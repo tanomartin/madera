@@ -1,0 +1,6 @@
+Usuario: 5 - HORA: 10:00:19 - Archivos: (Empresa: 1254877 - Acuerdos: 14227 - Cuotas: 156240)
+Usuario: 4 - HORA: 10:22:39 - Archivos: (Empresa: 1254877 - Acuerdos: 14240 - Cuotas: 156519)
+Usuario: 4 - HORA: 10:43:44 - Archivos: (Empresa: 1254877 - Acuerdos: 14254 - Cuotas: 156591)
+Usuario: 4 - HORA: 10:46:25 - Archivos: (Empresa: 1254877 - Acuerdos: 14254 - Cuotas: 156653)
+Usuario: 4 - HORA: 11:27:21 - Archivos: (Empresa: 1254877 - Acuerdos: 14267 - Cuotas: 156743)
+Usuario: 4 - HORA: 11:36:35 - Archivos: (Empresa: 1254877 - Acuerdos: 14279 - Cuotas: 156807)

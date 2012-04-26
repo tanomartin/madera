@@ -1,0 +1,104 @@
+                <html xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:x="urn:schemas-microsoft-com:office:excel"
+                xmlns="http://www.w3.org/TR/REC-html40">
+
+                <head>
+                <meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+                <meta name=ProgId content=Excel.Sheet>
+                <!--[if gte mso 9]><xml>
+                 <o:DocumentProperties>
+                  <o:Author>sistemas</o:Author>
+                  <o:LastSaved>2005-01-02T07:46:23Z</o:LastSaved>
+                  <o:Version>10.2625</o:Version>
+                 </o:DocumentProperties>
+                 <o:OfficeDocumentSettings>
+                  <o:DownloadComponents/>
+                 </o:OfficeDocumentSettings>
+                </xml><![endif]-->
+                <style>
+                <!--table
+                    {mso-displayed-decimal-separator:"\.";
+                    mso-displayed-thousand-separator:"\,";}
+                @page
+                    {margin:1.0in .75in 1.0in .75in;
+                    mso-header-margin:.5in;
+                    mso-footer-margin:.5in;}
+                tr
+                    {mso-height-source:auto;}
+                col
+                    {mso-width-source:auto;}
+                br
+                    {mso-data-placement:same-cell;}
+                .style0
+                    {mso-number-format:General;
+                    text-align:general;
+                    vertical-align:bottom;
+                    white-space:nowrap;
+                    mso-rotate:0;
+                    mso-background-source:auto;
+                    mso-pattern:auto;
+                    color:windowtext;
+                    font-size:10.0pt;
+                    font-weight:400;
+                    font-style:normal;
+                    text-decoration:none;
+                    font-family:Arial;
+                    mso-generic-font-family:auto;
+                    mso-font-charset:0;
+                    border:none;
+                    mso-protection:locked visible;
+                    mso-style-name:Normal;
+                    mso-style-id:0;}
+                td
+                    {mso-style-parent:style0;
+                    padding-top:1px;
+                    padding-right:1px;
+                    padding-left:1px;
+                    mso-ignore:padding;
+                    color:windowtext;
+                    font-size:10.0pt;
+                    font-weight:400;
+                    font-style:normal;
+                    text-decoration:none;
+                    font-family:Arial;
+                    mso-generic-font-family:auto;
+                    mso-font-charset:0;
+                    mso-number-format:General;
+                    text-align:general;
+                    vertical-align:bottom;
+                    border:none;
+                    mso-background-source:auto;
+                    mso-pattern:auto;
+                    mso-protection:locked visible;
+                    white-space:nowrap;
+                    mso-rotate:0;}
+                .xl24
+                    {mso-style-parent:style0;
+                    white-space:normal;}
+                -->
+                </style>
+                <!--[if gte mso 9]><xml>
+                 <x:ExcelWorkbook>
+                  <x:ExcelWorksheets>
+                   <x:ExcelWorksheet>
+                    <x:Name>hoja1</x:Name>
+                    <x:WorksheetOptions>
+                     <x:Selected/>
+                     <x:ProtectContents>False</x:ProtectContents>
+                     <x:ProtectObjects>False</x:ProtectObjects>
+                     <x:ProtectScenarios>False</x:ProtectScenarios>
+                    </x:WorksheetOptions>
+                   </x:ExcelWorksheet>
+                  </x:ExcelWorksheets>
+                  <x:WindowHeight>10005</x:WindowHeight>
+                  <x:WindowWidth>10005</x:WindowWidth>
+                  <x:WindowTopX>120</x:WindowTopX>
+                  <x:WindowTopY>135</x:WindowTopY>
+                  <x:ProtectStructure>False</x:ProtectStructure>
+                  <x:ProtectWindows>False</x:ProtectWindows>
+                 </x:ExcelWorkbook>
+                </xml><![endif]-->
+                </head>
+
+                <body link=blue vlink=purple>
+                <table x:str border=1 cellpadding=0 cellspacing=0 style='border-collapse: collapse;table-layout:fixed;'><tr><td class=xl24 width=64 >26/4/2012</td></tr><tr><tr><td class=xl24 width=64 >Cod. Del.</td><td class=xl24 width=64 >Cod. Emp.</td><td class=xl24 width=64 >Razon Social</td><td class=xl24 width=64 >Nro. Cheque</td><td class=xl24 width=64 >Banco</td><td class=xl24 width=64 >Importe</td><td class=xl24 width=64 >Nro. Acuerdo</td><td class=xl24 width=64 >Nro. Cuota</td><td class=xl24 width=64 >Nro. Acta</td><td class=xl24 width=64 >Nro. Boleta</td></tr><tr><td class=xl24 width=64 >1703</td><td class=xl24 width=64 >191</td><td class=xl24 width=64 >COMPAÑIA MADERERA SA</td><td class=xl24 width=64 >63253792</td><td class=xl24 width=64 >standard</td><td class=xl24 width=64 >1047.00</td><td class=xl24 width=64 >1</td><td class=xl24 width=64 >8</td><td class=xl24 width=64 >16959</td><td class=xl24 width=64 >99110921093833</td></tr><tr><td class=xl24 width=64 >1102</td><td class=xl24 width=64 >2496</td><td class=xl24 width=64 >CASTRO CLAUDIO ENRIQUE</td><td class=xl24 width=64 >28002990</td><td class=xl24 width=64 >hsbc</td><td class=xl24 width=64 >456.30</td><td class=xl24 width=64 >2</td><td class=xl24 width=64 >99</td><td class=xl24 width=64 >19193</td><td class=xl24 width=64 >99120329123254</td></tr><tr><td class=xl24 width=64 >1108</td><td class=xl24 width=64 >3056</td><td class=xl24 width=64 >A+D SA</td><td class=xl24 width=64 >24739702</td><td class=xl24 width=64 >galicia</td><td class=xl24 width=64 >1132.00</td><td class=xl24 width=64 >6</td><td class=xl24 width=64 >7</td><td class=xl24 width=64 >17626</td><td class=xl24 width=64 >99111006114249</td></tr><tr><td class=xl24 width=64 >2402</td><td class=xl24 width=64 >143</td><td class=xl24 width=64 >COPA CHAMBI ANGEL</td><td class=xl24 width=64 >32845322</td><td class=xl24 width=64 >Nacion</td><td class=xl24 width=64 >1227.05</td><td class=xl24 width=64 >1</td><td class=xl24 width=64 >99</td><td class=xl24 width=64 >13766</td><td class=xl24 width=64 >99120416115308</td></tr><tr><td class=xl24 width=64 >2801</td><td class=xl24 width=64 >166</td><td class=xl24 width=64 >SUC.DE ANTONIO PROSPERO MAX</td><td class=xl24 width=64 >33359318</td><td class=xl24 width=64 >Nacion</td><td class=xl24 width=64 >7553.00</td><td class=xl24 width=64 >2</td><td class=xl24 width=64 >2</td><td class=xl24 width=64 >15676</td><td class=xl24 width=64 >99120419130710</td></tr><tr><td class=xl24 width=64 >2103</td><td class=xl24 width=64 >24</td><td class=xl24 width=64 >ESPERANZA SA</td><td class=xl24 width=64 >91956180</td><td class=xl24 width=64 >gALICIA</td><td class=xl24 width=64 >13454.00</td><td class=xl24 width=64 >8</td><td class=xl24 width=64 >1</td><td class=xl24 width=64 >19181</td><td class=xl24 width=64 >99120418131622</td></tr><tr><td class=xl24 width=64 >1002</td><td class=xl24 width=64 >9820</td><td class=xl24 width=64 >TEQSA SA</td><td class=xl24 width=64 >65695356</td><td class=xl24 width=64 >standard</td><td class=xl24 width=64 >1119.84</td><td class=xl24 width=64 >11</td><td class=xl24 width=64 >99</td><td class=xl24 width=64 >19187</td><td class=xl24 width=64 >99120420111142</td></tr><tr><td class=xl24 width=64 >1102</td><td class=xl24 width=64 >1044</td><td class=xl24 width=64 >PASEMI SRL</td><td class=xl24 width=64 >46099190</td><td class=xl24 width=64 >credicoop</td><td class=xl24 width=64 >1279.00</td><td class=xl24 width=64 >11</td><td class=xl24 width=64 >501</td><td class=xl24 width=64 >18020</td><td class=xl24 width=64 >99111125122304</td></tr><tr><td class=xl24 width=64 >1301</td><td class=xl24 width=64 >1924</td><td class=xl24 width=64 >ASERRADERO Y TRANSPORTE LIMIA</td><td class=xl24 width=64 >3446</td><td class=xl24 width=64 >santander</td><td class=xl24 width=64 >590.00</td><td class=xl24 width=64 >16</td><td class=xl24 width=64 >1</td><td class=xl24 width=64 >19479</td><td class=xl24 width=64 >99120423111851</td></tr></tr><tr><tr><td class=xl24 width=64 >TOTAL</td><td class=xl24 width=64 >9</td></tr></tr></table></body></html>

@@ -1,0 +1,6 @@
+Usuario: 5 - HORA: 11:00:34 - Archivos: (Empresa: 1255346 - Acuerdos: 13524 - Cuotas: 150539)
+Usuario: 4 - HORA: 11:04:40 - Archivos: (Empresa: 1255346 - Acuerdos: 13535 - Cuotas: 151058)
+Usuario: 4 - HORA: 11:22:34 - Archivos: (Empresa: 1255421 - Acuerdos: 13548 - Cuotas: 151128)
+Usuario: 4 - HORA: 11:26:07 - Archivos: (Empresa: 1255421 - Acuerdos: 13548 - Cuotas: 151128)
+Usuario: 4 - HORA: 11:32:03 - Archivos: (Empresa: 1255421 - Acuerdos: 13560 - Cuotas: 151278)
+Usuario: 4 - HORA: 11:38:14 - Archivos: (Empresa: 1255421 - Acuerdos: 13560 - Cuotas: 151278)

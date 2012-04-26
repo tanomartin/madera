@@ -1,0 +1,6 @@
+Usuario: 4 - HORA: 9:18:48 - Archivos: (Empresa: 1251076 - Acuerdos: 13782 - Cuotas: 153320)
+Usuario: 4 - HORA: 9:47:37 - Archivos: (Empresa: 1251076 - Acuerdos: 13795 - Cuotas: 153343)
+Usuario: 4 - HORA: 10:31:13 - Archivos: (Empresa: 1251076 - Acuerdos: 13851 - Cuotas: 153484)
+Usuario: 4 - HORA: 11:13:03 - Archivos: (Empresa: 1251076 - Acuerdos: 13931 - Cuotas: 153900)
+Usuario: 4 - HORA: 12:26:13 - Archivos: (Empresa: 1251163 - Acuerdos: 13971 - Cuotas: 154269)
+Usuario: 4 - HORA: 13:59:19 - Archivos: (Empresa: 1251163 - Acuerdos: 13984 - Cuotas: 154384)

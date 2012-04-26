@@ -1,0 +1,3 @@
+Usuario: 1 - HORA: 11:59:55 - Archivos: (Empresa: 1245852 - Acuerdos: 15026 - Cuotas: 167359)
+Usuario: 1 - HORA: 12:03:02 - Archivos: (Empresa: 1245852 - Acuerdos: 15026 - Cuotas: 167359)
+Usuario: 1 - HORA: 18:37:54 - Archivos: (Empresa: 1245852 - Acuerdos: 14154 - Cuotas: 156536)
