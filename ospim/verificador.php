@@ -4,7 +4,7 @@ session_start();
 $datos = array_values($_POST);
 $usuario = $datos [0];
 $clave = $datos [1];
-$host = "cronos";
+$host = "localhost";
 
 $dbusuario =  mysql_connect($host,$usuario, $clave);
 if (!$dbusuario) {
@@ -16,11 +16,7 @@ $_SESSION['host']= $host;
 $_SESSION['usuario'] = $usuario;
 $_SESSION['clave'] = $clave;
 $_SESSION['aut'] = 1;
-if ($usuario == "prueba") {
-	$_SESSION['dbname'] = "maderaprueba";
-} else {
-	$_SESSION['dbname'] = "madera";
-}
+$_SESSION['dbname'] = "madera";
 
 $_SESSION['ultimoAcceso'] = date("Y-n-j H:i:s");
 
