@@ -206,7 +206,6 @@ function validar(formulario) {
 	}
 	
 }
-
 </script>
 
 <form id="nuevoAcuerdo" name="nuevoAcuerdo" method="POST" action="cargarCuotas.php"  onSubmit="return validar(this)" style="visibility:visible" >
