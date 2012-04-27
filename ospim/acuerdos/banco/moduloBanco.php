@@ -19,7 +19,6 @@ A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="verificacionArchivo.php">
 <p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
