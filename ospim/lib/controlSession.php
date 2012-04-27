@@ -4,7 +4,7 @@ ini_set("session.use_only_cookies","1");
 ini_set("session.use_trans_sid","0"); 
 //iniciamos la sesión 
 session_start(); 
-session_set_cookie_params(0, "/", $HTTP_SERVER_VARS["HTTP_HOST"], 0); 
+//session_set_cookie_params(0, "/", $HTTP_SERVER_VARS["HTTP_HOST"], 0); 
 //cambiamos la duración a la cookie de la sesión 
 //antes de hacer los cálculos, compruebo que el usuario está logueado 
 //utilizamos el mismo script que antes 
@@ -28,4 +28,8 @@ if ($_SESSION['aut'] != 1) {
   	} 
 } 
 $db =  mysql_connect($_SESSION['host'],$_SESSION['usuario'], $_SESSION['clave']);
+if (!$db) {
+    die('No pudo conectarse: ' . mysql_error());
+}
+mysql_select_db($_SESSION['dbname']);
 ?>

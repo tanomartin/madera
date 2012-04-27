@@ -22,7 +22,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="614" border="3">
     <tr>
       <td width="196"><p align="center">ABM Acuerdos </p>
-          <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmacuerdo.jpg" width="97" height="78" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="abm/moduloABM.php?err="><img src="img/abmacuerdo.jpg" width="97" height="78" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Impresi&oacute;n de Boletas </p>
           <p align="center"><a class="enlace" href="impresion/moduloImpresion.php"><img src="img/impresora.jpg" width="98" height="84" border="0" alt="enviar"/></a></p>

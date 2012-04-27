@@ -21,14 +21,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" action="acuerdos.php">
+<form id="form1" name="form1" method="post" action="acuerdos.php?cuit=">
 <p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos O.S.P.I.M. </p>
   <?php 
-  		$err = $_GET['err'];
+		$err = $_GET['err'];
 		if ($err == 1) {
 			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
 		}
+
   ?>
   <p>
   <label>
