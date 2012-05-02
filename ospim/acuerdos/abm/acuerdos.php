@@ -8,8 +8,9 @@ if ($cuit=="") {
 
 $sql = "select * from empresas where cuit = $cuit";
 $result = mysql_query($sql,$db); 
-if (!$result) {
-	 die('Invalid query: ' . mysql_error());
+$cant = mysql_num_rows($result); 
+if ($cant != 1) {
+	header ("Location: moduloABM.php?err=1");
 }
 $row = mysql_fetch_array($result); 
 $sqlDelEmp = "select * from delegaempresa where cuit = $cuit";

@@ -2,10 +2,6 @@
 include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
 $cuit = $_GET['cuit'];
 $nroacu = $_GET['nroacu'];
-
-$dbname = $_SESSION['dbname'];
-echo $dbname;
-
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -27,25 +23,25 @@ A:hover {text-decoration: none;color:#00FFFF }
     <?php 
 	//PARA LA CABECERA
 	$sql = "select * from empresas where cuit = $cuit";
-	$result = mysql_db_query($dbname,$sql,$db); 
+	$result = mysql_query($sql,$db); 
 	$row = mysql_fetch_array($result); 
 	
 	$sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-	$resDelEmp = mysql_db_query($dbname,$sqlDelEmp,$db);
+	$resDelEmp = mysql_query($sqlDelEmp,$db);
 	$rowDelEmp = mysql_fetch_array($resDelEmp); 
 	
 	$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-	$resultlocalidad = mysql_db_query($dbname,$sqllocalidad,$db); 
+	$resultlocalidad = mysql_query($sqllocalidad,$db); 
 	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
 	
 	$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-	$resultprovi = mysql_db_query($dbname,$sqlprovi,$db); 
+	$resultprovi = mysql_query($sqlprovi,$db); 
 	$rowprovi = mysql_fetch_array($resultprovi);
 	//FIN CABECERA
 	include ("cabezeraEmpresa.php"); 
 	
 	$sqlCabecera = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-	$resCabecera = mysql_db_query($dbname,$sqlCabecera,$db); 
+	$resCabecera = mysql_query($sqlCabecera,$db); 
 	$canCabecera = mysql_num_rows($resCabecera); 
 	if ($canCabecera == 1) {
 		$rowCebecera = mysql_fetch_array($resCabecera); 
@@ -58,7 +54,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <p><strong>ESTADO </strong>
 	<?php 
 		$sqlEstado = "select * from estadosdeacuerdos where codigo = $rowCebecera[estadoacuerdo]";
-		$resEstado= mysql_db_query($dbname,$sqlEstado,$db); 
+		$resEstado= mysql_query($sqlEstado,$db); 
 		$rowEstado = mysql_fetch_array($resEstado);
 		echo $rowEstado['descripcion'];
 	?>
@@ -71,7 +67,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php 
 			echo $rowCebecera['tipoacuerdo'];
 		//	$sqlTipoAcuerdo = "select * from tiposdeacuerdos where codigo = $rowCebecera['tipoacuerdo']";
-		//	$resTipoAcuerdo = mysql_db_query($dbname,$sqlTipoAcuerdo,$db);
+		//	$resTipoAcuerdo = mysql_query($dbname,$sqlTipoAcuerdo,$db);
 		//	$rowTipoAcuerdo = mysql_fetch_array($resTipoAcuerdo);	
 		//	echo $rowTipoAcuerdo['descripcion'];
 		?>
@@ -87,7 +83,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php 
 			echo $rowCebecera['gestoracuerdo'];
 		//	$sqlGestor = "select * from gestoresdeacuerdos where codigo = $rowCebecera['gestoracuerdo']";
-		//	$resGestor = mysql_db_query($dbname,$sqlGestor,$db);
+		//	$resGestor = mysql_query($dbname,$sqlGestor,$db);
 		//	$rowGestor = mysql_fetch_array($resGestor);	
 		//	echo $rowGestor['apeynombre'];
 		?>
@@ -100,7 +96,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		//		echo "No Especificado";
 		//	} else {
 		//		$sqlInspec = "select * from inspectores where codigo = $rowCebecera['inspectorinterviene']";
-		//		$resInspec = mysql_db_query($dbname,$sqlInspec,$db);
+		//		$resInspec = mysql_query($dbname,$sqlInspec,$db);
 		//		$rowInspec = mysql_fetch_array($resInspec);	
 		//		echo $rowInspec['apeynombre'];
 		//	}
@@ -132,7 +128,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <p><strong>Per&iacute;odos</strong></p>
     <?php 
 		$sqlPeriodos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-		$resPeriodos = mysql_db_query($dbname,$sqlPeriodos,$db); 
+		$resPeriodos = mysql_query($sqlPeriodos,$db); 
 		$canPeriodos = mysql_num_rows($resPeriodos); 
 		if ($canPeriodos != 0 ) { ?>
 			<table width="431" height="32" border="1">
@@ -173,7 +169,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       </tr>
 	<?php 
 		$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-		$resCuotas = mysql_db_query($dbname,$sqlCuotas,$db); 
+		$resCuotas = mysql_query($sqlCuotas,$db); 
 		$canCuotas = mysql_num_rows($resCuotas); 
 		if ($canCuotas != 0) {
 			while ($rowCuotas = mysql_fetch_array($resCuotas)) {

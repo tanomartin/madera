@@ -1,33 +1,29 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
 include($libPath."controlSession.php");
 
-$dbname = $_SESSION['dbname'];
-echo $dbname;
-
 $cuit=$_GET['cuit'];
-
 if ($cuit=="") {
 	$cuit=$_POST['cuit'];
 }
 
 $sql = "select * from empresas where cuit = $cuit";
-$result = mysql_db_query($dbname,$sql,$db); 
+$result = mysql_query($sql,$db); 
 $row = mysql_fetch_array($result); 
 
 $sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp = mysql_db_query($dbname,$sqlDelEmp,$db);
+$resDelEmp = mysql_query($sqlDelEmp,$db);
 $rowDelEmp = mysql_fetch_array($resDelEmp); 
 
 $sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_db_query($dbname,$sqllocalidad,$db); 
+$resultlocalidad = mysql_query($sqllocalidad,$db); 
 $rowlocalidad = mysql_fetch_array($resultlocalidad); 
 
 $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_db_query($dbname,$sqlprovi,$db); 
+$resultprovi = mysql_query($sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlacu =  "select * from cabacuerdosospim where cuit = $cuit order by nroacuerdo DESC";
-$resulacu= mysql_db_query($dbname,$sqlacu,$db); 
+$resulacu= mysql_query($sqlacu,$db); 
 $cant = mysql_num_rows($resulacu); 
 if ($cant == 0) {
 	$nacuNuevo = 1;
@@ -47,14 +43,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>Carga de Acuerdos</title>
+<title>.: Carga de Acuerdos :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
 
 <script src="../../lib/jquery.js" type="text/javascript"></script>
 <script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="../../lib/funcionControl.js" type="text/javascript"></script>
-<script language=Javascript>
+
+<script type="text/javascript">
+
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
 	for (i=0; i<= 120; i++) {
@@ -114,6 +112,10 @@ function cargarNombreReq(nroReq) {
 	}
 }
 
+function prueba() {
+ 	alert("lala");
+}
+
 function habilitarCarga() {
 	var control = parseInt(document.forms.nuevoAcuerdo.cantCuotas.value);
 	if (control >= 0 && !isNaN(control)) {
@@ -126,7 +128,7 @@ function habilitarCarga() {
 function cargarPor(){
 	<?php 
 		$sqlPor = "select * from parametros where id = 1";
-		$resPor= mysql_db_query($dbname,$sqlPor,$db); 
+		$resPor= mysql_query($sqlPor,$db); 
 		$rowPor = mysql_fetch_array($resPor);
 	?>
 	if (document.forms.nuevoAcuerdo.gasAdmi[1].checked) {
@@ -202,7 +204,6 @@ function validar(formulario) {
 			document.getElementById(nombreAnio).focus();
 			return (false);
 		}
-		//TODO: ver que no se repitan periodos.
 	}
 	
 }
@@ -210,7 +211,8 @@ function validar(formulario) {
 
 <form id="nuevoAcuerdo" name="nuevoAcuerdo" method="POST" action="cargarCuotas.php"  onSubmit="return validar(this)" style="visibility:visible" >
   <input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
-  <p align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+   <div align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
+  </div>
   <?php include ("cabezeraEmpresa.php"); ?> 
   <p align="center"><strong>M&oacute;dulo de Carga - Acuerdos Nuevos </strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong>
@@ -227,7 +229,7 @@ function validar(formulario) {
 		          <option value=0 selected="selected">Seleccione un valor </option>
 		          <?php 
 					$query="select * from tiposdeacuerdos";
-					$result=mysql_db_query($dbname,$query,$db);
+					$result=mysql_query($query,$db);
 					while ($rowtipos=mysql_fetch_array($result)) { ?>
 		          <option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['descripcion']  ?></option>
 		          <?php } ?>
@@ -251,7 +253,7 @@ function validar(formulario) {
               <select name="gestor" id="gestor" >
                 <?php 
 					$sqlGestor="select * from gestoresdeacuerdos";
-					$resGestor=mysql_db_query($dbname,$sqlGestor,$db);
+					$resGestor=mysql_query($sqlGestor,$db);
 					while ($rowGestor=mysql_fetch_array($resGestor)) { ?>
                   <option value="<?php echo $rowGestor['codigo'] ?>"><?php echo $rowGestor['apeynombre'] ?></option>
                 <?php } ?>
@@ -265,7 +267,7 @@ function validar(formulario) {
 		          <option value=0>No Especificado </option>
 	              <?php 
 					$sqlInspec="select * from inspectores where codidelega = ".$rowDelEmp['codidelega'];
-					$resInspec=mysql_db_query($dbname,$sqlInspec,$db);
+					$resInspec=mysql_query($sqlInspec,$db);
 					while ($rowInspec=mysql_fetch_array($resInspec)) { ?>
 		           		<option value="<?php echo $rowInspec['codigo'] ?>"><?php echo $rowInspec['apeynombre'] ?></option>
 	              <?php } ?>
@@ -278,7 +280,7 @@ function validar(formulario) {
 		        <option value=0>Seleccione un valor </option>
 	            <?php 
 				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
-				$resNroReq = mysql_db_query($dbname,$sqlNroReq,$db);
+				$resNroReq = mysql_query($sqlNroReq,$db);
 				while ($rowNroReq=mysql_fetch_array($resNroReq)) { ?>
 		           <option value="<?php echo $rowNroReq['nrorequerimiento'] ?>"><?php echo $rowNroReq['nrorequerimiento'] ?></option>
 	            <?php } ?>
@@ -304,7 +306,7 @@ function validar(formulario) {
           	<div align="left">
           	  <input name="gasAdmi" type="radio" value=0 checked onfocusout="cargarPor()"/>
           	NO<br />
-          	<input name="gasAdmi" type="radio" value=1 onfocusout="cargarPor()"/>
+          		<input name="gasAdmi" type="radio" value=1 onfocusout="cargarPor()"/>
           	SI            </div>
           </label></td>
           <td width="100" valign="bottom">
@@ -325,7 +327,7 @@ function validar(formulario) {
     <table width="710" border="0">
       <tr>
         <td width="398"><div align="center">
-          <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
+          <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="javascript:mostrarPeriodos()"/>
         </div></td>
         <td width="302"><div align="right">
           <input type="submit" name="guardar" id="guardar" value="Cargar Cuotas" disabled="disabled" sub />
@@ -339,7 +341,7 @@ function validar(formulario) {
           <td width="126"><div align="center">A&ntilde;o</div></td>
           <td width="135"><div align="center">Concepto de deuda </div></td>
           <td width="304"><div align="right">Cantidad de Cuotas
-              <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="habilitarCarga()" value="3"/>
+              <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="prueba()" value="3"/>
 </div></td>
         </tr>
        
