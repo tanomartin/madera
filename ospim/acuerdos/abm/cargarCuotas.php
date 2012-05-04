@@ -2,9 +2,6 @@
 include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
 $datos = array_values($_POST);
 
-$dbname = $_SESSION['dbname'];
-echo $dbname;
-
 $cuit = $datos[0];
 //echo "CUIT: ".$cuit; echo "<br>";
 $nroacuerdo = $datos[1];
@@ -90,7 +87,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="../../lib/jquery.js" type="text/javascript"></script>
 <script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="../../lib/funcionControl.js" type="text/javascript"></script>
-<script language=Javascript>
+<script type="text/javascript">
 
 jQuery(function($){
 	for (i=0; i<=<?php echo $cuotasapagar ?>; i++) {
@@ -224,7 +221,7 @@ function validarYGuardar(formulario) {
       <option value=0>Seleccione un valor </option>
       <?php
 					$query="select * from tiposcancelaciones";
-					$result=mysql_db_query($dbname,$query,$db);
+					$result=mysql_query($query,$db);
 					while ($rowtipos=mysql_fetch_array($result)) { ?>
       <option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
         <?php } ?>

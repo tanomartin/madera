@@ -79,7 +79,7 @@ try {
 	
 	$dbh->commit();
 	$pagina = "consultaAcuerdo.php?cuit=$cuit&nroacu=$nroacu";
-//	Header("Location: $pagina"); 
+	Header("Location: $pagina"); 
 	
 }catch (PDOException $e) {
 	echo $e->getMessage();

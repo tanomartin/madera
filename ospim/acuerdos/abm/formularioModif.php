@@ -4,27 +4,24 @@ include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
 
-$dbname = $_SESSION['dbname'];
-echo $dbname;
-
 $sql = "select * from empresas where cuit = $cuit";
-$result = mysql_db_query($dbname,$sql,$db); 
+$result =  mysql_query( $sql,$db); 
 $row = mysql_fetch_array($result); 
 
 $sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp = mysql_db_query($dbname,$sqlDelEmp,$db);
+$resDelEmp =  mysql_query( $sqlDelEmp,$db);
 $rowDelEmp = mysql_fetch_array($resDelEmp); 
 
 $sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_db_query($dbname,$sqllocalidad,$db); 
+$resultlocalidad =  mysql_query( $sqllocalidad,$db); 
 $rowlocalidad = mysql_fetch_array($resultlocalidad); 
 
 $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_db_query($dbname,$sqlprovi,$db); 
+$resultprovi =  mysql_query( $sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlacu = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-$resulacu= mysql_db_query($dbname,$sqlacu,$db); 
+$resulacu=  mysql_query( $sqlacu,$db); 
 $rowacu = mysql_fetch_array($resulacu);
 ?>
 
@@ -38,7 +35,7 @@ $rowacu = mysql_fetch_array($resulacu);
 <script src="../../lib/jquery.js" type="text/javascript"></script>
 <script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="../../lib/funcionControl.js" type="text/javascript"></script>
-<script language=Javascript>
+<script type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
 	for (i=0; i<= 120; i++) {
@@ -51,7 +48,9 @@ function cargarNombreReq(nroReq) {
 	var enc = 0;
 	if (nroReq != 0) {
 		 <?php
-		  	$dir = "/home/sistemas/Documentos/Liquidaciones/Liquidaciones";
+		  	//TODO: ver como resolvermos esto para probar...
+			//$dir = "/home/sistemas/Documentos/Liquidaciones/Liquidaciones";
+		  	$dir = "H:/Liquidaciones";
 			$directorio=opendir($dir); 
 			while ($archivo = readdir($directorio)) { 
 				$nroRequerimiento = substr($archivo, -12, 8); 
@@ -100,10 +99,10 @@ function validar(formulario) {
 		return(false);
 	}
 	
-	var totalPeriodos = parseInt(formulario.mostrar.value) + 12;
+	var totalPeriodos = parseInt(formulario.mostrar.value);
 	var errorMes = "Error en la carga del mes";
 	var errorAnio = "Error en la carga del año";
-	for (i=0; i<=totalPeriodos; i++) {
+	for (i=0; i<totalPeriodos; i++) {
 		nombreMes = "mes" + i;
 		nombreAnio = "anio" + i;
 		valorMes = document.getElementById(nombreMes).value;
@@ -118,7 +117,11 @@ function validar(formulario) {
 			document.getElementById(nombreAnio).focus();
 			return (false);
 		}
-		//TODO: ver que no se repitan periodos.
+		if (valorAnio < 1000 && valorMes != 0) {
+			alert(errorAnio);
+			document.getElementById(nombreAnio).focus();
+			return (false);
+		}
 	}
 	
 }
@@ -163,7 +166,7 @@ function mostrarPeriodos() {
    	<p align="center"><strong>ESTADO</strong> 
 	<?php 
 		$sqlEstado = "select * from estadosdeacuerdos where codigo = $rowacu[estadoacuerdo]";
-		$resEstado= mysql_db_query($dbname,$sqlEstado,$db); 
+		$resEstado=  mysql_query( $sqlEstado,$db); 
 		$rowEstado = mysql_fetch_array($resEstado);
 		echo $rowEstado['descripcion'];
 	?>
@@ -177,7 +180,7 @@ function mostrarPeriodos() {
               <option value=0>Seleccione un valor </option>
               <?php 
 					$query="select * from tiposdeacuerdos";
-					$result=mysql_db_query($dbname,$query,$db);
+					$result= mysql_query( $query,$db);
 					while ($rowtipos=mysql_fetch_array($result)) { 	
 						if ($rowtipos['codigo'] == $rowacu['tipoacuerdo']) {?>			
               <option value="<?php echo $rowtipos['codigo'] ?>" selected="selected"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
@@ -204,7 +207,7 @@ function mostrarPeriodos() {
            <select name="gestor" id="gestor" >
                 <?php 
 					$sqlGestor="select * from gestoresdeacuerdos";
-					$resGestor=mysql_db_query($dbname,$sqlGestor,$db);
+					$resGestor= mysql_query( $sqlGestor,$db);
 					while ($rowGestor=mysql_fetch_array($resGestor)) { 
 						if ($rowGestor['codigo'] == $rowacu['gestoracuerdo'])  { ?>					
                  		 	<option value="<?php echo $rowGestor['codigo'] ?>" selected="selected"><?php echo $rowGestor['apeynombre'] ?></option>
@@ -223,7 +226,7 @@ function mostrarPeriodos() {
 						  <option value=0>No Especificado </option>
 					<?php } 
 					$sqlInspec="select * from inspectores where codidelega = ".$rowDelEmp['codidelega'];
-					$resInspec=mysql_db_query($dbname,$sqlInspec,$db);
+					$resInspec= mysql_query( $sqlInspec,$db);
 					while ($rowInspec=mysql_fetch_array($resInspec)) { 
 						if ($rowacu['inspectorinterviene'] == $rowInspec['codigo']) { ?>
 		           			<option value="<?php echo $rowInspec['codigo'] ?>" selected="selected"><?php echo $rowInspec['apeynombre'] ?></option>
@@ -242,7 +245,7 @@ function mostrarPeriodos() {
 						  <option value=0>Seleccione un valor </option>
 				<?php } 
 				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
-				$resNroReq = mysql_db_query($dbname,$sqlNroReq,$db);
+				$resNroReq =  mysql_query( $sqlNroReq,$db);
 				while ($rowNroReq=mysql_fetch_array($resNroReq)) { 
 					if ($rowNroReq['nrorequerimiento'] == $rowacu['requerimientoorigen']) { ?>
 		           		<option value="<?php echo $rowNroReq['nrorequerimiento'] ?>" selected="selected"><?php echo $rowNroReq['nrorequerimiento'] ?></option>
@@ -303,7 +306,7 @@ function mostrarPeriodos() {
 	    <tr>
 			<?php 
 				$sqlPeridos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-				$resPeridos = mysql_db_query($dbname,$sqlPeridos,$db);
+				$resPeridos =  mysql_query( $sqlPeridos,$db);
 				$canPeridos = mysql_num_rows($resPeridos); 
 			?>
 			<input  name="mostrar" type="text" id="mostrar" size="4" value="<?php echo $canPeridos?>" readonly="readonly" style="visibility:hidden"/>
@@ -312,7 +315,12 @@ function mostrarPeriodos() {
 			
 			if ($canPeridos > 0) {
 				while ($rowPeridos=mysql_fetch_array($resPeridos)) { 
-					print("<td height='11'><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' value='".$rowPeridos['mesacuerdo']."' size='2' onfocusout='validoMes(".$i.")'/></div></td>");
+					if ($rowPeridos['mesacuerdo'] < 10) {
+						$mes = "0".$rowPeridos['mesacuerdo'];
+					} else {
+						$mes = $rowPeridos['mesacuerdo'];
+					}
+					print("<td height='11'><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' value='".$mes."' size='2' onfocusout='validoMes(".$i.")'/></div></td>");
 					print("<td height='11'><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' value='".$rowPeridos['anoacuerdo']."' size='4' onfocusout='validoAnio(".$i.")' /></div></td>");
 					if ($rowPeridos['conceptodeuda'] == "A") {
 						print("<td height='11'><div align='center'>

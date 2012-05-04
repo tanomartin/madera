@@ -41,18 +41,10 @@ A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Carga de Acuerdos :.</title>
-</head>
-<body bgcolor="#CCCCCC" >
-
 <script src="../../lib/jquery.js" type="text/javascript"></script>
 <script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="../../lib/funcionControl.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-
+<script language="javascript" type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
 	for (i=0; i<= 120; i++) {
@@ -89,7 +81,9 @@ function cargarNombreReq(nroReq) {
 	var enc = 0;
 	if (nroReq != 0) {
 		 <?php
-		  	$dir = "/home/sistemas/Documentos/Liquidaciones/Liquidaciones";
+		 	//TODO: ver como resolvermos esto para probar...
+			//$dir = "/home/sistemas/Documentos/Liquidaciones/Liquidaciones";
+		  	$dir = "H:/Liquidaciones";
 			$directorio=opendir($dir); 
 			while ($archivo = readdir($directorio)) { 
 				$nroRequerimiento = substr($archivo, -12, 8); 
@@ -110,10 +104,6 @@ function cargarNombreReq(nroReq) {
 	if (enc != 1) {
 		document.forms.nuevoAcuerdo.nombreArcReq.value = "";
 	}
-}
-
-function prueba() {
- 	alert("lala");
 }
 
 function habilitarCarga() {
@@ -199,7 +189,12 @@ function validar(formulario) {
 			document.getElementById(nombreMes).focus();
 			return (false);
 		}
-		if (valorMes != 0 && valorAnio == 0) {
+		if (valorMes != 0 && valorAnio == 0 ) {
+			alert(errorAnio);
+			document.getElementById(nombreAnio).focus();
+			return (false);
+		}
+		if (valorAnio < 1000 && valorMes!= 0) {
 			alert(errorAnio);
 			document.getElementById(nombreAnio).focus();
 			return (false);
@@ -208,7 +203,10 @@ function validar(formulario) {
 	
 }
 </script>
-
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>.: Carga de Acuerdos :.</title>
+</head>
+<body bgcolor="#CCCCCC" >
 <form id="nuevoAcuerdo" name="nuevoAcuerdo" method="POST" action="cargarCuotas.php"  onSubmit="return validar(this)" style="visibility:visible" >
   <input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
    <div align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
@@ -327,7 +325,7 @@ function validar(formulario) {
     <table width="710" border="0">
       <tr>
         <td width="398"><div align="center">
-          <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="javascript:mostrarPeriodos()"/>
+          <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
         </div></td>
         <td width="302"><div align="right">
           <input type="submit" name="guardar" id="guardar" value="Cargar Cuotas" disabled="disabled" sub />
@@ -341,7 +339,7 @@ function validar(formulario) {
           <td width="126"><div align="center">A&ntilde;o</div></td>
           <td width="135"><div align="center">Concepto de deuda </div></td>
           <td width="304"><div align="right">Cantidad de Cuotas
-              <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="prueba()" value="3"/>
+              <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="habilitarCarga()" value="3"/>
 </div></td>
         </tr>
        
