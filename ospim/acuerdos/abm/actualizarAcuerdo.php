@@ -61,6 +61,9 @@ try {
 	$dbh->exec($sqlDeletePeridos); 
 	
 	//Creo los SQL para los periodos
+	if ($peridosHabili > 108) {
+		$peridosHabili = 119;
+	}
 	$id = 1;
 	$finFor = 14 + ($peridosHabili * 3);
 	echo "FIN FOR: ".$finFor;  echo("<br>");
