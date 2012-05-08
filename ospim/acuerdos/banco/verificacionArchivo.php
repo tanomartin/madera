@@ -1,6 +1,8 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+include($libPath."controlSession.php");
+
 $fechacargada=$_POST['fechaarchivo'];
-$archivo_name="00005734".$fechacargada.".TXT";
+$archivo_name="00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
 $hayErrores=0;
 $validas=0;
 $deposit=0;
@@ -101,11 +103,12 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td height="27" colspan="3">&nbsp;</td>
   </tr>
   <tr align="center" valign="top">
-    <td height="27"><div align="left"><?php print("<a href=moduloBanco.php>".VOLVER);?></div></td>
-    <td width="426" height="27"><div align="center"><?php 
-		if ($hayErrores == 0)
-			print("<a href=procesarArchivo.php?nombreArc=".$archivo_name.">".INGRESAR);
-	?></div></td>
+    <td height="27"><div align="left">
+      <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloBanco.php'" align="left" />
+    </div></td>
+    <td width="426" height="27"><div align="center">
+	  <input type="submit" name="ingresar" value="Ingresar" onclick="location.href = 'procesarArchivo.php?nombreArc=<?php echo $archivo_name ?> '" align="left" />
+    </div></td>
     <td width="157"><div align="right">
         <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
       </div>

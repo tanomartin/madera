@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); ?>
-
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+include($libPath."controlSession.php");
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -13,6 +14,21 @@
 }
 -->
 </style>
+<script src="../../lib/jquery.js" type="text/javascript"></script>
+<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+jQuery(function($){
+	$("#fechaarchivo").mask("99-99-9999");
+});
+
+function validar(formulario) {
+	if (!esFechaValida(formulario.fechaarchivo.value)) {
+		document.getElementById("fechaarchivo").focus();
+		return(false);
+	} 
+}
+</script>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -25,7 +41,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p align="center" class="Estilo1">M&oacute;dulo De Procesamiento Bancario</p>
   <label>
   <div align="center">Fecha del Archivo del Banco: 
-  <input name="fechaarchivo" type="text" value="<?php echo date("dmY",time());?>" size="10" />
+  <input name="fechaarchivo" type="text" value="<?php echo date("d/m/Y",time());?>" size="10" />
   </label>
     <p align="center">
     <label>

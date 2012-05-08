@@ -1,4 +1,7 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+include($libPath."controlSession.php");
+
+$hayErrores=0;
 $archivo_name=$_GET['nombreArc'];
 $fechahoy=date("YmdHis",time());
 
@@ -29,9 +32,9 @@ else{
 		$chenrodb=substr($registros[$i], 146, 8);
 		$fecregdb=$fechahoy;
 		$usuregdb=$_SESSION['usuario'];
-				
+
 		$sqlBanco="INSERT INTO banacuerdosospim VALUES('$nromovdb','$sucoridb','$frecaudb','$frendidb','$estmovdb','$sucbcrdb',	'$codmovdb','$impdepdb','$monedadb','$codbardb','$cuibardb','$ctrbardb','$chebandb','$chesucdb','$chenrodb','$fecregdb','$usuregdb','','','','')";
-		$resultBanco= mysql_db_query("madera",$sqlBanco,$db); 
+		$resultBanco= mysql_query($sqlBanco,$db); 
 	}
 	$origen=$archivo_name;
 	$destino="ProcesadosBanco/".$archivo_name;
@@ -71,12 +74,9 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td height="23" colspan="2"><div align="left"></div></td>
     </tr>
   <tr align="center" valign="top">
-    <td width="373" height="27"><div align="left"><?php
-	if ($hayErrores == 1)
-		print("<a href=moduloBanco.php>".VOLVER);
-	else
-		print("<a href=moduloBanco.php>".VOLVER);
-	?></div></td>
+    <td width="373" height="27"><div align="left">
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloBanco.php'" align="left" />
+	</div></td>
     <td width="373"><div align="right">
         <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">	
 	</div></td>
