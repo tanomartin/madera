@@ -299,7 +299,7 @@ function mostrarPeriodos() {
           <td width="126"><div align="center">A&ntilde;o</div></td>
           <td width="135"><div align="center">Concepto de deuda </div></td>
           <td width="304"><div align="right">
-            <input type="button" name="modifcarCuotas" id="modifcarCuotas" value="Modificar Cuotas" />
+            <input type="button" name="modifcarCuotas" id="modifcarCuotas" value="Modificar Cuotas" onclick="location.href='modificarCuotas.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu ?>'"/>
           </div></td>
         </tr>
        

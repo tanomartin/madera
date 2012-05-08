@@ -156,16 +156,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 	
 	
     <p><strong>Cuotas</strong></p>
-    <table width="1000" border="1">
+    <table width="1100" border="1">
       <tr>
         <td width="41"><div align="center">Cuota </div></td>
-        <td width="84"><div align="center">Monto</div></td>
-        <td width="110"><div align="center">Fecha</div></td>
-        <td width="120"><div align="center">Cancelacion</div></td>
-        <td width="102"><div align="center">Nro Cheque </div></td>
-        <td width="110"><div align="center">Banco </div></td>
-        <td width="119"><div align="center">Fecha Cheque </div></td>
-		<td width="262"><div align="center">Observaciones </div></td>
+        <td width="83"><div align="center">Monto</div></td>
+        <td width="98"><div align="center">Fecha</div></td>
+        <td width="117"><div align="center">Cancelacion</div></td>
+        <td width="108"><div align="center">Nro Cheque </div></td>
+        <td width="105"><div align="center">Banco </div></td>
+        <td width="118"><div align="center">Fecha Cheque </div></td>
+		<td width="249"><div align="center">Observaciones </div></td>
+		<td width="123"><div align="center">Estado </div></td>
       </tr>
 	<?php 
 		$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
@@ -174,19 +175,29 @@ A:hover {text-decoration: none;color:#00FFFF }
 		if ($canCuotas != 0) {
 			while ($rowCuotas = mysql_fetch_array($resCuotas)) {
 				print ("<td width=41 align='center'><font face=Verdana size=2>".$rowCuotas['nrocuota']."</font></td>");
-				print ("<td width=84 align='center'><font face=Verdana size=2>".$rowCuotas['montocuota']."</font></td>");
-				print ("<td width=110 align='center'><font face=Verdana size=2>".$rowCuotas['fechacuota']."</font></td>");
-				print ("<td width=120 align='center'><font face=Verdana size=2>".$rowCuotas['tipocancelacion']."</font></td>");
+				print ("<td width=83 align='center'><font face=Verdana size=2>".$rowCuotas['montocuota']."</font></td>");
+				print ("<td width=98 align='center'><font face=Verdana size=2>".$rowCuotas['fechacuota']."</font></td>");
+				print ("<td width=117 align='center'><font face=Verdana size=2>".$rowCuotas['tipocancelacion']."</font></td>");
 				if ($rowCuotas['chequenro'] != 0) {
-					print ("<td width=102 align='center'><font face=Verdana size=2>".$rowCuotas['chequenro']."</font></td>");
-					print ("<td width=110 align='center'><font face=Verdana size=2>".$rowCuotas['chequebanco']."</font></td>");
-					print ("<td width=119 align='center'><font face=Verdana size=2>".$rowCuotas['chequefecha']."</font></td>");
+					print ("<td width=108 align='center'><font face=Verdana size=2>".$rowCuotas['chequenro']."</font></td>");
+					print ("<td width=105 align='center'><font face=Verdana size=2>".$rowCuotas['chequebanco']."</font></td>");
+					print ("<td width=118 align='center'><font face=Verdana size=2>".$rowCuotas['chequefecha']."</font></td>");
 				} else {
-					print ("<td width=102 align='center'><font face=Verdana size=2>-</font></td>");
-					print ("<td width=110 align='center'><font face=Verdana size=2>-</font></td>");
-					print ("<td width=119 align='center'><font face=Verdana size=2>-</font></td>");
+					print ("<td width=108 align='center'><font face=Verdana size=2>-</font></td>");
+					print ("<td width=105 align='center'><font face=Verdana size=2>-</font></td>");
+					print ("<td width=118 align='center'><font face=Verdana size=2>-</font></td>");
 				}
-				print ("<td width=262 align='center'><font face=Verdana size=2>".$rowCuotas['observaciones']."</font></td>");
+				print ("<td width=249 align='center'><font face=Verdana size=2>".$rowCuotas['observaciones']."</font></td>");
+				if ($rowCuotas['montopagada'] != 0) {
+					print ("<td width=123 align='center'><font face=Verdana size=2>CANCELADA</font></td>");
+				} else {
+					if ($rowCuotas['boletaimpresa'] != 0) {
+						print ("<td width=123 align='center'><font face=Verdana size=2>BOLETA IMPRESA</font></td>");
+					} else {
+						print ("<td width=123 align='center'><font face=Verdana size=2>A PAGAR</font></td>");
+					}
+				}
+				
 				print ("</tr>");
 			}
 		} else {
