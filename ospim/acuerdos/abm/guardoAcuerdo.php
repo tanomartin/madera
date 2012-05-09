@@ -54,7 +54,9 @@ try {
 		$monto = $datos[$i];
 		$totalMonto = $totalMonto + $monto;
 		$i++;
-		$fecha = invertirFecha($datos[$i]);
+		echo $datos[$i];echo "<br>";
+		$fecha = fechaParaGuardar($datos[$i]);
+		echo $fecha;echo "<br>";
 		$i++;
 		$tipoC = $datos[$i];
 		$i++;
@@ -62,7 +64,7 @@ try {
 		$i++;
 		$chequeb = $datos[$i];
 		$i++;
-		$chequef = invertirFecha($datos[$i]); 
+		$chequef = fechaParaGuardar($datos[$i]); 
 		$i++;
 		$observ = $datos[$i];
 		
@@ -79,7 +81,7 @@ try {
 	
 	//update del monto a pagar (suma de todas las cuotas)
 	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET montoapagar=$totalMonto WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
-	//echo $sqlUpdateMonto; echo "<br>";
+	echo $sqlUpdateMonto; echo "<br>";
 	$dbh->exec($sqlUpdateMonto);
 	$dbh->commit();
 	

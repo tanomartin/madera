@@ -2,6 +2,7 @@
 include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
+$cambio=$_GET['cambio'];
 
 $sqlMod = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa = 0";
 $resMod = mysql_query($sqlMod,$db);
@@ -49,6 +50,9 @@ function verInfoCheques(tipo, amostrar){
 		document.getElementById(banco).style.visibility="visible";
 		document.getElementById(fechaCheque).style.visibility="visible";
 	} else {
+		document.getElementById(nroCheque).value = "";
+		document.getElementById(banco).value = "";
+		document.getElementById(fechaCheque).value = "";
 		document.getElementById(nroCheque).style.visibility="hidden";
 		document.getElementById(banco).style.visibility="hidden";
 		document.getElementById(fechaCheque).style.visibility="hidden";
@@ -56,6 +60,7 @@ function verInfoCheques(tipo, amostrar){
 }
 
 function mostrarNuevaCuota(nroCuota) {	
+	var nrocuota = "nrocuota"+nroCuota;
 	var monto = "monto"+nroCuota;
 	var fecha = "fecha"+nroCuota;
 	var tipo = "tipo"+nroCuota;
@@ -65,7 +70,7 @@ function mostrarNuevaCuota(nroCuota) {
 	var titobs = "titobs"+nroCuota;
 	var obs = "obs"+nroCuota;
 	
-	document.getElementById(nroCuota).style.visibility="visible";
+	document.getElementById(nrocuota).style.visibility="visible";
 	document.getElementById(monto).style.visibility="visible";
 	document.getElementById(fecha).style.visibility="visible";
 	document.getElementById(tipo).style.visibility="visible";
@@ -115,6 +120,8 @@ function validarYGuardar(formulario) {
 	if (!document.getElementById(nombre).disabled) {
 		finfor = finfor +1;
 	}
+	
+	document.getElementById("cantCuotas").value = finfor;
 
 	for (i=1; i<=finfor; i++) {
 		nombreMonto = "monto"+i;
@@ -147,13 +154,21 @@ function validarYGuardar(formulario) {
 	return(validoMontos());
 }
 
+function popUpcambio(confi) {
+	if (confi == 1) {
+		alert("CAMBIO GUARDADO SATISFACTORIAMENTE");
+	}
+}
+
 </script>
 
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
+<p  align="center"><strong><a href="formularioModif.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
-<form id="modifCuotas" name="modifCuotas" onSubmit="return validarYGuardar(this)" method="POST" action="actualizarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu?>">
+<form id="modifCuotas" name="modifCuotas" onSubmit="return validarYGuardar(this)" method="POST" action="actualizarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu?>&canMod=<?php echo $canMod ?>">
+ <input name="cantCuotas" type="text" id="cantCuotas" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1">
   <div align="center"></div>
   <div align="center">
     <table width="800" border="1">
@@ -172,9 +187,9 @@ function validarYGuardar(formulario) {
 	while ($rowCuotas=mysql_fetch_array($resCuotas)) {
 		if ($rowCuotas['montopagada'] == 0 && $rowCuotas['boletaimpresa'] == 0) {
 			$contadorCuotas = $contadorCuotas + 1;	
-			print ("<td width=134 align='center'><font face=Verdana size=1>".$rowCuotas['nrocuota']."</font></td>");
+			print ("<td width=134> <input  style='background-color:#CCCCCC' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$rowCuotas['nrocuota']."' readonly='raadonly'></td>");
 			print ("<td width=107> <input name='monto".$contadorCuotas."' id='monto".$contadorCuotas."' type='text' size='10' value='".$rowCuotas['montocuota']."'></td>");
-			print ("<td width=116> <input name='fecha".$contadorCuotas."' id='fecha".$contadorCuotas."' type='text' size='10' value='".$rowCuotas['fechacuota']."'></td>");
+			print ("<td width=116> <input name='fecha".$contadorCuotas."' id='fecha".$contadorCuotas."' type='text' size='10' value='".invertirFecha($rowCuotas['fechacuota'])."'></td>");
 			print ("<td width=212>"); ?>
 		<select name=<?php print("tipo".$contadorCuotas);?> id=<?php print("tipo".$contadorCuotas);?> onChange="verInfoCheques(document.forms.modifCuotas.<?php echo("tipo".$contadorCuotas."[selectedIndex]");?>.value ,<?php echo $contadorCuotas ?>)">
 		  <option value=0>Seleccione un valor </option>
@@ -211,7 +226,7 @@ function validarYGuardar(formulario) {
 				
 				//::::::NUEVA CUOTA::::::
 				$contadorCuotas = $contadorCuotas + 1;
-				print ("<td width=134 id='".$contadorCuotas."' align='center' style='visibility: hidden'><font face=Verdana size=1>".$nroNuevaCuota."</font></td>");
+			print ("<td width=134> <input  style='background-color:#CCCCCC; visibility: hidden' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$nroNuevaCuota."' readonly='raadonly'></td>");
 				print ("<td width=107> <input name='monto".$contadorCuotas."' id='monto".$contadorCuotas."' disabled='disabled' style='visibility: hidden' type='text' size='10'></td>");
 				print ("<td width=116> <input name='fecha".$contadorCuotas."' id='fecha".$contadorCuotas."' disabled='disabled' style='visibility: hidden' type='text' size='10'></td>");
 				print ("<td width=212>");  ?>
@@ -242,17 +257,20 @@ function validarYGuardar(formulario) {
   </div>
   </p>
   <p>
-    <div align="center">
+  <div align="center">
       <input type="button" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">  
-    </div>
+  </div>
   </p>
+  <script type="text/javascript">
+  	popUpcambio(<?php echo $cambio ?>);
+  </script>
   <div align="center">
     <table width="739" border="0">
       <tr>
-        <td width="384"><input type="submit" name="guardar" id="guardar" value="Guardar Cambios" sub /></td>
-        <td width="339"><div align="right">
-          <input type="button" name="cancelar" id="cancelar" value="VOLVER" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" >
-        </div></td>
+        <td><div align="center">
+          <input type="submit" name="guardar" id="guardar" value="Guardar Cambios" sub />          
+        </div>
+        <div align="right"></div></td>
       </tr>
     </table>
   </div>

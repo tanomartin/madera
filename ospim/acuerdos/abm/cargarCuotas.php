@@ -185,6 +185,7 @@ function validarYGuardar(formulario) {
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
+<p  align="center"><strong><a href="formularioCarga.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
 <form id="cuotas" name="cuotas" onSubmit="return validarYGuardar(this)" method="POST" action="guardoAcuerdo.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacuerdo?>">
 
@@ -245,9 +246,7 @@ function validarYGuardar(formulario) {
   </p>
   <p align="center"> 
   	<input type="submit" name="guardar" id="guardar" value="Guardar" sub />
-	<label>
-	<input type="button" name="cancelar" id="cancelar" value="Cancelar" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" > 
-	</label>
+	<label></label>
   </p>
 </form>
 </body>

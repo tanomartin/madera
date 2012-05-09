@@ -280,27 +280,28 @@ function mostrarPeriodos() {
       </table>
    	</div>
 	<div align="center">
-    <p><b>Carga Períodos y Cuotas </b> </p>
-    <table width="710" border="0">
+    <p><b>Carga Períodos y Cuotas </b>      </p>
+    <table width="905" border="0">
       <tr>
-        <td width="398"><div align="center">
-		
+        <td width="399">
+          <div align="left">
+            <input type="button" name="modifcarCuotas" id="modifcarCuotas" value="Modificar Cuotas" onclick="location.href='modificarCuotas.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu ?>&cambio=0'"/>
+          </div></td>
+        <td width="92"><div align="center">
           <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
         </div></td>
-        <td width="302"><div align="right">
-          <input type="submit" name="guardar2" value="Guardar Cambios" sub />
-        </div></td>
+        <td width="400">
+          <div align="right">
+            <input type="submit" name="guardar2" value="Guardar Cambios" sub />
+          </div></td>
       </tr>
     </table>
-    <table width="711" height="32" border="0">
+    <table width="468" height="29" border="0">
        
         <tr>
-          <td width="128" height="11"> <div align="center">Mes</div></td>
-          <td width="126"><div align="center">A&ntilde;o</div></td>
-          <td width="135"><div align="center">Concepto de deuda </div></td>
-          <td width="304"><div align="right">
-            <input type="button" name="modifcarCuotas" id="modifcarCuotas" value="Modificar Cuotas" onclick="location.href='modificarCuotas.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu ?>'"/>
-          </div></td>
+          <td width="113" height="11"> <div align="center">Mes</div></td>
+          <td width="105"><div align="center">A&ntilde;o</div></td>
+          <td width="236"><div align="center">Concepto de deuda </div></td>
         </tr>
        
 	    <tr>
