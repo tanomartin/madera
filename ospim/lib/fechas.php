@@ -1,5 +1,4 @@
 <?php 
-
 function invertirFecha($fecha) {
 	$dia = substr($fecha,8,2);
 	$mes = substr($fecha,5,2);
@@ -23,5 +22,11 @@ function getAnio($fecha) {
 	return($dia);
 }
 
-
+function fechaParaGuardar($fecha) {
+	$dia = substr($fecha,0,2);
+	$mes = substr($fecha,3,2);
+	$anio = substr($fecha,6,4);
+	$fechaLista = $anio."-".$mes."-".$dia;
+	return($fechaLista);
+}
 ?>
