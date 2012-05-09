@@ -36,12 +36,12 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" action="verificacionArchivo.php">
+<form id="form1" onSubmit="return validar(this)"  name="form1" method="post" action="verificacionArchivo.php">
 <p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
   <p align="center" class="Estilo1">M&oacute;dulo De Procesamiento Bancario</p>
   <label>
   <div align="center">Fecha del Archivo del Banco: 
-  <input name="fechaarchivo" type="text" value="<?php echo date("d/m/Y",time());?>" size="10" />
+  <input id="fechaarchivo" name="fechaarchivo" type="text" value="<?php echo date("d/m/Y",time());?>" size="10" />
   </label>
     <p align="center">
     <label>
