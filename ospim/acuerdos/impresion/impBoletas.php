@@ -6,19 +6,19 @@ if ($cuit == NULL) {
 }
 
 $sql = "select * from empresas where cuit = $cuit";
-$result = mysql_db_query("madera",$sql,$db); 
+$result = mysql_query( $sql,$db); 
 $row=mysql_fetch_array($result); 
 
 $sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_db_query("madera",$sqllocalidad,$db); 
+$resultlocalidad = mysql_query( $sqllocalidad,$db); 
 $rowlocalidad = mysql_fetch_array($resultlocalidad); 
 
 $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_db_query("madera",$sqlprovi,$db); 
+$resultprovi = mysql_query( $sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit";
-$resulacuerdos= mysql_db_query("madera",$sqlacuerdos,$db); 
+$resulacuerdos= mysql_query( $sqlacuerdos,$db); 
 
 $cant = mysql_num_rows($resulacuerdos); 
 if ($cant == 0) {
@@ -42,42 +42,15 @@ A:hover {text-decoration: none;color:#33CCFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><strong><a href="moduloImpresion.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
-  <p><strong>Datos de la Empresa </strong></p>
-  <table width="43%" height="156" border="2">
-    <tr bordercolor="#000000" bgcolor="#CCCCCC">
-      <td width="23%" bordercolor="#0066CC"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">CUIT:</font></strong></div></td>
-      <td width="77%" bordercolor="#0066CC"><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo  $row['cuit'];?></font></div></td>
-    </tr>
-    <tr bordercolor="#000000" bgcolor="#CCCCCC">
-      <td bordercolor="#0066CC"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Raz&oacute;n 
-        Social:</font></strong></div></td>
-      <td bordercolor="#0066CC"><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['nombre'];?></font></div></td>
-    </tr>
-
-    <tr bordercolor="#000000" bgcolor="#CCCCCC">
-      <td bordercolor="#0066CC"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Domicilio:</font></strong></div></td>
-      <td bordercolor="#0066CC"><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['domilegal'];?></font></div></td>
-    </tr>
-    <tr bordercolor="#000000" bgcolor="#CCCCCC">
-      <td bordercolor="#0066CC"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Localidad:</font></strong></div></td>
-      <td bordercolor="#0066CC"><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $rowlocalidad['nomlocali'];?></font></div></td>
-    </tr>
-    <tr bordercolor="#000000" bgcolor="#CCCCCC">
-      <td bordercolor="#0066CC"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Provincia</font></strong></div></td>
-      <td bordercolor="#0066CC"><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $rowprovi['descrip']; ?></font></div></td>
-    </tr>
-    <tr bordercolor="#000000" bgcolor="#CCCCCC">
-      <td bordercolor="#0066CC"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo 
-        Postal:</strong></font></div></td>
-      <td bordercolor="#0066CC"><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['numpostal'];?></font></div></td>
-    </tr>
-  </table>
+	 <?php 	
+		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="340" border="1">
      <?php 
 		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
 			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
-			$result=mysql_db_query("madera",$query,$db);
+			$result=mysql_query( $query,$db);
 			$rowtipos=mysql_fetch_array($result);
 			echo ('<td width=340  align="center"><font face=Verdana size=3><a href="impBoletas.php?acuerdo='.$rowacuerdos['nroacuerdo'].'&cuit='.$cuit.'"> Acuerdo '.$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
 			print ("</tr>");
@@ -88,7 +61,7 @@ A:hover {text-decoration: none;color:#33CCFF }
   <p>
     <?php
   	$acuerdo = $_GET["acuerdo"];
-		if ($acuerdo != "") { ?>
+		if ($acuerdo != 0) { ?>
   </p>
   <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
   <table border="1" width="935" bordercolorlight="#000099" bordercolordark="#0066FF" bordercolor="#000000" cellpadding="2" cellspacing="0">
@@ -105,14 +78,14 @@ A:hover {text-decoration: none;color:#33CCFF }
 			
 			<?php	
 			$sqllistado = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
-			$reslistado = mysql_db_query("madera",$sqllistado,$db); 
+			$reslistado = mysql_query( $sqllistado,$db); 
 			while ($rowListado = mysql_fetch_array($reslistado)) {
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['nrocuota']."</font></div></td>");
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['montocuota']."</font></div></td>");
 				print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowListado['fechacuota'])."</font></div></td>");
 				
 				$sqltipocan = "select * from tiposcancelaciones where codigo = $rowListado[tipocancelacion]";
-				$restipocan =  mysql_db_query("madera",$sqltipocan,$db);
+				$restipocan =  mysql_query( $sqltipocan,$db);
 				$rowtipocan = mysql_fetch_array($restipocan);
 				
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowtipocan['descripcion']."</font></div></td>");
@@ -132,7 +105,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 							if ($rowListado['tipocancelacion'] == 3) {
 								$nrocuota = $rowListado['nrocuota'];
 								$sqlValorCobro = "select * from valoresalcobro where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $nrocuota";
-								$resValorCobro =  mysql_db_query("madera",$sqlValorCobro,$db);
+								$resValorCobro =  mysql_query( $sqlValorCobro,$db);
 								$cantValor = mysql_num_rows($resValorCobro); 
 									if ($cantValor == 1) {
 										$rowValorCobro = mysql_fetch_array($resValorCobro);

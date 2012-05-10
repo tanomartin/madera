@@ -21,8 +21,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" action="acuerdos.php?cuit=">
-<p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
+<form id="form1" name="form1" method="post" action="acuerdos.php">
+<p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos O.S.P.I.M. </p>
   <?php 
 		$err = $_GET['err'];
@@ -34,7 +34,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p>
   <label>
   <div align="center">CUIT
-      <input name="cuit" type="text" value="20182863182" />
+      <input name="cuit" type="text" />
   </label>
     <p align="center">
     <label>

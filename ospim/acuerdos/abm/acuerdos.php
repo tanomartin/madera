@@ -44,8 +44,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#CCCCCC" > 
 <div align="center">
-  <p><strong><a href="moduloABM.php?err="><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
-  <?php include ("cabezeraEmpresa.php"); ?> 
+  <p><strong><a href="moduloABM.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+  <?php 	
+		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="500" border="1">
      <?php 

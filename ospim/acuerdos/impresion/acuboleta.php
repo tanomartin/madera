@@ -19,17 +19,17 @@
 <table border="0" width="100%" height="90%">
   <tr>
     <td width="100%" valign="top" align="center"> 
-<?		
+<?php	
 	$cuit = $_GET["cuit"];
 	$acuerdo = $_GET["acuerdo"];
 	$cuota = $_GET["cuota"];	 
  
 	$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
-	$resulacuerdos= mysql_db_query("madera",$sqlacuerdos,$db); 
+	$resulacuerdos=  mysql_query( $sqlacuerdos,$db); 
 	$rowacuerdos = mysql_fetch_array($resulacuerdos);
 	
 	$sqlcuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
-	$rescuotas = mysql_db_query("madera",$sqlcuotas,$db); 
+	$rescuotas =  mysql_query( $sqlcuotas,$db); 
 	$rowcuotas = mysql_fetch_array($rescuotas);
 
 	$nroact = $rowacuerdos['nroacta'];
@@ -41,7 +41,7 @@
 	
 	if ($tipopago == 3) {
 		$sqlvalor = "select * from valoresalcobro where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
-		$resvalor = mysql_db_query("madera",$sqlvalor,$db); 
+		$resvalor =  mysql_query( $sqlvalor,$db); 
 		$rowvalor = mysql_fetch_array($resvalor);
 		$nrocheque = $rowvalor['chequenroospim'];
 		$banco = $rowvalor['chequebancoospim'];
@@ -59,20 +59,20 @@
 	$ctrlh = $h.$ctrlh;
 		
 	$sql = "select * from empresas where cuit = $nrcuit";
-	$result = mysql_db_query("madera",$sql,$db); 
+	$result =  mysql_query( $sql,$db); 
 	$row=mysql_fetch_array($result); 
 	
 	$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-	$resultlocalidad = mysql_db_query("madera",$sqllocalidad,$db); 
+	$resultlocalidad =  mysql_query( $sqllocalidad,$db); 
 	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
 
 //Ejecucion del sql para ingreso del registro en tabla boletasospim
 	$sqlgrababoleta = "INSERT INTO boletasospim (cuit,nroacuerdo,nrocuota,importe,nrocontrol,usuarioregistro) VALUES ('$cuit','$acuerdo','$cuota','$importe','$ctrlh','$_SESSION[usuario]')";
-	$resulgrababoleta = mysql_db_query("madera",$sqlgrababoleta,$db);
+	$resulgrababoleta =  mysql_query( $sqlgrababoleta,$db);
 
 //Ejecucion del sql para incrementar la cantidad de boletas impresas en tabla cuoacuerdosospim
 	$sqlactcuotas = "update cuoacuerdosospim set boletaimpresa = ($cantbole+1) where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
-	$resulactcuotas = mysql_db_query("madera",$sqlactcuotas,$db); 
+	$resulactcuotas =  mysql_query( $sqlactcuotas,$db); 
 
 	$nota[0] = ("1 - Original: Para el BANCO como comprobante de Caja");
 	$nota[1] = ("1 - Duplicado: Para el DEPOSITANTE");

@@ -1,4 +1,4 @@
-<?
+<?php
 function ControlCien($Palabras, $Cientos, $SubValue, $UltimaCentena) {
   if ($SubValue==0) return '';
   if ($SubValue==100) return 'cien';

@@ -158,7 +158,9 @@ function mostrarPeriodos() {
 <form id="modifAcuerdo" name="modifAcuerdo" method="POST" action="actualizarAcuerdo.php" onSubmit="return validar(this)"  style="visibility:visible">
    	<input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>" />
 	<p align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2">VOLVER</font></a></strong></p>
-	 <?php include ("cabezeraEmpresa.php"); ?> 
+	 <?php 	
+		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+	?>
 	<p align="center"><strong>M&oacute;dulo de Modificación</strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong> 
    	  <input name="nroacu" type="text" id="nroacu" value="<?php echo $nroacu ?>" size="2" readonly="true"  />
@@ -285,7 +287,7 @@ function mostrarPeriodos() {
       <tr>
         <td width="399">
           <div align="left">
-            <input type="button" name="modifcarCuotas" id="modifcarCuotas" value="Modificar Cuotas" onclick="location.href='modificarCuotas.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu ?>&cambio=0'"/>
+            <input type="button" name="modifcarCuotas" id="modifcarCuotas" value="Modificar Cuotas" onclick="location.href='modificarCuotas.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu ?>'"/>
           </div></td>
         <td width="92"><div align="center">
           <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>

@@ -31,12 +31,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 		}
   ?>
   <p>
-  <label>
+  <label> 
   <div align="center">CUIT
       <input name="cuit" type="text" />
   </div>
   </label>
-    <p align="center">
+  <p align="center">
     <label>
     <input type="submit" name="Submit" value="Enviar" />
     </label>

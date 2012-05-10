@@ -211,7 +211,9 @@ function validar(formulario) {
   <input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
    <div align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
   </div>
-  <?php include ("cabezeraEmpresa.php"); ?> 
+   <?php 	
+		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+	?>
   <p align="center"><strong>M&oacute;dulo de Carga - Acuerdos Nuevos </strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong>
       <input name="nroacu" type="text" id="nroacu" size="4" readonly="true" value="<?php echo $nacuNuevo ?>">
@@ -236,12 +238,12 @@ function validar(formulario) {
           <td width="106" valign="bottom"><div align="left">Fecha Acuerdo</div></td>
           <td width="144" valign="bottom">
             <div align="left">
-              <input id="fechaAcuerdo" type="text" name="fechaAcuerdo" value="12/12/2012"/>
+              <input id="fechaAcuerdo" type="text" name="fechaAcuerdo"/>
             </div></td>
           <td width="158" valign="bottom"><div align="left">N&uacute;mero de Acta</div></td>
           <td colspan="2" valign="bottom">
             <div align="left">
-              <input id="numeroActa" type="text" name="numeroActa" value="1111"/>
+              <input id="numeroActa" type="text" name="numeroActa"/>
             </div></td>
         </tr>
         <tr>
@@ -297,7 +299,7 @@ function validar(formulario) {
           <td valign="bottom"><div align="left">Monto Acuerdo </div></td>
           <td valign="bottom">
             <div align="left">
-              <input id="monto" type="text" name="monto" value="125.2"/>
+              <input id="monto" type="text" name="monto"/>
             </div></td>
           <td valign="bottom"><div align="left">Gastos Administrativos </div></td>
           <td width="49" valign="bottom"><label>
@@ -339,7 +341,7 @@ function validar(formulario) {
           <td width="126"><div align="center">A&ntilde;o</div></td>
           <td width="135"><div align="center">Concepto de deuda </div></td>
           <td width="304"><div align="right">Cantidad de Cuotas
-              <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="habilitarCarga()" value="3"/>
+              <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="habilitarCarga()"/>
 </div></td>
         </tr>
        
