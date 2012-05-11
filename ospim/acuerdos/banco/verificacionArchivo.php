@@ -104,7 +104,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr align="center" valign="top">
     <td height="27"><div align="left">
-      <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloBanco.php'" align="left" />
+      <input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoArchivos.php'" align="left" />
     </div></td>
     <td width="426" height="27"><div align="center">
 	  <input type="submit" name="ingresar" value="Ingresar" onclick="location.href = 'procesarArchivo.php?nombreArc=<?php echo $archivo_name ?> '" align="left" />
