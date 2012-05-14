@@ -1,4 +1,4 @@
-<? session_save_path("sessiones");
+<?php session_save_path("sessiones");
 session_start();
 if($_SESSION['usuario'] == null or $_SESSION['aut'] > 1)
 	header ("location:index.htm");
@@ -28,10 +28,10 @@ SCROLLBAR-DARKSHADOW-COLOR: #CD8C34
 
 <title>.: Sistmea de Acuerdos - Reimprimir :.</title>
 </head>
-<?
+<?php
 include("conexion.php");
 $sql = "select * from usuarios where id = '$_SESSION[usuario]'";
-$result = mysql_db_query("acuerdos",$sql,$db);
+$result = mysql_query($sql,$db);
 $row=mysql_fetch_array($result);
 
 $delcod=$_GET['delcod'];
@@ -40,67 +40,67 @@ $acuerdo=$_GET['acuerdo'];
 $cuota=$_GET['cuota'];
 
 $sqlEmpresa = "select * from empresas where delcod=".$delcod." and empcod=".$empcod;
-$resultEmpresa = mysql_db_query("acuerdos",$sqlEmpresa,$db);
+$resultEmpresa = mysql_query($sqlEmpresa,$db);
 $rowEmpresa=mysql_fetch_array($resultEmpresa);
 
 ?>
 <body bgcolor="#E4C192" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
 <p align="center"><img border="0" src="top.jpg" width="700" height="120"></p>
 <p align="center"><strong><font color="#990000" size="1" face="Verdana, Arial, Helvetica, sans-serif">Bienvenid@</font><font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-  <? echo $row['nombre']?></font></strong></p>
+  <?php echo $row['nombre']?></font></strong></p>
 
 <form name="reimprimir" id="reimprimir" method="post" action="acuerdos2.php">
-          <input name="cuit" type="hidden" value="<? echo $rowEmpresa['nrcuit'];?>">
-          <input name="delcod" type="hidden" value="<? echo $delcod;?>">
-          <input name="empcod" type="hidden" value="<? echo $empcod;?>">
-          <input name="acuerdo" type="hidden" value="<? echo $acuerdo;?>">
-          <input name="cuota" type="hidden" value="<? echo $cuota;?>">
+          <input name="cuit" type="hidden" value="<?php echo $rowEmpresa['nrcuit'];?>">
+          <input name="delcod" type="hidden" value="<?php echo $delcod;?>">
+          <input name="empcod" type="hidden" value="<?php echo $empcod;?>">
+          <input name="acuerdo" type="hidden" value="<?php echo $acuerdo;?>">
+          <input name="cuota" type="hidden" value="<?php echo $cuota;?>">
 <table width="906" border="1" align="center">
       <tr>
         <td height="50"><p>DATOS DE LA EMPRESA </p>        </td>
       </tr>
       <tr bgcolor="#C08345">
         <td><div align="center">
-          <p><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">CUIT:</font></strong><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> <? echo $rowEmpresa['nrcuit'];?></font></strong></p>
+          <p><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">CUIT:</font></strong><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> <?php echo $rowEmpresa['nrcuit'];?></font></strong></p>
           </div></td>
       </tr>
       <tr bgcolor="#C08345">
         <td><div align="center">
           <p><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Raz&oacute;n 
-            Social: </font></strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $rowEmpresa['nombre'];?></font></p>
+            Social: </font></strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowEmpresa['nombre'];?></font></p>
           </div></td>
       </tr>
       <tr bgcolor="#C08345">
-        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Delegaci&oacute;n:</strong> <? echo $rowEmpresa['delcod'];?></font></div></td>
+        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Delegaci&oacute;n:</strong> <?php echo $rowEmpresa['delcod'];?></font></div></td>
       </tr>
       <tr bgcolor="#C08345">
-        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Empresa: </strong> <? echo $rowEmpresa['empcod'];?></font></div></td>
+        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Empresa: </strong> <?php echo $rowEmpresa['empcod'];?></font></div></td>
       </tr>
       <tr bgcolor="#C08345">
-        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Domicilio: </strong> <? echo $rowEmpresa['domici'];?> </font></div></td>
+        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Domicilio: </strong> <?php echo $rowEmpresa['domici'];?> </font></div></td>
       </tr>
       <tr bgcolor="#C08345">
-        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Localidad: </strong> <? echo $rowEmpresa['locali'];?> </font></div></td>
+        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Localidad: </strong> <?php echo $rowEmpresa['locali'];?> </font></div></td>
       </tr>
       <tr bgcolor="#C08345">
-        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo Postal: </strong><? echo $rowEmpresa['codpos'];?></font></div></td>
+        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo Postal: </strong><?php echo $rowEmpresa['codpos'];?></font></div></td>
       </tr>
       <tr bgcolor="#C08345">
-        <?
+        <?php
 $provincia = array ("PROVINCIA", "CAPITAL FEDERAL", "BUENOS AIRES", "MENDOZA", "NEUQUEN", "SALTA", "ENTRE RIOS", "MISIONES", "CHACO", "SANTA FE", "CORDOBA", "SAN JUAN", "RIO NEGRO", "CORRIENTES", "SANTA CRUZ", "CHUBUT", "FORMOSA", "LA PAMPA", "SANTIAGO DEL ESTERO", "JUJUY", "TUCUMAN", "TIERRA DEL FUEGO", "SAN LUIS", "LA RIOJA", "CATAMARCA");
 $pro = $row["provin"];
 ?>
-        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Provincia:</strong> <? echo $provincia [$pro]; ?></font></div></td>
+        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Provincia:</strong> <?php echo $provincia [$pro]; ?></font></div></td>
       </tr>
       
       <tr>
         <td height="43"><p>DATOS DE LA CUOTA A HABILITAR PARA REIMPRESION </p>        </td>
       </tr>
       <tr bgcolor="#C08345">
-        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Acuerdo: </strong><? echo $acuerdo;?></font></div></td>
+        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Acuerdo: </strong><?php echo $acuerdo;?></font></div></td>
       </tr>
       <tr bgcolor="#C08345">
-        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Cuota: </strong> <? echo $cuota;?></font></div></td>
+        <td><div align="center"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Cuota: </strong> <?php echo $cuota;?></font></div></td>
       </tr>
       <tr>
         <td>

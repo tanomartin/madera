@@ -1,4 +1,4 @@
-<? session_save_path("sessiones");
+<?php session_save_path("sessiones");
 session_start();
 if($_SESSION['usuario'] == null)
 	header ("location:index.htm");
@@ -19,8 +19,7 @@ if($_SESSION['usuario'] == null)
 <table border="0" width="100%" height="100%">
   <tr>
     <td width="100%" valign="top" align="center"> 
-<?
-require ("numeros.php");			  
+<?php require ("numeros.php");			  
 $datos = array_values($_POST);
 
 if ($datos[1] == -1) {
@@ -59,11 +58,11 @@ include("conexion.php");
 
 //Ejecucion de la sentencia SQL para ingresar registro en boletas impresas.
 $sqlBoletas = "INSERT INTO boletas VALUES ('$delcod','$empcod','$nroacu','$nrocuo','$ctrlh')";
-$resultBole = mysql_db_query("acuerdos",$sqlBoletas,$db);
+$resultBole = mysql_query( $sqlBoletas,$db);
 
 //Ejecucion de la sentencia SQL para empresas
 $sql = "select * from empresas where nrcuit = '$nrcuit' and delcod = '$delcod' and empcod = '$empcod'";
-$result = mysql_db_query("acuerdos",$sql,$db);
+$result = mysql_query( $sql,$db);
 $row = mysql_fetch_array($result);
 $delcod = $row['delcod'];
 $empcod = $row['empcod'];
@@ -71,7 +70,7 @@ $empcod = $row['empcod'];
 //Ejecucion ingreso registro en depositos
 $sql = "INSERT INTO depositos (nrcuit,delcod,empcod,nroacu,nrocuo,nroact,importe,fecpro,idusuario,tipopago,nrocheque,banco)
 VALUES ('$nrcuit','$delcod','$empcod','$nroacu','$nrocuo','$nroact','$importe','$ctrlh','$_SESSION[usuario]','$tipopago','$nrocheque','$banco')";
-$result = mysql_db_query("acuerdos",$sql,$db);			  
+$result = mysql_query( $sql,$db);			  
 
 $nota[0] = ("1 - Original: Para el DEPOSITANTE");
 $nota[1] = ("1 - Duplicado: Para el BANCO como comprobante de Caja");
@@ -112,7 +111,7 @@ print ("  </tr>");
 print ("</table>");
 
 $sqlRedun = "select * from depositos where nrcuit = '$nrcuit' and delcod = '$delcod' and empcod = '$empcod' and fecpro = '$ctrlh'";
-$resRedun = mysql_db_query("acuerdos",$sqlRedun,$db);
+$resRedun = mysql_query( $sqlRedun,$db);
 $rowRedun = mysql_fetch_array($resRedun);
 
 $pepe = cfgValorEnLetras($rowRedun['importe']);

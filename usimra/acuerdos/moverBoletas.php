@@ -1,4 +1,4 @@
-<? session_save_path("sessiones");
+<?php session_save_path("sessiones");
 session_start();
 if($_SESSION['usuario'] == null or $_SESSION['aut'] > 1)
 	header ("location:index.htm");
@@ -28,17 +28,16 @@ SCROLLBAR-DARKSHADOW-COLOR: #CD8C34
 
 <title>.: Sistmea de Acuerdos - INFORME CNE :.</title>
 </head>
-<?
-include("conexion.php");
+<?php include("conexion.php");
 $sql = "select * from usuarios where id = '$_SESSION[usuario]'";
-$result = mysql_db_query("acuerdos",$sql,$db);
+$result = mysql_query( $sql,$db);
 $row=mysql_fetch_array($result);
 
 ?>
 <body bgcolor="#E4C192" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
 <p align="center"><img border="0" src="top.jpg" width="700" height="120"></p>
 <p align="center"><strong><font color="#990000" size="1" face="Verdana, Arial, Helvetica, sans-serif">Bienvenid@</font><font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-  <? echo $row['nombre']?></font></strong></p>
+  <?php echo $row['nombre']?></font></strong></p>
 
 <form name="mover" id="mover" method="post" action="">
     <table width="906" border="1" align="center">
@@ -56,10 +55,10 @@ $row=mysql_fetch_array($result);
 		if (count($_POST['seleccion']) != 0) {
 			foreach ($_POST['seleccion'] as $fecpro){ 
 				 $sql = "INSERT INTO eliminadas SELECT * FROM depositos WHERE fecpro =".$fecpro;
-				 $result = mysql_db_query("acuerdos",$sql,$db);
+				 $result = mysql_query( $sql,$db);
 				 if ($result == true) {
 				 	$sqlElim = "DELETE FROM depositos WHERE fecpro =".$fecpro;
-					$resultElim = mysql_db_query("acuerdos",$sqlElim,$db);
+					$resultElim = mysql_query( $sqlElim,$db);
 					if ($resultElim == true) {
 						print ("Se eliminó la boleta número: ".$fecpro);
 						echo '<img src="ok.png" width="20" height="20"><br>'; 

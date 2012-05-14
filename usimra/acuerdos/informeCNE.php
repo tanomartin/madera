@@ -1,4 +1,4 @@
-<? session_save_path("sessiones");
+ <?php session_save_path("sessiones");
 session_start();
 if($_SESSION['usuario'] == null or $_SESSION['aut'] > 1)
 	header ("location:index.htm");
@@ -28,17 +28,16 @@ SCROLLBAR-DARKSHADOW-COLOR: #CD8C34
 
 <title>.: Sistmea de Acuerdos - INFORME CNE :.</title>
 </head>
-<?
-include("conexion.php");
+ <?php include("conexion.php");
 $sql = "select * from usuarios where id = '$_SESSION[usuario]'";
-$result = mysql_db_query("acuerdos",$sql,$db);
+$result = mysql_query( $sql,$db);
 $row=mysql_fetch_array($result);
 
 ?>
 <body bgcolor="#E4C192" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
 <p align="center"><img border="0" src="top.jpg" width="700" height="120"></p>
 <p align="center"><strong><font color="#990000" size="1" face="Verdana, Arial, Helvetica, sans-serif">Bienvenid@</font><font size="1" face="Verdana, Arial, Helvetica, sans-serif"> 
-  <? echo $row['nombre']?></font></strong></p>
+   <?php echo $row['nombre']?></font></strong></p>
 
 <form name="informeCNE" id="informeCNE" method="post" action="moverBoletas.php">
     <table width="906" border="1" align="center">
@@ -72,11 +71,11 @@ $row=mysql_fetch_array($result);
 					if ($query <> null) {
 						while ($rowHisto=mysql_fetch_assoc($rsTotal)) {	
 							$sqlUsuario = "select * from usuarios where id = ".$rowHisto['idusuario'];
-							$resultUsua = mysql_db_query("acuerdos",$sqlUsuario,$db);
+							$resultUsua = mysql_query( $sqlUsuario,$db);
 							$rowUsuar=mysql_fetch_array($resultUsua);
 						
 							$sqlExiste="select * from cuotas where delcod=".$rowHisto['delcod']." and empcod=".$rowHisto['empcod']." and nroacu=".$rowHisto['nroacu']." and nrocuo=".$rowHisto['nrocuo'];
-							$resultExiste = mysql_db_query("acuerdos",$sqlExiste,$db);
+							$resultExiste = mysql_query( $sqlExiste,$db);
 							$cant = mysql_num_rows($resultExiste);
 							
 							if ($cant == 0) {

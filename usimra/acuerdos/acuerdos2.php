@@ -1,4 +1,4 @@
-<? session_save_path("sessiones");
+<?php session_save_path("sessiones");
 session_start();
 if($_SESSION['usuario'] == null or $_SESSION['aut'] > 1)
 	header ("location:index.htm");
@@ -20,7 +20,7 @@ if ($nrcuit == "") {
 include("conexion.php");
 if ($acuerdo <> "" and $cuota <> "") {
 	$sqlBorrar= "delete from boletas where delcod=".$delcod." and empcod=".$empcod." and nroacu=".$acuerdo." and nrocuo=".$cuota;
-	$resultBorrar = mysql_db_query("acuerdos",$sqlBorrar,$db);
+	$resultBorrar =  mysql_query( $sqlBorrar,$db);
 }
 
 ?>
@@ -50,19 +50,22 @@ SCROLLBAR-DARKSHADOW-COLOR: #CD8C34
 <p align="center">&nbsp;</p>
 
 
-<script language=Javascript>
+<script type="text/javascript">
 function EstadoCheque() {
 	 if (document.forms.form1.tipoPago.value ==  2) {
 	       document.forms.form1.nrocheque.value = "";
 		   document.forms.form1.nrocheque.readOnly = true;
+		   document.getElementById('nrocheque').style.background='#CCCCCC'; 
 		   document.forms.form1.banco.value = "";
 		   document.forms.form1.banco.readOnly = true;
+		   document.getElementById('banco').style.background='#CCCCCC'; 
 	 } else {
 	 	   document.forms.form1.nrocheque.value = "";
 		   document.forms.form1.nrocheque.readOnly = false;
+		   document.getElementById('nrocheque').style.background='#FFFFFF'; 
 		   document.forms.form1.banco.value = "";
 		   document.forms.form1.banco.readOnly = false;
-
+		   document.getElementById('banco').style.background='#FFFFFF';
 	 }
 }
 
@@ -78,7 +81,7 @@ function ComponerLista(Acu) {
 }
 
 function CargarCuotas(Acu) {
-	var o
+	var o;
 	document.forms.form1.cuotas.disabled=true;
 	o = document.createElement("OPTION");
 	o.text = '-';
@@ -86,14 +89,14 @@ function CargarCuotas(Acu) {
 	document.forms.form1.cuotas.options.add (o);
 	<?php	
 		$sql3 = "select * from cuotas where delcod = '$delcod' and empcod = '$empcod'";
-		$result3 = mysql_db_query("acuerdos",$sql3,$db);
+		$result3 =  mysql_query($sql3,$db);
 		while ($row3 = mysql_fetch_array($result3)) {
 	?>
 			if (Acu == <?php echo $row3["nroacu"]; ?>) {
 				
 				<?php 
 					$sqlImpresa = "select * from boletas where delcod = '$delcod' and empcod = '$empcod' and nroacu =".$row3["nroacu"]." and nrocuo =".$row3["nrocuo"];	
-					$resultImpresa = mysql_db_query("acuerdos",$sqlImpresa,$db);
+					$resultImpresa = mysql_query($sqlImpresa,$db);
 					$cant = mysql_num_rows($resultImpresa);
 					if ($cant == 0) {
 				?>
@@ -118,7 +121,7 @@ function CargarImporte(Cuota) {
 	var Acuerdo = document.forms.form1.acuerdos.options[indice].value;
 	<?php 	
 			$sqlImporte = "select * from cuotas where delcod = '$delcod' and empcod = '$empcod'";
-			$resultImporte = mysql_db_query("acuerdos",$sqlImporte,$db);
+			$resultImporte =  mysql_query( $sqlImporte,$db);
 			while ($rowImporte = mysql_fetch_array($resultImporte)) { 
 	?>		
 				if (Cuota == <?php echo $rowImporte["nrocuo"]; ?> && Acuerdo == <?php echo $rowImporte["nroacu"]; ?> ) {
@@ -149,16 +152,16 @@ function no_foco(elemento) {
 	
 </script>
 
-<?
+<?php
 //SQL para acuerdos...
 $sql2 = "select * from acuerdos where delcod = '$delcod' and empcod = '$empcod'";
-$result2 = mysql_db_query("acuerdos",$sql2,$db);
+$result2 = mysql_query( $sql2,$db);
 $cant2 = mysql_num_rows($result2);
 
 
 //Ejecucion de la sentencia SQL para los datos de la emprersa...
 $sql = "select * from empresas where nrcuit = '$nrcuit' and delcod = '$delcod' and empcod = '$empcod'";
-$result = mysql_db_query("acuerdos",$sql,$db);
+$result =  mysql_query( $sql,$db);
 $cant = mysql_num_rows($result);
 if ($cant > 0 and $delcod <> "" and $empcod <> "" ) {
 $row = mysql_fetch_array($result);
@@ -167,37 +170,36 @@ $row = mysql_fetch_array($result);
 <table width="100%" border="0">
   <tr bgcolor="#C08345"> 
     <td width="16%"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">CUIT:</font></strong></td>
-    <td colspan="3"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['nrcuit'];?></font></td>
+    <td colspan="3"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['nrcuit'];?></font></td>
   </tr>
   <tr bgcolor="#C08345"> 
     <td><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Raz&oacute;n 
       Social:</font></strong></td>
-    <td colspan="3"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['nombre'];?></font></td>
+    <td colspan="3"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['nombre'];?></font></td>
   </tr>
   <tr bgcolor="#C08345"> 
     <td><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></td>
-    <td width="32%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['delcod'];?></font></td>
+    <td width="32%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['delcod'];?></font></td>
     <td width="23%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Empresa:</strong></font></td>
-    <td width="29%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['empcod'];?></font></td>
+    <td width="29%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['empcod'];?></font></td>
   </tr>
   <tr bgcolor="#C08345"> 
     <td><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Domicilio:</font></strong></td>
-    <td colspan="3"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['domici'];?></font></td>
+    <td colspan="3"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['domici'];?></font></td>
   </tr>
   <tr bgcolor="#C08345"> 
     <td><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Localidad:</font></strong></td>
-    <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['locali'];?></font></td>
+    <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['locali'];?></font></td>
     <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo 
       Postal:</strong></font></td>
-    <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $row['codpos'];?></font></td>
+    <td><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['codpos'];?></font></td>
   </tr>
   <tr bgcolor="#C08345"> 
-<?
-$provincia = array ("PROVINCIA", "CAPITAL FEDERAL", "BUENOS AIRES", "MENDOZA", "NEUQUEN", "SALTA", "ENTRE RIOS", "MISIONES", "CHACO", "SANTA FE", "CORDOBA", "SAN JUAN", "RIO NEGRO", "CORRIENTES", "SANTA CRUZ", "CHUBUT", "FORMOSA", "LA PAMPA", "SANTIAGO DEL ESTERO", "JUJUY", "TUCUMAN", "TIERRA DEL FUEGO", "SAN LUIS", "LA RIOJA", "CATAMARCA");
+<?php $provincia = array ("PROVINCIA", "CAPITAL FEDERAL", "BUENOS AIRES", "MENDOZA", "NEUQUEN", "SALTA", "ENTRE RIOS", "MISIONES", "CHACO", "SANTA FE", "CORDOBA", "SAN JUAN", "RIO NEGRO", "CORRIENTES", "SANTA CRUZ", "CHUBUT", "FORMOSA", "LA PAMPA", "SANTIAGO DEL ESTERO", "JUJUY", "TUCUMAN", "TIERRA DEL FUEGO", "SAN LUIS", "LA RIOJA", "CATAMARCA");
 $pro = $row["provin"];
 ?>
     <td><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Provincia</font></strong></td>
-    <td colspan="3"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><? echo $provincia [$pro]; ?></font></td>
+    <td colspan="3"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $provincia [$pro]; ?></font></td>
   </tr>
 </table>
 <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Datos a 
@@ -250,17 +252,17 @@ $pro = $row["provin"];
             </select>
         </p></td>
         <td width="21%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>N&uacute;mero Cheque:</strong></font>
-            <input name="nrocheque" type="text" onFocus="limpiarCheque();" onBlur="no_foco(this);">
+            <input name="nrocheque" id="nrocheque" type="text" onFocus="limpiarCheque();" onBlur="no_foco(this);">
             </span></td>
         <td width="52%"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong> Banco:</strong></font>
-            <input name="banco" type="text" onFocus="limpiarBanco();" onBlur="no_foco(this);"></td>
+            <input name="banco" id="banco" type="text" onFocus="limpiarBanco();" onBlur="no_foco(this);"></td>
       </tr>
     </table>
     <p><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> 
-      <input name="hiddenField" type="hidden" value="<? echo $nrcuit;?>">
-      <input name="hiddenField2" type="hidden" value="<? echo $usuario;?>">
-      <input name="hiddenField22" type="hidden" value="<? echo $delcod;?>">
-      <input name="hiddenField23" type="hidden" value="<? echo $empcod;?>">
+      <input name="hiddenField" type="hidden" value="<?php echo $nrcuit;?>">
+      <input name="hiddenField2" type="hidden" value="<?php echo $usuario;?>">
+      <input name="hiddenField22" type="hidden" value="<?php echo $delcod;?>">
+      <input name="hiddenField23" type="hidden" value="<?php echo $empcod;?>">
     </font></strong></p>
     <p><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
       <input type="submit" name="Submit" value="Enviar">
@@ -273,8 +275,7 @@ $pro = $row["provin"];
 		<p align="center"><a href="acuerdosFisca.php"><font color="#CD8C34" face="Verdana" size="2"><b>Volver</b></font></a> </p>	
 	<?php } else { ?>
 		<p align="center"><a href="acuerdos.php"><font color="#CD8C34" face="Verdana" size="2"><b>Volver</b></font></a> </p>	
-	<?
-		}
+	<?php }
 } else {
 	if ($_SESSION['aut'] > 1) { ?>
 		<p align="center"><a href="acuerdosFisca.php"><font color="#CD8C34" face="Verdana" size="2"><b> EMPRESA NO ENCONTRADA - Volver</b></font></a> 
@@ -282,8 +283,7 @@ $pro = $row["provin"];
    	} else {
 ?>
 		<p align="center"><a href="acuerdos.php"><font color="#CD8C34" face="Verdana" size="2"><b> EMPRESA NO ENCONTRADA - Volver</b></font></a> 
-<?
-		echo 'cuit'.$nrcuit;
+<?php echo 'cuit'.$nrcuit;
 	}
 }
 ?>
