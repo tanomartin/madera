@@ -1,8 +1,10 @@
-<?php session_save_path("sessiones");
+<? session_save_path("sessiones");
 session_start();
 if($_SESSION['usuario'] == null or $_SESSION['aut'] > 1)
 	header ("location:index.htm");
 ?>
+<?php include("../controlSession.php");?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -13,7 +15,7 @@ if($_SESSION['usuario'] == null or $_SESSION['aut'] > 1)
 <?php
 include("conexion.php");
 $sql = "select * from usuarios where id = '$_SESSION[usuario]'";
-$result = mysql_query( $sql,$db);
+$result = mysql_db_query("acuerdos",$sql,$db);
 $row=mysql_fetch_array($result);
 ?>
 <body bgcolor="#E4C192" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
@@ -36,7 +38,7 @@ $excel->writeLine($myArr);
 $excel->writeRow();
 
 //Escribimos la primera fila con las cabeceras
-$myArr=array("Cod. Del.","Cod. Emp.","Razon Social","Nro. Cheque","Banco","Importe","Nro. Acuerdo","Nro. Cuota");
+$myArr=array("Cod. Del.","Cod. Emp.","Razon Social","Nro. Cheque","Banco","Nro. Acuerdo","Nro. Cuota","Importe");
 $excel->writeLine($myArr);
 
 $cheques = $_POST['cheques'];
@@ -54,13 +56,13 @@ for ( $i = 0; $i <= $cantidad - 1 ; $i++) {
 	depositos.nrcuit = empresas.nrcuit and
 	depositos.delcod = empresas.delcod and
 	depositos.empcod = empresas.empcod";
-	$result = mysql_query( $sql,$db);
+	$result = mysql_db_query("acuerdos",$sql,$db);
 	$cant = mysql_num_rows($result);
 	if ($cant > 0) {;
 		$resultados = $resultados + 1;
 		while ($row = mysql_fetch_array($result)) {
 			$boletas = $boletas + 1;
-			$myArr=array($row['delcod'],$row['empcod'],$row['nombre'],$row['nrocheque'],$row['banco'],$row['importe'],$row['nroacu'],$row['nrocuo']);
+			$myArr=array($row['delcod'],$row['empcod'],$row['nombre'],$row['nrocheque'],$row['banco'],$row['nroacu'],$row['nrocuo'],$row['importe']);
 			$excel->writeLine($myArr);
 		}
 	} else {
