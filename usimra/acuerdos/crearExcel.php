@@ -38,7 +38,7 @@ $excel->writeLine($myArr);
 $excel->writeRow();
 
 //Escribimos la primera fila con las cabeceras
-$myArr=array("Cod. Del.","Cod. Emp.","Razon Social","Nro. Cheque","Banco","Importe","Nro. Acuerdo","Nro. Cuota", "Nro. Acta", "Nro. Boleta");
+$myArr=array("Cod. Del.","Cod. Emp.","Razon Social","Nro. Cheque","Banco","Importe","Nro. Acuerdo","Nro. Cuota");
 $excel->writeLine($myArr);
 
 $cheques = $_POST['cheques'];
@@ -48,7 +48,7 @@ $resultados = 0;
 $boletas = 0;
 
 for ( $i = 0; $i <= $cantidad - 1 ; $i++) {
-	$sql = "select depositos.delcod, depositos.empcod, empresas.nombre, depositos.nrocheque, depositos.banco, depositos.importe, depositos.nroacu, depositos.nrocuo, depositos.nroact, depositos.fecpro
+	$sql = "select depositos.delcod, depositos.empcod, empresas.nombre, depositos.nrocheque, depositos.banco, depositos.importe, depositos.nroacu, depositos.nrocuo
 	from 
 	depositos, empresas 
 	where 
@@ -62,7 +62,7 @@ for ( $i = 0; $i <= $cantidad - 1 ; $i++) {
 		$resultados = $resultados + 1;
 		while ($row = mysql_fetch_array($result)) {
 			$boletas = $boletas + 1;
-			$myArr=array($row['delcod'],$row['empcod'],$row['nombre'],$row['nrocheque'],$row['banco'],$row['importe'],$row['nroacu'],$row['nrocuo'],$row['nroact'], $row['fecpro']);
+			$myArr=array($row['delcod'],$row['empcod'],$row['nombre'],$row['nrocheque'],$row['banco'],$row['importe'],$row['nroacu'],$row['nrocuo']);
 			$excel->writeLine($myArr);
 		}
 	} else {
