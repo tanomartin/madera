@@ -92,11 +92,13 @@ try {
 $sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 $resCuotas = mysql_query($sqlCuotas,$db);
 $total=0;
+$cuotas=0;
 while ($rowCuotas=mysql_fetch_array($resCuotas)) {
 	$total = $total + $rowCuotas['montocuota'];
+	$cuotas = $cuotas + 1;
 }
 try {
-	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET montoapagar=$total WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
+	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET cuotasapagar=$cuotas, montoapagar=$total WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
 	echo $sqlUpdateMonto; echo "<br>";
 	$dbh->exec($sqlUpdateMonto);
 	$dbh->commit();
