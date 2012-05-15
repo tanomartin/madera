@@ -86,7 +86,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			echo $rowGestor['apeynombre'];
 		?>
 		</div></td>
-		<td valign="bottom"><div align="left"><b>Inpector</b></div></td>
+		<td valign="bottom"><div align="left"><b>Inspector</b></div></td>
         <td valign="bottom"><div align="left">
 		<?php 
 			if ($rowCebecera['inspectorinterviene'] == 0) {
@@ -112,13 +112,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 			}
 		?>
 		</div></td>
-        <td valign="bottom"><div align="left"><b>onto Acuerdo</b> </div></td>
+        <td valign="bottom"><div align="left"><b>Monto Acuerdo</b> </div></td>
         <td valign="bottom"><div align="left"><?php echo $rowCebecera['montoacuerdo'] ?></div></td>
         <td valign="bottom"><div align="left"><b>Gastos Administrativos</b> </div></td>
         <td valign="bottom"><div align="left"><?php echo $rowCebecera['porcengastoadmin']."%" ?></div></td>
       </tr>
       <tr>
-        <td height="23" valign="bottom"><div align="left"><b>Obervaciones</b> </div></td>
+        <td height="23" valign="bottom"><div align="left"><b>Observaciones</b> </div></td>
         <td colspan="5" valign="bottom"><div align="left"><?php echo $rowCebecera['observaciones'] ?></div></td>
       </tr>
     </table>
