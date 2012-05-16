@@ -81,8 +81,6 @@ try {
 		}				
 	}
 	$dbh->commit();
-	$pagina = "modificarCuotas.php?cuit=$cuit&nroacu=$nroacu&cambio=1";
-	Header("Location: $pagina"); 
 } catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
@@ -98,10 +96,18 @@ while ($rowCuotas=mysql_fetch_array($resCuotas)) {
 	$cuotas = $cuotas + 1;
 }
 try {
+	$hostname = $_SESSION['host'];
+	$dbname = $_SESSION['dbname'];
+	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbh->beginTransaction();
+
 	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET cuotasapagar=$cuotas, montoapagar=$total WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
 	echo $sqlUpdateMonto; echo "<br>";
 	$dbh->exec($sqlUpdateMonto);
 	$dbh->commit();
+	$pagina = "modificarCuotas.php?cuit=$cuit&nroacu=$nroacu&cambio=1";
+	Header("Location: $pagina"); 
 } catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
