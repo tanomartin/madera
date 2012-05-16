@@ -7,16 +7,16 @@
 	$cuit=$_GET['cuit'];
 	$cantCuotasModif=$_GET['canMod'];
 	
-	echo $nroacu;echo "<br>";
-	echo $cuit;echo "<br>";
-	echo $cantCuotasModif;echo "<br>";
+	//echo $nroacu;echo "<br>";
+	//echo $cuit;echo "<br>";
+	//echo $cantCuotasModif;echo "<br>";
 	
 	$datos = array_values($_POST);
 	$cantCuotasTotal = $datos[0];
-	echo $cantCuotasTotal;echo "<br>";
+	//echo $cantCuotasTotal;echo "<br>";
 	
 	$finFor = $cantCuotasModif * 8;
-	echo $finFor;echo "<br>";
+	//echo $finFor;echo "<br>";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -41,11 +41,11 @@ try {
 		$observ = $datos[$i];
 		
 		$sqlDeleteValorCobro = "DELETE from valoresalcobro where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuota";
-		echo $sqlDeleteValorCobro; echo "<br>";
+		//echo $sqlDeleteValorCobro; echo "<br>";
 		$dbh->exec($sqlDeleteValorCobro);	
 		
 		$sqlUpdateCuota="UPDATE cuoacuerdosospim set montocuota = '$monto', fechacuota = '$fecha', tipocancelacion = '$tipoC', chequenro = '$chequen', chequebanco = '$chequeb', chequefecha = '$chequef', observaciones = '$observ', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuota";
-		echo $sqlUpdateCuota; echo "<br>";
+		//echo $sqlUpdateCuota; echo "<br>";
 		$dbh->exec($sqlUpdateCuota);	
 		if ($tipoC == 3) {
 			$sqlValCob = "INSERT INTO valoresalcobro VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
@@ -72,11 +72,11 @@ try {
 		$finFor++;
 		$observ = $datos[$finFor];	
 		$sqlCuota="INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroacu','$nrocuota','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fechamodificacion','$usuariomodificacion','$fechamodificacion','$usuariomodificacion')";
-		echo $sqlCuota; echo "<br>";
+		//echo $sqlCuota; echo "<br>";
 		$dbh->exec($sqlCuota);	
 		if ($tipoC == 3) {
 			$sqlValCob = "INSERT INTO valoresalcobro VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
-			echo $sqlValCob; echo "<br>";				
+			//echo $sqlValCob; echo "<br>";				
 			$dbh->exec($sqlValCob);	
 		}				
 	}
@@ -103,7 +103,7 @@ try {
 	$dbh->beginTransaction();
 
 	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET cuotasapagar=$cuotas, montoapagar=$total WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
-	echo $sqlUpdateMonto; echo "<br>";
+	//echo $sqlUpdateMonto; echo "<br>";
 	$dbh->exec($sqlUpdateMonto);
 	$dbh->commit();
 	$pagina = "modificarCuotas.php?cuit=$cuit&nroacu=$nroacu&cambio=1";

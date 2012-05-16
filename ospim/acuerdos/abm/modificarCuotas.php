@@ -256,21 +256,19 @@ function popUpcambio(confi) {
     </table>
   </div>
   </p>
-  <p>
-  <div align="center">
-      <input type="button" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">  
-  </div>
-  </p>
-  <script type="text/javascript">
-  	popUpcambio(<?php echo $cambio ?>);
-  </script>
+  <script type="text/javascript">popUpcambio(<?php echo $cambio ?>); </script>
   <div align="center">
     <table width="739" border="0">
       <tr>
-        <td><div align="center">
-          <input type="submit" name="guardar" id="guardar" value="Guardar Cambios" sub />          
-        </div>
+        <td width="365">
+          <div align="left">
+            <input type="button" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">
+            </div>
         <div align="right"></div></td>
+        <td width="364">
+          <div align="right">
+            <input type="submit" name="guardar" id="guardar" value="Guardar Cambios" sub />
+          </div></td>
       </tr>
     </table>
   </div>
