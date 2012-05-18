@@ -23,7 +23,8 @@ $rowBol = mysql_fetch_array($resBol);
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none;color:#0033FF}
 A:hover {text-decoration: none;color:#33CCFF }
-.Estilo1 {	font-size: 18px;
+.Estilo1 {	
+	font-size: 18px;
 	font-weight: bold;
 }
 </style>
@@ -76,28 +77,27 @@ A:hover {text-decoration: none;color:#33CCFF }
       <tr>
         <td width="126"><div align="right">Documento en mano </div></td>
         <td width="257">
-		
 	      <div align="center">
 	        <?php 
 			if ($docuMano == 1) {
-				echo "<b>SI</b>";
+				print("<input type='text' id='docuMano' name='docuMano' value='SI' size='2' readonly='readonly' style='background:#CCCCCC' />");
 			} else {
-				echo "<b>NO</b>";
+				print("<input type='text' id='docuMano' name='docuMano' value='NO' size='2' readonly='readonly' style='background:#CCCCCC' />");
 			}
-		?>
+			?>
           </div></td>
       </tr>
       <tr>
         <td><div align="right">Motivo</div></td>
         <td>
-          <textarea name="motivo" cols="40" rows="5" style="background:#CCCCCC"><?php echo $motivo ?></textarea>
+          <textarea name="motivo" cols="40" rows="5" style="background:#CCCCCC" readonly="readonly"><?php echo $motivo ?></textarea>
         </td>
       </tr>
     </table>
     <p>&nbsp;</p>
     <p>
       <label>
-      <input type="submit" name="Submit" value="Aceptar" />
+      <input type="submit" name="Submit" value="Confirmar Anulacion" />
       </label>
     </p>
   </form>

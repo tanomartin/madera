@@ -66,6 +66,11 @@ A:hover {text-decoration: none;color:#33CCFF }
 		if ($err == 1) {
 			print("<div align='center' style='color:#FF0000'><b> BOLETA NO ENCONTRADA </b></div>");
 		}
+		if ($err == 2) {
+			$control = $_GET['control'];
+			print("<div align='center' style='color:#0000000'><b> SE ANULO LA BOLETA CON CODIGO DE IDENTIFICACION ".$control."</b></div>");
+		}
+		
   ?>
   </p>
 </div>
