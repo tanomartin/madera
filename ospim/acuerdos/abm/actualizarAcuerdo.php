@@ -66,16 +66,16 @@ try {
 	}
 	$id = 1;
 	$finFor = 14 + ($peridosHabili * 3);
-	echo "FIN FOR: ".$finFor;  echo("<br>");
-	for ($i = 14; $i <= $finFor; $i++) {
+	//echo "FIN FOR: ".$finFor;  echo "<br>";
+	for ($i = 14; $i < $finFor; $i++) {
 		if ($datos[$i] != "" and $datos[$i+1] != "") {
 			$mes = $datos[$i];
 			$anio = $datos[$i+1];
 			$deuda = $datos[$i+2];
 			$sqlInsertPeriodos = "INSERT INTO detacuerdosospim VALUES('$cuit','$nroacu','$id','$mes','$anio','$deuda')";
+			//echo $sqlInsertPeriodos;
 			$dbh->exec($sqlInsertPeriodos); 
-			$id = $id + 1;
-			echo($sqlInsertPeriodos); echo("<br>");
+			$id = $id + 1;	
 		} 
 	$i=$i+2;
 	}

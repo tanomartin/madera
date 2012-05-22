@@ -331,15 +331,14 @@ function mostrarPeriodos() {
 									<option selected value='A'>No Pago</option>
 									<option value='B'>Fuera de Termino</option>
 							  </select> </div></td>");
-						print("</tr>");
 					} else {
 						print("<td height='11'><div align='center'>
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
 									<option value='A'>No Pago</option>
 									<option selected value='B'>Fuera de Termino</option>
 							  </select> </div></td>");
-						print("</tr>");
 					}
+					print("</tr>");
 					$i = $i + 1;
 				} 
 			} else {
