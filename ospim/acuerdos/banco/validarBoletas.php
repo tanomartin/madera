@@ -62,40 +62,49 @@ try {
 
 							if($importebanco=$importeboleta)
 							{
-								$sqlAgregaValida="INSERT INTO validasospim (idboleta, cuit, nroacuerdo, nrocuota, importe, nrocontrol, usuarioregistro) VALUES (:idboleta,:cuit,:nroacuerdo,:nrocuota,:importe,:nrocontrol,:usuarioregistro)";
-								$resultAgregaValida = $dbh->prepare($sqlAgregaValida);
-								//echo $sqlAgregaValida; echo "<br>";
-								if ($resultAgregaValida->execute(array(':idboleta' => $id, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':importe' => $importeboleta, ':nrocontrol' => $control, ':usuarioregistro' => $usuario)))
-								{
-								    print "<p>Registro creado correctamente.</p>\n";
-								}
-								else
-								{
-								    print "<p>Error al crear el registro.</p>\n";
-								}
+								print "<p>Importe Boleta : $importeboleta - Importe Banco: $importebanco</p>\n";
 
-								$sqlBorraBoleta="DELETE FROM boletasospim WHERE nrocontrol = :nrocontrol";
-								$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
-								//echo $sqlBorraBoleta; echo "<br>";
-								if ($resultBorraBoleta->execute(array(':nrocontrol' => $control)))
+								if($cuitbanco=$cuitboleta)
 								{
-								    print "<p>Registro borrado correctamente.</p>\n";
-								}
-								else
-								{
-								    print "<p>Error al borrar el registro.</p>\n";
-								}
+									print "<p>CUIT Boleta : $cuitboleta - Cuit Banco: $cuitbanco</p>\n";
+									$sqlAgregaValida="INSERT INTO validasospim (idboleta, cuit, nroacuerdo, nrocuota, importe, nrocontrol, usuarioregistro) VALUES (:idboleta,:cuit,:nroacuerdo,:nrocuota,:importe,:nrocontrol,:usuarioregistro)";
+									$resultAgregaValida = $dbh->prepare($sqlAgregaValida);
+									//echo $sqlAgregaValida; echo "<br>";
+									if ($resultAgregaValida->execute(array(':idboleta' => $id, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':importe' => $importeboleta, ':nrocontrol' => $control, ':usuarioregistro' => $usuario)))
+									{
+									    print "<p>Registro creado correctamente.</p>\n";
+									}
+									else
+									{
+									    print "<p>Error al crear el registro.</p>\n";
+									}
 
-								$sqlActualizaBanco="UPDATE banacuerdosospim SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
-								$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
-								//echo $sqlActualizaBanco; echo "<br>";
-								if ($resultActualizaBanco->execute(array(':fechavalidacion' => $fechavalidacion, ':usuariovalidacion' => $usuariovalidacion, ':nrocontrol' => $control, ':estadomovimiento' => $estado)))
-								{
-								    print "<p>Registro actualizado correctamente.</p>\n";
+									$sqlBorraBoleta="DELETE FROM boletasospim WHERE nrocontrol = :nrocontrol";
+									$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
+									//echo $sqlBorraBoleta; echo "<br>";
+									if ($resultBorraBoleta->execute(array(':nrocontrol' => $control)))
+									{
+									    print "<p>Registro borrado correctamente.</p>\n";
+									}
+									else
+									{
+									    print "<p>Error al borrar el registro.</p>\n";
+									}
+
+									$sqlActualizaBanco="UPDATE banacuerdosospim SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
+									$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
+									//echo $sqlActualizaBanco; echo "<br>";
+									if ($resultActualizaBanco->execute(array(':fechavalidacion' => $fechavalidacion, ':usuariovalidacion' => $usuariovalidacion, ':nrocontrol' => $control, ':estadomovimiento' => $estado)))
+									{
+									    print "<p>Registro actualizado correctamente.</p>\n";
+									}
+									else
+									{
+									    print "<p>Error al actualizar el registro.</p>\n";
+									}
 								}
 								else
 								{
-								    print "<p>Error al actualizar el registro.</p>\n";
 								}
 							}
 							else
