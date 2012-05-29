@@ -37,7 +37,7 @@ A:visited {text-decoration: none;color:#0033FF}
 A:hover {text-decoration: none;color:#33CCFF }
 </style>
 
-<title>.: Sistema de Acuerdos OSPIM :.</title>
+<title>.: Seleccion cuata a cancelar :.</title>
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">

@@ -29,7 +29,7 @@ $rowCuo = mysql_fetch_array($resCuo);
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>.: Módulo Acuerdo OSPIM :.</title>
+<title>.: Confirmar Cancelacion :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
