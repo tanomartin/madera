@@ -22,7 +22,7 @@ $resulacuerdos= mysql_query( $sqlacuerdos,$db);
 
 $cant = mysql_num_rows($resulacuerdos); 
 if ($cant == 0) {
-	header('Location: moduloImpresion.php?err=1');
+	header('Location: moduloCancelacion.php?err=1');
 }
 
 ?>
