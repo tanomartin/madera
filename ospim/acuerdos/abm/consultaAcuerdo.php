@@ -199,7 +199,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				} else {
 					print ("<td width=125 align='center'><font face=Verdana size=2>".$rowCuotas['observaciones']."</font></td>");
 				}
-				if ($rowCuotas['montopagada'] != 0) {
+				if ($rowCuotas['montopagada'] != 0 || $rowCuotas['fechapagada'] != '0000-00-00') {
 					print ("<td width=119 align='center'><font face=Verdana size=2>CANCELADA</font></td>");
 					print ("<td width=94 align='center'><font face=Verdana size=2>".invertirFecha($rowCuotas['fechapagada'])."</font></td>");
 				} else {

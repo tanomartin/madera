@@ -21,8 +21,8 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p><span class="Estilo2">Men&uacute; Acuerdos </span></p>
   <table width="614" border="3">
     <tr>
-      <td width="196"><p align="center">ABM Acuerdos </p>
-          <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmacuerdo.jpg" width="97" height="78" border="0" alt="enviar"/></a></p>
+      <td width="196"><p align="center">Alta y Modificaci&oacute;n de Acuerdos </p>
+        <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmacuerdo.jpg" width="97" height="78" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center"> Boletas de Pago </p>
           <p align="center"><a class="enlace" href="impresion/menuBoletas.php"><img src="img/impresora.jpg" width="98" height="84" border="0" alt="enviar"/></a></p>
@@ -32,8 +32,8 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
-      <td><p align="center">Cancelar Cuotas</p>
-      <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelacion.jpg" width="97" height="78" border="0" /></a></p>
+      <td><p align="center">Cancelaci&oacute;n Manual de Cuotas </p>
+        <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelacion.jpg" width="97" height="78" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
       <td><p>&nbsp;</p>
       <p align="center">&nbsp;</p>

@@ -185,7 +185,7 @@ function popUpcambio(confi) {
     <?php
 	$contadorCuotas = 0;
 	while ($rowCuotas=mysql_fetch_array($resCuotas)) {
-		if ($rowCuotas['montopagada'] == 0 && $rowCuotas['boletaimpresa'] == 0) {
+		if ($rowCuotas['montopagada'] == 0 && $rowCuotas['boletaimpresa'] == 0 && $rowCuotas['fechapagada'] == '0000-00-00') {
 			$contadorCuotas = $contadorCuotas + 1;	
 			print ("<td width=134> <input  style='background-color:#CCCCCC' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$rowCuotas['nrocuota']."' readonly='raadonly'></td>");
 			print ("<td width=107> <input name='monto".$contadorCuotas."' id='monto".$contadorCuotas."' type='text' size='10' value='".$rowCuotas['montocuota']."'></td>");
