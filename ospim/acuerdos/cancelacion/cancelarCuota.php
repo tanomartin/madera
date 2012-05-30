@@ -1,6 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
 include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
 $fechamodificacion = date("Y-m-d H:m:s");
+$fechaCancela = date("Y-m-d");
 $usuariomodificacion = $_SESSION['usuario'];
 
 $cuit = $_GET["cuit"];
@@ -71,10 +72,10 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 	
-	$sqlUpdateCuota = "UPDATE cuoacuerdosospim set montopagada = $montoCuota, observaciones = $observ, fechapagada = $fechaPagada, fechacancelacion = $fechamodificacion, sistemacancelacion = 'M', fechamodificacion = $fechamodificacion, usuariomodificacion = $usuariomodificacion where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
+	$sqlUpdateCuota = "UPDATE cuoacuerdosospim set montopagada = '$montoCuota', observaciones = '$observ', fechapagada = '$fechaPagada', fechacancelacion = '$fechaCancela', sistemacancelacion = 'M', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 	 //echo $sqlUpdateCuota; //echo "<br>";
 	$dbh->exec($sqlUpdateCuota); 
-	$sqlUpdateCabe = "UPDATE cabacuerdosospim set montopagadas = $montoPagadoUpdate, cuotaspagadas = $cuotasPagasUpdate, estadoacuerdo = $estadoAcuerdo, fechapagadas = $fechamodificacion, saldoacuerdo = $saldoAcuerdo where cuit = $cuit and nroacuerdo = $acuerdo";
+	$sqlUpdateCabe = "UPDATE cabacuerdosospim set montopagadas = '$montoPagadoUpdate', cuotaspagadas = '$cuotasPagasUpdate', estadoacuerdo = '$estadoAcuerdo', fechapagadas = '$fechaCancela', saldoacuerdo = '$saldoAcuerdo' where cuit = $cuit and nroacuerdo = $acuerdo";
 	 //echo $sqlUpdateCabe;  //echo "<br>";
 	$dbh->exec($sqlUpdateCabe); 
 	
