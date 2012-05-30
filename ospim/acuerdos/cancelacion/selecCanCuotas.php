@@ -99,7 +99,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['chequebanco']."</font></div></td>");
 					print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowListado['chequefecha'])."</font></div></td>");
 				}
-				if ($rowListado['montopagada'] == 0 && $rowListado['fechapagada'] == '0000-00-00') {
+				if ($rowListado['tipocancelacion']!=8 && $rowListado['montopagada']==0 && $rowListado['fechapagada']=='0000-00-00') {
 					if ($rowListado['boletaimpresa'] == 0) {
 						print ("<td width=168><div align=center><font face=Verdana size=1><a href='confirmarCancelacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelar</a></font></div></td>");
 						// else de si la boleta ya esta inmpresa
@@ -108,7 +108,11 @@ A:hover {text-decoration: none;color:#33CCFF }
 					}					
 				// else de si el monto == 0	
 				} else {
-					print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
+					if ($rowListado['tipocancelacion'] == 8) {
+						print ("<td width=168><div align=center><font face=Verdana size=1>No Cancelable</font></div></td>");
+					} else {
+						print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
+					}
 				}
 				
 				print ("</tr>"); 
