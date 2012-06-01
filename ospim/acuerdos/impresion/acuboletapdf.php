@@ -7,8 +7,6 @@
 	$cuit = $_GET["cuit"];
 	$acuerdo = $_GET["acuerdo"];
 
- 	//echo $cuit; echo "<br>";
- 	//echo $acuerdo; echo "<br>";
 	//echo "<pre>";
 	//print_r($_POST);
 	//echo "</pre>";
@@ -19,12 +17,8 @@
 
 		for($z=0; $z<count($cuotas); $z++)
 		{
-			echo $cuotas[$z]; echo "<br>";
- 
-		 	$cuota=$cuotas[$z];
+			$cuota=$cuotas[$z];
 
-			echo $cuota; echo "<br>";
- 
 			$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
 			$resulacuerdos=  mysql_query( $sqlacuerdos,$db); 
 			$rowacuerdos = mysql_fetch_array($resulacuerdos);
