@@ -22,7 +22,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="fiscalizacionImpBoletas.php">
-  <p align="center" class="Estilo1"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="menuBoletas.php">VOLVER</a></strong></font></p>
+  <p align="center" class="Estilo1"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
   <p align="center" class="Estilo1">M&oacute;dulo Impresi&oacute;n de Bolestas</p>
    <?php 
   		$err = $_GET['err'];
