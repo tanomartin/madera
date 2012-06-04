@@ -7,10 +7,10 @@ $usuariovalidacion = $_SESSION['usuario'];
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
-	echo "$hostname"; echo "<br>";
-	echo "$dbname"; echo "<br>";
+	//echo "$hostname"; echo "<br>";
+	//echo "$dbname"; echo "<br>";
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-	echo 'Connected to database<br/>';
+	//echo 'Connected to database<br/>';
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
@@ -35,7 +35,7 @@ try {
 			{
         		foreach ($resultLeeAValidar as $validar)
 				{
-            		print "<p>Movimiento: $validar[nromovimiento] - Sucursal: $validar[sucursalorigen] - Recaudacion: $validar[fecharecaudacion] - Acreditacion: $validar[fechaacreditacion] - Estado: $validar[estadomovimiento] - Control: $validar[nrocontrol]</p>\n";
+            		//print "<p>Movimiento: $validar[nromovimiento] - Sucursal: $validar[sucursalorigen] - Recaudacion: $validar[fecharecaudacion] - Acreditacion: $validar[fechaacreditacion] - Estado: $validar[estadomovimiento] - Control: $validar[nrocontrol]</p>\n";
 
 					$control = $validar[nrocontrol];
 					$estado = $validar[estadomovimiento];
@@ -62,21 +62,21 @@ try {
 
 							if($importebanco=$importeboleta)
 							{
-								print "<p>Importe Boleta : $importeboleta - Importe Banco: $importebanco</p>\n";
+								//print "<p>Importe Boleta : $importeboleta - Importe Banco: $importebanco</p>\n";
 
 								if($cuitbanco=$cuitboleta)
 								{
-									print "<p>CUIT Boleta : $cuitboleta - Cuit Banco: $cuitbanco</p>\n";
+									//print "<p>CUIT Boleta : $cuitboleta - Cuit Banco: $cuitbanco</p>\n";
 									$sqlAgregaValida="INSERT INTO validasospim (idboleta, cuit, nroacuerdo, nrocuota, importe, nrocontrol, usuarioregistro) VALUES (:idboleta,:cuit,:nroacuerdo,:nrocuota,:importe,:nrocontrol,:usuarioregistro)";
 									$resultAgregaValida = $dbh->prepare($sqlAgregaValida);
 									//echo $sqlAgregaValida; echo "<br>";
 									if ($resultAgregaValida->execute(array(':idboleta' => $id, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':importe' => $importeboleta, ':nrocontrol' => $control, ':usuarioregistro' => $usuario)))
 									{
-									    print "<p>Registro creado correctamente.</p>\n";
+									    //print "<p>Registro creado correctamente.</p>\n";
 									}
 									else
 									{
-									    print "<p>Error al crear el registro.</p>\n";
+									    //print "<p>Error al crear el registro.</p>\n";
 									}
 
 									$sqlBorraBoleta="DELETE FROM boletasospim WHERE nrocontrol = :nrocontrol";
@@ -84,11 +84,11 @@ try {
 									//echo $sqlBorraBoleta; echo "<br>";
 									if ($resultBorraBoleta->execute(array(':nrocontrol' => $control)))
 									{
-									    print "<p>Registro borrado correctamente.</p>\n";
+									    //print "<p>Registro borrado correctamente.</p>\n";
 									}
 									else
 									{
-									    print "<p>Error al borrar el registro.</p>\n";
+									    //print "<p>Error al borrar el registro.</p>\n";
 									}
 
 									$sqlActualizaBanco="UPDATE banacuerdosospim SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
@@ -96,15 +96,17 @@ try {
 									//echo $sqlActualizaBanco; echo "<br>";
 									if ($resultActualizaBanco->execute(array(':fechavalidacion' => $fechavalidacion, ':usuariovalidacion' => $usuariovalidacion, ':nrocontrol' => $control, ':estadomovimiento' => $estado)))
 									{
-									    print "<p>Registro actualizado correctamente.</p>\n";
+									    //print "<p>Registro actualizado correctamente.</p>\n";
 									}
 									else
 									{
-									    print "<p>Error al actualizar el registro.</p>\n";
+									    //print "<p>Error al actualizar el registro.</p>\n";
 									}
 								}
 								else
 								{
+
+
 								}
 							}
 							else
