@@ -219,8 +219,8 @@
 				$pdf->Image('jpg/tijera.jpg',30,$poslintij,6.5,4);
 			}
 
-			$nombrearchivo = "H:\\Boletas\\".$ctrl."-".$nrcuit."-".$nroact."-".$nroacu."-".$nrocuo.".pdf";
-
+			//$nombrearchivo = "H:\\Boletas\\".$ctrl."-".$nrcuit."-".$nroact."-".$nroacu."-".$nrocuo.".pdf";
+			$nombrearchivo = "/home/sistemas/Documentos/Liquidaciones/Boletas/".$ctrl."-".$nrcuit."-".$nroact."-".$nroacu."-".$nrocuo.".pdf";
 			$pdf->Output($nombrearchivo,'F');
 			//	$pdf->Output();
 
