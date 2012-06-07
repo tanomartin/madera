@@ -29,20 +29,15 @@ function array_recibe($arrayDatos) {
     $tmp = unserialize($tmp); 
     return $tmp; 
 } 
+
 $datos = array_values($_POST);
 $info = array_recibe($datos[0]);
 $nroChequeOspim = $datos[1];
 $fechaChequeOspim = fechaParaGuardar($datos[2]);
-$idResumen = $datos[3];
-$fechaResumen = fechaParaGuardar($datos[4]);
 $banco = "NACION";
 
-echo "NRO CHEQUE: ".$nroChequeOspim; echo "<br>";
-echo "FECHA CHEQUE: ".$fechaChequeOspim; echo "<br>";
-
-
-echo "ID RESUMEN: ".$idResumen; echo "<br>";
-echo "FECHA RESUMEN: ".$fechaResumen; echo "<br>";
+//echo "NRO CHEQUE: ".$nroChequeOspim; echo "<br>";
+//echo "FECHA CHEQUE: ".$fechaChequeOspim; echo "<br>";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -50,17 +45,20 @@ try {
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
    	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
-
+	$i = 3;
 	foreach ($info as $array) {
 		$info = desglosar($array);
 		$cuit = $info[0];
 		$nroacu = $info[1];
 		$nrocuo = $info[2];
-	
+		$idResumen = $datos[$i];
+		$i = $i + 1;
+		$fechaResumen = fechaParaGuardar($datos[$i]);
+		$i = $i + 1;
 		$sqlUpdateValores = "UPDATE valoresalcobro set idresumenbancario = '$idResumen', fecharesumenbancario = '$fechaResumen', chequenroospim = 		 		'$nroChequeOspim', chequebancoospim = '$banco', chequefechaospim = '$fechaChequeOspim', usuariodepositoospim = '$usuariodeposito', 
 		fechadepositoospim = '$fechadeposito' where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
 	
-		echo $sqlUpdateValores;  echo "<br>";
+		//echo $sqlUpdateValores;  echo "<br>";
 		$dbh->exec($sqlUpdateValores);
 	}
 	$dbh->commit();
