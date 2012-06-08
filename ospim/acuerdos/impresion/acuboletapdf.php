@@ -66,7 +66,7 @@
 			$resulgrababoleta =  mysql_query( $sqlgrababoleta,$db);
 
 //Ejecucion del sql para incrementar la cantidad de boletas impresas en tabla cuoacuerdosospim
-			if ($tipopago == 13) {
+			if ($tipopago == 0) {
 				$sqlactcuotas = "update cuoacuerdosospim set tipocancelacion = 8, boletaimpresa = ($cantbole+2) where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 			}
 			else {
