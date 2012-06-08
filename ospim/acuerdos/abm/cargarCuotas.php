@@ -165,16 +165,10 @@ function validarYGuardar(formulario) {
 			document.getElementById(nombreFecha).focus();
 			return false;
 		}
-		if (tipoCance == 0) {
-			alert("Error en el tipo de Cancelacion");
-			document.getElementById(nombreTipo).focus();
-			return false;
-		} else {
-			if (tipoCance == 1 || tipoCance == 3) {
-				if(!hayInfoCheque(i)){
-					return false;
-				} 
-			}
+		if (tipoCance == 1 || tipoCance == 3) {
+			if(!hayInfoCheque(i)){
+				return false;
+			} 
 		}
 	}
 	return(validoMontos());
