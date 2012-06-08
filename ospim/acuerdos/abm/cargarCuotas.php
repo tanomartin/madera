@@ -165,10 +165,16 @@ function validarYGuardar(formulario) {
 			document.getElementById(nombreFecha).focus();
 			return false;
 		}
-		if (tipoCance == 1 || tipoCance == 3) {
-			if(!hayInfoCheque(i)){
-				return false;
-			} 
+		if (tipoCance == -1) {
+			alert("Error en el tipo de Cancelacion");
+			document.getElementById(nombreTipo).focus();
+			return false;
+		} else {
+			if (tipoCance == 1 || tipoCance == 3) {
+				if(!hayInfoCheque(i)){
+					return false;
+				} 
+			}
 		}
 	}
 	return(validoMontos());
@@ -213,7 +219,7 @@ function validarYGuardar(formulario) {
 		print ("<td width=116> <input name='fecha".$i."' id='fecha".$i."' type='text' size='10'></td>");
 		print ("<td width=212>"); ?>
 	<select name=<?php print("tipo".$i);?> id=<?php print("tipo".$i);?> onChange="verInfoCheques(document.forms.cuotas.<?php print("tipo".$i."[selectedIndex]");?>.value ,<?php echo $i ?>)">
-      <option value=0>Seleccione un valor </option>
+      <option value=-1>Seleccione un valor </option>
       <?php
 					$query="select * from tiposcancelaciones";
 					$result=mysql_query($query,$db);
