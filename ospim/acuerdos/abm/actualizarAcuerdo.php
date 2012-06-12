@@ -23,9 +23,6 @@ $inspectorinterviene = $datos[6];
 //echo "INSPECTOR: ".$inspectorinterviene; echo "<br>";
 $requerimientoorigen = $datos[7];
 $liquidacionorigen = $datos[8];
-if ($liquidacionorigen == "") {
-	$requerimientoorigen = 0;
-}
 //echo "REQUERI: ".$requerimientoorigen; echo "<br>";
 //echo "LIQUI: ".$liquidacionorigen; echo "<br>";
 $montoacuerdo = $datos[9];
