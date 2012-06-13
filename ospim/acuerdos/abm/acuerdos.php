@@ -58,8 +58,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 			echo ("<td width=300  align='center'><font face=Verdana size=2> ".$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
 			if ($rowacuerdos['estadoacuerdo'] != 0) {
 				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='formularioModif.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>MODIFICAR</a></font></td>");
+				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='reemplazarAcuerdo.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>REEMPLAZAR</a></font></td>");
 			} else {
 				echo ("<td width=100  align='center'><font face=Verdana size=2>CANCELADO</a></font></td>");
+				echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
 			}
 			echo ("<td width=100  align='center'><font face=Verdana size=2><a href='consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>CONSULTAR</a></font></td>");
 			print ("</tr>");
