@@ -8,52 +8,52 @@ $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
 $cuit = $_GET['cuit'];
-//echo "CUIT: ".$cuit; echo "<br>";
+ //echo "CUIT: ".$cuit; //echo "<br>";
 
 $datos = array_values($_POST);
 $acuReem = $datos[0];
-//echo "NRO ACUERDO A REEMPLAZAR: ".$acuReem; echo "<br>";
+ //echo "NRO ACUERDO A REEMPLAZAR: ".$acuReem; //echo "<br>";
 
 $nroNuevoAcuerdo = $datos[1];
-//echo "NRO NUEVO ACUERDO: ".$nroNuevoAcuerdo; echo "<br>";
+ //echo "NRO NUEVO ACUERDO: ".$nroNuevoAcuerdo; //echo "<br>";
 
 $tipoAcu = $datos[2];
-//echo "TIPO ACUERDO: ".$tipoAcu; echo "<br>";
+ //echo "TIPO ACUERDO: ".$tipoAcu; //echo "<br>";
 
 $fechaAcu = fechaParaGuardar($datos[3]);
-//echo "FECHA: ".$fechaAcu; echo "<br>";
+ //echo "FECHA: ".$fechaAcu; //echo "<br>";
 
 $acta = $datos[4];
-//echo "ACTA: ".$acta; echo "<br>";
+ //echo "ACTA: ".$acta; //echo "<br>";
 
 $gestor = $datos[5];
-//echo "GESTOR: ".$gestor; echo "<br>";
+ //echo "GESTOR: ".$gestor; //echo "<br>";
 
 $inspector = $datos[6];
-//echo "INSPECTOR: ".$inspector; echo "<br>";
+ //echo "INSPECTOR: ".$inspector; //echo "<br>";
 
 $requerimientoorigen = $datos[7];
 $liquidacionorigen = $datos[8];
-//echo "REQUERI: ".$requerimientoorigen; echo "<br>";
-//echo "LIQUI: ".$liquidacionorigen; echo "<br>";
+ //echo "REQUERI: ".$requerimientoorigen; //echo "<br>";
+ //echo "LIQUI: ".$liquidacionorigen; //echo "<br>";
 
 $montoacuerdo = $datos[9];
-//echo "MONTO: ".$montoacuerdo; echo "<br>";
+ //echo "MONTO: ".$montoacuerdo; //echo "<br>";
 
 $gastosAdmi = $datos[10];
-//echo "GASTOS ADMI: ".$gastosAdmi; echo "<br>";
+ //echo "GASTOS ADMI: ".$gastosAdmi; //echo "<br>";
 
 $porcGastos = $datos[11];
-//echo "PORC GAST: ".$porcGastos; echo "<br>";
+ //echo "PORC GAST: ".$porcGastos; //echo "<br>";
 
 $observaciones = $datos[12];
-//echo "OBSER: ".$observaciones; echo "<br>";
+ //echo "OBSER: ".$observaciones; //echo "<br>";
 
-//echo "<br>";echo "<br>";
+ //echo "<br>";//echo "<br>";
 
 $estadoacuerdo = 1;
-$cuotasapagar = 0;
-$montoapagar = $montoacuerdo;
+$cuotasapagar = 1;
+$montoapagar = 0;
 $cuotaspagadas = 0;
 $montopagadas = 0;
 $fechapagadas = "0000-00-00";
@@ -79,11 +79,11 @@ try {
 
 	//CABECERA
 	$dbh->exec($sqlCargaCabecera);
-	//echo $sqlCargaCabecera; echo("<br>");  echo("<br>");
+	 //echo $sqlCargaCabecera; //echo("<br>");  //echo("<br>");
 	
 	//PERIODOS
 	$sqlUpdatePeriodos = "UPDATE detacuerdosospim set nroacuerdo = $nroNuevoAcuerdo where cuit = $cuit and nroacuerdo = $acuReem";
-	//echo $sqlUpdatePeriodos; echo("<br>");  echo("<br>");
+	 //echo $sqlUpdatePeriodos; //echo("<br>");  //echo("<br>");
 	$dbh->exec($sqlUpdatePeriodos);
 	
 	//CUOTAS
@@ -103,11 +103,12 @@ try {
 		} else { 
 			//cuota no cancelada...
 			$montoAcuNuevo = $montoAcuNuevo + $rowCuotas['montocuota'];
-			$cantCuotasNuevo = $cantCuotasNuevo + 1;
-			
+			$sqlDeleteCuotas = "DELETE from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuReem and nrocuota = $nrocuota";
+			 //echo $sqlDeleteCuotas; //echo("<br>");
+			$dbh->exec($sqlDeleteCuotas);
 			//anulacion de boleta impresa
 			if ($rowCuotas['boletaimpresa'] != 0) {
-				//echo "HAY QUE ANULAR BOLETA DE LA CUOTA NUMERO $nrocuota"; echo("<br>");
+				 //echo "HAY QUE ANULAR BOLETA DE LA CUOTA NUMERO $nrocuota"; //echo("<br>");
 				
 				$sqlBol = "select * from boletasospim where cuit = $cuit and nroacuerdo = $acuReem and nrocuota = $nrocuota";
 				$resBol = mysql_query($sqlBol,$db); 
@@ -121,33 +122,25 @@ try {
 				$usuarioReg = $rowBol['usuarioregistro'];
 				
 				$sqlAnula = "INSERT INTO anuladasospim VALUES('$idBoleta','$cuit','$nroacu','$nrocuo','$importe','$nrocontrol','$usuarioReg','$fechamodificacion','$usuariomodificacion','0','Reemplazo de Acuerdo') ";
-				//echo $sqlAnula; echo "<br>";
+				 //echo $sqlAnula; //echo "<br>";
 				$dbh->exec($sqlAnula);
 				
 				$sqlDelete = "DELETE FROM boletasospim where idboleta = $idBoleta";
-				//echo $sqlDelete; echo "<br>";
+				 //echo $sqlDelete; //echo "<br>";
 				$dbh->exec($sqlDelete);
-			}
-			//updatevaloresalcobro
-			if ($rowCuotas['tipocancelacion'] == 3) {
-				//echo "HAY QUE UPDETEAR VALORES AL COBRO DE LA CUOTA NUMERO $nrocuota"; echo("<br>");
-				$sqlUpdateValores = "UPDATE valoresalcobro set nroacuerdo = '$nroNuevoAcuerdo', nrocuota = '$cantCuotasNuevo' where cuit = $cuit and nroacuerdo = $acuReem and nrocuota = $nrocuota";
-				//echo $sqlUpdateValores; echo "<br>";
-				$dbh->exec($sqlUpdateValores);
-			}
-			
-			$sqlUpdateCuota = "UPDATE cuoacuerdosospim set nroacuerdo = '$nroNuevoAcuerdo', nrocuota = '$cantCuotasNuevo', boletaimpresa = '0', fecharegistro = '$fecharegistro', usuarioregistro = '$usuarioregistro', fechamodificacion = '$fecharegistro', usuariomodificacion = '$usuarioregistro' where cuit = $cuit and nroacuerdo = $acuReem and nrocuota = $nrocuota";
-			//echo $sqlUpdateCuota; echo "<br>";
-			$dbh->exec($sqlUpdateCuota);
+			}		
 		}
 	}
 	
-	//echo "Monto VIEJO: ".$montoAcuViejo; echo "<br>";
-	//echo "CUOTAS A PAG VIEJO: ".$cantCuotasPagasViejo; echo "<br>";
-	//echo "Monto NUEVO: ".$montoAcuNuevo; echo "<br>";
-	//echo "CUOTAS NUEVO: ".$cantCuotasNuevo; echo "<br>";
+	 //echo "Monto VIEJO: ".$montoAcuViejo; //echo "<br>";
+	 //echo "CUOTAS A PAG VIEJO: ".$cantCuotasPagasViejo; //echo "<br>";
+	 //echo "Monto NUEVO: ".$montoAcuNuevo; //echo "<br>";
 	
-	//echo("<br>");
+	$insertCuota = "INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroNuevoAcuerdo','1','$montoAcuNuevo','$fecharegistro','8','','','','Deuda Pendiente del acuerdo reemplazado','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+	 //echo $insertCuota; //echo "<br>";
+	$dbh->exec($insertCuota);
+	
+	 //echo("<br>");
 	//update cabecera viejo
 	$sqlCabecera = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $acuReem";
 	$resCabecera = mysql_query($sqlCabecera,$db); 
@@ -158,12 +151,12 @@ try {
 	}
 	$observa = $rowCebecera['observaciones']." - Acuerdo reemplazado por el acuerdo numero $nroNuevoAcuerdo con acta numero $acta";
 	$sqlUpdateCabeViejo = "UPDATE cabacuerdosospim set montoapagar = '$montoAcuViejo', saldoacuerdo = '$saldoAcuerdo', cuotasapagar = '$cantCuotasPagasViejo', observaciones = '$observa', estadoacuerdo = '0', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit and nroacuerdo = $acuReem";
-	//echo $sqlUpdateCabeViejo;  echo("<br>");
+	 //echo $sqlUpdateCabeViejo;  //echo("<br>");
 	$dbh->exec($sqlUpdateCabeViejo);
 	
 	//update cabecera nuevo
-	$sqlUpdateCabeNuevo = "UPDATE cabacuerdosospim set montoapagar = '$montoAcuNuevo', cuotasapagar = '$cantCuotasNuevo', saldoacuerdo = '$montoAcuNuevo' where cuit = $cuit and nroacuerdo = $nroNuevoAcuerdo";
-	//echo $sqlUpdateCabeNuevo;  echo("<br>");
+	$sqlUpdateCabeNuevo = "UPDATE cabacuerdosospim set montoapagar = '$montoAcuNuevo', saldoacuerdo = '$montoAcuNuevo' where cuit = $cuit and nroacuerdo = $nroNuevoAcuerdo";
+	 //echo $sqlUpdateCabeNuevo;  //echo("<br>");
 	$dbh->exec($sqlUpdateCabeNuevo);
 	
 	$dbh->commit();

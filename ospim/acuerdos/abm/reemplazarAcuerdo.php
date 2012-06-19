@@ -42,24 +42,6 @@ jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
 });
 
-function verInfoCheques(tipo, amostrar){
-	var nroCheque = "ncheque"+amostrar;
-	var banco = "bcheque"+amostrar;
-	var fechaCheque = "fcheque"+amostrar;
-	if (tipo == 1 || tipo == 3) {
-		document.getElementById(nroCheque).style.visibility="visible";
-		document.getElementById(banco).style.visibility="visible";
-		document.getElementById(fechaCheque).style.visibility="visible";
-	} else {
-		document.getElementById(nroCheque).value = "";
-		document.getElementById(banco).value = "";
-		document.getElementById(fechaCheque).value = "";
-		document.getElementById(nroCheque).style.visibility="hidden";
-		document.getElementById(banco).style.visibility="hidden";
-		document.getElementById(fechaCheque).style.visibility="hidden";
-	}
-}
-
 function cargarNombreReq(nroReq) {
 	var enc = 0;
 	if (nroReq != 0) {
@@ -239,15 +221,12 @@ function validar(formulario) {
   </div>
   <div align="center">
     <p><b>Cuotas</b></p>
-    <table width="800" border="1">
+    <table width="600" border="1">
       <tr>
         <td width="134"><div align="center">Cuota </div></td>
         <td width="107"><div align="center">Monto</div></td>
         <td width="116"><div align="center">Fecha</div></td>
         <td width="300"><div align="center">Cancelacion</div></td>
-        <td width="200"><div align="center">Nro Cheque </div></td>
-        <td width="212"><div align="center">Banco </div></td>
-        <td width="212"><div align="center">Fecha Cheque </div></td>
       </tr>
       <p>
         <?php
@@ -265,17 +244,7 @@ function validar(formulario) {
 			$result=mysql_query($query,$db);
 			$rowtipos=mysql_fetch_array($result);
 			print ("<td width=300>".$rowtipos['descripcion']."</td>");
-			
-		
-			print ("<td width=212>".$rowCuotas['chequenro']."</td>");
-			print ("<td width=212>".$rowCuotas['chequebanco']."</td>"); 
-			if ($rowCuotas['tipocancelacion'] == 1 || $rowCuotas['tipocancelacion'] == 3) {
-				print ("<td width=212>".invertirFecha($rowCuotas['chequefecha'])."</td>");
-			} else {
-				print ("<td width=212></td>");
-			}
-			print ("</tr>");
-			
+	
 			print ("<tr>");
 			print ("<td width=134 align='center'><font face=Verdana size=1>Obs.</font></td>");
 			print ("<td colspan='6' align='left'>".$rowCuotas['observaciones']."</td>");

@@ -52,13 +52,34 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="500" border="1">
      <?php 
 		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
+			$nroacu = $rowacuerdos['nroacuerdo'];
 			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
 			$result=mysql_query($query,$db);
 			$rowtipos=mysql_fetch_array($result);
 			echo ("<td width=300  align='center'><font face=Verdana size=2> ".$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
 			if ($rowacuerdos['estadoacuerdo'] != 0) {
 				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='formularioModif.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>MODIFICAR</a></font></td>");
-				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='reemplazarAcuerdo.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>REEMPLAZAR</a></font></td>");
+				
+				$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+				$resCuotas = mysql_query($sqlCuotas,$db); 
+				$canCuotas = mysql_num_rows($resCuotas); 
+				$reemplazable = true;
+				if ($canCuotas != 0 && $rowacuerdos['tipoacuerdo'] != 3) {
+					while ($rowCuotas = mysql_fetch_array($resCuotas)) {
+						if ($rowCuotas['montopagada'] == 0 || $rowCuotas['fechapagada'] == '0000-00-00') {
+							if ($rowCuotas['tipocancelacion'] != 8 && $reemplazable == true){
+								$reemplazable = false;
+							}	
+						}										
+					}
+					if ($reemplazable == true) {
+						echo ("<td width=100  align='center'><font face=Verdana size=2><a href='reemplazarAcuerdo.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>REEMPLAZAR</a></font></td>");
+					} else {
+						echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
+					}
+				} else {
+					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
+				}
 			} else {
 				echo ("<td width=100  align='center'><font face=Verdana size=2>CANCELADO</a></font></td>");
 				echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
