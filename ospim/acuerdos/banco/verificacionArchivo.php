@@ -2,8 +2,8 @@
 include($libPath."controlSession.php");
 
 $fechacargada=$_POST['fechaarchivo'];
-//$archivo_name="00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
-$archivo_name="/home/sistemas/Documentos/Repositorio/ArchivosBanco/00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
+$archivo_name="00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
+//$archivo_name="/home/sistemas/Documentos/Repositorio/ArchivosBanco/00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
 $hayErrores=0;
 $validas=0;
 $deposit=0;
@@ -18,8 +18,8 @@ if (!file_exists($archivo_name))
 			$fechanio=substr($registros[$i], 26, 4);
 			$fechames=substr($registros[$i], 30, 2);
 			$fechadia=substr($registros[$i], 32, 2);
-			//$fechaarc=substr($archivo_name, 8,8);
-			$fechaarc=substr($archivo_name, 60,8);
+			$fechaarc=substr($archivo_name, 8,8);
+			//$fechaarc=substr($archivo_name, 60,8);
 			$fechaenarchivo=$fechadia.$fechames.$fechanio;
 			if(strcmp($fechaenarchivo, $fechaarc)!=0)
 				$hayErrores=2;
@@ -67,7 +67,8 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr align="center" valign="top">
     <td width="157" height="23"><div align="left"><strong>Nombre del Archivo</strong></div></td>
-    <td colspan="2"><div align="left"><?php print(substr($archivo_name,52,20)); ?></div></td>
+    <td colspan="2"><div align="left"><?php //print(substr($archivo_name,52,20));
+	print($archivo_name); ?></div></td>
   </tr>
   <tr align="center" valign="top">
     <td height="23"><div align="left"><strong>Total de Registros </strong></div></td>

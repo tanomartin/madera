@@ -37,8 +37,8 @@ else{
 		$resultBanco= mysql_query($sqlBanco,$db); 
 	}
 	$origen=$archivo_name;
-	//$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".$archivo_name;
-	$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".substr($archivo_name,52,20);
+	$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".$archivo_name;
+	//$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".substr($archivo_name,52,20);
 	rename($origen,$destino);
 }
 ?>
@@ -66,7 +66,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	if ($hayErrores == 1)
 		print("Error en Archivo -- Error en la apertura del archivo. Comuniquese con el Depto. de Sistemas.<br/>\n");
 	else{
-		$fechaarc=substr($archivo_name, 8,8);
+		$fechaarc=substr($archivo_name, 8, 2)."-".substr($archivo_name, 10, 2)."-".substr($archivo_name, 12, 4);
+		//$fechaarc=substr($archivo_name, 60, 2)."-".substr($archivo_name, 62, 2)."-".substr($archivo_name, 64, 4);
 		print("Ingreso Exitoso -- Los registros del dia $fechaarc han ingresado correctamente a la Base de Datos.<br/>\n");
 	}
 	?></div></td>
