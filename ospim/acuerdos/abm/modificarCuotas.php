@@ -8,6 +8,12 @@ $sqlMod = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $n
 $resMod = mysql_query($sqlMod,$db);
 $canMod  = mysql_num_rows($resMod);
 
+$sqlModFisca = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and tipocancelacion = 8 and boletaimpresa != 0";
+$resModFisca = mysql_query($sqlModFisca,$db);
+$canModFisca = mysql_num_rows($resModFisca);
+
+$canMod = $canMod + $canModFisca;
+
 $sqlUltima =  "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu order by nrocuota DESC";
 $resUltima = mysql_query($sqlUltima,$db);
 $rowUltima = mysql_fetch_array($resUltima);
