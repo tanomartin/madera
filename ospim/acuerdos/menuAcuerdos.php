@@ -21,7 +21,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p><span class="Estilo2">Men&uacute; Acuerdos </span></p>
   <table width="614" border="3">
     <tr>
-      <td width="196"><p align="center">Alta, Modificaci&oacute;n y Consulta de Acuerdos </p>
+      <td width="196"><p align="center">Alta, Modificaci&oacute;n y Consulta</p>
         <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmacuerdo.jpg" width="97" height="78" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center"> Boletas de Pago </p>
