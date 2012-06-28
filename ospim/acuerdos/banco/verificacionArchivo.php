@@ -1,9 +1,13 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
 include($libPath."controlSession.php");
-
+$maquina = $_SERVER['SERVER_NAME'];
 $fechacargada=$_POST['fechaarchivo'];
-$archivo_name="00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
-//$archivo_name="/home/sistemas/Documentos/Repositorio/ArchivosBanco/00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
+
+if(strcmp("localhost",$maquina)==0)
+	$archivo_name="00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
+else
+	$archivo_name="/home/sistemas/Documentos/Repositorio/ArchivosBanco/00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
+
 $hayErrores=0;
 $validas=0;
 $deposit=0;
@@ -13,14 +17,21 @@ $rechazo=0;
 if (!file_exists($archivo_name)) 
 	$hayErrores=1;
 	else{
+		$impoapro=0.00;
+		$imporech=0.00;
 		$registros = file($archivo_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 		for($i=0; $i < count($registros); $i++){
 			$fechanio=substr($registros[$i], 26, 4);
 			$fechames=substr($registros[$i], 30, 2);
 			$fechadia=substr($registros[$i], 32, 2);
-			$fechaarc=substr($archivo_name, 8,8);
-			//$fechaarc=substr($archivo_name, 60,8);
+
+			if(strcmp("localhost",$maquina)==0)
+				$fechaarc=substr($archivo_name, 8,8);
+			else
+				$fechaarc=substr($archivo_name, 60,8);
+
 			$fechaenarchivo=$fechadia.$fechames.$fechanio;
+
 			if(strcmp($fechaenarchivo, $fechaarc)!=0)
 				$hayErrores=2;
 
@@ -28,11 +39,16 @@ if (!file_exists($archivo_name))
 			if(strcmp("0000005734", $convearc)!=0)
 				$hayErrores=3;
 
+			$impoente=substr($registros[$i], 42, 13);
+			$impodeci=substr($registros[$i], 55, 2);
+			$impodepo=$impoente.".".$impodeci;
+
 			$codimovi=substr($registros[$i], 34, 2);
 			if(strcmp("50", $codimovi)==0){
 				$validas++;
 				$deposit++;
 				$efectiv++;
+				$impoapro=$impoapro+$impodepo;
 			}
 			if(strcmp("54", $codimovi)==0){
 				$estamovi=substr($registros[$i], 154, 1);
@@ -41,9 +57,12 @@ if (!file_exists($archivo_name))
 				if(strcmp("L", $estamovi)==0){
 					$deposit++;
 					$cheques++;
+					$impoapro=$impoapro+$impodepo;
 				}
-				if(strcmp("R", $estamovi)==0)
+				if(strcmp("R", $estamovi)==0){
 					$rechazo++;
+					$imporech=$imporech+$impodepo;
+				}
 			}
 		}
 	}
@@ -67,8 +86,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr align="center" valign="top">
     <td width="157" height="23"><div align="left"><strong>Nombre del Archivo</strong></div></td>
-    <td colspan="2"><div align="left"><?php //print(substr($archivo_name,52,20));
-	print($archivo_name); ?></div></td>
+    <td colspan="2"><div align="left"><?php	if(strcmp("localhost",$maquina)==0) print($archivo_name); else print(substr($archivo_name,52,20)); ?></div></td>
   </tr>
   <tr align="center" valign="top">
     <td height="23"><div align="left"><strong>Total de Registros </strong></div></td>
@@ -80,17 +98,17 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr align="center" valign="top">
     <td height="23"><div align="left"><strong>Depositos Aprobados </strong></div></td>
-    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print("$deposit : $efectiv En Efectivo - $cheques En Cheques"); ?></div></td>
+    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print("$deposit: $efectiv en Efectivo - $cheques en Cheques por un Total de $impoapro"); ?></div></td>
   </tr>
   <tr align="center" valign="top">
     <td height="23"><div align="left"><strong>Depositos Rechazados</strong> </div></td>
-    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print($rechazo); ?></div></td>
+    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print("$rechazo por un Total de $imporech"); ?></div></td>
   </tr>
   <tr align="center" valign="top">
     <td height="27"><div align="left"><strong>Control de Errores </strong></div></td>
     <td colspan="2"><div align="left"><?php 
 		if ($hayErrores == 0)
-			print("No se ha encontrado ningun error en los registros.");
+			print("No se ha encontrado ningun error en los registros. Servidor: $maquina");
 		else
 		{
 			if ($hayErrores == 1)
