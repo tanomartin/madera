@@ -108,11 +108,11 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td height="27"><div align="left"><strong>Control de Errores </strong></div></td>
     <td colspan="2"><div align="left"><?php 
 		if ($hayErrores == 0)
-			print("No se ha encontrado ningun error en los registros. Servidor: $maquina");
+			print("No se ha encontrado ningun error en los registros.");
 		else
 		{
 			if ($hayErrores == 1)
-				print("Error en Archivo -- El Archivo solicitado no existe. Servidor: $maquina<br/>\n");
+				print("Error en Archivo -- El Archivo solicitado no existe.<br/>\n");
 			if ($hayErrores == 2)
 				print("Error en Archivo -- Las fechas en el contenido del archivo son incorrectas.<br/>\n");
 			if ($hayErrores == 3)
