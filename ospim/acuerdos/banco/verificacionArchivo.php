@@ -98,11 +98,11 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr align="center" valign="top">
     <td height="23"><div align="left"><strong>Depositos Aprobados </strong></div></td>
-    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print("$deposit: $efectiv en Efectivo - $cheques en Cheques por un Total de $impoapro"); ?></div></td>
+    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print("$deposit: $efectiv en Efectivo - $cheques en Cheques por un Total de $$impoapro "); ?></div></td>
   </tr>
   <tr align="center" valign="top">
     <td height="23"><div align="left"><strong>Depositos Rechazados</strong> </div></td>
-    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print("$rechazo por un Total de $imporech"); ?></div></td>
+    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print("$rechazo por un Total de $$imporech"); ?></div></td>
   </tr>
   <tr align="center" valign="top">
     <td height="27"><div align="left"><strong>Control de Errores </strong></div></td>
