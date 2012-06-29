@@ -41,7 +41,8 @@ else{
 	if(strcmp("localhost",$maquina)==0)
 		$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".$archivo_name;
 	else
-		$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".substr($archivo_name,52,20);
+		$destino="/home/sistemas/Documentos/Repositorio/ArchivosBanco/Procesados/".substr($archivo_name,52,20);
+		//$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".substr($archivo_name,52,20);
 	rename($origen,$destino);
 }
 ?>
