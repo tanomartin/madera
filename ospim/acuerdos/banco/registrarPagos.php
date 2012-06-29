@@ -367,7 +367,7 @@ try {
 				{
 					print ("<table width=769 border=1 align=center>");
 					print ("<tr>");
-					print ("<td width=769><div align=left class=Estilo1>-- ".$cantcanc." Cuotas canceladas por un Total de $".$totacanc." --</div></td>");
+					print ("<td width=769><div align=right class=Estilo1>".$cantcanc." Cuotas canceladas por un Total de $".$totacanc."</div></td>");
 					print ("</tr>");
 					print ("</table>");
 				}

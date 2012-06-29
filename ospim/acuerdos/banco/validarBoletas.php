@@ -65,6 +65,7 @@ try {
 			else
 			{
 				$cantvali=0;
+				$cantnova=0;
 
 				print ("<table width=769 border=1 align=center>");
 				print ("<tr>");
@@ -91,6 +92,7 @@ try {
 						foreach ($resultControlaBoleta as $anuladas)
 						{
 							$controlanulada = $anuladas[nrocontrol];
+							$cantnova++;
 							print ("<tr>");
 						    print ("<td><div align=center><font size=1 face=Verdana>".$controlanulada."</font></div></td>");
 						    print ("<td><div align=center><font size=1 face=Verdana>-</font></div></td>");
@@ -134,7 +136,7 @@ try {
 									//echo $sqlAgregaValida; echo "<br>";
 									if ($resultAgregaValida->execute(array(':idboleta' => $id, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':importe' => $importeboleta, ':nrocontrol' => $control, ':usuarioregistro' => $usuario)))
 									{
-										cantvali++;
+										$cantvali++;
 									    print ("<td><div align=center><font size=1 face=Verdana>Boleta Validada</font></div></td>");
 									}
 									else
@@ -168,11 +170,13 @@ try {
 								}
 								else
 								{
+									$cantnova++;
 									print ("<td><div align=center><font size=1 face=Verdana>CUIT BANCO ".$cuitbanco." Erroneo - No Validada</font></div></td>");
 								}
 							}
 							else
 							{
+								$cantnova++;
 								print ("<td><div align=center><font size=1 face=Verdana>IMPORTE BANCO ".$importebanco." Erroneo - No Validada</font></div></td>");
 							}
 							print ("</tr>");
@@ -181,11 +185,13 @@ try {
         		}
 				print ("</table>");
 
-				if($cantvali!=0)
+				$totabole=$cantvali+$cantnova;
+
+				if($totabole!=0)
 				{
 					print ("<table width=769 border=1 align=center>");
 					print ("<tr>");
-					print ("<td width=769><div align=left class=Estilo1>-- ".$cantvali." Boletas Validadas --</div></td>");
+					print ("<td width=769><div align=right class=Estilo1>TOTAL DE BOLETAS: ".$totabole." -- ".$cantvali." Validadas ".$cantnova." No Validadas</div></td>");
 					print ("</tr>");
 					print ("</table>");
 				}
