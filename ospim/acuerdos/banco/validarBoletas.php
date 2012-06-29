@@ -64,6 +64,8 @@ try {
 			}
 			else
 			{
+				$cantvali=0;
+
 				print ("<table width=769 border=1 align=center>");
 				print ("<tr>");
 				print ("<td><div align=center><strong><font size=1 face=Verdana>Id. Boleta</font></strong></div></td>");
@@ -132,6 +134,7 @@ try {
 									//echo $sqlAgregaValida; echo "<br>";
 									if ($resultAgregaValida->execute(array(':idboleta' => $id, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':importe' => $importeboleta, ':nrocontrol' => $control, ':usuarioregistro' => $usuario)))
 									{
+										cantvali++;
 									    print ("<td><div align=center><font size=1 face=Verdana>Boleta Validada</font></div></td>");
 									}
 									else
@@ -177,6 +180,15 @@ try {
 					}
         		}
 				print ("</table>");
+
+				if($cantvali!=0)
+				{
+					print ("<table width=769 border=1 align=center>");
+					print ("<tr>");
+					print ("<td width=769><div align=left class=Estilo1>-- ".$cantvali." Boletas Validadas --</div></td>");
+					print ("</tr>");
+					print ("</table>");
+				}
 	   		}
 		}
 	}

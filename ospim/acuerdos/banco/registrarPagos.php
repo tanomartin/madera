@@ -65,6 +65,9 @@ try {
 			}
 			else
 			{
+				$totacanc=0.00;
+				$cantcanc=0;
+
 				print ("<table width=769 border=1 align=center>");
 				print ("<tr>");
 				print ("<td><div align=center><strong><font size=1 face=Verdana>Codigo de Barra</font></strong></div></td>");
@@ -263,7 +266,11 @@ try {
 													if($tiposcanc=='10')
 														print ("<td><div align=center><font size=1 face=Verdana>Cheque Rechazado</font></div></td>");
 													else
+													{
+														$totacanc=$totacanc+$montopago;
+														$cantcanc++;
 														print ("<td><div align=center><font size=1 face=Verdana>Cuota Cancelada</font></div></td>");
+													}
 												}
 												else
 												{
@@ -355,6 +362,15 @@ try {
 					}
         		}
 				print ("</table>");
+
+				if($totacanc!=0.00)
+				{
+					print ("<table width=769 border=1 align=center>");
+					print ("<tr>");
+					print ("<td width=769><div align=left class=Estilo1>-- ".$cantcanc." Cuotas canceladas por un Total de $".$totacanc." --</div></td>");
+					print ("</tr>");
+					print ("</table>");
+				}
     		}
 		}
 	}
