@@ -12,6 +12,24 @@
 }
 </style>
 
+<script language="javascript">
+function abrirAcuerdos(dire) {
+	a= window.open(dire,"Acuerdos",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+}
+
+function abrirAfil(dire) {
+	b= window.open(dire,"Afiliados",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
+}
+
+function abrirEmpresa(dire) {
+	c= window.open(dire,"Empresas",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
+}
+</script>
+
+
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
@@ -22,19 +40,19 @@
     <tr>
       <td width="196"> <div align="center">
         <p>M&oacute;dulo Acuerdos</p>
-        <p><a href="acuerdos/menuAcuerdos.php" onclick = "window.open(this.href,'Acuerdos','resizable=YES, Scrollbars=YES'); return false"><img src="img/manos.jpg" width="101" height="86" border="0"/></a></p>
+        <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/manos.jpg" width="101" height="86" border="0" /></a></p>
         <p>&nbsp;</p>
-      </div></td>
+        </div></td>
 		
       <td width="196"><div align="center">
 	    <p>M&oacute;dulo Empresas</p>
-	    <p><a class="enlace" href="#"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirEmpresa('empresas/menuEmpresa.php')"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
 	  
       <td width="183"><div align="center">
 	    <p>M&oacute;dulo Afiliados</p>
-	    <p><a class="enlace" href="#"><img src="img/empleado.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirAfil('afiliados/menuAfiliados.php')"><img src="img/empleado.jpg" width="101" height="86" border="0" /></a></p>
 	    <p>&nbsp;</p>
       </div></td>
     </tr>
