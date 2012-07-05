@@ -1,5 +1,7 @@
 <?php  include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); ?>
+<script type="text/javascript">document.body.style.cursor = 'wait';</script>		
+<?php	
 	$fechamodificacion = date("Y-m-d H:m:s");
 	$usuariomodificacion = $_SESSION['usuario'];
 	

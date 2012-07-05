@@ -121,7 +121,10 @@ function validarYGuardar(formulario) {
 	var finfor = <?php echo $canMod ?>;
 	var id = finfor+1;
 	var nombre = "monto"+id;
-
+	
+	document.getElementById("nuevaCuota").disabled = true;
+	document.getElementById("guardar").disabled = true;
+	document.body.style.cursor = 'wait';
 	
 	if (!document.getElementById(nombre).disabled) {
 		finfor = finfor +1;
@@ -161,6 +164,7 @@ function validarYGuardar(formulario) {
 }
 
 function popUpcambio(confi) {
+	document.body.style.cursor = 'default';
 	if (confi == 1) {
 		alert("CAMBIO GUARDADO SATISFACTORIAMENTE");
 	}
@@ -268,7 +272,7 @@ function popUpcambio(confi) {
       <tr>
         <td width="365">
           <div align="left">
-            <input type="button" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">
+            <input type="button" id="nuevaCuota" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">
             </div>
         <div align="right"></div></td>
         <td width="364">
