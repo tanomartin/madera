@@ -35,7 +35,7 @@ try {
 	if ($cantPer != 0) {
 		for ($i = 2; $i<$cantPer+2; $i++) {
 			$sqlAltaPeri = $datos[$i];
-			echo $sqlAltaPeri;echo "<br>";
+			//echo $sqlAltaPeri;echo "<br>";
 			$dbh->exec($sqlAltaPeri);
 		}
 	} //else {
