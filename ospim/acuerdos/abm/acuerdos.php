@@ -57,7 +57,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			$result=mysql_query($query,$db);
 			$rowtipos=mysql_fetch_array($result);
 			echo ("<td width=300  align='center'><font face=Verdana size=2> ".$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
-			if ($rowacuerdos['estadoacuerdo'] != 0) {
+			if ($rowacuerdos['estadoacuerdo'] == 1) {
 				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='formularioModif.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>MODIFICAR</a></font></td>");
 				
 				$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
@@ -81,8 +81,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
 				}
 			} else {
-				echo ("<td width=100  align='center'><font face=Verdana size=2>CANCELADO</a></font></td>");
-				echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
+				if ($rowacuerdos['estadoacuerdo'] == 0) {
+					echo ("<td width=100  align='center'><font face=Verdana size=2>CANCELADO</a></font></td>");
+					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
+				} 
+				if ($rowacuerdos['estadoacuerdo'] == 2) {
+					echo ("<td width=100  align='center'><font face=Verdana size=2>INCOBRABLE</a></font></td>");
+					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
+				}
 			}
 			echo ("<td width=100  align='center'><font face=Verdana size=2><a href='consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>CONSULTAR</a></font></td>");
 			print ("</tr>");

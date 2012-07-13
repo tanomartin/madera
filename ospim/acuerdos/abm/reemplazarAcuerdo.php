@@ -4,6 +4,11 @@ include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
 
+$sqlCabeViejo = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+$resCabeViejo =  mysql_query($sqlCabeViejo,$db); 
+$rowCabeViejo = mysql_fetch_array($resCabeViejo);
+$actaVieja = $rowCabeViejo['nroacta'];
+
 $sql = "select * from empresas where cuit = $cuit";
 $result =  mysql_query( $sql,$db); 
 $row = mysql_fetch_array($result); 
@@ -214,7 +219,7 @@ function validar(formulario) {
       <tr>
         <td valign="bottom"><div align="left">Obervaciones</div></td>
         <td colspan="6" valign="bottom"><div align="left">
-            <textarea name="observaciones" cols="100" rows="5" id="observaciones">Reemplaza al Acuerdo <?php echo $nroacu ?> Número de Acta <?php echo $rowacu['nroacta']  ?> </textarea>
+            <textarea name="observaciones" cols="100" rows="5" id="observaciones">Reemplaza al Acuerdo <?php echo $nroacu ?> Número de Acta <?php echo $actaVieja  ?> </textarea>
         </div></td>
       </tr>
     </table>
