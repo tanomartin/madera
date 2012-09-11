@@ -56,6 +56,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <td width="168"><div align="center"><strong><font size="1" face="Verdana">Raz&oacute;n Social </font></strong></div></td>
         <td width="168"><div align="center"><strong><font size="1" face="Verdana">Acuerdo</font></strong></div></td>
         <td width="168"><div align="center"><strong><font size="1" face="Verdana">Cuota</font></strong></div></td>
+		<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
         <td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cheque</font></strong></div></td>
         <td width="168"><div align="center"><strong><font size="1" face="Verdana">Banco</font></strong></div></td>
         <td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Cheque</font></strong></div></td>
@@ -69,10 +70,19 @@ A:hover {text-decoration: none;color:#00FFFF }
 				$sqlRazon = "select * from empresas where cuit = $cuit";
 				$resRazon = mysql_query( $sqlRazon,$db); 
 				$rowRazon = mysql_fetch_array($resRazon); 
-				
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowRazon['nombre']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowLista['nroacuerdo']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowLista['nrocuota']."</font></div></td>");
+				
+						
+				$nroacuerdo = $rowLista['nroacuerdo'];
+				$nrocuota = $rowLista['nrocuota'];
+				print ("<td width=168><div align=center><font face=Verdana size=1>".$nroacuerdo."</font></div></td>");
+				print ("<td width=168><div align=center><font face=Verdana size=1>".$nrocuota."</font></div></td>");
+				
+				$sqlCuota = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacuerdo and nrocuota = $nrocuota";
+				$resCuota = mysql_query($sqlCuota,$db); 
+				$rowCuota = mysql_fetch_array($resCuota); 
+				
+				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuota['montocuota']."</font></div></td>");
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowLista['chequenro']."</font></div></td>");
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowLista['chequebanco']."</font></div></td>");
 				print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowLista['chequefecha'])."</font></div></td>");
