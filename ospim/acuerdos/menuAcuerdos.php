@@ -32,6 +32,13 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
+      <td>&nbsp;</td>
+      <td><p align="center">Informes</p>
+        <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.jpg" width="120" height="80" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
       <td><p align="center">Cancelaci&oacute;n Manual de Cuotas </p>
         <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.jpg" width="97" height="76" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
@@ -43,6 +50,10 @@ A:hover {text-decoration: none;color:#00FFFF }
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
+  <p>&nbsp;</p>
 </div>
 </body>
 </html>
