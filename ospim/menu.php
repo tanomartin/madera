@@ -40,7 +40,7 @@ function abrirEmpresa(dire) {
     <tr>
       <td width="196"> <div align="center">
         <p>M&oacute;dulo Acuerdos</p>
-        <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/manos.jpg" width="101" height="86" border="0" /></a></p>
+        <p><a href="acuerdos/menuAcuerdos.php" onclick = "window.open(this.href,'Acuerdos','resizable=YES, Scrollbars=YES, height=800'); return false"><img src="img/manos.jpg" width="101" height="86" border="0"/></a></p>
         <p>&nbsp;</p>
         </div></td>
 		
