@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-04-2012 a las 11:00:28
+-- Tiempo de generación: 19-09-2012 a las 10:21:40
 -- Versión del servidor: 5.1.41
 -- Versión de PHP: 5.3.2-1ubuntu4.11
 
@@ -35,6 +35,29 @@ CREATE TABLE IF NOT EXISTS `anuladasospim` (
   `usuarioregistro` char(50) NOT NULL,
   `fechaanulacion` datetime NOT NULL,
   `usuarioanulacion` char(50) NOT NULL,
+  `documentoenmano` int(1) unsigned NOT NULL COMMENT 'Boleta en posesion de OSPIM al momento de anularla',
+  `motivoanulacion` text NOT NULL COMMENT 'Descripcion del motivo de la anulacion',
+  PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `anuladasusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `anuladasusimra` (
+  `idboleta` int(10) unsigned NOT NULL,
+  `cuit` char(11) NOT NULL,
+  `nroacuerdo` int(3) unsigned NOT NULL,
+  `nrocuota` int(3) unsigned NOT NULL,
+  `importe` decimal(9,2) NOT NULL,
+  `nrocontrol` char(14) NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechaanulacion` datetime NOT NULL,
+  `usuarioanulacion` char(50) NOT NULL,
+  `documentoenmano` int(1) unsigned NOT NULL COMMENT 'Boleta en posesion de USIMRA al momento de anularla',
+  `motivoanulacion` text NOT NULL COMMENT 'Descripcion del motivo de la anulacion',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -72,6 +95,37 @@ CREATE TABLE IF NOT EXISTS `banacuerdosospim` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `banacuerdosusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `banacuerdosusimra` (
+  `nromovimiento` int(6) unsigned NOT NULL COMMENT 'Numero de Movimiento en el Banco',
+  `sucursalorigen` char(4) NOT NULL COMMENT 'Sucursal de Origen del Movimiento',
+  `fecharecaudacion` date NOT NULL COMMENT 'Fecha en que se Deposita',
+  `fechaacreditacion` date NOT NULL COMMENT 'Fecha en que Acredita el Banco',
+  `estadomovimiento` char(1) NOT NULL COMMENT 'Tipo/Status del Movimiento',
+  `sucursalbcra` char(4) NOT NULL COMMENT 'Sucursal del Banco Central',
+  `codigomovimiento` int(2) unsigned NOT NULL COMMENT 'Codigo de Movimiento',
+  `importe` decimal(15,2) NOT NULL COMMENT 'Importe Acreditado',
+  `moneda` int(1) unsigned NOT NULL COMMENT 'Moneda del Deposito',
+  `codigobarra` char(80) NOT NULL COMMENT 'Codigo de Barra de la Boleta de Pago',
+  `cuit` char(11) NOT NULL COMMENT 'CUIT de la Empresa - En Tabla Empresas',
+  `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control Univoco para Identificacion de la Boleta',
+  `chequebanco` int(4) unsigned DEFAULT NULL COMMENT 'Codigo del Banco del Cheque',
+  `chequesucursal` int(4) unsigned DEFAULT NULL COMMENT 'Codigo de Sucursal del Banco del Cheque',
+  `chequenro` int(8) unsigned DEFAULT NULL COMMENT 'Nro. de Cheque',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha en que se carga el Registro en la Tabla',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que carga el Registro en la Tabla',
+  `fechavalidacion` datetime DEFAULT NULL COMMENT 'Fecha del Proceso de Validacion de la Boleta',
+  `usuariovalidacion` char(50) DEFAULT NULL COMMENT 'Usuario que Genera el Proceso de Validacion de la Boleta',
+  `fechaimputacion` datetime DEFAULT NULL COMMENT 'Fecha del Proceso de Imputacion del Pago en la Tabla cuoacuerdosusimra',
+  `usuarioimputacion` char(50) DEFAULT NULL COMMENT 'Usuario que Genera el Proceso de Imputacion del Pago en la Tabla cuoacuerdosusimra',
+  PRIMARY KEY (`nromovimiento`,`sucursalorigen`,`fecharecaudacion`,`fechaacreditacion`,`estadomovimiento`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `boletasospim`
 --
 
@@ -84,7 +138,24 @@ CREATE TABLE IF NOT EXISTS `boletasospim` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=160 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `boletasusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `boletasusimra` (
+  `idboleta` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identificador de Boleta',
+  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. - En tabla Empresas',
+  `nroacuerdo` int(3) unsigned NOT NULL COMMENT 'Nro. de Acuerdo',
+  `nrocuota` int(3) unsigned NOT NULL COMMENT 'Nro. de Cuota',
+  `importe` decimal(9,2) unsigned NOT NULL COMMENT 'Importe de la Boleta',
+  `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas';
 
 -- --------------------------------------------------------
 
@@ -132,6 +203,7 @@ CREATE TABLE IF NOT EXISTS `cabacuerdosusimra` (
   `fechaacuerdo` date NOT NULL COMMENT 'Fecha de Entrada en Vigencia del Acuerdo',
   `nroacta` int(9) unsigned DEFAULT NULL COMMENT 'Numero de Acta de Acuerdo',
   `gestoracuerdo` int(3) unsigned NOT NULL COMMENT 'Gestor del Acuerdo - En tabla gestoresdeacuerdos',
+  `porcengastoadmin` decimal(5,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Porcentaje de Gto. Administrativo al momento de Celebrar el Acuerdo',
   `inspectorinterviene` int(3) unsigned NOT NULL COMMENT 'Inspector Interviniente - En tabla inspectores',
   `requerimientoorigen` int(8) unsigned DEFAULT NULL COMMENT 'Requerimiento que da origen al acuerdo - En tabla requerimientosospim',
   `liquidacionorigen` char(100) DEFAULT NULL COMMENT 'Plantilla de Liquidacion que da origen al acuerdo - Excel en unidad compartida de Fiscalizacion',
@@ -209,6 +281,9 @@ CREATE TABLE IF NOT EXISTS `cuoacuerdosusimra` (
   `tipocancelacion` int(2) unsigned NOT NULL COMMENT 'Instrumento de Cancelacion de la Cuota - En tabla tiposcancelaciones',
   `chequenro` char(20) DEFAULT NULL COMMENT 'Nro de Cheque con que se Cancela',
   `chequebanco` char(20) DEFAULT NULL COMMENT 'Banco Cheque a Cargo',
+  `chequefecha` date DEFAULT NULL COMMENT 'Fecha del Cheque con que se cancela',
+  `observaciones` char(60) DEFAULT NULL COMMENT 'Observaciones Generales para la Cuota',
+  `boletaimpresa` int(2) unsigned NOT NULL DEFAULT '0' COMMENT 'Contador de Boletas Electronicas Impresas para la cuota',
   `montopagada` decimal(9,2) DEFAULT NULL COMMENT 'Monto Pagado de la Cuota',
   `fechapagada` date DEFAULT NULL COMMENT 'Fecha de Pago de la Cuota',
   `fechacancelacion` date DEFAULT NULL COMMENT 'Fecha en que se Procesa la Cancelacion',
@@ -416,7 +491,7 @@ CREATE TABLE IF NOT EXISTS `gestoresdeacuerdos` (
   `codigo` int(3) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Codigo para Gestor de Acuerdo',
   `apeynombre` char(100) NOT NULL COMMENT 'Apellido y Nombre del Gestor',
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Codificadora de Gestores de Acuerdos' AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Codificadora de Gestores de Acuerdos';
 
 -- --------------------------------------------------------
 
@@ -441,7 +516,7 @@ CREATE TABLE IF NOT EXISTS `inspectores` (
   `apeynombre` char(50) NOT NULL COMMENT 'Apellido y Nombre del Inspector',
   `codidelega` int(4) unsigned NOT NULL COMMENT 'Delegacion sobre la que posee jurisdiccion',
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla codificadora de Inspectores' AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla codificadora de Inspectores';
 
 -- --------------------------------------------------------
 
@@ -733,7 +808,7 @@ CREATE TABLE IF NOT EXISTS `tiposdeacuerdos` (
   `codigo` int(1) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Codigo de Tipos de Acuerdos',
   `descripcion` char(50) NOT NULL COMMENT 'Descripcion para los Tipos de Acuerdos',
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla codificadora de Tipos de Acuerdos' AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla codificadora de Tipos de Acuerdos';
 
 -- --------------------------------------------------------
 
@@ -746,6 +821,40 @@ CREATE TABLE IF NOT EXISTS `tipotitular` (
   `descrip` char(50) NOT NULL COMMENT 'Descripcion para Tipo de Beneficiario Titular',
   PRIMARY KEY (`codtiptit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora para Tipos de Beneficiarios Titulares de la SSS';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `validasospim`
+--
+
+CREATE TABLE IF NOT EXISTS `validasospim` (
+  `idboleta` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identificador de Boleta',
+  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. - En tabla Empresas',
+  `nroacuerdo` int(3) unsigned NOT NULL COMMENT 'Nro. de Acuerdo',
+  `nrocuota` int(3) unsigned NOT NULL COMMENT 'Nro. de Cuota',
+  `importe` decimal(9,2) unsigned NOT NULL COMMENT 'Importe de la Boleta',
+  `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Validadas';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `validasusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `validasusimra` (
+  `idboleta` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Identificador de Boleta',
+  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. - En tabla Empresas',
+  `nroacuerdo` int(3) unsigned NOT NULL COMMENT 'Nro. de Acuerdo',
+  `nrocuota` int(3) unsigned NOT NULL COMMENT 'Nro. de Cuota',
+  `importe` decimal(9,2) unsigned NOT NULL COMMENT 'Importe de la Boleta',
+  `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Validadas';
 
 -- --------------------------------------------------------
 
@@ -767,6 +876,29 @@ CREATE TABLE IF NOT EXISTS `valoresalcobro` (
   `chequefechaospim` date DEFAULT NULL COMMENT 'Fecha del Cheque que se deposita en Cuenta Recaudadora',
   `usuariodepositoospim` char(20) DEFAULT NULL COMMENT 'Usuario que registra el deposito en Cuenta Recaudadora',
   `fechadepositoospim` datetime DEFAULT NULL COMMENT 'Fecha en que se registra el deposito en Cuenta Recaudadora',
+  PRIMARY KEY (`cuit`,`nroacuerdo`,`nrocuota`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `valoresalcobrousimra`
+--
+
+CREATE TABLE IF NOT EXISTS `valoresalcobrousimra` (
+  `cuit` char(11) NOT NULL COMMENT 'CUIT de la Empresa - En tabla empresas',
+  `nroacuerdo` int(3) unsigned NOT NULL COMMENT 'Numero de Acuerdo',
+  `nrocuota` int(3) unsigned NOT NULL COMMENT 'Numero de Cuota',
+  `chequenro` char(20) NOT NULL COMMENT 'Nro de Cheque con que se Cancela',
+  `chequebanco` char(20) NOT NULL COMMENT 'Banco Cheque a Cargo',
+  `chequefecha` date NOT NULL COMMENT 'Fecha del Cheque con que se cancela',
+  `idresumenbancario` char(50) DEFAULT NULL COMMENT 'Identificacion del Resumen Bancario en que se Acredita el Valor al Cobro',
+  `fecharesumenbancario` date DEFAULT NULL COMMENT 'Feha del Resumen Bancario en que se Acredita el Valor al Cobro',
+  `chequenrousimra` char(20) DEFAULT NULL COMMENT 'Nro de Cheque que se deposita en Cuenta Recaudadora',
+  `chequebancousimra` char(20) DEFAULT 'Nacion' COMMENT 'Banco del Cheque que se deposita en Cuenta Recaudadora',
+  `chequefechausimra` date DEFAULT NULL COMMENT 'Fecha del Cheque que se deposita en Cuenta Recaudadora',
+  `usuariodepositousimra` char(20) DEFAULT NULL COMMENT 'Usuario que registra el deposito en Cuenta Recaudadora',
+  `fechadepositousimra` datetime DEFAULT NULL COMMENT 'Fecha en que se registra el deposito en Cuenta Recaudadora',
   PRIMARY KEY (`cuit`,`nroacuerdo`,`nrocuota`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
