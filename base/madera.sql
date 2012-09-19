@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-09-2012 a las 10:21:40
+-- Tiempo de generación: 19-09-2012 a las 10:33:42
 -- Versión del servidor: 5.1.41
 -- Versión de PHP: 5.3.2-1ubuntu4.11
 
@@ -736,6 +736,26 @@ CREATE TABLE IF NOT EXISTS `reqfiscalizospim` (
   `procesoasignado` int(1) unsigned NOT NULL COMMENT 'Proceso Asignado al Requerimiento',
   PRIMARY KEY (`fecharequerimiento`,`nrorequerimiento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de OSPIM';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `reqfiscalizusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `reqfiscalizusimra` (
+  `fecharequerimiento` date NOT NULL COMMENT 'Fecha de Requerimiento',
+  `nrorequerimiento` int(8) unsigned NOT NULL COMMENT 'Nro, de Requerimiento',
+  `origenrequerimiento` int(1) unsigned NOT NULL COMMENT 'Origen del Requerimiento',
+  `solicitarequerimiento` char(40) NOT NULL COMMENT 'Solicitante del Requerimiento',
+  `motivorequerimiento` char(60) NOT NULL COMMENT 'Motivo del Requerimiento',
+  `cuit` char(11) NOT NULL COMMENT 'CUIT de la Empresa - En tabla empresas',
+  `codidelega` int(4) unsigned NOT NULL COMMENT 'Codigo de Delegacion',
+  `codiempresa` int(6) unsigned NOT NULL COMMENT 'Codigo de Empresa',
+  `incluyedetalle` char(1) NOT NULL COMMENT 'Detalles de la Fiscalizacion en Tabla detfiscalizusimra',
+  `procesoasignado` int(1) unsigned NOT NULL COMMENT 'Proceso Asignado al Requerimiento',
+  PRIMARY KEY (`fecharequerimiento`,`nrorequerimiento`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de USIMRA';
 
 -- --------------------------------------------------------
 
