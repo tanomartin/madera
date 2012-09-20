@@ -1,5 +1,0 @@
-Usuario: 5 - HORA: 9:01:16 - Archivos: (Empresa: 1254953 - Acuerdos: 14210 - Cuotas: 155940)
-Usuario: 5 - HORA: 9:03:56 - Archivos: (Empresa: 1254953 - Acuerdos: 14210 - Cuotas: 155964)
-Usuario: 5 - HORA: 9:48:55 - Archivos: (Empresa: 1254953 - Acuerdos: 14212 - Cuotas: 155941)
-Usuario: 4 - HORA: 13:11:59 - Archivos: (Empresa: 1254865 - Acuerdos: 14224 - Cuotas: 156007)
-Usuario: 4 - HORA: 13:23:29 - Archivos: (Empresa: 1254865 - Acuerdos: 14236 - Cuotas: 156029)
