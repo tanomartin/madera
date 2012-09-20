@@ -1,0 +1,7 @@
+Usuario: 5 - HORA: 11:59:02 - Archivos: (Empresa: 1254610 - Acuerdos: 14023 - Cuotas: 153580)
+Usuario: 4 - HORA: 12:20:58 - Archivos: (Empresa: 1254610 - Acuerdos: 14036 - Cuotas: 153907)
+Usuario: 5 - HORA: 13:06:31 - Archivos: (Empresa: 1254610 - Acuerdos: 14036 - Cuotas: 153928)
+Usuario: 4 - HORA: 13:07:15 - Archivos: (Empresa: 1254610 - Acuerdos: 14036 - Cuotas: 153928)
+Usuario: 5 - HORA: 13:11:25 - Archivos: (Empresa: 1254610 - Acuerdos: 14036 - Cuotas: 153928)
+Usuario: 4 - HORA: 13:22:43 - Archivos: (Empresa: 1254610 - Acuerdos: 14036 - Cuotas: 153928)
+Usuario: 4 - HORA: 13:50:32 - Archivos: (Empresa: 1254610 - Acuerdos: 14036 - Cuotas: 153928)
