@@ -1,3 +1,0 @@
-Usuario: 5 - HORA: 10:27:27 - Archivos: (Empresa: 1248463 - Acuerdos: 14456 - Cuotas: 158786)
-Usuario: 5 - HORA: 13:05:45 - Archivos: (Empresa: 1248463 - Acuerdos: 14509 - Cuotas: 159249)
-Usuario: 5 - HORA: 14:23:53 - Archivos: (Empresa: 1248463 - Acuerdos: 14509 - Cuotas: 159249)

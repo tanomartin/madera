@@ -1,4 +1,0 @@
-Usuario: 4 - HORA: 11:03:43 - Archivos: (Empresa: 1250756 - Acuerdos: 13656 - Cuotas: 152344)
-Usuario: 4 - HORA: 11:27:16 - Archivos: (Empresa: 1250756 - Acuerdos: 13669 - Cuotas: 152482)
-Usuario: 4 - HORA: 11:45:17 - Archivos: (Empresa: 1250756 - Acuerdos: 13682 - Cuotas: 152505)
-Usuario: 4 - HORA: 13:01:12 - Archivos: (Empresa: 1250759 - Acuerdos: 13682 - Cuotas: 152505)
