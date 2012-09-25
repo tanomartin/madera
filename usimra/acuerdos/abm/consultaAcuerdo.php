@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $cuit = $_GET['cuit'];
 $nroacu = $_GET['nroacu'];
 ?>
@@ -14,7 +14,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <title>.: Consulta Acuerdo :.</title>
 </head>
-<body bgcolor="#CCCCCC" >
+<body bgcolor="#B2A274" >
 <form name="verificador">
   <label>
   <div align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
@@ -38,9 +38,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	$resultprovi = mysql_query($sqlprovi,$db); 
 	$rowprovi = mysql_fetch_array($resultprovi);
 	//FIN CABECERA
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	
-	$sqlCabecera = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+	$sqlCabecera = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 	$resCabecera = mysql_query($sqlCabecera,$db); 
 	$canCabecera = mysql_num_rows($resCabecera); 
 	if ($canCabecera == 1) {
@@ -124,7 +124,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     </table>
     <p><strong>Per&iacute;odos</strong></p>
     <?php 
-		$sqlPeriodos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+		$sqlPeriodos = "select * from detacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 		$resPeriodos = mysql_query($sqlPeriodos,$db); 
 		$canPeriodos = mysql_num_rows($resPeriodos); 
 		if ($canPeriodos != 0 ) { ?>
@@ -170,7 +170,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<td width="94"><div align="center"><b>Fecha Pago</b> </div></td>
       </tr>
 	<?php 
-		$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+		$sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 		$resCuotas = mysql_query($sqlCuotas,$db); 
 		$canCuotas = mysql_num_rows($resCuotas); 
 		if ($canCuotas != 0) {

@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); ?>
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -20,10 +20,10 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="acuerdos.php">
 <p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
-  <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos O.S.P.I.M. </p>
+  <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos U.S.I.M.R.A </p>
   <?php 
 		$err = $_GET['err'];
 		if ($err == 1) {

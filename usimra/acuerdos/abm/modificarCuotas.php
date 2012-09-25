@@ -1,25 +1,25 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
 $cambio=$_GET['cambio'];
 
-$sqlMod = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa = 0";
+$sqlMod = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa = 0";
 $resMod = mysql_query($sqlMod,$db);
 $canMod  = mysql_num_rows($resMod);
 
-$sqlModFisca = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and tipocancelacion = 8 and boletaimpresa != 0";
+$sqlModFisca = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu and tipocancelacion = 8 and boletaimpresa != 0";
 $resModFisca = mysql_query($sqlModFisca,$db);
 $canModFisca = mysql_num_rows($resModFisca);
 
 $canMod = $canMod + $canModFisca;
 
-$sqlUltima =  "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu order by nrocuota DESC";
+$sqlUltima =  "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu order by nrocuota DESC";
 $resUltima = mysql_query($sqlUltima,$db);
 $rowUltima = mysql_fetch_array($resUltima);
 $nroNuevaCuota = $rowUltima['nrocuota'] + 1;
 
-$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+$sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 $resCuotas = mysql_query($sqlCuotas,$db);
 $canCuotas = mysql_num_rows($resCuotas);
 
@@ -174,7 +174,7 @@ function popUpcambio(confi) {
 
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
-<body bgcolor="#CCCCCC" >
+<body bgcolor="#B2A274" >
 <p  align="center"><strong><a href="formularioModif.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
 <form id="modifCuotas" name="modifCuotas" onSubmit="return validarYGuardar(this)" method="POST" action="actualizarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu?>&canMod=<?php echo $canMod ?>">
@@ -197,7 +197,7 @@ function popUpcambio(confi) {
 	while ($rowCuotas=mysql_fetch_array($resCuotas)) {
 		if (($rowCuotas['montopagada'] == 0 && $rowCuotas['boletaimpresa'] == 0 && $rowCuotas['fechapagada'] == '0000-00-00') || ($rowCuotas['tipocancelacion'] == 8 && $rowCuotas['boletaimpresa'] != 0)) {
 			$contadorCuotas = $contadorCuotas + 1;	
-			print ("<td width=134> <input  style='background-color:#CCCCCC' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$rowCuotas['nrocuota']."' readonly='raadonly'></td>");
+			print ("<td width=134> <input  style='background-color:#B2A274' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$rowCuotas['nrocuota']."' readonly='raadonly'></td>");
 			print ("<td width=107> <input name='monto".$contadorCuotas."' id='monto".$contadorCuotas."' type='text' size='10' value='".$rowCuotas['montocuota']."'></td>");
 			print ("<td width=116> <input name='fecha".$contadorCuotas."' id='fecha".$contadorCuotas."' type='text' size='10' value='".invertirFecha($rowCuotas['fechacuota'])."'></td>");
 			print ("<td width=212>"); ?>
@@ -236,7 +236,7 @@ function popUpcambio(confi) {
 				
 				//::::::NUEVA CUOTA::::::
 				$contadorCuotas = $contadorCuotas + 1;
-			print ("<td width=134> <input  style='background-color:#CCCCCC; visibility: hidden' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$nroNuevaCuota."' readonly='raadonly'></td>");
+			print ("<td width=134> <input  style='background-color:#B2A274; visibility: hidden' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$nroNuevaCuota."' readonly='raadonly'></td>");
 				print ("<td width=107> <input name='monto".$contadorCuotas."' id='monto".$contadorCuotas."' disabled='disabled' style='visibility: hidden' type='text' size='10'></td>");
 				print ("<td width=116> <input name='fecha".$contadorCuotas."' id='fecha".$contadorCuotas."' disabled='disabled' style='visibility: hidden' type='text' size='10'></td>");
 				print ("<td width=212>");  ?>

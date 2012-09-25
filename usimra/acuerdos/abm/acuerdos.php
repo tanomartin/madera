@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 
 $cuit=$_GET['cuit'];
@@ -25,7 +25,7 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi = mysql_query($sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit";
+$sqlacuerdos =  "select * from cabacuerdosusimra where cuit = $cuit";
 $resulacuerdos= mysql_query($sqlacuerdos); 
 
 ?>
@@ -40,13 +40,13 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<title>.: Sistema de Acuerdos OSPIM :.</title>
+<title>.: Sistema de Acuerdos USIMRA :.</title>
 </head>
-<body bgcolor="#CCCCCC" > 
+<body bgcolor="#B2A274" > 
 <div align="center">
   <p><strong><a href="moduloABM.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
   <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="500" border="1">
@@ -60,7 +60,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			if ($rowacuerdos['estadoacuerdo'] == 1) {
 				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='formularioModif.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>MODIFICAR</a></font></td>");
 				
-				$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+				$sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 				$resCuotas = mysql_query($sqlCuotas,$db); 
 				$canCuotas = mysql_num_rows($resCuotas); 
 				$reemplazable = true;

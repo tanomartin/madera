@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 
 $cuit=$_GET['cuit'];
@@ -22,7 +22,7 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi = mysql_query($sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlacu =  "select * from cabacuerdosospim where cuit = $cuit order by nroacuerdo DESC";
+$sqlacu =  "select * from cabacuerdosusimra where cuit = $cuit order by nroacuerdo DESC";
 $resulacu= mysql_query($sqlacu,$db); 
 $cant = mysql_num_rows($resulacu); 
 if ($cant == 0) {
@@ -206,13 +206,13 @@ function validar(formulario) {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Carga de Acuerdos :.</title>
 </head>
-<body bgcolor="#CCCCCC" >
+<body bgcolor="#B2A274" >
 <form id="nuevoAcuerdo" name="nuevoAcuerdo" method="POST" action="cargarCuotas.php"  onSubmit="return validar(this)" style="visibility:visible" >
   <input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
    <div align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
   </div>
    <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	?>
   <p align="center"><strong>M&oacute;dulo de Carga - Acuerdos Nuevos </strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong>
@@ -279,7 +279,7 @@ function validar(formulario) {
 		      <select name="requerimiento" id="requerimiento" onchange="cargarNombreReq(document.forms.nuevoAcuerdo.requerimiento[selectedIndex].value)">
 		        <option value=0>Seleccione un valor </option>
 	            <?php 
-				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
+				$sqlNroReq = "select * from reqfiscalizusimra where cuit = ".$cuit;
 				$resNroReq = mysql_query($sqlNroReq,$db);
 				while ($rowNroReq=mysql_fetch_array($resNroReq)) { ?>
 		           <option value="<?php echo $rowNroReq['nrorequerimiento'] ?>"><?php echo $rowNroReq['nrorequerimiento'] ?></option>

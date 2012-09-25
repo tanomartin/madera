@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
@@ -20,7 +20,7 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi =  mysql_query( $sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlacu = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+$sqlacu = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 $resulacu=  mysql_query( $sqlacu,$db); 
 $rowacu = mysql_fetch_array($resulacu);
 ?>
@@ -153,13 +153,13 @@ function mostrarPeriodos() {
 
 </script>
 
-<body  bgcolor="#CCCCCC" >
+<body  bgcolor="#B2A274" >
 
 <form id="modifAcuerdo" name="modifAcuerdo" method="POST" action="actualizarAcuerdo.php" onSubmit="return validar(this)"  style="visibility:visible">
    	<input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>" />
 	<p align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2">VOLVER</font></a></strong></p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	?>
 	<p align="center"><strong>M&oacute;dulo de Modificación</strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong> 
@@ -246,7 +246,7 @@ function mostrarPeriodos() {
 			     <?php } else { ?>
 						  <option value=0>Seleccione un valor </option>
 				<?php } 
-				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
+				$sqlNroReq = "select * from reqfiscalizusimra where cuit = ".$cuit;
 				$resNroReq =  mysql_query( $sqlNroReq,$db);
 				while ($rowNroReq=mysql_fetch_array($resNroReq)) { 
 					if ($rowNroReq['nrorequerimiento'] == $rowacu['requerimientoorigen']) { ?>
@@ -308,7 +308,7 @@ function mostrarPeriodos() {
        
 	    <tr>
 			<?php 
-				$sqlPeridos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+				$sqlPeridos = "select * from detacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 				$resPeridos =  mysql_query( $sqlPeridos,$db);
 				$canPeridos = mysql_num_rows($resPeridos); 
 			?>

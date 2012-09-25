@@ -1,10 +1,10 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
 
-$sqlCabeViejo = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+$sqlCabeViejo = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 $resCabeViejo =  mysql_query($sqlCabeViejo,$db); 
 $rowCabeViejo = mysql_fetch_array($resCabeViejo);
 $actaVieja = $rowCabeViejo['nroacta'];
@@ -25,11 +25,11 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi =  mysql_query( $sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu order by fechacuota ASC";
+$sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu order by fechacuota ASC";
 $resCuotas = mysql_query($sqlCuotas,$db);
 $canCuotas = mysql_num_rows($resCuotas);
 
-$sqlacu =  "select * from cabacuerdosospim where cuit = $cuit order by nroacuerdo DESC";
+$sqlacu =  "select * from cabacuerdosusimra where cuit = $cuit order by nroacuerdo DESC";
 $resulacu= mysql_query($sqlacu,$db); 
 $rowacu = mysql_fetch_array($resulacu);
 $nroacuNuevo = $rowacu['nroacuerdo'] + 1;
@@ -120,11 +120,11 @@ function validar(formulario) {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Reemplazo de Acuerdo :.</title></head>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <form id="reemAcuerdo" name="reemAcuerdo" method="post" action="reemplazoAcuerdEfectivo.php?cuit=<?php echo $cuit ?>" onsubmit="return validar(this)">
   <p align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2">VOLVER</font></a></strong></p>
   <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
   ?>
   <p align="center"><strong>M&oacute;dulo de Reemplazo de Acuerdo </strong></p>
   <p align="center"><strong>ACUERDO NUMERO</strong>
@@ -185,7 +185,7 @@ function validar(formulario) {
             <select name="requerimiento" id="requerimiento" onchange="cargarNombreReq(document.forms.nuevoAcuerdo.requerimiento[selectedIndex].value)">
               <option value=0>Seleccione un valor </option>
               <?php 
-				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
+				$sqlNroReq = "select * from reqfiscalizusimra where cuit = ".$cuit;
 				$resNroReq = mysql_query($sqlNroReq,$db);
 				while ($rowNroReq=mysql_fetch_array($resNroReq)) { ?>
               <option value="<?php echo $rowNroReq['nrorequerimiento'] ?>"><?php echo $rowNroReq['nrorequerimiento'] ?></option>
@@ -267,7 +267,7 @@ function validar(formulario) {
       </tr>
       <tr>
         <?php 
-				$sqlPeridos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+				$sqlPeridos = "select * from detacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 				$resPeridos =  mysql_query( $sqlPeridos,$db);
 				$canPeridos = mysql_num_rows($resPeridos); 
 			?>

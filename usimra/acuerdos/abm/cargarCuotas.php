@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $datos = array_values($_POST);
 
 $cuit = $datos[0];
@@ -51,7 +51,7 @@ $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
 //Creo la sentencia SQL para cabecera.
-$sqlCargaCabecera = "INSERT INTO cabacuerdosospim VALUES ('$cuit','$nroacuerdo','$tipoacuerdo','$fechaacuerdo','$nroacta','$gestoracuerdo','$porcGastos','$inspectorinterviene','$requerimientoorigen','$liquidacionorigen','$montoacuerdo','$observaciones','$estadoacuerdo','$cuotasapagar','$montoapagar','$cuotaspagadas','$montopagadas','$fechapagadas','$saldoacuerdo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlCargaCabecera = "INSERT INTO cabacuerdosusimra VALUES ('$cuit','$nroacuerdo','$tipoacuerdo','$fechaacuerdo','$nroacta','$gestoracuerdo','$porcGastos','$inspectorinterviene','$requerimientoorigen','$liquidacionorigen','$montoacuerdo','$observaciones','$estadoacuerdo','$cuotasapagar','$montoapagar','$cuotaspagadas','$montopagadas','$fechapagadas','$saldoacuerdo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 //echo $sqlCargaCabecera; echo("<br>");
 
 //Creo los SQL para los periodos
@@ -63,7 +63,7 @@ for ($i = 16; $i <= $finFor; $i++) {
 		$mes = $datos[$i];
 		$anio = $datos[$i+1];
 		$deuda = $datos[$i+2];
-		$sql = "INSERT INTO detacuerdosospim VALUES('$cuit','$nroacuerdo','$id','$mes','$anio','$deuda')"; 
+		$sql = "INSERT INTO detacuerdosusimra VALUES('$cuit','$nroacuerdo','$id','$mes','$anio','$deuda')"; 
 		$listaPeriodos[$id - 1] = $sql;
 		$id = $id + 1;
 		//echo($sql); echo("<br>");
@@ -181,7 +181,7 @@ function validarYGuardar(formulario) {
 
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
-<body bgcolor="#CCCCCC" >
+<body bgcolor="#B2A274" >
 <p  align="center"><strong><a href="formularioCarga.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
 <form id="cuotas" name="cuotas" onSubmit="return validarYGuardar(this)" method="POST" action="guardoAcuerdo.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacuerdo?>">

@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $fecharegistro = date("Y-m-d H:m:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
@@ -66,11 +66,11 @@ try {
 		$i++;
 		$observ = $datos[$i];
 		
-		$sqlCuota="INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroacu','$nroCuo','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+		$sqlCuota="INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroacu','$nroCuo','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 		//echo $sqlCuota; echo "<br>";
 		$dbh->exec($sqlCuota);	
 		if ($tipoC == 3) {
-			$sqlValCob = "INSERT INTO valoresalcobro VALUES('$cuit','$nroacu','$nroCuo','$chequen','$chequeb','$chequef','','','','','','','')";
+			$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nroCuo','$chequen','$chequeb','$chequef','','','','','','','')";
 			//echo $sqlValCob; echo "<br>";
 			$dbh->exec($sqlValCob);	
 		}
@@ -78,7 +78,7 @@ try {
 	}
 	
 	//update del monto a pagar (suma de todas las cuotas)
-	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET montoapagar=$totalMonto WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
+	$sqlUpdateMonto = "UPDATE cabacuerdosusimra SET montoapagar=$totalMonto WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
 	//echo $sqlUpdateMonto; echo "<br>";
 	$dbh->exec($sqlUpdateMonto);
 	$dbh->commit();

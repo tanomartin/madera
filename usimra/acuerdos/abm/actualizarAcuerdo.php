@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $fechamodificacion = date("Y-m-d H:m:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -36,7 +36,7 @@ $peridosHabili =  $datos[13];
 //echo "Peridoso Cantidad: ".$peridosHabili; echo "<br>";
 
 
-$sqlModifCabe = "UPDATE cabacuerdosospim set tipoacuerdo = ".$tipoacuerdo.", fechaacuerdo = '".$fechaacuerdo."', nroacta = ".$nroacta.", gestoracuerdo = ".$gestoracuerdo.", inspectorinterviene=".$inspectorinterviene.", requerimientoorigen = ".$requerimientoorigen.", liquidacionorigen = '".$liquidacionorigen."', montoacuerdo = ".$montoacuerdo.", observaciones = '".$observaciones."'  where cuit = ".$cuit." and nroacuerdo = ".$nroacu;
+$sqlModifCabe = "UPDATE cabacuerdosusimra set tipoacuerdo = ".$tipoacuerdo.", fechaacuerdo = '".$fechaacuerdo."', nroacta = ".$nroacta.", gestoracuerdo = ".$gestoracuerdo.", inspectorinterviene=".$inspectorinterviene.", requerimientoorigen = ".$requerimientoorigen.", liquidacionorigen = '".$liquidacionorigen."', montoacuerdo = ".$montoacuerdo.", observaciones = '".$observaciones."'  where cuit = ".$cuit." and nroacuerdo = ".$nroacu;
 //echo $sqlModifCabe;echo "<br>";
 
 //conexion y craecion de transaccion.
@@ -53,7 +53,7 @@ try {
 	$dbh->exec($sqlModifCabe);
 	
 	//DELETEO LOS PERIDOS...
-	$sqlDeletePeridos = "DELETE FROM detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+	$sqlDeletePeridos = "DELETE FROM detacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 	//echo $sqlDeletePeridos; echo("<br>");
 	$dbh->exec($sqlDeletePeridos); 
 	
@@ -69,7 +69,7 @@ try {
 			$mes = $datos[$i];
 			$anio = $datos[$i+1];
 			$deuda = $datos[$i+2];
-			$sqlInsertPeriodos = "INSERT INTO detacuerdosospim VALUES('$cuit','$nroacu','$id','$mes','$anio','$deuda')";
+			$sqlInsertPeriodos = "INSERT INTO detacuerdosusimra VALUES('$cuit','$nroacu','$id','$mes','$anio','$deuda')";
 			//echo $sqlInsertPeriodos;
 			$dbh->exec($sqlInsertPeriodos); 
 			$id = $id + 1;	

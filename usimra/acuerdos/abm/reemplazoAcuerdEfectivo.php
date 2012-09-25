@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 
 $fecharegistro = date("Y-m-d H:m:s");
 $usuarioregistro = $_SESSION['usuario'];
@@ -66,7 +66,7 @@ $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
 //Creo la sentencia SQL para cabecera.
-$sqlCargaCabecera = "INSERT INTO cabacuerdosospim VALUES ('$cuit','$nroNuevoAcuerdo','$tipoAcu','$fechaAcu','$acta','$gestor','$porcGastos','$inspector','$requerimientoorigen','$liquidacionorigen','$montoacuerdo','$observaciones','$estadoacuerdo','$cuotasapagar',
+$sqlCargaCabecera = "INSERT INTO cabacuerdosusimra VALUES ('$cuit','$nroNuevoAcuerdo','$tipoAcu','$fechaAcu','$acta','$gestor','$porcGastos','$inspector','$requerimientoorigen','$liquidacionorigen','$montoacuerdo','$observaciones','$estadoacuerdo','$cuotasapagar',
 '$montoapagar','$cuotaspagadas','$montopagadas','$fechapagadas','$saldoacuerdo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 //conexion y craecion de transaccion.
@@ -82,12 +82,12 @@ try {
 	 //echo $sqlCargaCabecera; //echo("<br>");  //echo("<br>");
 	
 	//PERIODOS
-	$sqlUpdatePeriodos = "UPDATE detacuerdosospim set nroacuerdo = $nroNuevoAcuerdo where cuit = $cuit and nroacuerdo = $acuReem";
+	$sqlUpdatePeriodos = "UPDATE detacuerdosusimra set nroacuerdo = $nroNuevoAcuerdo where cuit = $cuit and nroacuerdo = $acuReem";
 	 //echo $sqlUpdatePeriodos; //echo("<br>");  //echo("<br>");
 	$dbh->exec($sqlUpdatePeriodos);
 	
 	//CUOTAS
-	$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuReem order by fechacuota ASC";
+	$sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $acuReem order by fechacuota ASC";
 	$resCuotas = mysql_query($sqlCuotas,$db);
 	$montoAcuViejo = 0;
 	$cantCuotasPagasViejo = 0;
@@ -103,14 +103,14 @@ try {
 		} else { 
 			//cuota no cancelada...
 			$montoAcuNuevo = $montoAcuNuevo + $rowCuotas['montocuota'];
-			$sqlDeleteCuotas = "DELETE from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuReem and nrocuota = $nrocuota";
+			$sqlDeleteCuotas = "DELETE from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $acuReem and nrocuota = $nrocuota";
 			 //echo $sqlDeleteCuotas; //echo("<br>");
 			$dbh->exec($sqlDeleteCuotas);
 			//anulacion de boleta impresa
 			if ($rowCuotas['boletaimpresa'] != 0) {
 				 //echo "HAY QUE ANULAR BOLETA DE LA CUOTA NUMERO $nrocuota"; //echo("<br>");
 				
-				$sqlBol = "select * from boletasospim where cuit = $cuit and nroacuerdo = $acuReem and nrocuota = $nrocuota";
+				$sqlBol = "select * from boletasusimra where cuit = $cuit and nroacuerdo = $acuReem and nrocuota = $nrocuota";
 				$resBol = mysql_query($sqlBol,$db); 
 				$rowBol = mysql_fetch_array($resBol); 
 				$idBoleta = $rowBol['idboleta'];
@@ -121,11 +121,11 @@ try {
 				$nrocontrol = $rowBol['nrocontrol'];
 				$usuarioReg = $rowBol['usuarioregistro'];
 				
-				$sqlAnula = "INSERT INTO anuladasospim VALUES('$idBoleta','$cuit','$nroacu','$nrocuo','$importe','$nrocontrol','$usuarioReg','$fechamodificacion','$usuariomodificacion','0','Reemplazo de Acuerdo') ";
+				$sqlAnula = "INSERT INTO anuladasusimra VALUES('$idBoleta','$cuit','$nroacu','$nrocuo','$importe','$nrocontrol','$usuarioReg','$fechamodificacion','$usuariomodificacion','0','Reemplazo de Acuerdo') ";
 				 //echo $sqlAnula; //echo "<br>";
 				$dbh->exec($sqlAnula);
 				
-				$sqlDelete = "DELETE FROM boletasospim where idboleta = $idBoleta";
+				$sqlDelete = "DELETE FROM boletasusimra where idboleta = $idBoleta";
 				 //echo $sqlDelete; //echo "<br>";
 				$dbh->exec($sqlDelete);
 			}		
@@ -136,13 +136,13 @@ try {
 	 //echo "CUOTAS A PAG VIEJO: ".$cantCuotasPagasViejo; //echo "<br>";
 	 //echo "Monto NUEVO: ".$montoAcuNuevo; //echo "<br>";
 	
-	$insertCuota = "INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroNuevoAcuerdo','1','$montoAcuNuevo','$fecharegistro','8','','','','Deuda Pendiente del acuerdo reemplazado','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+	$insertCuota = "INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroNuevoAcuerdo','1','$montoAcuNuevo','$fecharegistro','8','','','','Deuda Pendiente del acuerdo reemplazado','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 	 //echo $insertCuota; //echo "<br>";
 	$dbh->exec($insertCuota);
 	
 	 //echo("<br>");
 	//update cabecera viejo
-	$sqlCabecera = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $acuReem";
+	$sqlCabecera = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $acuReem";
 	$resCabecera = mysql_query($sqlCabecera,$db); 
 	$rowCebecera = mysql_fetch_array($resCabecera); 
 	$saldoAcuerdo = $rowCebecera['montopagadas'] - $montoAcuViejo;
@@ -150,12 +150,12 @@ try {
 		$saldoAcuerdo = 0;
 	}
 	$observa = $rowCebecera['observaciones']." - Acuerdo reemplazado por el acuerdo numero $nroNuevoAcuerdo con acta numero $acta";
-	$sqlUpdateCabeViejo = "UPDATE cabacuerdosospim set montoapagar = '$montoAcuViejo', saldoacuerdo = '$saldoAcuerdo', cuotasapagar = '$cantCuotasPagasViejo', observaciones = '$observa', estadoacuerdo = '0', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit and nroacuerdo = $acuReem";
+	$sqlUpdateCabeViejo = "UPDATE cabacuerdosusimra set montoapagar = '$montoAcuViejo', saldoacuerdo = '$saldoAcuerdo', cuotasapagar = '$cantCuotasPagasViejo', observaciones = '$observa', estadoacuerdo = '0', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit and nroacuerdo = $acuReem";
 	 //echo $sqlUpdateCabeViejo;  //echo("<br>");
 	$dbh->exec($sqlUpdateCabeViejo);
 	
 	//update cabecera nuevo
-	$sqlUpdateCabeNuevo = "UPDATE cabacuerdosospim set montoapagar = '$montoAcuNuevo', saldoacuerdo = '$montoAcuNuevo' where cuit = $cuit and nroacuerdo = $nroNuevoAcuerdo";
+	$sqlUpdateCabeNuevo = "UPDATE cabacuerdosusimra set montoapagar = '$montoAcuNuevo', saldoacuerdo = '$montoAcuNuevo' where cuit = $cuit and nroacuerdo = $nroNuevoAcuerdo";
 	 //echo $sqlUpdateCabeNuevo;  //echo("<br>");
 	$dbh->exec($sqlUpdateCabeNuevo);
 	

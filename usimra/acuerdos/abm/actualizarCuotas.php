@@ -1,5 +1,5 @@
-<?php  include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); ?>
+<?php  include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
+	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); ?>
 <script type="text/javascript">document.body.style.cursor = 'wait';</script>		
 <?php	
 	$fechamodificacion = date("Y-m-d H:m:s");
@@ -42,15 +42,15 @@ try {
 		$i++;
 		$observ = $datos[$i];
 		
-		$sqlDeleteValorCobro = "DELETE from valoresalcobro where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuota";
+		$sqlDeleteValorCobro = "DELETE from valoresalcobrousimra where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuota";
 		//echo $sqlDeleteValorCobro; //echo "<br>";
 		$dbh->exec($sqlDeleteValorCobro);	
 		
-		$sqlUpdateCuota="UPDATE cuoacuerdosospim set montocuota = '$monto', fechacuota = '$fecha', tipocancelacion = '$tipoC', chequenro = '$chequen', chequebanco = '$chequeb', chequefecha = '$chequef', observaciones = '$observ', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuota";
+		$sqlUpdateCuota="UPDATE cuoacuerdosusimra set montocuota = '$monto', fechacuota = '$fecha', tipocancelacion = '$tipoC', chequenro = '$chequen', chequebanco = '$chequeb', chequefecha = '$chequef', observaciones = '$observ', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuota";
 		//echo $sqlUpdateCuota; //echo "<br>";
 		$dbh->exec($sqlUpdateCuota);	
 		if ($tipoC == 3) {
-			$sqlValCob = "INSERT INTO valoresalcobro VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
+			$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
 			//echo $sqlValCob; //echo "<br>";				
 			$dbh->exec($sqlValCob);	
 		}
@@ -73,22 +73,22 @@ try {
 		$chequef = fechaParaGuardar($datos[$finFor]); 
 		$finFor++;
 		$observ = $datos[$finFor];	
-		$sqlCuota="INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroacu','$nrocuota','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fechamodificacion','$usuariomodificacion','$fechamodificacion','$usuariomodificacion')";
+		$sqlCuota="INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroacu','$nrocuota','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fechamodificacion','$usuariomodificacion','$fechamodificacion','$usuariomodificacion')";
 		//echo $sqlCuota; //echo "<br>";
 		$dbh->exec($sqlCuota);	
 		if ($tipoC == 3) {
-			$sqlValCob = "INSERT INTO valoresalcobro VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
+			$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
 			//echo $sqlValCob; //echo "<br>";				
 			$dbh->exec($sqlValCob);	
 		}				
 	}
 		
 	//TODO: actualizo cabecera con total a pagar....
-	$sqlCabe = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+	$sqlCabe = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 	$rowCabe = $dbh->query($sqlCabe)->fetch();
 	$montopagado = $rowCabe['montopagadas'];
 	
-	$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+	$sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 	$resCuotas = $dbh->query($sqlCuotas);
 	$total=0;
 	$cuotas=0;
@@ -104,7 +104,7 @@ try {
 	echo "MONTOP: ".$montopagado; echo "<br>";
 	echo "SALDO: ".$saldo; echo "<br>";
 	
-	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET cuotasapagar=$cuotas, montoapagar=$total, saldoacuerdo = $saldo WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
+	$sqlUpdateMonto = "UPDATE cabacuerdosusimra SET cuotasapagar=$cuotas, montoapagar=$total, saldoacuerdo = $saldo WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
 	//echo $sqlUpdateMonto; //echo "<br>";
 	$dbh->exec($sqlUpdateMonto);
 	$dbh->commit();
