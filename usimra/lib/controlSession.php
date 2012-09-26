@@ -11,7 +11,7 @@ session_start();
 if ($_SESSION['aut'] != 1) { 
     //si no está logueado lo envío a la página de autentificación 
 	//TODO que vaya a una pantalla de session caducada....
-	header("Location: ../logout.php"); 
+	header("Location: http://localhost/usimra/logout.php"); 
 } else { 
     //sino, calculamos el tiempo transcurrido 
     $fechaGuardada = $_SESSION["ultimoAcceso"]; 
@@ -21,7 +21,7 @@ if ($_SESSION['aut'] != 1) {
     if($tiempo_transcurrido >= 2400) { 
        //si pasaron 10 minutos o más 
 	   //TODO que vaya a una pantalla de session caducada....	
-   	   header("Location: ../logout.php"); //envío al usuario a la pag. de autenticación 
+   	   header("Location: http://localhost/usimra/logout.php"); //envío al usuario a la pag. de autenticación 
       //sino, actualizo la fecha de la sesión 
  	}else { 
     	$_SESSION["ultimoAcceso"] = $ahora; 
