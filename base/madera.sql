@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 19-09-2012 a las 10:33:42
+-- Tiempo de generación: 26-09-2012 a las 11:47:24
 -- Versión del servidor: 5.1.41
 -- Versión de PHP: 5.3.2-1ubuntu4.11
 
@@ -234,6 +234,75 @@ CREATE TABLE IF NOT EXISTS `conceptosdeudas` (
   `descripcion` char(50) NOT NULL COMMENT 'Descripcion para los Conceptos  de Deudas',
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora para los Conceptos de Deudas';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `conciliacuotasusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `conciliacuotasusimra` (
+  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. de la Empresa',
+  `nroacuerdo` int(3) unsigned NOT NULL COMMENT 'Numero de Acuerdo',
+  `nrocuota` int(3) unsigned NOT NULL COMMENT 'Numero de Cuota',
+  `cuentaboleta` int(2) unsigned NOT NULL COMMENT 'Cuenta en que se Acredita la Boleta',
+  `cuentaremesa` int(2) unsigned DEFAULT NULL COMMENT 'Cuenta a la que Pertenece la Remesa Bancaria',
+  `fecharemesa` date DEFAULT NULL COMMENT 'Fecha de la Remesa Bancaria',
+  `nroremesa` int(4) unsigned DEFAULT NULL COMMENT 'Numero de la Remesa Bancaria',
+  `nroremitoremesa` int(4) unsigned DEFAULT NULL COMMENT 'Numero de Remito que compone la Remesa Bancaria',
+  `cuentaremitosuelto` int(2) unsigned DEFAULT NULL COMMENT 'Cuenta a la que Pertenece el Remito Suelto Bancario',
+  `fecharemitosuelto` date DEFAULT NULL COMMENT 'Fecha del Remito Suelto Bancario',
+  `nroremitosuelto` int(4) unsigned DEFAULT NULL COMMENT 'Numero del Remito Suelto Bancario',
+  `estadoconciliacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Estado de Conciliacion / 0 No Conciliado - 1 Conciliado',
+  `fechaconciliacion` datetime DEFAULT NULL COMMENT 'Fecha de Conciliacion',
+  `usuarioconciliacion` char(50) DEFAULT NULL COMMENT 'Usuario de Conciliacion',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
+  `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
+  PRIMARY KEY (`cuit`,`nroacuerdo`,`nrocuota`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Conciliacion Bancaria de Cuotas de Acuerdos';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `conciliapagosusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `conciliapagosusimra` (
+  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. de la Empresa',
+  `mespago` int(2) unsigned NOT NULL COMMENT 'Mes del Pago',
+  `anopago` int(4) unsigned NOT NULL COMMENT 'Anio del Pago',
+  `nropago` int(3) unsigned NOT NULL COMMENT 'Nro de Pago',
+  `cuentaboleta` int(2) unsigned NOT NULL COMMENT 'Cuenta en que se Acredita la Boleta',
+  `cuentaremesa` int(2) unsigned DEFAULT NULL COMMENT 'Cuenta a la que Pertenece la Remesa Bancaria',
+  `fecharemesa` date DEFAULT NULL COMMENT 'Fecha de la Remesa Bancaria',
+  `nroremesa` int(4) unsigned DEFAULT NULL COMMENT 'Numero de la Remesa Bancaria',
+  `nroremitoremesa` int(4) unsigned DEFAULT NULL COMMENT 'Numero de Remito que compone la Remesa Bancaria',
+  `cuentaremitosuelto` int(2) unsigned DEFAULT NULL COMMENT 'Cuenta a la que Pertenece el Remito Suelto Bancario',
+  `fecharemitosuelto` date DEFAULT NULL COMMENT 'Fecha del Remito Suelto Bancario',
+  `nroremitosuelto` int(4) unsigned DEFAULT NULL COMMENT 'Numero del Remito Suelto Bancario',
+  `estadoconciliacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Estado de Conciliacion / 0 No Conciliado - 1 Conciliado',
+  `fechaconciliacion` datetime DEFAULT NULL COMMENT 'Fecha de Conciliacion',
+  `usuarioconciliacion` char(50) DEFAULT NULL COMMENT 'Usuario de Conciliacion',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
+  `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
+  PRIMARY KEY (`cuit`,`anopago`,`mespago`,`nropago`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Conciliacion Bancaria de Pagos de Empresas por Aportes';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cuentasusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `cuentasusimra` (
+  `codigocuenta` int(2) unsigned NOT NULL COMMENT 'Codigo de Cuenta',
+  `descripcioncuenta` char(100) NOT NULL COMMENT 'Descripcion de Cuenta',
+  PRIMARY KEY (`codigocuenta`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Cuentas Bancarias de USIMRA';
 
 -- --------------------------------------------------------
 
@@ -720,6 +789,113 @@ CREATE TABLE IF NOT EXISTS `provincia` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `remesasusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `remesasusimra` (
+  `codigocuenta` int(2) unsigned NOT NULL COMMENT 'Codigo de Cuenta Bancaria',
+  `sistemaremesa` char(1) NOT NULL COMMENT 'Sistema de Origen de la Remesa / M Manual - E Electronico',
+  `fecharemesa` date NOT NULL COMMENT 'Fecha de la Remesa',
+  `nroremesa` int(4) unsigned NOT NULL COMMENT 'Numero de la Remesa',
+  `importebruto` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe Bruto de la Remesa',
+  `importecomision` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Comision Bancaria sobre la Remesa',
+  `importeneto` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe Neto de la Remesa',
+  `importefaima` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe que le corresponde a FAIMA de la Remesa',
+  `importebrutoremitos` decimal(9,2) DEFAULT NULL COMMENT 'Total Bruto de los Remitos de la Remesa',
+  `importecomisionesremitos` decimal(9,2) DEFAULT NULL COMMENT 'Total Comision Bancaria sobre los Remitos de la Remesa',
+  `importenetoremitos` decimal(9,2) DEFAULT NULL COMMENT 'Total Neto de los Remitos de la Remesa',
+  `importeboletasaporte` decimal(9,2) DEFAULT NULL COMMENT 'Total de Aportes de las Boletas de la Remesa',
+  `importeboletasrecargo` decimal(9,2) DEFAULT NULL COMMENT 'Total de Recargos de las Boletas de la Remesa',
+  `importeboletasvarios` decimal(9,2) DEFAULT NULL COMMENT 'Total de Pagos Varios de las Boletas de la Remesa',
+  `importeboletaspagos` decimal(9,2) DEFAULT NULL COMMENT 'Total de Pagos de las Boletas de la Remesa',
+  `importeboletascuotas` decimal(9,2) DEFAULT NULL COMMENT 'Total de Cuotas de Acuerdos de las Boletas de la Remesa',
+  `importeboletasbruto` decimal(9,2) DEFAULT NULL COMMENT 'Total Bruto de las Boletas de la Remesa',
+  `cantidadboletas` int(5) unsigned DEFAULT NULL COMMENT 'Cantidad Total de Boletas Conciliadas de la Remesa',
+  `estadoconciliacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Estado de Conciliacion / 0 No Conciliado - 1 Conciliado',
+  `fechaconciliacion` datetime DEFAULT NULL COMMENT 'Fecha de Conciliacion',
+  `usuarioconciliacion` char(50) DEFAULT NULL COMMENT 'Usuario de Conciliacion',
+  `fechaacreditacion` date DEFAULT NULL COMMENT 'Fecha de Acreditacion en la Cuenta',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
+  `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
+  PRIMARY KEY (`codigocuenta`,`sistemaremesa`,`fecharemesa`,`nroremesa`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `remitosremesasusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `remitosremesasusimra` (
+  `codigocuenta` int(2) unsigned NOT NULL COMMENT 'Codigo de Cuenta Bancaria',
+  `sistemaremesa` char(1) NOT NULL COMMENT 'Sistema de Origen de la Remesa / M Manual - E Electronico',
+  `fecharemesa` date NOT NULL COMMENT 'Fecha de la Remesa',
+  `nroremesa` int(4) unsigned NOT NULL COMMENT 'Numero de la Remesa',
+  `fecharemito` date NOT NULL COMMENT 'Fecha del Remito',
+  `nroremito` int(4) unsigned NOT NULL COMMENT 'Numero del Remito',
+  `sucursalbanco` char(4) DEFAULT NULL COMMENT 'Sucursal del Banco Nacion',
+  `importebruto` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe Bruto del Remito',
+  `importecomision` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Comision Bancaria sobre el Remito',
+  `importeneto` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe Neto del Remito',
+  `boletasremito` int(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Cantidad Total de Boletas del Remito',
+  `importeboletasaporte` decimal(9,2) DEFAULT NULL COMMENT 'Total de Aportes de las Boletas del Remito',
+  `importeboletasrecargo` decimal(9,2) DEFAULT NULL COMMENT 'Total de Recargos de las Boletas del Remito',
+  `importeboletasvarios` decimal(9,2) DEFAULT NULL COMMENT 'Total de Pagos Varios de las Boletas del Remito',
+  `importeboletaspagos` decimal(9,2) DEFAULT NULL COMMENT 'Total de Pagos de las Boletas del Remito',
+  `importeboletascuotas` decimal(9,2) DEFAULT NULL COMMENT 'Total de Cuotas de Acuerdos de las Boletas del Remito',
+  `importeboletasbruto` decimal(9,2) DEFAULT NULL COMMENT 'Total Bruto de las Boletas del Remito',
+  `cantidadboletas` int(5) unsigned DEFAULT NULL COMMENT 'Cantidad Total de Boletas Conciliadas del Remito',
+  `estadoconciliacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Estado de Conciliacion / 0 No Conciliado - 1 Conciliado',
+  `fechaconciliacion` datetime DEFAULT NULL COMMENT 'Fecha de Conciliacion',
+  `usuarioconciliacion` char(50) DEFAULT NULL COMMENT 'Usuario de Conciliacion',
+  `fechaacreditacion` date DEFAULT NULL COMMENT 'Fecha de Acreditacion en la Cuenta',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
+  `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
+  PRIMARY KEY (`codigocuenta`,`sistemaremesa`,`fecharemesa`,`nroremesa`,`fecharemito`,`nroremito`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `remitossueltosusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `remitossueltosusimra` (
+  `codigocuenta` int(2) unsigned NOT NULL COMMENT 'Codigo de Cuenta Bancaria',
+  `sistemaremito` char(1) NOT NULL COMMENT 'Sistema de Origen del Remito / M Manual - E Electronico',
+  `fecharemito` date NOT NULL COMMENT 'Fecha del Remito',
+  `nroremito` int(4) unsigned NOT NULL COMMENT 'Numero del Remito',
+  `sucursalbanco` char(4) DEFAULT NULL COMMENT 'Sucursal del Banco Nacion',
+  `importebruto` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe Bruto del Remito',
+  `importecomision` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Comision Bancaria sobre el Remito',
+  `importeneto` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe Neto del Remito',
+  `importefaima` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe que le corresponde a FAIMA del Remito',
+  `boletasremito` int(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Cantidad Total de Boletas del Remito',
+  `importeboletasaporte` decimal(9,2) DEFAULT NULL COMMENT 'Total de Aportes de las Boletas del Remito',
+  `importeboletasrecargo` decimal(9,2) DEFAULT NULL COMMENT 'Total de Recargos de las Boletas del Remito',
+  `importeboletasvarios` decimal(9,2) DEFAULT NULL COMMENT 'Total de Pagos Varios de las Boletas del Remito',
+  `importeboletaspagos` decimal(9,2) DEFAULT NULL COMMENT 'Total de Pagos de las Boletas del Remito',
+  `importeboletascuotas` decimal(9,2) DEFAULT NULL COMMENT 'Total de Cuotas de Acuerdos de las Boletas del Remito',
+  `importeboletasbruto` decimal(9,2) DEFAULT NULL COMMENT 'Total Bruto de las Boletas del Remito',
+  `cantidadboletas` int(5) unsigned DEFAULT NULL COMMENT 'Cantidad Total de Boletas Conciliadas del Remito',
+  `estadoconciliacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Estado de Conciliacion / 0 No Conciliado - 1 Conciliado',
+  `fechaconciliacion` datetime DEFAULT NULL COMMENT 'Fecha de Conciliacion',
+  `usuarioconciliacion` char(50) DEFAULT NULL COMMENT 'Usuario de Conciliacion',
+  `fechaacreditacion` date DEFAULT NULL COMMENT 'Fecha de Acreditacion en la Cuenta',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
+  `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
+  PRIMARY KEY (`codigocuenta`,`sistemaremito`,`fecharemito`,`nroremito`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `reqfiscalizospim`
 --
 
@@ -756,6 +932,33 @@ CREATE TABLE IF NOT EXISTS `reqfiscalizusimra` (
   `procesoasignado` int(1) unsigned NOT NULL COMMENT 'Proceso Asignado al Requerimiento',
   PRIMARY KEY (`fecharequerimiento`,`nrorequerimiento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de USIMRA';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `resumenusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `resumenusimra` (
+  `codigocuenta` int(2) unsigned NOT NULL COMMENT 'Codigo de Cuenta Bancaria',
+  `fechaemision` date NOT NULL COMMENT 'Fecha de Emision del Resumen Bancario',
+  `nroordenimputacion` int(4) unsigned NOT NULL COMMENT 'Numero de Orden de la Imputacion',
+  `fechaimputacion` date NOT NULL COMMENT 'Fecha de la Imputacion',
+  `importeimputado` decimal(9,2) NOT NULL COMMENT 'Importe Imputado',
+  `tipoimputacion` char(1) NOT NULL COMMENT 'Tipo de Imputacion / C Credito - D Debito',
+  `estadoconciliacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Estado de Conciliacion / 0 No Conciliado - 1 Conciliado',
+  `fechaconciliacion` datetime DEFAULT NULL COMMENT 'Fecha de Conciliacion',
+  `usuarioconciliacion` char(50) DEFAULT NULL COMMENT 'Usuario de Conciliacion',
+  `comprobanteorigen` char(100) DEFAULT NULL COMMENT 'Comprobante que Origina la Imputacion',
+  `sistemacomprobanteorigen` char(1) DEFAULT NULL COMMENT 'Sistema del Comprobante que da Origen a la Imputacion / M Manual - E Electronico',
+  `fechacomprobanteorigen` date DEFAULT NULL COMMENT 'Fecha del Comprobante que Origina la Imputacion',
+  `nrocomprobanteorigen` int(4) unsigned DEFAULT NULL COMMENT 'Nro de Comprobante que Origina la Imputacion',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
+  `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
+  PRIMARY KEY (`codigocuenta`,`fechaemision`,`nroordenimputacion`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Resumenes Bancarios de USIMRA';
 
 -- --------------------------------------------------------
 
