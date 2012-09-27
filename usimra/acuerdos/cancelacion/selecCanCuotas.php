@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $cuit= $_POST['cuit'];
 if ($cuit == NULL) {
 	$cuit = $_GET['cuit'];
@@ -17,7 +17,7 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi = mysql_query( $sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit";
+$sqlacuerdos =  "select * from cabacuerdosusimra where cuit = $cuit";
 $resulacuerdos= mysql_query( $sqlacuerdos,$db); 
 
 $cant = mysql_num_rows($resulacuerdos); 
@@ -39,11 +39,11 @@ A:hover {text-decoration: none;color:#33CCFF }
 
 <title>.: Seleccion cuata a cancelar :.</title>
 </head>
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <div align="center">
   <p><strong><a href="moduloCancelacion.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="340" border="1">
@@ -64,7 +64,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 		if ($acuerdo != 0) { ?>
   </p>
   <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
-  <table border="1" width="935" bordercolorlight="#000099" bordercolordark="#0066FF" bordercolor="#000000" cellpadding="2" cellspacing="0">
+  <table border="1" width="935" bordercolorlight="#000000" bordercolordark="#000000" bordercolor="#000000" cellpadding="2" cellspacing="0">
 				<tr>
     				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cuota</font></strong></div></td>
    					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
@@ -77,7 +77,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 				</tr>
 			
 			<?php	
-			$sqllistado = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
+			$sqllistado = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo";
 			$reslistado = mysql_query( $sqllistado,$db); 
 			while ($rowListado = mysql_fetch_array($reslistado)) {
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['nrocuota']."</font></div></td>");
@@ -108,6 +108,10 @@ A:hover {text-decoration: none;color:#33CCFF }
 					}					
 				// else de si el monto == 0	
 				} else {
+					//TODO ver si esta concilidao... si lo esta no hay que dejar que modifique... hay que verlo dentro del if del M...
+					if ($rowListado['sistemacancelacion'] == 'M') {
+						print ("<td width=168><div align=center><font face=Verdana size=1><a href='datosConciliacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelada - Modificar Datos Banco</font></div></td>");
+					} 
 					if ($rowListado['tipocancelacion'] == 8) {
 						print ("<td width=168><div align=center><font face=Verdana size=1>No Cancelable</font></div></td>");
 					} else {

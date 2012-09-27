@@ -28,13 +28,15 @@ A:hover {text-decoration: none;color:#00FFFF }
           <p align="center"><a class="enlace" href="impresion/menuBoletas.php"><img src="img/impresora.jpg" width="98" height="84" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Banco</p>
-          <p align="center"><a class="enlace" href="banco/moduloBanco.php"><img src="img/banco.jpg" width="107" height="81" border="0" alt="enviar"/></a></p>
+	  	  <!-- href="banco/moduloBanco.php" -->
+          <p align="center"><a class="enlace" href="http://localhost/usimra/moduloNoDisponible.php"><img src="img/banco.jpg" width="107" height="81" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td><p align="center">Informes</p>
-        <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.jpg" width="120" height="80" border="0" alt="enviar"/></a></p>
+	  <!-- href="informes/moduloInformes.php" -->
+        <p align="center"><a class="enlace" href="http://localhost/usimra/moduloNoDisponible.php"><img src="img/informes.jpg" width="120" height="80" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
@@ -43,10 +45,12 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.jpg" width="97" height="76" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
       <td><p align="center">Fiscalizaci&oacute;n</p>
-        <p align="center"><a class="enlace" href="impresion/fiscalizacionImpresion.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
+	  	  <!--  href="impresion/fiscalizacionImpresion.php" -->
+        <p align="center"><a class="enlace" href="http://localhost/usimra/moduloNoDisponible.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td><p align="center">Valores al Cobro</p>
-      <p align="center"><a class="enlace" href="valores/moduloValores.php"><img src="img/valores.jpg" width="96" height="76" border="0" /></a></p>
+	   <!-- href="valores/moduloValores.php" -->
+      <p align="center"><a class="enlace" href="http://localhost/usimra/moduloNoDisponible.php"><img src="img/valores.jpg" width="96" height="76" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>

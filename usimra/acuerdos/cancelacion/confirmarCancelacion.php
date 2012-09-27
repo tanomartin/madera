@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $cuit = $_GET["cuit"];
 $acuerdo = $_GET["acuerdo"];
 $cuota = $_GET["cuota"];	
@@ -16,11 +16,11 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi = mysql_query( $sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlCab = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
+$sqlCab = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo";
 $resCab = mysql_query($sqlCab,$db); 
 $rowCab = mysql_fetch_array($resCab);
 
-$sqlCuo = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
+$sqlCuo = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 $resCuo = mysql_query($sqlCuo,$db); 
 $rowCuo = mysql_fetch_array($resCuo);
 
@@ -56,16 +56,16 @@ function validar(formulario) {
 
 </script>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <div align="center">
   <p><strong><a href="selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	?>
 <form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="cancelarCuota.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
   <div align="center">
     <p><strong>Acuerdo N&uacute;mero </strong> <?php echo $acuerdo ?> <strong>Cuota</strong> <?php echo $cuota ?> </p>
-	 <table border="1" width="935" bordercolorlight="#000099" bordercolordark="#0066FF" bordercolor="#000000" cellpadding="2" cellspacing="0">
+	 <table border="1" width="935" bordercolorlight="#000000" bordercolordark="#000000" bordercolor="#000000" cellpadding="2" cellspacing="0">
 				<tr>
    					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
     				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Vto.</font></strong></div></td>
@@ -97,13 +97,71 @@ function validar(formulario) {
 				?>
 	</table>
 	
-     <p>
-       <label>Fecha de Pago
-       		<input name="fechapagada" type="text" id="fechapagada" size="8">
+     <p>Fecha de Pago 
+       <label>
+       <input name="fechapagada" type="text" id="fechapagada" size="8">
        </label>
-    </p>
+     </p>
+     <p>Cuenta de la Boleta
+       <label>
+       <select name="select">
+       </select>
+       </label>
+     </p>
+     <label></label>
+     <table width="663" border="0">
+       <tr>
+         <td colspan="2"><div align="center"><strong>REMESA </strong></div></td>
+         <td colspan="2"><div align="center"><strong>REMITO SUELTO </strong></div></td>
+       </tr>
+       <tr>
+         <td width="206"><div align="right">Cuenta de la Remesa
+           
+         </div></td>
+         <td width="126"><select name="select2">
+         </select></td>
+         <td width="161"><label>
+          <div align="right">Cuenta Reminto Suelto</div>
+         </label></td>
+         <td width="152"><select name="select6">
+         </select></td>
+       </tr>
+       <tr>
+         <td><label>
+           <div align="right">Fecha de la Remesa           </div>
+         </label></td>
+         <td><select name="select3">
+         </select></td>
+         <td><label>
+          <div align="right">Fecha Remito Suelto</div>
+         </label></td>
+         <td><select name="select7">
+         </select></td>
+       </tr>
+       <tr>
+         <td><label>
+          <div align="right">Nro Remesa</div>
+         </label></td>
+         <td><select name="select4">
+         </select></td>
+         <td><label>
+          <div align="right">Nro Remito Suelto</div>
+         </label></td>
+         <td><select name="select8">
+         </select></td>
+       </tr>
+       <tr>
+         <td><label>
+          <div align="right">Nro Remito</div>
+         </label></td>
+         <td><select name="select5">
+         </select></td>
+         <td colspan="2">&nbsp;</td>
+       </tr>
+     </table>
      <p>
-       <label>Observacion
+       <label></label>
+       <label></label><label>Observacion
 	   <textarea name="textarea" cols="50" rows="4"></textarea>
        </label>
      </p>

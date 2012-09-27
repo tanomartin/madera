@@ -1,6 +1,6 @@
 <?php 
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 	require ("numeros.php");
 ?>
 
@@ -16,19 +16,19 @@
 <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
 <body topmargin="0" leftmargin="0">
 
-<table border="0" width="100%" height="90%">
+<table border="0" width="100%" height="45%">
   <tr>
-    <td width="100%" valign="top" align="center"> 
+    <td width="100%" align="center" valign="top"> 
 <?php	
 	$cuit = $_GET["cuit"];
 	$acuerdo = $_GET["acuerdo"];
 	$cuota = $_GET["cuota"];	 
  
-	$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
+	$sqlacuerdos =  "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo";
 	$resulacuerdos=  mysql_query( $sqlacuerdos,$db); 
 	$rowacuerdos = mysql_fetch_array($resulacuerdos);
 	
-	$sqlcuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
+	$sqlcuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 	$rescuotas =  mysql_query( $sqlcuotas,$db); 
 	$rowcuotas = mysql_fetch_array($rescuotas);
 
@@ -40,12 +40,12 @@
 	$cantbole = $rowcuotas['boletaimpresa'];
 	
 	if ($tipopago == 3) {
-		$sqlvalor = "select * from valoresalcobro where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
+		$sqlvalor = "select * from valoresalcobrousimra where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 		$resvalor =  mysql_query( $sqlvalor,$db); 
 		$rowvalor = mysql_fetch_array($resvalor);
-		$nrocheque = $rowvalor['chequenroospim'];
-		$banco = $rowvalor['chequebancoospim'];
-		$fechaChe = invertirFecha($rowvalor['chequefechaospim']);
+		$nrocheque = $rowvalor['chequenrousimra'];
+		$banco = $rowvalor['chequebancousimra'];
+		$fechaChe = invertirFecha($rowvalor['chequefechausimra']);
 	} else {
 		$nrocheque = $rowcuotas['chequenro'];
 		$banco = $rowcuotas['chequebanco'];
@@ -66,33 +66,36 @@
 	$resultlocalidad =  mysql_query( $sqllocalidad,$db); 
 	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
 
-//Ejecucion del sql para ingreso del registro en tabla boletasospim
-	$sqlgrababoleta = "INSERT INTO boletasospim (cuit,nroacuerdo,nrocuota,importe,nrocontrol,usuarioregistro) VALUES ('$cuit','$acuerdo','$cuota','$importe','$ctrlh','$_SESSION[usuario]')";
+//Ejecucion del sql para ingreso del registro en tabla boletasusimra
+	$sqlgrababoleta = "INSERT INTO boletasusimra (cuit,nroacuerdo,nrocuota,importe,nrocontrol,usuarioregistro) VALUES ('$cuit','$acuerdo','$cuota','$importe','$ctrlh','$_SESSION[usuario]')";
 	$resulgrababoleta =  mysql_query( $sqlgrababoleta,$db);
 
-//Ejecucion del sql para incrementar la cantidad de boletas impresas en tabla cuoacuerdosospim
-	$sqlactcuotas = "update cuoacuerdosospim set boletaimpresa = ($cantbole+1) where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
+//Ejecucion del sql para incrementar la cantidad de boletas impresas en tabla cuoacuerdosusimra
+	$sqlactcuotas = "update cuoacuerdosusimra set boletaimpresa = ($cantbole+1) where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 	$resulactcuotas =  mysql_query( $sqlactcuotas,$db); 
 
 	$nota[0] = ("1 - Original: Para el BANCO como comprobante de Caja");
 	$nota[1] = ("1 - Duplicado: Para el DEPOSITANTE");
 	$nota[2] = ("3 - Triplicado: Para O.S.P.I.M. como comprobante de Control");
-	for ($w = 0; $w <3; $w++) {			  
+	for ($w = 0; $w <2; $w++) {			  
 	
 	print ("<table border=1 width=650 bordercolor=#000000");
 	print ("  <tr>");
-	print ("    <td width=650><p align=center><font face=Arial size=3><b>OBRA SOCIAL DEL PERSONAL DE LA INDUSTRIA MADERERA - O.S.P.I.M.</b></font></td>");
+	print ("    <td width=650><p align=center><font face=Arial size=3><b>UNION DE SINDICATOS DE LA INDUSTRIA MADERERA DE LA REPUBLICA ARGENTINA - U.S.I.M.R.A.</b></font></td>");
 	print ("  </tr>");
 	print ("</table>");
 	print ("<table border=1 width=650 bordercolor=#000000 bordercolorlight=#000000 bordercolordark=#000000 cellspacing=0 cellpadding=0>");
 	print ("  <tr>");
-	print ("    <td width=650><p align=center><font size=2 face=Arial Narrow>Cta. Cte. <b>Nº 39.750/12</b> (O.S.P.I.M.) BANCO NACION - SUCURSAL PLAZA DE MAYO</b></font></td>");
+	print ("    <td width=650><p align=center><font size=2 face=Arial Narrow>NOTA DE CREDITO para la Cuenta de Unión de Sindicatos de la Industria Maderera de la República Argentina (U.S.I.M.R.A.) y Federación Argentina de la Industria Maderera y Afines (F.A.I.M.A.) - CCT 335/75 Artículos 32 y 32 bis.</font></td>");
+	print ("  </tr>");
+	print ("  <tr>");
+	print ("    <td width=650><p align=center><font size=2 face=Arial Narrow>Cta. Cte. <b>Nº 900004/93</b> (F.A.I.M.A. - U.S.I.M.R.A.) BANCO NACION - SUCURSAL CABALLITO</b></font></td>");
 	print ("  </tr>");
 	print ("</table>");
 	print ("<br>");
-	print ("<table border=1 width=350 bordercolor=#000000 bordercolorlight=#000000 bordercolordark=#000000 cellspacing=0 cellpadding=0><p align=center>");
+	print ("<table border=1 width=400 bordercolor=#000000 bordercolorlight=#000000 bordercolordark=#000000 cellspacing=0 cellpadding=0><p align=center>");
 	print ("  <tr>");
-	print ("    <td width=350><p align=center><font size=1 face=Arial Narrow>BANCO DE LA NACION ARGENTINA - Sucursal Plaza de Mayo Bartolomé Mitre 326 - C.A.B.A.</b></font></td>");
+	print ("    <td width=400><p align=center><font size=1 face=Arial Narrow>BANCO DE LA NACION ARGENTINA - Sucursal Caballito - Rivadavia 5199 - C.A.B.A.</b></font></td>");
 	print ("  </tr>");
 	print ("</table>");
 	print ("<br>");
@@ -135,7 +138,7 @@
 	
 	print ("<table border=0 width=650 bordercolor=#000000 bordercolorlight=#000000 bordercolordark=#000000 cellspacing=0 cellpadding=0>");
 	print ("  <tr>");
-		print(" <td width=650 align=left ><font size=1> O.S.P.I.M. formula expresa reserva de intereses por pagos fuera de término </font></td>");
+		print(" <td width=650 align=left ><font size=1> U.S.I.M.R.A formula expresa reserva de intereses por pagos fuera de término </font></td>");
 	print ("  </tr>");
 	
 	//Tabla de tipo de pagos y datos del mismo
@@ -160,8 +163,7 @@
 	print ("</table>");
 	
 	print ("<br>");
-	
-	$nconvenio = 5734;
+	$nconvenio = 3617;
 	$ncuasifinal = $nconvenio.$nrcuit.$ctrlh;
 	
 	
@@ -206,31 +208,28 @@
 	print ("<table border=0 width=650>");
 	print ("  <tr>");
 	print ("    <td width=650><p align=left><font size=1 face=Arial Narrow>".$nota[$w]."</font></td>");
-	
 	print ("  </tr>");
-	print ("    <td width=650><p align=center><font size=1 face=Arial Narrow><img border=0 src=jpg/tijera.jpg width=30 height=17>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </font></td>");
+	print ("    <td width=100%><p align=left><font size=1 face=Arial Narrow><img border=0 src=jpg/tijera.jpg width=30 height=17>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font></td>");
 	print ("  <tr>");
 	print ("  </tr>");
-	
+	print ("<br>");
 	print ("</table>");
-	
-	
+	print ("<br>");
 	}
 	mysql_close();
 	
-	?>
-    </td> 
+	?>   
+ </td> 
   </tr>
 </table>
-    <table width="719" border="0">
+    <table width="100%" border="0">
       <tr>
-          <td width="596"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="impBoletas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>">VOLVER</a></strong></font></td>
-          <td width="113"><div align="right">
-            <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
-        </div></td>
+          <td width="520"><div align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="impBoletas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>">VOLVER</a></strong></font></div></td>
+          <td width="533">
+            <div align="center">
+              <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
+            </div></td>
       </tr>
 </table>
-	  <p align="right">&nbsp; </p>
-    <p>&nbsp;</p>
-</body>
+	  </body>
 </html>
