@@ -13,6 +13,18 @@
 }
 -->
 </style>
+
+<script src="../../lib/jquery.js" type="text/javascript"></script>
+<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+
+jQuery(function($){
+	$("#cuit").mask("99999999999");
+});
+
+</script>
+
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -33,8 +45,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p>
   <label> 
   <div align="center">CUIT 
-    <input name="cuit" type="text" />
-  </div>
+    <input name="cuit" id="cuit" type="text" size="10" />
   </label>
   <p align="center">
     <label>
