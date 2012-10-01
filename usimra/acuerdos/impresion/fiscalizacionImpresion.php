@@ -20,6 +20,17 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
+<script src="../../lib/jquery.js" type="text/javascript"></script>
+<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+
+jQuery(function($){
+	$("#cuit").mask("99999999999");
+});
+
+</script>
+
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="fiscalizacionImpBoletas.php">
   <p align="center" class="Estilo1"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
@@ -33,8 +44,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p>
   <label> 
   <div align="center">CUIT 
-    <input name="cuit" type="text" />
-  </div>
+    <input name="cuit" type="text" id="cuit" size="10" />
   </label>
   <p align="center">
     <label>

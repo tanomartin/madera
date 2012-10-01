@@ -109,13 +109,14 @@ A:hover {text-decoration: none;color:#33CCFF }
 				// else de si el monto == 0	
 				} else {
 					//TODO ver si esta concilidao... si lo esta no hay que dejar que modifique... hay que verlo dentro del if del M...
-					if ($rowListado['sistemacancelacion'] == 'M') {
-						print ("<td width=168><div align=center><font face=Verdana size=1><a href='datosConciliacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelada - Modificar Datos Banco</font></div></td>");
-					} 
 					if ($rowListado['tipocancelacion'] == 8) {
 						print ("<td width=168><div align=center><font face=Verdana size=1>No Cancelable</font></div></td>");
 					} else {
-						print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
+						if ($rowListado['sistemacancelacion'] == 'M') {
+							print ("<td width=168><div align=center><font face=Verdana size=1><a href='datosConciliacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelada - Modificar Datos Banco</font></div></td>");
+						} else {
+							print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
+						}
 					}
 				}
 				

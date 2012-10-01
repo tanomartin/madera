@@ -114,6 +114,11 @@ function hayInfoCheque(id) {
 	return true;
 }
 
+function desbloquear(){
+	document.body.style.cursor = 'default';
+	document.getElementById("nuevaCuota").disabled = false;
+	document.getElementById("guardar").disabled = false;
+}
 
 function validarYGuardar(formulario) {
 	var nombreMonto, nombreFecha, nombreTipo;
@@ -142,25 +147,34 @@ function validarYGuardar(formulario) {
 		if (!isNumberPositivo(monto)) {
 			alert("Error en el Monto");
 			document.getElementById(nombreMonto).focus();
+			desbloquear();
 			return false;
 		}
 		if (!esFechaValida(fecha)){
 			document.getElementById(nombreFecha).focus();
+			desbloquear();
 			return false;
 		}
 		if (tipoCance == -1) {
 			alert("Error en el tipo de Cancelacion");
 			document.getElementById(nombreTipo).focus();
+			desbloquear();
 			return false;
 		} else {
 			if (tipoCance == 1 || tipoCance == 3) {
 				if(!hayInfoCheque(i)){
+					desbloquear();
 					return false;
 				} 
 			}
 		}
 	}
-	return(validoMontos());
+	if (validoMontos() == false) {
+		desbloquear();
+		return false
+	} else {
+		return true;
+	}
 }
 
 function popUpcambio(confi) {
