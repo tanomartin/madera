@@ -43,7 +43,103 @@ A:hover {text-decoration: none;color:#33CCFF }
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechapagada").mask("99-99-9999");
+	$("#fecharemesa").mask("99-99-9999");
+	$("#fecharemito").mask("99-99-9999");
 });
+
+function limpiarFechaRemesa(){
+	document.forms.formularioSeleCuotas.fecharemesa.value = "";
+	document.forms.formularioSeleCuotas.fecharemesa.disabled = true;
+	document.forms.formularioSeleCuotas.botonRemesas.disabled = true;
+}
+
+function limpiarFechaRemito(){
+	document.forms.formularioSeleCuotas.fecharemito.value = "";
+	document.forms.formularioSeleCuotas.fecharemito.disabled = true;
+	document.forms.formularioSeleCuotas.botonRemitos.disabled = true;
+}
+
+function limpiarRemesas(){
+	document.forms.formularioSeleCuotas.selectRemesa.length = 0;
+	document.forms.formularioSeleCuotas.selectRemesa.disabled = true;
+}
+
+function LogicaCargaRemesa(Cuenta) {
+		if (Cuenta == 0) {
+			document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = false;
+			limpiarFechaRemesa();
+			limpiarRemesas();
+		} else {
+			document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = true;
+			document.forms.formularioSeleCuotas.fecharemesa.disabled = false;
+			document.forms.formularioSeleCuotas.botonRemesas.disabled = false;
+		}
+}
+
+function LogicaCargaRemito(Cuenta) {
+		if (Cuenta == 0) {
+			document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = false;
+			limpiarFechaRemito();
+		} else {
+			document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
+			document.forms.formularioSeleCuotas.fecharemito.disabled = false;
+			document.forms.formularioSeleCuotas.botonRemitos.disabled = false;
+		}
+}
+
+function cargarRemesas(){
+	limpiarRemesas();
+	var cuenta = document.forms.formularioSeleCuotas.selectCuentaRemesa.value;
+	var fecha = document.forms.formularioSeleCuotas.fecharemesa.value;
+	var o;
+	if (fecha == "") {
+		alert("Debe cargar fecha de remesa");
+	} else {
+		fecha = invertirFecha(fecha);
+		o = document.createElement("OPTION");
+		o.text = 'Seleccione Remesa';
+		o.value = 0;
+		document.forms.formularioSeleCuotas.selectRemesa.options.add(o);
+		<?php 
+		$sqlRemesa="select * from remesasusimra";
+		$resRemesa=mysql_query($sqlRemesa,$db);
+		while ($rowRemesa=mysql_fetch_array($resRemesa)) { ?>
+			if (cuenta == <?php echo $rowRemesa['codigocuenta'] ?> && fecha == "<?php echo $rowRemesa['fecharemesa'] ?>" ) {
+				o = document.createElement("OPTION");
+				o.text = '<?php echo $rowRemesa["nroremesa"]; ?>';
+				o.value = <?php echo $rowRemesa["nroremesa"]; ?>;
+				document.forms.formularioSeleCuotas.selectRemesa.options.add(o);
+			}
+  <?php } ?>
+	}
+	document.forms.formularioSeleCuotas.selectRemesa.disabled = false;
+}
+
+function cargaRemitos(){
+	//carga de remitos...
+	var cuenta = document.forms.formularioSeleCuotas.selectCuentaRemesa.value;
+	var fecha = document.forms.formularioSeleCuotas.fecharemesa.value;
+	var remesa = document.forms.formularioSeleCuotas.selectRemesa.value;
+	var o;
+	fecha = invertirFecha(fecha);
+	o = document.createElement("OPTION");
+	o.text = 'Seleccione Remesa';
+	o.value = 0;
+	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
+	<?php 
+	//TODO: no se puede tomar la tabla de remitosremesasusimra porque es muy grande...
+	//$sqlRemito="select * from remitosremesasusimra";
+	//$resRemito=mysql_query($sqlRemito,$db);
+	//while ($rowRemito=mysql_fetch_array($resRemito)) { ?>
+	<!--	if (cuenta == <?php //echo $rowRemito['codigocuenta'] ?> && fecha == "<?php //echo $rowRemito['fecharemesa'] ?>" && remesa == <?php //echo $rowRemito['nroremesa'] ?> ) {
+		<!--	o = document.createElement("OPTION");
+		<!--	o.text = '<?php //echo $rowRemito["nroremesa"]; ?>';
+		<!--	o.value = <?php // echo $rowRemito["nroremesa"]; ?>;
+		<!--	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
+	<!--	}
+<?php //} ?>
+	document.forms.formularioSeleCuotas.selectRemito.disabled = false;
+}
 
 function validar(formulario) {
 	var fecha = formulario.fechapagada.value;
@@ -104,61 +200,84 @@ function validar(formulario) {
      </p>
      <p>Cuenta de la Boleta
        <label>
-       <select name="select">
+	   <?php 
+	   		
+	   ?>
+        <select name="selectCuenta"  id="selectCuenta">
+		          <option value=0 selected="selected">Seleccione una Cuenta </option>
+		          <?php 
+					$query="select * from cuentasusimra";
+					$result=mysql_query($query,$db);
+					while ($rowcuentas=mysql_fetch_array($result)) { ?>
+		          <option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
+		          <?php } ?>
        </select>
        </label>
      </p>
      <label></label>
-     <table width="663" border="0">
+     <table width="834" border="0">
        <tr>
          <td colspan="2"><div align="center"><strong>REMESA </strong></div></td>
          <td colspan="2"><div align="center"><strong>REMITO SUELTO </strong></div></td>
        </tr>
        <tr>
-         <td width="206"><div align="right">Cuenta de la Remesa
+         <td width="142"><div align="right">Cuenta de la Remesa
            
          </div></td>
-         <td width="126"><select name="select2">
-         </select></td>
-         <td width="161"><label>
-          <div align="right">Cuenta Reminto Suelto</div>
-         </label></td>
-         <td width="152"><select name="select6">
-         </select></td>
-       </tr>
-       <tr>
-         <td><label>
-           <div align="right">Fecha de la Remesa           </div>
-         </label></td>
-         <td><select name="select3">
-         </select></td>
-         <td><label>
-          <div align="right">Fecha Remito Suelto</div>
-         </label></td>
-         <td><select name="select7">
-         </select></td>
-       </tr>
-       <tr>
-         <td><label>
-          <div align="right">Nro Remesa</div>
-         </label></td>
-         <td><select name="select4">
-         </select></td>
-         <td><label>
-          <div align="right">Nro Remito Suelto</div>
-         </label></td>
-         <td><select name="select8">
+         <td width="263">  
+		 	<select name="selectCuentaRemesa" id="selectCuentaRemesa" onChange="LogicaCargaRemesa(document.forms.formularioSeleCuotas.selectCuentaRemesa[selectedIndex].value);">
+		          <option value=0 selected="selected">Seleccione Cuenta de Remesa </option>
+		          <?php 
+					$query="select * from cuentasusimra";
+					$result=mysql_query($query,$db);
+					while ($rowcuentas=mysql_fetch_array($result)) { ?>
+		          <option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
+		          <?php } ?>
+           </select>
+	     </td>
+         <td width="143">
+         <div align="right">Cuenta Reminto Suelto</div></td>
+         <td width="268">	
+		    <select name="selectCuentaRemito" id="selectCuentaRemito" onChange="LogicaCargaRemito(document.forms.formularioSeleCuotas.selectCuentaRemesa[selectedIndex].value);">
+		          <option value=0 selected="selected">Seleccione Cuenta de Remito </option>
+		          <?php 
+					$query="select * from cuentasusimra";
+					$result=mysql_query($query,$db);
+					while ($rowcuentas=mysql_fetch_array($result)) { ?>
+		          <option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
+		          <?php } ?>
          </select></td>
        </tr>
        <tr>
+         <td>
+           <div align="right">Fecha de la Remesa</div></td>
          <td><label>
-          <div align="right">Nro Remito</div>
-         </label></td>
-         <td><select name="select5">
+           <input name="fecharemesa" type="text" id="fecharemesa" size="8" disabled="disabled">
+           <input name="botonRemesas" type="button" id="botonRemesas" value="Ver Remesas" disabled="disabled" onClick="cargarRemesas()">
+           </label></td>
+         <td>
+           <div align="right">Fecha Remito Suelto</div></td>
+         <td> <input name="fecharemito" type="text" id="fecharemito" size="8" disabled="disabled">
+         <input name="botonRemitos" type="button" id="botonRemitos" value="Ver Remitos" disabled="disabled"></td>
+       </tr>
+       <tr>
+         <td>
+          <div align="right">Nro Remesa</div></td>
+         <td><select name="selectRemesa" id="selectRemesa" disabled="disabled" onChange="cargaRemitos()">
+         </select></td>
+         <td>
+           <div align="right">Nro Remito Suelto</div></td>
+         <td><select name="select8" disabled="disabled">
+         </select></td>
+       </tr>
+       <tr>
+         <td>
+          <div align="right">Nro Remito</div></td>
+         <td><select name="selectRemito" id="selectRemito" disabled="disabled">
          </select></td>
          <td colspan="2">&nbsp;</td>
        </tr>
-     </table>
+    </table>
      <p>
        <label></label>
        <label></label><label>Observacion
