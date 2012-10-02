@@ -165,16 +165,16 @@ function cargaRemitos(){
 	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
 	<?php 
 	//TODO: no se puede tomar la tabla de remitosremesasusimra porque es muy grande...
-	//$sqlRemito="select * from remitosremesasusimra";
-	//$resRemito=mysql_query($sqlRemito,$db);
-	//while ($rowRemito=mysql_fetch_array($resRemito)) { ?>
-	<!--	if (cuenta == <?php //echo $rowRemito['codigocuenta'] ?> && fecha == "<?php //echo $rowRemito['fecharemesa'] ?>" && remesa == <?php //echo $rowRemito['nroremesa'] ?> ) {
-		<!--	o = document.createElement("OPTION");
-		<!--	o.text = '<?php //echo $rowRemito["nroremesa"]; ?>';
-		<!--	o.value = <?php // echo $rowRemito["nroremesa"]; ?>;
-		<!--	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
-	<!--	}
-<?php //} ?>
+	$sqlRemito="select * from remitosremesasusimra where codigocuenta = 1 and fecharemesa = '1996-05-02'";
+	$resRemito=mysql_query($sqlRemito,$db);
+	while ($rowRemito=mysql_fetch_array($resRemito)) { ?>
+		if (cuenta == <?php echo $rowRemito['codigocuenta'] ?> && fecha == "<?php echo $rowRemito['fecharemesa'] ?>" && remesa == <?php echo $rowRemito['nroremesa'] ?> ) {
+			o = document.createElement("OPTION");
+			o.text = '<?php echo $rowRemito["nroremito"]; ?>';
+			o.value = <?php  echo $rowRemito["nroremito"]; ?>;
+			document.forms.formularioSeleCuotas.selectRemito.options.add(o);
+		}
+<?php } ?>
 	document.forms.formularioSeleCuotas.selectRemito.disabled = false;
 }
 

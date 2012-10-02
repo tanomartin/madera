@@ -1,3 +1,11 @@
+function invertirFecha(fecha) {
+  	var dia  =  fecha.substring(0,2);
+    var mes  =  fecha.substring(3,5);
+    var anio =  fecha.substring(6);
+	var fechaRetorno = anio+"-"+mes+"-"+dia;
+	return fechaRetorno;
+}
+
 function comprobarSiBisisesto(anio){
 if ( ( anio % 100 != 0) && ((anio % 4 == 0) || (anio % 400 == 0))) {
     return true;
