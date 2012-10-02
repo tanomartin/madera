@@ -61,7 +61,15 @@ function limpiarFechaRemito(){
 
 function limpiarRemesas(){
 	document.forms.formularioSeleCuotas.selectRemesa.length = 0;
+	document.forms.formularioSeleCuotas.selectRemito.length = 0;
 	document.forms.formularioSeleCuotas.selectRemesa.disabled = true;
+	document.forms.formularioSeleCuotas.selectRemito.disabled = true;
+}
+
+function limpiarRemitoSuelto(){
+	document.forms.formularioSeleCuotas.selectRemitoSuelto.length = 0;
+	document.forms.formularioSeleCuotas.selectRemesa.disabled = true;
+	document.forms.formularioSeleCuotas.selectRemito.disabled = true;
 }
 
 function LogicaCargaRemesa(Cuenta) {
@@ -80,6 +88,7 @@ function LogicaCargaRemito(Cuenta) {
 		if (Cuenta == 0) {
 			document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = false;
 			limpiarFechaRemito();
+			limpiarRemitoSuelto();
 		} else {
 			document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
 			document.forms.formularioSeleCuotas.fecharemito.disabled = false;
@@ -113,6 +122,34 @@ function cargarRemesas(){
   <?php } ?>
 	}
 	document.forms.formularioSeleCuotas.selectRemesa.disabled = false;
+}
+
+function cargarRemitosSueltos(){
+	limpiarRemitoSuelto();
+	var cuenta = document.forms.formularioSeleCuotas.selectCuentaRemito.value;
+	var fecha = document.forms.formularioSeleCuotas.fecharemito.value;
+	var o;
+	if (fecha == "") {
+		alert("Debe cargar fecha de remito");
+	} else {
+		fecha = invertirFecha(fecha);
+		o = document.createElement("OPTION");
+		o.text = 'Seleccione Remito';
+		o.value = 0;
+		document.forms.formularioSeleCuotas.selectRemitoSuelto.options.add(o);
+		<?php 
+		$sqlRemesa="select * from remitossueltosusimra";
+		$resRemesa=mysql_query($sqlRemesa,$db);
+		while ($rowRemesa=mysql_fetch_array($resRemesa)) { ?>
+			if (cuenta == <?php echo $rowRemesa['codigocuenta'] ?> && fecha == "<?php echo $rowRemesa['fecharemito'] ?>" ) {
+				o = document.createElement("OPTION");
+				o.text = '<?php echo $rowRemesa["nroremito"]; ?>';
+				o.value = <?php echo $rowRemesa["nroremito"]; ?>;
+				document.forms.formularioSeleCuotas.selectRemitoSuelto.options.add(o);
+			}
+  <?php } ?>
+	}
+	document.forms.formularioSeleCuotas.selectRemitoSuelto.disabled = false;
 }
 
 function cargaRemitos(){
@@ -258,7 +295,7 @@ function validar(formulario) {
          <td>
            <div align="right">Fecha Remito Suelto</div></td>
          <td> <input name="fecharemito" type="text" id="fecharemito" size="8" disabled="disabled">
-         <input name="botonRemitos" type="button" id="botonRemitos" value="Ver Remitos" disabled="disabled"></td>
+         <input name="botonRemitos" type="button" id="botonRemitos" value="Ver Remitos" disabled="disabled"  onClick="cargarRemitosSueltos()"></td>
        </tr>
        <tr>
          <td>
@@ -267,7 +304,7 @@ function validar(formulario) {
          </select></td>
          <td>
            <div align="right">Nro Remito Suelto</div></td>
-         <td><select name="select8" disabled="disabled">
+         <td><select name="selectRemitoSuelto" id="selectRemitoSuelto" disabled="disabled">
          </select></td>
        </tr>
        <tr>
