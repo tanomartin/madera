@@ -77,7 +77,7 @@ if (!file_exists($archivo_name))
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title></head>
+<title>.: Módulo Banco USIMRA :.</title></head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -85,7 +85,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 .Estilo2 {font-weight: bold}
 </style>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
   <table width="762" height="241" border="1" align="center">
   <tr align="center" valign="top">
     <td height="23" colspan="3"><div align="center"><em><strong><font face="Arial, Helvetica, sans-serif">Control de Archivo del Banco </font></strong></em></div></td>

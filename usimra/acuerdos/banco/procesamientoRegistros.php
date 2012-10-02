@@ -13,7 +13,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 .Estilo2 {font-weight: bold}
 </style>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
   <table width="762" height="107" border="1" align="center">
   <tr align="center" valign="top">
     <td height="23" colspan="3"><div align="center"><em><strong><font face="Arial, Helvetica, sans-serif">Imputaciones </font></strong></em></div></td>

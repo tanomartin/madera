@@ -55,14 +55,14 @@ else{
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title></head>
+<title>.: Módulo Banco USIMRA :.</title></head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
   <table width="762" height="133" border="1" align="center">
   <tr align="center" valign="top">
     <td height="23" colspan="2"><div align="center"><em><strong><font face="Arial, Helvetica, sans-serif">Ingreso de Registros de Archivo del Banco a la BASE DE DATOS</font></strong></em></div></td>
