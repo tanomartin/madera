@@ -29,7 +29,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Banco</p>
 	  	  <!-- href="banco/moduloBanco.php" -->
-          <p align="center"><a class="enlace" href="http://localhost/usimra/moduloNoDisponible.php"><img src="img/banco.jpg" width="107" height="81" border="0" alt="enviar"/></a></p>
+           <p align="center"><a class="enlace" href="banco/moduloBanco.php"><img src="img/banco.jpg" width="107" height="81" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
