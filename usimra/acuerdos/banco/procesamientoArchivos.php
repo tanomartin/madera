@@ -1,11 +1,11 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title>
+<title>.: Módulo Banco USIMRA :.</title>
 <style type="text/css">
 <!--
 .Estilo1 {
@@ -45,7 +45,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </label>
     <p align="center">
     <label>
-    <input type="submit" name="Submit" value="Enviar" />
+    <input type="submit" name="Submit" value="Procesar" />
     </label>
   </p>
   <p>&nbsp;</p>

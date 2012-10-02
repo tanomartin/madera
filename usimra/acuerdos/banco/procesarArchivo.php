@@ -1,8 +1,9 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 $maquina = $_SERVER['SERVER_NAME'];
 
 $hayErrores=0;
+$hayPago=0;
 $archivo_name=$_GET['nombreArc'];
 $fechahoy=date("YmdHis",time());
 
@@ -11,35 +12,39 @@ if (!file_exists($archivo_name))
 else{
 	$registros = file($archivo_name, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 	for($i=0; $i < count($registros); $i++){
-		$nromovdb=substr($registros[$i], 36, 6);
-		$sucoridb=substr($registros[$i], 10, 4);
-		$frecaudb=substr($registros[$i], 18, 8);
-		$frendidb=substr($registros[$i], 26, 8);
-		$sucbcrdb=substr($registros[$i], 14, 4);
-		$codmovdb=substr($registros[$i], 34, 2);
-		if(strcmp("50", $codmovdb)==0)
-			$estmovdb=E;
-		else
-			$estmovdb=substr($registros[$i], 154, 1);
-		$impoente=substr($registros[$i], 42, 13);
-		$impodeci=substr($registros[$i], 55, 2);
-		$impdepdb=$impoente.".".$impodeci;
-		$monedadb=substr($registros[$i], 57, 1);
-		$codbardb=substr($registros[$i], 58, 30);
-		$cuibardb=substr($registros[$i], 62, 11);
-		$ctrbardb=substr($registros[$i], 73, 14);
-		$chebandb=substr($registros[$i], 138, 4);
-		$chesucdb=substr($registros[$i], 142, 4);
-		$chenrodb=substr($registros[$i], 146, 8);
-		$fecregdb=$fechahoy;
-		$usuregdb=$_SESSION['usuario'];
+		$tipopago=substr($registros[$i], 73, 2);
+		if(strcmp("99", $tipopago)==0) {
+			$hayPago=1;
+			$nromovdb=substr($registros[$i], 36, 6);
+			$sucoridb=substr($registros[$i], 10, 4);
+			$frecaudb=substr($registros[$i], 18, 8);
+			$frendidb=substr($registros[$i], 26, 8);
+			$sucbcrdb=substr($registros[$i], 14, 4);
+			$codmovdb=substr($registros[$i], 34, 2);
+			if(strcmp("50", $codmovdb)==0)
+				$estmovdb=E;
+			else
+				$estmovdb=substr($registros[$i], 154, 1);
+			$impoente=substr($registros[$i], 42, 13);
+			$impodeci=substr($registros[$i], 55, 2);
+			$impdepdb=$impoente.".".$impodeci;
+			$monedadb=substr($registros[$i], 57, 1);
+			$codbardb=substr($registros[$i], 58, 30);
+			$cuibardb=substr($registros[$i], 62, 11);
+			$ctrbardb=substr($registros[$i], 73, 14);
+			$chebandb=substr($registros[$i], 138, 4);
+			$chesucdb=substr($registros[$i], 142, 4);
+			$chenrodb=substr($registros[$i], 146, 8);
+			$fecregdb=$fechahoy;
+			$usuregdb=$_SESSION['usuario'];
 
-		$sqlBanco="INSERT INTO banacuerdosospim VALUES('$nromovdb','$sucoridb','$frecaudb','$frendidb','$estmovdb','$sucbcrdb',	'$codmovdb','$impdepdb','$monedadb','$codbardb','$cuibardb','$ctrbardb','$chebandb','$chesucdb','$chenrodb','$fecregdb','$usuregdb','','','','')";
-		$resultBanco= mysql_query($sqlBanco,$db); 
+			$sqlBanco="INSERT INTO banacuerdosusimra VALUES('$nromovdb','$sucoridb','$frecaudb','$frendidb','$estmovdb','$sucbcrdb',	'$codmovdb','$impdepdb','$monedadb','$codbardb','$cuibardb','$ctrbardb','$chebandb','$chesucdb','$chenrodb','$fecregdb','$usuregdb','','','','')";
+			$resultBanco= mysql_query($sqlBanco,$db); 
+		}
 	}
 	$origen=$archivo_name;
 	if(strcmp("localhost",$maquina)==0)
-		$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".$archivo_name;
+		$destino=$_SERVER['DOCUMENT_ROOT']."/usimra/acuerdos/Banco/ProcesadosBanco/".$archivo_name;
 	else
 		$destino="/home/sistemas/Documentos/Repositorio/ArchivosBanco/Procesados/".substr($archivo_name,52,20);
 		//$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".substr($archivo_name,52,20);
@@ -74,7 +79,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 			$fechaarc=substr($archivo_name, 8, 2)."-".substr($archivo_name, 10, 2)."-".substr($archivo_name, 12, 4);
 		else
 			$fechaarc=substr($archivo_name, 60, 2)."-".substr($archivo_name, 62, 2)."-".substr($archivo_name, 64, 4);
-		print("Ingreso Exitoso -- Los registros del dia $fechaarc han ingresado correctamente a la Base de Datos.<br/>\n");
+		if ($hayPagos == 1)
+			print("Ingreso Exitoso -- Los registros del dia $fechaarc han ingresado correctamente a la Base de Datos.<br/>\n");
+		else
+			print("Sin Ingreso de Registros - El archivo del dia $fechaarc no contiene registros vinculados a Acuerdos.<br/>\n");
 	}
 	?></div></td>
     </tr>

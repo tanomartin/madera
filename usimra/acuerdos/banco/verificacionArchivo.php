@@ -1,19 +1,21 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 $maquina = $_SERVER['SERVER_NAME'];
 $fechacargada=$_POST['fechaarchivo'];
 
 if(strcmp("localhost",$maquina)==0)
-	$archivo_name="00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
+	$archivo_name="00003617".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
 else
-	$archivo_name="/home/sistemas/Documentos/Repositorio/ArchivosBanco/00005734".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
+	$archivo_name="/home/sistemas/Documentos/Repositorio/ArchivosBanco/00003617".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
 
 $hayErrores=0;
+$totregi=0;
 $validas=0;
 $deposit=0;
 $efectiv=0;
 $cheques=0;
 $rechazo=0;
+
 if (!file_exists($archivo_name)) 
 	$hayErrores=1;
 	else{
@@ -36,32 +38,36 @@ if (!file_exists($archivo_name))
 				$hayErrores=2;
 
 			$convearc=substr($registros[$i], 0, 10);
-			if(strcmp("0000005734", $convearc)!=0)
+			if(strcmp("0000003617", $convearc)!=0)
 				$hayErrores=3;
 
-			$impoente=substr($registros[$i], 42, 13);
-			$impodeci=substr($registros[$i], 55, 2);
-			$impodepo=$impoente.".".$impodeci;
+			$tipopago=substr($registros[$i], 73, 2);
+			if(strcmp("99", $tipopago)==0) {
+				$totregi++;
+				$impoente=substr($registros[$i], 42, 13);
+				$impodeci=substr($registros[$i], 55, 2);
+				$impodepo=$impoente.".".$impodeci;
 
-			$codimovi=substr($registros[$i], 34, 2);
-			if(strcmp("50", $codimovi)==0){
-				$validas++;
-				$deposit++;
-				$efectiv++;
-				$impoapro=$impoapro+$impodepo;
-			}
-			if(strcmp("54", $codimovi)==0){
-				$estamovi=substr($registros[$i], 154, 1);
-				if(strcmp("P", $estamovi)==0)
+				$codimovi=substr($registros[$i], 34, 2);
+				if(strcmp("50", $codimovi)==0){
 					$validas++;
-				if(strcmp("L", $estamovi)==0){
 					$deposit++;
-					$cheques++;
+					$efectiv++;
 					$impoapro=$impoapro+$impodepo;
 				}
-				if(strcmp("R", $estamovi)==0){
-					$rechazo++;
-					$imporech=$imporech+$impodepo;
+				if(strcmp("54", $codimovi)==0){
+					$estamovi=substr($registros[$i], 154, 1);
+					if(strcmp("P", $estamovi)==0)
+						$validas++;
+					if(strcmp("L", $estamovi)==0){
+						$deposit++;
+						$cheques++;
+						$impoapro=$impoapro+$impodepo;
+					}
+					if(strcmp("R", $estamovi)==0){
+						$rechazo++;
+						$imporech=$imporech+$impodepo;
+					}
 				}
 			}
 		}
@@ -90,7 +96,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr align="center" valign="top">
     <td height="23"><div align="left"><strong>Total de Registros </strong></div></td>
-    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print(count($registros)); ?></div></td>
+    <td colspan="2"><div align="left"><?php if ($hayErrores == 0) print($totregi); ?></div></td>
   </tr>
   <tr align="center" valign="top">
     <td height="23"><div align="left" class="Estilo2">Boletas Presentadas </div></td>

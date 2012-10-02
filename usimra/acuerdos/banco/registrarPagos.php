@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
 $fechacancelacion = date("Y-m-d H:m:s");
@@ -21,8 +21,8 @@ try {
 	print ("</tr>");
 	print ("</table>");
 
-	$sqlControlImputar="SELECT COUNT(*) FROM banacuerdosospim WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
-	$sqlLeeAImputar="SELECT * FROM banacuerdosospim WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
+	$sqlControlImputar="SELECT COUNT(*) FROM banacuerdosusimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
+	$sqlLeeAImputar="SELECT * FROM banacuerdosusimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
 
 	$resultControlImputar = $dbh->query($sqlControlImputar);
 
@@ -31,7 +31,7 @@ try {
 		print ("<p>&nbsp;</p>\n");
 		print ("<table width=769 border=1 align=center>");
 		print ("<tr>");
-		print ("<td width=769><div align=center class=Estilo1>Error en la consulta de BANACUERDOSOSPIM. Comuniquese con el Depto. de Sistemas.</div></td>");
+		print ("<td width=769><div align=center class=Estilo1>Error en la consulta de BANACUERDOSUSIMRA. Comuniquese con el Depto. de Sistemas.</div></td>");
 		print ("</tr>");
 		print ("</table>");
 	}
@@ -89,7 +89,7 @@ try {
 					$codbarrabanco = $imputar[codigobarra];
 					$validadabanco = $imputar[fechavalidacion];
 					
-					$sqlBuscaValida="SELECT * FROM validasospim WHERE nrocontrol = :nrocontrol";
+					$sqlBuscaValida="SELECT * FROM validasusimra WHERE nrocontrol = :nrocontrol";
 					//echo $sqlBuscaValida; echo "<br>";
 					$resultBuscaValida = $dbh->prepare($sqlBuscaValida);
 					$resultBuscaValida->execute(array(':nrocontrol' => $controlbanco));
@@ -114,7 +114,7 @@ try {
 							{
 								if($cuitbanco==$cuitboleta)
 								{
-									$sqlVerificaCuota="SELECT * from cuoacuerdosospim WHERE cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
+									$sqlVerificaCuota="SELECT * from cuoacuerdosusimra WHERE cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
 									$resultVerificaCuota = $dbh->prepare($sqlVerificaCuota);
 									if ($resultVerificaCuota->execute(array(':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota)))
 									{
@@ -160,18 +160,18 @@ try {
 											if($estado=='L' && $cancelacion==3)
 											{
 												//lee valoresalcobro
-												$sqlLeeValorAlCobro = "SELECT * from valoresalcobro where cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
+												$sqlLeeValorAlCobro = "SELECT * from valoresalcobrousimra where cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
 												$resultLeeValorAlCobro = $dbh->prepare($sqlLeeValorAlCobro); 
 												if ($resultLeeValorAlCobro->execute(array(':cuit' => $cuitcuota, ':nroacuerdo' => $acuerdocuota, ':nrocuota' => $cuotacuota)))
 												{
 						        					foreach ($resultLeeValorAlCobro as $valoralcobro)
 													{
-														$nrocheque = $valoralcobro[chequenroospim];
-														$fechaChe = invertirFecha($valoralcobro[chequefechaospim]);
+														$nrocheque = $valoralcobro[chequenrousimra];
+														$fechaChe = invertirFecha($valoralcobro[chequefechausimra]);
 													}
 
 													$tiposcanc = $cancelacion;
-													$observaci = "Cancelada cheque OSPIM Nro. ".$nrocheque." de Fecha ".$fechaChe;
+													$observaci = "Cancelada cheque USIMRA Nro. ".$nrocheque." de Fecha ".$fechaChe;
 													$boletaimp = $boleta;
 													$montopago = $importebanco;
 													$fechapago = $recaudabanco;
@@ -211,18 +211,18 @@ try {
 												if($validadabanco!='00000000000000')
 												{
 													//lee valoresalcobro
-													$sqlLeeValorAlCobro = "SELECT * from valoresalcobro where cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
+													$sqlLeeValorAlCobro = "SELECT * from valoresalcobrousimra where cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
 													$resultLeeValorAlCobro = $dbh->prepare($sqlLeeValorAlCobro); 
 													if ($resultLeeValorAlCobro->execute(array(':cuit' => $cuitcuota, ':nroacuerdo' => $acuerdocuota, ':nrocuota' => $cuotacuota)))
 													{
 							        					foreach ($resultLeeValorAlCobro as $valoralcobro)
 														{
-															$nrocheque = $valoralcobro[chequenroospim];
-															$fechaChe = invertirFecha($valoralcobro[chequefechaospim]);
+															$nrocheque = $valoralcobro[chequenrousimra];
+															$fechaChe = invertirFecha($valoralcobro[chequefechausimra]);
 														}
 
 														$tiposcanc = $cancelacion;
-														$observaci = "Cancelada cheque OSPIM Nro. ".$nrocheque." de Fecha ".$fechaChe;
+														$observaci = "Cancelada cheque USIMRA Nro. ".$nrocheque." de Fecha ".$fechaChe;
 														$boletaimp = $boleta;
 														$montopago = $importebanco;
 														$fechapago = $recaudabanco;
@@ -258,7 +258,7 @@ try {
 
 											if($cancelacuota==1 && $puedecancelar==1)
 											{
-												$sqlActualizaCuota="UPDATE cuoacuerdosospim SET tipocancelacion = :tipocancelacion, observaciones = :observaciones, boletaimpresa = :boletaimpresa, montopagada = :montopagada, fechapagada = :fechapagada, fechacancelacion = :fechacancelacion, sistemacancelacion = :sistemacancelacion, codigobarra = :codigobarra, fechaacreditacion = :fechaacreditacion WHERE cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
+												$sqlActualizaCuota="UPDATE cuoacuerdosusimra SET tipocancelacion = :tipocancelacion, observaciones = :observaciones, boletaimpresa = :boletaimpresa, montopagada = :montopagada, fechapagada = :fechapagada, fechacancelacion = :fechacancelacion, sistemacancelacion = :sistemacancelacion, codigobarra = :codigobarra, fechaacreditacion = :fechaacreditacion WHERE cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
 												$resultActualizaCuota = $dbh->prepare($sqlActualizaCuota);
 												//echo $sqlActualizaCuota; echo "<br>";
 												if ($resultActualizaCuota->execute(array(':tipocancelacion' => $tiposcanc, ':observaciones' => $observaci, ':boletaimpresa' => $boletaimp, ':montopagada' => $montopago, ':fechapagada' => $fechapago, ':fechacancelacion' => $fechacanc, ':sistemacancelacion' => $sistecanc, ':codigobarra' => $codibarra, ':fechaacreditacion' => $acreditabanco, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota)))
@@ -277,7 +277,7 @@ try {
 													print ("<td><div align=center><font size=1 face=Verdana>ERROR URC - Avise al Depto. Sistemas.</font></div></td>");
 												}
 
-												$sqlActualizaBanco="UPDATE banacuerdosospim SET fechaimputacion = :fechaimputacion, usuarioimputacion = :usuarioimputacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
+												$sqlActualizaBanco="UPDATE banacuerdosusimra SET fechaimputacion = :fechaimputacion, usuarioimputacion = :usuarioimputacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
 												$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
 												//echo $sqlActualizaBanco; echo "<br>";
 												if ($resultActualizaBanco->execute(array(':fechaimputacion' => $fechacancelacion, ':usuarioimputacion' => $usuariocancelacion, ':nrocontrol' => $controlboleta, ':estadomovimiento' => $estado)))
@@ -293,7 +293,7 @@ try {
 												$montocuotaspagas = 0.00;
 												$fechacancela = date("Y-m-d"); 
 
-												$sqlLeeCuotas="SELECT * FROM cuoacuerdosospim WHERE cuit = $cuitboleta and nroacuerdo = $acuerdo";
+												$sqlLeeCuotas="SELECT * FROM cuoacuerdosusimra WHERE cuit = $cuitboleta and nroacuerdo = $acuerdo";
 												$resultLeeCuotas = $dbh->query($sqlLeeCuotas);
 												foreach ($resultLeeCuotas as $leidas)
 												{
@@ -304,7 +304,7 @@ try {
 													}
 												}
 
-												$sqlActualizaCabecera="UPDATE cabacuerdosospim SET cuotaspagadas = :cuotaspagadas, montopagadas = :montopagadas, fechapagadas = :fechapagadas WHERE cuit = :cuit and nroacuerdo = :nroacuerdo";
+												$sqlActualizaCabecera="UPDATE cabacuerdosusimra SET cuotaspagadas = :cuotaspagadas, montopagadas = :montopagadas, fechapagadas = :fechapagadas WHERE cuit = :cuit and nroacuerdo = :nroacuerdo";
 												$resultActualizaCabecera = $dbh->prepare($sqlActualizaCabecera);
 												if ($resultActualizaCabecera->execute(array(':cuotaspagadas' => $cantidadcuotaspagas, ':montopagadas' => $montocuotaspagas, ':fechapagadas' => $fechacancela,':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo)))
 												{
@@ -315,7 +315,7 @@ try {
 													//print "<p>Error al actualizar el registro Cabecera Acuerdo.</p>\n";
 												}
 
-												$sqlLeeCabecera="SELECT * FROM cabacuerdosospim WHERE cuit = $cuitboleta and nroacuerdo = $acuerdo";
+												$sqlLeeCabecera="SELECT * FROM cabacuerdosusimra WHERE cuit = $cuitboleta and nroacuerdo = $acuerdo";
 												$resultLeeCabecera = $dbh->query($sqlLeeCabecera);
 												foreach ($resultLeeCabecera as $cabecera)
 												{
@@ -330,7 +330,7 @@ try {
 													$saldodeacuerdo=$cabecera[montoapagar]-$cabecera[montopagadas];
 												}
 
-												$sqlActualizaCabecera="UPDATE cabacuerdosospim SET estadoacuerdo = :estadoacuerdo, saldoacuerdo = :saldoacuerdo WHERE cuit = :cuit and nroacuerdo = :nroacuerdo";
+												$sqlActualizaCabecera="UPDATE cabacuerdosusimra SET estadoacuerdo = :estadoacuerdo, saldoacuerdo = :saldoacuerdo WHERE cuit = :cuit and nroacuerdo = :nroacuerdo";
 												$resultActualizaCabecera = $dbh->prepare($sqlActualizaCabecera);
 												if ($resultActualizaCabecera->execute(array(':estadoacuerdo' => $estadodeacuerdo, ':saldoacuerdo' => $saldodeacuerdo, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo)))
 												{

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 ?>
 
@@ -6,7 +6,7 @@ include($libPath."controlSession.php");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Módulo Banco OSPIM :.</title>
+<title>.: Módulo Banco USIMRA :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 $fechavalidacion = date("Y-m-d H:m:s");
 $usuariovalidacion = $_SESSION['usuario'];
@@ -20,8 +20,8 @@ try {
 	print ("</tr>");
 	print ("</table>");
 
-	$sqlControlValidar="SELECT COUNT(*) FROM banacuerdosospim WHERE fechavalidacion = '00000000000000' and estadomovimiento in ('P','E')";
-	$sqlLeeAValidar="SELECT * FROM banacuerdosospim WHERE fechavalidacion = '00000000000000' and estadomovimiento in ('P','E')";
+	$sqlControlValidar="SELECT COUNT(*) FROM banacuerdosusimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in ('P','E')";
+	$sqlLeeAValidar="SELECT * FROM banacuerdosusimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in ('P','E')";
 
 	$resultControlValidar = $dbh->query($sqlControlValidar);
 
@@ -30,7 +30,7 @@ try {
 		print ("<p>&nbsp;</p>\n");
 		print ("<table width=769 border=1 align=center>");
 		print ("<tr>");
-		print ("<td width=769><div align=center class=Estilo1>Error en la consulta de BANACUERDOSOSPIM. Comuniquese con el Depto. de Sistemas.</div></td>");
+		print ("<td width=769><div align=center class=Estilo1>Error en la consulta de BANACUERDOSUSIMRA. Comuniquese con el Depto. de Sistemas.</div></td>");
 		print ("</tr>");
 		print ("</table>");	
 	}
@@ -84,7 +84,7 @@ try {
 					$importebanco = $validar[importe];
 					$cuitbanco = $validar[cuit];
 
-					$sqlControlaBoleta="SELECT * FROM anuladasospim WHERE nrocontrol = :nrocontrol";
+					$sqlControlaBoleta="SELECT * FROM anuladasusimra WHERE nrocontrol = :nrocontrol";
 					$resultControlaBoleta = $dbh->prepare($sqlControlaBoleta);
 					$resultControlaBoleta->execute(array(':nrocontrol' => $control));
 					if($resultControlaBoleta)
@@ -104,7 +104,7 @@ try {
 						}
 					}
 
-					$sqlBuscaBoleta="SELECT * FROM boletasospim WHERE nrocontrol = :nrocontrol";
+					$sqlBuscaBoleta="SELECT * FROM boletasusimra WHERE nrocontrol = :nrocontrol";
 					//echo $sqlBuscaBoleta; echo "<br>";
 					$resultBuscaBoleta = $dbh->prepare($sqlBuscaBoleta);
 					$resultBuscaBoleta->execute(array(':nrocontrol' => $control));
@@ -131,7 +131,7 @@ try {
 							{
 								if($cuitbanco==$cuitboleta)
 								{
-									$sqlAgregaValida="INSERT INTO validasospim (idboleta, cuit, nroacuerdo, nrocuota, importe, nrocontrol, usuarioregistro) VALUES (:idboleta,:cuit,:nroacuerdo,:nrocuota,:importe,:nrocontrol,:usuarioregistro)";
+									$sqlAgregaValida="INSERT INTO validasusimra (idboleta, cuit, nroacuerdo, nrocuota, importe, nrocontrol, usuarioregistro) VALUES (:idboleta,:cuit,:nroacuerdo,:nrocuota,:importe,:nrocontrol,:usuarioregistro)";
 									$resultAgregaValida = $dbh->prepare($sqlAgregaValida);
 									//echo $sqlAgregaValida; echo "<br>";
 									if ($resultAgregaValida->execute(array(':idboleta' => $id, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':importe' => $importeboleta, ':nrocontrol' => $control, ':usuarioregistro' => $usuario)))
@@ -144,7 +144,7 @@ try {
 									    print ("<td><div align=center><font size=1 face=Verdana>ERROR CRV - Avise al Depto. Sistemas.</font></div></td>");
 									}
 
-									$sqlBorraBoleta="DELETE FROM boletasospim WHERE nrocontrol = :nrocontrol";
+									$sqlBorraBoleta="DELETE FROM boletasusimra WHERE nrocontrol = :nrocontrol";
 									$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
 									//echo $sqlBorraBoleta; echo "<br>";
 									if ($resultBorraBoleta->execute(array(':nrocontrol' => $control)))
@@ -156,7 +156,7 @@ try {
 									    //print "<p>Error al borrar el registro Boleta.</p>\n";
 									}
 
-									$sqlActualizaBanco="UPDATE banacuerdosospim SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
+									$sqlActualizaBanco="UPDATE banacuerdosusimra SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
 									$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
 									//echo $sqlActualizaBanco; echo "<br>";
 									if ($resultActualizaBanco->execute(array(':fechavalidacion' => $fechavalidacion, ':usuariovalidacion' => $usuariovalidacion, ':nrocontrol' => $control, ':estadomovimiento' => $estado)))
