@@ -72,6 +72,11 @@ function limpiarRemitoSuelto(){
 	document.forms.formularioSeleCuotas.selectRemito.disabled = true;
 }
 
+function limpiarRemitos(){
+	document.forms.formularioSeleCuotas.selectRemito.length = 0;
+	document.forms.formularioSeleCuotas.selectRemitoSuelto.disabled = true;
+}
+
 function LogicaCargaRemesa(Cuenta) {
 		if (Cuenta == 0) {
 			document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = false;
@@ -154,6 +159,7 @@ function cargarRemitosSueltos(){
 
 function cargaRemitos(){
 	//carga de remitos...
+	limpiarRemitos();
 	var cuenta = document.forms.formularioSeleCuotas.selectCuentaRemesa.value;
 	var fecha = document.forms.formularioSeleCuotas.fecharemesa.value;
 	var remesa = document.forms.formularioSeleCuotas.selectRemesa.value;
@@ -161,28 +167,67 @@ function cargaRemitos(){
 	fecha = invertirFecha(fecha);
 	o = document.createElement("OPTION");
 	o.text = 'Seleccione Remesa';
-	o.value = 0;
+	o.value = 1;
 	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
 	<?php 
 	//TODO: no se puede tomar la tabla de remitosremesasusimra porque es muy grande...
-	$sqlRemito="select * from remitosremesasusimra where codigocuenta = 1 and fecharemesa = '1996-05-02'";
-	$resRemito=mysql_query($sqlRemito,$db);
-	while ($rowRemito=mysql_fetch_array($resRemito)) { ?>
-		if (cuenta == <?php echo $rowRemito['codigocuenta'] ?> && fecha == "<?php echo $rowRemito['fecharemesa'] ?>" && remesa == <?php echo $rowRemito['nroremesa'] ?> ) {
-			o = document.createElement("OPTION");
-			o.text = '<?php echo $rowRemito["nroremito"]; ?>';
-			o.value = <?php  echo $rowRemito["nroremito"]; ?>;
-			document.forms.formularioSeleCuotas.selectRemito.options.add(o);
-		}
-<?php } ?>
+	 ?>
 	document.forms.formularioSeleCuotas.selectRemito.disabled = false;
 }
 
 function validar(formulario) {
+	document.body.style.cursor = 'wait';
 	var fecha = formulario.fechapagada.value;
+	var cuentaBoleta = formulario.selectCuenta.value;
+	var cuentaRemesa = formulario.selectCuentaRemesa.value;
+	var cuentaRemito = formulario.selectCuentaRemito.value;
+	var fechaRemesa = formulario.fecharemesa.value;
+	var fechaRemito = formulario.fecharemito.value;
+	var nroRemesa = formulario.selectRemesa.value;
+	var nroRemito = formulario.selectRemito.value;
+	var nroRemitoSuelto = formulario.selectRemitoSuelto.value;
+	
 	if (!esFechaValida(fecha)) {
-		formulario.fechapagada.focus = true;
+		document.body.style.cursor = 'default';
 		return false;
+	}
+	if (cuentaBoleta == 0) {
+		alert("Debe elegir una cuenta de boleta");
+		document.body.style.cursor = 'default';
+		return false;
+	}
+	if (cuentaRemesa == 0 && cuentaRemito == 0) {
+		alert("Debe elegir cuenta de remesa o de remito suelto");
+		document.body.style.cursor = 'default';
+		return false;
+	}
+	
+	if (cuentaRemesa != 0) {
+		if (!esFechaValida(fechaRemesa)) {
+			return false;
+		}
+		if (nroRemesa == 0) {
+			alert("Debe elegir un nro de remesa");
+			document.body.style.cursor = 'default';
+			return false;
+		}
+		if (nroRemito == 0) {
+			alert("Debe elegir un nro de remito");
+			document.body.style.cursor = 'default';
+			return false;
+		}
+	}
+	
+	if (cuentaRemito != 0) {
+		if (!esFechaValida(fechaRemito)) {
+			document.body.style.cursor = 'default';
+			return false;
+		}
+		if (nroRemitoSuelto == 0) {
+		  	alert("Debe elegir un nro de remito suelto");
+			document.body.style.cursor = 'default';
+			return false;
+		}
 	}
 	return true;
 }
