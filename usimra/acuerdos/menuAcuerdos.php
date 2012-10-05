@@ -36,7 +36,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td>&nbsp;</td>
       <td><p align="center">Informes</p>
 	  <!-- href="informes/moduloInformes.php" -->
-        <p align="center"><a href="http://cronos/usimra/moduloNoDisponible.php"><img src="img/informes.jpg" width="120" height="80" border="0" alt="enviar"/></a></p>
+        <p align="center"><a href="../moduloNoDisponible.php"><img src="img/informes.jpg" width="120" height="80" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
@@ -46,11 +46,11 @@ A:hover {text-decoration: none;color:#00FFFF }
       <p align="center">&nbsp;</p></td>
       <td><p align="center">Fiscalizaci&oacute;n</p>
 	  	  <!--  href="impresion/fiscalizacionImpresion.php" -->
-        <p align="center"><a class="enlace" href="http://cronos/usimra/moduloNoDisponible.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td><p align="center">Valores al Cobro</p>
 	   <!-- href="valores/moduloValores.php" -->
-      <p align="center"><a href="http://cronos/usimra/moduloNoDisponible.php"><img src="img/valores.jpg" width="96" height="76" border="0" /></a></p>
+      <p align="center"><a href="../moduloNoDisponible.php"><img src="img/valores.jpg" width="96" height="76" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>
