@@ -167,7 +167,7 @@ function cargaRemitos(){
 	fecha = invertirFecha(fecha);
 	o = document.createElement("OPTION");
 	o.text = 'Seleccione Remesa';
-	o.value = 1;
+	o.value = 0;
 	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
 	<?php 
 	//TODO: no se puede tomar la tabla de remitosremesasusimra porque es muy grande...
