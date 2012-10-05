@@ -42,7 +42,7 @@ function abrirEmpresa(dire) {
       <td width="196"><div align="center">
 	    <p>M&oacute;dulo Empresas</p>
 		<!-- href="javascript:abrirEmpresa('empresas/menuEmpresa.php') -->
-	    <p><a href="javascript:abrirEmpresa('http://localhost/usimra/moduloNoDisponible.php')"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirEmpresa(<?php echo $_SERVER['DOCUMENT_ROOT']?>/usimra/moduloNoDisponible.php')"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
     </tr>
