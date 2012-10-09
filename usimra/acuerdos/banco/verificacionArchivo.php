@@ -6,7 +6,7 @@ $fechacargada=$_POST['fechaarchivo'];
 if(strcmp("localhost",$maquina)==0)
 	$archivo_name="00003617".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
 else
-	$archivo_name="/home/sistemas/Documentos/Repositorio/ArchivosBanco/00003617".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
+	$archivo_name="/home/sistemas/Documentos/Repositorio/UsimraxxBanco/00003617".substr($fechacargada, 0, 2).substr($fechacargada, 3, 2).substr($fechacargada, 6, 4).".TXT";
 
 $hayErrores=0;
 $totregi=0;
