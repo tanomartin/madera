@@ -34,6 +34,9 @@ if ($esremito == 1) {
 }
 
 echo "DATOS DE LA PANTALLA ANTERIOR"; echo "<br>";echo "<br>";
+
+echo "Fecha de pago: ";echo $fechapagada; echo "<br>";
+echo "Cuenta Boleta: ";echo $cuentaBoleta; echo "<br>"; echo "<br>";
 if ($esremesa == 1) {
  	echo "REMESA"; echo "<br>";echo "<br>";
 	echo "Cuenta Remesa: "; echo $cuentaRemesa;echo "<br>";
