@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
 $fechaAnulacion = date("Y-m-d H:m:s");
 $usuarioAnulacion = $_SESSION['usuario'];
 
@@ -14,7 +14,7 @@ if ($docuMano == "SI") {
 
 $motivo = $datos[1];
 
-$sqlBol = "select * from boletasospim where idboleta = $idBoleta";
+$sqlBol = "select * from boletasusimra where idboleta = $idBoleta";
 $resBol = mysql_query($sqlBol,$db); 
 $rowBol = mysql_fetch_array($resBol); 
 
@@ -32,15 +32,15 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$sqlAnula = "INSERT INTO anuladasospim VALUES('$idBoleta','$cuit','$nroacu','$nrocuo',
+	$sqlAnula = "INSERT INTO anuladasusimra VALUES('$idBoleta','$cuit','$nroacu','$nrocuo',
 				'$importe','$nrocontrol','$usuarioReg','$fechaAnulacion','$usuarioAnulacion',
 				'$docuMano','$motivo') ";
 	$dbh->exec($sqlAnula);
 	
-	$sqlUpdate = "UPDATE cuoacuerdosospim set boletaimpresa = 0 where cuit = ".$cuit." and nroacuerdo = ".$nroacu." and nrocuota = ".$nrocuo;
+	$sqlUpdate = "UPDATE cuoacuerdosusimra set boletaimpresa = 0 where cuit = ".$cuit." and nroacuerdo = ".$nroacu." and nrocuota = ".$nrocuo;
 	$dbh->exec($sqlUpdate);
 	
-	$sqlDelete = "DELETE FROM boletasospim where idboleta = $idBoleta";
+	$sqlDelete = "DELETE FROM boletasusimra where idboleta = $idBoleta";
 	$dbh->exec($sqlDelete);
 	
 	$dbh->commit();

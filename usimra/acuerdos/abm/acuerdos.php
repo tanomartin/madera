@@ -49,14 +49,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
-  <table width="500" border="1">
+  <table width="600" border="1">
      <?php 
 		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
 			$nroacu = $rowacuerdos['nroacuerdo'];
 			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
 			$result=mysql_query($query,$db);
 			$rowtipos=mysql_fetch_array($result);
-			echo ("<td width=300  align='center'><font face=Verdana size=2> ".$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
+			echo ("<td width=400  align='center'><font face=Verdana size=2> ".$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']." - "."Acta: ".$rowacuerdos['nroacta']."</a></font></td>");
 			if ($rowacuerdos['estadoacuerdo'] == 1) {
 				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='formularioModif.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>MODIFICAR</a></font></td>");
 				

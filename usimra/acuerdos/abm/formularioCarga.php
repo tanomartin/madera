@@ -352,9 +352,15 @@ function validar(formulario) {
 				if ($i < 12) {
 				print("<td height='11'><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' onfocusout='validoMes(".$i.")'/></div></td>");
            		print("<td height='11'><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' onfocusout='validoAnio(".$i.")' /></div></td>");
-            	print("<td height='11'><div align='center'><select id='conDeuda".$i."' name='conDeuda".$i."'>
-              		<option selected value='A'>No Pago</option>
-              		<option value='B'>Fuera de Termino</option>
+            	
+				//TODO: hacerlo dinamico pegandole a la base..
+				print("<td height='11'><div align='center'><select id='conDeuda".$i."' name='conDeuda".$i."'>
+              			<option selected value='A'>Período no Pagado</option>
+						<option value='B'>Pagado Fuera de Término</option>
+						<option value='C'>Aporte y Contribución</option>
+						<option value='D'>Aporte</option>
+						<option value='E'>Contribución</option>
+						<option value='F'>No Remunerativo</option>
             	   </select> </div></td>");
 				 print("</tr>");
 				 } else {
@@ -362,11 +368,15 @@ function validar(formulario) {
 					print("<td height='11'><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")'/></div></td>");
 					print("<td height='11'><div align='center'>
 					<select id='conDeuda".$i."' name='conDeuda".$i."' style='visibility:hidden'>
-              		<option selected value='A'>No Pago</option>
-              		<option value='B'>Fuera de Termino</option>
-            	   </select> </div></td>");
+						<option selected value='A'>Período no Pagado</option>
+						<option value='B'>Pagado Fuera de Término</option>
+						<option value='C'>Aporte y Contribución</option>
+						<option value='D'>Aporte</option>
+						<option value='E'>Contribución</option>
+						<option value='F'>No Remunerativo</option>
+            	    </select> </div></td>");
 				 	 print("</tr>");
-					 
+					//FIN TODO
 				 }
 			}
 			?>

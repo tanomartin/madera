@@ -24,8 +24,8 @@ A:hover {text-decoration: none;color:#00FFFF }
     <tr>
       <td width="196"><p align="center">Anulacion de Boletas </p>
 	  	  <!-- href="cargaAnulacion.php" -->
-		  
-          <p align="center"><a href="../../moduloNoDisponible.php"><img src="../img/anulacion.jpg" width="98" height="90" border="0" alt="enviar"/></a></p>
+		  <!-- href="../../moduloNoDisponible.php" -->
+          <p align="center"><a href="cargaAnulacion.php" ><img src="../img/anulacion.jpg" width="98" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Impresi&oacute;n de Boletas </p>
           <p align="center"><a class="enlace" href="moduloImpresion.php"><img src="../img/impresora.jpg" width="98" height="84" border="0" alt="enviar"/></a></p>

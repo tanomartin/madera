@@ -1,11 +1,11 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
 
 $datos = array_values($_POST);
 $nroControl = $datos[0];
 $docuMano = $datos[1];
 $motivo = $datos[2];
 
-$sqlBol = "select * from boletasospim where nrocontrol = $nroControl";
+$sqlBol = "select * from boletasusimra where nrocontrol = $nroControl";
 $resBol = mysql_query($sqlBol,$db); 
 $canBol = mysql_num_rows($resBol);
 
@@ -33,7 +33,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 <title>.: Verificacion Anulacion :.</title>
 </head>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <div align="center">
   <p><strong><a href="cargaAnulacion.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
   <p class="Estilo1"><strong>Verificacion Anulacion</strong> </p>

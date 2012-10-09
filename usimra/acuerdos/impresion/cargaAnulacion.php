@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); ?>
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -56,7 +56,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 <title>.: Anulacion de Boleta :.</title>
 </head>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <div align="center">
   <p><strong><a href="menuBoletas.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
   <p><span class="Estilo1">M&oacute;dulo Anulacion de Bolestas Impresas</span> </p>

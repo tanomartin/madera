@@ -325,19 +325,75 @@ function mostrarPeriodos() {
 					}
 					print("<td height='11'><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' value='".$mes."' size='2' onfocusout='validoMes(".$i.")'/></div></td>");
 					print("<td height='11'><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' value='".$rowPeridos['anoacuerdo']."' size='4' onfocusout='validoAnio(".$i.")' /></div></td>");
+					
+					//TODO: Ver de hacerlo mas prolijo....
 					if ($rowPeridos['conceptodeuda'] == "A") {
 						print("<td height='11'><div align='center'>
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option selected value='A'>No Pago</option>
-									<option value='B'>Fuera de Termino</option>
+								<option selected value='A'>Período no Pagado</option>
+								<option value='B'>Pagado Fuera de Término</option>
+								<option value='C'>Aporte y Contribución</option>
+								<option value='D'>Aporte</option>
+								<option value='E'>Contribución</option>
+								<option value='F'>No Remunerativo</option>
 							  </select> </div></td>");
-					} else {
+					} 
+					if ($rowPeridos['conceptodeuda'] == "B") {
 						print("<td height='11'><div align='center'>
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>No Pago</option>
-									<option selected value='B'>Fuera de Termino</option>
+									<option value='A'>Período no Pagado</option>
+									<option selected value='B'>Pagado Fuera de Término</option>
+									<option value='C'>Aporte y Contribución</option>
+									<option value='D'>Aporte</option>
+									<option value='E'>Contribución</option>
+									<option value='F'>No Remunerativo</option>
 							  </select> </div></td>");
 					}
+					if ($rowPeridos['conceptodeuda'] == "C") {
+						print("<td height='11'><div align='center'>
+							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
+									<option value='A'>Período no Pagado</option>
+									<option value='B'>Pagado Fuera de Término</option>
+									<option selected value='C'>Aporte y Contribución</option>
+									<option value='D'>Aporte</option>
+									<option value='E'>Contribución</option>
+									<option value='F'>No Remunerativo</option>
+							  </select> </div></td>");
+					}
+					if ($rowPeridos['conceptodeuda'] == "D") {
+						print("<td height='11'><div align='center'>
+							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
+									<option value='A'>Período no Pagado</option>
+									<option value='B'>Pagado Fuera de Término</option>
+									<option value='C'>Aporte y Contribución</option>
+									<option selected value='D'>Aporte</option>
+									<option value='E'>Contribución</option>
+									<option value='F'>No Remunerativo</option>
+							  </select> </div></td>");
+					}
+					if ($rowPeridos['conceptodeuda'] == "E") {
+						print("<td height='11'><div align='center'>
+							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
+									<option value='A'>Período no Pagado</option>
+									<option value='B'>Pagado Fuera de Término</option>
+									<option value='C'>Aporte y Contribución</option>
+									<option value='D'>Aporte</option>
+									<option selected value='E'>Contribución</option>
+									<option value='F'>No Remunerativo</option>
+							  </select> </div></td>");
+					}
+					if ($rowPeridos['conceptodeuda'] == "F") {
+						print("<td height='11'><div align='center'>
+							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
+									<option value='A'>Período no Pagado</option>
+									<option value='B'>Pagado Fuera de Término</option>
+									<option value='C'>Aporte y Contribución</option>
+									<option value='D'>Aporte</option>
+									<option value='E'>Contribución</option>
+									<option selected value='F'>No Remunerativo</option>
+							  </select> </div></td>");
+					}
+					//FIN TODO
 					print("</tr>");
 					$i = $i + 1;
 				} 
@@ -350,8 +406,12 @@ function mostrarPeriodos() {
 				print("<td height='11'><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")'/></div></td>");
 				print("<td height='11'><div align='center'>
 							<select id='conDeuda".$i."' name='conDeuda".$i."' style='visibility:hidden'>
-								<option selected value='A'>No Pago</option>
-								<option value='B'>Fuera de Termino</option>
+								<option selected value='A'>Período no Pagado</option>
+								<option value='B'>Pagado Fuera de Término</option>
+								<option value='C'>Aporte y Contribución</option>
+								<option value='D'>Aporte</option>
+								<option value='E'>Contribución</option>
+								<option value='F'>No Remunerativo</option>
 							</select> </div></td>");
 				print("</tr>");
 				$i = $i + 1;
