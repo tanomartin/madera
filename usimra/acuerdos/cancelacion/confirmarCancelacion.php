@@ -170,8 +170,16 @@ function cargaRemitos(){
 	o.value = 0;
 	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
 	<?php 
-	//TODO: no se puede tomar la tabla de remitosremesasusimra porque es muy grande...
-	 ?>
+		$sqlRemesa="select * from remitosremesasusimra";
+		$resRemesa=mysql_query($sqlRemesa,$db);
+		while ($rowRemesa=mysql_fetch_array($resRemesa)) { ?>
+			if (cuenta == <?php echo $rowRemesa['codigocuenta'] ?> && fecha == "<?php echo $rowRemesa['fecharemesa'] ?>" ) {
+				o = document.createElement("OPTION");
+				o.text = '<?php echo $rowRemesa["nroremito"]; ?>';
+				o.value = <?php echo $rowRemesa["nroremito"]; ?>;
+				document.forms.formularioSeleCuotas.selectRemito.options.add(o);
+			}
+  <?php } ?>
 	document.forms.formularioSeleCuotas.selectRemito.disabled = false;
 }
 
