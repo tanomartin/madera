@@ -65,6 +65,19 @@ try {
 			}
 			else
 			{
+				$cuentaboleta = 2;
+				$cuentaremesa = 2;
+				$nroremesa = 1;
+				$nroremitoremesa=0;
+				$cuentaremitosuelto=0;
+				$fecharemitosuelto='00000000';
+				$nroremitosuelto=0;
+				$estadoconciliacion=0;
+				$fechaconciliacion='00000000000000';
+				$usuarioconciliacion='';
+				$fechamodificacion='00000000000000';
+				$usuariomodificacion='';
+
 				$totacanc=0.00;
 				$cantcanc=0;
 
@@ -88,7 +101,9 @@ try {
 					$acreditabanco = $imputar[fechaacreditacion];
 					$codbarrabanco = $imputar[codigobarra];
 					$validadabanco = $imputar[fechavalidacion];
-					
+					if($estado=='E' || $estado=='L')
+						$nroremitoremesa=$nroremitoremesa+1;
+
 					$sqlBuscaValida="SELECT * FROM validasusimra WHERE nrocontrol = :nrocontrol";
 					//echo $sqlBuscaValida; echo "<br>";
 					$resultBuscaValida = $dbh->prepare($sqlBuscaValida);
@@ -267,6 +282,18 @@ try {
 														print ("<td><div align=center><font size=1 face=Verdana>Cheque Rechazado</font></div></td>");
 													else
 													{
+														$sqlAddConcilia="INSERT INTO conciliacuotasusimra VALUES(:cuit,:nroacuerdo,:nrocuota,:cuentaboleta,:cuentaremesa,:fecharemesa,:nroremesa,:nroremitoremesa,:cuentaremitosuelto,:fecharemitosuelto,:nroremitosuelto,:estadoconciliacion,:fechaconciliacion, usuarioconciliacion,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
+														$resultAddConcilia = $dbh->prepare($sqlAddConcilia);
+														//echo $sqlAddConcilia; echo "<br>";
+														if ($resultAddconcilia->execute(array(':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':cuentaboleta' => $cuentaboleta, ':cuentaremesa' => $cuentaremesa, ':fecharemesa' => $acreditabanco, ':nroremesa' => $nroremesa, ':nroremitoremesa' => $nroremitoremesa, 'cuentaremitosuelto:' => $cuentaremitosuelto, 'fecharemitosuelto:' => $fecharemitosuelto, ':nroremitosuelto' => $nroremitosuelto, 'estadoconciliacion:' => $estadoconciliacion, ':fechaconciliacion' => $fechaconciliacion, ':usuarioconciliacion' => $usuarioconciliacion, ':fecharegistro' => $fechacancelacion, ':usuarioregistro' => $usuariocancelacion, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion)))
+														{
+															//print "<p>Registro Conciliacion agregado correctamente.</p>\n";
+														}
+														else
+														{
+															//print "<p>Error al agregar el registro Conciliacion.</p>\n";
+														}
+
 														$totacanc=$totacanc+$montopago;
 														$cantcanc++;
 														print ("<td><div align=center><font size=1 face=Verdana>Cuota Cancelada</font></div></td>");
@@ -339,7 +366,7 @@ try {
 												else
 												{
 													//print "<p>Error al actualizar el registro Cabecera Acuerdo.</p>\n";
-												}												
+												}
 											}
 											else
 											{

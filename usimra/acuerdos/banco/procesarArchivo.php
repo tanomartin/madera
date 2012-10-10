@@ -4,8 +4,15 @@ $maquina = $_SERVER['SERVER_NAME'];
 
 $hayErrores=0;
 $hayPago=0;
+$totbruto=0.00;
+$nroremit=0;
 $archivo_name=$_GET['nombreArc'];
 $fechahoy=date("YmdHis",time());
+
+if(strcmp("localhost",$maquina)==0)
+	$fecremes=substr($archivo_name, 12, 4).substr($archivo_name, 10, 2).substr($archivo_name, 8, 2);
+else
+	$fecremes=substr($archivo_name, 64, 4).substr($archivo_name, 62, 2).substr($archivo_name, 60, 2);
 
 if (!file_exists($archivo_name)) 
 	$hayErrores=1;
@@ -41,7 +48,38 @@ else{
 			$sqlBanco="INSERT INTO banacuerdosusimra VALUES('$nromovdb','$sucoridb','$frecaudb','$frendidb','$estmovdb','$sucbcrdb',	'$codmovdb','$impdepdb','$monedadb','$codbardb','$cuibardb','$ctrbardb','$chebandb','$chesucdb','$chenrodb','$fecregdb','$usuregdb','','','','')";
 			$resultBanco= mysql_query($sqlBanco,$db); 
 		}
+
+		$codmovre=substr($registros[$i], 34, 2);
+		if(strcmp("50", $codmovre)==0)
+			$estmovre=E;
+		else
+			$estmovre=substr($registros[$i], 154, 1);
+
+		if(strcmp("E", $estmovre)==0 || strcmp("L", $estmovre)==0){
+			$nroremit=$nroremit+1;
+			$fecremit=substr($registros[$i], 26, 8);
+			$sucremit=substr($registros[$i], 10, 4);
+			$brutente=substr($registros[$i], 42, 13);
+			$brutdeci=substr($registros[$i], 55, 2);
+			$impbruto=$brutente.".".$brutdeci;
+			$usuremit=$_SESSION['usuario'];
+
+			$sqlRemito="INSERT INTO remitosremesasusimra VALUES('2','E','$fecremes','1','$nroremit','$fecremit','$sucremit','$impbruto','0.00','$impbruto','1','0.00','0.00','0.00','0.00','0.00','0.00','0','0','','','','$fechahoy','$usuremit','','')";
+			$resultRemito= mysql_query($sqlRemito,$db);
+
+			$totbruto=totbruto+$impbruto;
+		}
 	}
+
+	if(totbruto!=0.00)
+	{
+		$totfaima=totbruto*0.0968;
+		$totnetos=totbruto-totfaima;
+		$usuremes=$_SESSION['usuario'];
+		$sqlRemesa="INSERT INTO remesasusimra VALUES('2','E','$fecremes','1','$totbruto','0.00','$totnetos','$totfaima','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0','0','','','','$fechahoy','$usuremes','','')";
+		$resultRemesa= mysql_query($sqlRemesa,$db);
+	}
+
 	$origen=$archivo_name;
 	if(strcmp("localhost",$maquina)==0)
 		$destino=$_SERVER['DOCUMENT_ROOT']."/usimra/acuerdos/Banco/ProcesadosBanco/".$archivo_name;
