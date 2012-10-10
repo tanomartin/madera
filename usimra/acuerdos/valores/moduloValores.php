@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); ?>
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -15,7 +15,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <p align="center" class="Estilo2"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
 <p align="center" class="Estilo2">M&oacute;dulo Valores al Cobro</p>
 <form id="ordena" name="ordena" method="post" action="listadoValores.php">

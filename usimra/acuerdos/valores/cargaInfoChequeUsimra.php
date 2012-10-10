@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 
 function desglosar ($dato) {
 	$cont = 0;
@@ -80,7 +80,7 @@ function validar(formulario) {
 </script>
 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Carga Datos Cheque OSPIM :.</title>
+<title>.: Carga Datos Cheque USIMRA :.</title>
 <style type="text/css">
 <!--
 .Estilo2 {	font-weight: bold;
@@ -89,14 +89,14 @@ function validar(formulario) {
 -->
 </style>
 </head>
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="listadoValores.php">VOLVER</a></strong></font></p>
 <div align="center">
   <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="guardoValorAlCobro.php">
   	<p>
   	  <input type="hidden" value="<?php echo $datosArrayEnvia  ?>" name="datos" />
     </p>
-  	<p><strong>Informaci&oacute;n Cheque OSPIM</strong></p>
+  	<p><strong>Informaci&oacute;n Cheque USIMRA</strong></p>
   	<table width="660" border="0">
       <tr>
         <td width="334"><label>N&uacute;mero de Cheque
@@ -108,7 +108,7 @@ function validar(formulario) {
       </tr>
         </table>
   	<p><strong>Informaci&oacute;n Valores al Cobro </strong></p>
-  	<table border="1" width="1000" bordercolorlight="#000099" bordercolordark="#0066FF" bordercolor="#000000" cellpadding="2" cellspacing="0">
+  	<table border="1" width="1000" bordercolorlight="#000000" bordercolordark="#000000" bordercolor="#000000" cellpadding="2" cellspacing="0">
       <tr>
         <td width="150"><div align="center"><strong><font size="1" face="Verdana">CUIT</font></strong></div></td>
         <td width="400"><div align="center"><strong><font size="1" face="Verdana">Raz&oacute;n Social </font></strong></div></td>
@@ -129,11 +129,11 @@ function validar(formulario) {
 		$cuit = $info[0];
 		$nroacu = $info[1];
 		$nrocuo = $info[2];
-		$sqlCuota = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
+		$sqlCuota = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
 		$resCuota = mysql_query( $sqlCuota,$db); 
 		$rowCuota = mysql_fetch_array($resCuota); 
 		
-		$sqlValor= "select * from valoresalcobro where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
+		$sqlValor= "select * from valoresalcobrousimra where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
 		$resValor = mysql_query( $sqlValor,$db); 
 		$rowValor = mysql_fetch_array($resValor); 
 

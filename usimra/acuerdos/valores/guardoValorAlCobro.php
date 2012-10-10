@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $fechadeposito  = date("Y-m-d H:m:s");
 $usuariodeposito = $_SESSION['usuario'];
 
@@ -32,12 +32,12 @@ function array_recibe($arrayDatos) {
 
 $datos = array_values($_POST);
 $info = array_recibe($datos[0]);
-$nroChequeOspim = $datos[1];
-$fechaChequeOspim = fechaParaGuardar($datos[2]);
+$nroChequeUsimra = $datos[1];
+$fechaChequeUsimra = fechaParaGuardar($datos[2]);
 $banco = "NACION";
 
-//echo "NRO CHEQUE: ".$nroChequeOspim; echo "<br>";
-//echo "FECHA CHEQUE: ".$fechaChequeOspim; echo "<br>";
+//echo "NRO CHEQUE: ".$nroChequeUsimra; echo "<br>";
+//echo "FECHA CHEQUE: ".$fechaChequeUsimra; echo "<br>";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -55,8 +55,7 @@ try {
 		$i = $i + 1;
 		$fechaResumen = fechaParaGuardar($datos[$i]);
 		$i = $i + 1;
-		$sqlUpdateValores = "UPDATE valoresalcobro set idresumenbancario = '$idResumen', fecharesumenbancario = '$fechaResumen', chequenroospim = 		 		'$nroChequeOspim', chequebancoospim = '$banco', chequefechaospim = '$fechaChequeOspim', usuariodepositoospim = '$usuariodeposito', 
-		fechadepositoospim = '$fechadeposito' where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
+		$sqlUpdateValores = "UPDATE valoresalcobrousimra set idresumenbancario = '$idResumen', fecharesumenbancario = '$fechaResumen', chequenrousimra = '$nroChequeUsimra', chequebancousimra = '$banco', chequefechausimra = '$fechaChequeUsimra', usuariodepositousimra = '$usuariodeposito', fechadepositousimra = '$fechadeposito' where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
 	
 		//echo $sqlUpdateValores;  echo "<br>";
 		$dbh->exec($sqlUpdateValores);

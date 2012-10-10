@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 
 $orden = $_POST['orden'];
 
@@ -13,7 +13,7 @@ if ($orden == "cuit") {
 	$titulo = "FECHA VALOR AL COBRO";
 }
 
-$sqlLista = "select * from valoresalcobro where chequenroospim = '' order by $orden";
+$sqlLista = "select * from valoresalcobrousimra where chequenrousimra = '' order by $orden";
 $resLista = mysql_query( $sqlLista,$db); 
 
 ?>
@@ -35,11 +35,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <p align="center" class="Estilo2"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="moduloValores.php">VOLVER</a></strong></font></p>
 <p align="center" class="Estilo2">Listado Valores al Cobro ordenado por <?php echo $titulo ?></p>
 <div align="center">
-  <form id="listado" name="listado" method="post" action="cargaInfoChequeOspim.php">
+  <form id="listado" name="listado" method="post" action="cargaInfoChequeUsimra.php">
     <table width="935" border="0">
       <tr>
         <td width="462"><label>
@@ -50,7 +50,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         </div></td>
       </tr>
     </table>
-    <table border="1" width="935" bordercolorlight="#000099" bordercolordark="#0066FF" bordercolor="#000000" cellpadding="2" cellspacing="0">
+    <table border="1" width="935" bordercolorlight="#000000" bordercolordark="#000000" bordercolor="#000000" cellpadding="2" cellspacing="0">
       <tr>
         <td width="168"><div align="center"><strong><font size="1" face="Verdana">CUIT</font></strong></div></td>
         <td width="168"><div align="center"><strong><font size="1" face="Verdana">Raz&oacute;n Social </font></strong></div></td>
@@ -78,7 +78,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$nroacuerdo."</font></div></td>");
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$nrocuota."</font></div></td>");
 				
-				$sqlCuota = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacuerdo and nrocuota = $nrocuota";
+				$sqlCuota = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacuerdo and nrocuota = $nrocuota";
 				$resCuota = mysql_query($sqlCuota,$db); 
 				$rowCuota = mysql_fetch_array($resCuota); 
 				

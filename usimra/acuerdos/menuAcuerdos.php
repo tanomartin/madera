@@ -49,8 +49,10 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td><p align="center">Valores al Cobro</p>
-	   <!-- href="valores/moduloValores.php" -->
-      <p align="center"><a href="../moduloNoDisponible.php"><img src="img/valores.jpg" width="96" height="76" border="0" /></a></p>
+	   <!-- href="../moduloNoDisponible.php" -->
+	   
+	  
+      <p align="center"><a href="valores/moduloValores.php"><img src="img/valores.jpg" width="96" height="76" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>
