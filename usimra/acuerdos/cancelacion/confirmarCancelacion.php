@@ -83,6 +83,9 @@ function LogicaCargaRemesa(Cuenta) {
 			limpiarFechaRemesa();
 			limpiarRemesas();
 		} else {
+			document.forms.formularioSeleCuotas.fecharemesa.value = "";
+			document.forms.formularioSeleCuotas.selectRemesa.length = 0;
+			document.forms.formularioSeleCuotas.selectRemito.length = 0;
 			document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = true;
 			document.forms.formularioSeleCuotas.fecharemesa.disabled = false;
 			document.forms.formularioSeleCuotas.botonRemesas.disabled = false;
@@ -95,6 +98,8 @@ function LogicaCargaRemito(Cuenta) {
 			limpiarFechaRemito();
 			limpiarRemitoSuelto();
 		} else {
+			document.forms.formularioSeleCuotas.fecharemito.value = "";		
+			document.forms.formularioSeleCuotas.selectRemitoSuelto.length = 0;
 			document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
 			document.forms.formularioSeleCuotas.fecharemito.disabled = false;
 			document.forms.formularioSeleCuotas.botonRemitos.disabled = false;

@@ -86,6 +86,9 @@ function LogicaCargaRemesa(Cuenta) {
 			limpiarFechaRemesa();
 			limpiarRemesas();
 		} else {
+			document.forms.formularioSeleCuotas.fecharemesa.value = "";
+			document.forms.formularioSeleCuotas.selectRemesa.length = 0;
+			document.forms.formularioSeleCuotas.selectRemito.length = 0;
 			document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = true;
 			document.forms.formularioSeleCuotas.fecharemesa.disabled = false;
 			document.forms.formularioSeleCuotas.botonRemesas.disabled = false;
@@ -98,6 +101,8 @@ function LogicaCargaRemito(Cuenta) {
 			limpiarFechaRemito();
 			limpiarRemitoSuelto();
 		} else {
+			document.forms.formularioSeleCuotas.fecharemito.value = "";		
+			document.forms.formularioSeleCuotas.selectRemitoSuelto.length = 0;
 			document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
 			document.forms.formularioSeleCuotas.fecharemito.disabled = false;
 			document.forms.formularioSeleCuotas.botonRemitos.disabled = false;
@@ -260,6 +265,7 @@ function cargarDatos() {
 		document.forms.formularioSeleCuotas.botonRemitos.disabled = false;
 		document.forms.formularioSeleCuotas.fecharemesa.value = "";
 		document.forms.formularioSeleCuotas.selectRemesa.disabled = true;
+		document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
 	}
 }
 
@@ -305,8 +311,7 @@ function cargarDatos() {
 				print ("</tr>"); 
 				?>
 	</table>
-	
-     <p>Fecha de Pago <b><?php echo invertirFecha($rowCuo['fechacancelacion']); ?></b>
+     <p>Fecha de Pago <input name="fechapagada" readonly="readonly" value="<?php echo invertirFecha($rowCuo['fechacancelacion']); ?>" type="text" id="fechapagada" size="8" style="background-color:#CCCCCC">
      </p>
      <p>Cuenta de la Boleta
        <label>
@@ -405,7 +410,7 @@ function cargarDatos() {
      </p>
      <p>
        <label>
-       <input type="submit" name="Submit" value="Cancelar Cuota">
+       <input type="submit" name="Submit" value="Modificar Datos Conciliacion">
        </label>
      </p>
   </div>
