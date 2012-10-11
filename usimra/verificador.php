@@ -13,7 +13,7 @@ if (!$dbusuario) {
 	$_SESSION['usuario'] = $usuario;
 	$_SESSION['clave'] = $clave;
 	$_SESSION['aut'] = 1;
-	$_SESSION['dbname'] = "pruebaAcuerdos";
+	$_SESSION['dbname'] = "madera";
 	$_SESSION['ultimoAcceso'] = date("Y-n-j H:i:s");
 	header ('location:menu.php');	
 }

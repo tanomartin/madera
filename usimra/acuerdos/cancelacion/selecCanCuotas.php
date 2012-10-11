@@ -113,7 +113,15 @@ A:hover {text-decoration: none;color:#33CCFF }
 						print ("<td width=168><div align=center><font face=Verdana size=1>No Cancelable</font></div></td>");
 					} else {
 						if ($rowListado['sistemacancelacion'] == 'M') {
-							print ("<td width=168><div align=center><font face=Verdana size=1><a href='datosConciliacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelada - Modificar Datos Banco</font></div></td>");
+							$cuota = $rowListado['nrocuota'];
+							$sqlConcilia = "select * from conciliacuotasusimra where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
+							$resConcilia = mysql_query($sqlConcilia,$db); 
+							$rowConcilia = mysql_fetch_array($resConcilia);							
+							if ($rowConcilia['estadoconciliacion'] == 0) {
+								print ("<td width=168><div align=center><font face=Verdana size=1><a href='datosConciliacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelada - Modificar Datos Banco</font></div></td>");
+							} else {
+								print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
+							}
 						} else {
 							print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
 						}
