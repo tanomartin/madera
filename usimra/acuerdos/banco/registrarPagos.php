@@ -65,14 +65,14 @@ try {
 			}
 			else
 			{
-				$cuentaboleta = 2;
-				$cuentaremesa = 2;
-				$nroremesa = 1;
-				$nroremitoremesa=0;
-				$cuentaremitosuelto=0;
+				$cuentaboleta = '2';
+				$cuentaremesa = '2';
+				$nroremesa = '1';
+				$nroremitoremesa='0';
+				$cuentaremitosuelto='0';
 				$fecharemitosuelto='00000000';
-				$nroremitosuelto=0;
-				$estadoconciliacion=0;
+				$nroremitosuelto='0';
+				$estadoconciliacion='0';
 				$fechaconciliacion='00000000000000';
 				$usuarioconciliacion='';
 				$fechamodificacion='00000000000000';
@@ -282,16 +282,15 @@ try {
 														print ("<td><div align=center><font size=1 face=Verdana>Cheque Rechazado</font></div></td>");
 													else
 													{
-														$sqlAddConcilia="INSERT INTO conciliacuotasusimra VALUES(:cuit,:nroacuerdo,:nrocuota,:cuentaboleta,:cuentaremesa,:fecharemesa,:nroremesa,:nroremitoremesa,:cuentaremitosuelto,:fecharemitosuelto,:nroremitosuelto,:estadoconciliacion,:fechaconciliacion, usuarioconciliacion,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
-														$resultAddConcilia = $dbh->prepare($sqlAddConcilia);
-														//echo $sqlAddConcilia; echo "<br>";
-														if ($resultAddconcilia->execute(array(':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':cuentaboleta' => $cuentaboleta, ':cuentaremesa' => $cuentaremesa, ':fecharemesa' => $acreditabanco, ':nroremesa' => $nroremesa, ':nroremitoremesa' => $nroremitoremesa, 'cuentaremitosuelto:' => $cuentaremitosuelto, 'fecharemitosuelto:' => $fecharemitosuelto, ':nroremitosuelto' => $nroremitosuelto, 'estadoconciliacion:' => $estadoconciliacion, ':fechaconciliacion' => $fechaconciliacion, ':usuarioconciliacion' => $usuarioconciliacion, ':fecharegistro' => $fechacancelacion, ':usuarioregistro' => $usuariocancelacion, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion)))
+														$sqlLeeRemitosRemesas="SELECT * FROM remitosremesasusimra WHERE codigocuenta = '$cuentaremesa' and sistemaremesa = 'E' and fecharemesa = '$acreditabanco' and nroremesa = '$nroremesa' and nrocontrol = '$controlboleta' and importebruto = '$montopago'";
+														$resultLeeRemitosRemesas = $dbh->query($sqlLeeRemitosRemesas);
+														foreach ($resultLeeRemitosRemesas as $remitos)
 														{
-															//print "<p>Registro Conciliacion agregado correctamente.</p>\n";
-														}
-														else
-														{
-															//print "<p>Error al agregar el registro Conciliacion.</p>\n";
+															$nroremitoremesa = $remitos[nroremito];
+
+															$sqlAddConcilia="INSERT INTO conciliacuotasusimra (cuit, nroacuerdo, nrocuota, cuentaboleta, cuentaremesa, fecharemesa, nroremesa, nroremitoremesa, cuentaremitosuelto, fecharemitosuelto, nroremitosuelto, estadoconciliacion, fechaconciliacion, usuarioconciliacion, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES ('$cuitboleta','$acuerdo','$cuota','$cuentaboleta','$cuentaremesa','$acreditabanco','$nroremesa','$nroremitoremesa','$cuentaremitosuelto','$fecharemitosuelto','$nroremitosuelto','$estadoconciliacion','$fechaconciliacion','$usuarioconciliacion','$fechacancelacion','$usuariocancelacion','$fechamodificacion','$usuariomodificacion')";
+															$resultAddConcilia = $dbh->query($sqlAddConcilia);
+															//echo $sqlAddConcilia; echo "<br>";
 														}
 
 														$totacanc=$totacanc+$montopago;

@@ -62,19 +62,20 @@ else{
 			$brutente=substr($registros[$i], 42, 13);
 			$brutdeci=substr($registros[$i], 55, 2);
 			$impbruto=$brutente.".".$brutdeci;
+			$ctrremit=substr($registros[$i], 73, 14);
 			$usuremit=$_SESSION['usuario'];
 
-			$sqlRemito="INSERT INTO remitosremesasusimra VALUES('2','E','$fecremes','1','$nroremit','$fecremit','$sucremit','$impbruto','0.00','$impbruto','1','0.00','0.00','0.00','0.00','0.00','0.00','0','0','','','','$fechahoy','$usuremit','','')";
+			$sqlRemito="INSERT INTO remitosremesasusimra (codigocuenta, sistemaremesa, fecharemesa, nroremesa, nroremito, fecharemito, sucursalbanco, importebruto, importecomision, importeneto, boletasremito, importeboletasaporte, importeboletasrecargo, importeboletasvarios, importeboletaspagos, importeboletascuotas, importeboletasbruto, cantidadboletas, nrocontrol, estadoconciliacion, fechaconciliacion, usuarioconciliacion, fechaacreditacion, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES('2','E','$fecremes','1','$nroremit','$fecremit','$sucremit','$impbruto','0.00','$impbruto','1','0.00','0.00','0.00','0.00','0.00','0.00','0','$ctrremit','0','','','','$fechahoy','$usuremit','','')";
 			$resultRemito= mysql_query($sqlRemito,$db);
 
-			$totbruto=totbruto+$impbruto;
+			$totbruto=$totbruto+$impbruto;
 		}
 	}
 
-	if(totbruto!=0.00)
+	if($totbruto!=0.00)
 	{
-		$totfaima=totbruto*0.0968;
-		$totnetos=totbruto-totfaima;
+		$totfaima=$totbruto*0.0968;
+		$totnetos=$totbruto-$totfaima;
 		$usuremes=$_SESSION['usuario'];
 		$sqlRemesa="INSERT INTO remesasusimra VALUES('2','E','$fecremes','1','$totbruto','0.00','$totnetos','$totfaima','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0','0','','','','$fechahoy','$usuremes','','')";
 		$resultRemesa= mysql_query($sqlRemesa,$db);
@@ -117,7 +118,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			$fechaarc=substr($archivo_name, 8, 2)."-".substr($archivo_name, 10, 2)."-".substr($archivo_name, 12, 4);
 		else
 			$fechaarc=substr($archivo_name, 60, 2)."-".substr($archivo_name, 62, 2)."-".substr($archivo_name, 64, 4);
-		if ($hayPagos == 1)
+		if ($hayPago == 1)
 			print("Ingreso Exitoso -- Los registros del dia $fechaarc han ingresado correctamente a la Base de Datos.<br/>\n");
 		else
 			print("Sin Ingreso de Registros - El archivo del dia $fechaarc no contiene registros vinculados a Acuerdos.<br/>\n");
