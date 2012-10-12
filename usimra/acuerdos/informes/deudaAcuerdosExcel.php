@@ -1,7 +1,7 @@
 <?php 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php");
-require_once ($_SERVER['DOCUMENT_ROOT']."/ospim/lib/phpExcel/Classes/PHPExcel.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php");
+require_once ($_SERVER['DOCUMENT_ROOT']."/usimra/lib/phpExcel/Classes/PHPExcel.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 $fechacargada=$_POST['fechaarchivo'];
@@ -11,9 +11,9 @@ $fechacancelacion=substr($fechacargada, 6, 4)."-".substr($fechacargada, 3, 2)."-
 $fechagenera=date("d/m/Y");
 
 if(strcmp("localhost",$maquina)==0)
-	$archivo_name="Ve que pedis-".substr($fechacargada, 0, 2)."-".substr($fechacargada, 3, 2)."-".substr($fechacargada, 6, 4)."!!!.xls";
+	$archivo_name="Deuda de Acuerdos por Año al ".substr($fechacargada, 0, 2)."-".substr($fechacargada, 3, 2)."-".substr($fechacargada, 6, 4)."!!!.xls";
 else
-	$archivo_name="/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Ve que pedis-".substr($fechacargada, 0, 2)."-".substr($fechacargada, 3, 2)."-".substr($fechacargada, 6, 4)."!!!.xls";
+	$archivo_name="/home/sistemas/Documentos/Repositorio/GGGG1210121610SYS/Deuda de Acuerdos por Año al ".substr($fechacargada, 0, 2)."-".substr($fechacargada, 3, 2)."-".substr($fechacargada, 6, 4)."!!!.xls";
 
 //conexion y creacion de transaccion.
 try{
@@ -41,7 +41,7 @@ try{
 	$objPHPExcel->setActiveSheetIndex(0);
 
 	// Setea encabezado y pie de pagina
-	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&BO.S.P.I.M.&G&C&H&BAcuerdos por Anio - '.$objPHPExcel->getActiveSheet()->getTitle().'&R&B'.$fechagenera);
+	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&BU.S.I.M.R.A.&G&C&H&BAcuerdos por Anio - '.$objPHPExcel->getActiveSheet()->getTitle().'&R&B'.$fechagenera);
 	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&L&R&BPagina &P de &N');
 
 	// Setea en configuracion de pagina orientacion y tamaño
@@ -92,7 +92,7 @@ try{
 
 	$fila=1;	
 
-	$sqlAcuerdos="SELECT * FROM cabacuerdosospim WHERE estadoacuerdo = 1 and tipoacuerdo = 1 and fechaacuerdo >= $fechainicio and fechaacuerdo <= $fechafin order by fechaacuerdo, cuit, nroacuerdo";
+	$sqlAcuerdos="SELECT * FROM cabacuerdosusimra WHERE estadoacuerdo = 1 and tipoacuerdo = 1 and fechaacuerdo >= $fechainicio and fechaacuerdo <= $fechafin order by fechaacuerdo, cuit, nroacuerdo";
 	$resultAcuerdos = $dbh->query($sqlAcuerdos);
 	if ($resultAcuerdos){
 		foreach ($resultAcuerdos as $acuerdos){
@@ -106,7 +106,7 @@ try{
 			$montocheque = 0.00;
 			$montodepositado = 0.00;
 
-			$sqlCuotas="SELECT * FROM cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
+			$sqlCuotas="SELECT * FROM cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo";
 			$resultCuotas = $dbh->query($sqlCuotas);
 			if ($resultCuotas){
 				set_time_limit(0);

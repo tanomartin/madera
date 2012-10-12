@@ -1,7 +1,7 @@
 <?php 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php");
-require_once ($_SERVER['DOCUMENT_ROOT']."/ospim/lib/phpExcel/Classes/PHPExcel.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php");
+require_once ($_SERVER['DOCUMENT_ROOT']."/usimra/lib/phpExcel/Classes/PHPExcel.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 $fechacargadadesde=$_POST['fechadesde'];
@@ -13,7 +13,7 @@ $fechagenera=date("d/m/Y");
 if(strcmp("localhost",$maquina)==0)
 	$archivo_name="Verificacion de Cuotas desde el ".substr($fechacargadadesde, 0, 2)."-".substr($fechacargadadesde, 3, 2)."-".substr($fechacargadadesde, 6, 4)." hasta el ".substr($fechacargadahasta, 0, 2)."-".substr($fechacargadahasta, 3, 2)."-".substr($fechacargadahasta, 6, 4).".xls";
 else
-	$archivo_name="/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Verificacion de Cuotas desde el ".substr($fechacargadadesde, 0, 2)."-".substr($fechacargadadesde, 3, 2)."-".substr($fechacargadadesde, 6, 4)." hasta el ".substr($fechacargadahasta, 0, 2)."-".substr($fechacargadahasta, 3, 2)."-".substr($fechacargadahasta, 6, 4).".xls";
+	$archivo_name="/home/sistemas/Documentos/Repositorio/GGGG1210121610SYS/Verificacion de Cuotas desde el ".substr($fechacargadadesde, 0, 2)."-".substr($fechacargadadesde, 3, 2)."-".substr($fechacargadadesde, 6, 4)." hasta el ".substr($fechacargadahasta, 0, 2)."-".substr($fechacargadahasta, 3, 2)."-".substr($fechacargadahasta, 6, 4).".xls";
 
 //conexion y creacion de transaccion.
 try{
@@ -41,7 +41,7 @@ try{
 	$objPHPExcel->setActiveSheetIndex(0);
 
 	// Setea encabezado y pie de pagina
-	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&BO.S.P.I.M.&G&C&H&BVerificacion de Cuotas - '.$objPHPExcel->getActiveSheet()->getTitle().'&R&B'.$fechagenera);
+	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&BU.S.I.M.R.A.&G&C&H&BVerificacion de Cuotas - '.$objPHPExcel->getActiveSheet()->getTitle().'&R&B'.$fechagenera);
 	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&L&R&BPagina &P de &N');
 
 	// Setea en configuracion de pagina orientacion y tamaño
@@ -100,7 +100,7 @@ try{
 
 	$fila=1;
 		
-	$sqlCuotas="SELECT * FROM cuoacuerdosospim WHERE sistemacancelacion in ('M','E') order by cuit, nroacuerdo, nrocuota";
+	$sqlCuotas="SELECT * FROM cuoacuerdosusimra WHERE sistemacancelacion in ('M','E') order by cuit, nroacuerdo, nrocuota";
 	$resultCuotas = $dbh->query($sqlCuotas);
 	if ($resultCuotas){
 		foreach ($resultCuotas as $cuotas){

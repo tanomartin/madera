@@ -1,7 +1,7 @@
 <?php 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php");
-require_once ($_SERVER['DOCUMENT_ROOT']."/ospim/lib/phpExcel/Classes/PHPExcel.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php");
+require_once ($_SERVER['DOCUMENT_ROOT']."/usimra/lib/phpExcel/Classes/PHPExcel.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 $fechacargadadesde=$_POST['fechadesde'];
@@ -13,7 +13,7 @@ $fechagenera=date("d/m/Y");
 if(strcmp("localhost",$maquina)==0)
 	$archivo_name="Liquidaciones desde el ".substr($fechacargadadesde, 0, 2)."-".substr($fechacargadadesde, 3, 2)."-".substr($fechacargadadesde, 6, 4)." hasta el ".substr($fechacargadahasta, 0, 2)."-".substr($fechacargadahasta, 3, 2)."-".substr($fechacargadahasta, 6, 4).".xls";
 else
-	$archivo_name="/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Liquidaciones desde el ".substr($fechacargadadesde, 0, 2)."-".substr($fechacargadadesde, 3, 2)."-".substr($fechacargadadesde, 6, 4)." hasta el ".substr($fechacargadahasta, 0, 2)."-".substr($fechacargadahasta, 3, 2)."-".substr($fechacargadahasta, 6, 4).".xls";
+	$archivo_name="/home/sistemas/Documentos/Repositorio/GGGG1210121610SYS/Liquidaciones desde el ".substr($fechacargadadesde, 0, 2)."-".substr($fechacargadadesde, 3, 2)."-".substr($fechacargadadesde, 6, 4)." hasta el ".substr($fechacargadahasta, 0, 2)."-".substr($fechacargadahasta, 3, 2)."-".substr($fechacargadahasta, 6, 4).".xls";
 
 //conexion y creacion de transaccion.
 try{
@@ -41,7 +41,7 @@ try{
 	$objPHPExcel->setActiveSheetIndex(0);
 
 	// Set header and footer. When no different headers for odd/even are used, odd header is assumed.
-	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&BO.S.P.I.M.&G&C&H&BLiquidacion Comisiones - '.$objPHPExcel->getActiveSheet()->getTitle().'&R&B'.$fechagenera);
+	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&BU.S.I.M.R.A.&G&C&H&BLiquidacion Comisiones - '.$objPHPExcel->getActiveSheet()->getTitle().'&R&B'.$fechagenera);
 	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&L&R&BPagina &P de &N');
 
 	// Set page orientation and size
@@ -104,7 +104,7 @@ try{
 
 	$fila=1;
 
-	$sqlCuotas="SELECT * FROM cuoacuerdosospim WHERE montopagada != 0.00";
+	$sqlCuotas="SELECT * FROM cuoacuerdosusimra WHERE montopagada != 0.00";
 	$resultCuotas = $dbh->query($sqlCuotas);
 	if ($resultCuotas){
 		set_time_limit(0);
@@ -120,7 +120,7 @@ try{
 				}
 			}
 
-			$sqlAcuerdos="SELECT * FROM cabacuerdosospim WHERE cuit = $cuit and nroacuerdo = $acuerdo";
+			$sqlAcuerdos="SELECT * FROM cabacuerdosusimra WHERE cuit = $cuit and nroacuerdo = $acuerdo";
 			$resultAcuerdos = mysql_query( $sqlAcuerdos,$db);						
 			$rowAcuerdos = mysql_fetch_array($resultAcuerdos);
 

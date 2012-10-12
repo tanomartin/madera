@@ -1,7 +1,7 @@
 <?php 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php");
-require_once ($_SERVER['DOCUMENT_ROOT']."/ospim/lib/phpExcel/Classes/PHPExcel.php");
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php");
+require_once ($_SERVER['DOCUMENT_ROOT']."/usimra/lib/phpExcel/Classes/PHPExcel.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 $fechacargada=$_POST['fechahasta'];
@@ -11,7 +11,7 @@ $fechagenera=date("d/m/Y");
 if(strcmp("localhost",$maquina)==0)
 	$archivo_name="Cheques en Cartera al ".substr($fechacargada, 0, 2)."-".substr($fechacargada, 3, 2)."-".substr($fechacargada, 6, 4).".xls";
 else
-	$archivo_name="/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Cheques en Cartera al ".substr($fechacargada, 0, 2)."-".substr($fechacargada, 3, 2)."-".substr($fechacargada, 6, 4).".xls";
+	$archivo_name="/home/sistemas/Documentos/Repositorio/GGGG1210121610SYS/Cheques en Cartera al ".substr($fechacargada, 0, 2)."-".substr($fechacargada, 3, 2)."-".substr($fechacargada, 6, 4).".xls";
 
 //conexion y creacion de transaccion.
 try{
@@ -39,7 +39,7 @@ try{
 	$objPHPExcel->setActiveSheetIndex(0);
 
 	// Setea encabezado y pie de pagina
-	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&BO.S.P.I.M.&G&C&H&BCheques en Cartera al '.$objPHPExcel->getActiveSheet()->getTitle().'&R&B'.$fechagenera);
+	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader('&L&BU.S.I.M.R.A.&G&C&H&BCheques en Cartera al '.$objPHPExcel->getActiveSheet()->getTitle().'&R&B'.$fechagenera);
 	$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddFooter('&L&R&BPagina &P de &N');
 
 	// Setea en configuracion de pagina orientacion y tamaño
@@ -89,7 +89,7 @@ try{
 
 	$fila=1;	
 
-	$sqlCuotas="SELECT * FROM cuoacuerdosospim WHERE tipocancelacion IN(1,3) order by cuit, nroacuerdo, nrocuota";
+	$sqlCuotas="SELECT * FROM cuoacuerdosusimra WHERE tipocancelacion IN(1,3) order by cuit, nroacuerdo, nrocuota";
 	$resultCuotas = $dbh->query($sqlCuotas);
 	if ($resultCuotas){
 		foreach ($resultCuotas as $cuotas){
