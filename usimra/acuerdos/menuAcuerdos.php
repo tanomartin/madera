@@ -35,8 +35,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <tr>
       <td>&nbsp;</td>
       <td><p align="center">Informes</p>
-	  <!-- href="informes/moduloInformes.php" -->
-        <p align="center"><a href="../moduloNoDisponible.php"><img src="img/informes.jpg" width="120" height="80" border="0" alt="enviar"/></a></p>
+	  <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.jpg" width="120" height="80" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
