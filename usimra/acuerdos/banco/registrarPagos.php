@@ -101,9 +101,7 @@ try {
 					$acreditabanco = $imputar[fechaacreditacion];
 					$codbarrabanco = $imputar[codigobarra];
 					$validadabanco = $imputar[fechavalidacion];
-					if($estado=='E' || $estado=='L')
-						$nroremitoremesa=$nroremitoremesa+1;
-
+					
 					$sqlBuscaValida="SELECT * FROM validasusimra WHERE nrocontrol = :nrocontrol";
 					//echo $sqlBuscaValida; echo "<br>";
 					$resultBuscaValida = $dbh->prepare($sqlBuscaValida);
@@ -372,6 +370,10 @@ try {
 												print ("<td><div align=center><font size=1 face=Verdana>La Cuota no puede ser Cancelada</font></div></td>");
 											}
 										}
+									}
+									else
+									{
+										print ("<td><div align=center><font size=1 face=Verdana>El ACUERDO/CUOTA No Existe</font></div></td>");
 									}
 								}
 								else
