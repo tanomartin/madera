@@ -37,7 +37,7 @@ A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <form id="form1" name="form1" onSubmit="return validar(this)" method="POST" action="deudaAcuerdosExcel.php" enctype="multipart/form-data" >
 <p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="moduloInformes.php">VOLVER</a></strong></font></p>
 <p align="center" class="Estilo1">Deuda de Acuerdos por A&ntilde;o</p>
