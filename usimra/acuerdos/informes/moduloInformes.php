@@ -18,7 +18,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <div align="center">
   <p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
   <p><span class="Estilo2">M&oacute;dulo De Informes</span></p>
