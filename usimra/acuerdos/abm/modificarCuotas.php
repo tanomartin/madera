@@ -23,7 +23,10 @@ $sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo 
 $resCuotas = mysql_query($sqlCuotas,$db);
 $canCuotas = mysql_num_rows($resCuotas);
 
-
+$sqlMonto =  "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
+$resMonto = mysql_query($sqlMonto,$db);
+$rowMonto = mysql_fetch_array($resMonto);
+$montoapagar = $rowMonto['montoacuerdo'] - $rowMonto['montopagadas'];
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -118,6 +121,20 @@ function desbloquear(){
 	document.body.style.cursor = 'default';
 	document.getElementById("nuevaCuota").disabled = false;
 	document.getElementById("guardar").disabled = false;
+}
+
+function validoMontos() {
+	var monto = 0;
+	var cantCuotas = document.getElementById("cantCuotas").value;
+	for (i=1; i<=cantCuotas; i++) {
+		monto = monto + parseFloat(document.getElementById("monto"+i).value);
+	}
+	if (monto < <?php echo $montoapagar ?>) {
+		alert("La suma del monto de las cuotas en inferior al monto del acuerdo");
+		document.getElementById("monto1").focus();
+		return false;
+	}
+	return true;
 }
 
 function validarYGuardar(formulario) {
@@ -286,6 +303,7 @@ function popUpcambio(confi) {
       <tr>
         <td width="365">
           <div align="left">
+		  	<input id="cantCuotas" name="cantCuotas" value="<?php echo $contadorCuotas ?>" size="2" style="visibility:hidden">
             <input type="button" id="nuevaCuota" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">
             </div>
         <div align="right"></div></td>
