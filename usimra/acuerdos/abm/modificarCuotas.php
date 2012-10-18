@@ -33,11 +33,6 @@ $sqlMonto =  "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo 
 $resMonto = mysql_query($sqlMonto,$db);
 $rowMonto = mysql_fetch_array($resMonto);
 $montoapagar = $rowMonto['montoacuerdo'] - $rowMonto['montopagadas'] - $montoBoletasImpresas;
-
-echo $rowMonto['montoacuerdo'];echo "<br>"; echo "<br>";
-echo $rowMonto['montopagadas'];echo "<br>"; echo "<br>";
-echo $montoBoletasImpresas;echo "<br>"; echo "<br>";
-echo $montoapagar; echo "<br>"; echo "<br>";
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -141,13 +136,12 @@ function validoMontos() {
 		monto = monto + parseFloat(document.getElementById("monto"+i).value);
 	}
 	monto = Math.round(monto*100)/100;
-	alert(monto);
 	if (monto < <?php echo $montoapagar ?>) {
 		alert("La suma del monto de las cuotas en inferior al monto del acuerdo");
 		document.getElementById("monto1").focus();
 		return false;
 	}
-	return false;
+	return true;
 }
 
 function validarYGuardar(formulario) {
