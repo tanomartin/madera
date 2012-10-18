@@ -93,16 +93,16 @@ try {
 	$total=0;
 	$cuotas=0;
 	foreach ($resCuotas as $cuota) {
-		echo $cuota['montocuota']; echo "<br>";
+		//echo $cuota['montocuota']; //echo "<br>";
 		$total = $total + $cuota['montocuota'];
 		$cuotas = $cuotas + 1;
 	}
 
 	$saldo = $total - $montopagado;
 	
-	echo "TOTAL: ".$total; echo "<br>";
-	echo "MONTOP: ".$montopagado; echo "<br>";
-	echo "SALDO: ".$saldo; echo "<br>";
+	//echo "TOTAL: ".$total; //echo "<br>";
+	//echo "MONTOP: ".$montopagado; //echo "<br>";
+	//echo "SALDO: ".$saldo; //echo "<br>";
 	
 	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET cuotasapagar=$cuotas, montoapagar=$total, saldoacuerdo = $saldo WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
 	//echo $sqlUpdateMonto; //echo "<br>";
@@ -112,7 +112,7 @@ try {
 	Header("Location: $pagina"); 
 	
 } catch (PDOException $e) {
-	echo $e->getMessage();
+	//echo $e->getMessage();
 	$dbh->rollback();
 }
 ?>

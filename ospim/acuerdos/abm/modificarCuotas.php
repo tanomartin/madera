@@ -23,10 +23,16 @@ $sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo =
 $resCuotas = mysql_query($sqlCuotas,$db);
 $canCuotas = mysql_num_rows($resCuotas);
 
+$sqlMontoImpresas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa != 0";
+$resMontoImpresas = mysql_query($sqlMontoImpresas,$db);
+while ($rowMontoImpresas=mysql_fetch_array($resMontoImpresas)) {
+	$montoBoletasImpresas = $rowMontoImpresas['montocuota'];
+}
+
 $sqlMonto =  "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 $resMonto = mysql_query($sqlMonto,$db);
 $rowMonto = mysql_fetch_array($resMonto);
-$montoapagar = $rowMonto['montoacuerdo'] - $rowMonto['montopagadas'];
+$montoapagar = $rowMonto['montoacuerdo'] - $rowMonto['montopagadas'] - $montoBoletasImpresas;
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -129,6 +135,7 @@ function validoMontos() {
 	for (i=1; i<=cantCuotas; i++) {
 		monto = monto + parseFloat(document.getElementById("monto"+i).value);
 	}	
+	monto = Math.round(monto*100)/100;
 	if (monto < <?php echo $montoapagar ?>) {
 		alert("La suma del monto de las cuotas en inferior al monto del acuerdo");
 		document.getElementById("monto1").focus();
@@ -303,7 +310,6 @@ function popUpcambio(confi) {
       <tr>
         <td width="365">
           <div align="left">
-            <input id="cantCuotas" name="cantCuotas" value="<?php echo $contadorCuotas ?>" size="2" style="visibility:hidden">
 			<input type="button" id="nuevaCuota" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">
             </div>
         <div align="right"></div></td>

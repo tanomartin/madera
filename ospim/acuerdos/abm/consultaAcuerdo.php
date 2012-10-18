@@ -158,16 +158,16 @@ A:hover {text-decoration: none;color:#00FFFF }
     <p><strong>Cuotas</strong></p>
     <table width="972" border="1">
       <tr>
-        <td width="28"><div align="center"><b>N&deg; </b></div></td>
-        <td width="81"><div align="center"><b>Monto </b></div></td>
-        <td width="82"><div align="center"><b>Fecha </b></div></td>
-        <td width="106"><div align="center"><b>Cancelacion</b></div></td>
-        <td width="91"><div align="center"><b>Nro Cheque</b> </div></td>
-        <td width="83"><div align="center"><b>Banco </b></div></td>
-        <td width="99"><div align="center"><b>Fecha Cheque </b></div></td>
-		<td width="125"><div align="center"><b>Observaciones</b> </div></td>
-		<td width="119"><div align="center"><b>Estado</b> </div></td>
-		<td width="94"><div align="center"><b>Fecha Pago</b> </div></td>
+        <td width="79"><div align="center"><b>N&deg; </b></div></td>
+        <td width="78"><div align="center"><b>Monto </b></div></td>
+        <td width="71"><div align="center"><b>Fecha </b></div></td>
+        <td width="102"><div align="center"><b>Cancelacion</b></div></td>
+        <td width="85"><div align="center"><b>Nro Cheque</b> </div></td>
+        <td width="78"><div align="center"><b>Banco </b></div></td>
+        <td width="100"><div align="center"><b>Fecha Cheque </b></div></td>
+		<td width="114"><div align="center"><b>Observaciones</b> </div></td>
+		<td width="109"><div align="center"><b>Estado</b> </div></td>
+		<td width="92"><div align="center"><b>Fecha Pago</b> </div></td>
       </tr>
 	<?php 
 		$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
@@ -218,6 +218,18 @@ A:hover {text-decoration: none;color:#00FFFF }
 			echo ("<div align='center'>Error al leer las cuotas recien cargadas.</div>");
 		}
 	?>
+	<tr>
+	    <td width="79"><div align="center"><b>Total Cuotas</b></div></td>
+		 		<?php print ("<td width=79 align='center'><font face=Verdana size=2><b>".$rowCebecera['montoapagar']."</b></font></td>"); ?>
+	</tr>
+	<tr>
+	    <td width="79"><div align="center"><b>Total Pagado</b></div></td>
+		 		<?php print ("<td width=79 align='center'><font face=Verdana size=2><b>".$rowCebecera['montopagadas']."</b></font></td>"); ?>
+	</tr>
+	<tr>
+	    <td width="79"><div align="center"><b>Saldo</b></div></td>
+		 		<?php print ("<td width=79 align='center'><font face=Verdana size=2><b>".$rowCebecera['saldoacuerdo']."</b></font></td>"); ?>
+	</tr>
 	</table>
     <p>&nbsp;</p>
     <p>
