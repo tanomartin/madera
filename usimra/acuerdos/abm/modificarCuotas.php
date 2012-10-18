@@ -309,7 +309,6 @@ function popUpcambio(confi) {
       <tr>
         <td width="365">
           <div align="left">
-		  	<input id="cantCuotas" name="cantCuotas" value="<?php echo $contadorCuotas ?>" size="2" style="visibility:hidden">
             <input type="button" id="nuevaCuota" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">
             </div>
         <div align="right"></div></td>
