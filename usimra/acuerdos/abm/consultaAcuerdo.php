@@ -228,7 +228,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 	</tr>
 	<tr>
 	    <td width="79"><div align="center"><b>Saldo</b></div></td>
-		 		<?php print ("<td width=79 align='center'><font face=Verdana size=2><b>".$rowCebecera['saldoacuerdo']."</b></font></td>"); ?>
+		 		<?php 
+				$saldoRestante = $rowCebecera['montoapagar'] - $rowCebecera['montopagadas'];
+				print ("<td width=79 align='center'><font face=Verdana size=2><b>".number_format($saldoRestante,2,'.','')."</b></font></td>"); 
+				?>
 	</tr>
 	</table>
     <p>&nbsp;</p>
