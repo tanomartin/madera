@@ -26,7 +26,7 @@ $canCuotas = mysql_num_rows($resCuotas);
 $sqlMontoImpresas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa != 0";
 $resMontoImpresas = mysql_query($sqlMontoImpresas,$db);
 while ($rowMontoImpresas=mysql_fetch_array($resMontoImpresas)) {
-	$montoBoletasImpresas = $rowMontoImpresas['montocuota'];
+	$montoBoletasImpresas = $montoBoletasImpresas + $rowMontoImpresas['montocuota'];
 }
 
 $sqlMonto =  "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
