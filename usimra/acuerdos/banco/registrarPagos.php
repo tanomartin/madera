@@ -89,6 +89,7 @@ try {
 				print ("<td><div align=center><strong><font size=1 face=Verdana>Cuota</font></strong></div></td>");
 				print ("<td><div align=center><strong><font size=1 face=Verdana>Importe</font></strong></div></td>");
 				print ("<td><div align=center><strong><font size=1 face=Verdana>Status</font></strong></div></td>");
+				print ("<td><div align=center><strong><font size=1 face=Verdana>Fecha</font></strong></div></td>");
 				print ("</tr>");
 
         		foreach ($resultLeeAImputar as $imputar)
@@ -99,6 +100,7 @@ try {
 					$cuitbanco = $imputar[cuit];
 					$recaudabanco = $imputar[fecharecaudacion];
 					$acreditabanco = $imputar[fechaacreditacion];
+					$fechabanco = invertirFecha($imputar[fechaacreditacion]);
 					$codbarrabanco = $imputar[codigobarra];
 					$validadabanco = $imputar[fechavalidacion];
 					
@@ -277,7 +279,10 @@ try {
 												if ($resultActualizaCuota->execute(array(':tipocancelacion' => $tiposcanc, ':observaciones' => $observaci, ':boletaimpresa' => $boletaimp, ':montopagada' => $montopago, ':fechapagada' => $fechapago, ':fechacancelacion' => $fechacanc, ':sistemacancelacion' => $sistecanc, ':codigobarra' => $codibarra, ':fechaacreditacion' => $acreditabanco, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota)))
 												{
 													if($tiposcanc=='10')
+													{
 														print ("<td><div align=center><font size=1 face=Verdana>Cheque Rechazado</font></div></td>");
+													    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
+													}
 													else
 													{
 														$sqlLeeRemitosRemesas="SELECT * FROM remitosremesasusimra WHERE codigocuenta = '$cuentaremesa' and sistemaremesa = 'E' and fecharemesa = '$acreditabanco' and nroremesa = '$nroremesa' and nrocontrol = '$controlboleta' and importebruto = '$montopago'";
@@ -294,6 +299,7 @@ try {
 														$totacanc=$totacanc+$montopago;
 														$cantcanc++;
 														print ("<td><div align=center><font size=1 face=Verdana>Cuota Cancelada</font></div></td>");
+													    print ("<td><div align=center><font size=1 face=Verdana>----------</font></div></td>");
 													}
 												}
 												else
@@ -368,22 +374,26 @@ try {
 											else
 											{
 												print ("<td><div align=center><font size=1 face=Verdana>La Cuota no puede ser Cancelada</font></div></td>");
+											    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
 											}
 										}
 									}
 									else
 									{
 										print ("<td><div align=center><font size=1 face=Verdana>El ACUERDO/CUOTA No Existe</font></div></td>");
+									    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
 									}
 								}
 								else
 								{
 									print ("<td><div align=center><font size=1 face=Verdana>CUIT BANCO ".$cuitbanco." Erroneo - Pago No Imputado</font></div></td>");
+								    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
 								}
 							}
 							else
 							{
 								print ("<td><div align=center><font size=1 face=Verdana>IMPORTE BANCO ".$importebanco." Erroneo - Pago No Imputado</font></div></td>");
+							    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
 							}
 							print ("</tr>");
 						}
