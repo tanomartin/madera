@@ -98,13 +98,11 @@ try {
 		$cuotas = $cuotas + 1;
 	}
 
-	$saldo = $total - $montopagado;
-	
 	//echo "TOTAL: ".$total; //echo "<br>";
 	//echo "MONTOP: ".$montopagado; //echo "<br>";
 	//echo "SALDO: ".$saldo; //echo "<br>";
 	
-	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET cuotasapagar=$cuotas, montoapagar=$total, saldoacuerdo = $saldo WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
+	$sqlUpdateMonto = "UPDATE cabacuerdosospim SET cuotasapagar=$cuotas, montoapagar=$total WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
 	//echo $sqlUpdateMonto; //echo "<br>";
 	$dbh->exec($sqlUpdateMonto);
 	$dbh->commit();
