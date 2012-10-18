@@ -23,10 +23,16 @@ $sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo 
 $resCuotas = mysql_query($sqlCuotas,$db);
 $canCuotas = mysql_num_rows($resCuotas);
 
+$sqlMontoImpresas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa != 0";
+$resMontoImpresas = mysql_query($sqlMontoImpresas,$db);
+while ($rowMontoImpresas=mysql_fetch_array($resMontoImpresas)) {
+	$montoBoletasImpresas = $rowMontoImpresas['montocuota'];
+}
+
 $sqlMonto =  "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 $resMonto = mysql_query($sqlMonto,$db);
 $rowMonto = mysql_fetch_array($resMonto);
-$montoapagar = $rowMonto['montoacuerdo'] - $rowMonto['montopagadas'];
+$montoapagar = $rowMonto['montoacuerdo'] - $rowMonto['montopagadas'] - $montoBoletasImpresas;
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
