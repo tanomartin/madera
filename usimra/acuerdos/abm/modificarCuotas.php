@@ -135,6 +135,7 @@ function validoMontos() {
 	for (i=1; i<=cantCuotas; i++) {
 		monto = monto + parseFloat(document.getElementById("monto"+i).value);
 	}
+	monto = Math.round(monto*100)/100;
 	if (monto < <?php echo $montoapagar ?>) {
 		alert("La suma del monto de las cuotas en inferior al monto del acuerdo");
 		document.getElementById("monto1").focus();
