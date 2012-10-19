@@ -2,7 +2,7 @@
 include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
-$cambio=$_GET['cambio'];
+$cantCuotas=$_GET['cantAgregar'];
 
 $sqlMod = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa = 0";
 $resMod = mysql_query($sqlMod,$db);
@@ -129,6 +129,16 @@ function desbloquear(){
 	document.getElementById("guardar").disabled = false;
 }
 
+function cartelCantidadCuotas(){
+	var cantCuotasAgregar = prompt("Introduzca cantidad de cuotas","0");
+	if (isNumberPositivo(cantCuotasAgregar)) {
+		location.href = "modificarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu ?>&cantAgregar=" + cantCuotasAgregar 
+	} else {
+		alert("Debe ser un numero positivo");
+		return false;
+	}
+}
+
 function validoMontos() {
 	var monto = 0;
 	var cantCuotas = document.getElementById("cantCuotas").value;
@@ -147,19 +157,16 @@ function validoMontos() {
 function validarYGuardar(formulario) {
 	var nombreMonto, nombreFecha, nombreTipo;
 	var monto, fecha, tipoCance;
-	var finfor = <?php echo $canMod ?>;
-	var id = finfor+1;
+	var cantidadModif = <?php echo $canMod ?>;
+	var id = cantidadModif+1;
 	var nombre = "monto"+id;
+	finfor = cantidadModif + <?php echo $cantCuotas ?>;
 	
+	document.getElementById("cantCuotas").value = finfor;
 	document.getElementById("nuevaCuota").disabled = true;
 	document.getElementById("guardar").disabled = true;
 	document.body.style.cursor = 'wait';
 	
-	if (!document.getElementById(nombre).disabled) {
-		finfor = finfor +1;
-	}
-	
-	document.getElementById("cantCuotas").value = finfor;
 
 	for (i=1; i<=finfor; i++) {
 		nombreMonto = "monto"+i;
@@ -198,13 +205,6 @@ function validarYGuardar(formulario) {
 		return false
 	} else {
 		return true;
-	}
-}
-
-function popUpcambio(confi) {
-	document.body.style.cursor = 'default';
-	if (confi == 1) {
-		alert("CAMBIO GUARDADO SATISFACTORIAMENTE");
 	}
 }
 
@@ -271,14 +271,14 @@ function popUpcambio(confi) {
 	  <?php 
 			} 
 		} 
-				
-				//::::::NUEVA CUOTA::::::
+		if ($cantCuotas != 0) {	
+			for ( $i = 1 ; $i <= $cantCuotas ; $i ++) {
 				$contadorCuotas = $contadorCuotas + 1;
-			print ("<td width=134> <input  style='background-color:#B2A274; visibility: hidden' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$nroNuevaCuota."' readonly='raadonly'></td>");
-				print ("<td width=107> <input name='monto".$contadorCuotas."' id='monto".$contadorCuotas."' disabled='disabled' style='visibility: hidden' type='text' size='10'></td>");
-				print ("<td width=116> <input name='fecha".$contadorCuotas."' id='fecha".$contadorCuotas."' disabled='disabled' style='visibility: hidden' type='text' size='10'></td>");
+				print ("<td width=134> <input  style='background-color:#B2A274' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$nroNuevaCuota."' readonly='raadonly'></td>");
+				print ("<td width=107> <input name='monto".$contadorCuotas."' id='monto".$contadorCuotas."' type='text' size='10'></td>");
+				print ("<td width=116> <input name='fecha".$contadorCuotas."' id='fecha".$contadorCuotas."' type='text' size='10'></td>");
 				print ("<td width=212>");  ?>
-				<select name=<?php print("tipo".$contadorCuotas);?> id=<?php print("tipo".$contadorCuotas); ?> disabled="disabled" style="visibility: hidden" onChange="verInfoCheques(document.forms.modifCuotas.<?php echo("tipo".$contadorCuotas."[selectedIndex]");?>.value ,<?php echo $contadorCuotas ?>)">
+				<select name=<?php print("tipo".$contadorCuotas);?> id=<?php print("tipo".$contadorCuotas); ?> onChange="verInfoCheques(document.forms.modifCuotas.<?php echo("tipo".$contadorCuotas."[selectedIndex]");?>.value ,<?php echo $contadorCuotas ?>)">
 			  <option value=0>Seleccione un valor </option>
 			  <?php
 							$query="select * from tiposcancelaciones";
@@ -292,25 +292,27 @@ function popUpcambio(confi) {
 						<?php } ?>
 			</select>
 				 <?php  print("</td>"); 
-						print ("<td width=212> <input name=ncheque".$contadorCuotas." id=ncheque".$contadorCuotas." disabled='disabled' style='visibility: hidden' type='text' size='12' style='visibility: hidden'> </td>");
-						print ("<td width=212> <input name=bcheque".$contadorCuotas." id=bcheque".$contadorCuotas." disabled='disabled' style='visibility: hidden' type='text' size='12'  style='visibility: hidden'> </td>"); 
-						print ("<td width=212> <input name=fcheque".$contadorCuotas." id=fcheque".$contadorCuotas." disabled='disabled' style='visibility: hidden' type='text' size='12' style='visibility: hidden'> </td>");
+						print ("<td width=212> <input name=ncheque".$contadorCuotas." id=ncheque".$contadorCuotas." type='text' size='12' style='visibility: hidden'> </td>");
+						print ("<td width=212> <input name=bcheque".$contadorCuotas." id=bcheque".$contadorCuotas." type='text' size='12'  style='visibility: hidden'> </td>"); 
+						print ("<td width=212> <input name=fcheque".$contadorCuotas." id=fcheque".$contadorCuotas." type='text' size='12' style='visibility: hidden'> </td>");
 						print ("</tr>");
 						print ("<tr>");
 						
-						print ("<td width=134 id='titobs".$contadorCuotas."' align='center' style='visibility: hidden' ><font face=Verdana size=1>Obs.</font></td>");
-						print ("<td colspan='6'> <textarea disabled='disabled'  style='visibility: hidden' name='obs".$contadorCuotas."' id='obs".$contadorCuotas."' cols='93' rows='2' ></textarea> </td>");
-						print ("</tr>"); ?>
+						print ("<td width=134 id='titobs".$contadorCuotas."' align='center' ><font face=Verdana size=1>Obs.</font></td>");
+						print ("<td colspan='6'> <textarea name='obs".$contadorCuotas."' id='obs".$contadorCuotas."' cols='93' rows='2' ></textarea> </td>");
+						print ("</tr>"); 
+						$nroNuevaCuota = $nroNuevaCuota+1;
+					}
+			}?>	
     </table>
   </div>
   </p>
-  <script type="text/javascript">popUpcambio(<?php echo $cambio ?>); </script>
   <div align="center">
     <table width="739" border="0">
       <tr>
         <td width="365">
           <div align="left">
-            <input type="button" id="nuevaCuota" name="nuevaCuota" value="Nueva Cuota" onClick="mostrarNuevaCuota(<?php echo $contadorCuotas ?>)">
+            <input type="button" id="nuevaCuota" name="nuevaCuota" value="Agregar Cuotas" onClick="cartelCantidadCuotas()">
             </div>
         <div align="right"></div></td>
         <td width="364">

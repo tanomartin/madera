@@ -57,55 +57,56 @@ try {
 	
 	} 
 	if ($cantCuotasTotal > $cantCuotasModif) {
-		$finFor++;
-		$nrocuota = $datos[$finFor];
-		$finFor++;
-		$monto = $datos[$finFor];
-		$finFor++;
-		$fecha = fechaParaGuardar($datos[$finFor]);
-		$finFor++;
-		$tipoC = $datos[$finFor];
-		$finFor++;
-		$chequen = $datos[$finFor];
-		$finFor++;
-		$chequeb = $datos[$finFor];
-		$finFor++;
-		$chequef = fechaParaGuardar($datos[$finFor]); 
-		$finFor++;
-		$observ = $datos[$finFor];	
-		$sqlCuota="INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroacu','$nrocuota','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fechamodificacion','$usuariomodificacion','$fechamodificacion','$usuariomodificacion')";
-		//echo $sqlCuota; //echo "<br>";
-		$dbh->exec($sqlCuota);	
-		if ($tipoC == 3) {
-			$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
-			//echo $sqlValCob; //echo "<br>";				
-			$dbh->exec($sqlValCob);	
+		$cantidadInsert=$cantCuotasTotal-$cantCuotasModif;
+		$inicioForInsert=$finFor+1;
+		$finForInsert=($cantidadInsert)*8 + $inicioForInsert;
+		//echo "NUEVAS: ".$cantidadInsert; //echo "<br>";
+		//echo "INICIO INSERCION EN: ".$inicioForInsert; //echo "<br>";
+		//echo "FIN INSERCION EN: ".$finForInsert; //echo "<br>";
+		for ($i= $inicioForInsert; $i < $finForInsert; $i++){
+			$nrocuota = $datos[$i];
+			$i++;
+			$monto = $datos[$i];
+			$i++;
+			$fecha = fechaParaGuardar($datos[$i]);
+			$i++;
+			$tipoC = $datos[$i];
+			$i++;
+			$chequen = $datos[$i];
+			$i++;
+			$chequeb = $datos[$i];
+			$i++;
+			$chequef = fechaParaGuardar($datos[$i]); 
+			$i++;
+			$observ = $datos[$i];	
+			$sqlCuota="INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroacu','$nrocuota','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fechamodificacion','$usuariomodificacion','$fechamodificacion','$usuariomodificacion')";
+			//echo $sqlCuota; //echo "<br>";
+			$dbh->exec($sqlCuota);	
+			if ($tipoC == 3) {
+				$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
+				//echo $sqlValCob; //echo "<br>";				
+				$dbh->exec($sqlValCob);	
+			}
 		}				
 	}
 		
 	//TODO: actualizo cabecera con total a pagar....
-	$sqlCabe = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
-	$rowCabe = $dbh->query($sqlCabe)->fetch();
-	$montopagado = $rowCabe['montopagadas'];
-	
 	$sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 	$resCuotas = $dbh->query($sqlCuotas);
 	$total=0;
 	$cuotas=0;
 	foreach ($resCuotas as $cuota) {
-		echo $cuota['montocuota']; echo "<br>";
+		//echo $cuota['montocuota']; //echo "<br>";
 		$total = $total + $cuota['montocuota'];
 		$cuotas = $cuotas + 1;
 	}
 	
-	echo "TOTAL: ".$total; echo "<br>";
-	echo "MONTOP: ".$montopagado; echo "<br>";
-	
+	//echo "TOTAL: ".$total; //echo "<br>";
 	$sqlUpdateMonto = "UPDATE cabacuerdosusimra SET cuotasapagar=$cuotas, montoapagar=$total WHERE cuit = $cuit AND nroacuerdo = $nroacu";	
 	//echo $sqlUpdateMonto; //echo "<br>";
 	$dbh->exec($sqlUpdateMonto);
 	$dbh->commit();
-	$pagina = "modificarCuotas.php?cuit=$cuit&nroacu=$nroacu&cambio=1";
+	$pagina = "consultaAcuerdo.php?cuit=$cuit&nroacu=$nroacu";
 	Header("Location: $pagina"); 
 	
 } catch (PDOException $e) {
