@@ -36,7 +36,7 @@ $peridosHabili =  $datos[13];
 //echo "Peridoso Cantidad: ".$peridosHabili; echo "<br>";
 
 
-$sqlModifCabe = "UPDATE cabacuerdosospim set tipoacuerdo = ".$tipoacuerdo.", fechaacuerdo = '".$fechaacuerdo."', nroacta = ".$nroacta.", gestoracuerdo = ".$gestoracuerdo.", inspectorinterviene=".$inspectorinterviene.", requerimientoorigen = ".$requerimientoorigen.", liquidacionorigen = '".$liquidacionorigen."', montoacuerdo = ".$montoacuerdo.", observaciones = '".$observaciones."'  where cuit = ".$cuit." and nroacuerdo = ".$nroacu;
+$sqlModifCabe = "UPDATE cabacuerdosospim set tipoacuerdo = ".$tipoacuerdo.", fechaacuerdo = '".$fechaacuerdo."', nroacta = ".$nroacta.", gestoracuerdo = ".$gestoracuerdo.", inspectorinterviene=".$inspectorinterviene.", requerimientoorigen = ".$requerimientoorigen.", liquidacionorigen = '".$liquidacionorigen."', montoacuerdo = ".$montoacuerdo.", observaciones = '".$observaciones."', fechamodificacion = '".$fechamodificacion."', usuariomodificacion = '".$usuariomodificacion."'  where cuit = ".$cuit." and nroacuerdo = ".$nroacu;
 //echo $sqlModifCabe;echo "<br>";
 
 //conexion y craecion de transaccion.
