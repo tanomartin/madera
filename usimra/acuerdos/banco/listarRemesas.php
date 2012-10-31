@@ -66,10 +66,10 @@ if ($totalLeeRemesa !=0) {
 			if($rowLeeRemesa['sistemaremesa']=="M")
 				print ("<td width=46><div align=center><font size=1 face=Verdana><a href='modificaRemesa.php?ctaRemesa=".$cuentaRemesa."&fecRemesa=".$fechaCargada."&ultRemesa=".$rowLeeRemesa['nroremesa']."'>".Modificar."</a></font></div></td>");
 			else
-				print ("<td width=46><div align=center><font size=1 face=Verdana>---------</font></div></td>");
+				print ("<td width=46><div align=center><font size=1 face=Verdana><a href='consultaRemesa.php?ctaRemesa=".$cuentaRemesa."&fecRemesa=".$fechaCargada."&ultRemesa=".$rowLeeRemesa['nroremesa']."&sisRemesa=".$rowLeeRemesa['sistemaremesa']."'>".Ver."</a></font></div></td>");
 		}
 		else
-			print ("<td width=46><div align=center><font size=1 face=Verdana>---------</font></div></td>");
+			print ("<td width=46><div align=center><font size=1 face=Verdana><a href='consultaRemesa.php?ctaRemesa=".$cuentaRemesa."&fecRemesa=".$fechaCargada."&ultRemesa=".$rowLeeRemesa['nroremesa']."&sisRemesa=".$rowLeeRemesa['sistemaremesa']."'>".Ver."</a></font></div></td>");
 		print ("</tr>");
 		$ultimaremesa=$rowLeeRemesa['nroremesa'];
 	}

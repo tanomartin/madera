@@ -190,7 +190,7 @@ function validar(formulario) {
     </tr>
     <tr>
       <td width="170"><div align="right">Acuerdos:</div></td>
-      <td width="180"><input id="importeboletascuotas" name="importeboletascuotas" value="<?php echo $rowLeeRemito['importeboletascuotas']?>0" type="text" size="10" readonly="readonly" style="background-color:#CCCCCC"/></td>
+      <td width="180"><input id="importeboletascuotas" name="importeboletascuotas" value="<?php echo $rowLeeRemito['importeboletascuotas']?>" type="text" size="10" readonly="readonly" style="background-color:#CCCCCC"/></td>
     </tr>
     <tr>
       <td width="170"><div align="right">Total Bruto:</div></td>

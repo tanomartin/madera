@@ -67,10 +67,10 @@ if ($totalLeeRemito !=0) {
 			if($rowLeeRemito['sistemaremesa']=="M")
 				print ("<td width=46><div align=center><font size=1 face=Verdana><a href='modificaRemito.php?ctaRemesa=".$cuentaRemesa."&fecRemesa=".$fechaCargada."&ultRemesa=".$rowLeeRemito['nroremesa']."&ultRemito=".$rowLeeRemito['nroremito']."'>".Modificar."</a></font></div></td>");
 			else
-				print ("<td width=46><div align=center><font size=1 face=Verdana>---------</font></div></td>");
+				print ("<td width=46><div align=center><font size=1 face=Verdana><a href='consultaRemito.php?ctaRemesa=".$cuentaRemesa."&fecRemesa=".$fechaCargada."&ultRemesa=".$rowLeeRemito['nroremesa']."&sisRemesa=".$rowLeeRemito['sistemaremesa']."&ultRemito=".$rowLeeRemito['nroremito']."'>".Ver."</a></font></div></td>");
 		}
 		else
-			print ("<td width=46><div align=center><font size=1 face=Verdana>---------</font></div></td>");
+			print ("<td width=46><div align=center><font size=1 face=Verdana><a href='consultaRemito.php?ctaRemesa=".$cuentaRemesa."&fecRemesa=".$fechaCargada."&ultRemesa=".$rowLeeRemito['nroremesa']."&sisRemesa=".$rowLeeRemito['sistemaremesa']."&ultRemito=".$rowLeeRemito['nroremito']."'>".Ver."</a></font></div></td>");
 		print ("</tr>");
 		$ultimoremito=$rowLeeRemito['nroremito'];
 	}
