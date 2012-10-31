@@ -13,15 +13,12 @@ $resModFisca = mysql_query($sqlModFisca,$db);
 $canModFisca = mysql_num_rows($resModFisca);
 
 $canMod = $canMod + $canModFisca;
+$candCuotasTotal = $canMod + $cantCuotas;
 
 $sqlUltima =  "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu order by nrocuota DESC";
 $resUltima = mysql_query($sqlUltima,$db);
 $rowUltima = mysql_fetch_array($resUltima);
 $nroNuevaCuota = $rowUltima['nrocuota'] + 1;
-
-$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-$resCuotas = mysql_query($sqlCuotas,$db);
-$canCuotas = mysql_num_rows($resCuotas);
 
 $sqlMontoImpresas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa != 0";
 $resMontoImpresas = mysql_query($sqlMontoImpresas,$db);
@@ -33,6 +30,9 @@ $sqlMonto =  "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo =
 $resMonto = mysql_query($sqlMonto,$db);
 $rowMonto = mysql_fetch_array($resMonto);
 $montoapagar = $rowMonto['montoacuerdo'] - $rowMonto['montopagadas'] - $montoBoletasImpresas;
+
+$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+$resCuotas = mysql_query($sqlCuotas,$db);
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -50,7 +50,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script type="text/javascript">
 
 jQuery(function($){
-	for (i=0; i<=<?php echo $nroNuevaCuota ?>; i++) {
+	for (i=0; i<=<?php echo $candCuotasTotal ?>; i++) {
 		$("#fecha"+i).mask("99-99-9999");
 		$("#fcheque"+i).mask("99-99-9999");
 	}
