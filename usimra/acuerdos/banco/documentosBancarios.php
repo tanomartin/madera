@@ -25,13 +25,13 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="614" height="174" border="3">
     <tr>
      <td width="196" height="164"><p align="center">Resumenes</p>
-        <p align="center"><a class="enlace" href="resumenBancario.php"><img src="../img/resumen.jpg" width="111" height="102" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="resumenBancario.php"><img src="../img/resumen.jpg" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
       <td width="196" height="164"><p align="center">Remesas / Remitos </p>
-        <p align="center"><a class="enlace" href="remesasBancarias.php"><img src="../img/excellogo.jpg" width="105" height="106" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="remesasBancarias.php"><img src="../img/remesas.jpg" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
       <td width="196" height="164"><p align="center">Conciliacion</p>
-        <p align="center"><a class="enlace" href="conciliacionBancaria.php"><img src="../img/excellogo.jpg" width="105" height="106" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="conciliacionBancaria.php"><img src="../img/conciliacion.jpg" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
     </tr>
   </table>
