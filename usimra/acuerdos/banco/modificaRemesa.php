@@ -32,27 +32,29 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="../../lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-function controlaBrutoYCargaFaima() {
+function controlaBruto() {
 	var bruto = new Number(document.forms.modificaRemesa.importebruto.value);
-	var porcentaje = new Number(0.0968);
-	var faima = new Number(bruto*porcentaje);
 	if (bruto <= 0 || !isNumber(bruto)) {
 		alert("Debe ingresar un importe bruto mayor que cero");
 		document.getElementById('importebruto').focus();
 		return false;
 	}
-	if (faima >= 0) {
-		document.forms.modificaRemesa.importefaima.value = faima;
-	}
 }
 
-function controlaComision() {
+function controlaComisionYCargaFaima() {
 	var bruto = new Number(document.forms.modificaRemesa.importebruto.value);
 	var comision = new Number(document.forms.modificaRemesa.importecomision.value);
+	var porcentaje = new Number(0.0968);
+	var faima = new Number(Math.round(((bruto-comision)*porcentaje)*100)/100);
+
 	if (comision < 0 || !isNumber(comision) || comision >= bruto) {
 		alert("El importe de la comision es incorrecto");
 		document.getElementById('importebruto').focus();
 		return false;
+	}
+
+	if (faima >= 0) {
+		document.forms.modificaRemesa.importefaima.value = faima;
 	}
 }
 
@@ -65,7 +67,7 @@ function controlaFaimaYCargaNeto() {
 		document.getElementById('importebruto').focus();
 		return false;
 	}
-	var calculo = new Number(bruto - (comision + faima));
+	var calculo = new Number(Math.round((bruto - (comision + faima))*100)/100);
 	if (calculo >= 0) {
 		document.forms.modificaRemesa.importeneto.value = calculo;
 	}
@@ -126,11 +128,11 @@ function validar(formulario) {
     </tr>
     <tr>
       <td width="170"><div align="right">Bruto:</div></td>
-      <td width="180"><input id="importebruto" name="importebruto" value="<?php echo $rowLeeRemesa['importebruto']?>" type="text" size="10" onfocusout="controlaBrutoYCargaFaima()"/></td>
+      <td width="180"><input id="importebruto" name="importebruto" value="<?php echo $rowLeeRemesa['importebruto']?>" type="text" size="10" onfocusout="controlaBruto()"/></td>
     </tr>
     <tr>
       <td width="170"><div align="right">Comision:</div></td>
-      <td width="180"><input id="importecomision" name="importecomision" value="<?php echo $rowLeeRemesa['importecomision']?>" type="text" size="10" onfocusout="controlaComision()"/></td>
+      <td width="180"><input id="importecomision" name="importecomision" value="<?php echo $rowLeeRemesa['importecomision']?>" type="text" size="10" onfocusout="controlaComisionYCargaFaima()"/></td>
     </tr>
     <tr>
       <td width="170"><div align="right">FAIMA:</div></td>
