@@ -22,8 +22,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
   <p><span class="Estilo2">M&oacute;dulo De Pr</span><span class="Estilo2">ocesamiento Bancario</span></p>
-  <table width="412" height="189" border="3">
+  <table width="614" height="189" border="3">
     <tr>
+      <td width="196"><p align="center">Documentacion Bancaria </p>
+        <p align="center"><a class="enlace" href="documentosBancarios.php"><img src="../img/documentacion.jpg" width="105" height="105" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
       <td width="196" height="164"><p align="center">Archivos Transferidos</p>
           <p align="center"><a class="enlace" href="procesamientoArchivos.php"><img src="../img/transferencia.jpg" width="105" height="105" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>

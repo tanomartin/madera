@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
+include($libPath."fechas.php");
 $fechavalidacion = date("Y-m-d H:m:s");
 $usuariovalidacion = $_SESSION['usuario'];
 
@@ -83,6 +84,7 @@ try {
 					$estado = $validar[estadomovimiento];
 					$importebanco = $validar[importe];
 					$cuitbanco = $validar[cuit];
+					$fechabanco = $validar[fechaacreditacion];
 
 					$sqlControlaBoleta="SELECT * FROM anuladasusimra WHERE nrocontrol = :nrocontrol";
 					$resultControlaBoleta = $dbh->prepare($sqlControlaBoleta);

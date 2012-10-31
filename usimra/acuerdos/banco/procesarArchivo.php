@@ -5,6 +5,7 @@ $maquina = $_SERVER['SERVER_NAME'];
 $hayErrores=0;
 $hayPago=0;
 $totbruto=0.00;
+$totcomis=0.00;
 $nroremit=0;
 $archivo_name=$_GET['nombreArc'];
 $fechahoy=date("YmdHis",time());
@@ -62,22 +63,25 @@ else{
 			$brutente=substr($registros[$i], 42, 13);
 			$brutdeci=substr($registros[$i], 55, 2);
 			$impbruto=$brutente.".".$brutdeci;
+			$impcomis=1.21;
+			$imponeto=$impbruto-$impcomis;
 			$ctrremit=substr($registros[$i], 73, 14);
 			$usuremit=$_SESSION['usuario'];
 
-			$sqlRemito="INSERT INTO remitosremesasusimra (codigocuenta, sistemaremesa, fecharemesa, nroremesa, nroremito, fecharemito, sucursalbanco, importebruto, importecomision, importeneto, boletasremito, importeboletasaporte, importeboletasrecargo, importeboletasvarios, importeboletaspagos, importeboletascuotas, importeboletasbruto, cantidadboletas, nrocontrol, estadoconciliacion, fechaconciliacion, usuarioconciliacion, fechaacreditacion, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES('2','E','$fecremes','1','$nroremit','$fecremit','$sucremit','$impbruto','0.00','$impbruto','1','0.00','0.00','0.00','0.00','0.00','0.00','0','$ctrremit','0','','','','$fechahoy','$usuremit','','')";
+			$sqlRemito="INSERT INTO remitosremesasusimra (codigocuenta, sistemaremesa, fecharemesa, nroremesa, nroremito, fecharemito, sucursalbanco, importebruto, importecomision, importeneto, boletasremito, importeboletasaporte, importeboletasrecargo, importeboletasvarios, importeboletaspagos, importeboletascuotas, importeboletasbruto, cantidadboletas, nrocontrol, estadoconciliacion, fechaconciliacion, usuarioconciliacion, fechaacreditacion, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES('2','E','$fecremes','1','$nroremit','$fecremit','$sucremit','$impbruto',$impcomis','$imponeto','1','0.00','0.00','0.00','0.00','0.00','0.00','0','$ctrremit','0','','','','$fechahoy','$usuremit','','')";
 			$resultRemito= mysql_query($sqlRemito,$db);
 
 			$totbruto=$totbruto+$impbruto;
+			$totcomis=$totcomis+$impcomis;
 		}
 	}
 
 	if($totbruto!=0.00)
 	{
-		$totfaima=$totbruto*0.0968;
-		$totnetos=$totbruto-$totfaima;
+		$totfaima=($totbruto-$totcomis)*0.0968;
+		$totnetos=$totbruto-($totcomis+$totfaima);
 		$usuremes=$_SESSION['usuario'];
-		$sqlRemesa="INSERT INTO remesasusimra VALUES('2','E','$fecremes','1','$totbruto','0.00','$totnetos','$totfaima','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0','0','','','','$fechahoy','$usuremes','','')";
+		$sqlRemesa="INSERT INTO remesasusimra VALUES('2','E','$fecremes','1','$totbruto','$totcomis','$totnetos','$totfaima','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0','0','','','','$fechahoy','$usuremes','','')";
 		$resultRemesa= mysql_query($sqlRemesa,$db);
 	}
 
