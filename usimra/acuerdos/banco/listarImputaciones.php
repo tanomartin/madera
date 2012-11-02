@@ -59,17 +59,46 @@ if ($totalLeeResumen !=0) {
 			print ("<td width=301><div align=center><font size=1 face=Verdana>------------------------------------</font></div></td>");
 			print ("<td width=86><div align=center><font size=1 face=Verdana>-----------</font></div></td>");
 			print ("<td width=46><div align=center><font size=1 face=Verdana><a href='modificaImputacion.php?ctaResumen=".$cuentaResumen."&fecEmision=".$fechaCargada."&ultOrden=".$rowLeeResumen['nroordenimputacion']."'>".Modificar."</a></font></div></td>");
+			print ("</tr>");
 		}
 		else {
 			print ("<td width=96><div align=center><font size=1 face=Verdana>Conciliado</font></div></td>");
-			print ("<td width=301><div align=center><font size=1 face=Verdana>".$rowLeeResumen['comprobanteorigen']." Nro. ".$rowLeeResumen['nrocomprobanteorigen']." del ".invertirFecha($rowLeeResumen['fechacomprobanteorigen'])."</font></div></td>");
-			if($rowLeeResumen['sistemacomprobanteorigen']=="M")
-				print ("<td width=86><div align=center><font size=1 face=Verdana>Manual</font></div></td>");
-			else
-				print ("<td width=86><div align=center><font size=1 face=Verdana>Electronico</font></div></td>");
-			print ("<td width=46><div align=center><font size=1 face=Verdana>---------</font></div></td>");
+
+			$nroorden = $rowLeeResumen['nroordenimputacion'];
+			$registroscomprobante = 0;
+			$sqlLeeComprobante = "SELECT * FROM origencomprobanteusimra WHERE codigocuenta = $cuentaResumen and fechaemision = $fechaEmision and nroordenimputacion = $nroorden";
+			$resultLeeComprobante = mysql_query($sqlLeeComprobante,$db);
+			while($rowLeeComprobante = mysql_fetch_array($resultLeeComprobante)) {
+				$registroscomprobante = $registroscomprobante+1;
+				if($registroscomprobante==1)
+				{
+					print ("<td width=301><div align=center><font size=1 face=Verdana>".$rowLeeComprobante['comprobante']." Nro. ".$rowLeeComprobante['nrocomprobante']." del ".invertirFecha($rowLeeComprobante['fechacomprobante'])."</font></div></td>");
+
+					if($rowLeeComprobante['sistemacomprobante']=="M")
+						print ("<td width=86><div align=center><font size=1 face=Verdana>Manual</font></div></td>");
+					else
+						print ("<td width=86><div align=center><font size=1 face=Verdana>Electronico</font></div></td>");
+					print ("<td width=46><div align=center><font size=1 face=Verdana>---------</font></div></td>");
+					print ("</tr>");
+				}
+				else
+				{
+					print ("<td width=49><div align=center><font size=1 face=Verdana>-</font></div></td>");
+					print ("<td width=74><div align=center><font size=1 face=Verdana>-</font></div></td>");
+					print ("<td width=81><div align=center><font size=1 face=Verdana>-</font></div></td>");
+					print ("<td width=67><div align=center><font size=1 face=Verdana>-</font></div></td>");
+					print ("<td width=96><div align=center><font size=1 face=Verdana>-</font></div></td>");
+					print ("<td width=301><div align=center><font size=1 face=Verdana>".$rowLeeComprobante['comprobante']." Nro. ".$rowLeeComprobante['nrocomprobante']." del ".invertirFecha($rowLeeComprobante['fechacomprobante'])."</font></div></td>");
+
+					if($rowLeeComprobante['sistemacomprobante']=="M")
+						print ("<td width=86><div align=center><font size=1 face=Verdana>Manual</font></div></td>");
+					else
+						print ("<td width=86><div align=center><font size=1 face=Verdana>Electronico</font></div></td>");
+					print ("<td width=46><div align=center><font size=1 face=Verdana>---------</font></div></td>");
+					print ("</tr>");
+				}
+			}
 		}
-		print ("</tr>");
 		$ultimoorden=$rowLeeResumen['nroordenimputacion'];
 	}
 	print ("</table>");

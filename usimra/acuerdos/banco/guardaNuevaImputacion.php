@@ -30,14 +30,6 @@ $feccon="";
 //echo "FECHA CONCILIACION: "; echo $feccon; echo "<br>";
 $usucon="";
 //echo "USUARIO CONCILIACION: "; echo $usucon; echo "<br>";
-$comori="";
-//echo "COMPROBANTE ORIGEN: "; echo $comori; echo "<br>";
-$sisori="";
-//echo "SISTEMA ORIGEN: "; echo $sisori; echo "<br>";
-$fecori="";
-//echo "FECHA ORIGEN: "; echo $fecori; echo "<br>";
-$nroori="";
-//echo "NRO ORIGEN: "; echo $nroori; echo "<br>";
 $fecreg = date("Y-m-d H:m:s");
 //echo "FECHA REGISTRO: "; echo $fecreg; echo "<br>";
 $usureg = $_SESSION['usuario'];
@@ -59,10 +51,10 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$sqlAddResumen="INSERT INTO resumenusimra (codigocuenta, fechaemision, nroordenimputacion, fechaimputacion, importeimputado, tipoimputacion, estadoconciliacion, fechaconciliacion, usuarioconciliacion, comprobanteorigen, sistemacomprobanteorigen, fechacomprobanteorigen, nrocomprobanteorigen, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES (:codigocuenta, :fechaemision, :nroordenimputacion, :fechaimputacion, :importeimputado, :tipoimputacion, :estadoconciliacion, :fechaconciliacion, :usuarioconciliacion, :comprobanteorigen, :sistemacomprobanteorigen, :fechacomprobanteorigen, :nrocomprobanteorigen, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion)";
+	$sqlAddResumen="INSERT INTO resumenusimra (codigocuenta, fechaemision, nroordenimputacion, fechaimputacion, importeimputado, tipoimputacion, estadoconciliacion, fechaconciliacion, usuarioconciliacion, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES (:codigocuenta, :fechaemision, :nroordenimputacion, :fechaimputacion, :importeimputado, :tipoimputacion, :estadoconciliacion, :fechaconciliacion, :usuarioconciliacion, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion)";
 	//echo $sqlAddResumen; echo "<br>";
 	$resultAddResumen = $dbh->prepare($sqlAddResumen);
-	if($resultAddResumen->execute(array(':codigocuenta' => $cuenta, ':fechaemision' => $fecemi, ':nroordenimputacion' => $orden, ':fechaimputacion' => $fecimp, ':importeimputado' => $impimp, ':tipoimputacion' => $tipimp, ':estadoconciliacion' => $estcon, ':fechaconciliacion' => $feccon, ':usuarioconciliacion' => $usucon, ':comprobanteorigen' => $comori, ':sistemacomprobanteorigen' => $sisori, ':fechacomprobanteorigen' => $fecori, ':nrocomprobanteorigen' => $nroori, ':fecharegistro' => $fecreg, ':usuarioregistro' => $usureg, ':fechamodificacion' => $fecmod, ':usuariomodificacion' => $usumod)))
+	if($resultAddResumen->execute(array(':codigocuenta' => $cuenta, ':fechaemision' => $fecemi, ':nroordenimputacion' => $orden, ':fechaimputacion' => $fecimp, ':importeimputado' => $impimp, ':tipoimputacion' => $tipimp, ':estadoconciliacion' => $estcon, ':fechaconciliacion' => $feccon, ':usuarioconciliacion' => $usucon, ':fecharegistro' => $fecreg, ':usuarioregistro' => $usureg, ':fechamodificacion' => $fecmod, ':usuariomodificacion' => $usumod)))
 	
 	$dbh->commit();
 	$pagina = "listarImputaciones.php?ctaResumen=$cuenta&fecEmision=$feccar";
