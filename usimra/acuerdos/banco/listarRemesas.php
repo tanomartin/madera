@@ -46,6 +46,14 @@ if ($totalLeeRemesa !=0) {
 	print ("<td width=46><div align=center>Accion</div></td>");
 	print ("</tr>");
 
+	$totalbrutoe=0.00;
+	$totalcomise=0.00;
+	$totalfaimae=0.00;
+	$totalnetose=0.00;
+	$totalbrutom=0.00;
+	$totalcomism=0.00;
+	$totalfaimam=0.00;
+	$totalnetosm=0.00;
 	while($rowLeeRemesa = mysql_fetch_array($resultLeeRemesa)) {
 		print ("<tr>");
 		print ("<td width=49><div align=center><font size=1 face=Verdana>".$rowLeeRemesa['nroremesa']."</font></div></td>");
@@ -58,10 +66,20 @@ if ($totalLeeRemesa !=0) {
 			print ("<td width=96><div align=center><font size=1 face=Verdana>No Conciliado</font></div></td>");
 		else
 			print ("<td width=96><div align=center><font size=1 face=Verdana>Conciliado</font></div></td>");
-		if($rowLeeRemesa['sistemaremesa']=="M")
+		if($rowLeeRemesa['sistemaremesa']=="M") {
 			print ("<td width=86><div align=center><font size=1 face=Verdana>Manual</font></div></td>");
-		else
+			$totalbrutom=$totalbrutom+$rowLeeRemesa['importebruto'];
+			$totalcomism=$totalcomism+$rowLeeRemesa['importecomision'];
+			$totalfaimam=$totalfaimam+$rowLeeRemesa['importefaima'];
+			$totalnetosm=$totalnetosm+$rowLeeRemesa['importeneto'];
+		}
+		else {
+			$totalbrutoe=$totalbrutoe+$rowLeeRemesa['importebruto'];
+			$totalcomise=$totalcomise+$rowLeeRemesa['importecomision'];
+			$totalfaimae=$totalfaimae+$rowLeeRemesa['importefaima'];
+			$totalnetose=$totalnetose+$rowLeeRemesa['importeneto'];
 			print ("<td width=86><div align=center><font size=1 face=Verdana>Electronico</font></div></td>");
+		}
 		if($rowLeeRemesa['estadoconciliacion']==0) {
 			if($rowLeeRemesa['sistemaremesa']=="M")
 				print ("<td width=46><div align=center><font size=1 face=Verdana><a href='modificaRemesa.php?ctaRemesa=".$cuentaRemesa."&fecRemesa=".$fechaCargada."&ultRemesa=".$rowLeeRemesa['nroremesa']."'>".Modificar."</a></font></div></td>");
@@ -73,6 +91,46 @@ if ($totalLeeRemesa !=0) {
 		print ("</tr>");
 		$ultimaremesa=$rowLeeRemesa['nroremesa'];
 	}
+	print ("</table>");
+	print ("</div>");
+
+	print ("<div align=center>");
+	print ("<table width=800 border=1 align=center>");
+	print ("<tr>");
+	print ("<td width=800><div align=center><font size=1 face=Verdana>TOTALES ELECTRONICOS</font></div></td>");
+	print ("</tr>");
+	print ("<tr>");
+	print ("<td width=800><div align=left><font size=1 face=Verdana>BRUTO ----- ".number_format($totalbrutoe, 2, '.', '')."</font></div></td>");
+	print ("</tr>");
+	print ("<tr>");
+	print ("<td width=800><div align=left><font size=1 face=Verdana>COMISION - ".number_format($totalcomise, 2, '.', '')."</font></div></td>");
+	print ("</tr>");
+	print ("<tr>");
+	print ("<td width=800><div align=left><font size=1 face=Verdana>FAIMA ------ ".number_format($totalfaimae, 2, '.', '')."</font></div></td>");
+	print ("</tr>");
+	print ("<tr>");
+	print ("<td width=800><div align=left><font size=1 face=Verdana>NETO ------- ".number_format($totalnetose, 2, '.', '')."</font></div></td>");
+	print ("</tr>");
+	print ("</table>");
+	print ("</div>");
+
+	print ("<div align=center>");
+	print ("<table width=800 border=1 align=center>");
+	print ("<tr>");
+	print ("<td width=800><div align=center><font size=1 face=Verdana>TOTALES MANUALES</font></div></td>");
+	print ("</tr>");
+	print ("<tr>");
+	print ("<td width=800><div align=left><font size=1 face=Verdana>BRUTO ----- ".number_format($totalbrutom, 2, '.', '')."</font></div></td>");
+	print ("</tr>");
+	print ("<tr>");
+	print ("<td width=800><div align=left><font size=1 face=Verdana>COMISION - ".number_format($totalcomism, 2, '.', '')."</font></div></td>");
+	print ("</tr>");
+	print ("<tr>");
+	print ("<td width=800><div align=left><font size=1 face=Verdana>FAIMA ------ ".number_format($totalfaimam, 2, '.', '')."</font></div></td>");
+	print ("</tr>");
+	print ("<tr>");
+	print ("<td width=800><div align=left><font size=1 face=Verdana>NETO ------- ".number_format($totalnetosm, 2, '.', '')."</font></div></td>");
+	print ("</tr>");
 	print ("</table>");
 	print ("</div>");
 }
