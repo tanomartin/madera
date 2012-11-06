@@ -120,7 +120,7 @@ function cargarRemesas(){
 		o.value = 0;
 		document.forms.formularioSeleCuotas.selectRemesa.options.add(o);
 		<?php 
-		$sqlRemesa="select * from remesasusimra where estadoconciliacion = 0";
+		$sqlRemesa="select * from remesasusimra";
 		$resRemesa=mysql_query($sqlRemesa,$db);
 		while ($rowRemesa=mysql_fetch_array($resRemesa)) { ?>
 			if (cuenta == <?php echo $rowRemesa['codigocuenta'] ?> && fecha == "<?php echo $rowRemesa['fecharemesa'] ?>" ) {
@@ -148,7 +148,7 @@ function cargarRemitosSueltos(){
 		o.value = 0;
 		document.forms.formularioSeleCuotas.selectRemitoSuelto.options.add(o);
 		<?php 
-		$sqlRemesa="select * from remitossueltosusimra where estadoconciliacion = 0";
+		$sqlRemesa="select * from remitossueltosusimra";
 		$resRemesa=mysql_query($sqlRemesa,$db);
 		while ($rowRemesa=mysql_fetch_array($resRemesa)) { ?>
 			if (cuenta == <?php echo $rowRemesa['codigocuenta'] ?> && fecha == "<?php echo $rowRemesa['fecharemito'] ?>" ) {
@@ -175,7 +175,7 @@ function cargaRemitos(){
 	o.value = 0;
 	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
 	<?php 
-		$sqlRem="select * from remitosremesasusimra where estadoconciliacion = 0";
+		$sqlRem="select * from remitosremesasusimra";
 		$resRem=mysql_query($sqlRem,$db);
 		while ($rowRem=mysql_fetch_array($resRem)) { ?>
 			if (cuenta == <?php echo $rowRem['codigocuenta'] ?> && fecha == "<?php echo $rowRem['fecharemesa'] ?>" && remesa == <?php echo $rowRem['nroremesa'] ?>) {
