@@ -46,13 +46,13 @@ A:hover {text-decoration: none;color:#33CCFF }
 		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
-  <table width="340" border="1">
+  <table width="450" border="1">
      <?php 
 		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
 			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
 			$result=mysql_query( $query,$db);
 			$rowtipos=mysql_fetch_array($result);
-			echo ('<td width=340  align="center"><font face=Verdana size=3><a href="impBoletas.php?acuerdo='.$rowacuerdos['nroacuerdo'].'&cuit='.$cuit.'"> Acuerdo '.$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
+			echo ('<td width=450  align="center"><font face=Verdana size=3><a href="impBoletas.php?acuerdo='.$rowacuerdos['nroacuerdo'].'&cuit='.$cuit.'"> Acuerdo '.$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']." - "."Acta: ".$rowacuerdos['nroacta']."</a></font></td>");
 			print ("</tr>");
 		}
 		
