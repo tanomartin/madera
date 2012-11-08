@@ -120,7 +120,7 @@ function cargarRemesas(){
 		o.value = 0;
 		document.forms.formularioSeleCuotas.selectRemesa.options.add(o);
 		<?php 
-		$sqlRemesa="select * from remesasusimra where sistemacomprobanteorigen = 'M'";
+		$sqlRemesa="select * from remesasusimra where sistemaremesa = 'M'";
 		$resRemesa=mysql_query($sqlRemesa,$db);
 		while ($rowRemesa=mysql_fetch_array($resRemesa)) { ?>
 			if (cuenta == <?php echo $rowRemesa['codigocuenta'] ?> && fecha == "<?php echo $rowRemesa['fecharemesa'] ?>" ) {
