@@ -4,6 +4,70 @@ $cuit = $_GET["cuit"];
 $acuerdo = $_GET["acuerdo"];
 $cuota = $_GET["cuota"];	
 
+$datos = array_values($_POST);
+if (sizeof($datos) != 0) {
+	$fechapagada = $datos[0];
+	$cuentaBoleta = $datos[1];
+	$quees = $datos[2];
+	if ($quees == "remesa") {
+		$cuentaRemesa = $datos[3];
+		$fechaRemesa = $datos[4];
+		$nroremesa = $datos[5];
+		$nroremito = $datos[6];
+		$observ = $datos[7];
+		$cuentaRemito = 0;
+		$fechaRemito = "0000-00-00";
+		$nroRemitoSuelto = 0;
+		$fechaInvertida = fechaParaGuardar($fechaRemesa);
+		$sqlRemesa="select * from remesasusimra where codigocuenta = $cuentaRemesa and sistemaremesa = 'M' and fecharemesa = '$fechaInvertida'";
+		$resRemesa=mysql_query($sqlRemesa,$db);	
+		if ($nroremesa!=0) {
+			$sqlRem="select * from remitosremesasusimra where codigocuenta = $cuentaRemesa and sistemaremesa = 'M' and fecharemesa = '$fechaInvertida' and nroremesa = $nroremesa";
+			$resRem=mysql_query($sqlRem,$db);
+		}
+	} 
+	if ($quees == "remito") {
+		$cuentaRemito = $datos[3];
+		$fechaRemito = $datos[4];
+		$nroRemitoSuelto = $datos[5];
+		$observ = $datos[6];
+		$cuentaRemesa = 0;
+		$fechaRemesa = "0000-00-00";
+		$nroremesa = 0;
+		$nroremito = 0;
+		$fechaInvertida = fechaParaGuardar($fechaRemito);
+		$sqlRemitoSuelto = "select * from remitossueltosusimra where codigocuenta = $cuentaRemito and sistemaremito = 'M' and fecharemito = '$fechaInvertida'";
+		$resRemitoSuelto=mysql_query($sqlRemitoSuelto,$db);
+	}
+} else {
+	$sqlConcilia = "select * from conciliacuotasusimra where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
+	$resConcilia = mysql_query($sqlConcilia,$db); 
+	$rowConcilia = mysql_fetch_array($resConcilia);
+	$cuentaBoleta = $rowConcilia['cuentaboleta'];
+	$cuentaRemesa=$rowConcilia['cuentaremesa'];
+	$fechaRemesa =$rowConcilia['fecharemesa'];
+	$nroremesa=$rowConcilia['nroremesa'];
+	$nroremito=$rowConcilia['nroremitoremesa'];
+	$cuentaRemito=$rowConcilia['cuentaremitosuelto'];
+	$fechaRemito=$rowConcilia['fecharemitosuelto'];
+	$nroRemitoSuelto=$rowConcilia['nroremitosuelto'];
+	if ($rowConcilia['cuentaremesa'] != 0) {
+		$quees="remesa";
+		$sqlRemesa="select * from remesasusimra where codigocuenta = $cuentaRemesa and sistemaremesa = 'M' and fecharemesa = '$fechaRemesa'";
+		$resRemesa=mysql_query($sqlRemesa,$db);	
+		if ($nroremesa!=0) {
+			$sqlRem="select * from remitosremesasusimra where codigocuenta = $cuentaRemesa and sistemaremesa = 'M' and fecharemesa = '$fechaRemesa' and nroremesa = $nroremesa";
+			$resRem=mysql_query($sqlRem,$db);
+		}
+	} else {
+		$quees="remito";
+		$sqlRemitoSuelto = "select * from remitossueltosusimra where codigocuenta = $cuentaRemito and sistemaremito = 'M' and fecharemito = '$fechaRemito'";
+		$resRemitoSuelto=mysql_query($sqlRemitoSuelto,$db);
+	}
+	$fechaRemesa = invertirFecha($fechaRemesa);
+	$fechaRemito = invertirFecha($fechaRemito);
+}
+
 $sql = "select * from empresas where cuit = $cuit";
 $result = mysql_query( $sql,$db); 
 $row=mysql_fetch_array($result); 
@@ -23,11 +87,6 @@ $rowCab = mysql_fetch_array($resCab);
 $sqlCuo = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 $resCuo = mysql_query($sqlCuo,$db); 
 $rowCuo = mysql_fetch_array($resCuo);
-
-$sqlConcilia = "select * from conciliacuotasusimra where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
-$resConcilia = mysql_query($sqlConcilia,$db); 
-$rowConcilia = mysql_fetch_array($resConcilia);
-
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -54,6 +113,7 @@ function limpiarFechaRemesa(){
 	document.forms.formularioSeleCuotas.fecharemesa.value = "";
 	document.forms.formularioSeleCuotas.fecharemesa.disabled = true;
 	document.forms.formularioSeleCuotas.botonRemesas.disabled = true;
+	document.forms.formularioSeleCuotas.botonRemitoRemesa.disabled = true;
 }
 
 function limpiarFechaRemito(){
@@ -67,137 +127,102 @@ function limpiarRemesas(){
 	document.forms.formularioSeleCuotas.selectRemito.length = 0;
 	document.forms.formularioSeleCuotas.selectRemesa.disabled = true;
 	document.forms.formularioSeleCuotas.selectRemito.disabled = true;
+	document.forms.formularioSeleCuotas.quees.value = "";
 }
 
 function limpiarRemitoSuelto(){
 	document.forms.formularioSeleCuotas.selectRemitoSuelto.length = 0;
-	document.forms.formularioSeleCuotas.selectRemesa.disabled = true;
-	document.forms.formularioSeleCuotas.selectRemito.disabled = true;
-}
-
-function limpiarRemitos(){
-	document.forms.formularioSeleCuotas.selectRemito.length = 0;
 	document.forms.formularioSeleCuotas.selectRemitoSuelto.disabled = true;
+	document.forms.formularioSeleCuotas.quees.value = "";
 }
 
 function LogicaCargaRemesa(Cuenta) {
-		if (Cuenta == 0) {
-			document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = false;
-			limpiarFechaRemesa();
-			limpiarRemesas();
-		} else {
-			document.forms.formularioSeleCuotas.fecharemesa.value = "";
-			document.forms.formularioSeleCuotas.selectRemesa.length = 0;
-			document.forms.formularioSeleCuotas.selectRemito.length = 0;
-			document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = true;
-			document.forms.formularioSeleCuotas.fecharemesa.disabled = false;
-			document.forms.formularioSeleCuotas.botonRemesas.disabled = false;
-		}
+	document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = false;
+	limpiarFechaRemesa();
+	limpiarRemesas();
+	if (Cuenta != 0) {
+		document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = true;
+		document.forms.formularioSeleCuotas.fecharemesa.value = "";
+		document.forms.formularioSeleCuotas.fecharemesa.disabled = false;
+		document.forms.formularioSeleCuotas.quees.value = "remesa"
+	}
 }
 
 function LogicaCargaRemito(Cuenta) {
-		if (Cuenta == 0) {
-			document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = false;
-			limpiarFechaRemito();
-			limpiarRemitoSuelto();
-		} else {
-			document.forms.formularioSeleCuotas.fecharemito.value = "";		
-			document.forms.formularioSeleCuotas.selectRemitoSuelto.length = 0;
-			document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
-			document.forms.formularioSeleCuotas.fecharemito.disabled = false;
-			document.forms.formularioSeleCuotas.botonRemitos.disabled = false;
-		}
-}
-
-function cargarRemesas(){
-	limpiarRemesas();
-	var cuenta = document.forms.formularioSeleCuotas.selectCuentaRemesa.value;
-	var fecha = document.forms.formularioSeleCuotas.fecharemesa.value;
-	var o;
-	if (fecha == "") {
-		alert("Debe cargar fecha de remesa");
-	} else {
-		fecha = invertirFecha(fecha);
-		o = document.createElement("OPTION");
-		o.text = 'Seleccione Remesa';
-		o.value = 0;
-		document.forms.formularioSeleCuotas.selectRemesa.options.add(o);
-		<?php 
-		$sqlRemesa="select * from remesasusimra where estadoconciliacion = 0";
-		$resRemesa=mysql_query($sqlRemesa,$db);
-		while ($rowRemesa=mysql_fetch_array($resRemesa)) { ?>
-			if (cuenta == <?php echo $rowRemesa['codigocuenta'] ?> && fecha == "<?php echo $rowRemesa['fecharemesa'] ?>" ) {
-				o = document.createElement("OPTION");
-				o.text = '<?php echo $rowRemesa["nroremesa"]; ?>';
-				o.value = <?php echo $rowRemesa["nroremesa"]; ?>;
-				<?php if ($rowRemesa['nroremesa'] == $rowConcilia['nroremesa']) { ?> 
-					o.selected = true; 		 
-		  <?php } ?>
-				document.forms.formularioSeleCuotas.selectRemesa.options.add(o);
-			}
-  <?php } ?>
-	}
-	document.forms.formularioSeleCuotas.selectRemesa.disabled = false;
-}
-
-function cargarRemitosSueltos(){
+	document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = false;
+	limpiarFechaRemito();
 	limpiarRemitoSuelto();
-	var cuenta = document.forms.formularioSeleCuotas.selectCuentaRemito.value;
-	var fecha = document.forms.formularioSeleCuotas.fecharemito.value;
-	var o;
-	if (fecha == "") {
-		alert("Debe cargar fecha de remito");
-	} else {
-		fecha = invertirFecha(fecha);
-		o = document.createElement("OPTION");
-		o.text = 'Seleccione Remito';
-		o.value = 0;
-		document.forms.formularioSeleCuotas.selectRemitoSuelto.options.add(o);
-		<?php 
-		$sqlRemesa="select * from remitossueltosusimra where estadoconciliacion = 0";
-		$resRemesa=mysql_query($sqlRemesa,$db);
-		while ($rowRemesa=mysql_fetch_array($resRemesa)) { ?>
-			if (cuenta == <?php echo $rowRemesa['codigocuenta'] ?> && fecha == "<?php echo $rowRemesa['fecharemito'] ?>" ) {
-				o = document.createElement("OPTION");
-				o.text = '<?php echo $rowRemesa["nroremito"]; ?>';
-				o.value = <?php echo $rowRemesa["nroremito"]; ?>;
-				<?php if ($rowRemesa['nroremito'] == $rowConcilia['nroremitosuelto']) { ?> 
-					o.selected = true; 		 
-		  <?php } ?>
-				document.forms.formularioSeleCuotas.selectRemitoSuelto.options.add(o);
-			}
-  <?php } ?>
+	if (Cuenta != 0) {
+		document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
+		document.forms.formularioSeleCuotas.fecharemito.value = "";		
+		document.forms.formularioSeleCuotas.fecharemito.disabled = false;
+		document.forms.formularioSeleCuotas.quees.value = "remito";
 	}
-	document.forms.formularioSeleCuotas.selectRemitoSuelto.disabled = false;
 }
 
-function cargaRemitos(){
-	//carga de remitos...
-	limpiarRemitos();
-	var cuenta = document.forms.formularioSeleCuotas.selectCuentaRemesa.value;
-	var fecha = document.forms.formularioSeleCuotas.fecharemesa.value;
-	var remesa = document.forms.formularioSeleCuotas.selectRemesa.value;
-	var o;
-	fecha = invertirFecha(fecha);
-	o = document.createElement("OPTION");
-	o.text = 'Seleccione Remesa';
-	o.value = 0;
-	document.forms.formularioSeleCuotas.selectRemito.options.add(o);
-	<?php 
-		$sqlRem="select * from remitosremesasusimra where estadoconciliacion = 0";
-		$resRem=mysql_query($sqlRem,$db);
-		while ($rowRem=mysql_fetch_array($resRem)) { ?>
-			if (cuenta == <?php echo $rowRem['codigocuenta'] ?> && fecha == "<?php echo $rowRem['fecharemesa'] ?>" && remesa == <?php echo $rowRem['nroremesa'] ?>) {
-				o = document.createElement("OPTION");
-				o.text = '<?php echo $rowRem["nroremito"]; ?>';
-				o.value = <?php echo $rowRem["nroremito"]; ?>;
-				<?php if ($rowRem['nroremito'] == $rowConcilia['nroremitoremesa']) { ?> 
-					o.selected = true; 		 
-		  <?php } ?>
-				document.forms.formularioSeleCuotas.selectRemito.options.add(o);
+function validarFechaHabilitaBoton(fecha) {
+	document.forms.formularioSeleCuotas.selectRemesa.length = 0;
+	document.forms.formularioSeleCuotas.selectRemito.length = 0;
+	if (!esFechaValida(fecha)){
+		document.forms.formularioSeleCuotas.botonRemesas.disabled = true;
+		document.forms.formularioSeleCuotas.selectRemito.disabled = true;
+	} else {
+		document.forms.formularioSeleCuotas.botonRemesas.disabled = false;
+	}
+}
+
+function habilitarBotonRemito(remesa){
+	document.forms.formularioSeleCuotas.selectRemito.length = 0;
+	if(remesa!=0) {
+		document.forms.formularioSeleCuotas.botonRemitoRemesa.disabled = false;
+		document.forms.formularioSeleCuotas.selectRemito.disabled = false;
+	} else {
+		document.forms.formularioSeleCuotas.botonRemitoRemesa.disabled = true;
+		document.forms.formularioSeleCuotas.selectRemito.disabled = true;
+	}
+}
+
+function limpiarSelect(){
+	document.forms.formularioSeleCuotas.selectRemesa.length = 0;
+	document.forms.formularioSeleCuotas.selectRemito.length = 0;
+	document.forms.formularioSeleCuotas.selectRemesa.disabled = true;
+	document.forms.formularioSeleCuotas.selectRemito.disabled = true;
+	document.forms.formularioSeleCuotas.botonRemitoRemesa.disabled = true;
+}
+
+function validarFechaHabilitaBotonRemitoSuelto(fecha) {
+	document.forms.formularioSeleCuotas.selectRemitoSuelto.length = 0;
+	if (!esFechaValida(fecha)){
+		document.forms.formularioSeleCuotas.botonRemitos.disabled = true;
+	} else {
+		document.forms.formularioSeleCuotas.botonRemitos.disabled = false;
+	}
+}
+
+function limpiarSelectRemitoSuelto(){
+	document.forms.formularioSeleCuotas.selectRemitoSuelto.length = 0;
+	document.forms.formularioSeleCuotas.selectRemitoSuelto.disabled = true;
+}
+
+function logicaHabilitacion() {
+	if (document.forms.formularioSeleCuotas.selectCuentaRemesa.value != 0) {
+		document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = true;
+		document.forms.formularioSeleCuotas.fecharemesa.disabled = false;
+		if (document.forms.formularioSeleCuotas.fecharemesa.value != "") {
+			document.forms.formularioSeleCuotas.selectRemesa.disabled = false;
+			if (document.forms.formularioSeleCuotas.selectRemesa.value != 0) {
+				document.forms.formularioSeleCuotas.selectRemito.disabled = false;
+				document.forms.formularioSeleCuotas.botonRemitoRemesa.disabled = false;
 			}
-  <?php } ?>
-	document.forms.formularioSeleCuotas.selectRemito.disabled = false;
+		}
+	}
+	if (document.forms.formularioSeleCuotas.selectCuentaRemito.value != 0) {
+		document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
+		document.forms.formularioSeleCuotas.fecharemito.disabled = false;
+		if (document.forms.formularioSeleCuotas.fecharemito.value != "") {
+			document.forms.formularioSeleCuotas.selectRemitoSuelto.disabled = false;
+		}
+	}
 }
 
 function validar(formulario) {
@@ -250,28 +275,9 @@ function validar(formulario) {
 	}
 	return true;
 }
-
-function cargarDatos() {
-	if (<?php echo $rowConcilia['cuentaremesa'] ?> != 0) {
-		cargarRemesas();
-		cargaRemitos();
-		document.forms.formularioSeleCuotas.fecharemesa.disabled = false;
-		document.forms.formularioSeleCuotas.botonRemesas.disabled = false;
-		document.forms.formularioSeleCuotas.fecharemito.value = "";
-		document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = true;
-	} else {
-		cargarRemitosSueltos()
-		document.forms.formularioSeleCuotas.fecharemito.disabled = false;
-		document.forms.formularioSeleCuotas.botonRemitos.disabled = false;
-		document.forms.formularioSeleCuotas.fecharemesa.value = "";
-		document.forms.formularioSeleCuotas.selectRemesa.disabled = true;
-		document.forms.formularioSeleCuotas.selectCuentaRemesa.disabled = true;
-	}
-}
-
 </script>
 
-<body bgcolor="#B2A274" onLoad="cargarDatos()">
+<body bgcolor="#B2A274" onLoad="logicaHabilitacion()">
 <div align="center">
   <p><strong><a href="selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 	 <?php 	
@@ -321,7 +327,7 @@ function cargarDatos() {
 					$query="select * from cuentasusimra";
 					$result=mysql_query($query,$db);
 					while ($rowcuentas=mysql_fetch_array($result)) { 
-						if ($rowcuentas['codigocuenta'] == $rowConcilia['cuentaboleta']){?>
+						if ($rowcuentas['codigocuenta'] == $cuentaBoleta){?>
 		         			<option value="<?php echo $rowcuentas['codigocuenta'] ?>" selected="selected"><?php echo $rowcuentas['descripcioncuenta']?></option>	 
 		          <?php } else { ?>
 				   			<option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
@@ -329,7 +335,10 @@ function cargarDatos() {
 			 <?php } ?>
        </select>
        </label>
-     </p>
+       <label>
+       <input type="text" name="quees" id="quees" value="<?php echo $quees ?>" style="visibility:hidden" size="1">
+       </label>
+</p>
      <label></label>
      <table width="834" border="0">
        <tr>
@@ -347,7 +356,7 @@ function cargarDatos() {
 					$query="select * from cuentasusimra";
 					$result=mysql_query($query,$db);
 					while ($rowcuentas=mysql_fetch_array($result)) { 
-						if ($rowcuentas['codigocuenta'] == $rowConcilia['cuentaremesa']) {	?>
+						if ($rowcuentas['codigocuenta'] == $cuentaRemesa) {	?>
 							<option value="<?php echo $rowcuentas['codigocuenta'] ?>" selected="selected"><?php echo $rowcuentas['descripcioncuenta']  ?></option>	
 		          <?php } else { ?>
 				 			<option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>	
@@ -364,7 +373,7 @@ function cargarDatos() {
 					$query="select * from cuentasusimra";
 					$result=mysql_query($query,$db);
 					while ($rowcuentas=mysql_fetch_array($result)) { 
-						if ($rowcuentas['codigocuenta'] == $rowConcilia['cuentaremitosuelto']) {	?>
+						if ($rowcuentas['codigocuenta'] == $cuentaRemito) {	?>
 		         			 <option value="<?php echo $rowcuentas['codigocuenta'] ?>" selected="selected"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
 		          <?php } else { ?>
 				    		 <option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
@@ -376,28 +385,46 @@ function cargarDatos() {
          <td>
            <div align="right">Fecha de la Remesa</div></td>
          <td><label>
-           <input name="fecharemesa" value="<?php echo invertirFecha($rowConcilia['fecharemesa']) ?>" type="text" id="fecharemesa" size="8" disabled="disabled">
-           <input name="botonRemesas" type="button" id="botonRemesas" value="Ver Remesas" disabled="disabled" onClick="cargarRemesas()">
+          <input name="fecharemesa" type="text" id="fecharemesa" size="8" disabled="disabled" value="<?php if ($fechaRemesa!="0000-00-00" && $fechaRemesa!="00/00/0000") echo $fechaRemesa ?>" onFocusOut="validarFechaHabilitaBoton(this.value)" onFocus="limpiarSelect()">
+           <input name="botonRemesas" type="button" id="botonRemesas" value="Ver Remesas" disabled="disabled" onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();">
            </label></td>
          <td>
            <div align="right">Fecha Remito Suelto</div></td>
-         <td> <input name="fecharemito" value="<?php echo invertirFecha($rowConcilia['fecharemitosuelto']) ?>" type="text" id="fecharemito" size="8" disabled="disabled">
-         <input name="botonRemitos" type="button" id="botonRemitos" value="Ver Remitos" disabled="disabled"  onClick="cargarRemitosSueltos()"></td>
+         <td> <input name="fecharemito" type="text" id="fecharemito" size="8" disabled="disabled" value="<?php if ($fechaRemito!="0000-00-00" && $fechaRemito!="00/00/0000") echo $fechaRemito ?>" onFocusOut="validarFechaHabilitaBotonRemitoSuelto(this.value)" onFocus="limpiarSelectRemitoSuelto()">
+         <input name="botonRemitos" type="button" id="botonRemitos" value="Ver Remitos" disabled="disabled"  onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();"></td>
        </tr>
        <tr>
          <td>
           <div align="right">Nro Remesa</div></td>
-         <td><select name="selectRemesa" id="selectRemesa" disabled="disabled" onChange="cargaRemitos()">
-         </select></td>
+         <td><select name="selectRemesa" id="selectRemesa" disabled="disabled" onChange="habilitarBotonRemito(this.value)"> 
+		 <?php while ($rowRemesa=mysql_fetch_array($resRemesa)) { 
+		 		  if ($rowRemesa['nroremesa'] == $nroremesa ) { ?>
+				    <option value="<?php echo $rowRemesa['nroremesa'] ?>" selected="selected"><?php echo $rowRemesa['nroremesa'] ?></option>
+  		    <?php } else { ?>
+					<option value="<?php echo $rowRemesa['nroremesa'] ?>"><?php echo $rowRemesa['nroremesa'] ?></option>
+				<?php }
+				} ?>
+		  </select><input name="botonRemitoRemesa" type="button" id="botonRemitoRemesa" value="Ver Remitos" disabled="disabled" onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();"></td>
          <td>
            <div align="right">Nro Remito Suelto</div></td>
-         <td><select name="selectRemitoSuelto" id="selectRemitoSuelto" disabled="disabled">
-         </select></td>
+         <td><select name="selectRemitoSuelto" id="selectRemitoSuelto" disabled="disabled"> 
+		 <?php while ($rowRemitoSuelto=mysql_fetch_array($resRemitoSuelto)) { ?>
+					<option value="<?php echo $rowRemitoSuelto['nroremito'] ?>"><?php echo $rowRemitoSuelto['nroremito'] ?></option>
+		<?php }?>
+		  </select></td>
        </tr>
        <tr>
          <td>
           <div align="right">Nro Remito</div></td>
          <td><select name="selectRemito" id="selectRemito" disabled="disabled">
+		  <?php while ($rowRem=mysql_fetch_array($resRem)) { 
+		  			echo $rowRem['nroremito'];
+		  			if ($rowRem['nroremito'] == $nroremito) { ?>
+						<option value="<?php echo $rowRem['nroremito'] ?>" selected="selected"><?php echo $rowRem['nroremito'] ?></option>
+			  <?php } else { ?>
+			  			<option value="<?php echo $rowRem['nroremito'] ?>"><?php echo $rowRem['nroremito'] ?></option>
+				<?php }
+				} ?>
          </select></td>
          <td colspan="2">&nbsp;</td>
        </tr>

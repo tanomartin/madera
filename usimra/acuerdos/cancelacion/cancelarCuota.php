@@ -8,43 +8,35 @@ $cuit = $_GET["cuit"];
 $acuerdo = $_GET["acuerdo"];
 $cuota = $_GET["cuota"];		
 $datos = array_values($_POST);
-//con el lenght de datos me doy cuenta por donde viene...
-//echo sizeof($datos); //echo "<br>";//echo "<br>";
-if (sizeof($datos) == 8) {
-	$esremesa = 1;
-} 
-if (sizeof($datos) == 7) {
-	$esremito = 1;
-}
-
 $fechapagada = $datos[0];
 $cuentaBoleta = $datos[1];
-if ($esremesa == 1) {
-	$cuentaRemesa = $datos[2];
-	$fechaRemesa = fechaParaGuardar($datos[3]);
-	$nroremesa = $datos[4];
-	$nroremito = $datos[5];
-	$observ = $datos[6];
+$quees = $datos[2];
+
+if ($quees == "remesa") {
+	$cuentaRemesa = $datos[3];
+	$fechaRemesa = fechaParaGuardar($datos[4]);
+	$nroremesa = $datos[5];
+	$nroremito = $datos[6];
+	$observ = $datos[7];
 	$cuentaRemito = 0;
 	$fechaRemito = "0000-00-00";
 	$nroRemitoSuelto = 0;
 } 
-if ($esremito == 1) {
-	$cuentaRemito = $datos[2];
-	$fechaRemito = fechaParaGuardar($datos[3]);
-	$nroRemitoSuelto = $datos[4];
-	$observ = $datos[5];
+if ($quees == "remito") {
+	$cuentaRemito = $datos[3];
+	$fechaRemito = fechaParaGuardar($datos[4]);
+	$nroRemitoSuelto = $datos[5];
+	$observ = $datos[6];
 	$cuentaRemesa = 0;
 	$fechaRemesa = "0000-00-00";
 	$nroremesa = 0;
 	$nroremito = 0;
 }
-
 //echo "DATOS DE LA PANTALLA ANTERIOR"; //echo "<br>";//echo "<br>";
 
 //echo "Fecha de pago: ";//echo $fechapagada; //echo "<br>";
 //echo "Cuenta Boleta: ";//echo $cuentaBoleta; //echo "<br>"; //echo "<br>";
-//if ($esremesa == 1) {
+//if ($quees == "remesa")  {
  	//echo "REMESA"; //echo "<br>";//echo "<br>";
 	//echo "Cuenta Remesa: "; //echo $cuentaRemesa;//echo "<br>";
 	//echo "FECHA Remesa: "; //echo $fechaRemesa;//echo "<br>";
@@ -52,7 +44,7 @@ if ($esremito == 1) {
 	//echo "NRO Remito: "; //echo $nroremito;//echo "<br>";
 	//echo "OBS: "; //echo $observ;//echo "<br>";
 //}
-//if ($esremito == 1) {
+//if ($quees == "remito")  {
 	//echo "REMITO SUELTO"; //echo "<br>";//echo "<br>";
 	//echo "Cuenta REMITO: "; //echo $cuentaRemito;//echo "<br>";
 	//echo "FECHA REMITO: "; //echo $fechaRemito;//echo "<br>";
