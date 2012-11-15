@@ -408,9 +408,13 @@ function validar(formulario) {
          <td>
            <div align="right">Nro Remito Suelto</div></td>
          <td><select name="selectRemitoSuelto" id="selectRemitoSuelto" disabled="disabled"> 
-		 <?php while ($rowRemitoSuelto=mysql_fetch_array($resRemitoSuelto)) { ?>
-					<option value="<?php echo $rowRemitoSuelto['nroremito'] ?>"><?php echo $rowRemitoSuelto['nroremito'] ?></option>
-		<?php }?>
+		 <?php while ($rowRemitoSuelto=mysql_fetch_array($resRemitoSuelto)) { 
+		 			if ($rowRemitoSuelto['nroremito'] == $nroRemitoSuelto) {?>
+						<option value="<?php echo $rowRemitoSuelto['nroremito'] ?>" selected="selected"><?php echo $rowRemitoSuelto['nroremito'] ?></option>
+					<?php } else { ?>
+						<option value="<?php echo $rowRemitoSuelto['nroremito'] ?>"><?php echo $rowRemitoSuelto['nroremito'] ?></option>
+					<?php }
+					}?>
 		  </select></td>
        </tr>
        <tr>
