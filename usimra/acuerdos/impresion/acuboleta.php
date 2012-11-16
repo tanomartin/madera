@@ -16,7 +16,7 @@
 <p><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
 <body topmargin="0" leftmargin="0">
 
-<table border="0" width="100%" height="45%">
+<table border="0" width="100%" height="90%">
   <tr>
     <td width="100%" align="center" valign="top"> 
 <?php	
@@ -75,7 +75,7 @@
 	$resulactcuotas =  mysql_query( $sqlactcuotas,$db); 
 
 	$nota[0] = ("1 - Original: Para el BANCO como comprobante de Caja");
-	$nota[1] = ("1 - Duplicado: Para el DEPOSITANTE");
+	$nota[1] = ("2 - Duplicado: Para el DEPOSITANTE");
 	$nota[2] = ("3 - Triplicado: Para O.S.P.I.M. como comprobante de Control");
 	for ($w = 0; $w <2; $w++) {			  
 	
@@ -89,7 +89,7 @@
 	print ("    <td width=650><p align=center><font size=2 face=Arial Narrow>NOTA DE CREDITO para la Cuenta de Unión de Sindicatos de la Industria Maderera de la República Argentina (U.S.I.M.R.A.) y Federación Argentina de la Industria Maderera y Afines (F.A.I.M.A.) - CCT 335/75 Artículos 32 y 32 bis.</font></td>");
 	print ("  </tr>");
 	print ("  <tr>");
-	print ("    <td width=650><p align=center><font size=2 face=Arial Narrow>Cta. Cte. <b>Nº 900004/93</b> (F.A.I.M.A. - U.S.I.M.R.A.) BANCO NACION - SUCURSAL CABALLITO</b></font></td>");
+	print ("    <td width=650><p align=center><font size=2 face=Arial Narrow>Cta. Cte. Nº 900004/93 (F.A.I.M.A. - U.S.I.M.R.A.) BANCO NACION - SUCURSAL CABALLITO</b></font></td>");
 	print ("  </tr>");
 	print ("</table>");
 	print ("<br>");
@@ -222,10 +222,10 @@
  </td> 
   </tr>
 </table>
-    <table width="100%" border="0">
+    <table width="719" border="0">
       <tr>
-          <td width="520"><div align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="impBoletas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>">VOLVER</a></strong></font></div></td>
-          <td width="533">
+          <td width="596"><div align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="impBoletas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>">VOLVER</a></strong></font></div></td>
+          <td width="113">
             <div align="center">
               <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
             </div></td>
