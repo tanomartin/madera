@@ -75,7 +75,7 @@
 	$resulactcuotas =  mysql_query( $sqlactcuotas,$db); 
 
 	$nota[0] = ("1 - Original: Para el BANCO como comprobante de Caja");
-	$nota[1] = ("1 - Duplicado: Para el DEPOSITANTE");
+	$nota[1] = ("2 - Duplicado: Para el DEPOSITANTE");
 	$nota[2] = ("3 - Triplicado: Para O.S.P.I.M. como comprobante de Control");
 	for ($w = 0; $w <3; $w++) {			  
 	
