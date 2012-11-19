@@ -69,7 +69,7 @@ else{
 			$usuremit=$_SESSION['usuario'];
 
 			$sqlRemito="INSERT INTO remitosremesasusimra VALUES('2','E','$fecremes','1','$nroremit','$fecremit','$sucremit','$impbruto','$impcomis','$imponeto','1','0.00','0.00','0.00','0.00','0.00','0.00','0','$ctrremit','0','','','','$fechahoy','$usuremit','','')";
-			$resultRemito= mysql_query($sqlRemito,$db)
+			$resultRemito= mysql_query($sqlRemito,$db);
 			
 			$totbruto=$totbruto+$impbruto;
 			$totcomis=$totcomis+$impcomis;

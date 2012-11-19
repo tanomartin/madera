@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
 $cuit= $_POST['cuit'];
 if ($cuit == NULL) {
 	$cuit = $_GET['cuit'];
@@ -17,7 +17,7 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi = mysql_query( $sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit";
+$sqlacuerdos =  "select * from cabacuerdosusimra where cuit = $cuit";
 $resulacuerdos= mysql_query( $sqlacuerdos,$db); 
 
 $cant = mysql_num_rows($resulacuerdos); 
@@ -39,11 +39,11 @@ A:hover {text-decoration: none;color:#33CCFF }
 
 <title>.: Sistema de Acuerdos OSPIM :.</title>
 </head>
-<body bgcolor="#CCCCCC">
+<body bgcolor="#B2A274">
 <div align="center">
   <p><strong><a href="fiscalizacionImpresion.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="340" border="1">
@@ -80,7 +80,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 			
 			<?php	
 			$hayboleta = 0;
-			$sqllistado = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
+			$sqllistado = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo";
 			$reslistado = mysql_query( $sqllistado,$db); 
 			while ($rowListado = mysql_fetch_array($reslistado)) {
 				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['nrocuota']."</font></div></td>");
@@ -107,30 +107,28 @@ A:hover {text-decoration: none;color:#33CCFF }
 						if ($rowListado['boletaimpresa'] == 0) {
 							if ($rowListado['tipocancelacion'] == 3) {
 								$nrocuota = $rowListado['nrocuota'];
-								$sqlValorCobro = "select * from valoresalcobro where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $nrocuota";
+								$sqlValorCobro = "select * from valoresalcobrousimra where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $nrocuota";
 								$resValorCobro =  mysql_query( $sqlValorCobro,$db);
 								$cantValor = mysql_num_rows($resValorCobro); 
 									if ($cantValor == 1) {
 										$rowValorCobro = mysql_fetch_array($resValorCobro);
-											if ($rowValorCobro['chequenroospim'] != 0) {
-												$hayboleta=1;
-												print ("<td width=168><div align=center><font face=Verdana size=1><a href='fiscalizacionAcuBoleta.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>".Imprimir."</a></font></div></td>");
-												print("<td width=168><div align=center><input type='checkbox' name='seleccion[]' value=".$rowListado['nrocuota']."></div></td>");
+											if ($rowValorCobro['chequenrousimra'] != 0) {
+												print ("<td width=168><div align=center><font face=Verdana size=1>Imprimible</font></div></td>");
+												print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
 											// else si hay info de ospim.
 											} else {
-												print ("<td width=168><div align=center><font face=Verdana size=1>S/valor O.S.P.I.M.</font></div></td>");
+												print ("<td width=168><div align=center><font face=Verdana size=1>S/valor U.S.I.M.R.A.</font></div></td>");
 												print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
 											}
 									//else de cantidad de valor al cobro.
 									} else {
-										print ("<td width=168><div align=center><font face=Verdana size=1>S/valor O.S.P.I.M.</font></div></td>");
+										print ("<td width=168><div align=center><font face=Verdana size=1>S/valor U.S.I.M.R.A.</font></div></td>");
 										print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
 									}
 							// else del tipo de cancelacion
 							} else {
-								$hayboleta=1;
-								print ("<td width=168><div align=center><font face=Verdana size=1><a href='fiscalizacionAcuBoleta.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>".Imprimir."</a></font></div></td>");
-								print("<td width=168><div align=center><input type='checkbox' name='seleccion[]' value=".$rowListado['nrocuota']."></div></td>");
+								print ("<td width=168><div align=center><font face=Verdana size=1>Imprimible</font></div></td>");
+								print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
 							}
 						// else de si la boleta ya esta inmpresa
 						} else {

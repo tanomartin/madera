@@ -45,7 +45,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       <p align="center">&nbsp;</p></td>
       <td><p align="center">Fiscalizaci&oacute;n</p>
 	  	  <!--  href="impresion/fiscalizacionImpresion.php" -->
-        <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="impresion/fiscalizacionImpresion.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td><p align="center">Valores al Cobro</p>
 	   <!-- href="../moduloNoDisponible.php" -->
