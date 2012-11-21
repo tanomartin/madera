@@ -227,20 +227,20 @@
 
 			//$nombrearchivo = "H:\\Boletas\\".$ctrl."-".$nrcuit."-".$nroact."-".$nroacu."-".$nrocuo.".pdf";
 			$nombrearchivo = "/home/sistemas/Documentos/Liquidaciones/BoletasUSIMRA/".$ctrl."-".$nrcuit."-".$nroact."-".$nroacu."-".$nrocuo.".pdf";
-			//$pdf->Output($nombrearchivo,'F');
-			$pdf->Output();
+			$pdf->Output($nombrearchivo,'F');
+			//$pdf->Output();
 
 			sleep(1);
 		}
 		mysql_close();
 
-		//$pagina = "fiscalizacionImpBoletas.php?cuit=$cuit&nroacu=$nroacu";
-		//Header("Location: $pagina");
+		$pagina = "fiscalizacionImpBoletas.php?cuit=$cuit&nroacu=$nroacu";
+		Header("Location: $pagina");
 	}
 	else
 	{
 		//echo "No paso valores"; echo "<br>";
-		//$pagina = "fiscalizacionImpBoletas.php?cuit=$cuit&nroacu=$nroacu";
-		//Header("Location: $pagina");
+		$pagina = "fiscalizacionImpBoletas.php?cuit=$cuit&nroacu=$nroacu";
+		Header("Location: $pagina");
 	}
 ?>
