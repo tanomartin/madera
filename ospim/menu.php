@@ -14,17 +14,17 @@
 
 <script language="javascript">
 function abrirAcuerdos(dire) {
-	a= window.open(dire,"Acuerdos",
+	a= window.open(dire,"AcuerdosOspim",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 
 function abrirAfil(dire) {
-	b= window.open(dire,"Afiliados",
+	b= window.open(dire,"AfiliadosOspim",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
 }
 
 function abrirEmpresa(dire) {
-	c= window.open(dire,"Empresas",
+	c= window.open(dire,"EmpresasOspim",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
 }
 </script>
@@ -40,13 +40,12 @@ function abrirEmpresa(dire) {
     <tr>
       <td width="196"> <div align="center">
         <p>M&oacute;dulo Acuerdos</p>
-        <p><a href="acuerdos/menuAcuerdos.php" onclick = "window.open(this.href,'Acuerdos','resizable=YES, Scrollbars=YES, height=800'); return false"><img src="img/manos.jpg" width="101" height="86" border="0"/></a></p>
+        <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/manos.jpg" width="101" height="86" border="0"/></a></p>
         <p>&nbsp;</p>
         </div></td>
-		
       <td width="196"><div align="center">
 	    <p>M&oacute;dulo Empresas</p>
-	    <p><a href="javascript:abrirEmpresa('empresas/menuEmpresa.php')"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=ospim')"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
 	  
