@@ -131,7 +131,39 @@ jQuery(function($){
           <div align="left"><strong><?php echo $rowAMostrar['usuarioregistro']; ?></strong></div>
         </div></td>
       </tr>
-      </table>
+    </table>
+    <p>
+      <?php 
+	if ($tipoBoletas == "Anulada") {
+		print("<div align='center' style='color:#000000'><b> INFORMACION DE ANULACION</b></div><br>"); ?>
+	</p>
+    <table width="543">
+      <tr>
+        <td width="180"><div align="right">Fecha Anulacion</div></td>
+        <td width="351" style="border:groove"><div align="left"><strong><?php echo $rowAMostrar['fechaanulacion']; ?></strong></div></td>
+      </tr>
+      <tr>
+        <td><div align="right">Docuemtancion en Mano</div></td>
+        <td><div align="left" style="border:groove">
+            <div align="left"><strong>
+              <?php 
+		   if($rowAMostrar['documentacionenmano'] == 0) {
+		   		echo "NO";
+		   } else {
+		   		echo "SI";
+		   }
+		?>
+            </strong></div>
+        </div></td>
+      </tr>
+      <tr>
+        <td><div align="right">Motivo</div></td>
+        <td><div align="left" style="border:groove">
+            <div align="left"><strong><?php echo $rowAMostrar['motivoanulacion']; ?></strong></div>
+        </div></td>
+      </tr>
+    </table>
+		 <?php } ?>
     <p>
       <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />
     </p>
