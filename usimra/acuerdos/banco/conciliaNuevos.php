@@ -65,6 +65,7 @@ try {
 			}
 			else
 			{
+				set_time_limit(0);
 				print ("<table width=769 border=1 align=center>");
 				print ("<tr>");
 				print ("<td><div align=center><strong><font size=1 face=Verdana>Cuenta</font></strong></div></td>");

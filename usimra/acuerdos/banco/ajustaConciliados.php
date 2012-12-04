@@ -12,13 +12,14 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$ajustefechainicio = "2012-01-01";
+	$ajustefechainicio = "2011-06-01";
 	$ajusteestadoconciliacion = 1;
 
 	$sqlBuscaResumen="SELECT * FROM resumenusimra WHERE fechaemision >= :fechaemision and estadoconciliacion = :estadoconciliacion ORDER BY codigocuenta, fechaemision, nroordenimputacion, fechaimputacion";
 	$resultBuscaResumen = $dbh->prepare($sqlBuscaResumen);
 	if ($resultBuscaResumen->execute(array(':fechaemision' => $ajustefechainicio, ':estadoconciliacion' => $ajusteestadoconciliacion)))
 	{
+		set_time_limit(0);
 		//echo "BUSCA RESUMENUSIMRA"; echo "<br>";
 		foreach ($resultBuscaResumen as $ajustaresumen)
 		{
