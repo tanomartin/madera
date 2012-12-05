@@ -1,8 +1,13 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
+$fechaCargada=$_GET['fecEmision'];
+//$fechaEmision=substr($fechaCargada, 6, 4).substr($fechaCargada, 3, 2).substr($fechaCargada, 0, 2);
+$fechaEmision=substr($fechaCargada, 0, 4).substr($fechaCargada, 5, 2).substr($fechaCargada, 8, 2);
 $fechaconciliacion = date("Y-m-d H:m:s");
 $usuarioconciliacion = $_SESSION['usuario'];
+
+//echo $fechaEmision;
 
 //conexion y creacion de transaccion.
 try {
@@ -21,8 +26,8 @@ try {
 	print ("</tr>");
 	print ("</table>");
 
-	$sqlControlConciliado="SELECT COUNT(*) FROM resumenusimra WHERE estadoconciliacion = 0";
-	$sqlLeeResumen="SELECT * FROM resumenusimra WHERE estadoconciliacion = 0 ORDER BY codigocuenta, fechaemision, nroordenimputacion, fechaimputacion";
+	$sqlControlConciliado="SELECT COUNT(*) FROM resumenusimra WHERE fechaemision = $fechaEmision AND estadoconciliacion = 0";
+	$sqlLeeResumen="SELECT * FROM resumenusimra WHERE fechaemision = $fechaEmision AND estadoconciliacion = 0 ORDER BY codigocuenta, fechaemision, nroordenimputacion, fechaimputacion";
 
 	$resultControlConciliado = $dbh->query($sqlControlConciliado);
 
@@ -435,16 +440,21 @@ try {
 	if($hayimputacion==1) { 
 	?>
 		<p>&nbsp;</p>
-		<table width="769" border="1" align="center">
+		<table width="771" border="1" align="center">
 		<tr align="center" valign="top">
-	    <td width="385" valign="middle">
+	    <td width="257" valign="middle">
 		<div align="left">
-		<input type="reset" name="volver" value="Volver" onClick="location.href = 'documentosBancarios.php'" align="left"/>
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'listaAConciliar.php'" align="left"/>
 		</div>
 		</td>
-	    <td width="384" valign="middle">
+	    <td width="257" valign="middle">
+		<div align="center">
+        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center">
+	    </div>
+		</td>
+		<td width="257" valign="middle">
 		<div align="right">
-        <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
+        <input type="button" name="ajustar" value="Ajustar Conciliados" onclick="location.href = 'conciliacionBancaria.php'" align="right">
 	    </div>
 		</td>
 		</tr>
@@ -454,9 +464,9 @@ try {
 	else
 	{ ?>
 		<p>&nbsp;</p>
-		<table width="769" border="1" align="center">
+		<table width="771" border="1" align="center">
 		<tr align="center" valign="top">
-	    <td width="769" valign="middle"><input type="reset" name="volver" value="Volver" onClick="location.href = 'documentosBancarios.php'" align="center"/>
+	    <td width="771" valign="middle"><input type="reset" name="volver" value="Volver" onclick="location.href = 'documentosBancarios.php'" align="center"/>
 		</td>
 		</tr>
 		</table>
@@ -473,7 +483,7 @@ try {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Módulo Banco USIMRA :.</title></head>
+<title>.: Módulo Banco USIMRA :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}

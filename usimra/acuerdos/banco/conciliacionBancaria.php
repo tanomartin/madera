@@ -38,7 +38,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <input type="reset" name="volver" value="Volver" onclick="location.href = 'documentosBancarios.php'" align="left" />
         </div>	</td>
 	<td width="381" height="47" valign="middle"><div align="center">
-	  	<input type="submit" name="conciliar" value="Conciliar" align="left" />
+	  	<input type="submit" name="ajustar" value="Ajustar Conciliados" align="left" />
     </div>
     </label></td>
   </tr>
