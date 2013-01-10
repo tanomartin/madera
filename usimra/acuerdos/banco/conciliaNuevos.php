@@ -2,7 +2,7 @@
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
 $fechaCargada=$_GET['fecEmision'];
-//$fechaEmision=substr($fechaCargada, 6, 4).substr($fechaCargada, 3, 2).substr($fechaCargada, 0, 2);
+$fechaEmision=substr($fechaCargada, 6, 4).substr($fechaCargada, 3, 2).substr($fechaCargada, 0, 2);
 $fechaEmision=substr($fechaCargada, 0, 4).substr($fechaCargada, 5, 2).substr($fechaCargada, 8, 2);
 $fechaconciliacion = date("Y-m-d H:m:s");
 $usuarioconciliacion = $_SESSION['usuario'];
@@ -104,7 +104,7 @@ try {
 								$orden=$resumen[nroordenimputacion];
 								$fechaimputacion = $resumen[fechaimputacion];
 								$fechabuscada = date("Y-m-d", strtotime($fechaimputacion."-".$i." day"));
-								//echo "Fecha Imputacion: ".$fechaimputacion." - Dia: ".$i." - Fecha Buscada: ".$fechabuscada; echo "<br>";
+								//echo "Fecha Imputacion: ".$fechaimputacion." - Dia: ".$i." - Fecha Buscada: ".$fechabuscada." - Importe Imputado: ".round($resumen[importeimputado],2); echo "<br>";
 								$estado=$resumen[estadoconciliacion];
 								$importebuscado=0.00;
 
@@ -120,7 +120,7 @@ try {
 										{
 											if($remesaencontrada==0)
 											{
-												$importebuscado=$importebuscado+$remesas[importebruto];
+												$importebuscado=round($remesas[importebruto],2);
 												if(round($resumen[importeimputado],2) == round($importebuscado,2))
 												{
 													$arrayremesa[$indiceremesa]=$remesas[nroremesa];
@@ -128,12 +128,12 @@ try {
 													$remesaencontrada=1;
 													$fechaencontrada=$fechabuscada;
 												}
-												else
-												{
-													$arrayremesa[$indiceremesa]=$remesas[nroremesa];
-													$arraysistema[$indiceremesa]=$remesas[sistemaremesa];
-													$indiceremesa++;
-												}
+//												else
+//												{
+//													$arrayremesa[$indiceremesa]=$remesas[nroremesa];
+//													$arraysistema[$indiceremesa]=$remesas[sistemaremesa];
+//													$indiceremesa++;
+//												}
 												//echo "Fecha Imputacion 1: ".$fechaimputacion." - Importe Buscado: ".$importebuscado." - Fecha Encontrada 1: ".$fechaencontrada; echo "<br>";
 											}
 										}
@@ -163,7 +163,7 @@ try {
 								{
 									foreach ($resultLeeRemesa as $remesa)
 									{
-										$remesaimporte=$remesa[importebruto];
+										$remesaimporte=round($remesa[importebruto],2);
 										$remitosencontrados=0;
 										//echo "Cuenta ".$remesa[codigocuenta]." Sistema ".$remesa[sistemaremesa]." Fecha ".$remesa[fecharemesa]." Nro ".$remesa[nroremesa]." Importe ".$remesa[importebruto].""; echo "<br>";
 										$sqlLeeRemitos="SELECT * FROM remitosremesasusimra WHERE codigocuenta = :codigocuenta and sistemaremesa = :sistemaremesa and fecharemesa = :fecharemesa and nroremesa = :nroremesa and estadoconciliacion = :estadoconciliacion";
@@ -172,7 +172,7 @@ try {
 										{
 											$totalnetoremitos=0.00;
 											foreach ($resultLeeRemitos as $remitos)
-												$totalnetoremitos=$totalnetoremitos+$remitos[importebruto];
+												$totalnetoremitos=$totalnetoremitos+round($remitos[importebruto],2);
 										}
 
 										//echo " Total Remitos ".$totalnetoremitos.""; echo "<br>";
@@ -182,6 +182,8 @@ try {
 											//echo " Total Remitos ".$totalnetoremitos.""; echo "<br>";
 											$remitosencontrados=1;
 										}
+										else
+											$remitosencontrados=0;
 
 										if($remitosencontrados==1)
 											$totalconciliadas++;
@@ -249,11 +251,87 @@ try {
 							}
 								
 							if($remesaencontrada==0)
-								print ("<td><div align=center><font size=1 face=Verdana>No Conciliado - Diferencia de Remesas</font></div></td>");
+							{
+								$remitosueltoencontrado=0;
+								$cuentasuelto=$resumen[codigocuenta];
+								$fechaemisuelto=$resumen[fechaemision];
+								$ordensuelto=$resumen[nroordenimputacion];
+								$fechaimputacionsuelto=$resumen[fechaimputacion];
+								$estadosuelto=$resumen[estadoconciliacion];
+								$importebuscadosuelto=0.00;
+
+								if($remitosueltoencontrado==0)
+								{
+									$sqlBuscaRemitoSuelto="SELECT * FROM remitossueltosusimra WHERE codigocuenta = :codigocuentasuelto and fecharemito = :fecharemitosuelto and estadoconciliacion = :estadoconciliacionsuelto";
+									$resultBuscaRemitoSuelto = $dbh->prepare($sqlBuscaRemitoSuelto);
+									if ($resultBuscaRemitoSuelto->execute(array(':codigocuentasuelto' => $cuentasuelto, ':fecharemitosuelto' => $fechaimputacionsuelto, ':estadoconciliacionsuelto' => $estadosuelto)))
+									{
+										foreach ($resultBuscaRemitoSuelto as $remitossueltos)
+										{
+											if($remitosueltoencontrado==0)
+											{
+												$importebuscadosuelto=round($remitossueltos[importebruto],2);
+												if(round($resumen[importeimputado],2) == round($importebuscadosuelto,2))
+												{
+													$remitosueltoencontrado=1;
+													$sistemaremitosuelto=$remitossueltos[sistemaremito];
+													$nroremitosuelto=$remitossueltos[nroremito];
+													$conciliasuelto=1;
+
+													//Actualiza REMITOSSUELTOSUSIMRA
+													$sqlActualizaRemitosSueltos="UPDATE remitossueltosusimra SET estadoconciliacion = :nuevoestadoconciliacion, fechaconciliacion = :fechaconciliacion, usuarioconciliacion = :usuarioconciliacion, fechaacreditacion = :fechaacreditacion WHERE codigocuenta = :codigocuentasuelto and sistemaremito = :sistemaremito and fecharemito = :fecharemitosuelto and nroremito = :nroremitosuelto and estadoconciliacion = :estadoconciliacionsuelto";
+													$resultActualizaRemitosSueltos = $dbh->prepare($sqlActualizaRemitosSueltos);
+													if ($resultActualizaRemitosSueltos->execute(array(':codigocuentasuelto' => $cuentasuelto, ':sistemaremito' => $sistemaremitosuelto, ':fecharemitosuelto' => $fechaimputacionsuelto, ':nroremitosuelto' => $nroremitosuelto, ':estadoconciliacionsuelto' => $estadosuelto, ':nuevoestadoconciliacion' => $conciliasuelto, ':fechaconciliacion' => $fechaconciliacion, ':usuarioconciliacion' => $usuarioconciliacion, ':fechaacreditacion' => $fechaimputacionsuelto)))
+													{
+														//echo "ACTUALIZA REMITOSSUELTOS"; echo "<br>";
+													}
+
+													//Actualiza CONCILIACUOTASUSIMRA
+													$sqlActConciliaCuotasSueltos="UPDATE conciliacuotasusimra SET estadoconciliacion = :nuevoestadoconciliacion, fechaconciliacion = :fechaconciliacion, usuarioconciliacion = :usuarioconciliacion WHERE cuentaboleta = :cuentaboletasuelto and cuentaremitosuelto = :cuentaremitosuelto and fecharemitosuelto = :fecharemitosuelto and nroremitosuelto = :nroremitosuelto and estadoconciliacion = :estadoconciliacionsuelto";
+													$resultActConciliaCuotasSueltos = $dbh->prepare($sqlActConciliaCuotasSueltos);
+													if ($resultActConciliaCuotasSueltos->execute(array(':cuentaboletasuelto' => $cuentasuelto, ':cuentaremitosuelto' => $cuentasuelto, ':fecharemitosuelto' => $fechaimputacionsuelto, ':nroremitosuelto' => $nroremitosuelto, ':estadoconciliacionsuelto' => $estadosuelto, ':nuevoestadoconciliacion' => $conciliasuelto, ':fechaconciliacion' => $fechaconciliacion, ':usuarioconciliacion' => $usuarioconciliacion)))
+													{
+														//echo "ACTUALIZA CONCILIACUOTAS"; echo "<br>";
+													}
+
+													//Actualiza CONCILIAPAGOSUSIMRA
+													$sqlActConciliaPagosSueltos="UPDATE conciliapagosusimra SET estadoconciliacion = :nuevoestadoconciliacion, fechaconciliacion = :fechaconciliacion, usuarioconciliacion = :usuarioconciliacion WHERE cuentaboleta = :cuentaboletasuelto and cuentaremitosuelto = :cuentaremitosuelto and fecharemitosuelto = :fecharemitosuelto and nroremitosuelto = :nroremitosuelto and estadoconciliacion = :estadoconciliacionsuelto";
+													$resultActConciliaPagosSueltos = $dbh->prepare($sqlActConciliaPagosSueltos);
+													if ($resultActConciliaPagosSueltos->execute(array(':cuentaboletasuelto' => $cuentasuelto, ':cuentaremitosuelto' => $cuentasuelto, ':fecharemitosuelto' => $fechaimputacionsuelto, ':nroremitosuelto' => $nroremitosuelto, ':estadoconciliacionsuelto' => $estadosuelto, ':nuevoestadoconciliacion' => $conciliasuelto, ':fechaconciliacion' => $fechaconciliacion, ':usuarioconciliacion' => $usuarioconciliacion)))
+													{
+														//echo "ACTUALIZA CONCILIAPAGOS"; echo "<br>";
+													}
+
+													//Agrega ORIGENCOMPROBANTEUSIMRA
+													$comprobanteorigensuelto="Remito Suelto";
+													$sqlAddOrigenSuelto="INSERT INTO origencomprobanteusimra (codigocuenta, fechaemision, nroordenimputacion, sistemacomprobante, fechacomprobante, nrocomprobante, comprobante) VALUES (:codigocuenta, :fechaemision, :nroordenimputacion, :sistemacomprobante, :fechacomprobante, :nrocomprobante, :comprobante)";
+													$resultAddOrigenSuelto = $dbh->prepare($sqlAddOrigenSuelto);
+													if ($resultAddOrigenSuelto->execute(array(':codigocuenta' => $cuentasuelto, ':fechaemision' => $fechaemi, ':nroordenimputacion' => $orden, ':sistemacomprobante' => $sistemaremitosuelto, ':fechacomprobante' => $fechaimputacionsuelto, ':nrocomprobante' => $nroremitosuelto, ':comprobante' => $comprobanteorigensuelto)))
+													{
+														//echo "AGREGA ORIGENCOMPROBANTE"; echo "<br>";
+													}
+
+													//Actualiza RESUMENUSIMRA
+													$sqlActualizaResumenSuelto="UPDATE resumenusimra SET estadoconciliacion = :nuevoestadoconciliacion, fechaconciliacion = :fechaconciliacion, usuarioconciliacion = :usuarioconciliacion WHERE codigocuenta = :codigocuenta and fechaemision = :fechaemision and nroordenimputacion = :nroordenimputacion";
+													$resultActualizaResumenSuelto = $dbh->prepare($sqlActualizaResumenSuelto);
+													if ($resultActualizaResumenSuelto->execute(array(':codigocuenta' => $cuentasuelto, ':fechaemision' => $fechaemi, ':nroordenimputacion' => $orden, ':nuevoestadoconciliacion' => $conciliasuelto, ':fechaconciliacion' => $fechaconciliacion, ':usuarioconciliacion' => $usuarioconciliacion)))
+													{
+														//echo "ACTUALIZA RESUMEN"; echo "<br>";
+													}
+													print ("<td><div align=center><font size=1 face=Verdana>Conciliado</font></div></td>");
+												}
+											}
+										}
+									}
+								}
+
+								if($remitosueltoencontrado==0)
+									print ("<td><div align=center><font size=1 face=Verdana>No Conciliado - Diferencia Remesa/Rto. Suelto</font></div></td>");
+							}
 							else
 							{
 								if($remesasconciliadas==0)
-									print ("<td><div align=center><font size=1 face=Verdana>No Conciliado - Diferencia de Remitos</font></div></td>");
+									print ("<td><div align=center><font size=1 face=Verdana>No Conciliado - Diferencia en Remitos de la Remesa</font></div></td>");
 							}
 						}
 						
@@ -444,17 +522,17 @@ try {
 		<tr align="center" valign="top">
 	    <td width="257" valign="middle">
 		<div align="left">
-		<input type="reset" name="volver" value="Volver" onclick="location.href = 'listaAConciliar.php'" align="left"/>
+		<input type="reset" name="volver" value="Volver" onClick="location.href = 'listaAConciliar.php'" align="left"/>
 		</div>
 		</td>
 	    <td width="257" valign="middle">
 		<div align="center">
-        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center">
+        <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center">
 	    </div>
 		</td>
 		<td width="257" valign="middle">
 		<div align="right">
-        <input type="button" name="ajustar" value="Ajustar Conciliados" onclick="location.href = 'conciliacionBancaria.php'" align="right">
+        <input type="button" name="ajustar" value="Ajustar Conciliados" onClick="location.href = 'conciliacionBancaria.php'" align="right">
 	    </div>
 		</td>
 		</tr>
@@ -466,7 +544,7 @@ try {
 		<p>&nbsp;</p>
 		<table width="771" border="1" align="center">
 		<tr align="center" valign="top">
-	    <td width="771" valign="middle"><input type="reset" name="volver" value="Volver" onclick="location.href = 'documentosBancarios.php'" align="center"/>
+	    <td width="771" valign="middle"><input type="reset" name="volver" value="Volver" onClick="location.href = 'documentosBancarios.php'" align="center"/>
 		</td>
 		</tr>
 		</table>
