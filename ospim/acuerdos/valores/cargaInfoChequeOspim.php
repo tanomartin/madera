@@ -106,7 +106,7 @@ function validar(formulario) {
           <input name="fechaCheque" type="text" id="fechaCheque" size="8" />
         </label></td>
       </tr>
-        </table>
+    </table>
   	<p><strong>Informaci&oacute;n Valores al Cobro </strong></p>
   	<table border="1" width="1000" bordercolorlight="#000099" bordercolordark="#0066FF" bordercolor="#000000" cellpadding="2" cellspacing="0">
       <tr>
@@ -173,6 +173,9 @@ function validar(formulario) {
       <label>
       <input type="submit" name="Submit" value="Enviar" />
       </label>
+    </p>
+    <p>
+      <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />
     </p>
   </form>
 </div>
