@@ -1,10 +1,13 @@
 <?php session_save_path("sessiones");
 session_start();
-
+#print(session_id);
 $datos = array_values($_POST);
-$usuario = $datos [0];
-$clave = $datos [1];
+$usuario = $datos[0];
+$clave = $datos[1];
 $host = "localhost";
+if ($_SESSION['usuario'] == $usuario) {
+	header ('location:index.php?error=2');	
+}
 $dbusuario =  mysql_connect($host,$usuario, $clave);
 if (!$dbusuario) {
   	header ('location:index.php?error=1');	

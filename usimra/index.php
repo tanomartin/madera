@@ -25,6 +25,9 @@ A:hover {text-decoration:underline; color:FCF63C}
 		if ($error == 1) {
 			print("<div align='center' style='color:#FF0000'><b> USUARIO Y/O CONTRASEÑA INCORRECTOS </b></div>");
 		}
+		if ($error == 2) {
+			print("<div align='center' style='color:#FF0000'><b> YA TIENE UNA SESION INICIADO CON ESTE USUARIO </b></div>");
+		}
 	?></p>
     <table border="0" width="26%">
       <tr>
