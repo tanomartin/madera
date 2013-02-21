@@ -1,5 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
-include($libPath."controlSession.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php");
 
 $cuit=$_GET['cuit'];
 if ($cuit=="") {
@@ -10,7 +9,8 @@ $sql = "select * from empresas where cuit = $cuit";
 $result = mysql_query($sql,$db); 
 $cant = mysql_num_rows($result); 
 if ($cant != 1) {
-	header ("Location: moduloABM.php?err=1");
+	//Aca hay que buscar en empresa de baja y mandar a la pantalla de consulta
+	header ("Location: moduloABM.php?origen=$origen&err=1");
 }
 $row = mysql_fetch_array($result); 
 
@@ -38,77 +38,42 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-jQuery(function($){
-	$("#cuit").mask("99-99999999-9");
-});
-</script>
 
 <title>.: Módulo Empresa :.</title>
 </head>
-<body bgcolor="#CCCCCC" > 
+<body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <p><strong><a href="moduloABM.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+  <p><strong><a href="moduloABM.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
   <p>
     <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
 	?>
-</p>
-  <form name="empresa" id="empresa" method="post" action="guardarEmpresa.php">
-    <table width="836" height="87" border="0">
-      <tr>
-        <td width="57" height="41">C.U.I.T. </td>
-        <td width="157"><label>
-          <input name="cuit" type="text" id="cuit" value="<?php echo $row['cuit'];?>">
-        </label></td>
-        <td width="213"><label>Razón Social</label></td>
-        <td width="144"><input name="nombre" type="text" id="nombre" value="<?php echo $row['nombre'];?>"></td>
-        <td width="79">Domicilio</td>
-        <td width="160"><input name="domicilio" type="text" id="domicilio" value="<?php echo $row['domilegal'];?>"></td>
-      </tr>
-      <tr>
-        <td height="40"><label>Provincia</label></td>
-        <td><select name="tipoAcuerdo" size="1" id="tipoAcuerdo">
-              <option value=0>Seleccione un valor </option>
-              <?php 
-					$sqlProvi="select * from provincia";
-					$resProvi= mysql_query($sqlProvi,$db);
-					while ($rowProvi=mysql_fetch_array($resProvi)) { 	
-						if ($rowProvi['codprovin'] == $row['codprovin']) {?>			
-              <option value="<?php echo $rowProvi['codprovin'] ?>" selected="selected"><?php echo $rowProvi['descrip']  ?></option>
-                  <?php } else { ?>
-              <option value="<?php echo $rowProvi['codprovin'] ?>"><?php echo $rowProvi['descrip']  ?></option>
-                  <?php } ?>          
-                <?php } ?>
-            </select></td>
-        <td><label>Codigo Postal</label></td>
-        <td><input name="codPos" type="text" id="codPos" value="<?php echo $row['numpostal'];?>"></td>
-        <td>Localidad</td>
-        <td><select name="select" size="1" id="select">
-          <option value=0>Seleccione un valor </option>
-          <?php 
-					$sqlLaca="select * from localidades";
-					$resLoca= mysql_query($sqlLaca,$db);
-					while ($rowLoca=mysql_fetch_array($resLoca)) { 	
-						if ($rowLoca['codlocali'] == $row['codlocali']) {?>
-          <option value="<?php echo $rowLoca['codlocali'] ?>" selected="selected"><?php echo $rowLoca['nomlocali']  ?></option>
-          <?php } else { ?>
-          <option value="<?php echo $rowLoca['codlocali'] ?>"><?php echo $rowLoca['nomlocali']  ?></option>
-          <?php } ?>
-          <?php } ?>
-        </select></td>
-      </tr>
-    </table>
-    <p>
-      <label>
-      <input type="submit" name="Submit" value="Guardar">
-      </label>
-    </p>
-  </form>
-  </div>
+  </p>
+  <table width="354" border="0">
+    <tr>
+      <td width="112"><div align="center">
+        <input name="Input" type="button" value="Modificar Cabecera">
+      </div></td>
+      <td width="123"><div align="center">
+        <input name="Input2" type="button" value="Cuenta Corriente">
+      </div></td>
+      <td width="97"><div align="center">
+        <input name="Input3" type="button" value="Beneficiarios">
+      </div></td>
+    </tr>
+  </table>
+  <p>
+    
+    <?php
+		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/jurisdicEmpresa.php");
+	?>
+  </p>
+  <p>
+    <input name="Input" type="button" value="Modificar Jurisdicciones">
+  </p>
+  <p>
+    <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
+  </p>
+</div>
 </body>
 </html>
