@@ -9,10 +9,8 @@
     <p>
       <?php 
 	if ($canjuris != 0) {
-		while ($rowjuris = mysql_fetch_array($resjuris)) { 
-			$contador = $contador + 1; ?>
+		while ($rowjuris = mysql_fetch_array($resjuris)) { ?>
     </p>
-    <p><strong>Jurisdiccion <?php echo $contador ?></strong></p>
     <table width="53%" height="222" border="2">
       <tr bordercolor="#000000">
         <td width="34%" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>

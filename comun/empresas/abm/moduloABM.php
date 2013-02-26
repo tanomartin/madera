@@ -32,28 +32,37 @@ jQuery(function($){
 <body bgcolor=<?php echo $bgcolor ?>>
 <form id="form1" name="form1" method="post" action="empresa.php?origen=<?php echo $origen ?>">
   <p align="center" class="Estilo1"><strong><a href="../menuEmpresa.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
-    </p>
+  </p>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Empresas</p>
-  <?php 
+  <div align="center">
+    <?php 
 		$err = $_GET['err'];
 		if ($err == 1) {
 			print("<div align='center' style='color:#FF0000'><b> EMPRESA NO ENCONTRADA </b></div>");
-		}
+		} 
+		if ($err == 2) {
+			print("<div align='center' style='color:#FF0000'><b> EMPRESA EXISTENTE - NO SE PUEDE DAR DE ALTA </b></div>");
+		} 
 
   ?>
-  <p>
-  <label>
-  <div align="center">CUIT
+  </div>
+  <div align="center">
+    <p>CUIT
       <input name="cuit" id="cuit" type="text"  size="10" />
-  </label>
-    <p align="center">
-    <label>
-    <input type="submit" name="Submit" value="Enviar" />
-    </label>
-  </p>
-    <p align="center"><input type="button" value="Nueva Empresa" onclick="location.href='nuevaEmpresa.php?origen=<?php echo $origen ?>'"/></p>
-    <p>&nbsp;</p>
+    </p>
+  </div>
+  <div align="center">
+    <table width="228" border="0">
+      <tr>
+        <td width="107"><div align="center">
+          <input type="submit" name="Submit" value="Enviar" />
+        </div></td>
+        <td width="105"><div align="center">
+          <input name="button" type="button" onclick='location.href="nuevaEmpresa.php?origen=<?php echo $origen ?>&cuit="+document.form1.cuit.value' value="Nueva Empresa"/>
+        </div></td>
+      </tr>
+    </table>
+  </div>
 </form>
-<p align="center">&nbsp;</p>
 </body>
 </html>

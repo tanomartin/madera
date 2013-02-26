@@ -7,6 +7,40 @@ else {
     }
 }
 
+function verificaCuil(sCUIT) {
+	var aMult = '5432765432';
+    var aMult = aMult.split('');
+    
+    if (sCUIT && sCUIT.length == 11) {
+        aCUIT = sCUIT.split('');
+        var iResult = 0;
+		var resAux = 0;
+        for(i = 0; i <= 9; i++) {
+            iResult += aCUIT[i] * aMult[i];
+        }
+        iResult = (iResult % 11);
+		if (iResult == 1) iResult = 0;
+		if (iResult != 0) iResult = 11 - iResult;
+		
+        if (iResult == aCUIT[10]) {
+			return true;	
+        } else {
+			alert("CUIT INVALIDO");
+			return false;
+		}
+    } else {
+		if (sCUIT  && sCUIT.length != 11) {
+			alert("CUIT INVALIDO");
+			return false;	
+		} else {
+			alert("CUIT INVALIDO");
+			return false;	
+    	}
+		alert("CUIT INVALIDO");
+		return false;	
+	}
+}
+
 function esFechaValida(fecha){
 	if (fecha != undefined && fecha.value != "" ){
         if (!/^\d{2}\-\d{2}\-\d{4}$/.test(fecha)){
@@ -34,11 +68,9 @@ function esFechaValida(fecha){
             if (comprobarSiBisisesto(anio)){ numDias=29 }else{ numDias=28};
             break;
         default:
-            alert("Fecha introducida erronea");
             return (false);
     }
         if (dia>numDias || dia==0){
-            alert("Fecha introducida erronea");
             return (false);
         }
         return true;

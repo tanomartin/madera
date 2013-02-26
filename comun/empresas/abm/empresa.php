@@ -52,7 +52,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="354" border="0">
     <tr>
       <td width="112"><div align="center">
-        <input name="Input" type="button" value="Modificar Cabecera">
+        <input name="Input" type="button" value="Modificar Cabecera" onClick="location.href='modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '">
       </div></td>
       <td width="123"><div align="center">
         <input name="Input2" type="button" value="Cuenta Corriente">
