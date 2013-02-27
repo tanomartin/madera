@@ -13,6 +13,8 @@ if ($numpostal == "") {
 	$numpostal = $row['numpostal'];
 }
 
+
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -27,7 +29,7 @@ if ($numpostal == "") {
 <script type="text/javascript">
 
 jQuery(function($){
-	$("#cuit").mask("99-99999999-9");
+	$("#cuit").mask("99999999999");
 	$("#fechaInicioOspim").mask("99-99-9999");
 	$("#fechaInicioUsimra").mask("99-99-9999");
 });
@@ -46,9 +48,89 @@ function cambioProvincia(locali) {
 				?>
 				document.forms.modifCabeEmpresa.provincia.value = "<?php echo $rowProvin['descrip'] ?>";
 				document.forms.modifCabeEmpresa.indpostal.value = "<?php echo $rowProvin['indpostal'] ?>";
+				document.forms.nuevaCabeEmpresa.codprovin.value = "<?php echo $rowProvin['codprovin'] ?>";
 			}
 <?php } ?>
 }
+
+function validar(formulario) {
+	if (!verificaCuil(formulario.cuit.value)){
+		return false;
+	}
+	if (formulario.nombre.value == "") {
+		alert("El campo Razon social es Obligatrio");
+		return false;
+	}
+	if (formulario.domicilio.value == "") {
+		alert("El campo domicilio es obligatrio");
+		return false;
+	}
+	if (formulario.codPos.value == "") {
+		alert("El campo Codigo Postal es obligatrio");
+		return false;
+	} else {
+		if (!esEnteroPositivo(formulario.codPos.value)){
+		 	alert("El campo Codigo Postal tiene que ser numerico");
+			return false;
+		}
+	}
+	if (formulario.selectLocali.options[formulario.selectLocali.selectedIndex].value == 0) {
+		alert("Debe elegir una Localidad");
+		return false;
+	}
+	
+	if (formulario.ddn1.value != "") {
+		if (!esEnteroPositivo(formulario.ddn1.value)) {
+			alert("El codigo de area 1 debe ser un numero");
+			return false;
+		}
+	} else {
+		formulario.ddn1.value = "0";
+	}
+	if (formulario.telefono1.value != "") {
+		if (!esEnteroPositivo(formulario.telefono1.value)) {
+			alert("El telefono 1 debe ser un numero");
+			return false;
+		}
+	} else {
+		formulario.telefono1.value = "0";
+	}
+	if (formulario.ddn2.value != "") {
+		if (!esEnteroPositivo(formulario.ddn2.value)) {
+			alert("El codigo de area 2 debe ser un numero");
+			return false;
+		}
+	} else {
+		formulario.ddn2.value = "0";
+	}
+	if (formulario.telefono2.value != "") {
+		if (!esEnteroPositivo(formulario.telefono2.value)) {
+			alert("El telefono 2 debe ser un numero");
+			return false;
+		}
+	} else {
+		formulario.telefono2.value = "0";
+	}
+	
+	if (formulario.fechaInicioOspim.value != "") {
+		if (!esFechaValida(formulario.fechaInicioOspim.value)) {
+			alert("La fecha de inicio de obligacion OSPIM no es valida");
+			return false;
+		}
+	} else {
+		formulario.fechaInicioOspim.value = "00-00-0000";
+	}
+	if (formulario.fechaInicioUsimra.value != "") {
+		if (!esFechaValida(formulario.fechaInicioUsimra.value)) {
+			alert("La fecha de inicio de obligacion USIMRA no es valida");
+			return false;
+		}
+	} else {
+		formulario.fechaInicioUsimra.value = "00-00-0000";
+	}
+	return true;
+}
+
 
 </script>
 
@@ -56,7 +138,7 @@ function cambioProvincia(locali) {
 <div align="center">
   <p><strong><a href="empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
   <p><strong>Modificacion Cabecera de Empresa</strong>
-  <form name="modifCabeEmpresa" id="modifCabeEmpresa" method="post" action="modificarEmpresa.php?origen=<?php echo $origen ?>">
+  <form name="modifCabeEmpresa" id="modifCabeEmpresa" method="post" onSubmit="return validar(this)" action="guardarModifCabecera.php?origen=<?php echo $origen ?>">
     <table width="723" border="1">
       <tr>
         <td width="167"><div align="left">C.U.I.T. </div></td>
@@ -119,6 +201,7 @@ function cambioProvincia(locali) {
 				$rowProvi = mysql_fetch_array($resProvi);
 			?>
              <input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $rowProvi['descrip'];?>" />
+			  <input style="background-color:#CCCCCC; visibility:hidden" value="<?php echo $row['codprovin'] ?>" readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
         </div></td>
       </tr>
       <tr>
@@ -128,14 +211,14 @@ function cambioProvincia(locali) {
             <input name="ddn1" type="text" id="ddn1" value="<?php echo $row['ddn1'];?>" size="5" />
             - 
             <input name="telefono1" type="text" id="telefono1" value="<?php echo $row['telefono1'];?>" size="10" />
-            </div>        </td>
+          </div>        </td>
       </tr>
       <tr>
         <td><div align="left">Contacto 1 </div></td>
         <td>
           <div align="left">
             <input name="contacto1" type="text" id="contacto1" value="<?php echo $row['contactel1'];?>" size="50" />
-            </div>			</td>
+          </div>			</td>
       </tr>
       <tr>
         <td><div align="left">Telefono 2 </div></td>
@@ -225,11 +308,21 @@ function cambioProvincia(locali) {
         </div></td>
       </tr>
     </table>
+    <table width="727" border="0">
+      <tr>
+        <td width="361"><div align="left">
+          <input type="submit" name="Submit" value="Guardar" />
+        </div></td>
+        <td width="350"><div align="right">
+          <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />
+        </div></td>
+      </tr>
+    </table>
+    <p>&nbsp;</p>
     <p>
-      <label>
-      <input type="submit" name="Submit" value="Guardar">
-      </label>
+      <label></label>
     </p>
+    <p>&nbsp;</p>
   </form>
   </p>
 </div>

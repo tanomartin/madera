@@ -65,14 +65,14 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p>
     
     <?php
-		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/jurisdicEmpresa.php");
+		include($_SERVER['DOCUMENT_ROOT']."/comun/empresas/abm/jurisdicEmpresa.php");
 	?>
   </p>
   <p>
-    <input name="Input" type="button" value="Modificar Jurisdicciones">
+    <input name="Input" type="button" value="Disgregacion Dineraria" onclick='location.href="disgregaDinero.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
   </p>
   <p>
-    <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
+    <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" >
   </p>
 </div>
 </body>
