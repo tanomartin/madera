@@ -24,7 +24,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="abm/moduloABM.php?origen=<?php echo $origen?>"><img src="img/abemp.jpg" width="86" height="70" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Buscador</p>
-        <p align="center"><a class="enlace" href="abm/buscador.php?origen=<?php echo $origen?>"><img src="img/buscar.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="buscador/buscador.php?origen=<?php echo $origen?>"><img src="img/buscar.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>

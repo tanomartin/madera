@@ -15,7 +15,7 @@ $resbusqueda = mysql_query($sqlbusqueda,$db);
 $canbusqueda = mysql_num_rows($resbusqueda); 
 if ($canbusqueda == 0) {
 	//Aca hay que buscar en empresa de baja y mandar a la pantalla de consulta
-	//header ("Location: buscador.php?origen=$origen&err=1");
+	header ("Location: buscador.php?origen=$origen&err=1");
 } 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -50,7 +50,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		print ("<td><div align=center>".$rowbusqueda['cuit']."</div></td>");
 		print ("<td><div align=center>".$rowbusqueda['nombre']."</div></td>");
 		print ("<td><div align=center>".$rowbusqueda['domilegal']."</div></td>");
-		print ("<td><div align=center><a href=empresa.php?origen=$origen&cuit=$cuit>+ INFO</a></div></td>");
+		print ("<td><div align=center><a href=../abm/empresa.php?origen=$origen&cuit=$cuit>+ INFO</a></div></td>");
 		print ("</tr>"); 	
 
 }?>
