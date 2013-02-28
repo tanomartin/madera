@@ -41,7 +41,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 jQuery(function($){
 	for (i=1; i<=<?php echo $canjuris + 1 ?>; i++) {
-		if (<?php echo $canjuris ?> == 2)
+		if (<?php echo $canjuris ?> == 2) {
 			$("#disgdinero"+i).mask("999.99");
 		} else {
 			$("#disgdinero"+i).mask("99.99");
@@ -53,9 +53,9 @@ function validar(formulario) {
 	total = 0;
 	for (i=1; i<=<?php echo $canjuris ?>; i++) {
 		nombre = "disgdinero"+i;
+		disgre = document.getElementById(nombre).value;
 		delega = "delega"+i;
 		codidelega = document.getElementById(delega).value;
-		disgre = document.getElementById(nombre).value;
 		if (codidelega != <?php echo $codidelega ?>) {
 			if (parseFloat(disgre) == 0) {
 				alert("El porcentaje no puede ser 0 %");
@@ -65,6 +65,7 @@ function validar(formulario) {
 		total += parseFloat(disgre);
 	}
 	total = Math.round(total*100)/100;
+	
 	if (total != 100) {
 		alert("La suma de los porcentajes debe ser 100%");
 		return false;
