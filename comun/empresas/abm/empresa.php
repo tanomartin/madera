@@ -8,9 +8,9 @@ if ($cuit=="") {
 $sql = "select * from empresas where cuit = $cuit";
 $result = mysql_query($sql,$db); 
 $cant = mysql_num_rows($result); 
-if ($cant != 1) {
-	//Aca hay que buscar en empresa de baja y mandar a la pantalla de consulta
-	header ("Location: moduloABM.php?origen=$origen&err=1");
+if ($cant == 0) {
+	//Aca hay que buscar en empresa de baja y mandar a la pantalla de consulta y si no hay es nueva...
+	header ("Location: nuevaEmpresa.php?origen=$origen&cuit=$cuit");
 }
 $row = mysql_fetch_array($result); 
 
@@ -45,7 +45,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <p><strong><a href="moduloABM.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
   <p>
-    <?php 	
+    <?php 
+		$err = $_GET['err'];
+		if ($err > 0) {
+			$sqldelegacion = "select * from delegaciones where codidelega = $err";
+			$resultdelegacion = mysql_query($sqldelegacion,$db); 
+			$rowdelegacion = mysql_fetch_array($resultdelegacion); 
+			print("<div align='center' style='color:#FF0000'><b> ERROR JURISDICCION EXISTENTE </b></div>");
+			print("<div align='center' style='color:#FF0000'><b> NO SE PUEDE CARGAR LA JURISDICCION </b></div>");
+			print("<div align='center' style='color:#FF0000'><b>".$rowdelegacion['nombre']." </b></div>");
+		}
+		
 		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
 	?>
   </p>
@@ -63,13 +73,13 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
   </table>
   <p>
-    
     <?php
 		include($_SERVER['DOCUMENT_ROOT']."/comun/empresas/abm/jurisdicEmpresa.php");
 	?>
   </p>
   <p>
-    <input name="Input" type="button" value="Disgregacion Dineraria" onclick='location.href="disgregaDinero.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
+    <input name="Input5" type="button" value="Disgregacion Dineraria" onClick='location.href="disgregaDinero.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
+    <input name="Input4" type="button" value="Agreagar Jurisdiccion" onclick='location.href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
   </p>
   <p>
     <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" >

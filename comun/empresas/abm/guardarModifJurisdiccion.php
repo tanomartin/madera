@@ -28,7 +28,7 @@ $sqlDeleteJuris = "DELETE from jurisdiccion where cuit = $cuit and codidelega = 
 
 $sqlInsertJurisNueva = "INSERT INTO jurisdiccion VALUES ('$cuit','$delegacion','$codprovin','$indpostal','$codpostal','$alfapostal','$localidad','$domicilio','$ddn1','$telefono1','$contacto1','$email','$disgdinero')";
 
-//ADEMAS TENGO QUE UPDETEAR LAS DLEGACIONES DE LOS BENEFICIARIOS
+//TODO: ADEMAS TENGO QUE UPDETEAR LAS DLEGACIONES DE LOS BENEFICIARIOS
 
 /*print($sqlDeleteJuris); print("<br>");
 print($sqlInsertJurisNueva);*/

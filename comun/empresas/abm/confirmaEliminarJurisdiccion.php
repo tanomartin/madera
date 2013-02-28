@@ -1,17 +1,47 @@
-<p align="center"><strong>Datos de Jurisdicciones </strong></p>
-<?php 
-	$cuit = $row['cuit'];
-	$sqljuris = "select * from jurisdiccion where cuit = $cuit";
+<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php");
+	
+	$cuit=$_GET['cuit'];
+	$codidelega=$_GET['coddel'];
+	
+	//TODO: ANTES DE ESTO TENGO QUE VER SI TIENE BENEFICIARIOS, SI LO TIENE NO LOS DEJO ELIMINAR
+
+	$sql = "select * from empresas where cuit = $cuit";
+	$result = mysql_query($sql,$db); 
+	$row = mysql_fetch_array($result); 
+
+	$sqljuris = "select * from jurisdiccion where cuit = $cuit and codidelega = $codidelega";
 	$resjuris = mysql_query($sqljuris,$db); 
-	$canjuris = mysql_num_rows($resjuris); 
+	$rowjuris = mysql_fetch_array($resjuris);
+	
+	$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
+	$resultlocalidad = mysql_query($sqllocalidad,$db); 
+	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
+	
+	$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
+	$resultprovi = mysql_query($sqlprovi,$db); 
+	$rowprovi = mysql_fetch_array($resultprovi);
+	
+	
 ?>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<style>
+A:link {text-decoration: none;color:#0033FF}
+A:visited {text-decoration: none}
+A:hover {text-decoration: none;color:#00FFFF }
+</style>
+<title>.: Confirmacion Eliminacion Jurisdiccion :.</title>
+</head>
+<body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-    <p>
-      <?php 
-	if ($canjuris != 0) {
-		while ($rowjuris = mysql_fetch_array($resjuris)) { ?>
-    </p>
-    <table width="53%" height="261" border="2">
+ <p><strong><a href="empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+   <p>
+     <?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); ?>
+  </p>
+   <p><strong>Datos de la Jurisdicci&oacute;n a eliminar </strong></p>
+  <table width="53%" height="261" border="2">
       <tr bordercolor="#000000">
         <td width="38%" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
         <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
@@ -98,24 +128,10 @@
         <td height="22"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Disgregacion Dineraria:</strong></font></div></td>
         <td colspan="2"><div align="left"><?php echo $rowjuris['disgdinero']." %" ?></div></td>
       </tr>
-      <tr bordercolor="#000000" >
-        <td height="28" bordercolor="#000000">&nbsp;</td>
-        <td width="29%"><div align="center">
-          <p>
-            <input name="Input2" type="button" value="Modificar Datos" onclick="location.href='modificarJurisdiccion.php?origen=<?php echo $origen ?>&amp;cuit=<?php echo $cuit ?>&amp;coddel=<?php echo $delega ?> '"/>
-          </p>
-        </div></td>
-        <td width="33%"><p align="center">
-          <?php if ($canjuris > 1) { ?>
-          <input name="Input" type="button" value="Eliminar Jurisdiccion" onclick="location.href='confirmaEliminarJurisdiccion.php?origen=<?php echo $origen ?>&amp;cuit=<?php echo $cuit ?>&amp;coddel=<?php echo $delega ?> '"/>
-          <?php } ?>
-          </p>
-        </td>
-      </tr>
   </table>
-	 <p>
-	   <?php  } 
-	  }
-	  ?>
+  <p>
+    <input name="Input2" type="button" value="Confirmar Eliminacion - Reajustar Digregacion Dineraria" onClick="location.href='disgregaEliminaJurisdiccion.php?origen=<?php echo $origen ?>&amp;cuit=<?php echo $cuit ?>&coddel=<?php echo $codidelega ?> '"/>
   </p>
 </div>
+</body>
+</html>

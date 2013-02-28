@@ -182,7 +182,7 @@ function validar(formulario) {
         <td><div align="left">Codigo Postal</div></td>
         <td><div align="left">
           <label>
-          <input style="background-color:#CCCCCC" name="indpostal" type="text" size="1"/>
+          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" type="text" size="1"/>
           </label>
           -
           <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7" onchange='location.href="nuevaEmpresa.php?origen=<?php echo $origen ?>&numpostal="+document.forms.nuevaCabeEmpresa.codPos.value+"&cuit="+document.forms.nuevaCabeEmpresa.cuit.value+"&nombre="+document.forms.nuevaCabeEmpresa.nombre.value+"&domicilio="+document.forms.nuevaCabeEmpresa.domicilio.value+"&alfapostal="+document.forms.nuevaCabeEmpresa.alfapostal.value+" "'/>

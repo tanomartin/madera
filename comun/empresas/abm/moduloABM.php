@@ -36,33 +36,13 @@ jQuery(function($){
   </p>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Empresas</p>
   <div align="center">
-    <?php 
-		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> EMPRESA NO ENCONTRADA </b></div>");
-		} 
-		if ($err == 2) {
-			print("<div align='center' style='color:#FF0000'><b> EMPRESA EXISTENTE - NO SE PUEDE DAR DE ALTA </b></div>");
-		} 
-
-  ?>
-  </div>
-  <div align="center">
     <p>CUIT
+      
       <input name="cuit" id="cuit" type="text"  size="10" />
     </p>
   </div>
   <div align="center">
-    <table width="228" border="0">
-      <tr>
-        <td width="107"><div align="center">
-          <input type="submit" name="Submit" value="Enviar" />
-        </div></td>
-        <td width="105"><div align="center">
-          <input name="button" type="button" onclick='location.href="nuevaEmpresa.php?origen=<?php echo $origen ?>&cuit="+document.form1.cuit.value' value="Nueva Empresa"/>
-        </div></td>
-      </tr>
-    </table>
+    <input type="submit" name="Submit" value="Enviar" />
   </div>
 </form>
 </body>

@@ -162,7 +162,7 @@ function validar(formulario) {
         <td><div align="left">Codigo Postal</div></td>
         <td><div align="left">
           <label>
-          <input style="background-color:#CCCCCC" name="indpostal" type="text" size="1" value="<?php echo $row['indpostal'];?>"/>
+          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" type="text" size="1" value="<?php echo $row['indpostal'];?>"/>
           </label>
           -
           <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7" onchange='location.href="modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&numpostal="+ document.forms.modifCabeEmpresa.codPos.value'  />
