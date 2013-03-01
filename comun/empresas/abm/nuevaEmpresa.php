@@ -32,6 +32,8 @@ jQuery(function($){
 	$("#cuit").mask("99999999999");
 	$("#fechaInicioOspim").mask("99-99-9999");
 	$("#fechaInicioUsimra").mask("99-99-9999");
+	$("#alfapostal").mask("aaa");
+	alfapostal
 });
 
 function cambioProvincia(locali) {
@@ -71,6 +73,7 @@ function cambioProvincia(locali) {
 }
 
 function validar(formulario) {
+	formulario.Submit.disabled = true;
 	if (!verificaCuil(formulario.cuit.value)){
 		return false;
 	}
@@ -332,7 +335,7 @@ function validar(formulario) {
     </table>
     <p>
       <label>
-      <input type="submit" name="Submit" value="Guardar">
+      <input type="submit" name="Submit" id="Submit" value="Guardar">
       </label>
     </p>
   </form>

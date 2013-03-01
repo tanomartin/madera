@@ -26,6 +26,7 @@ $domicilio = strtoupper($domicilio);
 $indpostal = $datos[2];
 $codpostal = $datos[3];
 $alfapostal = $datos[4];
+$alfapostal = strtoupper($alfapostal);
 $localidad = $datos[5];
 $provincia = $datos[6];
 $codprovin = $datos[7];
@@ -70,11 +71,13 @@ jQuery(function($){
 });
 
 function validar(formulario) {
+	formulario.Submit.disabled = true;
 	total = 0;
 	for (i=1; i<=<?php echo $canjuris + 1 ?>; i++) {
 		nombre = "disgdinero"+i;
 		if (parseFloat(document.getElementById(nombre).value) == 0) {
 			alert("El porcentaje no puede ser 0 %");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 		total += parseFloat(document.getElementById(nombre).value);
@@ -82,6 +85,7 @@ function validar(formulario) {
 	total = Math.round(total*100)/100;
 	if (total != 100) {
 		alert("La suma de los porcentajes debe ser 100%");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	return true;
@@ -142,7 +146,7 @@ function validar(formulario) {
 		   ?>
   	</table> 
     <p>      
-      <input type="submit" name="Submit" value="Guardar" />
+      <input type="submit" id="Submit" name="Submit" value="Guardar" />
     </p>
 </form>
 </div>

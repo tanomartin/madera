@@ -9,8 +9,14 @@ $sql = "select * from empresas where cuit = $cuit";
 $result = mysql_query($sql,$db); 
 $cant = mysql_num_rows($result); 
 if ($cant == 0) {
-	//Aca hay que buscar en empresa de baja y mandar a la pantalla de consulta y si no hay es nueva...
-	header ("Location: nuevaEmpresa.php?origen=$origen&cuit=$cuit");
+	$sql = "select * from empresasdebaja where cuit = $cuit";
+	$result = mysql_query($sql,$db); 
+	$cant = mysql_num_rows($result); 
+	if ($cant == 0) {
+		header ("Location: nuevaEmpresa.php?origen=$origen&cuit=$cuit");
+	} else {
+		header ("Location: empresaBaja.php?origen=$origen&cuit=$cuit");
+	}
 }
 $row = mysql_fetch_array($result); 
 
@@ -47,6 +53,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p>
     <?php 
 		$err = $_GET['err'];
+		$reactiva = $_GET['reactiva'];
 		if ($err > 0) {
 			$sqldelegacion = "select * from delegaciones where codidelega = $err";
 			$resultdelegacion = mysql_query($sqldelegacion,$db); 
@@ -54,6 +61,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 			print("<div align='center' style='color:#FF0000'><b> ERROR JURISDICCION EXISTENTE </b></div>");
 			print("<div align='center' style='color:#FF0000'><b> NO SE PUEDE CARGAR LA JURISDICCION </b></div>");
 			print("<div align='center' style='color:#FF0000'><b>".$rowdelegacion['nombre']." </b></div>");
+		}
+		if ($reactiva == 1) {
+			print("<h2 class='Estilo1'><div align='center' style='color:#006666'><b> EMPRESA REACTIVADA </b></div> </h2>");
 		}
 		
 		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 

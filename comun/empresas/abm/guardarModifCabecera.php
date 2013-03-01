@@ -14,6 +14,7 @@ $domicilio = strtoupper($domicilio);
 $indpostal = $datos[3];
 $codpostal = $datos[4];
 $alfapostal = $datos[5];
+$alfapostal = strtoupper($alfapostal);
 $localidad = $datos[6];
 $provincia = $datos[7];
 $codprovin = $datos[8];

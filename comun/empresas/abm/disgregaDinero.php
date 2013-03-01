@@ -42,11 +42,13 @@ jQuery(function($){
 });
 
 function validar(formulario) {
+	formulario.Submit.disabled = true;
 	total = 0;
 	for (i=1; i<=<?php echo $canjuris ?>; i++) {
 		nombre = "disgdinero"+i;
 		if (parseFloat(document.getElementById(nombre).value) == 0) {
 			alert("El porcentaje no puede ser 0 %");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 		total += parseFloat(document.getElementById(nombre).value);
@@ -54,6 +56,7 @@ function validar(formulario) {
 	total = Math.round(total*100)/100;
 	if (total != 100) {
 		alert("La suma de los porcentajes debe ser 100%");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	return true;
@@ -99,7 +102,7 @@ function validar(formulario) {
 	       }?>
   	</table> 
     <p>
-      <input type="submit" name="Submit" value="Guardar" />
+      <input type="submit" name="Submit" id="Submit" value="Guardar" />
         </p>
 </form>
 </div>

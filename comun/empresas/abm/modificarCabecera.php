@@ -32,6 +32,7 @@ jQuery(function($){
 	$("#cuit").mask("99999999999");
 	$("#fechaInicioOspim").mask("99-99-9999");
 	$("#fechaInicioUsimra").mask("99-99-9999");
+	$("#alfapostal").mask("aaa");
 });
 
 function cambioProvincia(locali) {
@@ -54,34 +55,42 @@ function cambioProvincia(locali) {
 }
 
 function validar(formulario) {
+	formulario.Submit.disabled = true;
 	if (!verificaCuil(formulario.cuit.value)){
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	if (formulario.nombre.value == "") {
 		alert("El campo Razon social es Obligatrio");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	if (formulario.domicilio.value == "") {
 		alert("El campo domicilio es obligatrio");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	if (formulario.codPos.value == "") {
 		alert("El campo Codigo Postal es obligatrio");
+		formulario.Submit.disabled = false;
 		return false;
 	} else {
 		if (!esEnteroPositivo(formulario.codPos.value)){
 		 	alert("El campo Codigo Postal tiene que ser numerico");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	}
 	if (formulario.selectLocali.options[formulario.selectLocali.selectedIndex].value == 0) {
 		alert("Debe elegir una Localidad");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	
 	if (formulario.ddn1.value != "") {
 		if (!esEnteroPositivo(formulario.ddn1.value)) {
 			alert("El codigo de area 1 debe ser un numero");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	} else {
@@ -90,6 +99,7 @@ function validar(formulario) {
 	if (formulario.telefono1.value != "") {
 		if (!esEnteroPositivo(formulario.telefono1.value)) {
 			alert("El telefono 1 debe ser un numero");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	} else {
@@ -98,6 +108,7 @@ function validar(formulario) {
 	if (formulario.ddn2.value != "") {
 		if (!esEnteroPositivo(formulario.ddn2.value)) {
 			alert("El codigo de area 2 debe ser un numero");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	} else {
@@ -106,23 +117,26 @@ function validar(formulario) {
 	if (formulario.telefono2.value != "") {
 		if (!esEnteroPositivo(formulario.telefono2.value)) {
 			alert("El telefono 2 debe ser un numero");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	} else {
 		formulario.telefono2.value = "0";
 	}
 	
-	if (formulario.fechaInicioOspim.value != "") {
+	if (formulario.fechaInicioOspim.value != "" & formulario.fechaInicioUsimra.value != "00-00-0000") {
 		if (!esFechaValida(formulario.fechaInicioOspim.value)) {
 			alert("La fecha de inicio de obligacion OSPIM no es valida");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	} else {
 		formulario.fechaInicioOspim.value = "00-00-0000";
 	}
-	if (formulario.fechaInicioUsimra.value != "") {
+	if (formulario.fechaInicioUsimra.value != "" & formulario.fechaInicioUsimra.value != "00-00-0000") {
 		if (!esFechaValida(formulario.fechaInicioUsimra.value)) {
 			alert("La fecha de inicio de obligacion USIMRA no es valida");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	} else {
@@ -168,7 +182,7 @@ function validar(formulario) {
           <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7" onchange='location.href="modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&numpostal="+ document.forms.modifCabeEmpresa.codPos.value'  />
 		  -        
 		  <label>
-		  <input name="alfapostal" type="text" size="3" value="<?php echo $row['alfapostal'];?>"/>
+		  <input name="alfapostal" id="alfapostal" type="text" size="3" value="<?php echo $row['alfapostal'];?>"/>
 		  </label>
         </div></td>
       </tr>
@@ -179,9 +193,9 @@ function validar(formulario) {
               <option value="0">Seleccione un valor </option>
               <?php 
 			  		
-					$sqlLaca="select * from localidades where numpostal = $numpostal";
-					$resLoca= mysql_query($sqlLaca,$db);
-					while ($rowLoca=mysql_fetch_array($resLoca)) { 	
+					$sqlLoca="select * from localidades where numpostal = $numpostal";
+					$resLoca= mysql_query($sqlLoca,$db);
+					while ($rowLoca= mysql_fetch_array($resLoca)) {	
 						if ($rowLoca['codlocali'] == $row['codlocali']) {?>
               				<option value="<?php echo $rowLoca['codlocali'] ?>" selected="selected"><?php echo $rowLoca['nomlocali']  ?></option>
               	 <?php } else { ?>
@@ -311,7 +325,7 @@ function validar(formulario) {
     <table width="727" border="0">
       <tr>
         <td width="361"><div align="left">
-          <input type="submit" name="Submit" value="Guardar" />
+          <input type="submit" name="Submit" id="Submit" value="Guardar" />
         </div></td>
         <td width="350"><div align="right">
           <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />

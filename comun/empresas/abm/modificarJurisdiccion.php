@@ -29,6 +29,7 @@ if ($numpostal == "") {
 
 jQuery(function($){
 		$("#cuit").mask("99999999999");
+		$("#alfapostal").mask("aaa");
 });
 
 function cambioProvincia(locali) {
@@ -67,33 +68,40 @@ function cambioProvincia(locali) {
 }
 
 function validar(formulario) {
+	formulario.Submit.disabled = true;
 	if (formulario.domicilio.value == "") {
 		alert("El campo domicilio es obligatrio");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	if (formulario.codPos.value == "") {
 		alert("El campo Codigo Postal es obligatrio");
+		formulario.Submit.disabled = false;
 		return false;
 	} else {
 		if (!esEnteroPositivo(formulario.codPos.value)){
 		 	alert("El campo Codigo Postal tiene que ser numerico");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	}
 	if (formulario.selectLocali.options[formulario.selectLocali.selectedIndex].value == 0) {
 		alert("Debe elegir una Localidad");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	
 	if (formulario.ddn1.value != "") {
 		if (!esEnteroPositivo(formulario.ddn1.value)) {
 			alert("El codigo de area 1 debe ser un numero");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	}
 	if (formulario.telefono1.value != "") {
 		if (!esEnteroPositivo(formulario.telefono1.value)) {
 			alert("El telefono 1 debe ser un numero");
+			formulario.Submit.disabled = false;
 			return false;
 		}
 	} else {
@@ -102,6 +110,7 @@ function validar(formulario) {
 	
 	if (formulario.selectDelegacion.options[formulario.selectDelegacion.selectedIndex].value == 0) {
 		alert("Debe elegir una Delegacion");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	
@@ -140,7 +149,7 @@ function validar(formulario) {
 			  <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7" onchange='location.href="modificarJurisdiccion.php?origen=<?php echo $origen ?>&coddel=<?php echo $delega ?>&cuit=<?php echo $cuit ?>&numpostal="+ document.forms.modifJurisEmpresa.codPos.value'  />
 			  -        
 			  <label>
-			  <input name="alfapostal" type="text" size="3" value="<?php echo $row['alfapostal'];?>"/>
+			  <input name="alfapostal" id="alfapostal" type="text" size="3" value="<?php echo $row['alfapostal'];?>"/>
 			  </label>
 			</div></td>
 		  </tr>

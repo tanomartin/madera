@@ -50,6 +50,7 @@ jQuery(function($){
 });
 
 function validar(formulario) {
+	formulario.Submit.disabled = true;
 	total = 0;
 	for (i=1; i<=<?php echo $canjuris ?>; i++) {
 		nombre = "disgdinero"+i;
@@ -59,15 +60,16 @@ function validar(formulario) {
 		if (codidelega != <?php echo $codidelega ?>) {
 			if (parseFloat(disgre) == 0) {
 				alert("El porcentaje no puede ser 0 %");
+				formulario.Submit.disabled = false;
 				return false;
 			}
 		}
 		total += parseFloat(disgre);
 	}
 	total = Math.round(total*100)/100;
-	
 	if (total != 100) {
 		alert("La suma de los porcentajes debe ser 100%");
+		formulario.Submit.disabled = false;
 		return false;
 	}
 	return true;
@@ -110,7 +112,11 @@ function validar(formulario) {
 				print("<td align='center'><font face=Verdana size=2>".$rowprovi['descrip']."</font></td>");
 				
 				if ($delega == $codidelega) {
-					print("<td align='center'><input style='background-color:#CCCCCC' readonly='readonly'  name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value='00.00'> %</td>");
+					if ($canjuris == 2) {
+						print("<td align='center'><input style='background-color:#CCCCCC' readonly='readonly'  name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value='000.00'> %</td>");
+					} else {
+						print("<td align='center'><input style='background-color:#CCCCCC' readonly='readonly'  name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value='00.00'> %</td>");
+					}
 				} else {
 					if ($canjuris == 2) {
 						print("<td align='center'><input style='background-color:#CCCCCC' readonly='readonly'  name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value='100.00'> %</td>");
@@ -124,7 +130,7 @@ function validar(formulario) {
 		   ?>
   	</table> 
     <p>      
-      <input type="submit" name="Submit" value="Guardar" />
+      <input type="submit" name="Submit" id="Submit" value="Guardar" />
     </p>
 </form>
 </div>
