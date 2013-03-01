@@ -50,7 +50,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	}	
 	
 	?> 
-    <p><strong>Acuerdo Cargado </strong><strong> NUMERO <?php echo $rowCebecera['nroacuerdo'] ?></strong>	</p>
+    <p><strong> U.S.I.M.R.A. - Acuerdo Cargado </strong><strong> NUMERO <?php echo $rowCebecera['nroacuerdo'] ?></strong>	</p>
     <p><strong>ESTADO </strong>
 	<?php 
 		$sqlEstado = "select * from estadosdeacuerdos where codigo = $rowCebecera[estadoacuerdo]";
