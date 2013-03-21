@@ -20,12 +20,17 @@ function abrirAcuerdos(dire) {
 
 function abrirAfil(dire) {
 	b= window.open(dire,"AfiliadosOspim",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=20, left=20");
 }
 
 function abrirEmpresa(dire) {
 	c= window.open(dire,"EmpresasOspim",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=30");
+}
+
+function abrirAuditoria(dire) {
+	c= window.open(dire,"Auditoria",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 </script>
 
@@ -54,6 +59,17 @@ function abrirEmpresa(dire) {
 	    <p><a href="javascript:abrirAfil('afiliados/menuAfiliados.php')"><img src="img/empleado.jpg" width="101" height="86" border="0" /></a></p>
 	    <p>&nbsp;</p>
       </div></td>
+    </tr>
+	<tr>
+      <td width="196">&nbsp;</td>
+		
+      <td width="196"><div align="center">
+	    <p>M&oacute;dulo Auditoria Medica </p>
+	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p>&nbsp;</p>
+      </div></td>
+	  
+      <td width="183">&nbsp;</td>
     </tr>
   </table>
    <p><strong><a href="logout.php">
