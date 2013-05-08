@@ -332,10 +332,12 @@ function mostrarPeriodos() {
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
 								<option selected value='A'>Período no Pagado</option>
 								<option value='B'>Pagado Fuera de Término</option>
-								<option value='C'>Aporte y Contribución</option>
-								<option value='D'>Aporte</option>
-								<option value='E'>Contribución</option>
+								<option value='C'>Aporte y Contribución 3.1%</option>
+								<option value='D'>Aporte 1.5%</option>
+								<option value='E'>Contribución 1.6%</option>
 								<option value='F'>No Remunerativo</option>
+								<option value='G'>Contribución 0.6%</option>
+								<option value='H'>Contribución 1.0%</option>
 							  </select> </div></td>");
 					} 
 					if ($rowPeridos['conceptodeuda'] == "B") {
@@ -343,10 +345,12 @@ function mostrarPeriodos() {
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
 									<option value='A'>Período no Pagado</option>
 									<option selected value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución</option>
-									<option value='D'>Aporte</option>
-									<option value='E'>Contribución</option>
+									<option value='C'>Aporte y Contribución 3.1%</option>
+									<option value='D'>Aporte 1.5%</option>
+									<option value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
+									<option value='G'>Contribución 0.6%</option>
+									<option value='H'>Contribución 1.0%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "C") {
@@ -354,10 +358,12 @@ function mostrarPeriodos() {
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
 									<option value='A'>Período no Pagado</option>
 									<option value='B'>Pagado Fuera de Término</option>
-									<option selected value='C'>Aporte y Contribución</option>
-									<option value='D'>Aporte</option>
-									<option value='E'>Contribución</option>
+									<option selected value='C'>Aporte y Contribución 3.1%</option>
+									<option value='D'>Aporte 1.5%</option>
+									<option value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
+									<option value='G'>Contribución 0.6%</option>
+									<option value='H'>Contribución 1.0%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "D") {
@@ -365,10 +371,12 @@ function mostrarPeriodos() {
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
 									<option value='A'>Período no Pagado</option>
 									<option value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución</option>
-									<option selected value='D'>Aporte</option>
-									<option value='E'>Contribución</option>
+									<option value='C'>Aporte y Contribución 3.1%</option>
+									<option selected value='D'>Aporte 1.5%</option>
+									<option value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
+									<option value='G'>Contribución 0.6%</option>
+									<option value='H'>Contribución 1.0%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "E") {
@@ -376,10 +384,12 @@ function mostrarPeriodos() {
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
 									<option value='A'>Período no Pagado</option>
 									<option value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución</option>
-									<option value='D'>Aporte</option>
-									<option selected value='E'>Contribución</option>
+									<option value='C'>Aporte y Contribución 3.1%</option>
+									<option value='D'>Aporte 1.5%</option>
+									<option selected value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
+									<option value='G'>Contribución 0.6%</option>
+									<option value='H'>Contribución 1.0%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "F") {
@@ -387,10 +397,38 @@ function mostrarPeriodos() {
 							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
 									<option value='A'>Período no Pagado</option>
 									<option value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución</option>
-									<option value='D'>Aporte</option>
-									<option value='E'>Contribución</option>
+									<option value='C'>Aporte y Contribución 3.1%</option>
+									<option value='D'>Aporte 1.5%</option>
+									<option value='E'>Contribución 1.6%</option>
 									<option selected value='F'>No Remunerativo</option>
+									<option value='G'>Contribución 0.6%</option>
+									<option value='H'>Contribución 1.0%</option>
+							  </select> </div></td>");
+					}
+					if ($rowPeridos['conceptodeuda'] == "G") {
+						print("<td height='11'><div align='center'>
+							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
+									<option value='A'>Período no Pagado</option>
+									<option value='B'>Pagado Fuera de Término</option>
+									<option value='C'>Aporte y Contribución 3.1%</option>
+									<option value='D'>Aporte 1.5%</option>
+									<option value='E'>Contribución 1.6%</option>
+									<option value='F'>No Remunerativo</option>
+									<option selected value='G'>Contribución 0.6%</option>
+									<option value='H'>Contribución 1.0%</option>
+							  </select> </div></td>");
+					}
+					if ($rowPeridos['conceptodeuda'] == "H") {
+						print("<td height='11'><div align='center'>
+							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
+									<option value='A'>Período no Pagado</option>
+									<option value='B'>Pagado Fuera de Término</option>
+									<option value='C'>Aporte y Contribución 3.1%</option>
+									<option value='D'>Aporte 1.5%</option>
+									<option value='E'>Contribución 1.6%</option>
+									<option value='F'>No Remunerativo</option>
+									<option value='G'>Contribución 0.6%</option>
+									<option selected value='H'>Contribución 1.0%</option>
 							  </select> </div></td>");
 					}
 					//FIN TODO
