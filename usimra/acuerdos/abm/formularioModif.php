@@ -337,7 +337,7 @@ function mostrarPeriodos() {
 								<option value='E'>Contribución 1.6%</option>
 								<option value='F'>No Remunerativo</option>
 								<option value='G'>Contribución 0.6%</option>
-								<option value='H'>Contribución 1.0%</option>
+								<option value='H'>Aporte y Contribución 2.5%</option>
 							  </select> </div></td>");
 					} 
 					if ($rowPeridos['conceptodeuda'] == "B") {
@@ -350,7 +350,7 @@ function mostrarPeriodos() {
 									<option value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
 									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Contribución 1.0%</option>
+									<option value='H'>Aporte y Contribución 2.5%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "C") {
@@ -363,7 +363,7 @@ function mostrarPeriodos() {
 									<option value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
 									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Contribución 1.0%</option>
+									<option value='H'>Aporte y Contribución 2.5%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "D") {
@@ -376,7 +376,7 @@ function mostrarPeriodos() {
 									<option value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
 									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Contribución 1.0%</option>
+									<option value='H'>Aporte y Contribución 2.5%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "E") {
@@ -389,7 +389,7 @@ function mostrarPeriodos() {
 									<option selected value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
 									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Contribución 1.0%</option>
+									<option value='H'>Aporte y Contribución 2.5%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "F") {
@@ -402,7 +402,7 @@ function mostrarPeriodos() {
 									<option value='E'>Contribución 1.6%</option>
 									<option selected value='F'>No Remunerativo</option>
 									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Contribución 1.0%</option>
+									<option value='H'>Aporte y Contribución 2.5%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "G") {
@@ -415,7 +415,7 @@ function mostrarPeriodos() {
 									<option value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
 									<option selected value='G'>Contribución 0.6%</option>
-									<option value='H'>Contribución 1.0%</option>
+									<option value='H'>Aporte y Contribución 2.5%</option>
 							  </select> </div></td>");
 					}
 					if ($rowPeridos['conceptodeuda'] == "H") {
@@ -428,7 +428,7 @@ function mostrarPeriodos() {
 									<option value='E'>Contribución 1.6%</option>
 									<option value='F'>No Remunerativo</option>
 									<option value='G'>Contribución 0.6%</option>
-									<option selected value='H'>Contribución 1.0%</option>
+									<option selected value='H'>Aporte y Contribución 2.5%</option>
 							  </select> </div></td>");
 					}
 					//FIN TODO

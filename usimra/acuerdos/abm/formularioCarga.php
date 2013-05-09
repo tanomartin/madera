@@ -362,7 +362,7 @@ function validar(formulario) {
 						<option value='E'>Contribución 1.6%</option>
 						<option value='F'>No Remunerativo</option>
 						<option value='G'>Contribución 0.6%</option>
-						<option value='H'>Contribución 1.0%</option>
+						<option value='H'>Aporte y Contribución 2.5%</option>
             	   </select> </div></td>");
 				 print("</tr>");
 				 } else {
@@ -377,7 +377,7 @@ function validar(formulario) {
 						<option value='E'>Contribución 1.6%</option>
 						<option value='F'>No Remunerativo</option>
 						<option value='G'>Contribución 0.6%</option>
-						<option value='H'>Contribución 1.0%</option>
+						<option value='H'>Aporte y Contribución 2.5%</option>
             	    </select> </div></td>");
 				 	 print("</tr>");
 					//FIN TODO
