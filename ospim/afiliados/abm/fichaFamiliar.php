@@ -3,20 +3,22 @@ include($libPath."controlSession.php");
 
 $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
+$ordafiliado=$_GET['nroOrd'];
 
 //echo $nroafiliado; echo "<br>";
 //echo $estafiliado; echo "<br>";
+//echo $ordafiliado; echo "<br>";
 
 if ($estafiliado == 1)
-	$sqlTitular = "select * from titulares where nroafiliado = $nroafiliado";
+	$sqlFamilia = "select * from familiares where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
 
 if ($estafiliado == 0)
-	$sqlTitular = "select * from titularesdebaja where nroafiliado = $nroafiliado";
+	$sqlFamilia = "select * from familiaresdebaja where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
 
 //echo $sqlTitular; echo "<br>";
 
-$resTitular = mysql_query($sqlTitular,$db);
-$rowTitular = mysql_fetch_array($resTitular);
+$resFamilia = mysql_query($sqlFamilia,$db);
+$rowFamilia = mysql_fetch_array($resFamilia);
 
 $cuitempresa = $rowTitular['cuitempresa'];
 $delegacion = $rowTitular['codidelega'];
@@ -56,7 +58,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <table width="1205" border="0">
 	<tr align="center" valign="top">
       <td width="1205" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'buscaAfiliado.php'" align="center"/> 
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" align="center"/> 
         </div></td>
 	</tr>
 </table>

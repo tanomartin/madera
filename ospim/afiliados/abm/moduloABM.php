@@ -22,7 +22,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="buscaAfiliado.php">
-<p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAfiliados.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
+<div align="center">
+<table width="137" border="0">
+	<tr align="center" valign="top">
+      <td width="137" valign="middle"><div align="center">
+        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAfiliados.php'" align="center"/> 
+        </div></td>
+	</tr>
+</table>
+</div>
   <p align="center" class="Estilo1">Afiliados</p>
   <p>
     <?php 
@@ -54,7 +62,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <td><label>
           <input name="radiobutton" type="radio" value="nrocuil" />
         </label></td>
-        <td><div align="left">Nro CUIL</div></td>
+        <td><div align="left">CUIL</div></td>
       </tr>
     </table>
     <p>
@@ -63,15 +71,12 @@ A:hover {text-decoration: none;color:#00FFFF }
       </label>
     </p>
   </div>
-  <label></label>
   <p align="center">
     <label>
-    <input type="submit" name="Submit" value="Buscar" />
+    <input type="submit" name="buscar" value="Buscar" />
     </label>
   </p>
   <p align="center"><input type="button" value="Nuevo Afiliado" onclick="location.href='nuevoAfiliado.php'"/></p>
-  <p>&nbsp;</p>
 </form>
-<p align="center">&nbsp;</p>
 </body>
 </html>
