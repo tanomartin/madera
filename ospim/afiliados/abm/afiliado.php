@@ -200,8 +200,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td width="166"><div align="center">Ficha</div></td>
   </tr>
 </table>
-<p>
-  <?php
+<?php
 $sqlFamilia = "select * from familiares where nroafiliado = $nroafiliado order by nroafiliado, nroorden";
 $resFamilia = mysql_query($sqlFamilia,$db);
 while($rowFamilia = mysql_fetch_array($resFamilia)) {
