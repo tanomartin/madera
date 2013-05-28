@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Módulo ABM Afiliados :.</title>
+<title>.: ABM Afiliados :.</title>
 <style type="text/css">
 <!--
 .Estilo1 {
@@ -21,14 +21,20 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" action="afiliado.php">
+<form id="form1" name="form1" method="post" action="buscaAfiliado.php">
 <p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAfiliados.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
-  <p align="center" class="Estilo1">M&oacute;dulo De ABM de Afiliados</p>
+  <p align="center" class="Estilo1">Afiliados</p>
   <p>
     <?php 
 		$err = $_GET['err'];
 		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
+			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR NRO DE AFILIADO NO GENERO RESULTADOS </b></div>");
+		}
+		if ($err == 2) {
+			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR NRO DE DOCUMENTO NO GENERO RESULTADOS </b></div>");
+		}
+		if ($err == 3) {
+			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR CUIL NO GENERO RESULTADOS </b></div>");
 		}
 
   ?></p>
@@ -60,7 +66,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <label></label>
   <p align="center">
     <label>
-    <input type="submit" name="Submit" value="Enviar" />
+    <input type="submit" name="Submit" value="Buscar" />
     </label>
   </p>
   <p align="center"><input type="button" value="Nuevo Afiliado" onclick="location.href='nuevoAfiliado.php'"/></p>
