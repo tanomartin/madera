@@ -246,16 +246,16 @@ if($estafiliado == 1) {
 <table width="1204" border="0">
   <tr>
     <td width="301" valign="middle"><div align="center">
-        <input type="submit" name="guardar" value="Guardar Cambios" onClick="location.href = 'guardaAfiliado.php'" align="center"/> 
+        <input type="button" name="guardar" value="Guardar Cambios" onClick="location.href = 'guardaAfiliado.php'" align="center"/> 
         </div></td>
     <td width="301" valign="middle"><div align="center">
-        <input type="submit" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php'" align="center"/> 
+        <input type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php'" align="center"/> 
         </div></td>
     <td width="301" valign="middle"><div align="center">
-        <input type="submit" name="foto" value="Foto" onClick="location.href = 'agregaFoto.php'" align="center"/> 
+        <input type="button" name="foto" value="Foto" onClick="location.href = 'agregaFoto.php'" align="center"/> 
         </div></td>
     <td width="301" valign="middle"><div align="center">
-        <input type="submit" name="bajar" value="Dar de Baja" onClick="location.href = 'bajarAfiliado.php'" align="center"/> 
+        <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajarAfiliado.php'" align="center"/> 
         </div></td>
   </tr>
 </table>
@@ -268,7 +268,7 @@ if($estafiliado == 0) {
 <table width="1204" border="0">
   <tr>
     <td width="1204" valign="middle"><div align="center">
-        <input type="submit" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php'" align="center"/> 
+        <input type="button" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php'" align="center"/> 
         </div></td>
   </tr>
 </table>
