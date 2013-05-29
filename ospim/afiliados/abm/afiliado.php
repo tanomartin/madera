@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
 include($libPath."controlSession.php");
+include($libPath."fechas.php");
 
 $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
@@ -53,6 +54,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <title>.: ABM Afiliados :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
+<form id="formAfiliado" name="formAfiliado" method="post" action="guardaModificacionAfiliado.php">
 <table width="1205" border="0">
 	<tr align="center" valign="top">
       <td width="1205" valign="middle"><div align="center">
@@ -210,13 +212,13 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td colspan="7"><div align="center"><span class="Estilo4">Grupo Familiar</span> </div></td>
   </tr>
   <tr>
-    <td width="166"><div align="center">Parentesco</div></td>
-    <td width="245"><div align="center">Apellido y Nombre </div></td>
-    <td width="184"><div align="center">Fecha de Nacimiento </div></td>
-    <td width="137"><div align="center">Documento</div></td>
-    <td width="152"><div align="center">C.U.I.L.</div></td>
-    <td width="125"><div align="center">Estado</div></td>
-    <td width="166"><div align="center"></div></td>
+    <td width="291"><div align="center">Parentesco</div></td>
+    <td width="464"><div align="center">Apellido y Nombre </div></td>
+    <td width="109"><div align="center">Nacimiento</div></td>
+    <td width="90"><div align="center">Documento</div></td>
+    <td width="88"><div align="center">C.U.I.L.</div></td>
+    <td width="80"><div align="center">Estado</div></td>
+    <td width="83"><div align="center"></div></td>
   </tr>
 </table>
 <?php
@@ -229,13 +231,13 @@ while($rowFamilia = mysql_fetch_array($resFamilia)) {
 	$sqlParentesco = "select * from parentesco where codparent = $parentesco";
 	$resParentesco = mysql_query($sqlParentesco,$db);
 	$rowParentesco = mysql_fetch_array($resParentesco);
-	print ("<td width=166><div align=center><font face=Verdana size=1>".$rowParentesco['descrip']."</font></div></td>");
-	print ("<td width=245><div align=center><font face=Verdana size=1>".$rowFamilia['apellidoynombre']."</font></div></td>");
-	print ("<td width=184><div align=center><font face=Verdana size=1>".$rowFamilia['fechanacimiento']."</font></div></td>");
-	print ("<td width=137><div align=center><font face=Verdana size=1>".$rowFamilia['nrodocumento']."</font></div></td>");
-	print ("<td width=152><div align=center><font face=Verdana size=1>".$rowFamilia['cuil']."</font></div></td>");
-	print ("<td width=125><div align=center><font face=Verdana size=1>ACTIVO</font></div></td>");
-	print ("<td width=166><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?NroAfi=".$nroafiliado."&estAfi=1&nroOrd=".$rowFamilia['nroorden']."' align=center/></font></div></td>");
+	print ("<td width=291><div align=center><font face=Verdana size=1>".$rowParentesco['descrip']."</font></div></td>");
+	print ("<td width=464><div align=center><font face=Verdana size=1>".$rowFamilia['apellidoynombre']."</font></div></td>");
+	print ("<td width=109><div align=center><font face=Verdana size=1>".$rowFamilia['fechanacimiento']."</font></div></td>");
+	print ("<td width=90><div align=center><font face=Verdana size=1>".$rowFamilia['nrodocumento']."</font></div></td>");
+	print ("<td width=88><div align=center><font face=Verdana size=1>".$rowFamilia['cuil']."</font></div></td>");
+	print ("<td width=80><div align=center><font face=Verdana size=1>ACTIVO</font></div></td>");
+	print ("<td width=83><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?nroAfi=".$nroafiliado."&estAfi=1&nroOrd=".$rowFamilia['nroorden']."' align=center/></font></div></td>");
 	print ("</tr>");
 	print ("</table>");
 }
@@ -248,36 +250,35 @@ while($rowFamBaja = mysql_fetch_array($resFamBaja)) {
 	$sqlParentesco = "select * from parentesco where codparent = $parentesco";
 	$resParentesco = mysql_query($sqlParentesco,$db);
 	$rowParentesco = mysql_fetch_array($resParentesco);
-	print ("<td width=166><div align=center><font face=Verdana size=1>".$rowParentesco['descrip']."</font></div></td>");
-	print ("<td width=245><div align=center><font face=Verdana size=1>".$rowFamBaja['apellidoynombre']."</font></div></td>");
-	print ("<td width=184><div align=center><font face=Verdana size=1>".$rowFamBaja['fechanacimiento']."</font></div></td>");
-	print ("<td width=137><div align=center><font face=Verdana size=1>".$rowFamBaja['nrodocumento']."</font></div></td>");
-	print ("<td width=152><div align=center><font face=Verdana size=1>".$rowFamBaja['cuil']."</font></div></td>");
-	print ("<td width=125><div align=center><font face=Verdana size=1>INACTIVO</font></div></td>");
-	print ("<td width=166><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?NroAfi=".$nroafiliado."&estAfi=0&nroOrd=".$rowFamilia['nroorden']."' align=center/></font></div></td>");
+	print ("<td width=291><div align=center><font face=Verdana size=1>".$rowParentesco['descrip']."</font></div></td>");
+	print ("<td width=464><div align=center><font face=Verdana size=1>".$rowFamBaja['apellidoynombre']."</font></div></td>");
+	print ("<td width=109><div align=center><font face=Verdana size=1>".$rowFamBaja['fechanacimiento']."</font></div></td>");
+	print ("<td width=90><div align=center><font face=Verdana size=1>".$rowFamBaja['nrodocumento']."</font></div></td>");
+	print ("<td width=88><div align=center><font face=Verdana size=1>".$rowFamBaja['cuil']."</font></div></td>");
+	print ("<td width=80><div align=center><font face=Verdana size=1>INACTIVO</font></div></td>");
+	print ("<td width=83><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?nroAfi=".$nroafiliado."&estAfi=0&nroOrd=".$rowFamBaja['nroorden']."' align=center/></font></div></td>");
 	print ("</tr>");
 	print ("</table>");
 }
 
 if($estafiliado == 1) { 
 ?>
-<p>&nbsp;</p>
 <table width="1205" border="0">
   <tr>
     <td width="241" valign="middle"><div align="center">
-        <input type="button" name="guardar" value="Guardar Cambios" onClick="location.href = 'guardaAfiliado.php'" align="center"/> 
+        <input type="submit" name="guardar" value="Guardar Cambios" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
         <input type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input type="button" name="foto" value="Foto" onClick="location.href = 'agregaFoto.php'" align="center"/> 
+        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFotoAfiliado.php'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
         <input type="button" name="aportes" value="Aportes / DDJJ" onClick="location.href = 'aportesAfiliado.php'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajarAfiliado.php'" align="center"/> 
+        <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php'" align="center"/> 
         </div></td>
   </tr>
 </table>
@@ -286,7 +287,6 @@ if($estafiliado == 1) {
 
 if($estafiliado == 0) { 
 ?>
-<p>&nbsp;</p>
 <table width="1205" border="0">
   <tr>
     <td width="1205" valign="middle"><div align="center">
@@ -304,5 +304,6 @@ if($estafiliado == 0) {
         </div></td>
   </tr>
 </table>
+</form>
 </body>
 </html>
