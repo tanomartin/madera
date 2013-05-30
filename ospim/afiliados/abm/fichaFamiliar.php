@@ -36,10 +36,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
-<title>.: ABM Afiliados :.</title>
+<title>.: Familiar :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="formAfiliado" name="formAfiliado" method="post" action="guardaModificacionFamiliar.php">
+<form id="formFichaFamiliar" name="formFichaFamiliar" method="post" action="guardaModificacionFamiliar.php">
 <table width="1205" border="0">
 	<tr align="center" valign="top">
       <td width="1205" valign="middle"><div align="center">
@@ -74,7 +74,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td width="316"><input name="tipodocumento" type="text" id="tipodocumento" value="<?php echo $rowFamilia['tipodocumento'] ?>" size="2" />
 					<input name="nrodocumento" type="text" id="nrodocumento" value="<?php echo $rowFamilia['nrodocumento'] ?>" size="10" />	</td>
     <td width="173">Fecha de Nacimiento:</td>
-    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo $rowFamilia['fechanacimiento'] ?>" size="10" />	</td>
+    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo invertirFecha($rowFamilia['fechanacimiento']) ?>" size="10" />	</td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
@@ -102,7 +102,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td>Parentesco:</td>
     <td><input name="tipoparentesco" type="text" id="tipoparentesco" value="<?php echo $rowFamilia['tipoparentesco'] ?>" size="2" />	</td>
     <td>Fecha Ingreso O.S.:</td>
-    <td><input name="fechaobrasocial" type="text" id="fechaobrasocial" value="<?php echo $rowFamilia['fechaobrasocial'] ?>" size="10" />	</td>
+    <td><input name="fechaobrasocial" type="text" id="fechaobrasocial" value="<?php echo invertirFecha($rowFamilia['fechaobrasocial']) ?>" size="10" />	</td>
   </tr>
   <tr>
     <td>Discapacidad:</td>
@@ -121,17 +121,17 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td>Emision:</td>
     <td><input name="emitecarnet" type="text" id="emitecarnet" value="<?php echo $rowFamilia['emitecarnet'] ?>" size="1" />	</td>
     <td>Cantidad Emitida:</td>
-    <td><input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowFamilia['cantidadcarnet'] ?>" size="4" />	</td>
+    <td><input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowFamilia['cantidadcarnet'] ?>" size="4" readonly="true" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td>Fecha Ultima Emision:</td>
-    <td><input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo $rowFamilia['fechacarnet'] ?>" size="10" />	</td>
+    <td><input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo invertirFecha($rowFamilia['fechacarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
     <td>Tipo Credencial:</td>
-    <td><input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowFamilia['tipocarnet'] ?>" size="1" />	</td>
+    <td><input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowFamilia['tipocarnet'] ?>" size="1" readonly="true" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td>Vencimiento:</td>
-    <td colspan="3"><input name="vencimientocarnet" type="text" id="vencimientocarnet" value="<?php echo $rowFamilia['vencimientocarnet'] ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
+    <td colspan="3"><input name="vencimientocarnet" type="text" id="vencimientocarnet" value="<?php echo invertirFecha($rowFamilia['vencimientocarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">

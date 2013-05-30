@@ -51,7 +51,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
-<title>.: ABM Afiliados :.</title>
+<title>.: Afiliado :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
 <form id="formAfiliado" name="formAfiliado" method="post" action="guardaModificacionAfiliado.php">
@@ -90,7 +90,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td width="316"><input name="tipodocumento" type="text" id="tipodocumento" value="<?php echo $rowTitular['tipodocumento'] ?>" size="2" />
 					<input name="nrodocumento" type="text" id="nrodocumento" value="<?php echo $rowTitular['nrodocumento'] ?>" size="10" />	</td>
     <td width="173">Fecha de Nacimiento:</td>
-    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo $rowTitular['fechanacimiento'] ?>" size="10" />	</td>
+    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo invertirFecha($rowTitular['fechanacimiento']) ?>" size="10" />	</td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
@@ -136,7 +136,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <tr>
     <td>Fecha Ingreso O.S.: </td>
     <td>
-	<input name="fechaobrasocial" type="text" id="fechaobrasocial" value="<?php echo $rowTitular['fechaobrasocial'] ?>" size="10" />	</td>
+	<input name="fechaobrasocial" type="text" id="fechaobrasocial" value="<?php echo invertirFecha($rowTitular['fechaobrasocial']) ?>" size="10" />	</td>
     <td>Tipo Afiliado: </td>
     <td><input name="tipoafiliado" type="text" id="tipoafiliado" value="<?php echo $rowTitular['tipoafiliado'] ?>" size="1" />
 		<input name="solicitudopcion" type="text" id="solicitudopcion" value="<?php echo $rowTitular['solicitudopcion'] ?>" size="8" />	</td>
@@ -162,7 +162,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr>
     <td>Fecha  Ingreso Empresa:</td>
-    <td><input name="fechaempresa" type="text" id="fechaempresa" value="<?php echo $rowTitular['fechaempresa'] ?>" size="10" />	</td>
+    <td><input name="fechaempresa" type="text" id="fechaempresa" value="<?php echo invertirFecha($rowTitular['fechaempresa']) ?>" size="10" />	</td>
     <td>Jurisdiccion del Titular:</td>
     <td><input name="codidelega" type="text" id="codidelega" value="<?php echo $rowTitular['codidelega'] ?>" size="4" /> </td>
   </tr>
@@ -179,17 +179,17 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td>Emision:</td>
     <td><input name="emitecarnet" type="text" id="emitecarnet" value="<?php echo $rowTitular['emitecarnet'] ?>" size="1" />	</td>
     <td>Cantidad Emitida:</td>
-    <td><input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowTitular['cantidadcarnet'] ?>" size="4" />	</td>
+    <td><input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowTitular['cantidadcarnet'] ?>" size="4" readonly="true" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td>Fecha Ultima Emision:</td>
-    <td><input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo $rowTitular['fechacarnet'] ?>" size="10" />	</td>
+    <td><input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo invertirFecha($rowTitular['fechacarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
     <td>Tipo Credencial:</td>
-    <td><input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowTitular['tipocarnet'] ?>" size="1" />	</td>
+    <td><input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowTitular['tipocarnet'] ?>" size="1" readonly="true" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td>Vencimiento:</td>
-    <td colspan="3"><input name="vencimientocarnet" type="text" id="vencimientocarnet" value="<?php echo $rowTitular['vencimientocarnet'] ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
+    <td colspan="3"><input name="vencimientocarnet" type="text" id="vencimientocarnet" value="<?php echo invertirFecha($rowTitular['vencimientocarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -222,6 +222,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
 </table>
 <?php
+$canfamilia = 0;
 $sqlFamilia = "select * from familiares where nroafiliado = $nroafiliado order by nroafiliado, nroorden";
 $resFamilia = mysql_query($sqlFamilia,$db);
 while($rowFamilia = mysql_fetch_array($resFamilia)) {
@@ -233,13 +234,14 @@ while($rowFamilia = mysql_fetch_array($resFamilia)) {
 	$rowParentesco = mysql_fetch_array($resParentesco);
 	print ("<td width=291><div align=center><font face=Verdana size=1>".$rowParentesco['descrip']."</font></div></td>");
 	print ("<td width=464><div align=center><font face=Verdana size=1>".$rowFamilia['apellidoynombre']."</font></div></td>");
-	print ("<td width=109><div align=center><font face=Verdana size=1>".$rowFamilia['fechanacimiento']."</font></div></td>");
+	print ("<td width=109><div align=center><font face=Verdana size=1>".invertirFecha($rowFamilia['fechanacimiento'])."</font></div></td>");
 	print ("<td width=90><div align=center><font face=Verdana size=1>".$rowFamilia['nrodocumento']."</font></div></td>");
 	print ("<td width=88><div align=center><font face=Verdana size=1>".$rowFamilia['cuil']."</font></div></td>");
 	print ("<td width=80><div align=center><font face=Verdana size=1>ACTIVO</font></div></td>");
 	print ("<td width=83><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?nroAfi=".$nroafiliado."&estAfi=1&nroOrd=".$rowFamilia['nroorden']."' align=center/></font></div></td>");
 	print ("</tr>");
 	print ("</table>");
+	$canfamilia++;
 }
 $sqlFamBaja = "select * from familiaresdebaja where nroafiliado = $nroafiliado order by nroafiliado, nroorden";
 $resFamBaja = mysql_query($sqlFamBaja,$db);
@@ -252,13 +254,14 @@ while($rowFamBaja = mysql_fetch_array($resFamBaja)) {
 	$rowParentesco = mysql_fetch_array($resParentesco);
 	print ("<td width=291><div align=center><font face=Verdana size=1>".$rowParentesco['descrip']."</font></div></td>");
 	print ("<td width=464><div align=center><font face=Verdana size=1>".$rowFamBaja['apellidoynombre']."</font></div></td>");
-	print ("<td width=109><div align=center><font face=Verdana size=1>".$rowFamBaja['fechanacimiento']."</font></div></td>");
+	print ("<td width=109><div align=center><font face=Verdana size=1>".invertirFecha($rowFamBaja['fechanacimiento'])."</font></div></td>");
 	print ("<td width=90><div align=center><font face=Verdana size=1>".$rowFamBaja['nrodocumento']."</font></div></td>");
 	print ("<td width=88><div align=center><font face=Verdana size=1>".$rowFamBaja['cuil']."</font></div></td>");
 	print ("<td width=80><div align=center><font face=Verdana size=1>INACTIVO</font></div></td>");
 	print ("<td width=83><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?nroAfi=".$nroafiliado."&estAfi=0&nroOrd=".$rowFamBaja['nroorden']."' align=center/></font></div></td>");
 	print ("</tr>");
 	print ("</table>");
+	$canfamilia++;
 }
 
 if($estafiliado == 1) { 
@@ -269,7 +272,7 @@ if($estafiliado == 1) {
         <input type="submit" name="guardar" value="Guardar Cambios" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php'" align="center"/> 
+        <input type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&nueOrd=<?php echo $canfamilia?>'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
         <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFotoAfiliado.php'" align="center"/> 
