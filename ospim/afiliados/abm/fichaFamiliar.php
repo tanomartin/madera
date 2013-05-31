@@ -159,7 +159,7 @@ if($estafiliado == 1) {
         <input type="submit" name="guardar" value="Guardar Cambios" align="center"/> 
         </div></td>
     <td width="402" valign="middle"><div align="center">
-        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFotoFamiliar.php'" align="center"/> 
+        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
         </div></td>
     <td width="401" valign="middle"><div align="center">
         <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaFamiliar.php'" align="center"/> 

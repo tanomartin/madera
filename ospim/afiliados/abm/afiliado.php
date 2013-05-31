@@ -275,7 +275,7 @@ if($estafiliado == 1) {
         <input type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&nueOrd=<?php echo $canfamilia?>'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFotoAfiliado.php'" align="center"/> 
+        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
         <input type="button" name="aportes" value="Aportes / DDJJ" onClick="location.href = 'aportesAfiliado.php'" align="center"/> 
