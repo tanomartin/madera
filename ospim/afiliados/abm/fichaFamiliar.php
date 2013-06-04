@@ -16,7 +16,7 @@ if ($estafiliado == 1)
 if ($estafiliado == 0)
 	$sqlFamilia = "select * from familiaresdebaja where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
 
-//echo $sqlTitular; echo "<br>";
+//echo $sqlFamilia; echo "<br>";
 
 $resFamilia = mysql_query($sqlFamilia,$db);
 $rowFamilia = mysql_fetch_array($resFamilia);
@@ -54,7 +54,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </table>
 <table width="1205" height="100" border="0">
   <tr>
-	<td width="212" align="left" valign="middle"><?php echo "<img src='mostrarFotoFamiliar.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."&nroOrd=".$ordafiliado."' alt='Foto'>" ?></td>
+	<td width="212" align="left" valign="middle"><?php echo "<img src='mostrarFotoFamiliar.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."&nroOrd=".$ordafiliado."' alt='Foto' width='115' height='115'>" ?></td>
     <td width="983" align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span><strong>  
     <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowFamilia['nroafiliado'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" /></strong></div></td>
   </tr>
@@ -66,13 +66,13 @@ A:hover {text-decoration: none;color:#00FFFF }
       </div></td>
   </tr>
   <tr>
-    <td width="238">Apellido y Nombre:</td>
+    <td width="142">Apellido y Nombre:</td>
     <td colspan="3"><input name="apellidoynombre" type="text" id="apellidoynombre" value="<?php echo $rowFamilia['apellidoynombre'] ?>" size="100" />	</td>
   </tr>
   <tr>
     <td>Documento:</td>
-    <td width="316"><input name="tipodocumento" type="text" id="tipodocumento" value="<?php echo $rowFamilia['tipodocumento'] ?>" size="2" />
-					<input name="nrodocumento" type="text" id="nrodocumento" value="<?php echo $rowFamilia['nrodocumento'] ?>" size="10" />	</td>
+    <td width="412"><input name="tipodocumento" type="text" id="tipodocumento" value="<?php echo $rowFamilia['tipodocumento'] ?>" size="2" />
+	  <input name="nrodocumento" type="text" id="nrodocumento" value="<?php echo $rowFamilia['nrodocumento'] ?>" size="10" />	</td>
     <td width="173">Fecha de Nacimiento:</td>
     <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo invertirFecha($rowFamilia['fechanacimiento']) ?>" size="10" />	</td>
   </tr>
@@ -106,8 +106,12 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr>
     <td>Discapacidad:</td>
-    <td><input name="discapacidad" type="text" id="discapacidad" value="<?php echo $rowFamilia['discapacidad'] ?>" size="2" />
-		<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $rowFamilia['certificadodiscapacidad'] ?>" size="1" />	</td>
+    <td><input name="discapacidad" type="text" id="discapacidad" value="<?php echo $rowFamilia['discapacidad'] ?>" size="2"  readonly="true" style="background-color:#CCCCCC" />
+		 Certif:
+		   <input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $rowFamilia['certificadodiscapacidad'] ?>" size="2" readonly="true" style="background-color:#CCCCCC" /> Emision:
+		<input name="emisiondiscapacidad" type="text" id="emisiondiscapacidad" value="" size="10" readonly="true" style="background-color:#CCCCCC" /> 
+		Vto:
+		<input name="vencimientodiscapacidad" type="text" id="vencimientodiscapacidad" value="" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
     <td>Estudia:</td>
     <td><input name="estudia" type="text" id="estudia" value="<?php echo $rowFamilia['estudia'] ?>" size="2" />
 		<input name="certificadoestudio" type="text" id="certificadoestudio" value="<?php echo $rowFamilia['certificadoestudio'] ?>" size="1" />	</td>
@@ -159,7 +163,7 @@ if($estafiliado == 1) {
         <input type="submit" name="guardar" value="Guardar Cambios" align="center"/> 
         </div></td>
     <td width="402" valign="middle"><div align="center">
-        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>&fotAfi=0'" align="center"/>
         </div></td>
     <td width="401" valign="middle"><div align="center">
         <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaFamiliar.php'" align="center"/> 

@@ -89,13 +89,10 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td><input name="fechaobrasocial" type="text" id="fechaobrasocial" value="" size="10" />	</td>
   </tr>
   <tr>
-    <td>Discapacidad:</td>
-    <td><input name="discapacidad" type="text" id="discapacidad" value="" size="2" />
-		<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="" size="1" />	</td>
     <td>Estudia:</td>
-    <td><input name="estudia" type="text" id="estudia" value="" size="2" />
-		<input name="certificadoestudio" type="text" id="certificadoestudio" value="" size="1" />	</td>
-  </tr>
+    <td colspan="3"><input name="estudia" type="text" id="estudia" value="" size="2" />
+		<input name="certificadoestudio" type="text" id="certificadoestudio" value="" size="1" /></td>
+    </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
       <div align="left">Datos Credencial </div>
@@ -112,14 +109,6 @@ A:hover {text-decoration: none;color:#00FFFF }
         <input type="submit" name="guardar" value="Guardar" align="center"/> 
         </div></td>
     </tr>
-</table>
-
-<table width="1205" border="0">
-  <tr>
-    <td width="1205" valign="middle"><div align="center">
-        <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/> 
-        </div></td>
-  </tr>
 </table>
 </form>
 </body>

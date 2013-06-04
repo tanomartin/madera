@@ -1,13 +1,16 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
 include($libPath."controlSession.php");
+
 $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
 $ordafiliado=$_GET['nroOrd'];
 $tipafiliado=$_GET['tipAfi'];
-echo $nroafiliado; echo "<br>";
-echo $estafiliado; echo "<br>";
-echo $ordafiliado; echo "<br>";
-echo $tipafiliado; echo "<br>";
+$fotafiliado=$_GET['fotAfi'];
+//echo $nroafiliado; echo "<br>";
+//echo $estafiliado; echo "<br>";
+//echo $ordafiliado; echo "<br>";
+//echo $tipafiliado; echo "<br>";
+//echo $fotafiliado; echo "<br>";
 
 exec('wiaacmgr');
 ?>
@@ -31,13 +34,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 if($tipafiliado == 1) {
 	$etiquetafoto = $nroafiliado."T";
 ?>
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>'" align="center"/>
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>&fotAfi=1'" align="center"/>
 <?php
 }
 else {
 	$etiquetafoto = $nroafiliado."F".$ordafiliado;
 ?>
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>&fotAfi=1'" align="center"/>
 <?php
 }
 ?>

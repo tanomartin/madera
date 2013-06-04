@@ -2,12 +2,12 @@
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
 
-$fechamodificacion = date("Y-m-d H:m:s");
-$usuariomodificacion = $_SESSION['usuario'];
+$fecharegistro = date("Y-m-d H:m:s");
+$usuarioregistro = $_SESSION['usuario'];
 
 $datos = array_values($_POST);
 
-//echo $datos[0]; echo "<br>"; //nroafiliado (no guarda)
+//echo $datos[0]; echo "<br>"; //nroafiliado
 $nroafiliado = $datos[0];
 //echo $datos[1]; echo "<br>"; //apellidoynombre
 $apellidoynombre = strtoupper($datos[1]);
@@ -49,23 +49,26 @@ $tipoafiliado = $datos[18];
 $solicitudopcion = $datos[19];
 //echo $datos[20]; echo "<br>"; //situaciontitularidad
 $situaciontitularidad = $datos[20];
+//echo $datos[21]; echo "<br>"; //cuil
+$cuil = $datos[21];
+//echo $datos[262; echo "<br>"; //cuitempresa
+$cuitempresa = $datos[22];
+//echo $datos[23]; echo "<br>"; //nombreempresa (no guarda)
+//echo $datos[24]; echo "<br>"; //fechaempresa
+$fechaempresa = fechaParaGuardar($datos[24]);
+//echo $datos[25]; echo "<br>"; //codidelega
+$codidelega = $datos[25];
+//echo $datos[26]; echo "<br>"; //categoria
+$categoria = strtoupper($datos[26]);
+//echo $datos[27]; echo "<br>"; //emitecarnet
+$emitecarnet = $datos[27];
+
+
+
 //echo $datos[21]; echo "<br>"; //discapacidad (no guarda)
 //echo $datos[22]; echo "<br>"; //certificadodiscapacidad (no guarda)
 //echo $datos[23]; echo "<br>"; //emisiondiscapacidad (no guarda)
 //echo $datos[24]; echo "<br>"; //vencimientodiscapacidad (no guarda)
-//echo $datos[25]; echo "<br>"; //cuil
-$cuil = $datos[25];
-//echo $datos[26]; echo "<br>"; //cuitempresa
-$cuitempresa = $datos[26];
-//echo $datos[27]; echo "<br>"; //nombreempresa (no guarda)
-//echo $datos[28]; echo "<br>"; //fechaempresa
-$fechaempresa = fechaParaGuardar($datos[28]);
-//echo $datos[29]; echo "<br>"; //codidelega
-$codidelega = $datos[29];
-//echo $datos[30]; echo "<br>"; //categoria
-$categoria = strtoupper($datos[30]);
-//echo $datos[31]; echo "<br>"; //emitecarnet
-$emitecarnet = $datos[31];
 //echo $datos[32]; echo "<br>"; //cantidadcarnet (no guarda)
 //echo $datos[33]; echo "<br>"; //fechacarnet (no guarda)
 //echo $datos[34]; echo "<br>"; //tipocarnet (no guarda)
@@ -81,9 +84,9 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$sqlActualizaTitular = "UPDATE titulares SET apellidoynombre = :apellidoynombre, tipodocumento = :tipodocumento, nrodocumento = :nrodocumento, fechanacimiento = :fechanacimiento, nacionalidad = :nacionalidad, sexo = :sexo, estadocivil = :estadocivil, domicilio = :domicilio, indpostal = :indpostal, numpostal = :numpostal, alfapostal = :alfapostal, codlocali = :codlocali, codprovin = :codprovin, ddn = :ddn, telefono = :telefono, email = :email, fechaobrasocial = :fechaobrasocial, tipoafiliado = :tipoafiliado, solicitudopcion = :solicitudopcion, situaciontitularidad = :situaciontitularidad, cuil = :cuil, cuitempresa = :cuitempresa, fechaempresa = :fechaempresa, codidelega = :codidelega, categoria = :categoria, emitecarnet = :emitecarnet, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
-	$resActualizaTitular = $dbh->prepare($sqlActualizaTitular);
-	if($resActualizaTitular->execute(array(':nroafiliado' => $nroafiliado, ':apellidoynombre' => $apellidoynombre, ':tipodocumento' => $tipodocumento, ':nrodocumento' => $nrodocumento, ':fechanacimiento' => $fechanacimiento, ':nacionalidad' => $nacionalidad, ':sexo' => $sexo, ':estadocivil' => $estadocivil, ':domicilio' => $domicilio, ':indpostal' => $indpostal, ':numpostal' => $numpostal, ':alfapostal' => $alfapostal, ':codlocali' => $codlocali, ':codprovin' => $codprovin, ':ddn' => $ddn, ':telefono' => $telefono, ':email' => $email, ':fechaobrasocial' => $fechaobrasocial, ':tipoafiliado' => $tipoafiliado, ':solicitudopcion' => $solicitudopcion, ':situaciontitularidad' => $situaciontitularidad, ':cuil' => $cuil, ':cuitempresa' => $cuitempresa, ':fechaempresa' => $fechaempresa, ':codidelega' => $codidelega, ':categoria' => $categoria, ':emitecarnet' => $emitecarnet, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion)))
+	$sqlAgregaTitular = "INSERT INTO titulares (nroafiliado, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento, nacionalidad, sexo, estadocivil, codprovin, indpostal, numpostal, alfapostal, codlocali, domicilio, ddn, telefono, email, fechaobrasocial, tipoafiliado, solicitudopcion, situaciontitularidad, discapacidad, certificadodiscapacidad, cuil, cuitempresa, fechaempresa, codidelega, categoria, emitecarnet, cantidadcarnet, fechacarnet, tipocarnet, vencimientocarnet, informesss, tipoinformesss, fechainformesss, usuarioinformesss, foto, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion, mirroring) VALUES (:nroafiliado, :apellidoynombre, :tipodocumento, :nrodocumento, :fechanacimiento, :nacionalidad, :sexo, :estadocivil, :codprovin, :indpostal, :numpostal, :alfapostal, :codlocali, :domicilio, :ddn, :telefono, :email, :fechaobrasocial, :tipoafiliado, :solicitudopcion, :situaciontitularidad, :discapacidad, :certificadodiscapacidad, :cuil, :cuitempresa, :fechaempresa, :codidelega, :categoria, :emitecarnet, :cantidadcarnet, :fechacarnet, :tipocarnet, :vencimientocarnet, :informesss, :tipoinformesss, :fechainformesss, :usuarioinformesss, :foto, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion, :mirroring)";
+	$resAgregaTitular = $dbh->prepare($sqlAgregaTitular);
+	if($resAgregaTitular->execute(array()))
 
 
 	$dbh->commit();

@@ -58,7 +58,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <table width="1205" border="0">
 	<tr align="center" valign="top">
       <td width="1205" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'buscaAfiliado.php'" align="center"/> 
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/> 
         </div></td>
 	</tr>
 </table>
@@ -69,7 +69,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </table>
 <table width="1205" height="100" border="0">
   <tr>
-	<td width="212" align="left" valign="middle"><?php echo "<img src='mostrarFoto.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."' alt='Foto'>" ?></td>
+	<td width="212" align="left" valign="middle"><?php echo "<img src='mostrarFoto.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."' alt='Foto' width='115' height='115'>" ?></td>
     <td width="983" align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span><strong>  
     <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowTitular['nroafiliado'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" /></strong></div></td>
   </tr>
@@ -145,8 +145,12 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td>Tipo Titularidad: </td>
     <td><input name="situaciontitularidad" type="text" id="situaciontitularidad" value="<?php echo $rowTitular['situaciontitularidad'] ?>" size="2" />	</td>
     <td>Discapacidad:</td>
-    <td><input name="discapacidad" type="text" id="discapacidad" value="<?php echo $rowTitular['discapacidad'] ?>" size="2" />
-		<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $rowTitular['certificadodiscapacidad'] ?>" size="1" />	</td>
+    <td><input name="discapacidad" type="text" id="discapacidad" value="<?php echo $rowTitular['discapacidad'] ?>" size="2" readonly="true" style="background-color:#CCCCCC" /> 
+    Certif:
+		<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $rowTitular['certificadodiscapacidad'] ?>" size="2" readonly="true" style="background-color:#CCCCCC" /> Emision:
+		<input name="emisiondiscapacidad" type="text" id="emisiondiscapacidad" value="" size="10" readonly="true" style="background-color:#CCCCCC" /> 
+		Vto:
+		<input name="vencimientodiscapacidad" type="text" id="vencimientodiscapacidad" value="" size="10" readonly="true" style="background-color:#CCCCCC" /></td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -275,10 +279,10 @@ if($estafiliado == 1) {
         <input type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&nueOrd=<?php echo $canfamilia?>'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" align="center"/> 
+        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1&fotAfi=0'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input type="button" name="aportes" value="Aportes / DDJJ" onClick="location.href = 'aportesAfiliado.php'" align="center"/> 
+        <input type="button" name="aportes" value="DDJJ / Aportes" onClick="location.href = 'aportesAfiliado.php'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
         <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php'" align="center"/> 

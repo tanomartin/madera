@@ -1,20 +1,21 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
 include($libPath."controlSession.php");
+
 $datos = array_values($_POST);
-echo $datos[0]; echo "<br>"; //nroafiliado (no guarda)
+//echo $datos[0]; echo "<br>"; //nroafiliado (no guarda)
 $nroafiliado = $datos[0];
-echo $datos[1]; echo "<br>"; //tipafiliado
+//echo $datos[1]; echo "<br>"; //tipafiliado
 $tipafiliado = $datos[1];
-echo $datos[2]; echo "<br>"; //ordafiliado
+//echo $datos[2]; echo "<br>"; //ordafiliado
 $ordafiliado = $datos[2];
 $archivo = $_FILES["archivofoto"]["tmp_name"];
-echo $archivo; echo "<br>"; //archivo
+//echo $archivo; echo "<br>"; //archivo
 $nomarchivo=$_FILES['archivofoto']['name'];
-echo $nomarchivo; echo "<br>"; //archivo
+//echo $nomarchivo; echo "<br>"; //archivo
 $tiparchivo=$_FILES['archivofoto']['type'];
-echo $tiparchivo; echo "<br>"; //archivo
+//echo $tiparchivo; echo "<br>"; //archivo
 $tamarchivo=$_FILES['archivofoto']['size'];
-echo $tamarchivo; echo "<br>"; //archivo
+//echo $tamarchivo; echo "<br>"; //archivo
 
 if ($archivo != "") {
 	$fp = fopen($archivo, "rb");

@@ -8,11 +8,21 @@ $tipafiliado=$_GET['tipAfi'];
 if($tipafiliado == 2)
 	$ordafiliado=$_GET['nroOrd'];
 
+$fotafiliado=$_GET['fotAfi'];
+
 //echo $nroafiliado; echo "<br>";
 //echo $estafiliado; echo "<br>";
 //echo $tipafiliado; echo "<br>";
 //echo $ordafiliado; echo "<br>";
+//echo $fotafiliado; echo "<br>";
 
+if($tipafiliado == 1 && $fotafiliado == 1)
+	$archivofoto = "C:\\FotosCarnets\\".$nroafiliado."T\\".$nroafiliado."T.jpg";
+
+if($tipafiliado == 2 && $fotafiliado == 1)
+	$archivofoto = "C:\\FotosCarnets\\".$nroafiliado."F".$ordafiliado."\\".$nroafiliado."F".$ordafiliado.".jpg";
+
+//echo $archivofoto; echo "<br>";
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -59,8 +69,8 @@ else {
   <tr>
 	<td align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span>
 	  <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="true" style="background-color:#CCCCCC" />
-	  <input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="9" readonly="true" style="background-color:#CCCCCC" />
-	  <input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="true" style="background-color:#CCCCCC" />
+	  <input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="9" readonly="true" style="visibility:hidden" />
+	  <input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="true" style="visibility:hidden" />
     </div></td>
   </tr>
 </table>
@@ -79,14 +89,18 @@ else {
   <tr>
     <td width="170"><span class="Estilo4">Archivo Contenedor</span></td>
     <td width="533"><label>
-      <input name="archivofoto" type="file" size="70">
+      <input name="archivofoto" type="file" size="70" />
     </label></td>
   </tr>
   <tr>
-    <td colspan="2"><label></label></td>
+    <td></td>
+    <td><label><div align="left"><?php if($fotafiliado == 1) echo "Carpeta de la Foto Scaneada: ".$archivofoto ?></label></div></td>
   </tr>
 </table>
 <table width="1205" border="0">
+  <tr>
+    <td valign="middle">&nbsp;</td>
+  </tr>
   <tr>
     <td valign="middle">&nbsp;</td>
   </tr>
