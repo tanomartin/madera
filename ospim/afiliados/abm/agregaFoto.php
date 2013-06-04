@@ -73,7 +73,7 @@ else {
   <tr>
     <td colspan="2">&nbsp;</td>
     <td width="488" colspan="2" rowspan="3"><div align="center">
-      <input type="button" name="scanear2" value="Scanear Foto" onClick="location.href = 'scanearFoto.php'" align="center"/>
+      <input type="button" name="scanear2" value="Scanear Foto" onClick="location.href = 'scanearFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
     </div></td>
   </tr>
   <tr>

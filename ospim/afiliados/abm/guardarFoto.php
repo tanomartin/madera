@@ -17,9 +17,9 @@ $tamarchivo=$_FILES['archivofoto']['size'];
 echo $tamarchivo; echo "<br>"; //archivo
 
 if ($archivo != "") {
-	$fp = fopen($archivo, “rb”);
+	$fp = fopen($archivo, "rb");
 	$conarchivo = fread($fp, $tamarchivo);
-	$conarchivo = addslashes($conarchivo);
+	//$conarchivo = addslashes($conarchivo);
 	fclose($fp);
 
 	try {
@@ -32,19 +32,26 @@ if ($archivo != "") {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 
-		if(tipafiliado==1)
+		if($tipafiliado==1)
 			$sqlActualizaFoto = "UPDATE titulares SET foto = :foto WHERE nroafiliado = :nroafiliado";
 		else
 			$sqlActualizaFoto = "UPDATE familiares SET foto = :foto WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 
 		$resActualizaFoto = $dbh->prepare($sqlActualizaFoto);
-		if($resActualizaFoto->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden, ':foto' => $conarchivo)))
+
+		if($tipafiliado==1)	{	
+			$resActualizaFoto->execute(array(':nroafiliado' => $nroafiliado, ':foto' => $conarchivo));
+		}
+		else {
+			$resActualizaFoto->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $ordafiliado, ':foto' => $conarchivo));
+		}
 
 		$dbh->commit();
-		if(tipafiliado==1)
+
+		if($tipafiliado==1)
 			$pagina = "afiliado.php?nroAfi=$nroafiliado&estAfi=1";
 		else
-			$pagina = "fichFamiliar.php?nroAfi=$nroafiliado&estAfi=1&nroOrd=$ordafiliado";
+			$pagina = "fichaFamiliar.php?nroAfi=$nroafiliado&estAfi=1&nroOrd=$ordafiliado";
 
 		Header("Location: $pagina"); 
 	}
@@ -53,7 +60,6 @@ if ($archivo != "") {
 		$dbh->rollback();
 	}
 }
-
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
