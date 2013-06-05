@@ -2,9 +2,6 @@
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
 
-$fechamodificacion = date("Y-m-d H:m:s");
-$usuariomodificacion = $_SESSION['usuario'];
-
 $datos = array_values($_POST);
 
 //echo $datos[0]; echo "<br>"; //nroafiliado (no guarda)
@@ -70,6 +67,8 @@ $emitecarnet = $datos[31];
 //echo $datos[33]; echo "<br>"; //fechacarnet (no guarda)
 //echo $datos[34]; echo "<br>"; //tipocarnet (no guarda)
 //echo $datos[35]; echo "<br>"; //vencimientocarnet (no guarda)
+$fechamodificacion = date("Y-m-d H:m:s");
+$usuariomodificacion = $_SESSION['usuario'];
 
 try {
 	$hostname = $_SESSION['host'];

@@ -2,9 +2,6 @@
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
 
-$fecharegistro = date("Y-m-d H:m:s");
-$usuarioregistro = $_SESSION['usuario'];
-
 $datos = array_values($_POST);
 
 //echo $datos[0]; echo "<br>"; //nroafiliado (no guarda)
@@ -33,14 +30,14 @@ $cuil = $datos[10];
 $tipoparentesco = $datos[11];
 //echo $datos[12]; echo "<br>"; //fechaobrasocial
 $fechaobrasocial = fechaParaGuardar($datos[12]); 
-$discapacidad = "0";
-$certificadodiscapacidad = "0";
 //echo $datos[13]; echo "<br>"; //estudia
 $estudia = $datos[13];
 //echo $datos[14]; echo "<br>"; //certificadoestudio
 $certificadoestudio = $datos[14];
 //echo $datos[15]; echo "<br>"; //emitecarnet
 $emitecarnet = $datos[15];
+$discapacidad = "0";
+$certificadodiscapacidad = "0";
 $cantidadcarnet = 0;
 $fechacarnet = "";
 $tipocarnet = "";
@@ -58,6 +55,8 @@ if ($archivo != "") {
 		fclose($fp);
 	}
 }
+$fecharegistro = date("Y-m-d H:m:s");
+$usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = "";
 $usuariomodificacion = "";
 $mirroring = "N";

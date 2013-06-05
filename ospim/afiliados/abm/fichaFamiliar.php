@@ -56,7 +56,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <tr>
 	<td width="212" align="left" valign="middle"><?php echo "<img src='mostrarFotoFamiliar.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."&nroOrd=".$ordafiliado."' alt='Foto' width='115' height='115'>" ?></td>
     <td width="983" align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span><strong>  
-    <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowFamilia['nroafiliado'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" /></strong></div></td>
+    <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowFamilia['nroafiliado'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" />    <input name="nroorden" type="text" id="nroorden" value="<?php echo $rowFamilia['nroorden'] ?>" size="3" readonly="true" style="visibility:hidden" /></strong></div></td>
   </tr>
 </table>
 <table width="1205" border="0">
@@ -131,7 +131,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td>Fecha Ultima Emision:</td>
     <td><input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo invertirFecha($rowFamilia['fechacarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
     <td>Tipo Credencial:</td>
-    <td><input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowFamilia['tipocarnet'] ?>" size="1" readonly="true" style="background-color:#CCCCCC" />	</td>
+    <td><input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowFamilia['tipocarnet'] ?>" size="1" readonly="true" style="background-color:#CCCCCC" /></td>
   </tr>
   <tr>
     <td>Vencimiento:</td>
