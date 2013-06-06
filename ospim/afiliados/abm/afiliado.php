@@ -242,7 +242,7 @@ while($rowFamilia = mysql_fetch_array($resFamilia)) {
 	print ("<td width=90><div align=center><font face=Verdana size=1>".$rowFamilia['nrodocumento']."</font></div></td>");
 	print ("<td width=88><div align=center><font face=Verdana size=1>".$rowFamilia['cuil']."</font></div></td>");
 	print ("<td width=80><div align=center><font face=Verdana size=1>ACTIVO</font></div></td>");
-	print ("<td width=83><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?nroAfi=".$nroafiliado."&estAfi=1&nroOrd=".$rowFamilia['nroorden']."' align=center/></font></div></td>");
+	print ("<td width=83><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."&estFam=1&nroOrd=".$rowFamilia['nroorden']."' align=center/></font></div></td>");
 	print ("</tr>");
 	print ("</table>");
 	$canfamilia++;
@@ -262,7 +262,7 @@ while($rowFamBaja = mysql_fetch_array($resFamBaja)) {
 	print ("<td width=90><div align=center><font face=Verdana size=1>".$rowFamBaja['nrodocumento']."</font></div></td>");
 	print ("<td width=88><div align=center><font face=Verdana size=1>".$rowFamBaja['cuil']."</font></div></td>");
 	print ("<td width=80><div align=center><font face=Verdana size=1>INACTIVO</font></div></td>");
-	print ("<td width=83><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?nroAfi=".$nroafiliado."&estAfi=0&nroOrd=".$rowFamBaja['nroorden']."' align=center/></font></div></td>");
+	print ("<td width=83><div align=center><font face=Verdana size=1><input type=button name=ficha value=Ficha onClick=location.href='fichaFamiliar.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."&estFam=0&nroOrd=".$rowFamBaja['nroorden']."' align=center/></font></div></td>");
 	print ("</tr>");
 	print ("</table>");
 	$canfamilia++;
@@ -285,7 +285,7 @@ if($estafiliado == 1) {
         <input type="button" name="aportes" value="DDJJ / Aportes" onClick="location.href = 'aportesAfiliado.php'" align="center"/> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php'" align="center"/> 
+        <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" align="center"/> 
         </div></td>
   </tr>
 </table>

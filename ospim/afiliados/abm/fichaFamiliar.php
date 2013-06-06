@@ -4,6 +4,7 @@ include($libPath."fechas.php");
 
 $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
+$estfamilia=$_GET['estFam'];
 $ordafiliado=$_GET['nroOrd'];
 
 //echo $nroafiliado; echo "<br>";
@@ -166,7 +167,7 @@ if($estafiliado == 1) {
         <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>&fotAfi=0'" align="center"/>
         </div></td>
     <td width="401" valign="middle"><div align="center">
-        <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaFamiliar.php'" align="center"/> 
+        <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>'" align="center"/> 
         </div></td>
   </tr>
 </table>

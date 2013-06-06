@@ -38,7 +38,7 @@ function abrirAuditoria(dire) {
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span class="Estilo1">Men&uacute; Princal - Sistema OSPIM</span></p>
+  <p><span class="Estilo1">Men&uacute; Principal - Sistema OSPIM</span></p>
   <p>
     <img src="img/logo.jpg" width="168" height="139" /></p>
   <table width="599" border="2">

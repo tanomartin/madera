@@ -5,24 +5,22 @@ $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
 $tipafiliado=$_GET['tipAfi'];
 
-if($tipafiliado == 2)
+if($tipafiliado == 1) {
+	$sqlLeeAfiliado = "SELECT apellidoynombre FROM titulares WHERE nroafiliado = $nroafiliado";
+}
+else {
 	$ordafiliado=$_GET['nroOrd'];
+	$sqlLeeAfiliado = "SELECT apellidoynombre FROM familiares WHERE nroafiliado = $nroafiliado and nroorden = $ordafiliado";
+}
 
-$fotafiliado=$_GET['fotAfi'];
+$resLeeAfiliado = mysql_query($sqlLeeAfiliado,$db);
+$rowLeeAfiliado = mysql_fetch_array($resLeeAfiliado);
 
 //echo $nroafiliado; echo "<br>";
 //echo $estafiliado; echo "<br>";
 //echo $tipafiliado; echo "<br>";
 //echo $ordafiliado; echo "<br>";
-//echo $fotafiliado; echo "<br>";
 
-if($tipafiliado == 1 && $fotafiliado == 1)
-	$archivofoto = "C:\\FotosCarnets\\".$nroafiliado."T\\".$nroafiliado."T.jpg";
-
-if($tipafiliado == 2 && $fotafiliado == 1)
-	$archivofoto = "C:\\FotosCarnets\\".$nroafiliado."F".$ordafiliado."\\".$nroafiliado."F".$ordafiliado.".jpg";
-
-//echo $archivofoto; echo "<br>";
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -40,7 +38,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <title>.: Foto :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<form enctype="multipart/form-data" id="formAgregaFoto" name="formAgregaFoto" method="post" action="guardarFoto.php">
+<form enctype="multipart/form-data" id="formBajaAfiliado" name="formBajaAfiliado" method="post" action="guardarBaja.php">
 <table width="1205" border="0">
 	<tr align="center" valign="top">
       <td width="1205" valign="middle"><div align="center">
@@ -62,13 +60,14 @@ else {
 </table>
 <table width="1205" border="0">
 	<tr>
-      <td width="1205" valign="middle"><div align="center" class="Estilo4"><?php if ($tipafiliado == 1) echo "Agregar Foto de Titular"; else echo "Agregar Foto de Familiar";?></div></td>
+      <td width="1205" valign="middle"><div align="center" class="Estilo4"><?php if ($tipafiliado == 1) echo "Baja de Titular"; else echo "Baja de Familiar";?></div></td>
 	</tr>
 </table>
 <table width="1205" border="0">
   <tr>
 	<td align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span>
 	  <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="true" style="background-color:#CCCCCC" />
+	  <input name="apellidoynombre" type="text" id="nroafiliado" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="100" readonly="true" style="background-color:#CCCCCC" />
 	  <input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="1" readonly="true" style="visibility:hidden" />
 	  <input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="true" style="visibility:hidden" />
     </div></td>
@@ -81,20 +80,16 @@ else {
       </div></td>
   </tr>
   <tr>
-    <td colspan="2">&nbsp;</td>
-    <td width="488" colspan="2" rowspan="3"><div align="center">
-      <input type="button" name="scanear2" value="Scanear Foto" onClick="location.href = 'scanearFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
-    </div></td>
+    <td width="131">Fecha de Baja:</td>
+    <td width="1064"><input name="fechabaja" type="text" id="fechabaja" value="" size="10"/></td>
   </tr>
   <tr>
-    <td width="170"><span class="Estilo4">Archivo Contenedor</span></td>
-    <td width="533"><label>
-      <input name="archivofoto" type="file" size="70" />
-    </label></td>
+    <td width="131">Motivo de Baja:</td>
+    <td width="1064"><textarea name="motivobaja" cols="120" rows="5" id="motivobaja"></textarea></td>
   </tr>
   <tr>
     <td></td>
-    <td><label><div align="left"><?php if($fotafiliado == 1) echo "Carpeta de la Foto Scaneada: ".$archivofoto ?></label></div></td>
+    <td><label><div align="left"></label></div></td>
   </tr>
 </table>
 <table width="1205" border="0">
@@ -106,7 +101,7 @@ else {
   </tr>
   <tr>
     <td valign="middle"><div align="center">
-        <input type="submit" name="guardar" value="Guardar Foto" align="center"/> 
+        <input type="submit" name="guardar" value="Bajar" align="center"/> 
         </div></td>
   </tr>
 </table>
