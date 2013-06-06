@@ -1,10 +1,14 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+
+$datos = array_values($_POST);
+$motivobaja = $datos[0];
+$fechabaja = fechaParaGuardar($datos[1]);
+$fechaefectivizacion = date("Y-m-d H:m:s");
+$usuarioefectivizacion = $_SESSION['usuario'];
 
 $cuit=$_GET['cuit'];
-$fechamodificacionUpdate = date("Y-m-d H:m:s");
-$usuariomodificacionUpdate  = $_SESSION['usuario'];
-
-$sqlTomarDatos = "SELECT * FROM empresasdebaja where cuit = $cuit";
+$sqlTomarDatos = "SELECT * FROM empresas where cuit = $cuit";
 $resTomarDatos = mysql_query($sqlTomarDatos,$db); 
 $rowTomarDatos = mysql_fetch_array($resTomarDatos);
 
@@ -36,18 +40,16 @@ $fecharegistro = $rowTomarDatos['fecharegistro'];
 $usuarioregistro = $rowTomarDatos['usuarioregistro'];
 $fechamodificacion = $rowTomarDatos['fechamodificacion'];
 $usuariomodificacion = $rowTomarDatos['usuariomodificacion'];
+$mirroring = $rowTomarDatos['mirroring'];
 /************************************************************/
 
-$sqlReactivaEmpresa = "INSERT INTO empresas VALUES ('$cuit','$nombre','$codprovin','$indpostal','$codpostal','$alfapostal','$localidad','$domicilio','$ddn1','$telefono1','$contacto1','$ddn2','$telefono2','$contacto2','$codigotipo','$peretenencia','$actividad','$obsOspim','$obsUsimra','$inicioOspim','$inicioUsimra','$email','$carpetaArchivo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion','N')";
+$sqlDesactivarEmpresa = "INSERT INTO empresasdebaja VALUES ('$cuit','$nombre','$codprovin','$indpostal','$codpostal','$alfapostal','$localidad','$domicilio','$ddn1','$telefono1','$contacto1','$ddn2','$telefono2','$contacto2','$codigotipo','$peretenencia','$actividad','$obsOspim','$obsUsimra','$inicioOspim','$inicioUsimra','$email','$carpetaArchivo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion','$mirroring','$fechabaja','$motivobaja','$fechaefectivizacion','$usuarioefectivizacion')";
 
-$sqlUpdateModficador = "UPDATE empresas set fechamodificacion = '$fechamodificacionUpdate', usuariomodificacion = '$usuariomodificacionUpdate' where cuit = $cuit";
-
-$sqlDeleteEmpresaBaja = "DELETE from empresasdebaja where cuit = $cuit";
+$sqlDeleteEmpresa = "DELETE from empresas where cuit = $cuit";
 
 /*print($sqlTomarDatos);print("<br>");
-print($sqlReactivaEmpresa);print("<br>");
-print($sqlUpdateModficador);print("<br>");
-print($sqlDeleteEmpresaBaja);*/
+print($sqlDesactivarEmpresa);print("<br>");
+print($sqlDeleteEmpresa);*/
 
 try {
 	$hostname = $_SESSION['host'];
@@ -55,11 +57,10 @@ try {
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
-	$dbh->exec($sqlReactivaEmpresa);
-	$dbh->exec($sqlUpdateModficador);
-	$dbh->exec($sqlDeleteEmpresaBaja);
+	$dbh->exec($sqlDesactivarEmpresa);
+	$dbh->exec($sqlDeleteEmpresa);
 	$dbh->commit();
-	$pagina = "empresa.php?cuit=$cuit&origen=$origen&reactiva=1";
+	$pagina = "empresaBaja.php?cuit=$cuit&origen=$origen&reactiva=1";
 	Header("Location: $pagina"); 
 }catch (PDOException $e) {
 	echo $e->getMessage();

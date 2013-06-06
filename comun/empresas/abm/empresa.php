@@ -69,7 +69,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
 	?>
   </p>
-  <table width="354" border="0">
+  <table width="346" border="0">
     <tr>
       <td width="112"><div align="center">
         <input name="Input" type="button" value="Modificar Cabecera" onClick="location.href='modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '">
@@ -82,6 +82,9 @@ A:hover {text-decoration: none;color:#00FFFF }
       </div></td>
     </tr>
   </table>
+  <p>
+    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Desactivar Empresa" onClick='location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
+  </p>
   <p>
     <?php
 		include($_SERVER['DOCUMENT_ROOT']."/comun/empresas/abm/jurisdicEmpresa.php");
