@@ -14,10 +14,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <title>.: Consulta Acuerdo :.</title>
 </head>
-<body bgcolor="#CCCCCC" >
+<body bgcolor="#CCCCCC">
 <form name="verificador">
-  <label>
-  <div align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
+  <div align="center">
+  	<strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
   </div>
   <div align="center">
     <?php 
@@ -85,7 +85,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 			$rowGestor = mysql_fetch_array($resGestor);	
 			echo $rowGestor['apeynombre'];
 		?>
-		</div></td>
+		</div>
+		</td>
 		<td valign="bottom"><div align="left"><b>Inspector</b></div></td>
         <td valign="bottom"><div align="left">
 		<?php 
@@ -234,10 +235,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 			?>
 	</tr>
 	</table>
-    <p>&nbsp;</p>
-    <p>
-      <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
-    </p>
+  </div>
+  <div align="center">
+        <p>
+          <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/> 
+              </p>
   </div>
 </form>
 </body>
