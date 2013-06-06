@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Módulo Afiliados OSPIM :.</title>
+<title>.: Módulo Auditoria Medica OSPIM :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
