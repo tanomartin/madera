@@ -56,7 +56,7 @@ try {
 	if($resActualizaFamilia->execute(array(':apellidoynombre' => $apellidoynombre, ':tipodocumento' => $tipodocumento, ':nrodocumento' => $nrodocumento, ':fechanacimiento' => $fechanacimiento, ':nacionalidad' => $nacionalidad, ':sexo' => $sexo, ':ddn' => $ddn, ':telefono' => $telefono, ':email' => $email, ':cuil' => $cuil, ':tipoparentesco' => $tipoparentesco, ':fechaobrasocial' => $fechaobrasocial, ':estudia' => $estudia, ':certificadoestudio' => $certificadoestudio, ':emitecarnet' => $emitecarnet, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden)))
 
 	$dbh->commit();
-	$pagina = "fichaFamiliar.php?nroAfi=$nroafiliado&estAfi=1&nroOrd=$nroorden";
+	$pagina = "fichaFamiliar.php?nroAfi=$nroafiliado&estAfi=1&estFam=1&nroOrd=$nroorden";
 	Header("Location: $pagina"); 
 }
 catch (PDOException $e) {

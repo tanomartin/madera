@@ -5,8 +5,10 @@ $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
 $tipafiliado=$_GET['tipAfi'];
 
-if($tipafiliado == 2)
+if($tipafiliado == 2) {
+	$estfamilia=$_GET['estFam'];
 	$ordafiliado=$_GET['nroOrd'];
+}
 
 $fotafiliado=$_GET['fotAfi'];
 
@@ -47,12 +49,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 <?php
 if($tipafiliado == 1) {
 ?>
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" align="center"/>
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1'" align="center"/>
 <?php
 }
 else {
 ?>
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&estFam=1&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
 <?php
 }
 ?>
@@ -83,7 +85,7 @@ else {
   <tr>
     <td colspan="2">&nbsp;</td>
     <td width="488" colspan="2" rowspan="3"><div align="center">
-      <input type="button" name="scanear2" value="Scanear Foto" onClick="location.href = 'scanearFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+      <input type="button" name="scanear2" value="Scanear Foto" onClick="location.href = 'scanearFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=<?php echo $estfamilia?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
     </div></td>
   </tr>
   <tr>

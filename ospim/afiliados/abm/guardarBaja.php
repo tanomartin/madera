@@ -80,7 +80,7 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<title>.: Foto :.</title>
+<title>.: Baja :.</title>
 </head>
 <body bgcolor="#CCCCCC" > 
 </body>

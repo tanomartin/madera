@@ -1,13 +1,13 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
 include($libPath."controlSession.php");
 $nroafiliado=$_GET['nroAfi'];
-$estafiliado=$_GET['estAfi'];
+$estfamilia=$_GET['estFam'];
 $ordafiliado=$_GET['nroOrd'];
 
-if ($estafiliado == 1)
+if ($estfamilia == 1)
 	$sqlFamilia = "select * from familiares where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
 
-if ($estafiliado == 0)
+if ($estfamilia == 0)
 	$sqlFamilia = "select * from familiaresdebaja where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
 
 $resFamilia = mysql_query($sqlFamilia,$db);

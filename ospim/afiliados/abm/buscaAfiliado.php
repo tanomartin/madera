@@ -28,42 +28,44 @@ $valorbusqueda = $datos[1];
 
 $sqltituacti = "select * from titulares where $ordenbusqueda = $valorbusqueda";
 $restituacti = mysql_query($sqltituacti,$db);
-$cantituacti = mysql_num_rows($restituacti);
-if ($cantituacti != 1) {
+if (mysql_num_rows($restituacti)==0) {
 	$sqlfamiacti = "select * from familiares where $ordenbusqueda = $valorbusqueda";
 	$resfamiacti = mysql_query($sqlfamiacti,$db);
-	$canfamiacti = mysql_num_rows($resfamiacti);
-	if ($canfamiacti != 1) {
+	if (mysql_num_rows($resfamiacti)==0) {
 		$sqltitubaja = "select * from titularesdebaja where $ordenbusqueda = $valorbusqueda";
 		$restitubaja = mysql_query($sqltitubaja,$db);
-		$cantitubaja = mysql_num_rows($restitubaja);
-		if ($cantitubaja != 1) {
+		if (mysql_num_rows($restitubaja)==0) {
 			$sqlfamibaja = "select * from familiaresdebaja where $ordenbusqueda = $valorbusqueda";
 			$resfamibaja = mysql_query($sqlfamibaja,$db);
-			$canfamibaja = mysql_num_rows($resfamibaja);
-			if ($canfamibaja != 1) {
-				header ("Location: moduloABM.php?err=$errorbusqueda");
+			if (mysql_num_rows($resfamibaja)==0) {
+				$noexiste = 1;
 			}
 			else {
-				$leeafiliado = 2;
 				$rowfamibaja = mysql_fetch_array($resfamibaja);
 				$nroafiliado = $rowfamibaja['nroafiliado'];
+
+				$sqlLeeAfiliado = "SELECT * FROM titulares where nroafiliado = $nroafiliado";
+				$resLeeAfiliado = mysql_query($sqlLeeAfiliado,$db);
+				if (mysql_num_rows($resLeeAfiliado)==0)
+					$estafiliado = 0;
+				else
+					$estafiliado = 1;
 			}
 		}
 		else {
-			$leeafiliado = 2;
+			$estafiliado = 0;
 			$rowtitubaja = mysql_fetch_array($restitubaja);
 			$nroafiliado = $rowtitubaja['nroafiliado'];
 		}
 	}
 	else {
-		$leeafiliado = 1;
+		$estafiliado = 1;
 		$rowfamiacti = mysql_fetch_array($resfamiacti);
 		$nroafiliado = $rowfamiacti['nroafiliado'];
 	}
 }
 else {
-	$leeafiliado = 1;
+	$estafiliado = 1;
 	$rowtituacti = mysql_fetch_array($restituacti);
 	$nroafiliado = $rowtituacti['nroafiliado'];
 }
@@ -73,15 +75,10 @@ else {
 //echo $sqltitubaja; echo "<br>";
 //echo $sqlfamibaja; echo "<br>";
 
-if($leeafiliado == 1) {
-//	$sqlleeafili = "select * from titulares where nroafiliado = $nroafiliado";
-	header ("Location: afiliado.php?nroAfi=$nroafiliado&estAfi=1");
-}
-
-if($leeafiliado == 2) {
-//	$sqlleeafili = "select * from titularesdebaja where nroafiliado = $nroafiliado";
-	header ("Location: afiliado.php?nroAfi=$nroafiliado&estAfi=0");
-}
+if ($noexiste == 1)
+	header ("Location: moduloABM.php?err=$errorbusqueda");
+else
+	header ("Location: afiliado.php?nroAfi=$nroafiliado&estAfi=$estafiliado");
 
 //echo $sqlleeafili; echo "<br>";
 

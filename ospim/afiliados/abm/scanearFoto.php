@@ -3,8 +3,13 @@ include($libPath."controlSession.php");
 
 $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
-$ordafiliado=$_GET['nroOrd'];
 $tipafiliado=$_GET['tipAfi'];
+
+if($tipafiliado == 2) {
+	$estfamilia=$_GET['estFam'];
+	$ordafiliado=$_GET['nroOrd'];
+}
+
 $fotafiliado=$_GET['fotAfi'];
 //echo $nroafiliado; echo "<br>";
 //echo $estafiliado; echo "<br>";
@@ -34,13 +39,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 if($tipafiliado == 1) {
 	$etiquetafoto = $nroafiliado."T";
 ?>
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>&fotAfi=1'" align="center"/>
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&tipAfi=<?php echo $tipafiliado?>&fotAfi=1'" align="center"/>
 <?php
 }
 else {
 	$etiquetafoto = $nroafiliado."F".$ordafiliado;
 ?>
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>&fotAfi=1'" align="center"/>
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&estFam=1&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>&fotAfi=1'" align="center"/>
 <?php
 }
 ?>

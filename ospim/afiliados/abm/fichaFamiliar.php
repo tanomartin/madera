@@ -11,11 +11,14 @@ $ordafiliado=$_GET['nroOrd'];
 //echo $estafiliado; echo "<br>";
 //echo $ordafiliado; echo "<br>";
 
-if ($estafiliado == 1)
-	$sqlFamilia = "select * from familiares where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
-
 if ($estafiliado == 0)
 	$sqlFamilia = "select * from familiaresdebaja where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
+
+if ($estafiliado == 1 && $estfamilia == 0)
+	$sqlFamilia = "select * from familiaresdebaja where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
+
+if ($estafiliado == 1 && $estfamilia == 1)
+	$sqlFamilia = "select * from familiares where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
 
 //echo $sqlFamilia; echo "<br>";
 
@@ -50,12 +53,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 </table>
 <table width="1205" border="0">
 	<tr>
-      <td width="1205" valign="middle"><div align="center" class="Estilo4"><?php if ($estafiliado == 1) echo "Familiar Activo"; else echo "Familiar Inactivo";?></div></td>
+      <td width="1205" valign="middle"><div align="center" class="Estilo4"><?php if ($estfamilia == 1) echo "Familiar Activo"; else echo "Familiar Inactivo";?></div></td>
 	</tr>
 </table>
 <table width="1205" height="100" border="0">
   <tr>
-	<td width="212" align="left" valign="middle"><?php echo "<img src='mostrarFotoFamiliar.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."&nroOrd=".$ordafiliado."' alt='Foto' width='115' height='115'>" ?></td>
+	<td width="212" align="left" valign="middle"><?php echo "<img src='mostrarFotoFamiliar.php?nroAfi=".$nroafiliado."&estFam=".$estfamilia."&nroOrd=".$ordafiliado."' alt='Foto' width='115' height='115'>" ?></td>
     <td width="983" align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span><strong>  
     <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowFamilia['nroafiliado'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" />    <input name="nroorden" type="text" id="nroorden" value="<?php echo $rowFamilia['nroorden'] ?>" size="3" readonly="true" style="visibility:hidden" /></strong></div></td>
   </tr>
@@ -140,23 +143,23 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
-      <div align="left"><?php if ($estafiliado == 0)  echo "Datos Inactividad"; ?> </div>
+      <div align="left"><?php if ($estfamilia == 0)  echo "Datos Inactividad"; ?> </div>
     </div></td>
   </tr>
   <tr>
-    <td align="left" valign="top"><?php if ($estafiliado == 0)  echo "Fecha de Baja:"; ?> </td>
-    <td align="left" valign="top"><?php if ($estafiliado == 0) {
-				echo "<input name='fechabaja' type='text' id='fechabaja' value='".$rowFamilia['fechabaja']."' size='10' readonly='true' style='background-color:#CCCCCC' />";
+    <td align="left" valign="top"><?php if ($estfamilia == 0)  echo "Fecha de Baja:"; ?> </td>
+    <td align="left" valign="top"><?php if ($estfamilia == 0) {
+				echo "<input name='fechabaja' type='text' id='fechabaja' value='".invertirFecha($rowFamilia['fechabaja'])."' size='10' readonly='true' style='background-color:#CCCCCC' />";
 		  	  }?> </td>
-	<td align="left" valign="top"><?php if ($estafiliado == 0)  echo "Motivo de Baja:"; ?> </td>
-    <td align="left" valign="top"><?php if ($estafiliado == 0) {
+	<td align="left" valign="top"><?php if ($estfamilia == 0)  echo "Motivo de Baja:"; ?> </td>
+    <td align="left" valign="top"><?php if ($estfamilia == 0) {
           		echo "<textarea name='motivobaja' cols='60' rows='5' id='motivobaja' readonly='readonly' style='background-color:#CCCCCC'>".$rowFamilia['motivobaja']."</textarea>";
 		  	  }?> </td>
   </tr>
 </table>
 <?php
 
-if($estafiliado == 1) { 
+if($estfamilia == 1) { 
 ?>
 <table width="1205" border="0">
   <tr>
@@ -164,7 +167,7 @@ if($estafiliado == 1) {
         <input type="submit" name="guardar" value="Guardar Cambios" align="center"/> 
         </div></td>
     <td width="402" valign="middle"><div align="center">
-        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>&fotAfi=0'" align="center"/>
+        <input type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=<?php echo $estfamilia?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>&fotAfi=0'" align="center"/>
         </div></td>
     <td width="401" valign="middle"><div align="center">
         <input type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>'" align="center"/> 
@@ -174,7 +177,7 @@ if($estafiliado == 1) {
 <?php
 }
 
-if($estafiliado == 0) { 
+if($estafiliado == 1 && $estfamilia == 0) { 
 ?>
 <table width="1205" border="0">
   <tr>

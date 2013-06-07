@@ -52,7 +52,7 @@ if ($archivo != "") {
 		if($tipafiliado==1)
 			$pagina = "afiliado.php?nroAfi=$nroafiliado&estAfi=1";
 		else
-			$pagina = "fichaFamiliar.php?nroAfi=$nroafiliado&estAfi=1&nroOrd=$ordafiliado";
+			$pagina = "fichaFamiliar.php?nroAfi=$nroafiliado&estAfi=1&estFam=1&nroOrd=$ordafiliado";
 
 		Header("Location: $pagina"); 
 	}
