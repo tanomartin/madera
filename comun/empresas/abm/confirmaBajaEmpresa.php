@@ -69,7 +69,7 @@ function validar(formulario) {
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
   <p><strong><a href="empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
-  <p><strong>Confirmaci&oacute;n de Desactivaci&oacute;n de Empresa </strong></p>
+  <p><strong>Confirmaci&oacute;n de Baja de Empresa </strong></p>
   <p>
     <?php 
 		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
@@ -95,7 +95,7 @@ function validar(formulario) {
       <td colspan="2" bordercolor="#000000">	 
   			  <div align="center">
   			    <p>
-  			      <input type="submit" name="Submit" id="Submit" value="Desactivar Empresa">
+  			      <input type="submit" name="Submit" id="Submit" value="Confirmar Baja">
 		        </p>
 		    </div>
 	  </td>

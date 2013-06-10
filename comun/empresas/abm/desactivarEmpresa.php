@@ -3,6 +3,7 @@ include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php");
 
 $datos = array_values($_POST);
 $motivobaja = $datos[0];
+$motivobajaTitular = "Baja de empresa";
 $fechabaja = fechaParaGuardar($datos[1]);
 $fechaefectivizacion = date("Y-m-d H:m:s");
 $usuarioefectivizacion = $_SESSION['usuario'];

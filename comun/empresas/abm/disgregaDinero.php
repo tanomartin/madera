@@ -96,7 +96,7 @@ function validar(formulario) {
 				$resultprovi = mysql_query($sqlprovi,$db); 
 				$rowprovi = mysql_fetch_array($resultprovi);
 				print("<td align='center'><font face=Verdana size=2>".$rowprovi['descrip']."</font></td>");
-				print("<td align='center'><input name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value='".$rowjuris['disgdinero']."'> %</td>");
+				print("<td align='center'><input name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value=''> %</td>");
 				print ("</tr>"); 
 				
 	       }?>

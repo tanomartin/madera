@@ -44,6 +44,27 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
+<script type="text/javascript">
+
+function validarBaja(formulario) {
+	<?php 
+		$sqlTitulares = "select * from titulares where cuitempresa = $cuit";
+		$resTitulares = mysql_query($sqlTitulares,$db); 
+		$canTitulares = mysql_num_rows($resTitulares); 
+		if ($canTitulares > 0) {
+			?>
+			if (confirm('Hay titulares activos para esta empresa.\nQuiere confirmar la baja')) {
+				alert('Se dará de baja la empresa con sus titulares y sus respectivos familiares');
+				location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
+			} else {
+				alert('No se dará de baja la empresa ni sus titulares asociados');
+			}
+ <?php } else { ?>
+ 	   		location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
+<?php }   ?>
+}
+
+</script>
 
 <title>.: Módulo Empresa :.</title>
 </head>
@@ -65,7 +86,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 		if ($reactiva == 1) {
 			print("<h2 class='Estilo1'><div align='center' style='color:#006666'><b> EMPRESA REACTIVADA </b></div> </h2>");
 		}
-		
 		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
 	?>
   </p>
@@ -83,7 +103,22 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
   </table>
   <p>
-    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Desactivar Empresa" onClick='location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
+  	<?php
+		$sqlCantAcuOspim = "select * from cabacuerdosospim where cuit = $cuit and estadoacuerdo = 1";
+		$resCantAcuOspim = mysql_query($sqlCantAcuOspim,$db); 
+		$CantAcuOspim = mysql_num_rows($resCantAcuOspim); 
+		
+		$sqlCantAcuUsimra = "select * from cabacuerdosusimra where cuit = $cuit and estadoacuerdo = 1";
+		$resCantAcuUsimra = mysql_query($sqlCantAcuUsimra,$db); 
+		$CantAcuUsimra = mysql_num_rows($resCantAcuUsimra); 
+	
+		$CantAcuerdos = $CantAcuOspim + $CantAcuUsimra;
+		if ($CantAcuerdos > 0) {
+			print("<div align='center' style='color:#FF0000'>No se puede Desactivar. Acuerdos Activos</div>");
+		} else { ?>
+		    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()">
+	<?php } ?>
+	
   </p>
   <p>
     <?php

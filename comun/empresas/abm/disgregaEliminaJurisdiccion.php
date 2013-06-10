@@ -121,7 +121,7 @@ function validar(formulario) {
 					if ($canjuris == 2) {
 						print("<td align='center'><input style='background-color:#CCCCCC' readonly='readonly'  name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value='100.00'> %</td>");
 					} else {
-						print("<td align='center'><input name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value='".$rowjuris['disgdinero']."'> %</td>");
+						print("<td align='center'><input name='disgdinero".$contador."' id='disgdinero".$contador."' type='text' size='4' value=''> %</td>");
 					}
 				}
 				print ("</tr>"); 
