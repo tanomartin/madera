@@ -38,6 +38,8 @@ $estudia = $datos[18];
 $certificadoestudio = $datos[19];
 //echo $datos[20]; echo "<br>"; //emitecarnet
 $emitecarnet = $datos[20];
+$informesss = 1;
+$tipoinformesss = "M";
 $fechamodificacion = date("Y-m-d H:m:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -51,9 +53,9 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$sqlActualizaFamilia = "UPDATE familiares SET apellidoynombre = :apellidoynombre, tipodocumento = :tipodocumento, nrodocumento = :nrodocumento, fechanacimiento = :fechanacimiento, nacionalidad = :nacionalidad, sexo = :sexo, ddn = :ddn, telefono = :telefono, email = :email, cuil = :cuil, tipoparentesco = :tipoparentesco, fechaobrasocial = :fechaobrasocial, estudia = :estudia, certificadoestudio = :certificadoestudio, emitecarnet = :emitecarnet, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+	$sqlActualizaFamilia = "UPDATE familiares SET apellidoynombre = :apellidoynombre, tipodocumento = :tipodocumento, nrodocumento = :nrodocumento, fechanacimiento = :fechanacimiento, nacionalidad = :nacionalidad, sexo = :sexo, ddn = :ddn, telefono = :telefono, email = :email, cuil = :cuil, tipoparentesco = :tipoparentesco, fechaobrasocial = :fechaobrasocial, estudia = :estudia, certificadoestudio = :certificadoestudio, emitecarnet = :emitecarnet, informesss = :informesss, tipoinformesss = :tipoinformesss, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 	$resActualizaFamilia = $dbh->prepare($sqlActualizaFamilia);
-	if($resActualizaFamilia->execute(array(':apellidoynombre' => $apellidoynombre, ':tipodocumento' => $tipodocumento, ':nrodocumento' => $nrodocumento, ':fechanacimiento' => $fechanacimiento, ':nacionalidad' => $nacionalidad, ':sexo' => $sexo, ':ddn' => $ddn, ':telefono' => $telefono, ':email' => $email, ':cuil' => $cuil, ':tipoparentesco' => $tipoparentesco, ':fechaobrasocial' => $fechaobrasocial, ':estudia' => $estudia, ':certificadoestudio' => $certificadoestudio, ':emitecarnet' => $emitecarnet, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden)))
+	if($resActualizaFamilia->execute(array(':apellidoynombre' => $apellidoynombre, ':tipodocumento' => $tipodocumento, ':nrodocumento' => $nrodocumento, ':fechanacimiento' => $fechanacimiento, ':nacionalidad' => $nacionalidad, ':sexo' => $sexo, ':ddn' => $ddn, ':telefono' => $telefono, ':email' => $email, ':cuil' => $cuil, ':tipoparentesco' => $tipoparentesco, ':fechaobrasocial' => $fechaobrasocial, ':estudia' => $estudia, ':certificadoestudio' => $certificadoestudio, ':emitecarnet' => $emitecarnet, ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden)))
 
 	$dbh->commit();
 	$pagina = "fichaFamiliar.php?nroAfi=$nroafiliado&estAfi=1&estFam=1&nroOrd=$nroorden";

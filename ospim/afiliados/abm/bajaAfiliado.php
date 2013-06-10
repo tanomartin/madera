@@ -35,7 +35,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
-<title>.: Foto :.</title>
+<title>.: Baja :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
 <form enctype="multipart/form-data" id="formBajaAfiliado" name="formBajaAfiliado" method="post" action="guardarBaja.php">

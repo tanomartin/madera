@@ -23,8 +23,62 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <title>.: Afiliado :.</title>
 </head>
+<script src="../../lib/jquery.js" type="text/javascript"></script>
+<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+jQuery(function($){
+	$("#cuil").mask("99999999999");
+	$("#cuit").mask("99999999999");
+	
+});
+
+function validar(formulario) {
+	formulario.Submit.disabled = true;
+	if (!verificaCuil(formulario.cuil.value)){
+		return false;
+	}
+	if (formulario.apellidoynombre.value == "") {
+		alert("El campo Apellido y Nombre es Obligatrio");
+		return false;
+	}
+	if (formulario.domicilio.value == "") {
+		alert("El campo domicilio es obligatrio");
+		return false;
+	}
+	if (formulario.numpostal.value == "") {
+		alert("El campo Codigo Postal es obligatrio");
+		return false;
+	} else {
+		if (!esEnteroPositivo(formulario.numpostal.value)){
+		 	alert("El campo Codigo Postal tiene que ser numerico");
+			return false;
+		}
+	}
+	if (formulario.ddn.value != "") {
+		if (!esEnteroPositivo(formulario.ddn.value)) {
+			alert("El codigo de area debe ser un numero");
+			return false;
+		}
+	} else {
+		formulario.ddn.value = "0";
+	}
+	if (formulario.telefono.value != "") {
+		if (!esEnteroPositivo(formulario.telefono.value)) {
+			alert("El telefono debe ser un numero");
+			return false;
+		}
+	} else {
+		formulario.telefono.value = "0";
+	}
+	return true;
+}
+</script>
+
+
 <body bgcolor="#CCCCCC" >
-<form id="formAfiliado" name="formAfiliado" method="post" action="guardaAltaAfiliado.php">
+<form id="formAfiliado" name="formAfiliado" method="post" onSubmit="return validar(this)" action="guardaAltaAfiliado.php">
 <table width="1205" border="0">
 	<tr align="center" valign="top">
       <td width="1205" valign="middle"><div align="center">
