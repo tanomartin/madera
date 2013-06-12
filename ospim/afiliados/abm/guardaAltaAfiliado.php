@@ -84,28 +84,28 @@ $fechamodificacion = "";
 $usuariomodificacion = "";
 $mirroring = "N";
 
-try {
-	$hostname = $_SESSION['host'];
-	$dbname = $_SESSION['dbname'];
+//try {
+//	$hostname = $_SESSION['host'];
+//	$dbname = $_SESSION['dbname'];
 	//echo "$hostname"; echo "<br>";
 	//echo "$dbname"; echo "<br>";
-	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+//	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 	//echo 'Connected to database<br/>';
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbh->beginTransaction();
+//	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//	$dbh->beginTransaction();
 
-	$sqlAgregaTitular = "INSERT INTO titulares (nroafiliado, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento, nacionalidad, sexo, estadocivil, codprovin, indpostal, numpostal, alfapostal, codlocali, domicilio, ddn, telefono, email, fechaobrasocial, tipoafiliado, solicitudopcion, situaciontitularidad, discapacidad, certificadodiscapacidad, cuil, cuitempresa, fechaempresa, codidelega, categoria, emitecarnet, cantidadcarnet, fechacarnet, tipocarnet, vencimientocarnet, informesss, tipoinformesss, fechainformesss, usuarioinformesss, foto, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion, mirroring) VALUES (:nroafiliado, :apellidoynombre, :tipodocumento, :nrodocumento, :fechanacimiento, :nacionalidad, :sexo, :estadocivil, :codprovin, :indpostal, :numpostal, :alfapostal, :codlocali, :domicilio, :ddn, :telefono, :email, :fechaobrasocial, :tipoafiliado, :solicitudopcion, :situaciontitularidad, :discapacidad, :certificadodiscapacidad, :cuil, :cuitempresa, :fechaempresa, :codidelega, :categoria, :emitecarnet, :cantidadcarnet, :fechacarnet, :tipocarnet, :vencimientocarnet, :informesss, :tipoinformesss, :fechainformesss, :usuarioinformesss, :foto, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion, :mirroring)";
-	$resAgregaTitular = $dbh->prepare($sqlAgregaTitular);
-	if($resAgregaTitular->execute(array(':nroafiliado' => $nroafiliado, ':apellidoynombre' => $apellidoynombre, ':tipodocumento' => $tipodocumento, ':nrodocumento' => $nrodocumento, ':fechanacimiento' => $fechanacimiento, ':nacionalidad' => $nacionalidad, ':sexo' => $sexo, ':estadocivil' => $estadocivil, ':codprovin' => $codprovin, ':indpostal' => $indpostal, ':numpostal' => $numpostal, ':alfapostal' => $alfapostal, ':codlocali' => $codlocali, ':domicilio' => $domicilio, ':ddn' => $ddn, ':telefono' => $telefono, ':email' => $email, ':fechaobrasocial' => $fechaobrasocial, ':tipoafiliado' => $tipoafiliado, ':solicitudopcion' => $solicitudopcion, ':situaciontitularidad' => $situaciontitularidad, ':discapacidad' => $discapacidad, ':certificadodiscapacidad' => $certificadodiscapacidad, ':cuil' => $cuil, ':cuitempresa' => $cuitempresa, ':fechaempresa' => $fechaempresa, ':codidelega' => $codidelega, ':categoria' => $categoria, ':emitecarnet' => $emitecarnet, ':cantidadcarnet' => $cantidadcarnet, ':fechacarnet' => $fechacarnet, ':tipocarnet' => $tipocarnet, ':vencimientocarnet' => $vencimientocarnet, ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechainformesss' => $fechainformesss, ':usuarioinformesss' => $usuarioinformesss, ':foto' => $foto, ':fecharegistro' => $fecharegistro, ':usuarioregistro' => $usuarioregistro, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':mirroring' => $mirroring)))
+//	$sqlAgregaTitular = "INSERT INTO titulares (nroafiliado, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento, nacionalidad, sexo, estadocivil, codprovin, indpostal, numpostal, alfapostal, codlocali, domicilio, ddn, telefono, email, fechaobrasocial, tipoafiliado, solicitudopcion, situaciontitularidad, discapacidad, certificadodiscapacidad, cuil, cuitempresa, fechaempresa, codidelega, categoria, emitecarnet, cantidadcarnet, fechacarnet, tipocarnet, vencimientocarnet, informesss, tipoinformesss, fechainformesss, usuarioinformesss, foto, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion, mirroring) VALUES (:nroafiliado, :apellidoynombre, :tipodocumento, :nrodocumento, :fechanacimiento, :nacionalidad, :sexo, :estadocivil, :codprovin, :indpostal, :numpostal, :alfapostal, :codlocali, :domicilio, :ddn, :telefono, :email, :fechaobrasocial, :tipoafiliado, :solicitudopcion, :situaciontitularidad, :discapacidad, :certificadodiscapacidad, :cuil, :cuitempresa, :fechaempresa, :codidelega, :categoria, :emitecarnet, :cantidadcarnet, :fechacarnet, :tipocarnet, :vencimientocarnet, :informesss, :tipoinformesss, :fechainformesss, :usuarioinformesss, :foto, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion, :mirroring)";
+//	$resAgregaTitular = $dbh->prepare($sqlAgregaTitular);
+//	if($resAgregaTitular->execute(array(':nroafiliado' => $nroafiliado, ':apellidoynombre' => $apellidoynombre, ':tipodocumento' => $tipodocumento, ':nrodocumento' => $nrodocumento, ':fechanacimiento' => $fechanacimiento, ':nacionalidad' => $nacionalidad, ':sexo' => $sexo, ':estadocivil' => $estadocivil, ':codprovin' => $codprovin, ':indpostal' => $indpostal, ':numpostal' => $numpostal, ':alfapostal' => $alfapostal, ':codlocali' => $codlocali, ':domicilio' => $domicilio, ':ddn' => $ddn, ':telefono' => $telefono, ':email' => $email, ':fechaobrasocial' => $fechaobrasocial, ':tipoafiliado' => $tipoafiliado, ':solicitudopcion' => $solicitudopcion, ':situaciontitularidad' => $situaciontitularidad, ':discapacidad' => $discapacidad, ':certificadodiscapacidad' => $certificadodiscapacidad, ':cuil' => $cuil, ':cuitempresa' => $cuitempresa, ':fechaempresa' => $fechaempresa, ':codidelega' => $codidelega, ':categoria' => $categoria, ':emitecarnet' => $emitecarnet, ':cantidadcarnet' => $cantidadcarnet, ':fechacarnet' => $fechacarnet, ':tipocarnet' => $tipocarnet, ':vencimientocarnet' => $vencimientocarnet, ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechainformesss' => $fechainformesss, ':usuarioinformesss' => $usuarioinformesss, ':foto' => $foto, ':fecharegistro' => $fecharegistro, ':usuarioregistro' => $usuarioregistro, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':mirroring' => $mirroring)))
 
-	$dbh->commit();
-	$pagina = "afiliado.php?nroAfi=$nroafiliado&estAfi=1";
-	Header("Location: $pagina"); 
-}
-catch (PDOException $e) {
-	echo $e->getMessage();
-	$dbh->rollback();
-}
+//	$dbh->commit();
+//	$pagina = "afiliado.php?nroAfi=$nroafiliado&estAfi=1";
+//	Header("Location: $pagina"); 
+//}
+//catch (PDOException $e) {
+//	echo $e->getMessage();
+//	$dbh->rollback();
+//}
 ?>
 
 

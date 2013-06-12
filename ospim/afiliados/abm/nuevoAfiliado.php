@@ -1,13 +1,14 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
 include($libPath."controlSession.php");
 include($libPath."fechas.php");
+$base = $_SESSION['dbname'];
 
-$sqlBuscaNro = "SELECT (LAST_INSERT_ID(nroafiliado)+1) AS proximoNroAfiliado FROM titulares";
+$sqlBuscaNro = "SELECT AUTO_INCREMENT FROM information_schema.TABLES
+WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'titulares'";
 //echo $sqlBuscaNro; echo "<br>";
 $resBuscaNro = mysql_query($sqlBuscaNro,$db);
 $rowBuscaNro = mysql_fetch_array($resBuscaNro);
 ?>
-
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -29,54 +30,97 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script type="text/javascript">
 
 jQuery(function($){
+	$("#fechanacimiento").mask("99-99-9999");
+	$("#fechaobrasocial").mask("99-99-9999");
 	$("#cuil").mask("99999999999");
-	$("#cuit").mask("99999999999");
-	
+	$("#cuitempresa").mask("99999999999");
+	$("#fechaempresa").mask("99-99-9999");
 });
 
 function validar(formulario) {
-	formulario.Submit.disabled = true;
-	if (!verificaCuil(formulario.cuil.value)){
-		return false;
-	}
 	if (formulario.apellidoynombre.value == "") {
-		alert("El campo Apellido y Nombre es Obligatrio");
+		alert("El apellido y nombre es obligatorio");
 		return false;
 	}
-	if (formulario.domicilio.value == "") {
-		alert("El campo domicilio es obligatrio");
-		return false;
-	}
-	if (formulario.numpostal.value == "") {
-		alert("El campo Codigo Postal es obligatrio");
+
+	if (formulario.fechanacimiento.value == "") {
+		alert("La fecha de nacimiento es obligatoria");
 		return false;
 	} else {
-		if (!esEnteroPositivo(formulario.numpostal.value)){
-		 	alert("El campo Codigo Postal tiene que ser numerico");
+		if (!esFechaValida(formulario.fechanacimiento.value)) {
 			return false;
 		}
 	}
+
+	if (formulario.domicilio.value == "") {
+		alert("El domicilio es obligatorio");
+		return false;
+	}
+
+	if (formulario.numpostal.value == "") {
+		alert("El codigo postal es obligatorio");
+		return false;
+	} else {
+		if (!esEnteroPositivo(formulario.numpostal.value)){
+		 	alert("El codigo postal debe ser numerico");
+			return false;
+		}
+	}
+
+	if (formulario.selectLocalidad.options[formulario.selectLocalidad.selectedIndex].value == 0) {
+		alert("Debe elegir una Localidad");
+		return false;
+	}
+
 	if (formulario.ddn.value != "") {
 		if (!esEnteroPositivo(formulario.ddn.value)) {
-			alert("El codigo de area debe ser un numero");
+			alert("El codigo de area debe ser numerico");
 			return false;
 		}
 	} else {
 		formulario.ddn.value = "0";
 	}
+
 	if (formulario.telefono.value != "") {
 		if (!esEnteroPositivo(formulario.telefono.value)) {
-			alert("El telefono debe ser un numero");
+			alert("El telefono debe ser numerico");
 			return false;
 		}
 	} else {
 		formulario.telefono.value = "0";
 	}
+
+	if (formulario.fechaobrasocial.value == "") {
+		alert("La fecha de ingreso a la obra social es obligatoria");
+		return false;
+	} else {
+		if (!esFechaValida(formulario.fechaobrasocial.value)) {
+			return false;
+		}
+	}
+
+	if (formulario.cuil.value == "") {
+		alert("El C.U.I.L. es obligatorio");
+		return false;
+	}
+
+	if (formulario.cuitempresa.value == "") {
+		alert("El C.U.I.T. de la empresa es obligatorio");
+		return false;
+	}
+
+	if (formulario.fechaempresa.value == "") {
+		alert("La fecha de ingreso a la empresa es obligatoria");
+		return false;
+	} else {
+		if (!esFechaValida(formulario.fechaempresa.value)) {
+			return false;
+		}
+	}
+
 	return true;
 }
 </script>
-
-
 <body bgcolor="#CCCCCC" >
 <form id="formAfiliado" name="formAfiliado" method="post" onSubmit="return validar(this)" action="guardaAltaAfiliado.php">
 <table width="1205" border="0">
@@ -95,7 +139,7 @@ function validar(formulario) {
   <tr>
 	<td width="212" align="left" valign="middle"><img src="../img/Familiar sin Foto.jpg" alt="Foto" width="115" height="115"></td>
     <td width="983" align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span><strong>  
-    <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowBuscaNro['proximoNroAfiliado'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" /></strong></div></td>
+    <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" /></strong></div></td>
   </tr>
 </table>
 
@@ -124,7 +168,16 @@ function validar(formulario) {
   </tr>
   <tr>
     <td>Estado Civil: </td>
-    <td colspan="3"><input name="estadocivil" type="text" id="estadocivil" value="" size="2" /></td>
+    <td colspan="3"><select name="selectEstCiv" id="selectEstCiv">
+              <option value="0">Seleccione un valor </option>
+              <?php 
+					$sqlEstCiv="select * from estadocivil";
+					$resEstCiv=mysql_query($sqlEstCiv,$db);
+					while($rowEstCiv=mysql_fetch_array($resEstCiv)) { 	
+			  ?>
+              				<option value="<?php echo $rowEstCiv['codestciv'] ?>" selected="selected"><?php echo $rowEstCiv['descrip']  ?></option>
+              <?php } ?>
+            </select></td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -135,13 +188,22 @@ function validar(formulario) {
     <td>Domicilio:</td>
     <td><input name="domicilio" type="text" id="domicilio" value="" size="50" /></td>
     <td>C.P.</td>
-    <td><input name="indpostal" type="text" id="indpostal" value="" size="1" />
+    <td><input name="indpostal" type="text" id="indpostal" value="" size="1" readonly="true" style="background-color:#CCCCCC" />
 		<input name="numpostal" type="text" id="numpostal" value="" size="4" />
 		<input name="alfapostal" type="text" id="alfapostal" value="" size="3" /></td>
   </tr>
   <tr>
     <td>Localidad:</td>
-    <td><input name="codlocali" type="text" id="codlocali" value="" size="6" /></td>
+    <td><select name="selectLocalidad" id="selectLocalidad">
+              <option value="0">Seleccione un valor </option>
+              <?php 
+					$sqlLocalidad="select * from localidades where numpostal = $numpostal";
+					$resLocalidad=mysql_query($sqlLocalidad,$db);
+					while($rowLocalidad=mysql_fetch_array($resLocalidad)) { 	
+			  ?>
+              				<option value="<?php echo $rowLocalidad['codlocali'] ?>" selected="selected"><?php echo $rowLocalidad['nomlocali']  ?></option>
+              <?php } ?>
+            </select></td>
     <td>Provincia:</td>
     <td><input name="codprovin" type="text" id="codprovin" value="" size="2" /></td>
   </tr>
@@ -177,7 +239,7 @@ function validar(formulario) {
   <tr>
     <td>C.U.I.L.:</td>
     <td><input name="cuil" type="text" id="cuil" value="" size="11" /></td>
-    <td>Empresa:</td>
+    <td>C.U.I.T. Empresa:</td>
     <td><input name="cuitempresa" type="text" id="cuitempresa" value="" size="11" />
     <input name="nombreempresa" type="text" id="nombreempresa" value="" size="50" readonly="true" style="background-color:#CCCCCC" /></td>
   </tr>
