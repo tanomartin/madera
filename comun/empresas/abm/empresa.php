@@ -46,7 +46,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <script type="text/javascript">
 
-function validarBaja(formulario) {
+function validarBaja() {
 	<?php 
 		$sqlTitulares = "select * from titulares where cuitempresa = $cuit";
 		$resTitulares = mysql_query($sqlTitulares,$db); 

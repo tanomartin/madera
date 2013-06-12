@@ -38,7 +38,7 @@ $fechamodificacion = $rowTomarDatos['fechamodificacion'];
 $usuariomodificacion = $rowTomarDatos['usuariomodificacion'];
 /************************************************************/
 
-$sqlReactivaEmpresa = "INSERT INTO empresas VALUES ('$cuit','$nombre','$codprovin','$indpostal','$codpostal','$alfapostal','$localidad','$domicilio','$ddn1','$telefono1','$contacto1','$ddn2','$telefono2','$contacto2','$codigotipo','$peretenencia','$actividad','$obsOspim','$obsUsimra','$inicioOspim','$inicioUsimra','$email','$carpetaArchivo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion','N')";
+$sqlReactivaEmpresa = "INSERT INTO empresas VALUES ('$cuit','$nombre','$codprovin','$indpostal','$codpostal','$alfapostal','$localidad','$domicilio','$ddn1','$telefono1','$contacto1','$ddn2','$telefono2','$contacto2','$codigotipo','$peretenencia','$actividad','$obsOspim','$obsUsimra','$inicioOspim','$inicioUsimra','$email','$carpetaArchivo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion','S')";
 
 $sqlUpdateModficador = "UPDATE empresas set fechamodificacion = '$fechamodificacionUpdate', usuariomodificacion = '$usuariomodificacionUpdate' where cuit = $cuit";
 

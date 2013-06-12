@@ -38,6 +38,20 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 
+<script type="text/javascript">
+
+function informaTitulares() {
+	<?php 
+		$sqlTitulares = "select * from titularesdebaja where cuitempresa = $cuit";
+		$resTitulares = mysql_query($sqlTitulares,$db); 
+		$canTitulares = mysql_num_rows($resTitulares); 
+		if ($canTitulares > 0) {?>
+ 	   		alert("Hay titulares de baja para este CUIT.\nInformar al departamento de Afiliaciones");
+  <?php }   ?>
+		location.href="reactivarEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
+}
+
+</script>
 
 <title>.: Módulo Empresa De Baja :.</title>
 </head>
@@ -72,7 +86,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	?>
   </p>
   <p>
-    <input name="Input" type="button" value="Reactivar Empresa" onClick='location.href="reactivarEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'">
+    <input name="Input" type="button" value="Reactivar Empresa" onClick='informaTitulares()'">
   </p>
   <p>
     <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" >
