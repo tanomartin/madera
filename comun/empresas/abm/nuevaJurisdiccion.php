@@ -112,24 +112,24 @@ function validar(formulario) {
 
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <p><strong><a href="empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+	<input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
   <p><strong>Modificacion Jurisdicciones de Empresa</strong>
   <form name="nuevaJurisdiccion" id="nuevaJurisdiccion" method="post" onSubmit="return validar(this)" action="disgregaNuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>">	
-	 	<table width="723" border="1">
+	 	<table width="723" border="0">
 		  <tr>
-			<td width="167"><div align="left">C.U.I.T. </div></td>
+			<td width="167"><div align="right"><strong>C.U.I.T. </strong></div></td>
 			<td width="540"><div align="left">
 				<input style="background-color:#CCCCCC" name="cuit" type="text" id="cuit" size="12" value="<?php echo $cuit ?>"  readonly="readonly"/>                
 			  </div></td>
 		  </tr>
 		  <tr>
-			<td><div align="left">Domicilio</div></td>
+			<td><div align="right"><strong>Domicilio</strong></div></td>
 			<td><div align="left">
 			  <input name="domicilio" type="text" id="domicilio" value="<?php echo $domicilio ?>" size="90" />
 			</div></td>
 		  </tr>
 		  <tr>
-			<td><div align="left">Codigo Postal</div></td>
+			<td><div align="right"><strong>Codigo Postal</strong></div></td>
 			<td><div align="left">
 			  <label>
 			  <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" type="text" size="1"/>
@@ -143,7 +143,7 @@ function validar(formulario) {
 			</div></td>
 		  </tr>
 		  <tr>
-			<td><div align="left">Localidad</div></td>
+			<td><div align="right"><strong>Localidad</strong></div></td>
 			<td><div align="left">
 				<select name="selectLocali" id="selectLocali" onchange="cambioProvincia(document.forms.nuevaJurisdiccion.selectLocali[selectedIndex].value)">
 				  <option value="0">Seleccione un valor </option>
@@ -163,14 +163,14 @@ function validar(formulario) {
 		  </tr>
 		  
 		  <tr>
-			<td><div align="left">Provincia</div></td>
+			<td><div align="right"><strong>Provincia</strong></div></td>
 			<td><div align="left">
 				<input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" />
 				<input style="background-color:#CCCCCC; visibility:hidden" readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
 			</div></td>
 		  </tr>
 		  <tr>
-			<td><div align="left">Delegacion</div></td>
+			<td><div align="right"><strong>Delegacion</strong></div></td>
 			<td><div align="left">
 				<select name="selectDelegacion" id="selectDelegacion">
 				  <option value="0">Seleccione un valor </option>
@@ -179,7 +179,7 @@ function validar(formulario) {
 		  </tr>
 		  
 		  <tr>
-			<td><div align="left">Telefono 1 </div></td>
+			<td><div align="right"><strong>Telefono 1 </strong></div></td>
 			<td>
 			  <div align="left">
 				<input name="ddn1" type="text" id="ddn1" size="5" />
@@ -188,19 +188,19 @@ function validar(formulario) {
 			  </div>        </td>
 		  </tr>
 		  <tr>
-			<td><div align="left">Contacto 1 </div></td>
+			<td><div align="right"><strong>Contacto 1 </strong></div></td>
 			<td>
 			  <div align="left">
 				<input name="contacto1" type="text" id="contacto1" size="50" />
 			  </div>			</td>
 		  </tr>
 		  <tr>
-			<td><div align="left">Email</div></td>
+			<td><div align="right"><strong>Email</strong></div></td>
 			<td><div align="left">
 				<input name="email" type="text" id="email" size="50" />
 			</div></td>
 		  </tr>
-		</table>
+	</table>
     <p>
       <label>
       <input type="submit" name="Submit" id="Submit" value="Reasingar Disgregacion Dineraria">

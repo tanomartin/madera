@@ -37,7 +37,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 <body bgcolor=<?php echo $bgcolor ?>>
-<p align="center" class="Estilo2"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="buscador.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></font></p>
+<p align="center">
+<input type="reset" name="volver" value="Volver" onClick="location.href = 'buscador.php?origen=<?php echo $origen ?>'" align="center"/> 
+</p>
 <p align="center" class="Estilo2">Resultado de la Busqueda</p>
 <div align="center">
 	<p><span class="Estilo2">Empresas Activas </span></p>

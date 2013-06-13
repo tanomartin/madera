@@ -162,27 +162,27 @@ function validar(formulario) {
   <p><strong><a href="moduloABM.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
   <p><strong>Alta Cabecera de Empresa</strong>
   <form name="nuevaCabeEmpresa" id="nuevaCabeEmpresa" method="post" onSubmit="return validar(this)" action="guardarEmpresa.php?origen=<?php echo $origen ?>">
-    <table width="723" border="1">
+    <table width="723" border="0">
       <tr>
-        <td width="167"><div align="left">C.U.I.T. </div></td>
+        <td width="167"><div align="right"><strong>C.U.I.T. </strong></div></td>
         <td width="540"><div align="left">
 			<input readonly='readonly' style='background-color:#CCCCCC' name="cuit" value="<?php echo $cuit ?>" type="text" id="cuit" size="12" />                
           </div></td>
       </tr>
       <tr>
-        <td><div align="left">Raz&oacute;n Social</div></td>
+        <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
         <td><div align="left">
           <input name="nombre" value="<?php echo $nombre ?>"  type="text" id="nombre" size="90" />
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Domicilio</div></td>
+        <td><div align="right"><strong>Domicilio</strong></div></td>
         <td><div align="left">
           <input name="domicilio" value="<?php echo $domicilio ?>" type="text" id="domicilio" size="90" />
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Codigo Postal</div></td>
+        <td><div align="right"><strong>Codigo Postal</strong></div></td>
         <td><div align="left">
           <label>
           <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" type="text" size="1"/>
@@ -196,7 +196,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Localidad</div></td>
+        <td><div align="right"><strong>Localidad</strong></div></td>
         <td><div align="left">
             <select name="selectLocali" id="selectLocali" onchange="cambioProvincia(document.forms.nuevaCabeEmpresa.selectLocali[selectedIndex].value)">
               <option value="0">Seleccione un valor </option>
@@ -214,30 +214,30 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Provincia</div></td>
+        <td><div align="right"><strong>Provincia</strong></div></td>
         <td><div align="left">
              <input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" />
              <input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Telefono 1 </div></td>
+        <td><div align="right"><strong>Telefono 1 </strong></div></td>
         <td>
           <div align="left">
             <input name="ddn1" type="text" id="ddn1" size="5" />
             - 
             <input name="telefono1" type="text" id="telefono1" size="10" />
-            </div>        </td>
+          </div>        </td>
       </tr>
       <tr>
-        <td><div align="left">Contacto 1 </div></td>
+        <td><div align="right"><strong>Contacto 1 </strong></div></td>
         <td>
           <div align="left">
             <input name="contacto1" type="text" id="contacto1" size="50" />
-            </div>			</td>
+          </div>			</td>
       </tr>
       <tr>
-        <td><div align="left">Telefono 2 </div></td>
+        <td><div align="right"><strong>Telefono 2 </strong></div></td>
         <td><div align="left">
           <input name="ddn2" type="text" id="ddn2" size="5" />
           -
@@ -245,13 +245,13 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Contacto 2 </div></td>
+        <td><div align="right"><strong>Contacto 2 </strong></div></td>
         <td><div align="left">
           <input name="contacto2" type="text" id="contacto2" size="50" />
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Actividad</div></td>
+        <td><div align="right"><strong>Actividad</strong></div></td>
         <td><div align="left">
           <label>
           <input name="actividad" id="actividad" type="text" size="80" />
@@ -259,7 +259,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Delegacion</div></td>
+        <td><div align="right"><strong>Delegacion</strong></div></td>
         <td>
           <div align="left">
             <select name="selectDelegacion" id="selectDelegacion">
@@ -268,7 +268,7 @@ function validar(formulario) {
           </div></td>
       </tr>
       <tr>
-        <td><div align="left">Obs. OSPIM </div></td>
+        <td><div align="right"><strong>Obs. OSPIM </strong></div></td>
         <td><div align="left">
           <label>
 		  	<?php if ($origen == "ospim") {
@@ -281,7 +281,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Obs. USIMRA </div></td>
+        <td><div align="right"><strong>Obs. USIMRA </strong></div></td>
         <td><div align="left">
             <?php if ($origen == "usimra") {
          	 		echo "<textarea name='obsusimra' cols='60' rows='2' id='obsusimra'></textarea>";
@@ -292,7 +292,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Inicio Obl. OSPIM </div></td>
+        <td><div align="right"><strong>Inicio Obl. OSPIM </strong></div></td>
         <td><div align="left">
           <label>
 		  	<?php if ($origen == "ospim") {
@@ -304,7 +304,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Inicio Obl. USIMRA </div></td>
+        <td><div align="right"><strong>Inicio Obl. USIMRA </strong></div></td>
         <td><div align="left">
           <label>
           	<?php if ($origen == "usimra") {
@@ -316,13 +316,13 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Email</div></td>
+        <td><div align="right"><strong>Email</strong></div></td>
         <td><div align="left">
           <input name="email" type="text" id="email" size="60" />
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Carpeta Archivo </div></td>
+        <td><div align="right"><strong>Carpeta Archivo </strong></div></td>
         <td><div align="left">
           <?php if ($origen == "ospim") {
          	 		echo "<input name='carpetaArc' type='text' id='carpetaArc' size='10' />";

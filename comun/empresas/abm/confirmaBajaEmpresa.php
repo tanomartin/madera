@@ -68,7 +68,7 @@ function validar(formulario) {
 
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <p><strong><a href="empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+     <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 	
   <p><strong>Confirmaci&oacute;n de Baja de Empresa </strong></p>
   <p>
     <?php 
@@ -82,7 +82,7 @@ function validar(formulario) {
   </p>
   <p><strong>Informaci&oacute;n de baja </strong></p>
  <form name="form1" method="post" onSubmit="return validar(this)" action="desactivarEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>">
-  	<table width="399" border="2">
+  	<table width="399" border="0">
 		<tr>
 		  <td width="64" bordercolor="#000000"><div align="right"><strong>Motivo:</strong></div></td>
 		  <td width="317" bordercolor="#000000"><textarea name="motivo" cols="50" rows="5" id="motivo"></textarea></td>

@@ -99,15 +99,15 @@ function validar(formulario) {
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
 <form id="disDinero" name="disDinero" method="post" onSubmit="return validar(this)" action="guardarDisgregacionNueva.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&cantjuris=<?php echo $canjuris ?>">
-  <p><strong><a href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
-  <input style="visibility:hidden" name="sqlNuevaJuris" type="text" id="sqlNuevaJuris" size="50" value="<?php echo $sqlInsertJurisNueva ?>"  readonly="readonly"/>
+   <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> </p>
   	<p>
   	  <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
 	?>
 </p>
+ <input style="visibility:hidden" name="sqlNuevaJuris" type="text" id="sqlNuevaJuris" size="50" value="<?php echo $sqlInsertJurisNueva ?>"  readonly="readonly"/>
   	<p><strong>Disgregacion Dineraria Por Jurisdicci&oacute;n   </strong></p>
-  	<table width="800" border="1">
+  	<table width="700" border="1">
       <tr>
         <td width="40%"><div align="center"><strong>Delegacion</strong></div></td>
         <td width="40%"><div align="center"><strong>Provincia</strong></div></td>

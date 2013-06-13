@@ -70,14 +70,14 @@ function validar(formulario) {
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
 <form id="disDinero" name="disDinero" method="post" onSubmit="return validar(this)" action="guardarDisgregacion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&cantjuris=<?php echo $canjuris ?>">
-  <p><strong><a href="empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+       <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
   	<p>
   	  <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
 	?>
 </p>
   	<p><strong>Disgregacion Dineraria Por Jurisdicci&oacute;n   </strong></p>
-  	<table width="800" border="1">
+  	<table width="700" border="1">
       <tr>
         <td width="40%"><div align="center"><strong>Delegacion</strong></div></td>
         <td width="40%"><div align="center"><strong>Provincia</strong></div></td>
@@ -103,8 +103,8 @@ function validar(formulario) {
   	</table> 
     <p>
       <input type="submit" name="Submit" id="Submit" value="Guardar" />
-        </p>
-</form>
+    </p>
+  </form>
 </div>
 </body>
 </html>

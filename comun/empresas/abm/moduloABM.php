@@ -32,7 +32,8 @@ jQuery(function($){
 
 <body bgcolor=<?php echo $bgcolor ?>>
 <form id="form1" name="form1" method="post" action="empresa.php?origen=<?php echo $origen ?>">
-  <p align="center" class="Estilo1"><strong><a href="../menuEmpresa.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
+  <p align="center">
+  <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" align="center"/> 
   </p>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Empresas</p>
   <div align="center">

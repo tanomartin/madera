@@ -150,30 +150,30 @@ function validar(formulario) {
 
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <p><strong><a href="empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+   <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 	
   <p><strong>Modificacion Cabecera de Empresa</strong>
   <form name="modifCabeEmpresa" id="modifCabeEmpresa" method="post" onSubmit="return validar(this)" action="guardarModifCabecera.php?origen=<?php echo $origen ?>">
-    <table width="723" border="1">
+    <table width="723" border="0">
       <tr>
-        <td width="167"><div align="left">C.U.I.T. </div></td>
+        <td width="167"><div align="right"><strong>C.U.I.T. </strong></div></td>
         <td width="540"><div align="left">
 			<input style="background-color:#CCCCCC" name="cuit" type="text" id="cuit" size="12" value="<?php echo $row['cuit'];?>"  readonly="readonly"/>                
           </div></td>
       </tr>
       <tr>
-        <td><div align="left">Raz&oacute;n Social</div></td>
+        <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
         <td><div align="left">
           <input name="nombre" type="text" id="nombre" value="<?php echo $row['nombre'];?>" size="90" />
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Domicilio</div></td>
+        <td><div align="right"><strong>Domicilio</strong></div></td>
         <td><div align="left">
           <input name="domicilio" type="text" id="domicilio" value="<?php echo $row['domilegal'];?>" size="90" />
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Codigo Postal</div></td>
+        <td><div align="right"><strong>Codigo Postal</strong></div></td>
         <td><div align="left">
           <label>
           <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" type="text" size="1" value="<?php echo $row['indpostal'];?>"/>
@@ -187,7 +187,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Localidad</div></td>
+        <td><div align="right"><strong>Localidad</strong></div></td>
         <td><div align="left">
             <select name="selectLocali" id="selectLocali" onchange="cambioProvincia(document.forms.modifCabeEmpresa.selectLocali[selectedIndex].value)">
               <option value="0">Seleccione un valor </option>
@@ -206,7 +206,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Provincia</div></td>
+        <td><div align="right"><strong>Provincia</strong></div></td>
         <td><div align="left">
 			<?php	
 				$codProvi = $row['codprovin'];
@@ -219,7 +219,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Telefono 1 </div></td>
+        <td><div align="right"><strong>Telefono 1 </strong></div></td>
         <td>
           <div align="left">
             <input name="ddn1" type="text" id="ddn1" value="<?php echo $row['ddn1'];?>" size="5" />
@@ -228,14 +228,14 @@ function validar(formulario) {
           </div>        </td>
       </tr>
       <tr>
-        <td><div align="left">Contacto 1 </div></td>
+        <td><div align="right"><strong>Contacto 1 </strong></div></td>
         <td>
           <div align="left">
             <input name="contacto1" type="text" id="contacto1" value="<?php echo $row['contactel1'];?>" size="50" />
           </div>			</td>
       </tr>
       <tr>
-        <td><div align="left">Telefono 2 </div></td>
+        <td><div align="right"><strong>Telefono 2 </strong></div></td>
         <td><div align="left">
           <input name="ddn2" type="text" id="ddn2" value="<?php echo $row['ddn2'];?>" size="5" />
           -
@@ -243,13 +243,13 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Contacto 2 </div></td>
+        <td><div align="right"><strong>Contacto 2 </strong></div></td>
         <td><div align="left">
           <input name="contacto2" type="text" id="contacto2" value="<?php echo $row['contactel2'];?>" size="50" />
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Actividad</div></td>
+        <td><div align="right"><strong>Actividad</strong></div></td>
         <td><div align="left">
           <label>
           <input name="actividad" id="actividad" type="text" value="<?php echo $row['actividad'];?>" size="80" />
@@ -257,7 +257,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Obs. OSPIM </div></td>
+        <td><div align="right"><strong>Obs. OSPIM </strong></div></td>
         <td><div align="left">
           <label>
 		  	<?php if ($origen == "ospim") {
@@ -270,7 +270,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Obs. USIMRA </div></td>
+        <td><div align="right"><strong>Obs. USIMRA </strong></div></td>
         <td><div align="left">
             <?php if ($origen == "usimra") {
          	 		echo "<textarea name='obsusimra' cols='60' rows='2' id='obsusimra'>".$row['obsusimra']."</textarea>";
@@ -281,7 +281,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Inicio Obl. OSPIM </div></td>
+        <td><div align="right"><strong>Inicio Obl. OSPIM </strong></div></td>
         <td><div align="left">
           <label>
 		  	<?php if ($origen == "ospim") {
@@ -293,7 +293,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Inicio Obl. USIMRA </div></td>
+        <td><div align="right"><strong>Inicio Obl. USIMRA </strong></div></td>
         <td><div align="left">
           <label>
           	<?php if ($origen == "usimra") {
@@ -305,13 +305,13 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Email</div></td>
+        <td><div align="right"><strong>Email</strong></div></td>
         <td><div align="left">
           <input name="email" type="text" id="email" value="<?php echo $row['email'];?>" size="60" />
         </div></td>
       </tr>
       <tr>
-        <td><div align="left">Carpeta Archivo </div></td>
+        <td><div align="right"><strong>Carpeta Archivo </strong></div></td>
         <td><div align="left">
           <?php if ($origen == "ospim") {
          	 		echo "<input name='carpetaArc' type='text' id='carpetaArc' value='".$row['carpetaenarchivo']."' size='10' />";
@@ -324,10 +324,10 @@ function validar(formulario) {
     </table>
     <table width="727" border="0">
       <tr>
-        <td width="361"><div align="left">
+        <td width="359"><div align="left">
           <input type="submit" name="Submit" id="Submit" value="Guardar" />
         </div></td>
-        <td width="350"><div align="right">
+        <td width="358"><div align="right">
           <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />
         </div></td>
       </tr>

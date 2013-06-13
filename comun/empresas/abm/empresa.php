@@ -70,7 +70,7 @@ function validarBaja() {
 </head>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <p><strong><a href="moduloABM.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+    <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'" align="center"/> 	
   <p>
     <?php 
 		$err = $_GET['err'];

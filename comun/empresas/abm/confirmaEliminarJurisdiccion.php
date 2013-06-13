@@ -36,15 +36,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
- <p><strong><a href="empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+ <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
    <p>
      <?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); ?>
   </p>
    <p><strong>Datos de la Jurisdicci&oacute;n a eliminar </strong></p>
-  <table width="53%" height="261" border="2">
+  <table width="700" height="261" border="2">
       <tr bordercolor="#000000">
-        <td width="38%" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td width="200" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
+        <td width="500" colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php 
 			$delega = $rowjuris['codidelega'];
 			$sqldelegacion = "select * from delegaciones where codidelega = $delega";
@@ -56,12 +56,12 @@ A:hover {text-decoration: none;color:#00FFFF }
       </tr>
       
       <tr bordercolor="#000000">
-        <td height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Domicilio:</font></strong></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowjuris['domireal'];?></font></div></td>
+        <td width="200" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Domicilio:</font></strong></div></td>
+        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowjuris['domireal'];?></font></div></td>
       </tr>
       <tr bordercolor="#000000">
-        <td height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Localidad:</font></strong></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td width="200" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Localidad:</font></strong></div></td>
+        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php 
 			$locali =  $rowjuris['codlocali'];
 			$sqllocalidad = "select * from localidades where codlocali = $locali";
@@ -72,8 +72,8 @@ A:hover {text-decoration: none;color:#00FFFF }
         </font></div></td>
       </tr>
       <tr bordercolor="#000000">
-        <td height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Provincia</font></strong></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td width="200" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Provincia</font></strong></div></td>
+        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php 	
 			$provin = $rowjuris['codprovin'] ;
 			$sqlprovi =  "select * from provincia where codprovin = $provin";
@@ -84,13 +84,13 @@ A:hover {text-decoration: none;color:#00FFFF }
         </font></div></td>
       </tr>
       <tr bordercolor="#000000" >
-        <td height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo 
+        <td width="200" height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo 
           Postal:</strong></font></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> <?php echo $rowjuris['indpostal'].$rowjuris['numpostal'].$rowjuris['alfapostal'];?></font></div></td>
+        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> <?php echo $rowjuris['indpostal'].$rowjuris['numpostal'].$rowjuris['alfapostal'];?></font></div></td>
       </tr>
       <tr bordercolor="#000000" >
-        <td height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Telefono:</strong></font></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td width="200" height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Telefono:</strong></font></div></td>
+        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php 
 		if ($rowjuris['telefono'] == 0){
 			echo "-";
@@ -101,8 +101,8 @@ A:hover {text-decoration: none;color:#00FFFF }
         </font></div></td>
       </tr>
       <tr bordercolor="#000000" >
-        <td height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Contacto Telefonico </strong></font></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td width="200" height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Contacto Telefonico </strong></font></div></td>
+        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php 
 		if ($rowjuris['contactel']!= "") {
 			echo $rowjuris['contactel'];
@@ -113,8 +113,8 @@ A:hover {text-decoration: none;color:#00FFFF }
         </font></div></td>
       </tr>
       <tr bordercolor="#000000" >
-        <td height="22"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Email:</strong></font></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td width="200" height="22"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Email:</strong></font></div></td>
+        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php
 		if ($rowjuris['email']!= "") {
 			echo $rowjuris['email'];
@@ -125,8 +125,8 @@ A:hover {text-decoration: none;color:#00FFFF }
         </font></div></td>
       </tr>
       <tr bordercolor="#000000" >
-        <td height="22"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Disgregacion Dineraria:</strong></font></div></td>
-        <td colspan="2"><div align="left"><?php echo $rowjuris['disgdinero']." %" ?></div></td>
+        <td width="200" height="22"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Disgregacion Dineraria:</strong></font></div></td>
+        <td width="500"><div align="left"><?php echo $rowjuris['disgdinero']." %" ?></div></td>
       </tr>
   </table>
   <p>

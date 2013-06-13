@@ -18,7 +18,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Empresas </span></p>
-  <table width="412" border="3">
+  <table width="412" border="1" bordercolor="1">
     <tr>
       <td width="196"><p align="center">Alta, Modificaci&oacute;n y Consulta </p>
         <p align="center"><a class="enlace" href="abm/moduloABM.php?origen=<?php echo $origen?>"><img src="img/abemp.jpg" width="86" height="70" border="0" alt="enviar"/></a></p>

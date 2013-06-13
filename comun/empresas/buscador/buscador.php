@@ -15,7 +15,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 <body bgcolor=<?php echo $bgcolor ?>>
-<p align="center" class="Estilo2"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuEmpresa.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></font></p>
+<p align="center">
+<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" align="center"/> 
+</p>
 <p align="center" class="Estilo2">Buscador de Empresas </p>
  <?php 
 		$err = $_GET['err'];
@@ -26,13 +28,13 @@ A:hover {text-decoration: none;color:#00FFFF }
   ?>
 <form id="ordena" name="ordena" method="post" action="resultadoEmpresas.php?origen=<?php echo $origen ?>">
   <div align="center">
-    <p><strong>Criterio de Busqueda </strong></p>
-    <table width="157" border="2">
+    <table width="336" border="0">
     <tr>
-      <td width="37"><div align="center">
+      <td width="152" rowspan="3"><strong>Criterio de Busqueda </strong></td>
+      <td width="20"><div align="center">
         <input name="criterio"  id="orden" type="radio" value="cuit" checked/>
       </div></td>
-      <td width="102"><div align="left">CUIT</div></td>
+      <td width="150"><div align="left">CUIT</div></td>
     </tr>
     <tr>
       <td><div align="center">
@@ -47,12 +49,14 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><div align="left">Domicilio</div></td>
     </tr>
   </table>
+    <table width="297" border="0">
+      <tr>
+        <td width="131"><strong>Dato de Busqueda</strong></td>
+        <td width="156"><input name="dato" type="text" id="dato" /></td>
+      </tr>
+    </table>
     <p>
-      <label>Dato de busqueda
-      <input name="dato" type="text" id="dato" />
-      </label>
-    </p>
-    <p>      <br />
+      <label></label>
       <input type="submit" name="Submit" value="Buscar" />
       <br />
     </p>

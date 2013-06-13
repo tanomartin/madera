@@ -57,7 +57,7 @@ function informaTitulares() {
 </head>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <p><strong><a href="moduloABM.php?origen=<?php echo $origen ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'" align="center"/> 
   <h2 class="Estilo1">EMPRESA DE BAJA </h2>
   <p>
     <?php 
@@ -65,14 +65,14 @@ function informaTitulares() {
 	?>
   </p>
   <p><strong>Informaci&oacute;n de baja </strong></p>
-  <table width="405" border="2">
+  <table width="700" border="2">
     <tr>
-      <td width="66" bordercolor="#000000"><div align="right"><strong>Motivo:</strong></div></td>
-      <td width="323" bordercolor="#000000"><div align="left"><?php echo $row['motivobaja'] ?></div></td>
+      <td width="200" bordercolor="#000000"><div align="right"><strong>Motivo:</strong></div></td>
+      <td width="500" bordercolor="#000000"><div align="left"><?php echo $row['motivobaja'] ?></div></td>
     </tr>
     <tr>
-      <td height="23" bordercolor="#000000"><div align="right"><strong>Fecha:</strong></div></td>
-      <td bordercolor="#000000"><div align="left">
+      <td height="22" width="200" bordercolor="#000000"><div align="right"><strong>Fecha:</strong></div></td>
+      <td width="500" bordercolor="#000000"><div align="left">
         <?php echo (invertirFecha($row['fechabaja'])) ?>
       </div></td>
     </tr>

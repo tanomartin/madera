@@ -11,10 +11,10 @@
 	if ($canjuris != 0) {
 		while ($rowjuris = mysql_fetch_array($resjuris)) { ?>
     </p>
-    <table width="53%" height="222" border="2">
+    <table width="700" height="157" border="2">
       <tr bordercolor="#000000">
-        <td width="38%" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
-        <td width="62%"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td width="200" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
+        <td width="482"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php 
 			$delega = $rowjuris['codidelega'];
 			$sqldelegacion = "select * from delegaciones where codidelega = $delega";
