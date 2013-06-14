@@ -136,7 +136,7 @@ try {
 	 //echo "CUOTAS A PAG VIEJO: ".$cantCuotasPagasViejo; //echo "<br>";
 	 //echo "Monto NUEVO: ".$montoAcuNuevo; //echo "<br>";
 	
-	$insertCuota = "INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroNuevoAcuerdo','1','$montoAcuNuevo','$fecharegistro','8','','','','Deuda Pendiente del acuerdo reemplazado','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+	$insertCuota = "INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroNuevoAcuerdo','1','$montoAcuNuevo','$fecharegistro','8','','','0000-00-00','Deuda Pendiente del acuerdo reemplazado','0','0.0','0000-00-00','0000-00-00','','','0000-00-00','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 	 //echo $insertCuota; //echo "<br>";
 	$dbh->exec($insertCuota);
 	

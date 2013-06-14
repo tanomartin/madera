@@ -62,15 +62,15 @@ try {
 		$i++;
 		$chequeb = $datos[$i];
 		$i++;
-		$chequef = fechaParaGuardar($datos[$i]); 
+		$chequef = fechaParaGuardar($datos[$i]);
 		$i++;
 		$observ = $datos[$i];
 		
-		$sqlCuota="INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroacu','$nroCuo','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+		$sqlCuota="INSERT INTO cuoacuerdosospim VALUES ('$cuit','$nroacu','$nroCuo','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','0','0.0','0000-00-00','0000-00-00','','','0000-00-00','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 		//echo $sqlCuota; echo "<br>";
 		$dbh->exec($sqlCuota);	
 		if ($tipoC == 3) {
-			$sqlValCob = "INSERT INTO valoresalcobro VALUES('$cuit','$nroacu','$nroCuo','$chequen','$chequeb','$chequef','','','','','','','')";
+			$sqlValCob = "INSERT INTO valoresalcobro VALUES('$cuit','$nroacu','$nroCuo','$chequen','$chequeb','$chequef','','0000-00-00','','','0000-00-00','','0000-00-00')";
 			//echo $sqlValCob; echo "<br>";
 			$dbh->exec($sqlValCob);	
 		}

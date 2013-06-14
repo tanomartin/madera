@@ -10,8 +10,7 @@ $tipoacuerdo = $datos[2];
 //echo "TIPO ACUERDO: ".$tipoacuerdo; echo "<br>";
 
 $fechaacuerdo = $datos[3];
-$invert = explode("-",$fechaacuerdo); 
-$fechaacuerdo = $invert[2]."-".$invert[1]."-".$invert[0]; 
+$fechaacuerdo = fechaParaGuardar($fechaacuerdo);
 //echo "FECHA: ".$fechaacuerdo; echo "<br>";
 
 $nroacta = $datos[4];
@@ -29,11 +28,14 @@ $montoacuerdo = $datos[9];
 $gastosAdmi = $datos[10];
 //echo "GASTOS ADMI: ".$gastosAdmi; echo "<br>";
 $porcGastos = $datos[11];
+if ($gastosAdmi == 0) {
+ 	$porcGastos = 0;
+}
 //echo "PORC GAST: ".$porcGastos; echo "<br>";
 $observaciones = $datos[12];
 //echo "OBSER: ".$observaciones; echo "<br>";
 $estadoacuerdo = 1;
-$cuotasapagar = $datos[14];
+$cuotasapagar = $datos[13];
 //echo "CUTAS A PAGAR: ".$cuotasapagar; echo "<br>";
 $montoapagar = $montoacuerdo;
 $cuotaspagadas = 0;
@@ -183,7 +185,7 @@ function validarYGuardar(formulario) {
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<p  align="center"><strong><a href="formularioCarga.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+<p  align="center"><strong><a href="formularioCarga.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
 <form id="cuotas" name="cuotas" onSubmit="return validarYGuardar(this)" method="POST" action="guardoAcuerdo.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacuerdo?>">
 

@@ -88,12 +88,12 @@ function validar(formulario) {
 		document.getElementById("fechaAcuerdo").focus();
 		return(false);
 	} 
-	if (!esEnteroPositivo(formulario.numeroActa.value)) {
-			alert("Error Número de Acta");
-			document.getElementById("numeroActa").focus();
-			return(false);
+	if (!esEnteroPositivo(formulario.numeroActa.value) || formulario.numeroActa.value == "") {
+		alert("Error Número de Acta");
+		document.getElementById("numeroActa").focus();
+		return(false);
 	}
-	if (!isNumberPositivo(formulario.monto.value)){
+	if (!isNumberPositivo(formulario.monto.value)  || formulario.monto.value == ""){
 		alert("Error en el monto");
 		document.getElementById("monto").focus();
 		return(false);

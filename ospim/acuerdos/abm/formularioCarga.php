@@ -165,12 +165,12 @@ function validar(formulario) {
 		document.getElementById("fechaAcuerdo").focus();
 		return(false);
 	} 
-	if (!esEnteroPositivo(formulario.numeroActa.value)) {
-			alert("Error Número de Acta");
-			document.getElementById("numeroActa").focus();
-			return(false);
+	if (!esEnteroPositivo(formulario.numeroActa.value) || formulario.numeroActa.value == "") {
+		alert("Error Número de Acta");
+		document.getElementById("numeroActa").focus();
+		return(false);
 	}
-	if (!isNumberPositivo(formulario.monto.value)){
+	if (!isNumberPositivo(formulario.monto.value) || formulario.monto.value == ""){
 		alert("Error en el monto");
 		document.getElementById("monto").focus();
 		return(false);
@@ -324,25 +324,25 @@ function validar(formulario) {
    	</div>
   <div align="center">
     <p><b>Carga Períodos y Cuotas </b> </p>
-    <table width="710" border="0">
+    <p>Cantidad de Cuotas
+      <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="habilitarCarga()"/>
+    </p>
+    <p>
+      <input type="submit" name="guardar" id="guardar" value="Cargar Cuotas" disabled="disabled" sub />
+    </p>
+    <table width="484" border="0">
       <tr>
-        <td width="398"><div align="center">
+        <td width="478"><div align="center">
           <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
-        </div></td>
-        <td width="302"><div align="right">
-          <input type="submit" name="guardar" id="guardar" value="Cargar Cuotas" disabled="disabled" sub />
         </div></td>
       </tr>
     </table>
-    <table width="711" height="32" border="0">
+    <table width="492" height="32" border="0">
        
         <tr>
-          <td width="128" height="11"> <div align="center">Mes</div></td>
-          <td width="126"><div align="center">A&ntilde;o</div></td>
-          <td width="135"><div align="center">Concepto de deuda </div></td>
-          <td width="304"><div align="right">Cantidad de Cuotas
-              <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="habilitarCarga()"/>
-</div></td>
+          <td width="115" height="11"> <div align="center">Mes</div></td>
+          <td width="114"><div align="center">A&ntilde;o</div></td>
+          <td width="249"><div align="center">Concepto de deuda </div></td>
         </tr>
        
 	    <tr>
