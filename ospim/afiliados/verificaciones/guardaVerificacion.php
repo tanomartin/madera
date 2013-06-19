@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $datos = array_values($_POST);
 //echo "DATOS 0: "; echo $datos[0]; echo "<br>";
@@ -36,7 +36,7 @@ if ($nombre_archivo_sss!="") {
 		if ($tipo_archivo_sss==$tipoPermitido) {
 			$fp = fopen($archivo_sss,"rb");
 			$contenido_sss = fread($fp,$tamano_archivo_sss);
-			$contenido_sss = addslashes($contenido_sss);
+			//$contenido_sss = addslashes($contenido_sss);
 			fclose($fp);
 		}
 		else {

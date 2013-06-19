@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionOspim.php");
 $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
 

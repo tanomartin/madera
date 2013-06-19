@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
 $sqlLeeAutorizacion = "SELECT * FROM autorizaciones WHERE statusautorizacion = 0 ORDER BY nrosolicitud DESC";

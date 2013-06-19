@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $base = $_SESSION['dbname'];
 
@@ -35,11 +35,17 @@ jQuery(function($){
 	$("#cuil").mask("99999999999");
 	$("#cuitempresa").mask("99999999999");
 	$("#fechaempresa").mask("99-99-9999");
+	$("#nrodocumento").mask("9999999999");
 });
 
 function validar(formulario) {
 	if (formulario.apellidoynombre.value == "") {
 		alert("El apellido y nombre es obligatorio");
+		return false;
+	}
+	
+	if (formulario.selectTipDoc.options[formulario.selectTipDoc.selectedIndex].value == 0) {
+		alert("Debe seleccionar un tipo de documento");
 		return false;
 	}
 
@@ -51,6 +57,12 @@ function validar(formulario) {
 			return false;
 		}
 	}
+
+	if (formulario.selectEstCiv.options[formulario.selectEstCiv.selectedIndex].value == -1) {
+		alert("Debe seleccionar un estado civil");
+		return false;
+	}
+
 
 	if (formulario.domicilio.value == "") {
 		alert("El domicilio es obligatorio");
@@ -90,6 +102,17 @@ function validar(formulario) {
 		formulario.telefono.value = "0";
 	}
 
+	if (formulario.email.value != "") {
+		object=document.getElementById("email");
+		valueForm=object.value;
+		var patron=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
+		if(valueForm.search(patron)!=0) {
+			//Email incorrecto
+			alert("El correo electronico ingresado es incorrecto");
+			return false;
+		}
+	}
+
 	if (formulario.fechaobrasocial.value == "") {
 		alert("La fecha de ingreso a la obra social es obligatoria");
 		return false;
@@ -97,6 +120,11 @@ function validar(formulario) {
 		if (!esFechaValida(formulario.fechaobrasocial.value)) {
 			return false;
 		}
+	}
+
+	if (formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value == -1) {
+		alert("Debe seleccionar un tipo de titularidad");
+		return false;
 	}
 
 	if (formulario.cuil.value == "") {
@@ -155,29 +183,48 @@ function validar(formulario) {
   </tr>
   <tr>
     <td>Documento:</td>
-    <td width="316"><input name="tipodocumento" type="text" id="tipodocumento" value="" size="2" />
+    <td width="316"><select name="selectTipDoc" id="selectTipDoc">
+                   <option value="0">Seleccione un valor</option>
+                   <?php 
+			     		$sqlTipDoc="select * from tipodocumento";
+						$resTipDoc=mysql_query($sqlTipDoc,$db);
+						while($rowTipDoc=mysql_fetch_array($resTipDoc)) { 	
+							echo "<option title ='$rowTipDoc[descrip]' value='$rowTipDoc[codtipdoc]'>".$rowTipDoc['descrip']."</option>";
+						}
+			        ?>
+            		</select>
 					<input name="nrodocumento" type="text" id="nrodocumento" value="" size="10" /></td>
     <td width="173">Fecha de Nacimiento:</td>
     <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="" size="10" /></td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
-    <td><input name="nacionalidad" type="text" id="nacionalidad" value="" size="3" /></td>
+    <td><select name="selectNacion" id="selectNacion">
+                   <option value="0">Seleccione un valor</option>
+                   <?php 
+			     		$sqlNacion="select * from nacionalidad order by descrip";
+						$resNacion=mysql_query($sqlNacion,$db);
+						while($rowNacion=mysql_fetch_array($resNacion)) { 	
+							echo "<option title ='$rowNacion[descrip]' value='$rowNacion[codnacion]'>".$rowNacion['descrip']."</option>";
+						}
+			        ?>
+            		</select></td>
     <td>Sexo:</td>
     <td><input name="sexo" type="text" id="sexo" value="" size="1" /></td>
   </tr>
   <tr>
     <td>Estado Civil: </td>
     <td colspan="3"><select name="selectEstCiv" id="selectEstCiv">
-              <option value="0">Seleccione un valor </option>
-              <?php 
-					$sqlEstCiv="select * from estadocivil";
-					$resEstCiv=mysql_query($sqlEstCiv,$db);
-					while($rowEstCiv=mysql_fetch_array($resEstCiv)) { 	
-			  ?>
-              				<option value="<?php echo $rowEstCiv['codestciv'] ?>" selected="selected"><?php echo $rowEstCiv['descrip']  ?></option>
-              <?php } ?>
-            </select></td>
+                   <option value="-1">Seleccione un valor</option>
+                   <?php 
+			     		$sqlEstCiv="select * from estadocivil";
+						$resEstCiv=mysql_query($sqlEstCiv,$db);
+						while($rowEstCiv=mysql_fetch_array($resEstCiv)) { 	
+							echo "<option title ='$rowEstCiv[descrip]' value='$rowEstCiv[codestciv]'>".$rowEstCiv['descrip']."</option>";
+						}
+			        ?>
+            		</select>
+	</td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -211,7 +258,7 @@ function validar(formulario) {
     <td>Telefono:</td>
     <td><input name="ddn" type="text" id="ddn" value="" size="5" />
 		<input name="telefono" type="text" id="telefono" value="" size="10" /></td>
-    <td>Email:</td>
+    <td>Correo Electronico:</td>
     <td><input name="email" type="text" id="email" value="" size="60" /></td>
   </tr>
   <tr>
@@ -228,8 +275,17 @@ function validar(formulario) {
 		<input name="solicitudopcion" type="text" id="solicitudopcion" value="" size="8" /></td>
   </tr>
   <tr>
-    <td>Tipo Titularidad: </td>
-    <td colspan="3"><input name="situaciontitularidad" type="text" id="situaciontitularidad" value="" size="2" /></td>
+    <td>Tipo Titularidad:</td>
+    <td colspan="3"><select name="selectSitTit" id="selectSitTit">
+                   <option value="-1">Seleccione un valor</option>
+                   <?php 
+			     		$sqlSitTit="select * from tipotitular";
+						$resSitTit=mysql_query($sqlSitTit,$db);
+						while($rowSitTit=mysql_fetch_array($resSitTit)) { 	
+							echo "<option title ='$rowSitTit[descrip]' value='$rowSitTit[codtiptit]'>".$rowSitTit['descrip']."</option>";
+						}
+			        ?>
+            		</select></td>
     </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">

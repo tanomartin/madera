@@ -1,5 +1,5 @@
-<?php 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionOspim.php");
 $fechadescarga = date("Y-m-d H:m:s");
 $usuariodescarga = $_SESSION['usuario'];
 
