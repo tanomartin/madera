@@ -23,12 +23,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 <title>.: Afiliado :.</title>
-</head>
 <script src="../../lib/jquery.js" type="text/javascript"></script>
 <script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="../../lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
-
 jQuery(function($){
 	$("#fechanacimiento").mask("99-99-9999");
 	$("#fechaobrasocial").mask("99-99-9999");
@@ -38,13 +36,55 @@ jQuery(function($){
 	$("#nrodocumento").mask("9999999999");
 });
 
+function localidadesPorCp(codigo) {
+	$.ajax({
+		type: "POST",
+		dataType: 'html',
+		url: "localidadPorCP.php",
+		data: {codigo:codigo},
+	}).done(function(respuesta){
+		$("#selectLocalidad").html(respuesta);
+       });
+};
+
+function cambioProvincia(locali) {
+<?php 
+		$sqlLocalidad="SELECT codlocali, codprovin FROM localidades";
+		$resLocalidad=mysql_query($sqlLocalidad,$db);
+		while($rowLocalidad=mysql_fetch_array($resLocalidad)) { ?>
+			if (locali == <?php echo $rowLocalidad['codlocali'] ?>)  {
+				<?php	
+					$codProvincia= $rowLocalidad['codprovin'];
+					$sqlProvincia="SELECT indpostal, descrip FROM provincia WHERE codprovin = $codProvincia";
+					$resProvincia=mysql_query($sqlProvincia,$db);
+					$rowProvincia=mysql_fetch_array($resProvincia)
+				?>
+				document.forms.formAfiliado.indpostal.value = "<?php echo $rowProvincia['indpostal'] ?>";
+				document.forms.formAfiliado.nomprovin.value = "<?php echo $rowProvincia['descrip'] ?>";
+				document.forms.formAfiliado.codprovin.value = "<?php echo $rowLocalidad['codprovin'] ?>";
+			}
+<?php } ?>
+};
+
+$(document).ready(function(){
+	$("#numpostal").change(function(){
+		var codigo = $(this).val();
+		localidadesPorCp(codigo);
+	});
+
+	$("#selectLocalidad").change(function(){
+		var locali = $(this).val();
+		cambioProvincia(locali);
+	});
+});
+
 function validar(formulario) {
 	if (formulario.apellidoynombre.value == "") {
 		alert("El apellido y nombre es obligatorio");
 		return false;
 	}
 	
-	if (formulario.selectTipDoc.options[formulario.selectTipDoc.selectedIndex].value == 0) {
+	if (formulario.selectTipDoc.options[formulario.selectTipDoc.selectedIndex].value == "") {
 		alert("Debe seleccionar un tipo de documento");
 		return false;
 	}
@@ -58,11 +98,10 @@ function validar(formulario) {
 		}
 	}
 
-	if (formulario.selectEstCiv.options[formulario.selectEstCiv.selectedIndex].value == -1) {
+	if (formulario.selectEstCiv.options[formulario.selectEstCiv.selectedIndex].value == "") {
 		alert("Debe seleccionar un estado civil");
 		return false;
 	}
-
 
 	if (formulario.domicilio.value == "") {
 		alert("El domicilio es obligatorio");
@@ -79,8 +118,8 @@ function validar(formulario) {
 		}
 	}
 
-	if (formulario.selectLocalidad.options[formulario.selectLocalidad.selectedIndex].value == 0) {
-		alert("Debe elegir una Localidad");
+	if (formulario.selectLocalidad.options[formulario.selectLocalidad.selectedIndex].value == "") {
+		alert("Debe Seleccionar una Localidad");
 		return false;
 	}
 
@@ -122,7 +161,7 @@ function validar(formulario) {
 		}
 	}
 
-	if (formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value == -1) {
+	if (formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value == "") {
 		alert("Debe seleccionar un tipo de titularidad");
 		return false;
 	}
@@ -149,6 +188,7 @@ function validar(formulario) {
 	return true;
 }
 </script>
+</head>
 <body bgcolor="#CCCCCC" >
 <form id="formAfiliado" name="formAfiliado" method="post" onSubmit="return validar(this)" action="guardaAltaAfiliado.php">
 <table width="1205" border="0">
@@ -184,7 +224,7 @@ function validar(formulario) {
   <tr>
     <td>Documento:</td>
     <td width="316"><select name="selectTipDoc" id="selectTipDoc">
-                   <option value="0">Seleccione un valor</option>
+                   <option value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlTipDoc="select * from tipodocumento";
 						$resTipDoc=mysql_query($sqlTipDoc,$db);
@@ -200,7 +240,7 @@ function validar(formulario) {
   <tr>
     <td>Nacionalidad:</td>
     <td><select name="selectNacion" id="selectNacion">
-                   <option value="0">Seleccione un valor</option>
+                   <option value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlNacion="select * from nacionalidad order by descrip";
 						$resNacion=mysql_query($sqlNacion,$db);
@@ -213,9 +253,9 @@ function validar(formulario) {
     <td><input name="sexo" type="text" id="sexo" value="" size="1" /></td>
   </tr>
   <tr>
-    <td>Estado Civil: </td>
+    <td>Estado Civil:</td>
     <td colspan="3"><select name="selectEstCiv" id="selectEstCiv">
-                   <option value="-1">Seleccione un valor</option>
+                   <option value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlEstCiv="select * from estadocivil";
 						$resEstCiv=mysql_query($sqlEstCiv,$db);
@@ -242,17 +282,13 @@ function validar(formulario) {
   <tr>
     <td>Localidad:</td>
     <td><select name="selectLocalidad" id="selectLocalidad">
-              <option value="0">Seleccione un valor </option>
-              <?php 
-					$sqlLocalidad="select * from localidades where numpostal = $numpostal";
-					$resLocalidad=mysql_query($sqlLocalidad,$db);
-					while($rowLocalidad=mysql_fetch_array($resLocalidad)) { 	
-			  ?>
-              				<option value="<?php echo $rowLocalidad['codlocali'] ?>" selected="selected"><?php echo $rowLocalidad['nomlocali']  ?></option>
-              <?php } ?>
-            </select></td>
+        <option value="">Seleccione un valor</option>
+        </select>
+	</td>
     <td>Provincia:</td>
-    <td><input name="codprovin" type="text" id="codprovin" value="" size="2" /></td>
+    <td><input name="nomprovin" type="text" id="nomprovin" value="" size="50" readonly="true" style="background-color:#CCCCCC" />
+		<input name="codprovin" type="text" id="codprovin" value="" size="2" readonly="true" style="background-color:#CCCCCC" />
+	</td>
   </tr>
   <tr>
     <td>Telefono:</td>
@@ -277,7 +313,7 @@ function validar(formulario) {
   <tr>
     <td>Tipo Titularidad:</td>
     <td colspan="3"><select name="selectSitTit" id="selectSitTit">
-                   <option value="-1">Seleccione un valor</option>
+                   <option value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlSitTit="select * from tipotitular";
 						$resSitTit=mysql_query($sqlSitTit,$db);
