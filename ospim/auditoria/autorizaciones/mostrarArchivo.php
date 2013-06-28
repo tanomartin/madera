@@ -11,7 +11,7 @@ $rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
 
 if($archivo <= 8)
 {
-	$tipo = "image/pjpeg";
+	$tipo = "application/pdf";
 
 	switch ($archivo){
 	    case 1:
