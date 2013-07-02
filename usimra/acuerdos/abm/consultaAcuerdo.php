@@ -14,10 +14,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <title>.: Consulta Acuerdo :.</title>
 </head>
-<body bgcolor="#B2A274" >
+<body bgcolor="#B2A274">
 <form name="verificador">
-  <label>
-  <div align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
+  <div align="center">
+  	<strong><a href="acuerdos.php?cuit=<?php echo $cuit?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong>
   </div>
   <div align="center">
     <?php 
@@ -234,10 +234,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 				?>
 	</tr>
 	</table>
-    <p>&nbsp;</p>
-    <p>
-      <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
-    </p>
+  </div>
+  <div align="center">
+      <p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/></p>
   </div>
 </form>
 </body>
