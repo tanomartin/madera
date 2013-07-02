@@ -19,32 +19,79 @@ $fecauto = date("Y-m-d H:m:s");
 $usuauto = $_SESSION['usuario'];
 //echo "USUARIO REGISTRO: "; echo $usuveri; echo "<br>";
 
+if($staauto == 3)
+{
+	try {
+		$hostlocal = $_SESSION['host'];
+		$dblocal = $_SESSION['dbname'];
+		//echo "$hostlocal"; echo "<br>";
+		//echo "$dblocal"; echo "<br>";
+		$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
+		//echo 'Connected to database local<br/>';
+		$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbl->beginTransaction();
 
-//conexion y creacion de transaccion.
-try {
-	$hostlocal = $_SESSION['host'];
-	$dblocal = $_SESSION['dbname'];
-	//echo "$hostlocal"; echo "<br>";
-	//echo "$dblocal"; echo "<br>";
-	$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
-	//echo 'Connected to database local<br/>';
-	$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbl->beginTransaction();
-		
-	$sqlActualizaAuto="UPDATE autorizaciones SET statusverificacion = :statusverificacion, motivopidereverificacion = :motivopidereverificacion WHERE nrosolicitud = :nrosolicitud";
-	//echo $sqlActualizaAuto; echo "<br>";
-	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-	if($resultActualizaAuto->execute(array(':statusverificacion' => $staauto, ':motivopidereverificacion' => $recauto, ':nrosolicitud' => $nrosoli)))
-	{
+		$sqlActualizaAuto="UPDATE autorizaciones SET statusverificacion = :statusverificacion, fechapidereverificacion = :fechapidereverificacion, usuariopidereverificacion = :usuariopidereverificacion, motivopidereverificacion = :motivopidereverificacion WHERE nrosolicitud = :nrosolicitud";
+		//echo $sqlActualizaAuto; echo "<br>";
+		$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
+		if($resultActualizaAuto->execute(array(':statusverificacion' => $staauto, ':fechapidereverificacion' => $fecauto, ':usuariopidereverificacion' => $usuauto,':motivopidereverificacion' => $recauto, ':nrosolicitud' => $nrosoli)))
+		{
+		}
+
+		$dbl->commit();
+		$pagina = "listarSolicitudes.php";
+		Header("Location: $pagina");
 	}
-	
-	$dbl->commit();
-	$pagina = "listarSolicitudes.php";
-	Header("Location: $pagina");
+	catch (PDOException $e) {
+		echo $e->getMessage();
+		$dbl->rollback();
+	}
 }
-catch (PDOException $e) {
-	echo $e->getMessage();
-	$dbl->rollback();
+
+if($staauto == 2)
+{
+	try {
+		$hostlocal = $_SESSION['host'];
+		$dblocal = $_SESSION['dbname'];
+		//echo "$hostlocal"; echo "<br>";
+		//echo "$dblocal"; echo "<br>";
+		$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
+		//echo 'Connected to database local<br/>';
+		$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbl->beginTransaction();
+
+		$hostremoto = "ospim.com.ar";
+		$dbremota = "uv0471_intranet";
+		//echo "$hostremoto"; echo "<br>";
+		//echo "$dbremota"; echo "<br>";
+		$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","uv0471","bsdf5762");
+		//echo 'Connected to database remota<br/>';
+	    $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbr->beginTransaction();
+		
+		$sqlActualizaAuto="UPDATE autorizaciones SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, rechazoautorizacion = :rechazoautorizacion WHERE nrosolicitud = :nrosolicitud";
+		//echo $sqlActualizaAuto; echo "<br>";
+		$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
+		if($resultActualizaAuto->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':rechazoautorizacion' => $recauto, ':nrosolicitud' => $nrosoli)))
+		{
+			$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion WHERE nrosolicitud = :nrosolicitud";
+			//echo $sqlActualizaProcesadas; echo "<br>";
+			$resultActualizaProcesadas = $dbr->prepare($sqlActualizaProcesadas);
+			if($resultActualizaProcesadas->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':rechazoautorizacion' => $recauto, ':nrosolicitud' => $nrosoli)))
+			{
+			}
+		}
+	
+		$dbl->commit();
+		$dbr->commit();
+		$pagina = "listarSolicitudes.php";
+		Header("Location: $pagina");
+	}
+	catch (PDOException $e) {
+		echo $e->getMessage();
+		$dbl->rollback();
+		$dbr->rollback();
+	}
 }
 ?>
 
