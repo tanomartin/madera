@@ -105,7 +105,6 @@ if($archivoOk==0) {
 
 		$mail=new PHPMailer();
 		$body="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong> <br>ha sido verificada el dia ".$fechamail." a las ".$horamail.".<br><br><br><br />Verificaciones<br />Depto. de Afiliaciones<br /></body>";
-		//$body=file_get_contents('contents.html');
 		$mail->IsSMTP();							// telling the class to use SMTP
 		$mail->Host="smtp.ospim.com.ar"; 			// SMTP server
 		$mail->SMTPAuth=true;						// enable SMTP authentication

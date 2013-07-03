@@ -47,6 +47,7 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.prestaSi.disabled=false;
 		document.forms.atiendeAutorizacion.prestaNo.disabled=false;
 		document.forms.atiendeAutorizacion.emailPresta.disabled=false;
+		document.forms.atiendeAutorizacion.montoAutoriza.disabled=false;
 	} else {
 		document.forms.atiendeAutorizacion.motivoRechazo.disabled=false;
 		document.forms.atiendeAutorizacion.apeSi.checked=false;
@@ -59,6 +60,7 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.prestaNo.disabled=true;
 		document.forms.atiendeAutorizacion.emailPresta.value="";
 		document.forms.atiendeAutorizacion.emailPresta.disabled=true;
+		document.forms.atiendeAutorizacion.montoAutoriza.disabled=true;
 	}	
 }
 
@@ -108,10 +110,12 @@ function validar(formulario) {
 				}
 			}
 		}
+
+		if(document.getElementById("montoAutoriza").value == "") {
+			alert("Debe ingresar el monto autorizado");
+			return false;
+		}
 	}
-
-
-	
 
 	$.blockUI({ message: "<h1>Guardando Autorizacion. Aguarde por favor...</h1>" });
 	return true;
@@ -196,13 +200,16 @@ if($rowLeeSolicitud['material']==1) {
       <label><input name="autori" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada</label>
       <p><textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo" disabled="disabled"></textarea></p>
       <p>APE:<label><input name="ape" id="apeSi" type="radio" value="1"/>Si</label>
-        <label><input name="ape" id="apeNo" type="radio" value="2"/>No</label></p>
+        <label><input name="ape" id="apeNo" type="radio" value="0"/>
+        No</label></p>
       <p>Comunica al Prestador ?:
 	         <label><input name="presta" id="prestaSi" type="radio" value="1" onchange="mostrarEmail(1)"/>Si</label>
-             <label><input name="presta" id="prestaNo" type="radio" value="2" onchange="mostrarEmail(0)"/>No</label>
+             <label><input name="presta" id="prestaNo" type="radio" value="0" onchange="mostrarEmail(0)"/>No</label>
 - Email             
 <input name="emailPresta" type="text" id="emailPresta" size="50" maxlength="50" disabled="disabled"/>
-      </p>	</td>
+      </p>
+      <p>Monto Autorizado: <label><input name="montoAutoriza" type="text" id="montoAutoriza" size="10" maxlength="10" /></label></p>
+	</td>
   </tr>
   <tr>
     <td width="500"><div align="left"><input type="reset" name="volver" value="Volver" onclick="location.href = 'listarSolicitudes.php'"/></div></td>

@@ -1,6 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
+require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
 $datos = array_values($_POST);
 //echo "DATOS 0: "; echo $datos[0]; echo "<br>";
 $nrosoli = $datos[0];
@@ -50,10 +51,10 @@ try {
     $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbr->beginTransaction();
 		
-	$sqlActualizaAuto="UPDATE autorizaciones SET statusverificacion = :statusverificacion, fechaverificacion = :fechaverificacion, usuarioverificacion = :usuarioverificacion, rechazoverificacion = :rechazoverificacion WHERE nrosolicitud = :nrosolicitud";
+	$sqlActualizaAuto="UPDATE autorizaciones SET statusverificacion = :statusverificacion, fechaverificacion = :fechaverificacion, usuarioverificacion = :usuarioverificacion, rechazoverificacion = :rechazoverificacion, fechaemailautoriza = :fechaemailautoriza WHERE nrosolicitud = :nrosolicitud";
 	//echo $sqlActualizaAuto; echo "<br>";
 	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-	if($resultActualizaAuto->execute(array(':statusverificacion' => $staveri, ':fechaverificacion' => $fecveri, ':usuarioverificacion' => $usuveri, ':rechazoverificacion' => $recveri, ':nrosolicitud' => $nrosoli)))
+	if($resultActualizaAuto->execute(array(':statusverificacion' => $staveri, ':fechaverificacion' => $fecveri, ':usuarioverificacion' => $usuveri, ':rechazoverificacion' => $recveri, ':fechaemailautoriza' => $fecveri, ':nrosolicitud' => $nrosoli)))
 	{
 		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusverificacion = :statusverificacion, fechaverificacion = :fechaverificacion, rechazoverificacion = :rechazoverificacion WHERE nrosolicitud = :nrosolicitud";
 		//echo $sqlActualizaProcesadas; echo "<br>";
@@ -67,7 +68,7 @@ try {
 	$dbr->commit();
 
 	$mail=new PHPMailer();
-	$body="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong> <br>ha sido verificada el dia ".$fechamail." a las ".$horamail.".<br><br><br><br />Verificaciones<br />Depto. de Afiliaciones<br /></body>";
+	$body="<body><br><br>Este es un mensaje de Aviso.<br><br>Ante el pedido de Reverificacion de la Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong>, <br>informamos que la misma ha sido procesada el dia ".$fechamail." a las ".$horamail.".<br><br><br><br />Verificaciones<br />Depto. de Afiliaciones<br /></body>";
 	$mail->IsSMTP();							// telling the class to use SMTP
 	$mail->Host="smtp.ospim.com.ar"; 			// SMTP server
 	$mail->SMTPAuth=true;						// enable SMTP authentication
@@ -77,7 +78,7 @@ try {
 	$mail->Password="256512";					// SMTP account password
 	$mail->SetFrom('jcbolognese@ospim.com.ar', 'Verificaciones OSPIM');
 	$mail->AddReplyTo("jcbolognese@ospim.com.ar","Cozzi OSPIM");
-	$mail->Subject="Aviso de Verificacion de Solicitud de Autorizacion";
+	$mail->Subject="Aviso de Reverificacion de Solicitud de Autorizacion";
 	$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
 	$mail->MsgHTML($body);
 	$address = "jcbolognese@ospim.com.ar";

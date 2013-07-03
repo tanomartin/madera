@@ -1,25 +1,70 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
+require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
 $datos = array_values($_POST);
-//echo "DATOS 0: "; echo $datos[0]; echo "<br>";
-$nrosoli = $datos[0];
-//echo "DATOS 1: "; echo $datos[1]; echo "<br>";
-$staauto = $datos[1];
-if($staauto==2)
-	$recauto = $datos[2];
-else
-	$recauto = "";
-//echo "DATOS 2: "; echo $datos[2]; echo "<br>";
-//echo "DATOS 3: "; echo $datos[3]; echo "<br>";
-//echo "DATOS 4: "; echo $datos[4]; echo "<br>";
-//echo "DATOS 5: "; echo $datos[5]; echo "<br>";
-//echo "DATOS 6: "; echo $datos[6]; echo "<br>";
-$fecauto = date("Y-m-d H:m:s");
-//echo "FECHA REGISTRO: "; echo $fecveri; echo "<br>";
-$usuauto = $_SESSION['usuario'];
-//echo "USUARIO REGISTRO: "; echo $usuveri; echo "<br>";
 
+$nrosoli = $datos[0];
+$staauto = $datos[1];
+
+$fecauto = date("Y-m-d H:m:s");
+$usuauto = $_SESSION['usuario'];
+
+if($staauto==2)
+{
+	$estauto = "Rechazada";
+	$recauto = $datos[2];
+	$apeauto = "";
+	$apefech = "";
+	$presauto = "";
+	$presmail = "";
+	$presfech = "";	
+	$montauto = "0.00";
+}
+else
+{
+	$estauto = "Aprobada";
+	$recauto = "";
+	$apeauto = $datos[2];
+	if($apeauto==1)
+		$apefech = date("Y-m-d H:m:s");
+	else
+		$apefech = "";
+	$presauto = $datos[3];
+	if($presauto==1)
+	{
+		$presmail = $datos[4];
+		$presfech =  date("Y-m-d H:m:s");
+		$montauto = $datos[5];
+	}
+	else
+	{
+		$presmail = "";
+		$presfech = "";	
+		$montauto = $datos[4];
+	}
+}
+//echo "Nro Solicitud: "; echo $nrosoli; echo "<br>";
+//echo "Autorizacion: "; echo $staauto; echo "<br>";
+//echo "Estado: "; echo $estauto; echo "<br>";
+//echo "Rechazo: "; echo $recauto; echo "<br>";
+//echo "APE: "; echo $apeauto; echo "<br>";
+//echo "Fecha Mail APE: "; echo $apefech; echo "<br>";
+//echo "Prestador: "; echo $presauto; echo "<br>";
+//echo "Mail Prestador: "; echo $presmail; echo "<br>";
+//echo "Fecha Mail Prestador: "; echo $presfech; echo "<br>";
+//echo "Monto Autorizado: "; echo $montauto; echo "<br>";
+
+$fechamail=date("d/m/Y");
+$horamail=date("H:m");
+
+$sqlLeeSolicitud="SELECT codidelega FROM autorizaciones where nrosolicitud = $nrosoli";
+$resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
+$rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
+
+$sqlLeeDeleg = "SELECT nombre FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
+$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
+$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
 //conexion y creacion de transaccion.
 try {
@@ -38,22 +83,52 @@ try {
 	//echo "$dbremota"; echo "<br>";
 	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","uv0471","bsdf5762");
 	//echo 'Connected to database remota<br/>';
-    $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbr->beginTransaction();
 		
-	$sqlActualizaAuto="UPDATE autorizaciones SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, rechazoautorizacion = :rechazoautorizacion WHERE nrosolicitud = :nrosolicitud";
-	//echo $sqlActualizaAuto; echo "<br>";
+	$sqlActualizaAuto="UPDATE autorizaciones SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
+		//echo $sqlActualizaAuto; echo "<br>";
 	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-	if($resultActualizaAuto->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':rechazoautorizacion' => $recauto, ':nrosolicitud' => $nrosoli)))
+	if($resultActualizaAuto->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
 	{
 		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion WHERE nrosolicitud = :nrosolicitud";
-		//echo $sqlActualizaProcesadas; echo "<br>";
+			//echo $sqlActualizaProcesadas; echo "<br>";
 		$resultActualizaProcesadas = $dbr->prepare($sqlActualizaProcesadas);
 		if($resultActualizaProcesadas->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':rechazoautorizacion' => $recauto, ':nrosolicitud' => $nrosoli)))
 		{
 		}
 	}
+
+	$mail=new PHPMailer();
+	//$body="<body><br><br>Este es un mensaje de Aviso.<br><br>Su Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".<br>Verifique la situacion de la solicitud a traves del modulo INTRANET DELEGACIONES.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
 	
+	$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Su Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
+	if($staauto==2)
+	{	
+		$bodymail.="<br>Verifique la situacion de la solicitud a traves del modulo INTRANET DELEGACIONES.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
+	}
+	else
+	{
+		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
+	}
+	$mail->IsSMTP();							// telling the class to use SMTP
+	$mail->Host="smtp.ospim.com.ar"; 			// SMTP server
+	$mail->SMTPAuth=true;						// enable SMTP authentication
+	$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
+	$mail->Port=25;								// set the SMTP port for the GMAIL server
+	$mail->Username="jcbolognese@ospim.com.ar";	// SMTP account username
+	$mail->Password="256512";					// SMTP account password
+	$mail->SetFrom("jcbolognese@ospim.com.ar", "Autorizaciones OSPIM");
+	$mail->AddReplyTo("jcbolognese@ospim.com.ar","Cozzi OSPIM");
+	$mail->Subject="AVISO!!! Solicitud de Autorizacion Atendida";
+	$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
+	$mail->MsgHTML($bodymail);
+	$address = "jcbolognese@ospim.com.ar";
+	$nameto = "Autorizaciones ".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];
+	$mail->AddAddress($address, $nameto);
+	$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
+	$mail->Send();
+
 	$dbl->commit();
 	$dbr->commit();
 	$pagina = "listarSolicitudes.php";
