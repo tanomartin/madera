@@ -48,6 +48,11 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.prestaNo.disabled=false;
 		document.forms.atiendeAutorizacion.emailPresta.disabled=false;
 		document.forms.atiendeAutorizacion.montoAutoriza.disabled=false;
+		document.forms.atiendeAutorizacion.elige1.disabled=false;
+		document.forms.atiendeAutorizacion.elige2.disabled=false;
+		document.forms.atiendeAutorizacion.elige3.disabled=false;
+		document.forms.atiendeAutorizacion.elige4.disabled=false;
+		document.forms.atiendeAutorizacion.elige5.disabled=false;
 	} else {
 		document.forms.atiendeAutorizacion.motivoRechazo.disabled=false;
 		document.forms.atiendeAutorizacion.apeSi.checked=false;
@@ -60,7 +65,18 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.prestaNo.disabled=true;
 		document.forms.atiendeAutorizacion.emailPresta.value="";
 		document.forms.atiendeAutorizacion.emailPresta.disabled=true;
+		document.forms.atiendeAutorizacion.montoAutoriza.value="";
 		document.forms.atiendeAutorizacion.montoAutoriza.disabled=true;
+		document.forms.atiendeAutorizacion.elige1.checked=false;
+		document.forms.atiendeAutorizacion.elige1.disabled=true;
+		document.forms.atiendeAutorizacion.elige2.checked=false;
+		document.forms.atiendeAutorizacion.elige2.disabled=true;
+		document.forms.atiendeAutorizacion.elige3.checked=false;
+		document.forms.atiendeAutorizacion.elige3.disabled=true;
+		document.forms.atiendeAutorizacion.elige4.checked=false;
+		document.forms.atiendeAutorizacion.elige4.disabled=true;
+		document.forms.atiendeAutorizacion.elige5.checked=false;
+		document.forms.atiendeAutorizacion.elige5.disabled=true;
 	}	
 }
 
@@ -71,6 +87,143 @@ function mostrarEmail(habilita) {
 	else {
 		document.forms.atiendeAutorizacion.emailPresta.value="";
 		document.forms.atiendeAutorizacion.emailPresta.disabled=true;
+	}
+}
+
+function controlaElige(eleccion) {
+	if (eleccion == 1) {
+		if(document.forms.atiendeAutorizacion.elige1.checked==true)
+		{
+			document.forms.atiendeAutorizacion.elegido1.value=1;
+			document.forms.atiendeAutorizacion.elige2.checked=false;
+			document.forms.atiendeAutorizacion.elige2.disabled=true;
+			document.forms.atiendeAutorizacion.elegido2.disabled=true;
+			document.forms.atiendeAutorizacion.elige3.checked=false;
+			document.forms.atiendeAutorizacion.elige3.disabled=true;
+			document.forms.atiendeAutorizacion.elegido3.disabled=true;
+			document.forms.atiendeAutorizacion.elige4.checked=false;
+			document.forms.atiendeAutorizacion.elige4.disabled=true;
+			document.forms.atiendeAutorizacion.elegido4.disabled=true;
+			document.forms.atiendeAutorizacion.elige5.checked=false;
+			document.forms.atiendeAutorizacion.elige5.disabled=true;
+			document.forms.atiendeAutorizacion.elegido5.disabled=true;
+		}
+		else
+		{
+			document.forms.atiendeAutorizacion.elegido1.value="";
+			document.forms.atiendeAutorizacion.elige2.checked=false;
+			document.forms.atiendeAutorizacion.elige2.disabled=false;
+			document.forms.atiendeAutorizacion.elegido2.disabled=false;
+			document.forms.atiendeAutorizacion.elige3.checked=false;
+			document.forms.atiendeAutorizacion.elige3.disabled=false;
+			document.forms.atiendeAutorizacion.elegido3.disabled=false;
+			document.forms.atiendeAutorizacion.elige4.checked=false;
+			document.forms.atiendeAutorizacion.elige4.disabled=false;
+			document.forms.atiendeAutorizacion.elegido4.disabled=false;
+			document.forms.atiendeAutorizacion.elige5.checked=false;
+			document.forms.atiendeAutorizacion.elige5.disabled=false;
+			document.forms.atiendeAutorizacion.elegido5.disabled=false;
+		}
+	}
+
+	if (eleccion == 2) {
+		if(document.forms.atiendeAutorizacion.elige2.checked==true)
+		{
+			document.forms.atiendeAutorizacion.elige1.checked=false;
+			document.forms.atiendeAutorizacion.elige1.disabled=true;
+			document.forms.atiendeAutorizacion.elige3.checked=false;
+			document.forms.atiendeAutorizacion.elige3.disabled=true;
+			document.forms.atiendeAutorizacion.elige4.checked=false;
+			document.forms.atiendeAutorizacion.elige4.disabled=true;
+			document.forms.atiendeAutorizacion.elige5.checked=false;
+			document.forms.atiendeAutorizacion.elige5.disabled=true;
+		}
+		else
+		{
+			document.forms.atiendeAutorizacion.elige1.checked=false;
+			document.forms.atiendeAutorizacion.elige1.disabled=false;
+			document.forms.atiendeAutorizacion.elige3.checked=false;
+			document.forms.atiendeAutorizacion.elige3.disabled=false;
+			document.forms.atiendeAutorizacion.elige4.checked=false;
+			document.forms.atiendeAutorizacion.elige4.disabled=false;
+			document.forms.atiendeAutorizacion.elige5.checked=false;
+			document.forms.atiendeAutorizacion.elige5.disabled=false;
+		}
+	}
+
+	if (eleccion == 3) {
+		if(document.forms.atiendeAutorizacion.elige3.checked==true)
+		{
+			document.forms.atiendeAutorizacion.elige1.checked=false;
+			document.forms.atiendeAutorizacion.elige1.disabled=true;
+			document.forms.atiendeAutorizacion.elige2.checked=false;
+			document.forms.atiendeAutorizacion.elige2.disabled=true;
+			document.forms.atiendeAutorizacion.elige4.checked=false;
+			document.forms.atiendeAutorizacion.elige4.disabled=true;
+			document.forms.atiendeAutorizacion.elige5.checked=false;
+			document.forms.atiendeAutorizacion.elige5.disabled=true;
+		}
+		else
+		{
+			document.forms.atiendeAutorizacion.elige1.checked=false;
+			document.forms.atiendeAutorizacion.elige1.disabled=false;
+			document.forms.atiendeAutorizacion.elige2.checked=false;
+			document.forms.atiendeAutorizacion.elige2.disabled=false;
+			document.forms.atiendeAutorizacion.elige4.checked=false;
+			document.forms.atiendeAutorizacion.elige4.disabled=false;
+			document.forms.atiendeAutorizacion.elige5.checked=false;
+			document.forms.atiendeAutorizacion.elige5.disabled=false;
+		}
+	}
+
+	if (eleccion == 4) {
+		if(document.forms.atiendeAutorizacion.elige4.checked==true)
+		{
+			document.forms.atiendeAutorizacion.elige1.checked=false;
+			document.forms.atiendeAutorizacion.elige1.disabled=true;
+			document.forms.atiendeAutorizacion.elige2.checked=false;
+			document.forms.atiendeAutorizacion.elige2.disabled=true;
+			document.forms.atiendeAutorizacion.elige3.checked=false;
+			document.forms.atiendeAutorizacion.elige3.disabled=true;
+			document.forms.atiendeAutorizacion.elige5.checked=false;
+			document.forms.atiendeAutorizacion.elige5.disabled=true;
+		}
+		else
+		{
+			document.forms.atiendeAutorizacion.elige1.checked=false;
+			document.forms.atiendeAutorizacion.elige1.disabled=false;
+			document.forms.atiendeAutorizacion.elige2.checked=false;
+			document.forms.atiendeAutorizacion.elige2.disabled=false;
+			document.forms.atiendeAutorizacion.elige3.checked=false;
+			document.forms.atiendeAutorizacion.elige3.disabled=false;
+			document.forms.atiendeAutorizacion.elige5.checked=false;
+			document.forms.atiendeAutorizacion.elige5.disabled=false;
+		}
+	}
+
+	if (eleccion == 5) {
+		if(document.forms.atiendeAutorizacion.elige5.checked==true)
+		{
+			document.forms.atiendeAutorizacion.elige1.checked=false;
+			document.forms.atiendeAutorizacion.elige1.disabled=true;
+			document.forms.atiendeAutorizacion.elige2.checked=false;
+			document.forms.atiendeAutorizacion.elige2.disabled=true;
+			document.forms.atiendeAutorizacion.elige3.checked=false;
+			document.forms.atiendeAutorizacion.elige3.disabled=true;
+			document.forms.atiendeAutorizacion.elige4.checked=false;
+			document.forms.atiendeAutorizacion.elige4.disabled=true;
+		}
+		else
+		{
+			document.forms.atiendeAutorizacion.elige1.checked=false;
+			document.forms.atiendeAutorizacion.elige1.disabled=false;
+			document.forms.atiendeAutorizacion.elige2.checked=false;
+			document.forms.atiendeAutorizacion.elige2.disabled=false;
+			document.forms.atiendeAutorizacion.elige3.checked=false;
+			document.forms.atiendeAutorizacion.elige3.disabled=false;
+			document.forms.atiendeAutorizacion.elige4.checked=false;
+			document.forms.atiendeAutorizacion.elige4.disabled=false;
+		}
 	}
 }
 
@@ -115,6 +268,60 @@ function validar(formulario) {
 			alert("Debe ingresar el monto autorizado");
 			return false;
 		}
+
+		var totalelige = 0;
+
+		if(formulario.elige1){
+			if(formulario.elige1.disabled==false){
+				if(formulario.elige1.checked==true){
+					totalelige++;
+				}
+			}
+		}
+
+		if(formulario.elige2){
+			if(formulario.elige2.disabled==false){
+				if(formulario.elige2.checked==true){
+					totalelige++;
+				}
+			}
+		}
+
+		if(formulario.elige3){
+			if(formulario.elige3.disabled==false){
+				if(formulario.elige3.checked==true){
+					totalelige++;
+				}
+			}
+		}
+
+		if(formulario.elige4){
+			if(formulario.elige4.disabled==false){
+				if(formulario.elige4.checked==true){
+					totalelige++;
+				}
+			}
+		}
+
+		if(formulario.elige5){
+			if(formulario.elige5.disabled==false){
+				if(formulario.elige5.checked==true){
+					totalelige++;
+				}
+			}
+		}
+
+		if(formulario.elige1 || formulario.elige2 || formulario.elige3 || formulario.elige4 ||formulario.elige5){
+			if(totalelige==0){
+				alert("Debe seleccionar un presupuesto");
+				return false;
+			}
+
+			if(totalelige>1){
+				alert("Debe seleccionar solamente un presupuesto");
+				return false;
+			}
+		}
 	}
 
 	$.blockUI({ message: "<h1>Guardando Autorizacion. Aguarde por favor...</h1>" });
@@ -133,12 +340,11 @@ $sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeSolicitud[c
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
-if($rowLeeSolicitud['material']==1) {
+if($rowLeeSolicitud['material'] == 1) {
 	$sqlLeeMaterial = "SELECT * FROM clasificamaterial where codigo = $rowLeeSolicitud[tipomaterial]";
 	$resultLeeMaterial = mysql_query($sqlLeeMaterial,$db); 
 	$rowLeeMaterial = mysql_fetch_array($resultLeeMaterial);
 }
-
 ?>
 
 <body>
@@ -174,7 +380,7 @@ if($rowLeeSolicitud['material']==1) {
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
         <p><strong>Tipo:</strong> <?php	if($rowLeeSolicitud['codiparentesco']!=0) {	if($rowLeeSolicitud['codiparentesco']==1) echo "Titular"; else echo "Familiar ".$rowLeeSolicitud['codiparentesco'];	}?>
-          <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/>	
+          <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly" style="visibility:hidden"/>	
       </p></td>
     <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" align="center"/><?php }?></p>
 		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada"; else echo "Rechazada";?></p>
@@ -190,11 +396,12 @@ if($rowLeeSolicitud['material']==1) {
       <p><strong>Historia Cl&iacute;nica:</strong> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?><input type="button" name="historiaclinica" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" align="center"/><?php }?></p>
       <p><strong>Estudios:</strong> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" align="center"/><?php }?></p>
       <p><strong>Presupuestos:</strong></p>
-      <p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige1'>");} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige2'>");} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige3'>");} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige4'>");} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige5'>");} ?></p>    </td>
+      <p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige1' onchange='controlaElige(1)'> <input id='elegido1' name='elegido1' value='' type='text' size='1' readonly='readonly' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige2' onchange='controlaElige(2)'> <input id='elegido2' name='elegido2' value='' type='text' size='1' readonly='readonly' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige3' onchange='controlaElige(3)'> <input id='elegido3' name='elegido3' value='' type='text' size='1' readonly='readonly' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige4' onchange='controlaElige(4)'> <input id='elegido4' name='elegido4' value='' type='text' size='1' readonly='readonly' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige5' onchange='controlaElige(5)'> <input id='elegido5' name='elegido5' value='' type='text' size='1' readonly='readonly' />");} ?></p>
+	</td>
 	<td valign="top">
 	  <label><input name="autori" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada</label><br />
       <label><input name="autori" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada</label>
