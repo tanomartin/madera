@@ -1,7 +1,0 @@
-Usuario: 4 - HORA: 11:03:05 - Archivos: (Empresa: 1251490 - Acuerdos: 14174 - Cuotas: 156898)
-Usuario: 4 - HORA: 12:28:27 - Archivos: (Empresa: 1251490 - Acuerdos: 13657 - Cuotas: 150198)
-Usuario: 4 - HORA: 12:42:05 - Archivos: (Empresa: 1251490 - Acuerdos: 13657 - Cuotas: 150198)
-Usuario: 4 - HORA: 15:45:46 - Archivos: (Empresa: 1251490 - Acuerdos: 13670 - Cuotas: 150220)
-Usuario: 4 - HORA: 16:10:20 - Archivos: (Empresa: 1251490 - Acuerdos: 13683 - Cuotas: 150418)
-Usuario: 4 - HORA: 16:25:23 - Archivos: (Empresa: 1251490 - Acuerdos: 13709 - Cuotas: 150577)
-Usuario: 4 - HORA: 16:34:24 - Archivos: (Empresa: 1251490 - Acuerdos: 13709 - Cuotas: 150577)

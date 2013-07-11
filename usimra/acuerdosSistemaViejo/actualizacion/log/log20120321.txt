@@ -1,6 +1,0 @@
-Usuario: 5 - HORA: 10:05:31 - Archivos: (Empresa: 1254034 - Acuerdos: 13811 - Cuotas: 151328)
-Usuario: 5 - HORA: 10:55:20 - Archivos: (Empresa: 1254034 - Acuerdos: 13811 - Cuotas: 151374)
-Usuario: 4 - HORA: 11:20:32 - Archivos: (Empresa: 1254034 - Acuerdos: 13833 - Cuotas: 151906)
-Usuario: 4 - HORA: 12:01:13 - Archivos: (Empresa: 1254034 - Acuerdos: 13833 - Cuotas: 151953)
-Usuario: 5 - HORA: 12:08:46 - Archivos: (Empresa: 1254034 - Acuerdos: 13846 - Cuotas: 152000)
-Usuario: 4 - HORA: 12:13:21 - Archivos: (Empresa: 1254034 - Acuerdos: 13858 - Cuotas: 152021)

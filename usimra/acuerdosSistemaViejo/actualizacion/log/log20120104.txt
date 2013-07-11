@@ -1,5 +1,0 @@
-Usuario: 4 - HORA: 9:37:38 - Archivos: (Empresa: 1245477 - Acuerdos: 14815 - Cuotas: 164894)
-Usuario: 4 - HORA: 11:08:39 - Archivos: (Empresa: 1245477 - Acuerdos: 14815 - Cuotas: 164894)
-Usuario: 4 - HORA: 11:30:58 - Archivos: (Empresa: 1245477 - Acuerdos: 14815 - Cuotas: 164894)
-Usuario: 4 - HORA: 11:49:04 - Archivos: (Empresa: 1245477 - Acuerdos: 14815 - Cuotas: 164920)
-Usuario: 5 - HORA: 12:13:43 - Archivos: (Empresa: 1245475 - Acuerdos: 14815 - Cuotas: 164920)
