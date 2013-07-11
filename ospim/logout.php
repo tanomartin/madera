@@ -5,7 +5,7 @@ $cadena = $_SERVER['HTTP_REFERER'];
 $buscar = "menu.php";
 $resultado = strpos($cadena, $buscar);
 if ($resultado == true) {
-	header ('location:index.htm');
+	header ('location:index.php');
 } else {
 	header ('location:sesionCaducada.php');
 }
