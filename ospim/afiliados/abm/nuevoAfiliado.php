@@ -23,9 +23,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 <title>.: Afiliado :.</title>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechanacimiento").mask("99-99-9999");

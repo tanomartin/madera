@@ -27,9 +27,9 @@ body {
 }
 -->
 </style>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.blockUI.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function muestraArchivo(solicitud, archivo) {
@@ -70,14 +70,19 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.montoAutoriza.disabled=true;
 		document.forms.atiendeAutorizacion.elige1.checked=false;
 		document.forms.atiendeAutorizacion.elige1.disabled=true;
+		document.forms.atiendeAutorizacion.elegido1.disabled=true;
 		document.forms.atiendeAutorizacion.elige2.checked=false;
 		document.forms.atiendeAutorizacion.elige2.disabled=true;
+		document.forms.atiendeAutorizacion.elegido2.disabled=true;
 		document.forms.atiendeAutorizacion.elige3.checked=false;
 		document.forms.atiendeAutorizacion.elige3.disabled=true;
+		document.forms.atiendeAutorizacion.elegido3.disabled=true;
 		document.forms.atiendeAutorizacion.elige4.checked=false;
 		document.forms.atiendeAutorizacion.elige4.disabled=true;
+		document.forms.atiendeAutorizacion.elegido4.disabled=true;
 		document.forms.atiendeAutorizacion.elige5.checked=false;
 		document.forms.atiendeAutorizacion.elige5.disabled=true;
+		document.forms.atiendeAutorizacion.elegido5.disabled=true;
 	}	
 }
 
@@ -291,6 +296,7 @@ function validar(formulario) {
 		if (formulario.prestaSi.checked == true) {
 			if(document.getElementById("emailPresta").value == "") {
 				alert("Debe ingresar el correo electronico del prestador");
+				document.getElementById("emailPresta").focus();
 				return false;
 			}
 			else {
@@ -309,6 +315,7 @@ function validar(formulario) {
 
 		if(document.getElementById("montoAutoriza").value == "") {
 			alert("Debe ingresar el monto autorizado");
+			document.getElementById("montoAutoriza").focus();
 			return false;
 		}
 		else {
@@ -446,11 +453,11 @@ if($rowLeeSolicitud['material'] == 1) {
       <p><strong>Historia Cl&iacute;nica:</strong> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?><input type="button" name="historiaclinica" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" align="center"/><?php }?></p>
       <p><strong>Estudios:</strong> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" align="center"/><?php }?></p>
       <p><strong>Presupuestos:</strong></p>
-      <p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige1' onchange='controlaElige(1)'> <input id='elegido1' name='elegido1' value='' type='text' size='1' readonly='readonly' />");} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige2' onchange='controlaElige(2)'> <input id='elegido2' name='elegido2' value='' type='text' size='1' readonly='readonly' />");} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige3' onchange='controlaElige(3)'> <input id='elegido3' name='elegido3' value='' type='text' size='1' readonly='readonly' />");} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige4' onchange='controlaElige(4)'> <input id='elegido4' name='elegido4' value='' type='text' size='1' readonly='readonly' />");} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige5' onchange='controlaElige(5)'> <input id='elegido5' name='elegido5' value='' type='text' size='1' readonly='readonly' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige1' onchange='controlaElige(1)'> <input id='elegido1' name='elegido1' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige2' onchange='controlaElige(2)'> <input id='elegido2' name='elegido2' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige3' onchange='controlaElige(3)'> <input id='elegido3' name='elegido3' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige4' onchange='controlaElige(4)'> <input id='elegido4' name='elegido4' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" align="center"/><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige5' onchange='controlaElige(5)'> <input id='elegido5' name='elegido5' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
 	</td>
 	<td valign="top">
 	  <label><input name="autori" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada</label><br />

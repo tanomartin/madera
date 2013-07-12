@@ -26,8 +26,8 @@ body {
 }
 -->
 </style>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function muestraArchivo(solicitud, archivo) {
@@ -41,6 +41,7 @@ function validar(formulario) {
 	if (formulario.rechazada.checked == true) {
 		if(document.getElementById("motivoRechazo").value == "") {
 			alert("Debe especificar un Motivo de Rechazo de la Autorizacion");
+			document.getElementById("motivoRechazo").focus();
 			return false;
 		}
 	}
@@ -48,6 +49,7 @@ function validar(formulario) {
 	if (formulario.reverificar.checked == true) {
 		if(document.getElementById("motivoRechazo").value == "") {
 			alert("Debe especificar el Motivo para Solicitar Reverificacion");
+			document.getElementById("motivoRechazo").focus();
 			return false;		
 		}
 	}
@@ -77,7 +79,7 @@ if($rowLeeSolicitud['material']==1) {
 ?>
 
 <body>
-<form id="atiendeAutorizacion" name="atiendeAutorizacion" method="POST" action="guardaAutorizacionReverifica.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
+<form id="consultaVerificacion" name="consultaVerificacion" method="POST" action="guardaAutorizacionReverifica.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
 <table width="1100" border="0">
   <tr>
     <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.jpg" width="92" height="81" /></span></div></td>

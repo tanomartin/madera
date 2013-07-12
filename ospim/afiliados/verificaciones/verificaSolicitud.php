@@ -2,7 +2,6 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 $nrosolicitud=$_GET['nroSolicitud'];
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -27,8 +26,8 @@ body {
 }
 -->
 </style>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function mostrarMotivo(muestra) {
@@ -55,7 +54,6 @@ function validar(formulario) {
 
 </script>
 </head>
-
 <?php
 $sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosolicitud";
 $resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
@@ -65,7 +63,6 @@ $sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeSolicitud[c
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 ?>
-
 <body>
 <form id="verificaSolicitud" name="verificaSolicitud" method="POST" action="guardaVerificacion.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
 <table width="1100" border="0">

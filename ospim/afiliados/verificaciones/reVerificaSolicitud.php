@@ -27,8 +27,8 @@ body {
 }
 -->
 </style>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function muestraArchivo(solicitud, archivo) {

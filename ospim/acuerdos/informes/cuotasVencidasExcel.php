@@ -1,7 +1,7 @@
-<?php 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php");
-require_once ($_SERVER['DOCUMENT_ROOT']."/ospim/lib/phpExcel/Classes/PHPExcel.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php");
+require_once($libPath."phpExcel/Classes/PHPExcel.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 $fechacargada=$_POST['fechahasta'];
