@@ -1,13 +1,10 @@
-<?php 
-	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
-	require ("numeros.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
+require("numeros.php");
 ?>
-
 <html>
-
 <head>
-
 <title></title>
 <META HTTP-EQUIV="Expires" CONTENT="Tue, 01 Jan 1980 1:00:00 GMT">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
@@ -231,5 +228,5 @@
             </div></td>
       </tr>
 </table>
-	  </body>
+</body>
 </html>

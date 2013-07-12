@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php"); 
 $datos = array_values($_POST);
 
 $cuit = $datos[0];
@@ -81,9 +82,9 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -124,6 +125,7 @@ function hayInfoCheque(id) {
 		return false;
 	}
 	if (!esFechaValida(FChe)) {
+		alert("La fecha no es valida");
 		document.getElementById("fcheque"+id).focus();
 		return false;
 	}
@@ -160,6 +162,7 @@ function validarYGuardar(formulario) {
 			return false;
 		}
 		if (!esFechaValida(fecha)){
+			alert("La fecha no es valida");
 			document.getElementById(nombreFecha).focus();
 			return false;
 		}

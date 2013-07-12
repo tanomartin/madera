@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php"); 
 
 $sqlLeeResumen = "SELECT fechaemision, count(*) as registros FROM resumenusimra where estadoconciliacion = 0 group by fechaemision";
@@ -58,8 +58,8 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <title>.: Módulo Banco USIMRA :.</title>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function MsgWait(formulario) {

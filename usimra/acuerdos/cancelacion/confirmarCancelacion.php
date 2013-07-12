@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
 $cuit = $_GET["cuit"];
 $acuerdo = $_GET["acuerdo"];
 $cuota = $_GET["cuota"];	
@@ -72,9 +73,9 @@ A:visited {text-decoration: none;color:#0033FF}
 A:hover {text-decoration: none;color:#33CCFF }
 </style>
 
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechapagada").mask("99-99-9999");
@@ -137,6 +138,7 @@ function validarFechaHabilitaBoton(fecha) {
 	document.forms.formularioSeleCuotas.selectRemesa.length = 0;
 	document.forms.formularioSeleCuotas.selectRemito.length = 0;
 	if (!esFechaValida(fecha)){
+		alert("La fecha no es valida");
 		document.forms.formularioSeleCuotas.botonRemesas.disabled = true;
 		document.forms.formularioSeleCuotas.selectRemito.disabled = true;
 	} else {
@@ -166,6 +168,7 @@ function limpiarSelect(){
 function validarFechaHabilitaBotonRemitoSuelto(fecha) {
 	document.forms.formularioSeleCuotas.selectRemitoSuelto.length = 0;
 	if (!esFechaValida(fecha)){
+		alert("La fecha no es valida");
 		document.forms.formularioSeleCuotas.botonRemitos.disabled = true;
 	} else {
 		document.forms.formularioSeleCuotas.botonRemitos.disabled = false;
@@ -211,6 +214,7 @@ function validar(formulario) {
 	var nroRemitoSuelto = formulario.selectRemitoSuelto.value;
 	
 	if (!esFechaValida(fecha)) {
+		alert("La fecha no es valida");
 		document.body.style.cursor = 'default';
 		return false;
 	}
@@ -227,6 +231,7 @@ function validar(formulario) {
 	
 	if (cuentaRemesa != 0) {
 		if (!esFechaValida(fechaRemesa)) {
+			alert("La fecha no es valida");
 			return false;
 		}
 		if (nroRemesa == 0) {
@@ -243,6 +248,7 @@ function validar(formulario) {
 	
 	if (cuentaRemito != 0) {
 		if (!esFechaValida(fechaRemito)) {
+			alert("La fecha no es valida");
 			document.body.style.cursor = 'default';
 			return false;
 		}
@@ -259,7 +265,7 @@ function validar(formulario) {
 <body bgcolor="#B2A274" onLoad="logicaHabilitacion()">
 <p align="center"><strong><a href="selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresa.php"); 
 	?>
 <form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="cancelarCuota.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
   <div align="center">

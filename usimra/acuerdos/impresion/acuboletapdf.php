@@ -1,8 +1,8 @@
-<?php 
-	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
-	require ("numeros.php");
-	require($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fpdf.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
+require("numeros.php");
+require($libPath."fpdf.php");
 
 	$cuit = $_GET["cuit"];
 	$acuerdo = $_GET["acuerdo"];

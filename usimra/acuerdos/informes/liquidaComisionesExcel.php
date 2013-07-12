@@ -1,8 +1,7 @@
-<?php 
-include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php");
-require_once ($_SERVER['DOCUMENT_ROOT']."/usimra/lib/phpExcel/Classes/PHPExcel.php");
-
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
+require_once($libPath."phpExcel/Classes/PHPExcel.php");
 $maquina = $_SERVER['SERVER_NAME'];
 $fechacargadadesde=$_POST['fechadesde'];
 $fechacargadahasta=$_POST['fechahasta'];

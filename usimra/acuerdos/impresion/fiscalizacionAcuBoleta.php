@@ -1,7 +1,7 @@
-<?php 
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
-	require ("numeros.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
+require("numeros.php");
 ?>
 
 <html>

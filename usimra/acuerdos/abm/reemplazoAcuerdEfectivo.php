@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php"); 
 
 $fecharegistro = date("Y-m-d H:m:s");
 $usuarioregistro = $_SESSION['usuario'];

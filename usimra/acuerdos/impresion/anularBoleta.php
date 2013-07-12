@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
 $fechaAnulacion = date("Y-m-d H:m:s");
 $usuarioAnulacion = $_SESSION['usuario'];
 

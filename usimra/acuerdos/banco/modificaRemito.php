@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php"); 
 $cuentaRemesa=$_GET['ctaRemesa'];
 $fechaCargada=$_GET['fecRemesa'];
@@ -28,9 +28,9 @@ A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fecharemito").mask("99-99-9999");
@@ -39,6 +39,7 @@ jQuery(function($){
 function controlaFecha() {
 	var fecha = document.forms.modificaRemito.fecharemito.value;
 	if (!esFechaValida(fecha)) {
+		alert("La fecha del remito no es valida");
 		document.getElementById("fecharemito").focus();
 		return(false);
 	}
@@ -97,6 +98,7 @@ function validar(formulario) {
 	var cantidadBoletas = new Number(formulario.boletasremito.value);
 
 	if (!esFechaValida(fechaRemito)) {
+		alert("La fecha del remito no es valida");
 		document.body.style.cursor = 'default';
 		return false;
 	}

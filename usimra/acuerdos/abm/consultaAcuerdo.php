@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
 $cuit = $_GET['cuit'];
 $nroacu = $_GET['nroacu'];
 ?>
@@ -38,7 +39,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	$resultprovi = mysql_query($sqlprovi,$db); 
 	$rowprovi = mysql_fetch_array($resultprovi);
 	//FIN CABECERA
-	include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
+	include($libPath."cabeceraEmpresa.php"); 
 	
 	$sqlCabecera = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 	$resCabecera = mysql_query($sqlCabecera,$db); 

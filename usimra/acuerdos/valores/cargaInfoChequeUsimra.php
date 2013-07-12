@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
 
 function desglosar ($dato) {
 	$cont = 0;
@@ -36,9 +37,9 @@ $cantidad = sizeof($datos);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -61,6 +62,7 @@ function validar(formulario) {
 			return false;
 		}
 		if (!esFechaValida(fecha)){
+			alert("La fecha no es valida");
 			document.getElementById(idFec).focus();
 			return false;
 		}
@@ -71,6 +73,7 @@ function validar(formulario) {
 		return false;
 	}
 	if (!esFechaValida(formulario.fechaCheque.value)){
+		alert("La fecha no es valida");
 		formulario.fechaCheque.focus();
 		return false;
 	}

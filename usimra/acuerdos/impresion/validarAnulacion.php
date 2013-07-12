@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/controlSession.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php"); 
 
 $datos = array_values($_POST);
 $nroControl = $datos[0];

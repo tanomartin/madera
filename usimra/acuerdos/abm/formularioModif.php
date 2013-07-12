@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
@@ -32,9 +32,9 @@ $rowacu = mysql_fetch_array($resulacu);
 <title>Modificacion de Acuerdos</title>
 </head>
 
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
@@ -85,6 +85,7 @@ function validar(formulario) {
 		return(false);
 	}
 	if (!esFechaValida(formulario.fechaAcuerdo.value)) {
+		alert("La fecha no es valida");
 		document.getElementById("fechaAcuerdo").focus();
 		return(false);
 	} 
@@ -159,7 +160,7 @@ function mostrarPeriodos() {
    	<input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>" />
 	<p align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2">VOLVER</font></a></strong></p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/usimra/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresa.php"); 
 	?>
 	<p align="center"><strong>M&oacute;dulo de Modificación</strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong> 

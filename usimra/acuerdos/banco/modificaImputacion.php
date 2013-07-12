@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/usimra/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php"); 
 $cuentaResumen=$_GET['ctaResumen'];
 $fechaCargada=$_GET['fecEmision'];
@@ -30,9 +30,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechaimputacion").mask("99-99-9999");
@@ -43,6 +43,7 @@ function validar(formulario) {
 	var fechaImputacion = formulario.fechaimputacion.value;
 	var importeImputado = formulario.importeimputado.value;
 	if (!esFechaValida(fechaImputacion)) {
+		alert("La fecha de imputacion no es valida");
 		return false;
 	}
 	if (importeImputado <= 0 || !isNumber(importeImputado)) {
