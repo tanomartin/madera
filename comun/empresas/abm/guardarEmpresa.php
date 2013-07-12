@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 
 $fecharegistro = date("Y-m-d H:m:s");
 $usuarioregistro = $_SESSION['usuario'];

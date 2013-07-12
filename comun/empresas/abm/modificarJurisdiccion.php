@@ -1,6 +1,6 @@
 <?php 
-include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/comun/lib/fechas.php");
+include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 $cuit=$_GET['cuit'];
 $delega=$_GET['coddel'];
 
@@ -22,9 +22,9 @@ if ($numpostal == "") {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Jurisdicciones Empresa :.</title>
 </head>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){

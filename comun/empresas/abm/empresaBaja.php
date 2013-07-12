@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/comun/lib/fechas.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 
 $cuit=$_GET['cuit'];
 if ($cuit=="") {
@@ -61,7 +61,7 @@ function informaTitulares() {
   <h2 class="Estilo1">EMPRESA DE BAJA </h2>
   <p>
     <?php 
-		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
   </p>
   <p><strong>Informaci&oacute;n de baja </strong></p>

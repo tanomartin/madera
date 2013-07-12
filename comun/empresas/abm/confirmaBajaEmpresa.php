@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/comun/lib/fechas.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 
 $cuit=$_GET['cuit'];
 if ($cuit=="") {
@@ -38,9 +38,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 <title>.: Módulo Empresa De Baja :.</title>
 </head>
 
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -72,7 +72,7 @@ function validar(formulario) {
   <p><strong>Confirmaci&oacute;n de Baja de Empresa </strong></p>
   <p>
     <?php 
-		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
   </p>
   <p>

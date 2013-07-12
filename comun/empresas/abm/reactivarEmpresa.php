@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
 
 $cuit=$_GET['cuit'];
 $fechamodificacionUpdate = date("Y-m-d H:m:s");

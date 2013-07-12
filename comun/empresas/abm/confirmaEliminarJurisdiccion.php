@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
 	
 	$cuit=$_GET['cuit'];
 	$codidelega=$_GET['coddel'];
@@ -38,7 +38,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
  <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
    <p>
-     <?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); ?>
+     <?php include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); ?>
   </p>
    <p><strong>Datos de la Jurisdicci&oacute;n a eliminar </strong></p>
   <table width="700" height="261" border="2">

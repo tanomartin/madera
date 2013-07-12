@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
 	
 $cuit=$_GET['cuit'];
 $codidelega=$_GET['coddel'];
@@ -34,9 +34,9 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
@@ -88,7 +88,7 @@ function validar(formulario) {
   </p>
   	<p>
   	  <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
 </p>
     <input style="visibility:hidden" name="sqlNuevaJuris" type="text" id="sqlNuevaJuris" size="50" value="<?php echo $sqlDeleteJurisdiccion ?>"  readonly="readonly"/>

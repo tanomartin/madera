@@ -1,6 +1,6 @@
 <?php 
-include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/comun/lib/fechas.php");
+include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 $cuit=$_GET['cuit'];
 
 $sql = "select * from empresas where cuit = $cuit";
@@ -23,9 +23,9 @@ if ($numpostal == "") {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Cabecera Empresa :.</title>
 </head>
-<script src="../../lib/jquery.js" type="text/javascript"></script>
-<script src="../../lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="../../lib/funcionControl.js" type="text/javascript"></script>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -124,7 +124,7 @@ function validar(formulario) {
 		formulario.telefono2.value = "0";
 	}
 	
-	if (formulario.fechaInicioOspim.value != "" & formulario.fechaInicioUsimra.value != "00-00-0000") {
+	if (formulario.fechaInicioOspim.value != "" & formulario.fechaInicioOspim.value != "00-00-0000") {
 		if (!esFechaValida(formulario.fechaInicioOspim.value)) {
 			alert("La fecha de inicio de obligacion OSPIM no es valida");
 			formulario.Submit.disabled = false;

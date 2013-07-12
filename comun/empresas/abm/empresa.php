@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/comun/lib/controlSession.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
 
 $cuit=$_GET['cuit'];
 if ($cuit=="") {
@@ -86,7 +86,7 @@ function validarBaja() {
 		if ($reactiva == 1) {
 			print("<h2 class='Estilo1'><div align='center' style='color:#006666'><b> EMPRESA REACTIVADA </b></div> </h2>");
 		}
-		include($_SERVER['DOCUMENT_ROOT']."/comun/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
   </p>
   <table width="346" border="0">
