@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 $fechadeposito  = date("Y-m-d H:m:s");
 $usuariodeposito = $_SESSION['usuario'];
 

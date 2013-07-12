@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 $cuit= $_POST['cuit'];
 if ($cuit == NULL) {
 	$cuit = $_GET['cuit'];
@@ -43,7 +43,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 <div align="center">
   <p><strong><a href="fiscalizacionImpresion.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="340" border="1">

@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 $cuit = $_GET['cuit'];
 $nroacu = $_GET['nroacu'];
 ?>
@@ -38,7 +38,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	$resultprovi = mysql_query($sqlprovi,$db); 
 	$rowprovi = mysql_fetch_array($resultprovi);
 	//FIN CABECERA
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/cabeceraEmpresa.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	
 	$sqlCabecera = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 	$resCabecera = mysql_query($sqlCabecera,$db); 

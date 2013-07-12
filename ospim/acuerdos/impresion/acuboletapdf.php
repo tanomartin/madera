@@ -1,8 +1,8 @@
 <?php 
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/controlSession.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fechas.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 	require ("numeros.php");
-	require($_SERVER['DOCUMENT_ROOT']."/ospim/lib/fpdf.php");
+	require($_SERVER['DOCUMENT_ROOT']."/lib/fpdf.php");
 
 	$cuit = $_GET["cuit"];
 	$acuerdo = $_GET["acuerdo"];
