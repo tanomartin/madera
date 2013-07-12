@@ -29,6 +29,7 @@ body {
 </style>
 <script src="../../lib/jquery.js" type="text/javascript"></script>
 <script src="../../lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="../../lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function muestraArchivo(solicitud, archivo) {
@@ -129,100 +130,140 @@ function controlaElige(eleccion) {
 	if (eleccion == 2) {
 		if(document.forms.atiendeAutorizacion.elige2.checked==true)
 		{
+			document.forms.atiendeAutorizacion.elegido2.value=2;
 			document.forms.atiendeAutorizacion.elige1.checked=false;
 			document.forms.atiendeAutorizacion.elige1.disabled=true;
+			document.forms.atiendeAutorizacion.elegido1.disabled=true;
 			document.forms.atiendeAutorizacion.elige3.checked=false;
 			document.forms.atiendeAutorizacion.elige3.disabled=true;
+			document.forms.atiendeAutorizacion.elegido3.disabled=true;
 			document.forms.atiendeAutorizacion.elige4.checked=false;
 			document.forms.atiendeAutorizacion.elige4.disabled=true;
+			document.forms.atiendeAutorizacion.elegido4.disabled=true;
 			document.forms.atiendeAutorizacion.elige5.checked=false;
 			document.forms.atiendeAutorizacion.elige5.disabled=true;
+			document.forms.atiendeAutorizacion.elegido5.disabled=true;
 		}
 		else
 		{
+			document.forms.atiendeAutorizacion.elegido2.value="";
 			document.forms.atiendeAutorizacion.elige1.checked=false;
 			document.forms.atiendeAutorizacion.elige1.disabled=false;
+			document.forms.atiendeAutorizacion.elegido1.disabled=false;
 			document.forms.atiendeAutorizacion.elige3.checked=false;
 			document.forms.atiendeAutorizacion.elige3.disabled=false;
+			document.forms.atiendeAutorizacion.elegido3.disabled=false;
 			document.forms.atiendeAutorizacion.elige4.checked=false;
 			document.forms.atiendeAutorizacion.elige4.disabled=false;
+			document.forms.atiendeAutorizacion.elegido4.disabled=false;
 			document.forms.atiendeAutorizacion.elige5.checked=false;
 			document.forms.atiendeAutorizacion.elige5.disabled=false;
+			document.forms.atiendeAutorizacion.elegido5.disabled=false;
 		}
 	}
 
 	if (eleccion == 3) {
 		if(document.forms.atiendeAutorizacion.elige3.checked==true)
 		{
+			document.forms.atiendeAutorizacion.elegido3.value=3;
 			document.forms.atiendeAutorizacion.elige1.checked=false;
 			document.forms.atiendeAutorizacion.elige1.disabled=true;
+			document.forms.atiendeAutorizacion.elegido1.disabled=true;
 			document.forms.atiendeAutorizacion.elige2.checked=false;
 			document.forms.atiendeAutorizacion.elige2.disabled=true;
+			document.forms.atiendeAutorizacion.elegido2.disabled=true;
 			document.forms.atiendeAutorizacion.elige4.checked=false;
 			document.forms.atiendeAutorizacion.elige4.disabled=true;
+			document.forms.atiendeAutorizacion.elegido4.disabled=true;
 			document.forms.atiendeAutorizacion.elige5.checked=false;
 			document.forms.atiendeAutorizacion.elige5.disabled=true;
+			document.forms.atiendeAutorizacion.elegido5.disabled=true;
 		}
 		else
 		{
+			document.forms.atiendeAutorizacion.elegido3.value="";
 			document.forms.atiendeAutorizacion.elige1.checked=false;
 			document.forms.atiendeAutorizacion.elige1.disabled=false;
+			document.forms.atiendeAutorizacion.elegido1.disabled=false;
 			document.forms.atiendeAutorizacion.elige2.checked=false;
 			document.forms.atiendeAutorizacion.elige2.disabled=false;
+			document.forms.atiendeAutorizacion.elegido2.disabled=false;
 			document.forms.atiendeAutorizacion.elige4.checked=false;
 			document.forms.atiendeAutorizacion.elige4.disabled=false;
+			document.forms.atiendeAutorizacion.elegido4.disabled=false;
 			document.forms.atiendeAutorizacion.elige5.checked=false;
 			document.forms.atiendeAutorizacion.elige5.disabled=false;
+			document.forms.atiendeAutorizacion.elegido5.disabled=false;
 		}
 	}
 
 	if (eleccion == 4) {
 		if(document.forms.atiendeAutorizacion.elige4.checked==true)
 		{
+			document.forms.atiendeAutorizacion.elegido4.value=4;
 			document.forms.atiendeAutorizacion.elige1.checked=false;
 			document.forms.atiendeAutorizacion.elige1.disabled=true;
+			document.forms.atiendeAutorizacion.elegido1.disabled=true;
 			document.forms.atiendeAutorizacion.elige2.checked=false;
 			document.forms.atiendeAutorizacion.elige2.disabled=true;
+			document.forms.atiendeAutorizacion.elegido2.disabled=true;
 			document.forms.atiendeAutorizacion.elige3.checked=false;
 			document.forms.atiendeAutorizacion.elige3.disabled=true;
+			document.forms.atiendeAutorizacion.elegido3.disabled=true;
 			document.forms.atiendeAutorizacion.elige5.checked=false;
 			document.forms.atiendeAutorizacion.elige5.disabled=true;
+			document.forms.atiendeAutorizacion.elegido5.disabled=true;
 		}
 		else
 		{
+			document.forms.atiendeAutorizacion.elegido4.value="";
 			document.forms.atiendeAutorizacion.elige1.checked=false;
 			document.forms.atiendeAutorizacion.elige1.disabled=false;
+			document.forms.atiendeAutorizacion.elegido1.disabled=false;
 			document.forms.atiendeAutorizacion.elige2.checked=false;
 			document.forms.atiendeAutorizacion.elige2.disabled=false;
+			document.forms.atiendeAutorizacion.elegido2.disabled=false;
 			document.forms.atiendeAutorizacion.elige3.checked=false;
 			document.forms.atiendeAutorizacion.elige3.disabled=false;
+			document.forms.atiendeAutorizacion.elegido3.disabled=false;
 			document.forms.atiendeAutorizacion.elige5.checked=false;
 			document.forms.atiendeAutorizacion.elige5.disabled=false;
+			document.forms.atiendeAutorizacion.elegido5.disabled=false;
 		}
 	}
 
 	if (eleccion == 5) {
 		if(document.forms.atiendeAutorizacion.elige5.checked==true)
 		{
+			document.forms.atiendeAutorizacion.elegido5.value=5;
 			document.forms.atiendeAutorizacion.elige1.checked=false;
 			document.forms.atiendeAutorizacion.elige1.disabled=true;
+			document.forms.atiendeAutorizacion.elegido1.disabled=true;
 			document.forms.atiendeAutorizacion.elige2.checked=false;
 			document.forms.atiendeAutorizacion.elige2.disabled=true;
+			document.forms.atiendeAutorizacion.elegido2.disabled=true;
 			document.forms.atiendeAutorizacion.elige3.checked=false;
 			document.forms.atiendeAutorizacion.elige3.disabled=true;
+			document.forms.atiendeAutorizacion.elegido3.disabled=true;
 			document.forms.atiendeAutorizacion.elige4.checked=false;
 			document.forms.atiendeAutorizacion.elige4.disabled=true;
+			document.forms.atiendeAutorizacion.elegido4.disabled=true;
 		}
 		else
 		{
+			document.forms.atiendeAutorizacion.elegido5.value="";
 			document.forms.atiendeAutorizacion.elige1.checked=false;
 			document.forms.atiendeAutorizacion.elige1.disabled=false;
+			document.forms.atiendeAutorizacion.elegido1.disabled=false;
 			document.forms.atiendeAutorizacion.elige2.checked=false;
 			document.forms.atiendeAutorizacion.elige2.disabled=false;
+			document.forms.atiendeAutorizacion.elegido2.disabled=false;
 			document.forms.atiendeAutorizacion.elige3.checked=false;
 			document.forms.atiendeAutorizacion.elige3.disabled=false;
+			document.forms.atiendeAutorizacion.elegido3.disabled=false;
 			document.forms.atiendeAutorizacion.elige4.checked=false;
 			document.forms.atiendeAutorizacion.elige4.disabled=false;
+			document.forms.atiendeAutorizacion.elegido4.disabled=false;
 		}
 	}
 }
@@ -231,6 +272,7 @@ function validar(formulario) {
 	if (formulario.rechazada.checked == true) {
 		if(document.getElementById("motivoRechazo").value == "") {
 			alert("Debe especificar un Motivo de Rechazo de la Autorizacion");
+			document.getElementById("motivoRechazo").focus();
 			return false;
 		}
 	}
@@ -259,6 +301,7 @@ function validar(formulario) {
 				if(valueForm.search(patron)!=0) {
 					//Email incorrecto
 					alert("El correo electronico del prestador ingresado es incorrecto");
+					document.getElementById("emailPresta").focus();
 					return false;
 				}
 			}
@@ -267,6 +310,13 @@ function validar(formulario) {
 		if(document.getElementById("montoAutoriza").value == "") {
 			alert("Debe ingresar el monto autorizado");
 			return false;
+		}
+		else {
+			if (!isNumberPositivo(document.getElementById("montoAutoriza").value)) {
+				alert("El monto autorizado ingresado es incorrecto");
+				document.getElementById("montoAutoriza").focus();
+				return false;
+			}
 		}
 
 		var totalelige = 0;
