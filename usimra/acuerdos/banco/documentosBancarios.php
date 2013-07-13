@@ -20,7 +20,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="moduloBanco.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
+<table width="137" border="0">
+	<tr align="center" valign="top">
+      <td width="137" valign="middle"><div align="center">
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloBanco.php'" align="center"/> 
+        </div></td>
+	</tr>
+</table>
+</div>
+<div align="center">
   <p><span class="Estilo2">Documentacion Bancaria</span></p>
   <table width="614" height="340" border="3">
     <tr>

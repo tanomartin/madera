@@ -134,11 +134,11 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="350">
         <div align="left">
           <input type="reset" name="volver" value="Volver" onClick="location.href = 'resumenBancario.php'" align="left"/>
-        </div>
+        </div></td>
       <td width="100">
         <div align="center">
           <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/>
-        </div>
+        </div></td>
       <td width="350">
         <div align="right">
           <input type="submit" name="nuevaimputacion" value="Nueva Imputacion" align="right"/>
