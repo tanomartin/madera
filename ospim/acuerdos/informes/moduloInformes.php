@@ -1,5 +1,5 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/ospim/lib/";
-include($libPath."controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+include($libPath."controlSessionOspim.php");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -20,7 +20,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
+<table width="137" border="0">
+	<tr align="center" valign="top">
+      <td width="137" valign="middle"><div align="center">
+        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
+        </div></td>
+	</tr>
+</table>
+</div>
+<div align="center">
   <p><span class="Estilo2">M&oacute;dulo De Informes</span></p>
   <table width="614" height="340" border="3">
     <tr>
@@ -46,7 +54,6 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
-  <p>&nbsp;</p>
 </div>
 </body>
 </html>

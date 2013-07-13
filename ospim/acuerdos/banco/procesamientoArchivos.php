@@ -38,19 +38,18 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <body bgcolor="#CCCCCC">
 <form id="form1" onSubmit="return validar(this)"  name="form1" method="post" action="verificacionArchivo.php">
-<p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="moduloBanco.php">VOLVER</a></strong></font></p>
-  <p align="center" class="Estilo1">Procesamiento de Archivos Transferidos</p>
-  <label>
-  <div align="center">Fecha del Archivo del Banco: 
-  <input id="fechaarchivo" name="fechaarchivo" type="text" value="<?php echo date("d/m/Y",time());?>" size="10" />
-  </label>
-    <p align="center">
-    <label>
-    <input type="submit" name="Submit" value="Enviar" />
-    </label>
-  </p>
-  <p>&nbsp;</p>
+<div align="center">
+<table width="137" border="0">
+	<tr align="center" valign="top">
+      <td width="137" valign="middle"><div align="center">
+        <input type="reset" name="volver" value="Volver" onClick="location.href = '../moduloBanco.php'" align="center"/> 
+        </div></td>
+	</tr>
+</table>
+</div>
+<p align="center" class="Estilo1">Procesamiento de Archivos Transferidos</p>
+<p align="center">Fecha del Archivo del Banco:<label><input id="fechaarchivo" name="fechaarchivo" type="text" value="<?php echo date("d/m/Y",time());?>" size="10" /></label></p>
+<p align="center"><label><input type="submit" name="Submit" value="Enviar" /></label></p>
 </form>
-<p align="center">&nbsp;</p>
 </body>
 </html>

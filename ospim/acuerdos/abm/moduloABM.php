@@ -33,7 +33,15 @@ jQuery(function($){
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="acuerdos.php">
-<p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
+<div align="center">
+<table width="137" border="0">
+	<tr align="center" valign="top">
+      <td width="137" valign="middle"><div align="center">
+        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
+        </div></td>
+	</tr>
+</table>
+</div>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos O.S.P.I.M. </p>
   <?php 
 		$err = $_GET['err'];
@@ -42,18 +50,8 @@ jQuery(function($){
 		}
 
   ?>
-  <p>
-  <label>
-  <div align="center">CUIT
-      <input name="cuit" type="text" id="cuit" size="10" />
-  </label>
-    <p align="center">
-    <label>
-    <input type="submit" name="Submit" value="Enviar" />
-    </label>
-  </p>
-  <p>&nbsp;</p>
+  <p align="center"><label>CUIT <input name="cuit" type="text" id="cuit" size="10" /></label></p>
+  <p align="center"><label><input type="submit" name="Submit" value="Buscar" /></label></p>
 </form>
-<p align="center">&nbsp;</p>
 </body>
 </html>

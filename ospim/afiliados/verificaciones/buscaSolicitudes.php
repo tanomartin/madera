@@ -30,10 +30,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" onSubmit="return MsgWait(this)" method="POST" action="descargaSolicitudes.php" enctype="multipart/form-data" >
-<p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAfiliados.php">VOLVER</a></strong></font></p>
+<div align="center">
+<table width="137" border="0">
+	<tr align="center" valign="top">
+      <td width="137" valign="middle"><div align="center">
+        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAfiliados.php'" align="center"/> 
+        </div></td>
+	</tr>
+</table>
+</div>
 <p align="center" class="Estilo1">Solicitudes de Autorizacion</p>
 <p align="center"><label><input type="submit" name="Submit" value="Descargar Nuevas Solicitudes"/></label></p>
-<p align="center">&nbsp;</p>
 </form>
 </body>
 </html>
