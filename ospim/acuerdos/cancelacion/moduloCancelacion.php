@@ -34,7 +34,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="selecCanCuotas.php">
-  <p align="center" class="Estilo1"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
+  <p align="center">
+   <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/>
+  </p>
   <p align="center" class="Estilo1">M&oacute;dulo de Cancelaci&oacute;n de Cuotas </p>
    <?php 
   		$err = $_GET['err'];

@@ -41,7 +41,9 @@ A:hover {text-decoration: none;color:#33CCFF }
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><strong><a href="fiscalizacionImpresion.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+  <p>
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'fiscalizacionImpresion.php'" align="center"/>
+  </p>
 	 <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>

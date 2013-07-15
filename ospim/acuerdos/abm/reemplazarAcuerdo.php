@@ -101,6 +101,7 @@ function validar(formulario) {
 		return(false);
 	}
 	if (!esFechaValida(formulario.fechaAcuerdo.value)) {
+		alert("La fecha no es valida");
 		document.getElementById("fechaAcuerdo").focus();
 		return(false);
 	} 
@@ -122,7 +123,9 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <form id="reemAcuerdo" name="reemAcuerdo" method="post" action="reemplazoAcuerdEfectivo.php?cuit=<?php echo $cuit ?>" onsubmit="return validar(this)">
-  <p align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2">VOLVER</font></a></strong></p>
+  <p align="center">
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" align="center"/>
+  </p>
   <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
   ?>

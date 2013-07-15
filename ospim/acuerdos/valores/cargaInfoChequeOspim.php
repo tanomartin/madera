@@ -61,6 +61,7 @@ function validar(formulario) {
 			return false;
 		}
 		if (!esFechaValida(fecha)){
+			alert("La fecha no es valida");
 			document.getElementById(idFec).focus();
 			return false;
 		}
@@ -71,6 +72,7 @@ function validar(formulario) {
 		return false;
 	}
 	if (!esFechaValida(formulario.fechaCheque.value)){
+		alert("La fecha no es valida");
 		formulario.fechaCheque.focus();
 		return false;
 	}
@@ -90,7 +92,9 @@ function validar(formulario) {
 </style>
 </head>
 <body bgcolor="#CCCCCC">
-<p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="listadoValores.php">VOLVER</a></strong></font></p>
+<p align="center">
+<input type="reset" name="volver" value="Volver" onClick="location.href = 'listadoValores.php'" align="center"/>
+</p>
 <div align="center">
   <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="guardoValorAlCobro.php">
   	<p>

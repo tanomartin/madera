@@ -16,7 +16,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 <body bgcolor="#CCCCCC">
-<p align="center" class="Estilo2"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
+<p align="center">
+<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/>
+</p>
 <p align="center" class="Estilo2">M&oacute;dulo Valores al Cobro</p>
 <form id="ordena" name="ordena" method="post" action="listadoValores.php">
   <label><br />

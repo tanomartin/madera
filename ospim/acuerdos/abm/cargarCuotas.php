@@ -126,6 +126,7 @@ function hayInfoCheque(id) {
 		return false;
 	}
 	if (!esFechaValida(FChe)) {
+		alert("La fecha no es valida");
 		document.getElementById("fcheque"+id).focus();
 		return false;
 	}
@@ -162,6 +163,7 @@ function validarYGuardar(formulario) {
 			return false;
 		}
 		if (!esFechaValida(fecha)){
+			alert("La fecha no es valida");
 			document.getElementById(nombreFecha).focus();
 			return false;
 		}
@@ -185,7 +187,9 @@ function validarYGuardar(formulario) {
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<p  align="center"><strong><a href="formularioCarga.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+<p  align="center">
+   <input type="reset" name="volver" value="Volver" onClick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?>'" align="center"/>
+</p>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
 <form id="cuotas" name="cuotas" onSubmit="return validarYGuardar(this)" method="POST" action="guardoAcuerdo.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacuerdo?>">
 

@@ -48,6 +48,7 @@ jQuery(function($){
 function validar(formulario) {
 	var fecha = formulario.fechapagada.value;
 	if (!esFechaValida(fecha)) {
+		alert("La fecha no es valida");
 		formulario.fechapagada.focus = true;
 		return false;
 	}
@@ -58,7 +59,9 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><strong><a href="selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+  <p>
+    <input type="reset" name="volver" value="Volver" onClick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" align="center"/>
+ </p>
 	 <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
@@ -114,6 +117,6 @@ function validar(formulario) {
      </p>
   </div>
 </form>
-<p align="center">&nbsp;</p>
+</div>
 </body>
 </html>

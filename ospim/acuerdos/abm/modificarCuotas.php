@@ -100,6 +100,7 @@ function hayInfoCheque(id) {
 		return false;
 	}
 	if (!esFechaValida(FChe)) {
+		alert("La fecha no es valida");
 		document.getElementById("fcheque"+id).focus();
 		return false;
 	}
@@ -155,6 +156,7 @@ function validarYGuardar(formulario) {
 			return false;
 		}
 		if (!esFechaValida(fecha)){
+			alert("La fecha no es valida");
 			document.getElementById(nombreFecha).focus();
 			desbloquear();
 			return false;
@@ -193,7 +195,9 @@ function popUpcambio(confi) {
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<p  align="center"><strong><a href="formularioModif.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+<p  align="center">
+<input type="reset" name="volver" value="Volver" onClick="location.href = 'formularioModif.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>'" align="center"/>
+</p>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
 <form id="modifCuotas" name="modifCuotas" onSubmit="return validarYGuardar(this)" method="POST" action="actualizarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu?>&canMod=<?php echo $canMod ?>">
  <input name="cantCuotas" type="text" id="cantCuotas" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1">

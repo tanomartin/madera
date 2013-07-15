@@ -44,7 +44,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#CCCCCC" > 
 <div align="center">
-  <p><strong><a href="moduloABM.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+  <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/></p>
   <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
