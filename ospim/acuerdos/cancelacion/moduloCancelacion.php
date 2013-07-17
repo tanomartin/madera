@@ -51,7 +51,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </label>
   <p align="center">
     <label>
-    <input type="submit" name="Submit" value="Enviar" />
+    <input type="submit" name="Submit" value="Buscar" />
     </label>
   </p>
   <p>&nbsp;</p>

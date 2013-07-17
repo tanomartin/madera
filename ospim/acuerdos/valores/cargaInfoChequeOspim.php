@@ -175,7 +175,7 @@ function validar(formulario) {
     </table>
     <p>
       <label>
-      <input type="submit" name="Submit" value="Enviar" />
+      <input type="submit" name="Submit" value="Guardar" />
       </label>
     </p>
     <p>

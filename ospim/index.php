@@ -44,7 +44,7 @@ A:hover {text-decoration:underline; color:FCF63C}
       </tr>
       <tr>
         <td colspan="4"><div align="center">
-            <input type="submit" value="Ingresar" name="B1" style="background-color: #CCCCCC; border-style: groove; border-color: #000000">
+            <input type="submit" value="Ingresar" name="B1">
         </div></td>
       </tr>
     </table>

@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Módulo Valores al Cobro :.</title>
-</head>
+<title>.: Módulo Valores al Cobro :.</title></head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -21,9 +20,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 </p>
 <p align="center" class="Estilo2">M&oacute;dulo Valores al Cobro</p>
 <form id="ordena" name="ordena" method="post" action="listadoValores.php">
-  <label><br />
+  
+  <label> 
+  <div align="center"><strong>Ordenamiento</strong></div>
+  </label>
   <div align="center">
-    <p><strong>Ordenamiento</strong></p>
     <table width="200" border="2">
     <tr>
       <td><input name="orden"  id="orden" type="radio" value="cuit" checked/></td>
@@ -35,7 +36,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
   </table>
     <br />
-    <input type="submit" name="Submit" value="Procesar" />
+    <input type="submit" name="Submit" value="Listar" />
     <br />
   </div>
 </form>
