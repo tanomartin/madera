@@ -34,7 +34,11 @@ jQuery(function($){
 
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="fiscalizacionImpBoletas.php">
-  <p align="center" class="Estilo1"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
+   
+  <div align="center">
+  <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/>
+  </div>
+  
   <p align="center" class="Estilo1">M&oacute;dulo Impresi&oacute;n de Bolestas</p>
    <?php 
   		$err = $_GET['err'];
@@ -49,7 +53,7 @@ jQuery(function($){
   </label>
   <p align="center">
     <label>
-    <input type="submit" name="Submit" value="Enviar" />
+    <input type="submit" name="Submit" value="Buscar" />
     </label>
   </p>
   <p>&nbsp;</p>

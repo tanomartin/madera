@@ -216,7 +216,9 @@ function validarYGuardar(formulario) {
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
 <body bgcolor="#B2A274" >
-<p  align="center"><strong><a href="formularioModif.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+<div align="center">
+<input type="reset" name="volver" value="Volver" onClick="location.href = 'formularioModif.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>'" align="center"/>
+</div>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
 <form id="modifCuotas" name="modifCuotas" onSubmit="return validarYGuardar(this)" method="POST" action="actualizarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu?>&canMod=<?php echo $canMod ?>">
  <input name="cantCuotas" type="text" id="cantCuotas" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1">

@@ -103,7 +103,7 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 	
-	$sqlInsertConcila = "INSERT into conciliacuotasusimra VALUES('$cuit','$acuerdo','$cuota','$cuentaBoleta','$cuentaRemesa','$fechaRemesa','$nroremesa','$nroremito','$cuentaRemito','$fechaRemito','$nroRemitoSuelto','0','','','$fechamodificacion','$usuariomodificacion','','')";
+	$sqlInsertConcila = "INSERT into conciliacuotasusimra VALUES('$cuit','$acuerdo','$cuota','$cuentaBoleta','$cuentaRemesa','$fechaRemesa','$nroremesa','$nroremito','$cuentaRemito','$fechaRemito','$nroRemitoSuelto','0','0000-00-00','','$fechamodificacion','$usuariomodificacion','0000-00-00','')";
 	//echo $sqlInsertConcila;//echo "<br>";
 	$dbh->exec($sqlInsertConcila); 
 	

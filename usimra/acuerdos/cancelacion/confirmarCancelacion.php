@@ -263,7 +263,9 @@ function validar(formulario) {
 </script>
 
 <body bgcolor="#B2A274" onLoad="logicaHabilitacion()">
-<p align="center"><strong><a href="selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+<div align="center">
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" align="center"/> 
+</div>
 	 <?php 	
 		include($libPath."cabeceraEmpresa.php"); 
 	?>

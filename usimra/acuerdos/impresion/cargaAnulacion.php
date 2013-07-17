@@ -59,7 +59,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><strong><a href="menuBoletas.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuBoletas.php'" align="center"/> 
   <p><span class="Estilo1">M&oacute;dulo Anulacion de Bolestas Impresas</span> </p>
   <p>
   <?php 

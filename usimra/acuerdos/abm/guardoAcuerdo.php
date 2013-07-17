@@ -8,13 +8,13 @@ $usuariomodificacion = $usuarioregistro;
 
 $cuit = $_GET['cuit'];
 $nroacu = $_GET['nroacu'];
-//echo "CUIT: ".$cuit; echo "<br>";
-//echo "ACUERDO: ".$nroacu; echo "<br>"; echo "<br>";
+echo "CUIT: ".$cuit; echo "<br>";
+echo "ACUERDO: ".$nroacu; echo "<br>"; echo "<br>";
 
 $datos = array_values($_POST);
 $sqlAltaCabe = $datos[0];
-//echo "CARGO CABECERA"; echo "<br>";
-//echo $sqlAltaCabe;echo "<br>";echo "<br>";
+echo "CARGO CABECERA"; echo "<br>";
+echo $sqlAltaCabe;echo "<br>";echo "<br>";
 
 //conexion y craecion de transaccion.
 try {
@@ -67,11 +67,11 @@ try {
 		$i++;
 		$observ = $datos[$i];
 		
-		$sqlCuota="INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroacu','$nroCuo','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+		$sqlCuota="INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroacu','$nroCuo','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','0','0.0','0000-00-00','0000-00-00','','','0000-00-00','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 		//echo $sqlCuota; echo "<br>";
 		$dbh->exec($sqlCuota);	
 		if ($tipoC == 3) {
-			$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nroCuo','$chequen','$chequeb','$chequef','','','','','','','')";
+			$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nroCuo','$chequen','$chequeb','$chequef','','0000-00-00','','','0000-00-00','','0000-00-00')";
 			//echo $sqlValCob; echo "<br>";
 			$dbh->exec($sqlValCob);	
 		}

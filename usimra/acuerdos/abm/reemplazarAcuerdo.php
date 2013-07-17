@@ -123,7 +123,9 @@ function validar(formulario) {
 
 <body bgcolor="#B2A274">
 <form id="reemAcuerdo" name="reemAcuerdo" method="post" action="reemplazoAcuerdEfectivo.php?cuit=<?php echo $cuit ?>" onsubmit="return validar(this)">
-  <p align="center"><strong><a href="acuerdos.php?cuit=<?php echo $cuit ?>"><font face="Verdana" size="2">VOLVER</font></a></strong></p>
+  <div align="center">
+	<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" align="center"/> 
+  </div>
   <?php 	
 		include($libPath."cabeceraEmpresa.php"); 
   ?>

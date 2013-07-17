@@ -64,7 +64,9 @@ jQuery(function($){
 </script>
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="buscadorBoleta.php">
-  <p align="center" class="Estilo1"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="menuBoletas.php">VOLVER</a></strong></font></p>
+  <div align="center" >
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuBoletas.php'" align="center"/>
+  </div>
   <p align="center" class="Estilo1">M&oacute;dulo Buscador de Bolestas</p>
    <?php 
 		if ($noExiste == 1) {

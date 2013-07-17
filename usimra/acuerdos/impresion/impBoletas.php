@@ -42,8 +42,8 @@ A:hover {text-decoration: none;color:#33CCFF }
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><strong><a href="moduloImpresion.php"><font face="Verdana" size="2"><b>VOLVER</b></font></a></strong></p>
-	 <?php 	
+   <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloImpresion.php'" align="center"/> 
+ 	 <?php 	
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>

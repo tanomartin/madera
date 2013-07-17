@@ -30,11 +30,14 @@ $montoacuerdo = $datos[9];
 $gastosAdmi = $datos[10];
 //echo "GASTOS ADMI: ".$gastosAdmi; echo "<br>";
 $porcGastos = $datos[11];
+if ($gastosAdmi == 0) {
+ 	$porcGastos = 0;
+}
 //echo "PORC GAST: ".$porcGastos; echo "<br>";
 $observaciones = $datos[12];
 //echo "OBSER: ".$observaciones; echo "<br>";
 $estadoacuerdo = 1;
-$cuotasapagar = $datos[14];
+$cuotasapagar = $datos[13];
 //echo "CUTAS A PAGAR: ".$cuotasapagar; echo "<br>";
 $montoapagar = $montoacuerdo;
 $cuotaspagadas = 0;
@@ -53,7 +56,7 @@ $usuariomodificacion = $usuarioregistro;
 
 //Creo la sentencia SQL para cabecera.
 $sqlCargaCabecera = "INSERT INTO cabacuerdosusimra VALUES ('$cuit','$nroacuerdo','$tipoacuerdo','$fechaacuerdo','$nroacta','$gestoracuerdo','$porcGastos','$inspectorinterviene','$requerimientoorigen','$liquidacionorigen','$montoacuerdo','$observaciones','$estadoacuerdo','$cuotasapagar','$montoapagar','$cuotaspagadas','$montopagadas','$fechapagadas','$saldoacuerdo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
-//echo $sqlCargaCabecera; echo("<br>");
+echo $sqlCargaCabecera; echo("<br>");
 
 //Creo los SQL para los periodos
 $id = 1;

@@ -17,10 +17,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 <body bgcolor="#B2A274">
-<p align="center" class="Estilo2"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font></p>
+<div align="center"> 
+  <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/>
+</div>
 <p align="center" class="Estilo2">M&oacute;dulo Valores al Cobro</p>
 <form id="ordena" name="ordena" method="post" action="listadoValores.php">
-  <label><br />
   <div align="center">
     <p><strong>Ordenamiento</strong></p>
     <table width="200" border="2">
@@ -34,7 +35,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
   </table>
     <br />
-    <input type="submit" name="Submit" value="Procesar" />
+    <input type="submit" name="Submit" value="Listar" />
     <br />
   </div>
 </form>

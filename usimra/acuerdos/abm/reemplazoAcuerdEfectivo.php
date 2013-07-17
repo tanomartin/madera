@@ -46,7 +46,9 @@ $gastosAdmi = $datos[10];
 
 $porcGastos = $datos[11];
  //echo "PORC GAST: ".$porcGastos; //echo "<br>";
-
+if ($gastosAdmi == 0) {
+ 	$porcGastos = 0;
+}
 $observaciones = $datos[12];
  //echo "OBSER: ".$observaciones; //echo "<br>";
 
@@ -137,7 +139,7 @@ try {
 	 //echo "CUOTAS A PAG VIEJO: ".$cantCuotasPagasViejo; //echo "<br>";
 	 //echo "Monto NUEVO: ".$montoAcuNuevo; //echo "<br>";
 	
-	$insertCuota = "INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroNuevoAcuerdo','1','$montoAcuNuevo','$fecharegistro','8','','','','Deuda Pendiente del acuerdo reemplazado','','','','','','','','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+	$insertCuota = "INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroNuevoAcuerdo','1','$montoAcuNuevo','$fecharegistro','8','','','0000-00-00','Deuda Pendiente del acuerdo reemplazado','0','0.0','0000-00-00','0000-00-00','','','0000-00-00','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 	 //echo $insertCuota; //echo "<br>";
 	$dbh->exec($insertCuota);
 	

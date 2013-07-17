@@ -51,7 +51,7 @@ try {
 		//echo $sqlUpdateCuota; //echo "<br>";
 		$dbh->exec($sqlUpdateCuota);	
 		if ($tipoC == 3) {
-			$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
+			$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','0000-00-00','','','0000-00-00','','0000-00-00')";
 			//echo $sqlValCob; //echo "<br>";				
 			$dbh->exec($sqlValCob);	
 		}
@@ -80,11 +80,11 @@ try {
 			$chequef = fechaParaGuardar($datos[$i]); 
 			$i++;
 			$observ = $datos[$i];	
-			$sqlCuota="INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroacu','$nrocuota','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','','','','','','','','$fechamodificacion','$usuariomodificacion','$fechamodificacion','$usuariomodificacion')";
+			$sqlCuota="INSERT INTO cuoacuerdosusimra VALUES ('$cuit','$nroacu','$nrocuota','$monto','$fecha','$tipoC','$chequen','$chequeb','$chequef','$observ','0','0.0','0000-00-00','0000-00-00','','','0000-00-00','$fechamodificacion','$usuariomodificacion','$fechamodificacion','$usuariomodificacion')";
 			//echo $sqlCuota; //echo "<br>";
 			$dbh->exec($sqlCuota);	
 			if ($tipoC == 3) {
-				$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','','','','','','')";
+				$sqlValCob = "INSERT INTO valoresalcobrousimra VALUES('$cuit','$nroacu','$nrocuota','$chequen','$chequeb','$chequef','','0000-00-00','','','0000-00-00','','0000-00-00')";
 				//echo $sqlValCob; //echo "<br>";				
 				$dbh->exec($sqlValCob);	
 			}

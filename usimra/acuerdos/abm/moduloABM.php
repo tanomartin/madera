@@ -34,7 +34,9 @@ jQuery(function($){
 
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="acuerdos.php">
-<p align="center"><font face="Verdana" color="#000000" size="2"><strong><a href="../menuAcuerdos.php">VOLVER</a></strong></font><font color="#000000" size="2"><strong></strong></font></p>
+<div align="center">
+<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
+</div>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos U.S.I.M.R.A </p>
   <?php 
 		$err = $_GET['err'];
@@ -50,11 +52,9 @@ jQuery(function($){
   </label>
     <p align="center">
     <label>
-    <input type="submit" name="Submit" value="Enviar" />
+    <input type="submit" name="Submit" value="Buscar" />
     </label>
   </p>
-  <p>&nbsp;</p>
 </form>
-<p align="center">&nbsp;</p>
 </body>
 </html>

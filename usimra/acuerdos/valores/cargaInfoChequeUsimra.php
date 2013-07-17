@@ -93,7 +93,9 @@ function validar(formulario) {
 </style>
 </head>
 <body bgcolor="#B2A274">
-<p align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="listadoValores.php">VOLVER</a></strong></font></p>
+<div align="center">
+  <input type="reset" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" align="center"/>
+</div>
 <div align="center">
   <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="guardoValorAlCobro.php">
   	<p>
@@ -109,7 +111,7 @@ function validar(formulario) {
           <input name="fechaCheque" type="text" id="fechaCheque" size="8" />
         </label></td>
       </tr>
-        </table>
+    </table>
   	<p><strong>Informaci&oacute;n Valores al Cobro </strong></p>
   	<table border="1" width="1000" bordercolorlight="#000000" bordercolordark="#000000" bordercolor="#000000" cellpadding="2" cellspacing="0">
       <tr>

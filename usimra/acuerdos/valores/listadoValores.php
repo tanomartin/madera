@@ -37,7 +37,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 
 <body bgcolor="#B2A274">
-<p align="center" class="Estilo2"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="moduloValores.php">VOLVER</a></strong></font></p>
+<div align="center"> 
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloValores.php'" align="center"/>
+</div>
 <p align="center" class="Estilo2">Listado Valores al Cobro ordenado por <?php echo $titulo ?></p>
 <div align="center">
   <form id="listado" name="listado" method="post" action="cargaInfoChequeUsimra.php">

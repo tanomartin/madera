@@ -45,7 +45,7 @@ A:hover {text-decoration:underline; color:FCF63C}
       <tr>
         <td colspan="4"><div align="center">
             <p>
-              <input type="submit" value="Ingresar" name="B1" ><label></label>
+              <input type="submit" value="Ingresar" name="B1" >
             </p>
             </div></td>
       </tr>
