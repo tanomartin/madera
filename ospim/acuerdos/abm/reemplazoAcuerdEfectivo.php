@@ -45,6 +45,9 @@ $gastosAdmi = $datos[10];
 
 $porcGastos = $datos[11];
  //echo "PORC GAST: ".$porcGastos; //echo "<br>";
+if ($gastosAdmi == 0) {
+ 	$porcGastos = 0;
+}
 
 $observaciones = $datos[12];
  //echo "OBSER: ".$observaciones; //echo "<br>";
