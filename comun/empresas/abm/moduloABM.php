@@ -43,7 +43,7 @@ jQuery(function($){
     </p>
   </div>
   <div align="center">
-    <input type="submit" name="Submit" value="Enviar" />
+    <input type="submit" name="Submit" value="Buscar" />
   </div>
 </form>
 </body>
