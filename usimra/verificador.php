@@ -1,10 +1,10 @@
 <?php session_save_path("sessiones");
 session_start();
-#print(session_id);
+
 $datos = array_values($_POST);
 $usuario = $datos[0];
 $clave = $datos[1];
-$host = "localhost";
+$host = $_SERVER['SERVER_NAME'];
 if ($_SESSION['usuario'] == $usuario) {
 	header ('location:index.php?error=2');	
 }
