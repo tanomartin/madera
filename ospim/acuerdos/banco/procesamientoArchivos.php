@@ -42,7 +42,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <table width="137" border="0">
 	<tr align="center" valign="top">
       <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = '../moduloBanco.php'" align="center"/> 
+        <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloBanco.php'" align="center"/> 
         </div></td>
 	</tr>
 </table>
