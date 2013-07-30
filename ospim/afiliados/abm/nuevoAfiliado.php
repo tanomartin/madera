@@ -30,10 +30,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 jQuery(function($){
 	$("#fechanacimiento").mask("99-99-9999");
 	$("#fechaobrasocial").mask("99-99-9999");
-	$("#cuil").mask("99999999999");
-	$("#cuitempresa").mask("99999999999");
-	$("#fechaempresa").mask("99-99-9999");
 	$("#nrodocumento").mask("9999999999");
+	$("#numpostal").mask("9999");
+	$("#cuil").mask("99999999999");
+	$("#fechaempresa").mask("99-99-9999");
 });
 
 function localidadesPorCp(codigo) {
@@ -49,20 +49,31 @@ function localidadesPorCp(codigo) {
 
 function cambioProvincia(locali) {
 <?php 
-		$sqlLocalidad="SELECT codlocali, codprovin FROM localidades";
-		$resLocalidad=mysql_query($sqlLocalidad,$db);
-		while($rowLocalidad=mysql_fetch_array($resLocalidad)) { ?>
-			if (locali == <?php echo $rowLocalidad['codlocali'] ?>)  {
-				<?php	
-					$codProvincia= $rowLocalidad['codprovin'];
-					$sqlProvincia="SELECT indpostal, descrip FROM provincia WHERE codprovin = $codProvincia";
-					$resProvincia=mysql_query($sqlProvincia,$db);
-					$rowProvincia=mysql_fetch_array($resProvincia)
-				?>
-				document.forms.formAfiliado.indpostal.value = "<?php echo $rowProvincia['indpostal'] ?>";
-				document.forms.formAfiliado.nomprovin.value = "<?php echo $rowProvincia['descrip'] ?>";
-				document.forms.formAfiliado.codprovin.value = "<?php echo $rowLocalidad['codprovin'] ?>";
-			}
+	$sqlLocalidad="SELECT codlocali, codprovin FROM localidades";
+	$resLocalidad=mysql_query($sqlLocalidad,$db);
+	while($rowLocalidad=mysql_fetch_array($resLocalidad)) { ?>
+		if (locali == <?php echo $rowLocalidad['codlocali'] ?>)  {
+			<?php	
+			$codProvincia= $rowLocalidad['codprovin'];
+			$sqlProvincia="SELECT indpostal, descrip FROM provincia WHERE codprovin = $codProvincia";
+			$resProvincia=mysql_query($sqlProvincia,$db);
+			$rowProvincia=mysql_fetch_array($resProvincia);
+			?>
+			document.forms.formAfiliado.indpostal.value = "<?php echo $rowProvincia['indpostal']; ?>";
+			document.forms.formAfiliado.nomprovin.value = "<?php echo $rowProvincia['descrip']; ?>";
+			document.forms.formAfiliado.codprovin.value = "<?php echo $rowLocalidad['codprovin']; ?>";
+		}
+<?php } ?>
+};
+
+function nombreEmpresaYJurisdiccion(cuit) {
+<?php 
+	$sqlLeeEmpresa="SELECT cuit, nombre FROM empresas";
+	$resLeeEmpresa=mysql_query($sqlLeeEmpresa,$db);
+	while($rowLeeEmpresa=mysql_fetch_array($resLeeEmpresa)) { ?>
+		if (cuit == <?php echo $rowLeeEmpresa['cuit'] ?>) {
+			document.forms.formAfiliado.nombreempresa.value = "<?php echo $rowLeeEmpresa['nombre']; ?>";
+		}
 <?php } ?>
 };
 
@@ -75,6 +86,38 @@ $(document).ready(function(){
 	$("#selectLocalidad").change(function(){
 		var locali = $(this).val();
 		cambioProvincia(locali);
+	});
+
+	$("#selectTipoAfil").change(function(){
+		var tipoafi = $(this).val();
+		if(tipoafi=="O") {
+			document.forms.formAfiliado.solicitudopcion.readOnly=false;
+			document.forms.formAfiliado.solicitudopcion.style.backgroundColor="#FFFFFF";
+		}
+		else {
+			document.forms.formAfiliado.solicitudopcion.value="";
+			document.forms.formAfiliado.solicitudopcion.readOnly=true;
+			document.forms.formAfiliado.solicitudopcion.style.backgroundColor="#CCCCCC";
+		}
+	});
+
+	$("#selectSitTitular").change(function(){
+		var tipotitu = $(this).val();
+		if(tipotitu=="08") {
+			document.forms.formAfiliado.cuitempresa.readOnly=true;
+			document.forms.formAfiliado.cuitempresa.style.backgroundColor="#CCCCCC";
+			document.forms.formAfiliado.cuitempresa.value="33693450239";
+		}
+		else {
+			document.forms.formAfiliado.cuitempresa.readOnly=false;
+			document.forms.formAfiliado.cuitempresa.style.backgroundColor="#FFFFFF";
+			document.forms.formAfiliado.cuitempresa.value="";
+		}
+	});
+
+	$("#cuitempresa").change(function(){
+		var cuit = $(this).val();
+		nombreEmpresaYJurisdiccion(cuit);
 	});
 });
 
@@ -94,6 +137,7 @@ function validar(formulario) {
 		return false;
 	} else {
 		if (!esFechaValida(formulario.fechanacimiento.value)) {
+			alert("La fecha de nacimiento es invalida");
 			return false;
 		}
 	}
@@ -146,7 +190,6 @@ function validar(formulario) {
 		valueForm=object.value;
 		var patron=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
 		if(valueForm.search(patron)!=0) {
-			//Email incorrecto
 			alert("El correo electronico ingresado es incorrecto");
 			return false;
 		}
@@ -157,8 +200,14 @@ function validar(formulario) {
 		return false;
 	} else {
 		if (!esFechaValida(formulario.fechaobrasocial.value)) {
+			alert("La fecha de ingreso a la obra social es invalida");
 			return false;
 		}
+	}
+
+	if (formulario.selectTipoAfil.options[formulario.selectTipoAfil.selectedIndex].value == "") {
+		alert("Debe seleccionar un tipo de afiliado");
+		return false;
 	}
 
 	if (formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value == "") {
@@ -181,6 +230,7 @@ function validar(formulario) {
 		return false;
 	} else {
 		if (!esFechaValida(formulario.fechaempresa.value)) {
+			alert("La fecha de ingreso a la empresa es invalida");
 			return false;
 		}
 	}
@@ -248,9 +298,15 @@ function validar(formulario) {
 							echo "<option title ='$rowNacion[descrip]' value='$rowNacion[codnacion]'>".$rowNacion['descrip']."</option>";
 						}
 			        ?>
-            		</select></td>
+    	</select>
+	</td>
     <td>Sexo:</td>
-    <td><input name="sexo" type="text" id="sexo" value="" size="1" /></td>
+    <td><select name="selectSexo" id="selectSexo">
+             <option value="">Seleccione un valor</option>
+             <option value="M">Masculino</option>
+             <option value="F">Femenino</option>
+   		</select>
+	</td>
   </tr>
   <tr>
     <td>Estado Civil:</td>
@@ -307,12 +363,18 @@ function validar(formulario) {
     <td>
 	<input name="fechaobrasocial" type="text" id="fechaobrasocial" value="" size="10" /></td>
     <td>Tipo Afiliado: </td>
-    <td><input name="tipoafiliado" type="text" id="tipoafiliado" value="" size="1" />
-		<input name="solicitudopcion" type="text" id="solicitudopcion" value="" size="8" /></td>
+    <td><select name="selectTipoAfil" id="selectTipoAfil">
+             <option value="">Seleccione un valor</option>
+             <option value="R">Regular</option>
+             <option value="S">Solo OSPIM</option>
+             <option value="O">Por Opcion</option>
+   		</select>
+		<input name="solicitudopcion" type="text" id="solicitudopcion" value="" size="8" maxlength="8" readonly="true" style="background-color:#CCCCCC" />
+	</td>
   </tr>
   <tr>
     <td>Tipo Titularidad:</td>
-    <td colspan="3"><select name="selectSitTit" id="selectSitTit">
+    <td colspan="3"><select name="selectSitTitular" id="selectSitTitular">
                    <option value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlSitTit="select * from tipotitular";
@@ -332,14 +394,18 @@ function validar(formulario) {
     <td>C.U.I.L.:</td>
     <td><input name="cuil" type="text" id="cuil" value="" size="11" /></td>
     <td>C.U.I.T. Empresa:</td>
-    <td><input name="cuitempresa" type="text" id="cuitempresa" value="" size="11" />
-    <input name="nombreempresa" type="text" id="nombreempresa" value="" size="50" readonly="true" style="background-color:#CCCCCC" /></td>
+    <td><input name="cuitempresa" type="text" id="cuitempresa" value="" size="11" maxlength="11" readonly="true" style="background-color:#CCCCCC" />
+	    <input name="nombreempresa" type="text" id="nombreempresa" value="" size="50" readonly="true" style="background-color:#CCCCCC" />
+	</td>
   </tr>
   <tr>
     <td>Fecha  Ingreso Empresa:</td>
     <td><input name="fechaempresa" type="text" id="fechaempresa" value="" size="10" /></td>
     <td>Jurisdiccion del Titular:</td>
-    <td><input name="codidelega" type="text" id="codidelega" value="" size="4" /></td>
+    <td><select name="selectDelega" id="selectDelega">
+        <option value="">Seleccione un valor</option>
+        </select>
+	</td>
   </tr>
   <tr>
     <td>Categoria:</td>
@@ -352,7 +418,12 @@ function validar(formulario) {
   </tr>
   <tr>
     <td>Emision:</td>
-    <td colspan="3"><input name="emitecarnet" type="text" id="emitecarnet" value="" size="1" /></td>
+    <td colspan="3"><select name="selectEmiteCarnet" id="selectEmiteCarnet">
+             			<option value="">Seleccione un valor</option>
+             			<option value="1">Emite Carnet</option>
+             			<option value="0">No Emite Carnet</option>
+			   		</select>
+	</td>
     </tr>
 </table> 
 <table width="1205" border="0">
