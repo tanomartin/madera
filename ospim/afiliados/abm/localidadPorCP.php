@@ -3,7 +3,7 @@ include($libPath."controlSessionOspim.php");
 if(isset($_POST['codigo']))
 {
 	$numpostal=$_POST['codigo'];
-	$respuesta='<option value="">Seleccione un valor</option>';
+	$respuesta='<option title ="Seleccione un valor" value="">Seleccione un valor</option>';
 	$sqlLocalidad="select codlocali, nomlocali from localidades where numpostal = $numpostal";
 	$resLocalidad=mysql_query($sqlLocalidad,$db);
 	while($rowLocalidad=mysql_fetch_array($resLocalidad)) {

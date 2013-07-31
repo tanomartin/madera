@@ -9,10 +9,10 @@ $estafiliado=$_GET['estAfi'];
 //echo $estafiliado; echo "<br>";
 
 if ($estafiliado == 1)
-	$sqlTitular = "select * from titulares where nroafiliado = $nroafiliado";
+	$sqlTitular = "SELECT * FROM titulares WHERE nroafiliado = $nroafiliado";
 
 if ($estafiliado == 0)
-	$sqlTitular = "select * from titularesdebaja where nroafiliado = $nroafiliado";
+	$sqlTitular = "SELECT * FROM titularesdebaja WHERE nroafiliado = $nroafiliado";
 
 //echo $sqlTitular; echo "<br>";
 
@@ -21,21 +21,25 @@ $rowTitular = mysql_fetch_array($resTitular);
 
 $cuitempresa = $rowTitular['cuitempresa'];
 $delegacion = $rowTitular['codidelega'];
+$provincia = $rowTitular['codprovin'];
 
-$sqlEmpresa = "select * from empresas where cuit = $cuitempresa";
+$sqlEmpresa = "SELECT * FROM empresas WHERE cuit = $cuitempresa";
 $resEmpresa = mysql_query($sqlEmpresa,$db);
 if (mysql_num_rows($resEmpresa)== 0) {
-	$sqlEmpresa = "select * from empresasdebaja where cuit = $cuitempresa";
+	$sqlEmpresa = "SELECT * FROM empresasdebaja WHERE cuit = $cuitempresa";
 	$resEmpresa = mysql_query($sqlEmpresa,$db);
 	$rowEmpresa = mysql_fetch_array($resEmpresa);
 }
 else
 	$rowEmpresa = mysql_fetch_array($resEmpresa);
 
-$sqlDelegacion = "select * from delegaciones where codidelega = $delegacion";
+$sqlDelegacion = "SELECT * FROM delegaciones WHERE codidelega = $delegacion";
 $resDelegacion = mysql_query($sqlDelegacion,$db);
 $rowDelegacion = mysql_fetch_array($resDelegacion);
 
+$sqlProvincia = "SELECT codprovin, descrip FROM provincia WHERE codprovin = $provincia";
+$resProvincia = mysql_query($sqlProvincia,$db);
+$rowProvincia = mysql_fetch_array($resProvincia);
 ?>
 
 
@@ -83,24 +87,75 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr>
     <td width="238">Apellido y Nombre:</td>
-    <td colspan="3"><input name="apellidoynombre" type="text" id="apellidoynombre" value="<?php echo $rowTitular['apellidoynombre'] ?>" size="100" />	</td>
+    <td colspan="3"><input name="apellidoynombre" type="text" id="apellidoynombre" value="<?php echo $rowTitular['apellidoynombre'] ?>" size="100" maxlength="100" />	</td>
   </tr>
   <tr>
     <td>Documento:</td>
-    <td width="316"><input name="tipodocumento" type="text" id="tipodocumento" value="<?php echo $rowTitular['tipodocumento'] ?>" size="2" />
-					<input name="nrodocumento" type="text" id="nrodocumento" value="<?php echo $rowTitular['nrodocumento'] ?>" size="10" />	</td>
+    <td width="316"><select name="selectTipDoc" id="selectTipDoc">
+                   <option title="Seleccione un valor" value="">Seleccione un valor</option>
+                   <?php 
+			     		$sqlTipDoc="select * from tipodocumento";
+						$resTipDoc=mysql_query($sqlTipDoc,$db);
+						while($rowTipDoc=mysql_fetch_array($resTipDoc)) {
+							if ($rowTitular['tipodocumento'] == $rowTipDoc['codtipdoc'])
+								echo "<option title ='$rowTipDoc[descrip]' value='$rowTipDoc[codtipdoc]' selected='selected'>".$rowTipDoc['descrip']."</option>";
+							else
+								echo "<option title ='$rowTipDoc[descrip]' value='$rowTipDoc[codtipdoc]'>".$rowTipDoc['descrip']."</option>";
+						}
+			        ?>
+            		</select>
+					<input name="nrodocumento" type="text" id="nrodocumento" value="<?php echo $rowTitular['nrodocumento'] ?>" size="12" maxlength="10" />	</td>
     <td width="173">Fecha de Nacimiento:</td>
-    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo invertirFecha($rowTitular['fechanacimiento']) ?>" size="10" />	</td>
+    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo invertirFecha($rowTitular['fechanacimiento']) ?>" size="12" />	</td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
-    <td><input name="nacionalidad" type="text" id="nacionalidad" value="<?php echo $rowTitular['nacionalidad'] ?>" size="3" />	</td>
+    <td><select name="selectNacion" id="selectNacion">
+                   <option title="Seleccione un valor" value="">Seleccione un valor</option>
+                   <?php 
+			     		$sqlNacion="select * from nacionalidad order by descrip";
+						$resNacion=mysql_query($sqlNacion,$db);
+						while($rowNacion=mysql_fetch_array($resNacion)) { 	
+							if ($rowTitular['nacionalidad'] == $rowNacion['codnacion'])
+								echo "<option title ='$rowNacion[descrip]' value='$rowNacion[codnacion]' selected='selected'>".$rowNacion['descrip']."</option>";
+							else
+								echo "<option title ='$rowNacion[descrip]' value='$rowNacion[codnacion]'>".$rowNacion['descrip']."</option>";
+						}
+			        ?>
+    	</select>
+	</td>
     <td>Sexo:</td>
-    <td><input name="sexo" type="text" id="sexo" value="<?php echo $rowTitular['sexo'] ?>" size="1" />	</td>
+    <td><select name="selectSexo" id="selectSexo">
+		<option title="Seleccione un valor" value="">Seleccione un valor</option>
+			<?php 
+			if($rowTitular['sexo'] == "M")
+				echo "<option title='Masculino' value='M' selected='selected'>Masculino</option>";
+			else
+				echo "<option title='Masculino' value='M'>Masculino</option>";
+			if($rowTitular['sexo'] == "F")
+				echo "<option title='Femenino' value='F' selected='selected'>Femenino</option>";
+			else
+				echo "<option title='Femenino' value='F'>Femenino</option>";
+			?>
+   		</select>
+	</td>
   </tr>
   <tr>
     <td>Estado Civil: </td>
-    <td colspan="3"><input name="estadocivil" type="text" id="estadocivil" value="<?php echo $rowTitular['estadocivil'] ?>" size="2" />	</td>
+    <td colspan="3"><select name="selectEstCiv" id="selectEstCiv">
+                   <option title="Seleccione un valor" value="">Seleccione un valor</option>
+                   <?php 
+			     		$sqlEstCiv="select * from estadocivil";
+						$resEstCiv=mysql_query($sqlEstCiv,$db);
+						while($rowEstCiv=mysql_fetch_array($resEstCiv)) { 	
+							if ($rowTitular['estadocivil'] == $rowEstCiv['codestciv'])
+								echo "<option title ='$rowEstCiv[descrip]' value='$rowEstCiv[codestciv]' selected='selected'>".$rowEstCiv['descrip']."</option>";
+							else
+								echo "<option title ='$rowEstCiv[descrip]' value='$rowEstCiv[codestciv]'>".$rowEstCiv['descrip']."</option>";
+						}
+			        ?>
+            		</select>
+	</td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -109,24 +164,36 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr>
     <td>Domicilio:</td>
-    <td><input name="domicilio" type="text" id="domicilio" value="<?php echo $rowTitular['domicilio'] ?>" size="50" />	</td>
+    <td><input name="domicilio" type="text" id="domicilio" value="<?php echo $rowTitular['domicilio'] ?>" size="50" maxlength="50" />	</td>
     <td>C.P.</td>
-    <td><input name="indpostal" type="text" id="indpostal" value="<?php echo $rowTitular['indpostal'] ?>" size="1" />
-		<input name="numpostal" type="text" id="numpostal" value="<?php echo $rowTitular['numpostal'] ?>" size="4" />
+    <td><input name="indpostal" type="text" id="indpostal" value="<?php echo $rowTitular['indpostal'] ?>" size="1" readonly="true" style="background-color:#CCCCCC" />
+		<input name="numpostal" type="text" id="numpostal" value="<?php echo $rowTitular['numpostal'] ?>" size="4" maxlength="4" />
 		<input name="alfapostal" type="text" id="alfapostal" value="<?php echo $rowTitular['alfapostal'] ?>" size="3" />	</td>
   </tr>
   <tr>
     <td>Localidad:</td>
-    <td><input name="codlocali" type="text" id="codlocali" value="<?php echo $rowTitular['codlocali'] ?>" size="6" />	</td>
+    <td><select name="selectLocalidad" id="selectLocalidad">
+        <option title="Seleccione un valor" value="">Seleccione un valor</option>
+		<?php 
+			$titLoca=$rowTitular['codlocali'];
+			$sqlLoca="select * from localidades where codlocali = $titLoca";
+			$resLoca=mysql_query($sqlLoca,$db);
+			$rowLoca=mysql_fetch_array($resLoca);
+			echo "<option title ='$rowLoca[nomlocali]' value='$rowLoca[codlocali]' selected='selected'>".$rowLoca['nomlocali']."</option>";
+        ?>
+        </select>
+	</td>
     <td>Provincia:</td>
-    <td><input name="codprovin" type="text" id="codprovin" value="<?php echo $rowTitular['codprovin'] ?>" size="2" />	</td>
+    <td><input name="nomprovin" type="text" id="nomprovin" value="<?php echo $rowProvincia['descrip'] ?>" size="50" readonly="true" style="background-color:#CCCCCC" />
+		<input name="codprovin" type="text" id="codprovin" value="<?php echo $rowTitular['codprovin'] ?>" size="2" readonly="true" style="background-color:#CCCCCC" />
+	</td>
   </tr>
   <tr>
     <td>Telefono:</td>
-    <td><input name="ddn" type="text" id="ddn" value="<?php echo $rowTitular['ddn'] ?>" size="5" />
-		<input name="telefono" type="text" id="telefono" value="<?php echo $rowTitular['telefono'] ?>" size="10" />	</td>
+    <td><input name="ddn" type="text" id="ddn" value="<?php echo $rowTitular['ddn'] ?>" size="5" maxlength="5" />
+		<input name="telefono" type="text" id="telefono" value="<?php echo $rowTitular['telefono'] ?>" size="12" maxlength="10" />	</td>
     <td>Email:</td>
-    <td><input name="email" type="text" id="email" value="<?php echo $rowTitular['email'] ?>" size="60" />	</td>
+    <td><input name="email" type="text" id="email" value="<?php echo $rowTitular['email'] ?>" size="60" maxlength="60" />	</td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -136,14 +203,45 @@ A:hover {text-decoration: none;color:#00FFFF }
   <tr>
     <td>Fecha Ingreso O.S.: </td>
     <td>
-	<input name="fechaobrasocial" type="text" id="fechaobrasocial" value="<?php echo invertirFecha($rowTitular['fechaobrasocial']) ?>" size="10" />	</td>
+	<input name="fechaobrasocial" type="text" id="fechaobrasocial" value="<?php echo invertirFecha($rowTitular['fechaobrasocial']) ?>" size="12" />	</td>
     <td>Tipo Afiliado: </td>
-    <td><input name="tipoafiliado" type="text" id="tipoafiliado" value="<?php echo $rowTitular['tipoafiliado'] ?>" size="1" />
-		<input name="solicitudopcion" type="text" id="solicitudopcion" value="<?php echo $rowTitular['solicitudopcion'] ?>" size="8" />	</td>
+    <td>
+	<select name="selectTipoAfil" id="selectTipoAfil">
+		<option title="Seleccione un valor" value="">Seleccione un valor</option>
+		<?php 
+		if($rowTitular['tipoafiliado'] == "R")
+			echo "<option title='Regular' value='R' selected='selected'>Regular</option>";
+		else
+			echo "<option title='Regular' value='R'>Regular</option>";
+		if($rowTitular['tipoafiliado'] == "S")
+			echo "<option title='Solo OSPIM' value='S' selected='selected'>Solo OSPIM</option>";
+		else
+			echo "<option title='Solo OSPIM' value='S'>Solo OSPIM</option>";
+		if($rowTitular['tipoafiliado'] == "O")
+			echo "<option title='Por Opcion' value='O' selected='selected'>Por Opcion</option>";
+		else
+			echo "<option title='Por Opcion' value='O'>Por Opcion</option>";
+	 	?>	 
+   		</select>
+	<input name="solicitudopcion" type="text" id="solicitudopcion" value="<?php echo $rowTitular['solicitudopcion'] ?>" size="8" maxlength="8" readonly="true" style="background-color:#CCCCCC" />
+	</td>
   </tr>
   <tr>
     <td>Tipo Titularidad: </td>
-    <td><input name="situaciontitularidad" type="text" id="situaciontitularidad" value="<?php echo $rowTitular['situaciontitularidad'] ?>" size="2" />	</td>
+    <td><select name="selectSitTitular" id="selectSitTitular">
+			<option title="Seleccione un valor" value="">Seleccione un valor</option>
+			<?php 
+			$sqlSitTit="select * from tipotitular";
+			$resSitTit=mysql_query($sqlSitTit,$db);
+			while($rowSitTit=mysql_fetch_array($resSitTit)) { 	
+				if ($rowTitular['situaciontitularidad'] == $rowSitTit['codtiptit'])
+					echo "<option title ='$rowSitTit[descrip]' value='$rowSitTit[codtiptit]' selected='selected'>".$rowSitTit['descrip']."</option>";
+				else
+					echo "<option title ='$rowSitTit[descrip]' value='$rowSitTit[codtiptit]'>".$rowSitTit['descrip']."</option>";
+			}
+	        ?>
+		</select>
+	</td>
     <td>Discapacidad:</td>
     <td><input name="discapacidad" type="text" id="discapacidad" value="<?php echo $rowTitular['discapacidad'] ?>" size="2" readonly="true" style="background-color:#CCCCCC" /> 
     Certif:
@@ -159,20 +257,40 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr>
     <td>C.U.I.L.:</td>
-    <td><input name="cuil" type="text" id="cuil" value="<?php echo $rowTitular['cuil'] ?>" size="11" />	</td>
+    <td><input name="cuil" type="text" id="cuil" value="<?php echo $rowTitular['cuil'] ?>" size="13" maxlength="11" />	</td>
     <td>Empresa:</td>
-    <td><input name="cuitempresa" type="text" id="cuitempresa" value="<?php echo $rowTitular['cuitempresa'] ?>" size="11" />
+    <td><input name="cuitempresa" type="text" id="cuitempresa" value="<?php echo $rowTitular['cuitempresa'] ?>" size="13" maxlength="11" readonly="true" style="background-color:#CCCCCC" />
     <input name="nombreempresa" type="text" id="nombreempresa" value="<?php echo $rowEmpresa['nombre'] ?>" size="50" readonly="true" style="background-color:#CCCCCC" />    </td>
   </tr>
   <tr>
     <td>Fecha  Ingreso Empresa:</td>
-    <td><input name="fechaempresa" type="text" id="fechaempresa" value="<?php echo invertirFecha($rowTitular['fechaempresa']) ?>" size="10" />	</td>
+    <td><input name="fechaempresa" type="text" id="fechaempresa" value="<?php echo invertirFecha($rowTitular['fechaempresa']) ?>" size="12" />	</td>
     <td>Jurisdiccion del Titular:</td>
-    <td><input name="codidelega" type="text" id="codidelega" value="<?php echo $rowTitular['codidelega'] ?>" size="4" /> </td>
+    <td><select name="selectDelega" id="selectDelega">
+        <option title="Seleccione un valor" value="">Seleccione un valor</option>
+		<?php 
+		$cuiJurisdi=$rowEmpresa['cuit'];
+		$sqlJurisdi="SELECT cuit, codidelega FROM jurisdiccion WHERE cuit = $cuiJurisdi";
+		$resJurisdi=mysql_query($sqlJurisdi,$db);
+		while($rowJurisdi=mysql_fetch_array($resJurisdi)) {
+			$coddelega = $rowJurisdi['codidelega'];
+			$sqlLeeDelega = "SELECT codidelega, nombre FROM delegaciones WHERE codidelega = $coddelega";
+			$resLeeDelega = mysql_query($sqlLeeDelega,$db);
+			$rowLeeDelega = mysql_fetch_array($resLeeDelega);
+			if ($rowTitular['codidelega'] == $rowJurisdi['codidelega']) {
+				echo "<option title ='$rowLeeDelega[nombre]' value='$rowLeeJurisdi[codidelega]' selected='selected'>".$rowLeeDelega['nombre']."</option>";
+			}
+			else {
+				echo "<option title ='$rowLeeDelega[nombre]' value='$rowLeeJurisdi[codidelega]'>".$rowLeeDelega['nombre']."</option>";
+			}
+		}
+		?>
+        </select>
+	</td>
   </tr>
   <tr>
     <td>Categoria:</td>
-    <td colspan="3"><input name="categoria" type="text" id="categoria" value="<?php echo $rowTitular['categoria'] ?>" size="100" />	</td>
+    <td colspan="3"><input name="categoria" type="text" id="categoria" value="<?php echo $rowTitular['categoria'] ?>" size="100" maxlength="100" />	</td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -181,7 +299,20 @@ A:hover {text-decoration: none;color:#00FFFF }
   </tr>
   <tr>
     <td>Emision:</td>
-    <td><input name="emitecarnet" type="text" id="emitecarnet" value="<?php echo $rowTitular['emitecarnet'] ?>" size="1" />	</td>
+    <td><select name="selectEmiteCarnet" id="selectEmiteCarnet">
+		<option title="Seleccione un valor" value="">Seleccione un valor</option>
+		<?php 
+		if($rowTitular['emitecarnet'] == 1)
+			echo "<option title='Emite Carnet' value='1' selected='selected'>Emite Carnet</option>";
+		else
+			echo "<option title='Emite Carnet' value='1'>Emite Carnet</option>";
+		if($rowTitular['emitecarnet'] == 0)
+			echo "<option title='No Emite Carnet' value='0' selected='selected'>No Emite Carnet</option>";
+		else
+			echo "<option title='No Emite Carnet' value='0'>No Emite Carnet</option>";
+	 	?>	
+		</select>
+	</td>
     <td>Cantidad Emitida:</td>
     <td><input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowTitular['cantidadcarnet'] ?>" size="4" readonly="true" style="background-color:#CCCCCC" />	</td>
   </tr>

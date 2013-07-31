@@ -30,7 +30,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 jQuery(function($){
 	$("#fechanacimiento").mask("99-99-9999");
 	$("#fechaobrasocial").mask("99-99-9999");
-	$("#nrodocumento").mask("9999999999");
 	$("#numpostal").mask("9999");
 	$("#cuil").mask("99999999999");
 	$("#fechaempresa").mask("99-99-9999");
@@ -66,13 +65,41 @@ function cambioProvincia(locali) {
 <?php } ?>
 };
 
-function nombreEmpresaYJurisdiccion(cuit) {
+function nombreEmpresa(cuite) {
 <?php 
 	$sqlLeeEmpresa="SELECT cuit, nombre FROM empresas";
 	$resLeeEmpresa=mysql_query($sqlLeeEmpresa,$db);
 	while($rowLeeEmpresa=mysql_fetch_array($resLeeEmpresa)) { ?>
-		if (cuit == <?php echo $rowLeeEmpresa['cuit'] ?>) {
+		if (cuite == <?php echo $rowLeeEmpresa['cuit'] ?>) {
 			document.forms.formAfiliado.nombreempresa.value = "<?php echo $rowLeeEmpresa['nombre']; ?>";
+		}
+<?php } ?>
+};
+
+function buscarJurisdi(cuitj) {
+	var opciones;
+	document.forms.formAfiliado.selectDelega.length = 0;
+	opciones = document.createElement("option");
+	opciones.title = "Seleccione un valor";
+	opciones.text = "Seleccione un valor";
+	opciones.value = "";
+	document.forms.formAfiliado.selectDelega.options.add(opciones);
+<?php 
+	$sqlLeeJurisdi="SELECT cuit, codidelega FROM jurisdiccion";
+	$resLeeJurisdi=mysql_query($sqlLeeJurisdi,$db);
+	while($rowLeeJurisdi=mysql_fetch_array($resLeeJurisdi)) { ?>
+		if (cuitj == <?php echo $rowLeeJurisdi['cuit'] ?>) {
+			<?php 
+			$coddelega = $rowLeeJurisdi['codidelega'];
+			$sqlLeeDelega = "SELECT codidelega, nombre FROM delegaciones WHERE codidelega = $coddelega";
+			$resLeeDelega = mysql_query($sqlLeeDelega,$db);
+			$rowLeeDelega = mysql_fetch_array($resLeeDelega);
+			?>	
+			opciones = document.createElement("option");
+			opciones.title = "<?php echo $rowLeeDelega['nombre']; ?>";
+			opciones.text = "<?php echo $rowLeeDelega['nombre']; ?>";
+			opciones.value = <?php echo $rowLeeJurisdi['codidelega']; ?>;
+			document.forms.formAfiliado.selectDelega.options.add(opciones);
 		}
 <?php } ?>
 };
@@ -103,21 +130,44 @@ $(document).ready(function(){
 
 	$("#selectSitTitular").change(function(){
 		var tipotitu = $(this).val();
-		if(tipotitu=="08") {
-			document.forms.formAfiliado.cuitempresa.readOnly=true;
-			document.forms.formAfiliado.cuitempresa.style.backgroundColor="#CCCCCC";
-			document.forms.formAfiliado.cuitempresa.value="33693450239";
-		}
-		else {
+		if(tipotitu=="00" || tipotitu=="01") {
 			document.forms.formAfiliado.cuitempresa.readOnly=false;
 			document.forms.formAfiliado.cuitempresa.style.backgroundColor="#FFFFFF";
-			document.forms.formAfiliado.cuitempresa.value="";
 		}
+		else {
+			document.forms.formAfiliado.cuitempresa.readOnly=true;
+			document.forms.formAfiliado.cuitempresa.style.backgroundColor="#CCCCCC";
+		}
+		document.forms.formAfiliado.cuil.focus();
 	});
 
-	$("#cuitempresa").change(function(){
-		var cuit = $(this).val();
-		nombreEmpresaYJurisdiccion(cuit);
+	$("#cuil").focusout(function(){
+		var cuil = $(this).val();
+		var titutipo = $("#selectSitTitular option:selected").val();
+		if(titutipo=="00" || titutipo=="01" || titutipo=="03" || titutipo=="06" || titutipo=="09" || titutipo=="10" || titutipo=="11") {
+			document.forms.formAfiliado.cuitempresa.value="";
+			document.forms.formAfiliado.nombreempresa.value="";
+		}
+		if(titutipo=="02"|| titutipo=="08") {
+			document.forms.formAfiliado.cuitempresa.value="33637617449";
+			document.forms.formAfiliado.nombreempresa.value="";
+		}
+		if(titutipo=="04" || titutipo=="05" || titutipo=="07") {
+			document.forms.formAfiliado.cuitempresa.value=cuil;
+			document.forms.formAfiliado.nombreempresa.value="";
+			nombreEmpresa(cuil);
+		}
+		document.forms.formAfiliado.cuitempresa.focus();
+	});
+
+	$("#cuitempresa")
+	.change(function(){
+		var cuite = $(this).val();
+		nombreEmpresa(cuite);
+	})
+	.change(function(){
+		var cuitj = $(this).val();
+		buscarJurisdi(cuitj);
 	});
 });
 
@@ -132,6 +182,16 @@ function validar(formulario) {
 		return false;
 	}
 
+	if (formulario.nrodocumento.value == "") {
+		alert("El numero de documento es obligatorio");
+		return false;
+	} else {
+		if (!esEnteroPositivo(formulario.nrodocumento.value)) {
+			alert("El numero de documento debe ser numerico");
+			return false;
+		}
+	}
+
 	if (formulario.fechanacimiento.value == "") {
 		alert("La fecha de nacimiento es obligatoria");
 		return false;
@@ -140,6 +200,16 @@ function validar(formulario) {
 			alert("La fecha de nacimiento es invalida");
 			return false;
 		}
+	}
+
+	if (formulario.selectNacion.options[formulario.selectNacion.selectedIndex].value == "") {
+		alert("Debe seleccionar una nacionalidad");
+		return false;
+	}
+
+	if (formulario.selectSexo.options[formulario.selectSexo.selectedIndex].value == "") {
+		alert("Debe seleccionar un sexo");
+		return false;
 	}
 
 	if (formulario.selectEstCiv.options[formulario.selectEstCiv.selectedIndex].value == "") {
@@ -158,6 +228,13 @@ function validar(formulario) {
 	} else {
 		if (!esEnteroPositivo(formulario.numpostal.value)){
 		 	alert("El codigo postal debe ser numerico");
+			return false;
+		}
+	}
+
+	if (formulario.alfapostal.value != "") {
+		if (isNumber(formulario.alfapostal.value)){
+		 	alert("El componente alfabetico del codigo postal no puede ser numerico");
 			return false;
 		}
 	}
@@ -210,6 +287,18 @@ function validar(formulario) {
 		return false;
 	}
 
+	if (formulario.selectTipoAfil.options[formulario.selectTipoAfil.selectedIndex].value == "O") {
+		if (formulario.solicitudopcion.value == "") {
+			alert("Debe especificar el numero de solicitud de opcion");
+			return false;
+		} else {
+			if (!esEnteroPositivo(formulario.solicitudopcion.value)) {
+		 		alert("El numero de solicitud de opcion debe ser numerico");
+				return false;
+			}
+		}
+	}
+
 	if (formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value == "") {
 		alert("Debe seleccionar un tipo de titularidad");
 		return false;
@@ -223,6 +312,11 @@ function validar(formulario) {
 	if (formulario.cuitempresa.value == "") {
 		alert("El C.U.I.T. de la empresa es obligatorio");
 		return false;
+	} else {
+		if (!esEnteroPositivo(formulario.cuitempresa.value)) {
+		 	alert("El C.U.I.T. de la empresa debe ser numerico");
+			return false;
+		}
 	}
 
 	if (formulario.fechaempresa.value == "") {
@@ -233,6 +327,16 @@ function validar(formulario) {
 			alert("La fecha de ingreso a la empresa es invalida");
 			return false;
 		}
+	}
+
+	if (formulario.selectDelega.options[formulario.selectDelega.selectedIndex].value == "") {
+		alert("Debe seleccionar una jurisdiccion");
+		return false;
+	}
+
+	if (formulario.selectEmiteCarnet.options[formulario.selectEmiteCarnet.selectedIndex].value == "") {
+		alert("Debe seleccionar si se emite o no la credencial");
+		return false;
 	}
 
 	return true;
@@ -269,12 +373,12 @@ function validar(formulario) {
   </tr>
   <tr>
     <td width="238">Apellido y Nombre:</td>
-    <td colspan="3"><input name="apellidoynombre" type="text" id="apellidoynombre" value="" size="100" /></td>
+    <td colspan="3"><input name="apellidoynombre" type="text" id="apellidoynombre" value="" size="100" maxlength="100" /></td>
   </tr>
   <tr>
     <td>Documento:</td>
     <td width="316"><select name="selectTipDoc" id="selectTipDoc">
-                   <option value="">Seleccione un valor</option>
+                   <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlTipDoc="select * from tipodocumento";
 						$resTipDoc=mysql_query($sqlTipDoc,$db);
@@ -283,14 +387,14 @@ function validar(formulario) {
 						}
 			        ?>
             		</select>
-					<input name="nrodocumento" type="text" id="nrodocumento" value="" size="10" /></td>
+					<input name="nrodocumento" type="text" id="nrodocumento" value="" size="10" maxlength="10" /></td>
     <td width="173">Fecha de Nacimiento:</td>
-    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="" size="10" /></td>
+    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="" size="12" /></td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
     <td><select name="selectNacion" id="selectNacion">
-                   <option value="">Seleccione un valor</option>
+                   <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlNacion="select * from nacionalidad order by descrip";
 						$resNacion=mysql_query($sqlNacion,$db);
@@ -302,16 +406,16 @@ function validar(formulario) {
 	</td>
     <td>Sexo:</td>
     <td><select name="selectSexo" id="selectSexo">
-             <option value="">Seleccione un valor</option>
-             <option value="M">Masculino</option>
-             <option value="F">Femenino</option>
+             <option title="Seleccione un valor" value="">Seleccione un valor</option>
+             <option title="Masculino" value="M">Masculino</option>
+             <option title="Femenino" value="F">Femenino</option>
    		</select>
 	</td>
   </tr>
   <tr>
     <td>Estado Civil:</td>
     <td colspan="3"><select name="selectEstCiv" id="selectEstCiv">
-                   <option value="">Seleccione un valor</option>
+                   <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlEstCiv="select * from estadocivil";
 						$resEstCiv=mysql_query($sqlEstCiv,$db);
@@ -329,16 +433,16 @@ function validar(formulario) {
   </tr>
   <tr>
     <td>Domicilio:</td>
-    <td><input name="domicilio" type="text" id="domicilio" value="" size="50" /></td>
+    <td><input name="domicilio" type="text" id="domicilio" value="" size="50" maxlength="50" /></td>
     <td>C.P.</td>
     <td><input name="indpostal" type="text" id="indpostal" value="" size="1" readonly="true" style="background-color:#CCCCCC" />
-		<input name="numpostal" type="text" id="numpostal" value="" size="4" />
-		<input name="alfapostal" type="text" id="alfapostal" value="" size="3" /></td>
+		<input name="numpostal" type="text" id="numpostal" value="" size="4" maxlength="4" />
+		<input name="alfapostal" type="text" id="alfapostal" value="" size="3" maxlength="3" /></td>
   </tr>
   <tr>
     <td>Localidad:</td>
     <td><select name="selectLocalidad" id="selectLocalidad">
-        <option value="">Seleccione un valor</option>
+        <option title="Seleccione un valor" value="">Seleccione un valor</option>
         </select>
 	</td>
     <td>Provincia:</td>
@@ -348,10 +452,10 @@ function validar(formulario) {
   </tr>
   <tr>
     <td>Telefono:</td>
-    <td><input name="ddn" type="text" id="ddn" value="" size="5" />
-		<input name="telefono" type="text" id="telefono" value="" size="10" /></td>
+    <td><input name="ddn" type="text" id="ddn" value="" size="5" maxlength="5" />
+		<input name="telefono" type="text" id="telefono" value="" size="12" maxlength="10" /></td>
     <td>Correo Electronico:</td>
-    <td><input name="email" type="text" id="email" value="" size="60" /></td>
+    <td><input name="email" type="text" id="email" value="" size="60" maxlength="60" /></td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -361,13 +465,13 @@ function validar(formulario) {
   <tr>
     <td>Fecha Ingreso O.S.: </td>
     <td>
-	<input name="fechaobrasocial" type="text" id="fechaobrasocial" value="" size="10" /></td>
+	<input name="fechaobrasocial" type="text" id="fechaobrasocial" value="" size="12" /></td>
     <td>Tipo Afiliado: </td>
     <td><select name="selectTipoAfil" id="selectTipoAfil">
-             <option value="">Seleccione un valor</option>
-             <option value="R">Regular</option>
-             <option value="S">Solo OSPIM</option>
-             <option value="O">Por Opcion</option>
+             <option title="Seleccione un valor" value="">Seleccione un valor</option>
+             <option title="Regular" value="R">Regular</option>
+             <option title="Solo OSPIM" value="S">Solo OSPIM</option>
+             <option title="Por Opcion" value="O">Por Opcion</option>
    		</select>
 		<input name="solicitudopcion" type="text" id="solicitudopcion" value="" size="8" maxlength="8" readonly="true" style="background-color:#CCCCCC" />
 	</td>
@@ -375,7 +479,7 @@ function validar(formulario) {
   <tr>
     <td>Tipo Titularidad:</td>
     <td colspan="3"><select name="selectSitTitular" id="selectSitTitular">
-                   <option value="">Seleccione un valor</option>
+                   <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
 			     		$sqlSitTit="select * from tipotitular";
 						$resSitTit=mysql_query($sqlSitTit,$db);
@@ -392,7 +496,7 @@ function validar(formulario) {
   </tr>
   <tr>
     <td>C.U.I.L.:</td>
-    <td><input name="cuil" type="text" id="cuil" value="" size="11" /></td>
+    <td><input name="cuil" type="text" id="cuil" value="" size="13" maxlength="11" /></td>
     <td>C.U.I.T. Empresa:</td>
     <td><input name="cuitempresa" type="text" id="cuitempresa" value="" size="11" maxlength="11" readonly="true" style="background-color:#CCCCCC" />
 	    <input name="nombreempresa" type="text" id="nombreempresa" value="" size="50" readonly="true" style="background-color:#CCCCCC" />
@@ -400,16 +504,16 @@ function validar(formulario) {
   </tr>
   <tr>
     <td>Fecha  Ingreso Empresa:</td>
-    <td><input name="fechaempresa" type="text" id="fechaempresa" value="" size="10" /></td>
+    <td><input name="fechaempresa" type="text" id="fechaempresa" value="" size="12" /></td>
     <td>Jurisdiccion del Titular:</td>
     <td><select name="selectDelega" id="selectDelega">
-        <option value="">Seleccione un valor</option>
+        <option title="Seleccione un valor" value="">Seleccione un valor</option>
         </select>
 	</td>
   </tr>
   <tr>
     <td>Categoria:</td>
-    <td colspan="3"><input name="categoria" type="text" id="categoria" value="" size="100" /></td>
+    <td colspan="3"><input name="categoria" type="text" id="categoria" value="" size="100" maxlength="100" /></td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -419,9 +523,9 @@ function validar(formulario) {
   <tr>
     <td>Emision:</td>
     <td colspan="3"><select name="selectEmiteCarnet" id="selectEmiteCarnet">
-             			<option value="">Seleccione un valor</option>
-             			<option value="1">Emite Carnet</option>
-             			<option value="0">No Emite Carnet</option>
+             			<option title="Seleccione un valor" value="">Seleccione un valor</option>
+             			<option title="Emite Carnet" value="1">Emite Carnet</option>
+             			<option title="No Emite Carnet" value="0">No Emite Carnet</option>
 			   		</select>
 	</td>
     </tr>

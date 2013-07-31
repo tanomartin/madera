@@ -173,6 +173,11 @@ else {
 	}
 }
 
+$docpm=0;
+$docrh=0;
+$docas=0;
+$docpa=0;
+
 //conexion y creacion de transaccion.
 try {
 	$hostlocal = $_SESSION['host'];
@@ -198,10 +203,10 @@ try {
 	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
 	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
 	{
-		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion WHERE nrosolicitud = :nrosolicitud";
+		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion, fechaemail = :fechaemail WHERE nrosolicitud = :nrosolicitud";
 		//echo $sqlActualizaProcesadas; echo "<br>";
 		$resultActualizaProcesadas = $dbr->prepare($sqlActualizaProcesadas);
-		if($resultActualizaProcesadas->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':rechazoautorizacion' => $recauto, ':nrosolicitud' => $nrosoli)))
+		if($resultActualizaProcesadas->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':rechazoautorizacion' => $recauto, ':fechaemail' => $fecauto, ':nrosolicitud' => $nrosoli)))
 		{
 		}
 	}
@@ -254,6 +259,7 @@ try {
 		$pdf->Cell(183,6,"Monto Autorizado: ".$montauto,1,1,'L');
 
 		if($rowLeeSolicitud['pedidomedico']!=NULL) {
+			$docpm=1;
 			$documentacion="Pedido Medico";
 			$contenidoarchivo=$rowLeeSolicitud['pedidomedico'];
 			$nombrepedido="../tempautorizaciones/pedidomedico".$nrosoli.".pdf"; 
@@ -263,6 +269,7 @@ try {
 		}
 
 		if($rowLeeSolicitud['resumenhc']!=NULL) {
+			$docrh=1;
 			$documentacion.=" / Resumen Historia Clinica";
 			$contenidoarchivo=$rowLeeSolicitud['resumenhc'];
 			$nombreresumen="../tempautorizaciones/resumenhc".$nrosoli.".pdf"; 
@@ -272,6 +279,7 @@ try {
 		}
 
 		if($rowLeeSolicitud['avalsolicitud']!=NULL) {
+			$docas=1;
 			$documentacion.=" / Estudios";
 			$contenidoarchivo=$rowLeeSolicitud['avalsolicitud'];
 			$nombreaval="../tempautorizaciones/avalsolicitud".$nrosoli.".pdf"; 
@@ -281,6 +289,7 @@ try {
 		}
 
 		if($presupue!= 0) {
+			$docpa=1;
 			$documentacion.=" / Presupuesto Aprobado";
 			if($presupue == 1)
 				$contenidoarchivo=$rowLeeSolicitud['presupuesto1'];
@@ -297,61 +306,72 @@ try {
 			fwrite($fch, $contenidoarchivo); 
 			fclose($fch);
 		}
-
 		$pdf->Cell(10);
 		$pdf->Cell(183,6,"Documentacion Complementaria: ".$documentacion,1,1,'L');
 		$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 		$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
 		$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
 		$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
-		$pdf->AddPage('P','Letter');
-		$pdf->Ln(10);
-		$pdf->SetFont('Arial','B',18);
-		$pdf->Cell(10);
-		$pdf->Cell(183,8,"Pedido Medico",1,1,'C');
-		$pdf->setSourceFile($nombrepedido);
-		$tplIdx = $pdf->importPage(1);
-		$pdf->useTemplate($tplIdx, 10, 10, 200);
-		$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
-		$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-		$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-		$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
-		$pdf->AddPage('P','Letter');
-		$pdf->Ln(10);
-		$pdf->SetFont('Arial','B',18);
-		$pdf->Cell(10);
-		$pdf->Cell(183,8,"Resumen Historia Clinica",1,1,'C');
-		$pdf->setSourceFile($nombreresumen);
-		$tplIdx = $pdf->importPage(1);
-		$pdf->useTemplate($tplIdx, 10, 10, 200);
-		$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
-		$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-		$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-		$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
-		$pdf->AddPage('P','Letter');
-		$pdf->Ln(10);
-		$pdf->SetFont('Arial','B',18);
-		$pdf->Cell(10);
-		$pdf->Cell(183,8,"Estudios",1,1,'C');
-		$pdf->setSourceFile($nombreaval);
-		$tplIdx = $pdf->importPage(1);
-		$pdf->useTemplate($tplIdx, 10, 10, 200);
-		$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
-		$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-		$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-		$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
-		$pdf->AddPage('P','Letter');
-		$pdf->Ln(10);
-		$pdf->SetFont('Arial','B',18);
-		$pdf->Cell(10);
-		$pdf->Cell(183,8,"Presupuesto Aprobado",1,1,'C');
-		$pdf->setSourceFile($nombrepresupue);
-		$tplIdx = $pdf->importPage(1);
-		$pdf->useTemplate($tplIdx, 10, 10, 200);
-		$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
-		$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-		$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-		$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+		if($docpm==1) {
+			$totalpaginas=$pdf->setSourceFile($nombrepedido);
+			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
+				$pdf->AddPage('P','Letter');
+				$pdf->SetFont('Arial','B',18);
+				$pdf->Cell(10);
+				$pdf->Cell(183,8,"Pedido Medico - Hoja ".$nropagina,1,1,'C');
+				$tplIdx = $pdf->importPage($nropagina);
+				$pdf->useTemplate($tplIdx, 10, 30, 196);
+				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
+				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
+				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+				$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+			}
+		}
+		if($docrh==1) {
+			$totalpaginas=$pdf->setSourceFile($nombreresumen);
+			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
+				$pdf->AddPage('P','Letter');
+				$pdf->SetFont('Arial','B',18);
+				$pdf->Cell(10);
+				$pdf->Cell(183,8,"Resumen Historia Clinica - Hoja ".$nropagina,1,1,'C');
+				$tplIdx = $pdf->importPage($nropagina);
+				$pdf->useTemplate($tplIdx, 10, 30, 196);
+				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
+				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
+				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+				$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+			}
+		}
+		if($docas==1) {
+			$totalpaginas=$pdf->setSourceFile($nombreaval);
+			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
+				$pdf->AddPage('P','Letter');
+				$pdf->SetFont('Arial','B',18);
+				$pdf->Cell(10);
+				$pdf->Cell(183,8,"Estudios - Hoja ".$nropagina,1,1,'C');
+				$tplIdx = $pdf->importPage($nropagina);
+				$pdf->useTemplate($tplIdx, 10, 30, 196);
+				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
+				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
+				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+ 			$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+			}
+		}
+		if($docpa==1) {
+			$totalpaginas=$pdf->setSourceFile($nombrepresupue);
+			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
+				$pdf->AddPage('P','Letter');
+				$pdf->SetFont('Arial','B',18);
+				$pdf->Cell(10);
+				$pdf->Cell(183,8,"Presupuesto Aprobado - Hoja ".$nropagina,1,1,'C');
+				$tplIdx = $pdf->importPage($nropagina);
+				$pdf->useTemplate($tplIdx, 10, 30, 196);
+				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
+				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
+				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+				$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+			}
+		}
 		$nombrearchivo = "../tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
 		$pdf->Output($nombrearchivo,'F');
 
@@ -360,12 +380,16 @@ try {
 		$mail->Timeout=120;
 		$mail->AddAttachment($nombrearchivo);  
 
-//		$fph = fopen($nombrearchivo,"rb");
-//		$contenidodoc = fread($fph, filesize($nombrearchivo));
-//		fclose($fph);
+		$fph = fopen($nombrearchivo,"r");
+		$contenidodoc = fread($fph, filesize($nombrearchivo));
+		fclose($fph);
+//		echo $contenidodoc;
 
-//		$sqlAddDocumento="INSERT INTO autorizaciondocumento (nrosolicitud, documentofinal) VALUES ('$nrosoli','$contenidodoc')";
-//		$resultAddDocumento = $dbl->query($resultAddDocumento);
+		$sqlAddDocumento="INSERT INTO autorizaciondocumento (nrosolicitud, documentofinal) VALUES (:nrosolicitud, :documentofinal)";
+		$resultAddDocumento = $dbl->prepare($sqlAddDocumento);
+		if($resultAddDocumento->execute(array(':nrosolicitud' => $nrosoli, ':documentofinal' => $contenidodoc)))
+		{
+		}
 	}
 
 	$mail->IsSMTP();							// telling the class to use SMTP
@@ -383,29 +407,37 @@ try {
 	$address = "jcbolognese@ospim.com.ar";
 	$nameto = "Autorizaciones ".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];
 	$mail->AddAddress($address, $nameto);
-	$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
+//	$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
 	$mail->Send();
 
 	if($apeauto==1)
 	{
 //		TODO: Envia mail al departamento APE para comunicar que se trata de una autorizacion que incluye prestaciones APE
-//		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Su Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
-//		$mail->Subject="AVISO!!! Autorizacion Aprobada incluye prestaciones APE";
-//		$mail->MsgHTML($bodymail);
-//		$address = "jcbolognese@ospim.com.ar";
-//		$nameto = "APE OSPIM";
-//		$mail->AddAddress($address, $nameto);
+		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
+		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
+		$mail->Subject="AVISO!!! Autorizacion Aprobada incluye prestaciones APE";
+		$mail->MsgHTML($bodymail);
+		$address = "jcbolognese@ospim.com.ar";
+		$nameto = "APE OSPIM";
+		$mail->AddAddress($address, $nameto);
+		$mail->Timeout=120;
+		$mail->AddAttachment($nombrearchivo);
+		$mail->Send();
 	}
 
 	if($presauto==1)
 	{
 //		TODO: Envia mail al prestador para avisarle que hay una prestacion autorizada
-//		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Su Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
-//		$mail->Subject="AVISO!!! Autorizacion Aprobada incluye prestaciones APE";
-//		$mail->MsgHTML($bodymail);
-//		$address = $presmail;
-//		$nameto = "Prestador OSPIM";
-//		$mail->AddAddress($address, $nameto);
+		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Autorizacion de Prestacion Nro: <strong>".$nrosoli."</strong>, <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
+		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
+		$mail->Subject="AVISO!!! Autorizacion Aprobada";
+		$mail->MsgHTML($bodymail);
+		$address = $presmail;
+		$nameto = "Prestador OSPIM";
+		$mail->AddAddress($address, $nameto);
+		$mail->Timeout=120;
+		$mail->AddAttachment($nombrearchivo);
+		$mail->Send();
 	}
 
 	$pagina = "listarSolicitudes.php";
