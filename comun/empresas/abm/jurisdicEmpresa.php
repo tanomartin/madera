@@ -4,24 +4,23 @@
 	$sqljuris = "select * from jurisdiccion where cuit = $cuit";
 	$resjuris = mysql_query($sqljuris,$db); 
 	$canjuris = mysql_num_rows($resjuris); 
-?>
-<div align="center">
-    <p>
-      <?php 
+	
 	if ($canjuris != 0) {
-		while ($rowjuris = mysql_fetch_array($resjuris)) { ?>
-    </p>
-    <table width="700" height="157" border="2">
-      <tr bordercolor="#000000">
-        <td width="200" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
-        <td colspan="2" bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 
+		while ($rowjuris = mysql_fetch_array($resjuris)) { 
 			$delega = $rowjuris['codidelega'];
 			$sqldelegacion = "select * from delegaciones where codidelega = $delega";
 			$resultdelegacion = mysql_query($sqldelegacion,$db); 
 			$rowdelegacion = mysql_fetch_array($resultdelegacion); 
-			echo $rowdelegacion['nombre']
-		?>
+			
+			$sqltitu = "select * from titulares where cuitempresa = $cuit and codidelega = $delega";
+			$restitu = mysql_query($sqltitu,$db); 
+			$cantitu = mysql_num_rows($restitu); 
+?>
+<div align="center">
+    <table width="700" height="157" border="2">
+      <tr bordercolor="#000000">
+        <td width="200" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
+        <td colspan="2" bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> <?php echo $rowdelegacion['nombre']; ?>
         </font></div></td>
       </tr>
       <tr bordercolor="#000000">
@@ -105,7 +104,7 @@
             </p>
         </div></td>
         <td width="255"><p align="center">
-            <?php if ($canjuris > 1) { ?>
+            <?php if (($canjuris > 1) and ($cantitu == 0)) { ?>
             <input name="Input" type="button" value="Eliminar Jurisdiccion" onclick="location.href='confirmaEliminarJurisdiccion.php?origen=<?php echo $origen ?>&amp;cuit=<?php echo $cuit ?>&amp;coddel=<?php echo $delega ?> '"/>
             <?php } ?>
         </p></td>

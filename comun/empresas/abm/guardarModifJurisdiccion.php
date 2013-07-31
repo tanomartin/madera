@@ -29,10 +29,11 @@ $sqlDeleteJuris = "DELETE from jurisdiccion where cuit = $cuit and codidelega = 
 
 $sqlInsertJurisNueva = "INSERT INTO jurisdiccion VALUES ('$cuit','$delegacion','$codprovin','$indpostal','$codpostal','$alfapostal','$localidad','$domicilio','$ddn1','$telefono1','$contacto1','$email','$disgdinero')";
 
-//TODO: ADEMAS TENGO QUE UPDETEAR LAS DLEGACIONES DE LOS BENEFICIARIOS
+$sqlUpdateTitulares = "UPDATE titulares set codidelega = $delegacion where cuitempresa = $cuit and codidelega = $coddelega";
 
 /*print($sqlDeleteJuris); print("<br>");
-print($sqlInsertJurisNueva);*/
+print($sqlInsertJurisNueva);
+print($sqlUpdateTitulares);*/
 
 try {
 	$hostname = $_SESSION['host'];
@@ -42,6 +43,7 @@ try {
 	$dbh->beginTransaction();
 	$dbh->exec($sqlDeleteJuris);
 	$dbh->exec($sqlInsertJurisNueva);
+	$dbh->exec($sqlUpdateTitulares);
 	$dbh->commit();
 	$pagina = "empresa.php?cuit=$cuit&origen=$origen";
 	Header("Location: $pagina"); 
