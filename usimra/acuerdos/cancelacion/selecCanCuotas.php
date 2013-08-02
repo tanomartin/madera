@@ -119,9 +119,9 @@ A:hover {text-decoration: none;color:#33CCFF }
 							$resConcilia = mysql_query($sqlConcilia,$db); 
 							$rowConcilia = mysql_fetch_array($resConcilia);							
 							if ($rowConcilia['estadoconciliacion'] == 0) {
-								print ("<td width=168><div align=center><font face=Verdana size=1><a href='datosConciliacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelada - Modificar Datos Banco</font></div></td>");
+								print ("<td width=168><div align=center><font face=Verdana size=1><a href='datosConciliacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelada - Modificar Datos Banco</a></font></div></td>");
 							} else {
-								print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
+								print ("<td width=168><div align=center><font face=Verdana size=1><a href='verDatosConciliacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelada - Ver Datos Banco</a></font></div></td>");
 							}
 						} else {
 							print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
