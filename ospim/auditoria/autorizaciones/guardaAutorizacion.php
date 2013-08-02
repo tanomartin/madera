@@ -354,7 +354,7 @@ try {
 				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
 				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
- 			$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+	 			$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
 			}
 		}
 		if($docpa==1) {
@@ -397,15 +397,16 @@ try {
 	$mail->SMTPAuth=true;						// enable SMTP authentication
 	$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
 	$mail->Port=25;								// set the SMTP port for the GMAIL server
-	$mail->Username="jcbolognese@ospim.com.ar";	// SMTP account username
-	$mail->Password="256512";					// SMTP account password
-	$mail->SetFrom("jcbolognese@ospim.com.ar", "Autorizaciones OSPIM");
-	$mail->AddReplyTo("jcbolognese@ospim.com.ar","Cozzi OSPIM");
+	$mail->Username="autorizaciones@ospim.com.ar";	// SMTP account username
+	$mail->Password="curt5716";					// SMTP account password
+	$mail->SetFrom("autorizaciones@ospim.com.ar", "Autorizaciones OSPIM");
+	$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
 	$mail->Subject="AVISO!!! Solicitud de Autorizacion Atendida";
 	$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
 	$mail->MsgHTML($bodymail);
-	$address = "jcbolognese@ospim.com.ar";
-	$nameto = "Autorizaciones ".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];
+	$address = "autorizaciones".$rowLeeSolicitud['codidelega']."@ospim.com.ar";
+//	$nameto = "Autorizaciones ".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];
+	$nameto = "";
 	$mail->AddAddress($address, $nameto);
 //	$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
 	$mail->Send();
@@ -413,12 +414,15 @@ try {
 	if($apeauto==1)
 	{
 //		TODO: Envia mail al departamento APE para comunicar que se trata de una autorizacion que incluye prestaciones APE
+		$mail->ClearAddresses();
 		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
 		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-		$mail->Subject="AVISO!!! Autorizacion Aprobada incluye prestaciones APE";
+//		$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
+		$mail->Subject="AVISO: Autorizacion Aprobada incluye prestaciones APE";
 		$mail->MsgHTML($bodymail);
 		$address = "jcbolognese@ospim.com.ar";
-		$nameto = "APE OSPIM";
+//		$nameto = "APE OSPIM";
+		$nameto = "";
 		$mail->AddAddress($address, $nameto);
 		$mail->Timeout=120;
 		$mail->AddAttachment($nombrearchivo);
@@ -428,12 +432,15 @@ try {
 	if($presauto==1)
 	{
 //		TODO: Envia mail al prestador para avisarle que hay una prestacion autorizada
+		$mail->ClearAddresses();
 		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Autorizacion de Prestacion Nro: <strong>".$nrosoli."</strong>, <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
-		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-		$mail->Subject="AVISO!!! Autorizacion Aprobada";
+		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M. - Obra Social del Personal de la Industria Maderera<br /></body>";
+		$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
+		$mail->Subject="AVISO: Autorizacion Aprobada";
 		$mail->MsgHTML($bodymail);
 		$address = $presmail;
-		$nameto = "Prestador OSPIM";
+//		$nameto = "Prestador OSPIM";
+		$nameto = "";
 		$mail->AddAddress($address, $nameto);
 		$mail->Timeout=120;
 		$mail->AddAttachment($nombrearchivo);

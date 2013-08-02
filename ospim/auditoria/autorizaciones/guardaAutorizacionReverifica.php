@@ -71,15 +71,15 @@ if($staauto == 3)
 		$mail->SMTPAuth=true;						// enable SMTP authentication
 		$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
 		$mail->Port=25;								// set the SMTP port for the GMAIL server
-		$mail->Username="jcbolognese@ospim.com.ar";	// SMTP account username
-		$mail->Password="256512";					// SMTP account password
-		$mail->SetFrom('jcbolognese@ospim.com.ar', 'Autorizaciones OSPIM');
-		$mail->AddReplyTo("jcbolognese@ospim.com.ar","Cozzi OSPIM");
-		$mail->Subject="Pedido de Reverificacion de Solicitud de Autorizacion";
+		$mail->Username="autorizaciones@ospim.com.ar";	// SMTP account username
+		$mail->Password="curt5716";					// SMTP account password
+		$mail->SetFrom('autorizaciones@ospim.com.ar', 'Autorizaciones OSPIM');
+		$mail->AddReplyTo("autorizaciones@ospim.com.ar", "Autorizaciones OSPIM");
+		$mail->Subject="AVISO: Pedido de Reverificacion de Solicitud de Autorizacion";
 		$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
 		$mail->MsgHTML($body);
-		$address = "jcbolognese@ospim.com.ar";
-		$mail->AddAddress($address, "Verificaciones OSPIM");
+		$address = "verificaciones@ospim.com.ar";
+		$mail->AddAddress($address, "");
 		$mail->Send();
 
 		$pagina = "listarSolicitudes.php";
@@ -136,17 +136,19 @@ if($staauto == 2)
 		$mail->SMTPAuth=true;						// enable SMTP authentication
 		$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
 		$mail->Port=25;								// set the SMTP port for the GMAIL server
-		$mail->Username="jcbolognese@ospim.com.ar";	// SMTP account username
-		$mail->Password="256512";					// SMTP account password
-		$mail->SetFrom("jcbolognese@ospim.com.ar", "Autorizaciones OSPIM");
-		$mail->AddReplyTo("jcbolognese@ospim.com.ar","Cozzi OSPIM");
-		$mail->Subject="AVISO!!! Solicitud de Autorizacion Atendida";
+		$mail->Username="autorizaciones@ospim.com.ar";	// SMTP account username
+		$mail->Password="curt5716";					// SMTP account password
+		$mail->SetFrom("autorizaciones@ospim.com.ar", "Autorizaciones OSPIM");
+		$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
+		$mail->Subject="AVISO: Solicitud de Autorizacion Atendida";
 		$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
 		$mail->MsgHTML($bodymail);
-		$address = "jcbolognese@ospim.com.ar";
-		$nameto = "Autorizaciones ".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];
+//		$address = "jcbolognese@ospim.com.ar";
+		$address = "autorizaciones".$rowLeeSolicitud['codidelega']."@ospim.com.ar";
+//		$nameto = "Autorizaciones ".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];
+		$nameto = "";
 		$mail->AddAddress($address, $nameto);
-		$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
+//		$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
 		$mail->Send();
 
 		$pagina = "listarSolicitudes.php";

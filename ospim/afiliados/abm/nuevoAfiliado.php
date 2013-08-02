@@ -287,6 +287,8 @@ function validar(formulario) {
 		return false;
 	}
 
+	alert(formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value);
+
 	if (formulario.selectTipoAfil.options[formulario.selectTipoAfil.selectedIndex].value == "O") {
 		if (formulario.solicitudopcion.value == "") {
 			alert("Debe especificar el numero de solicitud de opcion");
@@ -299,10 +301,12 @@ function validar(formulario) {
 		}
 	}
 
-	if (formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value == "") {
-		alert("Debe seleccionar un tipo de titularidad");
-		return false;
-	}
+	alert(formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value);
+
+//	if (formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value == "") {
+//		alert("Debe seleccionar un tipo de titularidad");
+//		return false;
+//	}
 
 	if (formulario.cuil.value == "") {
 		alert("El C.U.I.L. es obligatorio");

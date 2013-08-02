@@ -74,15 +74,16 @@ try {
 	$mail->SMTPAuth=true;						// enable SMTP authentication
 	$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
 	$mail->Port=25;								// set the SMTP port for the GMAIL server
-	$mail->Username="jcbolognese@ospim.com.ar";	// SMTP account username
-	$mail->Password="256512";					// SMTP account password
-	$mail->SetFrom('jcbolognese@ospim.com.ar', 'Verificaciones OSPIM');
-	$mail->AddReplyTo("jcbolognese@ospim.com.ar","Cozzi OSPIM");
+	$mail->Username="verificaciones@ospim.com.ar";	// SMTP account username
+	$mail->Password="yebu8691";					// SMTP account password
+	$mail->SetFrom('verificaciones@ospim.com.ar', 'Verificaciones OSPIM');
+	$mail->AddReplyTo("verificaciones@ospim.com.ar","Verificaciones OSPIM");
 	$mail->Subject="Aviso de Reverificacion de Solicitud de Autorizacion";
 	$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
 	$mail->MsgHTML($body);
-	$address = "jcbolognese@ospim.com.ar";
-	$mail->AddAddress($address, "Autorizaciones OSPIM");
+	$address = "autorizaciones@ospim.com.ar";
+//	$mail->AddAddress($address, "Autorizaciones OSPIM");
+	$mail->AddAddress($address, "");
 	$mail->Send();
 
 	$pagina = "listarSolicitudes.php";
