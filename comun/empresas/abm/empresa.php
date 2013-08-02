@@ -113,11 +113,23 @@ function validarBaja() {
 		$CantAcuUsimra = mysql_num_rows($resCantAcuUsimra); 
 	
 		$CantAcuerdos = $CantAcuOspim + $CantAcuUsimra;
-		if ($CantAcuerdos > 0) {
-			print("<div align='center' style='color:#FF0000'>No se puede Desactivar. Acuerdos Activos</div>");
-		} else { ?>
+		$CanDdjj = 0;
+		if ($CantAcuerdos == 0) {
+			//TOMO LOS LIMIETES DE MES Y ANIO
+			$mesActual = date("n");
+			$meslimite = date("n", (strtotime ("-6 month")));
+			if ($mesActual < 8) {
+				$anioLimite = date("Y") - 1;
+			} else {
+				$anioLimite = date("Y");
+			}
+			$sqlCantDdjj = "select * from cabddjjospim where cuit = $cuit and anoddjj >= $anioLimite and mesddjj >= $meslimite";
+			$resCantDdjj = mysql_query($sqlCantDdjj,$db); 
+			$CanDdjj = mysql_num_rows($resCantDdjj); 
+		}
+		if ($CantAcuerdos == 0 and $CanDdjj == 0) { ?>
 		    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()">
-	<?php } ?>
+  <?php } ?>
 	
   </p>
   <p>
