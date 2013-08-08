@@ -33,6 +33,11 @@ function abrirAuditoria(dire) {
 	c= window.open(dire,"Auditoria",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
+
+function abrirFiscalizacion(dire) {
+	c= window.open(dire,"Fiscalizacion",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+}
 </script>
 
 
@@ -45,32 +50,36 @@ function abrirAuditoria(dire) {
   <table width="599" border="2">
     <tr>
       <td width="196"> <div align="center">
-        <p>M&oacute;dulo Acuerdos</p>
+        <p>Acuerdos</p>
         <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/manos.jpg" width="101" height="86" border="0"/></a></p>
         <p>&nbsp;</p>
         </div></td>
       <td width="196"><div align="center">
-	    <p>M&oacute;dulo Empresas</p>
+	    <p>Empresas</p>
 	    <p><a href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=ospim')"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
 	  
       <td width="183"><div align="center">
-	    <p>M&oacute;dulo Afiliados</p>
+	    <p>Afiliados</p>
 	    <p><a href="javascript:abrirAfil('afiliados/menuAfiliados.php')"><img src="img/empleado.jpg" width="101" height="86" border="0" /></a></p>
 	    <p>&nbsp;</p>
       </div></td>
     </tr>
 	<tr>
-      <td width="196">&nbsp;</td>
+      <td width="196"><div align="center">
+	    <p>Fiscalizaci&oacute;n</p>
+	    <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p>&nbsp;</p>
+      </div></td>
 		
       <td width="196"><div align="center">
-	    <p>M&oacute;dulo Auditoria Medica </p>
+	    <p>Auditoria Medica </p>
 	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
 	  
-      <td width="183">&nbsp;</td>
+      <td width="183"><p>&nbsp;</p></td>
     </tr>
   </table>
    <p><strong><a href="logout.php">
