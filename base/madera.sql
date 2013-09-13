@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 26-09-2012 a las 11:47:24
+-- Tiempo de generación: 13-09-2013 a las 12:21:56
 -- Versión del servidor: 5.1.41
 -- Versión de PHP: 5.3.2-1ubuntu4.11
 
@@ -18,6 +18,32 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Base de datos: `madera`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `afipddjj`
+--
+
+CREATE TABLE IF NOT EXISTS `afipddjj` (
+  `nrodisco` int(5) unsigned NOT NULL,
+  `nroregistro` int(6) unsigned NOT NULL,
+  `origeninfo` char(1) NOT NULL,
+  `codobrasocial` char(6) NOT NULL,
+  `anoddjj` int(4) unsigned NOT NULL,
+  `mesddjj` int(2) unsigned NOT NULL,
+  `cuit` char(11) NOT NULL,
+  `cuil` char(11) NOT NULL,
+  `remundeclarada` decimal(12,2) NOT NULL,
+  `importeosadicional` decimal(12,2) NOT NULL,
+  `familiares` int(2) unsigned NOT NULL,
+  `adherentes` int(2) unsigned NOT NULL,
+  `secuenciapresentacion` int(3) unsigned NOT NULL,
+  `aporteosadicional` decimal(12,2) NOT NULL,
+  `remundecreto` decimal(12,2) NOT NULL,
+  `unificaesposa` int(1) unsigned NOT NULL,
+  PRIMARY KEY (`nrodisco`,`nroregistro`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Informacion original de AFIP de declaraciones juradas';
 
 -- --------------------------------------------------------
 
@@ -60,6 +86,74 @@ CREATE TABLE IF NOT EXISTS `anuladasusimra` (
   `motivoanulacion` text NOT NULL COMMENT 'Descripcion del motivo de la anulacion',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `autorizaciondocumento`
+--
+
+CREATE TABLE IF NOT EXISTS `autorizaciondocumento` (
+  `nrosolicitud` int(9) unsigned NOT NULL,
+  `documentofinal` mediumblob NOT NULL,
+  PRIMARY KEY (`nrosolicitud`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Almacena el documento final de solicitudes autorizadas';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `autorizaciones`
+--
+
+CREATE TABLE IF NOT EXISTS `autorizaciones` (
+  `nrosolicitud` int(9) unsigned NOT NULL,
+  `codidelega` int(4) unsigned NOT NULL DEFAULT '0',
+  `fechasolicitud` date NOT NULL DEFAULT '0000-00-00',
+  `cuil` varchar(11) NOT NULL DEFAULT '',
+  `nroafiliado` int(7) unsigned DEFAULT NULL,
+  `codiparentesco` int(2) unsigned DEFAULT NULL,
+  `apellidoynombre` varchar(60) NOT NULL DEFAULT '',
+  `practica` int(1) unsigned DEFAULT NULL,
+  `material` int(1) unsigned DEFAULT NULL,
+  `tipomaterial` int(2) unsigned DEFAULT '0',
+  `medicamento` int(1) unsigned DEFAULT NULL,
+  `pedidomedico` mediumblob,
+  `resumenhc` mediumblob,
+  `avalsolicitud` mediumblob,
+  `presupuesto1` mediumblob,
+  `aprobado1` int(1) unsigned DEFAULT '0' COMMENT 'Presupuesto Aprobado en la Autorizacion',
+  `presupuesto2` mediumblob,
+  `aprobado2` int(1) unsigned DEFAULT '0' COMMENT 'Presupuesto Aprobado en la Autorizacion',
+  `presupuesto3` mediumblob,
+  `aprobado3` int(1) unsigned DEFAULT '0' COMMENT 'Presupuesto Aprobado en la Autorizacion',
+  `presupuesto4` mediumblob,
+  `aprobado4` int(1) unsigned DEFAULT '0' COMMENT 'Presupuesto Aprobado en la Autorizacion',
+  `presupuesto5` mediumblob,
+  `aprobado5` int(1) unsigned DEFAULT '0' COMMENT 'Presupuesto Aprobado en la Autorizacion',
+  `statusverificacion` int(1) DEFAULT NULL,
+  `fechaverificacion` datetime DEFAULT NULL,
+  `usuarioverificacion` char(50) DEFAULT NULL,
+  `consultasssverificacion` mediumblob,
+  `rechazoverificacion` text,
+  `fechaemailautoriza` datetime DEFAULT NULL,
+  `statusautorizacion` int(1) DEFAULT NULL,
+  `fechapidereverificacion` datetime DEFAULT NULL,
+  `usuariopidereverificacion` char(50) DEFAULT NULL,
+  `motivopidereverificacion` text,
+  `fechaemailreverificacion` datetime DEFAULT NULL,
+  `fechaautorizacion` datetime DEFAULT NULL,
+  `usuarioautorizacion` char(50) DEFAULT NULL,
+  `clasificacionape` int(1) DEFAULT NULL,
+  `fechaemailape` datetime DEFAULT NULL,
+  `rechazoautorizacion` text,
+  `fechaemaildelega` datetime DEFAULT NULL,
+  `emailprestador` char(100) DEFAULT NULL,
+  `fechaemailprestador` datetime DEFAULT NULL,
+  `montoautorizacion` decimal(9,2) unsigned DEFAULT '0.00' COMMENT 'Monto Autorizado para la Solicitud',
+  `usuariodescarga` char(50) DEFAULT NULL,
+  `fechadescarga` datetime DEFAULT NULL,
+  PRIMARY KEY (`nrosolicitud`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Solicitudes de autorizacion de las delegaciones';
 
 -- --------------------------------------------------------
 
@@ -138,7 +232,7 @@ CREATE TABLE IF NOT EXISTS `boletasospim` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=8967 ;
 
 -- --------------------------------------------------------
 
@@ -155,7 +249,7 @@ CREATE TABLE IF NOT EXISTS `boletasusimra` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=34932 ;
 
 -- --------------------------------------------------------
 
@@ -222,6 +316,36 @@ CREATE TABLE IF NOT EXISTS `cabacuerdosusimra` (
   `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
   PRIMARY KEY (`cuit`,`nroacuerdo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Cabecera de Acuerdos de USIMRA';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cabddjjospim`
+--
+
+CREATE TABLE IF NOT EXISTS `cabddjjospim` (
+  `cuit` char(11) NOT NULL,
+  `anoddjj` int(4) unsigned NOT NULL,
+  `mesddjj` int(2) unsigned NOT NULL,
+  `totalpersonal` int(5) unsigned NOT NULL,
+  `totalremundeclarada` decimal(12,2) NOT NULL,
+  `totalremundecreto` decimal(12,2) NOT NULL,
+  PRIMARY KEY (`cuit`,`anoddjj`,`mesddjj`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `clasificamaterial`
+--
+
+CREATE TABLE IF NOT EXISTS `clasificamaterial` (
+  `codigo` int(2) unsigned NOT NULL AUTO_INCREMENT,
+  `descripcion` char(100) NOT NULL DEFAULT '',
+  `presuminimo` int(1) unsigned NOT NULL DEFAULT '0',
+  `presumaximo` int(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Clasifica materiales para establecer puntos minimos y maximo' AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -406,8 +530,7 @@ CREATE TABLE IF NOT EXISTS `delegaempresa` (
   `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. de la Empresa',
   `codidelega` int(4) unsigned NOT NULL COMMENT 'Codigo de Delegacion',
   `codiempresa` int(6) unsigned NOT NULL COMMENT 'Codigo de Empresa',
-  PRIMARY KEY (`cuit`,`codidelega`,`codiempresa`) USING BTREE,
-  KEY `FK_DELEGAEMPRESA_CODIDELEGA` (`codidelega`)
+  PRIMARY KEY (`cuit`,`codidelega`,`codiempresa`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabla transitoria para mantener los codigos de empresa';
 
 -- --------------------------------------------------------
@@ -441,6 +564,22 @@ CREATE TABLE IF NOT EXISTS `detacuerdosusimra` (
   `conceptodeuda` char(1) NOT NULL COMMENT 'Concepto de la Deuda - En tabla conceptosdeudas',
   PRIMARY KEY (`cuit`,`nroacuerdo`,`idperiodo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Detalle y Periodos de Acuerdos de USIMRA';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `detddjjospim`
+--
+
+CREATE TABLE IF NOT EXISTS `detddjjospim` (
+  `cuit` char(11) NOT NULL,
+  `anoddjj` int(4) unsigned NOT NULL,
+  `mesddjj` int(2) unsigned NOT NULL,
+  `cuil` char(11) NOT NULL,
+  `remundeclarada` decimal(12,2) NOT NULL,
+  `adherentes` int(2) unsigned NOT NULL,
+  PRIMARY KEY (`cuit`,`anoddjj`,`mesddjj`,`cuil`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Detalle de las declaraciones juradas de OSPIM. Disgregramien';
 
 -- --------------------------------------------------------
 
@@ -519,12 +658,50 @@ CREATE TABLE IF NOT EXISTS `empresas` (
   `fechamodificacion` datetime NOT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
   `usuariomodificacion` char(50) NOT NULL COMMENT 'Ultimo Usuario que Modifica el Registro',
   `mirroring` char(1) NOT NULL DEFAULT 'N',
-  PRIMARY KEY (`cuit`),
-  KEY `FK_EMPRESAS_CODPROVIN` (`codprovin`),
-  KEY `FK_EMPRESAS_INDPOSTAL` (`indpostal`),
-  KEY `FK_EMPRESAS_NUMPOSTAL` (`numpostal`),
-  KEY `FK_EMPRESAS_CODLOCALI` (`codlocali`)
+  PRIMARY KEY (`cuit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Empresas';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `empresasdebaja`
+--
+
+CREATE TABLE IF NOT EXISTS `empresasdebaja` (
+  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T.',
+  `nombre` char(100) NOT NULL COMMENT 'Razon Social, Denominacion o Nombre',
+  `codprovin` int(2) unsigned NOT NULL COMMENT 'Codigo de Provincia',
+  `indpostal` char(1) NOT NULL COMMENT 'Indice de Provincia en el C.P.',
+  `numpostal` int(4) unsigned NOT NULL COMMENT 'Componente Numerico del C.P.',
+  `alfapostal` char(3) DEFAULT NULL COMMENT 'Componente Alfabetico del C.P.',
+  `codlocali` int(6) unsigned NOT NULL COMMENT 'Codigo de Localidad',
+  `domilegal` char(50) NOT NULL COMMENT 'Domicilio Legal del la Empresa o Persona',
+  `ddn1` char(5) DEFAULT NULL COMMENT 'Discado Directo Nacional para el Telefono 1',
+  `telefono1` bigint(10) unsigned DEFAULT NULL COMMENT 'Telefono 1',
+  `contactel1` char(50) DEFAULT NULL COMMENT 'Contacto Telefonico 1',
+  `ddn2` char(5) DEFAULT NULL COMMENT 'Discado Directo Nacional para el Telefono 2',
+  `telefono2` bigint(10) unsigned DEFAULT NULL COMMENT 'Telefono 2',
+  `contactel2` char(50) DEFAULT NULL COMMENT 'Contacto Telefonico 2',
+  `codigotipo` int(2) unsigned DEFAULT NULL COMMENT 'Codigo de Tipo de Empresa',
+  `codpertene` int(1) unsigned DEFAULT NULL COMMENT 'Codigo de Pertenencia Organizacional: USIMRA-OSPIM',
+  `actividad` char(80) DEFAULT NULL COMMENT 'Actividad Desarrollada por la Empresa',
+  `obsospim` char(120) DEFAULT NULL COMMENT 'Observaciones relacionadas con OSPIM',
+  `obsusimra` char(120) DEFAULT NULL COMMENT 'Observaciones relacionadas con USIMRA',
+  `iniobliosp` date DEFAULT NULL COMMENT 'Fecha en que comienza obligaciones con OSPIM',
+  `iniobliusi` date DEFAULT NULL COMMENT 'Fecha en que comienza obligaciones con USIMRA',
+  `email` char(60) DEFAULT NULL COMMENT 'Direccion de Correo Electronico',
+  `carpetaenarchivo` char(10) DEFAULT NULL COMMENT 'Indice de Carpeta en Archivo',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Incilializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  `fechamodificacion` datetime NOT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
+  `usuariomodificacion` char(50) NOT NULL COMMENT 'Ultimo Usuario que Modifica el Registro',
+  `mirroring` char(1) NOT NULL DEFAULT 'N',
+  `fechabaja` date NOT NULL COMMENT 'Fecha en que deja de tener actividad',
+  `motivobaja` text COMMENT 'Motivo por el que deja de tener actividad',
+  `fechaefectivizacion` datetime DEFAULT NULL,
+  `usuarioefectivizacion` char(50) DEFAULT NULL,
+  PRIMARY KEY (`cuit`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Empresas Inactivas';
 
 -- --------------------------------------------------------
 
@@ -553,6 +730,96 @@ CREATE TABLE IF NOT EXISTS `estadosdeacuerdos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `familiares`
+--
+
+CREATE TABLE IF NOT EXISTS `familiares` (
+  `nroafiliado` int(9) unsigned NOT NULL,
+  `nroorden` int(3) unsigned NOT NULL,
+  `tipoparentesco` int(2) unsigned NOT NULL,
+  `apellidoynombre` char(100) NOT NULL,
+  `tipodocumento` char(2) NOT NULL,
+  `nrodocumento` int(10) unsigned NOT NULL,
+  `fechanacimiento` date NOT NULL,
+  `nacionalidad` int(3) unsigned NOT NULL,
+  `sexo` char(1) NOT NULL,
+  `ddn` char(5) DEFAULT NULL,
+  `telefono` int(10) unsigned DEFAULT NULL,
+  `email` char(60) DEFAULT NULL,
+  `fechaobrasocial` date NOT NULL,
+  `discapacidad` int(2) unsigned NOT NULL,
+  `certificadodiscapacidad` int(1) unsigned DEFAULT NULL,
+  `estudia` int(1) unsigned NOT NULL,
+  `certificadoestudio` int(1) unsigned DEFAULT NULL,
+  `cuil` char(11) NOT NULL,
+  `emitecarnet` int(1) unsigned NOT NULL DEFAULT '0',
+  `cantidadcarnet` int(4) unsigned NOT NULL DEFAULT '0',
+  `fechacarnet` date DEFAULT NULL,
+  `tipocarnet` char(1) DEFAULT NULL,
+  `vencimientocarnet` date DEFAULT NULL,
+  `informesss` int(1) unsigned NOT NULL,
+  `tipoinformesss` char(1) DEFAULT NULL,
+  `fechainformesss` datetime DEFAULT NULL,
+  `usuarioinformesss` char(50) DEFAULT NULL,
+  `foto` mediumblob,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
+  `mirroring` char(1) NOT NULL,
+  PRIMARY KEY (`nroafiliado`,`nroorden`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Familiares';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `familiaresdebaja`
+--
+
+CREATE TABLE IF NOT EXISTS `familiaresdebaja` (
+  `nroafiliado` int(9) unsigned NOT NULL,
+  `nroorden` int(3) unsigned NOT NULL,
+  `tipoparentesco` int(2) unsigned NOT NULL,
+  `apellidoynombre` char(100) NOT NULL,
+  `tipodocumento` char(2) NOT NULL,
+  `nrodocumento` int(10) unsigned NOT NULL,
+  `fechanacimiento` date NOT NULL,
+  `nacionalidad` int(3) unsigned NOT NULL,
+  `sexo` char(1) NOT NULL,
+  `ddn` char(5) DEFAULT NULL,
+  `telefono` int(10) unsigned DEFAULT NULL,
+  `email` char(60) DEFAULT NULL,
+  `fechaobrasocial` date NOT NULL,
+  `discapacidad` int(2) unsigned NOT NULL,
+  `certificadodiscapacidad` int(1) unsigned DEFAULT NULL,
+  `estudia` int(1) unsigned NOT NULL,
+  `certificadoestudio` int(1) unsigned DEFAULT NULL,
+  `cuil` char(11) NOT NULL,
+  `emitecarnet` int(1) unsigned NOT NULL DEFAULT '0',
+  `cantidadcarnet` int(4) unsigned NOT NULL DEFAULT '0',
+  `fechacarnet` date DEFAULT NULL,
+  `tipocarnet` char(1) DEFAULT NULL,
+  `vencimientocarnet` date DEFAULT NULL,
+  `informesss` int(1) unsigned NOT NULL,
+  `tipoinformesss` char(1) DEFAULT NULL,
+  `fechainformesss` datetime DEFAULT NULL,
+  `usuarioinformesss` char(50) DEFAULT NULL,
+  `foto` mediumblob,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
+  `mirroring` char(1) NOT NULL,
+  `fechabaja` date NOT NULL,
+  `motivobaja` text,
+  `fechaefectivizacion` datetime DEFAULT NULL,
+  `usuarioefectivizacion` char(50) DEFAULT NULL,
+  PRIMARY KEY (`nroafiliado`,`nroorden`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Familiares de Baja';
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `gestoresdeacuerdos`
 --
 
@@ -560,7 +827,7 @@ CREATE TABLE IF NOT EXISTS `gestoresdeacuerdos` (
   `codigo` int(3) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Codigo para Gestor de Acuerdo',
   `apeynombre` char(100) NOT NULL COMMENT 'Apellido y Nombre del Gestor',
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Codificadora de Gestores de Acuerdos';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Codificadora de Gestores de Acuerdos' AUTO_INCREMENT=114 ;
 
 -- --------------------------------------------------------
 
@@ -584,8 +851,8 @@ CREATE TABLE IF NOT EXISTS `inspectores` (
   `codigo` int(3) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Codigo de Inspector',
   `apeynombre` char(50) NOT NULL COMMENT 'Apellido y Nombre del Inspector',
   `codidelega` int(4) unsigned NOT NULL COMMENT 'Delegacion sobre la que posee jurisdiccion',
-  PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla codificadora de Inspectores';
+  PRIMARY KEY (`codigo`,`codidelega`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla codificadora de Inspectores' AUTO_INCREMENT=41 ;
 
 -- --------------------------------------------------------
 
@@ -607,12 +874,7 @@ CREATE TABLE IF NOT EXISTS `jurisdiccion` (
   `contactel` char(50) DEFAULT NULL COMMENT 'Contacto',
   `email` char(60) DEFAULT NULL COMMENT 'Direccion de Correo Electronico',
   `disgdinero` decimal(5,2) NOT NULL COMMENT 'Porcentaje de Disgregacion de Masas Dinerarias',
-  PRIMARY KEY (`cuit`,`codidelega`) USING BTREE,
-  KEY `FK_JURISDICCION_CODIDELEGA` (`codidelega`),
-  KEY `FK_JURISDICCION_CODPROVIN` (`codprovin`),
-  KEY `FK_JURISDICCION_INDPOSTAL` (`indpostal`),
-  KEY `FK_JURISDICCION_NUMPOSTAL` (`numpostal`),
-  KEY `FK_JURISDICCION_CODLOCALI` (`codlocali`)
+  PRIMARY KEY (`cuit`,`codidelega`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Jurisdicciones a las que pertenecen las empresas';
 
 -- --------------------------------------------------------
@@ -691,6 +953,23 @@ CREATE TABLE IF NOT EXISTS `novedadessss` (
   KEY `FK_NOVEDADESSSS_INCAPACIDAD` (`codincapa`),
   KEY `FK_NOVEDADESSSS_TIPOTITULAR` (`codtiptit`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Novedades generadas hacia el padron de la O.S. por la SSS';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `origencomprobanteusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `origencomprobanteusimra` (
+  `codigocuenta` int(2) unsigned NOT NULL COMMENT 'Codigo de Cuenta Bancaria',
+  `fechaemision` date NOT NULL COMMENT 'Fecha de Emision del Resumen Bancario',
+  `nroordenimputacion` int(4) unsigned NOT NULL COMMENT 'Numero de Orden de la Imputacion',
+  `sistemacomprobante` char(1) NOT NULL COMMENT 'Sistema del Comprobante que da Origen a la Imputacion / M Manual - E Electronico',
+  `fechacomprobante` date NOT NULL COMMENT 'Fecha del Comprobante que Origina la Imputacion',
+  `nrocomprobante` int(4) unsigned NOT NULL COMMENT 'Nro de Comprobante que Origina la Imputacion',
+  `comprobante` char(100) NOT NULL COMMENT 'Comprobante que Origina la Imputacion',
+  PRIMARY KEY (`codigocuenta`,`fechaemision`,`nroordenimputacion`,`sistemacomprobante`,`fechacomprobante`,`nrocomprobante`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Origen de los Comprobantes que concilian las imputaciones de';
 
 -- --------------------------------------------------------
 
@@ -820,7 +1099,7 @@ CREATE TABLE IF NOT EXISTS `remesasusimra` (
   `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
   `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
   PRIMARY KEY (`codigocuenta`,`sistemaremesa`,`fecharemesa`,`nroremesa`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -833,8 +1112,8 @@ CREATE TABLE IF NOT EXISTS `remitosremesasusimra` (
   `sistemaremesa` char(1) NOT NULL COMMENT 'Sistema de Origen de la Remesa / M Manual - E Electronico',
   `fecharemesa` date NOT NULL COMMENT 'Fecha de la Remesa',
   `nroremesa` int(4) unsigned NOT NULL COMMENT 'Numero de la Remesa',
-  `fecharemito` date NOT NULL COMMENT 'Fecha del Remito',
   `nroremito` int(4) unsigned NOT NULL COMMENT 'Numero del Remito',
+  `fecharemito` date NOT NULL COMMENT 'Fecha del Remito',
   `sucursalbanco` char(4) DEFAULT NULL COMMENT 'Sucursal del Banco Nacion',
   `importebruto` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Importe Bruto del Remito',
   `importecomision` decimal(9,2) NOT NULL DEFAULT '0.00' COMMENT 'Comision Bancaria sobre el Remito',
@@ -847,6 +1126,7 @@ CREATE TABLE IF NOT EXISTS `remitosremesasusimra` (
   `importeboletascuotas` decimal(9,2) DEFAULT NULL COMMENT 'Total de Cuotas de Acuerdos de las Boletas del Remito',
   `importeboletasbruto` decimal(9,2) DEFAULT NULL COMMENT 'Total Bruto de las Boletas del Remito',
   `cantidadboletas` int(5) unsigned DEFAULT NULL COMMENT 'Cantidad Total de Boletas Conciliadas del Remito',
+  `nrocontrol` char(14) DEFAULT NULL COMMENT 'Numero de Control univoco para identificacion de la Boleta de pago',
   `estadoconciliacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Estado de Conciliacion / 0 No Conciliado - 1 Conciliado',
   `fechaconciliacion` datetime DEFAULT NULL COMMENT 'Fecha de Conciliacion',
   `usuarioconciliacion` char(50) DEFAULT NULL COMMENT 'Usuario de Conciliacion',
@@ -855,8 +1135,8 @@ CREATE TABLE IF NOT EXISTS `remitosremesasusimra` (
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
   `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
-  PRIMARY KEY (`codigocuenta`,`sistemaremesa`,`fecharemesa`,`nroremesa`,`fecharemito`,`nroremito`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`codigocuenta`,`sistemaremesa`,`fecharemesa`,`nroremesa`,`nroremito`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -949,10 +1229,6 @@ CREATE TABLE IF NOT EXISTS `resumenusimra` (
   `estadoconciliacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Estado de Conciliacion / 0 No Conciliado - 1 Conciliado',
   `fechaconciliacion` datetime DEFAULT NULL COMMENT 'Fecha de Conciliacion',
   `usuarioconciliacion` char(50) DEFAULT NULL COMMENT 'Usuario de Conciliacion',
-  `comprobanteorigen` char(100) DEFAULT NULL COMMENT 'Comprobante que Origina la Imputacion',
-  `sistemacomprobanteorigen` char(1) DEFAULT NULL COMMENT 'Sistema del Comprobante que da Origen a la Imputacion / M Manual - E Electronico',
-  `fechacomprobanteorigen` date DEFAULT NULL COMMENT 'Fecha del Comprobante que Origina la Imputacion',
-  `nrocomprobanteorigen` int(4) unsigned DEFAULT NULL COMMENT 'Nro de Comprobante que Origina la Imputacion',
   `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
@@ -1031,7 +1307,7 @@ CREATE TABLE IF NOT EXISTS `tiposdeacuerdos` (
   `codigo` int(1) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Codigo de Tipos de Acuerdos',
   `descripcion` char(50) NOT NULL COMMENT 'Descripcion para los Tipos de Acuerdos',
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla codificadora de Tipos de Acuerdos';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Tabla codificadora de Tipos de Acuerdos' AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -1048,6 +1324,116 @@ CREATE TABLE IF NOT EXISTS `tipotitular` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `titulares`
+--
+
+CREATE TABLE IF NOT EXISTS `titulares` (
+  `nroafiliado` int(9) unsigned NOT NULL AUTO_INCREMENT,
+  `apellidoynombre` char(100) NOT NULL,
+  `tipodocumento` char(2) NOT NULL,
+  `nrodocumento` int(10) unsigned NOT NULL,
+  `fechanacimiento` date NOT NULL,
+  `nacionalidad` int(3) unsigned NOT NULL,
+  `sexo` char(1) NOT NULL,
+  `estadocivil` int(2) unsigned NOT NULL,
+  `codprovin` int(2) unsigned NOT NULL,
+  `indpostal` char(1) NOT NULL,
+  `numpostal` int(4) unsigned NOT NULL,
+  `alfapostal` char(3) DEFAULT NULL,
+  `codlocali` int(6) unsigned NOT NULL,
+  `domicilio` char(50) NOT NULL,
+  `ddn` char(5) DEFAULT NULL,
+  `telefono` int(10) unsigned DEFAULT NULL,
+  `email` char(60) DEFAULT NULL,
+  `fechaobrasocial` date NOT NULL,
+  `tipoafiliado` char(1) NOT NULL,
+  `solicitudopcion` int(8) unsigned DEFAULT NULL,
+  `situaciontitularidad` int(2) unsigned NOT NULL,
+  `discapacidad` int(2) unsigned NOT NULL,
+  `certificadodiscapacidad` int(1) unsigned DEFAULT NULL,
+  `cuil` char(11) NOT NULL,
+  `cuitempresa` char(11) NOT NULL,
+  `fechaempresa` date NOT NULL,
+  `codidelega` int(4) unsigned NOT NULL,
+  `categoria` char(100) DEFAULT NULL,
+  `emitecarnet` int(1) unsigned NOT NULL DEFAULT '0',
+  `cantidadcarnet` int(4) unsigned NOT NULL DEFAULT '0',
+  `fechacarnet` date DEFAULT NULL,
+  `tipocarnet` char(1) DEFAULT NULL,
+  `vencimientocarnet` date DEFAULT NULL,
+  `informesss` int(1) unsigned NOT NULL,
+  `tipoinformesss` char(1) DEFAULT NULL,
+  `fechainformesss` datetime DEFAULT NULL,
+  `usuarioinformesss` char(50) DEFAULT NULL,
+  `foto` mediumblob,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
+  `mirroring` char(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`nroafiliado`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Titulares' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `titularesdebaja`
+--
+
+CREATE TABLE IF NOT EXISTS `titularesdebaja` (
+  `nroafiliado` int(9) unsigned NOT NULL,
+  `apellidoynombre` char(100) NOT NULL,
+  `tipodocumento` char(2) NOT NULL,
+  `nrodocumento` int(10) unsigned NOT NULL,
+  `fechanacimiento` date NOT NULL,
+  `nacionalidad` int(3) unsigned NOT NULL,
+  `sexo` char(1) NOT NULL,
+  `estadocivil` int(2) unsigned NOT NULL,
+  `codprovin` int(2) unsigned NOT NULL,
+  `indpostal` char(1) NOT NULL,
+  `numpostal` int(4) unsigned NOT NULL,
+  `alfapostal` char(3) DEFAULT NULL,
+  `codlocali` int(6) unsigned NOT NULL,
+  `domicilio` char(50) NOT NULL,
+  `ddn` char(5) DEFAULT NULL,
+  `telefono` int(10) unsigned DEFAULT NULL,
+  `email` char(60) DEFAULT NULL,
+  `fechaobrasocial` date NOT NULL,
+  `tipoafiliado` char(1) NOT NULL,
+  `solicitudopcion` int(8) unsigned DEFAULT NULL,
+  `situaciontitularidad` int(2) unsigned NOT NULL,
+  `discapacidad` int(2) unsigned NOT NULL,
+  `certificadodiscapacidad` int(1) unsigned DEFAULT NULL,
+  `cuil` char(11) NOT NULL,
+  `cuitempresa` char(11) NOT NULL,
+  `fechaempresa` date NOT NULL,
+  `codidelega` int(4) unsigned NOT NULL,
+  `categoria` char(100) DEFAULT NULL,
+  `emitecarnet` int(1) unsigned NOT NULL DEFAULT '0',
+  `cantidadcarnet` int(4) unsigned NOT NULL DEFAULT '0',
+  `fechacarnet` date DEFAULT NULL,
+  `tipocarnet` char(1) DEFAULT NULL,
+  `vencimientocarnet` date DEFAULT NULL,
+  `informesss` int(1) unsigned NOT NULL,
+  `tipoinformesss` char(1) DEFAULT NULL,
+  `fechainformesss` datetime DEFAULT NULL,
+  `usuarioinformesss` char(50) DEFAULT NULL,
+  `foto` mediumblob,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
+  `mirroring` char(1) NOT NULL DEFAULT 'N',
+  `fechabaja` date NOT NULL,
+  `motivobaja` text,
+  `fechaefectivizacion` datetime DEFAULT NULL,
+  `usuarioefectivizacion` char(50) DEFAULT NULL,
+  PRIMARY KEY (`nroafiliado`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Titulares de Baja';
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `validasospim`
 --
 
@@ -1060,7 +1446,7 @@ CREATE TABLE IF NOT EXISTS `validasospim` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Validadas';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Validadas' AUTO_INCREMENT=8795 ;
 
 -- --------------------------------------------------------
 
@@ -1077,7 +1463,7 @@ CREATE TABLE IF NOT EXISTS `validasusimra` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Validadas';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Validadas' AUTO_INCREMENT=34682 ;
 
 -- --------------------------------------------------------
 
@@ -1150,33 +1536,6 @@ ALTER TABLE `delegaciones`
   ADD CONSTRAINT `FK_DELEGACIONES_CODPROVIN` FOREIGN KEY (`codprovin`) REFERENCES `provincia` (`codprovin`),
   ADD CONSTRAINT `FK_DELEGACIONES_INDPOSTAL` FOREIGN KEY (`indpostal`) REFERENCES `provincia` (`indpostal`),
   ADD CONSTRAINT `FK_DELEGACIONES_NUMPOSTAL` FOREIGN KEY (`numpostal`) REFERENCES `localidades` (`numpostal`);
-
---
--- Filtros para la tabla `delegaempresa`
---
-ALTER TABLE `delegaempresa`
-  ADD CONSTRAINT `FK_DELEGAEMPRESA_CODIDELEGA` FOREIGN KEY (`codidelega`) REFERENCES `delegaciones` (`codidelega`),
-  ADD CONSTRAINT `FK_DELEGAEMPRESA_CUIT` FOREIGN KEY (`cuit`) REFERENCES `empresas` (`cuit`);
-
---
--- Filtros para la tabla `empresas`
---
-ALTER TABLE `empresas`
-  ADD CONSTRAINT `FK_EMPRESAS_CODLOCALI` FOREIGN KEY (`codlocali`) REFERENCES `localidades` (`codlocali`),
-  ADD CONSTRAINT `FK_EMPRESAS_CODPROVIN` FOREIGN KEY (`codprovin`) REFERENCES `provincia` (`codprovin`),
-  ADD CONSTRAINT `FK_EMPRESAS_INDPOSTAL` FOREIGN KEY (`indpostal`) REFERENCES `provincia` (`indpostal`),
-  ADD CONSTRAINT `FK_EMPRESAS_NUMPOSTAL` FOREIGN KEY (`numpostal`) REFERENCES `localidades` (`numpostal`);
-
---
--- Filtros para la tabla `jurisdiccion`
---
-ALTER TABLE `jurisdiccion`
-  ADD CONSTRAINT `FK_JURISDICCION_CODIDELEGA` FOREIGN KEY (`codidelega`) REFERENCES `delegaciones` (`codidelega`),
-  ADD CONSTRAINT `FK_JURISDICCION_CODLOCALI` FOREIGN KEY (`codlocali`) REFERENCES `localidades` (`codlocali`),
-  ADD CONSTRAINT `FK_JURISDICCION_CODPROVIN` FOREIGN KEY (`codprovin`) REFERENCES `provincia` (`codprovin`),
-  ADD CONSTRAINT `FK_JURISDICCION_CUIT` FOREIGN KEY (`cuit`) REFERENCES `empresas` (`cuit`),
-  ADD CONSTRAINT `FK_JURISDICCION_INDPOSTAL` FOREIGN KEY (`indpostal`) REFERENCES `provincia` (`indpostal`),
-  ADD CONSTRAINT `FK_JURISDICCION_NUMPOSTAL` FOREIGN KEY (`numpostal`) REFERENCES `localidades` (`numpostal`);
 
 --
 -- Filtros para la tabla `localidades`
