@@ -43,7 +43,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.jpg" width="97" height="76" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
       <td><p align="center">Fiscalizaci&oacute;n</p>
-        <p align="center"><a class="enlace" href="impresion/fiscalizacionImpresion.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="#"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td><p align="center">Valores al Cobro</p>
       <p align="center"><a class="enlace" href="valores/moduloValores.php"><img src="img/valores.jpg" width="96" height="76" border="0" /></a></p>
