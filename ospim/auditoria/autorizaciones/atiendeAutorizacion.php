@@ -463,7 +463,8 @@ if($rowLeeSolicitud['material'] == 1) {
 	  <label><input name="autori" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada</label><br />
       <label><input name="autori" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada</label>
       <p><textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo" disabled="disabled"></textarea></p>
-      <p>APE:<label><input name="ape" id="apeSi" type="radio" value="1"/>Si</label>
+      <p>Expediente SUR :
+        <label><input name="ape" id="apeSi" type="radio" value="1"/>Si</label>
         <label><input name="ape" id="apeNo" type="radio" value="0"/>
         No</label></p>
       <p>Comunica al Prestador ?:
