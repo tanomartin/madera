@@ -418,9 +418,9 @@ try {
 		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
 		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
 //		$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
-		$mail->Subject="AVISO: Autorizacion Aprobada incluye prestaciones APE";
+		$mail->Subject="AVISO: Autorizacion Aprobada incluye prestaciones SUR";
 		$mail->MsgHTML($bodymail);
-		$address = "jcbolognese@ospim.com.ar";
+		$address = "expedientessur@ospim.com.ar";
 //		$nameto = "APE OSPIM";
 		$nameto = "";
 		$mail->AddAddress($address, $nameto);
