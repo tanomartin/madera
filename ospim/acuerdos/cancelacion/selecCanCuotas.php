@@ -7,6 +7,11 @@ if ($cuit == NULL) {
 
 $sql = "select * from empresas where cuit = $cuit";
 $result = mysql_query( $sql,$db); 
+$cantEmp = mysql_num_rows($result); 
+if ($cantEmp == 0) {
+	header('Location: moduloCancelacion.php?err=2');
+}
+
 $row=mysql_fetch_array($result); 
 
 $sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
