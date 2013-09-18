@@ -113,7 +113,7 @@ function validar(formulario) {
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
 	<input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
-  <p><strong>Modificacion Jurisdicciones de Empresa</strong>
+  <p><strong>Nueva  Jurisdicci&oacute;n de Empresa</strong>
   <form name="nuevaJurisdiccion" id="nuevaJurisdiccion" method="post" onSubmit="return validar(this)" action="disgregaNuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>">	
 	 	<table width="723" border="0">
 		  <tr>
