@@ -28,5 +28,16 @@
         Postal:</strong></font></div></td>
         <td bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['numpostal'];?></font></div></td>
       </tr>
+      <tr bordercolor="#000000" >
+         <td width="200" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Carpeta en Archivo</strong></font></div></td>
+        <td bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+		<?php 
+			if ($row['carpetaenarchivo'] != "") {
+				echo $row['carpetaenarchivo'];
+			} else { 
+				echo '-' ;
+			}
+		?></font></div></td>
+      </tr>
     </table>
   </div>
