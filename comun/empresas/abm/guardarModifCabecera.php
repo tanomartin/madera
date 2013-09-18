@@ -53,8 +53,22 @@ try {
 	$pagina = "empresa.php?cuit=$cuit&origen=$origen";
 	Header("Location: $pagina"); 
 }catch (PDOException $e) {
-	echo $e->getMessage();
-	$dbh->rollback();
+	$error = $e->getTraceAsString();
+	if ($e->getCode() == 42000 && strpos($error, 'UPDATE')) {
+		$sqlUpdateCabecera = "UPDATE empresas set carpetaenarchivo = '$carpetaArchivo', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit";
+		try {
+			$dbh->exec($sqlUpdateCabecera);
+			$dbh->commit();
+			$pagina = "empresa.php?cuit=$cuit&origen=$origen";
+			Header("Location: $pagina"); 
+		} catch (PDOException $e) {
+			echo $e->getMessage();
+			$dbh->rollback();
+		} 
+	} else {
+		echo $e->getMessage();
+		$dbh->rollback();
+	}
 }
 
 ?>
