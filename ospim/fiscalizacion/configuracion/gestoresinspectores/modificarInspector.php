@@ -52,7 +52,6 @@ function validar(formulario) {
 				  </label>
 				</p>
 				<p>
-				<label>Delegaciones<br/>
 					<?php 
 						$error = $_GET['error'];
 						if ($error == 1) {
@@ -60,25 +59,33 @@ function validar(formulario) {
 						}
 					?>
 					 <br/>
-					<?php 
+					</label>
+				</p>
+				<table width="300" border="1">
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Delegaciones</td>
+                  </tr>
+			      <?php 
 					$i = 0;
 					$resDelega= mysql_query("SELECT * FROM delegaciones", $db);
 					while($rowDelega= mysql_fetch_array($resDelega)) { 
+						echo '<tr>';
 						$codigoDelega = $rowDelega['codidelega'];
 						$sqlExiste = "select * from inspectores where codigo = $codigo and codidelega = $codigoDelega";
 						$resExiste = mysql_query($sqlExiste,$db); 
 						$numExiste = mysql_num_rows($resExiste);
 						if ($numExiste == 1) {
-							echo '<input type="checkbox" id="delega'.$i.'" name="delega'.$i.'" value='.$codigoDelega.' checked>';
+							echo '<td><input type="checkbox" id="delega'.$i.'" name="delega'.$i.'" value='.$codigoDelega.' checked></td>';
 						} else {
-							echo '<input type="checkbox" id="delega'.$i.'" name="delega'.$i.'" value='.$codigoDelega.'>';
+							echo '<td><input type="checkbox" id="delega'.$i.'" name="delega'.$i.'" value='.$codigoDelega.'></td>';
 						}
-						echo '<span class="Estilo1">'.$rowDelega["nombre"].'</span><br>'; 
+						echo '<td><span class="Estilo1">'.$rowDelega["nombre"].'</span><br></td>'; 
 						$i = $i + 1;
+						echo '</tr>';
 					} 
-					?>
-					</label>
-					</p>
+					?>  	
+	</table>
 				<p>&nbsp;</p>
 				<table width="528" border="0">
                   <tr>
