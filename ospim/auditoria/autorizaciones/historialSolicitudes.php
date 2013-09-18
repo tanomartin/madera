@@ -2,21 +2,21 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
-$sqlLeeAutorizacion = "SELECT * FROM autorizaciones WHERE statusautorizacion = 0 ORDER BY nrosolicitud DESC";
+$sqlLeeAutorizacion = "SELECT * FROM autorizaciones WHERE statusverificacion != 0 AND statusautorizacion != 0 ORDER BY fechasolicitud DESC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
 $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 
 print ("<div align=center>");
-print ("<table width=850 border=1>");
+print ("<table width=970 border=1>");
 print ("<tr>");
-print ("<td width=850><div align=center><strong>Solicitudes</strong></div></td>");
+print ("<td width=970><div align=center><strong>Historial de Autorizaciones</strong></div></td>");
 print ("</tr>");
 print ("</table>");
 print ("</div>");
 
 if ($totalLeeAutorizacion !=0) {
 	print ("<div align=center>");
-	print ("<table width=850 border=1 align=center>");
+	print ("<table width=970 border=1 align=center>");
 
 	print ("<tr>");
 	print ("<td width=50><div align=center>Nro</div></td>");
@@ -27,6 +27,7 @@ if ($totalLeeAutorizacion !=0) {
 	print ("<td width=65><div align=center>Tipo</div></td>");
 	print ("<td width=180><div align=center>Apellido y Nombre</div></td>");
 	print ("<td width=120><div align=center>Verificacion</div></td>");
+	print ("<td width=120><div align=center>Autorizacion</div></td>");
 	print ("<td width=65><div align=center>Accion</div></td>");
 	print ("</tr>");
 
@@ -58,25 +59,27 @@ if ($totalLeeAutorizacion !=0) {
 
 		print ("<td width=180><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['apellidoynombre']."</font></div></td>");
 
-		if($rowLeeAutorizacion['statusverificacion']==0) {
-			print ("<td width=120><div align=center><font size=1 face=Verdana>No Verificada</font></div></td>");
-			print ("<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>");
-		}
-
 		if($rowLeeAutorizacion['statusverificacion']==1) {
 			print ("<td width=120><div align=center><font size=1 face=Verdana>Aprobada</font></div></td>");
-			print ("<td width=65><div align=center><font size=1 face=Verdana><a href='atiendeAutorizacion.php?nroSolicitud=".$rowLeeAutorizacion['nrosolicitud']."'>".Atender."</a></font></div></td>");
 		}
 
 		if($rowLeeAutorizacion['statusverificacion']==2) {
 			print ("<td width=120><div align=center><font size=1 face=Verdana>Rechazada</font></div></td>");
-			print ("<td width=65><div align=center><font size=1 face=Verdana><a href='consultaVerificacion.php?nroSolicitud=".$rowLeeAutorizacion['nrosolicitud']."'>".Atender."</a></font></div></td>");
 		}
 
 		if($rowLeeAutorizacion['statusverificacion']==3) {
 			print ("<td width=120><div align=center><font size=1 face=Verdana>No Reverificada</font></div></td>");
-			print ("<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>");
 		}
+
+		if($rowLeeAutorizacion['statusautorizacion']==1) {
+			print ("<td width=120><div align=center><font size=1 face=Verdana>Aprobada</font></div></td>");
+		}
+
+		if($rowLeeAutorizacion['statusautorizacion']==2) {
+			print ("<td width=120><div align=center><font size=1 face=Verdana>Rechazada</font></div></td>");
+		}
+
+		print ("<td width=65><div align=center><font size=1 face=Verdana><a href='consultaAutorizacion.php?nroSolicitud=".$rowLeeAutorizacion['nrosolicitud']."'>".Consultar."</a></font></div></td>");
 
 		print ("</tr>");
 	}
@@ -85,9 +88,9 @@ if ($totalLeeAutorizacion !=0) {
 }
 else {
 	print ("<div align=center>");
-	print ("<table width=850 border=1 align=center>");
+	print ("<table width=970 border=1 align=center>");
 	print ("<tr>");
-	print ("<td width=850><div align=center>No existen solicitudes que atender.</div></td>");
+	print ("<td width=970><div align=center>No existen solicitudes para consultar.</div></td>");
 	print ("</tr>");
 	print ("</table>");
 	print ("</div>");
@@ -105,7 +108,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <title>.: M&oacute;dulo Autorizaciones :.</title>
 </head>
 <body bgcolor="#CCCCCC">
-<form id="listaSolicitudes" name="listaSolicitudes">
+<form id="historialSolicitudes" name="historialSolicitudes">
 <div align="center">
   <table width="800" border="0">
     <tr>
