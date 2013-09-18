@@ -38,7 +38,7 @@ $inicioUsimra = fechaParaGuardar($inicioUsimra);
 $email = $datos[20];
 $carpetaArchivo = $datos[21];
 
-$sqlUpdateCabecera = "UPDATE empresas set nombre = '$nombre', codprovin = '$codprovin', indpostal = '$indpostal', numpostal = '$codpostal', alfapostal = '$alfapostal', codlocali = '$localidad', domilegal = '$domicilio', ddn1 = '$ddn1', telefono1 = '$telefono1', contactel1 = '$contacto1', ddn2 = '$ddn2', telefono2 = '$telefono2', contactel2 = '$contacto2', codigotipo = '$codigotipo', codpertene = '$peretenencia', actividad = '$actividad', obsospim = '$obsOspim', obsusimra = '$obsUsimra', iniobliosp = '$inicioOspim', iniobliusi = '$inicioUsimra', email = '$email ', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit";
+$sqlUpdateCabecera = "UPDATE empresas set nombre = '$nombre', codprovin = '$codprovin', indpostal = '$indpostal', numpostal = '$codpostal', alfapostal = '$alfapostal', codlocali = '$localidad', domilegal = '$domicilio', ddn1 = '$ddn1', telefono1 = '$telefono1', contactel1 = '$contacto1', ddn2 = '$ddn2', telefono2 = '$telefono2', contactel2 = '$contacto2', codigotipo = '$codigotipo', codpertene = '$peretenencia', actividad = '$actividad', obsospim = '$obsOspim', obsusimra = '$obsUsimra', iniobliosp = '$inicioOspim', iniobliusi = '$inicioUsimra', email = '$email ', carpetaenarchivo = '$carpetaArchivo', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit";
 
 //print($sqlUpdateCabecera);
 
