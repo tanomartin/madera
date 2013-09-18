@@ -10,10 +10,6 @@ $sql = "select * from empresasdebaja where cuit = $cuit";
 $result = mysql_query($sql,$db); 
 $row = mysql_fetch_array($result); 
 
-$sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp = mysql_query($sqlDelEmp,$db);
-$rowDelEmp = mysql_fetch_array($resDelEmp); 
-
 $sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
 $resultlocalidad = mysql_query($sqllocalidad,$db); 
 $rowlocalidad = mysql_fetch_array($resultlocalidad); 
