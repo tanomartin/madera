@@ -9,40 +9,45 @@ $resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
 $rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
 //echo $archivo;
 
-if($archivo <= 8)
-{
-	$tipo = "application/pdf";
-
-	switch ($archivo){
-	    case 1:
-			$contenidoarchivo = $rowLeeSolicitud['pedidomedico'];
-    		break;
-	    case 2:
-			$contenidoarchivo = $rowLeeSolicitud['resumenhc'];
-    		break;
-	    case 3:
-			$contenidoarchivo = $rowLeeSolicitud['avalsolicitud'];
-    		break;
-	    case 4:
-			$contenidoarchivo = $rowLeeSolicitud['presupuesto1'];
-    		break;
-	    case 5:
-			$contenidoarchivo = $rowLeeSolicitud['presupuesto2'];
-    		break;
-	    case 6:
-			$contenidoarchivo = $rowLeeSolicitud['presupuesto3'];
-    		break;
-	    case 7:
-			$contenidoarchivo = $rowLeeSolicitud['presupuesto4'];
-    		break;
-	    case 8:
-			$contenidoarchivo = $rowLeeSolicitud['presupuesto5'];
-    		break;
-	}
+if($rowLeeSolicitud['statusautorizacion'] == 1) {
+	$sqlLeeDocumento = "SELECT * FROM autorizaciondocumento WHERE nrosolicitud = $nrosolicitud";
+	$resultLeeDocumento = mysql_query($sqlLeeDocumento,$db); 
+	$rowLeeDocumento = mysql_fetch_array($resultLeeDocumento);
 }
-else {
-	$tipo = "application/pdf";
-	$contenidoarchivo = $rowLeeSolicitud['consultasssverificacion'];
+
+$tipo = "application/pdf";
+
+switch ($archivo){
+    case 1:
+		$contenidoarchivo = $rowLeeSolicitud['pedidomedico'];
+   		break;
+    case 2:
+		$contenidoarchivo = $rowLeeSolicitud['resumenhc'];
+   		break;
+    case 3:
+		$contenidoarchivo = $rowLeeSolicitud['avalsolicitud'];
+   		break;
+    case 4:
+		$contenidoarchivo = $rowLeeSolicitud['presupuesto1'];
+   		break;
+    case 5:
+		$contenidoarchivo = $rowLeeSolicitud['presupuesto2'];
+   		break;
+    case 6:
+		$contenidoarchivo = $rowLeeSolicitud['presupuesto3'];
+   		break;
+    case 7:
+		$contenidoarchivo = $rowLeeSolicitud['presupuesto4'];
+   		break;
+    case 8:
+		$contenidoarchivo = $rowLeeSolicitud['presupuesto5'];
+   		break;
+    case 9:
+		$contenidoarchivo = $rowLeeSolicitud['consultasssverificacion'];
+   		break;
+    case 10:
+		$contenidoarchivo = $rowLeeDocumento['documentofinal'];
+   		break;
 }
 
 //echo $tipo;

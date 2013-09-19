@@ -389,18 +389,24 @@ function validar(formulario) {
 </head>
 
 <?php
-$sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosolicitud";
+$sqlLeeSolicitud="SELECT * FROM autorizaciones WHERE nrosolicitud = $nrosolicitud";
 $resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
 $rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
 
-$sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
+$sqlLeeDeleg = "SELECT * FROM delegaciones WHERE codidelega = $rowLeeSolicitud[codidelega]";
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
 if($rowLeeSolicitud['material'] == 1) {
-	$sqlLeeMaterial = "SELECT * FROM clasificamaterial where codigo = $rowLeeSolicitud[tipomaterial]";
+	$sqlLeeMaterial = "SELECT * FROM clasificamaterial WHERE codigo = $rowLeeSolicitud[tipomaterial]";
 	$resultLeeMaterial = mysql_query($sqlLeeMaterial,$db); 
 	$rowLeeMaterial = mysql_fetch_array($resultLeeMaterial);
+}
+
+if($rowLeeSolicitud['statusautorizacion'] == 1) {
+	$sqlLeeDocumento = "SELECT * FROM autorizaciondocumento WHERE nrosolicitud = $nrosolicitud";
+	$resultLeeDocumento = mysql_query($sqlLeeDocumento,$db); 
+	$rowLeeDocumento = mysql_fetch_array($resultLeeDocumento);
 }
 ?>
 
@@ -409,7 +415,7 @@ if($rowLeeSolicitud['material'] == 1) {
   <tr>
     <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.jpg" width="92" height="81" /></span></div></td>
     <td colspan="2" scope="row"><div align="left">
-      <p class="Estilo3">Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
+      <p class="Estilo3">Consulta de Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
     </div></td>
     <td width="550"><div align="right">
       <table width="450" height="60" border="2">
@@ -438,12 +444,12 @@ if($rowLeeSolicitud['material'] == 1) {
         <p><strong>Tipo:</strong> <?php	if($rowLeeSolicitud['codiparentesco']!=0) {	if($rowLeeSolicitud['codiparentesco']==1) echo "Titular"; else echo "Familiar ".$rowLeeSolicitud['codiparentesco'];	}?></p>
       </td>
     <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" align="center"/><?php }?></p>
-		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada"; else echo "Rechazada";?></p>
+		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']); else echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']);?></p>
    	  <p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p></td>
   </tr>
   <tr>
     <td width="500" height="50"><h3 align="left" class="Estilo4">Documentaci&oacute;n de la Solicitud</h3></td>
-    <td width="600" height="50"><h3 align="left" class="Estilo4">Autorizaci&oacute;n</h3></td>
+    <td width="600" height="50"><h3 align="left" class="Estilo4">Resultado de la Autorizaci&oacute;n</h3></td>
   </tr>
   <tr>
     <td valign="top"><p><strong>Tipo:</strong> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeMaterial['descripcion']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
@@ -458,25 +464,28 @@ if($rowLeeSolicitud['material'] == 1) {
       <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" align="center"/><?php if($rowLeeSolicitud['aprobado5']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
 	</td>
 	<td valign="top">
-	<?php if($rowLeeSolicitud['statusautorizacion']==1) {?>
-	  <label><input name="autori" id="aprobada" type="radio" value="1" checked="checked"/>Aprobada</label><br />
-      <label><input name="autori" id="rechazada" type="radio" value="2" />Rechazada</label>
+	  <p><strong>Autorizaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusautorizacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']); else echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']);?></p>
+   	  <p><?php echo "".$rowLeeSolicitud['rechazoautorizacion'];?></p>
+      <p><strong>Expediente SUR:</strong>
+	<?php if($rowLeeSolicitud['clasificacionape']==1) {?>
+        <label><input name="ape" id="apeSi" type="radio" value="1" checked="checked" disabled="disabled"/>Si</label>
+        <label><input name="ape" id="apeNo" type="radio" value="0" disabled="disabled"/>No</label>
 	<?php } else {?>
-	  <label><input name="autori" id="aprobada" type="radio" value="1" />Aprobada</label><br />
-      <label><input name="autori" id="rechazada" type="radio" value="2" checked="checked"/>Rechazada</label>	
+        <label><input name="ape" id="apeSi" type="radio" value="1" disabled="disabled"/>Si</label>
+        <label><input name="ape" id="apeNo" type="radio" value="0" checked="checked" disabled="disabled"/>No</label>
 	<?php } ?>
-      <p><textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo" disabled="disabled"></textarea></p>
-      <p>Expediente SUR :
-        <label><input name="ape" id="apeSi" type="radio" value="1"/>Si</label>
-        <label><input name="ape" id="apeNo" type="radio" value="0"/>
-        No</label></p>
-      <p>Comunica al Prestador ?:
-	         <label><input name="presta" id="prestaSi" type="radio" value="1" onchange="mostrarEmail(1)"/>Si</label>
-             <label><input name="presta" id="prestaNo" type="radio" value="0" onchange="mostrarEmail(0)"/>No</label>
-- Email             
-<input name="emailPresta" type="text" id="emailPresta" size="50" maxlength="50" disabled="disabled"/>
-      </p>
-      <p>Monto Autorizado: <label><input name="montoAutoriza" type="text" id="montoAutoriza" size="10" maxlength="10" /></label></p>	</td>
+	  </p>
+      <p><strong>Comunica al Prestador ?:</strong>
+	<?php if($rowLeeSolicitud['emailprestador']!=NULL) {?>
+	         <label><input name="presta" id="prestaSi" type="radio" value="1" checked="checked" disabled="disabled"/>Si</label>
+             <label><input name="presta" id="prestaNo" type="radio" value="0" disabled="disabled"/>No</label>
+	<?php } else {?>
+	         <label><input name="presta" id="prestaSi" type="radio" value="1" disabled="disabled"/>Si</label>
+             <label><input name="presta" id="prestaNo" type="radio" value="0" checked="checked" disabled="disabled"/>No</label>
+	<?php }?>
+- Email: <?php echo $rowLeeSolicitud['emailprestador'];?></p>
+      <p><strong>Monto Autorizado:</strong> <?php echo $rowLeeSolicitud['montoautorizacion'];?></p>
+      <p><p><strong>Documento Autorizacion:</strong> <?php if($rowLeeDocumento['documentofinal']!=NULL) {?><input type="button" name="docuauto" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,10)" align="center"/><?php }?></p></p></td>
   </tr>
   <tr>
     <td colspan="2"><div align="center"><input type="reset" name="volver" value="Volver" onclick="location.href = 'historialSolicitudes.php'"/></div></td>
