@@ -18,7 +18,7 @@ if ($_SESSION['aut'] != 1) {
     $ahora = date("Y-n-j H:i:s"); 
     $tiempo_transcurrido = (strtotime($ahora)-strtotime($fechaGuardada)); 
     //comparamos el tiempo transcurrido 
-    if($tiempo_transcurrido >= 2400) { 
+    if($tiempo_transcurrido >= 1200) { 
        //si pasaron 10 minutos o más 
 	   //TODO que vaya a una pantalla de session caducada....	
    	   header("Location: http://localhost/ospim/logout.php"); //envío al usuario a la pag. de autenticación 
