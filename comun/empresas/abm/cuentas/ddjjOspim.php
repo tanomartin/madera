@@ -56,10 +56,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 	   <td width="225">Total Remuneraci&oacute;n Declarada: </td>
 	  <td width="122"><div align="center"><b><?php echo number_format($rowDdjj['totalremundeclarada'],2,',','.')?></b></div></td>
 	 </tr>
-	 <tr>
-	   <td width="225">Total Remuneraci&oacute;n Decreto: </td>
-	  <td width="122"><div align="center"><b><?php echo  number_format($rowDdjj['totalremundecreto'],2,',','.') ?></b></div></td>
-    </tr>
   </table>
   
 </div>
