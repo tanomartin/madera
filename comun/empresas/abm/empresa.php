@@ -88,13 +88,17 @@ function validarBaja() {
   <table width="346" border="0">
     <tr>
       <td width="112"><div align="center">
-        <input name="Input" type="button" value="Modificar Cabecera" onClick="location.href='modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '">
+        <input name="modifCabecera" type="button" value="Modificar Cabecera" onClick="location.href='modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '">
       </div></td>
       <td width="123"><div align="center">
-        <input name="Input2" type="button" value="Cuenta Corriente">
+        <?php if ($origen == "ospim") { ?>
+			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="location.href='cuentas/cuentaCorrienteOspim.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '">
+		<?php } else {?>
+			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
+		<?php } ?>
       </div></td>
       <td width="97"><div align="center">
-        <input name="Input3" type="button" value="Beneficiarios">
+		<input name="beneficiarios" type="button" value="Beneficiarios">
       </div></td>
     </tr>
   </table>
@@ -122,6 +126,8 @@ function validarBaja() {
 			$sqlCantDdjj = "select * from cabddjjospim where cuit = $cuit and anoddjj >= $anioLimite and mesddjj >= $meslimite";
 			$resCantDdjj = mysql_query($sqlCantDdjj,$db); 
 			$CanDdjj = mysql_num_rows($resCantDdjj); 
+			
+			//TODO VER ddjj de USIMRA TAMBIEN
 		}
 		if ($CantAcuerdos == 0 and $CanDdjj == 0) { ?>
 		    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()">
