@@ -17,7 +17,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <form name="verificador">
   <div align="center">
-  	<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/>
+  	<?php 
+		$origen = $_GET['origen'];
+		if (is_null($origen)) { ?>
+			<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" align="center"/>
+	<?php } ?>
   </div>
   <div align="center">
     <?php 
@@ -238,8 +242,11 @@ A:hover {text-decoration: none;color:#00FFFF }
   </div>
   <div align="center">
         <p>
-          <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/> 
-              </p>
+       	<?php 
+		if (is_null($origen)) { ?>
+			 <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/> 
+	<?php } ?>
+        </p>
   </div>
 </form>
 </body>
