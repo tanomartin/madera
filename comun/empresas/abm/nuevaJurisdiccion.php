@@ -11,7 +11,7 @@ $domicilio=$_GET['domicilio'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Modificar Jurisdicciones Empresa :.</title>
+<title>.: Nueva Jurisdicciones Empresa :.</title>
 </head>
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
