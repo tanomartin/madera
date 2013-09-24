@@ -64,7 +64,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="516">Nombre: <b><?php echo $row['nombre'] ?></b></td>
     </tr>
 	 <tr>
-      <td colspan="2">Peridodo: <b><?php echo $anio."-".$mes." [PAGO] " ?></b></td>
+      <td colspan="2">Peridodo: <b><?php echo $mes."-".$anio." [PAGO] " ?></b></td>
 	</tr>
   </table>
    <p><strong>Detalles del Pago</strong></p>

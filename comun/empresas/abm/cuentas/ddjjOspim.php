@@ -43,7 +43,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="516">Nombre: <b><?php echo $row['nombre'] ?></b></td>
     </tr>
 	 <tr>
-      <td colspan="2">Peridodo: <b><?php echo $anio."-".$mes." [NO PAGO] " ?></b></td>
+      <td colspan="2">Peridodo: <b><?php echo $mes."-".$anio." [NO PAGO] " ?></b></td>
 	</tr>
   </table>
   <p><strong>Infomación DDJJ</strong></p>
