@@ -21,7 +21,7 @@ $alfapostal=$_GET['alfapostal'];
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Modificar Cabecera Empresa :.</title>
+<title>.: Alta Empresa :.</title>
 </head>
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
