@@ -1,47 +1,8 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
-
+include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 $cuit=$_GET['cuit'];
-$sql = "select * from empresas where cuit = $cuit";
-$result = mysql_query($sql,$db); 
-$row = mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
-
-$ano = date("Y")-10;
-$anofin = date("Y");
-$mesactual = date("n");
-$diahoy = date("j");
-$anoinicio = $ano;
-//$ano = 2004;
-//$anofin = 2014;
-//$mesactual = 2;
-//$diahoy = 1;
-if ($diahoy > 15) {
-	$mesfin = $mesactual - 1;
-} else {
-	if ($mesactual == 1) {
-		$anofin = $anofin - 1;
-		$ano = $anofin - 11;
-		$anoinicio = $ano;
-		$mesfin = 11;
-	} else {
-		$mesfin = $mesactual - 2;
-	}
-} 
-$mesinicio = $mesfin + 1;
-//print("AÑO ITE: ".$ano."<br>");
-//print("AÑO Iniicio: ".$anoinicio."<br>");
-//print("AÑO anofin: ".$anofin."<br>");
-//print("MES mesinicio: ".$mesinicio."<br>");
-//print("MES fin: ".$mesfin."<br>");
-
-
+include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php");
+include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -127,14 +88,23 @@ function estado($ano, $me, $db) {
 <title>.: Cuenta Corriente Empresa :.</title>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-	<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
+	<?php if ($tipo == "activa") { ?>
+			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
+	<?php } else { ?>
+			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresaBaja.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
+	<?php } ?>
 	 <p>
     <?php 
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
   </p>
    <p><strong>Cuenta Corriente </strong></p>
-<table width="1024" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
+   <p><strong>Inicio Actividad: <?php echo invertirFecha($fechaInicio) ?></strong></p>
+  	<?php if ($tipo == "baja") {?>
+   		<p><strong>Fecha Baja Empresa: <?php echo invertirFecha($fechaBaja) ?></strong></p>
+	<?php } ?>	
+	
+   <table width="1024" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
   <tr>
     <td width="52" rowspan="2"><span class="Estilo6">A&Ntilde;OS</span></td>
     <td colspan="12"><span class="Estilo6">MESES</span></td>
