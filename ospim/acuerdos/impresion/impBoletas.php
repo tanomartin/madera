@@ -10,23 +10,24 @@ $result = mysql_query( $sql,$db);
 $cant = mysql_num_rows($result); 
 if ($cant != 1) {
 	header ("Location: moduloImpresion.php?err=2");
-}
-$row=mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query( $sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query( $sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
-
-$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit";
-$resulacuerdos= mysql_query( $sqlacuerdos,$db); 
-
-$cant = mysql_num_rows($resulacuerdos); 
-if ($cant == 0) {
-	header('Location: moduloImpresion.php?err=1');
+} else {
+	$row=mysql_fetch_array($result); 
+	
+	$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
+	$resultlocalidad = mysql_query( $sqllocalidad,$db); 
+	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
+	
+	$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
+	$resultprovi = mysql_query( $sqlprovi,$db); 
+	$rowprovi = mysql_fetch_array($resultprovi);
+	
+	$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit";
+	$resulacuerdos= mysql_query( $sqlacuerdos,$db); 
+	
+	$cant = mysql_num_rows($resulacuerdos); 
+	if ($cant == 0) {
+		header('Location: moduloImpresion.php?err=1');
+	}
 }
 
 ?>
