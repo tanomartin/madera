@@ -43,12 +43,9 @@ jQuery(function($){
 		if ($err == 1) {
 			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
 		}
-
   ?>
-  <p>
   <label>
-  <div align="center">CUIT
-      <input name="cuit" id="cuit" type="text" size="10" />
+  <div align="center">CUIT<input name="cuit" id="cuit" type="text" size="10" /></div>
   </label>
     <p align="center">
     <label>
