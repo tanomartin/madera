@@ -37,6 +37,7 @@ function abrirInfo(dire) {
 
 function estado($ano, $me, $db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+	//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
 	if ($ano == $anoinicio) {
 		if ($me < $mesinicio) {
 			$des = "-";
@@ -51,6 +52,7 @@ function estado($ano, $me, $db) {
 			return($des);
 		}
 	}
+	
 	//VEO LOS PAGOS DE AFIP
 	$sqlPagos = "select * from afiptransferencias where cuit = $cuit and anopago = $ano and mespago = $me";
 	$resPagos = mysql_query($sqlPagos,$db); 
@@ -58,23 +60,27 @@ function estado($ano, $me, $db) {
 	if($CantPagos > 0) {
 		$des = "PAGO";
 		print ("<td width=81><a href=javascript:abrirInfo('pagosOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$des."</a></td>");
-		} else { 
-			// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-			$sqlAcuerdos = "select * from detacuerdosospim where cuit = $cuit and anoacuerdo = $ano and mesacuerdo = $me" ;
-			$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
-			$CantAcuerdos = mysql_num_rows($resAcuerdos); 
-			if($CantAcuerdos > 0) {
-				$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
-				$nroacuerdo = $rowAcuerdos['nroacuerdo'];
-				$sqlCabe = "select estadoacuerdo from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacuerdo" ;
-				$resCabe = mysql_query($sqlCabe,$db); 
-				$rowCabe = mysql_fetch_array($resCabe); 
-				if ($rowCabe['estadoacuerdo'] == 0 ) {
-					$des = "P. ACUER.";
-				} else {
-					$des = "ACUER.";
-				}
-				print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowAcuerdos['nroacuerdo']."&origen=empresa')>".$des."</a></td>");
+	} else { 
+		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
+		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from detacuerdosospim d, cabacuerdosospim c where c.cuit = $cuit and c.cuit = d.cuit and d.anoacuerdo = $ano and d.mesacuerdo = $me";
+		$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
+		$CantAcuerdos = mysql_num_rows($resAcuerdos); 
+		if($CantAcuerdos > 0) {
+			$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
+			if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
+				$des = "P. ACUER.";
+			} else {
+				$des = "ACUER.";
+			}
+			print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowAcuerdos['nroacuerdo']."&origen=empresa')>".$des."</a></td>");
+		} else {
+			//VEO LOS JUICIOS
+			$sqlJuicio = "select c.nroorden from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicios = $ano and d.mesjuicios = $me";
+			$resJuicio = mysql_query($sqlJuicio,$db); 
+			$CantJuicio = mysql_num_rows($resJuicio); 
+			if ($CantJuicio > 0) {
+				$des = "JUICIO";
+				print ("<td width=81>".$des."</td>");
 			} else {
 				// VEO LOS REQ DE FISC
 				$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
@@ -95,13 +101,13 @@ function estado($ano, $me, $db) {
 						// NO HAY DDJJ SIN PAGOS
 						$des = "S.DJ.";
 						print ("<td width=81>".$des."</td>");
-					} //else
-				}//else
-			}//else
-		} //else 
+					} //else DDJJ
+				}//else REQ
+			} //else JUICIOS
+		}//else ACUERDOS
+	} //else PAGOS 
 	return $des;
-	} //if
-
+} //function
 
 ?>
 <title>.: Cuenta Corriente Empresa :.</title>
@@ -165,7 +171,7 @@ while($ano<=$anofin) {
   <tr>
     <td>*NO PAGO = PERIODO NO PAGO CON DDJJ</td>
 	<td>*S. DJ.= PERIODO NO PAGO SIN DDJJ</td>
-	<td>*JUICI.= PERIODO EN JUICIO </td>
+	<td>*JUICIO = PERIODO EN JUICIO </td>
     <td>&nbsp;</td>
   </tr>
 </table>
