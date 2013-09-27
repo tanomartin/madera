@@ -9,6 +9,7 @@ if ($cuit=="") {
 $sql = "select * from empresasdebaja where cuit = $cuit";
 $result = mysql_query($sql,$db); 
 $row = mysql_fetch_array($result); 
+$tipo = "baja";
 
 $sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
 $resultlocalidad = mysql_query($sqllocalidad,$db); 
@@ -17,6 +18,7 @@ $rowlocalidad = mysql_fetch_array($resultlocalidad);
 $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi = mysql_query($sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
+
 
 ?>
 
@@ -54,7 +56,6 @@ function informaTitulares() {
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
   <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'" align="center"/> 
-  <h2 class="Estilo1">EMPRESA DE BAJA </h2>
   <p>
     <?php 
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
@@ -74,7 +75,11 @@ function informaTitulares() {
     </tr>
   </table>
   <p>
-    <input name="cuentaCorriente" type="button" value="Cuenta Corriente">
+    	<?php if ($origen == "ospim") { ?>
+			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="location.href='cuentas/cuentaCorrienteOspim.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '">
+		<?php } else {?>
+			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
+		<?php } ?>
   </p>
   <p>
     <?php
