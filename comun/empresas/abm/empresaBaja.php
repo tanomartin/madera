@@ -76,7 +76,7 @@ function informaTitulares() {
   </table>
   <p>
     	<?php if ($origen == "ospim") { ?>
-			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="location.href='cuentas/cuentaCorrienteOspim.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '">
+			<input name="ctacteOspim" type="button" value="Cuenta Corriente">
 		<?php } else {?>
 			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
 		<?php } ?>
