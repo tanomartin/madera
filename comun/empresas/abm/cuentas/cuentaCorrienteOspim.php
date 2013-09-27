@@ -65,25 +65,44 @@ function estado($ano, $me, $db) {
 			$CantAcuerdos = mysql_num_rows($resAcuerdos); 
 			if($CantAcuerdos > 0) {
 				$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
-				$des = "ACUER.";
+				$nroacuerdo = $rowAcuerdos['nroacuerdo'];
+				$sqlCabe = "select estadoacuerdo from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacuerdo" ;
+				$resCabe = mysql_query($sqlCabe,$db); 
+				$rowCabe = mysql_fetch_array($resCabe); 
+				if ($rowCabe['estadoacuerdo'] == 0 ) {
+					$des = "P. ACUER.";
+				} else {
+					$des = "ACUER.";
+				}
 				print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowAcuerdos['nroacuerdo']."&origen=empresa')>".$des."</a></td>");
 			} else {
-				// VEO LAS DDJJ REALIZADAS SIN PAGOS
-				$sqlDDJJ = "select * from cabddjjospim where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
-				$resDDJJ = mysql_query($sqlDDJJ,$db); 
-				$CantDDJJ = mysql_num_rows($resDDJJ); 
-				if($CantDDJJ > 0) {
-					$des = "NO PAGO";
-					print ("<td width=81><a href=javascript:abrirInfo('ddjjOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$des."</a></td>");
-				} else {
-					// NO HAY DDJJ SIN PAGOS
-					$des = "S.DJ.";
+				// VEO LOS REQ DE FISC
+				$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+				$resReq = mysql_query($sqlReq,$db); 
+				$CantReq = mysql_num_rows($resReq); 
+				if($CantReq > 0) {
+					$des = "REQ.";
 					print ("<td width=81>".$des."</td>");
-				} //else
-			} //else 
-		} //else
-		return $des;
+				} else {
+					// VEO LAS DDJJ REALIZADAS SIN PAGOS
+					$sqlDDJJ = "select * from cabddjjospim where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
+					$resDDJJ = mysql_query($sqlDDJJ,$db); 
+					$CantDDJJ = mysql_num_rows($resDDJJ); 
+					if($CantDDJJ > 0) {
+						$des = "NO PAGO";
+						print ("<td width=81><a href=javascript:abrirInfo('ddjjOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$des."</a></td>");
+					} else {
+						// NO HAY DDJJ SIN PAGOS
+						$des = "S.DJ.";
+						print ("<td width=81>".$des."</td>");
+					} //else
+				}//else
+			}//else
+		} //else 
+	return $des;
 	} //if
+
+
 ?>
 <title>.: Cuenta Corriente Empresa :.</title>
 <body bgcolor=<?php echo $bgcolor ?>>
@@ -138,14 +157,16 @@ while($ano<=$anofin) {
 <br>
 <table width="1024" border="0" style="font-size:12px">
   <tr>
-    <td width="254">*ACUER. = PERIODO EN ACUERDO</td>
-    <td width="212">*PAGO = PERIODO PAGO CON DDJJ</td>
-	<td width="544">*S. DJ.= PERIODO SIN DDJJ</td>
+  	<td>*PAGO = PERIODO PAGO CON DDJJ</td>
+	<td>*P. ACUER. = PERIODO PAGO POR ACUERDO </td>
+    <td>*ACUER. = PERIODO EN ACUERDO</td>
+	<td>*REQ. = FISCALIZADO </td>
   </tr>
   <tr>
     <td>*NO PAGO = PERIODO NO PAGO CON DDJJ</td>
+	<td>*S. DJ.= PERIODO NO PAGO SIN DDJJ</td>
 	<td>*JUICI.= PERIODO EN JUICIO </td>
-    <td>*REQ = FISCALIZADO </td>
+    <td>&nbsp;</td>
   </tr>
 </table>
 <br>
