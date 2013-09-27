@@ -7,6 +7,10 @@ if ($cuit == NULL) {
 
 $sql = "select * from empresas where cuit = $cuit";
 $result = mysql_query( $sql,$db); 
+$cant = mysql_num_rows($result); 
+if ($cant != 1) {
+	header ("Location: fiscalizacionImpresion.php?err=2");
+}
 $row=mysql_fetch_array($result); 
 
 $sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";

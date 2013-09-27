@@ -40,11 +40,13 @@ jQuery(function($){
 		if ($err == 1) {
 			print("<div align='center' style='color:#FF0000'><b> CUIT SIN ACUERDOS CARGADOS </b></div>");
 		}
+		if ($err == 2) {
+			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
+		}
+
   ?>
-  <p>
   <label> 
-  <div align="center">CUIT 
-    <input name="cuit" type="text" id="cuit" size="10" />
+  <div align="center">CUIT <input name="cuit" type="text" id="cuit" size="10" /></div>
   </label>
   <p align="center">
     <label>
