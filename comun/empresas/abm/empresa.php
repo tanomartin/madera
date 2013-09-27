@@ -40,6 +40,8 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 function validarBaja() {
@@ -58,6 +60,16 @@ function validarBaja() {
  <?php } else { ?>
  	   		location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
 <?php }   ?>
+}
+
+function rediSabanaCtaCte(origen) {
+	$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	if (origen == "ospim") {
+		location.href='cuentas/cuentaCorrienteOspim.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>';
+	} else {
+		location.href='cuentas/cuentaCorrienteUsimra.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>';
+	}
+	
 }
 
 </script>
@@ -92,7 +104,7 @@ function validarBaja() {
       </div></td>
       <td width="123"><div align="center">
         <?php if ($origen == "ospim") { ?>
-			<input name="ctacteOspim" type="button" value="Cuenta Corriente">
+			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')">
 		<?php } else {?>
 			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
 		<?php } ?>
