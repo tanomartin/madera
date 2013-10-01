@@ -26,12 +26,11 @@ print("MES INICIO COMIENZO: ".$mesinicio."<br>");
 print("ANIO FIN COMIENZO: ".$anofin."<br>");
 print("MES FIN COMIENZO: ".$mesfin."<br>");*/
 
-$fechaInicio = $row['iniobliosp'];
 if ($fechaInicio != "0000-00-00") {
 	$anioInicioActi = substr($fechaInicio,0,4);
 	$mesInicioActi = substr($fechaInicio,5,2);
-	print("ANIO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
-	print("MES INICIO ACTIVIDAD: ".$mesInicioActi."<br>");
+	//print("ANIO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
+	//print("MES INICIO ACTIVIDAD: ".$mesInicioActi."<br>");
 	if ($anioInicioActi > $ano) {
 		$ano = $anioInicioActi;
 		if ($mesInicioActi < $mesinicio) {
@@ -61,10 +60,10 @@ if ($tipo == "baja") {
 }
 
 $anoinicio = $ano;
-//print("<br>::::::::::::::PARA TRABAJAR QUEDO ESTO:::::::::::<br>");
+/*print("<br>::::::::::::::PARA TRABAJAR QUEDO ESTO:::::::::::<br>");
 print("ANIO INICIO: ".$anoinicio."<br>");
 print("MES INICIO: ".$mesinicio."<br>");
 print("ANIO FIN: ".$anofin."<br>");
-print("MES FIN: ".$mesfin."<br>");
+print("MES FIN: ".$mesfin."<br>");*/
 
 ?>
