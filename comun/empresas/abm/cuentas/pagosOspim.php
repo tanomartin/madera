@@ -64,14 +64,14 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="516">Nombre: <b><?php echo $row['nombre'] ?></b></td>
     </tr>
 	 <tr>
-      <td colspan="2">Peridodo: <b><?php echo $mes."-".$anio." [PAGO] " ?></b></td>
+      <td colspan="2">Peridodo: <b><?php echo $mes."-".$anio ?></b></td>
 	</tr>
   </table>
    <p><strong>Detalles del Pago</strong></p>
   <table width="583" border="1">
     <tr>
       <th width="193">Concepto</th>
-      <th width="192">Fecha</th>
+      <th width="192">Fecha de Pago </th>
 	  <th width="88">Empleados</th>
 	   <th width="97">Remuneraci&oacute;n</th>
 	   <th width="88">Importe</th>

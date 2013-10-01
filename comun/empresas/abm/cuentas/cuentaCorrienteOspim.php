@@ -35,6 +35,28 @@ function abrirInfo(dire) {
 </head>
 <?php
 
+function estaVencido($resFechasPagos, $me, $ano) {
+	if ($me == 12) {
+		$mesvto = 1;
+		$anovto = $ano + 1;
+	} else {
+		$mesvto = $me + 1;
+		$anovto = $ano;
+	}
+	if ($mesvto < 10) {
+		$mesvto = "0".$mesvto;
+	}
+	$diavto = 15;
+	$fechaStr = $anovto.'-'.$mesvto.'-'.$diavto;
+	while ($rowPagos = mysql_fetch_array($resFechasPagos)) {
+		$fechaPago = $rowPagos['fechapago'];
+		if (strcmp($fechaPago,$fechaStr) > 0) {
+			return(1);
+		}
+	}
+	return(0);
+}
+
 function estado($ano, $me, $db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
 	//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
@@ -54,11 +76,15 @@ function estado($ano, $me, $db) {
 	}
 	
 	//VEO LOS PAGOS DE AFIP
-	$sqlPagos = "select * from afiptransferencias where cuit = $cuit and anopago = $ano and mespago = $me";
+	$sqlPagos = "select fechapago from afiptransferencias where cuit = $cuit and anopago = $ano and mespago = $me group by fechapago";
 	$resPagos = mysql_query($sqlPagos,$db); 
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
-		$des = "PAGO";
+		if (estaVencido($resPagos, $me, $ano)) {
+			$des = "P.F.T.";
+		} else {
+			$des = "PAGO";
+		}
 		print ("<td width=81><a href=javascript:abrirInfo('pagosOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$des."</a></td>");
 	} else { 
 		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
@@ -163,16 +189,16 @@ while($ano<=$anofin) {
 <br>
 <table width="1024" border="0" style="font-size:12px">
   <tr>
-  	<td>*PAGO = PERIODO PAGO CON DDJJ</td>
-	<td>*P. ACUER. = PERIODO PAGO POR ACUERDO </td>
-    <td>*ACUER. = PERIODO EN ACUERDO</td>
-	<td>*REQ. = FISCALIZADO </td>
+  	<td>*PAGO =  PAGO CON DDJJ</td>
+	<td>*P. ACUER. =  PAGO POR ACUERDO </td>
+    <td>*P.F.T. = PAGO FUERA DE TERMINO </td>
+	<td> *ACUER. =  EN ACUERDO</td>
   </tr>
   <tr>
-    <td>*NO PAGO = PERIODO NO PAGO CON DDJJ</td>
-	<td>*S. DJ.= PERIODO NO PAGO SIN DDJJ</td>
-	<td>*JUICIO = PERIODO EN JUICIO </td>
-    <td>&nbsp;</td>
+    <td>*NO PAGO =  NO PAGO CON DDJJ</td>
+	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
+	<td>*JUICIO = EN JUICIO </td>
+    <td>*REQ. = FISCALIZADO</td>
   </tr>
 </table>
 <br>
