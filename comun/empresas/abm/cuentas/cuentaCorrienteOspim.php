@@ -2,6 +2,7 @@
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 $cuit=$_GET['cuit'];
 include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php");
+$fechaInicio= $row['iniobliosp'];
 include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
 ?>
 
@@ -101,7 +102,7 @@ function estado($ano, $me, $db) {
 			print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowAcuerdos['nroacuerdo']."&origen=empresa')>".$des."</a></td>");
 		} else {
 			//VEO LOS JUICIOS
-			$sqlJuicio = "select c.nroorden from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicios = $ano and d.mesjuicios = $me";
+			$sqlJuicio = "select c.nroorden from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
 			$resJuicio = mysql_query($sqlJuicio,$db); 
 			$CantJuicio = mysql_num_rows($resJuicio); 
 			if ($CantJuicio > 0) {
