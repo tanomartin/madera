@@ -63,7 +63,7 @@ function validarBaja() {
 }
 
 function rediSabanaCtaCte(origen) {
-	$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	//$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	if (origen == "ospim") {
 		location.href='cuentas/cuentaCorrienteOspim.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>';
 	} else {
