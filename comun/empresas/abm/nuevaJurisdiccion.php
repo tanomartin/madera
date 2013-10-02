@@ -46,6 +46,13 @@ function cambioProvincia(locali) {
 				document.forms.nuevaJurisdiccion.codprovin.value = "<?php echo $rowProvin['codprovin'] ?>";
 				
 				<?php 
+				//solo para PRov de Bs As se agrega capital
+					if ($codprovin == 2) { ?>
+						o = document.createElement("OPTION");
+						o.text = 'CAPITAL FEDERAL';
+						o.value = 1002;
+						document.forms.nuevaJurisdiccion.selectDelegacion.options.add(o);
+			<?php 	} 
 					$sqlDelega = "select * from delegaciones where codprovin = $codprovin";
 					$resDelega = mysql_query($sqlDelega,$db);
 					while($rowDelega = mysql_fetch_array($resDelega)) { ?>
