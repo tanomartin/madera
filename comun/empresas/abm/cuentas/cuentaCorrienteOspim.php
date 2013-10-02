@@ -102,11 +102,21 @@ function estado($ano, $me, $db) {
 			print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowAcuerdos['nroacuerdo']."&origen=empresa')>".$des."</a></td>");
 		} else {
 			//VEO LOS JUICIOS
-			$sqlJuicio = "select c.nroorden from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
+			$sqlJuicio = "select c.nroorden, c.statusdeuda from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
 			$resJuicio = mysql_query($sqlJuicio,$db); 
 			$CantJuicio = mysql_num_rows($resJuicio); 
 			if ($CantJuicio > 0) {
-				$des = "JUICIO";
+				$rowJuicio = mysql_fetch_array($resJuicio); 
+				$statusDeuda = $rowJuicio['statusdeuda'];
+				if ($statusDeuda == 1) {
+					$des = "J.EJEC";
+				}
+				if ($statusDeuda == 2) {
+					$des = "J.CONV";
+				}
+				if ($statusDeuda == 3) {
+					$des = "J.QUIEB";
+				}
 				print ("<td width=81>".$des."</td>");
 			} else {
 				// VEO LOS REQ DE FISC
@@ -193,13 +203,19 @@ while($ano<=$anofin) {
   	<td>*PAGO =  PAGO CON DDJJ</td>
 	<td>*P. ACUER. =  PAGO POR ACUERDO </td>
     <td>*P.F.T. = PAGO FUERA DE TERMINO </td>
-	<td> *ACUER. =  EN ACUERDO</td>
+	<td>*ACUER. =  EN ACUERDO</td>
   </tr>
   <tr>
     <td>*NO PAGO =  NO PAGO CON DDJJ</td>
 	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
-	<td>*JUICIO = EN JUICIO </td>
-    <td>*REQ. = FISCALIZADO</td>
+	<td>*REQ. = FISCALIZADO</td>
+    <td>*J.EJEC = EN JUICIO EJECUI&Oacute;N </td>
+  </tr>
+  <tr>
+    <td>*J.CONV = EN JUICIO CONVOCATORIA </td>
+    <td>*J.QUIEB = EN JUICIO QUIEBRA </td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
 </table>
 <br>
