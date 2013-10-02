@@ -89,7 +89,7 @@ function estado($ano, $me, $db) {
 		print ("<td width=81><a href=javascript:abrirInfo('pagosOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$des."</a></td>");
 	} else { 
 		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from detacuerdosospim d, cabacuerdosospim c where c.cuit = $cuit and c.cuit = d.cuit and d.anoacuerdo = $ano and d.mesacuerdo = $me";
+		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and d.anoacuerdo = $ano and d.mesacuerdo = $me";
 		$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
 		$CantAcuerdos = mysql_num_rows($resAcuerdos); 
 		if($CantAcuerdos > 0) {
