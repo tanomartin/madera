@@ -10,7 +10,7 @@ $anio=$_GET['anio'];
 $mes=$_GET['mes'];
 
 $sqlPagos = "select concepto, fechapago, sum(importe), debitocredito, count(concepto)
-			from afiptransferencias 
+			from afipprocesadas 
 			where 
 			cuit = $cuit and 
 			anopago = $anio and 

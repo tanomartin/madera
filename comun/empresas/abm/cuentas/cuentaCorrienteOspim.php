@@ -77,7 +77,7 @@ function estado($ano, $me, $db) {
 	}
 	
 	//VEO LOS PAGOS DE AFIP
-	$sqlPagos = "select fechapago from afiptransferencias where cuit = $cuit and anopago = $ano and mespago = $me group by fechapago";
+	$sqlPagos = "select fechapago from afipprocesadas where cuit = $cuit and anopago = $ano and mespago = $me group by fechapago";
 	$resPagos = mysql_query($sqlPagos,$db); 
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
