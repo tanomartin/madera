@@ -29,7 +29,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <p align="center"><a class="enlace" href="#"><img src="img/impafil.jpg" width="90" height="78" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Solicitudes de Autorizacion </p>
-          <p align="center"><a class="enlace" href="#"><img src="img/autorizaciones.jpg" width="90" height="78" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="verificaciones/buscaSolicitudes.php"><img src="img/autorizaciones.jpg" width="90" height="78" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>
