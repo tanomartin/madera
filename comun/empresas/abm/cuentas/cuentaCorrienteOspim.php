@@ -58,6 +58,16 @@ function estaVencido($resFechasPagos, $me, $ano) {
 	return(0);
 }
 
+function encuentroPagos($db) {
+	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+	$sqlPagos = "select anopago, mespago, fechapago from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio))";
+	print($sqlPagos."<br>");
+	$resPagos = mysql_query($sqlPagos,$db);
+	while ($rowPagos = mysql_fetch_array($resPagos)) {  
+		var_dump($rowPagos);
+	}
+}
+
 function estado($ano, $me, $db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
 	//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
@@ -78,6 +88,7 @@ function estado($ano, $me, $db) {
 	
 	//VEO LOS PAGOS DE AFIP
 	$sqlPagos = "select fechapago from afipprocesadas where cuit = $cuit and anopago = $ano and mespago = $me group by fechapago";
+	print($sqlPagos.";<br>");
 	$resPagos = mysql_query($sqlPagos,$db); 
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
@@ -186,11 +197,13 @@ function estado($ano, $me, $db) {
     <td width="81" class="Estilo6">Diciembre</td>
   </tr>
 <?php
+
+$nose = encuentroPagos($db);
 while($ano<=$anofin) {
   	print("<tr>");
   	print("<td width='52'><strong>".$ano."</strong></td>");
 	for ($i=1;$i<13;$i++){
-		$descri = estado($ano,$i, $db);
+		//$descri = estado($ano,$i, $db);
 	}
 	print("</tr>");
 	$ano++;
