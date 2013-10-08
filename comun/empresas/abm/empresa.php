@@ -109,7 +109,6 @@ function rediSabanaCtaCte(origen) {
       <td width="123"><div align="center">
         <?php if ($origen == "ospim") { ?>
 			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')">
-			<input name="ctacteOspim" type="button" value="Cuenta Corriente Viejo" onClick="rediSabanaCtaCte('ospimviejo')">
 		<?php } else {?>
 			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
 		<?php } ?>
