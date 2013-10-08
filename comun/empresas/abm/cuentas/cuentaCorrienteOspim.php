@@ -224,7 +224,7 @@ while($ano<=$anofin) {
 		$idArray = $ano.$i;
 		if (!array_key_exists($idArray, $arrayPagos)) {
 			$resultado = estado($ano, $i, $db);
-			$arrayPagos[$idArray] =  array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => $resultado);
+			$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
 		}
 		imprimeTabla($arrayPagos[$idArray]);
 	}
