@@ -36,7 +36,7 @@ function abrirInfo(dire) {
 </head>
 <?php
 
-function estaVencido($resFechasPagos, $me, $ano) {
+function estaVencido($fechaPago, $me, $ano) {
 	if ($me == 12) {
 		$mesvto = 1;
 		$anovto = $ano + 1;
@@ -49,68 +49,65 @@ function estaVencido($resFechasPagos, $me, $ano) {
 	}
 	$diavto = 15;
 	$fechaStr = $anovto.'-'.$mesvto.'-'.$diavto;
-	while ($rowPagos = mysql_fetch_array($resFechasPagos)) {
-		$fechaPago = $rowPagos['fechapago'];
-		if (strcmp($fechaPago,$fechaStr) > 0) {
-			return(1);
-		}
+	if (strcmp($fechaPago,$fechaStr) > 0) {
+		return(1);
 	}
 	return(0);
 }
 
 function encuentroPagos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
-	$sqlPagos = "select anopago, mespago, fechapago from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio))";
-	print($sqlPagos."<br>");
+	$sqlPagos = "select anopago, mespago, fechapago from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
 	$resPagos = mysql_query($sqlPagos,$db);
-	while ($rowPagos = mysql_fetch_array($resPagos)) {  
-		var_dump($rowPagos);
+	$CantPagos = mysql_num_rows($resPagos); 
+	if($CantPagos > 0) {
+		while ($rowPagos = mysql_fetch_assoc($resPagos)) { 
+			$id=$rowPagos['anopago'].$rowPagos['mespago'];
+			$arrayPagos[$id] = array('anio' => $rowPagos['anopago'], 'mes' => $rowPagos['mespago'], 'fechapago' =>  $rowPagos['fechapago']);
+		}
+		$resPagos = array(); 
+		foreach ($arrayPagos as $pago) {
+			$id=$pago['anio'].$pago['mes'];
+			if (estaVencido($pago['fechapago'], $pago['mes'], $pago['anio'])) {
+				$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'P.F.T.');		
+			} else {
+				$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'PAGO');
+			}
+		}
+		return($resPagos);
+	} else {
+		return(0);
 	}
 }
 
 function estado($ano, $me, $db) {
-	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
-	//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
-	if ($ano == $anoinicio) {
-		if ($me < $mesinicio) {
-			$des = "-";
-			print ("<td width=81>".$des."</td>");
-			return($des);
+		global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+		//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
+		if ($ano == $anoinicio) {
+			if ($me < $mesinicio) {
+				$des = "-";
+				return($des);
+			}
 		}
-	}
-	if ($ano == $anofin) {
-		if ($me > $mesfin) {
-			$des = "-";
-			print ("<td width=81>".$des."</td>");
-			return($des);
+		if ($ano == $anofin) {
+			if ($me > $mesfin) {
+				$des = "-";
+				return($des);
+			}
 		}
-	}
 	
-	//VEO LOS PAGOS DE AFIP
-	$sqlPagos = "select fechapago from afipprocesadas where cuit = $cuit and anopago = $ano and mespago = $me group by fechapago";
-	print($sqlPagos.";<br>");
-	$resPagos = mysql_query($sqlPagos,$db); 
-	$CantPagos = mysql_num_rows($resPagos); 
-	if($CantPagos > 0) {
-		if (estaVencido($resPagos, $me, $ano)) {
-			$des = "P.F.T.";
-		} else {
-			$des = "PAGO";
-		}
-		print ("<td width=81><a href=javascript:abrirInfo('pagosOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$des."</a></td>");
-	} else { 
 		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and d.anoacuerdo = $ano and d.mesacuerdo = $me";
+		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
 		$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
 		$CantAcuerdos = mysql_num_rows($resAcuerdos); 
 		if($CantAcuerdos > 0) {
 			$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
+			$nroacuerdo = $rowAcuerdos['nroacuerdo'];
 			if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
-				$des = "P. ACUER.";
+				$des = "P. ACUER.-".$nroacuerdo;
 			} else {
-				$des = "ACUER.";
+				$des = "ACUER.-".$nroacuerdo;
 			}
-			print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowAcuerdos['nroacuerdo']."&origen=empresa')>".$des."</a></td>");
 		} else {
 			//VEO LOS JUICIOS
 			$sqlJuicio = "select c.nroorden, c.statusdeuda from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
@@ -128,7 +125,6 @@ function estado($ano, $me, $db) {
 				if ($statusDeuda == 3) {
 					$des = "J.QUIEB";
 				}
-				print ("<td width=81>".$des."</td>");
 			} else {
 				// VEO LOS REQ DE FISC
 				$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
@@ -136,7 +132,6 @@ function estado($ano, $me, $db) {
 				$CantReq = mysql_num_rows($resReq); 
 				if($CantReq > 0) {
 					$des = "REQ.";
-					print ("<td width=81>".$des."</td>");
 				} else {
 					// VEO LAS DDJJ REALIZADAS SIN PAGOS
 					$sqlDDJJ = "select * from cabddjjospim where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
@@ -144,18 +139,38 @@ function estado($ano, $me, $db) {
 					$CantDDJJ = mysql_num_rows($resDDJJ); 
 					if($CantDDJJ > 0) {
 						$des = "NO PAGO";
-						print ("<td width=81><a href=javascript:abrirInfo('ddjjOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$des."</a></td>");
 					} else {
 						// NO HAY DDJJ SIN PAGOS
 						$des = "S.DJ.";
-						print ("<td width=81>".$des."</td>");
 					} //else DDJJ
 				}//else REQ
 			} //else JUICIOS
 		}//else ACUERDOS
-	} //else PAGOS 
-	return $des;
+		return $des;
 } //function
+
+function imprimeTabla($periodo) {
+	global $cuit;
+	$estado = $periodo['estado'];
+	$ano = $periodo['anio'];
+	$me = $periodo['mes'];
+	if ($estado == "-" or $estado == 'J.EJEC' or $estado == 'J.CONV' or $estado == 'J.QUIEB' or $estado == 'REQ.' or $estado == 'S.DJ.') {
+		print ("<td width=81>".$estado."</a></td>");
+	} else {
+		if ($estado == 'P.F.T.' or $estado == 'PAGO') {
+			print ("<td width=81><a href=javascript:abrirInfo('pagosOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
+		} else {
+			if ($estado == 'NO PAGO') {
+				print ("<td width=81><a href=javascript:abrirInfo('ddjjOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
+			} else {
+				$pacuerdo = explode('-',$estado);
+				if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {
+					print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>");
+				}
+			}
+		}
+	}
+}
 
 ?>
 <title>.: Cuenta Corriente Empresa :.</title>
@@ -198,16 +213,25 @@ function estado($ano, $me, $db) {
   </tr>
 <?php
 
-$nose = encuentroPagos($db);
+$arrayPagos = encuentroPagos($db);
+if ($arrayPagos==0){ 
+	$arrayPagos = array();
+}
 while($ano<=$anofin) {
   	print("<tr>");
   	print("<td width='52'><strong>".$ano."</strong></td>");
 	for ($i=1;$i<13;$i++){
-		//$descri = estado($ano,$i, $db);
+		$idArray = $ano.$i;
+		if (!array_key_exists($idArray, $arrayPagos)) {
+			$resultado = estado($ano, $i, $db);
+			$arrayPagos[$idArray] =  array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => $resultado);
+		}
+		imprimeTabla($arrayPagos[$idArray]);
 	}
 	print("</tr>");
 	$ano++;
 }
+
 ?>
 </table>
 <br>
