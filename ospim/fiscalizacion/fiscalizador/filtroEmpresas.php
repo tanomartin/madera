@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 //Para que se vea el blockUI
-print("-");
+print("PAGINA FILTRO EMPRESA<br>");
 //*************************
 $datos = array_values($_POST);
 
@@ -37,7 +37,7 @@ if ($tipo == "delega") {
 	if ($cant != 0) {
 		$row = mysql_fetch_assoc($resEmpresas);
 		$listadoEmpresas[0] = $row;
-			header ("Location: fiscalizador.php?cuit=$cuit&origen=$origen&soli=$solicitante&motivo=$motivo");
+			header ("Location: fiscalizadorPorCuit.php?cuit=$cuit&origen=$origen&soli=$solicitante&motivo=$motivo");
 	} else {
 		header ("Location: menuFiscalizador.php?err=1");
 	}
