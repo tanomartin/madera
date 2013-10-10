@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 set_time_limit(0);
 //Para que se vea el blockUI
-print("PAGINA FILTRO PROMEDIO<br>");
+print("<br>");
 //*************************
 $listadoSerializado=$_POST['empresas'];
 $filtrosSerializado=$_POST['filtros'];
@@ -10,12 +10,10 @@ $listadoEmpresas = unserialize(urldecode($listadoSerializado));
 $filtros = unserialize(urldecode($filtrosSerializado));
 
 function calculoPersonalPromedio($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	print("CUIT: ".$cuit."<br>");
 	$sqlCantPersonalPromedio = "select avg(totalpersonal) from cabddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj <= $anofin) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	$resCantPersonalPromedio = mysql_query($sqlCantPersonalPromedio,$db);
 	$rowCantPersonalPromedio = mysql_fetch_assoc($resCantPersonalPromedio);
 	$resultado = $rowCantPersonalPromedio['avg(totalpersonal)'];
-	print("RESULTADO: ".$resultado."<br>");
 	return $resultado;
 }
 
@@ -30,8 +28,6 @@ for ($i=0; $i < sizeof($listadoEmpresas); $i++) {
 		$n = $n + 1;
 	}
 }
-
-var_dump($listadoEmpresasEmpleados);
 
 if (sizeof($listadoEmpresasEmpleados) == 0) {
 	header ("Location: menuFiscalizador.php?err=3");
@@ -53,9 +49,9 @@ if (sizeof($listadoEmpresasEmpleados) == 0) {
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-	//$.blockUI({ message: "<h1>Filtrando Por Deuda Nominal y Cantidad de Empresas a Fiscalizar... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	$.blockUI({ message: "<h1>Filtrando Por Deuda Nominal y Cantidad de Empresas a Fiscalizar... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	function formSubmit() {
-		//document.getElementById("filtroEmpresasEmpleados").submit();
+		document.getElementById("filtroEmpresasEmpleados").submit();
 	}
 </script>
 

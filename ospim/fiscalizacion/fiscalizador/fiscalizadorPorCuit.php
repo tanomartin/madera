@@ -187,9 +187,11 @@ $origen = $_GET['origen'];
 $solicitante = $_GET['soli'];
 $motivo = $_GET['motivo'];
 
-var_dump($arrayPagos);
-/*if (sizeof($arrayPagos) != 0) {
+//var_dump($arrayPagos);
+if (sizeof($arrayPagos) != 0) {
 	$listadoFinal[0] = array('cuit' => $cuit, 'deudas' => $arrayPagos);
+	print("CUIT: ".$cuit);
+	var_dump($arrayPagos);
 } else {
 	header ("Location: menuFiscalizador.php?err=5");
 }
@@ -202,7 +204,7 @@ $listadoSerializado = serialize($listadoFinal);
 $listadoSerializado = urlencode($listadoSerializado);
 	
 $listadoDatosReq = serialize($datosReque);
-$listadoDatosReq = urlencode($listadoDatosReq);*/
+$listadoDatosReq = urlencode($listadoDatosReq);
 
 ?>
 

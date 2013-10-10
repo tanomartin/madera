@@ -3,13 +3,25 @@ set_time_limit(0);
 
 function encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
-	$sqlPagos = "select anopago, mespago, fechapago from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
+	$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
+		$idanterior = "";
 		while ($rowPagos = mysql_fetch_assoc($resPagos)) { 
 			$id=$rowPagos['anopago'].$rowPagos['mespago'];
-			$arrayPagos[$id] = array('anio' => $rowPagos['anopago'], 'mes' => $rowPagos['mespago'], 'fechapago' =>  $rowPagos['fechapago'], 'estado' => 'PAGO');
+			if ($rowPagos['debitocredito'] == 'C') {
+				$importe = (float)$rowPagos['sum(importe)'];
+			} else {
+				$importe = (float)("-".$rowPagos['sum(importe)']);
+			}
+			if ($id == $idanterior) {
+				$importeArray = $arrayPagos[$id]['importe'];
+				$importe = $importeArray + $importe;
+			} else {
+				$idanterior = $id;
+			}
+			$arrayPagos[$id] = array('anio' => (int)$rowPagos['anopago'], 'mes' => (int)$rowPagos['mespago'], 'importe' => $importe, 'fechapago' => $rowPagos['fechapago'], 'estado' => 'PAGO');
 		}
 		return($arrayPagos);
 	} else {
@@ -51,7 +63,7 @@ function estado($ano, $me, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 				if($CantDDJJ > 0) {
 					$rowDDJJ = mysql_fetch_assoc($resDDJJ);
 					$totalRemu = $rowDDJJ['totalremundeclarada'] + $rowDDJJ['totalremundecreto'];
-					$res = array('mes' => (int)$me, 'anio' => (int)$ano, 'estado' => 'A', 'remu' => $totalRemu, 'totper' => $rowDDJJ['totalpersonal'] );
+					$res = array('mes' => (int)$me, 'anio' => (int)$ano, 'estado' => 'A', 'remu' => $totalRemu, 'totper' => (int)$rowDDJJ['totalpersonal'] );
 					return($res);
 				} else {
 					// NO HAY DDJJ SIN PAGOS
@@ -77,7 +89,7 @@ function deudaNominal($arrayPagos) {
 
 
 //Para que se vea el blockUI
-print("-");
+print("<br>");
 //*************************
 $listadoSerializado=$_POST['empresas'];
 $filtrosSerializado=$_POST['filtros'];
@@ -89,21 +101,21 @@ $filtros = unserialize(urldecode($filtrosSerializado));
 //var_dump($filtros);
 
 
-$n = 0;
+$empre = 0;
 for ($i=0; $i < sizeof($listadoEmpresas); $i++) {
-	if ($n < $filtros['empresas']) {
+	if ($empre < $filtros['empresas']) {
 		$cuit = $listadoEmpresas[$i]['cuit'];
 		$fechaInicio = $listadoEmpresas[$i]['iniobliosp'];
 		include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
 		$arrayPagos = encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
-		if ($arrayPagos==0){ 
+		if ($arrayPagos == 0){ 
 			$arrayPagos = array();
 		}
 		while($ano<=$anofin) {
-			for ($i=1;$i<13;$i++){
-				$idArray = $ano.$i;
+			for ($m=1;$m<13;$m++){
+				$idArray = $ano.$m;
 				if (!array_key_exists($idArray, $arrayPagos)) {
-					$resultado = estado($ano, $i, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+					$resultado = estado($ano, $m, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
 					if ($resultado != 0) {
 						$arrayPagos[$idArray] =  $resultado;
 					}
@@ -111,12 +123,12 @@ for ($i=0; $i < sizeof($listadoEmpresas); $i++) {
 			}
 			$ano++;
 		}
-		var_dump($arrayPagos);
 		$deudaNominal = deudaNominal($arrayPagos);
-		if($deudaNominal > $filtros['deuda'] && $n <= $filtros['empresas']) {
-			print("CUIT: ". $cuit." - DEUDA: ".$deudaNominal."<br>");
-			$empresasDefinitivas[$n] = array('cuit' => $cuit, 'deudas' => $arrayPagos);
-			$n = $n + 1;
+		//print("CUIT: ".$cuit." - DEUDA: ".$deudaNominal."<br>");
+		//var_dump($arrayPagos);
+		if($deudaNominal > $filtros['deuda']) {
+			$empresasDefinitivas[$empre] = array('cuit' => $cuit, 'deudas' => $arrayPagos);
+			$empre = $empre + 1;
 		}
 	} else {
 		$i = sizeof($listadoEmpresas);
@@ -130,6 +142,7 @@ if (sizeof($empresasDefinitivas) == 0) {
 	$listadoSerializado = serialize($empresasDefinitivas);
 	$listadoSerializado = urlencode($listadoSerializado);
 }
+
 //var_dump($empresasDefinitivas);
 
 ?>

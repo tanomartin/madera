@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 //Para que se vea el blockUI
-print("PAGINA FILTRO EMPRESA<br>");
+print("<br>");
 //*************************
 $datos = array_values($_POST);
 
