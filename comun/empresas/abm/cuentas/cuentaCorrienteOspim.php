@@ -1,4 +1,5 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+set_time_limit(0);
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 $cuit=$_GET['cuit'];
 include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php");
