@@ -1,4 +1,5 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/lib/envioMailGeneral.php"); 
 
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
@@ -12,7 +13,7 @@ for ($i=0; $i<$cantJuris*2; $i++) {
 	$i = $i+1;
 	$disgdinero = $datos[$i];
 	$sqlUpdateDisgregacion = "UPDATE jurisdiccion set disgdinero = '$disgdinero' where cuit = $cuit and codidelega = $delega";
-	print($sqlUpdateDisgregacion);print("<br>");
+	//print($sqlUpdateDisgregacion);print("<br>");
 	
 	try {
 		$hostname = $_SESSION['host'];
@@ -21,6 +22,16 @@ for ($i=0; $i<$cantJuris*2; $i++) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 		$dbh->exec($sqlUpdateDisgregacion);
+		
+		
+		$username = "sistemas@ospim.com.ar";
+		$passw = "pepepascual";
+		$fromRepli = "Sistemas O.S.P.I.M.";
+		$subject = "Se ha efectuado una disgregación dineraria";
+		$bodymail = "<body><br><br>Este es un mensaje de Aviso.<br><br>En el CUIT: <strong>".$cuit."</strong>, se ha efectuado un cambio en la disgregación dineraria.";
+		$address = "jlgomez@usimra.com.ar";
+		envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
+		
 		$dbh->commit();
 		$pagina = "empresa.php?cuit=$cuit&origen=$origen";
 		Header("Location: $pagina"); 
