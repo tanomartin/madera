@@ -12,6 +12,7 @@ function envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address)
 	$mail->Username=$username;			// SMTP account username
 	$mail->Password=$passw;				// SMTP account password
 	$mail->SetFrom($username, $fromRepli);
+	$mail->AddReplyTo($username, $fromRepli);
 	$mail->Subject=$subject;
 	$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
 	$bodymail.=" El dia ".$fechamail." a las ".$horamail.".";
