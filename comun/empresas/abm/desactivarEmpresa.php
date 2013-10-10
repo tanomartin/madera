@@ -89,7 +89,7 @@ try {
 	$dbh->exec($sqlDesactivarEmpresa);
 	$dbh->exec($sqlDeleteEmpresa);
 	$dbh->commit();
-	$pagina = "empresaBaja.php?cuit=$cuit&origen=$origen&reactiva=1";
+	$pagina = "empresaBaja.php?cuit=$cuit&origen=$origen";
 	Header("Location: $pagina"); 
 }catch (PDOException $e) {
 	echo $e->getMessage();
