@@ -25,15 +25,6 @@ try {
 		//print($sqlUpdateDisgregacion);print("<br>");
 		$dbh->exec($sqlUpdateDisgregacion);
 	}
-
-	$username = "sistemas@ospim.com.ar";
-	$passw = "pepepascual";
-	$fromRepli = "Sistemas O.S.P.I.M.";
-	$subject = "Se ha efectuado una disgregación dineraria";
-	$bodymail = "<body><br><br>Este es un mensaje de Aviso.<br><br>En el CUIT: <strong>".$cuit."</strong>, se ha efectuado un cambio en la disgregación dineraria por el agregado de una jurisdicción.";
-	$address = "jlgomez@usimra.com.ar";
-	envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
-
 	$dbh->commit();
 	$pagina = "empresa.php?cuit=$cuit&origen=$origen";
 	Header("Location: $pagina"); 
@@ -43,4 +34,12 @@ try {
 	$dbh->rollback();
 }
 
+//ENVIO DE MAIL AVISO A GOMEZ
+$username = "sistemas@ospim.com.ar";
+$passw = "pepepascual";
+$fromRepli = "Sistemas O.S.P.I.M.";
+$subject = "Se ha efectuado una disgregación dineraria";
+$bodymail = "<body><br><br>Este es un mensaje de Aviso.<br><br>En el CUIT: <strong>".$cuit."</strong>, se ha efectuado un cambio en la disgregación dineraria por el agregado de una jurisdicción.";	
+$address = "jlgomez@usimra.com.ar";
+envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
 ?>
