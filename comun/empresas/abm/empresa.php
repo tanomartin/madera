@@ -105,7 +105,7 @@ function rediSabanaCtaCte(origen) {
       </div></td>
       <td width="123"><div align="center">
         <?php if ($origen == "ospim") { ?>
-			<input name="ctacteOspim" type="button" value="Cuenta Corriente" >
+			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')">
 		<?php } else {?>
 			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
 		<?php } ?>
@@ -154,7 +154,7 @@ function rediSabanaCtaCte(origen) {
   </p>
   <p>
     <input name="Input5" type="button" value="Disgregacion Dineraria" onClick='location.href="disgregaDinero.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
-    <input name="Input4" type="button" value="Agreagar Jurisdiccion" onclick='location.href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
+    <input name="Input4" type="button" value="Agregar Jurisdiccion" onclick='location.href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
   </p>
   <p>
     <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" >
