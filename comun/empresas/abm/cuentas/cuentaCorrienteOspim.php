@@ -56,7 +56,7 @@ function estaVencido($fechaPago, $me, $ano) {
 	return(0);
 }
 
-function reverificaFueratTermino($ano, $me, $db) {
+function reverificaFueraTermino($ano, $me, $db) {
 	global $cuit;
 	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
 	$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
@@ -280,7 +280,7 @@ while($ano<=$anofin) {
 		} else {
 			$estado = $arrayPagos[$idArray]['estado'];
 			if($estado == 'P.F.T.') {
-				$resultado = reverificaFueratTermino($ano, $i, $db);
+				$resultado = reverificaFueraTermino($ano, $i, $db);
 				if ($resultado != 0) {
 					$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
 				}
