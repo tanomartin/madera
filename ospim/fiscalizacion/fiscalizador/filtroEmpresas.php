@@ -31,15 +31,28 @@ if ($tipo == "delega") {
 	$origen = $datos[8];
 	$solicitante = $datos[9];
 	$motivo = $datos[10];
-	$sqlEmpresas = "select cuit, iniobliosp, nombre from empresas where cuit = $cuit ";
+	$sqlEmpresas = "select cuit from empresas where cuit = $cuit ";
 	$resEmpresas = mysql_query($sqlEmpresas,$db);
 	$cant = mysql_num_rows($resEmpresas);
 	if ($cant != 0) {
-		$row = mysql_fetch_assoc($resEmpresas);
-		$listadoEmpresas[0] = $row;
-			header ("Location: fiscalizadorPorCuit.php?cuit=$cuit&origen=$origen&soli=$solicitante&motivo=$motivo");
+			header ("Location: fiscalizadorPorCuit.php?cuit=$cuit&origen=$origen&soli=$solicitante&motivo=$motivo&tipo=activa");
 	} else {
-		header ("Location: menuFiscalizador.php?err=1");
+		$sqlEmpresas = "select cuit from empresasdebaja where cuit = $cuit ";
+		$resEmpresas = mysql_query($sqlEmpresas,$db);
+		$cant = mysql_num_rows($resEmpresas);
+		if ($cant != 0) {
+ 				echo "<script>
+						if(confirm('Empresa de Baja. ¿Deseas continuar?')){ 
+							document.location='fiscalizadorPorCuit.php?cuit=$cuit&origen=$origen&soli=$solicitante&motivo=$motivo&tipo=baja';
+						} else{ 
+							alert('Fiscalización Cancelada'); 
+							document.location='menuFiscalizador.php';
+						}
+					  </script>";  
+		
+		} else {	
+			header ("Location: menuFiscalizador.php?err=1");
+		}
 	}
 }
 

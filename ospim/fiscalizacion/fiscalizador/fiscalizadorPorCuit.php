@@ -162,10 +162,18 @@ function estado($ano, $me, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 /****************************************************************************************/
 
 $cuit = $_GET['cuit'];
-$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
+$tipo = $_GET['tipo'];
+if (tipo == "activa") {
+	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
+} else {
+	$sqlEmpresasInicioActividad = "select iniobliosp, fechabaja from empresasdebaja where cuit = $cuit ";
+}	
 $resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
 $rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
 $fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
+if ($tipo == "baja") {
+	$fechaBaja = $rowEmpresasInicioActividad['fechabaja'];
+}
 include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
 
 $arrayPagos = encuentroPagosMyF($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
