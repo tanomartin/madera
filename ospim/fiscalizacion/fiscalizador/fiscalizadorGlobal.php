@@ -1,6 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+set_time_limit(0);
 //Para que se vea el blockUI
-//print("<br>");
+print("<br>");
 //*************************
 
 function esMontoMenor($cuit, $importe, $me, $ano, $db) {
@@ -80,6 +81,8 @@ function fiscalizoPagos($cuit, $arrayPagos, $db) {
 	}
 }
 
+/****************************************************************************************/
+
 $listadoSerializado=$_POST['empresas'];
 $listadoEmpresas = unserialize(urldecode($listadoSerializado));
 $solicitante=$_POST['solicitante'];
@@ -89,9 +92,9 @@ $origen = 1;
 
 $f = 0;
 for($i=0; $i < sizeof($listadoEmpresas); $i++) {
-	print("CUIT: ".$listadoEmpresas[$i]['cuit']);
+	//print("CUIT: ".$listadoEmpresas[$i]['cuit']);
 	$resultado = fiscalizoPagos($listadoEmpresas[$i]['cuit'], $listadoEmpresas[$i]['deudas'], $db);
-	var_dump($resultado);
+	//var_dump($resultado);
 	if ($resultado != 0) {
 		$listadoFinal[$f] = array('cuit' => $listadoEmpresas[$i]['cuit'], 'deudas' => $resultado);
 		$f = $f + 1;
@@ -123,9 +126,9 @@ if(sizeof($listadoFinal) == 0) {
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-	//$.blockUI({ message: "<h1>Grabando Requerimientos de Fiscalización... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	$.blockUI({ message: "<h1>Grabando Requerimientos de Fiscalización... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	function formSubmit() {
-		//document.getElementById("fiscalizador").submit();
+		document.getElementById("fiscalizador").submit();
 	}
 </script>
 

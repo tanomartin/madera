@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 set_time_limit(0);
 //Para que se vea el blockUI
-//print("-");
+print("<br>");
 //*************************
 
 function esMontoMenor($cuit, $importe, $me, $ano, $db) {
@@ -60,11 +60,11 @@ function fiscalizoPagos($cuit, $arrayPagos, $db) {
 		$fechaPago = $pago['fechapago'];
 		$resMenor = esMontoMenor($cuit, $importe, $mes, $anio, $db);
 		if ($resMenor != 0) {
-			$resultado[$id] = array('anio' => (int)$anio, 'mes' => (int)$mes, 'remu' => $resMenor['remu'],'totper' => $resMenor['totper'], 'importe' => $importe, 'estado' => 'M');
+			$resultado[$id] = array('anio' => (int)$anio, 'mes' => (int)$mes, 'remu' => $resMenor['remu'], 'totper' => (int)$resMenor['totper'], 'importe' => $importe, 'estado' => 'M');
 		} else {
 			$resVto = estaVencido($cuit, $fechaPago, $mes, $anio, $db);
 			if ($resVto != 0) {
-				$resultado[$id] = array('anio' => (int)$anio, 'mes' => (int)$mes, 'remu' => $resVto['remu'],'totper' => $resVto['totper'], 'importe' => $importe, 'estado' => 'F');
+				$resultado[$id] = array('anio' => (int)$anio, 'mes' => (int)$mes, 'remu' => $resVto['remu'], 'totper' => (int)$resVto['totper'], 'importe' => $importe, 'estado' => 'F');
 			} else {
 				$resultado[$id] = array('anio' => (int)$anio, 'mes' => (int)$mes, 'importe' => $importe, 'estado' => 'P');
 			}
@@ -134,7 +134,7 @@ function estado($ano, $me, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 		$CantJuicio = mysql_num_rows($resJuicio); 
 		if ($CantJuicio == 0) {
 			// VEO LOS REQ DE FISC
-			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
 			$resReq = mysql_query($sqlReq,$db); 
 			$CantReq = mysql_num_rows($resReq); 
 			if($CantReq == 0) {
@@ -145,7 +145,7 @@ function estado($ano, $me, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 				if($CantDDJJ > 0) {
 					$rowDDJJ = mysql_fetch_assoc($resDDJJ);
 					$totalRemu = $rowDDJJ['totalremundeclarada'] + $rowDDJJ['totalremundecreto'];
-					$res = array('mes' => (int)$me, 'anio' => (int)$ano, 'estado' => 'A', 'remu' => $totalRemu, 'totper' => $rowDDJJ['totalpersonal'] );
+					$res = array('mes' => (int)$me, 'anio' => (int)$ano, 'estado' => 'A', 'remu' => $totalRemu, 'totper' => (int)$rowDDJJ['totalpersonal'] );
 					return($res);
 				} else {
 					// NO HAY DDJJ SIN PAGOS
@@ -158,6 +158,8 @@ function estado($ano, $me, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 	return(0);
 } //function
 
+
+/****************************************************************************************/
 
 $cuit = $_GET['cuit'];
 $sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
@@ -190,8 +192,6 @@ $motivo = $_GET['motivo'];
 //var_dump($arrayPagos);
 if (sizeof($arrayPagos) != 0) {
 	$listadoFinal[0] = array('cuit' => $cuit, 'deudas' => $arrayPagos);
-	print("CUIT: ".$cuit);
-	var_dump($arrayPagos);
 } else {
 	header ("Location: menuFiscalizador.php?err=5");
 }
@@ -217,9 +217,9 @@ $listadoDatosReq = urlencode($listadoDatosReq);
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-	//$.blockUI({ message: "<h1>Grabando Requerimientos de Fiscalización... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	$.blockUI({ message: "<h1>Grabando Requerimientos de Fiscalización... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	function formSubmit() {
-		//document.getElementById("fiscalizador").submit();
+		document.getElementById("fiscalizador").submit();
 	}
 </script>
 

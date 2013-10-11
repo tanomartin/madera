@@ -3,11 +3,6 @@ set_time_limit(0);
 //Para que se vea el blockUI
 print("<br>");
 //*************************
-$listadoSerializado=$_POST['empresas'];
-$filtrosSerializado=$_POST['filtros'];
-
-$listadoEmpresas = unserialize(urldecode($listadoSerializado));
-$filtros = unserialize(urldecode($filtrosSerializado));
 
 function calculoPersonalPromedio($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	$sqlCantPersonalPromedio = "select avg(totalpersonal) from cabddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj <= $anofin) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
@@ -16,6 +11,14 @@ function calculoPersonalPromedio($cuit, $anoinicio, $mesinicio, $anofin, $mesfin
 	$resultado = $rowCantPersonalPromedio['avg(totalpersonal)'];
 	return $resultado;
 }
+
+/****************************************************************************************/
+
+$listadoSerializado=$_POST['empresas'];
+$filtrosSerializado=$_POST['filtros'];
+
+$listadoEmpresas = unserialize(urldecode($listadoSerializado));
+$filtros = unserialize(urldecode($filtrosSerializado));
 
 $n = 0;
 for ($i=0; $i < sizeof($listadoEmpresas); $i++) {

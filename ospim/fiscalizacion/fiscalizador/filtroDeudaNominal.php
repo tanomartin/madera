@@ -1,5 +1,8 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 set_time_limit(0);
+//Para que se vea el blockUI
+print("<br>");
+//*************************
 
 function encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
@@ -52,7 +55,7 @@ function estado($ano, $me, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 		$CantJuicio = mysql_num_rows($resJuicio); 
 		if ($CantJuicio == 0) {
 			// VEO LOS REQ DE FISC
-			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
 			$resReq = mysql_query($sqlReq,$db); 
 			$CantReq = mysql_num_rows($resReq); 
 			if($CantReq == 0) {
@@ -87,10 +90,8 @@ function deudaNominal($arrayPagos) {
 	return($totalDeuda * $alicuota);
 }
 
+/****************************************************************************************/
 
-//Para que se vea el blockUI
-print("<br>");
-//*************************
 $listadoSerializado=$_POST['empresas'];
 $filtrosSerializado=$_POST['filtros'];
 
