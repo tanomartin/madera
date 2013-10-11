@@ -56,6 +56,55 @@ function estaVencido($fechaPago, $me, $ano) {
 	return(0);
 }
 
+function reverificaFueratTermino($ano, $me, $db) {
+	global $cuit;
+	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
+	$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
+	$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
+	$CantAcuerdos = mysql_num_rows($resAcuerdos); 
+	if($CantAcuerdos > 0) {
+		$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
+		$nroacuerdo = $rowAcuerdos['nroacuerdo'];
+		if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
+			$des = "P. ACUER.-".$nroacuerdo;
+		} else {
+			$des = "ACUER.-".$nroacuerdo;
+		}
+	} else {
+		//VEO LOS JUICIOS
+		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
+		$resJuicio = mysql_query($sqlJuicio,$db); 
+		$CantJuicio = mysql_num_rows($resJuicio); 
+		if ($CantJuicio > 0) {
+			$rowJuicio = mysql_fetch_array($resJuicio); 
+			$statusDeuda = $rowJuicio['statusdeuda'];
+			$nrocertificado = $rowJuicio['nrocertificado'];
+			if ($statusDeuda == 1) {
+				$des = "J.EJEC";
+			}
+			if ($statusDeuda == 2) {
+				$des = "J.CONV";
+			}
+			if ($statusDeuda == 3) {
+				$des = "J.QUIEB";
+			}
+			$des = $des." (".$nrocertificado.")";
+		} else {
+			// VEO LOS REQ DE FISC
+			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+			$resReq = mysql_query($sqlReq,$db); 
+			$CantReq = mysql_num_rows($resReq); 
+			if($CantReq > 0) {
+				$rowReq = mysql_fetch_array($resReq); 
+				$nroreq = $rowReq['nrorequerimiento'];
+				$des = "REQ. (".$nroreq.")";
+			} // IF REQUERMINETOS
+		} // ELSE JUICIOS
+	} // ELSE ACUERDOS
+	return (0);
+}
+
+
 function encuentroPagos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
 	$sqlPagos = "select anopago, mespago, fechapago from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
@@ -228,6 +277,14 @@ while($ano<=$anofin) {
 		if (!array_key_exists($idArray, $arrayPagos)) {
 			$resultado = estado($ano, $i, $db);
 			$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
+		} else {
+			$estado = $arrayPagos[$idArray]['estado'];
+			if($estado == 'P.F.T.') {
+				$resultado = reverificaFueratTermino($ano, $i, $db);
+				if ($resultado != 0) {
+					$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
+				}
+			}
 		}
 		imprimeTabla($arrayPagos[$idArray]);
 	}
