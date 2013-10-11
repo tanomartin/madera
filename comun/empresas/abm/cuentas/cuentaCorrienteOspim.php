@@ -117,6 +117,7 @@ function estado($ano, $me, $db) {
 			if ($CantJuicio > 0) {
 				$rowJuicio = mysql_fetch_array($resJuicio); 
 				$statusDeuda = $rowJuicio['statusdeuda'];
+				$nroorden = $rowJuicio['nroorden'];
 				if ($statusDeuda == 1) {
 					$des = "J.EJEC";
 				}
@@ -126,13 +127,16 @@ function estado($ano, $me, $db) {
 				if ($statusDeuda == 3) {
 					$des = "J.QUIEB";
 				}
+				$des = $des." (".$nroorden.")";
 			} else {
 				// VEO LOS REQ DE FISC
 				$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
 				$resReq = mysql_query($sqlReq,$db); 
 				$CantReq = mysql_num_rows($resReq); 
 				if($CantReq > 0) {
-					$des = "REQ.";
+					$rowReq = mysql_fetch_array($resReq); 
+					$nroreq = $rowReq['nrorequerimiento'];
+					$des = "REQ. (".$nroreq.")";
 				} else {
 					// VEO LAS DDJJ REALIZADAS SIN PAGOS
 					$sqlDDJJ = "select * from cabddjjospim where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
@@ -155,19 +159,17 @@ function imprimeTabla($periodo) {
 	$estado = $periodo['estado'];
 	$ano = $periodo['anio'];
 	$me = $periodo['mes'];
-	if ($estado == "-" or $estado == 'J.EJEC' or $estado == 'J.CONV' or $estado == 'J.QUIEB' or $estado == 'REQ.' or $estado == 'S.DJ.') {
-		print ("<td width=81>".$estado."</a></td>");
+	if ($estado == 'P.F.T.' or $estado == 'PAGO') {
+		print ("<td width=81><a href=javascript:abrirInfo('pagosOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
 	} else {
-		if ($estado == 'P.F.T.' or $estado == 'PAGO') {
-			print ("<td width=81><a href=javascript:abrirInfo('pagosOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
+		if ($estado == 'NO PAGO') {
+			print ("<td width=81><a href=javascript:abrirInfo('ddjjOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
 		} else {
-			if ($estado == 'NO PAGO') {
-				print ("<td width=81><a href=javascript:abrirInfo('ddjjOspim.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
+			$pacuerdo = explode('-',$estado);
+			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {
+				print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>"); 
 			} else {
-				$pacuerdo = explode('-',$estado);
-				if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {
-					print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>");
-				}
+				print ("<td width=81>".$estado."</a></td>");
 			}
 		}
 	}
@@ -246,12 +248,12 @@ while($ano<=$anofin) {
   <tr>
     <td>*NO PAGO =  NO PAGO CON DDJJ</td>
 	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
-	<td>*REQ. = FISCALIZADO</td>
-    <td>*J.EJEC = EN JUICIO EJECUI&Oacute;N </td>
+	<td>*REQ. (nro. requerimiento) = FISCALIZADO</td>
+    <td>*J.EJEC (nro. orden) = EN JUICIO EJECUCI&Oacute;N </td>
   </tr>
   <tr>
-    <td>*J.CONV = EN JUICIO CONVOCATORIA </td>
-    <td>*J.QUIEB = EN JUICIO QUIEBRA </td>
+    <td>*J.CONV (nro. orden) = EN JUICIO CONVOCATORIA </td>
+    <td>*J.QUIEB (nro. orden) = EN JUICIO QUIEBRA </td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
