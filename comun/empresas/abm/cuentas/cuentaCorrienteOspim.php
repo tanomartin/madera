@@ -111,13 +111,13 @@ function estado($ano, $me, $db) {
 			}
 		} else {
 			//VEO LOS JUICIOS
-			$sqlJuicio = "select c.nroorden, c.statusdeuda from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
+			$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
 			$resJuicio = mysql_query($sqlJuicio,$db); 
 			$CantJuicio = mysql_num_rows($resJuicio); 
 			if ($CantJuicio > 0) {
 				$rowJuicio = mysql_fetch_array($resJuicio); 
 				$statusDeuda = $rowJuicio['statusdeuda'];
-				$nroorden = $rowJuicio['nroorden'];
+				$nrocertificado = $rowJuicio['nrocertificado'];
 				if ($statusDeuda == 1) {
 					$des = "J.EJEC";
 				}
@@ -127,7 +127,7 @@ function estado($ano, $me, $db) {
 				if ($statusDeuda == 3) {
 					$des = "J.QUIEB";
 				}
-				$des = $des." (".$nroorden.")";
+				$des = $des." (".$nrocertificado.")";
 			} else {
 				// VEO LOS REQ DE FISC
 				$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
