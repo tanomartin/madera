@@ -70,6 +70,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 		} else {
 			$des = "ACUER.-".$nroacuerdo;
 		}
+		return($des);
 	} else {
 		//VEO LOS JUICIOS
 		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
@@ -89,6 +90,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 				$des = "J.QUIEB";
 			}
 			$des = $des." (".$nrocertificado.")";
+			return($des);
 		} else {
 			// VEO LOS REQ DE FISC
 			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
@@ -98,10 +100,11 @@ function reverificaFueraTermino($ano, $me, $db) {
 				$rowReq = mysql_fetch_array($resReq); 
 				$nroreq = $rowReq['nrorequerimiento'];
 				$des = "REQ. (".$nroreq.")";
+				return($des);
 			} // IF REQUERMINETOS
 		} // ELSE JUICIOS
 	} // ELSE ACUERDOS
-	return (0);
+	return ('P.F.T.');
 }
 
 
@@ -281,7 +284,7 @@ while($ano<=$anofin) {
 			$estado = $arrayPagos[$idArray]['estado'];
 			if($estado == 'P.F.T.') {
 				$resultado = reverificaFueraTermino($ano, $i, $db);
-				if ($resultado != 0) {
+				if ($resultado != 'P.F.T.') {
 					$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
 				}
 			}
