@@ -250,7 +250,7 @@ function imprimeTabla($periodo) {
    <table width="1024" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
   <tr>
     <td width="52" rowspan="2"><span class="Estilo6">A&Ntilde;OS</span></td>
-    <td colspan="12"><span class="Estilo6">MESESS</span></td>
+    <td colspan="12"><span class="Estilo6">MESES</span></td>
   </tr>
   <tr> 
 	<td width="81" class="Estilo6">Enero</td>
