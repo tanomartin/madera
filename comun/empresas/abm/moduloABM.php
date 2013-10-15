@@ -27,20 +27,25 @@ jQuery(function($){
 	$("#cuit").mask("99999999999");
 });
 
+function validar(formulario) {
+	formulario.Submit.disabled = true;
+	if (!verificaCuil(formulario.cuit.value)){
+		formulario.Submit.disabled = false;
+		return false;
+	}
+	return true;
+}
 
 </script>
 
 <body bgcolor=<?php echo $bgcolor ?>>
-<form id="form1" name="form1" method="post" action="empresa.php?origen=<?php echo $origen ?>">
+<form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="empresa.php?origen=<?php echo $origen ?>">
   <p align="center">
   <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" align="center"/> 
   </p>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Empresas</p>
   <div align="center">
-    <p>CUIT
-      
-      <input name="cuit" id="cuit" type="text"  size="10" />
-    </p>
+    <p>CUIT <input name="cuit" id="cuit" type="text" size="10" /></p>
   </div>
   <div align="center">
     <input type="submit" name="Submit" value="Buscar" />
