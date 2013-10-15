@@ -4,6 +4,33 @@ set_time_limit(0);
 print("<br>");
 //*************************
 
+function reverificaFueraTerminoYMenor($ano, $me, $cuit, $db) {
+	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
+	$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
+	$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
+	$CantAcuerdos = mysql_num_rows($resAcuerdos); 
+	if($CantAcuerdos > 0) {
+		return('ACUERDO');
+	} else {
+		//VEO LOS JUICIOS
+		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
+		$resJuicio = mysql_query($sqlJuicio,$db); 
+		$CantJuicio = mysql_num_rows($resJuicio); 
+		if ($CantJuicio > 0) {
+			return('JUICIO');
+		} else {
+			// VEO LOS REQ DE FISC
+			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+			$resReq = mysql_query($sqlReq,$db); 
+			$CantReq = mysql_num_rows($resReq); 
+			if($CantReq > 0) {
+				return('REQ');
+			} // IF REQUERMINETOS
+		} // ELSE JUICIOS
+	} // ELSE ACUERDOS
+	return ('ENTRA');
+}
+
 function esMontoMenor($cuit, $importe, $me, $ano, $db) {
 	$alicuota = 0.081;
 	$sqlDDJJ = "select totalremundeclarada, totalremundecreto, totalpersonal from cabddjjospim where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
@@ -188,6 +215,14 @@ while($ano<=$anofin) {
 			$resultado = estado($ano, $i, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
 			if ($resultado != 0) {
 				$arrayPagos[$idArray] =  $resultado;
+			}
+		} else {
+			$estado = $arrayPagos[$idArray]['estado'];
+			if($estado != 'P') {
+				$resultado = reverificaFueraTerminoYMenor($ano, $i, $cuit, $db);
+				if ($resultado != 'ENTRA') {
+					$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'P');
+				}
 			}
 		}
 	}
