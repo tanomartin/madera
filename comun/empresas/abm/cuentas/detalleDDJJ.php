@@ -9,12 +9,22 @@ $row = mysql_fetch_array($result);
 $anio=$_GET['anio'];
 $mes=$_GET['mes'];
 
-$sqlDdjj = "select *
+
+if ($origen == "ospim") {
+	$sqlDdjj = "select *
 			from cabddjjospim 
 			where 
 			cuit = $cuit and 
 			anoddjj = $anio and 
 			mesddjj = $mes";
+} else {
+	$sqlDdjj = "select *
+			from cabddjjusimra
+			where 
+			cuit = $cuit and 
+			anoddjj = $anio and 
+			mesddjj = $mes";
+}
 //print($sqlDdjj );
 $resDdjj = mysql_query($sqlDdjj,$db); 
 $rowDdjj = mysql_fetch_array($resDdjj); 

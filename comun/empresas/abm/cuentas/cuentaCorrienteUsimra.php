@@ -59,7 +59,7 @@ function estaVencido($fechaPago, $me, $ano) {
 function reverificaFueraTermino($ano, $me, $db) {
 	global $cuit;
 	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-	$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
+	$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosusimra c, detacuerdosusimra d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
 	$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
 	$CantAcuerdos = mysql_num_rows($resAcuerdos); 
 	if($CantAcuerdos > 0) {
@@ -73,7 +73,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 		return($des);
 	} else {
 		//VEO LOS JUICIOS
-		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
+		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosusimra c, detjuiciosusimra d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
 		$resJuicio = mysql_query($sqlJuicio,$db); 
 		$CantJuicio = mysql_num_rows($resJuicio); 
 		if ($CantJuicio > 0) {
@@ -93,7 +93,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 			return($des);
 		} else {
 			// VEO LOS REQ DE FISC
-			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+			$sqlReq = "select r.nrorequerimiento from reqfiscalizusimra r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
 			$resReq = mysql_query($sqlReq,$db); 
 			$CantReq = mysql_num_rows($resReq); 
 			if($CantReq > 0) {
@@ -110,7 +110,8 @@ function reverificaFueraTermino($ano, $me, $db) {
 
 function encuentroPagos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
-	$sqlPagos = "select anopago, mespago, fechapago from afipprocesadas where cuit = $cuit and (concepto = '381' or concepto = '401') and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
+	//CAMBIAR A USIMRA
+	$sqlPagos = "select anopago, mespago, fechapago from ???????? where cuit = $cuit and (concepto = '381' or concepto = '401') and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
@@ -150,7 +151,7 @@ function estado($ano, $me, $db) {
 		}
 	
 		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
+		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosusimra c, detacuerdosusimra d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
 		$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
 		$CantAcuerdos = mysql_num_rows($resAcuerdos); 
 		if($CantAcuerdos > 0) {
@@ -163,7 +164,7 @@ function estado($ano, $me, $db) {
 			}
 		} else {
 			//VEO LOS JUICIOS
-			$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
+			$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosusimra c, detjuiciosusimra d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
 			$resJuicio = mysql_query($sqlJuicio,$db); 
 			$CantJuicio = mysql_num_rows($resJuicio); 
 			if ($CantJuicio > 0) {
@@ -182,7 +183,7 @@ function estado($ano, $me, $db) {
 				$des = $des." (".$nrocertificado.")";
 			} else {
 				// VEO LOS REQ DE FISC
-				$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+				$sqlReq = "select r.nrorequerimiento from reqfiscalizusimra r, detfiscalizusimra d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
 				$resReq = mysql_query($sqlReq,$db); 
 				$CantReq = mysql_num_rows($resReq); 
 				if($CantReq > 0) {
@@ -191,7 +192,7 @@ function estado($ano, $me, $db) {
 					$des = "REQ. (".$nroreq.")";
 				} else {
 					// VEO LAS DDJJ REALIZADAS SIN PAGOS
-					$sqlDDJJ = "select * from cabddjjospim where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
+					$sqlDDJJ = "select * from cabddjjusimra where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
 					$resDDJJ = mysql_query($sqlDDJJ,$db); 
 					$CantDDJJ = mysql_num_rows($resDDJJ); 
 					if($CantDDJJ > 0) {

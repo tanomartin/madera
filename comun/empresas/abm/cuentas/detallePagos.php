@@ -9,7 +9,8 @@ $row = mysql_fetch_array($result);
 $anio=$_GET['anio'];
 $mes=$_GET['mes'];
 
-$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito, count(concepto)
+if ($origen == "ospim") {
+	$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito, count(concepto)
 			from afipprocesadas 
 			where 
 			cuit = $cuit and 
@@ -17,6 +18,16 @@ $sqlPagos = "select concepto, fechapago, sum(importe), debitocredito, count(conc
 			mespago = $mes
 			group by concepto, fechapago, debitocredito
 			order by fechapago, concepto, debitocredito";
+} else {
+	$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito, count(concepto)
+			from ????????? 
+			where 
+			cuit = $cuit and 
+			anopago = $anio and 
+			mespago = $mes
+			group by concepto, fechapago, debitocredito
+			order by fechapago, concepto, debitocredito";
+}
 //print($sqlPagos );
 $resPagos = mysql_query($sqlPagos,$db); 
 $i = 0;
