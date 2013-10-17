@@ -26,10 +26,10 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="420" border="3">
     <tr>
       <td width="200"><p align="center">Requerimientos</p>
-        <p align="center"><a class="enlace" href="requerimientos.php"><img src="../img/impresora.jpg" width="99" height="83" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="requerimientos/requerimientos.php"><img src="../img/requerimientos.jpg" width="84" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 	  <td width="200"><p align="center">Fiscalizador </p>
-        <p align="center"><a class="enlace" href="fiscalizador/fiscalizador.php"><img src="../img/fiscalizador.jpg" width="104" height="84" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="fiscalizador/fiscalizador.php"><img src="../img/fiscalizador.jpg" width="84" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>

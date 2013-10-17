@@ -4,13 +4,6 @@ set_time_limit(0);
 print("<br>");
 //*************************
 
-function calculoMenor($cuit, $anio, $mes, $db) {
-	$sqlMenor = "SELECT cantcuilmenor240 FROM agrufiscalizospim d where cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
-	$resMenor = mysql_query($sqlMenor,$db); 
-	$rowMenor = mysql_fetch_assoc($resMenor);
-	return ((int)$rowMenor['cantcuilmenor240']);
-}
-
 /****************************************************************************************/
 
 $listadoSerializado=$_POST['empresas'];
@@ -41,7 +34,6 @@ for($i=0; $i < sizeof($listadoEmpresas); $i++) {
 			$mes = $deuda['mes'];
 			$id = $anio.$mes;
 			if ($estado != 'S') {
-				$deuda['menor240'] = calculoMenor($cuit, $anio, $mes, $db);
 				$deudaNominal = (float)($deuda['remu'] * $alicuota);
 				if ($estado == 'M' || $estado == 'F') {
 					$deudaNominal = (float)($deudaNominal - $deuda['importe']);
@@ -51,7 +43,6 @@ for($i=0; $i < sizeof($listadoEmpresas); $i++) {
 				$deuda['remu'] = 0.00;
 				$deuda['totper'] = 0;
 				$deuda['deudaNominal'] = 0.00;
-				$deuda['menor240'] = 0;
 			}
 			$deudaFinal[$id] = $deuda;
 		}	
@@ -94,8 +85,7 @@ foreach ($listadoFinal as $lista){
 			$remfis = $deuda['remu'];
 			$canper = $deuda['totper'];
 			$deunom = $deuda['deudaNominal'];
-			$men240 = $deuda['menor240'];
-			$sqlDetFis = "INSERT INTO detfiscalizospim VALUE('$nroreq', '$anofis', '$mesfis', '$stafis', '$remfis', '$canper', '$deunom', '$men240')";
+			$sqlDetFis = "INSERT INTO detfiscalizospim VALUE('$nroreq', '$anofis', '$mesfis', '$stafis', '$remfis', '$canper', '$deunom')";
 			//print($sqlDetFis."<br>");
 			$dbh->exec($sqlDetFis);
 		}
