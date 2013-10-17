@@ -5,6 +5,8 @@ require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
 require($libPath."fpdf.php");
 require($libPath."FPDI-1.4.4/fpdi.php"); 
 
+//var_dump($_POST);
+
 $datos = array_values($_POST);
 
 $nrosoli = $datos[0];
@@ -39,12 +41,17 @@ if($staauto==2)
 else
 {
 	$estauto = "Aprobada";
-	$recauto = "";
+	//$recauto = "";
 
 	if($datos[1]=="on")
-		$apeauto = $datos[4];
+		$recauto = $datos[4];
 	else
-		$apeauto = $datos[2];
+		$recauto = $datos[2];
+
+	if($datos[1]=="on")
+		$apeauto = $datos[5];
+	else
+		$apeauto = $datos[3];
 
 	if($apeauto==1)
 		$apefech = date("Y-m-d H:i:s");
@@ -52,23 +59,23 @@ else
 		$apefech = "";
 
 	if($datos[1]=="on")
-		$presauto = $datos[5];
+		$presauto = $datos[6];
 	else
-		$presauto = $datos[3];
+		$presauto = $datos[4];
 
 	if($presauto==1)
 	{
 		if($datos[1]=="on")
 		{
-			$presmail = $datos[6];
+			$presmail = $datos[7];
 			$presfech =  date("Y-m-d H:i:s");
-			$montauto = $datos[7];
+			$montauto = $datos[8];
 		}
 		else
 		{
-			$presmail = $datos[4];
+			$presmail = $datos[5];
 			$presfech =  date("Y-m-d H:i:s");
-			$montauto = $datos[5];
+			$montauto = $datos[6];
 		}
 	}
 	else
@@ -76,9 +83,9 @@ else
 		$presmail = "";
 		$presfech = "";	
 		if($datos[1]=="on")
-			$montauto = $datos[6];
+			$montauto = $datos[7];
 		else
-			$montauto = $datos[4];
+			$montauto = $datos[5];
 	}
 }
 

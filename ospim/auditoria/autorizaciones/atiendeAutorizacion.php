@@ -42,7 +42,6 @@ function muestraArchivo(solicitud, archivo) {
 function mostrarMotivo(muestra) {
 	if (muestra != 1) {
 		document.forms.atiendeAutorizacion.motivoRechazo.value="";
-		document.forms.atiendeAutorizacion.motivoRechazo.disabled=true;
 		document.forms.atiendeAutorizacion.apeSi.disabled=false;
 		document.forms.atiendeAutorizacion.apeNo.disabled=false;
 		document.forms.atiendeAutorizacion.prestaSi.disabled=false;
@@ -55,7 +54,7 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.elige4.disabled=false;
 		document.forms.atiendeAutorizacion.elige5.disabled=false;
 	} else {
-		document.forms.atiendeAutorizacion.motivoRechazo.disabled=false;
+		document.forms.atiendeAutorizacion.motivoRechazo.value="";
 		document.forms.atiendeAutorizacion.apeSi.checked=false;
 		document.forms.atiendeAutorizacion.apeSi.disabled=true;
 		document.forms.atiendeAutorizacion.apeNo.checked=false;
@@ -462,7 +461,7 @@ if($rowLeeSolicitud['material'] == 1) {
 	<td valign="top">
 	  <label><input name="autori" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada</label><br />
       <label><input name="autori" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada</label>
-      <p><textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo" disabled="disabled"></textarea></p>
+      <p><textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo"></textarea></p>
       <p>Expediente SUR :
         <label><input name="ape" id="apeSi" type="radio" value="1"/>Si</label>
         <label><input name="ape" id="apeNo" type="radio" value="0"/>
