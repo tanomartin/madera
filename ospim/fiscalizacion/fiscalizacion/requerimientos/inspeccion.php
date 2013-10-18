@@ -1,6 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php"); 
-include($libPath."fechas.php");
 
 $fecha = $_GET['fecha'];
 $nroreq = $_GET['nroreq'];
@@ -34,7 +33,12 @@ jQuery(function($){
 });
 
 function validar(formulario) {
-	return false;
+	if (formulario.inpector.value == 0) {
+		alert("Debe seleccionar un Inspector");
+		return false;
+	}
+	formulario.Submit.disabled = true;
+	return true;
 }
 
 </script>
@@ -44,7 +48,7 @@ function validar(formulario) {
   <p><span style="text-align:center">
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" align="center"/>
   </span></p>
-  <form name="inspecReq" onSubmit="return validar(this)" method="POST" action="eliminarPeriodos.php" >
+  <form name="inspecReq" onSubmit="return validar(this)" method="POST" action="guardaInspeccion.php" >
 		<input name="fechareq" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
 	  <p class="Estilo2">Inpecci&oacute;n  del  Requerimiento Nro. <?php echo $nroreq ?></p>
@@ -73,7 +77,7 @@ function validar(formulario) {
 		  </tr>
 	  </table>
 
-		<p><input type="submit" name="inspeccion" id="inspeccion" value="Mandar a Inspección" /></p>
+		<p><input type="submit" name="Submit" id="Submit" value="Mandar a Inspección" /></p>
 	</form>
 
 </div>

@@ -50,6 +50,10 @@ function validar(formulario) {
 	return true
 }
 
+function controlarFechaVtoInsp(fecha, plazo) {
+	alert(fecha);
+	alert(plazo);
+}
 </script>
 
 <body bgcolor="#CCCCCC">
@@ -88,7 +92,10 @@ function validar(formulario) {
 				if ($rowReque['procesoasignado'] == 0) {		
 					print("<td>Liquidar<br><a href='inspeccion.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Inspección</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
 				} else {
-					print("<td>Liquidar<br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
+					$sqlInsp = "SELECT * from requeinspeccionospim where nrorequerimiento = ".$rowReque['nrorequerimiento'];
+					$resInsp = mysql_query($sqlInsp,$db);
+					$rowInsp = mysql_fetch_array($resInsp);
+					print("<td><a href=javascript:controlarFechaVtoInsp('".$rowInsp['fechaasignacion']."',".$rowInsp['plazoefectivizacion'].")>Liquidar</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
 				}        
 				print("</tr>");
 			}

@@ -23,11 +23,14 @@ A:hover {text-decoration: none;color:#00FFFF }
     <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuFiscalizacion.php'" align="center"/>
   </span></p>
   <p><span class="Estilo2">Men&uacute; Fiscalizador </span></p>
-  <table width="420" border="3">
+  <table width="626" border="3">
     <tr>
       <td width="200"><p align="center">Requerimientos</p>
         <p align="center"><a class="enlace" href="requerimientos/requerimientos.php"><img src="../img/requerimientos.jpg" width="84" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
+	  <td width="200"><p align="center">Inspecciones </p>
+      <p align="center"><a class="enlace" href="requerimientos/listarInspecciones.php"><img src="../img/inspeccion.jpg" width="84" height="90" border="0" alt="enviar"/></a></p>
+	  <p align="center">&nbsp;</p></td>
 	  <td width="200"><p align="center">Fiscalizador </p>
         <p align="center"><a class="enlace" href="fiscalizador/fiscalizador.php"><img src="../img/fiscalizador.jpg" width="84" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
