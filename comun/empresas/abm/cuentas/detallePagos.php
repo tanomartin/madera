@@ -10,7 +10,7 @@ $anio=$_GET['anio'];
 $mes=$_GET['mes'];
 
 if ($origen == "ospim") {
-	$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito, count(concepto)
+	$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito
 			from afipprocesadas 
 			where 
 			cuit = $cuit and 
@@ -18,8 +18,16 @@ if ($origen == "ospim") {
 			mespago = $mes
 			group by concepto, fechapago, debitocredito
 			order by fechapago, concepto, debitocredito";
+			
+	$sqlCantPersonal = 	"select count(concepto)
+			from afiptransferencias 
+			where 
+			cuit = $cuit and 
+			anopago = $anio and 
+			mespago = $mes and
+			concepto = 'REM'";
 } else {
-	$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito, count(concepto)
+	$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito
 			from ????????? 
 			where 
 			cuit = $cuit and 
@@ -28,6 +36,9 @@ if ($origen == "ospim") {
 			group by concepto, fechapago, debitocredito
 			order by fechapago, concepto, debitocredito";
 }
+
+$resCantPersonal = mysql_query($sqlCantPersonal,$db); 
+$rowCantPersonal = mysql_fetch_array($resCantPersonal);
 //print($sqlPagos );
 $resPagos = mysql_query($sqlPagos,$db); 
 $i = 0;
@@ -92,7 +103,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		print("<td width='193'>".$pagos[$n]['concepto']."</td>");
 		print("<td width='192'>".invertirFecha($pagos[$n]['fechapago'])."</td>");
 		if ($pagos[$n]['concepto'] == 'REM') {
-			print("<td width='88'>".$pagos[$n]['count(concepto)']."</td>");
+			print("<td width='88'>".$rowCantPersonal['count(concepto)']."</td>");
 			print("<td width='97' align='right'>".number_format($pagos[$n]['sum(importe)'],2,',','.')."</td>");
 			print("<td width='88'>-</td>");
 		} else {
