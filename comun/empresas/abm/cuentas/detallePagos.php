@@ -18,14 +18,7 @@ if ($origen == "ospim") {
 			mespago = $mes
 			group by concepto, fechapago, debitocredito
 			order by fechapago, concepto, debitocredito";
-			
-	$sqlCantPersonal = 	"select count(concepto)
-			from afiptransferencias 
-			where 
-			cuit = $cuit and 
-			anopago = $anio and 
-			mespago = $mes and
-			concepto = 'REM'";
+
 } else {
 	$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito
 			from ????????? 
@@ -37,8 +30,6 @@ if ($origen == "ospim") {
 			order by fechapago, concepto, debitocredito";
 }
 
-$resCantPersonal = mysql_query($sqlCantPersonal,$db); 
-$rowCantPersonal = mysql_fetch_array($resCantPersonal);
 //print($sqlPagos );
 $resPagos = mysql_query($sqlPagos,$db); 
 $i = 0;
@@ -94,7 +85,6 @@ A:hover {text-decoration: none;color:#00FFFF }
     <tr>
       <th width="193">Concepto</th>
       <th width="192">Fecha de Pago </th>
-	  <th width="88">Empleados</th>
 	   <th width="97">Remuneraci&oacute;n</th>
 	   <th width="88">Importe</th>
     </tr>
@@ -103,11 +93,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		print("<td width='193'>".$pagos[$n]['concepto']."</td>");
 		print("<td width='192'>".invertirFecha($pagos[$n]['fechapago'])."</td>");
 		if ($pagos[$n]['concepto'] == 'REM') {
-			print("<td width='88'>".$rowCantPersonal['count(concepto)']."</td>");
 			print("<td width='97' align='right'>".number_format($pagos[$n]['sum(importe)'],2,',','.')."</td>");
 			print("<td width='88'>-</td>");
 		} else {
-			print("<td width='88'>-</td>");
 			print("<td width='97'>-</td>");
 			if ($pagos[$n]['debitocredito'] == 'D') {
 				print("<td width='88' align='right' style='color:#FF0000'> -".number_format($pagos[$n]['sum(importe)'],2,',','.')."</td>");
@@ -119,7 +107,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	} 
 	?>
 	<tr>
-      <td colspan="3"><div align="center"><strong>TOTAL</strong></div></td>
+      <td colspan="2"><div align="center"><strong>TOTAL</strong></div></td>
 	  <td width="97"><div align="right"><b><?php echo number_format($totalRemu,2,',','.') ?></b></div></td>
       <?php 
 	  	if ( $total < 0 ) {
