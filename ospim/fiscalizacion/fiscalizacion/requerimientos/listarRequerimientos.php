@@ -84,8 +84,12 @@ function validar(formulario) {
 				print("<td>".$rowReque['solicitarequerimiento']."</td>");   
 				print("<td>".$rowReque['motivorequerimiento']."</td>"); 
 				print("<td>".$rowReque['cuit']."</td>"); 
-				print("<td><a href='detalleRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Editar</a></td>");
-				print("<td>Liquidar<br>Inspección<br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");          
+				print("<td><a href='detalleRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Editar</a></td>");
+				if ($rowReque['procesoasignado'] == 0) {		
+					print("<td>Liquidar<br><a href='inspeccion.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Inspección</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
+				} else {
+					print("<td>Liquidar<br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
+				}        
 				print("</tr>");
 			}
 	  ?>
