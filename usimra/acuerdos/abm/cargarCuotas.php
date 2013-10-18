@@ -56,7 +56,7 @@ $usuariomodificacion = $usuarioregistro;
 
 //Creo la sentencia SQL para cabecera.
 $sqlCargaCabecera = "INSERT INTO cabacuerdosusimra VALUES ('$cuit','$nroacuerdo','$tipoacuerdo','$fechaacuerdo','$nroacta','$gestoracuerdo','$porcGastos','$inspectorinterviene','$requerimientoorigen','$liquidacionorigen','$montoacuerdo','$observaciones','$estadoacuerdo','$cuotasapagar','$montoapagar','$cuotaspagadas','$montopagadas','$fechapagadas','$saldoacuerdo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
-echo $sqlCargaCabecera; echo("<br>");
+//echo $sqlCargaCabecera; echo("<br>");
 
 //Creo los SQL para los periodos
 $id = 1;

@@ -8,10 +8,6 @@ $sql = "select * from empresas where cuit = $cuit";
 $result =  mysql_query( $sql,$db); 
 $row = mysql_fetch_array($result); 
 
-$sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp =  mysql_query( $sqlDelEmp,$db);
-$rowDelEmp = mysql_fetch_array($resDelEmp); 
-
 $sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
 $resultlocalidad =  mysql_query( $sqllocalidad,$db); 
 $rowlocalidad = mysql_fetch_array($resultlocalidad); 
@@ -230,7 +226,7 @@ function mostrarPeriodos() {
 					<?php } else { ?>
 						  <option value=0>No Especificado </option>
 					<?php } 
-					$sqlInspec="select * from inspectores where codidelega = ".$rowDelEmp['codidelega'];
+					$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
 					$resInspec= mysql_query( $sqlInspec,$db);
 					while ($rowInspec=mysql_fetch_array($resInspec)) { 
 						if ($rowacu['inspectorinterviene'] == $rowInspec['codigo']) { ?>
