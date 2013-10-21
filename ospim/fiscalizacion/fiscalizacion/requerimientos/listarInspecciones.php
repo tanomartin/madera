@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php"); 
 
-$sqlReque = "SELECT * from reqfiscalizospim where procesoasignado = 2 and requerimientoanulado = 0";
+$sqlReque = "SELECT * from reqfiscalizospim where procesoasignado = 2 and requerimientoanulado = 0 order by nrorequerimiento DESC";
 $resReque = mysql_query($sqlReque,$db);
 $canReque = mysql_num_rows($resReque);
 
@@ -38,7 +38,7 @@ function validar(formulario) {
 		formulario.fecha.focus();
 		return false;
 	}	
-	return true
+	return true;
 }
 
 </script>
@@ -46,7 +46,7 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" align="center"/>
   </span></p>
   	<p class="Estilo2">Listado de  Requerimiento en Inspecci&oacute;n  </p>
 	<?php if ($canReque == 0) {

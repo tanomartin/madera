@@ -14,7 +14,7 @@ $sqlUpdateReq = "UPDATE reqfiscalizospim
 					SET procesoasignado = 2, fechamodificacion = '$fechamodif', usuariomodificacion= '$usuariomodif'
 					WHERE nrorequerimiento =  $nroreq";
 //print($sqlUpdateReq."<br>");
-$sqlInsertInsp = "INSERT INTO requeinspeccionospim VALUE('$nroreq','$isnpec','$fechaInsp','0','','0','','0000-00-00','0000-00-00','$usuariomodif','$fechamodif','','0000-00-00')";
+$sqlInsertInsp = "INSERT INTO inspecfiscalizospim VALUE('$nroreq','$isnpec','$fechaInsp',DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,'$fechamodif','$usuariomodif',DEFAULT,DEFAULT)";
 //print($sqlInsertInsp."<br>");
 
 try {

@@ -4,7 +4,7 @@ include($libPath."controlSessionOspim.php");
 $fecha = $_GET['fecha'];
 $nroreq = $_GET['nroreq'];
 $cuit = $_GET['cuit'];
-
+$fechaInspec=date("d-m-Y");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -59,7 +59,7 @@ function validar(formulario) {
 		  </tr>
 		  <tr>
 			<td width="201"><div align="right">Fecha de Inspección:</div></td>
-			<td><input name="fechainsp" type="text" value="<?php echo $fecha?>" readonly="readonly" style="background-color:#CCCCCC"/></td>
+			<td><input name="fechainsp" type="text" value="<?php echo $fechaInspec?>" readonly="readonly" style="background-color:#CCCCCC"/></td>
 		  </tr>
 		   <tr>
 			<td colspan="2">
