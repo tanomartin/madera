@@ -150,7 +150,7 @@ function validar(formulario) {
 			</div></td>
 		  </tr>
 		  <tr>
-			<td><p align="right">D&iacute;as Efectivizaci&oacute;n</p></td>
+			<td><div align="right">D&iacute;as Efectivizaci&oacute;n</div></td>
 			<td><div align="left"><input name="diasefect" id="diasefect" type="text" size="4" value="<?php echo  $rowInspe['diasefectivizacion'] ?>" />
 			</div></td>
 		  </tr>

@@ -32,72 +32,35 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
-<script type="text/javascript">
-
-function controlarFechaVtoInsp(fecha, plazo, efectuada) {
-	if (efectuada == 1) {
-		alert("VAMOS A LIQUIDAR");
-	} else {
-		if (plazo == 0) {
-			alert("No se puede liquidar. No hay plazo de efectivización para la inspeccion");
-		} else {
-			fechavto = fecha.replace("-", "/").replace("-", "/");	
-			fechavto = new Date(fechavto);
-			var plazo=parseInt(plazo);
-			fechavto.setDate(fechavto.getDate() + plazo);
-			var aniovto = fechavto.getFullYear();
-			var mesvto = fechavto.getMonth()+1;
-			var diavto = fechavto.getDate();
-			fechavto = aniovto+"-"+mesvto+"-"+diavto;
-			
-			var today = new Date();
-			var curr_date = today.getDate();
-			var curr_month = today.getMonth() + 1; //Months are zero based
-			var curr_year = today.getFullYear();
-			today = curr_year + "-"  + curr_month + "-" + curr_date;
-
-			if (today > fechavto) {
-				if (confirm("La Inspección sigue vigente pero se ha vencido el plazo de la misma. ¿Desea liquidarla igualmente?")) {
-					alert("VAMOS A LIQUIDAR");
-				} 
-			} else {
-				alert("No se puede liquidar. Inspeccion en progreso y plazo de efectivización vigente.");
-			}
-		}
-	}
-}
-</script>
-
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" align="center"/>
   </span></p>
   	<p class="Estilo2">Listado de  Requerimiento del d&iacute;a <?php echo $fecha ?>  </p>
-	<p> <table width="1000" border="1" align="center">
-	  <tr>
-		<th>Número</th>
-		<th>Origen</th>
-		<th>Solicitante</th>
-		<th>Motivo</th>
-		<th>Cuit</th>
-		<th>Detalle</th>
-		<th>Acciones</th>
-	  </tr>
-	  <?php while($rowReque = mysql_fetch_array($resReque)) { 
+	<form id="listadoReque" name="listadoReque" method="post" action="liquidar.php?fecha=<?php echo $fecha ?>">
+	  <table width="1000" border="1" align="center">
+        <tr>
+          <th>N&uacute;mero</th>
+          <th>Origen</th>
+          <th>Solicitante</th>
+          <th>Motivo</th>
+          <th>Cuit</th>
+          <th>Detalle</th>
+          <th>Acciones</th>
+		  <th>Liquidar</th>
+        </tr>
+        <?php while($rowReque = mysql_fetch_array($resReque)) { 
 				print("<tr>");
 				print("<td>".$rowReque['nrorequerimiento']."</td>");
 				if ($rowReque['origenrequerimiento'] == 1) {
-					$origen = "Fiscalización";
+					$origen = "Fiscalizaci&oacute;n";
 				}
 				if ($rowReque['origenrequerimiento'] == 2) {
 					$origen = "Afiliaciones";
 				}
 				if ($rowReque['origenrequerimiento'] == 3) {
-					$origen = "Prestación";
+					$origen = "Prestaci&oacute;n";
 				}  
 				print("<td>".$origen."</td>");   
 				print("<td>".$rowReque['solicitarequerimiento']."</td>");   
@@ -105,19 +68,29 @@ function controlarFechaVtoInsp(fecha, plazo, efectuada) {
 				print("<td>".$rowReque['cuit']."</td>"); 
 				print("<td><a href='detalleRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Editar</a></td>");
 				if ($rowReque['procesoasignado'] == 0) {		
-					print("<td>Liquidar<br><a href='inspeccion.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Inspección</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
+					print("<td><a href='inspeccion.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Inspecci&oacute;n</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>"); 
+					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' value='".$rowReque['nrorequerimiento']."'></td>"); 
 				} else {
 					$sqlInsp = "SELECT * from inspecfiscalizospim where nrorequerimiento = ".$rowReque['nrorequerimiento'];
 					$resInsp = mysql_query($sqlInsp,$db);
 					$rowInsp = mysql_fetch_array($resInsp);
-					print("<td><a href=javascript:controlarFechaVtoInsp('".$rowInsp['fechaasignado']."',".$rowInsp['diasefectivizacion'].",".$rowInsp['inspeccionefectuada'].")>Liquidar</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
+					print("<td><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
+					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' value='".$rowReque['nrorequerimiento']."'></td>"); 
 				}        
 				print("</tr>");
 			}
 	  ?>
-	</table>
-	</p>
-	
+      </table>
+        <p><table width="999" border="0">
+          <tr>
+            <td width="928">&nbsp;</td>
+            <td width="61">
+              <div align="right">
+                <input type="submit" name="Submit" value="Liquidar" />
+              </div></td>
+          </tr>
+        </table></p>
+	</form>
 </div>
 </body>
 </html>

@@ -11,7 +11,7 @@ $canReque = mysql_num_rows($resReque);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Listado de Requerimientos :.</title>
+<title>.: Listado de Requerimientos en Inpsección:.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -77,7 +77,7 @@ function validar(formulario) {
 					print("<td>".$rowReque['solicitarequerimiento']."</td>");   
 					print("<td>".$rowReque['motivorequerimiento']."</td>"); 
 					print("<td>".$rowReque['cuit']."</td>"); 
-					print("<td><a href='datosInspeccion.php?nroreq=".$rowReque['nrorequerimiento']."'>Ver</a></td>");         
+					print("<td><a href='datosInspeccion.php?nroreq=".$rowReque['nrorequerimiento']."'>Modificar</a></td>");         
 					print("</tr>");
 				}
 		  ?>

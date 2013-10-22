@@ -148,6 +148,9 @@ function validar(formulario) {
 		if ($err == 5) {
 			print("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO NO GENERO REQUERIMIENTO DE DUEDA </b></div>");
 		}
+		if ($err == 6) {
+			print("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO ESTA DE BAJA </b></div>");
+		}
   ?>
   <table width="630" border="0" align="center" id="delega">
 	  <tr>

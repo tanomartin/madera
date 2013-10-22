@@ -41,15 +41,7 @@ if ($tipo == "delega") {
 		$resEmpresas = mysql_query($sqlEmpresas,$db);
 		$cant = mysql_num_rows($resEmpresas);
 		if ($cant != 0) {
- 				echo "<script>
-						if(confirm('Empresa de Baja. ¿Deseas continuar?')){ 
-							document.location='fiscalizadorPorCuit.php?cuit=$cuit&origen=$origen&soli=$solicitante&motivo=$motivo&tipo=baja';
-						} else{ 
-							alert('Fiscalización Cancelada'); 
-							document.location='fiscalizador.php';
-						}
-					  </script>";  
-		
+ 			header ("Location: fiscalizador.php?err=6");
 		} else {	
 			header ("Location: fiscalizador.php?err=1");
 		}
