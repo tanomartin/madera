@@ -487,9 +487,6 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
       <p><strong>Monto Autorizado:</strong> <?php echo $rowLeeSolicitud['montoautorizacion'];?></p>
       <p><p><strong>Documento Autorizacion:</strong> <?php if($rowLeeDocumento['documentofinal']!=NULL) {?><input type="button" name="docuauto" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,10)" align="center"/><?php }?></p></p></td>
   </tr>
-  <tr>
-    <td colspan="2"><div align="center"><input type="reset" name="volver" value="Volver" onclick="location.href = 'historialSolicitudes.php'"/></div></td>
-    </tr>
 </table>
 </body>
 </html>

@@ -10,20 +10,32 @@ $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
+<link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <title>.: M&oacute;dulo Autorizaciones :.</title>
+<script type="text/javascript" src="/lib/jquery.tablesorter/jquery-latest.js"></script>
+<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.metadata.js"></script>
+<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+<script type="text/javascript">
+	$(function() {
+		$("#historial")
+		.tablesorter({widthFixed: true, widgets:['zebra'], headers:{1:{sorter:false},5:{sorter:false},9:{sorter:false}}})
+		.tablesorterPager({container: $("#paginador")}); 
+	});
+</script>
 </head>
 <body bgcolor="#CCCCCC">
-<form id="historialSolicitudes" name="historialSolicitudes">
 <div align="center">
 <h1>Historial de Autorizaciones</h1>
 </div>
 <div align="center">
-<table id="historial">
+<table id="historial" class="tablesorter">
 	<thead>
 		<tr>
 			<th>Nro</th>
@@ -39,7 +51,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 		</tr>
 	</thead>
 	<tbody>
-
 <?php
 		while($rowLeeAutorizacion = mysql_fetch_array($resultLeeAutorizacion)) {
 ?>
@@ -58,7 +69,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
 			<td><?php if($rowLeeAutorizacion['statusverificacion']==1) echo "Aprobada"; if($rowLeeAutorizacion['statusverificacion']==2) echo "Rechazada"; if($rowLeeAutorizacion['statusverificacion']==3) echo "No Reverificada";?></td>
 			<td><?php if($rowLeeAutorizacion['statusautorizacion']==1) echo "Aprobada"; if($rowLeeAutorizacion['statusautorizacion']==2) echo "Rechazada";?></td>
-			<td>&nbsp;</td>
+			<td><a href="consultaAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']; ?>" target="popup" onClick="window.open(this.href, this.target, 'width=1100,height=800'); return false;">Consultar</a></td>
 		</tr>
 <?php
 		}
@@ -66,20 +77,33 @@ A:hover {text-decoration: none;color:#00FFFF }
 	</tbody>
 </table>
 </div>
-<div align="center">
-  <table width="800" border="0">
+<div id="paginador" class="pager">
+<form>
+	<p>&nbsp;</p>
+	<img src="../img/first.png" width="16" height="16" class="first"/>
+      <img src="../img/prev.png" width="16" height="16" class="prev"/>
+      <input type="text" class="pagedisplay"/>
+      <img src="../img/next.png" width="16" height="16" class="next"/>
+      <img src="../img/last.png" width="16" height="16" class="last"/>
+	    <select class="pagesize">
+	      <option selected value="10">10 por pagina</option>
+	      <option value="20">20 por pagina</option>
+	      <option value="30">30 por pagina</option>
+	      <option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
+		</select>
+  <table width="1229" border="0">
     <tr>
-      <td width="400">
+      <td width="599">
         <div align="left">
           <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'" align="left"/>
         </div>
-      <td width="400">
+      <td width="620">
         <div align="right">
           <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
         </div>
     </tr>
   </table>
-</div>
 </form>
+</div>
 </body>
 </html>
