@@ -1,4 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+set_time_limit(0);
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php"); 
 $fechamodif = date("Y-m-d H:m:s");
@@ -144,18 +145,19 @@ function deudaAnterior($cuit, $db) {
 	}
 	//var_dump($pagos);
 	$deuda = 0;
-	$ano = $anioInicioActi;
-	while($ano<=$anoinicio && $deuda <= 2) {
-		for ($i=1;$i<13;$i++){
-			$idArray = $ano.$i;
-			if (!array_key_exists($idArray, $pagos)) {
-				$deuda = $deuda + encuentroDeuda($ano, $i, $cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
-				//print("DEUDA ACUMULA: ".$deuda."<br>");
+	if ($pagos != 0) {
+		$ano = $anioInicioActi;
+		while($ano<=$anoinicio && $deuda <= 2) {
+			for ($i=1;$i<13;$i++){
+				$idArray = $ano.$i;
+				if (!array_key_exists($idArray, $pagos)) {
+					$deuda = $deuda + encuentroDeuda($ano, $i, $cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
+					//print("DEUDA ACUMULA: ".$deuda."<br>");
+				}
 			}
+			$ano++;
 		}
-		$ano++;
 	}
-	
 	if($deuda > 2) {
 		return 'S';
 	} else {
@@ -163,14 +165,91 @@ function deudaAnterior($cuit, $db) {
 	}
 }
 
-function cambioEstadoReq($sqlUpdateReq) {
+function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc) {	
+	$tipo = 'activa';
+	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
+	$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
+	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
+	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
+	include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
+	
+	/*print("CUIT: ".$cuit."<br>");
+	print("INICIO MES: ".$mesinicio."<br>");
+	print("INICIO ANO: ".$anoinicio."<br>");
+	print("FIN MES: ".$ultmes."<br>");
+	print("FIN ANO: ".$ultano."<br>");*/
+	
+	if ($anoinicio == $mesinicio) {
+		$sqlDDJJ = "select anoddjj, mesddjj, cuil, remundeclarada, adherentes from detddjjospim where cuit = $cuit and (anoddjj = $anoInicioDeuda and mesddjj <= $ultmes and mesddjj >= $mesinicio)";
+	} else {
+		$sqlDDJJ = "select anoddjj, mesddjj, cuil, remundeclarada, adherentes from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
+	}
+	
+	//print($sqlDDJJ."<br>");
+	$arrayDDJJ = array();
+	$resDDJJ = mysql_query($sqlDDJJ,$db);
+	$b = 0;
+	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
+		if ($rowDDJJ['mesddjj'] < 10) {
+			$mes = "0".$rowDDJJ['mesddjj'];
+		} else {
+			$mes = $rowDDJJ['mesddjj'];
+		}
+		$id = $rowDDJJ['anoddjj'].$mes;
+		$arrayDDJJ[$b] = array ('id' =>  $id, 'datos' => $rowDDJJ);
+		$b++;
+	}
+	//var_dump($arrayDDJJ);
+	
+	for ($i=0; $i < sizeof($cuerpo); $i++) {
+		$fecha = explode("|",$cuerpo[$i]);
+		$fechaArray =  explode("/",$fecha[0]);
+		$id = $fechaArray[2].$fechaArray[1];
+		$idBuscar[$id] = $id;
+	}
+	//var_dump($idBuscar);
+	
+	$c = 0;
+	for ($i=0; $i < sizeof($arrayDDJJ); $i++) {
+		$id = $arrayDDJJ[$i]['id'];
+		if (array_key_exists($id, $idBuscar)) {
+			if ($arrayDDJJ[$i]['datos']['mesddjj'] < 10) {
+				$mes = "0".$arrayDDJJ[$i]['datos']['mesddjj'];
+			} else {
+				$mes = $arrayDDJJ[$i]['datos']['mesddjj'];
+			}
+			$cuerpoCUIL[$c] = "01/".$mes."/".$arrayDDJJ[$i]['datos']['anoddjj']."|".agregaGuiones($arrayDDJJ[$i]['datos']['cuil'])."|".number_format((float)$arrayDDJJ[$i]['datos']['remundeclarada'],2,',','')."|".$arrayDDJJ[$i]['datos']['adherentes'];
+			$c++;
+		}
+	}
+	
+	//CREAMOS EL ARCHIVO
+	$ultanoArch = substr ($ultano,2,2);
+	$nombreArcCUIL = $cuit.$ultmes.$ultanoArch.'D'.$nroreqArc.".txt";
+	//print("ARCHIVO: ".$nombreArc."<br><br>");
+	$direArc = "liqui\\".$nombreArcCUIL;
+	//print($primeraLinea."<br>");
+	//solo por ahora...
+	unlink($direArc);
+	//****************
+	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación. Por favor cuminiquese con el dpto. de Sistemas");
+	for ($i=0; $i < sizeof($cuerpoCUIL); $i++) {
+		fputs($ar,$cuerpoCUIL[$i]."\n");
+	}
+	fclose($ar);
+	//**********************************
+}
+
+function cambioEstadoReq($nroreq) {
+	global $fechamodif, $usuariomodif;
+	$sqlUpdateReque = "UPDATE reqfiscalizospim SET procesoasignado = 1, fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif' WHERE nrorequerimiento = $nroreq";
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
 	try {
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
-		$dbh->exec($sqlUpdateReq);
+		$dbh->exec($sqlUpdateReque);
 		$dbh->commit();
 	}catch (PDOException $e) {
 		echo $e->getMessage();
@@ -179,8 +258,6 @@ function cambioEstadoReq($sqlUpdateReq) {
 }
 
 function liquidar($nroreq, $cuit, $db) {
-	global $fechamodif, $usuariomodif;
-
 	//CREAMOS PRIMERA LINEA DEL ARCHIVO
 	$sqlJuris = "SELECT * from empresas e, jurisdiccion j, provincia p where j.cuit = $cuit and j.cuit = e.cuit and j.codprovin = p.codprovin order by j.disgdinero DESC limit 1";
 	$resJuris = mysql_query($sqlJuris,$db);
@@ -251,10 +328,10 @@ function liquidar($nroreq, $cuit, $db) {
 	}
 	//************************************************************************************************************************
 	
-	//CREAMOS EL ARCHIVO
-	$ultano = substr ($ultano,2,2);
+	//CREAMOS EL ARCHIVO DE DEUDA
+	$ultanoArch = substr ($ultano,2,2);
 	$nroreqCompleto = compeltarNroReq($nroreq); 
-	$nombreArc = $cuit.$ultmes.$ultano."O".$nroreqCompleto.".txt";
+	$nombreArc = $cuit.$ultmes.$ultanoArch."O".$nroreqCompleto.".txt";
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
 	$direArc = "liqui\\".$nombreArc;
 	//print($primeraLinea."<br>");
@@ -270,9 +347,10 @@ function liquidar($nroreq, $cuit, $db) {
 	fclose($ar);
 	//**********************************
 	
+	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
+	
 	//ACTULIZAMOS EL ESTADO DEL REQUERIMIENTO A 1.
-	$sqlUpdateReque = "UPDATE reqfiscalizospim SET procesoasignado = 1, fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif' WHERE nrorequerimiento = $nroreq";
-	cambioEstadoReq($sqlUpdateReque);
+	cambioEstadoReq($nroreq);
 	//print("<br>".$sqlUpdateReque."<br>");
 	//**********************************
 	

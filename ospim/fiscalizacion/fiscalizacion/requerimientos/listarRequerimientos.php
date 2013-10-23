@@ -32,13 +32,27 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 
+
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+
+function validar() {
+	$.blockUI({ message: "<h1>Generando Archivos de Fiscalizacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	return true;
+}
+
+</script>
+
+
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" align="center"/>
   </span></p>
   	<p class="Estilo2">Listado de  Requerimiento del d&iacute;a <?php echo $fecha ?>  </p>
-	<form id="listadoReque" name="listadoReque" method="post" action="liquidar.php?fecha=<?php echo $fecha ?>">
+	<form id="listadoReque" name="listadoReque" method="post" onSubmit="return validar()" action="liquidar.php?fecha=<?php echo $fecha ?>">
 	  <table width="1000" border="1" align="center">
         <tr>
           <th>N&uacute;mero</th>
