@@ -105,7 +105,6 @@ function fiscalizoPagos($cuit, $arrayPagos, $db) {
 }
 
 function encuentroPagosMyF($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
 	$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
