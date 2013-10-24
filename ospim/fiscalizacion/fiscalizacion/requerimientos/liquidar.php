@@ -257,6 +257,64 @@ function cambioEstadoReq($nroreq) {
 	}
 }
 
+function estaVencida($fecha) {
+	$today = date("Y-m-d"); 
+	if ($today > $fecha) {
+		return 1;
+	}
+	return 0;
+}
+
+function masTresVto($fecha) {
+	$today = date("Y-m-d");
+	if ($today > $fecha) {
+		$mesToday = (int)substr($today,5,2) - 3;
+		$mesCuota = (int)substr($fecha,5,2);
+		if ($mesToday > $mesCuota) {
+			return 1;
+		}
+	}
+	return 0;
+}
+
+function acuerdosCaidos($cuit, $db) {
+	$sqlAcuerdo = "SELECT nroacuerdo, nroacta, fechaacuerdo, saldoacuerdo FROM cabacuerdosospim WHERE cuit = $cuit and estadoacuerdo = 1 and tipoacuerdo != 3";
+	$resAcuerdo = mysql_query($sqlAcuerdo,$db);
+	$cuerpo = array();
+	$c = 0;
+	while ($rowAcuerdo = mysql_fetch_assoc($resAcuerdo)) {
+		$nro = $rowAcuerdo['nroacuerdo'];
+		$sqlCuotas = "SELECT fechacuota FROM cuoacuerdosospim WHERE cuit = $cuit and nroacuerdo = $nro and tipocancelacion = 8 order by fechacuota";
+		$resCuotas = mysql_query($sqlCuotas,$db);
+		$canCuotas = mysql_num_rows($resCuotas);
+		$cantVto = 0;
+		while ($rowCuotas = mysql_fetch_assoc($resCuotas)) {
+			if (estaVencida($rowCuotas['fechacuota'])) {
+				$fechasVencidas[$cantVto] = $rowCuotas['fechacuota'];
+				$cantVto++;
+			}
+		}
+		if ($cantVto < 3) {
+			$masTres = 0;
+			for ($i=0; $i < sizeof($fechasVencidas); $i++) {
+				if (masTresVto($fechasVencidas[$i])) {
+					$masTres = 1;
+					$i = sizeof($fechasVencidas);
+				}
+			}
+			if ($masTres > 0) {
+				$cuerpo[$c] = $rowAcuerdo['nroacuerdo']."|".$rowAcuerdo['nroacta']."|".$fechasVencidas[0]."|".$rowAcuerdo['fechaacuerdo']."|".$rowAcuerdo['saldoacuerdo'];
+				$c++;
+			}
+		} else {
+			$cuerpo[$c] = $rowAcuerdo['nroacuerdo']."|".$rowAcuerdo['nroacta']."|".$fechasVencidas[0]."|".$rowAcuerdo['fechaacuerdo']."|".$rowAcuerdo['saldoacuerdo'];
+			$c++;
+		}
+		
+	}
+	return($cuerpo);
+}
+
 function liquidar($nroreq, $cuit, $db) {
 	//CREAMOS PRIMERA LINEA DEL ARCHIVO
 	$sqlJuris = "SELECT * from empresas e, jurisdiccion j, provincia p where j.cuit = $cuit and j.cuit = e.cuit and j.codprovin = p.codprovin order by j.disgdinero DESC limit 1";
@@ -267,6 +325,9 @@ function liquidar($nroreq, $cuit, $db) {
 	$deuda = deudaAnterior($cuit, $db);
 	$primeraLinea = $rowJuris['codidelega']."|000000|".$rowJuris['nombre']."|".$rowJuris['domireal']."|".$rowJuris['descrip']."|".$cuitconguiones."|".$rowJuris['numpostal']."|".$telefono."|".$deuda;
 	//**********************************
+	
+	//ACUERDOS CAIDOS
+	$cuerpoAcuerdoCaidos = acuerdosCaidos($cuit, $db);
 	
 	//CREAMOS EL CUERPO DEL ARCHIVO CON LA DEUDA ************************************************************************
 	$cuerpo = array();
@@ -340,6 +401,10 @@ function liquidar($nroreq, $cuit, $db) {
 	//****************
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación. Por favor cuminiquese con el dpto. de Sistemas");
 	fputs($ar,$primeraLinea."\n");
+	for ($i=0; $i < sizeof($cuerpoAcuerdoCaidos); $i++) {
+		//print($cuerpoAcuerdoCaidos[$i]."<br>");
+		fputs($ar,$cuerpoAcuerdoCaidos[$i]."\n");
+	}
 	for ($i=0; $i < sizeof($cuerpo); $i++) {
 		//print($cuerpo[$i]."<br>");
 		fputs($ar,$cuerpo[$i]."\n");
