@@ -294,6 +294,17 @@ function acuerdosCaidos($cuit, $db) {
 				$cantVto++;
 			}
 		}
+		
+		if ($rowAcuerdo['nroacuerdo'] < 10) {
+			$nroacue = "00".$rowAcuerdo['nroacuerdo'];
+		} else {
+			if ($rowAcuerdo['nroacuerdo'] < 100) {
+				$nroacue = "0".$rowAcuerdo['nroacuerdo'];
+			} else {
+				$nroacue = $rowAcuerdo['nroacuerdo'];
+			}
+		}
+		
 		if ($cantVto < 3) {
 			$masTres = 0;
 			for ($i=0; $i < sizeof($fechasVencidas); $i++) {
@@ -303,11 +314,11 @@ function acuerdosCaidos($cuit, $db) {
 				}
 			}
 			if ($masTres > 0) {
-				$cuerpo[$c] = $rowAcuerdo['nroacuerdo']."|".$rowAcuerdo['nroacta']."|".$fechasVencidas[0]."|".$rowAcuerdo['fechaacuerdo']."|".$rowAcuerdo['saldoacuerdo'];
+				$cuerpo[$c] = "ACUE".$nroacue."|".$rowAcuerdo['nroacta']."|".$fechasVencidas[0]."|".$rowAcuerdo['fechaacuerdo']."|".$rowAcuerdo['saldoacuerdo'];
 				$c++;
 			}
 		} else {
-			$cuerpo[$c] = $rowAcuerdo['nroacuerdo']."|".$rowAcuerdo['nroacta']."|".$fechasVencidas[0]."|".$rowAcuerdo['fechaacuerdo']."|".$rowAcuerdo['saldoacuerdo'];
+			$cuerpo[$c] = "ACUE".$nroacue."|".$rowAcuerdo['nroacta']."|".$fechasVencidas[0]."|".$rowAcuerdo['fechaacuerdo']."|".$rowAcuerdo['saldoacuerdo'];
 			$c++;
 		}
 		
