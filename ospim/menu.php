@@ -38,6 +38,11 @@ function abrirFiscalizacion(dire) {
 	c= window.open(dire,"Fiscalizacion",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
+
+function abrirSistemas(dire) {
+	c= window.open(dire,"Sistemas",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+}
 </script>
 
 
@@ -77,9 +82,14 @@ function abrirFiscalizacion(dire) {
 	    <p>Auditoria Medica </p>
 	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
-      </div></td>
-	  
-      <td width="183"><p>&nbsp;</p></td>
+      </div></td> 
+	  <?php if ($_SESSION['usuario'] == 'sistemas') { ?>
+		  <td width="183"><div align="center">
+			<p>Sistemas</p>
+			<p><a href="javascript:abrirSistemas('sistemas/menuSistemas.php')"><img src="img/sistemas.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+			<p>&nbsp;</p>
+		  </div></td>
+	 <?php } ?>
     </tr>
   </table>
    <p><strong><a href="logout.php">
