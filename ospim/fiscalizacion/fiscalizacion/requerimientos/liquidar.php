@@ -384,9 +384,9 @@ function liquidar($nroreq, $cuit, $db) {
 				$sqlAgrup = "SELECT * from agrufiscalizospim where cuit = $cuit and anoddjj =". $rowRequeDet['anofiscalizacion']." and mesddjj = ".$rowRequeDet['mesfiscalizacion'];
 				$resAgrup = mysql_query($sqlAgrup,$db);
 				$rowAgrup = mysql_fetch_assoc($resAgrup);
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".number_format((float)$rowRequeDet['cantidadpersonal'],0,'','')."|".number_format((float)$rowRequeDet['remundeclarada'],2,',','')."|".number_format((float)$rowAgrup['cantcuilmayor1000'],0,'','')."|".number_format((float)$rowAgrup['remucuilmayor1000'],2,',','')."|".number_format((float)$rowAgrup['cantadhemayor1000'],0,'','')."|".number_format((float)$rowAgrup['remuadhemayor1000'],2,',','')."|".number_format((float)$rowAgrup['cantcuilmenor1001'],0,'','')."|".number_format((float)$rowAgrup['remucuilmenor1001'],2,',','')."|".number_format((float)$rowAgrup['cantadhemenor1001'],0,'','')."|".number_format((float)$rowAgrup['remuadhemenor1001'],2,',','');
+				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".number_format((float)$rowRequeDet['cantidadpersonal'],0,'','')."|".number_format((float)$rowRequeDet['remundeclarada'],2,',','')."|||".number_format((float)$rowAgrup['cantcuilmayor1000'],0,'','')."|".number_format((float)$rowAgrup['remucuilmayor1000'],2,',','')."|".number_format((float)$rowAgrup['cantadhemayor1000'],0,'','')."|".number_format((float)$rowAgrup['remuadhemayor1000'],2,',','')."|".number_format((float)$rowAgrup['cantcuilmenor1001'],0,'','')."|".number_format((float)$rowAgrup['remucuilmenor1001'],2,',','')."|".number_format((float)$rowAgrup['cantadhemenor1001'],0,'','')."|".number_format((float)$rowAgrup['remuadhemenor1001'],2,',','');
 			} else {
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0|0|0|0|0|0|0|0|0|0";
+				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0|0|0|0|0|0|0|0|0|0|0|0";
 			}
 		}
 		
