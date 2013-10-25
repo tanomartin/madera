@@ -228,11 +228,11 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	$nombreArcCUIL = $cuit.$ultmes.$ultanoArch.'D'.$nroreqArc.".txt";
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
 	$maquina = $_SERVER['SERVER_NAME'];
-	if(strcmp("localhost",$maquina)==0)
+	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArcCUIL;
-	else
-		$destino="/home/sistemas/Documentos/Repositorio/pruebaLiqui/".$nombreArcCUIL;
-	print($direArc."<br>");
+	} else {
+		$direArc="/home/sistemas/Documentos/Repositorio/pruebaLiqui/".$nombreArcCUIL;
+	}
 	//print($primeraLinea."<br>");
 	//solo por ahora...
 	//unlink($direArc);
@@ -410,11 +410,12 @@ function liquidar($nroreq, $cuit, $db) {
 	$nroreqCompleto = compeltarNroReq($nroreq); 
 	$nombreArc = $cuit.$ultmes.$ultanoArch."O".$nroreqCompleto.".txt";
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
-	if(strcmp("localhost",$maquina)==0)
+	$maquina = $_SERVER['SERVER_NAME'];
+	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArc;
-	else
-		$destino="/home/sistemas/Documentos/Repositorio/pruebaLiqui/".$nombreArc;
-	print($direArc."<br>");
+	} else {
+		$direArc="/home/sistemas/Documentos/Repositorio/pruebaLiqui/".$nombreArc;
+	}
 	//print($primeraLinea."<br>");
 	//solo por ahora...
 	//unlink($direArc);
