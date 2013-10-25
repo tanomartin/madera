@@ -232,7 +232,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArcCUIL;
 	else
 		$destino="/home/sistemas/Documentos/Repositorio/pruebaLiqui/".$nombreArcCUIL;
-	
+	print($direArc."<br>");
 	//print($primeraLinea."<br>");
 	//solo por ahora...
 	//unlink($direArc);
@@ -414,6 +414,7 @@ function liquidar($nroreq, $cuit, $db) {
 		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArc;
 	else
 		$destino="/home/sistemas/Documentos/Repositorio/pruebaLiqui/".$nombreArc;
+	print($direArc."<br>");
 	//print($primeraLinea."<br>");
 	//solo por ahora...
 	//unlink($direArc);
