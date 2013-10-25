@@ -51,7 +51,8 @@ function validar(formulario) {
 				if (isset($_GET['err'])) {
 					$err = $_GET['err'];
 					if ($err == 1) {
-						print("<div align='center' style='color:#FF0000'><b> NO EXISTEN REQUERMIENTOS PARA LA FECHA DADA </b></div>");
+						$fechaBuscada = $_GET['fecha'];
+						print("<div align='center' style='color:#FF0000'><b> NO EXISTEN REQUERMIENTOS PARA LA FECHA ".$fechaBuscada."</b></div>");
 					}
 				}
 			?>

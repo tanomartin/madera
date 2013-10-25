@@ -12,7 +12,7 @@ $sqlReque = "SELECT * from reqfiscalizospim where fecharequerimiento = '$fechaBu
 $resReque = mysql_query($sqlReque,$db);
 $canReque = mysql_num_rows($resReque);
 if ($canReque == 0) {
-	header ("Location: requerimientos.php?err=1");
+	header ("Location: requerimientos.php?err=1&fecha=$fecha");
 }
 ?>
 
