@@ -227,10 +227,15 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	$ultanoArch = substr ($ultano,2,2);
 	$nombreArcCUIL = $cuit.$ultmes.$ultanoArch.'D'.$nroreqArc.".txt";
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
-	$direArc = "liqui\\".$nombreArcCUIL;
+	$maquina = $_SERVER['SERVER_NAME'];
+	if(strcmp("localhost",$maquina)==0)
+		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArcCUIL;
+	else
+		$destino="/home/sistemas/Documentos/Repositorio/pruebaLiqui/".$nombreArcCUIL;
+	
 	//print($primeraLinea."<br>");
 	//solo por ahora...
-	unlink($direArc);
+	//unlink($direArc);
 	//****************
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación. Por favor cuminiquese con el dpto. de Sistemas");
 	for ($i=0; $i < sizeof($cuerpoCUIL); $i++) {
@@ -405,10 +410,13 @@ function liquidar($nroreq, $cuit, $db) {
 	$nroreqCompleto = compeltarNroReq($nroreq); 
 	$nombreArc = $cuit.$ultmes.$ultanoArch."O".$nroreqCompleto.".txt";
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
-	$direArc = "liqui\\".$nombreArc;
+	if(strcmp("localhost",$maquina)==0)
+		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArc;
+	else
+		$destino="/home/sistemas/Documentos/Repositorio/pruebaLiqui/".$nombreArc;
 	//print($primeraLinea."<br>");
 	//solo por ahora...
-	unlink($direArc);
+	//unlink($direArc);
 	//****************
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación. Por favor cuminiquese con el dpto. de Sistemas");
 	fputs($ar,$primeraLinea."\n");
