@@ -11,19 +11,22 @@ if (file_exists($archivo)) {
 	while(!feof($file)) {
 		$linea = trim(fgets($file));
 		if (strlen($linea) > 0) {
+			$acuAbs = "";
 			$linea = str_replace('"','',$linea);
 			$campos = explode("|",$linea);
 			$nroreq = (int)$campos[0];
+			$sqlInserciones[$r] = "DELETE FROM aculiquiospim where nrorequerimiento = $nroreq";
+			$r++;
 			if (strlen($campos[10]) > 0) {
-				$acuerdos = explode("-",$campos[10]);
+				$acuerdos = explode("-",$campos[10]);	
 				for ($i=0; $i<sizeof($acuerdos); $i++) {
-					$acuAbs = 'S';
 					$nroacu = (int)$acuerdos[$i];
-					$sqlInserciones[$r] = "INSERT into requeAcuerdos VALUE($nroreq, $nroacu)";
+					$acuAbs = $nroacu." - ".$acuAbs;
+					$sqlInserciones[$r] = "INSERT into aculiquiospim VALUE($nroreq, $nroacu)";
 					$r++;
 				}
 			} else {
-				$acuAbs = 'N';
+				$acuAbs = '-';
 			}
 			$fechaliq = fechaParaGuardar($campos[1]);
 			$horaliq = $campos[2];
@@ -35,8 +38,8 @@ if (file_exists($archivo)) {
 			$nroreso = (int)$campos[8];
 			$nrosert = (int)$campos[9];
 			$operador = $campos[11];
-			$liqCargadas[$n] = $nroreq;
-			$sqlInserciones[$r] = "INSERT into cabliquidacionospim VALUE($nroreq, '$fechaliq', '$horaliq', '$fecinsp', $totdep, $totint, $gastos, $totliq, $nroreso, $nrosert, '$acuAbs', '$operador')";
+			$liqCargadas[$n] = array('reque' => $nroreq, 'fecha' => $campos[1], 'total' => number_format($totliq,2,',','.'), 'acu' => $acuAbs, 'operador' => $operador);
+			$sqlInserciones[$r] = "UPDATE cabliquiospim SET fechaliquidacion = '$fechaliq', horaliquidacion = '$horaliq', fechainspeccion = '$fecinsp', deudanominal = $totdep, intereses =  $totint, gtosadmin = $gastos, totalliquidado = $totliq, nroresolucioninspeccion = $nroreso, nrocertificadodeuda = $nrosert, operadorliquidador = '$operador' WHERE nrorequerimiento = $nroreq";
 			$r++;
 			$n++;
 		}
@@ -49,12 +52,12 @@ if (file_exists($archivo)) {
 		$dbname = $_SESSION['dbname'];
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		//$dbh->beginTransaction();
+		$dbh->beginTransaction();
 		foreach($sqlInserciones as $sql) {
-			print($sql."<br>");
-			//$dbh->exec($sql);
+			//print($sql."<br>");
+			$dbh->exec($sql);
 		}
-		//$dbh->commit();
+		$dbh->commit();
 		unlink($archivo);
 	}catch (PDOException $e) {
 		echo $e->getMessage();
@@ -109,9 +112,12 @@ function abrirInfo(dire) {
 					</tr>
 			  <?php for ($i=0; $i < sizeof($liqCargadas); $i++) {
 						//consultamos las liquidacioens y los aceurdos abscorvidos
-						$nroreq = $liqCargadas[$i];
 						print("<tr align='center'>");
-						print("<td>".$nroreq."</td>");
+						print("<td>".$liqCargadas[$i]['reque']."</td>");
+						print("<td>".$liqCargadas[$i]['fecha']."</td>");
+						print("<td>".$liqCargadas[$i]['total']."</td>");
+						print("<td>".$liqCargadas[$i]['acu']."</td>");
+						print("<td>".$liqCargadas[$i]['operador']."</td>");
 						print("</tr>");
 					}
 			  ?>
