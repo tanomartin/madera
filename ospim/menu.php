@@ -94,11 +94,8 @@ function abrirSistemas(dire) {
   </table>
    <p><strong><a href="logout.php">
      <input type="button" name="salir" value="SALIR" onclick="location.href='logout.php'" />
-   </a></strong></p>
-  <p>&nbsp;</p>
+  </a></strong></p>
 </div>
-<p align="center">&nbsp;</p>
-<p align="center">&nbsp;</p>
 </body>
 
 </html>
