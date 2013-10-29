@@ -14,13 +14,12 @@ $addoc = $datos[4];
 $detalledoc = $datos[5];
 $formaenvio = $datos[6];
 $fecharecibo = fechaParaGuardar($datos[7]);
-$inspefec = $datos[8];
-$fechainsp = fechaParaGuardar($datos[9]);
-
-
+$fechadevolu = fechaParaGuardar($datos[8]);
+$inspefec = $datos[9];
+$fechainsp = fechaParaGuardar($datos[10]);
 //var_dump($datos);
 
-$sqlUpdateInspec = "UPDATE inspecfiscalizospim set inspectorasignado = $inspector, fechaasignado = '$fechaasig', diasefectivizacion = $dias, adjuntadocumentos = $addoc, detalledocumentos = '$detalledoc', formaenviodocumentos = $formaenvio, fecharecibodocumentos = '$fecharecibo', inspeccionefectuada = $inspefec, fechainspeccion = '$fechainsp', fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif' WHERE nrorequerimiento = $nroreq";
+$sqlUpdateInspec = "UPDATE inspecfiscalizospim set inspectorasignado = $inspector, fechaasignado = '$fechaasig', diasefectivizacion = $dias, adjuntadocumentos = $addoc, detalledocumentos = '$detalledoc', formaenviodocumentos = $formaenvio, fecharecibodocumentos = '$fecharecibo',  fechadevoluciondocumentos = '$fechadevolu', inspeccionefectuada = $inspefec, fechainspeccion = '$fechainsp', fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif' WHERE nrorequerimiento = $nroreq";
 //print($sqlUpdateInspec);
 
 try {

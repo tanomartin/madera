@@ -36,6 +36,7 @@ jQuery(function($){
 	$("#fechaAsig").mask("99-99-9999");
 	$("#fechaRecep").mask("99-99-9999");
 	$("#fechaInspec").mask("99-99-9999");
+	$("#fechaDevolu").mask("99-99-9999");
 });
 
 function formatoFormulario() {
@@ -47,6 +48,8 @@ function formatoFormulario() {
 		document.getElementById('formaEnvio').style.background = "#CCCCCC";
 		document.getElementById('fechaRecep').readOnly = true;
 		document.getElementById('fechaRecep').style.background = "#CCCCCC";
+		document.getElementById('fechaDevolu').readOnly = true;
+		document.getElementById('fechaDevolu').style.background = "#CCCCCC";
 	}
 	
 	if (<?php echo $rowInspe['inspeccionefectuada'] ?> == 0) {
@@ -66,6 +69,9 @@ function habilitoDocumentacion(valor) {
 		document.getElementById('fechaRecep').value = ""; 
 		document.getElementById('fechaRecep').readOnly = true;
 		document.getElementById('fechaRecep').style.background = "#CCCCCC";	
+		document.getElementById('fechaDevolu').value = ""; 
+		document.getElementById('fechaDevolu').readOnly = true;
+		document.getElementById('fechaDevolu').style.background = "#CCCCCC";	
 	} else {
 		document.getElementById('detalleDoc').readOnly = false;
 		document.getElementById('detalleDoc').style.background = "#FFFFFF";
@@ -73,6 +79,8 @@ function habilitoDocumentacion(valor) {
 		document.getElementById('formaEnvio').style.background = "#FFFFFF";
 		document.getElementById('fechaRecep').readOnly = false;
 		document.getElementById('fechaRecep').style.background = "#FFFFFF";	
+		document.getElementById('fechaDevolu').readOnly = false;
+		document.getElementById('fechaDevolu').style.background = "#FFFFFF";	
 	}
 }
 
@@ -103,6 +111,31 @@ function validar(formulario) {
 		formulario.diasefect.focus();
 		return false;
 	}
+	if(formulario.docAdjuntos[0].checked) {
+		if (formulario.fechaRecep.value != "" && formulario.fechaRecep.value != '00-00-0000') {
+			if(!esFechaValida(formulario.fechaRecep.value)) {
+				alert("Fecha invalida");
+				formulario.fechaRecep.focus();
+				return false;
+			}
+		}
+		if (formulario.fechaDevolu.value != "" && formulario.fechaDevolu.value != '00-00-0000') {
+			if(!esFechaValida(formulario.fechaDevolu.value)) {
+				alert("Fecha invalida");
+				formulario.fechaDevolu.focus();
+				return false;
+			}
+		}
+	}
+	
+	if (formulario.fechaDevolu.value != "" && formulario.fechaDevolu.value != '00-00-0000' && formulario.fechaRecep.value != "" && formulario.fechaRecep.value != '00-00-0000') {
+		if (formulario.fechaDevolu.value < formulario.fechaRecep.value) {
+			alert("La fecha de Devolución de la documentación no puede ser inferior a la fecha de recepción de la misma por parte del inspector");
+			formulario.fechaDevolu.focus();
+			return false;
+		}
+	}
+	
 	if(formulario.inspecEfec[0].checked) {
 		if(!esFechaValida(formulario.fechaInspec.value)) {
 			alert("Fecha invalida");
@@ -155,7 +188,7 @@ function validar(formulario) {
 			</div></td>
 		  </tr>
 		  <tr>
-			<td><div align="right">Doc Adjuntos </div></td>
+			<td><div align="right">Doc Adjunta </div></td>
 			<td><div align="left">
 				<?php if ($rowInspe['adjuntadocumentos'] == 0) { ?>
 				<input name="docAdjuntos" id="docAdjuntos" type="radio" value="1" onchange="habilitoDocumentacion(this.value)"/>Si 
@@ -169,13 +202,13 @@ function validar(formulario) {
 				</div></td>
 		  </tr>
 		  <tr>
-			<td><div align="right">Detalle Doc Adjuntos </div></td>
+			<td><div align="right">Detalle Doc Adjunta </div></td>
 			<td><div align="left">
-			  <textarea name="detalleDoc" id="detalleDoc" cols="50" rows="4" value="<?php echo  $rowInspe['detalledocumentos'] ?>" ></textarea>
+			  <textarea name="detalleDoc" id="detalleDoc" cols="50" rows="4"><?php echo  $rowInspe['detalledocumentos'] ?></textarea>
 		    </div></td>
 		  </tr>
 		  <tr>
-			<td><div align="right">Forma de envio Doc Adjuntos </div></td>
+			<td><div align="right">Forma de envio Doc Adjunta </div></td>
 			<td><div align="left">
 			  <label>
 			  <select name="formaEnvio" id="formaEnvio">
@@ -189,10 +222,16 @@ function validar(formulario) {
 			</div></td>
 		  </tr>
 		  <tr>
-		    <td><div align="right">Fecha recepci&oacute;n Doc Adjuntos </div></td>
+		    <td><div align="right">Fecha recepci&oacute;n Doc Adjunta </div></td>
 		    <td><div align="left">
 		      <label><input name="fechaRecep" type="text" id="fechaRecep" size="12" value="<?php echo  invertirFecha($rowInspe['fecharecibodocumentos']) ?>"/></label>
 		    </div></td>
+	      </tr>
+		  <tr>
+		    <td><div align="right">Fecha devoluci&oacute;n Doc Adjunta </div></td>
+		    <td><div align="left">
+		      <input name="fechaDevolu" type="text" id="fechaDevolu" size="12" value="<?php echo  invertirFecha($rowInspe['fechadevoluciondocumentos']) ?>"/>
+	        </div></td>
 	      </tr>
 		  <tr>
 		    <td><div align="right">Inspecci&oacute;n Efectuada </div></td>

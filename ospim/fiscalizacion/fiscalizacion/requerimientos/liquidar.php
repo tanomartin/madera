@@ -331,6 +331,24 @@ function acuerdosCaidos($cuit, $db) {
 	return($cuerpo);
 }
 
+function grabarCabLiquidacion($nroreq, $nombreArcExc, $db) {
+	$fechaLiqui = date("Ymd");
+	$horaLiqui = date("His");
+	$sqlCabeLiqui = "INSERT INTO cabliquiospim VALUE($nroreq, $fechaLiqui, $horaLiqui, '$nombreArcExc', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
+	$hostname = $_SESSION['host'];
+	$dbname = $_SESSION['dbname'];
+	try {
+		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbh->beginTransaction();
+		$dbh->exec($sqlCabeLiqui);
+		$dbh->commit();
+	}catch (PDOException $e) {
+		echo $e->getMessage();
+		$dbh->rollback();
+	}
+}
+
 function liquidar($nroreq, $cuit, $db) {
 	//CREAMOS PRIMERA LINEA DEL ARCHIVO
 	$sqlJuris = "SELECT * from empresas e, jurisdiccion j, provincia p where j.cuit = $cuit and j.cuit = e.cuit and j.codprovin = p.codprovin order by j.disgdinero DESC limit 1";
@@ -409,6 +427,7 @@ function liquidar($nroreq, $cuit, $db) {
 	$ultanoArch = substr ($ultano,2,2);
 	$nroreqCompleto = compeltarNroReq($nroreq); 
 	$nombreArc = $cuit.$ultmes.$ultanoArch."O".$nroreqCompleto.".txt";
+	$nombreArcExc = $cuit.$ultmes.$ultanoArch."O".$nroreqCompleto.".xls";
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina) == 0) {
@@ -434,6 +453,9 @@ function liquidar($nroreq, $cuit, $db) {
 	//**********************************
 	
 	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
+	
+	//Grabamos cabecera de liquidación
+	grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
 	
 	//ACTULIZAMOS EL ESTADO DEL REQUERIMIENTO A 1.
 	cambioEstadoReq($nroreq);
@@ -504,7 +526,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script language="javascript">
 function abrirInfo(dire) {
 	a= window.open(dire,"InfoInspeccion",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=700, height=300, top=10, left=10");
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=700, height=400, top=10, left=10");
 }
 
 </script>
