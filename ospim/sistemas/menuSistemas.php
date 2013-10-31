@@ -20,11 +20,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Sistemas </span></p>
-  <table width="420" border="3">
+  <table width="626" border="3">
     <tr>
       <td width="200"><p align="center">Fiscalizaci&oacute;n</p>
           <p align="center"><a class="enlace" href="fiscalizacion/menuFiscalizacion.php"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
+      <td width="200"><p align="center">Aplicativo DDJJ </p>
+      <p align="center"><a class="enlace" href="aplicativoddjj/menuAplicativoddjj.php"><img src="img/aplicativoddjj.ico" width="97" height="85" border="0" alt="enviar"/></a></p>
+      <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Tratamiento A.F.I.P.</p>
         <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
