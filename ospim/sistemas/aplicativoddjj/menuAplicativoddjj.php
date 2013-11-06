@@ -17,6 +17,18 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script type="text/javascript">
+
+
+function importar() {
+	$.blockUI({ message: "<h1>Importando datos Aplicativo DDJJ... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	location.href='importarInfoAplicativoDDJJ.php';
+}
+
+</script>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
@@ -26,7 +38,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="214" border="3">
     <tr>
       <td width="200"><p align="center">Importaci&oacute;n de Empresas, Empleados y Familiares </p>
-          <p align="center"><a class="enlace" href="importarInfoAplicativoDDJJ.php"><img src="img/upload.ico" width="97" height="76" border="0" alt="enviar"/></a></p>
+          <p align="center"><a href="javascript:importar()"><img src="img/upload.ico" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
