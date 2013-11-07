@@ -23,6 +23,12 @@ function abrirEmpresa(dire) {
 	c= window.open(dire,"EmpresasUsimra",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
 }
+
+function abrirSistemas(dire) {
+	c= window.open(dire,"Sistemas",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+}
+
 </script>
 
 
@@ -32,20 +38,27 @@ function abrirEmpresa(dire) {
   <p><span class="Estilo1">Men&uacute; Principal</span></p>
   <p>
     <img src="img/logo.jpg" width="168" height="168" /></p>
-  <table width="410" border="2">
+  <table width="600" border="2">
     <tr>
-      <td width="196"> <div align="center">
+      <td width="192"> <div align="center">
         <p>M&oacute;dulo Acuerdos</p>
 		
         <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/manos.jpg" width="101" height="86" border="0"/></a></p>
         <p>&nbsp;</p>
         </div></td>
 		
-      <td width="196"><div align="center">
+      <td width="192"><div align="center">
 	    <p>M&oacute;dulo Empresas</p>
 	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
+	   <?php if ($_SESSION['usuario'] == 'sistemas') { ?>
+		  <td width="192"><div align="center">
+			<p>Sistemas</p>
+			<p><a href="javascript:abrirSistemas('sistemas/menuSistemas.php')"><img src="img/sistemas.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+			<p>&nbsp;</p>
+		  </div></td>
+	 <?php } ?>
     </tr>
   </table>
    <p><strong><a href="logout.php">
