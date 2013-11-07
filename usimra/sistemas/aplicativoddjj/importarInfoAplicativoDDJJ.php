@@ -1,36 +1,42 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionUsimraSistemas.php"); 
-
-/****************************************************/
-
-function ejectuarInsertEmpresa($sqlCabe, $sqlJuris) {
+set_time_limit(0);
+/********************* FUNCIONES *******************************/
+function ejectuarDoble($sql1, $sql2) {
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
-		$dbh->exec($sqlCabe);
-		$dbh->exec($sqlJuris);
+		//print($sql1."<br>");
+		$dbh->exec($sql1);
+		//print($sql2."<br>");
+		$dbh->exec($sql2);
 		$dbh->commit();
+		return 0;
 	} catch (PDOException $e) {
 		echo $e->getMessage();
 		$dbh->rollback();
+		return 1;
 	}
 }
 
-function ejectuarInsert($sql) {
+function ejectuarSimple($sql) {
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
+		//print($sql."<br>");
 		$dbh->exec($sql);
 		$dbh->commit();
+		return 0;
 	} catch (PDOException $e) {
 		echo $e->getMessage();
 		$dbh->rollback();
+		return 1;
 	}
 }
 
@@ -40,23 +46,20 @@ function ejecutarUpdate($sql) {
 		$dbname = 'uv0472_newaplicativo';
 		$usuarioaplicativo = 'uv0472';
 		$claveaplicativo = 'trozo299tabea';
-		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$usuarioaplicativo,$claveaplicativo);
-		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$dbh->beginTransaction();
-		$dbh->exec($sql);
-		$dbh->commit();
+		$dbhInternet = new PDO("mysql:host=$hostname;dbname=$dbname",$usuarioaplicativo,$claveaplicativo);
+		$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbhInternet->beginTransaction();
+		//print($sql."<br>");
+		$dbhInternet->exec($sql);
+		$dbhInternet->commit();
 	} catch (PDOException $e) {
 		echo $e->getMessage();
-		$dbh->rollback();
+		$dbhInternet->rollback();
 	}
-
 }
+/****************************************************************/
 
-
-/***************************************************/
-
-
-
+/*****************************************************/
 $fecharegistro = date("Y-m-d H:m:s");
 $usuarioregistro = $_SESSION['usuario'];
 $hostaplicativo = 'ospim.com.ar';
@@ -68,28 +71,27 @@ if (!$dbaplicativo) {
 }
 $dbnameaplicativo = 'uv0472_newaplicativo';
 mysql_select_db($dbnameaplicativo);
+$listadoIngresadas = array();
+/*****************************************************/
 
 // ***************** IMPORTO LAS EMPRESAS ******************** //
 $sqlEmpresas = "select * from empresa where bajada = 0";
-print("<br>".$sqlEmpresas."<br>");
 $resEmpresas = mysql_query($sqlEmpresas,$dbaplicativo); 
 $canEmpresas = mysql_num_rows($resEmpresas); 
 if ($canEmpresas > 0) {
+	$n = 0;
 	while($rowEmpresas = mysql_fetch_assoc($resEmpresas)) {
-		var_dump($rowEmpresas);
+		$result  = 1;
 		$cuitInsert = $rowEmpresas['nrcuit'];
+		$nombre = $rowEmpresas['nombre'];
 		$sqlEmpresaInsert = "select cuit from empresas where cuit = $cuitInsert";
 		$resEmpresaInsert = mysql_query($sqlEmpresaInsert,$db); 
 		$canEmpresaInsert = mysql_num_rows($resEmpresaInsert); 
-		if ($canEmpresaInsert > 0) {
-			print('EMPRESAS EXISTE<br>');
-		} else {
+		if ($canEmpresaInsert == 0) {
 			$sqlEmpresaInsert = "select cuit from empresasdebaja where cuit = $cuitInsert";
 			$resEmpresaInsert = mysql_query($sqlEmpresaInsert,$db); 
 			$canEmpresaInsert = mysql_num_rows($resEmpresaInsert); 
-			if ($canEmpresaInsert > 0) {
-				print('EMPRESAS EXISTE DE BAJA<br>');
-			} else {
+			if ($canEmpresaInsert == 0) {
 				$codProvin = $rowEmpresas['provin'];
 				$sqlIndPos = "select indpostal from provincia where codprovin = $codProvin";
 				$resIndPos = mysql_query($sqlIndPos,$db); 
@@ -103,116 +105,228 @@ if ($canEmpresas > 0) {
 					$rowLocali = mysql_fetch_assoc($resLocali);
 					$locali = $rowLocali['codlocali'];
 				} else {
-					$locali = 99;
+					$locali = 0;
 				}
-				
 				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".$rowEmpresas['nombre']."',".$rowEmpresas['provin'].",'".$rowIndPos['indpostal']."',".$rowEmpresas['copole'].",'','$locali','".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','','','',0,".$rowEmpresas['rramaa'].",'".$rowEmpresas['activi']."','','Importada Por Sistemas','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
-				print($sqlInsertCabe."<br>");
-	
 				$sqlInsertJuris = "INSERT INTO jurisdiccion VALUE('".$rowEmpresas['nrcuit']."','3200',".$rowEmpresas['provin'].",'".$rowIndPos['indpostal']."',".$rowEmpresas['copole'].",'',$locali,'".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','".$rowEmpresas['emails']."',100)";
-				print($sqlInsertJuris."<br>");
-				ejectuarInsertEmpresa($sqlInsertCabe,$sqlInsertJuris);
+				$result = ejectuarDoble($sqlInsertCabe,$sqlInsertJuris);
+				$listadoIngresadas[$n] = array('cuit' => $cuitInsert, 'nombre' => $nombre);
+				$n++;
+			} else {
+				$result = 0;
 			}
+		} else {
+			$result = 0;
 		}
-		$sqlUpdateBajadaEmpresa = "UPDATE empresa SET bajada = 1 WHERE nrcuit = $cuitInsert";
-		print($sqlUpdateBajadaEmpresa."<br>");
-		ejecutarUpdate($sqlUpdateBajadaEmpresa);
+		if ($result == 0) { 
+			$sqlUpdateBajadaEmpresa = "UPDATE empresa SET bajada = 1 WHERE nrcuit = $cuitInsert";
+			ejecutarUpdate($sqlUpdateBajadaEmpresa);
+		}
 	}
-} else {
-	print('NO HAY EMPRESAS A IMPORTAR<br>');
 }
-
 // *************************************************************** //
 
-
-// ***************** IMPORTO LAS EMPLEADOS ******************** //
+// ***************** IMPORTO LOS EMPLEADOS ******************** //
 $sqlEmpleados = "select * from empleados where bajada = 0";
-print("<br>".$sqlEmpleados."<br>");
 $resEmpleados = mysql_query($sqlEmpleados,$dbaplicativo); 
 $canEmpleados = mysql_num_rows($resEmpleados); 
 if ($canEmpleados > 0) {
 	while ($rowEmpleados = mysql_fetch_assoc($resEmpleados)) {
-		var_dump($rowEmpleados);
+		$result  = 1;
 		$cuilInsert = $rowEmpleados['nrcuil'];
 		$sqlEmpleadoInsert = "select nrcuil from empleadosusimra where nrcuil = $cuilInsert";
 		$resEmpleadoInsert = mysql_query($sqlEmpleadoInsert,$db); 
 		$canEmpleadoInsert = mysql_num_rows($resEmpleadoInsert); 
-		if ($canEmpleadoInsert > 0) {
-			print('EMPLEADO EXISTE<br>');
-		} else {
+		if ($canEmpleadoInsert == 0) {
+			
+			$sqlInsertTitu = "INSERT INTO empleadosusimra VALUE(
+			'".$rowEmpleados['nrcuit']."','".$rowEmpleados['nrcuil']."','".$rowEmpleados['apelli']."','".$rowEmpleados['nombre']."','".$rowEmpleados['fecing']."',
+			'".$rowEmpleados['tipdoc']."','".$rowEmpleados['nrodoc']."','".$rowEmpleados['ssexxo']."','".$rowEmpleados['fecnac']."','".$rowEmpleados['estciv']."',
+			'".$rowEmpleados['direcc']."','".$rowEmpleados['locale']."','".$rowEmpleados['copole']."','".$rowEmpleados['provin']."','".$rowEmpleados['nacion']."',
+			'".$rowEmpleados['catego']."','".$rowEmpleados['activo']."','1')";
+			
 			$sqlEmpleadoInsert = "select nrcuil from empleadosdebajausimra where nrcuil = $cuilInsert";
 			$resEmpleadoInsert = mysql_query($sqlEmpleadoInsert,$db); 
 			$canEmpleadoInsert = mysql_num_rows($resEmpleadoInsert); 
 			if ($canEmpleadoInsert > 0) {
-				print('EMPLEADO EXISTE DE BAJA. ELIMINARLO PARA SUBIRLO A LA TABLA empleadosusimra<br>');
-			} else {
-				$sqlInsertTitu = "INSERT INTO empleadosusimra VALUE(
-				'".$rowEmpleados['nrcuit']."','".$rowEmpleados['nrcuil']."','".$rowEmpleados['apelli']."','".$rowEmpleados['nombre']."','".$rowEmpleados['fecing']."',
-				'".$rowEmpleados['tipdoc']."','".$rowEmpleados['nrodoc']."','".$rowEmpleados['ssexxo']."','".$rowEmpleados['fecnac']."','".$rowEmpleados['estciv']."',
-				'".$rowEmpleados['direcc']."','".$rowEmpleados['locale']."','".$rowEmpleados['copole']."','".$rowEmpleados['provin']."','".$rowEmpleados['nacion']."',
-				'".$rowEmpleados['catego']."','".$rowEmpleados['activo']."','1')";
-				print($sqlInsertTitu."<br>");
-				ejectuarInsert($sqlInsertTitu);
+				$sqlDeleteTitu = "DELETE from empleadosdebajausimra where nrcuil = $cuilInsert";
+				$result = ejectuarDoble($sqlInsertTitu, $sqlDeleteTitu);
+			} else  {
+				$result = ejectuarSimple($sqlInsertTitu);
 			}
+		} else {
+			$result = 0;
 		}
-		
-		$sqlUpdateBajadaEmpleados = "UPDATE empleados SET bajada = 1 WHERE nrcuil = $cuilInsert";
-		print($sqlUpdateBajadaEmpleados."<br>");
-		ejecutarUpdate($sqlUpdateBajadaEmpleados);
+		if ($result == 0) {
+			$sqlUpdateBajadaEmpleados = "UPDATE empleados SET bajada = 1 WHERE nrcuil = $cuilInsert";
+			ejecutarUpdate($sqlUpdateBajadaEmpleados);
+		}
 	}
-} else {
-	print('NO HAY EMPLEADOS A IMPORTAR<br>');
 }
 // *************************************************************** //
 
-
 // ***************** IMPORTO LAS FAMILIA ******************** //
 $sqlFamiliar = "select * from familia where bajada = 0";
-print("<br>".$sqlFamiliar."<br>");
 $resFamiliar = mysql_query($sqlFamiliar,$dbaplicativo); 
 $canFamiliar = mysql_num_rows($resFamiliar); 
 if ($canFamiliar > 0) {
 	while($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
-		var_dump($rowFamiliar);
+		$result  = 1;
 		$idFamiliaInsert = $rowFamiliar['id'];
 		$sqlFamiliaInsert = "select nrcuil from familiausimra where id = $idFamiliaInsert";
 		$resFamiliaInsert = mysql_query($sqlFamiliaInsert,$db); 
 		$canFamiliaInsert = mysql_num_rows($resFamiliaInsert); 
-		if ($canFamiliaInsert > 0) {
-			print('FAMILIA EXISTE<br>');
-		} else {
+		if ($canFamiliaInsert == 0) {
+			$sqlInsertFami = "INSERT INTO familiausimra VALUE(
+			'".$rowFamiliar['id']."','".$rowFamiliar['nrcuit']."','".$rowFamiliar['nrcuil']."','".$rowFamiliar['nombre']."','".$rowFamiliar['apelli']."',
+			'".$rowFamiliar['codpar']."','".$rowFamiliar['ssexxo']."','".$rowFamiliar['fecnac']."','".$rowFamiliar['fecing']."','".$rowFamiliar['tipdoc']."',
+			'".$rowFamiliar['nrodoc']."','".$rowFamiliar['benefi']."','1')";
+			
 			$sqlFamiliaInsert = "select nrcuil from familiadebajausimra where id = $idFamiliaInsert";
 			$resFamiliaInsert = mysql_query($sqlFamiliaInsert,$db); 
 			$canFamiliaInsert = mysql_num_rows($resFamiliaInsert); 
 			if ($canFamiliaInsert > 0) {
-				print('FAMILIA EXISTE DE BAJA. ELIMINARLO PARA SUBIRLO A LA TABLA familiausimra <br>');
+				$sqlDeleteFami = "DELETE from familiadebajausimra where id = $idFamiliaInsert";
+				$result = ejectuarDoble($sqlInsertFami, $sqlDeleteFami);	
 			} else {
-				$sqlInsertFami = "INSERT INTO familiausimra VALUE(
-				'".$rowFamiliar['id']."','".$rowFamiliar['nrcuit']."','".$rowFamiliar['nrcuil']."','".$rowFamiliar['nombre']."','".$rowFamiliar['apelli']."',
-				'".$rowFamiliar['codpar']."','".$rowFamiliar['ssexxo']."','".$rowFamiliar['fecnac']."','".$rowFamiliar['fecing']."','".$rowFamiliar['tipdoc']."',
-				'".$rowFamiliar['nrodoc']."','".$rowFamiliar['benefi']."','1')";
-				print($sqlInsertFami."<br>");
-				ejectuarInsert($sqlInsertFami);
+				$result = ejectuarSimple($sqlInsertFami);	
 			}
+		} else {
+			$result = 0;
 		}
 		
-		$sqlUpdateBajadaFamilia = "UPDATE familia SET bajada = 1 WHERE id = $idFamiliaInsert";
-		print($sqlUpdateBajadaFamilia."<br>");
-		ejecutarUpdate($sqlUpdateBajadaFamilia);
+		if ($result == 0) {
+			$sqlUpdateBajadaFamilia = "UPDATE familia SET bajada = 1 WHERE id = $idFamiliaInsert";
+			ejecutarUpdate($sqlUpdateBajadaFamilia);
+		}
 	}
-} else {
-	print('NO HAY FAMILIARES A IMPORTAR<br>');
 }
 // *************************************************************** //
 
-
-// ***************** IMPORTO LAS EMPLEADOS DE BAJA ******************** //
-// TODO
+// ***************** IMPORTO LOS EMPLEADOS DE BAJA ******************** //
+$sqlEmpleadosdebaja = "select * from empleadosdebaja where bajada = 0";
+$resEmpleadosdebaja = mysql_query($sqlEmpleadosdebaja,$dbaplicativo); 
+$canEmpleadosdebaja = mysql_num_rows($resEmpleadosdebaja); 
+if ($canEmpleadosdebaja > 0) {
+	while($rowEmpleadodebaja = mysql_fetch_assoc($resEmpleadosdebaja)) {
+		$result  = 1;
+		$cuilInsert = $rowEmpleadodebaja['nrcuil'];
+		$sqlEmpleadoInsertBaja = "select nrcuil from empleadosdebajausimra where nrcuil = $cuilInsert";
+		$resEmpleadoInsertBaja = mysql_query($sqlEmpleadoInsertBaja,$db); 
+		$canEmpleadoInsertBaja = mysql_num_rows($resEmpleadoInsertBaja); 
+		if ($canEmpleadoInsertBaja == 0) {
+			$sqlInsertTituBaja = "INSERT INTO empleadosdebajausimra VALUE(
+			'".$rowEmpleadodebaja['nrcuit']."','".$rowEmpleadodebaja['nrcuil']."','".$rowEmpleadodebaja['apelli']."','".$rowEmpleadodebaja['nombre']."',
+			'".$rowEmpleadodebaja['fecing']."','".$rowEmpleadodebaja['tipdoc']."','".$rowEmpleadodebaja['nrodoc']."','".$rowEmpleadodebaja['ssexxo']."',
+			'".$rowEmpleadodebaja['fecnac']."','".$rowEmpleadodebaja['estciv']."','".$rowEmpleadodebaja['direcc']."','".$rowEmpleadodebaja['locale']."',
+			'".$rowEmpleadodebaja['copole']."','".$rowEmpleadodebaja['provin']."','".$rowEmpleadodebaja['nacion']."','".$rowEmpleadodebaja['catego']."',
+			'".$rowEmpleadodebaja['activo']."','1')";
+			
+			$sqlEmpleadoInsertBaja = "select nrcuil from empleadosusimra where nrcuil = $cuilInsert";
+			$resEmpleadoInsertBaja = mysql_query($sqlEmpleadoInsertBaja,$db); 
+			$canEmpleadoInsertBaja = mysql_num_rows($resEmpleadoInsertBaja); 
+			if ($canEmpleadoInsertBaja > 0) {
+				$sqlDeleteTituBaja = "DELETE from empleadosusimra where nrcuil = $cuilInsert";
+				$result = ejectuarDoble($sqlInsertTituBaja, $sqlDeleteTituBaja);
+			} else  {
+				$result = ejectuarSimple($sqlInsertTituBaja);
+			}
+			
+		} else {
+			$result = 0;
+		}
+		
+		if ($result == 0) {
+			$sqlUpdateBajadaEmpleadosBaja = "UPDATE empleadosdebaja SET bajada = 1 WHERE nrcuil = $cuilInsert";
+			ejecutarUpdate($sqlUpdateBajadaEmpleadosBaja);
+		}
+	}
+}
 // *************************************************************** //
 
-
 // ***************** IMPORTO LAS FAMILIA DE BAJA ******************** //
-// TODO
+$sqlFamiliarBaja = "select * from familiadebaja where bajada = 0";
+$resFamiliarBaja = mysql_query($sqlFamiliarBaja,$dbaplicativo); 
+$canFamiliarBaja = mysql_num_rows($resFamiliarBaja); 
+if ($canFamiliarBaja > 0) {
+	while($rowFamiliarBaja = mysql_fetch_assoc($resFamiliarBaja)) {
+		$result = 1;
+		$idFamiliaInsertBaja = $rowFamiliarBaja['id'];
+		$sqlFamiliaInsertBaja = "select nrcuil from familiadebajausimra where id = $idFamiliaInsertBaja";
+		$resFamiliaInsertBaja = mysql_query($sqlFamiliaInsertBaja,$db); 
+		$canFamiliaInsertBaja = mysql_num_rows($resFamiliaInsertBaja); 
+		if ($canFamiliaInsertBaja == 0) {
+			$sqlInsertFamiBaja = "INSERT INTO familiadebajausimra VALUE(
+			'".$rowFamiliarBaja['id']."','".$rowFamiliarBaja['nrcuit']."','".$rowFamiliarBaja['nrcuil']."','".$rowFamiliarBaja['nombre']."','".$rowFamiliarBaja['apelli']."',
+			'".$rowFamiliarBaja['codpar']."','".$rowFamiliarBaja['ssexxo']."','".$rowFamiliarBaja['fecnac']."','".$rowFamiliarBaja['fecing']."','".$rowFamiliarBaja['tipdoc']."',
+			'".$rowFamiliarBaja['nrodoc']."','".$rowFamiliarBaja['benefi']."','1')";
+		
+			$sqlFamiliaInsertBaja = "select nrcuil from familiausimra where id = $idFamiliaInsertBaja";
+			$resFamiliaInsertBaja = mysql_query($sqlFamiliaInsertBaja,$db); 
+			$canFamiliaInsertBaja = mysql_num_rows($resFamiliaInsertBaja); 
+			if ($canFamiliaInsertBaja > 0) {
+				$sqlDeleteFamiBaja = "DELETE from familiausimra where id = $idFamiliaInsertBaja";
+				$result = ejectuarDoble($sqlInsertFamiBaja, $sqlDeleteFamiBaja);	
+			} else {
+				$result = ejectuarSimple($sqlInsertFamiBaja);	
+			}
+			
+		} else {
+			$result = 0;
+		}
+		if ($result == 0) {
+			$sqlUpdateBajadaFamiliaBaja = "UPDATE familiadebaja SET bajada = 1 WHERE id = $idFamiliaInsertBaja";
+			ejecutarUpdate($sqlUpdateBajadaFamiliaBaja);
+		}
+	}
+}
 // *************************************************************** //
 
 ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>.: Listado de Empresas dasdas de alta :.</title>
+</head>
+<style>
+A:link {text-decoration: none;color:#0033FF}
+A:visited {text-decoration: none}
+A:hover {text-decoration: none;color:#00FFFF }
+.Estilo2 {
+	font-weight: bold;
+	font-size: 18px;
+}
+</style>
+
+<body bgcolor="#B2A274">
+<div align="center">
+  <p><span style="text-align:center">
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuAplicativoddjj.php'" align="center"/>
+  </span></p>
+  	<p class="Estilo2">Resultado del proceso de apertura automatica de empresas del Aplicativo del d&iacute;a <?php echo date("m/d/Y");?>  </p>
+	<?php if  (sizeof($listadoIngresadas) > 0) { ?>
+	  
+	  <table width="800" border="1" align="center">
+		<tr>
+		  <th>C.U.I.T.</th>
+			  <th>Raz&oacute;n Social </th>
+			</tr>
+	  <?php for ($i=0; $i < sizeof($listadoIngresadas); $i++) {
+				print("<tr align='center'>");
+				print("<td>".$listadoIngresadas[$i]['cuit']."</td>");
+				print("<td>".$listadoIngresadas[$i]['nombre']."</td>");   
+				print("</tr>");
+	} ?>
+	  </table>
+	<?php } else {
+		print("<div align='center' style='color:#FF0000'><b> NO SE CARGO NINGUNA EMPRESA </b></div>");
+	} 
+	?>
+      <p>
+        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+  </p>
+</div>
+</body>
+</html>
