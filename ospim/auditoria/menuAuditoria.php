@@ -20,16 +20,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Auditoria Medica </span></p>
-  <table width="600" border="3">
+  <table width="412" border="3">
     <tr>
       <td width="196"><p align="center">Prestadores</p>
-          <p align="center"><a class="enlace" href="#"><img src="img/prestadores.jpg" width="90" height="78" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="#"><img src="img/prestadores.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Autorizaciones</p>
-          <p align="center"><a class="enlace" href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.jpg" width="90" height="78" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">&nbsp;</p>
-      </td>
     </tr>
   </table>
 </div>

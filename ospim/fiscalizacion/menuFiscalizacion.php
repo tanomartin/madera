@@ -20,13 +20,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Fiscalizacion </span></p>
-  <table width="412" border="3">
+  <table width="600" border="3">
     <tr>
-      <td width="196"><p align="center">Configuraci&oacute;n</p>
-          <p align="center"><a class="enlace" href="configuracion/menuConfiguracionFiscalizacion.php"><img src="img/configuracion.jpg" width="90" height="78" border="0" alt="enviar"/></a></p>
+      <td width="200"><p align="center">Configuraci&oacute;n</p>
+          <p align="center"><a class="enlace" href="configuracion/menuConfiguracionFiscalizacion.php"><img src="img/configuracion.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">Boletas de Acuerdo </p>
-        <p align="center"><a class="enlace" href="acuerdos/fiscalizacionImpresion.php"><img src="img/impresora.jpg" width="90" height="78" border="0" alt="enviar"/></a></p>
+      <td width="200"><p align="center">Boletas de Acuerdo </p>
+        <p align="center"><a class="enlace" href="acuerdos/fiscalizacionImpresion.php"><img src="img/impresora.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>
+	  <td width="200"><p align="center">Fiscalizaciones </p>
+        <p align="center"><a class="enlace" href="#"><img src="img/fiscalizador.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>

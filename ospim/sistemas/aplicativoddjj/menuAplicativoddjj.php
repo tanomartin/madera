@@ -38,7 +38,7 @@ function importar() {
   <table width="214" border="3">
     <tr>
       <td width="200"><p align="center">Importaci&oacute;n de Empresas, Empleados y Familiares </p>
-          <p align="center"><a href="javascript:importar()"><img src="img/upload.ico" width="97" height="76" border="0" alt="enviar"/></a></p>
+          <p align="center"><a href="javascript:importar()"><img src="img/Download.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
