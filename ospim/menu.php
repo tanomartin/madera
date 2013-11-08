@@ -56,37 +56,37 @@ function abrirSistemas(dire) {
     <tr>
       <td width="196"> <div align="center">
         <p>Acuerdos</p>
-        <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/manos.jpg" width="101" height="86" border="0"/></a></p>
+        <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/acuerdos.ico" width="90" height="90" border="0"/></a></p>
         <p>&nbsp;</p>
         </div></td>
       <td width="196"><div align="center">
 	    <p>Empresas</p>
-	    <p><a href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=ospim')"><img src="img/empresa.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=ospim')"><img src="img/empresa.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
 	  
       <td width="183"><div align="center">
 	    <p>Afiliados</p>
-	    <p><a href="javascript:abrirAfil('afiliados/menuAfiliados.php')"><img src="img/empleado.jpg" width="101" height="86" border="0" /></a></p>
+	    <p><a href="javascript:abrirAfil('afiliados/menuAfiliados.php')"><img src="img/afiliados.ico" width="90" height="90" border="0" /></a></p>
 	    <p>&nbsp;</p>
       </div></td>
     </tr>
 	<tr>
       <td width="196"><div align="center">
 	    <p>Fiscalizaci&oacute;n</p>
-	    <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
 		
       <td width="196"><div align="center">
 	    <p>Auditoria Medica </p>
-	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td> 
 	  <?php if ($_SESSION['usuario'] == 'sistemas') { ?>
 		  <td width="183"><div align="center">
 			<p>Sistemas</p>
-			<p><a href="javascript:abrirSistemas('sistemas/menuSistemas.php')"><img src="img/sistemas.jpg" width="101" height="86" border="0" alt="enviar"/></a></p>
+			<p><a href="javascript:abrirSistemas('sistemas/menuSistemas.php')"><img src="img/sistemas.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
 			<p>&nbsp;</p>
 		  </div></td>
 	 <?php } ?>
