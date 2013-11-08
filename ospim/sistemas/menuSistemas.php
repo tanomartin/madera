@@ -29,6 +29,12 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
+    <tr>
+      <td><p align="center">Aplicativo DDJJ </p>
+      <p align="center"><a class="enlace" href="aplicativoddjj/menuAplicativoddjj.php"><img src="img/aplicativoddjj.ico" width="97" height="85" border="0" alt="enviar"/></a></p>
+      <p align="center">&nbsp;</p></td>
+      <td>&nbsp;</td>
+    </tr>
   </table>
 </div>
 </body>
