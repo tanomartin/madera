@@ -51,8 +51,6 @@ function abrirSistemas(dire) {
 	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
-	   <?php if ($_SESSION['usuario'] == 'sistemas') { ?>
-	  <?php } ?>
     </tr>
     <tr>
       <td><div align="center">
