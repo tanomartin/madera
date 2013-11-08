@@ -22,38 +22,25 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="614" border="3">
     <tr>
       <td width="196"><p align="center">Alta, Modificaci&oacute;n y Consulta</p>
-        <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmacuerdo.jpg" width="97" height="78" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmacuerdo.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center"> Boletas de Pago </p>
-          <p align="center"><a class="enlace" href="impresion/menuBoletas.php"><img src="img/impresora.jpg" width="98" height="84" border="0" alt="enviar"/></a></p>
+      <td width="196"><p align="center">Boletas de Pago </p>
+        <p align="center"><a class="enlace" href="impresion/menuBoletas.php"><img src="img/impresora.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Banco</p>
-          <p align="center"><a class="enlace" href="banco/moduloBanco.php"><img src="img/banco.jpg" width="107" height="81" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="banco/moduloBanco.php"><img src="img/banco.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td><p align="center">Informes</p>
-        <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.jpg" width="120" height="80" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><p align="center">Cancelaci&oacute;n Manual de Cuotas </p>
-        <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.jpg" width="97" height="76" border="0" /></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td><p align="center">Fiscalizaci&oacute;n</p>
-        <p align="center"><a class="enlace" href="#"><img src="img/fiscalizacion.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
+      <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.ico" width="90" height="90" border="0" /></a></p> <p>&nbsp;</p></td>
+      <td><p align="center">Informes</p>
+        <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
       <td><p align="center">Valores al Cobro</p>
-      <p align="center"><a class="enlace" href="valores/moduloValores.php"><img src="img/valores.jpg" width="96" height="76" border="0" /></a></p>
-      <p align="center">&nbsp;</p></td>
+      <p align="center"><a class="enlace" href="valores/moduloValores.php"><img src="img/valores.ico" width="90" height="90" border="0" /></a></p> <p>&nbsp;</p></td>
     </tr>
   </table>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-</div>
+  </div>
 </body>
 </html>

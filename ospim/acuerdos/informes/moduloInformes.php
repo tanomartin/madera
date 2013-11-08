@@ -33,24 +33,24 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="614" height="340" border="3">
     <tr>
      <td width="196" height="164"><p align="center">Cheques en Cartera</p>
-        <p align="center"><a class="enlace" href="chequesCartera.php"><img src="../img/excellogo.jpg" width="105" height="106" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="chequesCartera.php"><img src="img/excellogo.ico" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
       <td width="196" height="164"><p align="center">Liquidaciones</p>
-      <p align="center"><a class="enlace" href="liquidaComisiones.php"><img src="../img/excellogo.jpg" width="105" height="106" border="0" alt="enviar"/></a></p>
+      <p align="center"><a class="enlace" href="liquidaComisiones.php"><img src="img/excellogo.ico" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
       <td width="196" height="164"><p align="center">Cuotas Vencidas</p>
-        <p align="center"><a class="enlace" href="cuotasVencidas.php"><img src="../img/excellogo.jpg" width="105" height="106" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="cuotasVencidas.php"><img src="img/excellogo.ico" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
     </tr>
     <tr>
       <td width="196" height="164"><p align="center">Cheques Rechazados</p>
-        <p align="center"><a class="enlace" href="chequesRechazados.php"><img src="../img/excellogo.jpg" width="105" height="106" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="chequesRechazados.php"><img src="img/excellogo.ico" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td width="196" height="164"><p align="center">Deuda de Acuerdos Por Año</p>
-          <p align="center"><a class="enlace" href="deudaAcuerdos.php"><img src="../img/excellogo.jpg" width="105" height="106" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="deudaAcuerdos.php"><img src="img/excellogo.ico" width="105" height="106" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196" height="164"><p align="center">Verificacion de Cuotas </p>
-          <p align="center"><a class="enlace" href="verificacionCuotas.php"><img src="../img/excellogo.jpg" width="105" height="106" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="verificacionCuotas.php"><img src="img/excellogo.ico" width="105" height="106" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>

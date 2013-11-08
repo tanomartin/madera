@@ -33,10 +33,10 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="412" height="189" border="3">
     <tr>
       <td width="196" height="164"><p align="center">Archivos Transferidos</p>
-          <p align="center"><a class="enlace" href="procesamientoArchivos.php"><img src="../img/transferencia.jpg" width="105" height="105" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="procesamientoArchivos.php"><img src="img/archivosBanco.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196" height="164"><p align="center">Imputaciones</p>
-          <p align="center"><a class="enlace" href="procesamientoRegistros.php"><img src="../img/imputacion.jpg" width="105" height="105" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="procesamientoRegistros.php"><img src="img/imputacion.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
