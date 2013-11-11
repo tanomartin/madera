@@ -44,7 +44,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
     <tr>
       <td height="164"><p align="center">Trasferencias</p>
-        <p align="center"><img src="img/transferencia.png" width="105" height="105" border="0" alt="enviar"/></p>
+        <p align="center"><a class="enlace" href="trasnferencias.php"><img src="img/transferencia.png" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td height="164"><p align="center">Conciliacion</p>
         <p align="center"><a class="enlace" href="listaAConciliar.php"><img src="img/conciliacion.png" width="105" height="105" border="0" alt="enviar"/></a></p>
