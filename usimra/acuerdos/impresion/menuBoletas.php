@@ -26,12 +26,12 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="196"><p align="center">Anulacion de Boletas </p>
 	  	  <!-- href="cargaAnulacion.php" -->
 		  <!-- href="../../moduloNoDisponible.php" -->
-          <p align="center"><a href="cargaAnulacion.php" ><img src="img/anulacion.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a href="cargaAnulacion.php" ><img src="img/anulacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196" valign="top"><p align="center">Impresi&oacute;n de Boletas </p>
-      <p align="center"><a class="enlace" href="moduloImpresion.php"><img src="img/impresora.ico" width="90" height="90" border="0" alt="enviar"/></a></p></td>
+      <p align="center"><a class="enlace" href="moduloImpresion.php"><img src="img/impresora.png" width="90" height="90" border="0" alt="enviar"/></a></p></td>
       <td width="196"><p align="center">Buscador de Boletas </p>
-        <p align="center"><a class="enlace" href="buscadorBoleta.php"><img src="img/lupa.ico" width="90" height="90" border="0" /> </a></p>
+        <p align="center"><a class="enlace" href="buscadorBoleta.php"><img src="img/lupa.png" width="90" height="90" border="0" /> </a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
