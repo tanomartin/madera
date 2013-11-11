@@ -42,20 +42,20 @@ function abrirSistemas(dire) {
     <tr>
       <td width="192"> <div align="center">
         <p>M&oacute;dulo Acuerdos</p>
-        <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/acuerdos.ico" width="90" height="90" border="0"/></a></p>
+        <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/acuerdos.png" width="90" height="90" border="0"/></a></p>
         <p>&nbsp;</p>
         </div></td>
 		
       <td width="192"><div align="center">
 	    <p>M&oacute;dulo Empresas</p>
-	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
     </tr>
     <tr>
       <td><div align="center">
 	  <p>M&oacute;dulo Aportes </p>
-      <p><a href="javascript:abrirAportes('acuerdos/menuAportes.php')"><img src="img/aportes.ico" width="90" height="90" border="0"/></a></p>
+      <p><a href="javascript:abrirAportes('acuerdos/menuAportes.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
       <p>&nbsp;</p> 
     </div></td>
       <td>&nbsp;</td>
