@@ -21,10 +21,10 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="412" border="1" bordercolor="1">
     <tr>
       <td width="196"><p align="center">Alta, Modificaci&oacute;n y Consulta </p>
-        <p align="center"><a class="enlace" href="abm/moduloABM.php?origen=<?php echo $origen?>"><img src="img/abemp.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="abm/moduloABM.php?origen=<?php echo $origen?>"><img src="img/abemp.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Buscador</p>
-        <p align="center"><a class="enlace" href="buscador/buscador.php?origen=<?php echo $origen?>"><img src="img/buscar.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="buscador/buscador.php?origen=<?php echo $origen?>"><img src="img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>
