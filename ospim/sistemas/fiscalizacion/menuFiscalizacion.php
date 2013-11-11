@@ -26,7 +26,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="214" border="3">
     <tr>
       <td width="200"><p align="center">Cierre de Liquidaci&oacute;n </p>
-          <p align="center"><a class="enlace" href="cierreLiquidacion.php"><img src="img/fiscalizacion.ico" width="97" height="76" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="cierreLiquidacion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>

@@ -23,10 +23,10 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="412" border="3">
     <tr>
       <td width="196"><p align="center">Prestadores</p>
-          <p align="center"><a class="enlace" href="#"><img src="img/prestadores.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="#"><img src="img/prestadores.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Autorizaciones</p>
-          <p align="center"><a class="enlace" href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>

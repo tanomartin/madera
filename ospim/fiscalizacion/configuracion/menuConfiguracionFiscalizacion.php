@@ -25,10 +25,10 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="412" border="3">
     <tr>
       <td width="196"><p align="center"> Inspectores </p>
-          <p align="center"><a class="enlace" href="gestoresinspectores/inspectores.php"><img src="img/inspector.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="gestoresinspectores/inspectores.php"><img src="img/inspector.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Gestores</p>
-          <p align="center"><a class="enlace" href="gestoresinspectores/gestores.php"><img src="img/gestor.ico"" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="gestoresinspectores/gestores.php"><img src="img/gestor.png"" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
