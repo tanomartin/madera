@@ -26,13 +26,13 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="626" border="3">
     <tr>
       <td width="200"><p align="center">Requerimientos</p>
-        <p align="center"><a class="enlace" href="requerimientos/requerimientos.php"><img src="img/requerimientos.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="requerimientos/requerimientos.php"><img src="img/requerimientos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 	  <td width="200"><p align="center">Inspecciones </p>
-      <p align="center"><a class="enlace" href="requerimientos/listarInspecciones.php"><img src="img/inspeccion.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p align="center"><a class="enlace" href="requerimientos/listarInspecciones.php"><img src="img/inspeccion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  <p align="center">&nbsp;</p></td>
 	  <td width="200"><p align="center">Fiscalizador </p>
-        <p align="center"><a class="enlace" href="fiscalizador/fiscalizador.php"><img src="img/fiscalizador.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="fiscalizador/fiscalizador.php"><img src="img/fiscalizador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
