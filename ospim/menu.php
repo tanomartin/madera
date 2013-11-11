@@ -80,7 +80,7 @@ function abrirSistemas(dire) {
 		
       <td width="196"><div align="center">
 	    <p>Auditoria Medica </p>
-	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.ico" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td> 
 	  <?php if ($_SESSION['usuario'] == 'sistemas') { ?>
