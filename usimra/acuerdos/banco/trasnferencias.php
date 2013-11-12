@@ -66,32 +66,31 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $rowTransfe['cuit'];?></td>
 			<td><?php echo $rowTransfe['fecha'];?></td>
 			<td><?php echo $rowTransfe['monto'];?></td>
-			<td><a href="<?php echo "consultaTransferencia.php?nrotrans=$nroTrans" ?>">Consultar</a></td>
+			<td align="center"><a href="<?php echo "consultaTransferencia.php?nrotrans=$nroTrans" ?>">Consultar</a> - <a href="<?php echo "modificaTransferencia.php?nrotrans=$nroTrans" ?>">Modificar</a></td>
 		</tr>
 		<?php
 		}
 		?>
 	</tbody>
   </table>
-    <table width="199" border="0">
+    <table width="245" border="0">
       <tr>
-        <td width="193">
+        <td width="239">
 		<div id="paginador" class="pager">
 		  <form>
 			<p align="center">
 			  <img src="img/first.png" width="16" height="16" class="first"/> <img src="img/prev.png" width="16" height="16" class="prev"/>
 			  <input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
-			  <img src="img/next.png" width="16" height="16" class="next"/> <img src="img/last.png" width="16" height="16" class="last"/>		    </p>
-			<p align="center">
-			  <select name="select" class="pagesize">
-			    <option selected="selected" value="10">10 por pagina</option>
-			    <option value="20">20 por pagina</option>
-			    <option value="30">30 por pagina</option>
-			    <option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
+		    <img src="img/next.png" width="16" height="16" class="next"/> <img src="img/last.png" width="16" height="16" class="last"/>
+		    <select name="select" class="pagesize">
+		      <option selected="selected" value="10">10 por pagina</option>
+		      <option value="20">20 por pagina</option>
+		      <option value="30">30 por pagina</option>
+		      <option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
 		      </select>
 		    </p>
 			<p align="center"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
-			</form>	
+		  </form>	
 		</div>
 	</td>
       </tr>
