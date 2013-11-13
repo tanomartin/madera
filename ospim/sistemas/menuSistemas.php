@@ -26,7 +26,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <p align="center"><a class="enlace" href="fiscalizacion/menuFiscalizacion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Tratamiento A.F.I.P.</p>
-        <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.jpg" width="97" height="76" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.jpg" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
