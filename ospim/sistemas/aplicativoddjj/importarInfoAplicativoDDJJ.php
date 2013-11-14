@@ -107,7 +107,7 @@ if ($canEmpresas > 0) {
 				} else {
 					$locali = 0;
 				}
-				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".$rowEmpresas['nombre']."',".$rowEmpresas['provin'].",'".$rowIndPos['indpostal']."',".$rowEmpresas['copole'].",'','$locali','".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','','','',0,".$rowEmpresas['rramaa'].",'".$rowEmpresas['activi']."','','Importada Por Sistemas','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
+				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".$rowEmpresas['nombre']."',".$rowEmpresas['provin'].",'".$rowIndPos['indpostal']."',".$rowEmpresas['copole'].",'','$locali','".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','','','',0,3,'".$rowEmpresas['activi']."','','Importada Por Sistemas','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
 				$sqlInsertJuris = "INSERT INTO jurisdiccion VALUE('".$rowEmpresas['nrcuit']."','3200',".$rowEmpresas['provin'].",'".$rowIndPos['indpostal']."',".$rowEmpresas['copole'].",'',$locali,'".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','".$rowEmpresas['emails']."',100)";
 				$result = ejectuarDoble($sqlInsertCabe,$sqlInsertJuris);
 				$listadoIngresadas[$n] = array('cuit' => $cuitInsert, 'nombre' => $nombre);
