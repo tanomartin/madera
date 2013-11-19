@@ -148,7 +148,7 @@ function validar(formulario) {
           </div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Iva Comici&oacute;n </strong></div></td>
+          <td><div align="right"><strong>Iva Comisi&oacute;n </strong></div></td>
           <td><div align="left">
             <input name="ivacomi" type="text" id="ivacomi" size="5" />
           </div></td>
