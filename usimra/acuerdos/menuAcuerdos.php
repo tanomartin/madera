@@ -56,10 +56,6 @@ A:hover {text-decoration: none;color:#00FFFF }
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
-</div>
+  </div>
 </body>
 </html>

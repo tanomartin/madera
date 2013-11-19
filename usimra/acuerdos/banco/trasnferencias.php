@@ -2,7 +2,7 @@
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php"); 
 
-$sqlTransfe = "SELECT * FROM transferenciasusimra order by idtransferencia DESC";
+$sqlTransfe = "SELECT * FROM transferenciasusimra order by fecha DESC, idtransferencia DESC";
 $resTransfe = mysql_query($sqlTransfe,$db);
 ?>
 
@@ -64,7 +64,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $nroTrans;?></td>
 			<td><?php echo $rowTransfe['banco'];?></td>
 			<td><?php echo $rowTransfe['cuit'];?></td>
-			<td><?php echo $rowTransfe['fecha'];?></td>
+			<td><?php echo invertirFecha($rowTransfe['fecha']);?></td>
 			<td><?php echo $rowTransfe['monto'];?></td>
 			<td align="center"><a href="<?php echo "consultaTransferencia.php?nrotrans=$nroTrans" ?>">Consultar</a> - <a href="<?php echo "modificaTransferencia.php?nrotrans=$nroTrans" ?>">Modificar</a></td>
 		</tr>
