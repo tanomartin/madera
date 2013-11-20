@@ -25,6 +25,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	  <p>
 	    <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuFiscalizaciones.php'" align="center"/>
       </p>
+	  <p><span class="Estilo1">Men&uacute; Consultas </span></p>
 	  <table width="626" border="3">
         <tr>
           <td width="200"><p align="center">Aportes<a class="enlace" href="#"></p>
@@ -46,7 +47,6 @@ A:hover {text-decoration: none;color:#00FFFF }
           <td>&nbsp;</td>
         </tr>
       </table>
-	  <p>&nbsp;</p>
-</div>
+	  </div>
 </body>
 </html>
