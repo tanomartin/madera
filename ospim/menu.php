@@ -50,8 +50,7 @@ function abrirSistemas(dire) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span class="Estilo1">Men&uacute; Principal - Sistema OSPIM</span></p>
-  <p>
-    <img src="img/logo.jpg" width="168" height="139" /></p>
+  <p><img src="img/logo.png" width="168" height="142" /></p>
   <table width="599" border="2">
     <tr>
       <td width="196"> <div align="center">
