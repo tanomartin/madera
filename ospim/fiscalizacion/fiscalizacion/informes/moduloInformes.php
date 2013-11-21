@@ -35,14 +35,14 @@ A:hover {text-decoration: none;color:#00FFFF }
               <p align="center"><a class="enlace" href="ddjj/ddjjCuit.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p align="center">&nbsp;</p></td>
           <td width="200"><p align="center">Requerimientos </p>
-              <p align="center"><a class="enlace" href="~#"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+              <p align="center"><a class="enlace" href="requerimientos/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p align="center">&nbsp;</p></td>
         </tr>
         <tr>
           <td><p align="center">&nbsp;</p>
               <p align="center">&nbsp;</p></td>
           <td><p align="center">Liquidaciones</p>
-              <p align="center"><a class="enlace" href="#"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+              <p align="center"><a class="enlace" href="liquidaciones/liquiListado.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p>&nbsp;</p></td>
           <td>&nbsp;</td>
         </tr>

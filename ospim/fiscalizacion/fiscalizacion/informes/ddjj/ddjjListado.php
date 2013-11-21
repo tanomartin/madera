@@ -38,7 +38,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
 <script type="text/javascript" src="/lib/jquery.tablesorter/jquery-latest.js"></script>
 <script type="text/javascript" src="/lib/jquery.tablesorter/jquery.metadata.js"></script>
 <script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
@@ -56,7 +58,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </script>
 <body bgcolor="#CCCCCC">
 <div align="center">
-	 <input type="reset" name="volver" value="Volver" onclick="location.href = 'ddjjCuit.php'" align="center"/>
+	 <input type="reset" name="volver" class="nover" value="Volver" onclick="location.href = 'ddjjCuit.php'" align="center"/>
 	<p><span class="Estilo2">D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> </span></p>
 	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	<thead>
@@ -66,7 +68,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<th>Personal</th>
 			<th>Remuneracion</th>
 			<th>Remu. Decreto</th>
-			<th>Acciones</th>
+			<th class="nover">Acciones</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -80,7 +82,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $rowDdjj['totalpersonal'];?></td>
 			<td><?php echo $rowDdjj['totalremundeclarada'];?></td>
 			<td><?php echo $rowDdjj['totalremundecreto'];?></td>
-			<td><input type="button" value="Detalle" onclick="detalleDdjj('<?php echo $linkDetalle ?>')" /></td>
+			<td class="nover"><input type="button" value="Detalle" onclick="detalleDdjj('<?php echo $linkDetalle ?>')" /></td>
 		</tr>
 		<?php
 		}
@@ -103,7 +105,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		      <option value="<?php echo $canDdjj;?>">Todos</option>
 		      </select>
 		    </p>
-			<p align="center"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
+			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
 		  </form>	
 		</div>
 	</td>

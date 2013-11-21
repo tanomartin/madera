@@ -9,7 +9,7 @@ if ($canEmpresa == 0) {
 	header ("Location: aportesCuit.php?err=2");
 } else {
 	$rowEmpresa = mysql_fetch_assoc($resEmpresa);
-	$sqlAportes = "SELECT * FROM afipprocesadas where cuit = $cuit and concepto != 'REM' order by anopago DESC, mespago DESC";
+	$sqlAportes = "SELECT * FROM afipprocesadas where cuit = $cuit and concepto != 'REM' order by anopago DESC, mespago DESC, fechapago DESC, concepto DESC";
 	$resAportes = mysql_query($sqlAportes,$db);
 	$canAportes = mysql_num_rows($resAportes);
 	if ($canAportes == 0) {
@@ -38,7 +38,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
 <script type="text/javascript" src="/lib/jquery.tablesorter/jquery-latest.js"></script>
 <script type="text/javascript" src="/lib/jquery.tablesorter/jquery.metadata.js"></script>
 <script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
@@ -52,23 +54,23 @@ A:hover {text-decoration: none;color:#00FFFF }
 </script>
 <body bgcolor="#CCCCCC">
 <div align="center">
-	 <input type="reset" name="volver" value="Volver" onclick="location.href = 'aportesCuit.php'" align="center"/>
+	 <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'aportesCuit.php'" align="center"/>
 	<p><span class="Estilo2">Aportes Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> </span></p>
-	<table class="tablesorter" id="listado" style="width:800px">
+	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	<thead>
 		<tr>
 			<th>Año</th>
 			<th>Mes</th>
 			<th>Concepto</th>
 			<th>Fecha de Pago</th>
-			<th>D / C</th>
+			<th>Debito/Credito</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
 		while($rowAportes = mysql_fetch_assoc($resAportes)) {
 		?>
-		<tr>
+		<tr align="center">
 			<td><?php echo $rowAportes['anopago'];?></td>
 			<td><?php echo $rowAportes['mespago'];?></td>
 			<td><?php echo $rowAportes['concepto'];?></td>
@@ -96,7 +98,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		      <option value="<?php echo $canAportes;?>">Todos</option>
 		      </select>
 		    </p>
-			<p align="center"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
+			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
 		  </form>	
 		</div>
 	</td>

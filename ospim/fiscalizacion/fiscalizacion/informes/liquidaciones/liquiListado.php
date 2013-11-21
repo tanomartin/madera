@@ -1,16 +1,34 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 
-$cuit = $_GET['cuit'];
-$anoddjj = $_GET['anoddjj'];
-$mesddjj = $_GET['mesddjj'];
-$sqlEmpresa = "SELECT * FROM empresas where cuit = $cuit";
-$resEmpresa = mysql_query($sqlEmpresa,$db);
-$rowEmpresa = mysql_fetch_assoc($resEmpresa);
-	
-$sqlDetalle = "SELECT * FROM detddjjospim FORCE INDEX (busqueda) where cuit = 30709033995 and anoddjj = 2012 and mesddjj = 4 ";
-$resDetalle = mysql_query($sqlDetalle,$db);
-$canDetalle = mysql_num_rows($resDetalle);
+/*$tipo = $_POST['group1'];
+if ($tipo == 0) {
+	$titulo = "A REPARTIR";
+	$sqlLiqui = "SELECT * from cabliquiospim";
+}
+if ($tipo == 1) {
+	$titulo = "REPARTIDAS";
+	$sqlLiqui = "SELECT * from cabliquiospim";
+}
+if ($tipo == 2) {
+	$titulo = "NO NOTIFICADAS";
+	$sqlLiqui = "SELECT * from cabliquiospim";
+}*/
+$sqlLiqui = "SELECT * from cabliquiospim ORDER BY fechaliquidacion DESC";
+$resLiqui = mysql_query($sqlLiqui,$db);
+$canLiqui = mysql_num_rows($resLiqui);	
+/*if ($canLiqui == 0) {
+	if ($tipo == 0) {
+		header ("Location: filtrosBusqueda.php?err=1");
+	}
+	if ($tipo == 1) {
+		header ("Location: filtrosBusqueda.php?err=2");
+	}
+	if ($tipo == 2) {
+		header ("Location: filtrosBusqueda.php?err=3");
+	}
+}*/
+
 
 ?>
 
@@ -20,7 +38,7 @@ $canDetalle = mysql_num_rows($resDetalle);
 <link rel="stylesheet" href="/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
 <link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Listado de Aportes por C.U.I.T. :.</title>
+<title>.: Listado Requerimientos :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -31,6 +49,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -41,40 +60,48 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script type="text/javascript">
 	$(function() {
 		$("#listado")
-		.tablesorter({widthFixed: true})
+		.tablesorter({widthFixed: true, headers:{3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}}})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 </script>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span class="Estilo2">Detalle de DDJJ Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?></span></p>
-  <p><span class="Estilo2">Periodo: <?php echo $mesddjj ?>-<?php echo $anoddjj ?></span></p>
-	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+	 <input type="reset" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'" align="center"/>
+	<p><span class="Estilo2">Liquidaciones</span></p>
+	<table class="tablesorter" id="listado" style="width:1300px; font-size:14px">
 	<thead>
 		<tr>
-			<th>C.U.I.L.</th>
-			<th>Remuneracion</th>
-			<th>Adherentes</th>
+			<th>Nro. Requerimiento</th>
+			<th>Fecha - Hora Liquidación</th>
+			<th>Liquidación Origen</th>
+			<th>Fecha Inspección</th>
+			<th>Deuda Nominal</th>
+			<th>Intereses</th>
+			<th>Gastos Admin.</th>
+			<th>Total</th>
+			<th>Resolución</th>
+			<th>Certificado Deuda</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
-		while($rowDetalle = mysql_fetch_assoc($resDetalle)) {
-			$total = $total + $rowDetalle['remundeclarada'];
+		while($rowLiqui = mysql_fetch_assoc($resLiqui)) {
 		?>
 		<tr align="center">
-			<td><?php echo $rowDetalle['cuil'];?></td>
-			<td><?php echo $rowDetalle['remundeclarada'];?></td>
-			<td><?php echo $rowDetalle['adherentes'];?></td>
+			<td><?php echo $rowLiqui['nrorequerimiento'];?></td>
+			<td><?php echo invertirFecha($rowLiqui['fechaliquidacion'])." - ".$rowLiqui['horaliquidacion'] ?></td>
+			<td><?php echo $rowLiqui['liquidacionorigen'];?></td>
+			<td><?php echo invertirFecha($rowLiqui['fechainspeccion']);?></td>
+			<td><?php echo $rowLiqui['deudanominal'];?></td>
+			<td><?php echo $rowLiqui['intereses'];?></td>
+			<td><?php echo $rowLiqui['gtosadmin'];?></td>
+			<td><?php echo $rowLiqui['totalliquidado'];?></td>
+			<td><?php echo $rowLiqui['nroresolucioninspeccion'];?></td>
+			<td><?php echo $rowLiqui['nrocertificadodeuda'];?></td>
 		</tr>
 		<?php
 		}
 		?>
-		<tr align="center">
-			<td></td>
-			<td><b><?php echo number_format($total,2,',','.');?></b></td>
-			<td></td>
-		</tr>
 	</tbody>
   </table>
     <table width="245" border="0">
@@ -90,7 +117,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 		      <option selected="selected" value="10">10 por pagina</option>
 		      <option value="20">20 por pagina</option>
 		      <option value="30">30 por pagina</option>
-		      <option value="<?php echo $canDetalle;?>">Todos</option>
+			  <option value="50">50 por pagina</option>
+		      <option value="<?php echo $canLiqui;?>">Todos</option>
 		      </select>
 		    </p>
 			<p align="center"><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
