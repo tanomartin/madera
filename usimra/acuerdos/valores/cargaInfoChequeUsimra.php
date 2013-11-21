@@ -91,10 +91,14 @@ function validar(formulario) {
 }
 -->
 </style>
+
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" align="center"/>
+  <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" align="center"/>
 </div>
 <div align="center">
   <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="guardoValorAlCobro.php">
@@ -112,6 +116,9 @@ function validar(formulario) {
         </label></td>
       </tr>
     </table>
+  	<p>
+  	  <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>
+  	</p>
   	<p><strong>Informaci&oacute;n Valores al Cobro </strong></p>
   	<table border="1" width="1000" bordercolorlight="#000000" bordercolordark="#000000" bordercolor="#000000" cellpadding="2" cellspacing="0">
       <tr>
@@ -176,7 +183,7 @@ function validar(formulario) {
     </table>
     <p>
       <label>
-      <input type="submit" name="Submit" value="Enviar" />
+      <input class="nover" type="submit" name="Submit" value="Enviar" />
       </label>
     </p>
   </form>
