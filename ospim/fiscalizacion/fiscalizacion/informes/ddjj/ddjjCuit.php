@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Consulta de Aportes :.</title>
+<title>.: Consulta de D.D.J.J. :.</title>
 <style type="text/css">
 <!--
 .Estilo1 {
@@ -32,16 +32,16 @@ jQuery(function($){
 </script>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" action="aportesListado.php">
+<form id="form1" name="form1" method="post" action="ddjjListado.php">
   <p align="center">
    <input type="reset" name="volver" value="Volver" onClick="location.href = '../moduloInformes.php'" align="center"/>
   </p>
-  <p align="center" class="Estilo1">Consulta de Aportes por C.U.I.T.</p>
+  <p align="center" class="Estilo1">Consulta de D.D.J.J. por C.U.I.T.</p>
   <p> 
    <?php 
   		$err = $_GET['err'];
 		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> CUIT SIN APORTES REGISTRADOS </b></div>");
+			print("<div align='center' style='color:#FF0000'><b> CUIT SIN DDJJ REGISTRADOS </b></div>");
 		}
 		if ($err == 2) {
 			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
