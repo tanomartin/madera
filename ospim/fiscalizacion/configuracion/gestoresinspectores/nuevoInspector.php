@@ -31,6 +31,7 @@ function validar(formulario) {
 		alert("Debe completar en Nombre y el Apellido");
 		return false;
 	}
+	formulario.Submit.disabled = true;
 	return true;
 }
 
@@ -77,7 +78,7 @@ function validar(formulario) {
 				<table width="173" border="0">
                   <tr>
                     <td width="167"><div align="center">
-                      <input type="submit" name="guardar" value="Guardar" sub/>
+                      <input type="submit" name="Submit" value="Guardar" sub/>
                     </div></td>
                   </tr>
                 </table>

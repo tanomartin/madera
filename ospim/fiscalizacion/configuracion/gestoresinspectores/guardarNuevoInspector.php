@@ -3,7 +3,7 @@
 $codigo = $_GET['codigo'];
 $datos = array_values($_POST);
 
-if (sizeof($datos) == 2) {
+if (sizeof($datos) == 1) {
 	$pagina = "nuevoInspector.php?error=1&nombre=$datos[0]";
 	Header("Location: $pagina"); 
 }
@@ -17,11 +17,11 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 	
-	for ( $i = 1 ; $i < sizeof($datos) - 1 ; $i ++) {
+	for ( $i = 1 ; $i < sizeof($datos) ; $i ++) {
 		$delega = $datos[$i];
 		$sqlInsertInspector = "INSERT INTO inspectores VALUE($codigo,'$apeynombre',$delega)";
 		$dbh->exec($sqlInsertInspector);
-		//echo $sqlInsertInspector;
+		//echo $sqlInsertInspector."<br>";
 	}
 	$dbh->commit();
 	
