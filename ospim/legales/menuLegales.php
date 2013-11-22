@@ -27,7 +27,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p>	
 	</td>
 	  <td width="200"><p align="center">Configuraci&oacute;n</p>
-          <p align="center"><a class="enlace" href="#"><img src="img/configuracion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="configuracion/menuConfiguracion.php"><img src="img/configuracion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p>	  
 	 </td>
       <td width="200"><p align="center">Informes</p>
