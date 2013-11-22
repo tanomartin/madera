@@ -19,7 +19,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 <form method="POST" action="verificador.php">
   <div align="center">
     <p class="Estilo1">Ingreso Sistema O.S.P.I.M.</p>
-    <p><img src="img/logo.png" width="307" height="250"> </p>
+    <p><img src="img/logo.png" width="407" height="350"> </p>
     <p><?php  
 		$error = $_GET['error'];
 		if ($error == 1) {
@@ -37,7 +37,7 @@ A:hover {text-decoration:underline; color:FCF63C}
         </td>
       </tr>
       <tr>
-        <td width="50%" align="right"><font face="Verdana" size="2"><b>Contraseña:&nbsp;&nbsp;&nbsp;</b></font></td>
+        <td width="50%" align="right"><font face="Verdana" size="2"><b>Contraseña:&nbsp;&nbsp;</b></font></td>
         <td width="50%"><p align="left">
           <input name="pass" type="password" id="pass" style="background-color: #FFFFFF" size="20">
         </td>
