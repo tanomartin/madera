@@ -38,7 +38,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <tr>
       <td>&nbsp;</td>
       <td><p align="center">Asesores Legales </p>
-      <p align="center"><a class="enlace" href="#"><img src="img/asesores.png" alt="enviar" width="90" height="90" border="0"/></a></p>
+      <p align="center"><a class="enlace" href="asesores/asesores.php"><img src="img/asesores.png" alt="enviar" width="90" height="90" border="0"/></a></p>
       <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
