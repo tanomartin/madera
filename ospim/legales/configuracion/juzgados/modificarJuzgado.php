@@ -59,7 +59,7 @@ function validar(formulario) {
 				</p>
 				<p>Fuero 
 				  <label>
-				  <select name="select" name="fuero" id="fuero">
+				  <select name="fuero" id="fuero">
 					  <option value="0" selected="selected">SELECCIONE FUERO</option>
 					<?php if ($rowJuzgado['fueros'] == "CIVIL Y COMERCIAL") { ?>
 						<option value="CIVIL Y COMERCIAL" selected="selected">CIVIL Y COMERCIAL</option>

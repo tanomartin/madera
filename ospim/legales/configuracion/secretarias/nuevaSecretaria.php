@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Nuevo Juzgado :.</title>
+<title>.: Nueva Secretaria :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -20,11 +20,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 function validar(formulario) {
 	if (formulario.denominacion.value == "") {
-		alert("Debe completar la Denominación del Juzgado");
+		alert("Debe completar la Denominación de la Secretaria");
 		return(false);
 	}
-	if (formulario.fuero.value == 0) {
-		alert("Debe Seleccionar un Fuero");
+	if (formulario.juzgado.value == 0) {
+		alert("Debe Seleccionar un Juzgado");
 		return(false);
 	}
 	formulario.Submit.disabled = true;
@@ -36,10 +36,10 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'juzgados.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'secretarias.php'" align="center"/>
  </p>
-  <p><span class="Estilo2">Nuevo Juzgado </span></p>
-  <form id="nuevoJuzgado" name="nuevoJuzgado" method="POST" action="guardarNuevoJuzgado.php" onSubmit="return validar(this)">
+  <p><span class="Estilo2">Nueva Secretaria </span></p>
+  <form id="nuevaSecre" name="nuevaSecre" method="POST" action="guardarNuevaSecretaria.php" onSubmit="return validar(this)">
 				
 	<p>
 	  <label></label>
@@ -49,16 +49,17 @@ function validar(formulario) {
 				  <input name="denominacion" type="text" id="denominacion" size="100" maxlength="100"/>
 				  </label>
 				</p>
-				<p>Fuero 
+				<p>Juzgado 
 				  <label>
-				  <select name="fuero" id="fuero">
-				  	<option value="0" selected="selected">SELECCIONE FUERO</option>
-				    <option value="CIVIL Y COMERCIAL">CIVIL Y COMERCIAL</option>
-				    <option value="COMERCIAL">COMERCIAL</option>
-				    <option value="COMERCIAL CAP.FEDERAL">COMERCIAL CAP.FEDERAL</option>
-				    <option value="FEDERAL">FEDERAL</option>
-				    <option value="FEDERAL SEGURIDAD SOCIAL">FEDERAL SEGURIDAD SOCIAL</option>
-			      </select>
+				   <select name="juzgado" id="juzgado">
+				   	<option value="0" selected="selected">SELECCIONE JUZGADO</option>
+					<?php 
+						$sqlJuzgados = "select * from juzgados";
+						$resJuzgados = mysql_query($sqlJuzgados,$db); 
+						while ($rowJuzgados = mysql_fetch_assoc($resJuzgados)) { ?>
+							<option value=<?php echo $rowJuzgados['codigojuzgado']?>><?php echo $rowJuzgados['codigojuzgado']?> - <?php echo $rowJuzgados['denominacion'] ?></option>	
+				<?php 	} ?>
+				  </select>
 				  </label>
 				</p>
 				<table width="173" border="0">

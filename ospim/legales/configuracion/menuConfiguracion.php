@@ -26,10 +26,10 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="600" border="2">
     <tr>
      <td width="200"><p align="center">Juzgados</p>
-        <p align="center"><a class="enlace" href="#"><img src="img/juzgado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="juzgados/juzgados.php"><img src="img/juzgado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p>	</td>
 	  <td width="200"><p align="center">Secretarias</p>
-          <p align="center"><a class="enlace" href="#"><img src="img/secretaria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="secretarias/secretarias.php"><img src="img/secretaria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p>	 </td>
       <td width="200"><p align="center">Estados Procesales </p>
         <p align="center"><a class="enlace" href="#"><img src="img/estados.png" width="90" height="90" border="0" alt="enviar"/></a></p>

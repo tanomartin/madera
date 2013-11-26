@@ -2,8 +2,13 @@
 
 $datos = array_values($_POST);
 $denomi = strtoupper($datos[0]);
+$codigoJuz = $datos[1];
+$rs = mysql_query("SELECT MAX(codigosecretaria) FROM secretarias where codigojuzgado = $codigoJuz");
+if ($row = mysql_fetch_row($rs)) {
+	$codigoSecre = trim($row[0]) + 1;
+}
 
-$sqlNuevoJuzgado = "INSERT INTO juzgados VALUES(DEFAULT, '$denomi', '$datos[1]')";
+$sqlNuevaSecretaria = "INSERT INTO secretarias VALUES($codigoJuz, $codigoSecre, '$denomi')";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -12,10 +17,10 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$dbh->exec($sqlNuevoJuzgado);
+	$dbh->exec($sqlNuevaSecretaria);
 	$dbh->commit();
 	
-	$pagina = "juzgados.php";
+	$pagina = "secretarias.php";
 	Header("Location: $pagina"); 
 	
 }catch (PDOException $e) {
