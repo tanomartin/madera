@@ -27,7 +27,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 function validar(formulario) {
 	if (formulario.denominacion.value == "") {
-		alert("Debe completar en Nombre y el Apellido");
+		alert("Debe completar la Denominación del Juzgado");
 		return(false);
 	}
 	if (formulario.fuero.value == 0) {
