@@ -99,8 +99,12 @@ function validar(formulario) {
 					  $resAcuerdosUsimra = mysql_query($sqlAcuerdosUsimra,$db); 
 					  $usimraCant = mysql_num_rows($resAcuerdosUsimra); 
 					  
-					  $controlAcu = $ospimCant + $usimraCant;
-					  if ($controlAcu == 0) { ?>
+					  $sqlCabJuicios = "select * from cabjuiciosospim where codasesorlegal = $codigo";
+					  $resCabJuicios = mysql_query($sqlCabJuicios,$db); 
+					  $canCabJuicios = mysql_num_rows($resCabJuicios); 
+					  
+					  $controlAcuYJuicios = $ospimCant + $usimraCant + canCabJuicios;
+					  if ($controlAcuYJuicios == 0) { ?>
 					  		<input type="button" name="eliminar" onclick="location.href = 'eliminarInspector.php?codigo=<?php echo $codigo ?>'" value="Eliminar" />
 			   <?php } ?>
                     </div></td>
