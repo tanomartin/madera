@@ -19,12 +19,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script type="text/javascript">
 
 function validar(formulario) {
-	formulario.Submit.disabled = true;
 	if (formulario.apeynombre.value == "") {
-		formulario.Submit.disabled = false;
 		alert("Debe completar en Nombre y el Apellido");
 		return(false);
 	}
+	formulario.Submit.disabled = true;
 	return true;
 }
 
