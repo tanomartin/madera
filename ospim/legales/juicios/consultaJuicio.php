@@ -22,7 +22,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php"); 
 	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	
-	$sqlCabecera = "select c.*, e.*, a.apeynombre as asesor, i.apeynombre as inspector from cabjuiciosospim c, estadosdeacuerdos e, asesoreslegales a, inspectores i where cuit = $cuit and nroorden = $nroorden and c.statusdeuda = e.codigo and c.codasesorlegal = a.codigo and c.codinspector = i.codigo";
+	$sqlCabecera = "select c.*, e.descripcion as estado, a.apeynombre as asesor from cabjuiciosospim c, estadosdeacuerdos e, asesoreslegales a where c.cuit = $cuit and c.nroorden = $nroorden and c.statusdeuda = e.codigo and c.codasesorlegal = a.codigo";
 	$resCabecera = mysql_query($sqlCabecera,$db); 
 	$canCabecera = mysql_num_rows($resCabecera); 
 	if ($canCabecera == 1) {
@@ -33,7 +33,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	
 	?> 
     <p><strong>O.S.P.I.M. - Juicio </strong><strong> Nro. Orden <?php echo $rowCebecera['nroorden'] ?></strong>	</p>
-    <p><strong>ESTADO DE DEUDA </strong><?php echo $rowCebecera['descripcion']; ?></p>
+    <p><strong>ESTADO DE DEUDA </strong><?php echo $rowCebecera['estado']; ?></p>
     <p><strong>Cabecera</strong></p>
     <table width="954" border="1" style="text-align:left">
       <tr>
@@ -58,7 +58,13 @@ A:hover {text-decoration: none;color:#00FFFF }
         <td><b>Asesor Legal</b></td>
         <td><?php echo $rowCebecera['asesor']; ?></td>
         <td><b>Inspector</b></td>
-        <td><?php echo $rowCebecera['inspector']; ?></td>
+        <td><?php 
+			$codIns = $rowCebecera['codinspector'];
+			$sqlInspector = "SELECT apeynombre FROM inspectores where codigo = $codIns limit 1";
+			$resInspector = mysql_query($sqlInspector,$db); 
+			$rowInspector = mysql_fetch_array($resInspector);
+			echo $rowInspector['apeynombre']; 
+		?></td>
       </tr>
     </table>
     <p><strong>Per&iacute;odos</strong></p>
