@@ -4,7 +4,7 @@ include($libPath."fechas.php");
 $fechaCargada=$_GET['fecEmision'];
 $fechaEmision=substr($fechaCargada, 6, 4).substr($fechaCargada, 3, 2).substr($fechaCargada, 0, 2);
 $fechaEmision=substr($fechaCargada, 0, 4).substr($fechaCargada, 5, 2).substr($fechaCargada, 8, 2);
-$fechaconciliacion = date("Y-m-d H:m:s");
+$fechaconciliacion = date("Y-m-d H:i:s");
 $usuarioconciliacion = $_SESSION['usuario'];
 
 //echo $fechaEmision;

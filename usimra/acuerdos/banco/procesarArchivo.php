@@ -6,7 +6,12 @@ $hayErrores=0;
 $hayPago=0;
 $totbruto=0.00;
 $totcomis=0.00;
+$totcuota=0.00;
+$totpagos=0.00;
+$totbolet=0;
 $nroremit=0;
+$pagos=0.00
+$cuotas=0.00;
 $archivo_name=$_GET['nombreArc'];
 $fechahoy=date("YmdHis",time());
 
@@ -67,12 +72,23 @@ else{
 			$imponeto=$impbruto-$impcomis;
 			$ctrremit=substr($registros[$i], 73, 14);
 			$usuremit=$_SESSION['usuario'];
+			$pagoacue=substr($registros[$i], 73, 2);
+			if(strcmp("99", $pagoacue)==0) {
+				$cuotas=$impbruto;
+				$pagos=0.00;
+			} else {
+				$pagos=$impbruto;
+				$cuotas=0.00;
+			};
 
-			$sqlRemito="INSERT INTO remitosremesasusimra VALUES('2','E','$fecremes','1','$nroremit','$fecremit','$sucremit','$impbruto','$impcomis','$imponeto','1','0.00','0.00','0.00','0.00','0.00','0.00','0','$ctrremit','0','','','','$fechahoy','$usuremit','','')";
+			$sqlRemito="INSERT INTO remitosremesasusimra VALUES('2','E','$fecremes','1','$nroremit','$fecremit','$sucremit','$impbruto','$impcomis','$imponeto','1','0.00','0.00','0.00','$pagos','$cuotas','$impbruto','1','$ctrremit','1','$fechahoy','$usuremit','$fecremit','$fechahoy','$usuremit','','')";
 			$resultRemito= mysql_query($sqlRemito,$db);
 			
 			$totbruto=$totbruto+$impbruto;
 			$totcomis=$totcomis+$impcomis;
+			$totcuota=$totcuota+$cuotas;
+			$totpagos=$totpagos+$pagos;
+			$totbolet=$totbolet+1;
 		}
 	}
 
@@ -80,8 +96,9 @@ else{
 	{
 		$totfaima=($totbruto-$totcomis)*0.0968;
 		$totnetos=$totbruto-($totcomis+$totfaima);
+		$netoremi=$totbruto-$totcomis;
 		$usuremes=$_SESSION['usuario'];
-		$sqlRemesa="INSERT INTO remesasusimra VALUES('2','E','$fecremes','1','$totbruto','$totcomis','$totnetos','$totfaima','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0.00','0','0','','','','$fechahoy','$usuremes','','')";
+		$sqlRemesa="INSERT INTO remesasusimra VALUES('2','E','$fecremes','1','$totbruto','$totcomis','$totnetos','$totfaima','$totbruto','$totcomis','$netoremi','0.00','0.00','0.00','$totpagos','$totcuota','$totbruto','$totbolet','1','$fechahoy','$usuremes','$fecremes','$fechahoy','$usuremes','','')";
 		$resultRemesa= mysql_query($sqlRemesa,$db);
 	}
 

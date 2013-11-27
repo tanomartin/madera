@@ -30,7 +30,7 @@ $feccon="";
 //echo "FECHA CONCILIACION: "; echo $feccon; echo "<br>";
 $usucon="";
 //echo "USUARIO CONCILIACION: "; echo $usucon; echo "<br>";
-$fecreg = date("Y-m-d H:m:s");
+$fecreg = date("Y-m-d H:i:s");
 //echo "FECHA REGISTRO: "; echo $fecreg; echo "<br>";
 $usureg = $_SESSION['usuario'];
 //echo "USUARIO REGISTRO: "; echo $usureg; echo "<br>";

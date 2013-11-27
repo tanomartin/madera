@@ -12,7 +12,7 @@ $orden = $datos[5];
 $fecha = fechaParaGuardar($datos[6]);
 $comi = $datos[7];
 $iva = $datos[8];
-$fecreg = date("Y-m-d H:m:s");
+$fecreg = date("Y-m-d H:i:s");
 $usureg = $_SESSION['usuario'];
 
 $sqlInsertTrans = "INSERT INTO transferenciasusimra VALUE(DEFAULT,'$banco',$sucursal,'$nrocuenta','$cuit',$monto,'$orden','$fecha',$comi,$iva,'$fecreg','$usureg',DEFAULT,DEFAULT)";

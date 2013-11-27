@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
-$fechacancelacion = date("Y-m-d H:m:s");
+$fechacancelacion = date("Y-m-d H:i:s");
 $usuariocancelacion = $_SESSION['usuario'];
 
 //conexion y creacion de transaccion.
@@ -72,9 +72,9 @@ try {
 				$cuentaremitosuelto='0';
 				$fecharemitosuelto='00000000';
 				$nroremitosuelto='0';
-				$estadoconciliacion='0';
-				$fechaconciliacion='00000000000000';
-				$usuarioconciliacion='';
+				$estadoconciliacion='1';
+				$fechaconciliacion=$fechacancelacion;
+				$usuarioconciliacion=$usuariocancelacion;
 				$fechamodificacion='00000000000000';
 				$usuariomodificacion='';
 
@@ -290,7 +290,6 @@ try {
 														foreach ($resultLeeRemitosRemesas as $remitos)
 														{
 															$nroremitoremesa = $remitos[nroremito];
-
 															$sqlAddConcilia="INSERT INTO conciliacuotasusimra (cuit, nroacuerdo, nrocuota, cuentaboleta, cuentaremesa, fecharemesa, nroremesa, nroremitoremesa, cuentaremitosuelto, fecharemitosuelto, nroremitosuelto, estadoconciliacion, fechaconciliacion, usuarioconciliacion, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES ('$cuitboleta','$acuerdo','$cuota','$cuentaboleta','$cuentaremesa','$acreditabanco','$nroremesa','$nroremitoremesa','$cuentaremitosuelto','$fecharemitosuelto','$nroremitosuelto','$estadoconciliacion','$fechaconciliacion','$usuarioconciliacion','$fechacancelacion','$usuariocancelacion','$fechamodificacion','$usuariomodificacion')";
 															$resultAddConcilia = $dbh->query($sqlAddConcilia);
 															//echo $sqlAddConcilia; echo "<br>";
