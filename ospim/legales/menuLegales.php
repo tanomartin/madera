@@ -23,7 +23,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="600" border="2">
     <tr>
      <td width="200"><p align="center">Juicios</p>
-        <p align="center"><a class="enlace" href="#"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="juicios/moduloJuicios.php"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p>	
 	</td>
 	  <td width="200"><p align="center">Configuraci&oacute;n</p>
