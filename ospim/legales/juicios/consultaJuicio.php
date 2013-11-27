@@ -22,7 +22,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php"); 
 	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	
-	$sqlCabecera = "select c.*, e.descripcion as estado, a.apeynombre as asesor from cabjuiciosospim c, estadosdeacuerdos e, asesoreslegales a where c.cuit = $cuit and c.nroorden = $nroorden and c.statusdeuda = e.codigo and c.codasesorlegal = a.codigo";
+	$sqlCabecera = "select c.*, a.apeynombre as asesor from cabjuiciosospim c, asesoreslegales a where c.cuit = $cuit and c.nroorden = $nroorden and c.codasesorlegal = a.codigo";
 	$resCabecera = mysql_query($sqlCabecera,$db); 
 	$canCabecera = mysql_num_rows($resCabecera); 
 	if ($canCabecera == 1) {
@@ -33,7 +33,20 @@ A:hover {text-decoration: none;color:#00FFFF }
 	
 	?> 
     <p><strong>O.S.P.I.M. - Juicio </strong><strong> Nro. Orden <?php echo $rowCebecera['nroorden'] ?></strong>	</p>
-    <p><strong>ESTADO DE DEUDA </strong><?php echo $rowCebecera['estado']; ?></p>
+    <p>Situacion Deuda Judicial: 
+	<?php   $statusDeuda = $rowCebecera['statusdeuda'];
+			if ($statusDeuda == 1) {
+				$des = "EJECUCION";
+			}
+			if ($statusDeuda == 2) {
+				$des = "CONVOCATORIA";
+			}
+			if ($statusDeuda == 3) {
+				$des = "QUIEBRA";
+			}
+			echo "<b>".$des."</b>";
+	?>
+	</p>
     <p><strong>Cabecera</strong></p>
     <table width="954" border="1" style="text-align:left">
       <tr>
