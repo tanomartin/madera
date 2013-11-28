@@ -124,10 +124,14 @@ function rediSabanaCtaCte(origen) {
 		$sqlCantAcuUsimra = "select * from cabacuerdosusimra where cuit = $cuit and estadoacuerdo = 1";
 		$resCantAcuUsimra = mysql_query($sqlCantAcuUsimra,$db); 
 		$CantAcuUsimra = mysql_num_rows($resCantAcuUsimra); 
+		
+		$sqlCabJuicios = "select * from cabjuiciosospim where cuit = $cuit";
+		$resCabJuicios = mysql_query($sqlCabJuicios,$db); 
+		$canCabJuicios = mysql_num_rows($resCabJuicios); 
 	
-		$CantAcuerdos = $CantAcuOspim + $CantAcuUsimra;
+		$controlAcuYJuicios = $CantAcuOspim + $CantAcuUsimra + canCabJuicios;
 		$CanDdjj = 0;
-		if ($CantAcuerdos == 0) {
+		if ($controlAcuYJuicios == 0) {
 			//TOMO LOS LIMIETES DE MES Y ANIO
 			$mesActual = date("n");
 			$meslimite = date("n", (strtotime ("-6 month")));
@@ -142,7 +146,7 @@ function rediSabanaCtaCte(origen) {
 			
 			//TODO VER ddjj de USIMRA TAMBIEN
 		}
-		if ($CantAcuerdos == 0 and $CanDdjj == 0) { ?>
+		if ($controlAcuYJuicios == 0 and $CanDdjj == 0) { ?>
 		    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()">
   <?php } ?>
 	
