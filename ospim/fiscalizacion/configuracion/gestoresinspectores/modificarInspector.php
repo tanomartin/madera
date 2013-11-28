@@ -99,7 +99,7 @@ function validar(formulario) {
 					  $resAcuerdosUsimra = mysql_query($sqlAcuerdosUsimra,$db); 
 					  $usimraCant = mysql_num_rows($resAcuerdosUsimra); 
 					  
-					  $sqlCabJuicios = "select * from cabjuiciosospim where codasesorlegal = $codigo";
+					  $sqlCabJuicios = "select * from cabjuiciosospim where codinspector = $codigo";
 					  $resCabJuicios = mysql_query($sqlCabJuicios,$db); 
 					  $canCabJuicios = mysql_num_rows($resCabJuicios); 
 					  
@@ -122,9 +122,13 @@ function validar(formulario) {
 					  $resAcuerdosUsimra = mysql_query($sqlAcuerdosUsimra,$db); 
 					  $usimraCant = mysql_num_rows($resAcuerdosUsimra); 
 					  
-					  $controlAcu = $ospimCant + $usimraCant;
+					  $sqlCabJuicios = "select * from cabjuiciosospim where codinspector = $codigo";
+					  $resCabJuicios = mysql_query($sqlCabJuicios,$db); 
+					  $canCabJuicios = mysql_num_rows($resCabJuicios); 
 					  
-				 	  if ($controlAcu == 0) { ?>
+					  $controlAcuYJuicios = $ospimCant + $usimraCant + canCabJuicios;
+					  
+				 	  if ($controlAcuYJuicios == 0) { ?>
 					    <input type="button" name="desactivar" value="Desactivar"/>
 	            <?php } ?>
 			          </div></td>
