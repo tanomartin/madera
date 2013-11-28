@@ -25,7 +25,7 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi = mysql_query($sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit";
+$sqlacuerdos =  "select * from cabacuerdosospim c, estadosdeacuerdos e where c.cuit = $cuit and c.estadoacuerdo = e.codigo order by nroacuerdo";
 $resulacuerdos= mysql_query($sqlacuerdos); 
 
 ?>
@@ -49,14 +49,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
-  <table width="500" border="1">
+  <table width="600" border="1">
      <?php 
 		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
 			$nroacu = $rowacuerdos['nroacuerdo'];
 			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
 			$result=mysql_query($query,$db);
 			$rowtipos=mysql_fetch_array($result);
-			echo ("<td width=300  align='center'><font face=Verdana size=2> ".$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
+			echo ("<td width=300  align='center'><font face=Verdana size=2> ".$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']." - Acta: ".$rowacuerdos['nroacta']."</a></font></td>");
 			if ($rowacuerdos['estadoacuerdo'] == 1) {
 				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='formularioModif.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>MODIFICAR</a></font></td>");
 				
@@ -81,14 +81,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
 				}
 			} else {
-				if ($rowacuerdos['estadoacuerdo'] == 0) {
-					echo ("<td width=100  align='center'><font face=Verdana size=2>CANCELADO</a></font></td>");
-					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
-				} 
-				if ($rowacuerdos['estadoacuerdo'] == 2) {
-					echo ("<td width=100  align='center'><font face=Verdana size=2>INCOBRABLE</a></font></td>");
-					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
-				}
+				echo ("<td width=100  align='center'><font face=Verdana size=2>".$rowacuerdos['descripcion']."</a></font></td>");
+				echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
 			}
 			echo ("<td width=100  align='center'><font face=Verdana size=2><a href='consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>CONSULTAR</a></font></td>");
 			print ("</tr>");
