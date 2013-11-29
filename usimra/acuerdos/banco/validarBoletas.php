@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
-$fechavalidacion = date("Y-m-d H:m:s");
+$fechavalidacion = date("Y-m-d H:i:s");
 $usuariovalidacion = $_SESSION['usuario'];
 
 //conexion y creacion de transaccion.

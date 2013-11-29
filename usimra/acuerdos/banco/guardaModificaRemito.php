@@ -38,7 +38,7 @@ $sucban=$datos[10];
 //echo "SUCURSAL: "; echo $sucban; echo "<br>";
 $sisrem="M";
 //echo "SISTEMA: "; echo $sisrem; echo "<br>";
-$fecmod=date("Y-m-d H:m:s");
+$fecmod=date("Y-m-d H:i:s");
 //echo "FECHA MODIFICACION: "; echo $fecmod; echo "<br>";
 $usumod=$_SESSION['usuario'];
 //echo "USUARIO MODIFICACION: "; echo $usumod; echo "<br>";

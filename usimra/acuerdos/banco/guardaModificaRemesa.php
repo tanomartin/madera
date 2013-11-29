@@ -30,7 +30,7 @@ $netoss=$datos[7];
 //echo $datos[8]; echo "<br>";
 //echo $datos[9]; echo "<br>";
 $sisrem="M";
-$fecmod=date("Y-m-d H:m:s");
+$fecmod=date("Y-m-d H:i:s");
 //echo "FECHA MODIFICACION: "; echo $fecmod; echo "<br>";
 $usumod=$_SESSION['usuario'];
 //echo "USUARIO MODIFICACION: "; echo $usumod; echo "<br>";

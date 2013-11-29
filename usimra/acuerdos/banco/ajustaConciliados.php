@@ -78,7 +78,7 @@ try {
 										if($acuerdos[estadoconciliacion]==0)
 										{
 											$estconacu=1;
-											$fecconacu=date("Y-m-d H:m:s");
+											$fecconacu=date("Y-m-d H:i:s");
 											$usuconacu=$_SESSION['usuario'];
 										}
 										else
@@ -129,7 +129,7 @@ try {
 										if($aportes[estadoconciliacion]==0)
 										{
 											$estconapo=1;
-											$fecconapo=date("Y-m-d H:m:s");
+											$fecconapo=date("Y-m-d H:i:s");
 											$usuconapo=$_SESSION['usuario'];
 										}
 										else
@@ -265,7 +265,7 @@ try {
 										if($acuerdos[estadoconciliacion]==0)
 										{
 											$estconacu=1;
-											$fecconacu=date("Y-m-d H:m:s");
+											$fecconacu=date("Y-m-d H:i:s");
 											$usuconacu=$_SESSION['usuario'];
 										}
 										else
@@ -315,7 +315,7 @@ try {
 										if($aportes[estadoconciliacion]==0)
 										{
 											$estconapo=1;
-											$fecconapo=date("Y-m-d H:m:s");
+											$fecconapo=date("Y-m-d H:i:s");
 											$usuconapo=$_SESSION['usuario'];
 										}
 										else

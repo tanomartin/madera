@@ -13,7 +13,7 @@ $orden = $datos[5];
 $fecha = fechaParaGuardar($datos[6]);
 $comi = $datos[7];
 $iva = $datos[8];
-$fecmod = date("Y-m-d H:m:s");
+$fecmod = date("Y-m-d H:i:s");
 $usumod = $_SESSION['usuario'];
 
 $sqlUpdateTrans = "UPDATE transferenciasusimra SET banco = '$banco', sucursal = $sucursal, numerocuenta = '$nrocuenta', cuit = '$cuit', monto = $monto, numeroorden = '$orden', fecha = '$fecha', importecomision = $comi, ivacomision = $iva, fechamodificacion = '$fecmod', usuariomodificacion = '$usumod' WHERE idtransferencia = $nrotrans";

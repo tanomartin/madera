@@ -24,7 +24,7 @@ $impimp=$datos[5];
 //echo $datos[6];
 $tipimp=$datos[6];
 //echo "TIPO IMPUTACION: "; echo $tipimp; echo "<br>";
-$fecmod= date("Y-m-d H:m:s");
+$fecmod= date("Y-m-d H:i:s");
 //echo "FECHA MODIFICACION: "; echo $fecmod; echo "<br>";
 $usumod=$_SESSION['usuario'];
 //echo "USUARIO MODIFICACION: "; echo $usumod; echo "<br>";
