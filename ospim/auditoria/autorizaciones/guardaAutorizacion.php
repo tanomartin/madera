@@ -404,7 +404,7 @@ try {
 		$nombrearchivo = "../tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
 		$pdf->Output($nombrearchivo,'F');
 
-		if(!empty($recauto) {
+		if(!empty($recauto)) {
 			$bodymail.="<br>La aprobacion incluye una comunicacion de la que podra tomar conocimiento a traves del modulo INTRANET DELEGACIONES.";
 		}
 
