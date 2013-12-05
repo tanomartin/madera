@@ -225,12 +225,9 @@ try {
 
 	$mail=new PHPMailer();
 	$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Su Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
-	if($staauto==2)
-	{	
+	if($staauto==2) {	
 		$bodymail.="<br>Verifique la situacion de la solicitud a traves del modulo INTRANET DELEGACIONES.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-	}
-	else
-	{
+	} else {
 		$pdf = new FPDI();
 		$pdf->AddPage('P','Letter');
 		$pdf->Image('../img/Logo Membrete OSPIM.jpg',21,13,28,22);
@@ -317,8 +314,13 @@ try {
 		$pdf->Cell(183,6,"Documentacion Complementaria: ".$documentacion,1,1,'L');
 		$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 		$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-		$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-		$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+		if(strcmp($usuauto,"gflongo")==0) {
+			$pdf->Image('../img/Firma Longo.png',160,190,18,50);
+			$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+		} else {
+			$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+			$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+		}
 		if($docpm==1) {
 			$totalpaginas=$pdf->setSourceFile($nombrepedido);
 			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
@@ -330,8 +332,13 @@ try {
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-				$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+				if(strcmp($usuauto,"gflongo")==0) {
+					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
+					$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+				} else {
+					$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+					$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+				}
 			}
 		}
 		if($docrh==1) {
@@ -345,8 +352,13 @@ try {
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-				$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+				if(strcmp($usuauto,"gflongo")==0) {
+					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
+					$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+				} else {
+					$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+					$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+				}
 			}
 		}
 		if($docas==1) {
@@ -360,8 +372,13 @@ try {
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-	 			$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+				if(strcmp($usuauto,"gflongo")==0) {
+					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
+					$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+				} else {
+					$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+					$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+				}
 			}
 		}
 		if($docpa==1) {
@@ -375,12 +392,21 @@ try {
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-				$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
-				$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+				if(strcmp($usuauto,"gflongo")==0) {
+					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
+					$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+				} else {
+					$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
+					$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
+				}
 			}
 		}
 		$nombrearchivo = "../tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
 		$pdf->Output($nombrearchivo,'F');
+
+		if(!empty($recauto) {
+			$bodymail.="<br>La aprobacion incluye una comunicacion de la que podra tomar conocimiento a traves del modulo INTRANET DELEGACIONES.";
+		}
 
 		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
 
