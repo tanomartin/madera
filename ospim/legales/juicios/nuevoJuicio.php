@@ -138,11 +138,11 @@ function formatoPeriodoInicio() {
 
 function mostrarBotones() {
 	if (document.forms.nuevoJuicio.tramite[0].checked) {
-		document.getElementById("bguardar").disabled=false;
-		document.getElementById("btramite").disabled=true;
+		document.getElementById("bguardar").style.visibility="visible";
+		document.getElementById("btramite").style.visibility="hidden";
 	} else {
-		document.getElementById("bguardar").disabled=true;
-		document.getElementById("btramite").disabled=false;
+		document.getElementById("bguardar").style.visibility="hidden";
+		document.getElementById("btramite").style.visibility="visible";
 	}
 }
 
@@ -430,7 +430,7 @@ function validar(formulario) {
   				<input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/>
 	      SI ]	      </p>
 		    <p>
-		      <input name="btramite" type="button" id="btramite" value="Cargar Tramite" disabled="disabled" onclick="validar(document.forms.nuevoJuicio)"/>
+		      <input name="btramite" type="button" id="btramite" value="Cargar Tramite Judicial" style="visibility:hidden" onclick="validar(document.forms.nuevoJuicio)"/>
 	        </p>
 		  </div></td>
         </tr>
