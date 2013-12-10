@@ -18,15 +18,11 @@ $sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
 $resultprovi = mysql_query($sqlprovi,$db); 
 $rowprovi = mysql_fetch_array($resultprovi);
 
-$sqlJuicio =  "select * from cabjuiciosospim where cuit = $cuit order by nroorden DESC";
-$resJuicio = mysql_query($sqlJuicio,$db); 
-$canJuicio = mysql_num_rows($resJuicio); 
-if ($canJuicio == 0) {
-	$nroJuicioNuevo = 1;
-} else {
-	$rowJuicio = mysql_fetch_array($resJuicio);
-	$nroJuicioNuevo = $rowJuicio['nroorden'] + 1;
-}
+$base = $_SESSION['dbname'];
+$sqlBuscaNro = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'cabjuiciosospim'";
+//echo $sqlBuscaNro; echo "<br>";
+$resBuscaNro = mysql_query($sqlBuscaNro,$db);
+$rowBuscaNro = mysql_fetch_array($resBuscaNro);
 
 //VEO LOS ACUERDOS QUE PUEDEN SER ABSORIVIDOS
 $today = date('Y-m-j');
@@ -37,7 +33,7 @@ $resAcuerdos = mysql_query($sqlAcuerdos,$db);
 $i=0;
 while($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) {
 	$fechacuota = $rowAcuerdos['fechacuota'];
-	if ($fechacuota <$fechaVto) { 
+	if ($fechacuota < $fechaVto) { 
 		$acuAbs[$i] = array('nroacu' => $rowAcuerdos['nroacuerdo'], 'tipo' => $rowAcuerdos['descripcion'], 'acta' => $rowAcuerdos['nroacta']);
 		$i++;
 	}
@@ -228,8 +224,6 @@ function mostrarPeriodos() {
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
 			m = "mes" + o;
 			a = "anio" + o;
-			id = "id" + o;
-			document.getElementById(id).style.visibility="visible";
 			document.getElementById(m).style.visibility="visible";
 			document.getElementById(a).style.visibility="visible";
 		}
@@ -273,28 +267,33 @@ function validar(formulario) {
 		return false;
 	}
 	
-	if (formulario.acuabs[1].checked) {
-		var limite = <?php echo sizeof($acuAbs) ?>;
-		if (limite == 1) {
-			if(!document.forms.nuevoJuicio.nroacu.checked) {
-				alert("Debe elegir un acuerdo a absorber");
-				return false;
-			}
-		} else {
-		 	var algunCheck = false;
-			for (i=0; i < limite; i++) {
-				if(document.forms.nuevoJuicio.nroacu[i].checked) {
-					algunCheck = true;
+	var limite = <?php echo sizeof($acuAbs) ?>;		
+	if (limite != 0) {
+		if (formulario.acuabs[1].checked) {
+			if (limite == 1) {
+				if(!document.forms.nuevoJuicio.nroacu.checked) {
+					alert("Debe elegir un acuerdo a absorber");
+					return false;
+				}
+			} else {
+				var algunCheck = false;
+				for (i=0; i < limite; i++) {
+					if(document.forms.nuevoJuicio.nroacu[i].checked) {
+						algunCheck = true;
+					}
+				}
+				if (!algunCheck) {
+					alert("Debe elegir un acuerdo a absorber");
+					return false;
 				}
 			}
-			if (!algunCheck) {
-				alert("Debe elegir un acuerdo a absorber");
-				return false;
-			}
 		}
-	}
+	} 
 	if (formulario.tramite[1].checked) {
 		formulario.action = "tramiteJudidical.php";
+		formulario.btramite.disabled = true;
+	} else {
+		formulario.bguardar.disabled = true;
 	}
 	formulario.submit();
 }
@@ -315,25 +314,24 @@ function validar(formulario) {
   </div>
   <p align="center"><strong>M&oacute;dulo de Carga - Nuevo Juicio </strong></p>
    	<p align="center"><strong>NRO ORDEN </strong>
-      <input name="nroorden" type="text" id="nroorden" size="3" readonly="readonly" value="<?php echo $nroJuicioNuevo ?>" style="background-color:#CCCCCC; text-align:center">
+      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center">
 </p>
    	<div align="center">
    	<table width="1000" border="0" style="text-align:left">
       <tr>
-        <td>Nro. Certificado</td>
-        <td><input id="nrocert" type="text" name="nrocert"/></td>
-        <td>Status Deuda</td>
-        <td><label>
+        <td width="85">Nro. Certificado</td>
+        <td width="144"><input id="nrocert" type="text" name="nrocert"/></td>
+        <td width="70">Status Deuda</td>
+        <td width="156"><label>
           <select name="status" id="status">
             <option value="0" selected>Seleccione Status</option>
             <option value="1">EJECUCION</option>
             <option value="2">CONVOCATORIA</option>
             <option value="3">QUIEBRA</option>
           </select>
-          </label>
-        </td>
+          </label>        </td>
         <td width="125">Fecha Expedición</td>
-        <td width="242"><input id="fechaexp" type="text" name="fechaexp" size="12"/></td>
+        <td width="241"><input id="fechaexp" type="text" name="fechaexp" size="12"/></td>
       </tr>
       <tr>
         <td>Deuda Histórica</td>
@@ -353,8 +351,7 @@ function validar(formulario) {
 					while ($rowAsesor=mysql_fetch_assoc($resAsesor)) { ?>
             <option value="<?php echo $rowAsesor['codigo'] ?>"><?php echo $rowAsesor['apeynombre'] ?></option>
             <?php } ?>
-          </select>
-        </td>
+          </select>        </td>
         <td>Inspector</td>
         <td><select name="inspector" id="inspector">
             <option value=0 selected>Seleccione Inspector</option>
@@ -373,16 +370,15 @@ function validar(formulario) {
             <option value="<?php echo $rowInspe['codigo'] ?>"><?php echo $rowInspe['apeynombre'] ?></option>
 			
             <?php }?>
-          </select>
-        </td>
+          </select>        </td>
       </tr>
+      
       <tr>
-        <td height="50" colspan="6"><div align="center"><strong>PERÍODOS DEL JUICIO</strong></div></td>
-      </tr>
-      <tr>
-        <?php if (sizeof($acuAbs) > 0) { ?>
-        <td colspan="6"><div align="center">Acuerdos Absorbidos [
-          <label>
+	  		 
+     <?php 
+	 if (sizeof($acuAbs) > 0) { ?>
+        <td height="35" colspan="6"><div align="center"><strong>Acuerdos a Absorver </strong>[
+            <label>
                 <input name="acuabs" type="radio" value="0" checked="checked" onchange="mostrarAcuerdos()"/>
             NO - </label>
                 <label>
@@ -403,10 +399,9 @@ function validar(formulario) {
               </tr>
 		<?php } ?>
             </table>
-        </div>
-		</td>
-        <?php } else { ?>
-        <td colspan="6"><div align="center">Acuerdos Absorbidos [
+        </div>		</td>
+  <?php } else { ?>
+        <td width="149" colspan="6"><div align="center">Acuerdos Absorbidos [
           <label>
                 <input name="acuabs" type="radio" value="0" checked="checked"/>
             NO ]</label>
@@ -420,10 +415,13 @@ function validar(formulario) {
    	<table width="1001" border="0">
         <tr>
           <td height="43" colspan="4"><div align="center">
+            <div align="center">
+              <p><strong>PER&Iacute;ODOS DEL JUICIO</strong></p>
+            </div>
             <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="visibility:hidden"/>
             <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
           </div></td>
-		  <td width="578" colspan="4"><div align="center">
+		  <td width="551" colspan="4"><div align="center">
 		    <p><strong>TRAMITE JUDICIAL</strong> [
 		        <input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/>
 		    NO -
@@ -435,10 +433,10 @@ function validar(formulario) {
 		  </div></td>
         </tr>
         <tr>
-          <td width="99"></td>
-          <td width="103" align="center">Mes</td>
-          <td width="86" align="center">A&ntilde;o</td>
-          <td width="113"></td>
+          <td width="138"></td>
+          <td width="80" align="center">Mes</td>
+          <td width="70" align="center">A&ntilde;o</td>
+          <td width="140"></td>
 		  <td colspan="4"><div align="center">
             <input name="bguardar" type="button" id="bguardar" value="Guardar Juicio" onclick="validar(document.forms.nuevoJuicio)"/>
 		  </div></td>
@@ -447,7 +445,7 @@ function validar(formulario) {
 				for ($i = 0 ; $i < 120; $i ++) {
 					if ($i < 12) {
 					print("<tr>");
-					print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:visible'/></td>");
+					print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden'/></td>");
 					print("<td><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
 					print("<td><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
 					
