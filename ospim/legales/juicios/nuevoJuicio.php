@@ -77,7 +77,11 @@ function cargarPeriodosAbsorvidos(acuerdo) {
 				m = "mes" + n;
 				a = "anio" + n;
 				document.getElementById(i).value="<?php echo $rowPeriodos['idperiodo'] ?>";
-				document.getElementById(m).value="<?php echo $rowPeriodos['mesacuerdo'] ?>";
+				mes = <?php echo $rowPeriodos['mesacuerdo'] ?>;
+				if (mes < 10) {
+					mes = "0"+mes;
+				}
+				document.getElementById(m).value= mes;
 				document.getElementById(a).value="<?php echo $rowPeriodos['anoacuerdo'] ?>";
 				n++;
 				mostrando = document.forms.nuevoJuicio.mostrar.value;
@@ -186,6 +190,34 @@ function validoAnio(id){
 	}
 }
 
+function limpioid(id) {
+	idper = "id" + id;
+	document.getElementById(idper).value="";
+	
+	mesnombre = "mes" + id;
+	anionombre = "anio" + id;
+	mes = document.getElementById(mesnombre).value;
+	anio = document.getElementById(anionombre).value;
+	
+	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
+	for (i=0; i<n; i++){
+		if (i != id) {
+			mescom = "mes" + i;
+			aniocom = "anio" + i;
+			mescomp = document.getElementById(mescom).value;
+			aniocom = document.getElementById(aniocom).value;
+			if (mescomp != '' && aniocom != '') {
+				if (anio == aniocom && mes == mescomp) {
+					alert("Este periódo ya se encuentra en la lista");
+					document.getElementById(mesnombre).value = "";
+					document.getElementById(anionombre).value = "";;
+					document.getElementById(mesnombre).focus();
+				}
+			}
+		}	
+	}
+}
+
 function mostrarPeriodos() {
 	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
 	if (n < 120) {
@@ -196,6 +228,8 @@ function mostrarPeriodos() {
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
 			m = "mes" + o;
 			a = "anio" + o;
+			id = "id" + o;
+			document.getElementById(id).style.visibility="visible";
 			document.getElementById(m).style.visibility="visible";
 			document.getElementById(a).style.visibility="visible";
 		}
@@ -389,11 +423,16 @@ function validar(formulario) {
             <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="visibility:hidden"/>
             <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
           </div></td>
-		  <td width="578" colspan="4"><div align="center"><strong>TRAMITE JUDICIAL</strong> [
+		  <td width="578" colspan="4"><div align="center">
+		    <p><strong>TRAMITE JUDICIAL</strong> [
 		        <input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/>
 		    NO -
   				<input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/>
-	      SI ]</div></td>
+	      SI ]	      </p>
+		    <p>
+		      <input name="btramite" type="button" id="btramite" value="Cargar Tramite" disabled="disabled" onclick="validar(document.forms.nuevoJuicio)"/>
+	        </p>
+		  </div></td>
         </tr>
         <tr>
           <td width="99"></td>
@@ -402,21 +441,20 @@ function validar(formulario) {
           <td width="113"></td>
 		  <td colspan="4"><div align="center">
             <input name="bguardar" type="button" id="bguardar" value="Guardar Juicio" onclick="validar(document.forms.nuevoJuicio)"/>
-            <input name="btramite" type="button" id="btramite" value="Cargar Tramite" disabled="disabled" onclick="validar(document.forms.nuevoJuicio)"/>
-          </div></td>
+		  </div></td>
         </tr>
         <?php
 				for ($i = 0 ; $i < 120; $i ++) {
 					if ($i < 12) {
 					print("<tr>");
-					print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden'/></td>");
-					print("<td><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' onfocusout='validoMes(".$i.")'/></div></td>");
-					print("<td><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' onfocusout='validoAnio(".$i.")' /></div></td>");
+					print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:visible'/></td>");
+					print("<td><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
+					print("<td><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
 					
 					 } else {
 						print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden' /></td>");			 
-						print("<td><div align='center'><input name='mes".$i."' id='mes".$i."' type='text' size='2' style='visibility:hidden'  onfocusout='validoMes(".$i.")'/></div></td>");
-						print("<td><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")'/></div></td>");
+						print("<td><div align='center'><input name='mes".$i."' id='mes".$i."' type='text' size='2' style='visibility:hidden' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
+						print("<td><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
 										 
 					 }
 					 print("<td></td>");
@@ -424,7 +462,7 @@ function validar(formulario) {
 				}
 				?>
       </table>
-	  </div>
+  </div>
 </form>
 </body>
 </html>
