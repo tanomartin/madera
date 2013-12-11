@@ -143,28 +143,6 @@ function mostrarBotones() {
 	}
 }
 
-function cargoSecretarias(juzgado) {
-	document.forms.nuevoJuicio.secretaria.length = 0;
-	var o
-	document.forms.nuevoJuicio.juzgado.disabled=true;
-	o = document.createElement("OPTION");
-	o.text = 'Seleccione Secretaria';
-	o.value = 0;
-	document.forms.nuevoJuicio.secretaria.options.add (o);
-	<?php	
-		$sqlSecretarias = "select * from secretarias";
-		$resSecretarias = mysql_query($sqlSecretarias,$db); 
-		while ($rowSecretarias = mysql_fetch_array($resSecretarias)) { ?> 
-			if (juzgado == <?php echo $rowSecretarias["codigojuzgado"]; ?>) {
-				o = document.createElement("OPTION");
-				o.text = '<?php echo $rowSecretarias["denominacion"]; ?>';
-				o.value = <?php echo $rowSecretarias["codigosecretaria"]; ?>;
-				document.forms.nuevoJuicio.secretaria.options.add(o);
-			}
-<?php } ?> 
-	document.forms.nuevoJuicio.juzgado.disabled=false;
-}
-
 function validoMes(id) {
 	var errorMes = "Error en la carga del mes";
 	nombreMes = "mes" + id;

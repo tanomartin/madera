@@ -48,11 +48,28 @@ A:hover {text-decoration: none;color:#00FFFF }
   <?php include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); ?>
   <p><strong>Juicios Existentes </strong></p>
   <?php if($cantJuicios > 0) { ?>
-  <table width="500" border="1">
+  <table width="600" border="1">
      <?php 
 		while ($rowJuicios = mysql_fetch_array($resJuicios)) {
-			echo ("<td width=300  align='center'><font face=Verdana size=2>Orden: <b>".$rowJuicios['nroorden']."</b> - Certificado: <b>".$rowJuicios['nrocertificado']."</b></a></font></td>");
-			echo ("<td width=100  align='center'><font face=Verdana size=2><a href='consultaJuicio.php?cuit=".$cuit."&nroorden=".$rowJuicios['nroorden']."'>CONSULTAR</a></font></td>");
+			$nroorden = $rowJuicios['nroorden'];
+			echo ("<td width=300  align='center'><font face=Verdana size=2>Orden: <b>".$nroorden."</b> - Certificado: <b>".$rowJuicios['nrocertificado']."</b></a></font></td>");
+			
+			
+			$sqlTramite = "SELECT fechafinalizacion from trajuiciosospim WHERE nroorden = $nroorden";
+			$resTramite  = mysql_query($sqlTramite); 
+			$canTramite = mysql_num_rows($resTramite);
+			if ($canTramite > 0) {
+				$rowTramite = mysql_fetch_array($resTramite);
+				if ($rowTramite['fechafinalizacion'] == "0000-00-00") {
+					echo ("<td width=100  align='center'><font face=Verdana size=2><a href='modificarJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."'>MODIFICAR</a></font></td>");
+				} else {
+					echo ("<td width=100  align='center'><font face=Verdana size=2>-</font></td>");
+				}
+			} else {
+				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='modificarJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."'>MODIFICAR</a></font></td>");
+			}
+			
+			echo ("<td width=100  align='center'><font face=Verdana size=2><a href='consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."'>CONSULTAR</a></font></td>");
 			print ("</tr>");
 		}
 		

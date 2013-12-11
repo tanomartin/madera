@@ -118,27 +118,39 @@ A:hover {text-decoration: none;color:#00FFFF }
 			  <tr>
 				<td><b>Fecha Inicio</b></td>
 				<td><?php echo invertirFecha($rowTramite['fechainicio']); ?></td>
-				<td><b>Autos</b></td>
-				<td><?php echo $rowTramite['autoscaso'] ?></td>
-				<td><b>Juzgado</b></td>
-				<td><?php echo $rowTramite['juzgado'] ?></td>
-			  </tr>
-			  <tr>
-				<td><b>Secretaria</b></td>
-				<td><?php echo $rowTramite['secretaria'];?></td>
 				<td><b>Expediente</b></td>
 				<td><?php echo $rowTramite['nroexpediente']?></td>
-				<td><b>Bienes Embargados</b></td>
-				<td><?php echo $rowTramite['bienesembargados'] ?></td>
 			  </tr>
 			  <tr>
-				<td><b>Estado Procesal</b></td>
-				<td><?php echo $rowTramite['estadoprocesal'];?></td>
-				<td><b>Fecha Finalizacion</b></td>
-				<td><?php echo invertirFecha($rowTramite['fechafinalizacion']) ?></td>
-				<td><b>Monto Cobrado</b></td>
-				<td><?php echo $rowTramite['montocobrado']; ?></td>
+				<td><b>Juzgado</b></td>
+				<td colspan="3"><?php echo $rowTramite['juzgado'] ?></td>
 			  </tr>
+			  <tr>
+			    <td><b>Secretaria</b></td>
+			    <td><?php echo $rowTramite['secretaria'];?></td>
+			    <td><b>Estado Procesal</b></td>
+			    <td><?php echo $rowTramite['estadoprocesal'];?></td>
+		      </tr>
+			  <tr>
+			    <td><b>Auto Caso </b></td>
+			    <td colspan="3"><?php echo $rowTramite['autoscaso'] ?></td>
+		      </tr>
+			  <tr>
+				<td><b>Bienes Embargados</b></td>
+				<td colspan="3"><?php echo $rowTramite['bienesembargados'] ?></td>
+			  </tr>
+			  
+			  <tr>
+			    <td colspan="4"><div align="center">
+			      <p><strong>Datos Finalización de Trámite</strong></p>
+			    </div></td>
+	          </tr>
+			  <tr>
+			    <td><b>Fecha Finalizacion</b></td>
+			    <td><?php echo invertirFecha($rowTramite['fechafinalizacion']) ?></td>
+			    <td><b>Monto Cobrado</b></td>
+			    <td><?php echo $rowTramite['montocobrado']; ?></td>
+		      </tr>
 			</table>
 		<?php 
 		} else {
