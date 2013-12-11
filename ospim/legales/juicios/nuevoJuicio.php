@@ -50,6 +50,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
 <script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
@@ -289,12 +290,7 @@ function validar(formulario) {
 			}
 		}
 	} 
-	if (formulario.tramite[1].checked) {
-		formulario.action = "tramiteJudidical.php";
-		formulario.btramite.disabled = true;
-	} else {
-		formulario.bguardar.disabled = true;
-	}
+	$.blockUI({ message: "<h1>Preparando datos del juicio... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	formulario.submit();
 }
 
@@ -304,7 +300,7 @@ function validar(formulario) {
 <title>.: Nuevo Juicio :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="nuevoJuicio" name="nuevoJuicio" method="POST" action="guardarJuicio.php" style="visibility:visible" >
+<form id="nuevoJuicio" name="nuevoJuicio" method="POST" action="preparoDatosJuicio.php" >
   <div align="center">
     <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
     <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>
