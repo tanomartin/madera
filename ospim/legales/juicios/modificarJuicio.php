@@ -375,8 +375,8 @@ function validar(formulario) {
 		  <td>Acuerdo Abs. </td>
 		  <td>
 		  	 	<?php if ($rowJuicio['acuerdorelacionado'] == 1) { 
-		  					print("<b>SI - Nro. Acuerdo: ".$rowJuicio['nroacuerdo'])."</b>"; 
-					?> <br>Quitar Acuerdo 
+		  					print("<b>SI - Nro. Acuerdo: ".$rowJuicio['nroacuerdo']."</b>");?> 
+					 <br>Quitar Acuerdo 
 		  	 	       <input name="desabsorver" id="desabsorver" type="checkbox" value="1" onclick="checkQuitar();"/> <?php
 				       } else { 
 							print("<b>NO</b>"); 
