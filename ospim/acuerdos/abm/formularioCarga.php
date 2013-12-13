@@ -73,25 +73,25 @@ function mostrarPeriodos() {
 	}
 }
 
-function cargarNombreReq(nroReq) {
+/*function cargarNombreReq(nroReq) {
 	var enc = 0;
 	if (nroReq != 0) {
 		 <?php
 		 	//TODO: ver como resolvermos esto para probar...
 			//$dir = "/home/sistemas/Documentos/Liquidaciones/Liquidaciones";
-		  	$dir = "H:/Liquidaciones";
-			$directorio=opendir($dir); 
-			while ($archivo = readdir($directorio)) { 
-				$nroRequerimiento = substr($archivo, -12, 8); 
-				$ospim = substr($archivo, -13, 1); 
-				$numReque = (int)$nroRequerimiento;
+		  	//$dir = "H:/Liquidaciones";
+			//$directorio=opendir($dir); 
+			//while ($archivo = readdir($directorio)) { 
+			//	$nroRequerimiento = substr($archivo, -12, 8); 
+			//	$ospim = substr($archivo, -13, 1); 
+			//	$numReque = (int)$nroRequerimiento;
 		  ?>
-				if (nroReq == <?php echo $numReque ?> && "O" == "<?php echo $ospim ?>" ) {
-					document.forms.nuevoAcuerdo.nombreArcReq.value = "<?php echo $archivo ?>";
+				if (nroReq == <?php //echo $numReque ?> && "O" == "<?php //echo $ospim ?>" ) {
+					document.forms.nuevoAcuerdo.nombreArcReq.value = "<?php //echo $archivo ?>";
 					enc = 1;
 				}
- 	 	<?php }
-		  closedir($directorio);
+ 	 	<?php //}
+		  //closedir($directorio);
 		?>
 	} else {
 		document.forms.nuevoAcuerdo.nombreArcReq.value = "";
@@ -100,7 +100,7 @@ function cargarNombreReq(nroReq) {
 	if (enc != 1) {
 		document.forms.nuevoAcuerdo.nombreArcReq.value = "";
 	}
-}
+}*/
 
 function habilitarCarga() {
 	var control = parseInt(document.forms.nuevoAcuerdo.cantCuotas.value);
