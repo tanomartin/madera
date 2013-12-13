@@ -1,28 +1,13 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php");
+$nroorden = $_GET['nroorden'];
 
-$cuit=$_GET['cuit'];
-if ($cuit=="") {
-	$cuit=$_POST['cuit'];
-}
+$sqlJuicio = "select * from cabjuiciosospim where nroorden = $nroorden";
+$resJuicio = mysql_query($sqlJuicio,$db); 
+$rowJuicio = mysql_fetch_array($resJuicio); 
+$cuit = $rowJuicio['cuit'];
 
-$sql = "select * from empresas where cuit = $cuit";
-$result = mysql_query($sql,$db); 
-$row = mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
-
-$base = $_SESSION['dbname'];
-$sqlBuscaNro = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'cabjuiciosospim'";
-//echo $sqlBuscaNro; echo "<br>";
-$resBuscaNro = mysql_query($sqlBuscaNro,$db);
-$rowBuscaNro = mysql_fetch_array($resBuscaNro);
 
 //VEO LOS ACUERDOS QUE PUEDEN SER ABSORIVIDOS
 $today = date('Y-m-j');
@@ -113,22 +98,28 @@ function mostrarAcuerdos() {
 
 function formatoPeriodoInicio() {
 	for(i=0; i<12; i++) {
+		men = "mensaje" + i;
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
+		document.getElementById(m).style.visibility="visible";
+		document.getElementById(a).style.visibility="visible";
+		document.getElementById(men).style.visibility="hidden";
 	}
 	for (i=12; i<120; i++){
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
+		men = "mensaje" + i;
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
 		document.getElementById(m).style.visibility="hidden";
 		document.getElementById(a).style.visibility="hidden";
+		document.getElementById(men).style.visibility="hidden";
 	}
 	document.forms.nuevoJuicio.mostrar.value = 12;
 }
@@ -191,6 +182,8 @@ function limpioid(id) {
 			}
 		}	
 	}
+	mensnombre = "mensaje" + id;
+	document.getElementById(mensnombre).style.visibility="hidden";
 }
 
 function mostrarPeriodos() {
@@ -247,6 +240,7 @@ function validar(formulario) {
 	}
 	
 	var limite = <?php echo sizeof($acuAbs) ?>;		
+	var acuRel = <?php echo $rowJuicio['acuerdorelacionado']; ?>;
 	if (limite != 0) {
 		if (formulario.acuabs[1].checked) {
 			if (limite == 1) {
@@ -266,6 +260,12 @@ function validar(formulario) {
 					return false;
 				}
 			}
+			if(acuRel == 1) {
+				if (!formulario.desabsorver.checked) {
+					alert("Debe quitar el acuerdo anterior para absorver un nuevo acuerdo");
+					return false;
+				}
+			}
 		}
 	} 
 	$.blockUI({ message: "<h1>Preparando datos del juicio... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
@@ -278,57 +278,72 @@ function validar(formulario) {
 <title>.: Nuevo Juicio :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="nuevoJuicio" name="nuevoJuicio" method="POST" action="preparoDatosJuicio.php" >
+<form id="nuevoJuicio" name="nuevoJuicio" method="POST" action="preparoDatosJuicioModif.php" >
   <div align="center">
     <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
     <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>
     <?php 	
+		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php"); 
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	?>
   </div>
-  <p align="center"><strong>M&oacute;dulo de Carga - Nuevo Juicio </strong></p>
+  <p align="center"><strong>Modificación de Juicio </strong></p>
    	<p align="center"><strong>NRO ORDEN </strong>
-      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center">
+      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color:#CCCCCC; text-align:center">
 </p>
    	<div align="center">
    	<table width="1000" border="0" style="text-align:left">
       <tr>
         <td width="85">Nro. Certificado</td>
-        <td width="144"><input id="nrocert" type="text" name="nrocert"/></td>
+        <td width="144"><input id="nrocert" type="text" name="nrocert" value="<?php echo $rowJuicio['nrocertificado'] ?>"/></td>
         <td width="70">Status Deuda</td>
         <td width="156"><label>
+		<?php if ($rowJuicio['statusdeuda'] == 1) {
+				$selecEje = 'selected';
+			  }
+			  if ($rowJuicio['statusdeuda'] == 2) {
+				$selecCon = 'selected';
+			  }
+			  if ($rowJuicio['statusdeuda'] == 3) {
+				$selecQui = 'selected';
+			  }	
+		?>
           <select name="status" id="status">
-            <option value="0" selected>Seleccione Status</option>
-            <option value="1">EJECUCION</option>
-            <option value="2">CONVOCATORIA</option>
-            <option value="3">QUIEBRA</option>
+            <option value="0">Seleccione Status</option>
+            <option value="1" <?php echo $selecEje ?>>EJECUCION</option>
+            <option value="2" <?php echo $selecCon ?>>CONVOCATORIA</option>
+            <option value="3" <?php echo $selecQui ?>>QUIEBRA</option>
           </select>
           </label>        </td>
         <td width="125">Fecha Expedición</td>
-        <td width="241"><input id="fechaexp" type="text" name="fechaexp" size="12"/></td>
+        <td width="241"><input id="fechaexp" type="text" name="fechaexp" size="12" value="<?php echo invertirFecha($rowJuicio['fechaexpedicion']) ?>"/></td>
       </tr>
       <tr>
         <td>Deuda Histórica</td>
-        <td><input id="deudaHistorica" type="text" name="deudaHistorica"/></td>
+        <td><input id="deudaHistorica" type="text" name="deudaHistorica" value="<?php echo $rowJuicio['deudahistorica'] ?>"/></td>
         <td>Intereses</td>
-        <td><input name="intereses" type="text" id="intereses"/></td>
+        <td><input name="intereses" type="text" id="intereses" value="<?php echo $rowJuicio['intereses'] ?>"/></td>
         <td>Deuda Actualizada</td>
-        <td><input id="deudaActual" type="text" name="deudaActual"/></td>
+        <td><input id="deudaActual" type="text" name="deudaActual" value="<?php echo $rowJuicio['deudaactualizada'] ?>"/></td>
       </tr>
       <tr>
         <td>Asesor Legal</td>
         <td><select name="asesor" id="asesor">
-            <option value=0 selected>Seleccione Asesor</option>
-            <?php 
-					$sqlAsesor ="select * from asesoreslegales";
-					$resAsesor = mysql_query($sqlAsesor,$db);
-					while ($rowAsesor=mysql_fetch_assoc($resAsesor)) { ?>
-            <option value="<?php echo $rowAsesor['codigo'] ?>"><?php echo $rowAsesor['apeynombre'] ?></option>
-            <?php } ?>
-          </select>        </td>
+           		<option value=0>Seleccione Asesor</option>
+            	<?php 
+				$sqlAsesor ="select * from asesoreslegales";
+				$resAsesor = mysql_query($sqlAsesor,$db);
+				while ($rowAsesor=mysql_fetch_assoc($resAsesor)) { 
+					$selected = '';
+					if ($rowAsesor['codigo'] == $rowJuicio['codasesorlegal']) { $selected = 'selected'; }
+				?>
+            		<option value="<?php echo $rowAsesor['codigo']?>" <?php echo $selected ?>><?php echo $rowAsesor['apeynombre'] ?></option>
+          <?php } ?>
+          </select>        
+		</td>
         <td>Inspector</td>
         <td><select name="inspector" id="inspector">
-            <option value=0 selected>Seleccione Inspector</option>
+            <option value=0>Seleccione Inspector</option>
             <?php 
 				$sqlJuris = "select codidelega from jurisdiccion where cuit = $cuit";
 				$resJuris = mysql_query($sqlJuris,$db); 
@@ -340,25 +355,39 @@ function validar(formulario) {
 				$sqlInsp = $sqlInsp.")";
 				
 				$resInspe = mysql_query($sqlInsp,$db);
-				while ($rowInspe=mysql_fetch_assoc($resInspe)) { ?>
-            <option value="<?php echo $rowInspe['codigo'] ?>"><?php echo $rowInspe['apeynombre'] ?></option>
+				while ($rowInspe=mysql_fetch_assoc($resInspe)) { 
+					$selected = '';
+					if ($rowInspe['codigo'] == $rowJuicio['codinspector']) { $selected = 'selected'; }?>
+            			<option value="<?php echo $rowInspe['codigo'] ?>" <?php echo $selected ?>><?php echo $rowInspe['apeynombre'] ?></option>
 			
             <?php }?>
-          </select>        </td>
+          </select>        
+		  </td>
+		  <td>Acuerdo Abs. </td>
+		  <td>
+		  	 	<?php if ($rowJuicio['acuerdorelacionado'] == 1) { 
+		  					print("<b>SI - Nro. Acuerdo: ".$rowJuicio['nroacuerdo'])."</b>"; 
+					?> <br>Quitar Acuerdo 
+		  	 	       <input name="desabsorver" id="desabsorver" type="checkbox" value="1" onclick="formatoPeriodoInicio();"/> <?php
+				       } else { 
+							print("<b>NO</b>"); 
+					   } 
+			     ?> 
+		  </td>
       </tr>
       
       <tr>
 	  		 
      <?php 
 	 if (sizeof($acuAbs) > 0) { ?>
-        <td height="35" colspan="6"><div align="center"><strong>Acuerdos a Absorver </strong>[
+        <td colspan="6"><div align="center"><strong>Acuerdos a Absorver </strong>[
             <label>
                 <input name="acuabs" type="radio" value="0" checked="checked" onchange="mostrarAcuerdos()"/>
             NO - </label>
                 <label>
                 <input name="acuabs" type="radio" value="1" onchange="mostrarAcuerdos()"/>
                   SI</label>
-          ]</div></td>
+        ]</div></td>
       </tr>
       <tr>
         <td colspan="6">
@@ -375,8 +404,8 @@ function validar(formulario) {
             </table>
         </div>		</td>
   <?php } else { ?>
-        <td width="149" colspan="6"><div align="center"><strong>Acuerdos a Absorver</strong> [
-            <label>
+        <td width="149" colspan="6"><div align="center">Acuerdos a Absorver [
+          <label>
                 <input name="acuabs" type="radio" value="0" checked="checked"/>
             NO ]</label>
         </div></td>
@@ -386,52 +415,76 @@ function validar(formulario) {
         <?php } ?>
       </tr>
     </table>
+	
+	
+	
+	
    	<table width="1001" border="0">
         <tr>
           <td height="43" colspan="4"><div align="center">
             <div align="center">
               <p><strong>PER&Iacute;ODOS DEL JUICIO</strong></p>
             </div>
-            <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="visibility:hidden"/>
+			<?php
+				$sqlPeriodos = "SELECT * FROM detjuiciosospim WHERE nroorden = $nroorden";
+				$resPeriodos = mysql_query($sqlPeriodos,$db);
+				$canPeriodos = mysql_num_rows($resPeriodos); 	
+			?>
+            <input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="visibility:hidden"/>
             <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
           </div></td>
-		  <td width="551" colspan="4"><div align="center">
-		    <p><strong>TRAMITE JUDICIAL</strong> [
-		        <input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/>
-		    NO -
-  				<input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/>
-	      SI ]	      </p>
-		    <p>
-		      <input name="btramite" type="button" id="btramite" value="Cargar Tramite Judicial" style="visibility:hidden" onclick="validar(document.forms.nuevoJuicio)"/>
-	        </p>
+		  <td width="557" colspan="4"><div align="center">
+		    <div align="center">
+              <p><strong>TRAMITE JUDICIAL</strong></p>
+			<?php if ($rowJuicio['tramitejudicial'] == 0) { ?>
+			[<input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/> NO -
+  			 <input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/> SI ]	
+		     <br><input name="btramite" type="button" id="btramite" value="Cargar Tramite Judicial" style="visibility:hidden" onclick="validar(document.forms.nuevoJuicio)"/>     
+		    <?php } else { ?>
+			  <input name="btramite" type="button" id="btramite" value="Modificar Tramite Judicial"/>				
+		    <?php } ?>
 		  </div></td>
         </tr>
         <tr>
           <td width="138"></td>
           <td width="80" align="center">Mes</td>
           <td width="70" align="center">A&ntilde;o</td>
-          <td width="140"></td>
-		  <td colspan="4"><div align="center">
-            <input name="bguardar" type="button" id="bguardar" value="Guardar Juicio" onclick="validar(document.forms.nuevoJuicio)"/>
+          <td width="134"></td>
+		  <td colspan="4">
+		  <div align="center">
+            <p><input name="bguardar" type="button" id="bguardar" value="Guardar Modificación Juicio" onclick="validar(document.forms.nuevoJuicio)"/></p>
 		  </div></td>
         </tr>
-        <?php
-				for ($i = 0 ; $i < 120; $i ++) {
-					if ($i < 12) {
+        <?php	
+				$i = 0;
+				while ($rowPeriodos=mysql_fetch_assoc($resPeriodos)) {
 					print("<tr>");
-					print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden'/></td>");
-					print("<td><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-					print("<td><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-					
-					 } else {
-						print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden' /></td>");			 
-						print("<td><div align='center'><input name='mes".$i."' id='mes".$i."' type='text' size='2' style='visibility:hidden' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-						print("<td><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-										 
-					 }
-					 print("<td></td>");
-					 print("</tr>");
+					print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' value='".$rowPeriodos['idperiodo']."' style='visibility:hidden'/></td>");
+					if ($rowPeriodos['mesjuicio'] < 10) {
+						$mes = "0".$rowPeriodos['mesjuicio'];
+					} else {
+						$mes = $rowPeriodos['mesjuicio'];
+					}
+					print("<td><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' value='".$mes."' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
+					print("<td><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' value='".$rowPeriodos['anojuicio']."' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
+					if ($rowPeriodos['nroacuerdo'] != 0) {
+						$mensaje = "Abs A. Nro: ".$rowPeriodos['nroacuerdo'];
+					} else {
+						$mensaje = '';
+					}
+					print("<td id='mensaje".$i."'>$mensaje</td>");
+					print("</tr>");
+					$i++;
 				}
+				for ($n = $i; $n < 120; $n++) {
+					print("<tr>");
+					print("<td><div align='center'><input name='id".$n."' type='text' id='id".$n."' size='2' style='visibility:hidden' /></td>");			 
+					print("<td><div align='center'><input name='mes".$n."' id='mes".$n."' type='text' size='2' style='visibility:hidden' onfocusout='validoMes(".$n.")' onchange='limpioid(".$n.")'/></div></td>");
+					print("<td><div align='center'><input name='anio".$n."' id='anio".$n."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$n.")' onchange='limpioid(".$n.")'/></div></td>");
+					print("<td id='mensaje".$n."'></td>");
+					print("</tr>");
+				}
+				
 				?>
       </table>
   </div>

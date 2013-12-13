@@ -61,12 +61,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 			if ($canTramite > 0) {
 				$rowTramite = mysql_fetch_array($resTramite);
 				if ($rowTramite['fechafinalizacion'] == "0000-00-00") {
-					echo ("<td width=100  align='center'><font face=Verdana size=2><a href='modificarJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."'>MODIFICAR</a></font></td>");
+					echo ("<td width=100  align='center'><font face=Verdana size=2><a href='modificarJuicio.php?nroorden=".$nroorden."'>MODIFICAR</a></font></td>");
 				} else {
 					echo ("<td width=100  align='center'><font face=Verdana size=2>-</font></td>");
 				}
 			} else {
-				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='modificarJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."'>MODIFICAR</a></font></td>");
+				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='modificarJuicio.php?nroorden=".$nroorden."'>MODIFICAR</a></font></td>");
 			}
 			
 			echo ("<td width=100  align='center'><font face=Verdana size=2><a href='consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."'>CONSULTAR</a></font></td>");

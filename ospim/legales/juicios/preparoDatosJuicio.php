@@ -36,9 +36,9 @@ for ($i = 0; $i <= $peridosHabili; $i++) {
 		$mes = $_POST[$mesnombre];
 		$anio = $_POST[$anionombre];
 		if ($id == '') {
-			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,'',$mes,$anio,0)"; 
+			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,'',$anio,$mes,0)"; 
 		} else {
-			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,$id,$mes,$anio,$nroacuerdo)"; 
+			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,$id,$anio,$mes,$nroacuerdo)"; 
 		}
 		if ($id != '') {
 			$sqlDelete = "DELETE FROM detacuerdosospim WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo and idperiodo = $id";
