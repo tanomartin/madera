@@ -73,35 +73,6 @@ function mostrarPeriodos() {
 	}
 }
 
-/*function cargarNombreReq(nroReq) {
-	var enc = 0;
-	if (nroReq != 0) {
-		 <?php
-		 	//TODO: ver como resolvermos esto para probar...
-			//$dir = "/home/sistemas/Documentos/Liquidaciones/Liquidaciones";
-		  	//$dir = "H:/Liquidaciones";
-			//$directorio=opendir($dir); 
-			//while ($archivo = readdir($directorio)) { 
-			//	$nroRequerimiento = substr($archivo, -12, 8); 
-			//	$ospim = substr($archivo, -13, 1); 
-			//	$numReque = (int)$nroRequerimiento;
-		  ?>
-				if (nroReq == <?php //echo $numReque ?> && "O" == "<?php //echo $ospim ?>" ) {
-					document.forms.nuevoAcuerdo.nombreArcReq.value = "<?php //echo $archivo ?>";
-					enc = 1;
-				}
- 	 	<?php //}
-		  //closedir($directorio);
-		?>
-	} else {
-		document.forms.nuevoAcuerdo.nombreArcReq.value = "";
-	}
-	
-	if (enc != 1) {
-		document.forms.nuevoAcuerdo.nombreArcReq.value = "";
-	}
-}*/
-
 function habilitarCarga() {
 	var control = parseInt(document.forms.nuevoAcuerdo.cantCuotas.value);
 	if (control >= 0 && !isNaN(control)) {
@@ -274,7 +245,7 @@ function validar(formulario) {
           <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
 		  <td colspan="2" valign="bottom">
 		    <div align="left">
-		      <select name="requerimiento" id="requerimiento" onchange="cargarNombreReq(document.forms.nuevoAcuerdo.requerimiento[selectedIndex].value)">
+		      <select name="requerimiento" id="requerimiento">
 		        <option value=0>Seleccione un valor </option>
 	            <?php 
 				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
