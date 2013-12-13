@@ -450,7 +450,7 @@ function validar(formulario) {
   			 <input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/> SI ]	
 		     <br><input name="btramite" type="button" id="btramite" value="Cargar Tramite Judicial" style="visibility:hidden" onclick="validar(document.forms.nuevoJuicio)"/>     
 		    <?php } else { ?>
-			  <input name="btramite" type="button" id="btramite" value="Modificar Tramite Judicial"/>				
+			  <input name="btramite" type="button" id="btramite" value="Modificar Tramite Judicial" onclick="location.href='modificarTramite.php?nroorden=<?php echo $nroorden ?>&cuit=<?php echo $cuit ?>'"/>				
 		    <?php } ?>
 		  </div></td>
         </tr>
