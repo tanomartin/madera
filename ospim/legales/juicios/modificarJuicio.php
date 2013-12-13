@@ -48,6 +48,15 @@ jQuery(function($){
 	$("#fechaexp").mask("99-99-9999");
 });
 
+function checkQuitar() {
+	var limite = <?php echo sizeof($acuAbs) ?>;		
+	if (limite != 0) {
+		document.forms.nuevoJuicio.acuabs[0].checked = true;
+		limpiarAcuerdos();
+		mostrarAcuerdos();
+	}
+}
+
 function cargarPeriodosAbsorvidos(acuerdo) {
 	formatoPeriodoInicio();
 	var n = 0;
@@ -368,7 +377,7 @@ function validar(formulario) {
 		  	 	<?php if ($rowJuicio['acuerdorelacionado'] == 1) { 
 		  					print("<b>SI - Nro. Acuerdo: ".$rowJuicio['nroacuerdo'])."</b>"; 
 					?> <br>Quitar Acuerdo 
-		  	 	       <input name="desabsorver" id="desabsorver" type="checkbox" value="1" onclick="formatoPeriodoInicio();"/> <?php
+		  	 	       <input name="desabsorver" id="desabsorver" type="checkbox" value="1" onclick="checkQuitar();"/> <?php
 				       } else { 
 							print("<b>NO</b>"); 
 					   } 
