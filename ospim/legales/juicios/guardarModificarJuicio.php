@@ -42,36 +42,36 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 	
-	print("<br>PRIMERO: DEVUELVO LOS PERIODOS AL ACUERDO<br>");
+	//print("<br>PRIMERO: DEVUELVO LOS PERIODOS AL ACUERDO<br>");
 	if (!empty($sqlPeriodosQuitar)) {
 		for($i=0; $i<sizeof($sqlPeriodosQuitar); $i++) {
 			//print($sqlPeriodos[$i]."<br>");
 			$dbh->exec($sqlPeriodosQuitar[$i]);
 		}
 	}
-	print("<br>SEGUNDO: Desabsorvo el acuerdo si pide hacerlo<br>");
+	//print("<br>SEGUNDO: Desabsorvo el acuerdo si pide hacerlo<br>");
 	if (!empty($sqlUpdateAcuQuitado)) {
 		//print($sqlUpdateAcuQuitado."<br>");
 		$dbh->exec($sqlUpdateAcuQuitado);
 	}
 	
-	print("<br>TERCERO: Elimino todos los periodos del juicio<br>");
+	//print("<br>TERCERO: Elimino todos los periodos del juicio<br>");
 	if (!empty($sqlDeletePeriodos)) {
 		//print($sqlDeletePeriodos."<br>");
 		$dbh->exec($sqlDeletePeriodos);
 	}
 	
-	print("<br>CUARTO: Updeteo el nuevo acuerdo a absorver si es que lo hay<br>");
+	//print("<br>CUARTO: Updeteo el nuevo acuerdo a absorver si es que lo hay<br>");
 	if (!empty($sqlUpdateAcuAbs)) {
 		//print($sqlUpdateAcuAbs."<br>");
 		$dbh->exec($sqlUpdateAcuAbs);
 	}
 	
-	print("<br>QUINTO: Updeteo la cabecera del juicio dependiendo si hay o no acuerdos absorvidos.<br>");
+	//print("<br>QUINTO: Updeteo la cabecera del juicio dependiendo si hay o no acuerdos absorvidos.<br>");
 	//print($sqlCabecera."<br>");
 	$dbh->exec($sqlCabecera);
 	
-	print("<br>SEXTO: Grabo los periodos del juicio y si hay de acuerdo absorivdo los elimino del acuerdo.<br>");
+	//print("<br>SEXTO: Grabo los periodos del juicio y si hay de acuerdo absorivdo los elimino del acuerdo.<br>");
 	if (!empty($sqlPeriodos)) {
 		for($i=0; $i<sizeof($sqlPeriodos); $i++) {
 			//print($sqlPeriodos[$i]."<br>");

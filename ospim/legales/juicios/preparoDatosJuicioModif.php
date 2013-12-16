@@ -93,25 +93,6 @@ for ($i = 0; $i <= $peridosHabili; $i++) {
 	} 
 }
 
-
-
-/*print("<br>PRIMERO: DEVUELVO LOS PERIODOS AL ACUERDO<br>");
-var_dump($listaDetAcuQui);
-print("<br>SEGUNDO: Desabsorvo el acuerdo si pide hacerlo<br>");
-print($sqlUpdateAcuQuitado."<br>");
-print("<br>TERCERO: Elimino todos los periodos del juicio<br>");
-print($sqlDeletePeriodos."<br>");
-print("<br>CUARTO: Updeteo el nuevo acuerdo a absorver si es que lo hay<br>");
-print($sqlUpdateAcuAbs."<br>");
-print("<br>QUINTO: Updeteo la cabecera del juicio dependiendo si hay o no acuerdos absorvidos.<br>");
-print($sqlCabecera."<br>");
-print("<br>SEXTO: Grabo los periodos del juicio y si hay de acuerdo absorivdo los elimino del acuerdo.<br>");
-print("INSERT JUICIO: <br>");
-var_dump($sqlPeriodos);
-print("DELETE ACUERDO: <br>");
-var_dump($sqlDelPer);*/
-
-
 if (sizeof($listaDetAcuQui) > 0) {
 	$listadoPeriodosAcuQuitado = serialize($listaDetAcuQui);
 	$listadoPeriodosAcuQuitadoSerializado = urlencode($listadoPeriodosAcuQuitado);
