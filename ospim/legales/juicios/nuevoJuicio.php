@@ -73,13 +73,15 @@ function cargarPeriodosAbsorvidos(acuerdo) {
 				i = "id" + n;
 				m = "mes" + n;
 				a = "anio" + n;
-				document.getElementById(i).value="<?php echo $rowPeriodos['idperiodo'] ?>";
+				c = "concepto" + n;
 				mes = <?php echo $rowPeriodos['mesacuerdo'] ?>;
 				if (mes < 10) {
 					mes = "0"+mes;
 				}
+				document.getElementById(i).value="<?php echo $rowPeriodos['idperiodo'] ?>";
 				document.getElementById(m).value= mes;
 				document.getElementById(a).value="<?php echo $rowPeriodos['anoacuerdo'] ?>";
+				document.getElementById(c).value="<?php echo $rowPeriodos['conceptodeuda'] ?>";
 				n++;
 				mostrando = document.forms.nuevoJuicio.mostrar.value;
 				if (n > mostrando && mostrando < 120) {
@@ -116,17 +118,21 @@ function formatoPeriodoInicio() {
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
+		con = "concepto" + i;
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
+		document.getElementById(con).value="";
 	}
 	for (i=12; i<120; i++){
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
+		con = "concepto" + i;
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
+		document.getElementById(con).value="";
 		document.getElementById(m).style.visibility="hidden";
 		document.getElementById(a).style.visibility="hidden";
 	}
@@ -167,8 +173,9 @@ function validoAnio(id){
 
 function limpioid(id) {
 	idper = "id" + id;
+	idcon = "concepto" + id;
 	document.getElementById(idper).value="";
-	
+	document.getElementById(idcon).value="";
 	mesnombre = "mes" + id;
 	anionombre = "anio" + id;
 	mes = document.getElementById(mesnombre).value;
@@ -422,14 +429,13 @@ function validar(formulario) {
 					print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden'/></td>");
 					print("<td><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
 					print("<td><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-					
+					 print("<td><div align='center'><input name='concepto".$i."' type='text' id='concepto".$i."' size='2' style='visibility:hidden'/></td>");
 					 } else {
 						print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden' /></td>");			 
 						print("<td><div align='center'><input name='mes".$i."' id='mes".$i."' type='text' size='2' style='visibility:hidden' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
 						print("<td><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-										 
-					 }
-					 print("<td></td>");
+						print("<td><div align='center'><input name='concepto".$i."' type='text' id='concepto".$i."' size='2' style='visibility:hidden'/></td>");		 
+					 }			
 					 print("</tr>");
 				}
 				?>

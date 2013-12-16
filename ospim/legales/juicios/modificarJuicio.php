@@ -54,6 +54,8 @@ function checkQuitar() {
 		document.forms.nuevoJuicio.acuabs[0].checked = true;
 		limpiarAcuerdos();
 		mostrarAcuerdos();
+	} else {
+		formatoPeriodoInicio()
 	}
 }
 
@@ -111,9 +113,11 @@ function formatoPeriodoInicio() {
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
+		con = "concepto" + i;
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
+		document.getElementById(con).value="";
 		document.getElementById(m).style.visibility="visible";
 		document.getElementById(a).style.visibility="visible";
 		document.getElementById(men).style.visibility="hidden";
@@ -123,9 +127,11 @@ function formatoPeriodoInicio() {
 		m = "mes" + i;
 		a = "anio" + i;
 		men = "mensaje" + i;
+		con = "concepto" + i;
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
+		document.getElementById(con).value="";
 		document.getElementById(m).style.visibility="hidden";
 		document.getElementById(a).style.visibility="hidden";
 		document.getElementById(men).style.visibility="hidden";
@@ -167,8 +173,9 @@ function validoAnio(id){
 
 function limpioid(id) {
 	idper = "id" + id;
+	con = "concepto" + i;
 	document.getElementById(idper).value="";
-	
+	document.getElementById(con).value="";
 	mesnombre = "mes" + id;
 	anionombre = "anio" + id;
 	mes = document.getElementById(mesnombre).value;
@@ -371,7 +378,7 @@ function validar(formulario) {
 			
             <?php }?>
           </select>        
-		  </td>
+	    </td>
 		  <td>Acuerdo Abs. </td>
 		  <td>
 		  	 	<?php if ($rowJuicio['acuerdorelacionado'] == 1) { 
@@ -430,7 +437,7 @@ function validar(formulario) {
 	
    	<table width="1001" border="0">
         <tr>
-          <td height="43" colspan="4"><div align="center">
+          <td height="43" colspan="5"><div align="center">
             <div align="center">
               <p><strong>PER&Iacute;ODOS DEL JUICIO</strong></p>
             </div>
@@ -442,14 +449,13 @@ function validar(formulario) {
             <input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="visibility:hidden"/>
             <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
           </div></td>
-		  <td width="557" colspan="4"><div align="center">
-		    <div align="center">
-              <p><strong>TRAMITE JUDICIAL</strong></p>
-			<?php if ($rowJuicio['tramitejudicial'] == 0) { ?>
-			[<input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/> NO -
-  			 <input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/> SI ]	
-		     <br><input name="btramite" type="button" id="btramite" value="Cargar Tramite Judicial" style="visibility:hidden" onclick="validar(document.forms.nuevoJuicio)"/>     
-		    <?php } else { ?>
+		  <td width="557" colspan="5">	   
+		  <div align="center">
+			<?php if ($rowJuicio['tramitejudicial'] == 0) { ?>	
+			   <p><strong>TRAMITE JUDICIAL [NO]</strong></p>
+		     <input name="btramite" type="button" id="btramite" value="Cargar Tramite Judicial" onclick="location.href='cargarTramite.php?nroorden=<?php echo $nroorden ?>&cuit=<?php echo $cuit ?>'"/>     
+		    <?php } else { ?>			
+			<p><strong>TRAMITE JUDICIAL [SI]</strong></p>
 			  <input name="btramite" type="button" id="btramite" value="Modificar Tramite Judicial" onclick="location.href='modificarTramite.php?nroorden=<?php echo $nroorden ?>&cuit=<?php echo $cuit ?>'"/>				
 		    <?php } ?>
 		  </div></td>
@@ -458,8 +464,9 @@ function validar(formulario) {
           <td width="138"></td>
           <td width="80" align="center">Mes</td>
           <td width="70" align="center">A&ntilde;o</td>
-          <td width="134"></td>
-		  <td colspan="4">
+		  <td width="95"></td>
+		  <td width="1"></td>
+		  <td colspan="5">
 		  <div align="center">
             <p><input name="bguardar" type="button" id="bguardar" value="Guardar Modificación Juicio" onclick="validar(document.forms.nuevoJuicio)"/></p>
 		  </div></td>
@@ -482,6 +489,7 @@ function validar(formulario) {
 						$mensaje = '';
 					}
 					print("<td id='mensaje".$i."'>$mensaje</td>");
+					print("<td><div align='center'><input name='concepto".$i."' type='text' id='concepto".$i."' size='2' value='".$rowPeriodos['conceptodeuda']."' style='visibility:hidden'/></td>");
 					print("</tr>");
 					$i++;
 				}
@@ -491,6 +499,7 @@ function validar(formulario) {
 					print("<td><div align='center'><input name='mes".$n."' id='mes".$n."' type='text' size='2' style='visibility:hidden' onfocusout='validoMes(".$n.")' onchange='limpioid(".$n.")'/></div></td>");
 					print("<td><div align='center'><input name='anio".$n."' id='anio".$n."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$n.")' onchange='limpioid(".$n.")'/></div></td>");
 					print("<td id='mensaje".$n."'></td>");
+					print("<td><div align='center'><input name='concepto".$n."' type='text' id='concepto".$n."' size='2' style='visibility:hidden' /></td>");			
 					print("</tr>");
 				}
 				

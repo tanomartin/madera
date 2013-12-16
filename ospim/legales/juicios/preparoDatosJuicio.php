@@ -31,14 +31,16 @@ for ($i = 0; $i <= $peridosHabili; $i++) {
 	$idnombre = "id".$i;
 	$mesnombre = "mes".$i;
 	$anionombre = "anio".$i;
+	$concepto = "concepto".$i;
 	if ($_POST[$mesnombre] != "" && $_POST[$anionombre] != "") {
 		$id = $_POST[$idnombre];
 		$mes = $_POST[$mesnombre];
 		$anio = $_POST[$anionombre];
+		$concepto = $_POST[$concepto];
 		if ($id == '') {
-			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,'',$anio,$mes,0)"; 
+			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,'',$anio,$mes,0,'')"; 
 		} else {
-			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,$id,$anio,$mes,$nroacuerdo)"; 
+			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,$id,$anio,$mes,$nroacuerdo,'$concepto')"; 
 		}
 		if ($id != '') {
 			$sqlDelete = "DELETE FROM detacuerdosospim WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo and idperiodo = $id";
