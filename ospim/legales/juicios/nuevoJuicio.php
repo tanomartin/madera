@@ -253,6 +253,11 @@ function validar(formulario) {
 		return false;
 	}
 	
+	if (formulario.ejecutor.value == "") {
+		alert("Debe elegir un Ejecutor");
+		return false;
+	}
+	
 	var limite = <?php echo sizeof($acuAbs) ?>;		
 	if (limite != 0) {
 		if (formulario.acuabs[1].checked) {
@@ -351,7 +356,10 @@ function validar(formulario) {
             <option value="<?php echo $rowInspe['codigo'] ?>"><?php echo $rowInspe['apeynombre'] ?></option>
 			
             <?php }?>
-          </select>        </td>
+          </select>      
+		   </td>
+		    <td>Ejecutor</td>
+			<td><input id="ejecutor" type="text" name="ejecutor"/></td>
       </tr>
       
       <tr>

@@ -18,7 +18,10 @@ $duedaActual = number_format($_POST['deudaActual'],2,'.','');
 $asesor = $_POST['asesor'];
 $inspector = $_POST['inspector'];
 $acuAbs = $_POST['acuabs'];
-$usuarioregistro = $_SESSION['usuario'];
+$usuarioejecutor = $_POST['ejecutor'];
+
+$fechamodificacion = date("Y-m-d H:m:s");
+$usuariomodificacion =  $_SESSION['usuario'];
 
 if ($rowJuicio['acuerdorelacionado'] == 1) {
 	$nroAcuQuit = $rowJuicio['nroacuerdo'];
@@ -39,7 +42,7 @@ if ($rowJuicio['acuerdorelacionado'] == 1) {
 if ($rowJuicio['acuerdorelacionado'] == 1) {
 	$nroAcuQuit = $rowJuicio['nroacuerdo'];
 	if (isset($_POST['desabsorver'])) {
-		$sqlUpdateAcuQuitado = "UPDATE cabacuerdosospim SET estadoacuerdo = 1 WHERE cuit = '$cuit' and nroacuerdo = $nroAcuQuit";
+		$sqlUpdateAcuQuitado = "UPDATE cabacuerdosospim SET estadoacuerdo = 1, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE cuit = '$cuit' and nroacuerdo = $nroAcuQuit";
 	}
 }
 
@@ -47,7 +50,7 @@ $sqlDeletePeriodos = "DELETE FROM detjuiciosospim WHERE nroorden = $nroorden";
 
 if ($acuAbs == 1) {
 	$nroacuerdo = $_POST['nroacu'];
-	$sqlUpdateAcuAbs = "UPDATE cabacuerdosospim SET estadoacuerdo = 4 WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
+	$sqlUpdateAcuAbs = "UPDATE cabacuerdosospim SET estadoacuerdo = 4, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
 } else {
 	$nroacuerdo = 0;
 }
@@ -55,13 +58,13 @@ if ($acuAbs == 1) {
 
 if ($rowJuicio['acuerdorelacionado'] == 1) {
 	if (isset($_POST['desabsorver'])) {
-		$sqlCabecera = "UPDATE cabjuiciosospim SET nrocertificado = '$nrocerti', statusdeuda = $status, fechaexpedicion = '$fecExpe', acuerdorelacionado = $acuAbs, nroacuerdo = $nroacuerdo, deudahistorica = $deudaHisto, intereses = $intereses, deudaactualizada = $duedaActual, codasesorlegal = $asesor, codinspector = $inspector WHERE nroorden = $nroorden and cuit = '$cuit'";
+		$sqlCabecera = "UPDATE cabjuiciosospim SET nrocertificado = '$nrocerti', statusdeuda = $status, fechaexpedicion = '$fecExpe', acuerdorelacionado = $acuAbs, nroacuerdo = $nroacuerdo, deudahistorica = $deudaHisto, intereses = $intereses, deudaactualizada = $duedaActual, codasesorlegal = $asesor, codinspector = $inspector, usuarioejecutor = '$usuarioejecutor', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE nroorden = $nroorden and cuit = '$cuit'";
 	} else {
-		$sqlCabecera = "UPDATE cabjuiciosospim SET nrocertificado = '$nrocerti', statusdeuda = $status, fechaexpedicion = '$fecExpe', deudahistorica = $deudaHisto, intereses = $intereses, deudaactualizada = $duedaActual, codasesorlegal = $asesor, codinspector = $inspector WHERE nroorden = $nroorden and cuit = '$cuit'";
+		$sqlCabecera = "UPDATE cabjuiciosospim SET nrocertificado = '$nrocerti', statusdeuda = $status, fechaexpedicion = '$fecExpe', deudahistorica = $deudaHisto, intereses = $intereses, deudaactualizada = $duedaActual, codasesorlegal = $asesor, codinspector = $inspector, usuarioejecutor = '$usuarioejecutor', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE nroorden = $nroorden and cuit = '$cuit'";
 		$nroacuerdo = $rowJuicio['nroacuerdo'];
 	}
 } else {
-	$sqlCabecera = "UPDATE cabjuiciosospim SET nrocertificado = '$nrocerti', statusdeuda = $status, fechaexpedicion = '$fecExpe', acuerdorelacionado = $acuAbs, nroacuerdo = $nroacuerdo, deudahistorica = $deudaHisto, intereses = $intereses, deudaactualizada = $duedaActual, codasesorlegal = $asesor, codinspector = $inspector WHERE nroorden = $nroorden and cuit = '$cuit'";
+	$sqlCabecera = "UPDATE cabjuiciosospim SET nrocertificado = '$nrocerti', statusdeuda = $status, fechaexpedicion = '$fecExpe', acuerdorelacionado = $acuAbs, nroacuerdo = $nroacuerdo, deudahistorica = $deudaHisto, intereses = $intereses, deudaactualizada = $duedaActual, codasesorlegal = $asesor, codinspector = $inspector, usuarioejecutor = '$usuarioejecutor', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE nroorden = $nroorden and cuit = '$cuit'";
 }
 
 

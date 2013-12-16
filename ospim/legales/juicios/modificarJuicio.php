@@ -254,6 +254,10 @@ function validar(formulario) {
 		alert("Debe elegir un Inspector");
 		return false;
 	}
+	if (formulario.ejecutor.value == "") {
+		alert("Debe elegir un Ejecutor");
+		return false;
+	}
 	
 	var limite = <?php echo sizeof($acuAbs) ?>;		
 	var acuRel = <?php echo $rowJuicio['acuerdorelacionado']; ?>;
@@ -355,8 +359,7 @@ function validar(formulario) {
 				?>
             		<option value="<?php echo $rowAsesor['codigo']?>" <?php echo $selected ?>><?php echo $rowAsesor['apeynombre'] ?></option>
           <?php } ?>
-          </select>        
-		</td>
+          </select>		</td>
         <td>Inspector</td>
         <td><select name="inspector" id="inspector">
             <option value=0>Seleccione Inspector</option>
@@ -377,8 +380,7 @@ function validar(formulario) {
             			<option value="<?php echo $rowInspe['codigo'] ?>" <?php echo $selected ?>><?php echo $rowInspe['apeynombre'] ?></option>
 			
             <?php }?>
-          </select>        
-	    </td>
+          </select>	    </td>
 		  <td>Acuerdo Abs. </td>
 		  <td>
 		  	 	<?php if ($rowJuicio['acuerdorelacionado'] == 1) { 
@@ -388,10 +390,13 @@ function validar(formulario) {
 				       } else { 
 							print("<b>NO</b>"); 
 					   } 
-			     ?> 
-		  </td>
+			     ?>		  </td>
       </tr>
       
+      <tr>
+        <td>Ejecutor</td>
+        <td colspan="5"><input id="ejecutor" type="text" name="ejecutor" value="<?php echo $rowJuicio['usuarioejecutor'] ?>"/></td>
+      </tr>
       <tr>
 	  		 
      <?php 

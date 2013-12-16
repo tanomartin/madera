@@ -13,8 +13,13 @@ $duedaActual = number_format($_POST['deudaActual'],2,'.','');
 $asesor = $_POST['asesor'];
 $inspector = $_POST['inspector'];
 $acuAbs = $_POST['acuabs'];
-$usuarioregistro = $_SESSION['usuario'];
+$usuarioejecutor = $_POST['ejecutor'];
 $tramiteJudicial = $_POST['tramite'];
+
+$fecharegistro = date("Y-m-d H:m:s");
+$usuarioregistro = $_SESSION['usuario'];
+$fechamodificacion = $fecharegistro;
+$usuariomodificacion = $usuarioregistro;
 
 if ($acuAbs == 1) {
 	$nroacuerdo = $_POST['nroacu'];
@@ -22,7 +27,7 @@ if ($acuAbs == 1) {
 } else {
 	$nroacuerdo = 0;
 }	
-$sqlCabecera = "INSERT INTO cabjuiciosospim VALUE($nroorden,'$cuit',$nrocerti,$status,'$fecExpe',$acuAbs,$nroacuerdo,$deudaHisto,$intereses,$duedaActual,$asesor,$inspector,'$usuarioregistro',$tramiteJudicial)";
+$sqlCabecera = "INSERT INTO cabjuiciosospim VALUE($nroorden,'$cuit',$nrocerti,$status,'$fecExpe',$acuAbs,$nroacuerdo,$deudaHisto,$intereses,$duedaActual,$asesor,$inspector,'$usuarioejecutor',$tramiteJudicial,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 $peridosHabili = $_POST['mostrar'];
 $m = 0;

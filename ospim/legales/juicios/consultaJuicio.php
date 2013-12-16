@@ -55,19 +55,17 @@ A:hover {text-decoration: none;color:#00FFFF }
         <td><b>Fecha Expedición</b></td>
         <td><?php echo invertirFecha($rowCebecera['fechaexpedicion']) ?></td>
         <td><b>Incluye Acuerdo</b></td>
-        <td><?php if ($rowCebecera['acuerdorelacionado'] == 0) { echo "NO"; } else { echo "SI"; } ?></td>
+        <td><?php if ($rowCebecera['acuerdorelacionado'] == 0) { echo "NO"; } else { echo "SI (Nro: <b>".$rowCebecera['nroacuerdo']."</b>)"; } ?></td>
       </tr>
       <tr>
-        <td><b>Nro. Acuerdo</b></td>
-        <td><?php echo $rowCebecera['nroacuerdo'];?></td>
 		<td><b>Deuda Historica</b></td>
         <td><?php echo $rowCebecera['deudahistorica']?></td>
         <td><b>Intereses</b></td>
         <td><?php echo $rowCebecera['intereses'] ?></td>
+		<td><b>Deuda Actualizada</b></td>
+        <td><?php echo $rowCebecera['deudaactualizada'];?></td>
       </tr>
       <tr>
-        <td><b>Deuda Actualizada</b></td>
-        <td><?php echo $rowCebecera['deudaactualizada'];?></td>
         <td><b>Asesor Legal</b></td>
         <td><?php echo $rowCebecera['asesor']; ?></td>
         <td><b>Inspector</b></td>
@@ -78,6 +76,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 			$rowInspector = mysql_fetch_array($resInspector);
 			echo $rowInspector['apeynombre']; 
 		?></td>
+		<td><b>Ejecutor</b></td>
+        <td><?php echo $rowCebecera['usuarioejecutor'];?></td>
       </tr>
     </table>
     <p><strong>Per&iacute;odos</strong></p>

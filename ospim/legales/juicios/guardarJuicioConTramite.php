@@ -9,6 +9,11 @@ $listadoPeriodosSerializado = $_POST['insertPeriodosJui'];
 $sqlUpdateAcu = $_POST['updateCabeceraAcu'];
 $listadoPeriodosAcuSerializado = $_POST['deletePeriodosAcu'];
 
+$fecharegistro = date("Y-m-d H:m:s");
+$usuarioregistro = $_SESSION['usuario'];
+$fechamodificacion = $fecharegistro;
+$usuariomodificacion = $usuarioregistro;
+
 $sqlPeriodos = unserialize(urldecode($listadoPeriodosSerializado));
 $sqlDelPer = unserialize(urldecode($listadoPeriodosAcuSerializado));
 
@@ -31,7 +36,7 @@ if (!empty($_POST['montocobrado'])) {
 } else {
 	$monto = 0;
 }	
-$sqlTramite = "INSERT INTO trajuiciosospim VALUE($nroorden,'$fechainicio','$autocaso',$juzgado,$secretaria,'$expediente','$bienes',$estado,'$fechafin',$monto)";
+$sqlTramite = "INSERT INTO trajuiciosospim VALUE($nroorden,'$fechainicio','$autocaso',$juzgado,$secretaria,'$expediente','$bienes',$estado,'$fechafin',$monto,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];

@@ -22,8 +22,14 @@ if (!empty($_POST['montocobrado'])) {
 } else {
 	$monto = 0;
 }	
-$sqlTramite = "INSERT INTO trajuiciosospim VALUE($nroorden,'$fechainicio','$autocaso',$juzgado,$secretaria,'$expediente','$bienes',$estado,'$fechafin',$monto)";
-$updateCabe = "UPDATE cabjuiciosospim SET tramitejudicial = 1 WHERE nroorden = $nroorden and cuit = $cuit";
+
+$fecharegistro = date("Y-m-d H:m:s");
+$usuarioregistro = $_SESSION['usuario'];
+$fechamodificacion = $fecharegistro;
+$usuariomodificacion = $usuarioregistro;
+
+$sqlTramite = "INSERT INTO trajuiciosospim VALUE($nroorden,'$fechainicio','$autocaso',$juzgado,$secretaria,'$expediente','$bienes',$estado,'$fechafin',$monto,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$updateCabe = "UPDATE cabjuiciosospim SET tramitejudicial = 1, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE nroorden = $nroorden and cuit = $cuit";
 
 try {
 	$hostname = $_SESSION['host'];
