@@ -41,8 +41,14 @@ if ($rowJuicio['acuerdorelacionado'] == 1) {
 
 if ($rowJuicio['acuerdorelacionado'] == 1) {
 	$nroAcuQuit = $rowJuicio['nroacuerdo'];
+	$sqlCabObser = "SELECT observaciones FROM cabacuerdosospim WHERE cuit = '$cuit' and nroacuerdo = $nroAcuQuit";
+	$resCabObser = mysql_query($sqlCabObser,$db);
+	$rowCabObser = mysql_fetch_assoc($resCabObser);
+	$obs = $rowCabObser['observaciones'];
+	$obsAquitar = "/ Acuerdo Absorvido por Juicio con Nro. de Orden $nroorden./";
+	$nuevaObser = preg_replace($obsAquitar,"",$obs);
 	if (isset($_POST['desabsorver'])) {
-		$sqlUpdateAcuQuitado = "UPDATE cabacuerdosospim SET estadoacuerdo = 1, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE cuit = '$cuit' and nroacuerdo = $nroAcuQuit";
+		$sqlUpdateAcuQuitado = "UPDATE cabacuerdosospim SET estadoacuerdo = 1, observaciones = '$nuevaObser', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE cuit = '$cuit' and nroacuerdo = $nroAcuQuit";
 	}
 }
 

@@ -60,8 +60,8 @@ function checkQuitar() {
 }
 
 function cargarPeriodosAbsorvidos(acuerdo) {
-	formatoPeriodoInicio();
-	var n = 0;
+		formatoPeriodoInicio();
+		var n = 0;
 <?php  	$sqlPeriodos = "select * from detacuerdosospim where cuit = $cuit";
 		$resPeriodos = mysql_query($sqlPeriodos,$db); 
 		while ($rowPeriodos = mysql_fetch_array($resPeriodos)) { ?> 
@@ -69,6 +69,7 @@ function cargarPeriodosAbsorvidos(acuerdo) {
 				i = "id" + n;
 				m = "mes" + n;
 				a = "anio" + n;
+				c = "concepto" + n;
 				document.getElementById(i).value="<?php echo $rowPeriodos['idperiodo'] ?>";
 				mes = <?php echo $rowPeriodos['mesacuerdo'] ?>;
 				if (mes < 10) {
@@ -76,6 +77,7 @@ function cargarPeriodosAbsorvidos(acuerdo) {
 				}
 				document.getElementById(m).value= mes;
 				document.getElementById(a).value="<?php echo $rowPeriodos['anoacuerdo'] ?>";
+				document.getElementById(c).value="<?php echo $rowPeriodos['conceptodeuda'] ?>";
 				n++;
 				mostrando = document.forms.nuevoJuicio.mostrar.value;
 				if (n > mostrando && mostrando < 120) {
@@ -173,7 +175,7 @@ function validoAnio(id){
 
 function limpioid(id) {
 	idper = "id" + id;
-	con = "concepto" + i;
+	con = "concepto" + id;
 	document.getElementById(idper).value="";
 	document.getElementById(con).value="";
 	mesnombre = "mes" + id;

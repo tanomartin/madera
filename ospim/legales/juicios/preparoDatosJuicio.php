@@ -23,7 +23,11 @@ $usuariomodificacion = $usuarioregistro;
 
 if ($acuAbs == 1) {
 	$nroacuerdo = $_POST['nroacu'];
-	$sqlUpdateAcu = "UPDATE cabacuerdosospim SET estadoacuerdo = 4 WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
+	$sqlCabObser = "SELECT observaciones FROM cabacuerdosospim WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
+	$resCabObser = mysql_query($sqlCabObser,$db);
+	$rowCabObser = mysql_fetch_assoc($resCabObser);
+	$nuevaObser = $rowCabObser['observaciones']. " Acuerdo Absorvido por Juicio con Nro. de Orden $nroorden.";
+	$sqlUpdateAcu = "UPDATE cabacuerdosospim SET estadoacuerdo = 4, observaciones = '$nuevaObser', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
 } else {
 	$nroacuerdo = 0;
 }	
