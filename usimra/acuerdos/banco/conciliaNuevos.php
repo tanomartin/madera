@@ -97,9 +97,54 @@ try {
 						if($resumen[estadoconciliacion]==0)
 						{
 							$remesaencontrada=0;
+
+							$cuentaelectronica=$resumen[codigocuenta];
+							$sistemaelectronico='E';
+							$fechaelectronica = $resumen[fechaimputacion];
+							$nroelectronico = 1;
+							$importeelectronico=round($resumen[importeimputado],2);
+							$estadoelectronico=1;
+							$fechaemielectronico=$resumen[fechaemision];
+							$ordenelectronico=$resumen[nroordenimputacion];
+
+							$sqlBuscaRemesaElectronica="SELECT * FROM remesasusimra WHERE codigocuenta = :codigocuenta and sistemaremesa = :sistemaremesa and fecharemesa = :fecharemesa and nroremesa = :nroremesa and estadoconciliacion = :estadoconciliacion";
+							$resultBuscaRemesaElectronica = $dbh->prepare($sqlBuscaRemesaElectronica);
+							if ($resultBuscaRemesaElectronica->execute(array(':codigocuenta' => $cuentaelectronica, ':sistemaremesa' => $sistemaelectronico, ':fecharemesa' => $fechaelectronica, ':nroremesa' => $nroelectronico, ':estadoconciliacion' => $estadoelectronico)))
+							{
+								foreach ($resultBuscaRemesaElectronica as $remesaselectronicas)
+								{
+									$importebuscadoelectronico=round($remesaselectronicas[importebruto],2);
+									if(round($importeelectronico,2) == round($importebuscadoelectronico,2))
+									{
+										$fechaconciliacionremesa=$remesaselectronicas[fechaconciliacion];
+										$usuarioconciliacionremesa=$remesaselectronicas[usuarioconciliacion];
+
+										//Agrega ORIGENCOMPROBANTEUSIMRA
+										$comprobanteorigenelectronico="Remesa";
+										$sqlAddOrigenElectronico="INSERT INTO origencomprobanteusimra (codigocuenta, fechaemision, nroordenimputacion, sistemacomprobante, fechacomprobante, nrocomprobante, comprobante) VALUES (:codigocuenta, :fechaemision, :nroordenimputacion, :sistemacomprobante, :fechacomprobante, :nrocomprobante, :comprobante)";
+										$resultAddOrigenElectronico = $dbh->prepare($sqlAddOrigenElectronico);
+										if ($resultAddOrigenElectronico->execute(array(':codigocuenta' => $cuentaelectronica, ':fechaemision' => $fechaemielectronico, ':nroordenimputacion' => $ordenelectronico, ':sistemacomprobante' => $sistemaelectronico, ':fechacomprobante' => $fechaelectronica, ':nrocomprobante' => $nroelectronico, ':comprobante' => $comprobanteorigenelectronico)))
+										{
+											//echo "AGREGA ORIGENCOMPROBANTE"; echo "<br>";
+										}
+		
+										//Actualiza RESUMENUSIMRA
+										$sqlActualizaResumenElectronico="UPDATE resumenusimra SET estadoconciliacion = :nuevoestadoconciliacion, fechaconciliacion = :fechaconciliacion, usuarioconciliacion = :usuarioconciliacion WHERE codigocuenta = :codigocuenta and fechaemision = :fechaemision and nroordenimputacion = :nroordenimputacion";
+										$resultActualizaResumenElectronico = $dbh->prepare($sqlActualizaResumenElectronico);
+										if ($resultActualizaResumenElectronico->execute(array(':codigocuenta' => $cuentaelectronica, ':fechaemision' => $fechaemielectronico, ':nroordenimputacion' => $ordenelectronico, ':nuevoestadoconciliacion' => $estadoelectronico, ':fechaconciliacion' => $fechaconciliacionremesa, ':usuarioconciliacion' => $usuarioconciliacionremesa)))
+										{
+											//echo "ACTUALIZA RESUMEN"; echo "<br>";
+										}
+										$remesaencontrada=1;
+										print ("<td><div align=center><font size=1 face=Verdana>Conciliado</font></div></td>");
+									}
+								}
+							}
+
 							for($i=0;$i<60;$i++)
 							{
 								$cuenta=$resumen[codigocuenta];
+								$sistemamanual='M';
 								$fechaemi=$resumen[fechaemision];
 								$orden=$resumen[nroordenimputacion];
 								$fechaimputacion = $resumen[fechaimputacion];
@@ -110,9 +155,9 @@ try {
 
 								if($remesaencontrada==0)
 								{
-									$sqlBuscaRemesa="SELECT * FROM remesasusimra WHERE codigocuenta = :codigocuenta and fecharemesa = :fecharemesa and estadoconciliacion = :estadoconciliacion";
+									$sqlBuscaRemesa="SELECT * FROM remesasusimra WHERE codigocuenta = :codigocuenta and sistemaremesa = :sistemaremesa and fecharemesa = :fecharemesa and estadoconciliacion = :estadoconciliacion";
 									$resultBuscaRemesa = $dbh->prepare($sqlBuscaRemesa);
-									if ($resultBuscaRemesa->execute(array(':codigocuenta' => $cuenta, ':fecharemesa' => $fechabuscada, ':estadoconciliacion' => $estado)))
+									if ($resultBuscaRemesa->execute(array(':codigocuenta' => $cuenta, ':sistemaremesa' => $sistemamanual, ':fecharemesa' => $fechabuscada, ':estadoconciliacion' => $estado)))
 									{
 										$indiceremesa=0;
 										
@@ -348,10 +393,10 @@ try {
 								$ajustacuenta=$ajustaresumen[codigocuenta];
 								$ajustafechaemi=$ajustaresumen[fechaemision];
 								$ajustaorden=$ajustaresumen[nroordenimputacion];
-
-								$sqlLeeOrigen="SELECT * FROM origencomprobanteusimra WHERE codigocuenta = :codigocuenta AND fechaemision = :fechaemision AND nroordenimputacion = :nroordenimputacion";
+								$ajustasistema='M';
+								$sqlLeeOrigen="SELECT * FROM origencomprobanteusimra WHERE codigocuenta = :codigocuenta AND fechaemision = :fechaemision AND nroordenimputacion = :nroordenimputacion AND sistemacomprobante = :sistemacomprobante";
 								$resultLeeOrigen = $dbh->prepare($sqlLeeOrigen);
-								if ($resultLeeOrigen->execute(array(':codigocuenta' => $ajustacuenta, ':fechaemision' => $ajustafechaemi, ':nroordenimputacion' => $ajustaorden)))
+								if ($resultLeeOrigen->execute(array(':codigocuenta' => $ajustacuenta, ':fechaemision' => $ajustafechaemi, ':nroordenimputacion' => $ajustaorden, ':sistemacomprobante' => $ajustasistema)))
 								{
 									//echo "LEE ORIGENCOMPROBANTE"; echo "<br>";
 									foreach ($resultLeeOrigen as $origen)
