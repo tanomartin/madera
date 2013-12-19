@@ -136,6 +136,7 @@ try {
 											//echo "ACTUALIZA RESUMEN"; echo "<br>";
 										}
 										$remesaencontrada=1;
+										$remesasconciliadas=1;
 										print ("<td><div align=center><font size=1 face=Verdana>Conciliado</font></div></td>");
 									}
 								}
