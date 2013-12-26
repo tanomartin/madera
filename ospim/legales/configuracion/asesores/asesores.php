@@ -3,11 +3,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
-<link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Asesores Legales :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -17,17 +15,36 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery-latest.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.metadata.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+<script src="/lib/jquery.js"></script>
+<script src="/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
+<script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
 	$(function() {
 		$("#listado")
-		.tablesorter({widthFixed: true, headers:{2:{sorter:false}}})
+		.tablesorter({
+			theme: 'blue', 
+			widthFixed: true, 
+			widgets: ["zebra","filter"], 
+			headers:{2:{sorter:false, filter: false}},
+			widgetOptions : { 
+				filter_cssFilter   : '',
+				filter_childRows   : false,
+				filter_hideFilters : false,
+				filter_ignoreCase  : true,
+				filter_searchDelay : 300,
+				filter_startsWith  : false,
+				filter_hideFilters : false,
+				
+			}
+		
+		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 </script>
+</head>
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
@@ -38,8 +55,8 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
 	  <thead>
 		<tr>
-		  <th>Codigo</th>
-		  <th>Apellido y Nombre</th>
+		  <th data-placeholder="Inserte Código">Codigo</th>
+		  <th data-placeholder="Inserte Nombre">Apellido y Nombre</th>
 		  <th>Acciones</th>
 		</tr>
 	 </thead>
