@@ -20,7 +20,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Sistemas </span></p>
-  <table width="626" border="3">
+  <table width="600" border="3">
     <tr>
       <td width="200"><p align="center">Fiscalizaci&oacute;n</p>
           <p align="center"><a class="enlace" href="fiscalizacion/menuFiscalizacion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
@@ -31,6 +31,15 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="200"><p align="center">Tratamiento A.F.I.P.</p>
         <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.jpg" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
+    </tr>
+    <tr>
+      <td><p align="center">&nbsp;</p>
+      </td>
+      <td><p align="center">Stock</p>
+      <!--<p align="center"><a class="enlace" href="stock/menuStock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>-->
+	  <p align="center"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></p>
+      <p align="center">&nbsp;</p></td>
+      <td>&nbsp;</td>
     </tr>
   </table>
 </div>
