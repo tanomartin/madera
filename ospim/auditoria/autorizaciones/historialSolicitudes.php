@@ -10,22 +10,38 @@ $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
-<link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <title>.: M&oacute;dulo Autorizaciones :.</title>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery-latest.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.metadata.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+<script src="/lib/jquery.js"></script>
+<script src="/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
+<script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
 	$(function() {
 		$("#historial")
-		.tablesorter({widthFixed: true, widgets:['zebra'], headers:{1:{sorter:false},5:{sorter:false},9:{sorter:false}}})
+		.tablesorter({
+			theme: 'blue', 
+			widthFixed: true, 
+			widgets: ["zebra", "filter"], 
+			headers:{9:{sorter:false, filter: false}},
+			widgetOptions : { 
+				filter_cssFilter   : '',
+				filter_childRows   : false,
+				filter_hideFilters : false,
+				filter_ignoreCase  : true,
+				filter_searchDelay : 300,
+				filter_startsWith  : false,
+				filter_hideFilters : false,
+				
+			}
+		
+		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 </script>
@@ -40,13 +56,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<tr>
 			<th>Nro</th>
 			<th>Fecha</th>
-			<th>Delegaci&oacute;n</th>
+			<th class="filter-select" data-placeholder="Seleccione Delegación">Delegaci&oacute;n</th>
 			<th>C.U.I.L.</th>
 			<th>Afiliado</th>
-			<th>Tipo</th>
+			<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
 			<th>Apellido y Nombre</th>
-			<th>Verificaci&oacute;n</th>
-			<th>Autorizaci&oacute;n</th>
+			<th class="filter-select" data-placeholder="Seleccione Estado">Verificaci&oacute;n</th>
+			<th class="filter-select" data-placeholder="Seleccione Estado">Autorizaci&oacute;n</th>
 			<th>Acci&oacute;n</th>
 		</tr>
 	</thead>
