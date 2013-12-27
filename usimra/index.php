@@ -19,7 +19,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 <form method="POST" action="verificador.php">
   <div align="center">
     <p class="Estilo1">Ingreso Sistema U.S.I.M.R.A. </p>
-    <p><img src="img/logo.jpg" width="350" height="350"> </p>
+    <p><img src="img/logo.png" width="350" height="350"> </p>
     <p><?php  
 		$error = $_GET['error'];
 		if ($error == 1) {

@@ -37,7 +37,7 @@ function abrirSistemas(dire) {
 <div align="center">
   <p><span class="Estilo1">Men&uacute; Principal</span></p>
   <p>
-    <img src="img/logo.jpg" width="168" height="168" /></p>
+    <img src="img/logo.png" width="168" height="168" /></p>
   <table width="402" border="2">
     <tr>
       <td width="192"> <div align="center">
