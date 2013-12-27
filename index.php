@@ -27,7 +27,7 @@ A:hover {text-decoration:underline; color:FCF63C}
           <p><strong>O.S.P.I.M.</strong></p>
         </div></td>
         <td width="246"><div align="center" class="Estilo2">
-          <p><a href="usimra/index.php"><img src="usimra/img/logo.jpg" width="200" height="200" border="0" /></a></p>
+          <p><a href="usimra/index.php"><img src="usimra/img/logo.png" width="200" height="200" border="0" /></a></p>
           <p><strong>U.S.I.M.R.A.</strong></p>
         </div></td>
       </tr>
