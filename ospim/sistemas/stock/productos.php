@@ -25,7 +25,7 @@ include($libPath."controlSessionOspimSistemas.php");
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{2:{sorter:false, filter: false},5:{sorter:false, filter: false}},
+			headers:{2:{sorter:false, filter: false},5:{sorter:false, filter: false},6:{sorter:false, filter: false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -55,14 +55,14 @@ include($libPath."controlSessionOspimSistemas.php");
 		  <th>Codigo</th>
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
-		  <th>Activo</th>
+		  <th class="filter-select" data-placeholder="Seleccion Estado">Activo</th>
 		  <th class="filter-select" data-placeholder="Seleccione Ubicacion">Ubicacion</th>
 		  <th>Acciones</th>
 		</tr>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlProd = "SELECT p.*, i.idProducto, d.nombre as deptos FROM ubicacionproducto u, departamentos d, producto p LEFT JOIN insumos i ON p.id=i.idProducto WHERE u.id = p.id and u.departamento = d.id";
+			$sqlProd = "SELECT p.*, d.nombre as deptos FROM ubicacionproducto u, departamentos d, producto p WHERE u.id = p.id and u.departamento = d.id";
 			$resProd = mysql_query($sqlProd,$db);
 			$canProd = mysql_num_rows($resProd);
 			while ($rowProd = mysql_fetch_assoc($resProd)) { ?>
@@ -72,12 +72,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php echo $rowProd['descripcion'] ?></td>
 					<td><?php if ($rowProd['activo'] == 1) { echo "SI"; } else { echo "NO"; } ?></td>
 					<td><?php echo $rowProd['deptos'] ?></td>
-					<td><a href='modificarProducto.php?id=<?php echo $rowProd['id'] ?>'>Modificar</a> 
-					<?php if ($rowProd['idProducto'] != "") { ?>
-						- <a href='insumos.php?id=<?php echo $rowProd['id'] ?>'>Insumos</a></td>
-					<?php } ?>
-			
-		
+					<td><a href='modificarProducto.php?id=<?php echo $rowProd['id'] ?>'>Modificar</a></td>
 		</tr>
 	 <?php } ?>
     </tbody>
