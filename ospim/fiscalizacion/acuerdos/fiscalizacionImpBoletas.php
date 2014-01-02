@@ -151,7 +151,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 						
 					// else de si es imprimible o no (cheque, efectivo, valorAlCobro)
 					} else {
-						if ($rowListado['tipocancelacion'] == 0) {
+						if ($rowListado['tipocancelacion'] == 0 && $rowListado['boletaimpresa'] == 0) {
 							$hayboleta=1;						
 							print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
 							print("<td width=168><div align=center><input type='checkbox' name='seleccion[]' value=".$rowListado['nrocuota']."></div></td>");						
