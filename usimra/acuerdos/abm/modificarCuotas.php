@@ -239,6 +239,12 @@ function validarYGuardar(formulario) {
 	$contadorCuotas = 0;
 	while ($rowCuotas=mysql_fetch_array($resCuotas)) {
 		if (($rowCuotas['montopagada'] == 0 && $rowCuotas['boletaimpresa'] == 0 && $rowCuotas['fechapagada'] == '0000-00-00') || ($rowCuotas['tipocancelacion'] == 8 && $rowCuotas['boletaimpresa'] != 0)) {
+			if ($rowCuotas['tipocancelacion'] == 8 && $rowCuotas['boletaimpresa'] != 0) {
+				$precuota = true;
+			} else {
+				$precuota = false;
+			}
+		
 			$contadorCuotas = $contadorCuotas + 1;	
 			print ("<td width=134> <input  style='background-color:#B2A274' name='nroCuota".$contadorCuotas."' id='nroCuota".$contadorCuotas."' type='text' size='2' value='".$rowCuotas['nrocuota']."' readonly='raadonly'></td>");
 			print ("<td width=107> <input name='monto".$contadorCuotas."' id='monto".$contadorCuotas."' type='text' size='10' value='".$rowCuotas['montocuota']."'></td>");
@@ -250,11 +256,15 @@ function validarYGuardar(formulario) {
 						$query="select * from tiposcancelaciones";
 						$result=mysql_query($query,$db);
 						while ($rowtipos=mysql_fetch_array($result)) { 
-								if ($rowtipos['codigo'] == $rowCuotas['tipocancelacion']) { ?>
-									<option value="<?php echo $rowtipos['codigo'] ?>" selected="selected"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
-						  <?php } else {  ?>
-									<option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
-						  <?php } ?>
+								if ($rowtipos['codigo'] == $rowCuotas['tipocancelacion']) { 
+									if (($precuota == false) || ($precuota == true && $rowtipos['codigo'] != 0)) {	?>	
+										<option value="<?php echo $rowtipos['codigo'] ?>" selected="selected"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
+						  <?php 	} 
+						  		} else {  
+									if (($precuota == false) || ($precuota == true && $rowtipos['codigo'] != 0)) {	?>	
+										<option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
+						  	<?php 	}
+						  		} ?>
 					<?php } ?>
 		</select>
 		  <?php
