@@ -322,7 +322,7 @@ function validar(formulario) {
 				print ("</tr>"); 
 				?>
 	</table>
-     <p>Fecha de Pago <input name="fechapagada" readonly="readonly" value="<?php echo invertirFecha($rowCuo['fechacancelacion']); ?>" type="text" id="fechapagada" size="8" style="background-color:#CCCCCC">
+     <p>Fecha de Pago <input name="fechapagada" readonly="readonly" value="<?php echo invertirFecha($rowCuo['fechapagada']); ?>" type="text" id="fechapagada" size="8" style="background-color:#CCCCCC">
      </p>
      <p>Cuenta de la Boleta
        <label>
