@@ -16,7 +16,7 @@ $usuario = $_POST['usuario'];
 $fechamodificacion = date("Y-m-d H:m:s");
 $usuariomodif = $_SESSION['usuario'];
 
-$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,1,'$descrip','$fecIni',DEFAULT,DEFAULT)";
+$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip','$fecIni',DEFAULT,DEFAULT)";
 
 
 $datos = array_values($_POST);
