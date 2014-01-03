@@ -16,10 +16,10 @@ $usuario = $_POST['usuario'];
 $activo = $_POST['activo'];
 if ($activo == 0) {
 	$fecBaja = fechaParaGuardar($_POST['fecBaja']);
-	$inicioFor = 11;
+	$inicioFor = 12;
 } else {
 	$fecBaja = '';
-	$inicioFor = 10;
+	$inicioFor = 11;
 }
 $fechamodificacion = date("Y-m-d H:m:s");
 

@@ -139,8 +139,8 @@ function validar(formulario) {
                   <tr>
                     <td>Fecha Inicio </td>
                     <td><input name="fecIni" type="text" id="fecIni" size="12" maxlength="12" value="<?php echo invertirFecha($rowProd['fechainicio']) ?>"/></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td>Nro. Poliza</td>
+                    <td><input name="valor2" type="text" id="valor2" size="50" readonly="readonly" style="background-color:#CCCCCC" value="<?php echo $rowProd['numeropoliza'] ?>"/></td>
                   </tr>
                   <tr>
 				  	  <?php if($rowProd['pertenencia'] == "U") { 
