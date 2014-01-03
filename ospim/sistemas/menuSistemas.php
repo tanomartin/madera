@@ -36,8 +36,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><p align="center">&nbsp;</p>
       </td>
       <td><p align="center">Stock</p>
-      <!--<p align="center"><a class="enlace" href="stock/menuStock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>-->
-	  <p align="center"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></p>
+      <p align="center"><a class="enlace" href="stock/menuStock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
