@@ -39,10 +39,12 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><p align="center">Insumos  </p>
       <p align="center"><a class="enlace" href="insumos.php"><img src="img/insumos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
-      <td><p align="center">Stock Insumos </p>
+      <td><p align="center">Stock</p>
         <p align="center"><a class="enlace" href="stock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
-      <td></td>
+      <td><p align="center">Consumos</p>
+        <p align="center"><a class="enlace" href="consumos.php"><img src="img/consumos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
     </tr>
   </table>
 </div>
