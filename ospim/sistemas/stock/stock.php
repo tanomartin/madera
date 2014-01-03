@@ -40,6 +40,9 @@ include($libPath."controlSessionOspimSistemas.php");
 	
 	function alta(idInsumo, stock) {
 		var cantidad = prompt("Ingrese Cantidad: ");
+		if (cantidad == null) {
+			return false;
+		}
 		if (cantidad <= 0 || !esEnteroPositivo(cantidad)) {
 			alert("Debe ser un número postivo");
 			return false;
@@ -50,6 +53,9 @@ include($libPath."controlSessionOspimSistemas.php");
 	
 	function baja(idInsumo, stock) {
 		var usuario = prompt("Ingrese Usuario que pidio el Insumo: ");
+		if (usuario == null) {
+			return false;
+		}
 		if (usuario == "") {
 			alert("Debe ingrear el usuario que pidio el Insumo");
 			return false;
@@ -107,7 +113,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php echo $rowInsumos['stockminimo'] ?></td>
 					<?php 
 						$color = "";
-						$estado = "";
+						$estado = " - ";
 						if ($rowInsumos['cantidad'] <= $rowInsumos['puntopromedio']) {
 							$color = "#CC9999";
 							$estado = "PUNTO PROMEDIO";
