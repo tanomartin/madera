@@ -87,32 +87,37 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'modificarProducto.php?id=<?php echo $idProd ?>'" align="center"/>
  </p>
   <p><span class="Estilo2">Modificar Insumo del Producto "<?php echo $nombreProd ?>" </span></p>
-  <form id="nuevoInsumo" name="nuevoInsumo" method="POST" action="guardarNuevoProducto.php" onSubmit="return validar(this)">		
-			<input name="producto" type="hidden" value='<?php echo $arrayProducto ?>' />
-	  <?php for ($i = 1; $i <= $cantInsumos; $i++) { ?>
+  <form id="nuevoInsumo" name="nuevoInsumo" method="POST" action="guardarModifInsumo.php" onSubmit="return validar(this)">		
+			<input name="cantInsumos" id="cantInsumos" type="hidden" value="<?php echo $cantInsumos ?>" />
+	  <?php 
+	  	$i = 0;
+		$sqlInsumos = "SELECT * FROM insumos WHERE idProducto = $idProd";
+		$resInsumos = mysql_query($sqlInsumos,$db);
+		while($rowInsumos = mysql_fetch_assoc($resInsumos)) { 
+			$i++; ?>
 			<table width="850" border="0" style="text-align:left">
               <tr>
-                <td colspan="4"> <strong>INSUMO NÚMERO <?php echo $i ?></strong></td>
+                <td colspan="4"> <strong>INSUMO NÚMERO <?php echo $i ?></strong> <input name="idInsumo<?php echo $i?>" id="idInsumo<?php echo $i?>" type="hidden" value="<?php echo $rowInsumos['id'] ?>" /> </td>
               </tr>
               <tr>
                 <td>Nombre</td>
-                <td><input name="nombre<?php echo $i?>" type="text" id="nombre<?php echo $i?>" size="50" maxlength="50"/></td>
+                <td><input name="nombre<?php echo $i?>" type="text" id="nombre<?php echo $i?>" value="<?php echo $rowInsumos['nombre'] ?>" size="50" maxlength="50"/></td>
                 <td>Nro Serie</td>
-                <td><input name="nroserie<?php echo $i?>" type="text" id="nroserie<?php echo $i?>" size="50" maxlength="100"/></td>
+                <td><input name="nroserie<?php echo $i?>" type="text" id="nroserie<?php echo $i?>" value="<?php echo $rowInsumos['numeroserie'] ?>" size="50" maxlength="100"/></td>
               </tr>
               <tr>
                 <td>Descripcion</td>
                 <td><label>
-                  <textarea name="descrip<?php echo $i?>" cols="30" rows="3" id="descrip<?php echo $i?>"></textarea>
+                  <textarea name="descrip<?php echo $i?>" cols="30" rows="3" id="descrip<?php echo $i?>"><?php echo $rowInsumos['descripcion'] ?></textarea>
                 </label></td>
                 <td>Stock M&iacute;nimo</td>
-                <td><input name="stockmin<?php echo $i?>" type="text" id="stockmin<?php echo $i?>" size="14" maxlength="14"/></td>
+                <td><input name="stockmin<?php echo $i?>" type="text" id="stockmin<?php echo $i?>" value="<?php echo $rowInsumos['stockminimo'] ?>" size="14" maxlength="14"/></td>
               </tr>
               <tr>
                 <td>Punto de Pedido</td>
-                <td><input name="ptoPedido<?php echo $i?>" type="text" id="ptoPedido<?php echo $i?>" size="14" maxlength="14"/></td>
+                <td><input name="ptoPedido<?php echo $i?>" type="text" id="ptoPedido<?php echo $i?>" value="<?php echo $rowInsumos['puntopedido'] ?>" size="14" maxlength="14"/></td>
                 <td>Punto Promedio </td>
-                <td><input name="ptoPromedio<?php echo $i?>" type="text" id="ptoPromedio<?php echo $i?>" size="14" maxlength="14"/></td>
+                <td><input name="ptoPromedio<?php echo $i?>" type="text" id="ptoPromedio<?php echo $i?>" value="<?php echo $rowInsumos['puntopromedio'] ?>" size="14" maxlength="14"/></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>

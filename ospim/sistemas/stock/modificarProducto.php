@@ -140,8 +140,8 @@ function validar(formulario) {
                     <td>Fecha Inicio </td>
                     <td><input name="fecIni" type="text" id="fecIni" size="12" maxlength="12" value="<?php echo invertirFecha($rowProd['fechainicio']) ?>"/></td>
                     <td>Insumos </td>
-                    <td>
-                    <input name="modifInsumos" type="button" id="modifInsumos" value="Modificar Insumos" onclick="location.href = 'modificarInsumo.php?id=<?php echo $rowProd['id'] ?>'"/></td>
+                    <td><?php echo $rowProd['cantidadinsumos'] ?> -
+                      <input name="modifInsumos" type="button" id="modifInsumos" value="Modificar Insumos" onclick="location.href = 'modificarInsumo.php?id=<?php echo $rowProd['id'] ?>'"/></td>
                   </tr>
                   <tr>
 				  	  <?php if($rowProd['pertenencia'] == "U") { 

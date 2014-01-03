@@ -9,15 +9,13 @@ include($libPath."controlSessionOspimSistemas.php");
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Productos :.</title>
 
-
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/lib/jquery.js"></script>
 <script src="/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
 <script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
-
-
 <script>
 	$(function() {
 		$("#listado")
@@ -25,7 +23,7 @@ include($libPath."controlSessionOspimSistemas.php");
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{2:{sorter:false, filter: false},5:{sorter:false, filter: false},6:{sorter:false, filter: false}},
+			headers:{9:{sorter:false, filter: false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -39,6 +37,27 @@ include($libPath."controlSessionOspimSistemas.php");
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
+	
+	function alta(idInsumo, stock) {
+		var cantidad = prompt("Ingrese Cantidad: ");
+		if (cantidad <= 0 || !esEnteroPositivo(cantidad)) {
+			alert("Debe ser un número postivo");
+			return false;
+		}
+		var pagina = "alta.php?idInsumo="+idInsumo+"&cantidad="+cantidad+"&stock="+stock;
+		location.href=pagina;
+	}
+	
+	function baja(idInsumo, stock) {
+		var usuario = prompt("Ingrese Usuario que pidio el Insumo: ");
+		if (usuario == "") {
+			alert("Debe ingrear el usuario que pidio el Insumo");
+			return false;
+		}
+		var pagina = "baja.php?idInsumo="+idInsumo+"&usuario="+usuario+"&stock="+stock;
+		location.href=pagina;
+	}
+	
 </script>
 <style type="text/css">
 <!--
@@ -55,32 +74,61 @@ include($libPath."controlSessionOspimSistemas.php");
   <p>
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuStock.php'" align="center"/>
 </p>
-  <p><span class="Estilo1">Listado de Productos </span></p>
+  <p><span class="Estilo1">Listado de Insumos </span></p>
   <input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevoProducto.php'"  value="Nuevo" />
   <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	  <thead>
 		<tr>
 		  <th>Codigo</th>
+		  <th>Producto</th>
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
-		  <th class="filter-select" data-placeholder="Seleccion Estado">Activo</th>
-		  <th class="filter-select" data-placeholder="Seleccione Ubicacion">Ubicacion</th>
+		  <th>Pto. Prom</th>
+		  <th>Pto. Ped</th>
+		  <th>Stock Min.</th>
+		  <th>Stock Actual</th>
+		  <th>Estado</th>
 		  <th>Acciones</th>
 		</tr>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlProd = "SELECT p.*, d.nombre as deptos FROM ubicacionproducto u, departamentos d, producto p WHERE u.id = p.id and u.departamento = d.id";
-			$resProd = mysql_query($sqlProd,$db);
-			$canProd = mysql_num_rows($resProd);
-			while ($rowProd = mysql_fetch_assoc($resProd)) { ?>
+			$sqlInsumos = "SELECT i.*, p.nombre as prod, s.* FROM insumos i, producto p, stock s WHERE i.id = s.id and i.idProducto = p.id";
+			$resInsumos = mysql_query($sqlInsumos,$db);
+			$canInsumos = mysql_num_rows($resInsumos);
+			while ($rowInsumos = mysql_fetch_assoc($resInsumos)) { ?>
 			<tr align="center">
-					<td><?php echo $rowProd['id'] ?></td>
-					<td><?php echo $rowProd['nombre']?></td>
-					<td><?php echo $rowProd['descripcion'] ?></td>
-					<td><?php if ($rowProd['activo'] == 1) { echo "SI"; } else { echo "NO"; } ?></td>
-					<td><?php echo $rowProd['deptos'] ?></td>
-					<td><a href='modificarProducto.php?id=<?php echo $rowProd['id'] ?>'>Modificar</a></td>
+					<td><?php echo $rowInsumos['id'] ?></td>
+					<td><?php echo $rowInsumos['prod']?></td>
+					<td><?php echo $rowInsumos['nombre'] ?></td>
+					<td><?php echo $rowInsumos['descripcion'] ?></td>
+					<td><?php echo $rowInsumos['puntopromedio'] ?></td>
+					<td><?php echo $rowInsumos['puntopedido'] ?></td>
+					<td><?php echo $rowInsumos['stockminimo'] ?></td>
+					<?php 
+						$color = "";
+						$estado = "";
+						if ($rowInsumos['cantidad'] <= $rowInsumos['puntopromedio']) {
+							$color = "#CC9999";
+							$estado = "PUNTO PROMEDIO";
+						}
+						if ($rowInsumos['cantidad'] <= $rowInsumos['puntopedido']) {
+							$color = "#CC33CC";
+							$estado = "PUNTO PEDIDO";
+						}
+						if ($rowInsumos['cantidad']  <= $rowInsumos['stockminimo']) {
+							$color = "#FF0000";
+							$estado = "STOCK";
+						}				
+					?>
+					<td style="color:<?php echo $color ?>"><?php echo $rowInsumos['cantidad'] ?></td>
+					<td style="color:<?php echo $color ?>"><?php echo $estado ?></td>
+					<td>
+				  <?php if ($rowInsumos['cantidad'] > $rowInsumos['stockminimo']) { ?>
+						<img src="img/baja.png" width="20" height="20" border="0" alt="enviar" onclick="baja(<?php echo $rowInsumos['id']?>,<?php echo $rowInsumos['cantidad']?>)"/></br>
+				  <?php } ?> 
+						<img src="img/alta.png" width="20" height="20" border="0" alt="enviar" onclick="alta(<?php echo $rowInsumos['id']?>,<?php echo $rowInsumos['cantidad']?>)"/>
+					</td>
 		</tr>
 	 <?php } ?>
     </tbody>
@@ -98,7 +146,7 @@ include($libPath."controlSessionOspimSistemas.php");
 		      <option selected="selected" value="10">10 por pagina</option>
 		      <option value="20">20 por pagina</option>
 		      <option value="30">30 por pagina</option>
-		      <option value="<?php echo $canProd;?>">Todos</option>
+		      <option value="<?php echo $canInsumos;?>">Todos</option>
 		      </select>
 		    </p>
 			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
