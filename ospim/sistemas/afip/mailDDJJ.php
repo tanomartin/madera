@@ -20,18 +20,18 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
-<link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
+<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css" type="text/css" id="" media="print, projection, screen" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Transferencias AFIP :.</title>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery-latest.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.metadata.js"></script>
+<script type="text/javascript" src="/lib/jquery.js"></script>
+<script type="text/javascript" src="/lib/jquery-ui.min.js"></script>
 <script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script type="text/javascript" src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
 	$(function() {
 		$("#listamsj")
-		.tablesorter({widthFixed: true, widgets:['zebra'], headers:{3:{sorter:false}, 5:{sorter:false}}})
+		.tablesorter({theme: 'blue', widthFixed: true, widgets:['zebra'], headers:{3:{sorter:false}, 5:{sorter:false}}})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 </script>
