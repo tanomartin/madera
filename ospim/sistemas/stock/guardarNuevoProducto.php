@@ -5,21 +5,22 @@ include($libPath."fechas.php");
 //var_dump($_POST);
 
 $arrayProducto = $_POST['producto'];
-$arrayProducto = unserialize(urldecode($arrayProducto));
-$nombre = $arrayProducto['nombre'];
-$nroserie = $arrayProducto['nroserie'];
-$descrip = $arrayProducto['descrip'];
-$cantInsumos = $arrayProducto['cantInsumos'];
-$valor = number_format($arrayProducto['valor'],2,'.','');
-$fecIni = fechaParaGuardar($arrayProducto['fecIni']);
-$ubicacion = $arrayProducto['ubicacion'];
-$sector = $arrayProducto['sector'];
-$usuario = $arrayProducto['usuario'];
+$nombre = $_POST['nombre'];
+$nroserie = $_POST['nroserie'];
+$descrip = $_POST['descrip'];
+$valor = number_format($_POST['valor'],2,'.','');
+$fecIni = fechaParaGuardar($_POST['fecIni']);
+$ubicacion = $_POST['ubicacion'];
+$sector = $_POST['sector'];
+$usuario = $_POST['usuario'];
 $fechamodificacion = date("Y-m-d H:m:s");
 $usuariomodif = $_SESSION['usuario'];
 
-$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$cantInsumos,$valor,1,'$descrip','$fecIni',DEFAULT,DEFAULT)";
+$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,1,'$descrip','$fecIni',DEFAULT,DEFAULT)";
 
+
+$datos = array_values($_POST);
+//var_dump($datos);
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -34,29 +35,15 @@ try {
 	$sqlInsertUbicacion = "INSERT INTO ubicacionproducto VALUE($idProd,$sector,'$ubicacion','$usuario')";
 	//print($sqlInsertUbicacion."<br>");
 	$dbh->exec($sqlInsertUbicacion);
-	for ($i=1; $i<=$cantInsumos; $i++) {
-		$campNombre = "nombre".$i;
-		$nombreInsu = $_POST["$campNombre"];
-		$campNombre = "nroserie".$i;
-		$nroserie = $_POST["$campNombre"];
-		$campNombre = "descrip".$i;
-		$descrip = $_POST["$campNombre"];
-		$campNombre = "ptoPedido".$i;
-		$ptoPedido = $_POST["$campNombre"];
-		$campNombre = "stockmin".$i;
-		$stockmin = $_POST["$campNombre"];
-		$campNombre = "ptoPromedio".$i;
-		$ptopromedio = $_POST["$campNombre"];
-		$sqlInsertInsumos = "INSERT INTO insumos VALUE (DEFAULT, $idProd, '$nombreInsu','$nroserie','$descrip',$ptoPedido,$stockmin,$ptopromedio)";
-		//print($sqlInsertInsumos."<br>");
-		$dbh->exec($sqlInsertInsumos);
-		$idInsumo = $dbh->lastInsertId('id'); 
-		$sqlInsertStock = "INSERT INTO stock VALUE ($idInsumo,0,'$fechamodificacion','$usuariomodif')";
-		//print($sqlInsertStock."<br>");
-		$dbh->exec($sqlInsertStock);
-	}
-	$dbh->commit();
 	
+	for ($i = 8; $i < sizeof($datos); $i++) {
+		$idInsumo = $datos[$i];
+		$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$idProd)";
+		//print($sqlInsuProd."<br>");
+		$dbh->exec($sqlInsuProd);
+	}
+	
+	$dbh->commit();
 	$pagina = "productos.php";
 	Header("Location: $pagina"); 
 	

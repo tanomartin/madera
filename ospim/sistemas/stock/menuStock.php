@@ -22,7 +22,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p><span style="text-align:center">
     <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" align="center"/>
   </span></p>
-  <p><span class="Estilo2">Men&uacute; Stock - Sistemas </span></p>
+  <p><span class="Estilo2">Men&uacute; Stock</span></p>
   <table width="600" border="3">
     <tr>
        <td><p align="center">Productos </p>
@@ -36,7 +36,9 @@ A:hover {text-decoration: none;color:#00FFFF }
        <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
+      <td><p align="center">Insumos  </p>
+      <p align="center"><a class="enlace" href="insumos.php"><img src="img/insumos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p align="center">&nbsp;</p></td>
       <td><p align="center">Stock Insumos </p>
         <p align="center"><a class="enlace" href="stock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>

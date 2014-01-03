@@ -139,9 +139,8 @@ function validar(formulario) {
                   <tr>
                     <td>Fecha Inicio </td>
                     <td><input name="fecIni" type="text" id="fecIni" size="12" maxlength="12" value="<?php echo invertirFecha($rowProd['fechainicio']) ?>"/></td>
-                    <td>Insumos </td>
-                    <td><?php echo $rowProd['cantidadinsumos'] ?> -
-                      <input name="modifInsumos" type="button" id="modifInsumos" value="Modificar Insumos" onclick="location.href = 'modificarInsumo.php?id=<?php echo $rowProd['id'] ?>'"/></td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
                   </tr>
                   <tr>
 				  	  <?php if($rowProd['pertenencia'] == "U") { 
@@ -173,8 +172,7 @@ function validar(formulario) {
 						?>
 							<option value="<?php echo $rowSector['id']?>" <?php echo $selected ?>><?php echo $rowSector['nombre'] ?></option>
 				  <?php } ?>
-          			</select>					
-					</td>
+          			</select>					</td>
                   </tr>
                   <tr>
                     <td>Usuario</td>
@@ -202,6 +200,24 @@ function validar(formulario) {
 					<?php if ($rowProd['activo'] == 0) { $fechabaja =  invertirFecha($rowProd['fechabaja']); $dis = ""; } else { $fechabaja  = ""; $dis = "disabled"; } ?>
                     <td>Fecha Baja </td>
                     <td><input name="fecBaja" type="text" id="fecBaja" size="12" maxlength="12" value="<?php echo $fechabaja ?>" <?php echo $dis ?>/></td>
+                  </tr>
+                  <tr>
+                    <td>Insumos</td>
+                    <td colspan="3"><?php
+						$sqlInsumos = "SELECT * FROM insumo";
+						$resInsumos = mysql_query($sqlInsumos,$db); 
+						while ($rowInsumos = mysql_fetch_array($resInsumos)) {
+							$idInsumo = $rowInsumos['id'];
+							$sqlInsumoProducto = "SELECT * FROM insumoproducto WHERE idproducto = $id and idinsumo = $idInsumo";
+							$resInsumoProducto = mysql_query($sqlInsumoProducto,$db); 
+							$numInsumoProducto = mysql_num_rows($resInsumoProducto);
+							if ($numInsumoProducto == 1) {?>
+						  <input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>" checked="checked"/><?php echo "[".$rowInsumos['nombre']."] " ?>
+						  	<?php } else { ?>
+							 <input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>"/><?php echo "[".$rowInsumos['nombre']."] " ?>
+                  	<?php  }
+				  		}	?>     
+					</td>
                   </tr>
                 </table>
 

@@ -7,7 +7,7 @@ include($libPath."controlSessionOspimSistemas.php");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Productos :.</title>
+<title>.: STOCK :.</title>
 
 <script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/lib/jquery.js"></script>
@@ -80,15 +80,14 @@ include($libPath."controlSessionOspimSistemas.php");
   <p>
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuStock.php'" align="center"/>
 </p>
-  <p><span class="Estilo1">Listado de Insumos </span></p>
-  <input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevoProducto.php'"  value="Nuevo" />
-  <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+  <p><span class="Estilo1">STOCK</span></p>
+  <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 	  <thead>
 		<tr>
 		  <th>Codigo</th>
-		  <th>Producto</th>
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
+		  <th>Productos</th>
 		  <th>Pto. Prom</th>
 		  <th>Pto. Ped</th>
 		  <th>Stock Min.</th>
@@ -99,15 +98,24 @@ include($libPath."controlSessionOspimSistemas.php");
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlInsumos = "SELECT i.*, p.nombre as prod, s.* FROM insumos i, producto p, stock s WHERE i.id = s.id and i.idProducto = p.id";
+			$sqlInsumos = "SELECT i.*, s.* FROM insumo i, stock s WHERE i.id = s.id";
 			$resInsumos = mysql_query($sqlInsumos,$db);
 			$canInsumos = mysql_num_rows($resInsumos);
 			while ($rowInsumos = mysql_fetch_assoc($resInsumos)) { ?>
 			<tr align="center">
 					<td><?php echo $rowInsumos['id'] ?></td>
-					<td><?php echo $rowInsumos['prod']?></td>
 					<td><?php echo $rowInsumos['nombre'] ?></td>
 					<td><?php echo $rowInsumos['descripcion'] ?></td>
+					<td>
+					<?php 
+						$idInsumo = $rowInsumos['id'];
+						$sqlInsumoProducto = "SELECT p.nombre as prod FROM insumoproducto i, producto p WHERE i.idinsumo = $idInsumo and i.idproducto = p.id";
+						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
+						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
+							print($rowInsumoProducto['prod']."</br>");
+						}
+					?>
+					</td>
 					<td><?php echo $rowInsumos['puntopromedio'] ?></td>
 					<td><?php echo $rowInsumos['puntopedido'] ?></td>
 					<td><?php echo $rowInsumos['stockminimo'] ?></td>

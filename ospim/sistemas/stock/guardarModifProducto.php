@@ -16,15 +16,19 @@ $usuario = $_POST['usuario'];
 $activo = $_POST['activo'];
 if ($activo == 0) {
 	$fecBaja = fechaParaGuardar($_POST['fecBaja']);
+	$inicioFor = 11;
 } else {
 	$fecBaja = '';
+	$inicioFor = 10;
 }
 $fechamodificacion = date("Y-m-d H:m:s");
 
 $sqlUpdateProducto = "UPDATE producto SET nombre = '$nombre', numeroserie = '$nroserie', valororiginal = $valor, activo = $activo, descripcion = '$descrip', fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
-
 $sqlUpdateUbicacion = "UPDATE ubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, usuario = '$usuario' WHERE id = $id"; 
+$deleteInsumoPrducto = "DELETE from insumoproducto WHERE idproducto = $id";
 
+$datos = array_values($_POST);
+var_dump($datos);
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -35,6 +39,16 @@ try {
 	$dbh->exec($sqlUpdateProducto);
 	//print($sqlUpdateUbicacion."<br>");
 	$dbh->exec($sqlUpdateUbicacion);
+	//print($deleteInsumoPrducto."<br>");
+	$dbh->exec($deleteInsumoPrducto);
+	
+	for ($i = $inicioFor; $i < sizeof($datos); $i++) {
+		$idInsumo = $datos[$i];
+		$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$id)";
+		//print($sqlInsuProd."<br>");
+		$dbh->exec($sqlInsuProd);
+	}
+	
 	$dbh->commit();
 	
 	$pagina = "productos.php";

@@ -70,10 +70,6 @@ function validar(formulario) {
 		alert("Debe colocar fecha de Inicio del producto");
 		return false;
 	}
-	if (formulario.cantInsumos.value == 0 || !esEnteroPositivo(formulario.cantInsumos.value)) {
-		alert("Error en la cantidad de insumos");
-		return(false);
-	}
 	if (formulario.ubicacion.value == 0) {
 		alert("Debe seleccionar Ubicacion");
 		return(false);
@@ -82,8 +78,6 @@ function validar(formulario) {
 		alert("Debe seleccionar Sector");
 		return(false);
 	}
-	
-	
 	formulario.Submit.disabled = true;
 	return true;
 }
@@ -96,7 +90,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'productos.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Nuevo Producto</span></p>
-  <form id="nuevoProducto" name="nuevoProducto" method="POST" action="nuevoInsumo.php" onSubmit="return validar(this)">		
+  <form id="nuevoProducto" name="nuevoProducto" method="POST" action="guardarNuevoProducto.php" onSubmit="return validar(this)">		
 				<table width="850" border="0" style="text-align:left">
                   <tr>
                     <td>Nombre</td>
@@ -116,8 +110,8 @@ function validar(formulario) {
                   <tr>
                     <td>Fecha Inicio </td>
                     <td><input name="fecIni" type="text" id="fecIni" size="12" maxlength="12"/></td>
-                    <td>Cantidad Insumos </td>
-                    <td><input name="cantInsumos" type="text" id="cantInsumos" size="14" maxlength="14"/></td>
+                    <td>Usuario</td>
+                    <td><input name="usuario" type="text" id="usuario" size="50" maxlength="50"/></td>
                   </tr>
                   <tr>
                     <td>Ubicacion</td>
@@ -134,15 +128,20 @@ function validar(formulario) {
 					</select></td>
                   </tr>
                   <tr>
-                    <td>Usuario</td>
-                    <td><input name="usuario" type="text" id="usuario" size="50" maxlength="50"/></td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td height="48">Insumos</td>
+                    <td colspan="3">
+					<?php
+						$sqlInsumos = "SELECT * FROM insumo";
+						$resInsumos = mysql_query($sqlInsumos,$db); 
+						while ($rowInsumos = mysql_fetch_array($resInsumos)) {?>
+                      <input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>"/><?php echo "[".$rowInsumos['nombre']."] " ?>
+                  <?php }	?>                      
+				  	<div align="center"></div></td>
                   </tr>
                 </table>
 
-				<p>
-				  <input type="submit" name="Submit" value="Cargar Insumos" sub/>
+			   <p>
+			     <input type="submit" name="Submit" value="Guardar" sub/>
 			   </p>
   </form>
 </div>
