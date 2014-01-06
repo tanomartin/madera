@@ -13,6 +13,7 @@ include($libPath."fechas.php");
 
 <script src="/lib/jquery.js"></script>
 <script src="/lib/jquery-ui.min.js"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
 <script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
@@ -40,6 +41,13 @@ include($libPath."fechas.php");
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
+	
+	function generarExcel(id) {
+		$.blockUI({ message: "<h1>Generando Archivo de Pedido de Cotizacion</h1>" });
+		dire = "generarExcelPedido.php?id="+id;
+		location.href=dire;
+	}
+	
 </script>
 <style type="text/css">
 <!--
@@ -58,7 +66,7 @@ include($libPath."fechas.php");
 </p>
   <p><span class="Estilo1">Listado de Pedidos </span></p>
   <input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevoPedido.php'"  value="Nuevo" />
-  <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+  <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 	  <thead>
 		<tr>
 		  <th>Codigo</th>
@@ -81,7 +89,7 @@ include($libPath."fechas.php");
 					<td><?php echo $rowPedido['descripcion'] ?></td>
 					<td><?php echo $rowPedido['costototal'] ?></td>
 					<td><?php if($rowPedido['fechacierre'] != "0000-00-00") {echo invertirFecha($rowPedido['fechacierre']); } ?></td>
-					<td><?php if($rowPedido['fechacierre'] == "0000-00-00") { ?><a href='modifDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Modif. Detalle</a>  - <a href='generarExcel.php?id=<?php echo $rowPedido['id'] ?>'>Pedido Cotizacion 
+					<td><?php if($rowPedido['fechacierre'] == "0000-00-00") { ?><a href='modifPedido.php?id=<?php echo $rowPedido['id'] ?>'>Modificar Pedido</a> - <a href='modifDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Datos Proveedor</a> - <a href='javascript:generarExcel("<?php echo $rowPedido['id'] ?>")'>Pedido Cotizacion 
 					  <?php } else { ?>
 					  			<a href='verDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Ver Detalle</a>
 					  <?php } ?>
