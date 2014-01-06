@@ -68,7 +68,7 @@ function actualizar() {
 	 <tbody>
 	 	
 		<?php	
-			$sqlProd = "SELECT * FROM producto WHERE activo = 1";
+			$sqlProd = "SELECT * FROM producto p, ubicacionproducto u WHERE p.activo = 1 and p.id = u.id and u.pertenencia = 'O'";
 			$resProd = mysql_query($sqlProd,$db);
 			while ($rowProd = mysql_fetch_assoc($resProd)) { ?>		
 			<tr align="center">
