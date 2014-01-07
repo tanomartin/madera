@@ -24,8 +24,18 @@ function abrirEmpresa(dire) {
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
 }
 
-function abrirSistemas(dire) {
-	c= window.open(dire,"Sistemas",
+function abrirLegales(dire) {
+	c= window.open(dire,"LegalesUsimra",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+}
+
+function abrirAportes(dire) {
+	c= window.open(dire,"AportesUsimra",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+}
+
+function abrirFiscalizacion(dire) {
+	c= window.open(dire,"FiscalizacionUsimra",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 
@@ -38,27 +48,36 @@ function abrirSistemas(dire) {
   <p><span class="Estilo1">Men&uacute; Principal</span></p>
   <p>
     <img src="img/logo.png" width="168" height="168" /></p>
-  <table width="402" border="2">
+  <table width="600" border="2">
     <tr>
-      <td width="192"> <div align="center">
-        <p>M&oacute;dulo Acuerdos</p>
+      <td> <div align="center">
+        <p>Acuerdos</p>
         <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/acuerdos.png" width="90" height="90" border="0"/></a></p>
         <p>&nbsp;</p>
         </div></td>
-		
-      <td width="192"><div align="center">
-	    <p>M&oacute;dulo Empresas</p>
-	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td><div align="center">
+	    <p>Empresas</p>
+	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.png" width="90" height="90" border="0"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
-    </tr>
-    <tr>
-      <td><div align="center">
-	  <p>M&oacute;dulo Aportes </p>
-      <p><a href="javascript:abrirAportes('acuerdos/menuAportes.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
+	 <td><div align="center">
+	  <p>Aportes </p>
+      <p><a href="javascript:abrirAportes('moduloNoDisponible.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
       <p>&nbsp;</p> 
     </div></td>
-      <td>&nbsp;</td>
+    </tr>
+    <tr>
+     <td><div align="center">
+	  <p>Fiscalizacion </p>
+      <p><a href="javascript:abrirFiscalizacion('moduloNoDisponible.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0"/></a></p>
+      <p>&nbsp;</p> 
+    </div></td>
+      <td><div align="center">
+	  <p>Juicios </p>
+      <p><a href="javascript:abrirLegales('moduloNoDisponible.php')"><img src="img/juicios.png" width="90" height="90" border="0"/></a></p>
+      <p>&nbsp;</p>
+	  </div></td>
+	  <td></td>
     </tr>
   </table>
    <p><strong><a href="logout.php">
