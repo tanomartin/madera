@@ -12,7 +12,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 }
 </style>
 
-<title>.: O.S.P.I.M. :.</title>
+<title>.: U.S.I.M.R.A. :.</title>
 </head>
 
 <body bgcolor="#B2A274">
