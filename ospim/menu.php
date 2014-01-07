@@ -30,22 +30,22 @@ function abrirEmpresa(dire) {
 }
 
 function abrirAuditoria(dire) {
-	c= window.open(dire,"Auditoria",
+	c= window.open(dire,"AuditoriaOspim",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 
 function abrirFiscalizacion(dire) {
-	c= window.open(dire,"Fiscalizacion",
+	c= window.open(dire,"FiscalizacionOspim",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 
 function abrirLegales(dire) {
-	c= window.open(dire,"Legales",
+	c= window.open(dire,"LegalesOspim",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 
 function abrirSistemas(dire) {
-	c= window.open(dire,"Sistemas",
+	c= window.open(dire,"SistemasOspim",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 </script>
