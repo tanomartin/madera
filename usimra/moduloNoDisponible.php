@@ -21,8 +21,6 @@ A:hover {text-decoration:underline; color:FCF63C}
     <p class="Estilo1">¡¡¡ALTO!!!!</p>
     <p><img src="img/manoStop.jpg" width="296" height="282"> </p>
     <p>MODULO NO DISPONBLE </p>
-   	
-     <p><font color="#000000" size="3" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="<?php echo $_SERVER['HTTP_REFERER'] ?>">VOLVER</a></strong></font></p>
   </div>
 </form>
 
