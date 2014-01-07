@@ -89,11 +89,12 @@ include($libPath."fechas.php");
 					<td><?php echo $rowPedido['descripcion'] ?></td>
 					<td><?php echo $rowPedido['costototal'] ?></td>
 					<td><?php if($rowPedido['fechacierre'] != "0000-00-00") {echo invertirFecha($rowPedido['fechacierre']); } ?></td>
-					<td><?php if($rowPedido['fechacierre'] == "0000-00-00") { ?><a href='modifPedido.php?id=<?php echo $rowPedido['id'] ?>'>Modificar Pedido</a> - <a href='modifDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Datos Proveedor</a> - <a href='javascript:generarExcel("<?php echo $rowPedido['id'] ?>")'>Pedido Cotizacion 
-					  <?php } else { ?>
+					<td><?php if($rowPedido['fechacierre'] == "0000-00-00") { ?>
+								<a href='modificarPedido.php?id=<?php echo $rowPedido['id'] ?>'>Modificar Pedido</a> - <a href='modifDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Datos Proveedor</a> - <a href='javascript:generarExcel("<?php echo $rowPedido['id'] ?>")'>Pedido Cotizacion </a>
+					 	<?php } else { ?>
 					  			<a href='verDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Ver Detalle</a>
 					  <?php } ?>
-					</a></td>
+					</td>
 		</tr>
 	 <?php } ?>
     </tbody>

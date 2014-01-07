@@ -1,5 +1,12 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
+include($libPath."fechas.php"); 
+
+$id = $_GET['id'];
+
+$sqlPedido = "SELECT * FROM cabpedidos WHERE id = $id";
+$resPedido = mysql_query($sqlPedido,$db);
+$rowPedido = mysql_fetch_assoc($resPedido);
 
 $sqlInsumo = "SELECT * FROM insumo i, stock s WHERE i.id = s.id";
 $resInsumo = mysql_query($sqlInsumo,$db);
@@ -94,16 +101,16 @@ $canInsumo = mysql_num_rows($resInsumo);
   <p>
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'pedidos.php'" align="center"/>
 </p>
-  <p><span class="Estilo1">Nuevo Pedido </span></p>
-  <form name="nuevoPedido" id="nuevoPedido" method="POST" action="guardarNuevoPedido.php?cant=<?php echo  $canInsumo?>" onSubmit="return validar(this)">
+  <p><span class="Estilo1">Modificar Pedido </span></p>
+  <form name="nuevoPedido" id="nuevoPedido" method="POST" action="guardarModifPedido.php?cant=<?php echo  $canInsumo?>&id=<?php echo $id ?>" onSubmit="return validar(this)">
   <table width="800" border="0">
     <tr>
       <td>Fecha Solicitud </td>
       <td>
-        <input name="fecsoli" type="text" id="fecsoli" size="11"/>     </td>
+        <input name="fecsoli" type="text" id="fecsoli" size="11" value="<?php echo invertirFecha($rowPedido['fechasolicitud']) ?> "/>     </td>
       <td>Descripcion</td>
       <td>
-        <textarea name="descripcion" cols="50" rows="3" id="descripcion"></textarea>     </td>
+        <textarea name="descripcion" cols="50" rows="3" id="descripcion"><?php echo $rowPedido['descripcion'] ?></textarea>     </td>
     </tr>
   </table>
   <p class="Estilo1">Insumos</p>  
@@ -148,13 +155,28 @@ $canInsumo = mysql_num_rows($resInsumo);
 							}				
 						?>
 						<td style="color:<?php echo $color ?>"><?php echo $rowInsumo['cantidad']." - ".$estado ?></td>
-						<td> <input style="visibility:hidden" name="idInsumo<?php echo $i ?>" id="idInsumo<?php echo $i ?>" size="4" value="<?php echo $rowInsumo['id'] ?>"/><input name="cantidad<?php echo $i ?>" id="cantidad<?php echo $i ?>" size="4"/> </td>
+						<td> 
+							<input style="visibility:hidden" name="idInsumo<?php echo $i ?>" id="idInsumo<?php echo $i ?>" size="4" value="<?php echo $rowInsumo['id'] ?>"/>
+						<?php			
+							$idinsumo = $rowInsumo['id'];				
+							$sqlInsumoPedido = "SELECT * FROM cabpedidos c, detpedidos d WHERE id = $id and c.id = d.idpedido and d.idinsumo = $idinsumo";
+							$resInsumoPedido = mysql_query($sqlInsumoPedido,$db);
+							$canInsumoPedido = mysql_num_rows($resInsumoPedido);
+							if ($canInsumoPedido == 1) {
+								$rowInsumoPedido = mysql_fetch_assoc($resInsumoPedido);
+								$cantidad = $rowInsumoPedido['cantidadpedido'];
+							} else {
+								$cantidad = "";
+							}
+						?>
+							<input name="cantidad<?php echo $i ?>" id="cantidad<?php echo $i ?>" value="<?php echo $cantidad ?>"  size="4"/> 
+						</td>
 			</tr>
 		 <?php $i++;} ?>
 		</tbody>
 	  </table>
       <p>
-        <input type="submit" name="Submit" value="Guardar" sub="sub"/>
+        <input type="submit" name="Submit" value="Modificar" sub="sub"/>
       </p>
   </form>
 </div>
