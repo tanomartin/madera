@@ -60,7 +60,7 @@ include($libPath."fechas.php");
   <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	  <thead>
 		<tr>
-		  <th>Codigo Insumo</th>
+		  <th>Codigo Consumo</th>
 		  <th>Nombre</th>
 		  <th>Productos</th>
 		  <th class="filter-select" data-placeholder="Seleccione Usuario">Usuario Consumo </th>
