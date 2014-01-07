@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php");
 $nroorden = $_GET['nroorden'];
 $cuit = $_GET['cuit'];
 $sqlTramite = "select * from trajuiciosospim where nroorden = $nroorden";
@@ -116,7 +117,7 @@ function validar(formulario) {
   	<table align="center">
 		<tr>
 			<td>Fecha Inicio</td>
-			<td><input id="fechaInicio" type="text" size="12" name="fechaInicio" value="<?php echo $rowTramite['fechainicio'] ?>"/></td>
+			<td><input id="fechaInicio" type="text" size="12" name="fechaInicio" value="<?php echo invertirFecha($rowTramite['fechainicio']) ?>"/></td>
 			<td>Autocaso</td>
 			<td><textarea name="autocaso" id="autocaso" cols="50" rows="2"><?php echo $rowTramite['autoscaso'] ?></textarea></td>
 		</tr>

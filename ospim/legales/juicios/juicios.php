@@ -40,7 +40,7 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<title>.: Sistema de Acuerdos OSPIM :.</title>
+<title>.: Sistema de Juicios :.</title>
 </head>
 <body bgcolor="#CCCCCC" > 
 <div align="center">
