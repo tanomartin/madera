@@ -34,8 +34,6 @@ if ($canReque == 0) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
-<link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado Requerimientos :.</title>
 </head>
@@ -51,14 +49,30 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery-latest.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.metadata.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
-<script type="text/javascript" src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+
+<script src="/lib/jquery.js"></script>
+<script src="/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
+<script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
 	$(function() {
 		$("#listado")
-		.tablesorter({widthFixed: true})
+		.tablesorter({
+			theme: 'blue',
+			widthFixed: true, 
+			widgets: ["zebra","filter"],
+			widgetOptions : { 
+				filter_cssFilter   : '',
+				filter_childRows   : false,
+				filter_hideFilters : false,
+				filter_ignoreCase  : true,
+				filter_searchDelay : 300,
+				filter_startsWith  : false,
+				filter_hideFilters : false,
+			}
+		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 </script>
