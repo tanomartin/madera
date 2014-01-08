@@ -107,12 +107,13 @@ $canInsumo = mysql_num_rows($resInsumo);
     </tr>
   </table>
   <p class="Estilo1">Insumos</p>  
-	  <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+	  <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 		  <thead>
 			<tr>
 			  <th>Codigo</th>
 			  <th>Nombre</th>
 			  <th>Descripcion</th>
+			  <th>Producto</th>
 			  <th>Pto. Promedio</th>
 			  <th>Pto. Pedido</th>
 			  <th>Stock Min.</th>
@@ -128,26 +129,41 @@ $canInsumo = mysql_num_rows($resInsumo);
 						<td><?php echo $rowInsumo['id'] ?></td>
 						<td><?php echo $rowInsumo['nombre']?></td>
 						<td><?php echo $rowInsumo['descripcion'] ?></td>
+						<td>
+							<?php 
+								$idInsumo = $rowInsumo['id'];
+								$sqlInsumoProducto = "SELECT *, p.nombre as prod FROM insumoproducto i, producto p WHERE i.idinsumo = $idInsumo and i.idproducto = p.id";
+								$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
+								while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
+									if ($rowInsumoProducto['activo'] == 0) {
+										$color = "#FF0000";
+									} else {
+										$color = "#000000";
+									}
+									print("<font color='$color'> * ".$rowInsumoProducto['prod']."</font></br>");
+								}
+						?>
+						</td>
 						<td><?php echo $rowInsumo['puntopromedio'] ?></td>
 						<td><?php echo $rowInsumo['puntopedido'] ?></td>
 						<td><?php echo $rowInsumo['stockminimo'] ?></td>
 						<?php 
 							$color = "";
-							$estado = " - ";
-							if ($rowInsumos['cantidad'] <= $rowInsumos['puntopromedio']) {
+							$estado = "";
+							if ($rowInsumo['cantidad'] <= $rowInsumo['puntopromedio']) {
 								$color = "#CC9999";
-								$estado = "PUNTO PROMEDIO";
+								$estado = " - PUNTO PROMEDIO";
 							}
-							if ($rowInsumos['cantidad'] <= $rowInsumos['puntopedido']) {
+							if ($rowInsumo['cantidad'] <= $rowInsumo['puntopedido']) {
 								$color = "#CC33CC";
-								$estado = "PUNTO PEDIDO";
+								$estado = " - PUNTO PEDIDO";
 							}
-							if ($rowInsumos['cantidad']  <= $rowInsumos['stockminimo']) {
+							if ($rowInsumo['cantidad']  <= $rowInsumo['stockminimo']) {
 								$color = "#FF0000";
-								$estado = "STOCK";
+								$estado = " - STOCK";
 							}				
 						?>
-						<td style="color:<?php echo $color ?>"><?php echo $rowInsumo['cantidad']." - ".$estado ?></td>
+						<td style="color:<?php echo $color ?>"><?php echo $rowInsumo['cantidad'].$estado ?></td>
 						<td> <input style="visibility:hidden" name="idInsumo<?php echo $i ?>" id="idInsumo<?php echo $i ?>" size="4" value="<?php echo $rowInsumo['id'] ?>"/><input name="cantidad<?php echo $i ?>" id="cantidad<?php echo $i ?>" size="4"/> </td>
 			</tr>
 		 <?php $i++;} ?>
@@ -160,4 +176,3 @@ $canInsumo = mysql_num_rows($resInsumo);
 </div>
 </body>
 </html>
-
