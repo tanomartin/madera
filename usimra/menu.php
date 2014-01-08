@@ -69,7 +69,7 @@ function abrirFiscalizacion(dire) {
     <tr>
      <td><div align="center">
 	  <p>Fiscalizacion </p>
-      <p><a href="javascript:abrirFiscalizacion('moduloNoDisponible.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0"/></a></p>
+      <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0"/></a></p>
       <p>&nbsp;</p> 
     </div></td>
       <td><div align="center">

@@ -34,28 +34,20 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
-      <td><p align="center">Informes</p>
-	  <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-      <td>&nbsp;</td>
-    </tr>
-    <tr>
       <td><p align="center">Cancelaci&oacute;n Manual de Cuotas </p>
         <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
-      <td><p align="center">Fiscalizaci&oacute;n</p>
-	  	  <!--  href="impresion/fiscalizacionImpresion.php" -->
-        <p align="center"><a class="enlace" href="impresion/fiscalizacionImpresion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
+      <td><p align="center">Informes</p>
+	  	  <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	  	  <p align="center">&nbsp;</p></td>
       <td><p align="center">Valores al Cobro</p>
 	   <!-- href="../moduloNoDisponible.php" -->
 	   
 	  
-      <p align="center"><a href="valores/moduloValores.php"><img src="img/valores.png" width="100" height="100" border="0" /></a></p>
+      <p align="center"><a href="valores/moduloValores.php"><img src="img/valores.png" width="90" height="90" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>
-  </div>
+</div>
 </body>
 </html>
