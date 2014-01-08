@@ -127,6 +127,7 @@ if($noHayDDJJ) {
 										$sqlAddDisco = "INSERT INTO nominasddjj (nrodisco, fechaarchivoafip, fechaemailafip, registrosafip, fechaprocesoospim, usuarioprocesoospim, registrosprocesoospim, carpetaarchivoospim) VALUES (:nrodisco,:fechaarchivoafip,:fechaemailafip,:registrosafip,:fechaprocesoospim,:usuarioprocesoospim,:registrosprocesoospim,:carpetaarchivoospim)";
 										$resAddDisco = $dbl->prepare($sqlAddDisco);
 										if($resAddDisco->execute(array(':nrodisco' => $proximonro, ':fechaarchivoafip' => $fechatransfcorta, ':fechaemailafip' => $fechamensaje, ':registrosafip' => (int)$totalregistros, ':fechaprocesoospim' => $fechahoy, ':usuarioprocesoospim' => $usuarioproceso, ':registrosprocesoospim' => (int)$registrosleidos, ':carpetaarchivoospim' => $archivo_salida))) {
+											chmod($archivo_salida, 0777);
 											$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afipddjj FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
 											$resLoadArchivo = mysql_query($sqlLoadArchivo,$db);
 											if (!$resLoadArchivo) {
@@ -146,6 +147,7 @@ if($noHayDDJJ) {
 														fwrite($punteroagrupado, $registroagrupado."\n");
 													}
 													fclose($punteroagrupado);
+													chmod($archivo_agrupa, 0777);
 													$sqlLoadCabeceraDJ = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE cabddjjospim FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
 													$resLoadCabeceraDJ = mysql_query($sqlLoadCabeceraDJ,$db);
 													if (!$resLoadCabeceraDJ) {
@@ -165,6 +167,7 @@ if($noHayDDJJ) {
 																fwrite($punterodetalle, $registrodetalle."\n");
 															}
 															fclose($punterodetalle);
+															chmod($archivo_detalle, 0777);
 															$sqlLoadDetalleDJ = "LOAD DATA LOCAL INFILE '$archivo_detalle' REPLACE INTO TABLE detddjjospim FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
 															$resLoadDetalleDJ = mysql_query($sqlLoadDetalleDJ,$db);
 															if (!$resLoadCabeceraDJ) {
@@ -222,6 +225,7 @@ if($noHayDDJJ) {
 																		}
 																	}
 																	fclose($punterofiscali);
+																	chmod($archivo_fiscali, 0777);
 																	$sqlLoadFiscaliDJ = "LOAD DATA LOCAL INFILE '$archivo_fiscali' REPLACE INTO TABLE agrufiscalizospim FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
 																	$resLoadFiscaliDJ = mysql_query($sqlLoadFiscaliDJ,$db);
 																	if (!$resLoadFiscaliDJ) {
