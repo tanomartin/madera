@@ -153,8 +153,8 @@ else {
 											if(strcmp("localhost",$maquina)==0) {
 												$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
 											} else {
-												//chmod($archivo_salida, 0750);
-												$sqlLoadArchivo = "LOAD DATA INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+												chmod($archivo_salida, 0777);
+												$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
 											}
 											$resLoadArchivo = mysql_query($sqlLoadArchivo,$db);
 											if (!$resLoadArchivo) {
@@ -177,8 +177,8 @@ else {
 													if(strcmp("localhost",$maquina)==0) {
 														$sqlLoadAgrupa = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
 													} else {
-														//chmod($archivo_agrupa, 0777);
-														$sqlLoadAgrupa = "LOAD DATA INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+														chmod($archivo_agrupa, 0777);
+														$sqlLoadAgrupa = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
 													}
 													$resLoadAgrupa = mysql_query($sqlLoadAgrupa,$db);
 													if (!$resLoadAgrupa) {
