@@ -56,7 +56,11 @@ $sqlDeletePeriodos = "DELETE FROM detjuiciosusimra WHERE nroorden = $nroorden";
 
 if ($acuAbs == 1) {
 	$nroacuerdo = $_POST['nroacu'];
-	$sqlUpdateAcuAbs = "UPDATE cabacuerdosusimra SET estadoacuerdo = 4, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
+	$sqlCabObser = "SELECT observaciones FROM cabacuerdosusimra WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
+	$resCabObser = mysql_query($sqlCabObser,$db);
+	$rowCabObser = mysql_fetch_assoc($resCabObser);
+	$nuevaObser = $rowCabObser['observaciones']. " Acuerdo Absorvido por Juicio con Nro. de Orden $nroorden.";
+	$sqlUpdateAcuAbs = "UPDATE cabacuerdosusimra SET estadoacuerdo = 4, observaciones = '$nuevaObser', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
 } else {
 	$nroacuerdo = 0;
 }
