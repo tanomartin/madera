@@ -71,7 +71,7 @@ if($noHayDDJJ) {
 									$destino_ddjj="/home/sistemas/ArchivosAfip/Nominas/DDJJ/Disco".$proximonro."/";
 								}
 
-								mkdir($destino_ddjj, 0750);
+								mkdir($destino_ddjj, 0777);
 								$archivo_salida = $destino_ddjj."NODJ".$proximonro.".txt";
 								//echo $archivo_salida;
 								$punteroarchivo = fopen($archivo_salida, 'w') or die("Hubo un error al generar el archivo de DDJJ");

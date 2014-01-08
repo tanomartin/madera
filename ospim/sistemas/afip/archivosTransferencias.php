@@ -82,7 +82,7 @@ else {
 									$destino_autogestion="/home/sistemas/ArchivosAfip/Transferencias/Autogestion/Disco".$proximonro."/";
 								}
 
-								mkdir($destino_aporte, 0750);
+								mkdir($destino_aporte, 0777);
 								$archivo_salida = $destino_aporte."TRAP".$proximonro.".txt";
 								$punteroarchivo = fopen($archivo_salida, 'w') or die("Hubo un error al generar el archivo de transferencias");
 							}
