@@ -150,8 +150,12 @@ else {
 										$sqlAddDisco = "INSERT INTO transferenciasaportes (nrodisco, fechaarchivoafip, fechaemailafip, registrosafip, importeafip, fechaprocesoospim, usuarioprocesoospim, registrosprocesoospim, creditoprocesoospim, debitoprocesoospim, importeprocesoospim, carpetaarchivoospim) VALUES (:nrodisco,:fechaarchivoafip,:fechaemailafip,:registrosafip,:importeafip,:fechaprocesoospim,:usuarioprocesoospim,:registrosprocesoospim,:creditoprocesoospim,:debitoprocesoospim,:importeprocesoospim,:carpetaarchivoospim)";
 										$resAddDisco = $dbl->prepare($sqlAddDisco);
 										if($resAddDisco->execute(array(':nrodisco' => $proximonro, ':fechaarchivoafip' => $fechatransflarga, ':fechaemailafip' => $fechamensaje, ':registrosafip' => (int)$totalregistros, ':importeafip' => round((float)$totaltransferido,2), ':fechaprocesoospim' => $fechahoy, ':usuarioprocesoospim' => $usuarioproceso, ':registrosprocesoospim' => (int)$registrosleidos, ':creditoprocesoospim' => round($totalcredito,2), ':debitoprocesoospim' => round($totaldebito,2), ':importeprocesoospim' => round(($totalcredito - $totaldebito),2), ':carpetaarchivoospim' => $archivo_salida))) {
-											chmod($archivo_salida, 0777);
-											$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+											if(strcmp("localhost",$maquina)==0) {
+												$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+											} else {
+												//chmod($archivo_salida, 0750);
+												$sqlLoadArchivo = "LOAD DATA INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+											}
 											$resLoadArchivo = mysql_query($sqlLoadArchivo,$db);
 											if (!$resLoadArchivo) {
 												$tituloform = "ERROR";
@@ -170,8 +174,12 @@ else {
 														fwrite($punteroagrupado, $registroagrupado."\n");
 													}
 													fclose($punteroagrupado);
-													chmod($archivo_agrupa, 0777);
-													$sqlLoadAgrupa = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+													if(strcmp("localhost",$maquina)==0) {
+														$sqlLoadAgrupa = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+													} else {
+														//chmod($archivo_agrupa, 0777);
+														$sqlLoadAgrupa = "LOAD DATA INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+													}
 													$resLoadAgrupa = mysql_query($sqlLoadAgrupa,$db);
 													if (!$resLoadAgrupa) {
 														$tituloform = "ERROR";
