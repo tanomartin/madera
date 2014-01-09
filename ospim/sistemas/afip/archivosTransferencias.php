@@ -150,13 +150,12 @@ else {
 										$sqlAddDisco = "INSERT INTO transferenciasaportes (nrodisco, fechaarchivoafip, fechaemailafip, registrosafip, importeafip, fechaprocesoospim, usuarioprocesoospim, registrosprocesoospim, creditoprocesoospim, debitoprocesoospim, importeprocesoospim, carpetaarchivoospim) VALUES (:nrodisco,:fechaarchivoafip,:fechaemailafip,:registrosafip,:importeafip,:fechaprocesoospim,:usuarioprocesoospim,:registrosprocesoospim,:creditoprocesoospim,:debitoprocesoospim,:importeprocesoospim,:carpetaarchivoospim)";
 										$resAddDisco = $dbl->prepare($sqlAddDisco);
 										if($resAddDisco->execute(array(':nrodisco' => $proximonro, ':fechaarchivoafip' => $fechatransflarga, ':fechaemailafip' => $fechamensaje, ':registrosafip' => (int)$totalregistros, ':importeafip' => round((float)$totaltransferido,2), ':fechaprocesoospim' => $fechahoy, ':usuarioprocesoospim' => $usuarioproceso, ':registrosprocesoospim' => (int)$registrosleidos, ':creditoprocesoospim' => round($totalcredito,2), ':debitoprocesoospim' => round($totaldebito,2), ':importeprocesoospim' => round(($totalcredito - $totaldebito),2), ':carpetaarchivoospim' => $archivo_salida))) {
-											if(strcmp("localhost",$maquina)==0) {
-												$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
-											} else {
-												chmod($archivo_salida, 0777);
-												$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
-											}
-											$resLoadArchivo = mysql_query($sqlLoadArchivo,$db);
+											
+											$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afiptransferencias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";	
+											$linkid = mysqli_init();
+											mysqli_options($linkid, MYSQLI_OPT_LOCAL_INFILE, true);
+											mysqli_real_connect($linkid, $hostname, $_SESSION['usuario'], $_SESSION['clave'], $dbname);
+											$resLoadArchivo = mysqli_query($linkid, $sqlLoadArchivo);
 											if (!$resLoadArchivo) {
 												$tituloform = "ERROR";
 												$mensaje = 'La carga de los registros de transferencias (AFIPTRANSFERENCIAS) del archivo FALLO.';
@@ -174,13 +173,9 @@ else {
 														fwrite($punteroagrupado, $registroagrupado."\n");
 													}
 													fclose($punteroagrupado);
-													if(strcmp("localhost",$maquina)==0) {
-														$sqlLoadAgrupa = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
-													} else {
-														chmod($archivo_agrupa, 0777);
-														$sqlLoadAgrupa = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
-													}
-													$resLoadAgrupa = mysql_query($sqlLoadAgrupa,$db);
+													$sqlLoadAgrupa = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE afipprocesadas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+													$resLoadAgrupa = mysqli_query($linkid, $sqlLoadAgrupa);
+													mysqli_close($linkid);
 													if (!$resLoadAgrupa) {
 														$tituloform = "ERROR";
 														$mensaje = 'La carga de los registros de agrupamientos (AFIPPROCESADAS) del archivo FALLO.';
@@ -279,19 +274,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <body bgcolor="#CCCCCC">
 <div align="center">
+	<p><input type="button" name="volver" value="Volver" onClick="location.href = 'menuAfip.php'" /></p>
 	<h1><?php echo $tituloform;?></h1>
-</div>
-<div align="center">
 	<h3><?php echo $mensaje;?></h3>
-</div>
-<div align="center">
 	<h3><?php echo $tituloaviso;?></h3>
-</div>
-<div align="center">
 	<h4><?php echo $aviso;?></h4>
-</div>
-<div align="center">
-	<input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
+	<p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();"/></p>
 </div>
 </body>
 </html>

@@ -110,11 +110,11 @@ if($noHayDDJJ) {
 								fwrite($punteroarchivo, $registrosalida."\n");
 								$registrosleidos = $registrosleidos + 1;
 							} else {
-								echo $registrosleidos; echo "-";
+								//echo $registrosleidos; echo "-";
 								$footertransf = substr($registros[$i], 0, 22);
 								if(strcmp("TFOS111001DDJJ-NOMINAS", $footertransf)==0) {
 									$totalregistros = substr($registros[$i], 83, 10);
-									echo $totalregistros;
+									//echo $totalregistros;
 									fclose($punteroarchivo);
 
 									try {
@@ -127,9 +127,12 @@ if($noHayDDJJ) {
 										$sqlAddDisco = "INSERT INTO nominasddjj (nrodisco, fechaarchivoafip, fechaemailafip, registrosafip, fechaprocesoospim, usuarioprocesoospim, registrosprocesoospim, carpetaarchivoospim) VALUES (:nrodisco,:fechaarchivoafip,:fechaemailafip,:registrosafip,:fechaprocesoospim,:usuarioprocesoospim,:registrosprocesoospim,:carpetaarchivoospim)";
 										$resAddDisco = $dbl->prepare($sqlAddDisco);
 										if($resAddDisco->execute(array(':nrodisco' => $proximonro, ':fechaarchivoafip' => $fechatransfcorta, ':fechaemailafip' => $fechamensaje, ':registrosafip' => (int)$totalregistros, ':fechaprocesoospim' => $fechahoy, ':usuarioprocesoospim' => $usuarioproceso, ':registrosprocesoospim' => (int)$registrosleidos, ':carpetaarchivoospim' => $archivo_salida))) {
-											chmod($archivo_salida, 0777);
+											
 											$sqlLoadArchivo = "LOAD DATA LOCAL INFILE '$archivo_salida' REPLACE INTO TABLE afipddjj FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
-											$resLoadArchivo = mysql_query($sqlLoadArchivo,$db);
+											$linkid = mysqli_init();
+											mysqli_options($linkid, MYSQLI_OPT_LOCAL_INFILE, true);
+											mysqli_real_connect($linkid, $hostname, $_SESSION['usuario'], $_SESSION['clave'], $dbname);
+											$resLoadArchivo = mysqli_query($linkid, $sqlLoadArchivo);
 											if (!$resLoadArchivo) {
 												$tituloform = "ERROR";
 												$mensaje = 'La carga de los registros de DDJJ (AFIPDDJJ) desde el archivo FALLO.';
@@ -147,9 +150,9 @@ if($noHayDDJJ) {
 														fwrite($punteroagrupado, $registroagrupado."\n");
 													}
 													fclose($punteroagrupado);
-													chmod($archivo_agrupa, 0777);
+													
 													$sqlLoadCabeceraDJ = "LOAD DATA LOCAL INFILE '$archivo_agrupa' REPLACE INTO TABLE cabddjjospim FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
-													$resLoadCabeceraDJ = mysql_query($sqlLoadCabeceraDJ,$db);
+													$resLoadCabeceraDJ = mysqli_query($linkid, $sqlLoadCabeceraDJ);
 													if (!$resLoadCabeceraDJ) {
 														$tituloform = "ERROR";
 														$mensaje = 'La carga de los registros de agrupamiento para la cabecera de DDJJ (CABDDJJOSPIM) FALLO.';
@@ -167,10 +170,10 @@ if($noHayDDJJ) {
 																fwrite($punterodetalle, $registrodetalle."\n");
 															}
 															fclose($punterodetalle);
-															chmod($archivo_detalle, 0777);
+															
 															$sqlLoadDetalleDJ = "LOAD DATA LOCAL INFILE '$archivo_detalle' REPLACE INTO TABLE detddjjospim FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
-															$resLoadDetalleDJ = mysql_query($sqlLoadDetalleDJ,$db);
-															if (!$resLoadCabeceraDJ) {
+															$resLoadDetalleDJ = mysqli_query($linkid, $sqlLoadDetalleDJ);
+															if (!$resLoadDetalleDJ) {
 																$tituloform = "ERROR";
 																$mensaje = 'La carga de los registros seleccionados para el detalle de DDJJ (DETDDJJOSPIM) FALLO.';
 															} else {
@@ -227,7 +230,8 @@ if($noHayDDJJ) {
 																	fclose($punterofiscali);
 																	chmod($archivo_fiscali, 0777);
 																	$sqlLoadFiscaliDJ = "LOAD DATA LOCAL INFILE '$archivo_fiscali' REPLACE INTO TABLE agrufiscalizospim FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
-																	$resLoadFiscaliDJ = mysql_query($sqlLoadFiscaliDJ,$db);
+																	$resLoadFiscaliDJ =  mysqli_query($linkid, $sqlLoadFiscaliDJ);
+																	mysqli_close($linkid);
 																	if (!$resLoadFiscaliDJ) {
 																		$tituloform = "ERROR";
 																		$mensaje = 'La carga de los registros para el agrupamiento de DDJJ de Fiscalizacion (AGRUFISCALIZOSPIM) FALLO.';
@@ -329,19 +333,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <body bgcolor="#CCCCCC">
 <div align="center">
+	<p><input type="button" name="volver" value="Volver" onClick="location.href = 'menuAfip.php'" /></p>
 	<h1><?php echo $tituloform;?></h1>
-</div>
-<div align="center">
 	<h3><?php echo $mensaje;?></h3>
-</div>
-<div align="center">
 	<h3><?php echo $tituloaviso;?></h3>
-</div>
-<div align="center">
 	<h4><?php echo $aviso;?></h4>
-</div>
-<div align="center">
-	<input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
+	<p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();"/></p>
 </div>
 </body>
 </html>
