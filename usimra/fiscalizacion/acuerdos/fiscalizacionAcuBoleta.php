@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
-require("numeros.php");
+require($libPath."numeros.php");
 ?>
 
 <html>
