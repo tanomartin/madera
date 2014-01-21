@@ -129,20 +129,28 @@ function validar(formulario) {
                   </tr>
                   <tr>
                     <td height="48">Insumos</td>
-                    <td colspan="3">
+                    <td>
+					<table>
 					<?php
 						$sqlInsumos = "SELECT * FROM insumo";
 						$resInsumos = mysql_query($sqlInsumos,$db); 
 						while ($rowInsumos = mysql_fetch_array($resInsumos)) {?>
-                      <input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>"/><?php echo "[".$rowInsumos['nombre']."] " ?>
+                      		<tr>
+								<td>
+								<input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>"/>								</td>
+								<td>
+								<?php echo "[".$rowInsumos['nombre']."] " ?>								</td>
+							</tr>
                   <?php }	?>                      
-				  	<div align="center"></div></td>
-                  </tr>
+				  	</table>					</td>
+                  
+				    <td colspan="2"><div align="center">
+				      <input type="submit" name="Submit" value="Guardar" sub/>
+			        </div></td>
+			      </tr>
                 </table>
 
-			   <p>
-			     <input type="submit" name="Submit" value="Guardar" sub/>
-			   </p>
+			   <p>&nbsp;</p>
   </form>
 </div>
 </body>
