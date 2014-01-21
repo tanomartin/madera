@@ -25,7 +25,7 @@ include($libPath."controlSessionOspimSistemas.php");
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{6:{sorter:false, filter: false}},
+			headers:{7:{sorter:false, filter: false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -63,6 +63,7 @@ include($libPath."controlSessionOspimSistemas.php");
 		  <th>Codigo</th>
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
+		  <th>Producto</th>
 		  <th>Pto. Promedio</th>
 		  <th>Pto. Pedido</th>
 		  <th>Stock Min.</th>
@@ -79,6 +80,19 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php echo $rowInsumo['id'] ?></td>
 					<td><?php echo $rowInsumo['nombre']?></td>
 					<td><?php echo $rowInsumo['descripcion'] ?></td>
+					<td><?php 
+						$idInsumo = $rowInsumo['id'];
+						$sqlInsumoProducto = "SELECT p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
+						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
+							if ($rowInsumoProducto['activo'] == 0) {
+									$color = "#FF0000";
+							} else {
+								$color = "#000000";
+							}
+							print("<font color='$color'> * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto'].")"."</font></br>");
+						}
+					?></td>	
 					<td><?php echo $rowInsumo['puntopromedio'] ?></td>
 					<td><?php echo $rowInsumo['puntopedido'] ?></td>
 					<td><?php echo $rowInsumo['stockminimo'] ?></td>
