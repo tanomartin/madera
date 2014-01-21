@@ -31,7 +31,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra"],
-			headers:{2:{sorter:false, filter: false}, 3:{sorter:false, filter: false},  4:{sorter:false, filter: false}, 5:{sorter:false, filter: false}, 6:{sorter:false, filter: false}},
+			headers:{3:{sorter:false, filter: false}, 4:{sorter:false, filter: false},  5:{sorter:false, filter: false}, 6:{sorter:false, filter: false}, 7:{sorter:false, filter: false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -121,6 +121,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 		<tr>
 		  <th>Codigo</th>
 		  <th>Nombre</th>
+		  <th>Descripcion</th>
 		  <th>Cant. Pedido</th>
 		  <th>Costo Unitario</th>
 		  <th>Cant. Entregado</th>
@@ -135,6 +136,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 				<tr align="center">
 					<td><input name="id<?php echo $i ?>" id="id<?php echo $i ?>" type="text" size="4" value="<?php echo $rowDetPedido['id'] ?>" readonly="readonly" style="background-color:#CCCCCC"/></td>
 					<td><?php echo $rowDetPedido['nombre'] ?></td>	
+					<td><?php echo $rowDetPedido['descripcion'] ?></td>	
 					<td><input name="cantidad<?php echo $i ?>" id="cantidad<?php echo $i ?>" type="text" size="5" value="<?php echo $rowDetPedido['cantidadpedido'] ?>" readonly="readonly" style="background-color:#CCCCCC"  /></td>
 					<td><input name="costo<?php echo $i ?>" id="costo<?php echo $i ?>" type="text" size="10" value="<?php echo $rowDetPedido['costounitario'] ?>" onchange="calcularTotalFila('<?php echo $i ?>', this.value)"/></td>
 					<td><input name="entregado<?php echo $i ?>" id="entregado<?php echo $i ?>" type="text" size="5" value="<?php echo $rowDetPedido['cantidadentregada'] ?>"/></td>
