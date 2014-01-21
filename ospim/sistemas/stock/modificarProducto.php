@@ -203,20 +203,37 @@ function validar(formulario) {
                   </tr>
                   <tr>
                     <td>Insumos</td>
-                    <td colspan="3"><?php
-						$sqlInsumos = "SELECT * FROM insumo";
-						$resInsumos = mysql_query($sqlInsumos,$db); 
-						while ($rowInsumos = mysql_fetch_array($resInsumos)) {
-							$idInsumo = $rowInsumos['id'];
-							$sqlInsumoProducto = "SELECT * FROM insumoproducto WHERE idproducto = $id and idinsumo = $idInsumo";
-							$resInsumoProducto = mysql_query($sqlInsumoProducto,$db); 
-							$numInsumoProducto = mysql_num_rows($resInsumoProducto);
-							if ($numInsumoProducto == 1) {?>
-						  <input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>" checked="checked"/><?php echo "[".$rowInsumos['nombre']."] " ?>
-						  	<?php } else { ?>
-							 <input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>"/><?php echo "[".$rowInsumos['nombre']."] " ?>
-                  	<?php  }
-				  		}	?>     
+					<td colspan="3">
+						<table>
+							<?php
+							$sqlInsumos = "SELECT * FROM insumo order by nombre";
+							$resInsumos = mysql_query($sqlInsumos,$db); 
+							while ($rowInsumos = mysql_fetch_array($resInsumos)) {
+								$idInsumo = $rowInsumos['id'];
+								$sqlInsumoProducto = "SELECT * FROM insumoproducto WHERE idproducto = $id and idinsumo = $idInsumo";
+								$resInsumoProducto = mysql_query($sqlInsumoProducto,$db); 
+								$numInsumoProducto = mysql_num_rows($resInsumoProducto);
+								if ($numInsumoProducto == 1) {?>
+							  		<tr>
+										<td>	
+											<input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>" checked="checked"/>
+										</td>
+										<td>
+											<?php echo "[".$rowInsumos['nombre']."] " ?>
+										</td>
+									</tr>
+								<?php } else { ?>
+								 	<tr>
+										<td>
+											<input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>"/>
+										</td>
+										<td>
+											<?php echo "[".$rowInsumos['nombre']."] " ?>
+										</td>
+									</tr>
+						<?php  }
+							}	?>     
+						</table>
 					</td>
                   </tr>
                 </table>
