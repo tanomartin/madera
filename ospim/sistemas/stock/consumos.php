@@ -78,7 +78,7 @@ include($libPath."fechas.php");
 					<td><?php echo $rowConsumo['nombre']?></td>
 					<td><?php 
 						$idInsumo = $rowConsumo['idinsumo'];
-						$sqlInsumoProducto = "SELECT p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
 							print("* ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto'].")"."</br>");
