@@ -78,10 +78,10 @@ include($libPath."fechas.php");
 					<td><?php echo $rowConsumo['nombre']?></td>
 					<td><?php 
 						$idInsumo = $rowConsumo['idinsumo'];
-						$sqlInsumoProducto = "SELECT p.nombre as prod FROM insumoproducto i, producto p WHERE i.idinsumo = $idInsumo and i.idproducto = p.id";
+						$sqlInsumoProducto = "SELECT p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
-							print($rowInsumoProducto['prod']."</br>");
+							print("* ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto'].")"."</br>");
 						}
 					?></td>	
 					<td><?php echo $rowConsumo['usuario'] ?></td>			

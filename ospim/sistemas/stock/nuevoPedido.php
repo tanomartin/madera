@@ -132,7 +132,7 @@ $canInsumo = mysql_num_rows($resInsumo);
 						<td>
 							<?php 
 								$idInsumo = $rowInsumo['id'];
-								$sqlInsumoProducto = "SELECT *, p.nombre as prod FROM insumoproducto i, producto p WHERE i.idinsumo = $idInsumo and i.idproducto = p.id";
+								$sqlInsumoProducto = "SELECT p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 								$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 								while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
 									if ($rowInsumoProducto['activo'] == 0) {
@@ -140,7 +140,7 @@ $canInsumo = mysql_num_rows($resInsumo);
 									} else {
 										$color = "#000000";
 									}
-									print("<font color='$color'> * ".$rowInsumoProducto['prod']."</font></br>");
+									print("<font color='$color'> * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto'].")"."</font></br>");
 								}
 						?>
 						</td>
