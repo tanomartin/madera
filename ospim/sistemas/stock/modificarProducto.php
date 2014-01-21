@@ -203,7 +203,7 @@ function validar(formulario) {
                   </tr>
                   <tr>
                     <td>Insumos</td>
-					<td colspan="3">
+					<td>
 						<table>
 							<?php
 							$sqlInsumos = "SELECT * FROM insumo order by nombre";
@@ -216,31 +216,27 @@ function validar(formulario) {
 								if ($numInsumoProducto == 1) {?>
 							  		<tr>
 										<td>	
-											<input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>" checked="checked"/>
-										</td>
+											<input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>" checked="checked"/>										</td>
 										<td>
-											<?php echo "[".$rowInsumos['nombre']."] " ?>
-										</td>
+											<?php echo "[".$rowInsumos['nombre']."] " ?>										</td>
 									</tr>
 								<?php } else { ?>
 								 	<tr>
 										<td>
-											<input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>"/>
-										</td>
+											<input name="insumo<?php echo $rowInsumos['id'] ?>" id="insumo<?php echo $rowInsumos['id'] ?>" type="checkbox" value="<?php echo $rowInsumos['id'] ?>"/>										</td>
 										<td>
-											<?php echo "[".$rowInsumos['nombre']."] " ?>
-										</td>
+											<?php echo "[".$rowInsumos['nombre']."] " ?>										</td>
 									</tr>
 						<?php  }
 							}	?>     
-						</table>
-					</td>
+						</table>					</td>
+                    <td colspan="2"><div align="center">
+                      <input type="submit" name="Submit" value="Guardar" sub/>
+                    </div></td>
                   </tr>
                 </table>
 
-				<p>
-				  <input type="submit" name="Submit" value="Guardar" sub/>
-			   </p>
+			   <p>&nbsp;</p>
   </form>
 </div>
 </body>
