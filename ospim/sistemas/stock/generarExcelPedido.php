@@ -50,7 +50,7 @@ try {
 	$fila=1;	
 	while ($rowInsumos = mysql_fetch_assoc($resInsumos)) { 
 		$fila++;
-		$nombre = $rowInsumos['nombre'];
+		$nombre = $rowInsumos['nombre']."(".$rowInsumos['numeroserie'].")";
 		$descri = $rowInsumos['descripcion'];
 		$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $nombre);
 		$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $descri);
