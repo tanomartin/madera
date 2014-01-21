@@ -141,15 +141,15 @@ $canInsumo = mysql_num_rows($resInsumo);
 						<?php 
 							$color = "";
 							$estado = " - ";
-							if ($rowInsumos['cantidad'] <= $rowInsumos['puntopromedio']) {
+							if ($rowInsumo['cantidad'] <= $rowInsumo['puntopromedio']) {
 								$color = "#CC9999";
 								$estado = "PUNTO PROMEDIO";
 							}
-							if ($rowInsumos['cantidad'] <= $rowInsumos['puntopedido']) {
+							if ($rowInsumo['cantidad'] <= $rowInsumo['puntopedido']) {
 								$color = "#CC33CC";
 								$estado = "PUNTO PEDIDO";
 							}
-							if ($rowInsumos['cantidad']  <= $rowInsumos['stockminimo']) {
+							if ($rowInsumo['cantidad']  <= $rowInsumo['stockminimo']) {
 								$color = "#FF0000";
 								$estado = "STOCK";
 							}				
