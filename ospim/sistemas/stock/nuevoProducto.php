@@ -132,7 +132,7 @@ function validar(formulario) {
                     <td>
 					<table>
 					<?php
-						$sqlInsumos = "SELECT * FROM insumo";
+						$sqlInsumos = "SELECT * FROM insumo order by nombre";
 						$resInsumos = mysql_query($sqlInsumos,$db); 
 						while ($rowInsumos = mysql_fetch_array($resInsumos)) {?>
                       		<tr>
