@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 
-var_dump($_POST);
+//var_dump($_POST);
 $fechasoli = fechaParaGuardar($_POST['fecsoli']);
 $descripcion = $_POST['descripcion'];
 
@@ -10,7 +10,7 @@ $sqlInsertCabPedido = "INSERT INTO cabpedidos VALUE(DEFAULT,'$fechasoli','$descr
 
 
 $datos = array_values($_POST);
-var_dump($datos);
+//var_dump($datos);
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
