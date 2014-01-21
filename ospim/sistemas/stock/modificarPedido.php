@@ -140,21 +140,21 @@ $canInsumo = mysql_num_rows($resInsumo);
 						<td><?php echo $rowInsumo['stockminimo'] ?></td>
 						<?php 
 							$color = "";
-							$estado = " - ";
+							$estado = " ";
 							if ($rowInsumo['cantidad'] <= $rowInsumo['puntopromedio']) {
 								$color = "#CC9999";
-								$estado = "PUNTO PROMEDIO";
+								$estado = " - PUNTO PROMEDIO";
 							}
 							if ($rowInsumo['cantidad'] <= $rowInsumo['puntopedido']) {
 								$color = "#CC33CC";
-								$estado = "PUNTO PEDIDO";
+								$estado = "- PUNTO PEDIDO";
 							}
 							if ($rowInsumo['cantidad']  <= $rowInsumo['stockminimo']) {
 								$color = "#FF0000";
-								$estado = "STOCK";
+								$estado = "- STOCK";
 							}				
 						?>
-						<td style="color:<?php echo $color ?>"><?php echo $rowInsumo['cantidad']." - ".$estado ?></td>
+						<td style="color:<?php echo $color ?>"><?php echo $rowInsumo['cantidad'].$estado ?></td>
 						<td> 
 							<input style="visibility:hidden" name="idInsumo<?php echo $i ?>" id="idInsumo<?php echo $i ?>" size="4" value="<?php echo $rowInsumo['id'] ?>"/>
 						<?php			
