@@ -147,7 +147,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 		</tr>
 	 <?php $i++;} ?>
 	 	<tr>
-			<td colspan="5"><div align="right"><strong>TOTAL</strong></div></td>
+			<td colspan="6"><div align="right"><strong>TOTAL</strong></div></td>
 			<td><input name="total" id="total" type="text" size="10" value="<?php echo  $total ?>" readonly="readonly" style="background-color:#CCCCCC" /></td>
 			<td>&nbsp;</td>
 		</tr>

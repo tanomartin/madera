@@ -5,7 +5,7 @@ require_once($libPath."phpExcel/Classes/PHPExcel.php");
 $id = $_GET['id'];
 $maquina = $_SERVER['SERVER_NAME'];
 $fechapedido = date("d-m-Y His");
-$nombre = "Pedido De Insumos OSPIM ".$fechapedido.".xls";
+$nombre = "Pedido Cotizacion OSPIM ".$fechapedido.".xls";
 
 if(strcmp("localhost",$maquina)==0) {
 	$archivoPedido=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/stock/Pedidos/$nombre";
@@ -30,55 +30,44 @@ try {
 	$objPHPExcel->getActiveSheet()->getPageSetup()->setHorizontalCentered(true);
 	$objPHPExcel->getActiveSheet()->getPageSetup()->setVerticalCentered(false);
 	
-	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(45);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(54);
 	$objPHPExcel->getActiveSheet()->setCellValue('A1', 'Producto');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(45);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(54);
 	$objPHPExcel->getActiveSheet()->setCellValue('B1', 'Descripción');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(10);
-	$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Cantidad');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
-	$objPHPExcel->getActiveSheet()->setCellValue('D1', 'Costo Unitario');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-	$objPHPExcel->getActiveSheet()->setCellValue('E1', 'Costo Total');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+	$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Costo Unitario');
 	
  	$objPHPExcel->getDefaultStyle()->getFont()->setName('Arial');
 	$objPHPExcel->getDefaultStyle()->getFont()->setSize(12);
 	
-	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:C1')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:C1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:C1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcel->getActiveSheet()->getStyle('A1:C1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-	$sqlInsumos = "SELECT * FROM detpedidos d, insumo i WHERE d.idpedido = '$id' and d.idinsumo = i.id";
+	$sqlInsumos = "SELECT * FROM detpedidos d, insumo i WHERE d.idpedido = '$id' and d.idinsumo = i.id order by nombre";
 	$resInsumos = mysql_query($sqlInsumos,$db);
 	$fila=1;	
 	while ($rowInsumos = mysql_fetch_assoc($resInsumos)) { 
 		$fila++;
 		$nombre = $rowInsumos['nombre']." (".$rowInsumos['numeroserie'].")";
 		$descri = $rowInsumos['descripcion'];
-		$canti = $rowInsumos['cantidadpedido'];
-		$costoU = $rowInsumos['costounitario'];
-		$totalC = (float)($canti * $costoU);
 		$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $nombre);
 		$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $descri);
-		$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $canti);
-		$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $costoU);
-		$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $totalC);
+		$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, 0);
 	}
 	$filaTotal = $fila+2;
-	$objPHPExcel->getActiveSheet()->setCellValue('D'.$filaTotal, "TOTAL");
-	$objPHPExcel->getActiveSheet()->setCellValue('E'.$filaTotal, "=SUM(E2:E".($fila).")");
+	$objPHPExcel->getActiveSheet()->setCellValue('B'.$filaTotal, "TOTAL");
+	$objPHPExcel->getActiveSheet()->setCellValue('C'.$filaTotal, "=SUM(C2:C".($fila).")");
 	
 	
 	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$filaTotal)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$filaTotal)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	$objPHPExcel->getActiveSheet()->getStyle('E2:E'.$filaTotal)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$objPHPExcel->getActiveSheet()->getStyle('E2:E'.$filaTotal)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	$objPHPExcel->getActiveSheet()->getStyle('C'.$filaTotal)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	$objPHPExcel->getActiveSheet()->getStyle('D'.$filaTotal)->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('E'.$filaTotal)->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('C2:C'.$filaTotal)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+	$objPHPExcel->getActiveSheet()->getStyle('C2:C'.$filaTotal)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+	$objPHPExcel->getActiveSheet()->getStyle('B'.$filaTotal)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+	$objPHPExcel->getActiveSheet()->getStyle('B'.$filaTotal)->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('C'.$filaTotal)->getFont()->setBold(true);
 	
 	
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');

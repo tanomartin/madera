@@ -42,9 +42,14 @@ include($libPath."fechas.php");
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 	
-	function generarExcel(id) {
-		$.blockUI({ message: "<h1>Generando Archivo de Pedido de Cotizacion</h1>" });
-		dire = "generarExcelPedido.php?id="+id;
+	function generarExcel(id,tipo) {
+		if (tipo == "cotiza") {
+			$.blockUI({ message: "<h1>Generando Archivo de Pedido de Cotizacion</h1>" });
+			dire = "generarExcelPedidoCotizacion.php?id="+id;
+		} else {
+			$.blockUI({ message: "<h1>Generando Archivo de Pedido de Insumos</h1>" });
+			dire = "generarExcelPedido.php?id="+id;
+		}	
 		location.href=dire;
 	}
 	
@@ -90,7 +95,7 @@ include($libPath."fechas.php");
 					<td><?php echo $rowPedido['costototal'] ?></td>
 					<td><?php if($rowPedido['fechacierre'] != "0000-00-00") {echo invertirFecha($rowPedido['fechacierre']); } ?></td>
 					<td><?php if($rowPedido['fechacierre'] == "0000-00-00") { ?>
-								<a href='modificarPedido.php?id=<?php echo $rowPedido['id'] ?>'>Modificar Pedido</a> - <a href='modifDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Datos Proveedor</a> - <a href='javascript:generarExcel("<?php echo $rowPedido['id'] ?>")'>Pedido Cotizacion </a>
+								<a href='modificarPedido.php?id=<?php echo $rowPedido['id'] ?>'>Modificar Pedido</a> - <a href='cargarDatosProvedor.php?id=<?php echo $rowPedido['id'] ?>'>Datos Proveedor</a> - <a href='javascript:generarExcel("<?php echo $rowPedido['id'] ?>","cotiza")'>Cotizacion </a> - <a href='javascript:generarExcel("<?php echo $rowPedido['id'] ?>","pedido")'>Pedido</a>
 					 	<?php } else { ?>
 					  			<a href='verDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Ver Detalle</a>
 					  <?php } ?>

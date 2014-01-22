@@ -72,6 +72,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 		<tr>
 		  <th>Codigo</th>
 		  <th>Nombre</th>
+		  <th>Descripcion</th>
 		  <th>Cant. Pedido</th>
 		  <th>Costo Unitario</th>
 		  <th>Cant. Entregado</th>
@@ -86,6 +87,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 				<tr align="center">
 					<td><?php echo $rowDetPedido['id'] ?></td>
 					<td><?php echo $rowDetPedido['nombre'] ?></td>	
+					<td><?php echo $rowDetPedido['descripcion'] ?></td>	
 					<td><?php echo $rowDetPedido['cantidadpedido'] ?></td>
 					<td><?php echo $rowDetPedido['costounitario'] ?></td>
 					<td><?php echo $rowDetPedido['cantidadentregada'] ?></td>
@@ -99,7 +101,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 		</tr>
 	 <?php $i++;} ?>
 	 	<tr>
-			<td colspan="5"><div align="right"><strong>TOTAL</strong></div></td>
+			<td colspan="6"><div align="right"><strong>TOTAL</strong></div></td>
 			<td align="center"><?php echo  $total ?></td>
 			<td>&nbsp;</td>
 		</tr>
