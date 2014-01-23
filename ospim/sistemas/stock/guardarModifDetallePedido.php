@@ -15,8 +15,8 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 	$totalPedido = 0;
+	$cantCerrados = 0;
 	for ($i = 0; $i < $cantinsumos; $i++) {
-		
 		$campo = "id".$i;
 		$id = $_POST[$campo];
 		$campo = "cantidad".$i;
@@ -33,8 +33,8 @@ try {
 		$entregado = $_POST[$campo];
 		$campo = "descrip".$i;
 		$descrip =$_POST[$campo];
-		
 		if($entregado == $cantidad)  {
+			$cantCerrados = $cantCerrados + 1;
 			$fechacierre = date("Y-m-d");
 		} else {
 			$fechacierre = "DEFAULT";
@@ -44,13 +44,7 @@ try {
 		$dbh->exec($sqlUpdatePedido);
 	}
 	
-	$sqlVeoCierre = "SELECT * FROM detpedidos WHERE idpedido = $idPedido and fechacierre = '0000-00-00'";
-	print($sqlVeoCierre."<br>");
-	$resVeoCierre = mysql_query($sqlVeoCierre,$db);
-	$canVeoCierre = mysql_num_rows($resVeoCierre);
-	print($canVeoCierre."<br>");
-	
-	if ($canVeoCierre == 0) {
+	if ($cantCerrados == $cantinsumos) {
 		$fechacierre = date("Y-m-d");
 	} else {
 		$fechacierre = "0000-00-00";
