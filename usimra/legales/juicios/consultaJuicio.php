@@ -16,7 +16,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#B2A274">
 <form name="verificador">
-  <div align="center"><input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit ?>'" align="center"/> </div>
+  <div align="center">
+  <?php 
+		$origen = $_GET['origen'];
+		if (is_null($origen)) { ?>
+			  <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit ?>'" align="center"/> 
+	<?php } ?>  
+  </div>
   <div align="center">
     <?php 
 	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php"); 

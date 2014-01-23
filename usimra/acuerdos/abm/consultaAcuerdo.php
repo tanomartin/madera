@@ -18,7 +18,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#B2A274">
 <form name="verificador">
   <div align="center">
-  	<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/>
+  <?php 
+		$origen = $_GET['origen'];
+		if (is_null($origen)) { ?>
+			<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/>
+	<?php } ?>
   </div>
   <div align="center">
     <?php 
