@@ -80,6 +80,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 			$rowJuicio = mysql_fetch_array($resJuicio); 
 			$statusDeuda = $rowJuicio['statusdeuda'];
 			$nrocertificado = $rowJuicio['nrocertificado'];
+			$nroorden = $rowJuicio['nroorden'];
 			if ($statusDeuda == 1) {
 				$des = "J.EJEC";
 			}
@@ -89,11 +90,11 @@ function reverificaFueraTermino($ano, $me, $db) {
 			if ($statusDeuda == 3) {
 				$des = "J.QUIEB";
 			}
-			$des = $des." (".$nrocertificado.")";
+			$des = $des." (".$nrocertificado.")-".$nroorden;
 			return($des);
 		} else {
 			// VEO LOS REQ DE FISC
-			$sqlReq = "select r.nrorequerimiento from reqfiscalizusimra r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+			$sqlReq = "select r.nrorequerimiento from reqfiscalizusimra r, detfiscalizusimra d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
 			$resReq = mysql_query($sqlReq,$db); 
 			$CantReq = mysql_num_rows($resReq); 
 			if($CantReq > 0) {
@@ -111,7 +112,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 function encuentroPagos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
 	//CAMBIAR A USIMRA
-	$sqlPagos = "select anopago, mespago, fechapago from ???????? where cuit = $cuit and (concepto = '381' or concepto = '401') and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
+	$sqlPagos = "select anopago, mespago, fechapago from seguvidausimra where cuit = $cuit and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
@@ -149,61 +150,72 @@ function estado($ano, $me, $db) {
 				return($des);
 			}
 		}
-	
-		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosusimra c, detacuerdosusimra d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
-		$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
-		$CantAcuerdos = mysql_num_rows($resAcuerdos); 
-		if($CantAcuerdos > 0) {
-			$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
-			$nroacuerdo = $rowAcuerdos['nroacuerdo'];
-			if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
-				$des = "P. ACUER.-".$nroacuerdo;
-			} else {
-				$des = "ACUER.-".$nroacuerdo;
-			}
+			
+		//VEO PAGO DIFERENCIADO ANTES DE ACUERDOS
+		$sqlPagDif = "select * from periodosanterioresusimra where cuit = $cuit and anoanterior = $ano and mesanterior = $me";
+		$resPagDif = mysql_query($sqlPagDif,$db); 
+		$CantPagDif = mysql_num_rows($resPagDif); 
+		if($CantPagDif > 0) {
+			$rowPagDif = mysql_fetch_array($resPagDif); 
+			$perPago = $rowPagDif['mespago']."-".$rowPagDif['anopago'];
+			$des = "P. DIF. (".$perPago.")";
 		} else {
-			//VEO LOS JUICIOS
-			$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosusimra c, detjuiciosusimra d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
-			$resJuicio = mysql_query($sqlJuicio,$db); 
-			$CantJuicio = mysql_num_rows($resJuicio); 
-			if ($CantJuicio > 0) {
-				$rowJuicio = mysql_fetch_array($resJuicio); 
-				$statusDeuda = $rowJuicio['statusdeuda'];
-				$nrocertificado = $rowJuicio['nrocertificado'];
-				if ($statusDeuda == 1) {
-					$des = "J.EJEC";
-				}
-				if ($statusDeuda == 2) {
-					$des = "J.CONV";
-				}
-				if ($statusDeuda == 3) {
-					$des = "J.QUIEB";
-				}
-				$des = $des." (".$nrocertificado.")";
-			} else {
-				// VEO LOS REQ DE FISC
-				$sqlReq = "select r.nrorequerimiento from reqfiscalizusimra r, detfiscalizusimra d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
-				$resReq = mysql_query($sqlReq,$db); 
-				$CantReq = mysql_num_rows($resReq); 
-				if($CantReq > 0) {
-					$rowReq = mysql_fetch_array($resReq); 
-					$nroreq = $rowReq['nrorequerimiento'];
-					$des = "REQ. (".$nroreq.")";
+			// VEO LOS PERIODOS ABARCADOS POR ACUERDO
+			$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosusimra c, detacuerdosusimra d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
+			$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
+			$CantAcuerdos = mysql_num_rows($resAcuerdos); 
+			if($CantAcuerdos > 0) {
+				$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
+				$nroacuerdo = $rowAcuerdos['nroacuerdo'];
+				if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
+					$des = "P. ACUER.-".$nroacuerdo;
 				} else {
-					// VEO LAS DDJJ REALIZADAS SIN PAGOS
-					$sqlDDJJ = "select * from cabddjjusimra where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
-					$resDDJJ = mysql_query($sqlDDJJ,$db); 
-					$CantDDJJ = mysql_num_rows($resDDJJ); 
-					if($CantDDJJ > 0) {
-						$des = "NO PAGO";
+					$des = "ACUER.-".$nroacuerdo;
+				}
+			} else {
+				//VEO LOS JUICIOS
+				$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosusimra c, detjuiciosusimra d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
+				$resJuicio = mysql_query($sqlJuicio,$db); 
+				$CantJuicio = mysql_num_rows($resJuicio); 
+				if ($CantJuicio > 0) {
+					$rowJuicio = mysql_fetch_array($resJuicio); 
+					$statusDeuda = $rowJuicio['statusdeuda'];
+					$nrocertificado = $rowJuicio['nrocertificado'];
+					$nroorden = $rowJuicio['nroorden'];
+					if ($statusDeuda == 1) {
+						$des = "J.EJEC";
+					}
+					if ($statusDeuda == 2) {
+						$des = "J.CONV";
+					}
+					if ($statusDeuda == 3) {
+						$des = "J.QUIEB";
+					}
+					$des = $des." (".$nrocertificado.")-".$nroorden;
+				} else {
+					// VEO LOS REQ DE FISC
+					$sqlReq = "select r.nrorequerimiento from reqfiscalizusimra r, detfiscalizusimra d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
+					$resReq = mysql_query($sqlReq,$db); 
+					$CantReq = mysql_num_rows($resReq); 
+					if($CantReq > 0) {
+						$rowReq = mysql_fetch_array($resReq); 
+						$nroreq = $rowReq['nrorequerimiento'];
+						$des = "REQ. (".$nroreq.")";
 					} else {
-						// NO HAY DDJJ SIN PAGOS
-						$des = "S.DJ.";
-					} //else DDJJ
-				}//else REQ
-			} //else JUICIOS
-		}//else ACUERDOS
+						// VEO LAS DDJJ REALIZADAS SIN PAGOS
+						$sqlDDJJ = "select * from tempddjjusimra where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
+						$resDDJJ = mysql_query($sqlDDJJ,$db); 
+						$CantDDJJ = mysql_num_rows($resDDJJ); 
+						if($CantDDJJ > 0) {
+							$des = "NO PAGO";
+						} else {
+							// NO HAY DDJJ SIN PAGOS
+							$des = "S.DJ.";
+						} //else DDJJ
+					}//else REQ
+				} //else JUICIOS
+			}//else ACUERDOS
+		} //else PAGO DIF
 		return $des;
 } //function
 
@@ -213,16 +225,23 @@ function imprimeTabla($periodo) {
 	$ano = $periodo['anio'];
 	$me = $periodo['mes'];
 	if ($estado == 'P.F.T.' or $estado == 'PAGO') {
-		print ("<td width=81><a href=javascript:abrirInfo('detallePagos.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
+		print ("<td><a href=javascript:abrirInfo('detallePagosUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
 	} else {
 		if ($estado == 'NO PAGO') {
-			print ("<td width=81><a href=javascript:abrirInfo('detalleDDJJ.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
+			print ("<td><a href=javascript:abrirInfo('detalleDDJJUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
 		} else {
 			$pacuerdo = explode('-',$estado);
 			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {
-				print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>"); 
+				print ("<td><a href=javascript:abrirInfo('/usimra/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>"); 
 			} else {
-				print ("<td width=81>".$estado."</a></td>");
+				$juicioEstado = explode('-',$estado);
+				$pjuicio = explode('(',$juicioEstado[0]);
+				if ($pjuicio[0] == 'J.CONV ' or $pjuicio[0] == 'J.QUIEB ' or $pjuicio[0] == 'J.EJEC ') {
+					$nroorden = $juicioEstado[1];
+					print ("<td><a href=javascript:abrirInfo('/usimra/legales/juicios/consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."&origen=empresa')>".$juicioEstado[0]."</a></td>"); 
+				} else {
+					print ("<td>".$estado."</a></td>");
+				}
 			}
 		}
 	}
@@ -248,24 +267,24 @@ function imprimeTabla($periodo) {
    		<p><strong>Fecha Baja Empresa: <?php echo invertirFecha($fechaBaja) ?></strong></p>
 	<?php } ?>	
 	
-   <table width="1024" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
+   <table width="1132" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
   <tr>
-    <td width="52" rowspan="2"><span class="Estilo6">A&Ntilde;OS</span></td>
+    <td  width='40' rowspan="2"><span class="Estilo6">A&Ntilde;OS</span></td>
     <td colspan="12"><span class="Estilo6">MESES</span></td>
   </tr>
   <tr> 
-	<td width="81" class="Estilo6">Enero</td>
-    <td width="81" class="Estilo6">Febrero</td>
-    <td width="81" class="Estilo6">Marzo</td>
-    <td width="81" class="Estilo6">Abril</td>
-    <td width="81" class="Estilo6">Mayo</td>
-    <td width="81" class="Estilo6">Junio</td>
-    <td width="81" class="Estilo6">Julio</td>
-    <td width="81" class="Estilo6">Agosto</td>
-    <td width="81" class="Estilo6">Setiembre</td>
-    <td width="81" class="Estilo6">Octubre</td>
-    <td width="81" class="Estilo6">Noviembre</td>
-    <td width="81" class="Estilo6">Diciembre</td>
+	<td width="91" class="Estilo6">Enero</td>
+    <td width="91" class="Estilo6">Febrero</td>
+    <td width="91" class="Estilo6">Marzo</td>
+    <td width="91" class="Estilo6">Abril</td>
+    <td width="91" class="Estilo6">Mayo</td>
+    <td width="91" class="Estilo6">Junio</td>
+    <td width="91" class="Estilo6">Julio</td>
+    <td width="91" class="Estilo6">Agosto</td>
+    <td width="91" class="Estilo6">Setiembre</td>
+    <td width="91" class="Estilo6">Octubre</td>
+    <td width="91" class="Estilo6">Noviembre</td>
+    <td width="91" class="Estilo6">Diciembre</td>
   </tr>
 <?php
 
@@ -275,7 +294,7 @@ if ($arrayPagos==0){
 }
 while($ano<=$anofin) {
   	print("<tr>");
-  	print("<td width='52'><strong>".$ano."</strong></td>");
+  	print("<td><strong>".$ano."</strong></td>");
 	for ($i=1;$i<13;$i++){
 		$idArray = $ano.$i;
 		if (!array_key_exists($idArray, $arrayPagos)) {
@@ -299,7 +318,7 @@ while($ano<=$anofin) {
 ?>
 </table>
 <br>
-<table width="1024" border="0" style="font-size:12px">
+<table width="1130" border="0" style="font-size:12px">
   <tr>
   	<td>*PAGO =  PAGO CON DDJJ</td>
 	<td>*P. ACUER. =  PAGO POR ACUERDO </td>
@@ -309,13 +328,13 @@ while($ano<=$anofin) {
   <tr>
     <td>*NO PAGO =  NO PAGO CON DDJJ</td>
 	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
-	<td>*REQ. (nro. requerimiento) = FISCALIZADO</td>
+	<td>*REQ. (nro. req.) = FISCALIZADO</td>
     <td>*J.EJEC (nro. orden) = EN JUICIO EJECUCI&Oacute;N </td>
   </tr>
   <tr>
     <td>*J.CONV (nro. orden) = EN JUICIO CONVOCATORIA </td>
     <td>*J.QUIEB (nro. orden) = EN JUICIO QUIEBRA </td>
-    <td>&nbsp;</td>
+    <td>*P. DIF. (Per. Pago) = PAGO EN PERIODO POSTERIOR </td>
     <td>&nbsp;</td>
   </tr>
 </table>
