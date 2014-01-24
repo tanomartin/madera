@@ -69,12 +69,12 @@ include($libPath."fechas.php");
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlConsumo = "SELECT * FROM consumoinsumo c, insumo i WHERE i.id = c.idinsumo";
+			$sqlConsumo = "SELECT c.*, i.nombre as nombre FROM consumoinsumo c, insumo i WHERE i.id = c.idinsumo";
 			$resConsumo = mysql_query($sqlConsumo,$db);
 			$canConsumo = mysql_num_rows($resConsumo);
 			while ($rowConsumo = mysql_fetch_assoc($resConsumo)) { ?>
 			<tr align="center">
-					<td><?php echo $rowConsumo['idinsumo'] ?></td>
+					<td><?php echo $rowConsumo['id'] ?></td>
 					<td><?php echo $rowConsumo['nombre']?></td>
 					<td><?php 
 						$idInsumo = $rowConsumo['idinsumo'];
