@@ -19,6 +19,11 @@ function abrirAcuerdos(dire) {
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 
+function abrirAportes(dire) {
+	a= window.open(dire,"AportesUsimra",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+}
+
 function abrirEmpresa(dire) {
 	c= window.open(dire,"EmpresasUsimra",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=500, height=500, top=185, left=840");
@@ -31,6 +36,11 @@ function abrirLegales(dire) {
 
 function abrirAportes(dire) {
 	c= window.open(dire,"AportesUsimra",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+}
+
+function abrirBanco(dire) {
+	c= window.open(dire,"BancoUsimra",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 
@@ -77,7 +87,11 @@ function abrirFiscalizacion(dire) {
       <p><a href="javascript:abrirLegales('moduloNoDisponible.php')"><img src="img/juicios.png" width="90" height="90" border="0"/></a></p>
       <p>&nbsp;</p>
 	  </div></td>
-	  <td></td>
+	  <td><div align="center">
+	  <p>Banco </p>
+      <p><a href="javascript:abrirBanco('moduloNoDisponible.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
+      <p>&nbsp;</p>
+	   </div></td>
     </tr>
   </table>
    <p><strong><a href="logout.php">
