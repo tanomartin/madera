@@ -129,7 +129,7 @@ function rediSabanaCtaCte(origen) {
 		$resCabJuicios = mysql_query($sqlCabJuicios,$db); 
 		$canCabJuicios = mysql_num_rows($resCabJuicios); 
 	
-		$controlAcuYJuicios = $CantAcuOspim + $CantAcuUsimra + canCabJuicios;
+		$controlAcuYJuicios = $CantAcuOspim + $CantAcuUsimra + $canCabJuicios;
 		$CanDdjj = 0;
 		if ($controlAcuYJuicios == 0) {
 			//TOMO LOS LIMIETES DE MES Y ANIO
