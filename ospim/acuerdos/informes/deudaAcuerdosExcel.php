@@ -92,7 +92,7 @@ try{
 
 	$fila=1;	
 
-	$sqlAcuerdos="SELECT * FROM cabacuerdosospim WHERE estadoacuerdo = 1 and tipoacuerdo = 1 and fechaacuerdo >= $fechainicio and fechaacuerdo <= $fechafin order by fechaacuerdo, cuit, nroacuerdo";
+	$sqlAcuerdos="SELECT * FROM cabacuerdosospim c, empresas e WHERE c.estadoacuerdo = 1 and c.tipoacuerdo = 1 and c.fechaacuerdo >= $fechainicio and c.fechaacuerdo <= $fechafin and c.cuit = e.cuit order by c.fechaacuerdo, c.cuit, c.nroacuerdo";
 	$resultAcuerdos = $dbh->query($sqlAcuerdos);
 	if ($resultAcuerdos){
 		foreach ($resultAcuerdos as $acuerdos){
