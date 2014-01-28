@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 
 $cuit=$_GET['cuit'];
@@ -58,7 +58,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <title>.: Pagos Empresa :.</title>
 </head>
-<body bgcolor=<?php echo $bgcolor ?>>
+<body bgcolor="#CCCCCC">
 <div align="center">
   <table width="774" border="1">
     <tr>

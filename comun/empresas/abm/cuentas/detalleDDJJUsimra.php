@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 
 $cuit=$_GET['cuit'];
@@ -39,7 +39,7 @@ function abrirInfo(dire) {
 
 <title>.: DDJJ Empresa :.</title>
 </head>
-<body bgcolor=<?php echo $bgcolor ?>>
+<body bgcolor="#B2A274">
 <div align="center">
   <table width="774" border="1">
     <tr>

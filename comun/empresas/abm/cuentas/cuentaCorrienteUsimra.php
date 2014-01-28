@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
 set_time_limit(0);
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 $cuit=$_GET['cuit'];
@@ -249,7 +249,7 @@ function imprimeTabla($periodo) {
 
 ?>
 <title>.: Cuenta Corriente Empresa :.</title>
-<body bgcolor=<?php echo $bgcolor ?>>
+<body bgcolor="#B2A274">
 <div align="center">
 	<?php if ($tipo == "activa") { ?>
 			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
