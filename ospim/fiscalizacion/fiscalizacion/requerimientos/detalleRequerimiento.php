@@ -145,11 +145,11 @@ function validar(formulario) {
 					}
 					
 					if ($rowDeta['statusfiscalizacion'] == 'M' || $rowDeta['statusfiscalizacion'] == 'F') {
-						$dire = "/comun/empresas/abm/cuentas/detallePagos.php?origen=ospim&cuit=".$cuit."&anio=".$ano."&mes=".$mes;
+						$dire = "/comun/empresas/abm/cuentas/detallePagos.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
 						print ("<td><a href=javascript:abrirInfo('".$dire."')>Pago</a></td>");
 					} else {
 						if ($rowDeta['statusfiscalizacion'] == 'A') {
-							$dire = "/comun/empresas/abm/cuentas/detalleDDJJ.php?origen=ospim&cuit=".$cuit."&anio=".$ano."&mes=".$mes;
+							$dire = "/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
 							print ("<td><a href=javascript:abrirInfo('".$dire."')>DDJJ</a></td>");
 						} else {
 							print("<td>-</td>"); 

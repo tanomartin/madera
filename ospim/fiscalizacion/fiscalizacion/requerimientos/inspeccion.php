@@ -52,33 +52,39 @@ function validar(formulario) {
 		<input name="fechareq" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
 	  <p class="Estilo2">Inpecci&oacute;n  del  Requerimiento Nro. <?php echo $nroreq ?></p>
-		<table width="355" border="0">
+		<table width="600" border="0">
 		  <tr>
-			<td width="201"><div align="right">Requerimiento a Inspeccionar:</div></td>
-			<td><input name="nroreq" type="text" value="<?php echo $nroreq?>" readonly="readonly" style="background-color:#CCCCCC"/></td>
+			<td><div align="right">Requerimiento a Inspeccionar:</div></td>
+			<td><div align="left">
+			  <input name="nroreq" type="text" value="<?php echo $nroreq?>" readonly="readonly" style="background-color:#CCCCCC"/>
+		    </div></td>
 		  </tr>
 		  <tr>
-			<td width="201"><div align="right">Fecha de Inspección:</div></td>
-			<td><input name="fechainsp" type="text" value="<?php echo $fechaInspec?>" readonly="readonly" style="background-color:#CCCCCC"/></td>
+			<td><div align="right">Fecha de Inspección:</div></td>
+			<td><div align="left">
+			  <input name="fechainsp" type="text" value="<?php echo $fechaInspec?>" readonly="readonly" style="background-color:#CCCCCC"/>
+		    </div></td>
 		  </tr>
 		   <tr>
-			<td colspan="2">
-			  <div align="center">
-			    <select name="inpector" id="inspector" >
-			      <option value=0>Seleccionar Inspector</option>
-			<?php 
+			<td>
+			  
+	          <div align="right">Inspector	           </div></td>
+		    <td><div align="left">
+		      <select name="inpector" id="inspector" >
+		        <option value=0>Seleccionar Inspector</option>
+		        <?php 
 				$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
 				$resInspec=mysql_query($sqlInspec,$db);
 				while ($rowInspec=mysql_fetch_array($resInspec)) { ?>
-			    	  <option value="<?php echo $rowInspec['codigo'] ?>"><?php echo $rowInspec['apeynombre'] ?></option>
-			  <?php } ?>
-		        </select>
-	           </div></td>
-		  </tr>
+		        <option value="<?php echo $rowInspec['codigo'] ?>"><?php echo $rowInspec['apeynombre'] ?></option>
+		        <?php } ?>
+	          </select>
+	         </div></td>
+	      </tr>
 	  </table>
 
 		<p><input type="submit" name="Submit" id="Submit" value="Mandar a Inspección" /></p>
-	</form>
+  </form>
 
 </div>
 </body>
