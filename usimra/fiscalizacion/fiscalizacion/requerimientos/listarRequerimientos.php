@@ -38,8 +38,27 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
-function validar() {
-	$.blockUI({ message: "<h1>Generando Archivos de Fiscalizacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+function validar(formulario) {
+	var grupo = formulario.requerimientos;
+	var total = grupo.length;
+	if (total == null) {
+		if (!formulario.requerimientos.checked) {
+			alert("Debe seleccionar el o los requerimientos a liquidar");
+			return false;
+		}
+	} else {
+		var checkeados = 0; 
+		for (i = 0; i < total; i++) {
+			if (grupo[i].checked) {
+				checkeados++;
+			}
+		}
+		if (checkeados == 0) {
+			alert("Debe seleccionar el o los requerimientos a liquidar");
+			return false;
+		}
+	}
+	//$.blockUI({ message: "<h1>Generando Archivos de Fiscalizacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	return true;
 }
 
@@ -52,7 +71,7 @@ function validar() {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" align="center"/>
   </span></p>
   	<p class="Estilo2">Listado de  Requerimiento del d&iacute;a <?php echo $fecha ?>  </p>
-	<form id="listadoReque" name="listadoReque" method="post" onSubmit="return validar()" action="liquidar.php?fecha=<?php echo $fecha ?>">
+	<form id="listadoReque" name="listadoReque" method="post" onSubmit="return validar(this)" action="liquidar.php?fecha=<?php echo $fecha ?>">
 	  <table width="1000" border="1" align="center">
         <tr>
           <th>N&uacute;mero</th>
@@ -83,13 +102,13 @@ function validar() {
 				print("<td><a href='detalleRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Editar</a></td>");
 				if ($rowReque['procesoasignado'] == 0) {		
 					print("<td><a href='inspeccion.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Inspecci&oacute;n</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>"); 
-					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' value='".$rowReque['nrorequerimiento']."'></td>"); 
+					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' id='requerimientos' value='".$rowReque['nrorequerimiento']."'></td>"); 
 				} else {
 					$sqlInsp = "SELECT * from inspecfiscalizospim where nrorequerimiento = ".$rowReque['nrorequerimiento'];
 					$resInsp = mysql_query($sqlInsp,$db);
 					$rowInsp = mysql_fetch_array($resInsp);
 					print("<td><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
-					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' value='".$rowReque['nrorequerimiento']."'></td>"); 
+					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' id='requerimientos' value='".$rowReque['nrorequerimiento']."'></td>"); 
 				}        
 				print("</tr>");
 			}
