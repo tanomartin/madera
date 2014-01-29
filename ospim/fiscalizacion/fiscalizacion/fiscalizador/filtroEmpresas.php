@@ -24,7 +24,7 @@ if ($tipo == "delega") {
 		$i = $i + 1;
 	}
 	if (sizeof($listadoEmpresas) == 0) {
-		header ("Location: menuFiscalizador.php?err=2");
+		header ("Location: fiscalizador.php?err=2");
 	}
 } else {
 	$cuit = $datos[7];
