@@ -30,7 +30,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </div>
 <div align="center">
   <p><span class="Estilo2">M&oacute;dulo De Informes</span></p>
-  <table width="614" height="340" border="3">
+  <table width="614" height="506" border="3">
     <tr>
      <td width="196" height="164"><p align="center">Cheques en Cartera</p>
         <p align="center"><a class="enlace" href="chequesCartera.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>
@@ -52,6 +52,15 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="196" height="164"><p align="center">Verificacion de Cuotas </p>
           <p align="center"><a class="enlace" href="verificacionCuotas.php"><img src="img/excellogo.png" width="105" height="106" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
+    </tr>
+    <tr>
+      <td height="164"><p align="center">Distintos Montos </p>
+        <p align="center"><a class="enlace" href="distintoMonto.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>
+      <p align="center">&nbsp;</p></td>
+      <td height="164"><p align="center">Periodos Repetidos </p>
+        <p align="center"><a class="enlace" href="repeticionPeriodos.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
+      <td height="164">&nbsp;</td>
     </tr>
   </table>
 </div>
