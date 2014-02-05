@@ -152,7 +152,7 @@ function validar(formulario) {
 		print ("<td width=168><div align=center><font face=Verdana size=1>".$rowValor['chequenro']."</font></div></td>");
 		print ("<td width=168><div align=center><font face=Verdana size=1>".$rowValor['chequebanco']."</font></div></td>");
 		print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowValor['chequefecha'])."</font></div></td>");
-		print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuota['montocuota']."</font></div></td>");
+		print ("<td width=168><div align=center><font face=Verdana size=1>".number_format($rowCuota['montocuota'],2,',','.')."</font></div></td>");
 		print ("<td width=168><div align=center><input name='idResumen".$i."' type='text' id='idResumen".$i."'/></td></div></td>");
 		print ("<td width=168><div align=center><input name='fechaResumen".$i."' type='text' id='fechaResumen".$i."' size='8'/></td></div></td>");
 		print ("</tr>"); 	
@@ -166,7 +166,7 @@ function validar(formulario) {
 	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
 	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
 	print ("<td width=168><div align=center><font face=Verdana size=1><b>TOTAL</b></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1><b>".$suma."</b></font></div></td>");
+	print ("<td width=168><div align=center><font face=Verdana size=1><b>".number_format($suma,2,',','.')."</b></font></div></td>");
 	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
 	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
 	print ("</tr>"); 

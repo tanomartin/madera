@@ -55,8 +55,7 @@ try {
 		$i = $i + 1;
 		$fechaResumen = fechaParaGuardar($datos[$i]);
 		$i = $i + 1;
-		$sqlUpdateValores = "UPDATE valoresalcobro set idresumenbancario = '$idResumen', fecharesumenbancario = '$fechaResumen', chequenroospim = 		 		'$nroChequeOspim', chequebancoospim = '$banco', chequefechaospim = '$fechaChequeOspim', usuariodepositoospim = '$usuariodeposito', 
-		fechadepositoospim = '$fechadeposito' where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
+		$sqlUpdateValores = "UPDATE valoresalcobro set idresumenbancario = '$idResumen', fecharesumenbancario = '$fechaResumen', chequenroospim = '$nroChequeOspim', chequebancoospim = '$banco', chequefechaospim = '$fechaChequeOspim', usuariodepositoospim = '$usuariodeposito', fechadepositoospim = '$fechadeposito' where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
 	
 		//echo $sqlUpdateValores;  echo "<br>";
 		$dbh->exec($sqlUpdateValores);

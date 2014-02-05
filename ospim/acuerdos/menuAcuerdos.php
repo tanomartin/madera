@@ -38,7 +38,8 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td><p align="center">Valores al Cobro</p>
-      <p align="center"><a class="enlace" href="valores/moduloValores.php"><img src="img/valores.png" width="90" height="90" border="0" /></a></p> <p>&nbsp;</p></td>
+      <p align="center"><a class="enlace" href="valores/menuValores.php"><img src="img/valores.png" width="90" height="90" border="0" /></a></p> 
+      <p>&nbsp;</p></td>
     </tr>
   </table>
   </div>
