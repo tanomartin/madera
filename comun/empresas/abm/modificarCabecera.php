@@ -45,11 +45,11 @@ function cambioProvincia(locali) {
 					$codprovin =  $rowLocali['codprovin'];
 					$sqlProvin = "select * from provincia where codprovin = $codprovin";
 					$resProvin = mysql_query($sqlProvin,$db);
-					$rowProvin = mysql_fetch_array($resProvin)
+					$rowProvin = mysql_fetch_assoc($resProvin)
 				?>
 				document.forms.modifCabeEmpresa.provincia.value = "<?php echo $rowProvin['descrip'] ?>";
 				document.forms.modifCabeEmpresa.indpostal.value = "<?php echo $rowProvin['indpostal'] ?>";
-				document.forms.nuevaCabeEmpresa.codprovin.value = "<?php echo $rowProvin['codprovin'] ?>";
+				document.forms.modifCabeEmpresa.codprovin.value = "<?php echo $rowProvin['codprovin'] ?>";
 			}
 <?php } ?>
 }
