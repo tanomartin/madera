@@ -74,7 +74,7 @@ function abrirDetalle(dire) {
 			while ($rowValores = mysql_fetch_array($resValores)) { ?>
 			<tr align="center">
 					<td><?php echo $rowValores['chequenroospim'] ?></td>
-					<td><?php echo invertirFecha($rowValores['chequefechaospim'])?></td>
+					<td><?php echo $rowValores['chequefechaospim'] ?></td>
 					<td><?php echo $rowValores['chequebancoospim']?></td>
 					<td><a href=javascript:abrirDetalle('detalleValorAlCobro.php?nrocheque=<?php echo $rowValores['chequenroospim'] ?>')>Detalle</a></td>
 			</tr>

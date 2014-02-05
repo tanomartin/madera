@@ -79,7 +79,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<td><?php echo $rowValores['nroacuerdo'] ?></td>
 					<td><?php echo $rowValores['nrocuota'] ?></td>
 					<td><?php echo $rowValores['chequenro'] ?></td>
-					<td><?php echo invertirFecha($rowValores['chequefecha'])?></td>
+					<td><?php echo $rowValores['chequefecha'] ?></td>
 					<td><?php echo $rowValores['chequebanco']?></td>
 					<td align="right"><?php echo number_format($rowValores['montocuota'],2,',','.')?></td>
 			</tr>

@@ -117,7 +117,7 @@ function validar(formulario) {
 					<td><?php echo $rowCuota['montocuota'] ?></td>
 					<td><?php echo $rowLista['chequenro'] ?></td>
 					<td><?php echo $rowLista['chequebanco'] ?></td>
-					<td><?php echo invertirFecha($rowLista['chequefecha']) ?></td>	
+					<td><?php echo $rowLista['chequefecha'] ?></td>	
 					<td><input type='checkbox' name='elegidos[]' id='valores' value='<?php echo $valor ?>' /></td>
 				</tr>	
 		<?php } ?>
