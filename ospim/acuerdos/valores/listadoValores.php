@@ -48,6 +48,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 	});
 	
 function validar(formulario) {
+	if(!formulario.valores) {
+		alert("No hay valores para realizar");
+		return false;
+	}
 	var grupo = formulario.valores;
 	var total = grupo.length;
 	if (total == null) {
