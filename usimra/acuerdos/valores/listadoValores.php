@@ -2,19 +2,7 @@
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 
-$orden = $_POST['orden'];
-
-if ($orden == "") {
- $orden = "cuit";
-}
-
-if ($orden == "cuit") {
-	$titulo = "NRO CUIT";
-} else {
-	$titulo = "FECHA VALOR AL COBRO";
-}
-
-$sqlLista = "select * from valoresalcobrousimra where chequenrousimra = '' order by $orden";
+$sqlLista = "select * from valoresalcobrousimra where chequenrousimra = '' order by cuit";
 $resLista = mysql_query( $sqlLista,$db); 
 
 ?>
@@ -34,68 +22,117 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+<script src="/lib/jquery.js"></script>
+<script src="/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
+<script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+<script type="text/javascript">
+	$(function() {
+		$("#listado")
+		.tablesorter({
+			theme: 'blue', 
+			widthFixed: true, 
+			widgets: ["zebra", "filter"], 
+			headers:{8:{sorter:false, filter:false}},
+			widgetOptions : { 
+				filter_cssFilter   : '',
+				filter_childRows   : false,
+				filter_hideFilters : false,
+				filter_ignoreCase  : true,
+				filter_searchDelay : 300,
+				filter_startsWith  : false,
+				filter_hideFilters : false,
+				
+			}
+		
+		})
+	});
+	
+function validar(formulario) {
+	if(!formulario.valores) {
+		alert("No hay valores para realizar");
+		return false;
+	}
+	var grupo = formulario.valores;
+	var total = grupo.length;
+	if (total == null) {
+		if (!formulario.valores.checked) {
+			alert("Debe seleccionar algún valor al cobro");
+			return false;
+		} else {
+			return true;
+		}
+	}
+	var checkeados = 0; 
+	for (i = 0; i < total; i++) {
+		if (grupo[i].checked) {
+			checkeados++;
+		}
+	}
+	if (checkeados == 0) {
+		alert("Debe seleccionar algún valor al cobro");
+		return false;
+	}
+	return true;
+}
+</script>
 
 
 <body bgcolor="#B2A274">
 <div align="center"> 
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloValores.php'" align="center"/>
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuValores.php'" align="center"/>
 </div>
-<p align="center" class="Estilo2">Listado Valores al Cobro ordenado por <?php echo $titulo ?></p>
+<p align="center" class="Estilo2">Listado Valores al Cobro</p>
 <div align="center">
-  <form id="listado" name="listado" method="post" action="cargaInfoChequeUsimra.php">
+  <form id="listadoValoresUsimra" name="listadoValoresUsimra" onsubmit="return validar(this)" method="post" action="cargaInfoChequeUsimra.php">
     <table width="935" border="0">
       <tr>
-        <td width="462"><label>
-          <input type="submit" name="Submit" value="Valor de Depósito" />
-        </label></td>
-        <td width="463"><div align="right">
-            <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />
-        </div></td>
+        <td><div align="left"><input type="submit" name="Submit" value="Valor de Depósito" /></div></td>
+        <td><div align="right"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" /></div></td>
       </tr>
     </table>
-    <table border="1" width="935" bordercolorlight="#000000" bordercolordark="#000000" bordercolor="#000000" cellpadding="2" cellspacing="0">
-      <tr>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">CUIT</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Raz&oacute;n Social </font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Acuerdo</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Cuota</font></strong></div></td>
-		<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cheque</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Banco</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Cheque</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Seleccionar</font></strong></div></td>
+   
+   <table class="tablesorter" id="listado" style="width:935px; font-size:14px">
+     <thead>
+	  <tr>
+			<th>CUIT</th>
+			<th>Raz&oacute;n Social</th>
+			<th>Acuerdo</th>
+			<th>Cuota</th>
+			<th>Monto</th>
+			<th>Nro Cheque</th>
+			<th>Banco</th>
+			<th>Fecha Cheque</th>
+			<th>Seleccionar</th>
       </tr>
+	 </thead>
+	 <tbody>
       <?php	
 			while ($rowLista = mysql_fetch_array($resLista)) {
-				
 				$cuit = $rowLista['cuit'];
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$cuit."</font></div></td>");
-				$sqlRazon = "select * from empresas where cuit = $cuit";
-				$resRazon = mysql_query( $sqlRazon,$db); 
-				$rowRazon = mysql_fetch_array($resRazon); 
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowRazon['nombre']."</font></div></td>");
-				
-						
 				$nroacuerdo = $rowLista['nroacuerdo'];
 				$nrocuota = $rowLista['nrocuota'];
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$nroacuerdo."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$nrocuota."</font></div></td>");
-				
-				$sqlCuota = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacuerdo and nrocuota = $nrocuota";
+				$sqlCuota = "select c.*, e.nombre from cuoacuerdosusimra c, empresas e where c.cuit = $cuit and c.nroacuerdo = $nroacuerdo and c.nrocuota = $nrocuota and c.cuit = e.cuit";
 				$resCuota = mysql_query($sqlCuota,$db); 
 				$rowCuota = mysql_fetch_array($resCuota); 
-				
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuota['montocuota']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowLista['chequenro']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowLista['chequebanco']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowLista['chequefecha'])."</font></div></td>");
-				$valor = $cuit.",".$rowLista['nroacuerdo'].",".$rowLista['nrocuota'].",";
-				print ("<td width=168><div align=center><font face=Verdana size=1><input type='checkbox' name='elegidos[]' value='".$valor."' /></font></div></td>");
-				print ("</tr>"); 	
-			}
-			?>
+				$valor = $cuit.",".$rowLista['nroacuerdo'].",".$rowLista['nrocuota'].","; ?>
+				<tr align="center">
+					<td><?php echo $cuit ?> </td>
+					<td><?php echo $rowCuota['nombre'] ?></td>
+				    <td><?php echo $nroacuerdo ?></td>
+					<td><?php echo $nrocuota ?></td>	
+					<td><?php echo $rowCuota['montocuota'] ?></td>
+					<td><?php echo $rowLista['chequenro'] ?></td>
+					<td><?php echo $rowLista['chequebanco'] ?></td>
+					<td><?php echo $rowLista['chequefecha'] ?></td>	
+					<td><input type='checkbox' name='elegidos[]' id='valores' value='<?php echo $valor ?>' /></td>
+				</tr>
+			
+		<?php }?>
+		</tbody>
     </table>
-    <p>&nbsp;</p>
   </form>
   </div>
 </body>
