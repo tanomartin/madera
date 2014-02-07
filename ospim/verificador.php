@@ -9,7 +9,7 @@ if ($_SESSION['usuario'] == $usuario) {
 	header ('location:index.php?error=2');	
 }
 $dbusuario =  mysql_connect($host,$usuario, $clave);
-if (!$dbusuario) {
+if (!$dbusuario or $usuario == "" or $clave == "") {
   	header ('location:index.php?error=1');	
 } else {
 	$_SESSION['host']= $host;
