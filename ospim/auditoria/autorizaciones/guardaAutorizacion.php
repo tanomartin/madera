@@ -204,22 +204,6 @@ try {
 	//echo 'Connected to database remota<br/>';
 	$dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbr->beginTransaction();
-		
-	$sqlActualizaAuto="UPDATE autorizaciones SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
-	//echo $sqlActualizaAuto; echo "<br>";
-	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
-	{
-		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion, fechaemail = :fechaemail WHERE nrosolicitud = :nrosolicitud";
-		//echo $sqlActualizaProcesadas; echo "<br>";
-		$resultActualizaProcesadas = $dbr->prepare($sqlActualizaProcesadas);
-		if($resultActualizaProcesadas->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':rechazoautorizacion' => $recauto, ':fechaemail' => $fecauto, ':nrosolicitud' => $nrosoli)))
-		{
-		}
-	}
-
-	$dbl->commit();
-	$dbr->commit();
 
 	set_time_limit(0);
 
@@ -417,13 +401,30 @@ try {
 		$contenidodoc = fread($fph, filesize($nombrearchivo));
 		fclose($fph);
 //		echo $contenidodoc;
-
-		$sqlAddDocumento="INSERT INTO autorizaciondocumento (nrosolicitud, documentofinal) VALUES (:nrosolicitud, :documentofinal)";
-		$resultAddDocumento = $dbl->prepare($sqlAddDocumento);
-		if($resultAddDocumento->execute(array(':nrosolicitud' => $nrosoli, ':documentofinal' => $contenidodoc)))
+	}
+	
+	$sqlActualizaAuto="UPDATE autorizaciones SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
+	//echo $sqlActualizaAuto; echo "<br>";
+	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
+	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
+	{	
+		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion, fechaemail = :fechaemail WHERE nrosolicitud = :nrosolicitud";
+		//echo $sqlActualizaProcesadas; echo "<br>";
+		$resultActualizaProcesadas = $dbr->prepare($sqlActualizaProcesadas);
+		if($resultActualizaProcesadas->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':rechazoautorizacion' => $recauto, ':fechaemail' => $fecauto, ':nrosolicitud' => $nrosoli)))
 		{
 		}
+		if ($staauto==1)  {
+			$sqlAddDocumento="INSERT INTO autorizaciondocumento (nrosolicitud, documentofinal) VALUES (:nrosolicitud, :documentofinal)";
+			$resultAddDocumento = $dbl->prepare($sqlAddDocumento);
+			if($resultAddDocumento->execute(array(':nrosolicitud' => $nrosoli, ':documentofinal' => $contenidodoc)))
+			{
+			}
+		}
 	}
+
+	$dbl->commit();
+	$dbr->commit();
 
 	$mail->IsSMTP();							// telling the class to use SMTP
 	$mail->Host="smtp.ospim.com.ar"; 			// SMTP server
