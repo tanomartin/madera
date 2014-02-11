@@ -87,7 +87,7 @@ include($libPath."controlSessionOspimSistemas.php");
 		  <th>Codigo</th>
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
-		  <th>Productos</th>
+		  <th>Productos - Usuario</th>
 		  <th>Pto. Prom</th>
 		  <th>Pto. Ped</th>
 		  <th>Stock Min.</th>
@@ -109,7 +109,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td>
 					<?php 
 						$idInsumo = $rowInsumos['id'];
-						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, u.usuario FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
 							if ($rowInsumoProducto['activo'] == 0) {
@@ -117,7 +117,7 @@ include($libPath."controlSessionOspimSistemas.php");
 							} else {
 								$color = "#000000";
 							}
-							print("<font color='$color'> * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto'].")"."</font></br>");
+							print("<font color='$color'> * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto']." - ".$rowInsumoProducto['usuario'].")"."</font></br>");
 						}
 					?>
 					</td>
