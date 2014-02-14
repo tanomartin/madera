@@ -443,7 +443,7 @@ try {
 	$nameto = "";
 	$mail->AddAddress($address, $nameto);
 //	$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
-//	$mail->Send();
+	$mail->Send();
 
 	if($apeauto==1)
 	{
@@ -460,7 +460,7 @@ try {
 		$mail->AddAddress($address, $nameto);
 		$mail->Timeout=120;
 		$mail->AddAttachment($nombrearchivo);
-//		$mail->Send();
+		$mail->Send();
 	}
 
 	if($presauto==1)
@@ -478,7 +478,7 @@ try {
 		$mail->AddAddress($address, $nameto);
 		$mail->Timeout=120;
 		$mail->AddAttachment($nombrearchivo);
-//		$mail->Send();
+		$mail->Send();
 	}
 
 	$pagina = "listarSolicitudes.php";
