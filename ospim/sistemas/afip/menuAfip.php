@@ -47,7 +47,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <tr>
       <td>&nbsp;</td>
       <td><p align="center">Informaci&oacute;n Padr&oacute;n</p>
-        <p align="center"><a class="enlace" href="mailPadron.php" onclick="javascript:return MsgWait()"><img src="img/afippadron.png" alt="enviar" width="90" height="90" border="0"/></a></p>
+        <p align="center"><a class="enlace" href="mailPadrones.php" onclick="javascript:return MsgWait()"><img src="img/afippadron.png" alt="enviar" width="90" height="90" border="0"/></a></p>
       <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
