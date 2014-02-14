@@ -8,10 +8,17 @@ session_start();
 //cambiamos la duración a la cookie de la sesión 
 //antes de hacer los cálculos, compruebo que el usuario está logueado 
 //utilizamos el mismo script que antes 
+
+$maquina = $_SERVER['SERVER_NAME'];
+if(strcmp("localhost",$maquina) == 0) {
+	$redire = "Location://localhost/usimra/logout.php";
+} else {
+	$redire = "Location://Poseidon/usimra/logout.php";
+}
 if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') { 
     //si no está logueado lo envío a la página de autentificación 
 	//TODO que vaya a una pantalla de session caducada....
-	header("Location: http://localhost/usimra/logout.php"); 
+	header($redire); 
 } else { 
     //sino, calculamos el tiempo transcurrido 
     $fechaGuardada = $_SESSION["ultimoAcceso"]; 
@@ -21,7 +28,7 @@ if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') {
     if($tiempo_transcurrido >= 1200) { 
        //si pasaron 10 minutos o más 
 	   //TODO que vaya a una pantalla de session caducada....	
-   	   header("Location: http://localhost/usimra/logout.php"); //envío al usuario a la pag. de autenticación 
+   	   header($redire); //envío al usuario a la pag. de autenticación 
       //sino, actualizo la fecha de la sesión 
  	}else { 
     	$_SESSION["ultimoAcceso"] = $ahora; 
