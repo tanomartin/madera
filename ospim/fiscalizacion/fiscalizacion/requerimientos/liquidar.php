@@ -218,7 +218,10 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			} else {
 				$mes = $arrayDDJJ[$i]['datos']['mesddjj'];
 			}
-			$cuerpoCUIL[$c] = "01/".$mes."/".$arrayDDJJ[$i]['datos']['anoddjj']."|".agregaGuiones($arrayDDJJ[$i]['datos']['cuil'])."|".number_format((float)$arrayDDJJ[$i]['datos']['remundeclarada'],2,',','')."|".$arrayDDJJ[$i]['datos']['adherentes'];
+			$remuDecl = number_format((float)$arrayDDJJ[$i]['datos']['remundeclarada'],2,',','');
+			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
+			$cantAdhe = str_pad($arrayDDJJ[$i]['datos']['adherentes'],4,'0',STR_PAD_LEFT);
+			$cuerpoCUIL[$c] = "01/".$mes."/".$arrayDDJJ[$i]['datos']['anoddjj']."|".agregaGuiones($arrayDDJJ[$i]['datos']['cuil'])."|".$remuDecl."|".$cantAdhe;
 			$c++;
 		}
 	}
@@ -310,6 +313,12 @@ function acuerdosCaidos($cuit, $db) {
 			}
 		}
 		
+		//Colocolo los tamaños fijos.
+		$nroacue = str_pad($nroacue,4,'0',STR_PAD_LEFT);
+		$acueNro = "ACUE".$nroacue;
+		$acta = str_pad($rowAcuerdo['nroacta'],9,'0',STR_PAD_LEFT);
+		$deuda = str_pad($rowAcuerdo['saldoacuerdo'],12,'0',STR_PAD_LEFT);
+		
 		if ($cantVto < 3) {
 			$masTres = 0;
 			for ($i=0; $i < sizeof($fechasVencidas); $i++) {
@@ -319,14 +328,13 @@ function acuerdosCaidos($cuit, $db) {
 				}
 			}
 			if ($masTres > 0) {
-				$cuerpo[$c] = "ACUE".$nroacue."|".$rowAcuerdo['nroacta']."|".$fechasVencidas[0]."|".$rowAcuerdo['fechaacuerdo']."|".$rowAcuerdo['saldoacuerdo'];
+				$cuerpo[$c] = $acueNro."|".$acta."|".invertirFecha($fechasVencidas[0])."|".invertirFecha($rowAcuerdo['fechaacuerdo'])."|".$deuda;
 				$c++;
 			}
 		} else {
-			$cuerpo[$c] = "ACUE".$nroacue."|".$rowAcuerdo['nroacta']."|".$fechasVencidas[0]."|".$rowAcuerdo['fechaacuerdo']."|".$rowAcuerdo['saldoacuerdo'];
+			$cuerpo[$c] = $acueNro."|".$acta."|".invertirFecha($fechasVencidas[0])."|".invertirFecha($rowAcuerdo['fechaacuerdo'])."|".$deuda;
 			$c++;
 		}
-		
 	}
 	return($cuerpo);
 }
@@ -351,13 +359,23 @@ function grabarCabLiquidacion($nroreq, $nombreArcExc, $db) {
 
 function liquidar($nroreq, $cuit, $db) {
 	//CREAMOS PRIMERA LINEA DEL ARCHIVO
-	$sqlJuris = "SELECT * from empresas e, jurisdiccion j, provincia p where j.cuit = $cuit and j.cuit = e.cuit and j.codprovin = p.codprovin order by j.disgdinero DESC limit 1";
+	$sqlJuris = "SELECT e.*, j.*, p.descrip as provincia, l.nomlocali as localidad from empresas e, jurisdiccion j, provincia p, localidades l where j.cuit = $cuit and j.cuit = e.cuit and j.codprovin = p.codprovin and e.codlocali = l.codlocali order by j.disgdinero DESC limit 1";
 	$resJuris = mysql_query($sqlJuris,$db);
 	$rowJuris = mysql_fetch_assoc($resJuris);
 	$cuitconguiones = agregaGuiones($cuit);
+	
+	//Coloco los tamaños fijos.
+	$delcod = str_pad($rowJuris['codidelega'],4,'0',STR_PAD_RIGHT);
+	$nombre = str_pad($rowJuris['nombre'],30,' ',STR_PAD_RIGHT);
+	$domireal = str_pad($rowJuris['domireal'],30,' ',STR_PAD_RIGHT);
+	$locaDescr = str_pad($rowJuris['localidad'],30,' ',STR_PAD_RIGHT);
+	$provDescr = str_pad($rowJuris['provincia'],20,' ',STR_PAD_RIGHT);
+	$numpostal = str_pad($rowJuris['numpostal'],4,'0',STR_PAD_RIGHT);
 	$telefono = $rowJuris['ddn'].$rowJuris['telefono'];
+	$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
 	$deuda = deudaAnterior($cuit, $db);
-	$primeraLinea = $rowJuris['codidelega']."|000000|".$rowJuris['nombre']."|".$rowJuris['domireal']."|".$rowJuris['descrip']."|".$cuitconguiones."|".$rowJuris['numpostal']."|".$telefono."|".$deuda;
+	
+	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono."|".$deuda;
 	//**********************************
 	
 	//ACUERDOS CAIDOS
@@ -387,12 +405,33 @@ function liquidar($nroreq, $cuit, $db) {
 				} else {
 					$importe = $rowAfipProc['sum(importe)'];
 				}
-				$pagos[$p] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".number_format((float)$rowRequeDet['cantidadpersonal'],0,'','')."|".number_format((float)$rowRequeDet['remundeclarada'],2,',','')."|".invertirFecha($rowAfipProc['fechapago'])."|".number_format((float)$importe,2,',','');
+				$personal = str_pad($rowRequeDet['cantidadpersonal'],4,'0',STR_PAD_LEFT);
+				$remunDec = number_format((float)$rowRequeDet['remundeclarada'],2,',','');
+				$remunDec = str_pad($remunDec,12,'0',STR_PAD_LEFT);
+				$imporDep = number_format((float)$importe,2,',','');
+				$imporDep = str_pad($imporDep,12,'0',STR_PAD_LEFT);
+				
+				$pagos[$p] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($rowAfipProc['fechapago'])."|".$imporDep;
 				if ($p == 0) {	
 					$sqlAgrup = "SELECT * from agrufiscalizospim where cuit = $cuit and anoddjj =".$rowRequeDet['anofiscalizacion']." and mesddjj =".$rowRequeDet['mesfiscalizacion'];
 					$resAgrup = mysql_query($sqlAgrup,$db);
 					$rowAgrup = mysql_fetch_assoc($resAgrup);
-					$pagos[$p] = $pagos[$p]."|".number_format((float)$rowAgrup['cantcuilmayor1000'],0,'','')."|".number_format((float)$rowAgrup['remucuilmayor1000'],2,',','')."|".number_format((float)$rowAgrup['cantadhemayor1000'],0,'','')."|".number_format((float)$rowAgrup['remuadhemayor1000'],2,',','')."|".number_format((float)$rowAgrup['cantcuilmenor1001'],0,'','')."|".number_format((float)$rowAgrup['remucuilmenor1001'],2,',','')."|".number_format((float)$rowAgrup['cantadhemenor1001'],0,'','')."|".number_format((float)$rowAgrup['remuadhemenor1001'],2,',','');
+					
+					$cantm1000 = str_pad($rowAgrup['cantcuilmenor1001'],4,'0',STR_PAD_LEFT);
+					$remum1000 = number_format((float)$rowAgrup['remucuilmenor1001'],2,',','');
+					$remum1000 = str_pad($remum1000,12,'0',STR_PAD_LEFT);
+					$adehm1000 = str_pad($rowAgrup['cantadhemenor1001'],4,'0',STR_PAD_LEFT);
+					$remam1000 = number_format((float)$rowAgrup['remuadhemenor1001'],2,',','');
+					$remam1000 = str_pad($remam1000,12,'0',STR_PAD_LEFT);
+					
+					$cantM1000 = str_pad($rowAgrup['cantcuilmayor1000'],4,'0',STR_PAD_LEFT);
+					$remuM1000 = number_format((float)$rowAgrup['remucuilmayor1000'],2,',','');
+					$remuM1000 = str_pad($remuM1000,12,'0',STR_PAD_LEFT);
+					$adehM1000 = str_pad($rowAgrup['cantadhemayor1000'],4,'0',STR_PAD_LEFT);
+					$remaM1000 = number_format((float)$rowAgrup['remuadhemayor1000'],2,',','');
+					$remaM1000 = str_pad($remaM1000,12,'0',STR_PAD_LEFT);
+					
+					$pagos[$p] = $pagos[$p]."|".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
 				}
 				$p++;
 			}
@@ -402,9 +441,28 @@ function liquidar($nroreq, $cuit, $db) {
 				$sqlAgrup = "SELECT * from agrufiscalizospim where cuit = $cuit and anoddjj =". $rowRequeDet['anofiscalizacion']." and mesddjj = ".$rowRequeDet['mesfiscalizacion'];
 				$resAgrup = mysql_query($sqlAgrup,$db);
 				$rowAgrup = mysql_fetch_assoc($resAgrup);
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".number_format((float)$rowRequeDet['cantidadpersonal'],0,'','')."|".number_format((float)$rowRequeDet['remundeclarada'],2,',','')."|||".number_format((float)$rowAgrup['cantcuilmayor1000'],0,'','')."|".number_format((float)$rowAgrup['remucuilmayor1000'],2,',','')."|".number_format((float)$rowAgrup['cantadhemayor1000'],0,'','')."|".number_format((float)$rowAgrup['remuadhemayor1000'],2,',','')."|".number_format((float)$rowAgrup['cantcuilmenor1001'],0,'','')."|".number_format((float)$rowAgrup['remucuilmenor1001'],2,',','')."|".number_format((float)$rowAgrup['cantadhemenor1001'],0,'','')."|".number_format((float)$rowAgrup['remuadhemenor1001'],2,',','');
+				
+				$personal = str_pad($rowRequeDet['cantidadpersonal'],4,'0',STR_PAD_LEFT);
+				$remunDec = number_format((float)$rowRequeDet['remundeclarada'],2,',','');
+				$remunDec = str_pad($remunDec,12,'0',STR_PAD_LEFT);
+				
+				$cantm1000 = str_pad($rowAgrup['cantcuilmenor1001'],4,'0',STR_PAD_LEFT);
+				$remum1000 = number_format((float)$rowAgrup['remucuilmenor1001'],2,',','');
+				$remum1000 = str_pad($remum1000,12,'0',STR_PAD_LEFT);
+				$adehm1000 = str_pad($rowAgrup['cantadhemenor1001'],4,'0',STR_PAD_LEFT);
+				$remam1000 = number_format((float)$rowAgrup['remuadhemenor1001'],2,',','');
+				$remam1000 = str_pad($remam1000,12,'0',STR_PAD_LEFT);
+					
+				$cantM1000 = str_pad($rowAgrup['cantcuilmayor1000'],4,'0',STR_PAD_LEFT);
+				$remuM1000 = number_format((float)$rowAgrup['remucuilmayor1000'],2,',','');
+				$remuM1000 = str_pad($remuM1000,12,'0',STR_PAD_LEFT);
+				$adehM1000 = str_pad($rowAgrup['cantadhemayor1000'],4,'0',STR_PAD_LEFT);
+				$remaM1000 = number_format((float)$rowAgrup['remuadhemayor1000'],2,',','');
+				$remaM1000 = str_pad($remaM1000,12,'0',STR_PAD_LEFT);
+				
+				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|          |000000000,00|".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
 			} else {
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0|0|0|0|0|0|0|0|0|0|0|0";
+				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |000000000,00|0000|000000000,00|0000|000000000,00|0000|000000000,00|0000|000000000,00";
 			}
 		}
 		
