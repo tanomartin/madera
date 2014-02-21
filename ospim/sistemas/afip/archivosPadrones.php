@@ -7,44 +7,44 @@ $nombrearchivo=substr($fechaarchivo, 2, 6);
 $fechamensaje=$_GET['fechaMens'];
 $nromensaje=$_GET['nroMail'];
 $maquina = $_SERVER['SERVER_NAME'];
-$noHayDDJJ=FALSE;
+$noHayPadron=FALSE;
 $fechahoy=date("YmdHis",time());
 $usuarioproceso = $_SESSION['usuario'];
 
 if(strcmp("localhost",$maquina)==0) {
-	$archivo_ddjj=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Nominas/DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip";
-	$carpeta_ddjj=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Nominas/";
+	$archivo_padron=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Padrones/DDJJ_PADRON_OS111001.zip";
+	$carpeta_padron=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Padrones/";
 } else {
-	$archivo_ddjj="/home/sistemas/ArchivosAfip/Nominas/DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip";
-	$carpeta_ddjj="/home/sistemas/ArchivosAfip/Nominas/";
+	$archivo_padron="/home/sistemas/ArchivosAfip/Padrones/DDJJ_PADRON_OS111001.zip";
+	$carpeta_padron="/home/sistemas/ArchivosAfip/Padrones/";
 }
 
-if(!file_exists($archivo_ddjj))
-	$noHayDDJJ=TRUE;
+if(!file_exists($archivo_padron))
+	$noHayPadron=TRUE;
 
-if($noHayDDJJ) {
+if($noHayPadron) {
 	$tituloform = "ERROR";
-	$mensaje = 'No se encontraron archivos de DDJJ. Verifique si fue descargado o si ya fue procesado.';
+	$mensaje = 'No se encontraron archivos de Padron. Verifique si fue descargado o si ya fue procesado.';
 } else {
-	// Tratamiento de los Archivos de DDJJ
-	if(file_exists($archivo_ddjj)) {
-		$zipDDJJ = new ZipArchive;
-		if ($zipDDJJ->open($archivo_ddjj) === TRUE) {
-			$zipDDJJ->extractTo($carpeta_ddjj);
-			$zipDDJJ->close();
-			$archivo_descom = $carpeta_ddjj."DDJJ_NOMINA_OS111001_Q".$nombrearchivo;
+	// Tratamiento de los Archivos de Padrones
+	if(file_exists($archivo_padron)) {
+		$zipPadron = new ZipArchive;
+		if ($zipPadron->open($archivo_padron) === TRUE) {
+			$zipPadron->extractTo($carpeta_padron);
+			$zipPadron->close();
+			$archivo_descom = $carpeta_padron."DDJJ_PADRON_OS111001.txt";
 			$registros = file($archivo_descom, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 			for($i=0; $i < count($registros); $i++) {
 				if($i == 0) {
-					$headertransf = substr($registros[$i], 0, 22);
+					$headertransf = substr($registros[$i], 0, 21);
 					$fechatransfcorta = substr($registros[$i], 23, 4).substr($registros[$i], 28, 2).substr($registros[$i], 31, 2);
 					//$fechatransflarga = substr($registros[$i], 22, 14);
 				}
 
-				if(strcmp("HFOS111001DDJJ-NOMINAS", $headertransf)==0) {
+				if(strcmp("HFOS111001DDJJ-PADRON", $headertransf)==0) {
 					if(strcmp($fechaarchivo, $fechatransfcorta)==0) {
 						if($i == 0) {
-							$sqlArchivoExiste = "SELECT * FROM nominasddjj WHERE fechaarchivoafip = '$fechatransfcorta' AND fechaemailafip = '$fechamensaje'";
+							$sqlArchivoExiste = "SELECT * FROM padronesddjj WHERE fechaarchivoafip = '$fechatransfcorta' AND fechaemailafip = '$fechamensaje'";
 							$resArchivoExiste = mysql_query($sqlArchivoExiste,$db);
 							$canArchivoExiste = mysql_num_rows($resArchivoExiste);
 
@@ -60,60 +60,46 @@ if($noHayDDJJ) {
 								}
 								break;
 							} else {
-								$sqlBuscaNroDisco = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'nominasddjj'";
+								$sqlBuscaNroDisco = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'padronesddjj'";
 								$resBuscaNroDisco = mysql_query($sqlBuscaNroDisco,$db);
 								$rowBuscaNroDisco = mysql_fetch_array($resBuscaNroDisco);
 								$proximonro = $rowBuscaNroDisco['AUTO_INCREMENT'];
 
 								if(strcmp("localhost",$maquina)==0) {
-									$destino_ddjj=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Nominas/DDJJ/Disco".$proximonro."/";
+									$destino_padron=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Padrones/DDJJ/Disco".$proximonro."/";
 								} else {
-									$destino_ddjj="/home/sistemas/ArchivosAfip/Nominas/DDJJ/Disco".$proximonro."/";
+									$destino_padron="/home/sistemas/ArchivosAfip/Padrones/DDJJ/Disco".$proximonro."/";
 								}
 
-								mkdir($destino_ddjj, 0777);
-								$archivo_salida = $destino_ddjj."NODJ".$proximonro.".txt";
+								mkdir($destino_padron, 0777);
+								$archivo_salida = $destino_padron."PADJ".$proximonro.".txt";
 								//echo $archivo_salida;
-								$punteroarchivo = fopen($archivo_salida, 'w') or die("Hubo un error al generar el archivo de DDJJ");
+								$punteroarchivo = fopen($archivo_salida, 'w') or die("Hubo un error al generar el archivo de Padron");
 							}
 						} else {
-							$codobs = substr($registros[$i], 0, 6);
+							$codobs = substr($registros[$i], 124, 6);
 							if(strcmp("111001", $codobs)==0) {
 								$nroregistro = $i;
-								$codobs = substr($registros[$i], 0, 6);
-								$anoddjjcorto = substr($registros[$i], 6, 2);
-								if(strcmp("49", $anoddjjcorto)>=0) {
-									$anoddjj = "20".$anoddjjcorto;
-								} else {
-									$anoddjj = "19".$anoddjjcorto;;
-								}
-								$mesddjj = substr($registros[$i], 8, 2);
-								$cuit = substr($registros[$i], 10, 11);
-								$cuil = substr($registros[$i], 21, 11);
-								$remunentero = substr($registros[$i], 32, 10);
-								$remundecimal = substr($registros[$i], 42, 2);
-								$remundeclara = $remunentero.".".$remundecimal;
-								$impadentero = substr($registros[$i], 44, 6);
-								$impaddecimal = substr($registros[$i], 50, 2);
-								$impadicional = $impadentero.".".$impaddecimal;
-								$familiares = substr($registros[$i], 54, 2);
-								$adherentes = substr($registros[$i], 56, 2);
-								$secuenciapresentacion = substr($registros[$i], 58, 3);
-								$apoadentero = substr($registros[$i], 71, 6);
-								$apoaddecimal = substr($registros[$i], 77, 2);
-								$apoadicional = $apoadentero.".".$apoaddecimal;
-								$remdeentero = substr($registros[$i], 85, 7);
-								$remdedecimal = substr($registros[$i], 92, 2);
-								$remdecreto = $remunentero.".".$remundecimal;
-								$uniesposa =  substr($registros[$i], 94, 1);
+								$cuit = substr($registros[$i], 0, 11);
+								$nombre = substr($registros[$i], 11, 50);
+								$calle = substr($registros[$i], 61, 20);
+								$numero = substr($registros[$i], 81, 6);
+								$piso = substr($registros[$i], 87, 3);
+								$depto = substr($registros[$i], 90, 3);
+								$localidad = substr($registros[$i], 93, 20);
+								$provincia = substr($registros[$i], 113, 3);
+								$codpos = substr($registros[$i], 116, 4);
+								$vacios = substr($registros[$i], 120, 4);
+								$codobs = substr($registros[$i], 124, 6);
+
 								$registrosalida = str_replace(' ', '', $proximonro).'|'.str_replace(' ', '', $nroregistro).'||'.str_replace(' ', '', $codobs).'|'.str_replace(' ', '', $anoddjj).'|'.str_replace(' ', '', $mesddjj).'|'.str_replace(' ', '', $cuit).'|'.str_replace(' ', '', $cuil).'|'.str_replace(' ', '', $remundeclara).'|'.str_replace(' ', '', $impadicional).'|'.str_replace(' ', '', $familiares).'|'.str_replace(' ', '', $adherentes).'|'.str_replace(' ', '', $secuenciapresentacion).'|'.str_replace(' ', '', $apoadicional).'|'.str_replace(' ', '', $remdecreto).'|'.str_replace(' ', '', $uniesposa);
 								fwrite($punteroarchivo, $registrosalida."\n");
 								$registrosleidos = $registrosleidos + 1;
 							} else {
 								//echo $registrosleidos; echo "-";
-								$footertransf = substr($registros[$i], 0, 22);
-								if(strcmp("TFOS111001DDJJ-NOMINAS", $footertransf)==0) {
-									$totalregistros = substr($registros[$i], 83, 10);
+								$footertransf = substr($registros[$i], 0, 21);
+								if(strcmp("TFOS111001DDJJ-PADRON", $footertransf)==0) {
+									$totalregistros = substr($registros[$i], 33, 12);
 									//echo $totalregistros;
 									fclose($punteroarchivo);
 
