@@ -93,28 +93,32 @@ function validar(formulario) {
 				  <th>C.U.I.T.</th>
 				  <th>Razón Social</th>
 				  <th>Domicilio Legal</th>
+				  <th class="filter-select" data-placeholder="Seleccione Localidad">Localidad Legal</th>
 				  <th>Domicilio Real</th>
-				  <th class="filter-select" data-placeholder="Seleccione Localidad">Localidad</th>
-				  <th>Otra Jurisdiccion</th>
+				  <th class="filter-select" data-placeholder="Seleccione Localidad">Localidad Real</th>
+				  <th>Disg. Dinero</th>
+				  <th>Otra Jurisdiccion (Disg. Dinero)</th>
 				</tr>
 		 	</thead>
 			<tbody>
-	  <?php $sqlEmpre = "select e.*, j.*, l.nomlocali as localidad from empresas e, jurisdiccion j, localidades l where j.codidelega = $codidelega and j.cuit = e.cuit and e.codlocali = l.codlocali";
+	  <?php $sqlEmpre = "select e.cuit, e.nombre, e.domilegal, e.numpostal as numlegal, l.nomlocali as localidad, j.domireal, j.numpostal as numreal, lreal.nomlocali as localidadReal, j.disgdinero from empresas e, jurisdiccion j, localidades l, localidades lreal where j.codidelega = $codidelega and j.cuit = e.cuit and e.codlocali = l.codlocali and j.codlocali = lreal.codlocali";
 			$resEmpre = mysql_query($sqlEmpre,$db); 
 			while ($rowEmpre = mysql_fetch_assoc($resEmpre)) { ?>
 				<tr align="center">
 					<td><?php echo $rowEmpre['cuit'] ?></td>
 					<td><?php echo $rowEmpre['nombre'] ?></td>
-					<td><?php echo $rowEmpre['domilegal'] ?></td>
-					<td><?php echo $rowEmpre['domireal'] ?></td>
+					<td><?php echo $rowEmpre['domilegal']." [".$rowEmpre['numlegal']."]" ?></td>
 					<td><?php echo $rowEmpre['localidad'] ?></td>
+					<td><?php echo $rowEmpre['domireal']." [".$rowEmpre['numreal']."]" ?></td>
+					<td><?php echo $rowEmpre['localidadReal'] ?></td>
+					<td><?php echo $rowEmpre['disgdinero']."%" ?></td>
 					<td><?php 
 						$cuit =  $rowEmpre['cuit'];
-						$sqlOtraJuris = "select d.nombre from jurisdiccion j, delegaciones d where cuit = $cuit and j.codidelega != $codidelega and j.codidelega not in (1000,1001,3500) and j.codidelega = d.codidelega";
+						$sqlOtraJuris = "select d.nombre, j.disgdinero from jurisdiccion j, delegaciones d where cuit = $cuit and j.codidelega != $codidelega and j.codidelega not in (1000,1001,3500) and j.codidelega = d.codidelega";
 						$resOtraJuris = mysql_query($sqlOtraJuris,$db); 
 						$canOtraJuris = mysql_num_rows($resOtraJuris);
 						if ($canOtraJuris > 0) { 
-							while ($rowOtraJuris = mysql_fetch_assoc($resOtraJuris)) {  echo $rowOtraJuris['nombre']."<br>"; } 
+							while ($rowOtraJuris = mysql_fetch_assoc($resOtraJuris)) {  echo $rowOtraJuris['nombre']." (".$rowOtraJuris['disgdinero']."%)"."<br>"; } 
 						} else { 
 							echo "-";
 						} ?></td>
