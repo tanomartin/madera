@@ -18,13 +18,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Empresas </span></p>
-  <table width="412" border="1" bordercolor="1">
+  <table width="600" border="1" bordercolor="1">
     <tr>
-      <td width="196"><p align="center">Alta, Modificaci&oacute;n y Consulta </p>
+      <td width="200"><p align="center">Alta, Modificaci&oacute;n y Consulta </p>
         <p align="center"><a class="enlace" href="abm/moduloABM.php?origen=<?php echo $origen?>"><img src="img/abemp.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">Buscador</p>
+      <td width="200"><p align="center">Buscador</p>
         <p align="center"><a class="enlace" href="buscador/buscador.php?origen=<?php echo $origen?>"><img src="img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p align="center">&nbsp;</p></td>
+	  <td width="200"><p align="center">Listado de Empresas </p>
+        <p align="center"><a class="enlace" href="informes/listadoEmpresas.php?origen=<?php echo $origen?>"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
   </table>

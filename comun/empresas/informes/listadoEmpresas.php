@@ -60,7 +60,7 @@ function validar(formulario) {
 <div align="center">
   <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" align="center"/></p>
   	<form name="listadoEmpresa" id="listadoEmpresa" method="post" onSubmit="return validar(this)" action="listadoEmpresas.php?origen=<?php echo $origen ?>">
-  	<p><span class="Estilo2">Listado de Empresas Por Delegaci&oacute;n </span></p>
+  	<p><span class="Estilo2">Empresas por Delegaci&oacute;n </span></p>
 	<table>
 		<tr>
 			<td width="96" class="nover"><strong>Delegación</strong>	</td>
@@ -85,7 +85,7 @@ function validar(formulario) {
 		$resDele= mysql_query($sqlDele,$db);
 		$rowDele=mysql_fetch_array($resDele); ?>
 
-		<p><span class="Estilo2">Listado de Empresas - <?php echo $rowDele['nombre'] ?></span></p>
+		<p><span class="Estilo2"><?php echo $rowDele['nombre'] ?></span></p>
 		
 		<table class="tablesorter" id="listado" style="width:1100px; font-size:14px">
 			<thead>
