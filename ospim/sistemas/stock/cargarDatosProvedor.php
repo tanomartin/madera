@@ -31,7 +31,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra"],
-			headers:{3:{sorter:false, filter: false}, 4:{sorter:false, filter: false}, 6:{sorter:false, filter: false}, 7:{sorter:false, filter: false}},
+			headers:{3:{sorter:false, filter: false}, 4:{sorter:false, filter: false},  5:{sorter:false, filter: false}, 6:{sorter:false, filter: false}, 7:{sorter:false, filter: false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
