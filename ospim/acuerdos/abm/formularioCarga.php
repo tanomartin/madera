@@ -117,6 +117,26 @@ function validoAnio(id){
 	}
 }
 
+function cargarLiqui(requerimiento) {
+	var cargado = false;
+	<?php 
+		$sqlLiqui = "SELECT c.nrorequerimiento, c.liquidacionorigen FROM reqfiscalizospim r , cabliquiospim c where r.cuit = $cuit and r.nrorequerimiento = c.nrorequerimiento;";
+		$resLiqui= mysql_query($sqlLiqui,$db); 
+		$canLiqui = mysql_num_rows($resLiqui); 
+		if ($canLiqui != 0) {
+			while ($rowLiqui = mysql_fetch_assoc($resLiqui)) { ?>
+				if (requerimiento == <?php echo $rowLiqui['nrorequerimiento'] ?> ) {
+					document.getElementById("nombreArcReq").value = "<?php echo $rowLiqui['liquidacionorigen'] ?>";
+					cargado = true;
+				}
+	 <?php }
+		}
+	?>
+	if (cargado == false) {
+		document.getElementById("nombreArcReq").value = "";
+	}
+}
+
 function validar(formulario) {
 	if (!isNumberPositivo(formulario.nroacu.value)) {
 		alert("Error en el numero de acuerdo");
@@ -237,9 +257,13 @@ function validar(formulario) {
 	              <?php 
 				  	$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
 					$resInspec=mysql_query($sqlInspec,$db);
-					while ($rowInspec=mysql_fetch_array($resInspec)) { ?>
-		           		<option value="<?php echo $rowInspec['codigo'] ?>"><?php echo $rowInspec['apeynombre'] ?></option>
-	              <?php } ?>
+					while ($rowInspec=mysql_fetch_array($resInspec)) { 
+						if ($rowInspec['codigo'] == "35") {?>
+							<option value="<?php echo $rowInspec['codigo'] ?>" selected="selected"><?php echo $rowInspec['apeynombre'] ?></option>
+	              <?php } else { ?>	
+				  			<option value="<?php echo $rowInspec['codigo'] ?>"><?php echo $rowInspec['apeynombre'] ?></option>
+				  <?php }
+				 } ?>
 	          </select>
             </div></td>
           <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
@@ -257,11 +281,10 @@ function validar(formulario) {
             </div></td>
         </tr>
         <tr>
-          <td valign="bottom"><label>
+          <td valign="bottom">
             <div align="left">Liquidacion Origen </div>
-          </label></td>
-          <td valign="bottom"><label>
-          
+         </td>
+          <td valign="bottom">    
             <div align="left">
               <input name="nombreArcReq" type="text" id="nombreArcReq" size="40" readonly="readonly" />
             </div></td>
@@ -271,13 +294,13 @@ function validar(formulario) {
               <input id="monto" type="text" name="monto"/>
             </div></td>
           <td valign="bottom"><div align="left">Gastos Administrativos </div></td>
-          <td width="49" valign="bottom"><label>
+          <td width="49" valign="bottom">
           	<div align="left">
           	  <input name="gasAdmi" type="radio" value=0 checked onfocusout="cargarPor()"/>
           	NO<br />
           		<input name="gasAdmi" type="radio" value=1 onfocusout="cargarPor()"/>
           	SI            </div>
-          </label></td>
+         </td>
           <td width="100" valign="bottom">
             <div align="left">
             <input name="porcentaje" type="text" id="porcentaje" size="5" readonly="readonly"/>
