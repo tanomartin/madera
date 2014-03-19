@@ -105,7 +105,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $rowLiqui['nrorequerimiento'];?></td>
 			<td><?php echo invertirFecha($rowLiqui['fechaliquidacion'])." - ".$rowLiqui['horaliquidacion'] ?></td>
 			<td><?php echo $rowLiqui['liquidacionorigen'];?></td>
-			<td><?php echo invertirFecha($rowLiqui['fechainspeccion']);?></td>
+			<td><?php if ($rowLiqui['fechainspeccion'] != NULL) { echo invertirFecha($rowLiqui['fechainspeccion']); }?></td>
 			<td><?php echo $rowLiqui['deudanominal'];?></td>
 			<td><?php echo $rowLiqui['intereses'];?></td>
 			<td><?php echo $rowLiqui['gtosadmin'];?></td>

@@ -53,7 +53,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue', 
 			widthFixed: true, 
 			widgets: ["zebra", "filter"], 
-			headers:{4:{sorter:false}},
+			headers:{5:{sorter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -79,6 +79,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<th class="filter-select" data-placeholder="Seleccion Mes">Mes</th>
 			<th class="filter-select" data-placeholder="Seleccion Concepto">Concepto</th>
 			<th>Fecha de Pago</th>
+			<th>Importe</th>
 			<th class="filter-select" data-placeholder="Seleccion Concepto">Debito/Credito</th>
 		</tr>
 	</thead>
@@ -91,6 +92,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $rowAportes['mespago'];?></td>
 			<td><?php echo $rowAportes['concepto'];?></td>
 			<td><?php echo invertirFecha($rowAportes['fechapago']);?></td>
+			<td><?php echo $rowAportes['importe'];?></td>
 			<td><?php echo $rowAportes['debitocredito'];?></td>
 		</tr>
 		<?php
