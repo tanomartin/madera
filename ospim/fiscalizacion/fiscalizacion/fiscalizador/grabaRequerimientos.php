@@ -16,10 +16,10 @@ $listadoDatosReq = unserialize(urldecode($datosSerializado));
 $solicitante=$listadoDatosReq['solicitante'];
 $motivo = $listadoDatosReq['motivo'];
 $origen = $listadoDatosReq['origen'];
-print("DATOS FILSCALIZACION");
-var_dump($listadoDatosReq);
+//print("DATOS FILSCALIZACION");
+//var_dump($listadoDatosReq);
 
-print("DEUDA DE EMPRESAS FILSCALIZDAS<br><br>");
+//print("DEUDA DE EMPRESAS FILSCALIZDAS<br><br>");
 $empre = 0; 
 $alicuota = 0.081;
 $listadoFinal = array();
