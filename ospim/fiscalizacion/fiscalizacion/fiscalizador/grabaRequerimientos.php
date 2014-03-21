@@ -70,7 +70,12 @@ foreach ($listadoFinal as $lista){
 	$nroreq= $rowBuscaNro['AUTO_INCREMENT'];
 	
 	$cuit = $lista['cuit'];
-	$sqlReqFis = "INSERT INTO reqfiscalizospim VALUE('$nroreq', '$fecreq', '$origen', '$solici', '$motivo', '$cuit', '0', '$fecharegistro', '$usuarioregistro', '0000-00-00', '', '0','','0000-00-00','')";
+	$sqlJuris = "SELECT codidelega from jurisdiccion where cuit = '$cuit' order by disgdinero DESC limit 1";
+	$resJuris = mysql_query($sqlJuris,$db);
+	$rowJuris = mysql_fetch_assoc($resJuris);
+	$codidelega = $rowJuris['codidelega'];
+	
+	$sqlReqFis = "INSERT INTO reqfiscalizospim VALUE('$nroreq', '$fecreq', '$origen', '$solici', '$motivo', '$cuit', '$codidelega', '0', '$fecharegistro', '$usuarioregistro', '0000-00-00', '', '0','','0000-00-00','')";
 	//print($sqlReqFis."<br>");
 	$peridosDeuda = $lista['deuda'];	
 	try {
@@ -91,6 +96,11 @@ foreach ($listadoFinal as $lista){
 		}
 		$dbh->commit();
 		$pagina = "../menuFiscalizaciones.php";
+		
+		//cambio la hora de secion por ahora para no perder la misma
+		$ahora = date("Y-n-j H:i:s"); 
+		$_SESSION["ultimoAcceso"] = $ahora;
+		
 		Header("Location: $pagina"); 
 	}catch (PDOException $e) {
 		echo $e->getMessage();

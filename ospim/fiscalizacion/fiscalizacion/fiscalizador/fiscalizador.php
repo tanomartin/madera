@@ -131,7 +131,6 @@ function validar(formulario) {
          <td><div align="left">Por Empresa </div></td>
        </tr>
   </table>
-  <br />
   <?php 
 		if ($err == 1) {
 			print("<div align='center' style='color:#FF0000'><b> CUIT INEXISTENTE </b></div>");

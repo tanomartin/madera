@@ -14,7 +14,9 @@ if ($tipo == 2) {
 	$titulo = "NO NOTIFICADAS";
 	$sqlLiqui = "SELECT * from cabliquiospim";
 }*/
-$sqlLiqui = "SELECT * from cabliquiospim ORDER BY fechaliquidacion DESC";
+$sqlLiqui = "SELECT c.*, e.cuit, e.nombre, d.nombre as delega
+from cabliquiospim c, reqfiscalizospim r, empresas e, delegaciones d
+WHERE c.nrorequerimiento = r.nrorequerimiento and r.cuit = e.cuit and r.codidelega = d.codidelega";
 $resLiqui = mysql_query($sqlLiqui,$db);
 $canLiqui = mysql_num_rows($resLiqui);	
 /*if ($canLiqui == 0) {
@@ -64,7 +66,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{3:{sorter:false, filter:false}, 4:{sorter:false, filter:false}, 5:{sorter:false, filter:false}, 6:{sorter:false, filter:false}},
+			headers:{6:{sorter:false, filter:false}, 7:{sorter:false, filter:false}, 8:{sorter:false, filter:false}, 9:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -82,13 +84,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
 	 <input type="reset" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'" align="center"/>
 	<p><span class="Estilo2">Liquidaciones</span></p>
-	<table class="tablesorter" id="listado" style="width:1300px; font-size:14px">
+	<table class="tablesorter" id="listado" style="width:1200px; font-size:14px">
 	<thead>
 		<tr>
 			<th>Nro. Requerimiento</th>
-			<th>Fecha - Hora Liquidación</th>
+			<th>Razon Social</th>
+			<th>Delegacion</th>
+			<th>Fecha Liq.</th>
+			<th>Hora Liq.</th>
 			<th>Liquidación Origen</th>
-			<th>Fecha Inspección</th>
+			<th style="width:80px">Fecha Inspección</th>
 			<th>Deuda Nominal</th>
 			<th>Intereses</th>
 			<th>Gastos Admin.</th>
@@ -101,19 +106,22 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php
 		while($rowLiqui = mysql_fetch_assoc($resLiqui)) {
 		?>
-		<tr align="center">
-			<td><?php echo $rowLiqui['nrorequerimiento'];?></td>
-			<td><?php echo invertirFecha($rowLiqui['fechaliquidacion'])." - ".$rowLiqui['horaliquidacion'] ?></td>
-			<td><?php echo $rowLiqui['liquidacionorigen'];?></td>
-			<td><?php if ($rowLiqui['fechainspeccion'] != NULL) { echo invertirFecha($rowLiqui['fechainspeccion']); }?></td>
-			<td><?php echo $rowLiqui['deudanominal'];?></td>
-			<td><?php echo $rowLiqui['intereses'];?></td>
-			<td><?php echo $rowLiqui['gtosadmin'];?></td>
-			<td><?php echo $rowLiqui['totalliquidado'];?></td>
-			<td><?php echo $rowLiqui['nroresolucioninspeccion'];?></td>
-			<td><?php echo $rowLiqui['nrocertificadodeuda'];?></td>
-		</tr>
-		<?php
+			<tr align="center">
+				<td><?php echo $rowLiqui['nrorequerimiento'];?></td>
+				<td><?php echo $rowLiqui['nombre'];?></td>
+				<td><?php echo $rowLiqui['delega'];?></td>
+				<td style="width:80px"><?php echo $rowLiqui['fechaliquidacion'] ?></td>
+				<td><?php echo $rowLiqui['horaliquidacion'] ?></td>
+				<td><?php echo $rowLiqui['liquidacionorigen'];?></td>
+				<td><?php if ($rowLiqui['fechainspeccion'] != NULL && $rowLiqui['fechainspeccion'] != "0000-00-00") { echo invertirFecha($rowLiqui['fechainspeccion']); } else { echo "-"; }?></td>
+				<td><?php echo $rowLiqui['deudanominal'];?></td>
+				<td><?php echo $rowLiqui['intereses'];?></td>
+				<td><?php echo $rowLiqui['gtosadmin'];?></td>
+				<td><?php echo $rowLiqui['totalliquidado'];?></td>
+				<td><?php echo $rowLiqui['nroresolucioninspeccion'];?></td>
+				<td><?php echo $rowLiqui['nrocertificadodeuda'];?></td>
+			</tr>
+			<?php
 		}
 		?>
 	</tbody>

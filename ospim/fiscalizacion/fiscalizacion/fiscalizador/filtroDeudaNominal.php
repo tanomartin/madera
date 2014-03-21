@@ -146,6 +146,10 @@ if (sizeof($empresasDefinitivas) == 0) {
 
 //var_dump($empresasDefinitivas);
 
+//cambio la hora de secion por ahora para no perder la misma
+$ahora = date("Y-n-j H:i:s"); 
+$_SESSION["ultimoAcceso"] = $ahora;
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

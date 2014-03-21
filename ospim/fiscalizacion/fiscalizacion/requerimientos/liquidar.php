@@ -357,9 +357,9 @@ function grabarCabLiquidacion($nroreq, $nombreArcExc, $db) {
 	}
 }
 
-function liquidar($nroreq, $cuit, $db) {
+function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//CREAMOS PRIMERA LINEA DEL ARCHIVO
-	$sqlJuris = "SELECT e.*, j.*, p.descrip as provincia, l.nomlocali as localidad from empresas e, jurisdiccion j, provincia p, localidades l where j.cuit = $cuit and j.cuit = e.cuit and j.codprovin = p.codprovin and e.codlocali = l.codlocali order by j.disgdinero DESC limit 1";
+	$sqlJuris = "SELECT e.*, j.*, p.descrip as provincia, l.nomlocali as localidad from empresas e, jurisdiccion j, provincia p, localidades l where j.cuit = $cuit and j.cuit = e.cuit and j.codidelega = $codidelega and j.codprovin = p.codprovin and e.codlocali = l.codlocali";
 	$resJuris = mysql_query($sqlJuris,$db);
 	$rowJuris = mysql_fetch_assoc($resJuris);
 	$cuitconguiones = agregaGuiones($cuit);
@@ -376,7 +376,7 @@ function liquidar($nroreq, $cuit, $db) {
 	$deuda = deudaAnterior($cuit, $db);
 	
 	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono."|".$deuda;
-	//**********************************
+	//**********************************************************************************************************
 	
 	//ACUERDOS CAIDOS
 	$cuerpoAcuerdoCaidos = acuerdosCaidos($cuit, $db);
@@ -538,14 +538,14 @@ for ($i=0; $i < sizeof($datos) - 1; $i++) {
 	$resRequeCab = mysql_query($sqlRequeCab,$db);
 	$rowRequeCab = mysql_fetch_assoc($resRequeCab);
 	if ($rowRequeCab['procesoasignado'] == 0) {
-		$reqALiquidar[$req] = array ('req' => $nroreq, 'cuit' => $rowRequeCab['cuit']);
+		$reqALiquidar[$req] = array ('req' => $nroreq, 'cuit' => $rowRequeCab['cuit'], 'codidelega' => $rowRequeCab['codidelega']);
 		$req++;
 	} else {
 		$sqlRequeInsp = "SELECT * from inspecfiscalizospim where nrorequerimiento = $nroreq";
 		$resRequeInsp = mysql_query($sqlRequeInsp,$db);
 		$rowRequeInsp= mysql_fetch_assoc($resRequeInsp);
 		if ($rowRequeInsp['inspeccionefectuada'] == 1) {
-			$reqALiquidar[$req] = array ('req' => $nroreq, 'cuit' => $rowRequeCab['cuit']);
+			$reqALiquidar[$req] = array ('req' => $nroreq, 'cuit' => $rowRequeCab['cuit'], 'codidelega' => $rowRequeCab['codidelega']);
 			$req++;
 		} else {
 			$resultado[$resul] = array('nroreq' => $nroreq, 'estado' => "Se encuentra asociada a una inspección que nos se ha cerrado. No se liquidará", 'liquidado' => 0);
@@ -556,7 +556,7 @@ for ($i=0; $i < sizeof($datos) - 1; $i++) {
 
 if (sizeof($reqALiquidar) != 0) {
 	for ($i=0; $i < sizeof($reqALiquidar); $i++) {
-		$nombreArc = liquidar($reqALiquidar[$i]['req'],$reqALiquidar[$i]['cuit'], $db);
+		$nombreArc = liquidar($reqALiquidar[$i]['req'],$reqALiquidar[$i]['cuit'], $reqALiquidar[$i]['codidelega'], $db);
 		$resultado[$resul] =  array('nroreq' => $reqALiquidar[$i]['req'], 'estado' => "Se ha liquidado en el archivo con nombre '".$nombreArc."'", 'liquidado' => 1);
 		$resul++;
 	}

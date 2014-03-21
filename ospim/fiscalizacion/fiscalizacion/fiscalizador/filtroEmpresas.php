@@ -58,6 +58,10 @@ $listadoSerializado = serialize($listadoEmpresas);
 $listadoSerializado = urlencode($listadoSerializado);
 $filtrosSerializado = serialize($filtros);
 $filtrosSerializado = urlencode($filtrosSerializado);
+
+//cambio la hora de secion por ahora para no perder la misma
+$ahora = date("Y-n-j H:i:s"); 
+$_SESSION["ultimoAcceso"] = $ahora; 
 ?>
 
 
