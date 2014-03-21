@@ -20,8 +20,14 @@ if ($tipo == "delega") {
 	$resEmpresasJuris = mysql_query($sqlEmpresasJuris,$db);
 	$i = 0;
 	while($row = mysql_fetch_assoc($resEmpresasJuris)){
-		$listadoEmpresas[$i] = $row;
-		$i = $i + 1;
+		$cuit = $row['cuit'];
+		$sqlDelePrincipal = "select codidelega from jurisdiccion where cuit = $cuit order by disgdinero DESC limit 1";
+		$resDelePrincipal = mysql_query($sqlDelePrincipal,$db);
+		$rowDelePrincipal = mysql_fetch_assoc($resDelePrincipal);
+		if ($rowDelePrincipal['codidelega'] == $delega) {
+			$listadoEmpresas[$i] = $row;
+			$i = $i + 1;
+		}
 	}
 	if (sizeof($listadoEmpresas) == 0) {
 		header ("Location: fiscalizador.php?err=2");
