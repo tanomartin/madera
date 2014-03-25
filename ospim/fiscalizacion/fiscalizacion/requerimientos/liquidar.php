@@ -438,6 +438,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		} else {
 			unset($pagos);
 			if ($rowRequeDet['statusfiscalizacion'] == 'A') {
+				//ESTO NO SE USA MAS Y HACE QUE TARDE MUCHO
 				$sqlAgrup = "SELECT * from agrufiscalizospim where cuit = $cuit and anoddjj =". $rowRequeDet['anofiscalizacion']." and mesddjj = ".$rowRequeDet['mesfiscalizacion'];
 				$resAgrup = mysql_query($sqlAgrup,$db);
 				$rowAgrup = mysql_fetch_assoc($resAgrup);
@@ -561,6 +562,10 @@ if (sizeof($reqALiquidar) != 0) {
 		$resul++;
 	}
 } 
+
+//cambio la hora de secion por ahora para no perder la misma
+$ahora = date("Y-n-j H:i:s"); 
+$_SESSION["ultimoAcceso"] = $ahora;
 
 ?>
 
