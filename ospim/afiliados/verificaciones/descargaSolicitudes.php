@@ -5,7 +5,7 @@ $usuariodescarga = $_SESSION['usuario'];
 
 //conexion remota y creacion de transaccion.
 try{
-	$hostremoto = "www.ospim.com.ar";
+	$hostremoto = "ospim.com.ar";
 	$dbremota = "sistem22_intranet";
 	//echo "$hostremoto"; echo "<br>";
 	//echo "$dbremota"; echo "<br>";
