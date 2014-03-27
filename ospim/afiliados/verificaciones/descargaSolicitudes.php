@@ -9,7 +9,7 @@ try{
 	$dbremota = "sistem22_intranet";
 	//echo "$hostremoto"; echo "<br>";
 	//echo "$dbremota"; echo "<br>";
-	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","sistem22_charly","bsdf5762");
+	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","sistem22_charly@localhost","bsdf5762");
 	//echo 'Connected to database remota<br/>';
     $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbr->beginTransaction();
