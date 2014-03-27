@@ -79,10 +79,10 @@ if($archivoOk==0) {
 		$dbl->beginTransaction();
 		
 		$hostremoto = "ospim.com.ar";
-		$dbremota = "uv0471_intranet";
+		$dbremota = "sistem22_intranet";
 		//echo "$hostremoto"; echo "<br>";
 		//echo "$dbremota"; echo "<br>";
-		$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","uv0471","bsdf5762");
+		$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","sistem22_charly","bsdf5762");
 		//echo 'Connected to database remota<br/>';
 	    $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbr->beginTransaction();
