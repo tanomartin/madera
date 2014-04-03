@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 
-$hostname = '{pop3.ospim.com.ar:110/pop3}INBOX';
+$hostname = '{pop3.ospim.com.ar:110/pop3/notls}INBOX';
 $username = 'afiptransferencias@ospim.com.ar';
 $password = 'purz4865';
 $inbox = imap_open($hostname,$username,$password) or die('Ha fallado la conexión. - Error: '.imap_last_error());
