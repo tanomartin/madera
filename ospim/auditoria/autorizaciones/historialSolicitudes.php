@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
-$sqlLeeAutorizacion = "SELECT * FROM autorizaciones WHERE statusverificacion != 0 AND statusautorizacion != 0 ORDER BY fechasolicitud DESC, nrosolicitud DESC";
+$sqlLeeAutorizacion = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, d.nombre, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion FROM autorizaciones a, delegaciones d WHERE a.statusverificacion != 0 AND a.statusautorizacion != 0 and a.codidelega = d.codidelega ORDER BY fechasolicitud DESC, nrosolicitud DESC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
 $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 ?>
@@ -71,14 +71,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		while($rowLeeAutorizacion = mysql_fetch_array($resultLeeAutorizacion)) {
 ?>
 		<tr>
-<?php
-			$sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeAutorizacion[codidelega]";
-			$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
-			$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);		
-?>
 			<td><?php echo $rowLeeAutorizacion['nrosolicitud'];?></td>
 			<td><?php echo invertirFecha($rowLeeAutorizacion['fechasolicitud']);?></td>
-			<td><?php echo $rowLeeAutorizacion['codidelega']." - ".$rowLeeDeleg['nombre'];?></td>
+			<td><?php echo $rowLeeAutorizacion['codidelega']." - ".$rowLeeAutorizacion['nombre'];?></td>
 			<td><?php echo $rowLeeAutorizacion['cuil'];?></td>
 			<td><?php if($rowLeeAutorizacion['nroafiliado']==0) echo "-"; else echo $rowLeeAutorizacion['nroafiliado'];?></td>
 			<td><?php if($rowLeeAutorizacion['codiparentesco']==0) echo "-"; else { if($rowLeeAutorizacion['codiparentesco']==1) echo "Titular"; else echo "Familiar ".$rowLeeAutorizacion['codiparentesco'];};?></td>

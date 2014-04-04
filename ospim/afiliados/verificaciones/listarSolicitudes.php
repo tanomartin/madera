@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
-$sqlLeeAutorizacion = "SELECT * FROM autorizaciones WHERE statusverificacion = 0 or statusverificacion = 3 ORDER BY nrosolicitud DESC";
+$sqlLeeAutorizacion = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, d.nombre, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion FROM autorizaciones a, delegaciones d WHERE a.statusverificacion = 0 or a.statusverificacion = 3 and a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
 $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 
@@ -30,15 +30,10 @@ if ($totalLeeAutorizacion !=0) {
 	print ("</tr>");
 
 	while($rowLeeAutorizacion = mysql_fetch_array($resultLeeAutorizacion)) {
-
-		$sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeAutorizacion[codidelega]";
-		$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
-		$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
-
 		print ("<tr>");
 		print ("<td width=50><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['nrosolicitud']."</font></div></td>");
 		print ("<td width=70><div align=center><font size=1 face=Verdana>".invertirFecha($rowLeeAutorizacion['fechasolicitud'])."</font></div></td>");
-		print ("<td width=160><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['codidelega']." - ".$rowLeeDeleg['nombre']."</font></div></td>");
+		print ("<td width=160><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['codidelega']." - ".$rowLeeAutorizacion['nombre']."</font></div></td>");
 		print ("<td width=90><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['cuil']."</font></div></td>");
 
 		if($rowLeeAutorizacion['nroafiliado']==0)
