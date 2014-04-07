@@ -40,6 +40,26 @@ jQuery(function($){
 	}
 });
 
+function cargarLiqui(requerimiento) {
+	var cargado = false;
+	<?php 
+		$sqlLiqui = "SELECT c.nrorequerimiento, c.liquidacionorigen FROM reqfiscalizospim r , cabliquiospim c where r.cuit = $cuit and r.nrorequerimiento = c.nrorequerimiento;";
+		$resLiqui= mysql_query($sqlLiqui,$db); 
+		$canLiqui = mysql_num_rows($resLiqui); 
+		if ($canLiqui != 0) {
+			while ($rowLiqui = mysql_fetch_assoc($resLiqui)) { ?>
+				if (requerimiento == <?php echo $rowLiqui['nrorequerimiento'] ?> ) {
+					document.getElementById("nombreArcReq").value = "<?php echo $rowLiqui['liquidacionorigen'] ?>";
+					cargado = true;
+				} 
+	 <?php }
+		}
+	?>
+	if (cargado == false) {
+		document.getElementById("nombreArcReq").value = "";
+	}
+}
+
 function validar(formulario) {
 	if (!isNumberPositivo(formulario.nroacu.value)) {
 		alert("Error en el numero de acuerdo");
@@ -209,7 +229,7 @@ function mostrarPeriodos() {
           </div></td>
           <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
           <td valign="bottom"><div align="left">
-            <select name="requerimiento" id="requerimiento">
+            <select name="requerimiento" id="requerimiento" onChange="cargarLiqui(document.forms.modifAcuerdo.requerimiento[selectedIndex].value)">
 		         <?php if ($rowacu['requerimientoorigen'] == 0) { ?>
 						<option value=0 selected="selected">Seleccione un valor </option>
 			     <?php } else { ?>
@@ -228,9 +248,9 @@ function mostrarPeriodos() {
           </div></td>
         </tr>
         <tr>
-          <td valign="bottom"><label>
+          <td valign="bottom">
           <div align="left">Liquidacion Origen </div>
-          </label></td>
+          </td>
           <td valign="bottom"><div align="left">
 	  	    <input name="nombreArcReq"  value="<?php echo $rowacu['liquidacionorigen']?>"  type="text" id="nombreArcReq" size="40" readonly="readonly" />
           </div></td>
