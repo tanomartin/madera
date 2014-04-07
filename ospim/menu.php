@@ -1,5 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
-include($libPath."controlSessionOspim.php");; ?>
+include($libPath."controlSessionOspim.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -100,7 +100,7 @@ function abrirSistemas(dire) {
 	  <td>
 	  <div align="center">
 	    <p>Legales </p>
-	    <p><a href="javascript:abrirLegales('moduloNoDisponible.php')"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirLegales('legales/menuLegales.php')"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
 	  </td>
