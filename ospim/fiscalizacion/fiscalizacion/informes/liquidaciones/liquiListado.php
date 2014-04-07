@@ -66,7 +66,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{6:{sorter:false, filter:false}, 7:{sorter:false, filter:false}, 8:{sorter:false, filter:false}, 9:{sorter:false, filter:false}},
+			headers:{7:{sorter:false, filter:false}, 8:{sorter:false, filter:false}, 9:{sorter:false, filter:false}, 10:{sorter:false, filter:false}, 11:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -79,6 +79,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
+	
+function abrirAcuInclu(dire) {
+	a= window.open(dire,"InfoAcuIncluidos",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+}
+
 </script>
 <body bgcolor="#CCCCCC">
 <div align="center">
@@ -88,11 +94,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<thead>
 		<tr>
 			<th>Nro. Requerimiento</th>
+			<th>C.U.I.T.</th>
 			<th>Razon Social</th>
 			<th>Delegacion</th>
 			<th>Fecha Liq.</th>
 			<th>Hora Liq.</th>
 			<th>Liquidación Origen</th>
+			<th>Acu. Incluidos</th>
 			<th style="width:80px">Fecha Inspección</th>
 			<th>Deuda Nominal</th>
 			<th>Intereses</th>
@@ -108,11 +116,25 @@ A:hover {text-decoration: none;color:#00FFFF }
 		?>
 			<tr align="center">
 				<td><?php echo $rowLiqui['nrorequerimiento'];?></td>
+				<td><?php echo $rowLiqui['cuit'];?></td>
 				<td><?php echo $rowLiqui['nombre'];?></td>
 				<td><?php echo $rowLiqui['delega'];?></td>
 				<td style="width:80px"><?php echo $rowLiqui['fechaliquidacion'] ?></td>
 				<td><?php echo $rowLiqui['horaliquidacion'] ?></td>
 				<td><?php echo $rowLiqui['liquidacionorigen'];?></td>
+				<td>
+				<?php 
+					$nroreque = $rowLiqui['nrorequerimiento'];	
+					$cuit = $rowLiqui['cuit'];	
+					$sqlAcuInc = "SELECT * from aculiquiospim WHERE nrorequerimiento = $nroreque";
+					$resAcuInc = mysql_query($sqlAcuInc,$db);
+					$canAcuInc = mysql_num_rows($resAcuInc);
+					if ($canAcuInc == 0) {
+						echo "-";
+					} else {
+						print("<a href=javascript:abrirAcuInclu('infoAcuInlcu.php?req=".$nroreque."&cuit=".$cuit."')>".$canAcuInc." Acuer.</a>");
+					}
+				?></td>
 				<td><?php if ($rowLiqui['fechainspeccion'] != NULL && $rowLiqui['fechainspeccion'] != "0000-00-00") { echo invertirFecha($rowLiqui['fechainspeccion']); } else { echo "-"; }?></td>
 				<td><?php echo $rowLiqui['deudanominal'];?></td>
 				<td><?php echo $rowLiqui['intereses'];?></td>
