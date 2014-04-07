@@ -16,7 +16,7 @@ if ($tipo == 2) {
 }*/
 $sqlLiqui = "SELECT c.*, e.cuit, e.nombre, d.nombre as delega
 from cabliquiospim c, reqfiscalizospim r, empresas e, delegaciones d
-WHERE c.nrorequerimiento = r.nrorequerimiento and r.cuit = e.cuit and r.codidelega = d.codidelega";
+WHERE c.nrorequerimiento = r.nrorequerimiento and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY c.nrorequerimiento DESC";
 $resLiqui = mysql_query($sqlLiqui,$db);
 $canLiqui = mysql_num_rows($resLiqui);	
 /*if ($canLiqui == 0) {
