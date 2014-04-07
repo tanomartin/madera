@@ -93,7 +93,7 @@ function abrirAcuInclu(dire) {
 	<table class="tablesorter" id="listado" style="width:1200px; font-size:14px">
 	<thead>
 		<tr>
-			<th>Nro. Requerimiento</th>
+			<th>Nro. Req.</th>
 			<th>C.U.I.T.</th>
 			<th>Razon Social</th>
 			<th>Delegacion</th>
