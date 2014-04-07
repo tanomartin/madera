@@ -234,7 +234,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArcCUIL;
 	} else {
-		$direArc="/home/sistemas/Documentos/liquidacion/Preliquidaciones/PruebasLiq/".$nombreArcCUIL;
+		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArcCUIL;
 	}
 	//print($primeraLinea."<br>");
 	//solo por ahora...
@@ -492,7 +492,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArc;
 	} else {
-		$direArc="/home/sistemas/Documentos/liquidacion/Preliquidaciones/PruebasLiq/".$nombreArc;
+		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArc;
 	}
 	//print($primeraLinea."<br>");
 	//solo por ahora...
