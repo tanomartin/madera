@@ -55,9 +55,9 @@ function informaTitulares() {
 function rediSabanaCtaCte(origen) {
 	$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	if (origen == "ospim") {
-		location.href='cuentas/cuentaCorrienteOspim.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>';
+		location.href='cuentas/cuentaCorrienteOspim.php?cuit=<?php echo $cuit ?>';
 	} else {
-		location.href='cuentas/cuentaCorrienteUsimra.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>';
+		location.href='cuentas/cuentaCorrienteUsimra.php?cuit=<?php echo $cuit ?>';
 	}
 	
 }
@@ -90,7 +90,7 @@ function rediSabanaCtaCte(origen) {
     	<?php if ($origen == "ospim") { ?>
 			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')">
 		<?php } else {?>
-			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
+			<input name="ctacteUsimra" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('usimra')">
 		<?php } ?>
   </p>
   <p>

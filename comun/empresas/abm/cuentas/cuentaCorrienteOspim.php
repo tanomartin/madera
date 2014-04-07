@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
 set_time_limit(0);
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 $cuit=$_GET['cuit'];
@@ -80,6 +80,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 			$rowJuicio = mysql_fetch_array($resJuicio); 
 			$statusDeuda = $rowJuicio['statusdeuda'];
 			$nrocertificado = $rowJuicio['nrocertificado'];
+			$nroorden = $rowJuicio['nroorden'];
 			if ($statusDeuda == 1) {
 				$des = "J.EJEC";
 			}
@@ -89,7 +90,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 			if ($statusDeuda == 3) {
 				$des = "J.QUIEB";
 			}
-			$des = $des." (".$nrocertificado.")";
+			$des = $des." (".$nrocertificado.")-".$nroorden;
 			return($des);
 		} else {
 			// VEO LOS REQ DE FISC
@@ -170,6 +171,7 @@ function estado($ano, $me, $db) {
 				$rowJuicio = mysql_fetch_array($resJuicio); 
 				$statusDeuda = $rowJuicio['statusdeuda'];
 				$nrocertificado = $rowJuicio['nrocertificado'];
+				$nroorden = $rowJuicio['nroorden'];
 				if ($statusDeuda == 1) {
 					$des = "J.EJEC";
 				}
@@ -179,7 +181,7 @@ function estado($ano, $me, $db) {
 				if ($statusDeuda == 3) {
 					$des = "J.QUIEB";
 				}
-				$des = $des." (".$nrocertificado.")";
+				$des = $des." (".$nrocertificado.")-".$nroorden;
 			} else {
 				// VEO LOS REQ DE FISC
 				$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
@@ -221,7 +223,14 @@ function imprimeTabla($periodo) {
 			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {
 				print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>"); 
 			} else {
-				print ("<td width=81>".$estado."</a></td>");
+				$juicioEstado = explode('-',$estado);
+				$pjuicio = explode('(',$juicioEstado[0]);
+				if ($pjuicio[0] == 'J.CONV ' or $pjuicio[0] == 'J.QUIEB ' or $pjuicio[0] == 'J.EJEC ') {
+					$nroorden = $juicioEstado[1];
+					print ("<td><a href=javascript:abrirInfo('/ospim/legales/juicios/consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."&origen=empresa')>".$juicioEstado[0]."</a></td>"); 
+				} else {
+					print ("<td>".$estado."</a></td>");
+				}
 			}
 		}
 	}
@@ -229,12 +238,12 @@ function imprimeTabla($periodo) {
 
 ?>
 <title>.: Cuenta Corriente Empresa :.</title>
-<body bgcolor=<?php echo $bgcolor ?>>
+<body bgcolor="#CCCCCC">
 <div align="center">
 	<?php if ($tipo == "activa") { ?>
-			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
+			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresa.php?origen=ospim&cuit=<?php echo $cuit ?>'" align="center"/> 
 	<?php } else { ?>
-			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresaBaja.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
+			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresaBaja.php?origen=ospim&cuit=<?php echo $cuit ?>'" align="center"/> 
 	<?php } ?>
 	 <p>
     <?php 
