@@ -240,7 +240,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	//solo por ahora...
 	//unlink($direArc);
 	//****************
-	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de detalle de CUILES. Por favor cuminiquese con el dpto. de Sistemas");
+	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de detalle de CUILES en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
 	for ($i=0; $i < sizeof($cuerpoCUIL); $i++) {
 		fputs($ar,$cuerpoCUIL[$i]."\n");
 	}
@@ -498,7 +498,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//solo por ahora...
 	//unlink($direArc);
 	//****************
-	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de Deuda. Por favor cuminiquese con el dpto. de Sistemas");
+	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de Deuda en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
 	fputs($ar,$primeraLinea."\n");
 	for ($i=0; $i < sizeof($cuerpoAcuerdoCaidos); $i++) {
 		//print($cuerpoAcuerdoCaidos[$i]."<br>");
