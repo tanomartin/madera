@@ -113,6 +113,7 @@ function validar(formulario) {
 					$dire = "infoRequerimiento.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;     
 					print ("<td><a href=javascript:abrirMasInfo('".$dire."')>+ Info</a></td>");
 					if ($rowDeta['statusfiscalizacion'] == 'M' || $rowDeta['statusfiscalizacion'] == 'F') {
+						$dire = "/comun/empresas/abm/cuentas/detallePagos.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
 						print ("<td><a href=javascript:abrirDDJJPagos('".$dire."')>Pago</a></td>");
 					} else {
 						if ($rowDeta['statusfiscalizacion'] == 'A') {
