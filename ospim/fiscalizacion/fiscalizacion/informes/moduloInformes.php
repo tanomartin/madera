@@ -13,6 +13,15 @@
 }
 -->
 </style>
+<script src="/lib/jquery.js" type="text/javascript"></script>
+<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+function abrirInfo(dire) {
+	$.blockUI({ message: "<h1>Generando Listado<br>Aguarde por favor...</h1>" });
+	location.href = dire;
+}
+</script>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -35,14 +44,14 @@ A:hover {text-decoration: none;color:#00FFFF }
               <p align="center"><a class="enlace" href="ddjj/ddjjCuit.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p align="center">&nbsp;</p></td>
           <td width="200"><p align="center">Requerimientos </p>
-              <p align="center"><a class="enlace" href="requerimientos/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+              <p align="center"><a class="enlace"  href="requerimientos/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p align="center">&nbsp;</p></td>
         </tr>
         <tr>
           <td><p align="center">&nbsp;</p>
               <p align="center">&nbsp;</p></td>
           <td><p align="center">Liquidaciones</p>
-              <p align="center"><a class="enlace" href="liquidaciones/liquiListado.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+              <p align="center"><a class="enlace" href=javascript:abrirInfo('liquidaciones/liquiListado.php')><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p>&nbsp;</p></td>
           <td>&nbsp;</td>
         </tr>
