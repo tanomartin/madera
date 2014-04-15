@@ -42,7 +42,7 @@ function esMontoMenor($cuit, $importe, $me, $ano, $db) {
 		$remuDDJJ = $rowDDJJ['totalremundeclarada'] + $rowDDJJ['totalremundecreto'];
 		$valor81 = (float)($remuDDJJ * $alicuota );
 		$diferencia = $valor81 - $importe;
-		if ($diferencia < $limiteDif) {
+		if ($diferencia > $limiteDif) {
 			$resultadoMenor = array('remu' => $remuDDJJ, 'totper' => $rowDDJJ['totalpersonal']);
 			return($resultadoMenor);
 		}
