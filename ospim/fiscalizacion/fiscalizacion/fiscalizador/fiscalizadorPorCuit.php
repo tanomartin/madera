@@ -223,8 +223,15 @@ $origen = $_GET['origen'];
 $solicitante = $_GET['soli'];
 $motivo = $_GET['motivo'];
 
-//var_dump($arrayPagos);
-if (sizeof($arrayPagos) != 0) {
+$redire = 1;
+foreach ($arrayPagos as $pagos){ 
+	if ($pagos['estado'] != 'P') {
+		$redire = 0;
+		break;	
+	}
+}
+
+if ($redire == 0) {
 	$listadoFinal[0] = array('cuit' => $cuit, 'deudas' => $arrayPagos);
 } else {
 	header ("Location: fiscalizador.php?err=5");
