@@ -33,6 +33,7 @@ function reverificaFueraTerminoYMenor($ano, $me, $cuit, $db) {
 
 function esMontoMenor($cuit, $importe, $me, $ano, $db) {
 	$alicuota = 0.081;
+	$limiteDif = 0.01;
 	$sqlDDJJ = "select totalremundeclarada, totalremundecreto, totalpersonal from cabddjjospim where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
 	$resDDJJ = mysql_query($sqlDDJJ,$db);
 	$CanDDJJ = mysql_num_rows($resDDJJ); 
@@ -40,7 +41,8 @@ function esMontoMenor($cuit, $importe, $me, $ano, $db) {
 		$rowDDJJ = mysql_fetch_assoc($resDDJJ);
 		$remuDDJJ = $rowDDJJ['totalremundeclarada'] + $rowDDJJ['totalremundecreto'];
 		$valor81 = (float)($remuDDJJ * $alicuota );
-		if ($importe < $valor81) {
+		$diferencia = $valor81 - $importe;
+		if ($diferencia < $limiteDif) {
 			$resultadoMenor = array('remu' => $remuDDJJ, 'totper' => $rowDDJJ['totalpersonal']);
 			return($resultadoMenor);
 		}
