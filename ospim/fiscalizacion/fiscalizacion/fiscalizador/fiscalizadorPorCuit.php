@@ -91,7 +91,7 @@ function fiscalizoPagos($cuit, $arrayPagos, $db) {
 		} else {
 			$resVto = estaVencido($cuit, $fechaPago, $mes, $anio, $db);
 			if ($resVto != 0) {
-				$resultado[$id] = array('anio' => (int)$anio, 'mes' => (int)$mes, 'remu' => $resVto['remu'], 'totper' => (int)$resVto['totper'], 'importe' => 0.00, 'estado' => 'F');
+				$resultado[$id] = array('anio' => (int)$anio, 'mes' => (int)$mes, 'remu' => $resVto['remu'], 'totper' => (int)$resVto['totper'], 'importe' => $importe, 'estado' => 'F');
 			} else {
 				$resultado[$id] = array('anio' => (int)$anio, 'mes' => (int)$mes, 'importe' => $importe, 'estado' => 'P');
 			}
