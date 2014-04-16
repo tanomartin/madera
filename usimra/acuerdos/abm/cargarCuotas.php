@@ -135,7 +135,7 @@ function hayInfoCheque(id) {
 	return true;
 }
 
-function validoMontos() {
+function validoMontos(formulario) {
 	var monto = 0;
 	for (i=1; i<=<?php echo $cuotasapagar ?>; i++) {
 		monto = monto + parseFloat(document.getElementById("monto"+i).value);
@@ -146,6 +146,7 @@ function validoMontos() {
 		document.getElementById("monto1").focus();
 		return false;
 	}
+	formulario.Submit.disabled = true;
 	return true;
 }
 
@@ -181,7 +182,7 @@ function validarYGuardar(formulario) {
 			}
 		}
 	}
-	return(validoMontos());
+	return(validoMontos(formulario));
 }
 
 </script>
@@ -249,7 +250,7 @@ function validarYGuardar(formulario) {
   </div>
   </p>
   <p align="center"> 
-  	<input type="submit" name="guardar" id="guardar" value="Guardar" sub />
+  	<input type="submit" name="Submit" id="Submit" value="Guardar" sub />
 	<label></label>
   </p>
 </form>
