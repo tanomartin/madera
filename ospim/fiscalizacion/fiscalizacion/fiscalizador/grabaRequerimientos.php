@@ -35,11 +35,8 @@ for($i=0; $i < sizeof($listadoEmpresas); $i++) {
 			$id = $anio.$mes;
 			if ($estado != 'S') {
 				$deudaNominal = (float)($deuda['remu'] * $alicuota);
-				if ($estado == 'M') {
+				if ($estado == 'M' || $estado == 'F') {
 					$deudaNominal = (float)($deudaNominal - $deuda['importe']);
-				}
-				if ($estado == 'F') {
-					$deudaNominal = 0.00;
 				}
 				$deuda['deudaNominal'] = (float)number_format($deudaNominal,2,'.','');
 			} else {
