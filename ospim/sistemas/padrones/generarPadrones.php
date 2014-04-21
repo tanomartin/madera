@@ -31,6 +31,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 	
 	$nomTxtTeso = $presta."D".$mes.$anio.".txt";
 
+	//Archivi titulares...
 	try {
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator($_SESSION['usuario'])
@@ -131,6 +132,8 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$objWriter->save($direCompletaTitulares);
 		$objPHPExcel->disconnectWorksheets();
 		unset($objWriter, $objPHPExcel);
+		//*******************************************	
+			
 			
 		//ARCHIVO FAMILIARES
 		$objPHPExcel = new PHPExcel();
@@ -189,10 +192,22 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$objWriter->save($direCompletaFamiliares);
 		$objPHPExcel->disconnectWorksheets();
 		unset($objWriter, $objPHPExcel);
+		//********************************************
+		
 		
 		//aca tengo que crear el txt de totalizadores...
 		var_dump($totalizador);
 		print("<br>TOTAL ARCHIVOS <br> Total Titulares: $totalTitulares - Total Familiares: $totalFamiliares <br><br>");
+		//**********************************************
+		
+		//aca tenemos que zipiar a un archivo los xls.
+		//*******************************************
+		
+		//ftp al servidor de interent.
+		//*******************************************
+		
+		//subismo el registro de subida a la base de internet.
+		//*******************************************
 	
 	} catch (PDOException $e) {
 		echo $e->getMessage();
