@@ -23,8 +23,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 
 function importar() {
-	//$.blockUI({ message: "<h1>Importando datos Aplicativo DDJJ... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
-	//location.href='importarInfoAplicativoDDJJ.php';
+	$.blockUI({ message: "<h1>Importando datos Aplicativo DDJJ... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	location.href='importarInfoAplicativoDDJJ.php';
 }
 
 </script>

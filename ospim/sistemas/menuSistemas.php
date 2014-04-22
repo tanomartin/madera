@@ -26,15 +26,16 @@ A:hover {text-decoration: none;color:#00FFFF }
           <p align="center"><a class="enlace" href="fiscalizacion/menuFiscalizacion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Aplicativo DDJJ </p>
-      <p align="center"><a class="enlace" href="aplicativoddjj/menuAplicativoddjj.php"><img src="img/aplicativoddjj.png" width="97" height="85" border="0" alt="enviar"/></a></p>
+      <p align="center"><a class="enlace" href="#"><img src="img/aplicativoddjj.png" width="97" height="85" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Tratamiento A.F.I.P.</p>
         <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.jpg" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
-      <td><p align="center">&nbsp;</p>
-      </td>
+      <td><p align="center">Padrones</p>
+        <p align="center"><a class="enlace" href="#"><img src="img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>
       <td><p align="center">Stock</p>
       <p align="center"><a class="enlace" href="stock/menuStock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
