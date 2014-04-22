@@ -65,21 +65,14 @@ function validar(formulario) {
 		  <?php 
 		  $mes = date("n");
 		  $anio = date("Y");
-		  print("<select name='periodo' id='periodo' name='periodo'>");
-		  print("<option value=0> Seleccione Periodo </option>");
 		  if ($mes == 1) {
-			$aniopasado = date("Y") - 1;
-			$mespasado = 12;
-			print("<option value=$mespasado-$aniopasado>$mespasado - $aniopasado </option>");	
+			$anio =  $anio - 1;
+			$mes = 12;
+		  } else {
+			$mes = $mes - 1;
 		  }
-		  if ($mes > 2) {
-		  	$inicio = $mes - 2;
-		  }
-		  for ($i = $inicio; $i < $mes; $i++) {
-		  	print("<option value=$i-$anio>$i-$anio</option>");	
-		  }	
-		  print("</select>");
 		  ?>
+		  <input name="periodo" readonly="readonly" style="background-color:#CCCCCC; width:60px; text-align:center"  value="<?php echo $mes."-".$anio  ?>" type="text" />
       </label>
     </p>
     <p>

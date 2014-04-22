@@ -3,36 +3,57 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php"); 
 require_once($libPath."phpExcel/Classes/PHPExcel.php");
 
+function eliminarDir($carpeta) {
+	foreach(glob($carpeta."/*") as $archivos_carpeta) {
+		echo $archivos_carpeta."<br>";
+		if (is_dir($archivos_carpeta)) {
+			eliminarDir($archivos_carpeta);
+		} else {
+			unlink($archivos_carpeta);
+		}
+	}
+	rmdir($carpeta);
+	echo "<br>";
+}
+
+var_dump($_POST);
+$periodo = explode('-',$_POST['periodo']);
+$mes = $periodo[0];
+$anio = $periodo[1];
+$fecha = $anio."-".$mes."-01";
+$fechaLimite = date('Y-m-j',strtotime('+1 month',strtotime ($fecha)));
+print("MES A REALIZAR: ".$mes." - ".$anio." CON FECHA REGISTRO < ".$fechaLimite."<br><br>");
 $maquina = $_SERVER['SERVER_NAME'];
+$carpeta = $mes.$anio;
+
 if(strcmp("localhost",$maquina) == 0) {
-	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/padrones/archivos/";
+	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/padrones/archivos/".$carpeta;
 } else {
 	//$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArc;
 }
 
-var_dump($_POST);
-print("CARPETA DE GUARDADO: ".$direArc."<br>");
-$periodo = explode('-',$_POST['periodo']);
-$mes = $periodo[0];
-$anio = $periodo[1];
-print("MES A REALIZAR: ".$mes." - ".$anio."<br><br>");
+eliminarDir($direArc);
+mkdir($direArc);
+
 $finalFor = sizeof($_POST) - 2;
 $datos = array_values($_POST);
-
 for ($f = 0; $f < $finalFor; $f++) {
 	$presta = $datos[$f];
+	
 	$nomExcelTitu = $presta."T".$mes.$anio.".xls";
-	$direCompletaTitulares = $direArc.$nomExcelTitu;
-	unlink($direCompletaTitulares);
+	$direCompletaTitulares = $direArc."/".$nomExcelTitu;
 	
 	$nomExcelFami = $presta."F".$mes.$anio.".xls";
-	$direCompletaFamiliares = $direArc.$nomExcelFami;
-	unlink($direCompletaFamiliares);
+	$direCompletaFamiliares = $direArc."/".$nomExcelFami;
 	
 	$nomTxtTeso = $presta."D".$mes.$anio.".txt";
-
-	//Archivi titulares...
+	$direCompletaTesoreria = $direArc."/".$nomTxtTeso;
+	
+	$nomZip = $presta.$mes.$anio.".zip";
+	$direCompletaZip = $direArc."/".$nomZip;
+	
 	try {
+		//ARCHIVO TITULARES
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator($_SESSION['usuario'])
 									 ->setLastModifiedBy($_SESSION['usuario'])
@@ -46,42 +67,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setHorizontalCentered(true);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setVerticalCentered(false);
 		
-		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('A1', 'Nro. AFiliado');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('B1', 'Nombre y Apellido');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Tipo Documento');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('D1', 'Nro. Documento');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('E1', 'Fecha Nacimiento');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('F1', 'Sexo');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('G1', 'Direccion');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('H1', 'Localidad');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('I1', 'Provincia');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('J1', 'Telefono');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('K1', 'Cod. Delegacion');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('L1', 'CUIT empresa');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('M1', 'Razon Social');
-					
-		$objPHPExcel->getDefaultStyle()->getFont()->setName('Arial');
-		$objPHPExcel->getDefaultStyle()->getFont()->setSize(12);
-			
-		$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->getFill()->getStartColor()->setARGB('FF808080');
-		$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-		
-		$fila=1;
+		$fila=0;
 		$filaFamilia=0;	
 		$objPHPExcel->getDefaultStyle()->getFont()->setSize(10);
 		$cuerpoFamilia = array();
@@ -95,7 +81,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 			$totalFamiXDelega = 0;
 			$delega = $rowPresta['codidelega'];
 			
-			$sqlTitulares = "SELECT t.*, l.nomlocali, p.descrip as nomprovin, e.nombre as nomempresa FROM titulares t, localidades l, provincia p, empresas e where t.codidelega = $delega and t.codlocali = l.codlocali and t.codprovin = p.codprovin and t.cuitempresa = e.cuit";
+			$sqlTitulares = "SELECT t.*, l.nomlocali, p.descrip as nomprovin, e.nombre as nomempresa FROM titulares t, localidades l, provincia p, empresas e where t.codidelega = $delega and t.cantidadcarnet != 0 and t.fecharegistro < '$fechaLimite' and t.codlocali = l.codlocali and t.codprovin = p.codprovin and t.cuitempresa = e.cuit";
 			print($sqlTitulares."<br>");
 			$resTitulares = mysql_query($sqlTitulares, $db);	
 			
@@ -117,23 +103,26 @@ for ($f = 0; $f < $finalFor; $f++) {
 				$totalTituXDelega++;
 			
 				$nroafil = $rowTitulares['nroafiliado'];
-				$resFamiliares = mysql_query("SELECT f.*, p.descrip as parentezco FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.tipoparentesco = p.codparent",$db);
+				$sqlFamiliares = "SELECT f.*, p.descrip as parentezco FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite' and f.tipoparentesco = p.codparent";
+				print($sqlFamiliares."<br>");
+				$resFamiliares = mysql_query($sqlFamiliares, $db);
 				while($rowFamiliares = mysql_fetch_array($resFamiliares)) {
 					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'parentezco' => $rowFamiliares['parentezco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo']);
 					$filaFamilia++;
 					$totalFamiXDelega++;
 				}
 			}
-			$totalizador[$delega] = array('delega' => $delega, 'tottit' => $totalTituXDelega, 'totfam' => $totalFamiXDelega);
+			$totalDele = $totalTituXDelega + $totalFamiXDelega;
+			$totalizador[$delega] = array('delega' => $delega, 'tottit' => $totalTituXDelega, 'totfam' => $totalFamiXDelega, "total" => $totalDele);
 		}
-		$totalTitulares = $fila - 1;
+		$objPHPExcel->getActiveSheet()->getStyle('A1:M'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);	
+		$totalTitulares = $fila;
 			
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save($direCompletaTitulares);
 		$objPHPExcel->disconnectWorksheets();
 		unset($objWriter, $objPHPExcel);
 		//*******************************************	
-			
 			
 		//ARCHIVO FAMILIARES
 		$objPHPExcel = new PHPExcel();
@@ -149,32 +138,8 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setHorizontalCentered(true);
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setVerticalCentered(false);
 			
-		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('A1', 'Nro. AFiliado');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('B1', 'Parentezco');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Nombre y Apellido');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('D1', 'Tipo Documento');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('E1', 'Nro. Documento');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('F1', 'Fecha Nacimiento');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->setCellValue('G1', 'Sexo');
-			
-		$objPHPExcel->getDefaultStyle()->getFont()->setName('Arial');
-		$objPHPExcel->getDefaultStyle()->getFont()->setSize(12);
-			
-		$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getFill()->getStartColor()->setARGB('FF808080');			
-		$objPHPExcel->getActiveSheet()->getStyle('A1:G1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-		
-		$fila=1;	
-		$objPHPExcel->getDefaultStyle()->getFont()->setSize(10);
-			
+		$fila=0;	
+		$objPHPExcel->getDefaultStyle()->getFont()->setSize(10);	
 		foreach($cuerpoFamilia as $familiar) {
 		 	$fila++;
 			$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $familiar['nroafil']);
@@ -185,33 +150,60 @@ for ($f = 0; $f < $finalFor; $f++) {
 			$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $familiar['fecnac']);
 			$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $familiar['sexo']);
 		}
-			
-		$totalFamiliares = $fila - 1;
-			
+		$objPHPExcel->getActiveSheet()->getStyle('A1:G'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);	
+		$totalFamiliares = $fila;
+	
+		$totalBeneficiarios = $totalTitulares + $totalFamiliares;
+		
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save($direCompletaFamiliares);
 		$objPHPExcel->disconnectWorksheets();
 		unset($objWriter, $objPHPExcel);
 		//********************************************
 		
-		
-		//aca tengo que crear el txt de totalizadores...
+		//ARCHIVO TOTALIZADOR PARA TESORERIA
 		var_dump($totalizador);
-		print("<br>TOTAL ARCHIVOS <br> Total Titulares: $totalTitulares - Total Familiares: $totalFamiliares <br><br>");
+		print("<br>TOTAL ARCHIVO PRESTADOR $presta <br> Total Titulares: $totalTitulares - Total Familiares: $totalFamiliares <br><br>");
+		$rowPresta = mysql_fetch_array(mysql_query("SELECT * FROM prestadores WHERE codigo = $presta", $db));
+		$archivoTeso=fopen($direCompletaTesoreria,"a") or die("Problemas en la creacion");
+		$primeraLineaTexto = "Prestador: ".$presta." - ".$rowPresta['nombre'];
+		fputs($archivoTeso,$primeraLineaTexto);
+		fputs($archivoTeso,"\r\n\r\n");
+		$titulosTexto = "Delegacion  Titulares  Familiares  Beneficiarios";
+		fputs($archivoTeso,$titulosTexto);
+		fputs($archivoTeso,"\r\n");
+		foreach ($totalizador as $totalDele) {
+			$lineaDelega = "   ".$totalDele['delega']."      ".$totalDele['tottit']."           ".$totalDele['totfam']."            ".$totalDele['total'];
+			fputs($archivoTeso,$lineaDelega);
+			fputs($archivoTeso,"\r\n");
+		}
+		fputs($archivoTeso,"------------------------------------------------");
+		fputs($archivoTeso,"\r\n");
+		$totalesTexto= "TOTALES      $totalTitulares           $totalFamiliares           $totalBeneficiarios";
+		fputs($archivoTeso,$totalesTexto);
+		fclose($archivoTeso);
 		//**********************************************
 		
-		//aca tenemos que zipiar a un archivo los xls.
+		//ACHIVO DE ZIP
+		$zipPadron = new ZipArchive;
+		if ($zipPadron->open($direCompletaZip, ZipArchive::CREATE) === TRUE) {
+			$zipPadron->addFile($direCompletaTitulares, $nomExcelTitu);
+			$zipPadron->addFile($direCompletaFamiliares, $nomExcelFami);
+  			$zipPadron->close();
+		} else {
+			print("ERROR AL ABRIR EL ZIP <br>");
+		}
 		//*******************************************
 		
-		//ftp al servidor de interent.
+		//ftp al servidor de internet.
 		//*******************************************
 		
 		//subismo el registro de subida a la base de internet.
 		//*******************************************
 	
-	} catch (PDOException $e) {
+	} catch (Exception $e) {
 		echo $e->getMessage();
-		$dbh->rollback();
+		//$dbhInternet->rollback();
 	}
 }
 
