@@ -2,7 +2,13 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 
-$archivo = "liqui/Seguimiento.txt";
+$archivo = "Seguimiento.txt";
+$maquina = $_SERVER['SERVER_NAME'];
+if(strcmp("localhost",$maquina) == 0) {
+	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$nombreArc;
+} else {
+	$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArc;
+}
 
 if (file_exists($archivo)) {
 	$file = fopen($archivo, "r") or exit("Unable to open file!");
