@@ -1,17 +1,22 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
+include($libPath."ftpZeus.php"); 
+include($libPath."funcionesFTP.php"); 
 
 $archivo = "Seguimiento.txt";
+$archivoUsimra = "SegUsimra.txt";
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina) == 0) {
-	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$nombreArc;
+	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivo;
+	$direArcUsimra = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivoUsimra;
 } else {
-	$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArc;
+	$direArc = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$archivo;
+	$direArcUsimra = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$archivoUsimra;
 }
 
-if (file_exists($archivo)) {
-	$file = fopen($archivo, "r") or exit("Unable to open file!");
+if (file_exists($direArc)) {
+	$file = fopen($direArc, "r") or exit("Falla al abrir el archivo!");
 	$r = 0;
 	$n = 0;
 	while(!feof($file)) {
@@ -68,10 +73,23 @@ if (file_exists($archivo)) {
 	}catch (PDOException $e) {
 		echo $e->getMessage();
 		$dbh->rollback();
-	}
+	}	
 } else {
 	$liqCargadas = 0;
 }
+
+$liqUsimra = 0;
+if (file_exists($direArcUsimra)) {
+	$pathZeus = "/home/sistemas/";
+	$resultado = SubirArchivo($direArcUsimra, $archivoUsimra, $pathZeus);
+	if ($resultado) {
+		$liqUsimra = 1;
+		//unlink($direArcUsimra);
+	} else {
+		$liqUsimra = 2;
+	}
+} 
+
 ?>
 
 
@@ -91,13 +109,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
-<script language="javascript">
-function abrirInfo(dire) {
-	a= window.open(dire,"InfoInspeccion",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=700, height=300, top=10, left=10");
+<script language="JavaScript">
+function borrarArchivo(dire){
+	a= window.open(dire,"borrarArchivo",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
-
 </script>
 
 <body bgcolor="#CCCCCC">
@@ -128,10 +144,25 @@ function abrirInfo(dire) {
 					}
 			  ?>
 			</table>
-			<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
-	<?php } else {
-				print("<div align='center' style='color:#FF0000'><b> NO SE ENCONTRÓ EL ARCHIVO Seguimiento.txt </b></div>");
-		  } ?>
+			  <p>
+			    <?php } else {
+				print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO Seguimiento.txt </b></div></p>");
+		  		} 
+	
+		  if ($liqUsimra == 0) { 
+		  		print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUsimra.txt </b></div></p>");
+		  }	
+		  if ($liqUsimra == 1) {
+				print("<div align='center' style='color:#0033FF'><b> SE SUBIO EL ARCHIVO SegUsimra.txt </b></div>"); ?>
+				<input type="button" name="borrar" value="Borrar Archivo U.S.I.M.R.A." onclick="borrarArchivo('borrarArchivo.php')" align="center"/> 
+    <?php } 
+		  if ($liqUsimra == 2) {
+				print("<p><div align='center' style='color:#FF0000'><b> SE PRODUJO UN ERROR INTENTANDO SUBIR EL ARCHIVO SegUsimra.txt </b></div></p>");
+		  }
+		  
+	?>
+  </p>
+			  <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
 </div>
 </body>
 </html>
