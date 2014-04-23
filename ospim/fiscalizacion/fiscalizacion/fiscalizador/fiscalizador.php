@@ -56,10 +56,11 @@ function validar(formulario) {
 			alert("Debe seleccionar una Delegación");
 			return false;
 		}
-		if (formulario.personal.value == "") {
-			alert("La Cantidad de Personal Promedio debe ser ingresada");
-			return false;
-		} else {
+		if (formulario.personal.value != "") {
+			if (formulario.personal.value == 0) {
+				alert("La Cantidad de Personal Promedio no puede ser cero");
+				return false;
+			}
 			if (!esEnteroPositivo(formulario.personal.value)) {
 				alert("La Cantidad de Personal Promedio debe ser un numero entero postivo");
 				return false;

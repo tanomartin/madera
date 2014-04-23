@@ -8,7 +8,7 @@ if (isset($_GET['fecha'])) {
 }
 $fechaBusqueda = fechaParaGuardar($fecha);
 
-$sqlReque = "SELECT r.*, d.nombre from reqfiscalizospim r, delegaciones d where fecharequerimiento = '$fechaBusqueda' and procesoasignado != 1 and requerimientoanulado = 0 and r.codidelega = d.codidelega";
+$sqlReque = "SELECT r.*, d.nombre, e.nombre as empresa from reqfiscalizospim r, delegaciones d, empresas e where fecharequerimiento = '$fechaBusqueda' and procesoasignado != 1 and requerimientoanulado = 0 and r.codidelega = d.codidelega and r.cuit = e.cuit";
 $resReque = mysql_query($sqlReque,$db);
 $canReque = mysql_num_rows($resReque);
 if ($canReque == 0) {
@@ -78,7 +78,7 @@ function validar(formulario) {
           <th>Origen</th>
           <th>Solicitante</th>
           <th>Motivo</th>
-          <th>Cuit</th>
+          <th>Empresa</th>
 		  <th>Delegacion</th>
           <th>Detalle</th>
           <th>Acciones</th>
@@ -99,7 +99,7 @@ function validar(formulario) {
 				print("<td>".$origen."</td>");   
 				print("<td>".$rowReque['solicitarequerimiento']."</td>");   
 				print("<td>".$rowReque['motivorequerimiento']."</td>"); 
-				print("<td>".$rowReque['cuit']."</td>"); 
+				print("<td>".$rowReque['cuit']." - ".$rowReque['empresa']."</td>"); 
 				print("<td>".$rowReque['nombre']."</td>"); 
 				print("<td><a href='detalleRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Editar</a></td>");
 				if ($rowReque['procesoasignado'] == 0) {		

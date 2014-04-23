@@ -9,6 +9,10 @@ $cuit = $_GET['cuit'];
 $sqlDeta = "SELECT * from detfiscalizospim where nrorequerimiento = '$nroreq'";
 $resDeta = mysql_query($sqlDeta,$db);
 
+
+$sqlEmpresa = "SELECT * from empresas where cuit = '$cuit'";
+$resEmpresa  = mysql_query($sqlEmpresa,$db);
+$rowEmpresa  = mysql_fetch_array($resEmpresa)
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -75,6 +79,7 @@ function validar(formulario) {
 		<input name="fecha" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
 		<p class="Estilo2">Edici&oacute;n de Periodos  del  Requerimiento Nro. <?php echo $nroreq ?></p>
+		<p class="Estilo2"><?php echo $cuit." - ".$rowEmpresa['nombre'] ?></p>
 		<table width="600" border="1" align="center">
 		  <tr style="font-size:12px">
 			<th rowspan="2" width="65">Período</th>

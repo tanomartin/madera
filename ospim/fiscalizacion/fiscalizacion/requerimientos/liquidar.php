@@ -352,7 +352,7 @@ function grabarCabLiquidacion($nroreq, $nombreArcExc, $db) {
 
 function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//CREAMOS PRIMERA LINEA DEL ARCHIVO
-	$sqlJuris = "SELECT e.*, j.*, p.descrip as provincia, l.nomlocali as localidad from empresas e, jurisdiccion j, provincia p, localidades l where j.cuit = $cuit and j.cuit = e.cuit and j.codidelega = $codidelega and j.codprovin = p.codprovin and e.codlocali = l.codlocali";
+	$sqlJuris = "SELECT e.*, j.*, p.descrip as provincia, l.nomlocali as localidad from empresas e, jurisdiccion j, provincia p, localidades l where j.cuit = $cuit and j.cuit = e.cuit and j.codidelega = $codidelega and j.codprovin = p.codprovin and j.codlocali = l.codlocali";
 	$resJuris = mysql_query($sqlJuris,$db);
 	$rowJuris = mysql_fetch_assoc($resJuris);
 	$cuitconguiones = agregaGuiones($cuit);

@@ -19,27 +19,37 @@ $filtrosSerializado=$_POST['filtros'];
 
 $listadoEmpresas = unserialize(urldecode($listadoSerializado));
 $filtros = unserialize(urldecode($filtrosSerializado));
-
-$n = 0;
-for ($i=0; $i < sizeof($listadoEmpresas); $i++) {
-	$cuit = $listadoEmpresas[$i]['cuit'];
-	$fechaInicio = $listadoEmpresas[$i]['iniobliosp'];
-	include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
-	$empleadosPromedio =  calculoPersonalPromedio($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
-	if ($empleadosPromedio >= $filtros['empleados']) {
-		$listadoEmpresasEmpleados[$n] = $listadoEmpresas[$i];
-		$n = $n + 1;
+if ($filtros['empleados'] != '') {
+	$n = 0;
+	for ($i=0; $i < sizeof($listadoEmpresas); $i++) {
+		$cuit = $listadoEmpresas[$i]['cuit'];
+		$fechaInicio = $listadoEmpresas[$i]['iniobliosp'];
+		include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
+		$empleadosPromedio =  calculoPersonalPromedio($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+		if ($empleadosPromedio >= $filtros['empleados']) {
+			$listadoEmpresasEmpleados[$n] = $listadoEmpresas[$i];
+			$n = $n + 1;
+		}
 	}
-}
-
-if (sizeof($listadoEmpresasEmpleados) == 0) {
-	header ("Location: fiscalizador.php?err=3");
+	if (sizeof($listadoEmpresasEmpleados) == 0) {
+		header ("Location: fiscalizador.php?err=3");
+	} else {
+		$listadoSerializado = serialize($listadoEmpresasEmpleados);
+		$listadoSerializado = urlencode($listadoSerializado);
+		$filtrosSerializado = serialize($filtros);
+		$filtrosSerializado = urlencode($filtrosSerializado);
+	}
 } else {
-	$listadoSerializado = serialize($listadoEmpresasEmpleados);
+	$listadoSerializado = serialize($listadoEmpresas);
 	$listadoSerializado = urlencode($listadoSerializado);
 	$filtrosSerializado = serialize($filtros);
 	$filtrosSerializado = urlencode($filtrosSerializado);
 }
+
+//print("EMPRESAS<br>");
+//var_dump($listadoEmpresas);
+//print("EMPRESAS Filtradas<br>");
+//var_dump($listadoEmpresasEmpleados);
 
 //cambio la hora de secion por ahora para no perder la misma
 $ahora = date("Y-n-j H:i:s"); 
