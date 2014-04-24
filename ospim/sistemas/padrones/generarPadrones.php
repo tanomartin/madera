@@ -20,6 +20,7 @@ function eliminarDir($carpeta) {
 
 $periodo = explode('-',$_POST['periodo']);
 $mes = $periodo[0];
+$mes = str_pad($periodo[0],2,'0',STR_PAD_LEFT);
 $anio = $periodo[1];
 $fecha = $anio."-".$mes."-01";
 $fechaLimite = date('Y-m-j',strtotime('+1 month',strtotime ($fecha)));
