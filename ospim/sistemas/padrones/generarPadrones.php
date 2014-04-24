@@ -1,11 +1,14 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+set_time_limit(0);
 include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php"); 
+include($libPath."ftpOspim.php"); 
+include($libPath."funcionesFTP.php"); 
+include($libPath."claves.php");
 require_once($libPath."phpExcel/Classes/PHPExcel.php");
 
 function eliminarDir($carpeta) {
 	foreach(glob($carpeta."/*") as $archivos_carpeta) {
-		echo $archivos_carpeta."<br>";
 		if (is_dir($archivos_carpeta)) {
 			eliminarDir($archivos_carpeta);
 		} else {
@@ -13,16 +16,13 @@ function eliminarDir($carpeta) {
 		}
 	}
 	rmdir($carpeta);
-	echo "<br>";
 }
 
-var_dump($_POST);
 $periodo = explode('-',$_POST['periodo']);
 $mes = $periodo[0];
 $anio = $periodo[1];
 $fecha = $anio."-".$mes."-01";
 $fechaLimite = date('Y-m-j',strtotime('+1 month',strtotime ($fecha)));
-print("MES A REALIZAR: ".$mes." - ".$anio." CON FECHA REGISTRO < ".$fechaLimite."<br><br>");
 $maquina = $_SERVER['SERVER_NAME'];
 $carpeta = $mes.$anio;
 
@@ -32,13 +32,19 @@ if(strcmp("localhost",$maquina) == 0) {
 	//$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArc;
 }
 
-eliminarDir($direArc);
-mkdir($direArc);
+//eliminarDir($direArc);
+if (!file_exists($direArc)) {
+	mkdir($direArc);
+}
 
 $finalFor = sizeof($_POST) - 2;
 $datos = array_values($_POST);
+$arrayResultados = array();
+
 for ($f = 0; $f < $finalFor; $f++) {
 	$presta = $datos[$f];
+	$descriError = "CREACION Y SUBIDA DE PADRON CORRECTA";
+	$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);
 	
 	$nomExcelTitu = $presta."T".$mes.$anio.".xls";
 	$direCompletaTitulares = $direArc."/".$nomExcelTitu;
@@ -73,7 +79,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$cuerpoFamilia = array();
 		
 		$sqlDelega = "SELECT * FROM prestadelega where codigopresta = $presta";
-		print($sqlDelega."<br>");
+		//print($sqlDelega."<br><br>");
 		$resPresta = mysql_query($sqlDelega,$db);
 		$totalizador = array();
 		while($rowPresta = mysql_fetch_array($resPresta)) { 
@@ -82,7 +88,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 			$delega = $rowPresta['codidelega'];
 			
 			$sqlTitulares = "SELECT t.*, l.nomlocali, p.descrip as nomprovin, e.nombre as nomempresa FROM titulares t, localidades l, provincia p, empresas e where t.codidelega = $delega and t.cantidadcarnet != 0 and t.fecharegistro < '$fechaLimite' and t.codlocali = l.codlocali and t.codprovin = p.codprovin and t.cuitempresa = e.cuit";
-			print($sqlTitulares."<br>");
+			//print($sqlTitulares."<br>");
 			$resTitulares = mysql_query($sqlTitulares, $db);	
 			
 			while($rowTitulares = mysql_fetch_array($resTitulares)) {
@@ -104,7 +110,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 			
 				$nroafil = $rowTitulares['nroafiliado'];
 				$sqlFamiliares = "SELECT f.*, p.descrip as parentezco FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite' and f.tipoparentesco = p.codparent";
-				print($sqlFamiliares."<br>");
+				//print($sqlFamiliares."<br>");
 				$resFamiliares = mysql_query($sqlFamiliares, $db);
 				while($rowFamiliares = mysql_fetch_array($resFamiliares)) {
 					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'parentezco' => $rowFamiliares['parentezco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo']);
@@ -162,8 +168,12 @@ for ($f = 0; $f < $finalFor; $f++) {
 		//********************************************
 		
 		//ARCHIVO TOTALIZADOR PARA TESORERIA
-		var_dump($totalizador);
-		print("<br>TOTAL ARCHIVO PRESTADOR $presta <br> Total Titulares: $totalTitulares - Total Familiares: $totalFamiliares <br><br>");
+		
+		if (file_exists($direCompletaTesoreria)) {
+			unlink($direCompletaTesoreria);
+		}
+		//var_dump($totalizador);
+		//print("<br>TOTAL ARCHIVO PRESTADOR $presta <br> Total Titulares: $totalTitulares - Total Familiares: $totalFamiliares <br><br>");
 		$rowPresta = mysql_fetch_array(mysql_query("SELECT * FROM prestadores WHERE codigo = $presta", $db));
 		$archivoTeso=fopen($direCompletaTesoreria,"a") or die("Problemas en la creacion");
 		$primeraLineaTexto = "Prestador: ".$presta." - ".$rowPresta['nombre'];
@@ -185,27 +195,134 @@ for ($f = 0; $f < $finalFor; $f++) {
 		//**********************************************
 		
 		//ACHIVO DE ZIP
+		if (file_exists($direCompletaZip)) {
+			unlink($direCompletaZip);
+		}
 		$zipPadron = new ZipArchive;
 		if ($zipPadron->open($direCompletaZip, ZipArchive::CREATE) === TRUE) {
 			$zipPadron->addFile($direCompletaTitulares, $nomExcelTitu);
 			$zipPadron->addFile($direCompletaFamiliares, $nomExcelFami);
   			$zipPadron->close();
+			unlink($direCompletaTitulares);
+			unlink($direCompletaFamiliares);
 		} else {
-			print("ERROR AL ABRIR EL ZIP <br>");
+			$descriError = "ERROR AL CREAR EL ZIP";
+			$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);			
+			//print("$descriError<br>");
 		}
 		//*******************************************
+			
+		//CONTROLO QUE NO HAYA UNA BAJADA PARA ESTE PRESTA Y ESTE PERIDOD
+		$hostOspim = "localhost"; //para las pruebas...
+		$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimPrestadores",$usuarioOspim ,$claveOspim);
+   		$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbhInternet->beginTransaction();
 		
-		//ftp al servidor de internet.
-		//*******************************************
+		$hostname = $_SESSION['host'];
+		$dbname = $_SESSION['dbname'];
+		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbh->beginTransaction();
 		
-		//subismo el registro de subida a la base de internet.
-		//*******************************************
-	
-	} catch (Exception $e) {
-		echo $e->getMessage();
-		//$dbhInternet->rollback();
-	}
+		$sqlConsultaBajada = "SELECT count(*) FROM descarga WHERE codigo = $presta and anopad = $anio and mespad = $mes";
+		//print($sqlConsultaBajada."<br>");
+		$resConsultaBajada = $dbhInternet->query($sqlConsultaBajada);
+		$canConsultaBajada = $resConsultaBajada->fetchColumn();
+		
+		if ($canConsultaBajada == 0) {
+			if (file_exists($direCompletaZip) && file_exists($direCompletaTesoreria)) {
+				$carpetaFtp = $presta."C23".$presta;
+				$pathOspim = "/public_html/prestadores/prueba/$carpetaFtp";
+				$resultado = SubirArchivo($direCompletaZip, $nomZip, $pathOspim);
+				if ($resultado) {
+					$subidaOk = 1;
+					$fecsub = date('Y-m-j');
+					$horsub = date("H:i:s");
+					
+					$sqlEliminaSubidaInternet = "DELETE FROM subida WHERE codigo = $presta and anopad = $anio and mespad = $mes";
+					//print($sqlEliminaSubidaInternet."<br>");
+					$dbhInternet->exec($sqlEliminaSubidaInternet);
+				
+					$sqlEliminaSubidaMadera = "DELETE FROM subidapadronprestadores WHERE codigoprestador = $presta and anopadron = $anio and mespadron = $mes";
+					//print($sqlEliminaSubidaMadera."<br>");
+					$dbh->exec($sqlEliminaSubidaMadera);
+					
+					$sqlInsertInternet = "INSERT INTO subida VALUE($presta, $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
+					//print($sqlInsertInternet."<br>");
+					$dbhInternet->exec($sqlInsertInternet);
+
+					$sqlInsertMadera = "INSERT INTO subidapadronprestadores VALUE($presta, $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios)";
+					//print($sqlInsertMadera."<br>");
+					$dbh->exec($sqlInsertMadera);
+					
+					$dbhInternet->commit();
+					$dbh->commit();
+					
+					//print("<br>");
+				} else {
+					$subidaOk = 2;
+					$descriError = "ERROR AL SUBIR EL ZIP A OSPIM";
+					$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);
+					//print("$descriError<br><br>");
+				}
+			}
+		} else {	
+			$descriError = "EXISTE UNA DESCARGA PARA ESTE PERIODO ($mes-$anio) Y ESTE PRESTADOR ($presta) NO SE SUBIRA NUEVAMENTE";
+			$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);
+			//print("$descriError<br><br>");
+		}
+	} catch (PDOException $e) {
+		$descriError = $e->getMessage();
+		$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);
+		//print("$descriError<br><br>");
+		$dbh->rollback();
+		$dbhInternet->rollback();
+	}	
 }
 
-
+//cambio la hora de secion por ahora para no perder la misma
+$ahora = date("Y-n-j H:i:s"); 
+$_SESSION["ultimoAcceso"] = $ahora;
 ?>
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>.: Generacion de Padrones :.</title>
+</head>
+<style>
+A:link {text-decoration: none;color:#0033FF}
+A:visited {text-decoration: none}
+A:hover {text-decoration: none;color:#00FFFF }
+.Estilo2 {
+	font-weight: bold;
+	font-size: 18px;
+}
+</style>
+<body bgcolor="#CCCCCC">
+<div align="center">
+  <p class="Estilo2"><span style="text-align:center">
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuPadrones.php'" align="center"/>
+  </span></p>
+  <p class="Estilo2">Resultado del Generacion de Padrones Período (<?php echo $mes." - ".$anio ?>) </p>
+			  <table width="800" border="1" align="center">
+					<tr>
+					  <th>Prestador</th>
+					  <th>Descripcion</th>
+					</tr>
+			  <?php foreach ($arrayResultados as $resultado) {
+						print("<tr align='center'>");
+						print("<td>".$resultado['presta']."</td>");
+						print("<td>".$resultado['descri']."</td>");
+						print("</tr>");
+					}
+			  ?>
+			</table>
+			   <p class="Estilo2">Información de Control para Tesorería </p>
+			  <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+</div>
+</body>
+</html>
