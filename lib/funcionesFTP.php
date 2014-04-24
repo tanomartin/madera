@@ -3,7 +3,7 @@ function ConectarFTP(){
 	//Permite conectarse al Servidor FTP
 	$id_ftp=ftp_connect(SERVER,PORT); //Obtiene un manejador del Servidor FTP
 	ftp_login($id_ftp,USER,PASSWORD); //Se loguea al Servidor FTP
-	ftp_pasv($id_ftp,MODO); //Establece el modo de conexión
+	ftp_pasv($id_ftp,PASV); //Establece el modo de conexión
 	return $id_ftp; //Devuelve el manejador a la función
 }
 
