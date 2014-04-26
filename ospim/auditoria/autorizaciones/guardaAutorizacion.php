@@ -374,7 +374,7 @@ try {
 				$pdf->Cell(183,8,"Presupuesto Aprobado - Hoja ".$nropagina,1,1,'C');
 				$tplIdx = $pdf->importPage($nropagina);
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
-				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
+				$pdf->Image('../img/Sello Presupuesto.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
 				if(strcmp($usuauto,"gflongo")==0) {
 					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
