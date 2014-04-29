@@ -22,7 +22,7 @@ try {
 	//echo $sqlDeleteInpsector; echo "<br>";
 	$dbh->exec($sqlDeleteInpsector);
 
-	for ( $i = 1 ; $i < sizeof($datos) - 1 ; $i ++) {
+	for ( $i = 1 ; $i < sizeof($datos) ; $i ++) {
 		$delega = $datos[$i];
 		$sqlInsertInspector = "INSERT INTO inspectores VALUE($codigo,'$apeynombre',$delega)";
 		$dbh->exec($sqlInsertInspector);

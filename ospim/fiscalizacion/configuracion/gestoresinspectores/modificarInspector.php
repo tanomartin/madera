@@ -30,6 +30,8 @@ function validar(formulario) {
 		alert("Debe completar en Nombre y el Apellido");
 		return(false);
 	}
+	formulario.guardar.disabled = true;
+	formulario.eliminar.disabled = true;
 	return true;
 }
 
@@ -68,7 +70,7 @@ function validar(formulario) {
                   </tr>
 			      <?php 
 					$i = 0;
-					$resDelega= mysql_query("SELECT * FROM delegaciones", $db);
+					$resDelega= mysql_query("SELECT * FROM delegaciones where codidelega > 1001 and codidelega < 3500", $db);
 					while($rowDelega= mysql_fetch_array($resDelega)) { 
 						echo '<tr>';
 						$codigoDelega = $rowDelega['codidelega'];
