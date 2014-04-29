@@ -62,7 +62,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlGestores = "select * from asesoreslegales order by apeynombre";
+			$sqlGestores = "select * from asesoreslegales group by codigo order by apeynombre";
 			$resGestores = mysql_query($sqlGestores,$db); 
 			$canGestores = mysql_num_rows($resGestores);
 			while ($rowGestores = mysql_fetch_array($resGestores)) { ?>

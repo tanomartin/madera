@@ -53,6 +53,42 @@ function validar(formulario) {
 				  <input name="apeynombre" type="text" id="apeynombre" value="<?php echo $rowAsesor['apeynombre'];?>" size="100" maxlength="100"/>
 				  </label>
 				</p>
+				<p>
+                  <?php 
+						$error = $_GET['error'];
+						if ($error == 1) {
+							print("<div align='center' style='color:#FF0000'><b> Debe elegir una o varias delegaciones </b></div>");
+						}
+					?>
+                  <br/>
+                  </label>
+</p>
+				<table width="300" border="1">
+                  <tr>
+                    <td>&nbsp;</td>
+                    <td>Delegaciones</td>
+                  </tr>
+                  <?php 
+					$i = 0;
+					$resDelega= mysql_query("SELECT * FROM delegaciones where codidelega > 1001 and codidelega < 3500", $db);
+					while($rowDelega= mysql_fetch_array($resDelega)) { 
+						echo '<tr>';
+						$codigoDelega = $rowDelega['codidelega'];
+						$sqlExiste = "select * from asesoreslegales where codigo = $codigo and codidelega = $codigoDelega";
+						$resExiste = mysql_query($sqlExiste,$db); 
+						$numExiste = mysql_num_rows($resExiste);
+						if ($numExiste == 1) {
+							echo '<td><input type="checkbox" id="delega'.$i.'" name="delega'.$i.'" value='.$codigoDelega.' checked></td>';
+						} else {
+							echo '<td><input type="checkbox" id="delega'.$i.'" name="delega'.$i.'" value='.$codigoDelega.'></td>';
+						}
+						echo '<td><span class="Estilo1">'.$rowDelega["nombre"].'</span><br></td>'; 
+						$i = $i + 1;
+						echo '</tr>';
+					} 
+					?>
+                </table>
+				<p>&nbsp;</p>
 				<table border="0">
                   <tr>
                     
@@ -72,7 +108,7 @@ function validar(formulario) {
                     </div></td>
                   </tr>
                 </table>
-    </form>
+  </form>
 </div>
 </body>
 </html>

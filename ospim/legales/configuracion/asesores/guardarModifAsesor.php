@@ -3,7 +3,13 @@
 $codigo = $_GET['codigo'];
 $datos = array_values($_POST);
 
-$sqlModifAsesor = "UPDATE asesoreslegales SET apeynombre = '$datos[0]' where codigo = $codigo";
+if (sizeof($datos) == 2) {
+	$pagina = "modificarAsesor.php?error=1&codigo=$codigo";
+	Header("Location: $pagina"); 
+}
+
+$apeynombre = $datos[0];
+$sqlDeleteAsesor = "DELETE FROM asesoreslegales where codigo = $codigo";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -12,7 +18,15 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$dbh->exec($sqlModifAsesor);
+	//echo $sqlDeleteAsesor; echo "<br>";
+	$dbh->exec($sqlDeleteAsesor);
+
+	for ( $i = 1 ; $i < sizeof($datos); $i ++) {
+		$delega = $datos[$i];
+		$sqlInsertInspector = "INSERT INTO asesoreslegales VALUE($codigo,'$apeynombre',$delega)";
+		$dbh->exec($sqlInsertInspector);
+		//echo $sqlInsertInspector;echo "<br>";
+	}
 	$dbh->commit();
 	
 	$pagina = "asesores.php";

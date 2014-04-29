@@ -1,8 +1,14 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 
+$codigo = $_GET['codigo'];
 $datos = array_values($_POST);
 
-$sqlNuevoAsesor = "INSERT INTO asesoreslegales VALUES(DEFAULT, '$datos[0]')";
+if (sizeof($datos) == 1) {
+	$pagina = "nuevoAsesor.php?error=1&nombre=$datos[0]";
+	Header("Location: $pagina"); 
+}
+
+$apeynombre = $datos[0];
 
 try {
 	$hostname = $_SESSION['host'];
@@ -11,7 +17,13 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$dbh->exec($sqlNuevoAsesor);
+	for ( $i = 1 ; $i < sizeof($datos) ; $i ++) {
+		$delega = $datos[$i];
+		$sqlInsertAsesor = "INSERT INTO asesoreslegales VALUE($codigo,'$apeynombre',$delega)";
+		$dbh->exec($sqlInsertAsesor);
+		//echo $sqlInsertAsesor."<br>";
+	}
+	
 	$dbh->commit();
 	
 	$pagina = "asesores.php";
