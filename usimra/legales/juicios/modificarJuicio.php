@@ -23,6 +23,22 @@ while($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) {
 		$i++;
 	}
 }
+
+$sqlJuris = "select codidelega from jurisdiccion where cuit = $cuit";
+$resJuris = mysql_query($sqlJuris,$db);
+$sqlAsesor ="select * from asesoreslegales where codidelega in (";
+while ($rowJuris = mysql_fetch_assoc($resJuris)) {
+	$sqlAsesor = $sqlAsesor.$rowJuris['codidelega'].",";
+}
+$sqlAsesor = substr($sqlAsesor,0, -1);
+$sqlAsesor = $sqlAsesor.")";
+$resJuris = mysql_query($sqlJuris,$db);
+$sqlInsp = "select * from inspectores where codidelega in (";
+while ($rowJuris = mysql_fetch_assoc($resJuris)) {
+	$sqlInsp = $sqlInsp.$rowJuris['codidelega'].",";
+}
+$sqlInsp = substr($sqlInsp,0, -1);
+$sqlInsp = $sqlInsp.")";
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -353,7 +369,6 @@ function validar(formulario) {
         <td><select name="asesor" id="asesor">
            		<option value=0>Seleccione Asesor</option>
             	<?php 
-				$sqlAsesor ="select * from asesoreslegales";
 				$resAsesor = mysql_query($sqlAsesor,$db);
 				while ($rowAsesor=mysql_fetch_assoc($resAsesor)) { 
 					$selected = '';
@@ -365,16 +380,7 @@ function validar(formulario) {
         <td>Inspector</td>
         <td><select name="inspector" id="inspector">
             <option value=0>Seleccione Inspector</option>
-            <?php 
-				$sqlJuris = "select codidelega from jurisdiccion where cuit = $cuit";
-				$resJuris = mysql_query($sqlJuris,$db); 
-				$sqlInsp = "select * from inspectores where codidelega in (";
-				while ($rowJuris = mysql_fetch_assoc($resJuris)) {
-					$sqlInsp = $sqlInsp.$rowJuris['codidelega'].",";
-				}
-				$sqlInsp = substr($sqlInsp,0, -1);
-				$sqlInsp = $sqlInsp.")";
-				
+            <?php 	
 				$resInspe = mysql_query($sqlInsp,$db);
 				while ($rowInspe=mysql_fetch_assoc($resInspe)) { 
 					$selected = '';

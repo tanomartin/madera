@@ -28,7 +28,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php"); 
 	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
 	
-	$sqlCabecera = "select c.*, a.apeynombre as asesor from cabjuiciosusimra c, asesoreslegales a where c.cuit = $cuit and c.nroorden = $nroorden and c.codasesorlegal = a.codigo";
+	$sqlCabecera = "select c.*, a.apeynombre as asesor, i.apeynombre as inspector from cabjuiciosusimra c, asesoreslegales a, inspectores i where c.cuit = $cuit and c.nroorden = $nroorden and c.codasesorlegal = a.codigo and c.codinspector = i.codigo limit 1";
 	$resCabecera = mysql_query($sqlCabecera,$db); 
 	$canCabecera = mysql_num_rows($resCabecera); 
 	if ($canCabecera == 1) {
@@ -75,13 +75,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <td><b>Asesor Legal</b></td>
         <td><?php echo $rowCebecera['asesor']; ?></td>
         <td><b>Inspector</b></td>
-        <td><?php 
-			$codIns = $rowCebecera['codinspector'];
-			$sqlInspector = "SELECT apeynombre FROM inspectores where codigo = $codIns limit 1";
-			$resInspector = mysql_query($sqlInspector,$db); 
-			$rowInspector = mysql_fetch_array($resInspector);
-			echo $rowInspector['apeynombre']; 
-		?></td>
+        <td><?php echo $rowCebecera['inspector']; ?></td>
 		<td><b>Ejecutor</b></td>
         <td><?php echo $rowCebecera['usuarioejecutor'];?></td>
       </tr>
