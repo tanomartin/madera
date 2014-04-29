@@ -30,7 +30,7 @@ $carpeta = $mes.$anio;
 if(strcmp("localhost",$maquina) == 0) {
 	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/padrones/archivos/".$carpeta;
 } else {
-	//$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArc;
+	$direArc = "archivos/".$carpeta;
 }
 
 //eliminarDir($direArc);
@@ -321,9 +321,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 						print("</tr>");
 					}
 			  ?>
-			</table>
-			   <p class="Estilo2">Información de Control para Tesorería </p>
-			  <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+  </table>
+			   <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
 </div>
 </body>
 </html>
