@@ -173,7 +173,7 @@ function abrirArchivo(dire) {
 					if(strcmp("localhost",$maquina) == 0) {
 						$direArc = "/ospim/sistemas/padrones/archivos/".$carpeta;
 					} else {
-						//$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArc;
+						$direArc="poseidon/ospim/sistemas/padrones/archivos/".$carpeta;
 					}
 					$ubicacion=$direArc."/".$archivo;
 					print ("<td class='nover'><a href=javascript:abrirArchivo('$ubicacion')>VER</a></td>"); 
