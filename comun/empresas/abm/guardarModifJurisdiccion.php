@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 
-$fechamodificacion = date("Y-m-d H:m:s");
+$fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion  = $_SESSION['usuario'];
 
 $coddelega = $_GET['coddelega'];
