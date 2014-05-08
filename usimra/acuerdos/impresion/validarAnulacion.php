@@ -4,7 +4,7 @@ include($libPath."controlSessionUsimra.php");
 $datos = array_values($_POST);
 $nroControl = $datos[0];
 $docuMano = $datos[1];
-$motivo = $datos[2];
+$motivo = $datos[3];
 
 $sqlBol = "select * from boletasusimra where nrocontrol = $nroControl";
 $resBol = mysql_query($sqlBol,$db); 
@@ -40,15 +40,15 @@ A:hover {text-decoration: none;color:#33CCFF }
   <p class="Estilo1"><strong>Verificacion Anulacion</strong> </p>
   <form id="form1" name="form1" method="post" action="anularBoleta.php?idboleta=<?php echo $rowBol['idboleta']; ?> ">
 	<p><strong>Datos Boleta </strong></p>
-	<table width="406" border="1">
+	<table width="522" border="1">
       <tr>
-        <td width="196"><div align="right">CUIT</div></td>
-        <td width="194"><div align="left"><strong><?php echo $rowBol['cuit']; ?></strong></div></td>
+        <td width="205"><div align="left">CUIT</div></td>
+        <td width="301"><div align="left"><strong><?php echo $rowBol['cuit']; ?></strong></div></td>
       </tr>
       <tr>
-        <td><div align="right">Raz&oacute;n Social </div></td>
+        <td width="205"><div align="left">Raz&oacute;n Social </div></td>
         <td><div align="left"><strong>
-         <?php 
+          <?php 
 			$sqlEmp = "select * from empresas where cuit = ".$rowBol['cuit'];
 			$resEmp = mysql_query($sqlEmp,$db); 
 			$rowEmp = mysql_fetch_array($resEmp); 
@@ -57,27 +57,27 @@ A:hover {text-decoration: none;color:#33CCFF }
         </strong></div></td>
       </tr>
       <tr>
-        <td><div align="right">Nro Acuerdo </div></td>
+        <td><div align="left">Nro Acuerdo </div></td>
         <td><div align="left"><strong><?php echo $rowBol['nroacuerdo']; ?></strong></div></td>
       </tr>
       <tr>
-        <td><div align="right">Nro Cuota</div> </td>
+        <td><div align="left">Nro Cuota</div></td>
         <td><div align="left"><strong><?php echo $rowBol['nrocuota']; ?></strong></div></td>
       </tr>
       <tr>
-        <td><div align="right">Importe</div></td>
+        <td><div align="left">Importe</div></td>
         <td><div align="left"><strong><?php echo $rowBol['importe']; ?></strong></div></td>
       </tr>
       <tr>
-        <td><div align="right">COD. Identificacion Boleta </div></td>
+        <td><div align="left">COD. Identificacion Boleta </div></td>
         <td><div align="left"><strong><?php echo $rowBol['nrocontrol']; ?></strong></div></td>
       </tr>
     </table>
     <p><strong>Datos Anulaci&oacute;n </strong></p>
-    <table width="393" border="1">
+    <table width="400" border="1">
       <tr>
-        <td width="126"><div align="right">Documento en mano </div></td>
-        <td width="257">
+        <td><div align="right">Documento en mano </div></td>
+        <td>
 	      <div align="center">
 	        <?php 
 			if ($docuMano == 1) {
@@ -95,16 +95,12 @@ A:hover {text-decoration: none;color:#33CCFF }
         </td>
       </tr>
     </table>
-    <p>&nbsp;</p>
     <p>
       <label>
       <input type="submit" name="Submit" value="Confirmar Anulacion" />
       </label>
     </p>
   </form>
-  <p class="Estilo1">&nbsp;</p>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
 </div>
 </body>
 </html>

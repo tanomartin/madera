@@ -109,6 +109,16 @@ else{
 		$destino="/home/sistemas/Documentos/Repositorio/UsimraxxBanco/Procesados/".substr($archivo_name,52,20);
 		//$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".substr($archivo_name,52,20);
 	rename($origen,$destino);
+	
+	
+	$fecraModif = date("YmdHis",time());
+	$usuriModif = $_SESSION['usuario'];
+	$dia = substr($archivo_name,8,2);
+	$mes = substr($archivo_name,10,2);
+	$ano = substr($archivo_name,12,4);
+	$sqlUpdateDia = "UPDATE diasbancousimra SET procesado = 1, fechamodificacion = '$fecraModif', usuariomodificacion = '$usuriModif' WHERE ano = $ano and mes = $mes and dia = $dia";
+	//print($sqlUpdateDia);
+	$resUpdateDia = mysql_query($sqlUpdateDia,$db);
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

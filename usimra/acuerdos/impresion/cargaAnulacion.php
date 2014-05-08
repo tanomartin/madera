@@ -42,6 +42,15 @@ function validar() {
 	return true;
 }
 
+function botonAnular(valor) {
+	if (valor == 1) {
+		document.getElementById("anular").disabled = true;
+	}
+	if (valor == 2) {
+		document.getElementById("anular").disabled = false;
+	}
+}
+
 </script>
 
 
@@ -79,47 +88,38 @@ A:hover {text-decoration: none;color:#33CCFF }
   <div align="center">
     <table width="371" border="0">
       <tr>
-        <td colspan="2"><div align="center"><strong id="internal-source-marker_0.5388788003474474">Codigo de identificacion de boleta</strong> </div></td>
-      </tr>
-      <tr>
-        <td colspan="2"><div align="center">
-          <input name="nroControl" id="nroControl" type="text" size="14" />
+        <td height="38" colspan="2"><div align="center"><strong id="internal-source-marker_0.5388788003474474">Codigo de identificacion de boleta</strong> 
+          <input name="nroControl" id="nroControl" type="text" size="17" />
         </div></td>
       </tr>
+      
       <tr>
-        <td colspan="2">&nbsp;</td>
-      </tr>
-      <tr>
-        <td width="193"><div align="right"><strong>Documentacion en Mano</strong> </div></td>
+        <td width="193" height="36"><div align="right"><strong>&iquest;Documentacion en Mano?</strong> </div></td>
         <td width="168">
           <div align="left">
-            <input name="docuMano" id="docuMano" type="radio" value="1" /> 
-            SI <br/>
-            <input name="docuMano" id="docuMano" type="radio" value="2" /> 
-            NO
-	      </div>
-		  </td>
+            <input name="docuMano" id="docuMano" type="radio" value="1" /> SI
+            <input name="docuMano" id="docuMano" type="radio" value="2" /> NO		 </div>	  </td>
       </tr>
       <tr>
-        <td colspan="2">&nbsp;</td>
+        <td height="37"><div align="right"><strong>&iquest;Fue al Banco? </strong></div></td>
+        <td>
+		<div align="left">
+          	<input name="fueBanco" id="radio" type="radio" value="1" onclick="botonAnular(this.value)"/> SI
+  			<input name="fueBanco" id="radio" type="radio" value="2" onclick="botonAnular(this.value)"/> NO		</div>		</td>
       </tr>
       <tr>
         <td colspan="2"><div align="center"><strong>Motivo de Anulaci&oacute;n </strong></div></td>
       </tr>
       <tr>
-        <td colspan="2"><div align="center">
-          <textarea name="motivo" id="motivo" cols="50" rows="5"></textarea>
+        <td height="98" colspan="2"><div align="center">
+          <textarea name="motivo" cols="50" rows="5" id="motivo"></textarea>
         </div></td>
       </tr>
       <tr>
-        <td colspan="2">&nbsp;</td>
-      </tr>
-      <tr>
-        <td colspan="2"><label>
+        <td colspan="2">
           <div align="center">
-            <input type="submit" name="anular" value="Anular" />
-            </div>
-        </label></td>
+            <input type="submit" name="anular" id="anular" value="Anular" disabled="disabled" />
+            </div>       </td>
       </tr>
     </table>
   </div>
