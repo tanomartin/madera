@@ -200,11 +200,15 @@ function validar(formulario) {
 				  <option value="0">Seleccione un valor </option>
 				  <?php 
 					$codidelega = $row['codidelega'];
-					$sqldelega = "select * from delegaciones where codidelega = $codidelega";
+					$sqldelega = "select DISTINCT * from delegaciones where codidelega = $codidelega or codprovin = $codProvi";
 					$resdelega = mysql_query($sqldelega,$db); 
-					$rowdelega = mysql_fetch_array($resdelega); 
-				  ?>
-				  <option value="<?php echo $codidelega ?>" selected="selected"><?php echo $rowdelega['nombre'] ?></option>
+					while ($rowdelega = mysql_fetch_array($resdelega)) { 
+				  		if ($rowdelega['codidelega'] == $codidelega) { ?>
+				 			 <option value="<?php echo $codidelega ?>" selected="selected"><?php echo $rowdelega['nombre'] ?></option>
+				<?php   } else { ?> 
+							<option value="<?php echo $codidelega ?>"><?php echo $rowdelega['nombre'] ?></option>
+				<?php   }
+					} ?>
 				</select>
 			</div></td>
 		  </tr>
