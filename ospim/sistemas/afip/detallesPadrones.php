@@ -68,6 +68,11 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td>Carpeta de Almacenamiento :</td>
     <td><?php echo $rowBuscaArchivo['carpetaarchivoospim'];?></td>
   </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+    <td>Verificacion de Empresas :</td>
+    <td><?php if($rowBuscaArchivo['verificaempresasospim']==1) {echo "Verificacion efectuada el ".$rowBuscaArchivo['fechaverificaempresasospim']." con un total de ".$rowBuscaArchivo['altasempresasospim']." altas";} else {print ("<input type=button name=veriempresa value=Verificar onClick=location.href='verificaNuevasEmpresas.php?nroDis=".$rowBuscaArchivo['nrodisco']."' align=center/>");}?></td>
+  </tr>
 </table>
 <div align="center">
 	<input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
