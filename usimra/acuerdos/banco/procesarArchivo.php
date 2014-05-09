@@ -111,12 +111,12 @@ else{
 	rename($origen,$destino);
 	
 	
-	$fecraModif = date("YmdHis",time());
-	$usuriModif = $_SESSION['usuario'];
+	$fechaModif = date("Y-m-d H:i:s");
+	$usuarModif = $_SESSION['usuario'];
 	$dia = substr($archivo_name,8,2);
 	$mes = substr($archivo_name,10,2);
 	$ano = substr($archivo_name,12,4);
-	$sqlUpdateDia = "UPDATE diasbancousimra SET procesado = 1, fechamodificacion = '$fecraModif', usuariomodificacion = '$usuriModif' WHERE ano = $ano and mes = $mes and dia = $dia";
+	$sqlUpdateDia = "UPDATE diasbancousimra SET procesado = 1, fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarModif' WHERE ano = $ano and mes = $mes and dia = $dia";
 	//print($sqlUpdateDia);
 	$resUpdateDia = mysql_query($sqlUpdateDia,$db);
 }
