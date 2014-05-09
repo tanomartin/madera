@@ -135,7 +135,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#B2A274">
   <table width="762" height="133" border="1" align="center">
   <tr align="center" valign="top">
-    <td height="23" colspan="2"><div align="center"><em><strong><font face="Arial, Helvetica, sans-serif">Ingreso de Registros de Archivo del Banco a la BASE DE DATOS</font></strong></em></div></td>
+    <td height="23" colspan="2"><div align="center"><em><strong><font face="Arial, Helvetica, sans-serif">Ingreso de Registros de Archivo del Banco a la BASE DE DATOS</font></strong></em> PRUEBA </div></td>
   </tr>
   <tr align="center" valign="top">
     <td height="23" colspan="2"><div align="left"></div></td>
