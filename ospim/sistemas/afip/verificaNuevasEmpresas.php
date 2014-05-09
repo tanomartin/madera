@@ -103,8 +103,9 @@ try{
 		$bodymail.="<br><br>Las mismas han sido incorporadas en el ambito jurisdiccional de la Delegacion Auxiliar (3200), por favor verifique esta informacion para establecer el verdadero ambito jurisdiccional de las mismas.<br><br><br><br>Depto. de Sistemas<br>O.S.P.I.M.<br>";	
 		$address = "jlgomez@usimra.com.ar";
 		envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
-		//$address = "balbonetti@ospim.com.ar";
-		//envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
+
+		$address = "jcbolognese@ospim.com.ar";
+		envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
 	}
 
 	$pagina = "menuafip.php";
