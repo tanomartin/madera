@@ -2,7 +2,7 @@
 	include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); ?>
 <script type="text/javascript">document.body.style.cursor = 'wait';</script>		
 <?php	
-	$fechamodificacion = date("Y-m-d H:m:s");
+	$fechamodificacion = date("Y-m-d H:i:s");
 	$usuariomodificacion = $_SESSION['usuario'];
 	
 	$nroacu=$_GET['nroacu'];

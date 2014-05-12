@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
-$fechamodificacion = date("Y-m-d H:m:s");
+$fechamodificacion = date("Y-m-d H:i:s");
 $fechaCancela = date("Y-m-d");
 $usuariomodificacion = $_SESSION['usuario'];
 

@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
-$fechadeposito  = date("Y-m-d H:m:s");
+$fechadeposito  = date("Y-m-d H:i:s");
 $usuariodeposito = $_SESSION['usuario'];
 
 function desglosar ($dato) {
