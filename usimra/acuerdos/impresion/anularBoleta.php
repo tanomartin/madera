@@ -1,6 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionUsimra.php");
-$fechaAnulacion = date("Y-m-d H:m:s");
+$fechaAnulacion = date("Y-m-d H:i:s");
 $usuarioAnulacion = $_SESSION['usuario'];
 
 $idBoleta = $_GET['idboleta'];

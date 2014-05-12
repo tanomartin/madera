@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
-$fechamodificacion = date("Y-m-d H:m:s");
+$fechamodificacion = date("Y-m-d H:i:s");
 $fechaCancela = date("Y-m-d");
 $usuariomodificacion = $_SESSION['usuario'];
 

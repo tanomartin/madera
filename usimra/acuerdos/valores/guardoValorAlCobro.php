@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
-$fechadeposito  = date("Y-m-d H:m:s");
+$fechadeposito  = date("Y-m-d H:i:s");
 $usuariodeposito = $_SESSION['usuario'];
 
 function desglosar ($dato) {
