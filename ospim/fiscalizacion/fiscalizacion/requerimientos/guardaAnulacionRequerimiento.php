@@ -4,7 +4,7 @@ $fecha = $_GET['fecha'];
 $motivo = $_POST['motivo'];
 $nroreq = $_POST['nroreq'];
 
-$fechaanulacion = date("Y-m-d H:m:s");
+$fechaanulacion = date("Y-m-d H:i:s");
 $usuarioanulacion = $_SESSION['usuario'];
 
 print($motivo."<br>");

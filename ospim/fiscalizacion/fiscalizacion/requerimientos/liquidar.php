@@ -2,7 +2,7 @@
 set_time_limit(0);
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php"); 
-$fechamodif = date("Y-m-d H:m:s");
+$fechamodif = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 $fecha = $_GET['fecha'];
 /**********************************************************************************/
