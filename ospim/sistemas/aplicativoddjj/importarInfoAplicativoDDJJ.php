@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
+include($libPath."claves.php"); 
 set_time_limit(0);
 /********************* FUNCIONES *******************************/
 function ejectuarDoble($sql1, $sql2) {
@@ -42,10 +43,10 @@ function ejectuarSimple($sql) {
 
 function ejecutarUpdate($sql) {
 	try {
-		$hostname = 'ospim.com.ar';
-		$dbname = 'uv0472_newaplicativo';
-		$usuarioaplicativo = 'uv0472';
-		$claveaplicativo = 'trozo299tabea';
+		$hostname = $hostUsimra;
+		$dbname = $baseUsimraNewAplicativo;
+		$usuarioaplicativo = $usuarioUsimra;
+		$claveaplicativo = $claveUsimra;
 		$dbhInternet = new PDO("mysql:host=$hostname;dbname=$dbname",$usuarioaplicativo,$claveaplicativo);
 		$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbhInternet->beginTransaction();
@@ -60,16 +61,16 @@ function ejecutarUpdate($sql) {
 /****************************************************************/
 
 /*****************************************************/
-$fecharegistro = date("Y-m-d H:m:s");
+$fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$hostaplicativo = 'ospim.com.ar';
-$usuarioaplicativo = 'uv0472';
-$claveaplicativo = 'trozo299tabea';
+$hostaplicativo = $hostUsimra;
+$usuarioaplicativo = $usuarioUsimra;
+$claveaplicativo = $claveUsimra;
 $dbaplicativo =  mysql_connect($hostaplicativo, $usuarioaplicativo, $claveaplicativo);
 if (!$dbaplicativo) {
     die('No pudo conectarse: ' . mysql_error());
 }
-$dbnameaplicativo = 'uv0472_newaplicativo';
+$dbnameaplicativo = $baseUsimraNewAplicativo;
 mysql_select_db($dbnameaplicativo);
 $listadoIngresadas = array();
 /*****************************************************/

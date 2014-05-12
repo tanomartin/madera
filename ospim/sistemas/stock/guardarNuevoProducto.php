@@ -13,7 +13,7 @@ $fecIni = fechaParaGuardar($_POST['fecIni']);
 $ubicacion = $_POST['ubicacion'];
 $sector = $_POST['sector'];
 $usuario = $_POST['usuario'];
-$fechamodificacion = date("Y-m-d H:m:s");
+$fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 
 $sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip','$fecIni',DEFAULT,DEFAULT)";

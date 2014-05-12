@@ -9,7 +9,7 @@ $descrip = $_POST['descrip'];
 $ptoPedido = $_POST['ptoPedido'];
 $stockmin = $_POST['stockmin'];
 $ptopromedio = $_POST['ptoPromedio'];
-$fechamodificacion = date("Y-m-d H:m:s");
+$fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 
 $sqlInsertInsumos = "INSERT INTO insumo VALUE (DEFAULT, '$nombreInsu','$nroserie','$descrip',$ptoPedido,$stockmin,$ptopromedio)";

@@ -21,7 +21,7 @@ if ($activo == 0) {
 	$fecBaja = '';
 	$inicioFor = 11;
 }
-$fechamodificacion = date("Y-m-d H:m:s");
+$fechamodificacion = date("Y-m-d H:i:s");
 
 $sqlUpdateProducto = "UPDATE producto SET nombre = '$nombre', numeroserie = '$nroserie', valororiginal = $valor, activo = $activo, descripcion = '$descrip', fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
 $sqlUpdateUbicacion = "UPDATE ubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, usuario = '$usuario' WHERE id = $id"; 
