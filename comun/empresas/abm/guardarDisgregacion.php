@@ -1,8 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/lib/envioMailGeneral.php"); 
 
-$fechamodificacion = $fecharegistro;
-$usuariomodificacion = $usuarioregistro;
 $cuit=$_GET['cuit'];
 $cantJuris=$_GET['cantjuris'];
 
