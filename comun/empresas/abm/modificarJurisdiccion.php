@@ -204,9 +204,9 @@ function validar(formulario) {
 					$resdelega = mysql_query($sqldelega,$db); 
 					while ($rowdelega = mysql_fetch_array($resdelega)) { 
 				  		if ($rowdelega['codidelega'] == $codidelega) { ?>
-				 			 <option value="<?php echo $codidelega ?>" selected="selected"><?php echo $rowdelega['nombre'] ?></option>
+				 			 <option value="<?php echo $rowdelega['codidelega'] ?>" selected="selected"><?php echo $rowdelega['nombre'] ?></option>
 				<?php   } else { ?> 
-							<option value="<?php echo $codidelega ?>"><?php echo $rowdelega['nombre'] ?></option>
+							<option value="<?php echo $rowdelega['codidelega'] ?>"><?php echo $rowdelega['nombre'] ?></option>
 				<?php   }
 					} ?>
 				</select>
