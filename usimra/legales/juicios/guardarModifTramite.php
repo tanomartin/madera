@@ -21,7 +21,7 @@ if (!empty($_POST['montocobrado'])) {
 } else {
 	$monto = 0;
 }	
-$fechamodificacion = date("Y-m-d H:m:s");
+$fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion =  $_SESSION['usuario'];
 
 $sqlUpdateTramite = "UPDATE trajuiciosusimra SET fechainicio = '$fechainicio', autoscaso = '$autocaso', codigojuzgado = $juzgado, codigosecretaria = $secretaria, nroexpediente = '$expediente', bienesembargados = '$bienes', estadoprocesal = $estado, fechafinalizacion = '$fechafin', montocobrado = $monto, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE nroorden = $nroorden";

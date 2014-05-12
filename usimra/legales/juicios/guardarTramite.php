@@ -23,7 +23,7 @@ if (!empty($_POST['montocobrado'])) {
 	$monto = 0;
 }	
 
-$fecharegistro = date("Y-m-d H:m:s");
+$fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;

@@ -20,7 +20,7 @@ $inspector = $_POST['inspector'];
 $acuAbs = $_POST['acuabs'];
 $usuarioejecutor = $_POST['ejecutor'];
 
-$fechamodificacion = date("Y-m-d H:m:s");
+$fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion =  $_SESSION['usuario'];
 
 if ($rowJuicio['acuerdorelacionado'] == 1) {
