@@ -43,7 +43,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <td><p align="center">&nbsp;</p>
               <p align="center">&nbsp;</p></td>
           <td><p align="center">Liquidaciones</p>
-              <p align="center"><a class="enlace" href="liquidaciones/liquiListado.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+              <p align="center"><a class="enlace" href="liquidaciones/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p>&nbsp;</p></td>
           <td>&nbsp;</td>
         </tr>

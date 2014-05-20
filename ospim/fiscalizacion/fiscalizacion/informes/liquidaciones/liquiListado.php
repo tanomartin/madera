@@ -1,35 +1,23 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 
-/*$tipo = $_POST['group1'];
-if ($tipo == 0) {
-	$titulo = "A REPARTIR";
-	$sqlLiqui = "SELECT * from cabliquiospim";
+$consulta = 'c.'.$_POST['group1'];
+$valor = $_POST['dato'];
+if ($consulta == "c.fechaliquidacion") {
+	$valor = fechaParaGuardar($valor);
 }
-if ($tipo == 1) {
-	$titulo = "REPARTIDAS";
-	$sqlLiqui = "SELECT * from cabliquiospim";
+if ($consulta == "c.cuit") {
+	$consulta = 'e.'.$_POST['group1'];
 }
-if ($tipo == 2) {
-	$titulo = "NO NOTIFICADAS";
-	$sqlLiqui = "SELECT * from cabliquiospim";
-}*/
 $sqlLiqui = "SELECT c.*, e.cuit, e.nombre, d.nombre as delega
 from cabliquiospim c, reqfiscalizospim r, empresas e, delegaciones d
-WHERE c.nrorequerimiento = r.nrorequerimiento and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY c.nrorequerimiento DESC";
+WHERE $consulta = '$valor' and c.nrorequerimiento = r.nrorequerimiento and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY c.nrorequerimiento DESC";
+//print($sqlLiqui);
 $resLiqui = mysql_query($sqlLiqui,$db);
 $canLiqui = mysql_num_rows($resLiqui);	
-/*if ($canLiqui == 0) {
-	if ($tipo == 0) {
-		header ("Location: filtrosBusqueda.php?err=1");
-	}
-	if ($tipo == 1) {
-		header ("Location: filtrosBusqueda.php?err=2");
-	}
-	if ($tipo == 2) {
-		header ("Location: filtrosBusqueda.php?err=3");
-	}
-}*/
+if ($canLiqui == 0) {
+	header ("Location: filtrosBusqueda.php?err=1");
+}
 
 
 ?>
@@ -88,7 +76,7 @@ function abrirAcuInclu(dire) {
 </script>
 <body bgcolor="#CCCCCC">
 <div align="center">
-	 <input type="reset" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'" align="center"/>
+	 <input type="reset" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'" align="center"/>
 	<p><span class="Estilo2">Liquidaciones</span></p>
 	<table class="tablesorter" id="listado" style="width:1200px; font-size:14px">
 	<thead>
