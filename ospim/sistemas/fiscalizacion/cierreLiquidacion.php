@@ -69,7 +69,7 @@ if (file_exists($direArc)) {
 			$dbh->exec($sql);
 		}
 		$dbh->commit();
-		unlink($archivo);
+		unlink($direArc);
 	}catch (PDOException $e) {
 		echo $e->getMessage();
 		$dbh->rollback();
