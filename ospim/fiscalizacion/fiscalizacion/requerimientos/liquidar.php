@@ -67,42 +67,52 @@ function encuentroPagos($cuit, $anoInicioActivida, $mesInicioActividad, $anoInic
 	}
 }
 
-function encuentroDeuda($ano, $me, $cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	if ($ano == $anoinicio) {
-		if ($me < $mesinicio) {
-			return(0);
+function encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
+	$sqlAcuerdos = "select anoacuerdo, mesacuerdo from detacuerdosospim where cuit = $cuit and ((anoacuerdo > $anoinicio and anoacuerdo <= $anofin) or (anoacuerdo = $anoinicio and mesacuerdo >= $mesinicio)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
+	//print($sqlAcuerdos);
+	$resAcuerdos = mysql_query($sqlAcuerdos,$db);
+	$canAcuerdos = mysql_num_rows($resAcuerdos); 
+	if($canAcuerdos > 0) {
+		while ($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) { 
+			$id=$rowAcuerdos['anoacuerdo'].$rowAcuerdos['mesacuerdo'];	
+			$arrayAcuerdos[$id] = array('anio' => (int)$rowPagos['anopago'], 'mes' => (int)$rowPagos['mespago'], 'estado' => 'N');
 		}
-	}
-	if ($ano == $anofin) {
-		if ($me >= $mesfin) {
-			return(0);
-		}
-	}
-	
-	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-	$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
-	$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
-	$CantAcuerdos = mysql_num_rows($resAcuerdos); 
-	if($CantAcuerdos > 0) {
-		return(0);
 	} else {
-		//VEO LOS JUICIOS
-		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
-		$resJuicio = mysql_query($sqlJuicio,$db); 
-		$CantJuicio = mysql_num_rows($resJuicio); 
-		if ($CantJuicio > 0) {
-			return(0);
-		} else {
-			// VEO LOS REQ DE FISC
-			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
-			$resReq = mysql_query($sqlReq,$db); 
-			$CantReq = mysql_num_rows($resReq); 
-			if($CantReq > 0) {
-				return(0);
-			} // IF REQUERMINETOS
-		} // ELSE JUICIOS
-	} // ELSE ACUERDOS
-	return (1);
+		return 0;
+	}
+	return($arrayAcuerdos);
+}
+
+function encuentroJuicios($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
+	$sqlJuicios = "select d.anojuicio, d.mesjuicio from cabjuiciosospim c, detjuiciosospim d  where c.cuit = $cuit and c.nroorden = d.nroorden and ((d.anojuicio > $anoinicio and d.anojuicio <= $anofin) or (d.anojuicio = $anoinicio and d.mesjuicio >= $mesinicio)) group by d.anojuicio, d.mesjuicio order by d.anojuicio, d.mesjuicio";
+	//print($sqlJuicios);
+	$resJuicios = mysql_query($sqlJuicios,$db);
+	$canJuicios = mysql_num_rows($resJuicios); 
+	if($canJuicios > 0) {
+		while ($rowJuicios = mysql_fetch_assoc($resJuicios)) { 
+			$id=$rowJuicios['anojuicio'].$rowJuicios['mesjuicio'];	
+			$arrayJuicios[$id] = array('anio' => (int)$rowJuicios['anojuicio'], 'mes' => (int)$rowJuicios['mesjuicio'], 'estado' => 'N');
+		}
+	} else {
+		return 0;
+	}
+	return($arrayJuicios);
+}
+
+function encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
+	$sqlRequerimientos = "select d.anofiscalizacion, d.mesfiscalizacion from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and ((d.anofiscalizacion > $anoinicio and d.anofiscalizacion <= $anofin) or (d.anofiscalizacion = $anoinicio and d.mesfiscalizacion >= $mesinicio)) group by d.anofiscalizacion, d.mesfiscalizacion order by d.anofiscalizacion, d.mesfiscalizacion";
+	//print($sqlRequerimientos);
+	$resRequerimientos = mysql_query($sqlRequerimientos,$db);
+	$canRequerimientos = mysql_num_rows($resRequerimientos); 
+	if($canRequerimientos > 0) {
+		while ($rowRequerimientos = mysql_fetch_assoc($resRequerimientos)) { 
+			$id=$rowRequerimientos['anofiscalizacion'].$rowRequerimientos['mesfiscalizacion'];	
+			$arrayRequerimientos[$id] = array('anio' => (int)$rowRequerimientos['anofiscalizacion'], 'mes' => (int)$rowRequerimientos['mesfiscalizacion'], 'estado' => 'N');
+		}
+	} else {
+		return 0;
+	}
+	return($arrayRequerimientos);
 }
 
 function deudaAnterior($cuit, $db) {
@@ -144,14 +154,33 @@ function deudaAnterior($cuit, $db) {
 		}
 	}
 	//var_dump($pagos);
+	
+	$arrayAcuerdos = encuentroAcuerdos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
+	if ($arrayAcuerdos == 0){ 
+		$arrayAcuerdos = array();
+	} 
+	//var_dump($arrayAcuerdos);
+	
+	$arrayJuicios = encuentroJuicios($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
+	if ($arrayJuicios == 0){ 
+		$arrayJuicios = array();
+	} 
+	//var_dump($arrayJuicios);
+	
+	$arrayRequerimientos = encuentroRequerimientos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
+	if ($arrayRequerimientos == 0){ 
+		$arrayRequerimientos = array();
+	}
+	//var_dump($arrayRequerimientos);
+	
 	$deuda = 0;
 	if ($pagos != 0) {
 		$ano = $anioInicioActi;
 		while($ano<=$anoinicio && $deuda <= 2) {
 			for ($i=1;$i<13;$i++){
 				$idArray = $ano.$i;
-				if (!array_key_exists($idArray, $pagos)) {
-					$deuda = $deuda + encuentroDeuda($ano, $i, $cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
+				if (!array_key_exists($idArray, $pagos) && !array_key_exists($idArray, $arrayAcuerdos) && !array_key_exists($idArray, $arrayJuicios) && !array_key_exists($idArray, $arrayRequerimientos)) {
+					$deuda = $deuda + 1;
 					//print("DEUDA ACUMULA: ".$deuda."<br>");
 				}
 			}
@@ -167,7 +196,7 @@ function deudaAnterior($cuit, $db) {
 
 function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc) {	
 	$tipo = 'activa';
-	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
+	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit";
 	$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
 	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
 	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
