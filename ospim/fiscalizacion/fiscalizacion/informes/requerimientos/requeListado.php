@@ -1,32 +1,20 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 
-$tipo = $_POST['group1'];
-if ($tipo == 0) {
-	$titulo = "NO ATENDIDOS";
-	$sqlReque = "SELECT * from reqfiscalizospim WHERE procesoasignado = 0";
-}
-if ($tipo == 1) {
-	$titulo = "ATENDIDOS";
-	$sqlReque = "SELECT * from reqfiscalizospim WHERE procesoasignado != 0";
-}
-if ($tipo == 2) {
-	$titulo = "ATENDIDOS Y NO ATENDIDOS";
-	$sqlReque = "SELECT * from reqfiscalizospim";
+$consulta = $_POST['group1'];
+$valor = $_POST['dato'];
+if ($consulta == "fecharequerimiento") {
+	$valor = fechaParaGuardar($valor);
 }
 
+$sqlReque = "SELECT r.*, e.cuit, e.nombre, d.nombre as delega
+from reqfiscalizospim r, empresas e, delegaciones d
+WHERE r.$consulta = '$valor' and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY r.nrorequerimiento DESC";
+//print($sqlReque);
 $resReque = mysql_query($sqlReque,$db);
 $canReque = mysql_num_rows($resReque);	
 if ($canReque == 0) {
-	if ($tipo == 0) {
-		header ("Location: filtrosBusqueda.php?err=1");
-	}
-	if ($tipo == 1) {
-		header ("Location: filtrosBusqueda.php?err=2");
-	}
-	if ($tipo == 2) {
-		header ("Location: filtrosBusqueda.php?err=3");
-	}
+	header ("Location: filtrosBusqueda.php?err=1");
 }
 
 ?>
@@ -79,13 +67,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
 	 <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'" align="center"/>
-	<p><span class="Estilo2">Requerimientos "<?php echo $titulo?>" </span></p>
+	<p><span class="Estilo2">Resultado de Busqueda de Requerimientos </span></p>
 	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	<thead>
 		<tr>
 			<th>Nro.</th>
 			<th>Fecha</th>
 			<th>C.U.I.T.</th>
+			<th>Razón Social</th>
+			<th>Delegación</th>
 			<th>Proceso Asignado</th>
 		</tr>
 	</thead>
@@ -97,15 +87,24 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $rowReque['nrorequerimiento'];?></td>
 			<td><?php echo invertirFecha($rowReque['fecharequerimiento']);?></td>
 			<td><?php echo $rowReque['cuit'];?></td>
+			<td><?php echo $rowReque['nombre'];?></td>
+			<td><?php echo $rowReque['delega'];?></td>
 			<td><?php 
-					if ($rowReque['procesoasignado'] == 0) {
-						echo "No Atendido";
-					}
-					if ($rowReque['procesoasignado'] == 1) {
-						echo "Liquidado";
-					}
-					if ($rowReque['procesoasignado'] == 2) {
-						echo "En Inspección";
+					if ($rowReque['requerimientoanulado'] == 1) {
+						echo "Anulado - ".$rowReque['motivoanulacion'];
+					} else {	
+						if ($rowReque['procesoasignado'] == 0) {
+							echo "No Atendido";
+						}
+						if ($rowReque['procesoasignado'] == 1) {
+							echo "Liquidado";
+						}
+						if ($rowReque['procesoasignado'] == 2) {
+							echo "En Inspección";
+						}
+						if ($rowReque['requerimientoanulado'] == 1) {
+							echo "Anulado - ".$rowReque['motivoanulacion'];
+						}	
 					}	
 				?>
 			</td>
