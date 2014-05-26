@@ -146,7 +146,7 @@ function validar(formulario) {
 			print("<div align='center' style='color:#FF0000'><b> EL FILTRO POR <br>(DELEGACION - CODIDGO POSTAL - CANTIDAD PROMEDIO DE EMPLEDAOS - DEUDA NOMINAL)<br> NO DIO NINGUN RESULTADO </b></div>");
 		}
 		if ($err == 5) {
-			print("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO NO GENERO REQUERIMIENTO DE DUEDA </b></div>");
+			print("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO O LOS FILTROS CARGADOS NO GENERARON REQUERIMIENTO DE DUEDA </b></div>");
 		}
 		if ($err == 6) {
 			print("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO ESTA DE BAJA </b></div>");

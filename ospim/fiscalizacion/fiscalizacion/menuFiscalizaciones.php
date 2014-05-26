@@ -41,7 +41,8 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><p align="center">Informes</p>
       <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
-      <td>&nbsp;</td>
+      <td><p align="center">&nbsp;</p>
+      <p align="center">&nbsp;</p></td>
     </tr>
   </table>
 </div>
