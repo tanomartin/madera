@@ -25,7 +25,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
+function deshabilitarDato() {
+	document.getElementById('dato').disabled = true;
+}
+function habilitarDato() {
+	document.getElementById('dato').disabled = false;
+}
+
 function validar(formulario) {
+	if (formulario.group1[3].checked) {
+		return true;
+	}
 	if (formulario.dato.value == "") {
 		alert("Debe ingresar dato de busqueda");
 		return false;
@@ -73,29 +83,32 @@ function validar(formulario) {
   <div align="center">
     <table border="0">
       <tr>
-        <td rowspan="3"><div align="center"><strong>FILTRO</strong></div></td>
+        <td rowspan="4"><div align="center"><strong>FILTRO</strong></div></td>
         <td><div align="left">
-          <input name="group1" type="radio" value="nrorequerimiento" checked="checked" />
+          <input name="group1" type="radio" value="nrorequerimiento" checked="checked" onclick="habilitarDato()"/>
         Nro Requerimiento </div></td>
       </tr>
       <tr>
         <td><div align="left">
-          <input type="radio" name="group1" value="cuit" />
+          <input type="radio" name="group1" value="cuit" onclick="habilitarDato()"/>
           C.U.I.T.
         </div></td>
       </tr>
       <tr>
         <td><div align="left">
-          <input type="radio" name="group1" value="fecharequerimiento" />
+          <input type="radio" name="group1" value="fecharequerimiento" onclick="habilitarDato()"/>
         Fecha Creacion (dd-mm-aaaa) </div></td>
       </tr>
       <tr>
+        <td><div align="left">
+          <input type="radio" name="group1" value="noatendidos" onclick="deshabilitarDato()"/>
+        No Atendidos </div></td>
+      </tr>
+      <tr>
         <td height="37"><div align="center"><strong>DATO</strong></div></td>
-        <td>
-          <div align="left">
-            <input type="text" name="dato" id="dato" />
-          </div>
-        </td>
+        <td><div align="left">
+          <input type="text" name="dato" id="dato" />
+        </div></td>
       </tr>
     </table>
   </div>

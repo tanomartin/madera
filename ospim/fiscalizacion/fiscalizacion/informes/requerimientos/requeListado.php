@@ -2,14 +2,21 @@
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
 
 $consulta = $_POST['group1'];
-$valor = $_POST['dato'];
-if ($consulta == "fecharequerimiento") {
-	$valor = fechaParaGuardar($valor);
-}
 
-$sqlReque = "SELECT r.*, e.cuit, e.nombre, d.nombre as delega
-from reqfiscalizospim r, empresas e, delegaciones d
-WHERE r.$consulta = '$valor' and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY r.nrorequerimiento DESC";
+if ($consulta = "noatendidos") {
+	$sqlReque = "SELECT r.*, e.cuit, e.nombre, d.nombre as delega
+	from reqfiscalizospim r, empresas e, delegaciones d
+	WHERE r.procesoasignado = 0 and r.requerimientoanulado = 0 and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY r.nrorequerimiento DESC";
+} else {
+	$valor = $_POST['dato'];
+	if ($consulta == "fecharequerimiento") {
+		$valor = fechaParaGuardar($valor);
+	}
+	$sqlReque = "SELECT r.*, e.cuit, e.nombre, d.nombre as delega
+	from reqfiscalizospim r, empresas e, delegaciones d
+	WHERE r.$consulta = '$valor' and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY r.nrorequerimiento DESC";
+}
+	
 //print($sqlReque);
 $resReque = mysql_query($sqlReque,$db);
 $canReque = mysql_num_rows($resReque);	
