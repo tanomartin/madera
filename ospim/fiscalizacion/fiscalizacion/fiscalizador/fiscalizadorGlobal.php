@@ -35,7 +35,7 @@ function estaVencido($fechaPago, $me, $ano) {
 }
 
 function encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas use index (fiscalizador) where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
+	$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
