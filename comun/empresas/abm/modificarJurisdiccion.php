@@ -13,6 +13,9 @@ if ($numpostal == "") {
 	$numpostal = $row['numpostal'];
 }
 
+$sqltitu = "select * from titulares where cuitempresa = $cuit and codidelega = $delega";
+$restitu = mysql_query($sqltitu,$db); 
+$cantitu = mysql_num_rows($restitu); 
 
 ?>
 
@@ -74,7 +77,7 @@ function cambioProvincia(locali) {
 <?php } ?>
 }
 
-function validar(formulario) {
+function validar(formulario, deleAnterior, cantTitulares) {
 	formulario.Submit.disabled = true;
 	if (formulario.domicilio.value == "") {
 		alert("El campo domicilio es obligatrio");
@@ -115,12 +118,18 @@ function validar(formulario) {
 		formulario.telefono1.value = "0";
 	}
 	
-	if (formulario.selectDelegacion.options[formulario.selectDelegacion.selectedIndex].value == 0) {
+	var delega = formulario.selectDelegacion.options[formulario.selectDelegacion.selectedIndex].value;
+	if (delega == 0) {
 		alert("Debe elegir una Delegacion");
 		formulario.Submit.disabled = false;
 		return false;
+	} else {
+		if (delega != deleAnterior && cantTitulares != 0) {
+			var cartel = "Atención: Se pasarán " + 
+						cantTitulares + " titulares que se encuentran en la delegación " + deleAnterior + " a la nueva delegacion de la jurisdicción " + delega;  
+			alert(cartel);
+		}
 	}
-	
 	//TODO: ANTES DE ESTO TENGO QUE VER SI TIENE BENEFICIARIOS Y DAR UN SI O UN NO
 	return true;
 }
@@ -132,7 +141,7 @@ function validar(formulario) {
 <div align="center">
        <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 	
   <p><strong>Modificacion Jurisdicciones de Empresa</strong>
-  <form name="modifJurisEmpresa" id="modifJurisEmpresa" method="post" onSubmit="return validar(this)" action="guardarModifJurisdiccion.php?origen=<?php echo $origen ?>&coddelega=<?php echo $delega ?>">	
+  <form name="modifJurisEmpresa" id="modifJurisEmpresa" method="post" onSubmit="return validar(this, <?php echo $delega ?>, <?php echo $cantitu ?>)" action="guardarModifJurisdiccion.php?origen=<?php echo $origen ?>&coddelega=<?php echo $delega ?>">	
 	 	<table width="723" border="0">
 		  <tr>
 			<td width="167"><div align="right"><strong>C.U.I.T. </strong></div></td>
