@@ -4,7 +4,7 @@ include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 $cuit=$_GET['cuit'];
 $delega=$_GET['coddel'];
 
-$sql = "select * from jurisdiccion where cuit = $cuit and codidelega = $delega";
+$sql = "select j.*, p.descrip as provincia from jurisdiccion j, provincia p where cuit = $cuit and j.codidelega = $delega and j.codprovin = p.codprovin";
 $result = mysql_query($sql,$db);
 $row = mysql_fetch_array($result);
 
@@ -183,13 +183,7 @@ function validar(formulario) {
 		  <tr>
 			<td><div align="right"><strong>Provincia</strong></div></td>
 			<td><div align="left">
-				<?php	
-					$codProvi = $row['codprovin'];
-					$sqlProvi = "select * from provincia where codprovin = $codProvi ";
-					$resProvi = mysql_query($sqlProvi,$db);
-					$rowProvi = mysql_fetch_array($resProvi);
-				?>
-				<input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $rowProvi['descrip'];?>" />
+				<input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $row['provincia'];?>" />
 				<input style="background-color:#CCCCCC; visibility:hidden" value="<?php echo $row['codprovin'] ?>" readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
 			</div></td>
 		  </tr>
@@ -200,6 +194,7 @@ function validar(formulario) {
 				  <option value="0">Seleccione un valor </option>
 				  <?php 
 					$codidelega = $row['codidelega'];
+					$codProvi = $row['codprovin'];
 					$sqldelega = "select DISTINCT * from delegaciones where codidelega = $codidelega or codprovin = $codProvi";
 					$resdelega = mysql_query($sqldelega,$db); 
 					while ($rowdelega = mysql_fetch_array($resdelega)) { 

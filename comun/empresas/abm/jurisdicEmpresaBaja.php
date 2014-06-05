@@ -1,7 +1,9 @@
 <p align="center"><strong>Datos de Jurisdicciones </strong></p>
 <?php 
 	$cuit = $row['cuit'];
-	$sqljuris = "select * from jurisdiccion where cuit = $cuit";
+	$sqljuris = "select j.*, d.nombre as delegacion, p.descrip as provincia, l.nomlocali as localidad
+				from jurisdiccion j, delegaciones d, provincia p, localidades l 
+				where j.cuit = $cuit and j.codidelega = d.codidelega and j.codprovin = p.codprovin and j.codlocali = l.codlocali";
 	$resjuris = mysql_query($sqljuris,$db); 
 	$canjuris = mysql_num_rows($resjuris); 
 ?>
@@ -14,15 +16,7 @@
     <table width="700" height="157" border="2">
       <tr bordercolor="#000000">
         <td width="200" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
-        <td width="482"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 
-			$delega = $rowjuris['codidelega'];
-			$sqldelegacion = "select * from delegaciones where codidelega = $delega";
-			$resultdelegacion = mysql_query($sqldelegacion,$db); 
-			$rowdelegacion = mysql_fetch_array($resultdelegacion); 
-			echo $rowdelegacion['nombre']
-		?>
-        </font></div></td>
+        <td width="482"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowjuris['delegacion'] ?></font></div></td>
       </tr>
       
       <tr bordercolor="#000000">
@@ -31,27 +25,11 @@
       </tr>
       <tr bordercolor="#000000">
         <td height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Localidad:</font></strong></div></td>
-        <td><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 
-			$locali =  $rowjuris['codlocali'];
-			$sqllocalidad = "select * from localidades where codlocali = $locali";
-			$resultlocalidad = mysql_query($sqllocalidad,$db); 
-			$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-			echo $rowlocalidad['nomlocali'];
-		?>
-        </font></div></td>
+        <td><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowjuris['localidad'];?></font></div></td>
       </tr>
       <tr bordercolor="#000000">
         <td height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Provincia</font></strong></div></td>
-        <td><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 	
-			$provin = $rowjuris['codprovin'] ;
-			$sqlprovi =  "select * from provincia where codprovin = $provin";
-			$resultprovi = mysql_query($sqlprovi,$db); 
-			$rowprovi = mysql_fetch_array($resultprovi);
-			echo $rowprovi['descrip']; 
-		?>
-        </font></div></td>
+        <td><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowjuris['provincia']; ?></font></div></td>
       </tr>
       <tr bordercolor="#000000" >
         <td height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo 
