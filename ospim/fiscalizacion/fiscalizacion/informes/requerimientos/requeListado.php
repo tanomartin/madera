@@ -3,7 +3,7 @@ include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 
 $consulta = $_POST['group1'];
 
-if ($consulta = "noatendidos") {
+if ($consulta == "noatendidos") {
 	$sqlReque = "SELECT r.*, e.cuit, e.nombre, d.nombre as delega
 	from reqfiscalizospim r, empresas e, delegaciones d
 	WHERE r.procesoasignado = 0 and r.requerimientoanulado = 0 and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY r.nrorequerimiento DESC";
