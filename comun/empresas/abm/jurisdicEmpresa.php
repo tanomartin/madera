@@ -14,11 +14,11 @@
 			$restitu = mysql_query($sqltitu,$db); 
 			$cantitu = mysql_num_rows($restitu); 
 			
-			$sqlRequeOspim = "select nrorequerimiento from reqfiscalizospim where cuit = $cuit and codidelega = $delega and procesoasignado != 1";
+			$sqlRequeOspim = "select nrorequerimiento from reqfiscalizospim where cuit = $cuit and codidelega = $delega and procesoasignado != 1 and requerimientoanulado = 0";
 			$resRequeOspim = mysql_query($sqlRequeOspim,$db); 
 			$canRequeOspim = mysql_num_rows($resRequeOspim); 
-			
-			$sqlRequeUsimra = "select nrorequerimiento from reqfiscalizusimra where cuit = $cuit and codidelega = $delega and procesoasignado != 1";
+
+			$sqlRequeUsimra = "select nrorequerimiento from reqfiscalizusimra where cuit = $cuit and codidelega = $delega and procesoasignado != 1 and requerimientoanulado = 0";
 			$resRequeUsimra = mysql_query($sqlRequeUsimra,$db); 
 			$canRequeUsimra = mysql_num_rows($resRequeUsimra); 
 			$canTotalReq = $canRequeOspim + $canRequeUsimra;
