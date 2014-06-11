@@ -67,7 +67,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				if ($canCuotas != 0 && $rowacuerdos['tipoacuerdo'] != 3) {
 					while ($rowCuotas = mysql_fetch_array($resCuotas)) {
 						if ($rowCuotas['montopagada'] == 0 || $rowCuotas['fechapagada'] == '0000-00-00') {
-							if ($rowCuotas['tipocancelacion'] != 8 && $reemplazable == true){
+							if (($rowCuotas['tipocancelacion'] != 8 && $reemplazable == true) || $rowCuotas['boletaimpresa'] != 0){
 								$reemplazable = false;
 							}	
 						}										
