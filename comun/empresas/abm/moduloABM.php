@@ -28,11 +28,11 @@ jQuery(function($){
 });
 
 function validar(formulario) {
-	formulario.Submit.disabled = true;
-	if (!verificaCuil(formulario.cuit.value)){
-		formulario.Submit.disabled = false;
+	if (!verificaCuilCuit(formulario.cuit.value)){
+		alert("C.U.I.T invalido");
 		return false;
 	}
+	formulario.Submit.disabled = true;
 	return true;
 }
 
@@ -45,7 +45,7 @@ function validar(formulario) {
   </p>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Empresas</p>
   <div align="center">
-    <p>CUIT <input name="cuit" id="cuit" type="text" size="10" /></p>
+    <p>CUIT <input name="cuit" id="cuit" type="text" size="13" /></p>
   </div>
   <div align="center">
     <input type="submit" name="Submit" value="Buscar" />
