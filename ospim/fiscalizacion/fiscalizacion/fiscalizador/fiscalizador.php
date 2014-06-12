@@ -94,7 +94,8 @@ function validar(formulario) {
 			alert("Debe ingresar el C.U.I.T. de la empresa a fiscalizar");
 			return false;
 		} else {
-			if (!verificaCuil(formulario.cuit.value)) {
+			if (!verificaCuilCuit(formulario.cuit.value)) {
+				alert("C.U.I.T. invalido");
 				return false;
 			}
 		}

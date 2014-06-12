@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Requerimientos :.</title>
+<title>.: Liquidaciones :.</title>
 <style type="text/css">
 <!--
 .Estilo1 {
@@ -22,6 +22,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
@@ -39,7 +40,10 @@ function validar(formulario) {
 		return true; 
 	}
 	if (formulario.group1[1].checked) {
-		return(verificaCuil(formulario.dato.value));
+		if(!verificaCuilCuit(formulario.dato.value)) {
+			alert("C.U.I.T. invalido");
+			return false;
+		}
 	}
 	if (formulario.group1[2].checked) {
 		resultado = esFechaValida(formulario.dato.value);
@@ -49,6 +53,7 @@ function validar(formulario) {
 		} 
 		return true; 
 	}
+	$.blockUI({ message: "<h1>Generando Informe... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 	return true;
 } 
 
