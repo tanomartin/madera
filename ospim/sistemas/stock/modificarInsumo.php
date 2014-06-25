@@ -40,15 +40,15 @@ function validar(formulario) {
 		alert("Debe ingresar el numero de serie");
 		return false;
 	}
-	if (formulario.ptoPedido.value == 0 || !esEnteroPositivo(formulario.ptoPedido.value)) {
+	if (formulario.ptoPedido.value < 0 || !esEnteroPositivo(formulario.ptoPedido.value)) {
 		alert("Error en el Punto Pedido");
 		return false;
 	}
-	if (formulario.stockmin.value == 0 || !esEnteroPositivo(formulario.stockmin.value)) {
+	if (formulario.stockmin.value < 0 || !esEnteroPositivo(formulario.stockmin.value)) {
 		alert("Error en el Stock Minimo");
 		return false;
 	}	
-	if (formulario.ptoPromedio.value == 0 || !esEnteroPositivo(formulario.ptoPromedio.value)) {
+	if (formulario.ptoPromedio.value < 0 || !esEnteroPositivo(formulario.ptoPromedio.value)) {
 		alert("Error en el Punto Promedio");
 		return false;
 	}	
