@@ -62,6 +62,7 @@ include($libPath."fechas.php");
 		<tr>
 		  <th>Codigo Consumo</th>
 		  <th>Nombre</th>
+		  <th>Descripción</th>
 		  <th>Productos</th>
 		  <th class="filter-select" data-placeholder="Seleccione Usuario">Usuario Consumo </th>
 		  <th>Fecha Consumo </th>
@@ -69,13 +70,14 @@ include($libPath."fechas.php");
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlConsumo = "SELECT c.*, i.nombre as nombre FROM consumoinsumo c, insumo i WHERE i.id = c.idinsumo";
+			$sqlConsumo = "SELECT c.*, i.nombre as nombre, i.descripcion as descri FROM consumoinsumo c, insumo i WHERE i.id = c.idinsumo";
 			$resConsumo = mysql_query($sqlConsumo,$db);
 			$canConsumo = mysql_num_rows($resConsumo);
 			while ($rowConsumo = mysql_fetch_assoc($resConsumo)) { ?>
 			<tr align="center">
 					<td><?php echo $rowConsumo['id'] ?></td>
 					<td><?php echo $rowConsumo['nombre']?></td>
+					<td><?php echo $rowConsumo['descri']?></td>
 					<td><?php 
 						$idInsumo = $rowConsumo['idinsumo'];
 						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
