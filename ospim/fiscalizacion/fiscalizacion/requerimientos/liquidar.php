@@ -474,7 +474,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			} else {
 				$importePrimeraLinea = str_pad($importePrimeraLinea,12,'0',STR_PAD_LEFT);
 			}
-			$pagos[0] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".$fechaPrimeraLinea."|".$importePrimeraLinea."|".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
+			$pagos[0] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaPrimeraLinea)."|".$importePrimeraLinea."|".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
 		} else {
 			unset($pagos);
 			if ($rowRequeDet['statusfiscalizacion'] == 'A') {
