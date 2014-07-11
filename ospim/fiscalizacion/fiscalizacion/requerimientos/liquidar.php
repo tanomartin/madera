@@ -406,6 +406,8 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	
 	$cuerpo = array();
 	$pagos = array();
+	$pagosOrdi = array();
+	$pagosExtr = array();
 	$l = 0;
 	$sqlRequeDet = "SELECT * from detfiscalizospim where nrorequerimiento = $nroreq";
 	$resRequeDet = mysql_query($sqlRequeDet,$db);
@@ -417,7 +419,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		}
 		if ($rowRequeDet['statusfiscalizacion'] == 'F' || $rowRequeDet['statusfiscalizacion'] == 'M') {
 			//ACA PODEMOS PONER lA LINEA 0 ya que la data viene del detalle y de la consulta de agrupfisca linea de información.
-			unset($pagos);		
+			unset($pagos);	
+			unset($pagosOrdi);	
+			unset($pagosExtr);		
 			$personal = str_pad($rowRequeDet['cantidadpersonal'],4,'0',STR_PAD_LEFT);
 			$remunDec = number_format((float)$rowRequeDet['remundeclarada'],2,',','');
 			$remunDec = str_pad($remunDec,12,'0',STR_PAD_LEFT);
@@ -440,41 +444,46 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			$remaM1000 = number_format((float)$rowAgrup['remuadhemayor1000'],2,',','');
 			$remaM1000 = str_pad($remaM1000,12,'0',STR_PAD_LEFT);
 			
-			$importePrimeraLinea = 0;
-			$p = 1; 
-			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and concepto != 'REM' group by concepto, fechapago, debitocredito order by fechapago, concepto, debitocredito";
+			$pExt = 0;
+			$pOrd = 0;
+			
+			//PAGOS ORDINARIOS//
+			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and (concepto = '381' or concepto = '401') group by fechapago, debitocredito order by fechapago, debitocredito";
 			$resAfipProc = mysql_query($sqlAfipProc,$db);
 			while ($rowAfipProc = mysql_fetch_assoc($resAfipProc)) {
-				if ($rowAfipProc['concepto'] == 381 || $rowAfipProc['concepto'] == 401) {
-					$fechaPrimeraLinea = $rowAfipProc['fechapago'];
-					if ($rowAfipProc['debitocredito'] == 'D') {
-						$importePrimeraLinea = $importePrimeraLinea - $rowAfipProc['sum(importe)'];
-					} else {
-						$importePrimeraLinea = $importePrimeraLinea + $rowAfipProc['sum(importe)'];
-					}
+				$fechaOrdinario = $rowAfipProc['fechapago'];
+				$importeOrdinario = $rowAfipProc['sum(importe)'];
+				$importeOrdinario = number_format((float)$importeOrdinario,2,',','');
+				if ($rowAfipProc['debitocredito'] == 'D') {
+					$importeOrdinario = str_pad($importeOrdinario,11,'0',STR_PAD_LEFT);
+					$importeOrdinario = "-".$importeOrdinario;
 				} else {
-					$importe = $rowAfipProc['sum(importe)'];
-					$imporDep = number_format((float)$importe,2,',','');	
-					if ($rowAfipProc['debitocredito'] == 'D') {
-						$imporDep = str_pad($imporDep,11,'0',STR_PAD_LEFT);
-						$imporDep = "-".$imporDep;
-					} else {
-						$imporDep = str_pad($imporDep,12,'0',STR_PAD_LEFT);
-					}
-					$lineaDeuda =  "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|".invertirFecha($rowAfipProc['fechapago'])."|".$imporDep;
-					$pagos[$p] = str_pad($lineaDeuda,124,' ',STR_PAD_RIGHT);
-					$p++;
+					$importeOrdinario = str_pad($importeOrdinario,12,'0',STR_PAD_LEFT);
 				}
+				$pagosOrdi[$pOrd] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaOrdinario)."|".$importeOrdinario."|".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
+				$pOrd++;
+			} 
+			//********************//
+			
+			//PAGOS EXTRAORDINARIOS//
+			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and concepto != 'REM' and concepto != '381' and concepto != '401' group by fechapago, debitocredito order by fechapago, debitocredito";
+			$resAfipProc = mysql_query($sqlAfipProc,$db);
+			while ($rowAfipProc = mysql_fetch_assoc($resAfipProc)) {
+				$fechaExtra = $rowAfipProc['fechapago'];
+				$importe = $rowAfipProc['sum(importe)'];
+				$imporDep = number_format((float)$importe,2,',','');	
+				if ($rowAfipProc['debitocredito'] == 'D') {
+					$imporDep = str_pad($imporDep,11,'0',STR_PAD_LEFT);
+					$imporDep = "-".$imporDep;
+				} else {
+					$imporDep = str_pad($imporDep,12,'0',STR_PAD_LEFT);
+				}
+				$lineaDeuda =  "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|".invertirFecha($fechaExtra)."|".$imporDep;
+				$pagosExtr[$pExt] = str_pad($lineaDeuda,124,' ',STR_PAD_RIGHT);
+				$pExt++;
 			}
-			$importePrimeraLinea = number_format((float)$importePrimeraLinea,2,',','');
-			if ($importePrimeraLinea < 0) {
-				$importePrimeraLinea = (-1)*($importePrimeraLinea);
-				$importePrimeraLinea = str_pad($importePrimeraLinea,11,'0',STR_PAD_LEFT);
-				$importePrimeraLinea = "-".$importePrimeraLinea;
-			} else {
-				$importePrimeraLinea = str_pad($importePrimeraLinea,12,'0',STR_PAD_LEFT);
-			}
-			$pagos[0] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaPrimeraLinea)."|".$importePrimeraLinea."|".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
+			//********************//		
+			$pagos = array_merge((array)$pagosOrdi, (array)$pagosExtr);	
 		} else {
 			unset($pagos);
 			if ($rowRequeDet['statusfiscalizacion'] == 'A') {
