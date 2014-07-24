@@ -486,6 +486,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			$pagos = array_merge((array)$pagosOrdi, (array)$pagosExtr);	
 		} else {
 			unset($pagos);
+			unset($pagosExtr);
 			if ($rowRequeDet['statusfiscalizacion'] == 'A') {
 				//ESTO NO SE USA MAS Y HACE QUE TARDE MUCHO
 				$sqlAgrup = "SELECT * from agrufiscalizospim where cuit = $cuit and anoddjj =". $rowRequeDet['anofiscalizacion']." and mesddjj = ".$rowRequeDet['mesfiscalizacion'];
@@ -543,7 +544,6 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			}
 		} else  {
 			$cuerpo[$l] = $linea;
-			$l++;
 			if (sizeof($pagosExtr) > 0) {
 				for ($n = 0; $n < sizeof($pagosExtr); $n++) {
 					$cuerpo[$l] = $pagosExtr[$n];
