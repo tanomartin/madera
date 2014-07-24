@@ -485,8 +485,8 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			//********************//		
 			$pagos = array_merge((array)$pagosOrdi, (array)$pagosExtr);	
 		} else {
-			unset($pagos);
-			unset($pagosExtr);
+			unset($pagos);	
+			unset($pagosExtr);	
 			if ($rowRequeDet['statusfiscalizacion'] == 'A') {
 				//ESTO NO SE USA MAS Y HACE QUE TARDE MUCHO
 				$sqlAgrup = "SELECT * from agrufiscalizospim where cuit = $cuit and anoddjj =". $rowRequeDet['anofiscalizacion']." and mesddjj = ".$rowRequeDet['mesfiscalizacion'];
@@ -530,7 +530,8 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 					$pagosExtr[$pExt] = str_pad($lineaDeuda,124,' ',STR_PAD_RIGHT);
 					$pExt++;
 				}
-				//********************//		
+				//********************//	
+				$pagos = $pagosExtr;		
 			} else {
 				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            |0000|000000000,00|0000|000000000,00|0000|000000000,00|0000|000000000,00";
 			}
@@ -544,9 +545,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			}
 		} else  {
 			$cuerpo[$l] = $linea;
-			if (sizeof($pagosExtr) > 0) {
-				for ($n = 0; $n < sizeof($pagosExtr); $n++) {
-					$cuerpo[$l] = $pagosExtr[$n];
+			if (sizeof($pagos) > 0) {
+				for ($n = 0; $n < sizeof($pagos); $n++) {
+					$cuerpo[$l] = $pagos[$n];
 					$l++;
 				}
 			}
