@@ -548,7 +548,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			$l++;
 			if (sizeof($pagosExtr) > 0) {
 				for ($n = 0; $n < sizeof($pagosExtr); $n++) {
-					$cuerpo[$l] = $pagos[$n];
+					$cuerpo[$l] = $pagosExtr[$n];
 					$l++;
 				}
 			}
