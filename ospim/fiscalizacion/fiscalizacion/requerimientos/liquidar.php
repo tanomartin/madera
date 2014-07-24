@@ -511,6 +511,25 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 				$remaM1000 = str_pad($remaM1000,12,'0',STR_PAD_LEFT);
 				
 				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|          |            |".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
+				
+				//PAGOS EXTRAORDINARIOS//
+				$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and concepto != 'REM' and concepto != '381' and concepto != '401' group by fechapago, debitocredito order by fechapago, debitocredito";
+				$resAfipProc = mysql_query($sqlAfipProc,$db);
+				while ($rowAfipProc = mysql_fetch_assoc($resAfipProc)) {
+					$fechaExtra = $rowAfipProc['fechapago'];
+					$importe = $rowAfipProc['sum(importe)'];
+					$imporDep = number_format((float)$importe,2,',','');	
+					if ($rowAfipProc['debitocredito'] == 'D') {
+						$imporDep = str_pad($imporDep,11,'0',STR_PAD_LEFT);
+						$imporDep = "-".$imporDep;
+					} else {
+						$imporDep = str_pad($imporDep,12,'0',STR_PAD_LEFT);
+					}
+					$lineaDeuda =  "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|".invertirFecha($fechaExtra)."|".$imporDep;
+					$pagosExtr[$pExt] = str_pad($lineaDeuda,124,' ',STR_PAD_RIGHT);
+					$pExt++;
+				}
+				//********************//		
 			} else {
 				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            |0000|000000000,00|0000|000000000,00|0000|000000000,00|0000|000000000,00";
 			}
@@ -525,6 +544,12 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		} else  {
 			$cuerpo[$l] = $linea;
 			$l++;
+			if (sizeof($pagosExtr) > 0) {
+				for ($n = 0; $n < sizeof($pagosExtr); $n++) {
+					$cuerpo[$l] = $pagosExtr[$n];
+					$l++;
+				}
+			}
 		}
 		$ultmes = $mes;
 		$ultano = $rowRequeDet['anofiscalizacion'];
