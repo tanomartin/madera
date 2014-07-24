@@ -513,6 +513,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 				
 				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|          |            |".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
 				
+				$pExt = 0;
 				//PAGOS EXTRAORDINARIOS//
 				$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and concepto != 'REM' and concepto != '381' and concepto != '401' group by fechapago, debitocredito order by fechapago, debitocredito";
 				$resAfipProc = mysql_query($sqlAfipProc,$db);
@@ -531,7 +532,6 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 					$pExt++;
 				}
 				//********************//	
-				$pagos = $pagosExtr;		
 			} else {
 				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            |0000|000000000,00|0000|000000000,00|0000|000000000,00|0000|000000000,00";
 			}
@@ -545,8 +545,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			}
 		} else  {
 			$cuerpo[$l] = $linea;
-			if (sizeof($pagos) > 0) {
-				for ($n = 0; $n < sizeof($pagos); $n++) {
+			$l++;
+			if (sizeof($pagosExtr) > 0) {
+				for ($n = 0; $n < sizeof($pagosExtr); $n++) {
 					$cuerpo[$l] = $pagos[$n];
 					$l++;
 				}
