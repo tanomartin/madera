@@ -83,7 +83,7 @@ try{
 
 	$fila=1;	
 
-	$sqlCuotas="SELECT * FROM cuoacuerdosospim WHERE tipocancelacion = 2 and (sistemacancelacion = '' || fechacancelacion > '$fechafin') order by cuit, nroacuerdo, nrocuota";
+	$sqlCuotas="SELECT * FROM cuoacuerdosospim WHERE tipocancelacion = 2 and (sistemacancelacion = '' || fechacancelacion > '$fechafin') and fecharegistro <= '$fechafin' order by cuit, nroacuerdo, nrocuota";
 	$resultCuotas = $dbh->query($sqlCuotas);
 	if ($resultCuotas){
 		foreach ($resultCuotas as $cuotas){
