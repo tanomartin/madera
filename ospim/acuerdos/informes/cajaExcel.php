@@ -83,7 +83,7 @@ try{
 
 	$fila=1;	
 
-	$sqlCuotas="SELECT * FROM cuoacuerdosospim WHERE tipocancelacion = 2 and sistemacancelacion = '' order by cuit, nroacuerdo, nrocuota";
+	$sqlCuotas="SELECT * FROM cuoacuerdosospim WHERE tipocancelacion = 2 and (sistemacancelacion = '' || fechacancelacion > '$fechafin') order by cuit, nroacuerdo, nrocuota";
 	$resultCuotas = $dbh->query($sqlCuotas);
 	if ($resultCuotas){
 		foreach ($resultCuotas as $cuotas){
@@ -95,9 +95,13 @@ try{
 			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $cuotas['montocuota']);
 			$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, invertirFecha($cuotas['fechacuota']));
 			$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $cuotas['observaciones']);
-			if ($cuotas['boletaimpresa'] != 0) {
-				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, 'Boleta impresa');
-			}
+			if ($cuotas['sistemacancelacion'] != "") {
+				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, 'Cuota cancelada el dia '.invertirFecha($cuotas['fechacancelacion']));
+			} else {
+				if ($cuotas['boletaimpresa'] != 0) {
+					$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, 'Boleta impresa');
+				} 
+			}		
 		}
 	}
 
@@ -135,7 +139,7 @@ try{
 	$dbh->commit();
 	$pagina = "moduloInformes.php";
 	Header("Location: $pagina");
-
+	
 }
 catch (PDOException $e) {
 	echo $e->getMessage();
