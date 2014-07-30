@@ -60,7 +60,9 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td height="164"><p align="center">Periodos Repetidos </p>
       <p align="center"><a class="enlace" href="repeticionPeriodos.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
-      <td height="164">&nbsp;</td>
+      <td height="164"><p align="center">Existencia de Caja </p>
+        <p align="center"><a class="enlace" href="caja.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
     </tr>
   </table>
 </div>
