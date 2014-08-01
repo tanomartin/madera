@@ -39,6 +39,17 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><p align="center">Stock</p>
       <p align="center"><a class="enlace" href="stock/menuStock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
+      <td><p align="center">Intranet O.S.P.I.M. </p>
+        <p align="center"><a class="enlace" href="intraospim/menuActualizacionOspim.php"><img src="img/intraospim.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
+    </tr>
+    <tr>
+      <td><p align="center">&nbsp;</p>
+      
+      <p>&nbsp;</p></td>
+      <td><p align="center">Intranet U.S.I.M.R.A. </p>
+        <p align="center"><a href="intrausimra/menuActualizacionUsimra.php"><img src="img/intrausimra.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
   </table>
