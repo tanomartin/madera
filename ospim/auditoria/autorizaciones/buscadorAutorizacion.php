@@ -150,7 +150,6 @@ function abrirDetalle(dire) {
 		}
   ?>
   </div>
-  <label> 
   <div align="center"> 
     <table width="400" border="0">
       <tr>
