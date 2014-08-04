@@ -208,7 +208,7 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 		fclose($file);
 	} catch (PDOException $e) {
 		$descriError = $e->getMessage();
-		$control[0] = array("NO SE PUDO REALIZAR EL LOAD DE LOS ARCHIVOS DE LA DELEGACION", $descriError);
+		$control[0] = array("NO SE PUDO REALIZAR EL COUNT DE LAS TABLAS DE LA DELEGACION", $descriError);
 		print("$descriError<br><br>");
 		$dbhInternet->rollback();
 	}
