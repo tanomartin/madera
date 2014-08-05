@@ -22,17 +22,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 function validar(formulario) {
-	if (formulario.file.value == '') {
-		alert("Debe seleccionar un Archivo");
-		return false;
-	} else {
-		archivo = formulario.file.value;
-		extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase();
-		if (extension != ".txt") {
-			alert("El archivo debe ser un texto plano (.txt)");
-			return false;
-		} 
-	}
 	var mensaje = "<h1>Actualizando Intranet U.S.I.M.R.A.<br>Aguarde por favor...</h1>"
 	$.blockUI({ message: mensaje });
 	return true;
@@ -47,13 +36,8 @@ function validar(formulario) {
   </span></p>
   <p><span class="Estilo2">Men&uacute; Actualizacion Intranet U.S.I.M.R.A. </span></p>
   <form action="actualizarIntraUsimra.php" method="post" enctype="multipart/form-data" name="form1" id="form1" onsubmit="return validar(this)">
-    <p><strong>Cargar archivo para la Actualizaci&oacute;n </strong></p>
     <p>
-      <label>
-      <input type="file" name="file" id="file" />
-      </label>
-    </p>
-    <p>
+      <label></label>  
       <label>
       <input type="submit" name="Submit" value="Actualizar" />
       </label>
