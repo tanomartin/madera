@@ -1,14 +1,15 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
+include($libPath."claves.php");
 $delega = $_GET['delega'];
 $today = date('Y-m-d');
-$carpetames = date("Ym");
-$directorioBK = "backupintraospim/$carpetames/";
+$carpetamesdia = date("YmdGis");
+$directorioBK = "backupintraospim/$delega/";
 if(!file_exists($directorioBK)) {
 	mkdir ($directorioBK);
 	echo "Se ha creado el directorio: ".$directorioBK."<br>";
-	$directorioBK = $directorioBK.$delega."/";
+	$directorioBK = $directorioBK.$carpetamesdia."/";
 	if(!file_exists($directorioBK)) {
 		mkdir ($directorioBK);
 		echo "Se ha creado el directorio: ".$directorioBK."<br>";
@@ -17,7 +18,7 @@ if(!file_exists($directorioBK)) {
 	}	
 } else {
 	echo "la ruta: ".$directorioBK." ya existe<br>";
-	$directorioBK = $directorioBK.$delega."/";
+	$directorioBK = $directorioBK.$carpetamesdia."/";
 	if(!file_exists($directorioBK)) {
 		mkdir ($directorioBK);
 			echo "Se ha creado el directorio: ".$directorioBK."<br>";
@@ -91,9 +92,32 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p class="Estilo2">Resultado del Back Up Archivos Intranet O.S.P.I.M.</p>
   <p class="Estilo2">Delegación <?php echo $delega ?> - Fecha <?php echo invertirFecha($today) ?> </p>
   <?php if ($error == 0) {
-			print("<font color='#0000FF'>Se han movido todos los archivos a la siguiente direccion <b>$directorioBK</b></font><br>");
+  			$subidaAcceso = 0;
+			try {	
+				$hostOspim = "localhost"; //para las pruebas...
+				$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
+				$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				$dbhInternet->setAttribute(PDO::MYSQL_ATTR_LOCAL_INFILE, true);
+				$dbhInternet->beginTransaction();
+				$sqlAltaAcceso = "UPDATE usuarios SET acceso = 1, fechaactualizacion = '$today' WHERE delcod = $delega";
+				//print($sqlAltaAcceso."<br>");
+				$dbhInternet->exec($sqlAltaAcceso);
+				$dbhInternet->commit();
+				$subidaAcceso = 1;
+			} catch (PDOException $e) {
+				$descriError = $e->getMessage();
+				print("$descriError<br><br>");
+				$control[0] = array("NO SE PUDO DAR DE ALTA EL ACCESO A LA DELEGACION", $descriError);
+				$dbhInternet->rollback();
+			}
+			if ($subidaAcceso == 1) {
+				print("<font color='#0000FF'>Se han movido todos los archivos a la siguiente direccion <b>$directorioBK</b> y se dio de alta el acceso de la delegación</font><br>");
+			} else {
+				print("<font color='#0000FF'>Se han movido todos los archivos a la siguiente direccion <b>$directorioBK</b><br>");
+				print("<font color='#FF0000'>Se ha producido un error al querer dar de alta el acceso a la delegación</font>");
+			}
 		} else {
-			print("<font color='#FF0000'>Se ha producido un errro al querer mover los archivo</font>");
+			print("<font color='#FF0000'>Se ha producido un error al querer mover los archivo</font>");
 		}
 ?>
 	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
