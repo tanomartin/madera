@@ -107,7 +107,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 			} catch (PDOException $e) {
 				$descriError = $e->getMessage();
 				print("$descriError<br><br>");
-				$control[0] = array("NO SE PUDO DAR DE ALTA EL ACCESO A LA DELEGACION", $descriError);
 				$dbhInternet->rollback();
 			}
 			if ($subidaAcceso == 1) {
