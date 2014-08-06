@@ -27,7 +27,10 @@ foreach ($arrayNombreTablas as $nombreArc) {
 
 if ($errorArchivos == 0) {
 	print("<br>Doy de baja el acceso todos los accesos<br>");
-	$hostUsimra = "localhost"; //para las pruebas...
+	$maquina = $_SERVER['SERVER_NAME'];
+	if(strcmp("localhost",$maquina)==0) {
+		$hostUsimra = "localhost"; //para las pruebas...
+	}
 	$dbhInternet = new PDO("mysql:host=$hostUsimra;dbname=$baseUsimraIntranet",$usuarioUsimra ,$claveUsimra,array(PDO::MYSQL_ATTR_LOCAL_INFILE => 1,));
    	$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbhInternet->setAttribute(PDO::MYSQL_ATTR_LOCAL_INFILE, true);

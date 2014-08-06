@@ -29,7 +29,10 @@ foreach ($arrayNombreArchivo as $nombreArc) {
 
 if ($errorArchivos == 0) {
 	print("<br>Doy de baja el acceso a la delegacion<br>");
-	$hostOspim = "localhost"; //para las pruebas...
+	$maquina = $_SERVER['SERVER_NAME'];
+	if(strcmp("localhost",$maquina)==0) {
+		$hostOspim = "localhost"; //para las pruebas...
+	}
 	$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim,array(PDO::MYSQL_ATTR_LOCAL_INFILE => 1,));
    	$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbhInternet->setAttribute(PDO::MYSQL_ATTR_LOCAL_INFILE, true);
