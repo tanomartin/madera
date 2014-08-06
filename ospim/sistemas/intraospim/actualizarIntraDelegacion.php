@@ -71,10 +71,10 @@ if ($errorArchivos == 0) {
 		
 		foreach ($arraySqlDelete as $sqlDelete) { 
 			try {
-				//$dbhInternet->beginTransaction();
+				$dbhInternet->beginTransaction();
 				print($sqlDelete."<br>");
-				//$dbhInternet->exec($sqlDelete);
-				//$dbhInternet->commit();
+				$dbhInternet->exec($sqlDelete);
+				$dbhInternet->commit();
 				$deleteTablas = 1;
 			} catch (PDOException $e) {
 				$deleteTablas = 0;
@@ -102,10 +102,10 @@ if ($errorArchivos == 0) {
 		}
 		foreach ($arraySqlLoad as $sqlLoad) { 
 			try {
-				//$dbhInternet->beginTransaction();
+				$dbhInternet->beginTransaction();
 				print($sqlLoad."<br>");
-				//$dbhInternet->exec($sqlLoad);
-				//$dbhInternet->commit();
+				$dbhInternet->exec($sqlLoad);
+				$dbhInternet->commit();
 				$loadTablas = 1;
 			} catch (PDOException $e) {
 				$loadTablas = 0;
@@ -145,14 +145,14 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 			$pathCompleto = $pathArchivo.$nombreArc;			
 			$file = fopen ($pathCompleto, "r"); 
 			$num_lineas = 0; 
-			while (!feof ($file)) { 
+			while (!feof($file)) { 
 				if ($linea = fgets($file)){ 
-				   $num_lineas++; 
+					if (sizeof($linea) > 0) {
+				   		$num_lineas++;
+					} 
 				} 
 			} 
 			fclose ($file); 
-			
-			
 			$control[$i] = array('tabla' => $tabla, 'archivo' => $num_lineas, 'count' => $contador);
 			$i++;
 		}
