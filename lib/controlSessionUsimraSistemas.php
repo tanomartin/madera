@@ -19,6 +19,7 @@ if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') {
     //si no está logueado lo envío a la página de autentificación 
 	//TODO que vaya a una pantalla de session caducada....
 	header($redire); 
+	exit(0);
 } else { 
     //sino, calculamos el tiempo transcurrido 
     $fechaGuardada = $_SESSION["ultimoAcceso"]; 
@@ -29,6 +30,7 @@ if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') {
        //si pasaron 10 minutos o más 
 	   //TODO que vaya a una pantalla de session caducada....	
    	   header($redire); //envío al usuario a la pag. de autenticación 
+	   exit(0);
       //sino, actualizo la fecha de la sesión 
  	}else { 
     	$_SESSION["ultimoAcceso"] = $ahora; 

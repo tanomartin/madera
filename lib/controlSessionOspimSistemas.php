@@ -19,6 +19,7 @@ if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') {
     //si no está logueado lo envío a la página de autentificación 
 	//TODO que vaya a una pantalla de session caducada....
 	header($redire); 
+	exit(0);
 } else { 
     //sino, calculamos el tiempo transcurrido 
     $fechaGuardada = $_SESSION["ultimoAcceso"]; 
@@ -29,7 +30,8 @@ if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') {
        //si pasaron 10 minutos o más 
 	   //TODO que vaya a una pantalla de session caducada....	
    	   header($redire); //envío al usuario a la pag. de autenticación 
-      //sino, actualizo la fecha de la sesión 
+	   exit(0);        	
+	  //sino, actualizo la fecha de la sesión 
  	}else { 
     	$_SESSION["ultimoAcceso"] = $ahora; 
   	} 
@@ -37,6 +39,7 @@ if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') {
 $db =  mysql_connect($_SESSION['host'],$_SESSION['usuario'], $_SESSION['clave']);
 if (!$db) {
     die('No pudo conectarse: ' . mysql_error());
+	exit(0);
 }
 mysql_select_db($_SESSION['dbname']);
 ?>
