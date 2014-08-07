@@ -33,7 +33,7 @@ if ($errorArchivos == 0) {
 	if(strcmp("localhost",$maquina)==0) {
 		$hostOspim = "localhost"; //para las pruebas...
 	}
-	$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim,array(PDO::MYSQL_ATTR_LOCAL_INFILE => 1,));
+	$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim,array(PDO::MYSQL_ATTR_LOCAL_INFILE => 1));
    	$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbhInternet->setAttribute(PDO::MYSQL_ATTR_LOCAL_INFILE, true);
 	//Bajo el acceso de la delegacion
