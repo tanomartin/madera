@@ -91,33 +91,44 @@ if ($errorArchivos == 0) {
 	
 	if ($deleteTablas == 1) {
 		print("<br>Hago el load data.<br>");
-		$i = 0;
-		$arraySqlLoad = array();
 		foreach ($arrayNombreArchivo as $nombreArc) {
+			$n = 0;
+			$insertArray = array();
 			$pathCompleto = $pathArchivo.$nombreArc;
 			$splitNombre = explode('.',$nombreArc);
 			$tabla = $splitNombre[0];
-			if ($nombreArc != $nombreArchivoTotalizador) {
-				$sqlLoad = "LOAD DATA LOCAL INFILE '".$pathCompleto."' REPLACE INTO TABLE ".$tabla." FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
-				$arraySqlLoad[$i] = $sqlLoad;
-				$i++;
+			$file = fopen ($pathCompleto, "r"); 
+			while (!feof($file)) {
+				$insertLinea = "INSERT IGNORE INTO $tabla VALUES (";
+				if ($linea = fgets($file)){ 
+					if (strlen($linea) > 0) {
+						$lineaExplode = explode("|",$linea);
+						$cantidadCampos = sizeof($lineaExplode);
+						for ($i=0; $i < $cantidadCampos; $i++) {
+							$insertLinea = $insertLinea.'"'.$lineaExplode[$i].'",'; 
+						}
+						$insertLinea = substr($insertLinea,0,strlen($insertLinea)-1).")";
+					}
+					$insertArray[$n] = $insertLinea;
+					$n++;
+				} 
+			} 
+			foreach ($insertArray as $insert) {
+				try {
+					$dbhInternet->beginTransaction();
+					//print($insert."<br>");
+					$dbhInternet->exec($insert);
+					$dbhInternet->commit();
+				} catch (PDOException $e) {
+					$loadTablas = 0;
+					$descriError = $e->getMessage();
+					$control[0] = array("NO SE PUDO REALIZAR EL LOAD DE LOS ARCHIVOS DE LA DELEGACION", $descriError);
+					print("$descriError<br><br>");
+					$dbhInternet->rollback();
+				}
 			}
 		}
-		foreach ($arraySqlLoad as $sqlLoad) { 
-			try {
-				$dbhInternet->beginTransaction();
-				print($sqlLoad."<br>");
-				$dbhInternet->exec($sqlLoad);
-				$dbhInternet->commit();
-				$loadTablas = 1;
-			} catch (PDOException $e) {
-				$loadTablas = 0;
-				$descriError = $e->getMessage();
-				$control[0] = array("NO SE PUDO REALIZAR EL LOAD DE LOS ARCHIVOS DE LA DELEGACION", $descriError);
-				print("$descriError<br><br>");
-				$dbhInternet->rollback();
-			}
-		}
+		$loadTablas = 1;	
 	}
 } else {
 	$control[0] = array("NO SE ENCONTRÓ ALGUN ARCHIVO PARA REALIZAR LA ACTUALIZACION", $errorArc);
