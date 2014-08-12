@@ -94,10 +94,11 @@ A:hover {text-decoration: none;color:#00FFFF }
   <?php if ($error == 0) {
   			$subidaAcceso = 0;
 			try {	
-				$hostOspim = "localhost"; //para las pruebas...
+				if(strcmp("localhost",$maquina)==0) {
+					$hostOspim = "localhost"; //para las pruebas...
+				}
 				$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
 				$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$dbhInternet->setAttribute(PDO::MYSQL_ATTR_LOCAL_INFILE, true);
 				$dbhInternet->beginTransaction();
 				$sqlAltaAcceso = "UPDATE usuarios SET acceso = 1, fechaactualizacion = '$today' WHERE delcod = $delega";
 				//print($sqlAltaAcceso."<br>");
