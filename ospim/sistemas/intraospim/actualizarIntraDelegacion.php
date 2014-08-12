@@ -16,7 +16,8 @@ $control = array();
 
 print("<br>Verifico que existan los archivos<br>");
 $pathArchivo = "archivos/".$delegacion."/";
-$arrayNombreArchivo = array("apoi$delegacion.txt", "bajafam.txt", "bajatit.txt", "cabacuer.txt", "cabjur.txt", "cuij$delegacion.txt", "cuoacuer.txt", "detacuer.txt", "empresa.txt", "familia.txt", "juicios.txt", "pagos.txt", "titular.txt");
+//$arrayNombreArchivo = array("apoi$delegacion.txt", "bajafam.txt", "bajatit.txt", "cabacuer.txt", "cabjur.txt", "cuij$delegacion.txt", "cuoacuer.txt", "detacuer.txt", "empresa.txt", "familia.txt", "juicios.txt", "pagos.txt", "titular.txt");
+$arrayNombreArchivo = array("empresa.txt");
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
 	print($archivo."<br>");
@@ -90,8 +91,8 @@ if ($errorArchivos == 0) {
 	}
 	
 	if ($deleteTablas == 1) {
-		print("<br>Hago el load data.<br>");
 		foreach ($arrayNombreArchivo as $nombreArc) {
+			print("<br>Hago el load data de $nombreArc.<br>");
 			$n = 0;
 			$insertArray = array();
 			$pathCompleto = $pathArchivo.$nombreArc;
@@ -113,23 +114,23 @@ if ($errorArchivos == 0) {
 					$n++;
 				} 
 			} 
-			foreach ($insertArray as $insert) {
-				try {
-					$dbhInternet->beginTransaction();
-					//print($insert."<br>");
+			try {
+				$dbhInternet->beginTransaction();
+				foreach ($insertArray as $insert) {
+					print($insert."<br>");
 					$dbhInternet->exec($insert);
-					$dbhInternet->commit();
-				} catch (PDOException $e) {
-					$loadTablas = 0;
-					$descriError = $e->getMessage();
-					$control[0] = array("NO SE PUDO REALIZAR EL LOAD DE LOS ARCHIVOS DE LA DELEGACION", $descriError);
-					print("$descriError<br><br>");
-					$dbhInternet->rollback();
 				}
+				$dbhInternet->commit();
+			} catch (PDOException $e) {
+				$loadTablas = 0;
+				$descriError = $e->getMessage();
+				$control[0] = array("NO SE PUDO REALIZAR EL LOAD DE LOS ARCHIVOS DE LA DELEGACION", $descriError);
+				print("$descriError<br><br>");
+				$dbhInternet->rollback();
 			}
 		}
-		$loadTablas = 1;	
 	}
+	$loadTablas = 1;	
 } else {
 	$control[0] = array("NO SE ENCONTRÓ ALGUN ARCHIVO PARA REALIZAR LA ACTUALIZACION", $errorArc);
 }
