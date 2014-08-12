@@ -7,11 +7,11 @@ $today = date('Y-m-d');
 $carpetamesdia = date("YmdGis");
 $directorioBK = "backupintraospim/$delega/";
 if(!file_exists($directorioBK)) {
-	mkdir ($directorioBK);
+	mkdir ($directorioBK, 0777);
 	echo "Se ha creado el directorio: ".$directorioBK."<br>";
 	$directorioBK = $directorioBK.$carpetamesdia."/";
 	if(!file_exists($directorioBK)) {
-		mkdir ($directorioBK);
+		mkdir ($directorioBK, 0777);
 		echo "Se ha creado el directorio: ".$directorioBK."<br>";
 	} else {
 		echo "la ruta: ".$directorioBK. " ya existe<br>";
@@ -20,8 +20,8 @@ if(!file_exists($directorioBK)) {
 	echo "la ruta: ".$directorioBK." ya existe<br>";
 	$directorioBK = $directorioBK.$carpetamesdia."/";
 	if(!file_exists($directorioBK)) {
-		mkdir ($directorioBK);
-			echo "Se ha creado el directorio: ".$directorioBK."<br>";
+		mkdir ($directorioBK, 0777);
+		echo "Se ha creado el directorio: ".$directorioBK."<br>";
 	} else {
 		echo "la ruta: ".$directorioBK." ya existe<br>";
 	}
