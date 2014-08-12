@@ -17,7 +17,7 @@ $control = array();
 print("<br>Verifico que existan los archivos<br>");
 $pathArchivo = "archivos/".$delegacion."/";
 //$arrayNombreArchivo = array("apoi$delegacion.txt", "bajafam.txt", "bajatit.txt", "cabacuer.txt", "cabjur.txt", "cuij$delegacion.txt", "cuoacuer.txt", "detacuer.txt", "empresa.txt", "familia.txt", "juicios.txt", "pagos.txt", "titular.txt");
-$arrayNombreArchivo = array("cabjur.txt");
+$arrayNombreArchivo = array("apoi$delegacion.txt");
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
 	print($archivo."<br>");
@@ -112,8 +112,7 @@ if ($errorArchivos == 0) {
 							//print($values);
 						}
 						$cuerpo = "(".substr($values,0,strlen($values)-1)."),".$cuerpo;	
-					}
-					
+					}	
 				} 
 			} 
 			$insertLinea = $insertLinea.substr($cuerpo,0,strlen($cuerpo)-1);
@@ -121,7 +120,7 @@ if ($errorArchivos == 0) {
 			try {
 				$dbhInternet->beginTransaction();
 				//foreach ($insertArray as $insert) {
-					print($insertLinea."<br>");
+					//print($insertLinea."<br>");
 					$dbhInternet->exec($insertLinea);
 				//}
 				$dbhInternet->commit();
