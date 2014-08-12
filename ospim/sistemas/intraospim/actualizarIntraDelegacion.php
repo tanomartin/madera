@@ -119,10 +119,8 @@ if ($errorArchivos == 0) {
 			//$n++;
 			try {
 				//$dbhInternet->beginTransaction();
-				//foreach ($insertArray as $insert) {
-					//print($insertLinea."<br>");
-					//$dbhInternet->exec($insertLinea);
-				//}
+				print($insertLinea."<br>");
+				//$dbhInternet->exec($insertLinea);
 				//$dbhInternet->commit();
 			} catch (PDOException $e) {
 				$loadTablas = 0;
