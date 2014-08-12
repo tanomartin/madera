@@ -4,6 +4,7 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."claves.php");
 include($libPath."fechas.php");
 $today = date('Y-m-d');
+$horaInicio = date("H:i:s");
 $delegacion = $_POST['selectDelegacion'];
 print("DELE A ACTULAIZAR ".$delegacion."<br>");
 
@@ -183,7 +184,7 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 
 $ahora = date("Y-n-j H:i:s"); 
 $_SESSION["ultimoAcceso"] = $ahora;
-
+$horaFin = date("H:i:s");
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -205,6 +206,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <p class="Estilo2">Resultado del Actualizacion Intranet O.S.P.I.M.</p>
   <p class="Estilo2">Delegación <?php echo $delegacion ?> - Fecha <?php echo invertirFecha($today) ?> </p>
+   <p class="Estilo2">Hora Inicio <?php echo $horaInicio ?> - Hora Fin <?php echo $horaFin ?> </p>
   <?php if (sizeof($control) > 1) { ?>
 	  <table border="1" align="center">
 			<tr>
