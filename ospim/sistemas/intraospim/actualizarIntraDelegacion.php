@@ -17,7 +17,7 @@ $control = array();
 print("<br>Verifico que existan los archivos<br>");
 $pathArchivo = "archivos/".$delegacion."/";
 //$arrayNombreArchivo = array("apoi$delegacion.txt", "bajafam.txt", "bajatit.txt", "cabacuer.txt", "cabjur.txt", "cuij$delegacion.txt", "cuoacuer.txt", "detacuer.txt", "empresa.txt", "familia.txt", "juicios.txt", "pagos.txt", "titular.txt");
-$arrayNombreArchivo = array("empresa.txt");
+$arrayNombreArchivo = array("cabjur.txt");
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
 	print($archivo."<br>");
@@ -93,33 +93,37 @@ if ($errorArchivos == 0) {
 	if ($deleteTablas == 1) {
 		foreach ($arrayNombreArchivo as $nombreArc) {
 			print("<br>Hago el load data de $nombreArc.<br>");
-			$n = 0;
+			//$n = 0;
 			$insertArray = array();
 			$pathCompleto = $pathArchivo.$nombreArc;
 			$splitNombre = explode('.',$nombreArc);
 			$tabla = $splitNombre[0];
 			$file = fopen ($pathCompleto, "r"); 
+			$insertLinea = "INSERT IGNORE INTO $tabla VALUES ";
+			$cuerpo = "";
 			while (!feof($file)) {
-				$insertLinea = "INSERT IGNORE INTO $tabla VALUES (";
 				if ($linea = fgets($file)){ 
 					if (strlen($linea) > 0) {
+						$values = "";
 						$lineaExplode = explode("|",$linea);
 						$cantidadCampos = sizeof($lineaExplode);
 						for ($i=0; $i < $cantidadCampos; $i++) {
-							$insertLinea = $insertLinea.'"'.$lineaExplode[$i].'",'; 
+							$values = $values.'"'.$lineaExplode[$i].'",'; 
+							//print($values);
 						}
-						$insertLinea = substr($insertLinea,0,strlen($insertLinea)-1).")";
+						$cuerpo = "(".substr($values,0,strlen($values)-1)."),".$cuerpo;	
 					}
-					$insertArray[$n] = $insertLinea;
-					$n++;
+					
 				} 
 			} 
+			$insertLinea = $insertLinea.substr($cuerpo,0,strlen($cuerpo)-1);
+			//$n++;
 			try {
 				$dbhInternet->beginTransaction();
-				foreach ($insertArray as $insert) {
-					print($insert."<br>");
-					$dbhInternet->exec($insert);
-				}
+				//foreach ($insertArray as $insert) {
+					print($insertLinea."<br>");
+					$dbhInternet->exec($insertLinea);
+				//}
 				$dbhInternet->commit();
 			} catch (PDOException $e) {
 				$loadTablas = 0;
