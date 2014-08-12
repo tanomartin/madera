@@ -16,8 +16,8 @@ $control = array();
 
 print("<br>Verifico que existan los archivos<br>");
 $pathArchivo = "archivos/".$delegacion."/";
-//$arrayNombreArchivo = array("apoi$delegacion.txt", "bajafam.txt", "bajatit.txt", "cabacuer.txt", "cabjur.txt", "cuij$delegacion.txt", "cuoacuer.txt", "detacuer.txt", "empresa.txt", "familia.txt", "juicios.txt", "pagos.txt", "titular.txt");
-$arrayNombreArchivo = array("apoi$delegacion.txt");
+$arrayNombreArchivo = array("apoi$delegacion.txt", "bajafam.txt", "bajatit.txt", "cabacuer.txt", "cabjur.txt", "cuij$delegacion.txt", "cuoacuer.txt", "detacuer.txt", "empresa.txt", "familia.txt", "juicios.txt", "pagos.txt", "titular.txt");
+//$arrayNombreArchivo = array("apoi$delegacion.txt");
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
 	print($archivo."<br>");
