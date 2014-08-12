@@ -118,12 +118,12 @@ if ($errorArchivos == 0) {
 			$insertLinea = $insertLinea.substr($cuerpo,0,strlen($cuerpo)-1);
 			//$n++;
 			try {
-				$dbhInternet->beginTransaction();
+				//$dbhInternet->beginTransaction();
 				//foreach ($insertArray as $insert) {
 					//print($insertLinea."<br>");
-					$dbhInternet->exec($insertLinea);
+					//$dbhInternet->exec($insertLinea);
 				//}
-				$dbhInternet->commit();
+				//$dbhInternet->commit();
 			} catch (PDOException $e) {
 				$loadTablas = 0;
 				$descriError = $e->getMessage();
