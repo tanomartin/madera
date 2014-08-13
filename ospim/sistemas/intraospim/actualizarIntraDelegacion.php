@@ -6,7 +6,7 @@ include($libPath."claves.php");
 include($libPath."fechas.php");
 $today = date('Y-m-d');
 $timestamp1 = mktime(date("H"),date("i"),date("s"),date("n"),date("j"),date("Y")); 
-$delegacion = $_POST['selectDelegacion'];
+$delegacion = $_GET['delcod'];
 print("DELE A ACTULAIZAR ".$delegacion."<br>");
 
 //BANDERAS
