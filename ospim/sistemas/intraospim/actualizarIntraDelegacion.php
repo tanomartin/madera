@@ -1,10 +1,11 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 set_time_limit(0);
+ini_set('memory_limit', '-1');
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."claves.php");
 include($libPath."fechas.php");
 $today = date('Y-m-d');
-$horaInicio = date("H:i:s");
+$timestamp1 = mktime(date("H"),date("i"),date("s"),date("n"),date("j"),date("Y")); 
 $delegacion = $_POST['selectDelegacion'];
 print("DELE A ACTULAIZAR ".$delegacion."<br>");
 
@@ -93,35 +94,18 @@ if ($errorArchivos == 0) {
 	if ($deleteTablas == 1) {
 		foreach ($arrayNombreArchivo as $nombreArc) {
 			print("<br>Hago el load data de $nombreArc.<br>");
-			//$n = 0;
 			$insertArray = array();
 			$pathCompleto = $pathArchivo.$nombreArc;
 			$splitNombre = explode('.',$nombreArc);
 			$tabla = $splitNombre[0];
-			$file = fopen ($pathCompleto, "r"); 
-			$insertLinea = "INSERT IGNORE INTO $tabla VALUES ";
-			$cuerpo = "";
-			while (!feof($file)) {
-				if ($linea = fgets($file)){ 
-					if (strlen($linea) > 0) {
-						$values = "";
-						$lineaExplode = explode("|",$linea);
-						$cantidadCampos = sizeof($lineaExplode);
-						for ($i=0; $i < $cantidadCampos; $i++) {
-							$values = $values.'"'.$lineaExplode[$i].'",'; 
-							//print($values);
-						}
-						$cuerpo = "(".substr($values,0,strlen($values)-1)."),".$cuerpo;	
-					}	
-				} 
-			} 
-			$insertLinea = $insertLinea.substr($cuerpo,0,strlen($cuerpo)-1);
-			//$n++;
+			$gestor = fopen($pathCompleto, "r");
+			$contenido = fread($gestor, filesize($pathCompleto));
+			$insertLinea = "INSERT IGNORE INTO $tabla VALUES ".$contenido;
 			try {
-				//$dbhInternet->beginTransaction();
-				print($insertLinea."<br>");
-				//$dbhInternet->exec($insertLinea);
-				//$dbhInternet->commit();
+				$dbhInternet->beginTransaction();
+				//print($insertLinea."<br>");
+				$dbhInternet->exec($insertLinea);
+				$dbhInternet->commit();
 			} catch (PDOException $e) {
 				$loadTablas = 0;
 				$descriError = $e->getMessage();
@@ -182,7 +166,10 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 
 $ahora = date("Y-n-j H:i:s"); 
 $_SESSION["ultimoAcceso"] = $ahora;
-$horaFin = date("H:i:s");
+$timestamp2 = mktime(date("H"),date("i"),date("s"),date("n"),date("j"),date("Y"));
+$tiempoTranscurrido = ($timestamp2 - $timestamp1)/ 60;
+$enMintuos = number_format($tiempoTranscurrido,2,',','.');
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -204,7 +191,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <p class="Estilo2">Resultado del Actualizacion Intranet O.S.P.I.M.</p>
   <p class="Estilo2">Delegación <?php echo $delegacion ?> - Fecha <?php echo invertirFecha($today) ?> </p>
-   <p class="Estilo2">Hora Inicio <?php echo $horaInicio ?> - Hora Fin <?php echo $horaFin ?> </p>
+   <p class="Estilo2">Tiempo de Proceso: <?php echo $enMintuos ?> Minutos</p>
   <?php if (sizeof($control) > 1) { ?>
 	  <table border="1" align="center">
 			<tr>
