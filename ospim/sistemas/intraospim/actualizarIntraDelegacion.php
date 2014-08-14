@@ -333,6 +333,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 				print("</tr>");
 			} ?>
   </table>
+<?php	} 
+
+		if ($resultados[5]['estado'] == "Error" or $resultados[6]['estado'] == "Error" or $resultados[7]['estado'] == "Error") { ?>
+			<p><input type="reset" name="volver2" value="Forzar Cierre de Proceso" onclick="location.href = 'guardarArchivosBkup.php?delega=<?php echo $delegacion ?>'" align="center"/></p>
 <?php	} ?>
 	 
 	  <p><span style="text-align:center">
