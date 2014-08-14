@@ -178,7 +178,7 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 		foreach ($control as $con) {
 			if (in_array($con['tabla'],$tablasMayores)) {
 				if ($con['count'] > $con['archivo']) {
-					$descriError = "Tabla: ".$con['tabla']. "error en la cantidad de registros actualizados";
+					$descriError = "Tabla: ".$con['tabla']." error en la cantidad de registros actualizados";
 					$resultados[5] = array("etapa" => "Control de Subida", "estado" => "Error", "descripcion" => $descriError);
 					$errorUpdate = 1;
 				}
