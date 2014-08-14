@@ -393,8 +393,14 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	$locaDescr = str_pad($rowJuris['localidad'],30,' ',STR_PAD_RIGHT);
 	$provDescr = str_pad($rowJuris['provincia'],20,' ',STR_PAD_RIGHT);
 	$numpostal = str_pad($rowJuris['numpostal'],4,'0',STR_PAD_RIGHT);
-	$telefono = $rowJuris['ddn'].$rowJuris['telefono'];
-	$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
+	
+	if ($rowJuris['telefono'] == "" or $rowJuris['telefono'] == 0) {
+		$telefono = $rowJuris['ddn1'].$rowJuris['telefono1'];
+		$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
+	} else {
+		$telefono = $rowJuris['ddn'].$rowJuris['telefono'];
+		$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
+	}
 	$deuda = deudaAnterior($cuit, $db);
 	
 	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono."|".$deuda;
@@ -461,6 +467,8 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 					$importeOrdinario = str_pad($importeOrdinario,12,'0',STR_PAD_LEFT);
 				}
 				$pagosOrdi[$pOrd] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaOrdinario)."|".$importeOrdinario."|".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
+				$personal = "0000";
+				$remunDec = "000000000,00";
 				$pOrd++;
 			} 
 			//********************//
@@ -488,7 +496,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			unset($pagos);	
 			unset($pagosExtr);	
 			if ($rowRequeDet['statusfiscalizacion'] == 'A') {
-				//ESTO NO SE USA MAS Y HACE QUE TARDE MUCHO
+				//ESTO NO SE USA MAS Y HACE QUE TARDE MUCHO Y ESTA REPETIDO
 				$sqlAgrup = "SELECT * from agrufiscalizospim where cuit = $cuit and anoddjj =". $rowRequeDet['anofiscalizacion']." and mesddjj = ".$rowRequeDet['mesfiscalizacion'];
 				$resAgrup = mysql_query($sqlAgrup,$db);
 				$rowAgrup = mysql_fetch_assoc($resAgrup);
