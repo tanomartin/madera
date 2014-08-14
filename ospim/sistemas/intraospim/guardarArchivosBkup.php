@@ -8,30 +8,16 @@ $carpetamesdia = date("YmdGis");
 $directorioBK = "backupintraospim/$delega/";
 if(!file_exists($directorioBK)) {
 	mkdir ($directorioBK, 0777);
-	echo "Se ha creado el directorio: ".$directorioBK."<br>";
 	$directorioBK = $directorioBK.$carpetamesdia."/";
 	if(!file_exists($directorioBK)) {
 		mkdir ($directorioBK, 0777);
-		echo "Se ha creado el directorio: ".$directorioBK."<br>";
-	} else {
-		echo "la ruta: ".$directorioBK. " ya existe<br>";
-	}	
-} else {
-	echo "la ruta: ".$directorioBK." ya existe<br>";
-	$directorioBK = $directorioBK.$carpetamesdia."/";
-	if(!file_exists($directorioBK)) {
-		mkdir ($directorioBK, 0777);
-		echo "Se ha creado el directorio: ".$directorioBK."<br>";
-	} else {
-		echo "la ruta: ".$directorioBK." ya existe<br>";
 	}
-}
-print($directorioBK."<br><br>");
-/*if(strcmp("localhost",$maquina)==0) {
-	$pathBkup=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/intraospim/backupintraospim/$carpetames/$delega";
 } else {
-	$pathBkup="/home/sistemas/IntraOspim/bkup/$carpetames";
-}*/
+	$directorioBK = $directorioBK.$carpetamesdia."/";
+	if(!file_exists($directorioBK)) {
+		mkdir ($directorioBK, 0777);
+	} 
+}
 
 $pathDirectorio = "archivos/$delega/";
 $directorio = opendir($pathDirectorio);
@@ -42,10 +28,8 @@ while ($archivo = readdir($directorio)) {
 		$pathArchivoBK = $directorioBK.$archivo;
 		if (!copy($pathArchivo, $pathArchivoBK)) {
 			$error = 1;
-			echo "Error al copiar $archivo...<br>";
-		} else {
-			echo "Se copia el archivo $archivo...<br>";
-		}
+			$descri = "Error al copiar $archivo...<br>";
+		} 
     }
 }
 
@@ -57,14 +41,10 @@ if ($error == 0) {
 			$pathArchivo = $pathDirectorio.$archivo;
 			if (!unlink($pathArchivo)) {
 				$error = 1;
-				echo "Error al eliminar $archivo...<br>";
-			} else {
-				echo "Se ha eliminado el archivo $archivo...<br>";
-			}
+				$descri = "Error al eliminar $archivo...<br>";
+			} 
 		}
 	}
-} else {
-	echo "No se borraran los archivos de su lugar original ya que ha ocurrido un error...\n";
 }
 
 ?>
@@ -117,7 +97,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				print("<font color='#FF0000'>Se ha producido un error al querer dar de alta el acceso a la delegación</font>");
 			}
 		} else {
-			print("<font color='#FF0000'>Se ha producido un error al querer mover los archivo</font>");
+			print("<font color='#FF0000'>Se ha producido un error al querer mover los archivo <br> $descri </font>");
 		}
 ?>
 	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
