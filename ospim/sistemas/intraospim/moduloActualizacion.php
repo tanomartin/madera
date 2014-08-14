@@ -7,12 +7,19 @@ $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0) {
 	$hostOspim = "localhost"; //para las pruebas...
 }
-$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
-$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-$dbhInternet->beginTransaction();
-$sth = $dbhInternet->prepare("SELECT delcod, nombre, acceso, fechaactualizacion FROM usuarios where delcod >= 1002 and delcod <= 3101 order by delcod");
-$sth->execute();
-$resultado = $sth->fetchAll();
+try {
+	$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
+	$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbhInternet->beginTransaction();
+	$sth = $dbhInternet->prepare("SELECT delcod, nombre, acceso, fechaactualizacion FROM usuarios where delcod >= 1002 and delcod <= 3101 order by delcod");
+	$sth->execute();
+	$resultado = $sth->fetchAll();
+} catch (PDOException $e) {
+	$resultado = array();
+	$descriError = $e->getMessage();
+	print("$descriError<br><br>");
+	$dbhInternet->rollback();	
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
