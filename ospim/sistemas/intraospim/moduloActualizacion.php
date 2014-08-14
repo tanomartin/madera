@@ -10,7 +10,7 @@ if(strcmp("localhost",$maquina)==0) {
 $dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
 $dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $dbhInternet->beginTransaction();
-$sth = $dbhInternet->prepare("SELECT delcod, nombre, fechaactualizacion FROM usuarios where delcod >= 1002 and delcod <= 3101 order by delcod");
+$sth = $dbhInternet->prepare("SELECT delcod, nombre, acceso, fechaactualizacion FROM usuarios where delcod >= 1002 and delcod <= 3101 order by delcod");
 $sth->execute();
 $resultado = $sth->fetchAll();
 ?>
@@ -19,7 +19,7 @@ $resultado = $sth->fetchAll();
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Módulo Stock :.</title>
+<title>.: Modulo Actua OSPIM :.</title>
 </head>
 
 <style>
@@ -46,7 +46,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue', 
 			widthFixed: true, 
 			widgets: ["zebra", "filter"], 
-			headers:{4:{sorter:false, filter:false}},
+			headers:{5:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -82,6 +82,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<tr>
 		  <th>Codigo</th>
 		  <th>Nombre</th>
+		  <th>Acceso</th>
 		  <th>Fecha Actualizacion</th>
 		  <th>Timpo Trascurrido</th>
 		  <th>Acción</th>
@@ -100,6 +101,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<tr align="center">
 				<td><?php echo $res['delcod'] ?></td>
 				<td><?php echo $res['nombre'] ?></td>
+				<td><?php if ($res['acceso'] == 1) { echo "ALTA"; } else { echo "BAJA"; } ?></td>
 				<td><?php echo invertirFecha($fechaAct) ?></td>
 				<td><?php echo $dias." días" ?></td>
 				<td><input name="actualizar" type="button" value="Actualizar" onclick="cartelEspere('<?php echo $res['nombre'] ?>','<?php echo $res['delcod'] ?>')"/></td>

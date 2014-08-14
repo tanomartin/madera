@@ -7,31 +7,32 @@ include($libPath."fechas.php");
 $today = date('Y-m-d');
 $timestamp1 = mktime(date("H"),date("i"),date("s"),date("n"),date("j"),date("Y")); 
 $delegacion = $_GET['delcod'];
-print("DELE A ACTULAIZAR ".$delegacion."<br>");
 
+//print("DELE A ACTULAIZAR ".$delegacion."<br>");
 //BANDERAS
 $errorArchivos = 0;
 $bajaacceso = 0;
 $deleteTablas = 0;
 $loadTablas = 0;
 $control = array();
+$resultados = array();
 
-print("<br>Verifico que existan los archivos<br>");
+//print("<br>Verifico que existan los archivos<br>");
 $pathArchivo = "archivos/".$delegacion."/";
-$arrayNombreArchivo = array("apoi$delegacion.txt", "bajafam.txt", "bajatit.txt", "cabacuer.txt", "cabjur.txt", "cuij$delegacion.txt", "cuoacuer.txt", "detacuer.txt", "empresa.txt", "familia.txt", "juicios.txt", "pagos.txt", "titular.txt");
-//$arrayNombreArchivo = array("apoi$delegacion.txt");
+$arrayNombreArchivo = array("empresa.txt","titular.txt","familia.txt","bajatit.txt","bajafam.txt","cabjur.txt","cuij$delegacion.txt","pagos.txt","apoi$delegacion.txt", "cabacuer.txt","detacuer.txt","cuoacuer.txt","juicios.txt",);
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
-	print($archivo."<br>");
+	//print($archivo."<br>");
 	if (!file_exists ($archivo)) {
-		print("No existe el archivo ".$archivo."<br>");
 		$errorArc = "No existe el archivo ".$archivo."<br>";
+		//print($errorArc);
 		$errorArchivos = 1;
 	}
 }
 
 if ($errorArchivos == 0) {
-	print("<br>Doy de baja el acceso a la delegacion<br>");
+	$resultados[0] = array("etapa" => "Existencia Archivos", "estado" => "OK", "descripcion" => "");
+	//print("<br>Doy de baja el acceso a la delegacion<br>");
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina)==0) {
 		$hostOspim = "localhost"; //para las pruebas...
@@ -42,19 +43,20 @@ if ($errorArchivos == 0) {
 	$dbhInternet->beginTransaction();
 	try {
 		$sqlBajoAcceso = "UPDATE usuarios SET acceso = 0 WHERE delcod = $delegacion";
-		print($sqlBajoAcceso."<br>");
+		//print($sqlBajoAcceso."<br>");
 		$dbhInternet->exec($sqlBajoAcceso);
 		$dbhInternet->commit();
 		$bajaacceso = 1;
 	} catch (PDOException $e) {
 		$descriError = $e->getMessage();
-		$control[0] = array("NO SE PUDO DAR DE BAJA EL ACCESO DE LA DELEGACIÓN", $descriError);
-		print("$descriError<br><br>");
+		$resultados[1] = array("etapa" => "Bajada Acceso Usuario", "estado" => "Error", "descripcion" => $descriError);
+		//print("$descriError<br><br>");
 		$dbhInternet->rollback();	
 	}
 	if ($bajaacceso == 1) {
+		$resultados[1] = array("etapa" => "Bajada Acceso Usuario", "estado" => "OK", "descripcion" => "");
 		$i = 0;
-		print("<br>Deleteo las tablas de esa delegación.<br>");
+		//print("<br>Deleteo las tablas de esa delegación.<br>");
 		$arraySqlDelete = array();
 		$i = 0;
 		
@@ -77,51 +79,55 @@ if ($errorArchivos == 0) {
 		foreach ($arraySqlDelete as $sqlDelete) { 
 			try {
 				$dbhInternet->beginTransaction();
-				print($sqlDelete."<br>");
+				//print($sqlDelete."<br>");
 				$dbhInternet->exec($sqlDelete);
 				$dbhInternet->commit();
 				$deleteTablas = 1;
 			} catch (PDOException $e) {
 				$deleteTablas = 0;
 				$descriError = $e->getMessage();
-				$control[0] = array("NO SE PUDO ELIMINAR LAS TABALAS DE LA DELEGACION A ACTUALIZAR", $descriError);
-				print("$descriError<br><br>");
+				$resultados[2] = array("etapa" => "Eliminacion de Tablas", "estado" => "Error", "descripcion" => $descriError);
+				//print("$descriError<br><br>");
 				$dbhInternet->rollback();
 			}
 		}
 	}
 	
 	if ($deleteTablas == 1) {
-		foreach ($arrayNombreArchivo as $nombreArc) {
-			print("<br>Hago el load data de $nombreArc.<br>");
-			$insertArray = array();
-			$pathCompleto = $pathArchivo.$nombreArc;
-			$splitNombre = explode('.',$nombreArc);
-			$tabla = $splitNombre[0];
-			$gestor = fopen($pathCompleto, "r");
-			$contenido = fread($gestor, filesize($pathCompleto));
-			$insertLinea = "INSERT IGNORE INTO $tabla VALUES ".$contenido;
-			try {
+		$resultados[2] = array("etapa" => "Eliminacion de Tablas", "estado" => "OK", "descripcion" => "");
+		$loadTablas = 1;
+		try {
+			foreach ($arrayNombreArchivo as $nombreArc) {
+				//print("<br>Hago el load data de $nombreArc.<br>");
+				$insertArray = array();
+				$pathCompleto = $pathArchivo.$nombreArc;
+				$splitNombre = explode('.',$nombreArc);
+				$tabla = $splitNombre[0];
+				$gestor = fopen($pathCompleto, "r");
+				$contenido = fread($gestor, filesize($pathCompleto));
+				fclose($gestor);
+				$insertLinea = "INSERT IGNORE INTO $tabla VALUES ".$contenido;
 				$dbhInternet->beginTransaction();
 				//print($insertLinea."<br>");
 				$dbhInternet->exec($insertLinea);
 				$dbhInternet->commit();
-			} catch (PDOException $e) {
-				$loadTablas = 0;
-				$descriError = $e->getMessage();
-				$control[0] = array("NO SE PUDO REALIZAR EL LOAD DE LOS ARCHIVOS DE LA DELEGACION", $descriError);
-				print("$descriError<br><br>");
-				$dbhInternet->rollback();
 			}
+		} catch (PDOException $e) {
+			$loadTablas = 0;
+			$descriError = $e->getMessage();
+			$resultados[3] = array("etapa" => "Subida de Información", "estado" => "Error", "descripcion" => "ARCHIVO: ".$nombreArc."<br>".$descriError);
+			//print("$descriError<br><br>");
+			$dbhInternet->rollback();
 		}
 	}
-	$loadTablas = 1;	
 } else {
-	$control[0] = array("NO SE ENCONTRÓ ALGUN ARCHIVO PARA REALIZAR LA ACTUALIZACION", $errorArc);
+	$resultados[0] = array("etapa" => "Existencia Archivos", "estado" => "Error", "descripcion" => $errorArc);
 }
 
 if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loadTablas == 1)) {
-	print("<br>Hacer count de cada tabla actualizada y comprar con el archivo totalizador.<br>");
+	$countControl = 0;
+	$resultados[3] = array("etapa" => "Subida de Información", "estado" => "OK", "descripcion" => "");
+	//print("<br>Hacer count de cada tabla actualizada y comprar con el archivo totalizador.<br>");
 	$i = 0;
 	try {
 		foreach ($arrayNombreArchivo as $nombreArc) {
@@ -136,7 +142,7 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 					$sqlControlTabla = "SELECT count(*) as total from $tabla WHERE delcod = $delegacion";
 				}
 			}
-			print($sqlControlTabla."<br>");
+			//print($sqlControlTabla."<br>");
 			$query = $dbhInternet->prepare($sqlControlTabla);
 			$query->execute();
 			$row = $query->fetch();
@@ -152,15 +158,107 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 					} 
 				} 
 			} 
-			fclose ($file); 
+			fclose($file); 
 			$control[$i] = array('tabla' => $tabla, 'archivo' => $num_lineas, 'count' => $contador);
 			$i++;
 		}
 	} catch (PDOException $e) {
+		$countControl = 1;
 		$descriError = $e->getMessage();
-		$control[0] = array("NO SE PUDO REALIZAR EL COUNT DE LAS TABLAS DE LA DELEGACION", $descriError);
-		print("$descriError<br><br>");
+		$resultados[4] = array("etapa" => "Count Tablas", "estado" => "Error", "descripcion" => $descriError);
+		//print("$descriError<br><br>");
 		$dbhInternet->rollback();
+	}
+
+	if ($countControl == 0) {
+		$resultados[4] = array("etapa" => "Count Tablas", "estado" => "OK", "descripcion" => "");
+		//controlo y si da ok levanto acceso y backapeo archivos.
+		$tablasMayores = array("cuij$delegacion","pagos","apoi$delegacion","detacuer","juicios");
+		$errorUpdate = 0;
+		foreach ($control as $con) {
+			if (in_array($con['tabla'],$tablasMayores)) {
+				if ($con['count'] > $con['archivo']) {
+					$descriError = "Tabla: ".$con['tabla']. "error en la cantidad de registros actualizados";
+					$resultados[5] = array("etapa" => "Control de Subida", "estado" => "Error", "descripcion" => $descriError);
+					$errorUpdate = 1;
+				}
+			} else {
+				if ($con['count'] != $con['archivo']) {
+					$descriError = "Tabla: ".$con['tabla']. "error en la cantidad de registros actualizados";
+					$resultados[5] = array("etapa" => "Control de Subida", "estado" => "Error", "descripcion" => $descriError);
+					$errorUpdate = 1;
+				}
+			}
+		}
+		
+		if ($errorUpdate == 0) {
+			$resultados[5] = array("etapa" => "Control de Subida", "estado" => "OK", "descripcion" => "");
+			$carpetamesdia = date("YmdGis");
+			$directorioBK = "backupintraospim/$delegacion/";
+			if(!file_exists($directorioBK)) {
+				mkdir ($directorioBK, 0777);
+				$directorioBK = $directorioBK.$carpetamesdia."/";
+				if(!file_exists($directorioBK)) {
+					mkdir ($directorioBK, 0777);
+				}	
+			} else {
+				$directorioBK = $directorioBK.$carpetamesdia."/";
+				if(!file_exists($directorioBK)) {
+					mkdir ($directorioBK, 0777);
+				}
+			}
+			$pathDirectorio = "archivos/$delegacion/";
+			$directorio = opendir($pathDirectorio);
+			$errorBkARchivos = 0;
+			while ($archivo = readdir($directorio)) {
+				if (!is_dir($archivo)) {
+					$pathArchivo = $pathDirectorio.$archivo;
+					$pathArchivoBK = $directorioBK.$archivo;
+					if (!copy($pathArchivo, $pathArchivoBK)) {
+						$errorBkARchivos = 1;
+						$descriError = "Error al copiar $archivo";
+						$resultados[6] = array("etapa" => "BackUp Archivos", "estado" => "Error", "descripcion" => $descriError);
+					}
+				}
+			}
+			
+			if ($errorBkARchivos == 0) {
+				$pathDirectorio = "archivos/$delegacion/";
+				$directorio = opendir($pathDirectorio);
+				while ($archivo = readdir($directorio)) {
+					if (!is_dir($archivo)) {
+						$pathArchivo = $pathDirectorio.$archivo;
+						if (!unlink($pathArchivo)) {
+							$errorBkARchivos = 1;
+							$descriError = "Error al eliminar $archivo";
+							$resultados[6] = array("etapa" => "BackUp Archivos", "estado" => "Error", "descripcion" => $descriError);
+						} 
+					}
+				}
+			}
+			
+			if ($errorBkARchivos == 0) {
+				$resultados[6] = array("etapa" => "BackUp Archivos", "estado" => "OK", "descripcion" => "BackUp Path: ".$directorioBK);
+				try {	
+					if(strcmp("localhost",$maquina)==0) {
+						$hostOspim = "localhost"; //para las pruebas...
+					}
+					$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
+					$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+					$dbhInternet->beginTransaction();
+					$sqlAltaAcceso = "UPDATE usuarios SET acceso = 1, fechaactualizacion = '$today' WHERE delcod = $delegacion";
+					//print($sqlAltaAcceso."<br>");
+					$dbhInternet->exec($sqlAltaAcceso);
+					$dbhInternet->commit();
+					$subidaAcceso = 1;
+				} catch (PDOException $e) {
+					$descriError = $e->getMessage();
+					$resultados[7] = array("etapa" => "Alta Acceso Usuario", "estado" => "Error", "descripcion" => $descriError);
+					$dbhInternet->rollback();
+				}		
+				$resultados[7] = array("etapa" => "Alta Acceso Usuario", "estado" => "OK", "descripcion" => "");
+			}
+		}
 	}
 }
 
@@ -176,7 +274,7 @@ $enMintuos = number_format($tiempoTranscurrido,2,',','.');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Generacion de Padrones :.</title>
+<title>.: Resultado Actua OSPIM  :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -189,10 +287,31 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <body bgcolor="#CCCCCC">
 <div align="center">
+  <p class="Estilo2"><span style="text-align:center">
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'" align="center"/>
+  </span></p>
   <p class="Estilo2">Resultado del Actualizacion Intranet O.S.P.I.M.</p>
   <p class="Estilo2">Delegación <?php echo $delegacion ?> - Fecha <?php echo invertirFecha($today) ?> </p>
-   <p class="Estilo2">Tiempo de Proceso: <?php echo $enMintuos ?> Minutos</p>
+  <p class="Estilo2" style="color:#0000FF">Tiempo de Proceso: <?php echo $enMintuos ?> Minutos</p>
+  <p class="Estilo2">Procesos</p>
+   <table border="1" align="center" width="800">
+	  <tr>
+		<th>Etapa</th>
+		<th>Resultado</th>
+		<th>Descripcion</th>
+	  </tr>
+<?php foreach ($resultados as $res) {
+			print("<tr align='center'>");
+			print("<td>".$res['etapa']."</td>");
+			print("<td>".$res['estado']."</td>");
+			print("<td>".$res['descripcion']."</td>");
+			print("</tr>");
+		}
+?>
+  </table>
+ 
   <?php if (sizeof($control) > 1) { ?>
+  	 <p class="Estilo2">Control</p>
 	  <table border="1" align="center">
 			<tr>
 				<th>Tabla</th>
@@ -212,19 +331,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 					print("<td>-</td>");
 				}
 				print("</tr>");
-			}
-		?>
-	  </table>
+			} ?>
+  </table>
+<?php	} ?>
+	 
 	  <p><span style="text-align:center">
-	  	<input type="reset" name="volver2" value="Cerrar Proceso" onclick="location.href = 'guardarArchivosBkup.php?delega=<?php echo $delegacion ?>'" align="center"/>
 	  </span></p>
-<?php	} else { ?>
-			<p class="Estilo2"><span style="text-align:center">
-				<input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'" align="center"/>
-			</span></p>
-<?php		print("<font color='#FF0000'>".$control[0][0]."</font><br>".$control[0][1]);
-		}
-?>
 	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
 </div>
 </body>
