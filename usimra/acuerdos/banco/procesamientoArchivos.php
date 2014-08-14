@@ -2,21 +2,22 @@
 include($libPath."controlSessionUsimra.php");
 
 function UltimoDia($anho,$mes){ 
+    print($anho."".$mes);
    if (((fmod($anho,4)==0) and (fmod($anho,100)!=0)) or (fmod($anho,400)==0)) { 
        $dias_febrero = 29; 
    } else { 
        $dias_febrero = 28; 
    } 
    switch($mes) { 
-       case 01: return 31; break; 
-       case 02: return $dias_febrero; break; 
-       case 03: return 31; break; 
-       case 04: return 30; break; 
-       case 05: return 31; break; 
-       case 06: return 30; break; 
-       case 07: return 31; break; 
-       case 08: return 31; break; 
-       case 09: return 30; break; 
+       case 1: return 31; break; 
+       case 2: return $dias_febrero; break; 
+       case 3: return 31; break; 
+       case 4: return 30; break; 
+       case 5: return 31; break; 
+       case 6: return 30; break; 
+       case 7: return 31; break; 
+       case 8: return 31; break; 
+       case 9: return 30; break; 
        case 10: return 31; break; 
        case 11: return 30; break; 
        case 12: return 31; break; 
@@ -29,6 +30,7 @@ $sqlInsertDia = array();
 $sqlDias = "SELECT ano,mes,dia FROM diasbancousimra WHERE procesado = 0 and exceptuado = 0 ORDER BY ano, mes, dia limit 1";
 $resDias = mysql_query($sqlDias,$db); 
 $canDias = mysql_num_rows($resDias);
+//print("Cantida dias: ".$canDias."<br>");
 if ($canDias == 0) {
 	$sqlPeriodos = "SELECT mes, ano from diasbancousimra GROUP BY ano, mes ORDER BY ano DESC, mes DESC limit 1";
 	$resPeriodos = mysql_query($sqlPeriodos,$db); 
@@ -43,6 +45,13 @@ if ($canDias == 0) {
 	$proxPeriodo = $proxMes."-".$proxAno;
 	$ultimoDiaMes = UltimoDia($proxAno,$proxMes);
 	$c = 0;
+	
+	/*print("Mes Actual: ".$rowPeriodos['mes']."<br>");
+	print("Prox mes: ".$proxMes."<br>");
+	print("Prox ano: ".$proxAno."<br>");
+	print("Prox periodo: ".$proxPeriodo."<br>");
+	print("Ultimo dia mes: ".$ultimoDiaMes."<br>");*/
+	
 	for ($i = 1; $i <= $ultimoDiaMes; $i++) {
 		$fechaAInsertar = $proxAno."-".$proxMes."-".$i;
 		$fechaAInsertar = strtotime($fechaAInsertar);
@@ -69,7 +78,7 @@ if ($canDias == 0) {
 	} catch (PDOException $e) {
 		echo $e->getMessage();
 		$dbh->rollback();
-	}	
+	}
 	
 } else {
 	while($rowDias = mysql_fetch_assoc($resDias)) {
