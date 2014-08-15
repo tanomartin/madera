@@ -103,14 +103,16 @@ if ($errorArchivos == 0) {
 				$pathCompleto = $pathArchivo.$nombreArc;
 				$splitNombre = explode('.',$nombreArc);
 				$tabla = $splitNombre[0];
-				$gestor = fopen($pathCompleto, "r");
-				$contenido = fread($gestor, filesize($pathCompleto));
-				fclose($gestor);
-				$insertLinea = "INSERT IGNORE INTO $tabla VALUES ".$contenido;
-				$dbhInternet->beginTransaction();
-				//print($insertLinea."<br>");
-				$dbhInternet->exec($insertLinea);
-				$dbhInternet->commit();
+				if (filesize($pathCompleto) > 0) {
+					$gestor = fopen($pathCompleto, "r");
+					$contenido = fread($gestor, filesize($pathCompleto));
+					fclose($gestor);
+					$insertLinea = "INSERT IGNORE INTO $tabla VALUES ".$contenido;
+					$dbhInternet->beginTransaction();
+					//print($insertLinea."<br>");
+					$dbhInternet->exec($insertLinea);
+					$dbhInternet->commit();
+				}
 			}
 		} catch (PDOException $e) {
 			$loadTablas = 0;
