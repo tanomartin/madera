@@ -40,8 +40,8 @@ if ($errorArchivos == 0) {
 	$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
    	$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	//Bajo el acceso de la delegacion
-	$dbhInternet->beginTransaction();
 	try {
+		$dbhInternet->beginTransaction();
 		$sqlBajoAcceso = "UPDATE usuarios SET acceso = 0 WHERE delcod = $delegacion";
 		//print($sqlBajoAcceso."<br>");
 		$dbhInternet->exec($sqlBajoAcceso);
