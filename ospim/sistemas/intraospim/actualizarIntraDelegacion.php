@@ -99,7 +99,6 @@ if ($errorArchivos == 0) {
 		try {
 			foreach ($arrayNombreArchivo as $nombreArc) {
 				//print("<br>Hago el load data de $nombreArc.<br>");
-				$insertArray = array();
 				$pathCompleto = $pathArchivo.$nombreArc;
 				$splitNombre = explode('.',$nombreArc);
 				$tabla = $splitNombre[0];
