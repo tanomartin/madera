@@ -13,15 +13,14 @@ $deleteTablas = 0;
 $loadTablas = 0;
 $control = array();
 $resultado = array();
-$arrayNombreTablas = array("empresa", "cabacuer", "cuoacuer", "ddjjnopa", "detacuer", "juicios", "pagos" ,"peranter");
+$arrayNombreTablas = array("empresa","cabacuer","detacuer","cuoacuer","ddjjnopa","juicios","pagos","peranter");
 
-print("<br>Verifico que existan el archivo<br>");
+//print("<br>Verifico que existan el archivo<br>");
 $pathArchivo = "archivos/";
 foreach ($arrayNombreTablas as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc.".txt";
-	print($archivo."<br>");
 	if (!file_exists ($archivo)) {
-		print("No existe el archivo ".$archivo."<br>");
+		//print("No existe el archivo ".$archivo."<br>");
 		$errorArc = "No existe el archivo ".$archivo."<br>";
 		$errorArchivos = 1;
 	}
@@ -29,7 +28,7 @@ foreach ($arrayNombreTablas as $nombreArc) {
 
 if ($errorArchivos == 0) {
 	$resultados[0] = array("etapa" => "Existencia Archivos", "estado" => "OK", "descripcion" => "");
-	print("<br>Doy de baja el acceso todos los accesos<br>");
+	//print("<br>Doy de baja el acceso todos los accesos<br>");
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina)==0) {
 		$hostUsimra = "localhost"; //para las pruebas...
@@ -41,26 +40,26 @@ if ($errorArchivos == 0) {
 	try {
 		$dbhInternet->beginTransaction();
 		$sqlBajoAcceso = "UPDATE usuarios SET acceso = 0";
-		print($sqlBajoAcceso."<br>");
+		//print($sqlBajoAcceso."<br>");
 		$dbhInternet->exec($sqlBajoAcceso);
 		$dbhInternet->commit();
 		$bajaacceso = 1;
 	} catch (PDOException $e) {
 		$descriError = $e->getMessage();
 		$resultados[1] = array("etapa" => "Bajada Acceso Usuario", "estado" => "Error", "descripcion" => $descriError);
-		print("$descriError<br><br>");
+		//print("$descriError<br><br>");
 		$dbhInternet->rollback();	
 	}
 	
 	if ($bajaacceso == 1) {
 		$resultados[1] = array("etapa" => "Bajada Acceso Usuario", "estado" => "OK", "descripcion" => "");
 		$i = 0;
-		print("<br>Deleteo las tablas<br>");	
+		//print("<br>Deleteo las tablas<br>");	
 		foreach ($arrayNombreTablas as $nombreTabla) {
 			$sqlDelete = "DELETE from $nombreTabla";
 			try {
 				$dbhInternet->beginTransaction();
-				print($sqlDelete."<br>");
+				//print($sqlDelete."<br>");
 				$dbhInternet->exec($sqlDelete);
 				$dbhInternet->commit();
 				$deleteTablas = 1;
@@ -68,7 +67,7 @@ if ($errorArchivos == 0) {
 				$deleteTablas = 0;
 				$descriError = $e->getMessage();
 				$resultados[2] = array("etapa" => "Eliminacion de Tablas", "estado" => "Error", "descripcion" => $descriError);
-				print("$descriError<br><br>");
+				//print("$descriError<br><br>");
 				$dbhInternet->rollback();
 			}
 		}
@@ -76,25 +75,29 @@ if ($errorArchivos == 0) {
 	
 	if ($deleteTablas == 1) {
 		$resultados[2] = array("etapa" => "Eliminacion de Tablas", "estado" => "OK", "descripcion" => "");
-		print("<br>Hago el load data.<br>");
+		//print("<br>Hago el load data.<br>");
 		$i = 0;
-		$arraySqlLoad = array();
+		$loadTablas = 1;
 		try {
 			foreach ($arrayNombreTablas as $nombreTabla) {
 				$archivo = $pathArchivo.$nombreTabla.".txt";
-				//VER como va a quedar si con \\r\\n (CRLF) o solo con \\n (LF)
-				$sqlLoad = "LOAD DATA LOCAL INFILE '".$archivo."' REPLACE INTO TABLE ".$nombreTabla." FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
-				$dbhInternet->beginTransaction();
-				print($sqlLoad."<br>");
-				$dbhInternet->exec($sqlLoad);
-				$dbhInternet->commit();
-				$loadTablas = 1;
+				if (filesize($archivo) > 0) {
+					$gestor = fopen($archivo, "r");
+					$contenido = fread($gestor, filesize($archivo));
+					fclose($gestor);
+					$insertLinea = "INSERT IGNORE INTO $nombreTabla VALUES ".$contenido;
+					$dbhInternet->beginTransaction();
+					//print($insertLinea."<br>");
+					$dbhInternet->exec($insertLinea);
+					$dbhInternet->commit();
+				}
+				
 			}
 		} catch (PDOException $e) {
 			$loadTablas = 0;
 			$descriError = $e->getMessage();
 			$resultados[3] = array("etapa" => "Subida de Información", "estado" => "Error", "descripcion" => "ARCHIVO: ".$nombreTabla."<br>".$descriError);
-			print("$descriError<br><br>");
+			//print("$descriError<br><br>");
 			$dbhInternet->rollback();
 		}
 	}
@@ -105,13 +108,13 @@ if ($errorArchivos == 0) {
 if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loadTablas == 1)) {
 	$countControl = 0;
 	$resultados[3] = array("etapa" => "Subida de Información", "estado" => "OK", "descripcion" => "");
-	print("<br>Hacer count de cada tabla actualizada y comprar con el archivo totalizador.<br>");
+	//print("<br>Hacer count de cada tabla actualizada y comprar con el archivo totalizador.<br>");
 	$i = 0;
 	try {
 		$dbhInternet->beginTransaction();
 		foreach ($arrayNombreTablas as $nombreTabla) {
 			$sqlControlTabla = "SELECT count(*) as total from $nombreTabla";
-			print($sqlControlTabla."<br>");
+			//print($sqlControlTabla."<br>");
 			$query = $dbhInternet->prepare($sqlControlTabla);
 			$query->execute();
 			$row = $query->fetch();
@@ -135,13 +138,13 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 		$countControl = 1;
 		$descriError = $e->getMessage();
 		$resultados[4] = array("etapa" => "Count Tablas", "estado" => "Error", "descripcion" => $descriError);
-		print("$descriError<br><br>");
+		//print("$descriError<br><br>");
 		$dbhInternet->rollback();
 	}
 	
 	if ($countControl == 0) {
 		$resultados[4] = array("etapa" => "Count Tablas", "estado" => "OK", "descripcion" => "");		
-		$tablasMayores = array("pagos","detacuer","juicios");
+		$tablasMayores = array("pagos","detacuer","juicios","ddjjnopa");
 		$errorUpdate = 0;
 		foreach ($control as $con) {
 			if (in_array($con['tabla'],$tablasMayores)) {
