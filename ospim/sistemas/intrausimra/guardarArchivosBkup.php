@@ -86,7 +86,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$dbhInternet->setAttribute(PDO::MYSQL_ATTR_LOCAL_INFILE, true);
 				$dbhInternet->beginTransaction();
-				$sqlBajoAcceso = "UPDATE usuarios SET acceso = 1, fechaacutalizacion = '$today'";
+				$sqlBajoAcceso = "UPDATE usuarios SET acceso = 1, fechaactualizacion = '$today'";
 				$dbhInternet->exec($sqlBajoAcceso);
 				$dbhInternet->commit();
 				$subidaAcceso = 1;
