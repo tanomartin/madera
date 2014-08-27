@@ -33,7 +33,6 @@ jQuery(function($){
 	$("#fechaInicioOspim").mask("99-99-9999");
 	$("#fechaInicioUsimra").mask("99-99-9999");
 	$("#alfapostal").mask("aaa");
-	alfapostal
 });
 
 function cambioProvincia(locali) {
