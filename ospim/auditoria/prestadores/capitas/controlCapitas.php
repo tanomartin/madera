@@ -71,7 +71,9 @@ for ( $i = $inicio ; $i <= $fin ; $i++) {
 		$mesArc[$i]=formatoPerido($perAux);
 	}
 }
-$hostOspim = "localhost"; //para las pruebas
+if(strcmp("localhost",$maquina)==0) {
+	$hostOspim = "localhost"; //para las pruebas...
+}
 $dbInternet =  mysql_connect($hostOspim,$usuarioOspim,$claveOspim );
 if (!$dbInternet) {
 	die('No pudo conectarse a la base de OSPIM.COM.AR: ' . mysql_error());
@@ -123,7 +125,7 @@ function abrirArchivo(dire) {
   </form>
   
   <?php
-	$sqlPrestador = "select * from prestadores";
+	$sqlPrestador = "select * from capitados";
 	$resPrestador = mysql_query($sqlPrestador,$db);
 	if (isset($mesPedido) && isset($anioPedido)) { ?>
 		 <p class="Estilo2">Periodo <?php echo $mesPedido."/".$anioPedido ?></p>
@@ -139,7 +141,7 @@ function abrirArchivo(dire) {
 			</tr>
 		<?php while($rowPrestador=mysql_fetch_array($resPrestador)) {
 				$presta = $rowPrestador['codigo'];
-				$sql2 = "select * from subidapadronprestadores where codigoprestador = $presta and mespadron = $mesPedido and anopadron = $anioPedido"  ;
+				$sql2 = "select * from subidapadroncapitados where codigoprestador = $presta and mespadron = $mesPedido and anopadron = $anioPedido"  ;
 				$result2 = mysql_query($sql2,$db);
 				$row2=mysql_fetch_array($result2); 
 				if (mysql_num_rows($result2)==0) {
