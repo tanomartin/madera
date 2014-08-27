@@ -49,7 +49,7 @@ function validar(formulario) {
     <p><strong>Seleccionar Prestadore</strong>s</p>
     <table width="400" border="1">
 	<?php 
-		$resPresta = mysql_query("SELECT * FROM prestadores", $db);
+		$resPresta = mysql_query("SELECT * FROM capitados", $db);
 		while($rowPresta = mysql_fetch_array($resPresta)) { 
 			echo "<tr>";
 			$codigo = $rowPresta['codigo'];

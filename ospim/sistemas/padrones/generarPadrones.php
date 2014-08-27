@@ -214,7 +214,9 @@ for ($f = 0; $f < $finalFor; $f++) {
 		//*******************************************
 			
 		//CONTROLO QUE NO HAYA UNA BAJADA PARA ESTE PRESTA Y ESTE PERIDOD
-		$hostOspim = "localhost"; //para las pruebas...
+		if(strcmp("localhost",$maquina)==0) {
+			$hostOspim = "localhost"; //para las pruebas...
+		}
 		$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimPrestadores",$usuarioOspim ,$claveOspim);
    		$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbhInternet->beginTransaction();
@@ -245,7 +247,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 					//print($sqlEliminaSubidaInternet."<br>");
 					$dbhInternet->exec($sqlEliminaSubidaInternet);
 				
-					$sqlEliminaSubidaMadera = "DELETE FROM subidapadronprestadores WHERE codigoprestador = $presta and anopadron = $anio and mespadron = $mes";
+					$sqlEliminaSubidaMadera = "DELETE FROM subidapadroncapitados WHERE codigoprestador = $presta and anopadron = $anio and mespadron = $mes";
 					//print($sqlEliminaSubidaMadera."<br>");
 					$dbh->exec($sqlEliminaSubidaMadera);
 					
