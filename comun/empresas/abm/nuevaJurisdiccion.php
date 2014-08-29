@@ -19,51 +19,54 @@ $domicilio=$_GET['domicilio'];
 <script type="text/javascript">
 
 jQuery(function($){
-		$("#cuit").mask("99999999999");
-		$("#alfapostal").mask("aaa");
-});
+	$("#cuit").mask("99999999999");
+	$("#alfapostal").mask("aaa");
+	
+	$("#codPos").change(function(){
+		var codigo = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "localidadPorCP.php",
+			data: {codigo:codigo},
+		}).done(function(respuesta){
+			$("#selectLocali").html(respuesta);
+			$("#indpostal").val("");
+			$("#alfapostal").val("");
+			$("#provincia").val("");
+			$("#codprovin").val("");
+			$("#selectDelegacion").html("<option title ='Seleccione un valor' value='0'>Seleccione un valor</option>");
+		});
+	});
 
-function cambioProvincia(locali) {
-	var o
-	document.forms.nuevaJurisdiccion.selectDelegacion.length = 0;
-	o = document.createElement("OPTION");
-	o.text = 'Seleccione un valor';
-	o.value = 0;
-	document.forms.nuevaJurisdiccion.selectDelegacion.options.add(o);
-	<?php 
-		$sqlLocali = "select codlocali, codprovin from localidades";
-		$resLocali = mysql_query($sqlLocali,$db);
-		while($rowLocali = mysql_fetch_array($resLocali)) { ?>
-			if (locali == <?php echo $rowLocali['codlocali'] ?>)  {
-				<?php	
-					$codprovin =  $rowLocali['codprovin'];
-					$sqlProvin = "select * from provincia where codprovin = $codprovin";
-					$resProvin = mysql_query($sqlProvin,$db);
-					$rowProvin = mysql_fetch_array($resProvin)
-				?>
-				document.forms.nuevaJurisdiccion.provincia.value = "<?php echo $rowProvin['descrip'] ?>";
-				document.forms.nuevaJurisdiccion.indpostal.value = "<?php echo $rowProvin['indpostal'] ?>";			
-				document.forms.nuevaJurisdiccion.codprovin.value = "<?php echo $rowProvin['codprovin'] ?>";
-				
-				<?php 
-				//solo para PRov de Bs As se agrega capital
-					if ($codprovin == 2) { ?>
-						o = document.createElement("OPTION");
-						o.text = 'CAPITAL FEDERAL';
-						o.value = 1002;
-						document.forms.nuevaJurisdiccion.selectDelegacion.options.add(o);
-			<?php 	} 
-					$sqlDelega = "select * from delegaciones where codprovin = $codprovin";
-					$resDelega = mysql_query($sqlDelega,$db);
-					while($rowDelega = mysql_fetch_array($resDelega)) { ?>
-						o = document.createElement("OPTION");
-						o.text = '<?php echo $rowDelega["nombre"]; ?>';
-						o.value = <?php echo $rowDelega["codidelega"]; ?>;
-						document.forms.nuevaJurisdiccion.selectDelegacion.options.add(o);
-			<?php	} ?>
-			}
-<?php } ?>
-}
+	$("#selectLocali").change(function(){
+		var locali = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "cambioProvincia.php",
+			data: {locali:locali},
+		}).done(function(respuesta){
+			$("#indpostal").val(respuesta.indpostal);
+			$("#provincia").val(respuesta.descrip);
+			$("#codprovin").val(respuesta.codprovin);
+			$("#selectDelegacion").html("<option title ='Seleccione un valor' value='0'>Seleccione un valor</option>");
+		});
+	});
+	
+	$("#selectLocali").focusout(function(){
+		var codigo = $("#codprovin").val();
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "buscaJurisdicciones.php",
+			data: {codigo:codigo},
+		}).done(function(respuesta){
+			$("#selectDelegacion").html(respuesta);
+		});
+	});	
+	
+});
 
 function validar(formulario) {
 	if (formulario.domicilio.value == "") {
@@ -125,39 +128,28 @@ function validar(formulario) {
 		  <tr>
 			<td><div align="right"><strong>Domicilio</strong></div></td>
 			<td><div align="left">
-			  <input name="domicilio" type="text" id="domicilio" value="<?php echo $domicilio ?>" size="90" />
+			  <input name="domicilio" type="text" id="domicilio" size="90" />
 			</div></td>
 		  </tr>
 		  <tr>
 			<td><div align="right"><strong>Codigo Postal</strong></div></td>
 			<td><div align="left">
 			  <label>
-			  <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" type="text" size="1"/>
+			  <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1"/>
 			  </label>
 			  -
-			  <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7" onchange='location.href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&domicilio="+document.forms.nuevaJurisdiccion.domicilio.value+"&numpostal="+ document.forms.nuevaJurisdiccion.codPos.value+"&alfapostal="+ document.forms.nuevaJurisdiccion.alfapostal.value'  />
+			  <input name="codPos" type="text" id="codPos" size="7"/>
 			  -        
 			  <label>
-			  <input name="alfapostal" id="alfapostal" value=""<?php echo $alfapostal ?>"" type="text" size="3" />
+			  <input name="alfapostal" id="alfapostal" type="text" size="3" />
 			  </label>
 			</div></td>
 		  </tr>
 		  <tr>
 			<td><div align="right"><strong>Localidad</strong></div></td>
 			<td><div align="left">
-				<select name="selectLocali" id="selectLocali" onchange="cambioProvincia(document.forms.nuevaJurisdiccion.selectLocali[selectedIndex].value)">
+				<select name="selectLocali" id="selectLocali">
 				  <option value="0">Seleccione un valor </option>
-				  <?php 
-						
-						$sqlLaca="select * from localidades where numpostal = $numpostal";
-						$resLoca= mysql_query($sqlLaca,$db);
-						while ($rowLoca=mysql_fetch_array($resLoca)) { 	
-							if ($rowLoca['codlocali'] == $row['codlocali']) {?>
-								<option value="<?php echo $rowLoca['codlocali'] ?>" selected="selected"><?php echo $rowLoca['nomlocali']  ?></option>
-					 <?php } else { ?>
-								<option value="<?php echo $rowLoca['codlocali'] ?>"><?php echo $rowLoca['nomlocali']  ?></option>
-					 <?php } ?>
-				 <?php } ?>
 				</select>
 			</div></td>
 		  </tr>

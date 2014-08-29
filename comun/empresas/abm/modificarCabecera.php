@@ -33,26 +33,37 @@ jQuery(function($){
 	$("#fechaInicioOspim").mask("99-99-9999");
 	$("#fechaInicioUsimra").mask("99-99-9999");
 	$("#alfapostal").mask("aaa");
-});
+	
+	$("#codPos").change(function(){
+		var codigo = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "localidadPorCP.php",
+			data: {codigo:codigo},
+		}).done(function(respuesta){
+			$("#selectLocali").html(respuesta);
+			$("#indpostal").val("");
+			$("#alfapostal").val("");
+			$("#provincia").val("");
+			$("#codprovin").val("");
+		});
+	});
 
-function cambioProvincia(locali) {
-	<?php 
-		$sqlLocali = "select codlocali, codprovin from localidades";
-		$resLocali = mysql_query($sqlLocali,$db);
-		while($rowLocali = mysql_fetch_array($resLocali)) { ?>
-			if (locali == <?php echo $rowLocali['codlocali'] ?>)  {
-				<?php	
-					$codprovin =  $rowLocali['codprovin'];
-					$sqlProvin = "select * from provincia where codprovin = $codprovin";
-					$resProvin = mysql_query($sqlProvin,$db);
-					$rowProvin = mysql_fetch_assoc($resProvin)
-				?>
-				document.forms.modifCabeEmpresa.provincia.value = "<?php echo $rowProvin['descrip'] ?>";
-				document.forms.modifCabeEmpresa.indpostal.value = "<?php echo $rowProvin['indpostal'] ?>";
-				document.forms.modifCabeEmpresa.codprovin.value = "<?php echo $rowProvin['codprovin'] ?>";
-			}
-<?php } ?>
-}
+	$("#selectLocali").change(function(){
+		var locali = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "cambioProvincia.php",
+			data: {locali:locali},
+		}).done(function(respuesta){
+			$("#indpostal").val(respuesta.indpostal);
+			$("#provincia").val(respuesta.descrip);
+			$("#codprovin").val(respuesta.codprovin);
+		});
+	});
+});
 
 function validar(formulario) {
 	if (!verificaCuilCuit(formulario.cuit.value)){
@@ -165,10 +176,10 @@ function validar(formulario) {
         <td><div align="right"><strong>Codigo Postal</strong></div></td>
         <td><div align="left">
           <label>
-          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" type="text" size="1" value="<?php echo $row['indpostal'];?>"/>
+          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1" value="<?php echo $row['indpostal'];?>"/>
           </label>
           -
-          <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7" onchange='location.href="modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&numpostal="+ document.forms.modifCabeEmpresa.codPos.value'  />
+          <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7"/>
 		  -        
 		  <label>
 		  <input name="alfapostal" id="alfapostal" type="text" size="3" value="<?php echo $row['alfapostal'];?>"/>
@@ -178,7 +189,7 @@ function validar(formulario) {
       <tr>
         <td><div align="right"><strong>Localidad</strong></div></td>
         <td><div align="left">
-            <select name="selectLocali" id="selectLocali" onchange="cambioProvincia(document.forms.modifCabeEmpresa.selectLocali[selectedIndex].value)">
+            <select name="selectLocali" id="selectLocali">
               <option value="0">Seleccione un valor </option>
               <?php 
 			  		

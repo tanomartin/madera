@@ -31,51 +31,54 @@ $cantitu = mysql_num_rows($restitu);
 <script type="text/javascript">
 
 jQuery(function($){
-		$("#cuit").mask("99999999999");
-		$("#alfapostal").mask("aaa");
-});
+	$("#cuit").mask("99999999999");
+	$("#alfapostal").mask("aaa");
+	
+	$("#codPos").change(function(){
+		var codigo = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "localidadPorCP.php",
+			data: {codigo:codigo},
+		}).done(function(respuesta){
+			$("#selectLocali").html(respuesta);
+			$("#indpostal").val("");
+			$("#alfapostal").val("");
+			$("#provincia").val("");
+			$("#codprovin").val("");
+			$("#selectDelegacion").html("<option title ='Seleccione un valor' value='0'>Seleccione un valor</option>");
+		});
+	});
 
-function cambioProvincia(locali) {
-	var o
-	document.forms.modifJurisEmpresa.selectDelegacion.length = 0;
-	o = document.createElement("OPTION");
-	o.text = 'Seleccione un valor';
-	o.value = 0;
-	document.forms.modifJurisEmpresa.selectDelegacion.options.add(o);
-	<?php 
-		$sqlLocali = "select codlocali, codprovin from localidades";
-		$resLocali = mysql_query($sqlLocali,$db);
-		while($rowLocali = mysql_fetch_array($resLocali)) { ?>
-			if (locali == <?php echo $rowLocali['codlocali'] ?>)  {
-				<?php	
-					$codprovin =  $rowLocali['codprovin'];
-					$sqlProvin = "select * from provincia where codprovin = $codprovin";
-					$resProvin = mysql_query($sqlProvin,$db);
-					$rowProvin = mysql_fetch_array($resProvin)
-				?>
-				document.forms.modifJurisEmpresa.provincia.value = "<?php echo $rowProvin['descrip'] ?>";
-				document.forms.modifJurisEmpresa.indpostal.value = "<?php echo $rowProvin['indpostal'] ?>";			
-				document.forms.modifJurisEmpresa.codprovin.value = "<?php echo $rowProvin['codprovin'] ?>";
-				
-			<?php 
-				//solo para PRov de Bs As se agrega capital
-					if ($codprovin == 2) { ?>
-						o = document.createElement("OPTION");
-						o.text = 'CAPITAL FEDERAL';
-						o.value = 1002;
-						document.forms.modifJurisEmpresa.selectDelegacion.options.add(o);
-			<?php 	} 
-					$sqlDelega = "select * from delegaciones where codprovin = $codprovin";
-					$resDelega = mysql_query($sqlDelega,$db);
-					while($rowDelega = mysql_fetch_array($resDelega)) { ?>
-						o = document.createElement("OPTION");
-						o.text = '<?php echo $rowDelega["nombre"]; ?>';
-						o.value = <?php echo $rowDelega["codidelega"]; ?>;
-						document.forms.modifJurisEmpresa.selectDelegacion.options.add(o);
-			<?php	} ?>
-			}
-<?php } ?>
-}
+	$("#selectLocali").change(function(){
+		var locali = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "cambioProvincia.php",
+			data: {locali:locali},
+		}).done(function(respuesta){
+			$("#indpostal").val(respuesta.indpostal);
+			$("#provincia").val(respuesta.descrip);
+			$("#codprovin").val(respuesta.codprovin);
+			$("#selectDelegacion").html("<option title ='Seleccione un valor' value='0'>Seleccione un valor</option>");
+		});
+	});
+	
+	$("#selectLocali").focusout(function(){
+		var codigo = $("#codprovin").val();
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "buscaJurisdicciones.php",
+			data: {codigo:codigo},
+		}).done(function(respuesta){
+			$("#selectDelegacion").html(respuesta);
+		});
+	});	
+		
+});
 
 function validar(formulario, deleAnterior, cantTitulares) {
 	if (formulario.domicilio.value == "") {
@@ -151,10 +154,10 @@ function validar(formulario, deleAnterior, cantTitulares) {
 			<td><div align="right"><strong>Codigo Postal</strong></div></td>
 			<td><div align="left">
 			  <label>
-			  <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" type="text" size="1" value="<?php echo $row['indpostal'];?>"/>
+			  <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1" value="<?php echo $row['indpostal'];?>"/>
 			  </label>
 			  -
-			  <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7" onchange='location.href="modificarJurisdiccion.php?origen=<?php echo $origen ?>&coddel=<?php echo $delega ?>&cuit=<?php echo $cuit ?>&numpostal="+ document.forms.modifJurisEmpresa.codPos.value'  />
+			  <input name="codPos" type="text" id="codPos" value="<?php echo $numpostal ?>" size="7" />
 			  -        
 			  <label>
 			  <input name="alfapostal" id="alfapostal" type="text" size="3" value="<?php echo $row['alfapostal'];?>"/>
@@ -164,7 +167,7 @@ function validar(formulario, deleAnterior, cantTitulares) {
 		  <tr>
 			<td><div align="right"><strong>Localidad</strong></div></td>
 			<td><div align="left">
-				<select name="selectLocali" id="selectLocali" onchange="cambioProvincia(document.forms.modifJurisEmpresa.selectLocali[selectedIndex].value)">
+				<select name="selectLocali" id="selectLocali">
 				  <option value="0">Seleccione un valor </option>
 				  <?php 
 						
