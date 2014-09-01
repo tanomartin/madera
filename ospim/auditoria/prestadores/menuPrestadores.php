@@ -20,14 +20,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Prestadores </span></p>
-  <table width="400" border="3">
+  <table width="600" border="3">
     <tr>
-	  <td width="200"><p align="center">Alta, Baja y Modificación</p>
-          <p align="center"><a class="enlace" href="capitas/controlCapitas.php"><img src="img/prestadores.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	  <td width="200"><p align="center">A.B.M.C.</p>
+          <p align="center"><a class="enlace" href="abm/moduloAbmPrestadores.php"><img src="img/prestadores.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="200"><p align="center">Control C&aacute;pitas (Padrones) </p>
+      <td width="200"><p align="center">Control C&aacute;pitas</p>
           <p align="center"><a class="enlace" href="capitas/controlCapitas.php"><img src="img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
+	   <td width="200"><p align="center">Facturación </p>
+          <p align="center"><a class="enlace" href="#"><img src="img/factura.png" width="119" height="92" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>		
     </tr>
   </table>
 </div>
