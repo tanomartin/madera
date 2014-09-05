@@ -29,58 +29,74 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAbmPrestadores.php'" align="center"/> 
-  <p><strong>Prestador - Código <?php echo $rowConsultaPresta['codigoprestador']  ?></strong></p>
-  <table width="800" border="1">
-      <tr>
-        <td width="177"><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
-        <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?> </div></td>
-      </tr>
-      <tr>
-        <td><div align="right"><strong>Domicilio</strong></div></td>
-        <td><div align="left"><?php echo $rowConsultaPresta['domicilio'] ?> </div></td>
-      </tr>
-      <tr>
-        <td><div align="right"><strong>Codigo Postal</strong></div></td>
-        <td><div align="left"><?php echo $rowConsultaPresta['indpostal'].$rowConsultaPresta['numpostal'].$rowConsultaPresta['alfapostal'] ?> </div>
-        <div align="right"></div></td>
-      </tr>
-      <tr>
-        <td><div align="right"><strong>Localidad</strong></div></td>
-        <td><div align="left"><?php echo $rowConsultaPresta['localidad'] ?></div></td>
-      </tr>
-      <tr>
-        <td><div align="right"><strong>Provincia</strong></div></td>
-        <td><div align="left"><?php echo $rowConsultaPresta['provincia'] ?></div></td>
-      </tr>
-      <tr>
-        <td><div align="right"><strong>Telefono 1 </strong></div></td>
-        <td><div align="left"><?php if ($rowConsultaPresta['telefono1'] != 0) echo "(".$rowConsultaPresta['ddn1'].")-".$rowConsultaPresta['telefono1']; ?></div></td>
-      </tr>
-      <tr>
-        <td><div align="right"><strong>Telefono 2 </strong></div></td>
-        <td><div align="left"><?php if ($rowConsultaPresta['telefono2'] != 0) echo "(".$rowConsultaPresta['ddn2'].")-".$rowConsultaPresta['telefono2']; ?></div></td>
-      </tr>
-      <tr>
-        <td><div align="right"><strong>Telefono FAX </strong></div></td>
-        <td><div align="left"><?php if ($rowConsultaPresta['telefonofax'] != 0) echo "(".$rowConsultaPresta['ddnfax'].")-".$rowConsultaPresta['telefonofax']; ?></div></td>
-      </tr>
-	  <tr>
-        <td><div align="right"><strong>Email</strong></div></td>
-        <td><div align="left"><?php echo $rowConsultaPresta['email'] ?></div></td>
-      </tr>
-	  <tr>
-	    <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-	    <td><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
-      </tr>
-	  <tr>
-        <td><div align="right"><strong>Personería</strong></div></td>
-        <td><div align="left"><?php if($rowConsultaPresta['personeria'] == 1) { echo "Profesional"; } else { echo "Establecimiento"; } ?></div></td>
-      </tr>
-	  <tr>
-	    <td><div align="right"><strong>Tratamiento</strong></div></td>
-	    <td><div align="left">
-		<?php 
+  <p><strong>Ficha Prestador</strong></p>
+	  <table border="1">
+        <tr>
+          <td><div align="right"><strong>C&oacute;digo</strong></div></td>
+          <td colspan="6"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
+        </tr>
+        <tr>
+          <td width="129"><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+          <td colspan="6"><div align="left">
+              <div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
+          </div></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Domicilio</strong></div></td>
+          <td colspan="6"><div align="left"><?php echo $rowConsultaPresta['domicilio'] ?></div></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>C.U.I.T.</strong></div></td>
+          <td colspan="6"><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Codigo Postal</strong></div></td>
+          <td width="183"><div align="left"><?php echo $rowConsultaPresta['indpostal'].$rowConsultaPresta['numpostal'].$rowConsultaPresta['alfapostal'] ?></div>
+              <div align="right"></div></td>
+          <td width="160"><div align="left"><strong>Localidad</strong></div></td>
+          <td width="140"><div align="left"><?php echo $rowConsultaPresta['localidad'] ?></div></td>
+          <td width="145"><div align="left"><strong>Provincia </strong></div>
+              <div align="left"></div></td>
+          <td width="124"><div align="left"><?php echo $rowConsultaPresta['provincia'] ?></div></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Telefono 1 </strong></div></td>
+          <td><div align="left">
+            <?php if ($rowConsultaPresta['telefono1'] != 0) echo "(".$rowConsultaPresta['ddn1'].")-".$rowConsultaPresta['telefono1']; ?>
+          </div></td>
+          <td><div align="left"><strong>Telefono 2 </strong></div></td>
+          <td colspan="4"><div align="left">
+            <?php if ($rowConsultaPresta['telefono2'] != 0) echo "(".$rowConsultaPresta['ddn2'].")-".$rowConsultaPresta['telefono2']; ?>
+          </div></td>
+        </tr>
+        <tr>
+          <td><div align="right">
+              <div align="right"><strong>Telefono FAX </strong></div>
+          </div></td>
+          <td><div align="left">
+            <?php if ($rowConsultaPresta['telefonofax'] != 0) echo "(".$rowConsultaPresta['ddnfax'].")-".$rowConsultaPresta['telefonofax']; ?>
+          </div></td>
+          <td><div align="left"><strong>Email</strong></div>
+              <div align="left"></div></td>
+          <td colspan="4"><div align="left"><?php echo $rowConsultaPresta['email'] ?></div></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Personer&iacute;a</strong></div></td>
+          <td><div align="left">
+            <?php if($rowConsultaPresta['personeria'] == 1) { echo "Profesional"; } else { echo "Establecimiento"; } ?>
+          </div></td>
+          <td><div align="left">
+              <div align="left"><strong>Numero Registro SSS</strong></div>
+          </div>
+              <div align="left"></div></td>
+          <td colspan="4"><div align="left">
+            <?php if ($rowConsultaPresta['numeroregistrosss'] != 0) { echo $rowConsultaPresta['numeroregistrosss']; } ?>
+          </div></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Tratamiento</strong></div></td>
+          <td><div align="left">
+            <?php 
 		if($rowConsultaPresta['tratamiento'] != 0) {
 			$codigoTrat = $rowConsultaPresta['tratamiento'];
 			$sqlConsultaTrata = "SELECT descripcion FROM tipotratamiento WHERE codigotratamiento = $codigoTrat";
@@ -90,56 +106,60 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 		} else {
 			echo "-";
 		}
-		?></div></td>
-      </tr>
-	  <tr>
-	    <td><div align="right"><strong>Matr&iacute;cula Nacional </strong></div></td>
-	    <td><div align="left"><?php echo $rowConsultaPresta['matriculanacional'] ?></div></td>
-      </tr>
-	  <tr>
-	    <td><div align="right"><strong>Matr&iacute;culo Provincial </strong></div></td>
-	    <td><div align="left"><?php echo $rowConsultaPresta['matriculaprovincial'] ?></div></td>
-      </tr>
-	  <tr>
-	    <td><div align="right"><strong>Numero Registro SSS </strong></div></td>
-	    <td><div align="left"><?php if ($rowConsultaPresta['numeroregistrosss'] != 0) { echo $rowConsultaPresta['numeroregistrosss']; } ?></div></td>
-      </tr>
-	  <tr>
-	    <td><div align="right"><strong>Capitado</strong></div></td>
-	    <td><div align="left"><?php if ($rowConsultaPresta['capitado'] == 1) { echo "SI"; } else { echo "NO"; } ?></div></td>
-      </tr>
-	  <tr>
-	    <td><div align="right"><strong>Nomenclador </strong></div></td>
-	    <td><div align="left"><?php if ($rowConsultaPresta['nomenclador'] == 1) { echo "Nacional"; } 
+		?>
+          </div></td>
+          <td><div align="left"><strong>Matr&iacute;cula Nacional </strong></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['matriculanacional'] ?></div></td>
+          <td><div align="left"><strong>Matr&iacute;culo Provincial </strong></div></td>
+          <td colspan="2"><div align="left"><?php echo $rowConsultaPresta['matriculaprovincial'] ?></div>          </td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Capitado</strong></div></td>
+          <td colspan="6"><div align="left">
+            <?php if ($rowConsultaPresta['capitado'] == 1) { echo "SI"; } else { echo "NO"; } ?>
+          </div></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Nomenclador </strong></div></td>
+          <td colspan="6"><div align="left">
+            <?php if ($rowConsultaPresta['nomenclador'] == 1) { echo "Nacional"; } 
 									if ($rowConsultaPresta['nomenclador'] == 2) { echo "No Nomenclado"; }
 									if ($rowConsultaPresta['nomenclador'] == 3) { echo "Ambos"; }
-							?></div></td>
-      </tr>
-  </table>
-	  <p><div align="center" class="Estilo1"><strong>Servicios </strong></div><p>
-  <table width="800" border="1">
-	  <tr>
-        <td width="179"><div align="right"><strong>Tipos de Servicios </strong></div></td>
-	    <td width="605"><div align="left">
-		<?php while ($rowConsultaServcio = mysql_fetch_assoc($resConsultaServcio)) {
-				echo "<li>".$rowConsultaServcio['descripcion'];
-		} ?></div></td>
-      </tr>
-  </table>
-	  <p><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></p>
-  <table width="800" border="1">
-	  <tr>
-        <td width="179"><div align="right"><strong>Delegaciones </strong></div></td>
-	    <td width="605"><div align="left">
-	      <?php 
-			while ($rowConsultaJuris = mysql_fetch_assoc($resConsultaJuris)) {
-				echo "<li>".$rowConsultaJuris['codidelega']." - ".$rowConsultaJuris['nombre'];
+							?>
+          </div></td>
+        </tr>
+      </table>
+	  <p>&nbsp;</p>
+	  <table width="794" border="1">
+        <tr>
+          <td width="392" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></td>
+          <td width="386"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></td>
+        </tr>
+        <tr>
+          <td valign="top"><div align="left">
+            <?php while ($rowConsultaServcio = mysql_fetch_assoc($resConsultaServcio)) {
+				echo $rowConsultaServcio['descripcion']."<br>";
 		} ?>
-	    </div></td>
+          </div></td>
+          <td valign="top"><div align="left">
+            <?php 
+			while ($rowConsultaJuris = mysql_fetch_assoc($resConsultaJuris)) {
+				echo $rowConsultaJuris['codidelega']." - ".$rowConsultaJuris['nombre']."<br>";
+		} ?>
+          </div></td>
+        </tr>
+      </table>
+	  <table width="800" border="0">
+      <tr>
+        <td width="402"><div align="left">
+          <input name="modificar" type="button" value="Modificar"  onClick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
+        </div></td>
+        <td width="388"><div align="right">
+          <input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+        </div></td>
       </tr>
-  </table>
-    <p>
-    <input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
-    </div>
+    </table>
+    <p>&nbsp;</p>
+</div>
 </body>
 </html>

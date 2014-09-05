@@ -1,4 +1,17 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); ?>
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+
+$codigo = $_GET['codigo'];
+$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia FROM prestadores p, localidades l, provincia r WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin";
+$resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
+$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
+
+$sqlConsultaServcio = "SELECT s.descripcion FROM prestadorservicio p, tiposervicio s WHERE p.codigoprestador = $codigo and p.codigoservicio = s.codigoservicio";
+$resConsultaServcio = mysql_query($sqlConsultaServcio,$db);
+
+$sqlConsultaJuris = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $codigo and p.codidelega = d.codidelega";
+$resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
+
+?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -246,125 +259,158 @@ function validar(formulario) {
 
 </script>
 
-<body bgcolor="#CCCCCC">
+<body bgcolor="#CCCCCC" onload="habilitarServicios('<?php echo $rowConsultaPresta['personeria'] ?>')">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAbmPrestadores.php'" align="center"/> 
-  <p><strong>Nuevo Prestador </strong>
-  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onSubmit="return validar(this)" action="guardarNuevoPrestador.php">
+  <p><strong>Modificar Prestador</strong>
+  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onSubmit="return validar(this)" action="guardarModificacionPrestador.php">
     <table border="0">
+      <tr>
+        <td><div align="right"><strong>C&oacute;digo</strong></div></td>
+        <td colspan="5"><div align="left">
+          <input name="codigo" readonly="readonly" style="background:#CCCCCC" type="text" id="codigo2" size="4" value="<?php echo $rowConsultaPresta['codigoprestador'] ?>"/>
+        </div></td>
+      </tr>
       <tr>
         <td width="129"><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
         <td colspan="5"><div align="left">
-          <input name="nombre" type="text" id="nombre" size="120" />
+          <div align="left">
+            <input name="nombre" type="text" id="nombre" size="120" value="<?php echo $rowConsultaPresta['nombre'] ?>"/>
+          </div>
         </div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Domicilio</strong></div></td>
         <td colspan="5"><div align="left">
-          <input name="domicilio" type="text" id="domicilio" size="120" />
+          <input name="domicilio" type="text" id="domicilio" size="120" value="<?php echo $rowConsultaPresta['domicilio'] ?>" />
         </div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
         <td colspan="5"><div align="left">
-          <input name="cuit" type="text" id="cuit" size="13" />
+          <input name="cuit" type="text" id="cuit" size="13" value="<?php echo $rowConsultaPresta['cuit'] ?>"/>
         </div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Codigo Postal</strong></div></td>
         <td width="244"><div align="left">
-          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1"/>
-          -<input name="codPos" type="text" id="codPos" size="7" />-<input name="alfapostal"  id="alfapostal" type="text" size="3"/>
-        </div><div align="right"></div></td>
-        <td width="365"><div align="left"><strong>Localidad</strong>
+          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1" value="<?php echo $rowConsultaPresta['indpostal'] ?>"/>
+-
+<input name="codPos" type="text" id="codPos" size="7" value="<?php echo $rowConsultaPresta['numpostal'] ?>" />
+-
+<input name="alfapostal"  id="alfapostal" type="text" size="3" value="<?php echo $rowConsultaPresta['alfapostal'] ?>"/>
+</div>
+            <div align="right"></div></td>
+        <td width="365"><div align="left"><strong>Localidad</strong><strong>
           <select name="selectLocali" id="selectLocali">
             <option value="0">Seleccione un valor </option>
+            <option value="<?php echo $rowConsultaPresta['codlocali'] ?>" selected="selected"><?php echo $rowConsultaPresta['localidad'] ?></option>
           </select>
-        </div></td>
-        <td><div align="left"><strong>Provincia
-          <input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" />
-            <input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
-        </strong></div>          <div align="left"></div></td>
+        </strong></div></td>
+        <td><div align="left"><strong>Provincia          </strong><strong>
+          <input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $rowConsultaPresta['provincia'] ?>"/>
+          <input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2" value="<?php echo $rowConsultaPresta['codprovin'] ?>"/>
+        </strong></div>
+            <div align="left"></div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Telefono 1 </strong></div></td>
         <td><div align="left">(
-            <input name="ddn1" type="text" id="ddn1" size="5" />
+            <input name="ddn1" type="text" id="ddn1" size="5" value="<?php echo $rowConsultaPresta['ddn1'] ?>"/>
             )-
-            <input name="telefono1" type="text" id="telefono1" size="20" />
+            <input name="telefono1" type="text" id="telefono1" size="20" value="<?php echo $rowConsultaPresta['telefono1'] ?>"/>
 </div></td>
         <td colspan="4"><div align="left"><strong>Telefono 2 </strong>(
-            <input name="ddn2" type="text" id="ddn2" size="5"/>
-)-
-<input name="telefono2" type="text" id="telefono2" size="20"/>
-</div></td>
+              <strong>
+<input name="ddn2" type="text" id="ddn2" size="5" value="<?php echo $rowConsultaPresta['ddn2'] ?>"/>
+            </strong> )-<strong>
+<input name="telefono2" type="text" id="telefono2" size="20" value="<?php echo $rowConsultaPresta['telefono2'] ?>"/>
+                    </strong></div></td>
       </tr>
-	  <tr>
+      <tr>
         <td><div align="right">
-          <div align="right"><strong>Telefono FAX </strong></div>
+            <div align="right"><strong>Telefono FAX </strong></div>
         </div></td>
         <td><div align="left">(
-          <input name="ddnfax" type="text" id="ddnfax" size="5"/>
-          )-
-  <input name="telefonofax" type="text" id="telefonofax" size="20" />
-        </div></td>
+            <input name="ddnfax" type="text" id="ddnfax" size="5" value="<?php echo $rowConsultaPresta['ddnfax'] ?>"/>
+            )-
+            <input name="telefonofax" type="text" id="telefonofax" size="20" value="<?php echo $rowConsultaPresta['telefonofax'] ?>"/>
+</div></td>
         <td colspan="4"><div align="left"><strong>Email</strong>
-          <input name="email" type="text" id="email" size="40" />
-        </div>          <div align="left"></div></td>
+          <input name="email" type="text" id="email" size="30" value="<?php echo $rowConsultaPresta['email'] ?>"/>
+        </div>
+            <div align="left"></div></td>
       </tr>
-	  <tr>
-        <td><div align="right"><strong>Personería</strong></div></td>
+      <tr>
+        <td><div align="right"><strong>Personer&iacute;a</strong></div></td>
         <td><div align="left">
-            <select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)">
-              <option value="0">Seleccione un valor </option>
-			  <option value="1">Profesional </option>
-			  <option value="2">Establecimiento </option>
-            </select>
-        </div></td>
+          <?php 
+				if ($rowConsultaPresta['personeria'] == 1) { 
+					$profesional = "selected"; 
+					$establecimiento = "" ; 
+					$disabled=""; 
+				} else {
+					$profesional = "";
+					$establecimiento = "selected"; 
+					$disabled="disabled"; 
+				}
+			?>
+          <select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)">
+            <option value="0">Seleccione un valor </option>
+            <option value="1" <?php echo $profesional ?>>Profesional </option>
+            <option value="2" <?php echo $establecimiento ?>>Establecimiento </option>
+          </select>
+</div></td>
         <td colspan="4"><div align="left">
-          <div align="left"><strong>Numero Registro SSS
-            <input name="nroRegistro" type="text" id="nroRegistro" size="10" />
-          </strong></div>
-        </div>          
-        <div align="left"></div></td>
+            <div align="left"><strong>Numero Registro SSS</strong>
+              <input name="nroRegistro" type="text" id="nroRegistro" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosss']?>"/>
+            </div>
+        </div>
+            <div align="left"></div></td>
       </tr>
-	  <tr>
-	    <td><div align="right"><strong>Tratamiento</strong></div></td>
-	    <td><div align="left">
-	      <select name="selectTratamiento" size="1" id="selectTratamiento" disabled="disabled">
-            <option value="0" selected="selected">Seleccione un valor </option>
+      <tr>
+        <td><div align="right"><strong>Tratamiento</strong></div></td>
+        <td><div align="left">
+          <select name="selectTratamiento" size="1" id="selectTratamiento" <?php echo $disabled ?> >
+            <option value="0">Seleccione un valor </option>
             <?php 
 					$query="select * from tipotratamiento";
 					$result=mysql_query($query,$db);
-					while ($rowtipos=mysql_fetch_array($result)) { ?>
-            <option value="<?php echo $rowtipos['codigotratamiento'] ?>"><?php echo $rowtipos['descripcion']  ?></option>
+					while ($rowtipos=mysql_fetch_array($result)) {
+						if ($rowtipos['codigotratamiento'] == $rowConsultaPresta['tratamiento']) { $selected = "selected"; } else { $selected = ""; }?>
+            <option value="<?php echo $rowtipos['codigotratamiento'] ?>" <?php echo $selected ?>><?php echo $rowtipos['descripcion']  ?></option>
             <?php } ?>
           </select>
-	    </div></td>
+        </div></td>
         <td><div align="left"><strong>Matr&iacute;cula Nacional </strong>
-          <input name="matriculaNac" type="text" id="matriculaNac" size="10" disabled="disabled"/>
+          <input name="matriculaNac" type="text" id="matriculaNac" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaPresta['matriculanacional']?>"/>
         </div></td>
-        <td colspan="3"><div align="left"><strong>Matr&iacute;culo Provincial </strong>
-            <input name="matriculaPro" type="text" id="matriculaPro" size="10" disabled="disabled"/>
-        </div></td>
+        <td colspan="3"><div align="left"><strong>Matr&iacute;culo Provincial </strong><strong>
+          <input name="matriculaPro" type="text" id="matriculaPro" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaPresta['matriculaprovincial'] ?>"/>
+        </strong></div></td>
       </tr>
-	  <tr>
-	    <td><div align="right"><strong>Capitado</strong></div></td>
-	    <td colspan="5"><div align="left">
-          <input name="capitado" type="radio" value="0" checked="checked"/> NO
-  		  <input name="capitado" type="radio" value="1" />SI
-		  </div></td>
+      <tr>
+        <td><div align="right"><strong>Capitado</strong></div></td>
+        <td colspan="5"><div align="left">
+          <?php if ($rowConsultaPresta['capitado'] == 0) { $nocapitado = "checked"; } else { $capitado = "checked"; } ?>
+          <input name="capitado" type="radio" value="0" <?php echo $nocapitado ?> />
+NO
+<input name="capitado" type="radio" value="1" <?php echo $capitado ?> />
+SI </div></td>
       </tr>
-	  <tr>
-	    <td><div align="right"><strong>Nomenclador </strong></div></td>
-	    <td colspan="5"><div align="left">
-            <select name="selectNomenclador" id="selectNomenclador">
-              <option value="0">Seleccione un valor </option>
-			  <option value="1">Nacional </option>
-			  <option value="2">No Nomenclado </option>
-			  <option value="3">Ambos </option>
-            </select>
-        </div></td>
+      <tr>
+        <td><div align="right"><strong>Nomenclador </strong></div></td>
+        <td colspan="5"><div align="left">
+          <?php if ($rowConsultaPresta['nomenclador'] == 1) { $nacional = "selected"; } 
+			  if ($rowConsultaPresta['nomenclador'] == 2) { $noNomencaldo = "selected"; } 
+			  if ($rowConsultaPresta['nomenclador'] == 3) { $ambos = "selected"; }
+			 ?>
+          <select name="selectNomenclador" id="selectNomenclador">
+            <option value="0">Seleccione un valor </option>
+            <option value="1" <?php echo $nacional ?>>Nacional </option>
+            <option value="2" <?php echo $noNomencaldo ?>>No Nomenclado </option>
+            <option value="3" <?php echo $ambos ?>>Ambos </option>
+          </select>
+</div></td>
       </tr>
     </table>
     <table width="884" border="0">
@@ -377,36 +423,67 @@ function validar(formulario) {
           <?php 
 				$query="select * from tiposervicio";
 				$result=mysql_query($query,$db);
-				while ($rowtipos=mysql_fetch_array($result)) { ?>
-          <input type="checkbox" id="<?php echo "servicio".$rowtipos['codigoservicio'] ?>" name="<?php echo "servicio".$rowtipos['codigoservicio'] ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" disabled="disabled" />
+				while ($rowtipos=mysql_fetch_array($result)) { 
+					$codigoServicio = $rowtipos['codigoservicio'];
+					$sqlExiste = "select * from prestadorservicio where codigoprestador = $codigo and codigoservicio = $codigoServicio";
+					$resExiste = mysql_query($sqlExiste,$db); 
+					$numExiste = mysql_num_rows($resExiste);
+					if ($numExiste == 1) {
+						$checked = "checked";
+					} else {
+						$checked = "";
+					}	
+		?>
+          <input type="checkbox" <?php echo $checked ?> id="<?php echo "servicio".$rowtipos['codigoservicio'] ?>" name="<?php echo "servicio".$rowtipos['codigoservicio'] ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" />
           <?php echo $rowtipos['descripcion'] ?><br />
           <?php } ?>
         </div></td>
         <td width="281" valign="top"><div align="left">
-            <?php 
+          <?php 
 				$query="select * from delegaciones where codidelega > 1002 and codidelega <= 1703";
 				$result=mysql_query($query,$db);
 				$i = 0;
-				while ($rowtipos=mysql_fetch_array($result)) { ?>
-            <input type="checkbox" name="<?php echo "delegacion".$i ?>" id="<?php echo "delegacion".$i ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
-            <?php echo $rowtipos['nombre'] ?><br />
-            <?php 	$i++;
+				while ($rowtipos=mysql_fetch_array($result)) { 
+					$codigoDelega = $rowtipos['codidelega'];
+					$sqlExiste = "select * from prestadorjurisdiccion where codigoprestador = $codigo and codidelega = $codigoDelega";
+					$resExiste = mysql_query($sqlExiste,$db); 
+					$numExiste = mysql_num_rows($resExiste);
+					if ($numExiste == 1) {
+						$checked = "checked";
+					} else {
+						$checked = "";
+					}	
+					?>
+          <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegacion".$i ?>" id="<?php echo "delegacion".$i ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+          <?php echo $rowtipos['nombre'] ?><br />
+          <?php 	$i++;
 				} ?>
-                </div></td>
+        </div></td>
         <td width="297" valign="top"><div align="left">
           <?php 
 				$query="select * from delegaciones where codidelega > 1703 and codidelega < 3200";
-				$result=mysql_query($query,$db);
-				
-				while ($rowtipos=mysql_fetch_array($result)) { ?>
-          <input type="checkbox" name="<?php echo "delegacion".$i  ?>" id="<?php echo "delegacion".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+				$result=mysql_query($query,$db);				
+				while ($rowtipos=mysql_fetch_array($result)) {
+					$codigoDelega = $rowtipos['codidelega'];
+					$sqlExiste = "select * from prestadorjurisdiccion where codigoprestador = $codigo and codidelega = $codigoDelega";
+					$resExiste = mysql_query($sqlExiste,$db); 
+					$numExiste = mysql_num_rows($resExiste);
+					if ($numExiste == 1) {
+						$checked = "checked";
+					} else {
+						$checked = "";
+					}
+				 ?>
+          <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegacion".$i  ?>" id="<?php echo "delegacion".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
           <?php echo $rowtipos['nombre'] ?><br />
           <?php 	$i++;
 				} ?>
         </div></td>
       </tr>
     </table>
-    <p><input type="submit" name="Submit" id="Submit" value="Guardar"></p>
+    <p>&nbsp;</p>
+    <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n">
+    </p>
   </form>
   </p>
 </div>
