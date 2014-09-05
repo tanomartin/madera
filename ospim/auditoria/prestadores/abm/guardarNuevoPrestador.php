@@ -1,8 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 
-var_dump($_POST);
-
 $nombre = $_POST['nombre'];
 $domicilio = $_POST['domicilio'];
 $indpostal = $_POST['indpostal'];
@@ -39,7 +37,7 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	print($sqlInsertPresta."<br>");
+	//print($sqlInsertPresta."<br>");
 	$dbh->exec($sqlInsertPresta);
 	$codigoNextPresta = $dbh->lastInsertId(); 
 	
@@ -47,7 +45,7 @@ try {
 		if (strpos($key ,'servicio') !== false) {
 			$servicio = $_POST[$key];
 			$sqlInsertServicio = "INSERT INTO prestadorservicio VALUE($codigoNextPresta, $servicio)";
-			print($sqlInsertServicio."<br>");
+			//print($sqlInsertServicio."<br>");
 			$dbh->exec($sqlInsertServicio);
 		}
 	}
@@ -56,7 +54,7 @@ try {
 		if (strpos($key ,'delegacion') !== false) {
 			$delegacion = $_POST[$key];
 			$sqlInsertJurisdiccion = "INSERT INTO prestadorjurisdiccion VALUE($codigoNextPresta, $delegacion)";
-			print($sqlInsertJurisdiccion."<br>");
+			//print($sqlInsertJurisdiccion."<br>");
 			$dbh->exec($sqlInsertJurisdiccion);
 		}
 	}

@@ -111,7 +111,7 @@ function abrirPantalla(dire) {
   <div align="center">
 	  <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuPrestadores.php'" align="center"/>
 	  <p class="Estilo1">M&oacute;dulo Prestadores </p>
-	  <p><label><input type="button" name="nuevo" value="Nuevo Prestador" onClick="location.href = 'nuevoPrestador.php'" /></label></p>
+	  <p><label><input type="button" name="nuevo" value="Nuevo Prestador" onclick="abrirPantalla('nuevoPrestador.php')" /></label></p>
 	  <?php 
 			if ($noExiste == 1) {
 				print("<div style='color:#FF0000'><b> NO EXISTE PRESTADOR CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
@@ -133,7 +133,7 @@ function abrirPantalla(dire) {
     <p><input type="submit" name="Buscar" value="Buscar" /></p>
    <?php if ($noExiste == 0 and isset($dato)) { ?>
   		<p><?php echo $cartel ?></p>
-   <table style="text-align:center; width:800px" id="listaResultado" class="tablesorter" >
+   <table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
 	<thead>
 		<tr>
 			<th>Código</th>
@@ -154,7 +154,7 @@ function abrirPantalla(dire) {
 			<td><?php echo $rowPrestador['cuit'];?></td>
 			<td><?php echo $rowPrestador['telefono1'];?></td>
 			<td><?php echo $rowPrestador['email'];?></td>
-			<td><input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/> | <input name="modificar" type="button" value="Modificar" onclick="abrirPantalla('modificarPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/>  | <input name="contrato" type="button" value="Contrato" onclick="abrirPantalla('contratoPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/></td>
+			<td><input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/> | <input name="modificar" type="button" value="Modificar" onclick="abrirPantalla('modificarPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/>  | <input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratoPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/></td>
 		</tr>
 	<?php
 		}

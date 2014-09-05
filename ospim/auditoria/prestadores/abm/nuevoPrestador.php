@@ -248,7 +248,6 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAbmPrestadores.php'" align="center"/> 
   <p><strong>Nuevo Prestador </strong>
   <form name="nuevoPrestador" id="nuevoPrestador" method="post" onSubmit="return validar(this)" action="guardarNuevoPrestador.php">
     <table border="0">

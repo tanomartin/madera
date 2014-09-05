@@ -51,7 +51,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         </tr>
         <tr>
           <td><div align="right"><strong>Codigo Postal</strong></div></td>
-          <td width="183"><div align="left"><?php echo $rowConsultaPresta['indpostal'].$rowConsultaPresta['numpostal'].$rowConsultaPresta['alfapostal'] ?></div>
+          <td width="183"><div align="left"><?php echo $rowConsultaPresta['indpostal']." ".$rowConsultaPresta['numpostal']." ".$rowConsultaPresta['alfapostal'] ?></div>
               <div align="right"></div></td>
           <td width="160"><div align="left"><strong>Localidad</strong></div></td>
           <td width="140"><div align="left"><?php echo $rowConsultaPresta['localidad'] ?></div></td>
@@ -128,7 +128,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 							?>
           </div></td>
         </tr>
-      </table>
+  </table>
 	  <p>&nbsp;</p>
 	  <table width="794" border="1">
         <tr>
@@ -151,10 +151,14 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
       </table>
 	  <table width="800" border="0">
       <tr>
-        <td width="402"><div align="left">
+        <td width="208"><div align="left">
           <input name="modificar" type="button" value="Modificar"  onClick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
         </div></td>
-        <td width="388"><div align="right">
+        <td width="358">
+          <div align="center">
+            <input name="modificar2" type="button" value="Modificar Contrato"  onclick="location.href = 'modificarContrato.php?codigo=<?php echo $codigo ?>'" />
+          </div></td>
+        <td width="220"><div align="right">
           <input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
         </div></td>
       </tr>
