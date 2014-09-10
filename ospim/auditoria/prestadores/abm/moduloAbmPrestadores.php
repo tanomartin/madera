@@ -5,13 +5,13 @@ $dato = $_POST['dato'];
 $filtro = $_POST['filtro'];
 
 if ($filtro == 0) {
-	$cartel = "Resultados de Busqueda por Código de Prestador <b>".$dato."</b>";
+	$cartel = "Resultados de Busqueda por Código de Prestador <b>'".$dato."'</b>";
 }
 if ($filtro == 1) {
-	$cartel = "Resultados de Busqueda por Nombre o Razón SSocial <b>".$dato."</b>";
+	$cartel = "Resultados de Busqueda por Nombre o Razón Social <b>'".$dato."'</b>";
 }
 if ($filtro == 2) {
-	$cartel = "Resultados de Busqueda por C.U.I.T. <b>".$dato."</b>";
+	$cartel = "Resultados de Busqueda por C.U.I.T. <b>'".$dato."'</b>";
 }
 
 $noExiste = 0;
