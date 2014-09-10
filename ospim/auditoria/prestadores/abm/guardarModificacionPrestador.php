@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 
-var_dump($_POST);
+//var_dump($_POST);
 
 $codigo = $_POST['codigo'];
 $nombre = $_POST['nombre'];
@@ -91,6 +91,17 @@ try {
 			$dbh->exec($sqlInsertJurisdiccion);
 		}
 	}
+	
+	if ($nomenclador == 1) {
+		$sqlDeletePracticas = "DELETE FROM practicaprestador WHERE codigoprestador = $codigo and codigopractica in (SELECT codigopractica FROM practicas WHERE nomenclador = 2)";
+		//print($sqlDeletePracticas."<br>");
+		$dbh->exec($sqlDeletePracticas);
+	} 
+	if ($nomenclador == 2) {
+		$sqlDeletePracticas = "DELETE FROM practicaprestador WHERE codigoprestador = $codigo and codigopractica in (SELECT codigopractica FROM practicas WHERE nomenclador = 1)";
+		//print($sqlDeletePracticas."<br>");
+		$dbh->exec($sqlDeletePracticas);
+	} 
 	
 	$dbh->commit();
 	$pagina = "prestador.php?codigo=$codigo";

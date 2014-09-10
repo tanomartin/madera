@@ -63,7 +63,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		.tablesorter({
 			theme: 'blue', 
 			widthFixed: true, 
-			headers:{5:{sorter:false, filter: false}},
+			headers:{3:{sorter:false, filter: false},4:{sorter:false, filter: false},5:{sorter:false, filter: false}},
 			widgets: ["zebra", "filter"], 
 			widgetOptions : { 
 				filter_cssFilter   : '',
