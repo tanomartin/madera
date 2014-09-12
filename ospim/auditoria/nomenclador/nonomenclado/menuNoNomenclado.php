@@ -23,14 +23,11 @@ A:hover {text-decoration: none;color:#00FFFF }
     <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuNomenclador.php'" align="center"/>
   </p>
   <p><span class="Estilo2">Men&uacute; No Nomeclado </span></p>
-  <table width="626" border="3">
+  <table width="400" border="3">
     <tr>
 	  <td width="200"><p align="center">Listador </p>
           <p align="center"><a class="enlace" href="#"><img src="img/listador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="200"><p align="center">Buscador</p>
-      <p align="center"><a class="enlace" href="#"><img src="img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
       <td width="200"><p align="center">Nueva Prestacion</p>
         <p align="center"><a class="enlace" href="#"><img src="img/nueva.png" width="90" height="90" border="0" alt="enviar"/></a> </p>
       <p align="center">&nbsp;</p></td>
