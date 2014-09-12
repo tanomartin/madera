@@ -28,7 +28,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	  <td width="200"><p align="center">Listador </p>
           <p align="center"><a class="enlace" href="#"><img src="img/listador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="200"><p align="center">Nueva Prestacion</p>
+      <td width="200"><p align="center">Nueva Pr&aacute;ctica </p>
         <p align="center"><a class="enlace" href="#"><img src="img/nueva.png" width="90" height="90" border="0" alt="enviar"/></a> </p>
       <p align="center">&nbsp;</p></td>
     </tr>
