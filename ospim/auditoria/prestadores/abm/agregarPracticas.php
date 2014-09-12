@@ -34,8 +34,15 @@ try {
 	$pagina = "modificarContrato.php?codigo=$codigo";
 	Header("Location: $pagina"); 
 } catch (PDOException $e) {
-	echo $e->getMessage();
 	$dbh->rollback();
+	$error = $e->getMessage();
+	if (stripos($error,'Integrity constraint violation: 1062 Entrada duplicada') !== FALSE ) {
+		$pagina = "modificarContrato.php?codigo=$codigo&error=1";
+		Header("Location: $pagina"); 
+	} else {
+		echo $error;
+	}
+	
 }
 
 ?>

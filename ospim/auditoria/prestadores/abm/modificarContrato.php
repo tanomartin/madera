@@ -6,6 +6,48 @@ $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre, nomenclador FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
+
+function descripcionPractica($codigoPractica, $db) {
+	$codigoArray = explode(".",$codigoPractica);
+	if (sizeof($codigoArray) == 1) {
+		$tipoPractica = 1;
+		$sqlTipoPractica = "SELECT descripcion FROM tipopracticas WHERE id = $tipoPractica";
+		$resTipoPractica = mysql_query($sqlTipoPractica,$db);
+		$rowTipoPractica = mysql_fetch_array($resTipoPractica);
+		$resultado['tipo'] = $rowTipoPractica['descripcion'];
+		$resultado['codigosubcapitulo'] = "";
+		$resultado['subcapitulo'] = "";
+		$resultado['codigocapitulo'] = "";
+		$resultado['capitulo'] = "";	
+	}
+	
+	if (sizeof($codigoArray) == 2) {
+		$codCapitulo = $codigoArray[0];
+		$sqlTipoPractica = "SELECT c.descripcion as cap, t.descripcion as tipoprac FROM tipopracticas t, capitulosdepracticas c WHERE c.codigo = '$codCapitulo' and c.idtipopractica != 2 and c.idtipopractica = t.id";
+		$resTipoPractica = mysql_query($sqlTipoPractica,$db);
+		$rowTipoPractica = mysql_fetch_array($resTipoPractica);
+		$resultado['tipo'] = $rowTipoPractica['tipoprac'];
+		$resultado['codigosubcapitulo'] = "";
+		$resultado['subcapitulo'] = "";
+		$resultado['codigocapitulo'] = $codCapitulo;
+		$resultado['capitulo'] =  $rowTipoPractica['cap'];
+	}
+	if (sizeof($codigoArray) == 3) {
+		$tipoPractica = 2;
+		$codCapitulo = $codigoArray[0];
+		$codSubCapitulo = $codigoArray[1];
+		$sqlTipoPractica = "SELECT c.descripcion as cap, t.descripcion as tipoprac, s.descripcion as subcap FROM tipopracticas t, capitulosdepracticas c, subcapitulosdepracticas s WHERE s.codigo = '$codCapitulo.$codSubCapitulo' and s.idcapitulo = c.id and c.idtipopractica = t.id";
+		$resTipoPractica = mysql_query($sqlTipoPractica,$db);
+		$rowTipoPractica = mysql_fetch_array($resTipoPractica);
+		$resultado['tipo'] = $rowTipoPractica['tipoprac'];
+		$resultado['codigosubcapitulo'] = $codSubCapitulo;
+		$resultado['subcapitulo'] = $rowTipoPractica['subcap'];
+		$resultado['codigocapitulo'] = $codCapitulo;
+		$resultado['capitulo'] = $rowTipoPractica['cap'];
+	}
+	return ($resultado);
+}
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -177,66 +219,36 @@ A:hover {text-decoration: none;color:#00FFFF }
           <tbody>
             <?php
 			while($rowPracticas = mysql_fetch_array($resPracticas)) {
-				$codigoArray = explode(".",$rowPracticas['codigopractica']);
-				$practica = "";
-				$capitulo = "";
-				$subcapitulo = "";
-				if (sizeof($codigoArray) == 1) {
-					$tipoPractica = 1;
-					$sqlTipoPractica = "SELECT descripcion FROM tipopracticas WHERE id = $tipoPractica";
-					$resTipoPractica = mysql_query($sqlTipoPractica,$db);
-					$rowTipoPractica = mysql_fetch_array($resTipoPractica);
-					$practica = $rowTipoPractica['descripcion'];
-				}
-				if (sizeof($codigoArray) == 2) {
-					$codCapitulo = $codigoArray[0];
-					$sqlTipoPractica = "SELECT c.descripcion as cap, t.descripcion as tipoprac FROM tipopracticas t, capitulosdepracticas c WHERE c.codigo = '$codCapitulo' and c.idtipopractica != 2 and c.idtipopractica = t.id";
-					$resTipoPractica = mysql_query($sqlTipoPractica,$db);
-					$rowTipoPractica = mysql_fetch_array($resTipoPractica);
-					$practica = $rowTipoPractica['tipoprac'];
-					$capitulo = $rowTipoPractica['cap'];
-				}
-				if (sizeof($codigoArray) == 3) {
-					$tipoPractica = 2;
-					$codCapitulo = $codigoArray[0];
-					$codSubCapitulo = $codigoArray[1];
-					$sqlTipoPractica = "SELECT c.descripcion as cap, t.descripcion as tipoprac, s.descripcion as subcap FROM tipopracticas t, capitulosdepracticas c, subcapitulosdepracticas s WHERE s.codigo = '$codCapitulo.$codSubCapitulo' and s.idcapitulo = c.id and c.idtipopractica = t.id";
-					$resTipoPractica = mysql_query($sqlTipoPractica,$db);
-					$rowTipoPractica = mysql_fetch_array($resTipoPractica);
-					$practica = $rowTipoPractica['tipoprac'];
-					$capitulo = $rowTipoPractica['cap'];
-					$subcapitulo = $rowTipoPractica['subcap'];
-				}
-			?>
-            <tr>
-              <td><?php echo $rowPracticas['codigopractica'];?></td>
-			  <td><?php if ($rowPracticas['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?></td>
-			  <td><?php echo $practica ?></td>
-			  <td><?php echo $capitulo ?></td>
-			  <td><?php echo $subcapitulo ?></td></td>
-              <td><?php echo $rowPracticas['descripcion'];?></td>
-              <td align="left"><?php if ($rowPracticas['nomenclador'] == 1) { echo $rowPracticas['valornacional']; } else { echo $rowPracticas['valornonomenclado']; }?></td>
-			  <td><input type='checkbox' name='<?php echo $rowPracticas["codigopractica"]; ?>' id='practicasactuales' value='<?php echo $rowPracticas["codigopractica"]; ?>'></td>
-            </tr>
-            <?php
-			}
-		?>
+				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$db); ?>
+				<tr>
+				  <td><?php echo $rowPracticas['codigopractica'];?></td>
+				  <td><?php if ($rowPracticas['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?></td>
+				  <td><?php echo $descripPractica['tipo'] ?></td>
+				  <td><?php echo $descripPractica['capitulo'] ?></td>
+				  <td><?php echo $descripPractica['subcapitulo'] ?></td>
+				  <td><?php echo $rowPracticas['descripcion'];?></td>
+				  <td><?php if ($rowPracticas['nomenclador'] == 1) { echo $rowPracticas['valornacional']; } else { echo $rowPracticas['valornonomenclado']; }?></td>
+				  <td><input type='checkbox' name='<?php echo $rowPracticas["codigopractica"]; ?>' id='practicasactuales' value='<?php echo $rowPracticas["codigopractica"]; ?>'></td>
+				</tr>
+         <?php } ?>
           </tbody>
         </table>
-      <p>
-        <input type="submit" name="eliminar" id="eliminar" value="Eliminar Seleccionados" />
-        <?php } else { 	print("<div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </b></div><br>"); } ?></p>
+        <p> 
+			<input type="submit" name="eliminar" id="eliminar" value="Eliminar Seleccionados" />
+        	<?php } else { 	print("<div style='color:#000099'><b> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </b></div><br>"); } ?>
+		</p>
     </form>
 	
 	<!--******************************************************************************************************************************************************************** -->	
 	
 	<form name="agregarContrato" id="agregarContrato" onSubmit="return validarAdd(this)" method="POST" action="agregarPracticas.php?codigo=<?php echo $codigo ?>" >
 	  <p><strong>Pr&aacute;cticas para Agregar al contrato </strong></p>
-		<?php 
+	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> ERROR: NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS CON EL MISMO CODIGO</b></div><br>");} ?>
+	  <?php 
 		if ($rowConsultaPresta['nomenclador'] == 3) {
 			$sqlPracticas = "SELECT pr.* FROM  practicas pr WHERE pr.codigopractica not in (select codigopractica from practicaprestador where codigoprestador = $codigo)";
 		} else {
-  			$sqlPracticas = "SELECT pr.* FROM  practicas pr, prestadores presta WHERE pr.codigopractica not in ( select codigopractica from practicaprestador where codigoprestador = $codigo) and presta.codigoprestador = $codigo and pr.nomenclador = presta.nomenclador";
+  			$sqlPracticas = "SELECT pr.* FROM  practicas pr, prestadores presta WHERE pr.codigopractica not in (select codigopractica from practicaprestador where codigoprestador = $codigo) and presta.codigoprestador = $codigo and pr.nomenclador = presta.nomenclador";
 		}
 		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
@@ -258,55 +270,26 @@ A:hover {text-decoration: none;color:#00FFFF }
           <tbody>
             <?php
 			while($rowPracticas = mysql_fetch_array($resPracticas)) {
-				$codigo = explode(".",$rowPracticas['codigopractica']);
-				$practica = "";
-				$capitulo = "";
-				$subcapitulo = "";
-				if (sizeof($codigo) == 1) {
-					$tipoPractica = 1;
-					$sqlTipoPractica = "SELECT descripcion FROM tipopracticas WHERE id = $tipoPractica";
-					$resTipoPractica = mysql_query($sqlTipoPractica,$db);
-					$rowTipoPractica = mysql_fetch_array($resTipoPractica);
-					$practica = $rowTipoPractica['descripcion'];
-				}
-				if (sizeof($codigo) == 2) {
-					$codCapitulo = $codigo[0];
-					$sqlTipoPractica = "SELECT c.descripcion as cap, t.descripcion as tipoprac FROM tipopracticas t, capitulosdepracticas c WHERE c.codigo = '$codCapitulo' and c.idtipopractica != 2 and c.idtipopractica = t.id";
-					$resTipoPractica = mysql_query($sqlTipoPractica,$db);
-					$rowTipoPractica = mysql_fetch_array($resTipoPractica);
-					$practica = $rowTipoPractica['tipoprac'];
-					$capitulo = $rowTipoPractica['cap'];
-				}
-				if (sizeof($codigo) == 3) {
-					$tipoPractica = 2;
-					$codCapitulo = $codigo[0];
-					$codSubCapitulo = $codigo[1];
-					$sqlTipoPractica = "SELECT c.descripcion as cap, t.descripcion as tipoprac, s.descripcion as subcap FROM tipopracticas t, capitulosdepracticas c, subcapitulosdepracticas s WHERE s.codigo = '$codCapitulo.$codSubCapitulo' and s.idcapitulo = c.id and c.idtipopractica = t.id";
-					$resTipoPractica = mysql_query($sqlTipoPractica,$db);
-					$rowTipoPractica = mysql_fetch_array($resTipoPractica);
-					$practica = $rowTipoPractica['tipoprac'];
-					$capitulo = $rowTipoPractica['cap'];
-					$subcapitulo = $rowTipoPractica['subcap'];
-				}
-				
+				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$db);
+				$id = $rowPracticas['nomenclador'].$rowPracticas['codigopractica'];
 			?>
             <tr>
               <td><?php echo $rowPracticas['codigopractica'];?></td>
-			  <td><input type="text" style="display:none" size="1" value="<?php echo $rowPracticas['nomenclador'] ?>" disabled="disabled" name="N<?php echo $rowPracticas['nomenclador'].$rowPracticas['codigopractica'] ?>" id="N<?php echo $rowPracticas['nomenclador'].$rowPracticas['codigopractica'] ?>"  />
-			  	<?php if ($rowPracticas['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?></td>
-			  <td><?php echo $practica ?></td>
-			  <td><?php echo $capitulo ?></td>
-			  <td><?php echo $subcapitulo ?></td></td>
+			  <td>
+			  	<input type="text" style="display:none" size="1" value="<?php echo $rowPracticas['nomenclador'] ?>" disabled="disabled" name="N<?php echo $id; ?>" id="N<?php echo $id; ?>" /><?php if ($rowPracticas['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?>
+			  </td>
+			  <td><?php echo $descripPractica['tipo'] ?></td>
+			  <td><?php echo $descripPractica['capitulo'] ?></td>
+			  <td><?php echo $descripPractica['subcapitulo'] ?></td>
               <td><?php echo $rowPracticas['descripcion'];?></td>
               <td><?php 
 					if ($rowPracticas['nomenclador'] == 1) { 
 						echo $rowPracticas['valornacional']; 
 					} else { 
-						$codigopractia = $rowPracticas['codigopractica']; 
-						echo "<input size='8' disabled='disabled' type='text' name='valorNN2$codigopractia' id='valorNN2$codigopractia'/>"; 
+						echo "<input size='8' disabled='disabled' type='text' name='valorNN$id' id='valorNN$id'/>"; 
 					}?>
 			  </td>
-			  <td><input type='checkbox' name='<?php echo $rowPracticas["nomenclador"].$rowPracticas["codigopractica"]; ?>' onchange="habilitarValor('<?php echo $rowPracticas['nomenclador']?>','<?php echo $rowPracticas['codigopractica']?>',this)" accesskey='<?php echo $rowPracticas["nomenclador"]; ?>' id='practicasagregar' value='<?php echo $rowPracticas["codigopractica"]; ?>'></td>
+			  <td><input type='checkbox' name='<?php echo $id; ?>' onchange="habilitarValor('<?php echo $rowPracticas['nomenclador']?>','<?php echo $rowPracticas['codigopractica']?>',this)" accesskey='<?php echo $rowPracticas["nomenclador"]; ?>' id='practicasagregar' value='<?php echo $rowPracticas["codigopractica"]; ?>'></td>
             </tr>
             <?php
 			}
@@ -315,7 +298,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         </table>
       <p>
         <input type="submit" name="agregar" id="agregar" value="Agregar Seleccionados" />
-        <?php } else { 	print("<div style='color:#FF0000'><b> NO EXISTEN PRACTICAS POSIBLES DE SER AGREGADAS A ESTE PRESTADOR </b></div><br>"); } ?></p>
+        <?php } else { 	print("<div style='color:#000099'><b> NO EXISTEN PRACTICAS POSIBLES DE SER AGREGADAS A ESTE PRESTADOR </b></div><br>"); } ?></p>
     </form>
 	
 </div>
