@@ -1,6 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php");
-include($libPath."fechas.php");
 include($libPath."funcionespracticas.php");
 
 $dato = $_POST['dato'];
