@@ -68,7 +68,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
   </table>
   	<p><strong>Pr&aacute;cticas</strong></p>
   <?php 
-  		$sqlPracticas = "SELECT pr.* FROM practicaprestador p, practicas pr WHERE p.codigoprestador = $codigo and p.codigopractica = pr.codigopractica";
+  		$sqlPracticas = "SELECT pr.*, p.valornonomenclado FROM practicaprestador p, practicas pr WHERE p.codigoprestador = $codigo and p.codigopractica = pr.codigopractica and p.nomenclador = pr.nomenclador";
 		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas > 0) {
@@ -88,7 +88,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 			  <tr>
 				<td><?php echo $rowPracticas['codigopractica'];?></td>
 				<td><?php echo $rowPracticas['descripcion'];?></td>
-				<td align="left"><?php echo "$".$rowPracticas['valor'];?></td>
+				<td><?php if ($rowPracticas['nomenclador'] == 1) { echo $rowPracticas['valornacional']; } else { echo $rowPracticas['valornonomenclado']; }?></td>
 			  </tr>
 			  <?php
 			}
