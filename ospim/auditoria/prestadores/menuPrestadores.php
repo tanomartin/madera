@@ -37,10 +37,10 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
     <tr>
       <td><p align="center">Auditoria Factura </p>
-        <p align="center"><a class="enlace" href="abm/moduloAbmPrestadores.php"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="#"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td><p align="center">&Oacute;rdenes de Pago </p>
-        <p align="center"><a class="enlace" href="abm/moduloAbmPrestadores.php"><img src="img/ordenespago.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="#"><img src="img/ordenespago.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
