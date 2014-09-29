@@ -68,7 +68,7 @@ function abrirSistemas(dire) {
       <td>
 	  <div align="center">
 	    <p>Empresas</p>
-	    <p><a href="javascript:abrirEmpresa('moduloNoDisponible.php')"><img src="img/empresa.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=ospim')"><img src="img/empresa.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
 	  </td>
