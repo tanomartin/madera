@@ -1,5 +1,12 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
-include($libPath."controlSession.php");
+<?php 
+$origen = $_GET['origen'];
+if ($origen == "ospim") {
+	include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
+	$bgcolor="#CCCCCC";
+} else {
+	include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
+	$bgcolor="#B2A274";
+}
 if(isset($_POST['locali'])){
 	$codlocali=$_POST['locali'];
 	$sqlLocalidad="SELECT codlocali, codprovin FROM localidades WHERE codlocali = '$codlocali'";

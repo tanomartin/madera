@@ -1,5 +1,12 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
-include($libPath."controlSession.php");
+<?php 
+$origen = $_GET['origen'];
+if ($origen == "ospim") {
+	include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
+	$bgcolor="#CCCCCC";
+} else {
+	include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
+	$bgcolor="#B2A274";
+}
 if(isset($_POST['codigo'])) {
 	$numpostal=$_POST['codigo'];
 	$respuesta='<option title ="Seleccione un valor" value="0">Seleccione un valor</option>';
