@@ -68,11 +68,10 @@ function abrirSistemas(dire) {
       <td>
 	  <div align="center">
 	    <p>Empresas</p>
-	    <p><a href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=ospim')"><img src="img/empresa.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirEmpresa('moduloNoDisponible.php')"><img src="img/empresa.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
 	  </td>
-	  
       <td>
 	  <div align="center">
 	    <p>Afiliados</p>
@@ -89,24 +88,22 @@ function abrirSistemas(dire) {
 	    <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
-	  </td>
-		
+	  </td>	
       <td width="196"><div align="center">
 	    <p>Auditoria Medica </p>
 	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
-      </div></td> 
-		
+      </div></td> 	
 	  <td>
 	  <div align="center">
 	    <p>Legales </p>
-	    <p><a href="#"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirLegales('legales/menuLegales.php')"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
-	  </td>
-	  
+	  </td>	  
     </tr>
-	  <?php if ($_SESSION['usuario'] == 'sistemas') { ?>
+	  
+	<?php if ($_SESSION['usuario'] == 'sistemas') { ?> 
 	<tr>
 	  <td>&nbsp;</td>
 	  <td>
@@ -118,7 +115,7 @@ function abrirSistemas(dire) {
 	  </td>
 	  <td>&nbsp;</td>
     </tr>
-	 <?php } ?>
+    <?php } ?>
   </table>
    <p><strong><a href="logout.php">
      <input type="button" name="salir" value="SALIR" onclick="location.href='logout.php'" />
