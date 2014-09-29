@@ -211,12 +211,12 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 					$dbhInternet->exec($sqlBajoAcceso);
 					$dbhInternet->commit();
 					$subidaAcceso = 1;
+					$resultados[7] = array("etapa" => "Alta Acceso Usuario", "estado" => "OK", "descripcion" => "");
 				} catch (PDOException $e) {
 					$descriError = $e->getMessage();
 					$resultados[7] = array("etapa" => "Alta Acceso Usuario", "estado" => "Error", "descripcion" => $descriError);
 					$dbhInternet->rollback();
-				}
-				$resultados[7] = array("etapa" => "Alta Acceso Usuario", "estado" => "OK", "descripcion" => "");
+				}				
 			}
 		}
 	}
