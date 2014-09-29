@@ -67,7 +67,7 @@ function abrirFiscalizacion(dire) {
         </div></td>
       <td><div align="center">
 	    <p>Empresas</p>
-	    <p><a  href="javascript:abrirEmpresa('moduloNoDisponible.php')"><img src="img/empresa.png" width="90" height="90" border="0"/></a></p>
+	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.png" width="90" height="90" border="0"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
 	 <td><div align="center">
