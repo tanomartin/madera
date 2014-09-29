@@ -1,5 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
-include($libPath."controlSessionOspim.php");
+include($libPath."controlSession.php");
 if(isset($_POST['locali'])){
 	$codlocali=$_POST['locali'];
 	$sqlLocalidad="SELECT codlocali, codprovin FROM localidades WHERE codlocali = '$codlocali'";
