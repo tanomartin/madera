@@ -15,7 +15,6 @@ if(strcmp("localhost",$maquina) == 0) {
 } else {
 	$redire = "Location://Poseidon/usimra/logout.php";
 }
-
 if ($_SESSION['aut'] != 1) { 
     //si no está logueado lo envío a la página de autentificación 
 	//TODO que vaya a una pantalla de session caducada....
