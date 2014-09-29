@@ -67,7 +67,7 @@ function abrirFiscalizacion(dire) {
         </div></td>
       <td><div align="center">
 	    <p>Empresas</p>
-	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.png" width="90" height="90" border="0"/></a></p>
+	    <p><a  href="javascript:abrirEmpresa('moduloNoDisponible.php')"><img src="img/empresa.png" width="90" height="90" border="0"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
 	 <td><div align="center">
@@ -96,11 +96,8 @@ function abrirFiscalizacion(dire) {
   </table>
    <p><strong><a href="logout.php">
      <input type="button" name="salir" value="SALIR" onclick="location.href='logout.php'" />
-   </a></strong></p>
-  <p>&nbsp;</p>
+  </a></strong></p>
 </div>
-<p align="center">&nbsp;</p>
-<p align="center">&nbsp;</p>
 </body>
 
 </html>
