@@ -13,8 +13,6 @@ if ($numpostal == "") {
 	$numpostal = $row['numpostal'];
 }
 
-
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,7 +37,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "localidadPorCP.php",
+			url: "localidadPorCP.php?origen=<?php echo $origen ?>",
 			data: {codigo:codigo},
 		}).done(function(respuesta){
 			$("#selectLocali").html(respuesta);
@@ -55,7 +53,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "cambioProvincia.php",
+			url: "cambioProvincia.php?origen=<?php echo $origen ?>",
 			data: {locali:locali},
 		}).done(function(respuesta){
 			$("#indpostal").val(respuesta.indpostal);

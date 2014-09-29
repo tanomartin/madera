@@ -39,7 +39,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "localidadPorCP.php",
+			url: "localidadPorCP.php?origen=<?php echo $origen ?>",
 			data: {codigo:codigo},
 		}).done(function(respuesta){
 			$("#selectLocali").html(respuesta);
@@ -56,7 +56,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "cambioProvincia.php",
+			url: "cambioProvincia.php?origen=<?php echo $origen ?>",
 			data: {locali:locali},
 		}).done(function(respuesta){
 			$("#indpostal").val(respuesta.indpostal);
@@ -71,7 +71,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "buscaJurisdicciones.php",
+			url: "buscaJurisdicciones.php?origen=<?php echo $origen ?>",
 			data: {codigo:codigo},
 		}).done(function(respuesta){
 			$("#selectDelegacion").html(respuesta);

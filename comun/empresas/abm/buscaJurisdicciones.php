@@ -1,12 +1,4 @@
-<?php 
-$origen = $_GET['origen'];
-if ($origen == "ospim") {
-	include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
-	$bgcolor="#CCCCCC";
-} else {
-	include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
-	$bgcolor="#B2A274";
-}
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
 if(isset($_POST['codigo'])) {
 	$codigo=$_POST['codigo'];
 	$respuesta='<option title ="Seleccione un valor" value="0">Seleccione un valor</option>';
