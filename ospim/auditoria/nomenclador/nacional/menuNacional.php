@@ -26,7 +26,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="200" border="3">
     <tr>
 	  <td width="200"><p align="center">Listador </p>
-          <p align="center"><a class="enlace" href="#"><img src="img/listador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="listadorNacional.php"><img src="img/listador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
