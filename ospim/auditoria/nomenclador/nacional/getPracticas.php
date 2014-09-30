@@ -5,6 +5,7 @@ if(isset($_POST['valor'])) {
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
 					 <th>Valor ($)</th>
+					 <th>Acciones</th>
        			</tr></thead><tbody>";
 	if ($codigo == 0) {
 		$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%' and nomenclador = 1";
@@ -19,10 +20,12 @@ if(isset($_POST['valor'])) {
 	}
 	$resPractica=mysql_query($sqlPractica,$db);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
+		$practica = $rowPractica['codigopractica'];
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
 						<td>".$rowPractica['valornacional']."</td>
+						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?codigo=$practica&nomenclador=1')\"/></td>
 					</tr>";
 	}
 	$respuesta.="</tbody>";
