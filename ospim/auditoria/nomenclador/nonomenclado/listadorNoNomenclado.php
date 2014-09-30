@@ -5,7 +5,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Listador Nomenclador Nacional :.</title>
+<title>.: Listador No Nomenclado :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -124,9 +124,9 @@ jQuery(function($){
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuNacional.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuNoNomenclado.php'" align="center"/>
   </p>
-  <p><span class="Estilo2">Listador Nomenclador Nacional </span>  </p>
+  <p><span class="Estilo2">Listador Practicas No Nomencladas </span>  </p>
   <form id="form1" name="form1" method="post" action="">
     <p>
 	  <?php 

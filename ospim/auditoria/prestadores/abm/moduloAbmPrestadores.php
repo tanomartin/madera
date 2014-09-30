@@ -154,7 +154,7 @@ function abrirPantalla(dire) {
 			<td><?php echo $rowPrestador['cuit'];?></td>
 			<td><?php echo $rowPrestador['telefono1'];?></td>
 			<td><?php echo $rowPrestador['email'];?></td>
-			<td><input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/> | <input name="modificar" type="button" value="Modificar" onclick="abrirPantalla('modificarPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/>  | <input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratoPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>')"/></td>
+			<td><input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> <!--| <input name="modificar" type="button" value="Modificar" onclick="abrirPantalla('modificarPrestador.php?codigo=<?php //echo $rowPrestador['codigoprestador'] ?>')"/>-->  | <input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratoPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/></td>
 		</tr>
 	<?php
 		}

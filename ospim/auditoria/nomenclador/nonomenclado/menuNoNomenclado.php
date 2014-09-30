@@ -5,7 +5,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Menu Nomenclador Nacional :.</title>
+<title>.: Menu No Nomenclado :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -26,7 +26,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="400" border="3">
     <tr>
 	  <td width="200"><p align="center">Listador </p>
-          <p align="center"><a class="enlace" href="#"><img src="img/listador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="listadorNoNomenclado.php"><img src="img/listador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Nueva Pr&aacute;ctica </p>
         <p align="center"><a class="enlace" href="#"><img src="img/nueva.png" width="90" height="90" border="0" alt="enviar"/></a> </p>

@@ -261,6 +261,9 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC" onload="habilitarServicios('<?php echo $rowConsultaPresta['personeria'] ?>')">
 <div align="center">
+  <p><span style="text-align:center">
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'prestador.php?codigo=<?php echo $codigo ?>'" align="center"/>
+  </span>  
   <p><strong>Modificar Prestador</strong>
   <form name="nuevoPrestador" id="nuevoPrestador" method="post" onSubmit="return validar(this)" action="guardarModificacionPrestador.php">
     <table border="0">
