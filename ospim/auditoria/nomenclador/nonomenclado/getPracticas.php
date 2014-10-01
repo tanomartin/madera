@@ -4,7 +4,6 @@ if(isset($_POST['valor'])) {
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
-					 <th>Valor ($)</th>
 					 <th>Acciones</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
@@ -24,7 +23,6 @@ if(isset($_POST['valor'])) {
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
-						<td>".$rowPractica['valornacional']."</td>
 						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?codigo=$practica&nomenclador=2')\"/></td>
 					</tr>";
 	}
