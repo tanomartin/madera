@@ -113,7 +113,8 @@ function validar(formulario) {
       </tr>
 	</table>
     <p><strong>Dato</strong> 
-      <input name="dato" type="text" id="dato" size="14" />
+		<?php if (isset($_GET['dato'])) { $valorDeInsert = $_GET['dato']; } else { $valorDeInsert = ""; } ?>
+      <input name="dato" type="text" id="dato" size="14" value="<?php echo $valorDeInsert ?>"/>
     </p>
   </div>
   <p align="center">

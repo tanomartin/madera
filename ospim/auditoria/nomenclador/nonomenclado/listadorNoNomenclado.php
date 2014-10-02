@@ -52,7 +52,9 @@ function abrirPantalla(dire) {
 jQuery(function($){	
 	$("#tipo").change(function(){
 		$("#capitulo").html("<option value='0'>Seleccione Capitulo</option>");
+		$("#capitulo").prop("disabled",true);
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
+		$("#subcapitulo").prop("disabled",true);
 		$("#practicas").html("");
 		var valor = $(this).val();
 		$.ajax({
@@ -64,6 +66,7 @@ jQuery(function($){
 			if (valor != 0) {
 				if (respuesta != 0) {
 					$("#capitulo").html(respuesta);
+					$("#capitulo").prop("disabled",false);
 				} else {
 					$.ajax({
 						type: "POST",
@@ -80,6 +83,7 @@ jQuery(function($){
 	
 	$("#capitulo").change(function(){
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
+		$("#subcapitulo").prop("disabled",true);
 		$("#practicas").html("");
 		var valor = $(this).val();
 		valor = valor.split('-');
@@ -90,7 +94,8 @@ jQuery(function($){
 			data: {valor:valor[0]},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
-				$("#subcapitulo").html(respuesta);				
+				$("#subcapitulo").html(respuesta);	
+				$("#subcapitulo").prop("disabled",false);			
 			} else {
 				$.ajax({
 					type: "POST",
@@ -128,25 +133,24 @@ jQuery(function($){
   </p>
   <p><span class="Estilo2">Listador Practicas No Nomencladas </span>  </p>
   <form id="form1" name="form1" method="post" action="">
-    <p>
-	  <?php 
-			$sqlTipos = "SELECT * FROM tipopracticas";
-			$resTipos = mysql_query($sqlTipos,$db);
-	  ?>	
+    <p>	
       <select name="tipo" id="tipo">
 	  		  <option value=0>Seleccione Tipo de Practica</option>
-		<?php while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
+		<?php 
+			$sqlTipos = "SELECT * FROM tipopracticas";
+			$resTipos = mysql_query($sqlTipos,$db);
+			while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
 			  <option value=<?php echo $rowTipos['id'] ?>><?php echo $rowTipos['descripcion'] ?></option>
 		<?php } ?>
       </select>
     </p>
 	<p>
-      <select name="capitulo" id="capitulo">
+      <select name="capitulo" id="capitulo" disabled="disabled">
 	  	<option value=0>Seleccione Capitulo</option>
       </select>
     </p>
 	<p>
-      <select name="subcapitulo" id="subcapitulo">
+      <select name="subcapitulo" id="subcapitulo" disabled="disabled">
 	  	<option value=0>Seleccione SubCapitulo</option>
       </select>
 	</p>
