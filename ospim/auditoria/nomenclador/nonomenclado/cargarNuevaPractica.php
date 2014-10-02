@@ -56,9 +56,11 @@ if(isset($_POST['valor'])) {
 	} else {
 		$inptuCodigo = "<p>Codigo Practica: <b>$codigo</b>.<input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/></p>";
 	}
-	$respuesta = "<p><span class='Estilo2'>Carga Nueva Practica</span><input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly/></p>
+	$respuesta = "<p><span class='Estilo2'>Carga Nueva Practica</span></p>
 				  $inptuCodigo
-				  <label>Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea></label>
+				  <label> <input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly style='visibility:hidden'/>
+				  		  Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea>
+				  </label>
 				  <p><input type='submit' value='Guardar'></p>";
 	echo $respuesta;
 }
