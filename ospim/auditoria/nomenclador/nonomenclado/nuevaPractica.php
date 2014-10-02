@@ -122,24 +122,25 @@ jQuery(function($){
 	});
 	
 	$("#nuevoCap").click(function() {
-		valor = 1;
+		tipo = $("#tipo").val();
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
 			url: "cargarNuevoCapitulo.php",
-			data: {valor:valor[1]},
+			data: {tipo:tipo},
 		}).done(function(respuesta){
 			$("#formularioCargaCapitulo").html(respuesta);
 		});
 	});
 	
 	$("#nuevoSub").click(function() {
-		valor = 1;
+		tipo = $("#tipo").val();
+		capitulo = $("#capitulo").val();
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
 			url: "cargarNuevoSubCapitulo.php",
-			data: {valor:valor[1]},
+			data: {tipo:tipo, capitulo:capitulo},
 		}).done(function(respuesta){
 			$("#formularioCargaSubCapitulo").html(respuesta);
 		});
@@ -183,8 +184,29 @@ function validarPractica(formulario) {
 		alert("Debe ingresar una descripción para la practica");
 		return false;
 	}
+	formulario.Submit.disabled = true;
 	return true;
 }
+
+function validarCapituloSubcapitulo(formulario) {
+	var codigo = formulario.codigo.value;
+	if(esEnteroPositivo(codigo)) {
+		if(codigo <= 0 || codigo > 99) {
+			alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para este tipo de practica");
+			return false;
+		}
+	} else {
+		alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para la practica");
+		return false;
+	}
+	if(formulario.descri.value == "") {
+		alert("Debe ingresar una descripción para la practica");
+		return false;
+	}
+	formulario.Submit.disabled = true;
+	return true;
+}
+
 
 </script>
 
@@ -236,9 +258,9 @@ function validarPractica(formulario) {
 	</form>
 	
 	<!--Formulario de Carga -->
-	<form id="formularioCargaCapitulo" name="formularioCargaCapitulo" onSubmit='return validarCapitulo(this)' method="post" action="guardarNuevoCapitulo.php">
+	<form id="formularioCargaCapitulo" name="formularioCargaCapitulo" onSubmit='return validarCapituloSubcapitulo(this)' method="post" action="guardarNuevoCapitulo.php">
 	</form>
-	<form id="formularioCargaSubCapitulo" name="formularioCargaSubCapitulo" onSubmit='return validarSubCapitulo(this)' method="post" action="guardarNuevoSubCapitulo.php">
+	<form id="formularioCargaSubCapitulo" name="formularioCargaSubCapitulo" onSubmit='return validarCapituloSubcapitulo(this)' method="post" action="guardarNuevoSubCapitulo.php">
 	</form>
     <form id="formularioCargaPractica" name="formularioCargaPractica" onSubmit='return validarPractica(this)' method="post" action="guardarNuevaPractica.php">
 	</form>

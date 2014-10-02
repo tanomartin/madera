@@ -7,14 +7,14 @@ if(isset($_POST['valor'])) {
 	if ($codigo == -1) {
 		$codPosibles = 1000;
 		for($i=0; $i<1000; $i++) {
-			$codigosHabilitados[$i] = $codPosibles;
+			$codigosHabilitados[$i] = str_pad($codPosibles,4,'0',STR_PAD_LEFT);
 			$codPosibles++;
 		}
 		$sqlCodigosUsados = "SELECT codigopractica FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%'";
 		$resCodigosUsados = mysql_query($sqlCodigosUsados,$db);
 		$codigosUsados = array();
 		while($rowCodigosUsados = mysql_fetch_array($resCodigosUsados)) {
-			$codigosUsados[$n] = $rowCodigosUsados['codigopractica'];
+			$codigosUsados[$n] = str_pad($rowCodigosUsados['codigopractica'],4,'0',STR_PAD_LEFT);
 			$n++;
 		}
 	} else {
@@ -61,7 +61,7 @@ if(isset($_POST['valor'])) {
 				  <label> <input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly style='visibility:hidden'/>
 				  		  Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea>
 				  </label>
-				  <p><input type='submit' value='Guardar'></p>";
+				  <p><input type='submit' name='Submit' value='Guardar' sub/></p>";
 	echo $respuesta;
 }
 ?>

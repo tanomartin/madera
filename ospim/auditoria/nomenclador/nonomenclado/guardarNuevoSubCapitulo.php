@@ -1,21 +1,18 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
-var_dump($_POST);
-$tipo = $_POST['tipo'];
+//var_dump($_POST);
+$codcapitulo = $_POST['codcapitulo'];
+$idcapitulo = $_POST['idcapitulo'];
 $codigo = $_POST['codigo'];
-if($tipo != -1) {
-	$codigo = str_pad($codigo,2,'0',STR_PAD_LEFT);
-	$codigoCompleto = $tipo.".".$codigo;
-} else {
-	$codigo = str_pad($codigo,4,'0',STR_PAD_LEFT);
-	$codigoCompleto = $codigo;
-}
+$codigo = str_pad($codigo,2,'0',STR_PAD_LEFT);
 $descri = $_POST['descri'];
+$codigoCompleto = $codcapitulo.".".$codigo;
 
-$sqlExisteCodigo = "SELECT * FROM practicas WHERE codigopractica = '$codigoCompleto'";
+$sqlExisteCodigo = "SELECT * FROM subcapitulosdepracticas WHERE codigo = '$codigoCompleto' and idcapitulo = $idcapitulo";
 $resExisteCodigo = mysql_query($sqlExisteCodigo,$db);
 $numExisteCodigo = mysql_num_rows($resExisteCodigo);
+//print($sqlExisteCodigo."<br>");
 if ($numExisteCodigo == 0) {	
-	$sqlInsertPractica = "INSERT INTO practicas VALUES('$codigoCompleto',2,'$descri',0)";
+	$sqlInsertSubCapitulo = "INSERT INTO subcapitulosdepracticas VALUES(DEFAULT,'$codigoCompleto',$idcapitulo,'$descri')";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
@@ -23,18 +20,19 @@ if ($numExisteCodigo == 0) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 	
-		//print($sqlInsertPractica."<br>");
-		$dbh->exec($sqlInsertPractica);
+		//print($sqlInsertSubCapitulo."<br>");
+		$dbh->exec($sqlInsertSubCapitulo);
 		$dbh->commit();
-		$pagina = "../buscador/buscadorPractica.php?dato=$codigoCompleto";
+		$pagina = "nuevaPractica.php";
 		Header("Location: $pagina"); 
 	}catch (PDOException $e) {
 		echo $e->getMessage();
 		$dbh->rollback();
 	}
 } else {
-	$pagina = "existePractica.php?codigo=$codigoCompleto";
+	$rowExisteCodigo = mysql_fetch_assoc($resExisteCodigo);
+	$id = $rowExisteCodigo['id'];
+	$pagina = "existeSubCapitulo.php?id=$id";
 	Header("Location: $pagina"); 
 }
-
 ?>
