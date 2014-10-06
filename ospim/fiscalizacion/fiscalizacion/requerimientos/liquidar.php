@@ -576,7 +576,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArc;
 	} else {
-		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArc;
+		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArc;
 	}
 	//print($primeraLinea."<br>");
 	//solo por ahora...
