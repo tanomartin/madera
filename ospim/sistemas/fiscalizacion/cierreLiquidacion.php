@@ -88,7 +88,7 @@ if (file_exists($direArc)) {
 
 $liqUsimra = 0;
 if (file_exists($direArcUsimra)) {
-	$pathZeus = "/home/sistemas/";
+	$pathZeus = "/home/sistemas/seguimiento";
 	$resultado = SubirArchivo($direArcUsimra, $archivoUsimra, $pathZeus);
 	if ($resultado) {
 		$liqUsimra = 1;
