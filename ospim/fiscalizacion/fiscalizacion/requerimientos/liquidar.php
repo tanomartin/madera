@@ -263,7 +263,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArcCUIL;
 	} else {
-		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$nombreArcCUIL;
+		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArcCUIL;
 	}
 	//print($primeraLinea."<br>");
 	//solo para probar y eliminar lo recien hecho... en producción NO...
