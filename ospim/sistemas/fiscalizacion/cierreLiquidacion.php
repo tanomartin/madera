@@ -11,8 +11,8 @@ if(strcmp("localhost",$maquina) == 0) {
 	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivo;
 	$direArcUsimra = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivoUsimra;
 } else {
-	$direArc = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$archivo;
-	$direArcUsimra = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$archivoUsimra;
+	$direArc = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$archivo;
+	$direArcUsimra = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$archivoUsimra;
 }
 
 if (file_exists($direArc)) {
@@ -26,6 +26,12 @@ if (file_exists($direArc)) {
 			$linea = str_replace('"','',$linea);
 			$campos = explode("|",$linea);
 			$nroreq = (int)$campos[0];
+			
+			$sqlCuit = "SELECT cuit FROM reqfiscalizospim where nrorequerimiento = $nroreq";
+			$resCuit = mysql_query($sqlCuit,$db);
+			$rowCuit = mysql_fetch_array($resCuit);
+			$cuit = $rowCuit['cuit'];
+			
 			$sqlInserciones[$r] = "DELETE FROM aculiquiospim where nrorequerimiento = $nroreq";
 			$r++;
 			if (strlen($campos[10]) > 0) {
@@ -34,6 +40,8 @@ if (file_exists($direArc)) {
 					$nroacu = (int)$acuerdos[$i];
 					$acuAbs = $nroacu." - ".$acuAbs;
 					$sqlInserciones[$r] = "INSERT into aculiquiospim VALUE($nroreq, $nroacu)";
+					$r++;
+					$sqlInserciones[$r] = "UPDATE cabacuerdosospim SET estadoacuerdo = 5 WHERE cuit = $cuit and nroacuerdo = $nroacu";
 					$r++;
 				}
 			} else {
@@ -49,7 +57,7 @@ if (file_exists($direArc)) {
 			$nroreso = (int)$campos[8];
 			$nrosert = (int)$campos[9];
 			$operador = $campos[11];
-			$liqCargadas[$n] = array('reque' => $nroreq, 'fecha' => $campos[1], 'total' => number_format($totliq,2,',','.'), 'acu' => $acuAbs, 'operador' => $operador);
+			$liqCargadas[$n] = array('reque' => $nroreq, 'cuit' => $cuit, 'fecha' => $campos[1], 'total' => number_format($totliq,2,',','.'), 'acu' => $acuAbs, 'operador' => $operador);
 			$sqlInserciones[$r] = "UPDATE cabliquiospim SET fechaliquidacion = '$fechaliq', horaliquidacion = '$horaliq', fechainspeccion = '$fecinsp', deudanominal = $totdep, intereses =  $totint, gtosadmin = $gastos, totalliquidado = $totliq, nroresolucioninspeccion = $nroreso, nrocertificadodeuda = $nrosert, operadorliquidador = '$operador' WHERE nrorequerimiento = $nroreq";
 			$r++;
 			$n++;
@@ -124,9 +132,10 @@ function borrarArchivo(dire){
   <p class="Estilo2">Resultado del proceso de cierra de liquidación </p>
   <?php if ($liqCargadas != 0) { ?>
   		 <p class="Estilo2">El archivo Seguimineto.txt conten&iacute;a <?php echo sizeof($liqCargadas) ?> líneas</p>
-			  <table width="800" border="1" align="center">
+			  <table width="900" border="1" align="center">
 					<tr>
 					  <th>Req Nro.</th>
+					  <th>C.U.I.T.</th>
 					  <th>Fecha</th>
 					  <th>Total Liquidado</th>
 					  <th>Acuerdos Absorvidos</th>
@@ -136,6 +145,7 @@ function borrarArchivo(dire){
 						//consultamos las liquidacioens y los aceurdos abscorvidos
 						print("<tr align='center'>");
 						print("<td>".$liqCargadas[$i]['reque']."</td>");
+						print("<td>".$liqCargadas[$i]['cuit']."</td>");
 						print("<td>".$liqCargadas[$i]['fecha']."</td>");
 						print("<td>".$liqCargadas[$i]['total']."</td>");
 						print("<td>".$liqCargadas[$i]['acu']."</td>");
