@@ -47,34 +47,26 @@ jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
 });
 
-function cargarNombreReq(nroReq) {
-	var enc = 0;
-	if (nroReq != 0) {
-		 <?php
-		 	//TODO: ver como resolvermos esto para probar...
-			//$dir = "/home/sistemas/Documentos/Liquidaciones/Liquidaciones";
-		  	$dir = "H:/Liquidaciones";
-			$directorio=opendir($dir); 
-			while ($archivo = readdir($directorio)) { 
-				$nroRequerimiento = substr($archivo, -12, 8); 
-				$ospim = substr($archivo, -13, 1); 
-				$numReque = (int)$nroRequerimiento;
-		  ?>
-				if (nroReq == <?php echo $numReque ?> && "O" == "<?php echo $ospim ?>" ) {
-					document.forms.reemAcuerdo.nombreArcReq.value = "<?php echo $archivo ?>";
-					enc = 1;
+function cargarLiqui(requerimiento) {
+	var cargado = false;
+	<?php 
+		$sqlLiqui = "SELECT c.nrorequerimiento, c.liquidacionorigen FROM reqfiscalizospim r , cabliquiospim c where r.cuit = $cuit and r.nrorequerimiento = c.nrorequerimiento;";
+		$resLiqui= mysql_query($sqlLiqui,$db); 
+		$canLiqui = mysql_num_rows($resLiqui); 
+		if ($canLiqui != 0) {
+			while ($rowLiqui = mysql_fetch_assoc($resLiqui)) { ?>
+				if (requerimiento == <?php echo $rowLiqui['nrorequerimiento'] ?> ) {
+					document.getElementById("nombreArcReq").value = "<?php echo $rowLiqui['liquidacionorigen'] ?>";
+					cargado = true;
 				}
- 	 	<?php }
-		  closedir($directorio);
-		?>
-	} else {
-		document.forms.reemAcuerdo.nombreArcReq.value = "";
-	}
-	
-	if (enc != 1) {
-		document.forms.reemAcuerdo.nombreArcReq.value = "";
+	 <?php }
+		}
+	?>
+	if (cargado == false) {
+		document.getElementById("nombreArcReq").value = "";
 	}
 }
+
 
 function cargarPor(){
 	<?php 
@@ -185,7 +177,7 @@ function validar(formulario) {
         </div></td>
         <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
         <td colspan="2" valign="bottom"><div align="left">
-            <select name="requerimiento" id="requerimiento" onchange="cargarNombreReq(document.forms.nuevoAcuerdo.requerimiento[selectedIndex].value)">
+            <select name="requerimiento" id="requerimiento" onchange="cargarLiqui(document.forms.reemAcuerdo.requerimiento[selectedIndex].value)">
               <option value=0>Seleccione un valor </option>
               <?php 
 				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
