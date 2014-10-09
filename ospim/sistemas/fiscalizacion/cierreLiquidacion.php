@@ -163,7 +163,7 @@ function borrarArchivo(dire){
 		  		print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUsimra.txt </b></div></p>");
 		  }	
 		  if ($liqUsimra == 1) {
-				print("<div align='center' style='color:#0033FF'><b> SE SUBIO EL ARCHIVO SegUSIMRA.txt </b></div>"); ?>
+				print("<p><div align='center' style='color:#0033FF'><b> SE SUBIO EL ARCHIVO SegUSIMRA.txt </b></div></p>"); ?>
 				<input type="button" name="borrar" value="Borrar Archivo U.S.I.M.R.A." onclick="borrarArchivo('borrarArchivo.php')" align="center"/> 
     <?php } 
 		  if ($liqUsimra == 2) {

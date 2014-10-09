@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 
-$archivoUsimra = "SegUsimra.txt";
+$archivoUsimra = "SegUSIMRA.txt";
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina) == 0) {
 	$direArcUsimra = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivoUsimra;
