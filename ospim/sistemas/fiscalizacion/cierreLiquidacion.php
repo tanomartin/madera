@@ -160,14 +160,14 @@ function borrarArchivo(dire){
 		  		} 
 	
 		  if ($liqUsimra == 0) { 
-		  		print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUsimra.txt </b></div></p>");
+		  		print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUSIMRA.txt </b></div></p>");
 		  }	
 		  if ($liqUsimra == 1) {
 				print("<p><div align='center' style='color:#0033FF'><b> SE SUBIO EL ARCHIVO SegUSIMRA.txt </b></div></p>"); ?>
 				<input type="button" name="borrar" value="Borrar Archivo U.S.I.M.R.A." onclick="borrarArchivo('borrarArchivo.php')" align="center"/> 
     <?php } 
 		  if ($liqUsimra == 2) {
-				print("<p><div align='center' style='color:#FF0000'><b> SE PRODUJO UN ERROR INTENTANDO SUBIR EL ARCHIVO SegUsimra.txt </b></div></p>");
+				print("<p><div align='center' style='color:#FF0000'><b> SE PRODUJO UN ERROR INTENTANDO SUBIR EL ARCHIVO SegUSIMRA.txt </b></div></p>");
 		  }
 		  
 	?>
