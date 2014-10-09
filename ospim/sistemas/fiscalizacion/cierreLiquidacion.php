@@ -5,7 +5,7 @@ include($libPath."ftpZeus.php");
 include($libPath."funcionesFTP.php"); 
 
 $archivo = "Seguimiento.txt";
-$archivoUsimra = "SegUsimra.txt";
+$archivoUsimra = "SegUSIMRA.txt";
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina) == 0) {
 	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivo;
@@ -131,7 +131,7 @@ function borrarArchivo(dire){
   </span></p>
   <p class="Estilo2">Resultado del proceso de cierra de liquidación </p>
   <?php if ($liqCargadas != 0) { ?>
-  		 <p class="Estilo2">El archivo Seguimineto.txt conten&iacute;a <?php echo sizeof($liqCargadas) ?> líneas</p>
+  		 <p class="Estilo2">El archivo Seguimiento.txt conten&iacute;a <?php echo sizeof($liqCargadas) ?> líneas</p>
 			  <table width="900" border="1" align="center">
 					<tr>
 					  <th>Req Nro.</th>
@@ -163,7 +163,7 @@ function borrarArchivo(dire){
 		  		print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUsimra.txt </b></div></p>");
 		  }	
 		  if ($liqUsimra == 1) {
-				print("<div align='center' style='color:#0033FF'><b> SE SUBIO EL ARCHIVO SegUsimra.txt </b></div>"); ?>
+				print("<div align='center' style='color:#0033FF'><b> SE SUBIO EL ARCHIVO SegUSIMRA.txt </b></div>"); ?>
 				<input type="button" name="borrar" value="Borrar Archivo U.S.I.M.R.A." onclick="borrarArchivo('borrarArchivo.php')" align="center"/> 
     <?php } 
 		  if ($liqUsimra == 2) {
