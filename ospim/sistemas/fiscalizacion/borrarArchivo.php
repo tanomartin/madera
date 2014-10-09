@@ -6,7 +6,7 @@ $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina) == 0) {
 	$direArcUsimra = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivoUsimra;
 } else {
-	$direArcUsimra = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/PruebasLiq/".$archivoUsimra;
+	$direArcUsimra = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$archivoUsimra;
 }
 
 $borrado = 0;
@@ -36,9 +36,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <?php 
   	if ($borrado == 1) {
-		print("<p><div align='center' style='color:#0033FF'><b> SE BORRO EL ARCHIVO SegUsimra.txt </b></div></p>");
+		print("<p><div align='center' style='color:#0033FF'><b> SE BORRO EL ARCHIVO SegUSIMRA.txt </b></div></p>");
 	} else {
-		print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUsimra.txt </b></div></p>");
+		print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUSIMRA.txt </b></div></p>");
 	}
   
   ?>
