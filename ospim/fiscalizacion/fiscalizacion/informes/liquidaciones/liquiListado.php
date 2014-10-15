@@ -54,7 +54,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{7:{sorter:false, filter:false}, 8:{sorter:false, filter:false}, 9:{sorter:false, filter:false}, 10:{sorter:false, filter:false}, 11:{sorter:false, filter:false}},
+			headers:{7:{sorter:false, filter:false}, 8:{sorter:false, filter:false}, 9:{sorter:false, filter:false}, 10:{sorter:false, filter:false}, 11:{sorter:false, filter:false}, 15:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -96,6 +96,7 @@ function abrirAcuInclu(dire) {
 			<th>Total</th>
 			<th>Resolución</th>
 			<th>Certificado Deuda</th>
+			<th>Acciones</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -130,6 +131,12 @@ function abrirAcuInclu(dire) {
 				<td><?php echo $rowLiqui['totalliquidado'];?></td>
 				<td><?php echo $rowLiqui['nroresolucioninspeccion'];?></td>
 				<td><?php echo $rowLiqui['nrocertificadodeuda'];?></td>
+				<td><?php if ($rowLiqui['liquidacionanulada'] == 0) { ?>
+					<input name="anular" value="Anular" type="button" onclick="location.href='moduloEliminarLiquidacion.php?nroreq=<?php echo $nroreque ?>&dato=<?php echo $_POST['dato'] ?>&group1=<?php echo $_POST['group1'] ?>&cuit=<?php echo $cuit ?>'" />
+					<?php } else { 
+							print("ANULADA");
+						 } ?>	
+				</td>
 			</tr>
 			<?php
 		}
