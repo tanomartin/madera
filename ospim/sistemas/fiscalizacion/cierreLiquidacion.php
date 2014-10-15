@@ -31,21 +31,27 @@ if (file_exists($direArc)) {
 			$resCuit = mysql_query($sqlCuit,$db);
 			$rowCuit = mysql_fetch_array($resCuit);
 			$cuit = $rowCuit['cuit'];
-			
+
 			$sqlInserciones[$r] = "DELETE FROM aculiquiospim where nrorequerimiento = $nroreq";
 			$r++;
+			
+			$sqlAcuerdos = "SELECT nroacuerdo FROM aculiquiospim where nrorequerimiento = $nroreq";
+			$resAcuerdos = mysql_query($sqlAcuerdos,$db);
+			while ($rowAcuerdos = mysql_fetch_array($resAcuerdos)) {
+				$nroacuActivar = $rowAcuerdos['nroacuerdo'];
+				$sqlInserciones[$r] = "UPDATE cabacuerdosospim SET estadoacuerdo = 1 WHERE cuit = $cuit and nroacuerdo = $nroacuActivar";
+				$r++;
+			}
+		
 			if (strlen($campos[10]) > 0) {
 				$acuerdos = explode("-",$campos[10]);	
 				for ($i=0; $i<sizeof($acuerdos); $i++) {
 					$nroacu = (int)$acuerdos[$i];
-					$acuAbs = $nroacu." - ".$acuAbs;
 					$sqlInserciones[$r] = "INSERT into aculiquiospim VALUE($nroreq, $nroacu)";
 					$r++;
 					$sqlInserciones[$r] = "UPDATE cabacuerdosospim SET estadoacuerdo = 5 WHERE cuit = $cuit and nroacuerdo = $nroacu";
 					$r++;
 				}
-			} else {
-				$acuAbs = '-';
 			}
 			$fechaliq = fechaParaGuardar($campos[1]);
 			$horaliq = $campos[2];
@@ -57,7 +63,7 @@ if (file_exists($direArc)) {
 			$nroreso = (int)$campos[8];
 			$nrosert = (int)$campos[9];
 			$operador = $campos[11];
-			$liqCargadas[$n] = array('reque' => $nroreq, 'cuit' => $cuit, 'fecha' => $campos[1], 'total' => number_format($totliq,2,',','.'), 'acu' => $acuAbs, 'operador' => $operador);
+			$liqCargadas[$n] = array('reque' => $nroreq);
 			$sqlInserciones[$r] = "UPDATE cabliquiospim SET fechaliquidacion = '$fechaliq', horaliquidacion = '$horaliq', fechainspeccion = '$fecinsp', deudanominal = $totdep, intereses =  $totint, gtosadmin = $gastos, totalliquidado = $totliq, nroresolucioninspeccion = $nroreso, nrocertificadodeuda = $nrosert, operadorliquidador = '$operador' WHERE nrorequerimiento = $nroreq";
 			$r++;
 			$n++;
@@ -140,16 +146,35 @@ function borrarArchivo(dire){
 					  <th>Total Liquidado</th>
 					  <th>Acuerdos Absorvidos</th>
 					  <th>Operador</th>
+					  <th>Control</th>
 					</tr>
 			  <?php for ($i=0; $i < sizeof($liqCargadas); $i++) {
+			  			$nroreq = $liqCargadas[$i]['reque'];
+			  			$sqlControlLiqui = "SELECT *, r.cuit as cuit FROM cabliquiospim c, reqfiscalizospim r where c.nrorequerimiento = $nroreq and c.nrorequerimiento = r.nrorequerimiento";
+						$resControlLiqui = mysql_query($sqlControlLiqui,$db);
+						$rowControlLiqui = mysql_fetch_array($resControlLiqui);
+			  			
 						//consultamos las liquidacioens y los aceurdos abscorvidos
 						print("<tr align='center'>");
-						print("<td>".$liqCargadas[$i]['reque']."</td>");
-						print("<td>".$liqCargadas[$i]['cuit']."</td>");
-						print("<td>".$liqCargadas[$i]['fecha']."</td>");
-						print("<td>".$liqCargadas[$i]['total']."</td>");
-						print("<td>".$liqCargadas[$i]['acu']."</td>");
-						print("<td>".$liqCargadas[$i]['operador']."</td>");
+						print("<td>".$rowControlLiqui['nrorequerimiento']."</td>");
+						print("<td>".$rowControlLiqui['cuit']."</td>");
+						print("<td>".$rowControlLiqui['fechaliquidacion']." / ".$rowControlLiqui['horaliquidacion']."</td>");
+						print("<td>".$rowControlLiqui['totalliquidado']."</td>");
+						
+						$acuAbsor = "";
+						$sqlAcuLiqui = "SELECT * FROM aculiquiospim WHERE nrorequerimiento = $nroreq";
+						$resAcuLiqui = mysql_query($sqlAcuLiqui,$db);
+						while ($rowAcuLiqui = mysql_fetch_array($resAcuLiqui)) {
+							$acuAbsor = $acuAbsor." * ".$rowAcuLiqui['nroacuerdo'];
+						}
+						print("<td>".$acuAbsor."</td>");
+						
+						print("<td>".$rowControlLiqui['operadorliquidador']."</td>");
+						$liqAnulada = "";
+						if ($rowControlLiqui['liquidacionanulada'] == 1) {
+							$liqAnulada = "LIQ. ANULADA <br>(".$rowControlLiqui['usuarioanulacion']." - ".$rowControlLiqui['fechaanulacion'].")";
+						} 
+						print("<td>".$liqAnulada."</td>");
 						print("</tr>");
 					}
 			  ?>
