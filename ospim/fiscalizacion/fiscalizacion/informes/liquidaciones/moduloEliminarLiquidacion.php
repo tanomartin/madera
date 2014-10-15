@@ -50,7 +50,7 @@ function validar() {
 			<input type="hidden" value="<?php echo $_GET['nroreq'] ?>" id="nroreq" name="nroreq" />
 			<input type="hidden" value="<?php echo $_GET['cuit'] ?>" id="cuit" name="cuit" />
 			<p><b>Motivo </b><textarea name="motivo" id="motivo" cols="50" rows="4"></textarea></p>
-			<p><input type="button" name="eliminar" value="Eliminar" onclick="validar();"/></p>
+			<p><input type="button" name="anular" value="Anular Liquidacion" onclick="validar();"/></p>
 		  </form>	
 		</div>
 	</td>
