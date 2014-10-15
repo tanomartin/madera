@@ -364,7 +364,7 @@ function acuerdosCaidos($cuit, $db) {
 function grabarCabLiquidacion($nroreq, $nombreArcExc, $db) {
 	$fechaLiqui = date("Ymd");
 	$horaLiqui = date("His");
-	$sqlCabeLiqui = "INSERT INTO cabliquiospim VALUE($nroreq, $fechaLiqui, $horaLiqui, '$nombreArcExc', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
+	$sqlCabeLiqui = "INSERT INTO cabliquiospim VALUE($nroreq, $fechaLiqui, $horaLiqui, '$nombreArcExc', DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT, DEFAULT,DEFAULT, DEFAULT, DEFAULT, DEFAULT)";
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
 	try {
