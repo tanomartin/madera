@@ -55,14 +55,6 @@ function validar(formulario) {
 		alert("Fecha de Inicio invalida");
 		return false;
 	}
-	if (formulario.juzgado.value == 0) {
-		alert("Debe elegir un Juzgado");
-		return false;
-	}
-	if (formulario.secretaria.value == 0) {
-		alert("Debe elegir una Secretaria");
-		return false;
-	}
 	if(!esEnteroPositivo(formulario.nroexpe.value) || formulario.nroexpe.value == "" || formulario.nroexpe.value == 0) {
 		alert("Error en el Nro. de Expediente");
 		return false;
@@ -70,6 +62,25 @@ function validar(formulario) {
 	if (formulario.estado.value == 0) {
 		alert("Debe elegir una Estado Procesal");
 		return false;
+	}
+	if (formulario.estado.value != 3) {
+		if (formulario.juzgado.value == 0) {
+			alert("Debe elegir un Juzgado");
+			return false;
+		}
+		if (formulario.secretaria.value == 0) {
+			alert("Debe elegir una Secretaria");
+			return false;
+		}
+	} else {
+		if (formulario.juzgado.value != 0) {
+			alert("El estado extrajudicila no debe contener un juzgado");
+			return false;
+		}
+		if (formulario.secretaria.value != 0) {
+			alert("El estado extrajudicila no debe contener una secretaria");
+			return false;
+		}
 	}
 	if ((formulario.fechafinal.value != "" && formulario.montocobrado.value == 0) || (formulario.fechafinal.value == "" && formulario.montocobrado.value != "")) {
 		alert("Debe completar toda la información del cierre del tramite");
@@ -140,14 +151,18 @@ function validar(formulario) {
 		<tr>
 		  <td>Secretaria</td>
 		  <td><select name="secretaria" id="secretaria">
-		  <option value=0 selected>Seleccione Secretaría</option>
+		 		 <option value=0 selected>Seleccione Secretaría</option>
 		 	 <?php 
 				$sqlSecretaria ="select * from secretarias where codigojuzgado = ".$rowTramite['codigojuzgado']." and codigosecretaria = ".$rowTramite['codigosecretaria'];
 				$resSecretaria = mysql_query($sqlSecretaria,$db);
-				$rowSecretaria = mysql_fetch_assoc($resSecretaria);
-			?>
-            	 <option value="<?php echo $rowSecretaria['codigosecretaria'] ?>" selected="selected"><?php echo $rowSecretaria['denominacion'] ?></option>
-          </select></td>
+				$canSecretaria = mysql_num_rows($resSecretaria);
+				if ($canSecretaria == 1) {
+					$rowSecretaria = mysql_fetch_assoc($resSecretaria); ?>
+            		 <option value="<?php echo $rowSecretaria['codigosecretaria'] ?>" selected="selected"><?php echo $rowSecretaria['denominacion'] ?></option>
+			<?php } ?>
+          	</select>
+		  </td>
+		  		
 	      <td>Nro. Expediente</td>
 	      <td><input id="nroexpe" type="text" name="nroexpe" value="<?php echo $rowTramite['nroexpediente'] ?>"/></td>
 	  </tr>
