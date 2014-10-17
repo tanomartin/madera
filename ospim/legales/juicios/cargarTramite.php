@@ -51,10 +51,6 @@ function validar(formulario) {
 		alert("Fecha de Inicio invalida");
 		return false;
 	}
-	if(!esEnteroPositivo(formulario.nroexpe.value) || formulario.nroexpe.value == "" || formulario.nroexpe.value == 0) {
-		alert("Error en el Nro. de Expediente");
-		return false;
-	}
 	if (formulario.estado.value == 0) {
 		alert("Debe elegir una Estado Procesal");
 		return false;
@@ -68,6 +64,10 @@ function validar(formulario) {
 			alert("Debe elegir una Secretaria");
 			return false;
 		}
+		if(!esEnteroPositivo(formulario.nroexpe.value) || formulario.nroexpe.value == "" || formulario.nroexpe.value == 0) {
+			alert("Error en el Nro. de Expediente");
+			return false;
+		}
 	} else {
 		if (formulario.juzgado.value != 0) {
 			alert("El estado extrajudicila no debe contener un juzgado");
@@ -75,6 +75,10 @@ function validar(formulario) {
 		}
 		if (formulario.secretaria.value != 0) {
 			alert("El estado extrajudicila no debe contener una secretaria");
+			return false;
+		}
+		if (formulario.nroexpe.value != "") {
+			alert("El estado extrajudicila no debe contener nro. de expediente");
 			return false;
 		}
 	}
