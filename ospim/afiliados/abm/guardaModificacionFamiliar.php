@@ -2,68 +2,79 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 
-$datos = array_values($_POST);
+var_dump($_POST);
 
-//echo $datos[0]; echo "<br>"; //nroafiliado (no guarda)
-$nroafiliado = $datos[0];
-//echo $datos[1]; echo "<br>"; //nroorden (no guarda)
-$nroorden = $datos[1];
-//echo $datos[2]; echo "<br>"; //apellidoynombre
-$apellidoynombre = strtoupper($datos[2]);
-//echo $datos[3]; echo "<br>"; //tipodocumento
-$tipodocumento = $datos[3];
-//echo $datos[4]; echo "<br>"; //nrodocumento
-$nrodocumento = $datos[4];
-//echo $datos[5]; echo "<br>"; //fechanacimiento
-$fechanacimiento = fechaParaGuardar($datos[5]);
-//echo $datos[6]; echo "<br>"; //nacionalidad
-$nacionalidad = $datos[6];
-//echo $datos[7]; echo "<br>"; //sexo
-$sexo = $datos[7];
-//echo $datos[8]; echo "<br>"; //ddn
-$ddn = $datos[8];
-//echo $datos[9]; echo "<br>"; //telefono
-$telefono = $datos[9];
-//echo $datos[10]; echo "<br>"; //email
-$email = strtolower ($datos[10]);
-//echo $datos[11]; echo "<br>"; //cuil
-$cuil = $datos[11];
-//echo $datos[12]; echo "<br>"; //tipoparentesco
-$tipoparentesco = $datos[12];
-//echo $datos[13]; echo "<br>"; //fechaobrasocial
-$fechaobrasocial = fechaParaGuardar($datos[13]); 
-//echo $datos[18]; echo "<br>"; //estudia
-$estudia = $datos[18];
-//echo $datos[19]; echo "<br>"; //certificadoestudio
-$certificadoestudio = $datos[19];
-//echo $datos[20]; echo "<br>"; //emitecarnet
-$emitecarnet = $datos[20];
-$informesss = 1;
-$tipoinformesss = "M";
-$fechamodificacion = date("Y-m-d H:m:s");
-$usuariomodificacion = $_SESSION['usuario'];
+if(isset($_POST) && !empty($_POST)) {
+	$nroafiliado = $_POST['nroafiliado'];
+	$nroorden = $_POST['nroorden'];
 
-try {
-	$hostname = $_SESSION['host'];
-	$dbname = $_SESSION['dbname'];
-	//echo "$hostname"; echo "<br>";
-	//echo "$dbname"; echo "<br>";
-	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-	//echo 'Connected to database<br/>';
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbh->beginTransaction();
+	$sqlFamilia = "SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado' and nroorden = '$nroorden'";
+	$resFamilia = mysql_query($sqlFamilia,$db);
+	$rowFamilia = mysql_fetch_array($resFamilia);
 
-	$sqlActualizaFamilia = "UPDATE familiares SET apellidoynombre = :apellidoynombre, tipodocumento = :tipodocumento, nrodocumento = :nrodocumento, fechanacimiento = :fechanacimiento, nacionalidad = :nacionalidad, sexo = :sexo, ddn = :ddn, telefono = :telefono, email = :email, cuil = :cuil, tipoparentesco = :tipoparentesco, fechaobrasocial = :fechaobrasocial, estudia = :estudia, certificadoestudio = :certificadoestudio, emitecarnet = :emitecarnet, informesss = :informesss, tipoinformesss = :tipoinformesss, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
-	$resActualizaFamilia = $dbh->prepare($sqlActualizaFamilia);
-	if($resActualizaFamilia->execute(array(':apellidoynombre' => $apellidoynombre, ':tipodocumento' => $tipodocumento, ':nrodocumento' => $nrodocumento, ':fechanacimiento' => $fechanacimiento, ':nacionalidad' => $nacionalidad, ':sexo' => $sexo, ':ddn' => $ddn, ':telefono' => $telefono, ':email' => $email, ':cuil' => $cuil, ':tipoparentesco' => $tipoparentesco, ':fechaobrasocial' => $fechaobrasocial, ':estudia' => $estudia, ':certificadoestudio' => $certificadoestudio, ':emitecarnet' => $emitecarnet, ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden)))
+	if(isset($_POST['selectEstudia'])) {
+		$estudia = $_POST['selectEstudia'];
+	} else {
+		$estudia = 0;
+	}
 
-	$dbh->commit();
-	$pagina = "fichaFamiliar.php?nroAfi=$nroafiliado&estAfi=1&estFam=1&nroOrd=$nroorden";
-	Header("Location: $pagina"); 
-}
-catch (PDOException $e) {
-//	echo $e->getMessage();
-	$dbh->rollback();
+	if(isset($_POST['selectCertificadoEstudio'])) {
+		$certificadoestudio = $_POST['selectCertificadoEstudio'];
+	} else {
+		$certificadoestudio = 0;
+	}
+
+	if(isset($_POST['emisioncertificadoestudio'])) {
+		$emisioncertificadoestudio = fechaParaGuardar($_POST['emisioncertificadoestudio']);
+	} else {
+		$emisioncertificadoestudio = "";
+	}
+
+	if(isset($_POST['vencimientocertificadoestudio'])) {
+		$vencimientocertificadoestudio = fechaParaGuardar($_POST['vencimientocertificadoestudio']);
+	} else {
+		$vencimientocertificadoestudio = "";
+	}
+
+
+	if($rowFamilia['informesss'] == 0) {
+		$informesss = 1;
+		$tipoinformesss = "M";
+		$fechainformesss = "";
+		$usuarioinformesss = "";
+	} else {
+		$informesss = $rowFamilia['informesss'];
+		$tipoinformesss = $rowFamilia['tipoinformesss'];
+		$fechainformesss = $rowFamilia['fechainformesss'];
+		$usuarioinformesss = $rowFamilia['usuarioinformesss'];
+	}
+	
+	$fechamodificacion = date("Y-m-d H:i:s");
+	$usuariomodificacion = $_SESSION['usuario'];
+
+	try {
+		$hostname = $_SESSION['host'];
+		$dbname = $_SESSION['dbname'];
+		//echo "$hostname"; echo "<br>";
+		//echo "$dbname"; echo "<br>";
+		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+		//echo 'Connected to database<br/>';
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbh->beginTransaction();
+	
+		$sqlActualizaFamilia = "UPDATE familiares SET apellidoynombre = :apellidoynombre, tipodocumento = :tipodocumento, nrodocumento = :nrodocumento, fechanacimiento = :fechanacimiento, nacionalidad = :nacionalidad, sexo = :sexo, ddn = :ddn, telefono = :telefono, email = :email, cuil = :cuil, tipoparentesco = :tipoparentesco, fechaobrasocial = :fechaobrasocial, estudia = :estudia, certificadoestudio = :certificadoestudio, emisioncertificadoestudio = :emisioncertificadoestudio, vencimientocertificadoestudio = :vencimientocertificadoestudio, emitecarnet = :emitecarnet, informesss = :informesss, tipoinformesss = :tipoinformesss, fechainformesss = :fechainformesss, usuarioinformesss = :usuarioinformesss, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+		$resActualizaFamilia = $dbh->prepare($sqlActualizaFamilia);
+		if($resActualizaFamilia->execute(array(':apellidoynombre' => strtoupper($_POST['apellidoynombre']), ':tipodocumento' => $_POST['selectTipDoc'], ':nrodocumento' => $_POST['nrodocumento'], ':fechanacimiento' => fechaParaGuardar($_POST['fechanacimiento']), ':nacionalidad' => $_POST['selectNacion'], ':sexo' => $_POST['selectSexo'], ':ddn' => $_POST['ddn'], ':telefono' => $_POST['telefono'], ':email' => strtolower($_POST['email']), ':cuil' => $_POST['cuil'], ':tipoparentesco' => $_POST['selectParentesco'], ':fechaobrasocial' => fechaParaGuardar($_POST['fechaobrasocial']), ':estudia' => $estudia, ':certificadoestudio' => $certificadoestudio, ':emisioncertificadoestudio' => $emisioncertificadoestudio, ':vencimientocertificadoestudio' => $vencimientocertificadoestudio, ':emitecarnet' => $_POST['selectEmiteCarnet'], ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechainformesss' => $fechainformesss, ':usuarioinformesss' => $usuarioinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden))) {
+		}
+	
+		$dbh->commit();
+		$pagina = "fichaFamiliar.php?nroAfi=$nroafiliado&estAfi=1&estFam=1&nroOrd=$nroorden";
+		Header("Location: $pagina"); 
+	}
+	catch (PDOException $e) {
+	//	echo $e->getMessage();
+		$dbh->rollback();
+	}
 }
 ?>
 

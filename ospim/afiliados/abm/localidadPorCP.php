@@ -4,7 +4,7 @@ if(isset($_POST['codigo']))
 {
 	$numpostal=$_POST['codigo'];
 	$respuesta='<option title ="Seleccione un valor" value="">Seleccione un valor</option>';
-	$sqlLocalidad="select codlocali, nomlocali from localidades where numpostal = $numpostal";
+	$sqlLocalidad="SELECT codlocali, nomlocali FROM localidades WHERE numpostal = '$numpostal'";
 	$resLocalidad=mysql_query($sqlLocalidad,$db);
 	while($rowLocalidad=mysql_fetch_array($resLocalidad)) {
 		$respuesta.="<option title ='$rowLocalidad[nomlocali]' value='$rowLocalidad[codlocali]'>".$rowLocalidad['nomlocali']."</option>";

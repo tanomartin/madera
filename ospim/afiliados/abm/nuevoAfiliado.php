@@ -5,7 +5,6 @@ $base = $_SESSION['dbname'];
 
 $sqlBuscaNro = "SELECT AUTO_INCREMENT FROM information_schema.TABLES
 WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'titulares'";
-//echo $sqlBuscaNro; echo "<br>";
 $resBuscaNro = mysql_query($sqlBuscaNro,$db);
 $rowBuscaNro = mysql_fetch_array($resBuscaNro);
 ?>
@@ -22,9 +21,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
 <title>.: Afiliado :.</title>
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/jquery-ui.min.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
@@ -35,84 +39,51 @@ jQuery(function($){
 	$("#fechaempresa").mask("99-99-9999");
 });
 
-function localidadesPorCp(codigo) {
-	$.ajax({
-		type: "POST",
-		dataType: 'html',
-		url: "localidadPorCP.php",
-		data: {codigo:codigo},
-	}).done(function(respuesta){
-		$("#selectLocalidad").html(respuesta);
-       });
-};
-
-function cambioProvincia(locali) {
-<?php 
-	$sqlLocalidad="SELECT codlocali, codprovin FROM localidades";
-	$resLocalidad=mysql_query($sqlLocalidad,$db);
-	while($rowLocalidad=mysql_fetch_array($resLocalidad)) { ?>
-		if (locali == <?php echo $rowLocalidad['codlocali'] ?>)  {
-			<?php	
-			$codProvincia= $rowLocalidad['codprovin'];
-			$sqlProvincia="SELECT indpostal, descrip FROM provincia WHERE codprovin = $codProvincia";
-			$resProvincia=mysql_query($sqlProvincia,$db);
-			$rowProvincia=mysql_fetch_array($resProvincia);
-			?>
-			document.forms.formAfiliado.indpostal.value = "<?php echo $rowProvincia['indpostal']; ?>";
-			document.forms.formAfiliado.nomprovin.value = "<?php echo $rowProvincia['descrip']; ?>";
-			document.forms.formAfiliado.codprovin.value = "<?php echo $rowLocalidad['codprovin']; ?>";
-		}
-<?php } ?>
-};
-
-function nombreEmpresa(cuite) {
-<?php 
-	$sqlLeeEmpresa="SELECT cuit, nombre FROM empresas";
-	$resLeeEmpresa=mysql_query($sqlLeeEmpresa,$db);
-	while($rowLeeEmpresa=mysql_fetch_array($resLeeEmpresa)) { ?>
-		if (cuite == <?php echo $rowLeeEmpresa['cuit'] ?>) {
-			document.forms.formAfiliado.nombreempresa.value = "<?php echo $rowLeeEmpresa['nombre']; ?>";
-		}
-<?php } ?>
-};
-
-function buscarJurisdi(cuitj) {
-	var opciones;
-	document.forms.formAfiliado.selectDelega.length = 0;
-	opciones = document.createElement("option");
-	opciones.title = "Seleccione un valor";
-	opciones.text = "Seleccione un valor";
-	opciones.value = "";
-	document.forms.formAfiliado.selectDelega.options.add(opciones);
-<?php 
-	$sqlLeeJurisdi="SELECT cuit, codidelega FROM jurisdiccion";
-	$resLeeJurisdi=mysql_query($sqlLeeJurisdi,$db);
-	while($rowLeeJurisdi=mysql_fetch_array($resLeeJurisdi)) { ?>
-		if (cuitj == <?php echo $rowLeeJurisdi['cuit'] ?>) {
-			<?php 
-			$coddelega = $rowLeeJurisdi['codidelega'];
-			$sqlLeeDelega = "SELECT codidelega, nombre FROM delegaciones WHERE codidelega = $coddelega";
-			$resLeeDelega = mysql_query($sqlLeeDelega,$db);
-			$rowLeeDelega = mysql_fetch_array($resLeeDelega);
-			?>	
-			opciones = document.createElement("option");
-			opciones.title = "<?php echo $rowLeeDelega['nombre']; ?>";
-			opciones.text = "<?php echo $rowLeeDelega['nombre']; ?>";
-			opciones.value = <?php echo $rowLeeJurisdi['codidelega']; ?>;
-			document.forms.formAfiliado.selectDelega.options.add(opciones);
-		}
-<?php } ?>
-};
-
 $(document).ready(function(){
+	$("#fechanacimiento").change(function(){
+		var fechanac = $(this).val();
+		hoy=new Date();
+		var array_fechanac = fechanac.split("-");
+		var ano = parseInt(array_fechanac[2]);
+		var mes = parseInt(array_fechanac[1]);
+		var dia = parseInt(array_fechanac[0]);
+		var edad;
+		edad=hoy.getFullYear() - ano - 1;
+		if(hoy.getMonth() + 1 - mes > 0) {
+	       edad = edad + 1;
+		}
+		if(hoy.getMonth() + 1 - mes == 0) {
+			if(hoy.getUTCDate() - dia >= 0) {
+				edad = edad + 1;
+		   }
+		}
+		$("#edad").val(edad);
+	});
+
 	$("#numpostal").change(function(){
 		var codigo = $(this).val();
-		localidadesPorCp(codigo);
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "localidadPorCP.php",
+			data: {codigo:codigo},
+		}).done(function(respuesta){
+			$("#selectLocalidad").html(respuesta);
+		});
 	});
 
 	$("#selectLocalidad").change(function(){
 		var locali = $(this).val();
-		cambioProvincia(locali);
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "cambioProvincia.php",
+			data: {locali:locali},
+		}).done(function(respuesta){
+			$("#indpostal").val(respuesta.indpostal);
+			$("#nomprovin").val(respuesta.descrip);
+			$("#codprovin").val(respuesta.codprovin);
+		});
 	});
 
 	$("#selectTipoAfil").change(function(){
@@ -130,104 +101,171 @@ $(document).ready(function(){
 
 	$("#selectSitTitular").change(function(){
 		var tipotitu = $(this).val();
-		if(tipotitu=="00" || tipotitu=="01") {
+		if(tipotitu!="00" && tipotitu!="01") {
+			document.forms.formAfiliado.cuitempresa.readOnly=true;
+			document.forms.formAfiliado.cuitempresa.style.backgroundColor="#CCCCCC";
+			if(tipotitu=="08"|| tipotitu=="10") {
+				document.forms.formAfiliado.cuitempresa.value="33637617449";
+				document.forms.formAfiliado.nombreempresa.value="";
+				var cuite = "33637617449";
+				$.ajax({
+					type: "POST",
+					dataType: "html",
+					url: "nombreEmpresa.php",
+					data: {cuit:cuite},
+				}).done(function(respuesta){
+					$("#nombreempresa").val(respuesta);
+				});
+				$("#selectDelega option[value='']").prop('selected',true);
+				var cuitj = "33637617449";
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "buscaJurisdicciones.php",
+					data: {cuit:cuitj},
+				}).done(function(respuesta){
+					$("#selectDelega").html(respuesta);
+				});
+			}
+			if(tipotitu=="04" || tipotitu=="05" || tipotitu=="07") {
+				document.forms.formAfiliado.cuitempresa.value="";
+				document.forms.formAfiliado.nombreempresa.value="";
+			}
+		} else {
 			document.forms.formAfiliado.cuitempresa.readOnly=false;
 			document.forms.formAfiliado.cuitempresa.style.backgroundColor="#FFFFFF";
 		}
-		else {
-			document.forms.formAfiliado.cuitempresa.readOnly=true;
-			document.forms.formAfiliado.cuitempresa.style.backgroundColor="#CCCCCC";
-		}
-		document.forms.formAfiliado.cuil.focus();
+		$("#cuil").focus();
 	});
 
 	$("#cuil").focusout(function(){
 		var cuil = $(this).val();
 		var titutipo = $("#selectSitTitular option:selected").val();
-		if(titutipo=="00" || titutipo=="01" || titutipo=="03" || titutipo=="06" || titutipo=="09" || titutipo=="10" || titutipo=="11") {
-			document.forms.formAfiliado.cuitempresa.value="";
-			document.forms.formAfiliado.nombreempresa.value="";
-		}
-		if(titutipo=="02"|| titutipo=="08") {
-			document.forms.formAfiliado.cuitempresa.value="33637617449";
-			document.forms.formAfiliado.nombreempresa.value="";
-		}
+		
 		if(titutipo=="04" || titutipo=="05" || titutipo=="07") {
 			document.forms.formAfiliado.cuitempresa.value=cuil;
 			document.forms.formAfiliado.nombreempresa.value="";
-			nombreEmpresa(cuil);
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "nombreEmpresa.php",
+				data: {cuit:cuil},
+			}).done(function(respuesta){
+				$("#nombreempresa").val(respuesta);
+			});
+			$("#selectDelega option[value='']").prop('selected',true);
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "buscaJurisdicciones.php",
+				data: {cuit:cuil},
+			}).done(function(respuesta){
+				$("#selectDelega").html(respuesta);
+			});
 		}
-		document.forms.formAfiliado.cuitempresa.focus();
+		$("#cuitempresa").focus();
 	});
 
 	$("#cuitempresa")
 	.change(function(){
 		var cuite = $(this).val();
-		nombreEmpresa(cuite);
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "nombreEmpresa.php",
+			data: {cuit:cuite},
+		}).done(function(respuesta){
+			$("#nombreempresa").val(respuesta);
+		});
 	})
 	.change(function(){
 		var cuitj = $(this).val();
-		buscarJurisdi(cuitj);
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "buscaJurisdicciones.php",
+			data: {cuit:cuitj},
+		}).done(function(respuesta){
+			$("#selectDelega").html(respuesta);
+		});
 	});
 });
 
 function validar(formulario) {
 	if (formulario.apellidoynombre.value == "") {
 		alert("El apellido y nombre es obligatorio");
+		document.getElementById("apellidoynombre").focus();
 		return false;
 	}
 	
 	if (formulario.selectTipDoc.options[formulario.selectTipDoc.selectedIndex].value == "") {
 		alert("Debe seleccionar un tipo de documento");
+		document.getElementById("selectTipDoc").focus();
 		return false;
 	}
 
 	if (formulario.nrodocumento.value == "") {
 		alert("El numero de documento es obligatorio");
+		document.getElementById("nrodocumento").focus();
 		return false;
 	} else {
 		if (!esEnteroPositivo(formulario.nrodocumento.value)) {
 			alert("El numero de documento debe ser numerico");
+			document.getElementById("nrodocumento").focus();
 			return false;
 		}
 	}
 
 	if (formulario.fechanacimiento.value == "") {
 		alert("La fecha de nacimiento es obligatoria");
+		document.getElementById("fechanacimiento").focus();
 		return false;
 	} else {
 		if (!esFechaValida(formulario.fechanacimiento.value)) {
 			alert("La fecha de nacimiento es invalida");
+			document.getElementById("fechanacimiento").focus();
 			return false;
 		}
 	}
 
+	if (formulario.edad.value < 14 || formulario.edad.value > 90) {
+		alert("Verifique la fecha de nacimiento");
+		document.getElementById("fechanacimiento").focus();
+		return false;
+	}
+
 	if (formulario.selectNacion.options[formulario.selectNacion.selectedIndex].value == "") {
 		alert("Debe seleccionar una nacionalidad");
+		document.getElementById("selectNacion").focus();
 		return false;
 	}
 
 	if (formulario.selectSexo.options[formulario.selectSexo.selectedIndex].value == "") {
 		alert("Debe seleccionar un sexo");
+		document.getElementById("selectSexo").focus();
 		return false;
 	}
 
 	if (formulario.selectEstCiv.options[formulario.selectEstCiv.selectedIndex].value == "") {
 		alert("Debe seleccionar un estado civil");
+		document.getElementById("selectEstCiv").focus();
 		return false;
 	}
 
 	if (formulario.domicilio.value == "") {
 		alert("El domicilio es obligatorio");
+		document.getElementById("domicilio").focus();
 		return false;
 	}
 
 	if (formulario.numpostal.value == "") {
 		alert("El codigo postal es obligatorio");
+		document.getElementById("numpostal").focus();
 		return false;
 	} else {
 		if (!esEnteroPositivo(formulario.numpostal.value)){
 		 	alert("El codigo postal debe ser numerico");
+			document.getElementById("numpostal").focus();
 			return false;
 		}
 	}
@@ -235,18 +273,21 @@ function validar(formulario) {
 	if (formulario.alfapostal.value != "") {
 		if (isNumber(formulario.alfapostal.value)){
 		 	alert("El componente alfabetico del codigo postal no puede ser numerico");
+			document.getElementById("alfapostal").focus();
 			return false;
 		}
 	}
 
 	if (formulario.selectLocalidad.options[formulario.selectLocalidad.selectedIndex].value == "") {
 		alert("Debe Seleccionar una Localidad");
+		document.getElementById("selectLocalidad").focus();
 		return false;
 	}
 
 	if (formulario.ddn.value != "") {
 		if (!esEnteroPositivo(formulario.ddn.value)) {
 			alert("El codigo de area debe ser numerico");
+			document.getElementById("ddn").focus();
 			return false;
 		}
 	} else {
@@ -256,6 +297,7 @@ function validar(formulario) {
 	if (formulario.telefono.value != "") {
 		if (!esEnteroPositivo(formulario.telefono.value)) {
 			alert("El telefono debe ser numerico");
+			document.getElementById("telefono").focus();
 			return false;
 		}
 	} else {
@@ -268,80 +310,132 @@ function validar(formulario) {
 		var patron=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
 		if(valueForm.search(patron)!=0) {
 			alert("El correo electronico ingresado es incorrecto");
+			document.getElementById("email").focus();
 			return false;
 		}
 	}
 
 	if (formulario.fechaobrasocial.value == "") {
 		alert("La fecha de ingreso a la obra social es obligatoria");
+		document.getElementById("fechaobrasocial").focus();
 		return false;
 	} else {
 		if (!esFechaValida(formulario.fechaobrasocial.value)) {
 			alert("La fecha de ingreso a la obra social es invalida");
+			document.getElementById("fechaobrasocial").focus();
+			return false;
+		}
+
+		var fechanac = new Date(Date.parse(invertirFecha(formulario.fechanacimiento.value)));
+		var fechaobs = new Date(Date.parse(invertirFecha(formulario.fechaobrasocial.value)));
+
+		if (fechaobs < fechanac) {
+			alert("La fecha de ingreso a la obra social no puede ser menor que la fecha de nacimiento");
+			document.getElementById("fechaobrasocial").focus();
 			return false;
 		}
 	}
 
 	if (formulario.selectTipoAfil.options[formulario.selectTipoAfil.selectedIndex].value == "") {
 		alert("Debe seleccionar un tipo de afiliado");
+		document.getElementById("selectTipoAfil").focus();
 		return false;
 	}
-
-	alert(formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value);
 
 	if (formulario.selectTipoAfil.options[formulario.selectTipoAfil.selectedIndex].value == "O") {
 		if (formulario.solicitudopcion.value == "") {
 			alert("Debe especificar el numero de solicitud de opcion");
+			document.getElementById("solicitudopcion").focus();
 			return false;
 		} else {
 			if (!esEnteroPositivo(formulario.solicitudopcion.value)) {
 		 		alert("El numero de solicitud de opcion debe ser numerico");
+				document.getElementById("solicitudopcion").focus();
 				return false;
 			}
 		}
 	}
 
-	alert(formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value);
-
-//	if (formulario.selectSitTit.options[formulario.selectSitTit.selectedIndex].value == "") {
-//		alert("Debe seleccionar un tipo de titularidad");
-//		return false;
-//	}
+	if (formulario.selectSitTitular.options[formulario.selectSitTitular.selectedIndex].value == "") {
+		alert("Debe seleccionar un tipo de titularidad");
+		document.getElementById("selectSitTitular").focus();
+		return false;
+	}
 
 	if (formulario.cuil.value == "") {
 		alert("El C.U.I.L. es obligatorio");
+		document.getElementById("cuil").focus();
 		return false;
+	} else {
+		if (!verificaCuilCuit(formulario.cuil.value)){
+			alert("El C.U.I.L. es invalido");
+			document.getElementById("cuil").focus();
+			return false;
+		}
 	}
 
 	if (formulario.cuitempresa.value == "") {
 		alert("El C.U.I.T. de la empresa es obligatorio");
+		document.getElementById("cuitempresa").focus();
 		return false;
 	} else {
-		if (!esEnteroPositivo(formulario.cuitempresa.value)) {
-		 	alert("El C.U.I.T. de la empresa debe ser numerico");
+		if (!verificaCuilCuit(formulario.cuitempresa.value)) {
+			alert("El C.U.I.T. de la empresa es invalido");
+			document.getElementById("cuitempresa").focus();
 			return false;
+		}
+		if (formulario.selectSitTitular.options[formulario.selectSitTitular.selectedIndex].value == "00" ||
+			formulario.selectSitTitular.options[formulario.selectSitTitular.selectedIndex].value == "01" ||
+			formulario.selectSitTitular.options[formulario.selectSitTitular.selectedIndex].value == "08" ||
+			formulario.selectSitTitular.options[formulario.selectSitTitular.selectedIndex].value == "10" ) {
+			if (formulario.cuil.value == formulario.cuitempresa.value) {
+				alert("Para este tipo de Titularidad el C.U.I.L. y el C.U.I.T. no pueden ser iguales");
+				document.getElementById("cuil").focus();
+				return false;
+			}
+		} else {
+			if (formulario.cuil.value != formulario.cuitempresa.value) {
+				alert("Para este tipo de Titularidad el C.U.I.L. y el C.U.I.T. no pueden ser distintos");
+				document.getElementById("cuil").focus();
+				return false;
+			}
 		}
 	}
 
 	if (formulario.fechaempresa.value == "") {
 		alert("La fecha de ingreso a la empresa es obligatoria");
+		document.getElementById("fechaempresa").focus();
 		return false;
 	} else {
 		if (!esFechaValida(formulario.fechaempresa.value)) {
 			alert("La fecha de ingreso a la empresa es invalida");
+			document.getElementById("fechaempresa").focus();
+			return false;
+		}
+
+		var fechanac = new Date(Date.parse(invertirFecha(formulario.fechanacimiento.value)));
+		var fechaemp = new Date(Date.parse(invertirFecha(formulario.fechaempresa.value)));
+
+		if (fechaemp < fechanac) {
+			alert("La fecha de ingreso a la empresa no puede ser menor que la fecha de nacimiento");
+			document.getElementById("fechaempresa").focus();
 			return false;
 		}
 	}
 
 	if (formulario.selectDelega.options[formulario.selectDelega.selectedIndex].value == "") {
 		alert("Debe seleccionar una jurisdiccion");
+		document.getElementById("selectDelega").focus();
 		return false;
 	}
 
 	if (formulario.selectEmiteCarnet.options[formulario.selectEmiteCarnet.selectedIndex].value == "") {
 		alert("Debe seleccionar si se emite o no la credencial");
+		document.getElementById("selectEmiteCarnet").focus();
 		return false;
 	}
+
+	$.blockUI({ message: "<h1>Guardando datos. Aguarde por favor...</h1>" });
 
 	return true;
 }
@@ -349,18 +443,11 @@ function validar(formulario) {
 </head>
 <body bgcolor="#CCCCCC" >
 <form id="formAfiliado" name="formAfiliado" method="post" onSubmit="return validar(this)" action="guardaAltaAfiliado.php">
-<table width="1205" border="0">
-	<tr align="center" valign="top">
-      <td width="1205" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/> 
-        </div></td>
-	</tr>
-</table>
-<table width="1205" border="0">
-	<tr>
-      <td width="1205" valign="middle"><div align="center" class="Estilo4">Nuevo Afiliado</div></td>
-	</tr>
-</table>
+<div align="center">
+	<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/> 
+</div>
+<p></p>
+<div align="center" class="Estilo4">Nuevo Afiliado</div>
 <table width="1205" height="100" border="0">
   <tr>
 	<td width="212" align="left" valign="middle"><img src="../img/Familiar sin Foto.jpg" alt="Foto" width="115" height="115"></td>
@@ -368,7 +455,6 @@ function validar(formulario) {
     <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" /></strong></div></td>
   </tr>
 </table>
-
 <table width="1205" border="0">
   <tr>
     <td colspan="4"><div align="center">
@@ -393,7 +479,8 @@ function validar(formulario) {
             		</select>
 					<input name="nrodocumento" type="text" id="nrodocumento" value="" size="10" maxlength="10" /></td>
     <td width="173">Fecha de Nacimiento:</td>
-    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="" size="12" /></td>
+    <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="" size="12" /> Edad:
+					<input name="edad" type="text" id="edad" value="" size="2" readonly="true" style="background-color:#CCCCCC"/></td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
@@ -451,7 +538,7 @@ function validar(formulario) {
 	</td>
     <td>Provincia:</td>
     <td><input name="nomprovin" type="text" id="nomprovin" value="" size="50" readonly="true" style="background-color:#CCCCCC" />
-		<input name="codprovin" type="text" id="codprovin" value="" size="2" readonly="true" style="background-color:#CCCCCC" />
+		<input name="codprovin" type="text" id="codprovin" value="" size="2" readonly="true" style="visibility:hidden" />
 	</td>
   </tr>
   <tr>
@@ -485,7 +572,7 @@ function validar(formulario) {
     <td colspan="3"><select name="selectSitTitular" id="selectSitTitular">
                    <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
-			     		$sqlSitTit="select * from tipotitular";
+			     		$sqlSitTit="select * from tipotitular where codtiptit not in(2,3,6,9,11)";
 						$resSitTit=mysql_query($sqlSitTit,$db);
 						while($rowSitTit=mysql_fetch_array($resSitTit)) { 	
 							echo "<option title ='$rowSitTit[descrip]' value='$rowSitTit[codtiptit]'>".$rowSitTit['descrip']."</option>";
@@ -502,7 +589,7 @@ function validar(formulario) {
     <td>C.U.I.L.:</td>
     <td><input name="cuil" type="text" id="cuil" value="" size="13" maxlength="11" /></td>
     <td>C.U.I.T. Empresa:</td>
-    <td><input name="cuitempresa" type="text" id="cuitempresa" value="" size="11" maxlength="11" readonly="true" style="background-color:#CCCCCC" />
+    <td><input name="cuitempresa" type="text" id="cuitempresa" value="" size="13" maxlength="11" />
 	    <input name="nombreempresa" type="text" id="nombreempresa" value="" size="50" readonly="true" style="background-color:#CCCCCC" />
 	</td>
   </tr>
@@ -533,12 +620,11 @@ function validar(formulario) {
 			   		</select>
 	</td>
     </tr>
-</table> 
-<table width="1205" border="0">
-  <tr>
-    <td valign="middle"><div align="center"><input type="submit" name="guardar" value="Guardar" align="center"/></div></td>
-    </tr>
 </table>
+<p></p>
+<div align="center">
+	<input class="nover" type="submit" name="guardar" value="Guardar" align="center"/>
+</div>
 </form>
 </body>
 </html>

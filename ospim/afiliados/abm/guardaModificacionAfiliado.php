@@ -2,74 +2,25 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 
-$datos = array_values($_POST);
+//var_dump($_POST);
+$nroafiliado = $_POST['nroafiliado'];
+$sqlTitular = "SELECT * FROM titulares WHERE nroafiliado = '$nroafiliado'";
+$resTitular = mysql_query($sqlTitular,$db);
+$rowTitular = mysql_fetch_array($resTitular);
 
-//echo $datos[0]; echo "<br>"; //nroafiliado (no guarda)
-$nroafiliado = $datos[0];
-//echo $datos[1]; echo "<br>"; //apellidoynombre
-$apellidoynombre = strtoupper($datos[1]);
-//echo $datos[2]; echo "<br>"; //tipodocumento
-$tipodocumento = $datos[2];
-//echo $datos[3]; echo "<br>"; //nrodocumento
-$nrodocumento = $datos[3];
-//echo $datos[4]; echo "<br>"; //fechanacimiento
-$fechanacimiento = fechaParaGuardar($datos[4]);
-//echo $datos[5]; echo "<br>"; //nacionalidad
-$nacionalidad = $datos[5];
-//echo $datos[6]; echo "<br>"; //sexo
-$sexo = $datos[6];
-//echo $datos[7]; echo "<br>"; //estadocivil
-$estadocivil = $datos[7];
-//echo $datos[8]; echo "<br>"; //domicilio
-$domicilio = strtoupper($datos[8]);
-//echo $datos[9]; echo "<br>"; //indpostal
-$indpostal = $datos[9];
-//echo $datos[10]; echo "<br>"; //numpostal
-$numpostal = $datos[10];
-//echo $datos[11]; echo "<br>"; //alfapostal
-$alfapostal = $datos[11];
-//echo $datos[12]; echo "<br>"; //codlocali
-$codlocali = $datos[12];
-//echo $datos[13]; echo "<br>"; //codprovin
-$codprovin = $datos[13];
-//echo $datos[14]; echo "<br>"; //ddn
-$ddn = $datos[14];
-//echo $datos[15]; echo "<br>"; //telefono
-$telefono = $datos[15];
-//echo $datos[16]; echo "<br>"; //email
-$email = strtolower ($datos[16]);
-//echo $datos[17]; echo "<br>"; //fechaobrasocial
-$fechaobrasocial = fechaParaGuardar($datos[17]); 
-//echo $datos[18]; echo "<br>"; //tipoafiliado
-$tipoafiliado = $datos[18];
-//echo $datos[19]; echo "<br>"; //solicitudopcion
-$solicitudopcion = $datos[19];
-//echo $datos[20]; echo "<br>"; //situaciontitularidad
-$situaciontitularidad = $datos[20];
-//echo $datos[21]; echo "<br>"; //discapacidad (no guarda)
-//echo $datos[22]; echo "<br>"; //certificadodiscapacidad (no guarda)
-//echo $datos[23]; echo "<br>"; //emisiondiscapacidad (no guarda)
-//echo $datos[24]; echo "<br>"; //vencimientodiscapacidad (no guarda)
-//echo $datos[25]; echo "<br>"; //cuil
-$cuil = $datos[25];
-//echo $datos[26]; echo "<br>"; //cuitempresa
-$cuitempresa = $datos[26];
-//echo $datos[27]; echo "<br>"; //nombreempresa (no guarda)
-//echo $datos[28]; echo "<br>"; //fechaempresa
-$fechaempresa = fechaParaGuardar($datos[28]);
-//echo $datos[29]; echo "<br>"; //codidelega
-$codidelega = $datos[29];
-//echo $datos[30]; echo "<br>"; //categoria
-$categoria = strtoupper($datos[30]);
-//echo $datos[31]; echo "<br>"; //emitecarnet
-$emitecarnet = $datos[31];
-//echo $datos[32]; echo "<br>"; //cantidadcarnet (no guarda)
-//echo $datos[33]; echo "<br>"; //fechacarnet (no guarda)
-//echo $datos[34]; echo "<br>"; //tipocarnet (no guarda)
-//echo $datos[35]; echo "<br>"; //vencimientocarnet (no guarda)
-$informesss = 1;
-$tipoinformesss = "M";
-$fechamodificacion = date("Y-m-d H:m:s");
+if($rowTitular['informesss'] == 0) {
+	$informesss = 1;
+	$tipoinformesss = "M";
+	$fechainformesss = "";
+	$usuarioinformesss = "";
+} else {
+	$informesss = $rowTitular['informesss'];
+	$tipoinformesss = $rowTitular['tipoinformesss'];
+	$fechainformesss = $rowTitular['fechainformesss'];
+	$usuarioinformesss = $rowTitular['usuarioinformesss'];
+}
+
+$fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
 try {
@@ -82,17 +33,16 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	$sqlActualizaTitular = "UPDATE titulares SET apellidoynombre = :apellidoynombre, tipodocumento = :tipodocumento, nrodocumento = :nrodocumento, fechanacimiento = :fechanacimiento, nacionalidad = :nacionalidad, sexo = :sexo, estadocivil = :estadocivil, domicilio = :domicilio, indpostal = :indpostal, numpostal = :numpostal, alfapostal = :alfapostal, codlocali = :codlocali, codprovin = :codprovin, ddn = :ddn, telefono = :telefono, email = :email, fechaobrasocial = :fechaobrasocial, tipoafiliado = :tipoafiliado, solicitudopcion = :solicitudopcion, situaciontitularidad = :situaciontitularidad, cuil = :cuil, cuitempresa = :cuitempresa, fechaempresa = :fechaempresa, codidelega = :codidelega, categoria = :categoria, emitecarnet = :emitecarnet, informesss = :informesss, tipoinformesss = :tipoinformesss,  fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
+	$sqlActualizaTitular = "UPDATE titulares SET apellidoynombre = :apellidoynombre, tipodocumento = :tipodocumento, nrodocumento = :nrodocumento, fechanacimiento = :fechanacimiento, nacionalidad = :nacionalidad, sexo = :sexo, estadocivil = :estadocivil, domicilio = :domicilio, indpostal = :indpostal, numpostal = :numpostal, alfapostal = :alfapostal, codlocali = :codlocali, codprovin = :codprovin, ddn = :ddn, telefono = :telefono, email = :email, fechaobrasocial = :fechaobrasocial, tipoafiliado = :tipoafiliado, solicitudopcion = :solicitudopcion, situaciontitularidad = :situaciontitularidad, cuil = :cuil, cuitempresa = :cuitempresa, fechaempresa = :fechaempresa, codidelega = :codidelega, categoria = :categoria, emitecarnet = :emitecarnet, informesss = :informesss, tipoinformesss = :tipoinformesss,  fechainformesss = :fechainformesss, usuarioinformesss = :usuarioinformesss, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
 	$resActualizaTitular = $dbh->prepare($sqlActualizaTitular);
-	if($resActualizaTitular->execute(array(':nroafiliado' => $nroafiliado, ':apellidoynombre' => $apellidoynombre, ':tipodocumento' => $tipodocumento, ':nrodocumento' => $nrodocumento, ':fechanacimiento' => $fechanacimiento, ':nacionalidad' => $nacionalidad, ':sexo' => $sexo, ':estadocivil' => $estadocivil, ':domicilio' => $domicilio, ':indpostal' => $indpostal, ':numpostal' => $numpostal, ':alfapostal' => $alfapostal, ':codlocali' => $codlocali, ':codprovin' => $codprovin, ':ddn' => $ddn, ':telefono' => $telefono, ':email' => $email, ':fechaobrasocial' => $fechaobrasocial, ':tipoafiliado' => $tipoafiliado, ':solicitudopcion' => $solicitudopcion, ':situaciontitularidad' => $situaciontitularidad, ':cuil' => $cuil, ':cuitempresa' => $cuitempresa, ':fechaempresa' => $fechaempresa, ':codidelega' => $codidelega, ':categoria' => $categoria, ':emitecarnet' => $emitecarnet, ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion)))
-
+	if($resActualizaTitular->execute(array(':nroafiliado' => $_POST['nroafiliado'], ':apellidoynombre' => strtoupper($_POST['apellidoynombre']), ':tipodocumento' => $_POST['selectTipDoc'], ':nrodocumento' => $_POST['nrodocumento'], ':fechanacimiento' => fechaParaGuardar($_POST['fechanacimiento']), ':nacionalidad' => $_POST['selectNacion'], ':sexo' => $_POST['selectSexo'], ':estadocivil' => $_POST['selectEstCiv'], ':domicilio' => strtoupper($_POST['domicilio']), ':indpostal' => $_POST['indpostal'], ':numpostal' => $_POST['numpostal'], ':alfapostal' => $_POST['alfapostal'], ':codlocali' => $_POST['selectLocalidad'], ':codprovin' => $_POST['codprovin'], ':ddn' => $_POST['ddn'], ':telefono' => $_POST['telefono'], ':email' => strtolower($_POST['email']), ':fechaobrasocial' => fechaParaGuardar($_POST['fechaobrasocial']), ':tipoafiliado' => $_POST['selectTipoAfil'], ':solicitudopcion' => $_POST['solicitudopcion'], ':situaciontitularidad' => $_POST['selectSitTitular'], ':cuil' => $_POST['cuil'], ':cuitempresa' => $_POST['cuitempresa'], ':fechaempresa' => fechaParaGuardar($_POST['fechaempresa']), ':codidelega' => $_POST['selectDelega'], ':categoria' => strtoupper($_POST['categoria']), ':emitecarnet' => $_POST['selectEmiteCarnet'], ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechainformesss' => $fechainformesss, ':usuarioinformesss' => $usuarioinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion)))
 
 	$dbh->commit();
 	$pagina = "afiliado.php?nroAfi=$nroafiliado&estAfi=1";
 	Header("Location: $pagina"); 
 }
 catch (PDOException $e) {
-//	echo $e->getMessage();
+	echo $e->getMessage();
 	$dbh->rollback();
 }
 ?>

@@ -1,41 +1,35 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php");
+//var_dump($_POST);
+$ordenbusqueda = $_POST['seleccion'];
+$valorbusqueda = $_POST['valor'];
 
-$datos = array_values($_POST);
-
-//echo $datos[0]; echo "<br>";
-//echo $datos[1]; echo "<br>";
-
-if($datos[0] == "nroafil") {
+if(strcmp($ordenbusqueda, "nroafiliado")==0) {
 	$errorbusqueda = 1;
-	$ordenbusqueda = "nroafiliado";
 }
 
-if($datos[0] == "nrodocu") {
+if(strcmp($ordenbusqueda, "nrodocumento")==0) {
 	$errorbusqueda = 2;
-	$ordenbusqueda = "nrodocumento";
 }
 
-if($datos[0] == "nrocuil") {
+if(strcmp($ordenbusqueda, "cuil")==0) {
 	$errorbusqueda = 3;
-	$ordenbusqueda = "cuil";
 }
-
-$valorbusqueda = $datos[1];
 
 //echo $ordenbusqueda; echo "<br>";
 //echo $valorbusqueda; echo "<br>";
+//echo $errorbusqueda; echo "<br>";
 
-$sqltituacti = "select * from titulares where $ordenbusqueda = $valorbusqueda";
+$sqltituacti = "SELECT * FROM titulares WHERE $ordenbusqueda = '$valorbusqueda'";
 $restituacti = mysql_query($sqltituacti,$db);
 if (mysql_num_rows($restituacti)==0) {
-	$sqlfamiacti = "select * from familiares where $ordenbusqueda = $valorbusqueda";
+	$sqlfamiacti = "SELECT * FROM familiares WHERE $ordenbusqueda = '$valorbusqueda'";
 	$resfamiacti = mysql_query($sqlfamiacti,$db);
 	if (mysql_num_rows($resfamiacti)==0) {
-		$sqltitubaja = "select * from titularesdebaja where $ordenbusqueda = $valorbusqueda";
+		$sqltitubaja = "SELECT * FROM titularesdebaja WHERE $ordenbusqueda = '$valorbusqueda'";
 		$restitubaja = mysql_query($sqltitubaja,$db);
 		if (mysql_num_rows($restitubaja)==0) {
-			$sqlfamibaja = "select * from familiaresdebaja where $ordenbusqueda = $valorbusqueda";
+			$sqlfamibaja = "SELECT * FROM familiaresdebaja WHERE $ordenbusqueda = '$valorbusqueda'";
 			$resfamibaja = mysql_query($sqlfamibaja,$db);
 			if (mysql_num_rows($resfamibaja)==0) {
 				$noexiste = 1;
@@ -44,7 +38,7 @@ if (mysql_num_rows($restituacti)==0) {
 				$rowfamibaja = mysql_fetch_array($resfamibaja);
 				$nroafiliado = $rowfamibaja['nroafiliado'];
 
-				$sqlLeeAfiliado = "SELECT * FROM titulares where nroafiliado = $nroafiliado";
+				$sqlLeeAfiliado = "SELECT * FROM titulares WHERE nroafiliado = '$nroafiliado'";
 				$resLeeAfiliado = mysql_query($sqlLeeAfiliado,$db);
 				if (mysql_num_rows($resLeeAfiliado)==0)
 					$estafiliado = 0;
@@ -96,6 +90,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <title>.: ABM Afiliados :.</title>
 </head>
-<body bgcolor="#CCCCCC" > 
+<body bgcolor="#CCCCCC">
 </body>
 </html>

@@ -11,24 +11,22 @@ include($libPath."controlSessionOspim.php"); ?>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
 </style>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span class="Estilo2">Men&uacute; Afiliados  </span></p>
+	<h2>Men&uacute; Afiliados</h2>
+</div>
+<div align="center">
   <table width="600" border="3">
     <tr>
-      <td width="196"><p align="center">Alta, Modificaci&oacute;n y Consulta </p>
-        <p align="center"><a class="enlace" href="#"><img src="img/abmafil.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td width="196"><p align="center">Alta, Modificaci&oacute;n y Consulta</p>
+        <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmafil.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">Impresi&oacute;n de Carnets </p>
-          <p align="center"><a class="enlace" href="#"><img src="img/impafil.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td width="196"><p align="center">Carnets</p>
+          <p align="center"><a class="enlace" href="carnets/moduloImpresion.php"><img src="img/carnet.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">Solicitudes de Autorizacion </p>
+      <td width="196"><p align="center">Solicitudes de Autorizaci&oacute;n</p>
           <p align="center"><a class="enlace" href="verificaciones/buscaSolicitudes.php"><img src="img/autorizaciones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
