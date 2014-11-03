@@ -806,7 +806,7 @@ function validar(formulario) {
 	<tbody>
 <?php
 $canfamilia = 0;
-$sqlFamilia = "SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado' ORDER BY nroafiliado, nroorden";
+$sqlFamilia = "SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado' ORDER BY nroafiliado, tipoparentesco, fechanamiciento";
 $resFamilia = mysql_query($sqlFamilia,$db);
 if(mysql_num_rows($resFamilia)!=0) {
 	while($rowFamilia = mysql_fetch_array($resFamilia)) {
@@ -830,7 +830,7 @@ if(mysql_num_rows($resFamilia)!=0) {
 		$canfamilia++;
 	}
 }
-$sqlFamBaja = "SELECT * FROM familiaresdebaja WHERE nroafiliado = '$nroafiliado' ORDER BY nroafiliado, nroorden";
+$sqlFamBaja = "SELECT * FROM familiaresdebaja WHERE nroafiliado = '$nroafiliado' ORDER BY nroafiliado, tipoparentesco, fechanacimiento";
 $resFamBaja = mysql_query($sqlFamBaja,$db);
 if(mysql_num_rows($resFamBaja)!=0) {
 	while($rowFamBaja = mysql_fetch_array($resFamBaja)) {
