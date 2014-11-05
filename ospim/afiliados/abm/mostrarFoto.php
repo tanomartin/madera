@@ -4,10 +4,10 @@ $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
 
 if ($estafiliado == 1)
-	$sqlTitular = "select * from titulares where nroafiliado = $nroafiliado";
+	$sqlTitular = "SELECT foto FROM titulares WHERE nroafiliado = $nroafiliado";
 
 if ($estafiliado == 0)
-	$sqlTitular = "select * from titularesdebaja where nroafiliado = $nroafiliado";
+	$sqlTitular = "SELECT foto FROM titularesdebaja WHERE nroafiliado = $nroafiliado";
 
 $resTitular = mysql_query($sqlTitular,$db);
 $rowTitular = mysql_fetch_array($resTitular);

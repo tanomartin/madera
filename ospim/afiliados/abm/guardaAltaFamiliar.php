@@ -92,11 +92,11 @@ if(isset($_POST) && !empty($_POST)) {
 	}
 
 	if($noexiste) {
-		$sqlLeeFamilia = "SELECT * FROM familiares WHERE nroafiliado = $nroafiliado";
+		$sqlLeeFamilia = "SELECT nroafiliado FROM familiares WHERE nroafiliado = $nroafiliado";
 		$resLeeFamilia = mysql_query($sqlLeeFamilia,$db);
 		$canLeeFamilia = mysql_num_rows($resLeeFamilia);
 	
-		$sqlLeeFamiliaDebaja = "SELECT * FROM familiaresdebaja WHERE nroafiliado = $nroafiliado";
+		$sqlLeeFamiliaDebaja = "SELECT nroafiliado FROM familiaresdebaja WHERE nroafiliado = $nroafiliado";
 		$resLeeFamiliaDebaja = mysql_query($sqlLeeFamiliaDebaja,$db);
 		$canLeeFamiliaDebaja = mysql_num_rows($resLeeFamiliaDebaja);
 	

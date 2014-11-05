@@ -430,7 +430,7 @@ function validar(formulario) {
     <td colspan="2"><select name="selectTipDoc" id="selectTipDoc">
                    <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
-			     		$sqlTipDoc="select * from tipodocumento";
+			     		$sqlTipDoc="SELECT * FROM tipodocumento";
 						$resTipDoc=mysql_query($sqlTipDoc,$db);
 						while($rowTipDoc=mysql_fetch_array($resTipDoc)) { 	
 							echo "<option title ='$rowTipDoc[descrip]' value='$rowTipDoc[codtipdoc]'>".$rowTipDoc['descrip']."</option>";
@@ -447,7 +447,7 @@ function validar(formulario) {
     <td colspan="2"><select name="selectNacion" id="selectNacion">
                    <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
-			     		$sqlNacion="select * from nacionalidad order by descrip";
+			     		$sqlNacion="SELECT * FROM nacionalidad ORDER BY descrip";
 						$resNacion=mysql_query($sqlNacion,$db);
 						while($rowNacion=mysql_fetch_array($resNacion)) { 	
 							echo "<option title ='$rowNacion[descrip]' value='$rowNacion[codnacion]'>".$rowNacion['descrip']."</option>";
@@ -483,7 +483,7 @@ function validar(formulario) {
 		<select name="selectParentesco" id="selectParentesco">
                    <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
-			     		$sqlParentesco="select * from parentesco order by codparent";
+			     		$sqlParentesco="SELECT * FROM parentesco ORDER BY codparent";
 						$resParentesco=mysql_query($sqlParentesco,$db);
 						while($rowParentesco=mysql_fetch_array($resParentesco)) { 	
 							if($rowParentesco['codparent']!="00" && $rowParentesco['codparent']!="12") {

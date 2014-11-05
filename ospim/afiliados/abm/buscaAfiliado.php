@@ -20,16 +20,16 @@ if(strcmp($ordenbusqueda, "cuil")==0) {
 //echo $valorbusqueda; echo "<br>";
 //echo $errorbusqueda; echo "<br>";
 
-$sqltituacti = "SELECT * FROM titulares WHERE $ordenbusqueda = '$valorbusqueda'";
+$sqltituacti = "SELECT nroafiliado FROM titulares WHERE $ordenbusqueda = '$valorbusqueda'";
 $restituacti = mysql_query($sqltituacti,$db);
 if (mysql_num_rows($restituacti)==0) {
-	$sqlfamiacti = "SELECT * FROM familiares WHERE $ordenbusqueda = '$valorbusqueda'";
+	$sqlfamiacti = "SELECT nroafiliado FROM familiares WHERE $ordenbusqueda = '$valorbusqueda'";
 	$resfamiacti = mysql_query($sqlfamiacti,$db);
 	if (mysql_num_rows($resfamiacti)==0) {
-		$sqltitubaja = "SELECT * FROM titularesdebaja WHERE $ordenbusqueda = '$valorbusqueda'";
+		$sqltitubaja = "SELECT nroafiliado FROM titularesdebaja WHERE $ordenbusqueda = '$valorbusqueda'";
 		$restitubaja = mysql_query($sqltitubaja,$db);
 		if (mysql_num_rows($restitubaja)==0) {
-			$sqlfamibaja = "SELECT * FROM familiaresdebaja WHERE $ordenbusqueda = '$valorbusqueda'";
+			$sqlfamibaja = "SELECT nroafiliado FROM familiaresdebaja WHERE $ordenbusqueda = '$valorbusqueda'";
 			$resfamibaja = mysql_query($sqlfamibaja,$db);
 			if (mysql_num_rows($resfamibaja)==0) {
 				$noexiste = 1;
@@ -38,7 +38,7 @@ if (mysql_num_rows($restituacti)==0) {
 				$rowfamibaja = mysql_fetch_array($resfamibaja);
 				$nroafiliado = $rowfamibaja['nroafiliado'];
 
-				$sqlLeeAfiliado = "SELECT * FROM titulares WHERE nroafiliado = '$nroafiliado'";
+				$sqlLeeAfiliado = "SELECT nroafiliado FROM titulares WHERE nroafiliado = '$nroafiliado'";
 				$resLeeAfiliado = mysql_query($sqlLeeAfiliado,$db);
 				if (mysql_num_rows($resLeeAfiliado)==0)
 					$estafiliado = 0;

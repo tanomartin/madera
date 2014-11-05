@@ -8,7 +8,7 @@ if(isset($_POST) && !empty($_POST)) {
 	$nroafiliado = $_POST['nroafiliado'];
 	$nroorden = $_POST['nroorden'];
 
-	$sqlFamilia = "SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado' and nroorden = '$nroorden'";
+	$sqlFamilia = "SELECT informesss, tipoinformesss, fechainformesss, usuarioinformesss FROM familiares WHERE nroafiliado = '$nroafiliado' and nroorden = '$nroorden'";
 	$resFamilia = mysql_query($sqlFamilia,$db);
 	$rowFamilia = mysql_fetch_array($resFamilia);
 

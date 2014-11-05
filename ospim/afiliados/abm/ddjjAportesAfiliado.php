@@ -13,10 +13,10 @@ if($mesini == 1) {
 	$mesfin = ((int)date("m")-1);
 }
 
-$sqlTituActi = "SELECT * FROM titulares WHERE cuil = '$cuilafiliado'";
+$sqlTituActi = "SELECT nroafiliado, apellidoynombre FROM titulares WHERE cuil = '$cuilafiliado'";
 $resTituActi = mysql_query($sqlTituActi,$db);
 if (mysql_num_rows($resTituActi)==0) {
-	$sqlTituBaja = "SELECT * FROM titularesdebaja WHERE cuil = '$cuilafiliado'";
+	$sqlTituBaja = "SELECT nroafiliado, apellidoynombre FROM titularesdebaja WHERE cuil = '$cuilafiliado'";
 	$resTituBaja = mysql_query($sqlTituBaja,$db);
 	if (mysql_num_rows($resTituBaja)==0) {
 		$noexiste = 1;

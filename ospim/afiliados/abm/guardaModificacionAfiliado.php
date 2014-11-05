@@ -4,7 +4,7 @@ include($libPath."fechas.php");
 
 //var_dump($_POST);
 $nroafiliado = $_POST['nroafiliado'];
-$sqlTitular = "SELECT * FROM titulares WHERE nroafiliado = '$nroafiliado'";
+$sqlTitular = "SELECT informesss, tipoinformesss, fechainformesss, usuarioinformesss FROM titulares WHERE nroafiliado = '$nroafiliado'";
 $resTitular = mysql_query($sqlTitular,$db);
 $rowTitular = mysql_fetch_array($resTitular);
 

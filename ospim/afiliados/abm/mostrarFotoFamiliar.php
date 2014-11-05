@@ -5,10 +5,10 @@ $estfamilia=$_GET['estFam'];
 $ordafiliado=$_GET['nroOrd'];
 
 if ($estfamilia == 1)
-	$sqlFamilia = "select * from familiares where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
+	$sqlFamilia = "SELECT foto FROM familiares WHERE nroafiliado = $nroafiliado and nroorden = $ordafiliado";
 
 if ($estfamilia == 0)
-	$sqlFamilia = "select * from familiaresdebaja where nroafiliado = $nroafiliado and nroorden = $ordafiliado";
+	$sqlFamilia = "SELECT foto FROM familiaresdebaja WHERE nroafiliado = $nroafiliado and nroorden = $ordafiliado";
 
 $resFamilia = mysql_query($sqlFamilia,$db);
 $rowFamilia = mysql_fetch_array($resFamilia);

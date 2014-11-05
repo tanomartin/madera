@@ -470,7 +470,7 @@ function validar(formulario) {
     <td width="316"><select name="selectTipDoc" id="selectTipDoc">
                    <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
-			     		$sqlTipDoc="select * from tipodocumento";
+			     		$sqlTipDoc="SELECT * FROM tipodocumento";
 						$resTipDoc=mysql_query($sqlTipDoc,$db);
 						while($rowTipDoc=mysql_fetch_array($resTipDoc)) { 	
 							echo "<option title ='$rowTipDoc[descrip]' value='$rowTipDoc[codtipdoc]'>".$rowTipDoc['descrip']."</option>";
@@ -487,7 +487,7 @@ function validar(formulario) {
     <td><select name="selectNacion" id="selectNacion">
                    <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
-			     		$sqlNacion="select * from nacionalidad order by descrip";
+			     		$sqlNacion="SELECT * FROM nacionalidad ORDER BY descrip";
 						$resNacion=mysql_query($sqlNacion,$db);
 						while($rowNacion=mysql_fetch_array($resNacion)) { 	
 							echo "<option title ='$rowNacion[descrip]' value='$rowNacion[codnacion]'>".$rowNacion['descrip']."</option>";
@@ -508,7 +508,7 @@ function validar(formulario) {
     <td colspan="3"><select name="selectEstCiv" id="selectEstCiv">
                    <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
-			     		$sqlEstCiv="select * from estadocivil";
+			     		$sqlEstCiv="SELECT * FROM estadocivil";
 						$resEstCiv=mysql_query($sqlEstCiv,$db);
 						while($rowEstCiv=mysql_fetch_array($resEstCiv)) { 	
 							echo "<option title ='$rowEstCiv[descrip]' value='$rowEstCiv[codestciv]'>".$rowEstCiv['descrip']."</option>";
@@ -572,7 +572,7 @@ function validar(formulario) {
     <td colspan="3"><select name="selectSitTitular" id="selectSitTitular">
                    <option title="Seleccione un valor" value="">Seleccione un valor</option>
                    <?php 
-			     		$sqlSitTit="select * from tipotitular where codtiptit not in(2,3,6,9,11)";
+			     		$sqlSitTit="SELECT * FROM tipotitular WHERE codtiptit not in(2,3,6,9,11)";
 						$resSitTit=mysql_query($sqlSitTit,$db);
 						while($rowSitTit=mysql_fetch_array($resSitTit)) { 	
 							echo "<option title ='$rowSitTit[descrip]' value='$rowSitTit[codtiptit]'>".$rowSitTit['descrip']."</option>";
