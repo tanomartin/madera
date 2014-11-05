@@ -97,7 +97,7 @@ function habilitarServicios(valor) {
 			id++;
  <?php } ?>
 	}
-	if (valor == 2) {
+	if (valor == 2 || valor == 3) {
 	<?php 	
 		$query="select * from tiposervicio";
 		$result=mysql_query($query,$db);
@@ -192,6 +192,18 @@ function validar(formulario) {
 		if (tratamiento == 0) {
 			alert("Debe elegir una Tramtamiento para Persona Física");
 			return false;
+		}
+		if (formulario.matriculaNac.value != "") {
+			if (!esEntero(formulario.matriculaNac.value)) {
+				alert("El Nro. de Matricula Nacional debe ser un numero");
+				return false;
+			}
+		}
+		if (formulario.matriculaPro.value != "") {
+			if (!esEntero(formulario.matriculaPro.value)) {
+				alert("El Nro. de Matricula Provincial debe ser un numero");
+				return false;
+			}
 		}
 	}
 	if (formulario.nroRegistro.value != "") {
@@ -318,6 +330,7 @@ function validar(formulario) {
               <option value="0">Seleccione un valor </option>
 			  <option value="1">Profesional </option>
 			  <option value="2">Establecimiento </option>
+			  <option value="3">Círculo </option>
             </select>
         </div></td>
         <td colspan="4"><div align="left">

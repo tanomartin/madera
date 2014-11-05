@@ -9,7 +9,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Contrato Prestador :.</title>
+<title>.: Pofesionales Prestador :.</title>
 <style type="text/css">
 <!--
 .Estilo1 {
@@ -51,12 +51,18 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 		})
 	});
 	
+function abrirPantalla(dire) {
+	a= window.open(dire,'',
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+}
+
+	
 </script>
 
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><strong>Contrato Prestador</strong></p>
+  <p><strong>Profesionales del  Prestador</strong></p>
 	  <table width="500" border="1">
         <tr>
           <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -69,41 +75,39 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
           </div></td>
         </tr>
   </table>
-  	<p><strong>Pr&aacute;cticas</strong></p>
-  <?php 
-  		$sqlPracticas = "SELECT pr.*, p.valornonomenclado FROM practicaprestador p, practicas pr WHERE p.codigoprestador = $codigo and p.codigopractica = pr.codigopractica and p.nomenclador = pr.nomenclador";
-		$resPracticas = mysql_query($sqlPracticas,$db);
-		$numPracticas = mysql_num_rows($resPracticas);
-		if ($numPracticas > 0) {
+  	  <?php 
+  		$sqlProf = "SELECT codigoprofesional, nombre FROM profesionales WHERE codigoprestador = $codigo";
+		$resProf = mysql_query($sqlProf,$db);
+		$numProf  = mysql_num_rows($resProf);
+		if ($numProf > 0) {
   ?>
-	
-	 <table style="text-align:center; width:800px" id="practicas" class="tablesorter" >
+	<p>
+	<table style="text-align:center; width:600px" id="practicas" class="tablesorter" >
 			<thead>
 			  <tr>
 				<th>C&oacute;digo</th>
-				<th>Descripciones</th>
-				<th>Valor</th>
+				<th>Nombre</th>
 			  </tr>
 			</thead>
 			<tbody>
 			  <?php
-			while($rowPracticas = mysql_fetch_array($resPracticas)) {
+			while($rowProf= mysql_fetch_array($resProf)) {
 		?>
 			  <tr>
-				<td><?php echo $rowPracticas['codigopractica'];?></td>
-				<td><?php echo $rowPracticas['descripcion'];?></td>
-				<td><?php if ($rowPracticas['nomenclador'] == 1) { echo $rowPracticas['valornacional']; } else { echo $rowPracticas['valornonomenclado']; }?></td>
+				<td><?php echo $rowProf['codigoprofesional'];?></td>
+				<td><?php echo $rowProf['nombre'];?></td>
 			  </tr>
 			  <?php
 			}
 		?>
 			</tbody>
-		  </table>
-		  <p>
-	   		 <input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
-	 	 </p>
-		  
-	<?php } else { 	print("<div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </b></div><br>"); } ?>
+  </table>
+  </p>
+	<p>
+		<input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+   </p>	  
+	<?php } else { 	print("<p><div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE PROFESIONALES CARGADO </b></div></p>"); } ?>
+	    
 	
 </div>
 </body>

@@ -26,6 +26,10 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 }
 -->
 </style>
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
+
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
@@ -83,7 +87,10 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         <tr>
           <td><div align="right"><strong>Personer&iacute;a</strong></div></td>
           <td><div align="left">
-            <?php if($rowConsultaPresta['personeria'] == 1) { echo "Profesional"; } else { echo "Establecimiento"; } ?>
+            <?php 	if($rowConsultaPresta['personeria'] == 1) { echo "Profesional"; } 
+					if($rowConsultaPresta['personeria'] == 2) { echo "Establecimiento"; } 
+					if($rowConsultaPresta['personeria'] == 3) { echo "Círculo"; }
+			?>
           </div></td>
           <td><div align="left">
               <div align="left"><strong>Numero Registro SSS</strong></div>
@@ -148,22 +155,25 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 		} ?>
           </div></td>
         </tr>
-      </table>
-	  <table width="800" border="0">
+	</table>
+	 <p>
+	  <table width="600" border="0">
       <tr>
-        <td width="208"><div align="left">
-          <input name="modificar" type="button" value="Modificar"  onClick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
+        <td width="200"><div align="left">
+          <input class="nover" name="modificar" type="button" value="Modificar Prestador"  onClick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
         </div></td>
-        <td width="358">
-          <div align="center">
-            <input name="modificar2" type="button" value="Modificar Contrato"  onclick="location.href = 'modificarContrato.php?codigo=<?php echo $codigo ?>'" />
-          </div></td>
-        <td width="220"><div align="right">
-          <input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+        
+		<td width="200"><div align="center">
+		<?php if ($rowConsultaPresta['personeria'] == 3) { ?>
+            <input class="nover" name="profesionales" type="button" value="Modificar Profesionales"  onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
+        </div></td> 
+        <td width="200"><div align="center">
+          <input class="nover" name="modificar2" type="button" value="Modificar Contrato"  onclick="location.href = 'modificarContrato.php?codigo=<?php echo $codigo ?>'" />
         </div></td>
       </tr>
     </table>
-    <p>&nbsp;</p>
+	</p>
+    <p> <input class="nover" type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
 </div>
 </body>
 </html>

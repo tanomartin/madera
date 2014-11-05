@@ -101,7 +101,7 @@ function validar(formulario) {
 }
 
 function abrirPantalla(dire) {
-	a= window.open(dire,"DetalleAutorizacion",
+	a= window.open(dire,'',
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 
@@ -154,7 +154,11 @@ function abrirPantalla(dire) {
 			<td><?php echo $rowPrestador['cuit'];?></td>
 			<td><?php echo $rowPrestador['telefono1'];?></td>
 			<td><?php echo $rowPrestador['email'];?></td>
-			<td><input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> <!--| <input name="modificar" type="button" value="Modificar" onclick="abrirPantalla('modificarPrestador.php?codigo=<?php //echo $rowPrestador['codigoprestador'] ?>')"/>-->  | <input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratoPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/></td>
+			<td>
+				<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> | 
+				<input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratoPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
+				<?php if ($rowPrestador['personeria'] == 3) { ?> |  <input name="profesionales" type="button" value="Ver Profesionales" onclick="abrirPantalla('profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
+			</td>
 		</tr>
 	<?php
 		}
