@@ -84,13 +84,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php
 		}
 		?>
-		<tr align="center">
-			<td></td>
-			<td><b><?php echo number_format($total,2,',','.');?></b></td>
-			<td></td>
-		</tr>
 	</tbody>
   </table>
+  <div><b>TOTAL: <?php echo number_format($total,2,',','.');?></b></div>
     <table width="245" border="0">
       <tr>
         <td width="239">
