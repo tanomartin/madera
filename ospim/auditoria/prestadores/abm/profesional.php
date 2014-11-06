@@ -105,8 +105,10 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
         </tr>
 		<tr>
           <td><div align="left"><strong>Numero Registro SSS</strong></div></td>
-          <td colspan="5"><div align="left"><?php if ($rowConsultaProf['numeroregistrosss'] != 0) { echo $rowConsultaProf['numeroregistrosss']; } ?></div></td>
-        </tr>
+          <td><div align="left"><?php if ($rowConsultaProf['numeroregistrosss'] != 0) { echo $rowConsultaProf['numeroregistrosss']; } ?></div></td>
+          <td><strong>Activo</strong></td>
+		  <td colspan="3"><?php if ($rowConsultaProf['activo'] == 0 ) { echo "NO"; } else { echo "SI"; } ?></td>
+		</tr>
   </table>
   </p>
 <p><input class="nover" name="modificar" type="button" value="Modificar Profesional"  onClick="location.href='modificarProfesional.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" /></p>

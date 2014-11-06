@@ -37,6 +37,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 		.tablesorter({
 			theme: 'blue', 
 			widthFixed: true, 
+			headers:{2:{sorter:false}},
 			widgets: ["zebra", "filter"], 
 			widgetOptions : { 
 				filter_cssFilter   : '',
@@ -51,9 +52,14 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 		})
 	});
 	
-function abrirPantalla(dire) {
-	a= window.open(dire,'',
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+function activarDesactivar(accion, codigoprof, codigopresta) {
+	if (accion == 0) {
+		$.blockUI({ message: "<h1>Desactivando Profesional.<br> Espere por favor</h1>" });
+	} else {
+		$.blockUI({ message: "<h1>Activando Profesional.<br> Espere por favor</h1>" });
+	}
+	var pagina = "activarDesactivarProfesional.php?accion="+accion+"&codigoprof="+codigoprof+"&codigopresta="+codigopresta;
+	location.href = pagina;
 }
 
 	
@@ -76,7 +82,7 @@ function abrirPantalla(dire) {
         </tr>
   </table>
   	  <?php 
-  		$sqlProf = "SELECT codigoprofesional, nombre FROM profesionales WHERE codigoprestador = $codigo";
+  		$sqlProf = "SELECT codigoprofesional, nombre, activo FROM profesionales WHERE codigoprestador = $codigo";
 		$resProf = mysql_query($sqlProf,$db);
 		$numProf  = mysql_num_rows($resProf);
 		if ($numProf > 0) {
@@ -87,6 +93,7 @@ function abrirPantalla(dire) {
 			  <tr>
 				<th>C&oacute;digo</th>
 				<th>Nombre</th>
+				<th>Accion</th>
 			  </tr>
 			</thead>
 			<tbody>
@@ -96,6 +103,12 @@ function abrirPantalla(dire) {
 			  <tr>
 				<td><?php echo $rowProf['codigoprofesional'];?></td>
 				<td><?php echo $rowProf['nombre'];?></td>
+				<td><?php if ($rowProf['activo'] == 0) { ?> 
+							<input type="button" value="Activar" id="activar" onclick="activarDesactivar('1','<?php echo $rowProf['codigoprofesional']?>','<?php echo $codigo ?>')" />
+					<?php } else { ?>
+							<input type="button" value="Desactiar" id="desactivar" onclick="activarDesactivar('0','<?php echo $rowProf['codigoprofesional']?>','<?php echo $codigo ?>')" />
+					<?php } ?>
+				</td>
 			  </tr>
 			  <?php
 			}

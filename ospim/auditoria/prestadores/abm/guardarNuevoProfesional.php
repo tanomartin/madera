@@ -27,7 +27,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertProf = "INSERT INTO profesionales VALUES(DEFAULT,'$codigopresta','$nombre','$domicilio','$localidad','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email','$cuit','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistro','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertProf = "INSERT INTO profesionales VALUES(DEFAULT,'$codigopresta','$nombre','$domicilio','$localidad','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email','$cuit','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistro',DEFAULT,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];

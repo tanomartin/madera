@@ -24,6 +24,7 @@ $tratamiento = $_POST['selectTratamiento'];
 $matriculaNac = $_POST['matriculaNac'];
 $matriculaPro = $_POST['matriculaPro'];
 $nroRegistro = $_POST['nroRegistro'];
+$activo = $_POST['activo'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -47,7 +48,8 @@ cuit = '$cuit',
 tratamiento = '$tratamiento',
 matriculanacional = '$matriculaNac' ,
 matriculaprovincial = '$matriculaPro', 
-numeroregistrosss = '$nroRegistro', 
+numeroregistrosss = '$nroRegistro',
+activo = '$activo', 
 fehamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'
 WHERE codigoprofesional = $codigoprof and codigoprestador = $codigopresta";

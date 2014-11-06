@@ -234,7 +234,7 @@ function validar(formulario) {
       <tr>
         <td><div align="right"><strong>Tratamiento</strong></div></td>
         <td><div align="left">
-          <select name="selectTratamiento" size="1" id="selectTratamiento" <?php echo $disabled ?> >
+          <select name="selectTratamiento" size="1" id="selectTratamiento">
             <option value="0">Seleccione un valor </option>
             <?php 
 					$query="select * from tipotratamiento";
@@ -254,8 +254,15 @@ function validar(formulario) {
       </tr>
       <tr>
         <td><div align="left"><strong>Numero Registro SSS</strong></div></td>
-        <td colspan="5"><div align="left"><input name="nroRegistro" type="text" id="nroRegistro" size="10" value="<?php echo $rowConsultaProf['numeroregistrosss']?>"/></div></td>
-      </tr>
+        <td><div align="left"><input name="nroRegistro" type="text" id="nroRegistro" size="10" value="<?php echo $rowConsultaProf['numeroregistrosss']?>"/></div></td>
+      	<td colspan="4"><strong>Activo</strong> 
+			<?php if ($rowConsultaProf['activo'] == 0) { $selectedNo = "selected"; $selectedSi = ""; } else { $selectedNo = ""; $selectedSi = "selected"; } ?>
+			 <select name="activo" id="activo">
+            	<option value="0" <?php echo $selectedNo ?>>NO</option>
+				<option value="1" <?php echo $selectedSi ?>>SI</option>
+			 </select>
+		</td>
+	  </tr>
     </table>
     <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n"></p>
   </form>
