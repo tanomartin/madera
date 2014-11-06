@@ -24,6 +24,9 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 	font-size: 18px;
 	font-weight: bold;
 }
+.miestilo {
+	background-color: #CCCCCC;
+}
 -->
 </style>
 </head>
@@ -377,13 +380,21 @@ function validar(formulario) {
 					$ciculo = "selected";
 					$disabled="disabled"; 
 				}
-				?>
-          <select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)">
-            <option value="0">Seleccione un valor </option>
-            <option value="1" <?php echo $profesional ?>>Profesional </option>
-            <option value="2" <?php echo $establecimiento ?>>Establecimiento </option>
-			<option value="3" <?php echo $ciculo ?>>Círculo </option>
-          </select>
+				
+				$sqlNumProfesional = "select codigoprofesional from profesionales where codigoprestador = ".$rowConsultaPresta['codigoprestador']." and activo = 1";
+				$resNumProfesional=mysql_query($sqlNumProfesional,$db);
+				$cantidad = mysql_num_rows($resNumProfesional);
+				if ($cantidad > 0 and $rowConsultaPresta['personeria'] == 3) { 
+					$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
+				} else {
+					$deshabilitado = '';
+				} ?>
+		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" <?php echo $deshabilitado ?>>
+					<option value="0">Seleccione un valor </option>
+					<option value="1" <?php echo $profesional ?>>Profesional </option>
+					<option value="2" <?php echo $establecimiento ?>>Establecimiento </option>
+					<option value="3" <?php echo $ciculo ?>>Círculo </option>
+				  </select>
 </div></td>
         <td colspan="4"><div align="left">
             <div align="left"><strong>Numero Registro SSS</strong>

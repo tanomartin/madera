@@ -73,14 +73,13 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
+   <p><label><input type="button" name="nuevo" value="Nuevo Profesional" onclick="location.href = 'nuevoProfesional.php?codigopresta=<?php echo $codigo ?>' " /></label></p> 
 	<?php 
   		$sqlProf = "SELECT codigoprofesional, nombre FROM profesionales WHERE codigoprestador = $codigo";
 		$resProf = mysql_query($sqlProf,$db);
 		$numProf  = mysql_num_rows($resProf);
 		if ($numProf > 0) {
  		 ?>
-		 <p><label><input type="button" name="nuevo" value="Nuevo Profesional" onclick="location.href = 'nuevoProfesional.php?codigopresta=<?php echo $codigo ?>' " /></label></p> 
-		 
 		 <p>
        <table style="text-align:center; width:600px" id="profesionales" class="tablesorter" >
 			<thead>
