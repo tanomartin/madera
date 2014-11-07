@@ -25,7 +25,7 @@ if (isset($_POST['titularSeleccionado'])) {
 
 	$canTitularesAzul = 0;
 	$totCarnetAzul = 0;
-	$sqlTitularesAzul="SELECT * FROM titulares WHERE nroafiliado IN($titulares) and tipoafiliado = 'R'";
+	$sqlTitularesAzul="SELECT nroafiliado, apellidoynombre, fechaobrasocial, cuil, tipodocumento, nrodocumento, domicilio, codlocali, indpostal, numpostal, alfapostal, codidelega, cuitempresa FROM titulares WHERE nroafiliado IN($titulares) and tipoafiliado = 'R'";
 	//echo $sqlTitularesAzul;  echo "<br>";
 	$resTitularesAzul=mysql_query($sqlTitularesAzul,$db);
 	if(mysql_num_rows($resTitularesAzul)!=0) {
@@ -58,7 +58,7 @@ if (isset($_POST['titularSeleccionado'])) {
 			$listadoTitulares[] = array('nroafiliado' => $rowTitularesAzul['nroafiliado'], 'apellidoynombre' => $rowTitularesAzul['apellidoynombre'], 'afiliadosindical' => "S", 'cuitempresa' => $rowTitularesAzul['cuitempresa'], 'nombreempresa' => $nomempresa);
 
 			$nroafiliado = $rowTitularesAzul['nroafiliado'];
-			$sqlFamiliaresAzul="SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado' AND emitecarnet = 1";
+			$sqlFamiliaresAzul="SELECT tipoparentesco, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento FROM familiares WHERE nroafiliado = '$nroafiliado' AND emitecarnet = 1";
 			//echo $sqlFamiliaresAzul;  echo "<br>";
 			$resFamiliaresAzul=mysql_query($sqlFamiliaresAzul,$db);
 			if(mysql_num_rows($resFamiliaresAzul)!=0) {
@@ -145,7 +145,7 @@ if (isset($_POST['titularSeleccionado'])) {
 
 	$canTitularesBordo = 0;
 	$totCarnetBordo = 0;
-	$sqlTitularesBordo="SELECT * FROM titulares WHERE nroafiliado IN($titulares) and tipoafiliado = 'S'";
+	$sqlTitularesBordo="SELECT nroafiliado, apellidoynombre, fechaobrasocial, cuil, tipodocumento, nrodocumento, domicilio, codlocali, indpostal, numpostal, alfapostal, codidelega, cuitempresa FROM titulares WHERE nroafiliado IN($titulares) and tipoafiliado = 'S'";
 	//echo $sqlTitularesBordo;  echo "<br>";
 	$resTitularesBordo=mysql_query($sqlTitularesBordo,$db);
 	if(mysql_num_rows($resTitularesBordo)!=0) {
@@ -178,7 +178,7 @@ if (isset($_POST['titularSeleccionado'])) {
 			$listadoTitulares[] = array('nroafiliado' => $rowTitularesBordo['nroafiliado'], 'apellidoynombre' => $rowTitularesBordo['apellidoynombre'], 'afiliadosindical' => "N", 'cuitempresa' => $rowTitularesBordo['cuitempresa'], 'nombreempresa' => $nomempresa);
 
 			$nroafiliado = $rowTitularesBordo['nroafiliado'];
-			$sqlFamiliaresBordo="SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado' AND emitecarnet = 1";
+			$sqlFamiliaresBordo="SELECT tipoparentesco, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento FROM familiares WHERE nroafiliado = '$nroafiliado' AND emitecarnet = 1";
 			//echo $sqlFamiliaresBordo;  echo "<br>";
 			$resFamiliaresBordo=mysql_query($sqlFamiliaresBordo,$db);
 			if(mysql_num_rows($resFamiliaresBordo)!=0) {
@@ -264,7 +264,7 @@ if (isset($_POST['titularSeleccionado'])) {
 
 	$canTitularesRojo = 0;
 	$totCarnetRojo = 0;
-	$sqlTitularesRojo="SELECT * FROM titulares WHERE nroafiliado IN($titulares) and tipoafiliado = 'O'";
+	$sqlTitularesRojo="SELECT nroafiliado, apellidoynombre, fechaobrasocial, cuil, tipodocumento, nrodocumento, domicilio, codlocali, indpostal, numpostal, alfapostal, codidelega, cuitempresa FROM titulares WHERE nroafiliado IN($titulares) and tipoafiliado = 'O'";
 	//echo $sqlTitularesRojo;  echo "<br>";
 	$resTitularesRojo=mysql_query($sqlTitularesRojo,$db);
 	if(mysql_num_rows($resTitularesRojo)!=0) {
@@ -297,7 +297,7 @@ if (isset($_POST['titularSeleccionado'])) {
 			$listadoTitulares[] = array('nroafiliado' => $rowTitularesRojo['nroafiliado'], 'apellidoynombre' => $rowTitularesRojo['apellidoynombre'], 'afiliadosindical' => "N", 'cuitempresa' => $rowTitularesRojo['cuitempresa'], 'nombreempresa' => $nomempresa);
 
 			$nroafiliado = $rowTitularesRojo['nroafiliado'];
-			$sqlFamiliaresRojo="SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado' AND emitecarnet = 1";
+			$sqlFamiliaresRojo="SELECT tipoparentesco, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento FROM familiares WHERE nroafiliado = '$nroafiliado' AND emitecarnet = 1";
 			//echo $sqlFamiliaresRojo;  echo "<br>";
 			$resFamiliaresRojo=mysql_query($sqlFamiliaresRojo,$db);
 			if(mysql_num_rows($resFamiliaresRojo)!=0) {
@@ -383,7 +383,7 @@ if (isset($_POST['titularSeleccionado'])) {
 
 	$canTitularesVerde = 0;
 	$totCarnetVerde = 0;
-	$sqlTitularesVerde="SELECT * FROM titulares WHERE nroafiliado IN($titulares) and tipoafiliado IN('R','S')";
+	$sqlTitularesVerde="SELECT nroafiliado, apellidoynombre, fechaobrasocial, cuil, tipodocumento, nrodocumento, domicilio, codlocali, indpostal, numpostal, alfapostal, codidelega, cuitempresa FROM titulares WHERE nroafiliado IN($titulares) and tipoafiliado IN('R','S')";
 	//echo $sqlTitularesVerde;  echo "<br>";
 	$resTitularesVerde=mysql_query($sqlTitularesVerde,$db);
 	if(mysql_num_rows($resTitularesVerde)!=0) {
@@ -414,7 +414,7 @@ if (isset($_POST['titularSeleccionado'])) {
 			$pdf->Cell(50,3,"EMP: ".substr($nomempresa,0,24),0,1,'L');
 
 			$nroafiliado = $rowTitularesVerde['nroafiliado'];
-			$sqlFamiliaresVerde="SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado' AND emitecarnet = 1";
+			$sqlFamiliaresVerde="SELECT tipoparentesco, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento FROM familiares WHERE nroafiliado = '$nroafiliado' AND emitecarnet = 1";
 			//echo $sqlFamiliaresVerde;  echo "<br>";
 			$resFamiliaresVerde=mysql_query($sqlFamiliaresVerde,$db);
 			if(mysql_num_rows($resFamiliaresVerde)!=0) {
