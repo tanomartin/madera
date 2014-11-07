@@ -48,6 +48,7 @@ function informaTitulares() {
 		if ($canTitulares > 0) {?>
  	   		alert("Hay titulares de baja para este CUIT.\nInformar al departamento de Afiliaciones");
   <?php }   ?>
+  		$.blockUI({ message: "<h1>Reactivando Empresa... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 		location.href="reactivarEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
 }
 
@@ -99,7 +100,7 @@ function rediSabanaCtaCte(origen) {
 	?>
   </p>
   <p>
-    <input name="Input" type="button" value="Reactivar Empresa" onClick="'informaTitulares()'" />
+    <input name="Input" type="button" value="Reactivar Empresa" onClick='informaTitulares()' />
   </p>
   <p>
     <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" />

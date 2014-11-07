@@ -40,6 +40,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
@@ -61,6 +62,7 @@ function validar(formulario) {
 		alert("La fecha de baja es obligatoria");
 		return false;
 	}
+	$.blockUI({ message: "<h1>Bajando Empresa... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	return true;
 }
 

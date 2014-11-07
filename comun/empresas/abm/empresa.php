@@ -107,11 +107,11 @@ function rediSabanaCtaCte(origen) {
         <?php if ($origen == "ospim") { ?>
 			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')"/>
 		<?php } else {?>
-			<input name="ctacteUsimra" type="button" value="Cuenta Corriente"/>
+			<input name="ctacteUsimra" type="button" value="Cuenta Corriente" />
 		<?php } ?>
       </div></td>
       <td width="97"><div align="center">
-		<input name="beneficiarios" type="button" value="Beneficiarios"/>
+		<input name="beneficiarios" type="button" value="Beneficiarios" />
       </div></td>
     </tr>
   </table>
