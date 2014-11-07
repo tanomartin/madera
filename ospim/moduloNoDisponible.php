@@ -19,7 +19,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 <form method="POST" action="verificador.php">
   <div align="center">
     <p class="Estilo1">¡¡¡ALTO!!!!</p>
-    <p><img src="img/manoStop.jpg" width="296" height="282"> </p>
+    <p><img src="img/stop.png"> </p>
     <p>MODULO NO DISPONBLE </p>
   </div>
 </form>
