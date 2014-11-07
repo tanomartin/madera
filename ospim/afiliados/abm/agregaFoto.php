@@ -74,7 +74,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td colspan="2">&nbsp;</td>
 			<td rowspan="3">
 				<div align="center">
-					<input class="nover" type="button" name="scanear2" value="Scanear Foto" onClick="location.href = 'scanearFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=<?php echo $estfamilia?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+					<input class="nover" type="button" name="scanear2" value="Scanear Foto" disabled="disabled" onClick="location.href = 'scanearFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=<?php echo $estfamilia?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
 				</div>
 			</td>
 		</tr>
