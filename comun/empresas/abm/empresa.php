@@ -46,7 +46,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 function validarBaja() {
 	<?php 
-		$sqlTitulares = "select * from titulares where cuitempresa = $cuit";
+		$sqlTitulares = "select nroafiliado from titulares where cuitempresa = $cuit";
 		$resTitulares = mysql_query($sqlTitulares,$db); 
 		$canTitulares = mysql_num_rows($resTitulares); 
 		if ($canTitulares > 0) {
@@ -101,17 +101,17 @@ function rediSabanaCtaCte(origen) {
   <table width="346" border="0">
     <tr>
       <td width="112"><div align="center">
-        <input name="modifCabecera" type="button" value="Modificar Cabecera" onClick="location.href='modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '">
+        <input name="modifCabecera" type="button" value="Modificar Cabecera" onClick="location.href='modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '"/>
       </div></td>
       <td width="123"><div align="center">
         <?php if ($origen == "ospim") { ?>
-			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')">
+			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')"/>
 		<?php } else {?>
-			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
+			<input name="ctacteUsimra" type="button" value="Cuenta Corriente"/>
 		<?php } ?>
       </div></td>
       <td width="97"><div align="center">
-		<input name="beneficiarios" type="button" value="Beneficiarios">
+		<input name="beneficiarios" type="button" value="Beneficiarios"/>
       </div></td>
     </tr>
   </table>
@@ -147,7 +147,7 @@ function rediSabanaCtaCte(origen) {
 			//TODO VER ddjj de USIMRA TAMBIEN
 		}
 		if ($controlAcuYJuicios == 0 and $CanDdjj == 0) { ?>
-		    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()">
+		    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()"/>
   <?php } ?>
 	
   </p>
@@ -157,11 +157,11 @@ function rediSabanaCtaCte(origen) {
 	?>
   </p>
   <p>
-    <input name="Input5" type="button" value="Disgregacion Dineraria" onClick='location.href="disgregaDinero.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
-    <input name="Input4" type="button" value="Agregar Jurisdiccion" onclick='location.href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'>
+    <input name="Input5" type="button" value="Disgregacion Dineraria" onClick='location.href="disgregaDinero.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'/>
+    <input name="Input4" type="button" value="Agregar Jurisdiccion" onclick='location.href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'/>
   </p>
   <p>
-    <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" >
+    <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" />
   </p>
 </div>
 </body>

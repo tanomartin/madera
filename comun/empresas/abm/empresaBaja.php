@@ -42,7 +42,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 function informaTitulares() {
 	<?php 
-		$sqlTitulares = "select * from titularesdebaja where cuitempresa = $cuit";
+		$sqlTitulares = "select nroafiliado from titularesdebaja where cuitempresa = $cuit";
 		$resTitulares = mysql_query($sqlTitulares,$db); 
 		$canTitulares = mysql_num_rows($resTitulares); 
 		if ($canTitulares > 0) {?>
@@ -67,7 +67,7 @@ function rediSabanaCtaCte(origen) {
 </head>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'" align="center"/> 
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'" align="center" /> 
   <p>
     <?php 
 		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
@@ -88,9 +88,9 @@ function rediSabanaCtaCte(origen) {
   </table>
   <p>
     	<?php if ($origen == "ospim") { ?>
-			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')">
+			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')" />
 		<?php } else {?>
-			<input name="ctacteUsimra" type="button" value="Cuenta Corriente">
+			<input name="ctacteUsimra" type="button" value="Cuenta Corriente" />
 		<?php } ?>
   </p>
   <p>
@@ -99,10 +99,10 @@ function rediSabanaCtaCte(origen) {
 	?>
   </p>
   <p>
-    <input name="Input" type="button" value="Reactivar Empresa" onClick='informaTitulares()'">
+    <input name="Input" type="button" value="Reactivar Empresa" onClick="'informaTitulares()'" />
   </p>
   <p>
-    <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" >
+    <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left" />
   </p>
 </div>
 </body>
