@@ -14,6 +14,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <body bgcolor="#CCCCCC">
 <div align="center">
+	<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAfiliados.php'" align="center"/> 
+</div>
+<div align="center">
 	<h2>Men&uacute; Carnets</h2>
 </div>
 <div align="center">
