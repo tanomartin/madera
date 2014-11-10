@@ -46,7 +46,7 @@ while($rowTituDDJJ = mysql_fetch_array($resTituDDJJ)) {
 //var_dump($perd);
 
 (int)$indTituApor = 0;
-$sqlTituApor = "SELECT anopago, mespago, cuit, importe FROM afiptransferencias WHERE anopago >= '$anoini' AND concepto = 381 AND cuil = '$cuilafiliado' ORDER BY anopago DESC, mespago DESC, cuit ASC";
+$sqlTituApor = "SELECT anopago, mespago, cuit, importe FROM afiptransferencias WHERE anopago >= '$anoini' AND (concepto = '381' OR concepto = 'C14' OR concepto = 'O02' OR concepto = 'T14' OR concepto = 'T55') AND cuil = '$cuilafiliado' ORDER BY anopago DESC, mespago DESC, cuit ASC";
 $resTituApor = mysql_query($sqlTituApor,$db);
 while($rowTituApor = mysql_fetch_array($resTituApor)) {
 	$apor[$rowTituApor['anopago']][$rowTituApor['mespago']] = array('cuit' => $rowTituApor['cuit'], 'impo' => $rowTituApor['importe']);
