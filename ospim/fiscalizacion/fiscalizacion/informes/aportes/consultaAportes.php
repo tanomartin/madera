@@ -37,13 +37,16 @@ function redireccion(formulario) {
 	}
 	direccion = "#";
 	if (formulario.filtro[0].checked) {
-		direccion = "carlos.php?cuil="+formulario.dato.value;
+		direccion = "../../../../afiliados/abm/ddjjAportesAfiliado.php?cuiAfi="+formulario.dato.value;
+		opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no"
+		window.open(direccion, "", opciones);
 	} else {
 		direccion = "aportesListado.php";
+		$.blockUI({ message: "<h1>Generando Informe... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
+		formulario.action = direccion;
+		formulario.submit();
 	}
-	$.blockUI({ message: "<h1>Generando Informe... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
-	formulario.action = direccion;
-	formulario.submit();
+	
 }
 
 </script>
