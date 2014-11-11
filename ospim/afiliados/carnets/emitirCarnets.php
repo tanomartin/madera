@@ -13,6 +13,46 @@ $lote = date("YmdHis");
 $usuariolote = $_SESSION['usuario'];
 $fechalote = date("Y-m-d H:i:s");
 
+switch(date("m"))  
+{  
+	case "01":  
+		$nombremes="Enero";
+	break;  
+	case "02":  
+		$nombremes="Febrero";
+	break;  
+	case "03":  
+		$nombremes="Marzo";
+	break;  
+	case "04":  
+		$nombremes="Abril";
+	break;  
+	case "05":  
+		$nombremes="Mayo";
+	break;  
+	case "06":  
+		$nombremes="Junio";
+	break;  
+	case "07":  
+		$nombremes="Julio";
+	break;  
+	case "08":  
+		$nombremes="Agosto";
+	break;  
+	case "09":  
+		$nombremes="Setiembre";
+	break;  
+	case "10":  
+		$nombremes="Octubre";
+	break;  
+	case "11":  
+		$nombremes="Noviembre";
+	break;  
+	case "12":  
+		$nombremes="Diciembre";
+	break;  
+}  
+
 if (isset($_POST['titularSeleccionado'])) {
 	$titular = $_POST['titularSeleccionado'];
 	for($i=0; $i<count($titular); $i++) {
@@ -540,7 +580,7 @@ if (isset($_POST['titularSeleccionado'])) {
 		$pdfn->Cell(69,5,'Solidaridad  y  Organización  al  Servicio   de   la  Familia',0,1,'L');
 		$pdfn->Ln(22);
 		$pdfn->SetFont('Arial','',11);
-		$pdfn->Cell(196,5,"Buenos Aires, ".date("j")." de ".date("F")." de ".date("Y").".-",0,1,'R');
+		$pdfn->Cell(196,5,"Buenos Aires, ".date("j")." de ".$nombremes." de ".date("Y").".-",0,1,'R');
 		$pdfn->Ln(5);
 		$pdfn->Cell(196,4,'Compañero',0,1,'L');
 		$pdfn->SetFont('Arial','B',11);
