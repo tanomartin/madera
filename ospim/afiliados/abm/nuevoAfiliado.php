@@ -2,11 +2,6 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $base = $_SESSION['dbname'];
-
-$sqlBuscaNro = "SELECT AUTO_INCREMENT FROM information_schema.TABLES
-WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'titulares'";
-$resBuscaNro = mysql_query($sqlBuscaNro,$db);
-$rowBuscaNro = mysql_fetch_array($resBuscaNro);
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -451,8 +446,7 @@ function validar(formulario) {
 <table width="1205" height="100" border="0">
   <tr>
 	<td width="212" align="left" valign="middle"><img src="../img/Familiar sin Foto.jpg" alt="Foto" width="115" height="115"></td>
-    <td width="983" align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span><strong>  
-    <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" /></strong></div></td>
+    <td width="983" align="left" valign="middle"></td>
   </tr>
 </table>
 <table width="1205" border="0">
