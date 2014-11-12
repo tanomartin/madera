@@ -51,9 +51,79 @@ jQuery(function($){
 		});
 	});
 	
+	$("#cuit").change(function(){
+		var cuit = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "existePrestaCuit.php",
+			data: {cuit:cuit},
+		}).done(function(respuesta){
+			if (respuesta == 1) {
+				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' existe en otro prestador");
+				$("#cuit").val("");
+			} else {
+				$("#errorCuit").html("");
+			} 
+		});
+	});
+	
+	$("#nroRegistro").change(function(){
+		var nroreg = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "existePrestaNroSSS.php",
+			data: {nroreg:nroreg},
+		}).done(function(respuesta){
+			if (respuesta == 1) {
+				$("#errorSSS").html("El Nro de Registro de la SSS '" + nroreg + "' existe en otro prestador");
+				$("#nroRegistro").val("");
+			} else {
+				$("#errorSSS").html("");
+			} 
+		});
+	});
+	
+	$("#matriculaNac").change(function(){
+		var matricula = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "existeMatriculaNac.php",
+			data: {matricula:matricula},
+		}).done(function(respuesta){
+			if (respuesta == 1) {
+				$("#errorMatNac").html("La Matricula Nac. Nro. '" + matricula + "' existe en otro prestador");
+				$("#matriculaNac").val("");
+			} else {
+				$("#errorMatNac").html("");
+			} 
+		});
+	});
+	
+	$("#matriculaPro").change(function(){
+		var matricula = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "existeMatriculaPro.php",
+			data: {matricula:matricula},
+		}).done(function(respuesta){
+			if (respuesta == 1) {
+				$("#errorMatPro").html("La Matricula Prov. Nro. '" + matricula + "' existe en otro prestador");
+				$("#matriculaPro").val("");
+			} else {
+				$("#errorMatPro").html("");
+			} 
+		});
+	});
+	
 });
 
 function habilitaCamposProfesional(valor) {
+	document.getElementById("errorMatNac").innerHTML = "";
+	document.getElementById("errorMatPro").innerHTML = "";
 	if (valor == 1) {
 		document.forms.nuevoPrestador.selectTratamiento.disabled = false;
 		document.forms.nuevoPrestador.matriculaNac.disabled = false;
@@ -123,6 +193,10 @@ function validar(formulario) {
 		alert("El campo domicilio es obligatrio");
 		return false;
 	}
+	if (!verificaCuilCuit(formulario.cuit.value)){
+		alert("C.U.I.T invalido");
+		return false;
+	}
 	if (formulario.codPos.value == "") {
 		alert("El campo Codigo Postal es obligatrio");
 		return false;
@@ -177,10 +251,6 @@ function validar(formulario) {
 			alert("Email invalido");
 			return false;
 		}
-	}
-	if (!verificaCuilCuit(formulario.cuit.value)){
-		alert("C.U.I.T invalido");
-		return false;
 	}
 	var personeria = formulario.selectPersoneria.options[formulario.selectPersoneria.selectedIndex].value;
 	if (personeria == 0) {
@@ -277,9 +347,12 @@ function validar(formulario) {
       </tr>
       <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td colspan="5"><div align="left">
-          <input name="cuit" type="text" id="cuit" size="13" />
-        </div></td>
+        <td colspan="5">
+		<div id="errorCuit" style="color:#FF0000"></div>
+		<div align="left">
+			<input name="cuit" type="text" id="cuit" size="13" />
+        </div>
+		</td>
       </tr>
       <tr>
         <td><div align="right"><strong>Codigo Postal</strong></div></td>
@@ -333,7 +406,9 @@ function validar(formulario) {
 			  <option value="3">Círculo </option>
             </select>
         </div></td>
-        <td colspan="4"><div align="left">
+        <td colspan="4">
+		<div id="errorSSS" style="color:#FF0000"></div>
+		<div align="left">
           <div align="left"><strong>Numero Registro SSS
             <input name="nroRegistro" type="text" id="nroRegistro" size="10" />
           </strong></div>
@@ -353,10 +428,14 @@ function validar(formulario) {
             <?php } ?>
           </select>
 	    </div></td>
-        <td><div align="left"><strong>Matr&iacute;cula Nacional </strong>
+        <td>
+		   <div id="errorMatNac" style="color:#FF0000"></div>
+		   <div align="left"><strong>Matr&iacute;cula Nacional </strong>
           <input name="matriculaNac" type="text" id="matriculaNac" size="10" disabled="disabled"/>
         </div></td>
-        <td colspan="3"><div align="left"><strong>Matr&iacute;culo Provincial </strong>
+        <td colspan="3">
+		<div id="errorMatPro" style="color:#FF0000"></div>
+		<div align="left"><strong>Matr&iacute;culo Provincial </strong>
             <input name="matriculaPro" type="text" id="matriculaPro" size="10" disabled="disabled"/>
         </div></td>
       </tr>
