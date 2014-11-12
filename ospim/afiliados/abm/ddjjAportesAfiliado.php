@@ -56,13 +56,27 @@ while($rowTituApor = mysql_fetch_array($resTituApor)) {
 //var_dump($apor);
 //var_dump($pera);
 
+(int)$indTituDese = 0;
+$sqlTituDese = "SELECT anodesempleo, mesdesempleo, fechainformesss, clave FROM desempleosss WHERE anodesempleo >= '$anoini' AND cuiltitular = '$cuilafiliado' AND parentesco = 0 ORDER BY anodesempleo DESC, mesdesempleo DESC";
+$resTituDese = mysql_query($sqlTituDese,$db);
+while($rowTituDese = mysql_fetch_array($resTituDese)) {
+	$dese[$rowTituDese['anodesempleo']][$rowTituDese['mesdesempleo']] = array('fech' => $rowTituDese['fechainformesss'], 'clav' => $rowTituDese['clave']);
+	$pere[$indTituDese] = array('ano' => $rowTituDese['anodesempleo'], 'mes' => $rowTituDese['mesdesempleo']);
+	$indTituDese++;
+}
+//var_dump($dese);
+//var_dump($pere);
+
+
 if(count($ddjj) != 0) {
 	foreach($perd as $dj) {
 		$cuitddjj = $ddjj[$dj[ano]][$dj[mes]]['cuit'];
 		$remuddjj = $ddjj[$dj[ano]][$dj[mes]]['remu'];
 		$cuitapor = $apor[$dj[ano]][$dj[mes]]['cuit'];
 		$impoapor = $apor[$dj[ano]][$dj[mes]]['impo'];
-		$listado[$dj[ano]][$dj[mes]] = array('cuitddjj' => $cuitddjj, 'remuddjj' => $remuddjj, 'cuitapor' => $cuitapor, 'impoapor' => $impoapor);
+		$fechdese = $dese[$dj[ano]][$dj[mes]]['fech'];
+		$clavdese = $dese[$dj[ano]][$dj[mes]]['clav'];
+		$listado[$dj[ano]][$dj[mes]] = array('cuitddjj' => $cuitddjj, 'remuddjj' => $remuddjj, 'cuitapor' => $cuitapor, 'impoapor' => $impoapor, 'fechdese' => $fechdese, 'clavdese' => $clavdese);
 	}
 }
 
@@ -72,9 +86,25 @@ if(count($apor) != 0) {
 		$remuddjj = $ddjj[$ap[ano]][$ap[mes]]['remu'];
 		$cuitapor = $apor[$ap[ano]][$ap[mes]]['cuit'];
 		$impoapor = $apor[$ap[ano]][$ap[mes]]['impo'];
-		$listado[$ap[ano]][$ap[mes]] = array('cuitddjj' => $cuitddjj, 'remuddjj' => $remuddjj, 'cuitapor' => $cuitapor, 'impoapor' => $impoapor);
+		$fechdese = $dese[$ap[ano]][$ap[mes]]['fech'];
+		$clavdese = $dese[$ap[ano]][$ap[mes]]['clav'];
+		$listado[$ap[ano]][$ap[mes]] = array('cuitddjj' => $cuitddjj, 'remuddjj' => $remuddjj, 'cuitapor' => $cuitapor, 'impoapor' => $impoapor, 'fechdese' => $fechdese, 'clavdese' => $clavdese);
 	}
 }
+
+if(count($dese) != 0) {
+	foreach($pere as $de) {
+		$cuitddjj = $ddjj[$de[ano]][$de[mes]]['cuit'];
+		$remuddjj = $ddjj[$de[ano]][$de[mes]]['remu'];
+		$cuitapor = $apor[$de[ano]][$de[mes]]['cuit'];
+		$impoapor = $apor[$de[ano]][$de[mes]]['impo'];
+		$fechdese = $dese[$de[ano]][$de[mes]]['fech'];
+		$clavdese = $dese[$de[ano]][$de[mes]]['clav'];
+		$listado[$de[ano]][$de[mes]] = array('cuitddjj' => $cuitddjj, 'remuddjj' => $remuddjj, 'cuitapor' => $cuitapor, 'impoapor' => $impoapor, 'fechdese' => $fechdese, 'clavdese' => $clavdese);
+	}
+}
+
+
 //var_dump($listado);
 ?>
 
@@ -107,7 +137,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra"],
-			headers:{0:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}, 7:{sorter:false}}
+			headers:{0:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}, 7:{sorter:false}, 8:{sorter:false}, 9:{sorter:false}, 10:{sorter:false}}
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
@@ -118,7 +148,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div><h3>C.U.I.L.: <?php echo $cuilafiliado;?></h3></div>
 <div><h3>Afiliado: <?php if ($noexiste) { echo "NO EMPADRONADO"; } else { echo $nroafiliado." - ".$nomafiliado." - ".$estafiliado; }?></h3></div>
 <?php
-if(count($ddjj) == 0 && count($apor) == 0) {
+if(count($ddjj) == 0 && count($apor) == 0 && count($dese) == 0) {
 ?>
 <div align="center"><h3>No existen DDJJ ni APORTES</h3></div>
 <?php
@@ -132,12 +162,15 @@ if(count($ddjj) == 0 && count($apor) == 0) {
 			<th rowspan="2">A&ntilde;o</th>
 			<th colspan="2">DDJJ</th>
 			<th colspan="2">Aporte</th>
+			<th colspan="2">Subsidio Desempleo</th>
 		</tr>
 		<tr>
 			<th>C.U.I.T.</th>
 			<th>Remuneracion</th>
 			<th>C.U.I.T.</th>
 			<th>Importe</th>
+			<th>Informado</th>
+			<th>Clave</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -166,6 +199,16 @@ while($ano>=$anoini) {
 		} else {
 			$limpapor = "-";
 		}
+		if($listado[$ano][$mes]['fechdese']) {
+			$lfecdese = $listado[$ano][$mes]['fechdese'];
+		} else {
+			$lfecdese = "-";
+		}
+		if($listado[$ano][$mes]['clavdese']) {
+			$lcladese = $listado[$ano][$mes]['clavdese'];
+		} else {
+			$lcladese = "-";
+		}
 ?>
 		<tr align="center">
 			<td><?php echo $mes ?></td>
@@ -174,6 +217,8 @@ while($ano>=$anoini) {
 			<td><?php echo $lremddjj ?></td>
 			<td><?php echo $lcuiapor ?></td>
 			<td><?php echo $limpapor ?></td>
+			<td><?php echo $lfecdese ?></td>
+			<td><?php echo $lcladese ?></td>
 		</tr>
 <?php
 		$mes--;
