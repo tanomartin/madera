@@ -76,6 +76,8 @@ fclose($ar);
 $sqlImport = "LOAD DATA LOCAL INFILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
 
 $linkid = mysqli_init();
+$hostname = $_SESSION['host'];
+$dbname = $_SESSION['dbname'];
 mysqli_options($linkid, MYSQLI_OPT_LOCAL_INFILE, true);
 mysqli_real_connect($linkid, $hostname, $_SESSION['usuario'], $_SESSION['clave'], $dbname);
 $resLoadAnses = mysqli_query($linkid, $sqlImport);
