@@ -32,8 +32,28 @@ if($rowFamilia['certificadoestudio'] == 1) {
 	$vencimientocertificadoestudio = "";
 }
 
+if($rowFamilia['discapacidad'] == 1) {
+	$sqlLeeDiscapacidad = "SELECT emisioncertificado, vencimientocertificado FROM discapacitados WHERE nroafiliado = '$nroafiliado' and nroorden = '$ordafiliado'";
+	$resLeeDiscapacidad = mysql_query($sqlLeeDiscapacidad,$db);
+	$rowLeeDiscapacidad = mysql_fetch_array($resLeeDiscapacidad);
+	
+	$discapacidad = "Si";
+	if($rowFamilia['certificadodiscapacidad'] == 1) {
+		$certificadodiscapacidad = "Si";
+		$emisiondiscapacidad = invertirFecha($rowLeeDiscapacidad['emisioncertificado']);
+		$vencimientodiscapacidad = invertirFecha($rowLeeDiscapacidad['vencimientocertificado']);
+	} else {
+		$certificadodiscapacidad = "No";
+		$emisiondiscapacidad = "";
+		$vencimientodiscapacidad = "";
+	}
+} else {
+	$discapacidad = "No";
+	$certificadodiscapacidad = "No";
+	$emisiondiscapacidad = "";
+	$vencimientodiscapacidad = "";
+}
 ?>
-
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -591,13 +611,13 @@ function validar(formulario) {
 		<tr>
 			<td>Discapacidad:</td>
 			<td>
-				<input name="discapacidad" type="text" id="discapacidad" value="<?php if($rowFamilia['discapacidad']==0) echo "NO"; else echo "SI"; ?>" size="2" readonly="true" style="background-color:#CCCCCC" />
+				<input name="discapacidad" type="text" id="discapacidad" value="<?php echo $discapacidad?>" size="2" readonly="true" style="background-color:#CCCCCC" />
 			  Certif:
-				<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php if($rowFamilia['certificadodiscapacidad']==0) echo "NO"; else echo "SI"; ?>" size="2" readonly="true" style="background-color:#CCCCCC" />
+				<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $certificadodiscapacidad?>" size="2" readonly="true" style="background-color:#CCCCCC" />
 			  Emision:
-				<input name="emisiondiscapacidad" type="text" id="emisiondiscapacidad" value="" size="10" readonly="true" style="background-color:#CCCCCC" />
+				<input name="emisiondiscapacidad" type="text" id="emisiondiscapacidad" value="<?php echo $emisiondiscapacidad?>" size="10" readonly="true" style="background-color:#CCCCCC" />
 			  Vto:
-				<input name="vencimientodiscapacidad" type="text" id="vencimientodiscapacidad" value="" size="10" readonly="true" style="background-color:#CCCCCC" />
+				<input name="vencimientodiscapacidad" type="text" id="vencimientodiscapacidad" value="<?php echo $vencimientodiscapacidad?>" size="10" readonly="true" style="background-color:#CCCCCC" />
 			</td>
 			<td colspan="2"></td>
 		</tr>
