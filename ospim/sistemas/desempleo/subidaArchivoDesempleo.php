@@ -73,7 +73,7 @@ foreach($lineasNuevoArchivo as $linea) {
 }
 fclose($ar);
 
-$sqlImport = "LOAD DATA LOCAL INFdILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
+$sqlImport = "LOAD DATA LOCAL INFILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
 
 $linkid = mysqli_init();
 mysqli_options($linkid, MYSQLI_OPT_LOCAL_INFILE, true);
