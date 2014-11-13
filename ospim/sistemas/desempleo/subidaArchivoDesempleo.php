@@ -83,8 +83,7 @@ mysqli_real_connect($linkid, $hostname, $_SESSION['usuario'], $_SESSION['clave']
 $resLoadAnses = mysqli_query($linkid, $sqlImport);
 mysqli_close($linkid);
 if (!$resLoadAnses) {
-	$mensaje = 'La carga de los registros de desempleo de anses (Desempleo.txt) FALLO.';
-	echo $mensaje;
+	$mensajeError = 'La carga de los registros de desempleo de anses (Desempleo.txt) FALLO.';
 }
 
 ?>
@@ -111,7 +110,9 @@ A:hover {text-decoration: none;color:#00FFFF }
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuDesempleo.php'" align="center"/>
   </span></p>
   <p class="Estilo2">Resultado del proceso de subida de archivos de desempleo de A.N.S.E.S. </p>
-			  <table width="500" border="1" align="center">
+		<?php if ($resLoadAnses) {	  ?>
+			<p>
+				<table width="500" border="1" align="center">
 					<tr>
 					  <th>Periodo</th>
 					  <th>Lineas Archivo Original</th>
@@ -131,7 +132,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 					print("<td>".$cantImportadas."</td>");
 					print("</tr>");
 			  ?>
-			</table>  </p>
+				</table> 
+		</p> 
+		<?php } else { ?>
+					<p><div style="color:#FF0000"><b><?php echo $mensajeError ?></b>
+		<?php }?>
 	 <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
 </div>
 </body>
