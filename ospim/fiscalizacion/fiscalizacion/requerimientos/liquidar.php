@@ -407,7 +407,8 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//**********************************************************************************************************
 	
 	//ACUERDOS CAIDOS
-	$cuerpoAcuerdoCaidos = acuerdosCaidos($cuit, $db);
+	//$cuerpoAcuerdoCaidos = acuerdosCaidos($cuit, $db);
+	$cuerpoAcuerdoCaidos = array();
 	//CREAMOS EL CUERPO DEL ARCHIVO CON LA DEUDA ************************************************************************
 	
 	$cuerpo = array();
