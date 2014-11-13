@@ -73,20 +73,17 @@ foreach($lineasNuevoArchivo as $linea) {
 }
 fclose($ar);
 
-$sqlImport = "LOAD DATA INFILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
-try {
-	$hostname = $_SESSION['host'];
-	$dbname = $_SESSION['dbname'];
-	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbh->beginTransaction();
-	//print($sqlImport);
-	$dbh->exec($sqlImport);
-	$dbh->commit();
-}catch (PDOException $e) {
-	echo $e->getMessage();
-	$dbh->rollback();
-}	
+$sqlImport = "LOAD DATA LOCAL INFdILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
+
+$linkid = mysqli_init();
+mysqli_options($linkid, MYSQLI_OPT_LOCAL_INFILE, true);
+mysqli_real_connect($linkid, $hostname, $_SESSION['usuario'], $_SESSION['clave'], $dbname);
+$resLoadAnses = mysqli_query($linkid, $sqlImport);
+mysqli_close($linkid);
+if (!$resLoadAnses) {
+	$mensaje = 'La carga de los registros de desempleo de anses (Desempleo.txt) FALLO.';
+	echo $mensaje;
+}
 
 ?>
 
