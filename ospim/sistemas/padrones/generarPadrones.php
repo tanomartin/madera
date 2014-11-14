@@ -123,6 +123,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 			$totalizador[$delega] = array('delega' => $delega, 'tottit' => $totalTituXDelega, 'totfam' => $totalFamiXDelega, "total" => $totalDele);
 		}
 		$objPHPExcel->getActiveSheet()->getStyle('A1:M'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);	
+		$objPHPExcel->getActiveSheet()->getStyle('J1:J'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);	
 		$totalTitulares = $fila;
 			
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
