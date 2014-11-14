@@ -29,11 +29,11 @@ $reactiva = 1;
 if($tipafiliado == 1) {
 	$mesfin = (int)date("m");
 	$anofin = date("Y");
-	if($mesfin > 5) {
-		$mesini = $mesfin - 5;
+	if($mesfin > 2) {
+		$mesini = $mesfin - 2;
 		$anoini = $anofin;
 	} else {
-		$mesini = ($mesfin - 5) + 12 ;
+		$mesini = ($mesfin - 2) + 12 ;
 		$anoini = $anofin - 1;
 	}
 //	echo $mesini; echo "<br>";
@@ -53,8 +53,8 @@ if($tipafiliado == 1) {
 //	echo $cantapor; echo "<br>";
 //	echo $cantddjj; echo "<br>";
 
-	if($cantddjj < 3) {
-		if($cantapor < 3) {
+	if($cantddjj < 1) {
+		if($cantapor < 1) {
 			$reactiva = 0;
 		}
 	}
