@@ -30,29 +30,20 @@ jQuery(function($){
 	$("#dato").mask("99999999999");
 });
 
-function redireccion(formulario) {
+function validar(formulario) {
 	if (formulario.dato.value == "") {
-		alert("Debe ingresar el dato a buscar");
+		alert("Debe ingresar el C.U.I.T. a buscar");
 		return false;
 	}
-	direccion = "#";
-	if (formulario.filtro[0].checked) {
-		direccion = "../../../../afiliados/abm/ddjjAportesAfiliado.php?cuiAfi="+formulario.dato.value;
-		opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no"
-		window.open(direccion, "", opciones);
-	} else {
-		direccion = "aportesListado.php";
-		$.blockUI({ message: "<h1>Generando Informe... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
-		formulario.action = direccion;
-		formulario.submit();
-	}
-	
+	$.blockUI({ message: "<h1>Generando Informe... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
+	formulario.action = direccion;
+	formulario.submit();
 }
 
 </script>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" onsubmit="redireccion(this)">
+<form id="form1" name="form1" method="post" action="aportesListado.php" onsubmit="return validar(this)">
   <p align="center">
    <input type="reset" name="volver" value="Volver" onClick="location.href = '../moduloInformes.php'" align="center"/>
   </p>
@@ -69,21 +60,11 @@ function redireccion(formulario) {
   ?>
   </p>
   <div align="center">
-    <table width="357" border="0">
+    <table width="294" border="0">
+      
       <tr>
-        <td width="177" rowspan="2"><div align="right"><strong>Seleccion Tipo</strong></div></td>
-        <td width="170"><div align="left">
-            <input name="filtro" id="filtro" type="radio" value="0" checked="checked" />
-            C.U.I.L. </div></td>
-      </tr>
-      <tr>
-        <td><div align="left">
-            <input name="filtro" id="filtro" type="radio" value="1" /> 
-            C.U.I.T.</div></td>
-      </tr>
-      <tr>
-        <td><div align="right"><strong>Dato Busqueda </strong></div></td>
-        <td><div align="left">
+        <td width="137"><div align="right"> C.U.I.T.</div></td>
+        <td width="147"><div align="left">
           <input name="dato" id="dato" type="text" size="13" />
         </div></td>
       </tr>
