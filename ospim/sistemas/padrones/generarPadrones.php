@@ -94,19 +94,37 @@ for ($f = 0; $f < $finalFor; $f++) {
 			
 			while($rowTitulares = mysql_fetch_array($resTitulares)) {
 				$fila++;
-				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $rowTitulares['nroafiliado']);
+				
+				$nroAfil = number_format((float)$rowTitulares['nroafiliado'],0,',','');
+				$nroAfil = (string)str_pad($nroAfil,13,'0',STR_PAD_LEFT);
+				
+				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $nroAfil);
 				$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, utf8_encode($rowTitulares['apellidoynombre']));
-				$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $rowTitulares['tipodocumento']);
+				
+				$tipoDocu = "S/E";
+				if ($rowTitulares['tipodocumento'] == "DU") {
+					$tipoDocu = "D.N.I.";
+				}
+				if ($rowTitulares['tipodocumento'] == "LC") {
+					$tipoDocu = "L.C.";
+				}	
+				if ($rowTitulares['tipodocumento'] > 0 && $rowTitulares['tipodocumento'] < 25) {
+					$tipoDocu = "C.I.";
+				}
+				if ($rowTitulares['tipodocumento'] == "LE") {
+					$tipoDocu = "L.E.";
+				}
+				
+				$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $tipoDocu);
 				$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $rowTitulares['nrodocumento']);
 				$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, invertirFecha($rowTitulares['fechanacimiento']));
 				$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $rowTitulares['sexo']);
 				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, utf8_encode($rowTitulares['domicilio']));
 				$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, utf8_encode($rowTitulares['nomlocali']));
 				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, utf8_encode($rowTitulares['nomprovin']));
-				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $rowTitulares['ddn'].$rowTitulares['telefono']);
-				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['codidelega']);
-				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowTitulares['cuitempresa']);
-				$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, utf8_encode($rowTitulares['nomempresa']));
+				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $rowTitulares['cuitempresa']);
+				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['codidelega']);	
+				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, utf8_encode($rowTitulares['nomempresa']));
 				$totalTituXDelega++;
 			
 				$nroafil = $rowTitulares['nroafiliado'];
@@ -122,8 +140,13 @@ for ($f = 0; $f < $finalFor; $f++) {
 			$totalDele = $totalTituXDelega + $totalFamiXDelega;
 			$totalizador[$delega] = array('delega' => $delega, 'tottit' => $totalTituXDelega, 'totfam' => $totalFamiXDelega, "total" => $totalDele);
 		}
-		$objPHPExcel->getActiveSheet()->getStyle('A1:M'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);	
-		$objPHPExcel->getActiveSheet()->getStyle('J1:J'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);	
+		$objPHPExcel->getActiveSheet()->getStyle('A1:L'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);	
+		$objPHPExcel->getActiveSheet()->getStyle('A1:A'.$fila)->getNumberFormat()->setFormatCode('0000000000000');
+		
+		for($col = 'A'; $col !== 'M'; $col++) {
+			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+		}
+		
 		$totalTitulares = $fila;
 			
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
@@ -150,7 +173,11 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$objPHPExcel->getDefaultStyle()->getFont()->setSize(10);	
 		foreach($cuerpoFamilia as $familiar) {
 		 	$fila++;
-			$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $familiar['nroafil']);
+			
+			$nroAfil = number_format((float)$familiar['nroafil'],0,',','');
+			$nroAfil = (string)str_pad($nroAfil,13,'0',STR_PAD_LEFT);
+			
+			$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $nroAfil);
 		
 			$tipoParentesco = $familiar['tipoparentesco'];
 			if ($tipoParentesco == 1 || $tipoParentesco == 2) {
@@ -165,12 +192,33 @@ for ($f = 0; $f < $finalFor; $f++) {
 			
 			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $descriParentesco);
 			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, utf8_encode($familiar['nombre']));
-			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $familiar['tipdoc']);
+			
+			$tipoDocu = "S/E";
+			if ($familiar['tipdoc'] == "DU") {
+				$tipoDocu = "D.N.I.";
+			}
+			if ($familiar['tipdoc'] == "LC") {
+				$tipoDocu = "L.C.";
+			}	
+			if ($familiar['tipdoc'] > 0 && $rowTitulares['tipodocumento'] < 25) {
+				$tipoDocu = "C.I.";
+			}
+			if ($familiar['tipdoc'] == "LE") {
+				$tipoDocu = "L.E.";
+			}
+			
+			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $tipoDocu);
 			$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $familiar['numdoc']);
 			$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $familiar['fecnac']);
 			$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $familiar['sexo']);
 		}
 		$objPHPExcel->getActiveSheet()->getStyle('A1:G'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);	
+		$objPHPExcel->getActiveSheet()->getStyle('A1:A'.$fila)->getNumberFormat()->setFormatCode('0000000000000');
+		
+		for($col = 'A'; $col !== 'H'; $col++) {
+			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+		}
+				
 		$totalFamiliares = $fila;
 	
 		$totalBeneficiarios = $totalTitulares + $totalFamiliares;
