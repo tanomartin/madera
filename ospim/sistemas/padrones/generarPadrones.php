@@ -95,18 +95,18 @@ for ($f = 0; $f < $finalFor; $f++) {
 			while($rowTitulares = mysql_fetch_array($resTitulares)) {
 				$fila++;
 				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $rowTitulares['nroafiliado']);
-				$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $rowTitulares['apellidoynombre']);
+				$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, utf8_encode($rowTitulares['apellidoynombre']));
 				$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $rowTitulares['tipodocumento']);
 				$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $rowTitulares['nrodocumento']);
 				$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, invertirFecha($rowTitulares['fechanacimiento']));
 				$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $rowTitulares['sexo']);
-				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $rowTitulares['domicilio']);
-				$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, $rowTitulares['nomlocali']);
-				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $rowTitulares['nomprovin']);
+				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, utf8_encode($rowTitulares['domicilio']));
+				$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, utf8_encode($rowTitulares['nomlocali']));
+				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, utf8_encode($rowTitulares['nomprovin']));
 				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $rowTitulares['ddn'].$rowTitulares['telefono']);
 				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['codidelega']);
 				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowTitulares['cuitempresa']);
-				$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $rowTitulares['nomempresa']);
+				$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, utf8_encode($rowTitulares['nomempresa']));
 				$totalTituXDelega++;
 			
 				$nroafil = $rowTitulares['nroafiliado'];
@@ -154,7 +154,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		
 			$tipoParentesco = $familiar['tipoparentesco'];
 			if ($tipoParentesco == 1 || $tipoParentesco == 2) {
-				$descriParentesco = $familiar['parentesco'];
+				$descriParentesco = utf8_encode($familiar['parentesco']);
 			}
 			if (($tipoParentesco > 2 && $tipoParentesco < 7) || $tipoParentesco == 9) {
 				$descriParentesco = "Hijo";
@@ -164,7 +164,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 			}
 			
 			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $descriParentesco);
-			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $familiar['nombre']);
+			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, utf8_encode($familiar['nombre']));
 			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $familiar['tipdoc']);
 			$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $familiar['numdoc']);
 			$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $familiar['fecnac']);
