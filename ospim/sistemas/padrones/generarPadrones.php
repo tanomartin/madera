@@ -79,7 +79,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$objPHPExcel->getDefaultStyle()->getFont()->setSize(10);
 		$cuerpoFamilia = array();
 		
-		$sqlDelega = "SELECT * FROM prestadelega where codigopresta = $presta";
+		$sqlDelega = "SELECT * FROM capitadosdelega where codigopresta = $presta";
 		//print($sqlDelega."<br><br>");
 		$resPresta = mysql_query($sqlDelega,$db);
 		$totalizador = array();
@@ -110,11 +110,11 @@ for ($f = 0; $f < $finalFor; $f++) {
 				$totalTituXDelega++;
 			
 				$nroafil = $rowTitulares['nroafiliado'];
-				$sqlFamiliares = "SELECT f.nroafiliado, p.descrip as desparentesco, f.apellidoynombre, f.tipodocumento, f.nrodocumento, f.fechanacimiento, f.sexo FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite' and f.tipoparentesco = p.codparent";
+				$sqlFamiliares = "SELECT f.nroafiliado, p.descrip as desparentesco, f.tipoparentesco, f.apellidoynombre, f.tipodocumento, f.nrodocumento, f.fechanacimiento, f.sexo FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite' and f.tipoparentesco = p.codparent";
 				//print($sqlFamiliares."<br>");
 				$resFamiliares = mysql_query($sqlFamiliares, $db);
 				while($rowFamiliares = mysql_fetch_array($resFamiliares)) {
-					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'parentesco' => $rowFamiliares['desparentesco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo']);
+					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'parentesco' => $rowFamiliares['desparentesco'], 'tipoparentesco' => $rowFamiliares['tipoparentesco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo']);
 					$filaFamilia++;
 					$totalFamiXDelega++;
 				}
@@ -150,7 +150,19 @@ for ($f = 0; $f < $finalFor; $f++) {
 		foreach($cuerpoFamilia as $familiar) {
 		 	$fila++;
 			$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $familiar['nroafil']);
-			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $familiar['parentesco']);
+		
+			$tipoParentesco = $familiar['tipoparentesco'];
+			if ($tipoParentesco == 1 || $tipoParentesco == 2) {
+				$descriParentesco = $familiar['parentesco'];
+			}
+			if (($tipoParentesco > 2 && $tipoParentesco < 7) || $tipoParentesco == 9) {
+				$descriParentesco = "Hijo";
+			}
+			if ($tipoParentesco == 7 || $tipoParentesco == 8) {
+				$descriParentesco = "Familiar a cargo";
+			}
+			
+			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $descriParentesco);
 			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $familiar['nombre']);
 			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $familiar['tipdoc']);
 			$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $familiar['numdoc']);
