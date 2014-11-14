@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 set_time_limit(0);
+ini_set('memory_limit', '448M');
 include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php"); 
 include($libPath."ftpOspim.php"); 
