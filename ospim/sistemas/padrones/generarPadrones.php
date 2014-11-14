@@ -88,7 +88,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 			$totalFamiXDelega = 0;
 			$delega = $rowPresta['codidelega'];
 			
-			$sqlTitulares = "SELECT t.*, l.nomlocali, p.descrip as nomprovin, e.nombre as nomempresa FROM titulares t, localidades l, provincia p, empresas e where t.codidelega = $delega and t.cantidadcarnet != 0 and t.fecharegistro < '$fechaLimite' and t.codlocali = l.codlocali and t.codprovin = p.codprovin and t.cuitempresa = e.cuit";
+			$sqlTitulares = "SELECT t.nroafiliado, t.apellidoynombre, t.tipodocumento, t.nrodocumento, t.fechanacimiento, t.sexo, t.domicilio, l.nomlocali, p.descrip as nomprovin, t.telefono, t.ddn, t.codidelega, t.cuitempresa, e.nombre as nomempresa FROM titulares t, localidades l, provincia p, empresas e where t.codidelega = $delega and t.cantidadcarnet != 0 and t.fecharegistro < '$fechaLimite' and t.codlocali = l.codlocali and t.codprovin = p.codprovin and t.cuitempresa = e.cuit";
 			//print($sqlTitulares."<br>");
 			$resTitulares = mysql_query($sqlTitulares, $db);	
 			
@@ -103,18 +103,18 @@ for ($f = 0; $f < $finalFor; $f++) {
 				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $rowTitulares['domicilio']);
 				$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, $rowTitulares['nomlocali']);
 				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $rowTitulares['nomprovin']);
-				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $rowTitulares['telefono']);
+				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $rowTitulares['ddn'].$rowTitulares['telefono']);
 				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['codidelega']);
 				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowTitulares['cuitempresa']);
 				$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $rowTitulares['nomempresa']);
 				$totalTituXDelega++;
 			
 				$nroafil = $rowTitulares['nroafiliado'];
-				$sqlFamiliares = "SELECT f.*, p.descrip as parentezco FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite' and f.tipoparentesco = p.codparent";
+				$sqlFamiliares = "SELECT f.nroafiliado, p.descrip as desparentesco, f.apellidoynombre, f.tipodocumento, f.nrodocumento, f.fechanacimiento, f.sexo FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite' and f.tipoparentesco = p.codparent";
 				//print($sqlFamiliares."<br>");
 				$resFamiliares = mysql_query($sqlFamiliares, $db);
 				while($rowFamiliares = mysql_fetch_array($resFamiliares)) {
-					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'parentezco' => $rowFamiliares['parentezco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo']);
+					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'parentesco' => $rowFamiliares['desparentesco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo']);
 					$filaFamilia++;
 					$totalFamiXDelega++;
 				}
@@ -150,7 +150,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		foreach($cuerpoFamilia as $familiar) {
 		 	$fila++;
 			$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $familiar['nroafil']);
-			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $familiar['parentezco']);
+			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $familiar['parentesco']);
 			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $familiar['nombre']);
 			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $familiar['tipdoc']);
 			$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $familiar['numdoc']);
@@ -175,7 +175,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		}
 		//var_dump($totalizador);
 		//print("<br>TOTAL ARCHIVO PRESTADOR $presta <br> Total Titulares: $totalTitulares - Total Familiares: $totalFamiliares <br><br>");
-		$rowPresta = mysql_fetch_array(mysql_query("SELECT * FROM prestadores WHERE codigo = $presta", $db));
+		$rowPresta = mysql_fetch_array(mysql_query("SELECT * FROM capitados WHERE codigo = $presta", $db));
 		$archivoTeso=fopen($direCompletaTesoreria,"a") or die("Problemas en la creacion");
 		$primeraLineaTexto = "Prestador: ".$presta." - ".$rowPresta['nombre'];
 		fputs($archivoTeso,$primeraLineaTexto);
@@ -214,7 +214,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		//*******************************************
 			
 		//CONTROLO QUE NO HAYA UNA BAJADA PARA ESTE PRESTA Y ESTE PERIDOD
-		if(strcmp("localhost",$maquina)==0) {
+		/*if(strcmp("localhost",$maquina)==0) {
 			$hostOspim = "localhost"; //para las pruebas...
 		}
 		$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimPrestadores",$usuarioOspim ,$claveOspim);
@@ -274,14 +274,14 @@ for ($f = 0; $f < $finalFor; $f++) {
 			$descriError = "EXISTE UNA DESCARGA PARA ESTE PERIODO ($mes-$anio) Y ESTE PRESTADOR ($presta) NO SE SUBIRA NUEVAMENTE";
 			$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);
 			//print("$descriError<br><br>");
-		}
+		}*/
 	} catch (PDOException $e) {
 		$descriError = $e->getMessage();
 		$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);
 		//print("$descriError<br><br>");
 		$dbh->rollback();
 		$dbhInternet->rollback();
-	}	
+	}
 }
 
 //cambio la hora de secion por ahora para no perder la misma
