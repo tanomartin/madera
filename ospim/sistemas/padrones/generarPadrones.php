@@ -110,7 +110,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 				$totalTituXDelega++;
 			
 				$nroafil = $rowTitulares['nroafiliado'];
-				$sqlFamiliares = "SELECT f.nroafiliado, p.descrip as desparentesco, f.tipoparentesco, f.apellidoynombre, f.tipodocumento, f.nrodocumento, f.fechanacimiento, f.sexo FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite' and f.tipoparentesco = p.codparent";
+				$sqlFamiliares = "SELECT f.nroafiliado, p.descrip as desparentesco, f.tipoparentesco, f.apellidoynombre, f.tipodocumento, f.nrodocumento, f.fechanacimiento, f.sexo FROM familiares f, parentesco p where f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite' and f.tipoparentesco != 12 and f.tipoparentesco = p.codparent";
 				//print($sqlFamiliares."<br>");
 				$resFamiliares = mysql_query($sqlFamiliares, $db);
 				while($rowFamiliares = mysql_fetch_array($resFamiliares)) {
@@ -159,7 +159,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 				$descriParentesco = "Hijo";
 			}
 			if ($tipoParentesco == 7 || $tipoParentesco == 8) {
-				$descriParentesco = "Familiar a cargo";
+				$descriParentesco = "A Cargo";
 			}
 			
 			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $descriParentesco);
