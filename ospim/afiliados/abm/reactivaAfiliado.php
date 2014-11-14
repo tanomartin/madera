@@ -128,7 +128,7 @@ else {
       </div></td>
   </tr>
   <tr>
-    <td colspan="2"><div align="center"><h2><?php if(!$reactiva) {?>El titular NO tiene en el &uacute;ltimo semestre ni las DDJJ ni los APORTES necesarios para su reactivaci&oacute;n.<?php }?></h2></div></td>
+    <td colspan="2"><div align="center"><h2><?php if(!$reactiva) {?>El titular NO tiene en el &uacute;ltimo trimestre ni las DDJJ ni los APORTES necesarios para su reactivaci&oacute;n.<?php }?></h2></div></td>
     </tr>
   <tr>
     <td>&nbsp;</td>
