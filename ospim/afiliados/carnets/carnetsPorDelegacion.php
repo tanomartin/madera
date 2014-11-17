@@ -117,7 +117,7 @@ function validar(formulario) {
 		    	<select name="selectDelegacion" id="selectDelegacion">
 		    		<option title="Seleccione un valor" value="" selected="selected">Seleccione un Valor</option>
 		      		<?php 
-						$sqlSelectDelegacion="SELECT codidelega, nombre FROM delegaciones WHERE codidelega NOT IN(1000,1001,3500)";
+						$sqlSelectDelegacion="SELECT codidelega, nombre FROM delegaciones WHERE codidelega NOT IN(3500,4000,4001)";
 						$resSelectDelegacion=mysql_query($sqlSelectDelegacion,$db);
 						while($rowSelectDelegacion=mysql_fetch_array($resSelectDelegacion)) {
 							echo "<option title ='$rowSelectDelegacion[nombre]' value='$rowSelectDelegacion[codidelega]'>".$rowSelectDelegacion['nombre']."</option>";
