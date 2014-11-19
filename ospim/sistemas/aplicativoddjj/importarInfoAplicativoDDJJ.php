@@ -93,10 +93,26 @@ if ($canEmpresas > 0) {
 			$resEmpresaInsert = mysql_query($sqlEmpresaInsert,$db); 
 			$canEmpresaInsert = mysql_num_rows($resEmpresaInsert); 
 			if ($canEmpresaInsert == 0) {
-				$codProvin = $rowEmpresas['provin'];
+				$codProvinApli = $rowEmpresas['provin'];
+				$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
+				$resprovin = mysql_query($sqlprovin,$db); 
+				$canprovin = mysql_num_rows($resprovin); 
+				if ($codProvin == 1) {
+					$rowprovin = mysql_fetch_assoc($resprovin);
+					$codProvin = $rowprovin['codprovin'];
+				} else {
+					$codProvin = 0;
+				}
+				
 				$sqlIndPos = "select indpostal from provincia where codprovin = $codProvin";
 				$resIndPos = mysql_query($sqlIndPos,$db); 
-				$rowIndPos = mysql_fetch_assoc($resIndPos);
+				$canIndPos = mysql_num_rows($resIndPos); 
+				if ($canIndPos == 1) {
+					$rowIndPos = mysql_fetch_assoc($resIndPos);
+					$indPostal = $rowIndPos['indpostal'];
+				} else {
+					$indPostal = 0;
+				}
 				
 				$nomlocali = $rowEmpresas['locali'];
 				$sqlLocali = "select codlocali from localidades where codprovin = $codProvin and nomlocali like '$nomlocali'";
@@ -108,8 +124,8 @@ if ($canEmpresas > 0) {
 				} else {
 					$locali = 0;
 				}
-				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".$rowEmpresas['nombre']."',".$rowEmpresas['provin'].",'".$rowIndPos['indpostal']."',".$rowEmpresas['copole'].",'','$locali','".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','','','',0,3,'".$rowEmpresas['activi']."','','Importada Por Sistemas','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
-				$sqlInsertJuris = "INSERT INTO jurisdiccion VALUE('".$rowEmpresas['nrcuit']."','3200',".$rowEmpresas['provin'].",'".$rowIndPos['indpostal']."',".$rowEmpresas['copole'].",'',$locali,'".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','".$rowEmpresas['emails']."',100)";
+				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".$rowEmpresas['nombre']."',".$rowEmpresas['provin'].",'$indPostal',".$rowEmpresas['copole'].",'','$locali','".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','','','',0,3,'".$rowEmpresas['activi']."','','Importada Por Sistemas','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
+				$sqlInsertJuris = "INSERT INTO jurisdiccion VALUE('".$rowEmpresas['nrcuit']."','3200',".$rowEmpresas['provin'].",'$indPostal',".$rowEmpresas['copole'].",'',$locali,'".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','".$rowEmpresas['emails']."',100)";
 				$result = ejectuarDoble($sqlInsertCabe,$sqlInsertJuris);
 				$listadoIngresadas[$n] = array('cuit' => $cuitInsert, 'nombre' => $nombre);
 				$n++;
