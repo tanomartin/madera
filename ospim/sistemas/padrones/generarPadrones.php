@@ -298,7 +298,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		if ($canConsultaBajada == 0) {
 			if (file_exists($direCompletaZip) && file_exists($direCompletaTesoreria)) {
 				$carpetaFtp = $presta."C23".$presta;
-				$pathOspim = "/public_html/prestadores/prueba/$carpetaFtp";
+				$pathOspim = "/public_html/prestadores/$carpetaFtp";
 				$resultado = SubirArchivo($direCompletaZip, $nomZip, $pathOspim);
 				if ($resultado) {
 					$subidaOk = 1;
@@ -313,11 +313,11 @@ for ($f = 0; $f < $finalFor; $f++) {
 					//print($sqlEliminaSubidaMadera."<br>");
 					$dbh->exec($sqlEliminaSubidaMadera);
 					
-					$sqlInsertInternet = "INSERT INTO subida VALUE($presta, $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
+					$sqlInsertInternet = "INSERT INTO subida VALUE('$presta', $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
 					//print($sqlInsertInternet."<br>");
 					$dbhInternet->exec($sqlInsertInternet);
 
-					$sqlInsertMadera = "INSERT INTO subidapadroncapitados VALUE($presta,$mes,$anio,'$fecsub','$horsub',$totalTitulares,$totalFamiliares,$totalBeneficiarios)";
+					$sqlInsertMadera = "INSERT INTO subidapadroncapitados VALUE('$presta',$mes,$anio,'$fecsub','$horsub',$totalTitulares,$totalFamiliares,$totalBeneficiarios)";
 					//print($sqlInsertMadera."<br>");
 					$dbh->exec($sqlInsertMadera);
 					
