@@ -83,7 +83,7 @@ function abrirModulo(dire, titulo) {
 	  <td>
 	 <div align="center">
 	    <p>Tesorería </p>
-	    <p><a href="javascript:abrirModulo('tesoreria/menuTesoreria.php','TesoreriaOspim')"><img src="img/tesoreria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirModulo('moduloNoDisponible.php','TesoreriaOspim')"><img src="img/tesoreria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
 	  </td>
