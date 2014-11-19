@@ -14,39 +14,9 @@ include($libPath."controlSessionOspim.php"); ?>
 </style>
 
 <script language="javascript">
-function abrirAcuerdos(dire) {
-	a= window.open(dire,"AcuerdosOspim",
+function abrirModulo(dire, titulo) {
+	a= window.open(dire,titulo,
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
-}
-
-function abrirAfil(dire) {
-	b= window.open(dire,"AfiliadosOspim",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=20, left=20");
-}
-
-function abrirEmpresa(dire) {
-	c= window.open(dire,"EmpresasOspim",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=30");
-}
-
-function abrirAuditoria(dire) {
-	c= window.open(dire,"AuditoriaOspim",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
-}
-
-function abrirFiscalizacion(dire) {
-	c= window.open(dire,"FiscalizacionOspim",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
-}
-
-function abrirLegales(dire) {
-	c= window.open(dire,"LegalesOspim",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
-}
-
-function abrirSistemas(dire) {
-	c= window.open(dire,"SistemasOspim",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 </script>
 
@@ -61,21 +31,21 @@ function abrirSistemas(dire) {
       <td> 
 	  <div align="center">
         <p>Acuerdos</p>
-        <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/acuerdos.png" width="90" height="90" border="0"/></a></p>
+        <p><a href="javascript:abrirModulo('acuerdos/menuAcuerdos.php','AcuerdosOspim')"><img src="img/acuerdos.png" width="90" height="90" border="0"/></a></p>
         <p>&nbsp;</p>
         </div>
 	  </td>
       <td>
 	  <div align="center">
 	    <p>Empresas</p>
-	    <p><a href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=ospim')"><img src="img/empresa.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirModulo('../comun/empresas/menuEmpresa.php?origen=ospim','EmpresasOspim')"><img src="img/empresa.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
 	  </td>
       <td>
 	  <div align="center">
 	    <p>Afiliados</p>
-	    <p><a href="javascript:abrirAfil('afiliados/menuAfiliados.php')"><img src="img/afiliados.png" width="90" height="90" border="0" /></a></p>
+	    <p><a href="javascript:abrirModulo('afiliados/menuAfiliados.php','AfiliadosOspim')"><img src="img/afiliados.png" width="90" height="90" border="0" /></a></p>
 	    <p>&nbsp;</p>
       </div>
 	  </td>
@@ -85,37 +55,40 @@ function abrirSistemas(dire) {
       <td>
 	  <div align="center">
 	    <p>Fiscalizaci&oacute;n</p>
-	    <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirModulo('fiscalizacion/menuFiscalizacion.php','FiscalizacionOspim')"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
 	  </td>	
       <td width="196"><div align="center">
 	    <p>Auditoria Medica </p>
-	    <p><a href="javascript:abrirAuditoria('auditoria/menuAuditoria.php')"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirModulo('auditoria/menuAuditoria.php','AuditoriaOspim')"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div></td> 	
 	  <td>
 	  <div align="center">
 	    <p>Legales </p>
-	    <p><a href="javascript:abrirLegales('legales/menuLegales.php')"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p><a href="javascript:abrirModulo('legales/menuLegales.php','LegalesOspim')"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    <p>&nbsp;</p>
       </div>
 	  </td>	  
     </tr>
-	  
-	<?php if ($_SESSION['usuario'] == 'sistemas') { ?> 
 	<tr>
-	  <td>&nbsp;</td>
-	  <td>
+	  <td> <?php if ($_SESSION['usuario'] == 'sistemas') { ?> 
 	  <div align="center">
 			<p>Sistemas</p>
-			<p><a href="javascript:abrirSistemas('sistemas/menuSistemas.php')"><img src="img/sistemas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p><a href="javascript:abrirModulo('sistemas/menuSistemas.php','SistemasOspim')"><img src="img/sistemas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 			<p>&nbsp;</p>
 	  </div>
+	  <?php } ?></td>
+	  <td>
+	 <div align="center">
+	    <p>Tesorería </p>
+	    <p><a href="javascript:abrirModulo('tesoreria/menuTesoreria.php','TesoreriaOspim')"><img src="img/tesoreria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p>&nbsp;</p>
+      </div>
 	  </td>
 	  <td>&nbsp;</td>
     </tr>
-    <?php } ?>
   </table>
    <p><strong><a href="logout.php">
      <input type="button" name="salir" value="SALIR" onclick="location.href='logout.php'" />
