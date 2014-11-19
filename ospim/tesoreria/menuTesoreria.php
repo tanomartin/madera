@@ -23,13 +23,13 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="600" border="3">
     <tr>
 	  <td width="200"><p align="center">&Oacute;rdenes de Pago </p>
-          <p align="center"><a class="enlace" href="#"><img src="img/ordenespago.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/ordenespago.png" width="90" height="90" border="0" alt="enviar"/></a></p>
           <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Control C&aacute;pitas</p>
           <p align="center"><a class="enlace" href="capitas/controlCapitas.php"><img src="img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 	   <td width="200"><p align="center">Liquidaci&oacute;n </p>
-          <p align="center"><a class="enlace" href="#"><img src="img/factura.png" width="119" height="92" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/factura.png" width="119" height="92" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>		
     </tr>
   </table>
