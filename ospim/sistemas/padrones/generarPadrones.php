@@ -36,7 +36,7 @@ if(strcmp("localhost",$maquina) == 0) {
 
 //eliminarDir($direArc);
 if (!file_exists($direArc)) {
-	mkdir($direArc);
+	mkdir($direArc, 0777);
 }
 
 $finalFor = sizeof($_POST) - 2;
