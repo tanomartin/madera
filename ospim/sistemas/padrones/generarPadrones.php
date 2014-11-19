@@ -31,7 +31,7 @@ $carpeta = $mes.$anio;
 if(strcmp("localhost",$maquina) == 0) {
 	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/padrones/archivos/".$carpeta;
 } else {
-	$direArc = "archivos/".$carpeta;
+	$direArc = "/home/sistemas/Documentos/Repositorio/Capitados/".$carpeta;
 }
 
 //eliminarDir($direArc);
