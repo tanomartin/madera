@@ -278,7 +278,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		//CONTROLO QUE NO HAYA UNA BAJADA PARA ESTE PRESTA Y ESTE PERIDOD
 		/*if(strcmp("localhost",$maquina)==0) {
 			$hostOspim = "localhost"; //para las pruebas...
-		}
+		}*/
 		$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimPrestadores",$usuarioOspim ,$claveOspim);
    		$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbhInternet->beginTransaction();
@@ -317,7 +317,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 					//print($sqlInsertInternet."<br>");
 					$dbhInternet->exec($sqlInsertInternet);
 
-					$sqlInsertMadera = "INSERT INTO subidapadronprestadores VALUE($presta, $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios)";
+					$sqlInsertMadera = "INSERT INTO subidapadroncapitados VALUE($presta,$mes,$anio,'$fecsub','$horsub',$totalTitulares,$totalFamiliares,$totalBeneficiarios)";
 					//print($sqlInsertMadera."<br>");
 					$dbh->exec($sqlInsertMadera);
 					
@@ -336,7 +336,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 			$descriError = "EXISTE UNA DESCARGA PARA ESTE PERIODO ($mes-$anio) Y ESTE PRESTADOR ($presta) NO SE SUBIRA NUEVAMENTE";
 			$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);
 			//print("$descriError<br><br>");
-		}*/
+		}
 	} catch (PDOException $e) {
 		$descriError = $e->getMessage();
 		$arrayResultados[$presta] = array('presta' => $presta, 'descri' => $descriError);
