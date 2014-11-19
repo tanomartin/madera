@@ -71,9 +71,9 @@ for ( $i = $inicio ; $i <= $fin ; $i++) {
 		$mesArc[$i]=formatoPerido($perAux);
 	}
 }
-if(strcmp("localhost",$maquina)==0) {
+/*if(strcmp("localhost",$maquina)==0) {
 	$hostOspim = "localhost"; //para las pruebas...
-}
+}*/
 $dbInternet =  mysql_connect($hostOspim,$usuarioOspim,$claveOspim );
 if (!$dbInternet) {
 	die('No pudo conectarse a la base de OSPIM.COM.AR: ' . mysql_error());
@@ -166,7 +166,7 @@ function abrirArchivo(dire) {
 				print ("<td><div align=center><font face=Verdana size=2>".$row2['totalfamiliares']."</font></div></td>");
 				print ("<td><div align=center><font face=Verdana size=2>".$row2['totalbeneficiarios']."</font></div></td>");
 				if ($subida=="NO SUBIDO") {
-					print ("<td width=165><div align=center><font face=Verdana size=2>".$subida."</font></div></td>");
+					print ("<td class='nover'><div align=center><font face=Verdana size=2>".$subida."</font></div></td>");
 				} else {
 					
 					$maquina = $_SERVER['SERVER_NAME'];
@@ -175,10 +175,10 @@ function abrirArchivo(dire) {
 					if(strcmp("localhost",$maquina) == 0) {
 						$direArc = "/ospim/sistemas/padrones/archivos/".$carpeta;
 					} else {
-						$direArc="poseidon/ospim/sistemas/padrones/archivos/".$carpeta;
+						$direArc="/home/sistemas/Documentos/Repositorio/Capitados/".$carpeta;
 					}
 					$ubicacion=$direArc."/".$archivo;
-					print ("<td class='nover'><a href=javascript:abrirArchivo('$ubicacion')>VER</a></td>"); 
+					print ("<td class='nover' align=center><a href=javascript:abrirArchivo('$ubicacion')>VER</a></td>"); 
 				}
 				print ("</tr>");
 			?>
