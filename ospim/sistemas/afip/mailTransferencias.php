@@ -29,11 +29,11 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 <script type="text/javascript" src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script type="text/javascript" src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
-	$(function() {
-		$("#listamsj")
-		.tablesorter({theme: 'blue', widthFixed: true, widgets:['zebra'], headers:{3:{sorter:false}, 5:{sorter:false}}})
-		.tablesorterPager({container: $("#paginador")}); 
-	});
+$(function() {
+	$("#listamsj")
+	.tablesorter({theme: 'blue', widthFixed: true, widgets:['zebra'], headers:{3:{sorter:false}, 5:{sorter:false}}})
+	.tablesorterPager({container: $("#paginador")}); 
+});
 
 function consultaDetallesArchivo(fecmen, nromai) {
 	param = "fechaMens="+fecmen+"&nroMail="+nromai;
