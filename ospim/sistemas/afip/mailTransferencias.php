@@ -34,6 +34,12 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 		.tablesorter({theme: 'blue', widthFixed: true, widgets:['zebra'], headers:{3:{sorter:false}, 5:{sorter:false}}})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
+
+function consultaDetallesArchivo(fecmen, nromai) {
+	param = "fechaMens="+fecmen+"&nroMail="+nromai;
+	opciones = "top=50,left=50,width=1080,height=640,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=yes"
+	window.open("detallesTransferencias.php?"+param, "", opciones);
+};
 </script>
 </head>
 <style>
@@ -92,7 +98,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php if($indicaMail == 0) { ?>
 				<td><input type="button" value="Procesar Archivo" onClick="window.location.href='archivosTransferencias.php?fechaArch=<?php echo $fechaArch;?>&fechaMens=<?php echo $fechaMens;?>&nroMail=<?php echo $nroMail;?>'"></td>
 		<?php } else { ?>
-				<td><input type="button" value="Archivo Procesado" onClick="window.location.href='detallesTransferencias.php?fechaMens=<?php echo $fechaMens;?>&nroMail=<?php echo $nroMail;?>'"></td>
+				<td><input type="button" value="Archivo Procesado" onClick="javascript:consultaDetallesArchivo(<?php echo $fechaMens;?>,<?php echo $nroMail;?>)"/></td>
 		<?php } ?>
 			</tr>
 	<?php }?>
