@@ -99,7 +99,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 .nover {display:none}
 </style>
 <script language="javascript">
-function abrirArchivo(dire) {
+function abrirDetelle(dire) {
 	a= window.open(dire,"InfoCapitas",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
@@ -168,17 +168,8 @@ function abrirArchivo(dire) {
 				if ($subida=="NO SUBIDO") {
 					print ("<td class='nover'><div align=center><font face=Verdana size=2>".$subida."</font></div></td>");
 				} else {
-					
-					$maquina = $_SERVER['SERVER_NAME'];
-					$carpeta = $mesPedido.$anioPedido;
-					$archivo = $presta."D".$carpeta.".txt";
-					if(strcmp("localhost",$maquina) == 0) {
-						$direArc = "/ospim/sistemas/padrones/archivos/".$carpeta;
-					} else {
-						$direArc="/home/sistemas/Documentos/Repositorio/Capitados/".$carpeta;
-					}
-					$ubicacion=$direArc."/".$archivo;
-					print ("<td class='nover' align=center><a href=javascript:abrirArchivo('$ubicacion')>VER</a></td>"); 
+					$dire = "detalleCapitas.php?presta=$presta&ano=$anioPedido&mes=$mesPedido";
+					print ("<td class='nover' align=center><a href=javascript:abrirDetelle('$dire')>VER</a></td>"); 
 				}
 				print ("</tr>");
 			?>

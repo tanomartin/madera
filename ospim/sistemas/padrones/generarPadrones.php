@@ -229,34 +229,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$objPHPExcel->disconnectWorksheets();
 		unset($objWriter, $objPHPExcel);
 		//********************************************
-		
-		//ARCHIVO TOTALIZADOR PARA TESORERIA
-		
-		if (file_exists($direCompletaTesoreria)) {
-			unlink($direCompletaTesoreria);
-		}
-		//var_dump($totalizador);
-		//print("<br>TOTAL ARCHIVO PRESTADOR $presta <br> Total Titulares: $totalTitulares - Total Familiares: $totalFamiliares <br><br>");
-		$rowPresta = mysql_fetch_array(mysql_query("SELECT * FROM capitados WHERE codigo = $presta", $db));
-		$archivoTeso=fopen($direCompletaTesoreria,"a") or die("Problemas en la creacion");
-		$primeraLineaTexto = "Prestador: ".$presta." - ".$rowPresta['nombre'];
-		fputs($archivoTeso,$primeraLineaTexto);
-		fputs($archivoTeso,"\r\n\r\n");
-		$titulosTexto = "Delegacion  Titulares  Familiares  Beneficiarios";
-		fputs($archivoTeso,$titulosTexto);
-		fputs($archivoTeso,"\r\n");
-		foreach ($totalizador as $totalDele) {
-			$lineaDelega = "   ".$totalDele['delega']."      ".$totalDele['tottit']."           ".$totalDele['totfam']."            ".$totalDele['total'];
-			fputs($archivoTeso,$lineaDelega);
-			fputs($archivoTeso,"\r\n");
-		}
-		fputs($archivoTeso,"------------------------------------------------");
-		fputs($archivoTeso,"\r\n");
-		$totalesTexto= "TOTALES      $totalTitulares           $totalFamiliares           $totalBeneficiarios";
-		fputs($archivoTeso,$totalesTexto);
-		fclose($archivoTeso);
-		//**********************************************
-		
+
 		//ACHIVO DE ZIP
 		if (file_exists($direCompletaZip)) {
 			unlink($direCompletaZip);
@@ -296,7 +269,7 @@ for ($f = 0; $f < $finalFor; $f++) {
 		$canConsultaBajada = $resConsultaBajada->fetchColumn();
 		
 		if ($canConsultaBajada == 0) {
-			if (file_exists($direCompletaZip) && file_exists($direCompletaTesoreria)) {
+			if (file_exists($direCompletaZip)) {
 				$carpetaFtp = $presta."C23".$presta;
 				$pathOspim = "/public_html/prestadores/$carpetaFtp";
 				$resultado = SubirArchivo($direCompletaZip, $nomZip, $pathOspim);
@@ -305,13 +278,23 @@ for ($f = 0; $f < $finalFor; $f++) {
 					$fecsub = date('Y-m-j');
 					$horsub = date("H:i:s");
 					
-					$sqlEliminaSubidaInternet = "DELETE FROM subida WHERE codigo = $presta and anopad = $anio and mespad = $mes";
+					$sqlEliminaSubidaInternet = "DELETE FROM subida WHERE codigo = '$presta' and anopad = $anio and mespad = $mes";
 					//print($sqlEliminaSubidaInternet."<br>");
 					$dbhInternet->exec($sqlEliminaSubidaInternet);
 				
-					$sqlEliminaSubidaMadera = "DELETE FROM subidapadroncapitados WHERE codigoprestador = $presta and anopadron = $anio and mespadron = $mes";
+					$sqlEliminaSubidaMadera = "DELETE FROM subidapadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes";
 					//print($sqlEliminaSubidaMadera."<br>");
 					$dbh->exec($sqlEliminaSubidaMadera);
+					
+					$sqlEliminaDetalleMadera = "DELETE FROM detallepadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes";
+					//print($sqlEliminaDetalleMadera."<br>");
+					$dbh->exec($sqlEliminaDetalleMadera);
+					
+					foreach ($totalizador as $totalDele) {
+						$sqlInsertDetalle = "INSERT INTO detallepadroncapitados VALUE('$presta',$mes,$anio,".$totalDele['delega'].",".$totalDele['tottit'].",".$totalDele['totfam'].",".$totalDele['total'].")";
+						//print($sqlInsertDetalle."<br>");
+						$dbh->exec($sqlInsertDetalle);
+					}
 					
 					$sqlInsertInternet = "INSERT INTO subida VALUE('$presta', $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
 					//print($sqlInsertInternet."<br>");
