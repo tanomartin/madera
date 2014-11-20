@@ -3,6 +3,7 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php");
 $base = $_SESSION['dbname'];
 $fechaarchivo=$_GET['fechaArch'];
+$nombrearchivo=substr($fechaarchivo, 2, 6);
 $fechamensaje=$_GET['fechaMens'];
 $nromensaje=$_GET['nroMail'];
 $maquina = $_SERVER['SERVER_NAME'];
@@ -12,12 +13,12 @@ $fechahoy=date("YmdHis",time());
 $usuarioproceso = $_SESSION['usuario'];
 
 if(strcmp("localhost",$maquina)==0) {
-	$archivo_aporte=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/OS1110.txt.zip";
+	$archivo_aporte=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/ORGANS_TRANSFER_ORG1110_F".$nombrearchivo.".txt.zip";
 	$carpeta_aporte=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/";
 	$archivo_autogestion=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/Detalledemovimientos";
 }
 else {
-	$archivo_aporte="/home/sistemas/ArchivosAfip/Transferencias/OS1110.txt.zip";
+	$archivo_aporte="/home/sistemas/ArchivosAfip/Transferencias/ORGANS_TRANSFER_ORG1110_F".$nombrearchivo.".txt.zip";
 	$carpeta_aporte="/home/sistemas/ArchivosAfip/Transferencias/";
 	$archivo_autogestion="/home/sistemas/ArchivosAfip/Transferencias/Detalledemovimientos";
 }
@@ -39,7 +40,7 @@ else {
 		if ($zipAporte->open($archivo_aporte) === TRUE) {
 			$zipAporte->extractTo($carpeta_aporte);
 			$zipAporte->close();
-			$archivo_descom = $carpeta_aporte."OS1110.txt";
+			$archivo_descom = $carpeta_aporte."ORGANS_TRANSFER_ORG1110_F".$nombrearchivo.".txt";
 			$registros = file($archivo_descom, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 			for($i=0; $i < count($registros); $i++) {
 				if($i == 0) {
@@ -184,7 +185,7 @@ else {
 															$tituloaviso = "AVISO";
 															$aviso = 'El archivo descomprimido desde el ZIP NO pudo ser eliminado.';
 														}
-														rename($archivo_aporte,$destino_aporte."OS1110.txt.zip");
+														rename($archivo_aporte,$destino_aporte."ORGANS_TRANSFER_ORG1110_F".$nombrearchivo.".txt.zip");
 														$sqlAddMensaje = "INSERT INTO afipmensajes (nromensaje, fechaemailafip, cuentaderecepcion, tipoarchivo, nrodisco) VALUES (:nromensaje,:fechaemailafip,:cuentaderecepcion,:tipoarchivo,:nrodisco)";
 														$resAddMensaje = $dbl->prepare($sqlAddMensaje);
 														if($resAddMensaje->execute(array(':nromensaje' => $nromensaje, ':fechaemailafip' => $fechamensaje, ':cuentaderecepcion' => 'afiptransferencias@ospim.com.ar', ':tipoarchivo' => 'TRAP', ':nrodisco' => $proximonro))) {
