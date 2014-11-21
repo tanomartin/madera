@@ -9,6 +9,7 @@ $resEmpresaExiste = mysql_query($sqlEmpresaExiste,$db);
 $canEmpresaExiste = mysql_num_rows($resEmpresaExiste); 
 if ($canEmpresaExiste > 0) {
 	header ("Location: moduloABM.php?origen=$origen&err=2");
+	exit(0);
 }
 
 $numpostal=$_GET['numpostal'];
