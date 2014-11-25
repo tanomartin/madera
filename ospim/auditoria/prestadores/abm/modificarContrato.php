@@ -69,8 +69,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		
 		})
+		.tablesorterPager({container: $("#paginador")});
 	});
 	
 	function habilitarValor(nomenclador,practica,check) {
@@ -256,7 +256,21 @@ A:hover {text-decoration: none;color:#00FFFF }
 		?>
           </tbody>
         </table>
-      <p>
+      <p align="center">
+		<div id="paginador" class="pager">
+		<img src="../img/first.png" width="16" height="16" class="first"/> <img src="../img/prev.png" width="16" height="16" class="prev"/>
+		<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
+		<img src="../img/next.png" width="16" height="16" class="next"/> <img src="../img/last.png" width="16" height="16" class="last"/>
+		<br>
+		    <select name="select" class="pagesize">
+		      <option selected="selected" value="10">10 por pagina</option>
+		      <option value="20">20 por pagina</option>
+		      <option value="30">30 por pagina</option>
+		      <option value="<?php echo $numPracticas;?>">Todos</option>
+		      </select>
+	  	</div>
+	  </p>
+	  <p>
         <input type="submit" name="agregar" id="agregar" value="Agregar Seleccionados" />
         <?php } else { 	print("<div style='color:#000099'><b> NO EXISTEN PRACTICAS POSIBLES DE SER AGREGADAS A ESTE PRESTADOR </b></div><br>"); } ?></p>
     </form>
