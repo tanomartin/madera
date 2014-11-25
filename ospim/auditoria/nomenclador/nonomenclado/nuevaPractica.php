@@ -109,6 +109,10 @@ jQuery(function($){
 	});
 	
 	$("#subcapitulo").change(function(){
+		//reset formulario de carga
+		$("#formularioCargaCapitulo").html("");
+		$("#formularioCargaSubCapitulo").html("");
+		$("#formularioCargaPractica").html("");
 		var valor = $(this).val();
 		valor = valor.split('-');
 		$.ajax({
