@@ -15,8 +15,8 @@ if ($filtro == 1) {
 $noExiste = 0;
 $resultado = array();
 if (isset($dato)) {
-	if ($filtro == 0) { $sqlPracticas = "SELECT * FROM practicas WHERE codigopractica = '$dato' order by codigopractica DESC";}
-	if ($filtro == 1) { $sqlPracticas = "SELECT * FROM practicas WHERE descripcion like '%$dato%' order by codigopractica DESC"; }
+	if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo FROM practicas p, tipopracticas t WHERE p.codigopractica = '$dato' and p.tipopractica = t.id order by codigopractica DESC";}
+	if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo FROM practicas p, tipopracticas t WHERE p.descripcion like '%$dato%' and p.tipopractica = t.id order by codigopractica DESC"; }
 	$resPracticas = mysql_query($sqlPracticas,$db);
 	$numPracticas = mysql_num_rows($resPracticas);
 	if ($numPracticas == 0) {
@@ -140,11 +140,11 @@ function validar(formulario) {
      <tbody>
        <?php
 			while($rowPracticas = mysql_fetch_array($resPracticas)) {
-				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$db); ?>
+				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
 		   <tr>
 			 <td><?php echo $rowPracticas['codigopractica'];?></td>
 			 <td><?php if ($rowPracticas['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?></td>
-			 <td><?php echo $descripPractica['tipo'] ?></td>
+			 <td><?php echo $rowPracticas['tipo'] ?></td>
 			 <td><?php echo $descripPractica['capitulo'] ?></td>
 			 <td><?php echo $descripPractica['subcapitulo'] ?></td>
 			 <td><?php echo $rowPracticas['descripcion'];?></td>
