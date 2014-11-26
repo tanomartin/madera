@@ -74,7 +74,9 @@ jQuery(function($){
 						url: "getPracticas.php",
 						data: {valor:-1},
 					}).done(function(respuesta){
-						$("#practicas").html(respuesta);
+						if (respuesta != 0) {
+							$("#practicas").html(respuesta);
+						}
 					});
 				}
 			}
@@ -96,20 +98,22 @@ jQuery(function($){
 			if (respuesta != 0) {
 				$("#subcapitulo").html(respuesta);	
 				$("#subcapitulo").prop("disabled",false);			
-			} else {
-				$.ajax({
-					type: "POST",
-					dataType: 'html',
-					url: "getPracticas.php",
-					data: {valor:valor[1]},
-				}).done(function(respuesta){
+			} 
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "getPracticas.php",
+				data: {valor:valor[1]},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
-				});
-			}
+				}
+			});
 		});
 	});
 	
 	$("#subcapitulo").change(function(){
+		$("#practicas").html("");
 		var valor = $(this).val();
 		valor = valor.split('-');
 		$.ajax({
@@ -118,7 +122,9 @@ jQuery(function($){
 			url: "getPracticas.php",
 			data: {valor:valor[1]},
 		}).done(function(respuesta){
-			$("#practicas").html(respuesta);
+			if (respuesta != 0) {
+				$("#practicas").html(respuesta);
+			}
 		});
 	});
 });

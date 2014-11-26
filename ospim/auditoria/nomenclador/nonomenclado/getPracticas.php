@@ -18,6 +18,7 @@ if(isset($_POST['valor'])) {
 		}
 	}
 	$resPractica=mysql_query($sqlPractica,$db);
+	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
 		$practica = $rowPractica['codigopractica'];
 		$respuesta.="<tr>
@@ -27,6 +28,9 @@ if(isset($_POST['valor'])) {
 					</tr>";
 	}
 	$respuesta.="</tbody>";
+	if($canPractica == 0) {
+		$respuesta = 0;
+	}
 	echo $respuesta;
 }
 ?>
