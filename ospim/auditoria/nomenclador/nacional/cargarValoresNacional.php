@@ -74,7 +74,7 @@ jQuery(function($){
 						type: "POST",
 						dataType: 'html',
 						url: "getPracticasValores.php",
-						data: {valor:-1},
+						data: {valor:-1, tipo:valor},
 					}).done(function(respuesta){
 						$("#practicas").html(respuesta);
 						$("#guardar").prop("disabled",false);	
@@ -90,6 +90,7 @@ jQuery(function($){
 		$("#subcapitulo").prop("disabled",true);	
 		$("#practicas").html("");
 		$("#guardar").css("display", "none");
+		tipo = $("#tipo").val();
 		var valor = $(this).val();
 		valor = valor.split('-');
 		$.ajax({
@@ -101,37 +102,56 @@ jQuery(function($){
 			if (respuesta != 0) {
 				$("#subcapitulo").html(respuesta);	
 				$("#subcapitulo").prop("disabled",false);			
-			} else {
-				$.ajax({
-					type: "POST",
-					dataType: 'html',
-					url: "getPracticasValores.php",
-					data: {valor:valor[1]},
-				}).done(function(respuesta){
+			}
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "getPracticasValores.php",
+				data: {valor:valor[1], tipo:tipo},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
 					$("#guardar").prop("disabled",false);
 					$("#guardar").css("display", "block");
-				});
-			}
+				}
+			});
 		});
 	});
 	
 	$("#subcapitulo").change(function(){
 		var valor = $(this).val();
+		tipo = $("#tipo").val();
 		if(valor == 0) {
-			$("#guardar").css("display", "none");
-			$("#practicas").html("");
+			valor = $("#capitulo").val();
+			valor = valor.split('-');
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "getPracticasValores.php",
+				data: {valor:valor[1], tipo:tipo},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
+					$("#practicas").html(respuesta);
+					$("#guardar").prop("disabled",false);
+					$("#guardar").css("display", "block");
+				} else {
+					$("#guardar").css("display", "none");
+					$("#practicas").html("");
+				}
+			});
 		} else {
 			valor = valor.split('-');
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticasValores.php",
-				data: {valor:valor[1]},
+				data: {valor:valor[1],tipo:tipo},
 			}).done(function(respuesta){
-				$("#practicas").html(respuesta);
-				$("#guardar").prop("disabled",false);	
-				$("#guardar").css("display", "block");
+				if (respuesta != 0) {
+					$("#practicas").html(respuesta);
+					$("#guardar").prop("disabled",false);	
+					$("#guardar").css("display", "block");
+				}
 			});
 		}
 	});

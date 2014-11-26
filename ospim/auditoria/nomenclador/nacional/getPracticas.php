@@ -1,6 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
-if(isset($_POST['valor'])) {
+if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$codigo=$_POST['valor'];
+	$tipo = $_POST['tipo'];
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
@@ -8,14 +9,14 @@ if(isset($_POST['valor'])) {
 					 <th>Acciones</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
-		$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%' and nomenclador = 1";
+		$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%' and nomenclador = 1 and tipopractica = $tipo";
 	} else {
 		$cantidaPuntos = substr_count($codigo,'.');
 		if ($cantidaPuntos == 0) {
-			$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` like '$codigo.%' and `codigopractica` not like '$codigo.%.%' and nomenclador = 1";
+			$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` like '$codigo.%' and `codigopractica` not like '$codigo.%.%' and nomenclador = 1 and tipopractica = $tipo";
 		}
 		if ($cantidaPuntos == 1) {
-			$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` like '$codigo.%' and nomenclador = 1";
+			$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` like '$codigo.%' and nomenclador = 1 and tipopractica = $tipo";
 		}
 	}
 	

@@ -72,7 +72,7 @@ jQuery(function($){
 						type: "POST",
 						dataType: 'html',
 						url: "getPracticas.php",
-						data: {valor:-1},
+						data: {valor:-1, tipo:valor},
 					}).done(function(respuesta){
 						if (respuesta != 0) {	
 							$("#practicas").html(respuesta);
@@ -89,6 +89,7 @@ jQuery(function($){
 		$("#practicas").html("");
 		var valor = $(this).val();
 		valor = valor.split('-');
+		tipo = $("#tipo").val();
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
@@ -103,7 +104,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1]},
+				data: {valor:valor[1], tipo:tipo},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -114,18 +115,34 @@ jQuery(function($){
 	
 	$("#subcapitulo").change(function(){
 		$("#practicas").html("");
+		tipo = $("#tipo").val();
 		var valor = $(this).val();
-		valor = valor.split('-');
-		$.ajax({
-			type: "POST",
-			dataType: 'html',
-			url: "getPracticas.php",
-			data: {valor:valor[1]},
-		}).done(function(respuesta){
-			if (respuesta != 0) {
-				$("#practicas").html(respuesta);
-			}
-		});
+		if (valor == 0) { 
+			valor = $("#capitulo").val();
+			valor = valor.split('-');
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "getPracticas.php",
+				data: {valor:valor[1], tipo:tipo},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
+					$("#practicas").html(respuesta);
+				}
+			});
+		} else {
+			valor = valor.split('-');
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "getPracticas.php",
+				data: {valor:valor[1], tipo:tipo},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
+					$("#practicas").html(respuesta);
+				}
+			});
+		}
 	});
 });
 
