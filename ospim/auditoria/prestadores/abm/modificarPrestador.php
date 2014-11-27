@@ -476,7 +476,7 @@ SI </div></td>
         </div></td>
         <td width="281" valign="top"><div align="left">
           <?php 
-				$query="select * from delegaciones where codidelega > 1002 and codidelega <= 1703";
+				$query="select * from delegaciones where codidelega >= 1002 and codidelega <= 1702";
 				$result=mysql_query($query,$db);
 				$i = 0;
 				while ($rowtipos=mysql_fetch_array($result)) { 
@@ -497,7 +497,7 @@ SI </div></td>
         </div></td>
         <td width="297" valign="top"><div align="left">
           <?php 
-				$query="select * from delegaciones where codidelega > 1703 and codidelega < 3200";
+				$query="select * from delegaciones where codidelega > 1702 and codidelega < 3200";
 				$result=mysql_query($query,$db);				
 				while ($rowtipos=mysql_fetch_array($result)) {
 					$codigoDelega = $rowtipos['codidelega'];
