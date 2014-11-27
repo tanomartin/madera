@@ -48,7 +48,7 @@ jQuery(function($){
 			type: "POST",
 			dataType: 'html',
 			url: "getCapitulos.php",
-			data: {valor:valor},
+			data: {valor:valor, tipo:valor},
 		}).done(function(respuesta){
 			if (valor != 0) {
 				if (respuesta != 0) {
@@ -60,7 +60,7 @@ jQuery(function($){
 						type: "POST",
 						dataType: 'html',
 						url: "cargarNuevaPractica.php",
-						data: {valor:-1},
+						data: {valor:-1, tipo:valor},
 					}).done(function(respuesta){
 						$("#formularioCargaPractica").html(respuesta);
 					});
@@ -81,11 +81,12 @@ jQuery(function($){
 		
 		var valor = $(this).val();
 		valor = valor.split('-');
+		var tipo = $("#tipo").val();
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
 			url: "getSubCapitulos.php",
-			data: {valor:valor[0]},
+			data: {valor:valor[0], tipo:tipo},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
 				$("#subcapitulo").html(respuesta);	
@@ -99,7 +100,7 @@ jQuery(function($){
 						type: "POST",
 						dataType: 'html',
 						url: "cargarNuevaPractica.php",
-						data: {valor:valor[1]},
+						data: {valor:valor[1], tipo:tipo},
 					}).done(function(respuesta){
 						$("#formularioCargaPractica").html(respuesta);
 					});
@@ -115,11 +116,12 @@ jQuery(function($){
 		$("#formularioCargaPractica").html("");
 		var valor = $(this).val();
 		valor = valor.split('-');
+		var tipo = $("#tipo").val();
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
 			url: "cargarNuevaPractica.php",
-			data: {valor:valor[1]},
+			data: {valor:valor[1], tipo:tipo},
 		}).done(function(respuesta){
 			$("#formularioCargaPractica").html(respuesta);
 		});

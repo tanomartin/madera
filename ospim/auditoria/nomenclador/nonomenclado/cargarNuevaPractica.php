@@ -1,7 +1,8 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
-if(isset($_POST['valor'])) {
+if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$codigosHabilitados = array();
 	$codigo=$_POST['valor'];
+	$tipo = $_POST['tipo'];
 	$n=0;
 	
 	if ($codigo == -1) {
@@ -10,7 +11,7 @@ if(isset($_POST['valor'])) {
 			$codigosHabilitados[$i] = str_pad($codPosibles,4,'0',STR_PAD_LEFT);
 			$codPosibles++;
 		}
-		$sqlCodigosUsados = "SELECT codigopractica FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%'";
+		$sqlCodigosUsados = "SELECT codigopractica FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%' and tipopractica = $tipo";
 		$resCodigosUsados = mysql_query($sqlCodigosUsados,$db);
 		$codigosUsados = array();
 		while($rowCodigosUsados = mysql_fetch_array($resCodigosUsados)) {
@@ -25,10 +26,10 @@ if(isset($_POST['valor'])) {
 		}
 		$cantidaPuntos = substr_count($codigo,'.');
 		if ($cantidaPuntos == 0) {
-			$sqlCodigosUsados="SELECT codigopractica FROM practicas WHERE `codigopractica` like '$codigo.%' and `codigopractica` not like '$codigo.%.%'";
+			$sqlCodigosUsados="SELECT codigopractica FROM practicas WHERE `codigopractica` like '$codigo.%' and `codigopractica` not like '$codigo.%.%' and tipopractica = $tipo";
 		}
 		if ($cantidaPuntos == 1) {
-			$sqlCodigosUsados="SELECT codigopractica FROM practicas WHERE `codigopractica` like '$codigo.%'";
+			$sqlCodigosUsados="SELECT codigopractica FROM practicas WHERE `codigopractica` like '$codigo.%' and tipopractica = $tipo";
 		}
 		$resCodigosUsados = mysql_query($sqlCodigosUsados,$db);
 		$codigosUsados = array();
@@ -58,7 +59,9 @@ if(isset($_POST['valor'])) {
 	}
 	$respuesta = "<p><span class='Estilo2'>Carga Nueva Practica</span></p>
 				  $inptuCodigo
-				  <label> <input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly style='visibility:hidden'/>
+				  <label> 
+				  		  <input type='text' id='tipopractica' name='tipopractica' value='$tipo' size='2' readonly style='visibility:visible'/>	
+				  		  <input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly style='visibility:visible'/>
 				  		  Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea>
 				  </label>
 				  <p><input type='submit' name='Submit' value='Guardar' sub/></p>";
