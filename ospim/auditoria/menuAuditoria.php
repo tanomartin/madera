@@ -23,13 +23,13 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="600" border="3">
     <tr>
       <td width="200"><p align="center">Prestadores</p>
-          <p align="center"><a class="enlace" href="prestadores/menuPrestadores.php"><img src="img/prestadores.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/prestadores.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Autorizaciones</p>
           <p align="center"><a class="enlace" href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 		<td width="200"><p align="center">Nomencladores</p>
-          <p align="center"><a class="enlace" href="nomenclador/menuNomenclador.php"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
