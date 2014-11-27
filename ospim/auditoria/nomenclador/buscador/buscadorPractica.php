@@ -96,7 +96,7 @@ function validar(formulario) {
   <p align="center" class="Estilo1">M&oacute;dulo Buscador de Pr&aacute;cticas </p>
    <?php 
 		if ($noExiste == 1) {
-			print("<div style='color:#FF0000'><b> NO EXISTE AUTORIZACION CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
+			print("<div style='color:#FF0000'><b> NO EXISTE PRACTICA CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
 		}
   ?>
   </div>

@@ -59,9 +59,9 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	}
 	$respuesta = "<p><span class='Estilo2'>Carga Nueva Practica</span></p>
 				  $inptuCodigo
+				  <input type='text' id='tipopractica' name='tipopractica' value='$tipo' size='2' readonly style='visibility:hidden'/>	
+				  <input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly style='visibility:hidden'/>
 				  <label> 
-				  		  <input type='text' id='tipopractica' name='tipopractica' value='$tipo' size='2' readonly style='visibility:visible'/>	
-				  		  <input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly style='visibility:visible'/>
 				  		  Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea>
 				  </label>
 				  <p><input type='submit' name='Submit' value='Guardar' sub/></p>";

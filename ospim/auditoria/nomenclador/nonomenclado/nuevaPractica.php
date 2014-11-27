@@ -93,18 +93,14 @@ jQuery(function($){
 				$("#subcapitulo").prop("disabled",false);
 				$("#nuevoSub").prop("disabled",false);	
 			} else {
-				if (($("#tipo").val() == 2 || $("#tipo").val() == 4) && valor != 0) {
-					$("#nuevoSub").prop("disabled",false);
-				} else {
-					$.ajax({
-						type: "POST",
-						dataType: 'html',
-						url: "cargarNuevaPractica.php",
-						data: {valor:valor[1], tipo:tipo},
-					}).done(function(respuesta){
-						$("#formularioCargaPractica").html(respuesta);
-					});
-				}
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "cargarNuevaPractica.php",
+					data: {valor:valor[1], tipo:tipo},
+				}).done(function(respuesta){
+					$("#formularioCargaPractica").html(respuesta);
+				});
 			}
 		});
 	});
