@@ -3,8 +3,9 @@ include($libPath."controlSessionOspim.php");
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 
+//var_dump($_POST);
 $codigo = $_GET['codigo'];
-$datos = array_slice($_POST, 0,sizeof($_POST)-1);
+$datos = array_slice($_POST, 0,sizeof($_POST)-3);
 //var_dump($datos);
 $datos = array_values($datos);
 //var_dump($datos);
@@ -27,7 +28,7 @@ try {
 			$codigopractica = $datos[$i];
 		}
 		$sqlInsertPractica = "INSERT INTO practicaprestador VALUES($codigo,'$codigopractica',$nomenclador,$valor,'$fecharegistro','$usuarioregistro')";
-		//print($sqlInsertPractica."<br>");
+		print($sqlInsertPractica."<br>");
 		$dbh->exec($sqlInsertPractica);
 	}
 	$dbh->commit();
