@@ -158,7 +158,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <form name="editarContrato" id="editarContrato" onSubmit="return validar(this)" method="POST" action="eliminarPracticas.php?codigo=<?php echo $codigo ?>" >
     <p><strong>Pr&aacute;cticas dentro del contrato </strong></p>
 		<?php 
-  		$sqlPracticas = "SELECT pr.*, p.valornonomenclado FROM practicaprestador p, practicas pr WHERE p.codigoprestador = $codigo and p.codigopractica = pr.codigopractica and p.nomenclador = pr.nomenclador";
+  		$sqlPracticas = "SELECT pr.*, p.valornonomenclado, t.descripcion as tipo FROM practicaprestador p, practicas pr, tipopracticas t WHERE p.codigoprestador = $codigo and p.codigopractica = pr.codigopractica and p.nomenclador = pr.nomenclador and pr.tipopractica = t.id";
 		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas > 0) {
@@ -179,11 +179,11 @@ A:hover {text-decoration: none;color:#00FFFF }
           <tbody>
             <?php
 			while($rowPracticas = mysql_fetch_array($resPracticas)) {
-				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$db); ?>
+				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
 				<tr>
 				  <td><?php echo $rowPracticas['codigopractica'];?></td>
 				  <td><?php if ($rowPracticas['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?></td>
-				  <td><?php echo $descripPractica['tipo'] ?></td>
+				  <td><?php echo $rowPracticas['tipo'] ?></td>
 				  <td><?php echo $descripPractica['capitulo'] ?></td>
 				  <td><?php echo $descripPractica['subcapitulo'] ?></td>
 				  <td><?php echo $rowPracticas['descripcion'];?></td>
@@ -206,9 +206,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> ERROR: NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS CON EL MISMO CODIGO</b></div><br>");} ?>
 	  <?php 
 		if ($rowConsultaPresta['nomenclador'] == 3) {
-			$sqlPracticas = "SELECT pr.* FROM  practicas pr WHERE pr.codigopractica not in (select codigopractica from practicaprestador where codigoprestador = $codigo)";
+			$sqlPracticas = "SELECT pr.*, t.descripcion as tipo FROM  practicas pr, tipopracticas t WHERE pr.codigopractica not in (select codigopractica from practicaprestador where codigoprestador = $codigo) and pr.tipopractica = t.id";
 		} else {
-  			$sqlPracticas = "SELECT pr.* FROM  practicas pr, prestadores presta WHERE pr.codigopractica not in (select codigopractica from practicaprestador where codigoprestador = $codigo) and presta.codigoprestador = $codigo and pr.nomenclador = presta.nomenclador";
+  			$sqlPracticas = "SELECT pr.*, t.descripcion as tipo  FROM  practicas pr, prestadores presta, tipopracticas t WHERE pr.codigopractica not in (select codigopractica from practicaprestador where codigoprestador = $codigo) and presta.codigoprestador = $codigo and pr.nomenclador = presta.nomenclador and pr.tipopractica = t.id";
 		}
 		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
@@ -230,7 +230,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <tbody>
             <?php
 			while($rowPracticas = mysql_fetch_array($resPracticas)) {
-				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$db);
+				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db);
 				$id = $rowPracticas['nomenclador'].$rowPracticas['codigopractica'];
 			?>
             <tr>
@@ -238,7 +238,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			  <td>
 			  	<input type="text" style="display:none" size="1" value="<?php echo $rowPracticas['nomenclador'] ?>" disabled="disabled" name="N<?php echo $id; ?>" id="N<?php echo $id; ?>" /><?php if ($rowPracticas['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?>
 			  </td>
-			  <td><?php echo $descripPractica['tipo'] ?></td>
+			  <td><?php echo $rowPracticas['tipo'] ?></td>
 			  <td><?php echo $descripPractica['capitulo'] ?></td>
 			  <td><?php echo $descripPractica['subcapitulo'] ?></td>
               <td><?php echo $rowPracticas['descripcion'];?></td>
