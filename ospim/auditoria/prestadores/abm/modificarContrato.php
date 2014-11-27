@@ -7,7 +7,6 @@ $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre, nomenclador FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -35,6 +34,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 
 	$(function() {
 		$("#practicas")
@@ -71,6 +71,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 			}
 		})
 		.tablesorterPager({container: $("#paginador")});
+		
+		$.unblockUI(); 
 	});
 	
 	function habilitarValor(nomenclador,practica,check) {
@@ -137,6 +139,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 </script>
 
 <body bgcolor="#CCCCCC">
+<script>
+	$.blockUI({ message: "<h1>Cargando Contrato<br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" } );
+</script>
 <div align="center">
   <p><span style="text-align:center">
    <input type="reset" name="volver" value="Volver" onclick="location.href = 'prestador.php?codigo=<?php echo $codigo ?>'" align="center"/>
