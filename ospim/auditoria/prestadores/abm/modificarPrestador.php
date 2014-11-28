@@ -255,7 +255,7 @@ function validar(formulario) {
 	var delegaCheck = 0;
 	var id = 0;
  <?php 
-	$query="select * from delegaciones where codidelega > 1002 and codidelega < 3200";
+	$query="select * from delegaciones where codidelega >= 1002 and codidelega < 3200";
 	$result=mysql_query($query,$db);
 	while ($rowtipos=mysql_fetch_array($result)) { ?>
 		idDelega = "delegacion"+id;
