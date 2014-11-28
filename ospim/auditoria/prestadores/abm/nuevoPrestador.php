@@ -468,10 +468,12 @@ function validar(formulario) {
           <?php 
 				$query="select * from tiposervicio";
 				$result=mysql_query($query,$db);
+				$i=0;
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
-          <input type="checkbox" id="<?php echo "servicio".$rowtipos['codigoservicio'] ?>" name="<?php echo "servicio".$rowtipos['codigoservicio'] ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" disabled="disabled" />
-          <?php echo $rowtipos['descripcion'] ?><br />
-          <?php } ?>
+          			<input type="checkbox" id="<?php echo "servicio".$i ?>" name="<?php echo "servicio".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" disabled="disabled" />
+          <?php 	echo $rowtipos['descripcion']."<br />";
+         			$i++;
+				} ?>
         </div></td>
         <td width="281" valign="top"><div align="left">
             <?php 

@@ -459,6 +459,7 @@ SI </div></td>
           <?php 
 				$query="select * from tiposervicio";
 				$result=mysql_query($query,$db);
+				$i=0;
 				while ($rowtipos=mysql_fetch_array($result)) { 
 					$codigoServicio = $rowtipos['codigoservicio'];
 					$sqlExiste = "select * from prestadorservicio where codigoprestador = $codigo and codigoservicio = $codigoServicio";
@@ -470,9 +471,10 @@ SI </div></td>
 						$checked = "";
 					}	
 		?>
-          <input type="checkbox" <?php echo $checked ?> id="<?php echo "servicio".$rowtipos['codigoservicio'] ?>" name="<?php echo "servicio".$rowtipos['codigoservicio'] ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" />
-          <?php echo $rowtipos['descripcion'] ?><br />
-          <?php } ?>
+          			<input type="checkbox" <?php echo $checked ?> id="<?php echo "servicio".$i ?>" name="<?php echo "servicio".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" />
+          <?php 	echo $rowtipos['descripcion']."<br>";
+		  			$i++; 
+           		} ?>
         </div></td>
         <td width="281" valign="top"><div align="left">
           <?php 
