@@ -7,7 +7,7 @@ if(isset($_POST['codigo']))
 	$sqlLocalidad="SELECT codlocali, nomlocali FROM localidades WHERE numpostal = '$numpostal'";
 	$resLocalidad=mysql_query($sqlLocalidad,$db);
 	while($rowLocalidad=mysql_fetch_array($resLocalidad)) {
-		$respuesta.="<option title ='$rowLocalidad[nomlocali]' value='$rowLocalidad[codlocali]'>".$rowLocalidad['nomlocali']."</option>";
+		$respuesta.="<option title ='$rowLocalidad[nomlocali]' value='$rowLocalidad[codlocali]'>".utf8_encode($rowLocalidad['nomlocali'])."</option>";
 	}
 	echo $respuesta;
 }

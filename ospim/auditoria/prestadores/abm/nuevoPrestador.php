@@ -119,6 +119,22 @@ jQuery(function($){
 		});
 	});
 	
+	$("#selectPersoneria").change(function(){
+		var personeria = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "html",
+			url: "getServicios.php",
+			data: {personeria:personeria},
+		}).done(function(respuesta){
+			if (respuesta != 0) {
+				$("#divServicios").html(respuesta);
+			} else {
+				$("#divServicios").html("");
+			}
+		});
+	});
+	
 });
 
 function habilitaCamposProfesional(valor) {
@@ -136,52 +152,6 @@ function habilitaCamposProfesional(valor) {
 		document.forms.nuevoPrestador.matriculaNac.value = "";
 		document.forms.nuevoPrestador.matriculaPro.value = "";
 	}	
-	habilitarServicios(valor);
-}
-
-function habilitarServicios(valor) {
-	var idServicio;
-	var id = 0;
-	if (valor == 0) {
-<?php 	$query="select * from tiposervicio";
-		$result=mysql_query($query,$db);
-		while ($rowtipos=mysql_fetch_array($result)) { ?>
-			idServicio = "servicio"+id;
-			document.getElementById(idServicio).checked = false;
-			document.getElementById(idServicio).disabled = true;
-			id++;
-  <?php } ?>
-  	}
-	if (valor == 1) {
-	<?php 	
-		$query="select * from tiposervicio";
-		$result=mysql_query($query,$db);
-		while ($rowtipos=mysql_fetch_array($result)) { ?>
-			idServicio = "servicio"+id;
-			if (id == <?php echo $rowtipos['codigoservicio'] ?> && <?php echo $rowtipos['profesional'] ?> > 0) {	
-				document.getElementById(idServicio).disabled = false;
-			} else {
-				document.getElementById(idServicio).checked = false;
-				document.getElementById(idServicio).disabled = true;
-			}
-			id++;
- <?php } ?>
-	}
-	if (valor == 2 || valor == 3) {
-	<?php 	
-		$query="select * from tiposervicio";
-		$result=mysql_query($query,$db);
-		while ($rowtipos=mysql_fetch_array($result)) { ?>
-			idServicio = "servicio"+id;
-			if (id == <?php echo $rowtipos['codigoservicio'] ?> && <?php echo $rowtipos['profesional'] ?> != 1) {	
-				document.getElementById(idServicio).disabled = false;
-			} else {
-				document.getElementById(idServicio).checked = false;
-				document.getElementById(idServicio).disabled = true;
-			}
-			id++;
- <?php } ?>
-	}
 }
 
 function validar(formulario) {
@@ -287,24 +257,6 @@ function validar(formulario) {
 		alert("Debe elegir un tipo de Nomenclador");
 		return false;
 	}
-	var servicioCheck = 0;
-	var id = 0;
-<?php 	
-	$query="select * from tiposervicio";
-	$result=mysql_query($query,$db);
-	while ($rowtipos=mysql_fetch_array($result)) { ?>
-		idServicio = "servicio"+id;
-		if (document.getElementById(idServicio).checked) {
-			servicioCheck = 1;
-		}
-		id++;
-<?php
-  } ?>
-	if (servicioCheck == 0) {
-		alert("Debe elegir como mínimo un servicio para el prestador");
-		return false;
-	}
-	
 	
 	var delegaCheck = 0;
 	var id = 0;
@@ -322,6 +274,32 @@ function validar(formulario) {
 		alert("Debe elegir como mínimo una Delegación para el prestador");
 		return false;
 	}
+	
+	var servicioCheck = 0;
+	var id = 0;
+	if (personeria != 0) {
+		if (personeria == 1) {	
+	<?php   $query="SELECT * FROM tiposervicio where profesional != 0"; ?>
+
+		} 
+		if (personeria == 2 || personeria == 3) {	
+	<?php   $query="SELECT * FROM tiposervicio where profesional != 1"; ?>
+		} 
+  <?php $result=mysql_query($query,$db);
+		while ($rowtipos=mysql_fetch_array($result)) { ?>
+			idServicio = "servicio"+id;
+			if (document.getElementById(idServicio).checked) {
+				servicioCheck = 1;
+			}
+			id++;
+ <?php } ?>	
+	}
+	
+	if (servicioCheck == 0) {
+		alert("Debe elegir como mínimo un servicio para el prestador");
+		return false;
+	}
+	
 	formulario.Submit.disabled = true;
 	return true;
 }
@@ -464,17 +442,10 @@ function validar(formulario) {
         <td colspan="2"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></td>
       </tr>
       <tr>
-        <td valign="top"><div align="left">
-          <?php 
-				$query="select * from tiposervicio";
-				$result=mysql_query($query,$db);
-				$i=0;
-				while ($rowtipos=mysql_fetch_array($result)) { ?>
-          			<input type="checkbox" id="<?php echo "servicio".$i ?>" name="<?php echo "servicio".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" disabled="disabled" />
-          <?php 	echo $rowtipos['descripcion']."<br />";
-         			$i++;
-				} ?>
-        </div></td>
+        <td valign="top">
+			<div id="divServicios" align="left" >	 
+			</div>
+		</td>
         <td width="281" valign="top"><div align="left">
             <?php 
 				$query="select * from delegaciones where codidelega >= 1002 and codidelega <= 1702";
