@@ -367,7 +367,7 @@ function validar(formulario) {
 				} else {
 					$deshabilitado = '';
 				} ?>
-		  		<select name="selectPersoneria" id="selectPersoneria" <?php echo $deshabilitado ?>>
+		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" <?php echo $deshabilitado ?>>
 					<option value="0">Seleccione un valor </option>
 					<option value="1" <?php echo $profesional ?>>Profesional </option>
 					<option value="2" <?php echo $establecimiento ?>>Establecimiento </option>
@@ -458,8 +458,7 @@ SI </div></td>
           <?php 	echo $rowtipos['descripcion']."<br>";
 		  			$i++; 
            		} ?>
-        </div>
-		</td>
+        </div></td>
         <td width="281" valign="top"><div align="left">
           <?php 
 				$query="select * from delegaciones where codidelega >= 1002 and codidelega <= 1702";
