@@ -29,7 +29,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
-
+<link rel="stylesheet" href="/lib/tablas.css">
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
@@ -40,7 +40,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td colspan="6"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
         </tr>
         <tr>
-          <td width="129"><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+          <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
           <td colspan="6"><div align="left">
               <div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
           </div></td>
@@ -57,9 +57,9 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td><div align="right"><strong>Codigo Postal</strong></div></td>
           <td width="183"><div align="left"><?php echo $rowConsultaPresta['indpostal']." ".$rowConsultaPresta['numpostal']." ".$rowConsultaPresta['alfapostal'] ?></div>
               <div align="right"></div></td>
-          <td width="160"><div align="left"><strong>Localidad</strong></div></td>
+          <td><div align="left"><strong>Localidad</strong></div></td>
           <td width="140"><div align="left"><?php echo $rowConsultaPresta['localidad'] ?></div></td>
-          <td width="145"><div align="left"><strong>Provincia </strong></div>
+          <td><div align="left"><strong>Provincia </strong></div>
               <div align="left"></div></td>
           <td width="124"><div align="left"><?php echo $rowConsultaPresta['provincia'] ?></div></td>
         </tr>
@@ -74,9 +74,9 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           </div></td>
         </tr>
         <tr>
-          <td><div align="right">
+          <td>
               <div align="right"><strong>Telefono FAX </strong></div>
-          </div></td>
+          </td>
           <td><div align="left">
             <?php if ($rowConsultaPresta['telefonofax'] != 0) echo "(".$rowConsultaPresta['ddnfax'].")-".$rowConsultaPresta['telefonofax']; ?>
           </div></td>
@@ -92,10 +92,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 					if($rowConsultaPresta['personeria'] == 3) { echo "Círculo"; }
 			?>
           </div></td>
-          <td><div align="left">
-              <div align="left"><strong>Numero Registro SSS</strong></div>
-          </div>
-              <div align="left"></div></td>
+          <td> <div align="left"><strong>Numero Registro SSS</strong></div></td>
           <td colspan="4"><div align="left">
             <?php if ($rowConsultaPresta['numeroregistrosss'] != 0) { echo $rowConsultaPresta['numeroregistrosss']; } ?>
           </div></td>
@@ -135,14 +132,18 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 							?>
           </div></td>
         </tr>
-  </table>
+  	</table>
 	  <p>&nbsp;</p>
+	  <div class="grilla">
 	  <table width="794" border="1">
-        <tr>
-          <td width="392" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></td>
-          <td width="386"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></td>
+        <thead>
+		<tr>
+          <th width="392" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></td>
+          <th width="386"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></td>
         </tr>
-        <tr>
+		</thead>
+        <tbody>
+		<tr>
           <td valign="top"><div align="left">
             <?php while ($rowConsultaServcio = mysql_fetch_assoc($resConsultaServcio)) {
 				echo $rowConsultaServcio['descripcion']."<br>";
@@ -155,7 +156,9 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 		} ?>
           </div></td>
         </tr>
+		</tbody>
 	</table>
+	</div>
 	 <p>
 	  <table width="600" border="0">
       <tr>
