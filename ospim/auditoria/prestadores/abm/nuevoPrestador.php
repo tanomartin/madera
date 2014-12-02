@@ -154,7 +154,7 @@ function habilitaCamposProfesional(valor) {
 	}	
 }
 
-function validar(formulario) {
+function validar(formulario) {	
 	if (formulario.nombre.value == "") {
 		alert("El campo Nombre o Razon social es Obligatrio");
 		return false;
@@ -258,45 +258,31 @@ function validar(formulario) {
 		return false;
 	}
 	
-	var delegaCheck = 0;
-	var id = 0;
- <?php 
-	$query="select * from delegaciones where codidelega >= 1002 and codidelega < 3200";
-	$result=mysql_query($query,$db);
-	while ($rowtipos=mysql_fetch_array($result)) { ?>
-		idDelega = "delegacion"+id;
-		if (document.getElementById(idDelega).checked) {
-			delegaCheck = 1;
+	var servicioCheck = 0;
+	servicios = formulario.servicios;
+	if (servicios != null) {
+		for (x=0;x<servicios.length;x++) {
+			if(servicios[x].checked) {
+				servicioCheck = 1;
+			}
 		}
-		id++;
-<?php } ?>
-	if (delegaCheck == 0) {
-		alert("Debe elegir como mínimo una Delegación para el prestador");
+	}
+	if (servicioCheck == 0) {
+		alert("Debe elegir como mínimo un servicio para el prestador");
 		return false;
 	}
 	
-	var servicioCheck = 0;
-	var id = 0;
-	if (personeria != 0) {
-		if (personeria == 1) {	
-	<?php   $query="SELECT * FROM tiposervicio where profesional != 0"; ?>
-
-		} 
-		if (personeria == 2 || personeria == 3) {	
-	<?php   $query="SELECT * FROM tiposervicio where profesional != 1"; ?>
-		} 
-  <?php $result=mysql_query($query,$db);
-		while ($rowtipos=mysql_fetch_array($result)) { ?>
-			idServicio = "servicio"+id;
-			if (document.getElementById(idServicio).checked) {
-				servicioCheck = 1;
+	var delegaCheck = 0;
+	delegaciones = formulario.delegaciones;
+	if (delegaciones != null) {
+		for (x=0;x<delegaciones.length;x++) {
+			if(delegaciones[x].checked) {
+				delegaCheck = 1;
 			}
-			id++;
- <?php } ?>	
+		}
 	}
-	
-	if (servicioCheck == 0) {
-		alert("Debe elegir como mínimo un servicio para el prestador");
+	if (delegaCheck == 0) {
+		alert("Debe elegir como mínimo una Delegación para el prestador");
 		return false;
 	}
 	
@@ -452,7 +438,7 @@ function validar(formulario) {
 				$result=mysql_query($query,$db);
 				$i = 0;
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
-            <input type="checkbox" name="<?php echo "delegacion".$i ?>" id="<?php echo "delegacion".$i ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+            <input type="checkbox" name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" />
             <?php echo $rowtipos['nombre'] ?><br />
             <?php 	$i++;
 				} ?>
@@ -461,9 +447,8 @@ function validar(formulario) {
           <?php 
 				$query="select * from delegaciones where codidelega > 1702 and codidelega < 3200";
 				$result=mysql_query($query,$db);
-				
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
-          <input type="checkbox" name="<?php echo "delegacion".$i  ?>" id="<?php echo "delegacion".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+          <input type="checkbox" name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" />
           <?php echo $rowtipos['nombre'] ?><br />
           <?php 	$i++;
 				} ?>

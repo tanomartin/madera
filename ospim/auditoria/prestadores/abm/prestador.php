@@ -176,7 +176,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
       </tr>
     </table>
 	</p>
-    <p> <input class="nover" type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+    <p> <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
 </div>
 </body>
 </html>

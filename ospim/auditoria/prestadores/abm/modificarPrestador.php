@@ -205,47 +205,33 @@ function validar(formulario) {
 	}
 	
 	var servicioCheck = 0;
-	var id = 0;
-	if (personeria != 0) {
-		if (personeria == 1) {	
-	<?php   $query="SELECT * FROM tiposervicio where profesional != 0"; ?>
-
-		} 
-		if (personeria == 2 || personeria == 3) {	
-	<?php   $query="SELECT * FROM tiposervicio where profesional != 1"; ?>
-		} 
-  <?php $result=mysql_query($query,$db);
-		while ($rowtipos=mysql_fetch_array($result)) { ?>
-			idServicio = "servicio"+id;
-			if (document.getElementById(idServicio).checked) {
+	servicios = formulario.servicios;
+	if (servicios != null) {
+		for (x=0;x<servicios.length;x++) {
+			if(servicios[x].checked) {
 				servicioCheck = 1;
 			}
-			id++;
- <?php } ?>	
+		}
 	}
-	
 	if (servicioCheck == 0) {
 		alert("Debe elegir como mínimo un servicio para el prestador");
 		return false;
 	}
 	
-	
 	var delegaCheck = 0;
-	var id = 0;
- <?php 
-	$query="select * from delegaciones where codidelega >= 1002 and codidelega < 3200";
-	$result=mysql_query($query,$db);
-	while ($rowtipos=mysql_fetch_array($result)) { ?>
-		idDelega = "delegacion"+id;
-		if (document.getElementById(idDelega).checked) {
-			delegaCheck = 1;
+	delegaciones = formulario.delegaciones;
+	if (delegaciones != null) {
+		for (x=0;x<delegaciones.length;x++) {
+			if(delegaciones[x].checked) {
+				delegaCheck = 1;
+			}
 		}
-		id++;
-<?php } ?>
+	}
 	if (delegaCheck == 0) {
 		alert("Debe elegir como mínimo una Delegación para el prestador");
 		return false;
 	}
+	
 	formulario.Submit.disabled = true;
 	return true;
 }
@@ -454,7 +440,7 @@ SI </div></td>
 					$checked = "";
 				}	
 		?>
-          		<input type="checkbox" <?php echo $checked ?> id="<?php echo "servicio".$i ?>" name="<?php echo "servicio".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" />
+          		<input type="checkbox" <?php echo $checked ?> id="servicios" name="<?php echo "servicios".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" />
           <?php 	echo $rowtipos['descripcion']."<br>";
 		  			$i++; 
            		} ?>
@@ -475,7 +461,7 @@ SI </div></td>
 						$checked = "";
 					}	
 					?>
-          <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegacion".$i ?>" id="<?php echo "delegacion".$i ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+          <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" />
           <?php echo $rowtipos['nombre'] ?><br />
           <?php 	$i++;
 				} ?>
@@ -495,7 +481,7 @@ SI </div></td>
 						$checked = "";
 					}
 				 ?>
-          <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegacion".$i  ?>" id="<?php echo "delegacion".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+          <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" />
           <?php echo $rowtipos['nombre'] ?><br />
           <?php 	$i++;
 				} ?>

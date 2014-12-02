@@ -21,7 +21,7 @@ if(isset($_POST['personeria'])) {
 				$codigoServicio = $rowServicios['codigoservicio'];
 				$descripcion = $rowServicios['descripcion'];
 				$descripcion = utf8_encode($descripcion);
-				$respuesta.="<input type='checkbox' id='servicio$i' name='servicio$i' value='$codigoServicio' />$descripcion<br />";
+				$respuesta.="<input type='checkbox' id='servicios' name='servicios$i' value='$codigoServicio' />$descripcion<br />";
 				$i++;
 			}
 		}
