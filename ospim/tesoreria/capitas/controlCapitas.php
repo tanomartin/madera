@@ -51,14 +51,14 @@ function formatoPerido($per) {
 $dia=date("j");
 $mes=date("m");
 $anio=date("Y");
-if ($dia < 14) {
+/*if ($dia < 14) {
 	$inicio=2;
 	$fin=7;
 }
-else  {
+else  {*/
 	$inicio=1;
 	$fin=6;
-}
+//}
 
 for ( $i = $inicio ; $i <= $fin ; $i++) {
 	$perAux=$mes - $i;
