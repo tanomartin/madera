@@ -11,7 +11,7 @@ function SubirArchivo($archivo_local, $archivo_remoto, $path_remoto){
 	//Sube archivo de la maquina Cliente al Servidor (Comando PUT)
 	$id_ftp=ConectarFTP(); //Obtiene un manejador y se conecta al Servidor FTP 
 	ftp_chdir($id_ftp, $path_remoto);
-	$resultado = ftp_put($id_ftp, $archivo_remoto, $archivo_local, FTP_ASCII);
+	$resultado = ftp_put($id_ftp, $archivo_remoto, $archivo_local, FTP_BINARY);
 	//Sube un archivo al Servidor FTP en modo Binario
 	ftp_quit($id_ftp); //Cierra la conexion FTP
 	return($resultado);
