@@ -96,7 +96,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '"),';						
 						}
-						$registroTabla = '('.$contenidoTabla[del].',"'.$contenidoTabla[nom].'","'.$contenidoTabla[loc].'",'.$contenidoTabla[pro].','.$contenidoTabla[cpo].',"'.$contenidoTabla[tel].'","'.$contenidoTabla[fio].'","'.$contenidoTabla[cui].$finRegistro;
+						$registroTabla = '('.$contenidoTabla[del].',"'.$contenidoTabla[nom].'","'.$contenidoTabla[dom].'","'.$contenidoTabla[loc].'",'.$contenidoTabla[pro].','.$contenidoTabla[cpo].',"'.$contenidoTabla[tel].'","'.$contenidoTabla[fio].'","'.$contenidoTabla[cui].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
