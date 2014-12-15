@@ -5,7 +5,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Intra OSPIM :.</title>
+<title>.: M&oacute;dulo Intranet OSPIM :.</title>
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -26,7 +26,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="400" border="3">
     <tr>
       <td width="200"><p align="center">Generacion Archivos </p>
-          <p align="center"><a class="enlace" href="generacionArchivos.php"><img src="img/archivos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="moduloGeneracion.php"><img src="img/archivos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 	 <td width="200"><p align="center">Actualizacion Datos </p>
           <p align="center"><a class="enlace" href="moduloActualizacion.php"><img src="img/actualizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
