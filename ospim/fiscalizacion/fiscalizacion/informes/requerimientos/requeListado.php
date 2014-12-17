@@ -75,7 +75,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
 	 <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'" align="center"/>
 	<p><span class="Estilo2">Resultado de Busqueda de Requerimientos </span></p>
-	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+	<table class="tablesorter" id="listado" style="width:900px; font-size:14px">
 	<thead>
 		<tr>
 			<th>Nro.</th>
@@ -84,6 +84,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<th>Razón Social</th>
 			<th>Delegación</th>
 			<th>Proceso Asignado</th>
+			<th>U. Registro</th>
+			<th>U. Modificación</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -115,6 +117,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 					}	
 				?>
 			</td>
+			<td><?php echo $rowReque['usuarioregistro'];?></td>
+			<td><?php echo $rowReque['usuariomodificacion'];?></td>
 		</tr>
 		<?php
 		}
