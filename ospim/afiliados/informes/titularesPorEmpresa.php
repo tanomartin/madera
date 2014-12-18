@@ -103,7 +103,7 @@ function validar(formulario) {
 			<tr>
 				<td class="nover"><strong>C.U.I.T.</strong>	</td>
 				<td class="nover"><div align="left">
-				  <input name="cuit" id="cuit" type="text" size="10" />
+				  <input name="cuit" id="cuit" type="text" size="13" />
 				</div></td>
 			</tr>
 		</table>
