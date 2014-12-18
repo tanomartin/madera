@@ -73,6 +73,12 @@ function rediSabanaCtaCte(origen) {
 	
 }
 
+function beneficiarios(origen, cuit, root) {
+	var dire = "/ospim/afiliados/informes/titularesPorEmpresa.php?origen="+origen+"&cuit="+cuit;
+	a= window.open(dire,"BeneficiariosPorEmpresa",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+}
+
 </script>
 
 <title>.: Módulo Empresa :.</title>
@@ -111,7 +117,7 @@ function rediSabanaCtaCte(origen) {
 		<?php } ?>
       </div></td>
       <td width="97"><div align="center">
-		<input name="beneficiarios" type="button" value="Beneficiarios" />
+		<input name="titulares" type="button" value="Beneficiarios Titulares" onClick="beneficiarios('<?php echo $origen ?>','<?php echo $cuit ?>','<?php echo $_SERVER['DOCUMENT_ROOT'] ?>')" />
       </div></td>
     </tr>
   </table>
