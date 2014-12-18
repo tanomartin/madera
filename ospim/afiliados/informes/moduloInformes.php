@@ -20,13 +20,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<h2>Men&uacute; Consultas e Informes</h2>
 </div>
 <div align="center">
-  <table width="392" border="3">
+  <table width="600" border="3">
     <tr>
-      <td width="196"><p align="center">DDJJ / Aportes</p>
+      <td width="200"><p align="center">DDJJ / Aportes</p>
         <p align="center"><a class="enlace" href="ddjjAportesCuil.php"><img src="../img/ddjjaportes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">Titulares por Empresa</p>
-          <p align="center"><a class="enlace" href="#"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td width="200"><p align="center">Titulares por Empresa</p>
+          <p align="center"><a class="enlace" href="titularesPorEmpresa.php?origen=ospim"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>
+		 <td width="200"><p align="center">Beneficiarios por Delegación</p>
+          <p align="center"><a class="enlace" href="beneficiariosPorDelegacion.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
