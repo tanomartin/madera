@@ -12,7 +12,7 @@ $nomdelega = $arrayDelegacion[1];
 if(strcmp("localhost",$maquina)==0)
 	$archivo_path="informes/";
 else
-	$archivo_path="/home/sistemas/Documentos/Repositorio/Afiliados/";
+	$archivo_path="/home/sistemas/Documentos/Repositorio/Afiliaciones/";
 
 //conexion y creacion de transaccion.
 try{
@@ -23,74 +23,74 @@ try{
 	$dbh->beginTransaction();
 
 	// Crea el objeto PHPExcel
-	$objPHPExcelFamiliarTitular = new PHPExcel();
+	$objPHPExcelTitular = new PHPExcel();
 
 	// Setea propiedades del documento
-	$objPHPExcelFamiliarTitular->getProperties()->setCreator($_SESSION['usuario'])
+	$objPHPExcelTitular->getProperties()->setCreator($_SESSION['usuario'])
 								 ->setLastModifiedBy($_SESSION['usuario'])
 								 ->setTitle("Afiliados por delegación")
 								 ->setSubject("Modulo de Afiliados")
 								 ->setDescription("Informe de Afiliados por delegación.")
 								 ->setCategory("Informes del Sistema de Afiliados");
 	// Renombra la hoja
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setTitle("Titulares $delegacion al $fechagenera");
+	$objPHPExcelTitular->getActiveSheet()->setTitle("Titulares $delegacion al $fechagenera");
 
 	// Setea la hoja como activa, cuando se abra el Excel esta sera la primer hoja
-	$objPHPExcelFamiliarTitular->setActiveSheetIndex(0);
+	$objPHPExcelTitular->setActiveSheetIndex(0);
 
 	// Setea encabezado y pie de pagina
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getHeaderFooter()->setOddHeader("&L&BO.S.P.I.M.&G&C&H&BTitulares delegacion $nomdelega ($delegacion) al $fechagenera&R&B".$fechagenera);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getHeaderFooter()->setOddFooter('&L&R&BPagina &P de &N');
+	$objPHPExcelTitular->getActiveSheet()->getHeaderFooter()->setOddHeader("&L&BO.S.P.I.M.&G&C&H&BTitulares delegacion $nomdelega ($delegacion) al $fechagenera&R&B".$fechagenera);
+	$objPHPExcelTitular->getActiveSheet()->getHeaderFooter()->setOddFooter('&L&R&BPagina &P de &N');
 
 	// Setea en configuracion de pagina orientacion y tamaño
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LEGAL);	
+	$objPHPExcelTitular->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
+	$objPHPExcelTitular->getActiveSheet()->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_LEGAL);	
 	
 	// Setea en configuracion de pagina los margenes
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageMargins()->setTop(0.50);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageMargins()->setRight(0);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageMargins()->setLeft(0);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageMargins()->setBottom(0.50);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageMargins()->setHeader(0.25);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageMargins()->setFooter(0.25);
+	$objPHPExcelTitular->getActiveSheet()->getPageMargins()->setTop(0.50);
+	$objPHPExcelTitular->getActiveSheet()->getPageMargins()->setRight(0);
+	$objPHPExcelTitular->getActiveSheet()->getPageMargins()->setLeft(0);
+	$objPHPExcelTitular->getActiveSheet()->getPageMargins()->setBottom(0.50);
+	$objPHPExcelTitular->getActiveSheet()->getPageMargins()->setHeader(0.25);
+	$objPHPExcelTitular->getActiveSheet()->getPageMargins()->setFooter(0.25);
 	
 	// Setea en configuracion de pagina centrado horizontal y vertical
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageSetup()->setHorizontalCentered(true);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageSetup()->setVerticalCentered(false);
+	$objPHPExcelTitular->getActiveSheet()->getPageSetup()->setHorizontalCentered(true);
+	$objPHPExcelTitular->getActiveSheet()->getPageSetup()->setVerticalCentered(false);
 
 	// Setea en configuracion de pagina lineas de division (OJO: NO ANDA)
-	//$objPHPExcelFamiliarTitular->getActiveSheet()->getPageSetup()->setShowGridlines(true);
+	//$objPHPExcelTitular->getActiveSheet()->getPageSetup()->setShowGridlines(true);
 
 	// Setea en configuracion de pagina repetir filas en extremo superior
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 1);
+	$objPHPExcelTitular->getActiveSheet()->getPageSetup()->setRowsToRepeatAtTopByStartAndEnd(1, 1);
 
 	// ************************ TITULAR ************************** //
 
 	// Setea tamaño de la columna y agrega datos a las celdas de titulos
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('A')->setWidth(8);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('A1', 'N. Afiliado');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('B')->setWidth(40);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('B1', 'Nombre y Apellido');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('C')->setWidth(14);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('C1', 'Tipo Doc.');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('D')->setWidth(14);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('D1', 'Nro. Doc.');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('E')->setWidth(11);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('E1', 'Fec. Nac.');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('F')->setWidth(5);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('F1', 'Sexo');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('G1', 'C.U.I.L.');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('H')->setWidth(50);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('H1', 'Domicilio');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('I')->setWidth(40);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('I1', 'Localidad');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('J')->setWidth(30);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('J1', 'Provincia');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('K')->setWidth(18);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('K1', 'C.U.I.T. Empresa');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getColumnDimension('L')->setWidth(50);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('L1', 'Nombre Empresa');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('A')->setWidth(8);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('A1', 'N. Afiliado');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('B')->setWidth(40);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('B1', 'Nombre y Apellido');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('C')->setWidth(14);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('C1', 'Tipo Doc.');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('D')->setWidth(14);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('D1', 'Nro. Doc.');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('E')->setWidth(11);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('E1', 'Fec. Nac.');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('F')->setWidth(5);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('F1', 'Sexo');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('G1', 'C.U.I.L.');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('H')->setWidth(50);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('H1', 'Domicilio');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('I')->setWidth(40);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('I1', 'Localidad');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('J')->setWidth(30);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('J1', 'Provincia');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('K')->setWidth(18);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('K1', 'C.U.I.T. Empresa');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('L')->setWidth(50);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('L1', 'Nombre Empresa');
 
 	$fila=1;	
 	$sqlTitulares = "SELECT
@@ -123,36 +123,37 @@ try{
 		foreach ($resultTitulares as $titulares){
 			$fila++;
 			// Agrega datos a las celdas de datos
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('A'.$fila, $titulares['nroafiliado']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('B'.$fila, $titulares['apellidoynombre']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('C'.$fila, $titulares['tipodocumento']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('D'.$fila, $titulares['nrodocumento']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('E'.$fila, $titulares['fechanacimiento']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('F'.$fila, $titulares['sexo']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('G'.$fila, $titulares['cuil']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('H'.$fila, $titulares['domicilio']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('I'.$fila, $titulares['nomlocali']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('J'.$fila, $titulares['provincia']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('K'.$fila, $titulares['cuitempresa']);
-			$objPHPExcelFamiliarTitular->getActiveSheet()->setCellValue('L'.$fila, $titulares['nombre']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('A'.$fila, $titulares['nroafiliado']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('B'.$fila, $titulares['apellidoynombre']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('C'.$fila, $titulares['tipodocumento']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('D'.$fila, $titulares['nrodocumento']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('E'.$fila, $titulares['fechanacimiento']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('F'.$fila, $titulares['sexo']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('G'.$fila, $titulares['cuil']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('H'.$fila, $titulares['domicilio']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('I'.$fila, $titulares['nomlocali']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('J'.$fila, $titulares['provincia']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('K'.$fila, $titulares['cuitempresa']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('L'.$fila, $titulares['nombre']);
 		}
 	}
 
 	// Setea fuente tipo y tamaño a la hoja activa
-	$objPHPExcelFamiliarTitular->getDefaultStyle()->getFont()->setName('Arial');
-	$objPHPExcelFamiliarTitular->getDefaultStyle()->getFont()->setSize(8); 
+	$objPHPExcelTitular->getDefaultStyle()->getFont()->setName('Arial');
+	$objPHPExcelTitular->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getStyle('A1:L1')->getFont()->setBold(true);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getStyle('A1:L1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getStyle('A1:L1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcelFamiliarTitular->getActiveSheet()->getStyle('A1:L1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:L1')->getFont()->setBold(true);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:L1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:L1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:L1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 	// Guarda Archivo en Formato Excel 2003
-	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelFamiliarTitular, 'Excel5');
+	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelTitular, 'Excel5');
 	$archivo_name = $archivo_path."Titulares $nomdelega ($delegacion) al $fechagenera.xls";
 	$objWriter->save($archivo_name);
-	
+	$objPHPExcelTitular->disconnectWorksheets();
+	unset($objWriter, $objPHPExcelTitular);
 	//*************************************************************************************************************************** //
 
 	// ************************ FAMILIAR ************************** //
@@ -266,7 +267,8 @@ try{
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelFamiliar, 'Excel5');
 	$archivo_name = $archivo_path."Familiares $nomdelega ($delegacion) al $fechagenera.xls";
 	$objWriter->save($archivo_name);
-	
+	$objPHPExcelFamiliar->disconnectWorksheets();
+	unset($objWriter, $objPHPExcelFamiliar);
 	//*************************************************************************************************************************** //
 
 	$dbh->commit();
