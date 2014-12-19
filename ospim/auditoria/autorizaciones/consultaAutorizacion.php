@@ -464,7 +464,7 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
       <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" align="center"/><?php if($rowLeeSolicitud['aprobado5']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
 	</td>
 	<td valign="top">
-	  <p><strong>Autorizaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusautorizacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']); else echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']);?></p>
+	  <p><strong>Autorizaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusautorizacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']); else { if($rowLeeSolicitud['statusautorizacion']==2) echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']);}?></p>
    	  <p><?php echo "".$rowLeeSolicitud['rechazoautorizacion'];?></p>
       <p><strong>Expediente SUR:</strong>
 	<?php if($rowLeeSolicitud['clasificacionape']==1) {?>
