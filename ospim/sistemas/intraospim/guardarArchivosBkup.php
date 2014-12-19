@@ -80,7 +80,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
 				$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$dbhInternet->beginTransaction();
-				$sqlAltaAcceso = "UPDATE usuarios SET acceso = 1, fechaactualizacion = '$today' WHERE delcod = $delega";
+				$sqlAltaAcceso = "UPDATE usuarios SET acceso = 1, fechaactualizacion = '$today' WHERE delcod = $delega || delcod >= 3200";
 				//print($sqlAltaAcceso."<br>");
 				$dbhInternet->exec($sqlAltaAcceso);
 				$dbhInternet->commit();
