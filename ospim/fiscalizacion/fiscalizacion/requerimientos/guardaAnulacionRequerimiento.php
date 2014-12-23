@@ -2,26 +2,28 @@
 include($libPath."controlSessionOspim.php"); 
 $fecha = $_GET['fecha'];
 $motivo = $_POST['motivo'];
-$nroreq = $_POST['nroreq'];
+
+$requerimientos = $_POST['requerimientos'];
+$requerimientos = unserialize(urldecode($requerimientos));
 
 $fechaanulacion = date("Y-m-d H:i:s");
 $usuarioanulacion = $_SESSION['usuario'];
 
-print($motivo."<br>");
-print($nroreq."<br>");
-
+//print($motivo."<br>");
+//var_dump($requerimientos);
+foreach($requerimientos as $reque) {
+	$wherein .= $reque.",";
+}
+$wherein = substr($wherein, 0, -1);
 $sqlUpdateAnula = "UPDATE reqfiscalizospim 
 					SET requerimientoanulado = 1, motivoanulacion = '$motivo', fechaanulacion = '$fechaanulacion', usuarioanulacion = '$usuarioanulacion'
-					WHERE nrorequerimiento =  $nroreq";
-print($sqlUpdateAnula."<br>");
+					WHERE nrorequerimiento in ($wherein)";
+//print($sqlUpdateAnula."<br>");
 
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
-	//echo "$hostname"; echo "<br>";
-	//echo "$dbname"; echo "<br>";
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-	//echo 'Connected to database<br/>';
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 	$dbh->exec($sqlUpdateAnula);

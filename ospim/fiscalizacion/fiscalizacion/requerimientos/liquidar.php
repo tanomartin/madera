@@ -617,7 +617,7 @@ $resultado = array();
 $req = 0;
 $resul = 0;
 
-for ($i=0; $i < sizeof($datos) - 1; $i++) {
+for ($i=0; $i < sizeof($datos); $i++) {
 	$nroreq = $datos[$i];
 	$sqlRequeCab = "SELECT * from reqfiscalizospim where nrorequerimiento = $nroreq";
 	$resRequeCab = mysql_query($sqlRequeCab,$db);
@@ -681,7 +681,7 @@ function abrirInfo(dire) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" align="center"/>
   </span></p>
   	<p class="Estilo2">Resultado del proceso de liquidación los los requerimientos del d&iacute;a <?php echo $fecha ?>  </p>
 	  <table width="800" border="1" align="center">

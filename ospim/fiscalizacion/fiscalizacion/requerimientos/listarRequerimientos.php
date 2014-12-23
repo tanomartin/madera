@@ -31,19 +31,81 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
-
+<link rel="stylesheet" href="/lib/tablas.css">
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
-function validar(formulario) {
-	var grupo = formulario.requerimientos;
+function redireccion(tipo ,nroreque, fecha, cuit) {
+	if (tipo == 'edicion') {
+		var pagina = "detalleRequerimiento.php?nroreq="+nroreque+"&fecha="+fecha+"&cuit="+cuit;
+	}
+	if (tipo == 'inspeccion') {
+		var pagina = "inspeccion.php?nroreq="+nroreque+"&fecha="+fecha+"&cuit="+cuit;
+	}
+	location.href=pagina;
+}
+
+function checkall(tipo, seleccion, formulario) {
+	if (tipo == "anular") {
+		grupo = formulario.anular;
+	}
+	if (tipo == "liquidar") {
+		grupo = formulario.liquidar;
+	}
 	var total = grupo.length;
 	if (total == null) {
-		if (!formulario.requerimientos.checked) {
-			alert("Debe seleccionar el o los requerimientos a liquidar");
+		if (seleccion.checked) {
+			grupo.checked = 1;
+		} else {
+			grupo.checked = 0;
+		}
+	}
+	if (seleccion.checked) {
+		 for (i=0;i< grupo.length;i++) 
+			 if(grupo[i].type == "checkbox")	
+				 grupo[i].checked=1;  
+	} else {
+		 for (i=0;i<grupo.length;i++) 
+			 if(grupo[i].type == "checkbox")	
+				 grupo[i].checked=0;  
+	}
+} 
+
+function deshabilitarCheck(tipo,formulario) {
+	if (tipo == 'liquidar') {
+		grupo = formulario.anular;
+	} 
+	if (tipo == 'anular') {
+		grupo = formulario.liquidar;
+	}
+	var total = grupo.length;
+	if (total == null) {
+		grupo.disabled = true;
+	} else {
+		for (i = 0; i < total; i++) {
+			grupo[i].disabled = true;
+		}
+	}
+}
+
+function validarCheck(tipo,formulario, fecha) {
+	var grupo, mensaje, pagina;
+	if (tipo == 'liquidar') {
+		grupo = formulario.liquidar;
+		mensaje = "Debe seleccionar el o los requerimientos a liquidar";
+		action = "liquidar.php?fecha="+fecha;
+	} 
+	if (tipo == 'anular') {
+		grupo = formulario.anular;
+		mensaje = "Debe seleccionar el o los requerimientos a anular";
+		action = "anulaRequerimiento.php?fecha="+fecha;
+	}
+	var total = grupo.length;
+	if (total == null) {
+		if (!grupo.checked) {
+			alert(mensaje);
 			return false;
 		}
 	} else {
@@ -54,16 +116,25 @@ function validar(formulario) {
 			}
 		}
 		if (checkeados == 0) {
-			alert("Debe seleccionar el o los requerimientos a liquidar");
+			alert(mensaje);
 			return false;
 		}
 	}
-	$.blockUI({ message: "<h1>Generando Archivos de Fiscalizacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
-	return true;
+	if (tipo == 'liquidar') {
+		$.blockUI({ message: "<h1>Generando Archivos de Fiscalizacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+		deshabilitarCheck(tipo,formulario);
+	}
+	if (tipo == 'anular') {
+		deshabilitarCheck(tipo,formulario);
+	}
+	formulario.selecAllAnular.disabled = true;
+	formulario.selecAllLiquidar.disabled = true;
+	formulario.anularboton.disabled = true;
+	formulario.liquidarboton.disabled = true;
+	formulario.action = action;
+	formulario.submit();
 }
-
 </script>
-
 
 <body bgcolor="#CCCCCC">
 <div align="center">
@@ -71,9 +142,11 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" align="center"/>
   </span></p>
   	<p class="Estilo2">Listado de  Requerimiento del d&iacute;a <?php echo $fecha ?>  </p>
-	<form id="listadoReque" name="listadoReque" method="POST" onSubmit="return validar(this)" action="liquidar.php?fecha=<?php echo $fecha ?>">
+	<form id="listadoReque" name="listadoReque" method="POST" onSubmit="return validar(this)" />
+	  <div class="grilla">
 	  <table width="1000" border="1" align="center">
-        <tr>
+        <thead>
+		<tr>
           <th>N&uacute;mero</th>
           <th>Origen</th>
           <th>Solicitante</th>
@@ -82,49 +155,45 @@ function validar(formulario) {
 		  <th>Delegacion</th>
           <th>Detalle</th>
           <th>Acciones</th>
-		  <th>Liquidar</th>
+		  <th>Anular 
+	      <input type="checkbox" name="selecAllAnular" id="selecAllAnular" onchange="checkall('anular', this, this.form)" /></th>
+		  <th>Liquidar 
+	      <input type="checkbox" name="selecAllLiquidar" id="selecAllLiquidar" onchange="checkall('liquidar', this, this.form)" /></th>
         </tr>
+		</thead>
+		<tbody>
         <?php while($rowReque = mysql_fetch_array($resReque)) { 
-				print("<tr>");
-				print("<td>".$rowReque['nrorequerimiento']."</td>");
-				if ($rowReque['origenrequerimiento'] == 1) {
-					$origen = "Fiscalizaci&oacute;n";
-				}
-				if ($rowReque['origenrequerimiento'] == 2) {
-					$origen = "Afiliaciones";
-				}
-				if ($rowReque['origenrequerimiento'] == 3) {
-					$origen = "Prestaci&oacute;n";
-				}  
-				print("<td>".$origen."</td>");   
-				print("<td>".$rowReque['solicitarequerimiento']."</td>");   
-				print("<td>".$rowReque['motivorequerimiento']."</td>"); 
-				print("<td>".$rowReque['cuit']." - ".$rowReque['empresa']."</td>"); 
-				print("<td>".$rowReque['nombre']."</td>"); 
-				print("<td><a href='detalleRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Editar</a></td>");
-				if ($rowReque['procesoasignado'] == 0) {		
-					print("<td><a href='inspeccion.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Inspecci&oacute;n</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>"); 
-					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' id='requerimientos' value='".$rowReque['nrorequerimiento']."'></td>"); 
-				} else {
+				if ($rowReque['origenrequerimiento'] == 1) { $origen = "Fiscalizaci&oacute;n";  }
+				if ($rowReque['origenrequerimiento'] == 2) { $origen = "Afiliaciones"; }
+				if ($rowReque['origenrequerimiento'] == 3) { $origen = "Prestaci&oacute;n"; } ?> 
+				<tr>
+				<td><?php echo $rowReque['nrorequerimiento'] ?></td> 
+				<td><?php echo $origen ?></td> 
+				<td><?php echo $rowReque['solicitarequerimiento'] ?></td>   
+				<td><?php echo $rowReque['motivorequerimiento'] ?></td>
+				<td><?php echo $rowReque['cuit']." - ".$rowReque['empresa'] ?></td>
+				<td><?php echo $rowReque['nombre'] ?></td>
+				<td><input type="button" value="Editar" onclick="redireccion('edicion','<?php echo $rowReque['nrorequerimiento'] ?>','<?php echo $fecha ?>','<?php echo $rowReque['cuit'] ?>')" /></td>
+			<?php if ($rowReque['procesoasignado'] == 0) {	 ?>	
+					<td><input type="button" value="Mandar a Inspección" onclick="redireccion('inspeccion','<?php echo $rowReque['nrorequerimiento'] ?>','<?php echo $fecha ?>','<?php echo $rowReque['cuit'] ?>')" /></td>
+			<?php } else { 	
 					$sqlInsp = "SELECT * from inspecfiscalizospim where nrorequerimiento = ".$rowReque['nrorequerimiento'];
 					$resInsp = mysql_query($sqlInsp,$db);
 					$rowInsp = mysql_fetch_array($resInsp);
-					print("<td><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
-					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' id='requerimientos' value='".$rowReque['nrorequerimiento']."'></td>");
-				}        
-				print("</tr>");
-			}
-	  ?>
+					if ($rowInsp['inspeccionefectuada'] == 0) { ?>
+						<td>Inspección En Curso</td>  
+			<?php	}  	
+				}?>
+				<td><input type="checkbox" name="<?php echo $rowReque['nrorequerimiento'] ?>" id="anular" value="<?php echo $rowReque['nrorequerimiento'] ?>"></td>   
+				<td><input type="checkbox" name="<?php echo $rowReque['nrorequerimiento'] ?>" id="liquidar" value="<?php echo $rowReque['nrorequerimiento'] ?>"></td>
+			</tr>
+	<?php	} ?>
+			<td colspan='8'></td>
+			<td><input type='button' name='anularboton' value='Anular' onclick="validarCheck('anular',this.form,'<?php echo $fecha ?>')"/></td>
+			<td><input type='button' name='liquidarboton' value='Liquidar' onclick="validarCheck('liquidar',this.form,'<?php echo $fecha ?>')"/></td>
+	  </tbody>
       </table>
-        <p><table width="999" border="0">
-          <tr>
-            <td width="928">&nbsp;</td>
-            <td width="61">
-              <div align="right">
-                <input type="submit" name="Submit" value="Liquidar" />
-              </div></td>
-          </tr>
-        </table></p>
+	</div>
 	</form>
 </div>
 </body>
