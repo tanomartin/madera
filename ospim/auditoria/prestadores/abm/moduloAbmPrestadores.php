@@ -156,8 +156,8 @@ function abrirPantalla(dire) {
 			<td><?php echo $rowPrestador['email'];?></td>
 			<td>
 				<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> | 
-				<input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratoPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
-				<?php if ($rowPrestador['personeria'] == 3) { ?> |  <input name="profesionales" type="button" value="Ver Profesionales" onclick="abrirPantalla('profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
+				<input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratos/consultaContratosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
+				<?php if ($rowPrestador['personeria'] == 3) { ?> |  <input name="profesionales" type="button" value="Ver Profesionales" onclick="abrirPantalla('profesionales/profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
 			</td>
 		</tr>
 	<?php

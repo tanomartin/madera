@@ -43,7 +43,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "localidadPorCP.php",
+			url: "lib/localidadPorCP.php",
 			data: {codigo:codigo},
 		}).done(function(respuesta){
 			$("#selectLocali").html(respuesta);
@@ -58,7 +58,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "cambioProvincia.php",
+			url: "lib/cambioProvincia.php",
 			data: {locali:locali},
 		}).done(function(respuesta){
 			$("#indpostal").val(respuesta.indpostal);
@@ -72,7 +72,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "html",
-			url: "getServicios.php",
+			url: "lib/getServicios.php",
 			data: {personeria:personeria},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
@@ -299,13 +299,13 @@ function validar(formulario) {
         <td><div align="left">(
             <input name="ddn1" type="text" id="ddn1" size="5" value="<?php echo $rowConsultaPresta['ddn1'] ?>"/>
             )-
-            <input name="telefono1" type="text" id="telefono1" size="20" value="<?php echo $rowConsultaPresta['telefono1'] ?>"/>
+            <input name="telefono1" type="text" id="telefono1" size="15" value="<?php echo $rowConsultaPresta['telefono1'] ?>"/>
 </div></td>
         <td colspan="4"><div align="left"><strong>Telefono 2 </strong>(
               <strong>
 <input name="ddn2" type="text" id="ddn2" size="5" value="<?php echo $rowConsultaPresta['ddn2'] ?>"/>
             </strong> )-<strong>
-<input name="telefono2" type="text" id="telefono2" size="20" value="<?php echo $rowConsultaPresta['telefono2'] ?>"/>
+<input name="telefono2" type="text" id="telefono2" size="15" value="<?php echo $rowConsultaPresta['telefono2'] ?>"/>
                     </strong></div></td>
       </tr>
       <tr>
@@ -315,7 +315,7 @@ function validar(formulario) {
         <td><div align="left">(
             <input name="ddnfax" type="text" id="ddnfax" size="5" value="<?php echo $rowConsultaPresta['ddnfax'] ?>"/>
             )-
-            <input name="telefonofax" type="text" id="telefonofax" size="20" value="<?php echo $rowConsultaPresta['telefonofax'] ?>"/>
+            <input name="telefonofax" type="text" id="telefonofax" size="15" value="<?php echo $rowConsultaPresta['telefonofax'] ?>"/>
 </div></td>
         <td colspan="4"><div align="left"><strong>Email</strong>
           <input name="email" type="text" id="email" size="30" value="<?php echo $rowConsultaPresta['email'] ?>"/>
@@ -350,15 +350,19 @@ function validar(formulario) {
 				$cantidad = mysql_num_rows($resNumProfesional);
 				if ($cantidad > 0 and $rowConsultaPresta['personeria'] == 3) { 
 					$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
+					$cartel = "Existe profesionales activos<br>";
 				} else {
 					$deshabilitado = '';
-				} ?>
+					$castel = '';
+				}
+				print("<font color='#0000CC'>$cartel</font>"); ?>
 		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" <?php echo $deshabilitado ?>>
 					<option value="0">Seleccione un valor </option>
 					<option value="1" <?php echo $profesional ?>>Profesional </option>
 					<option value="2" <?php echo $establecimiento ?>>Establecimiento </option>
 					<option value="3" <?php echo $ciculo ?>>Círculo </option>
 				  </select>
+				  
 </div></td>
         <td colspan="4"><div align="left">
             <div align="left"><strong>Numero Registro SSS</strong>
@@ -400,17 +404,32 @@ SI </div></td>
       <tr>
         <td><div align="right"><strong>Nomenclador </strong></div></td>
         <td colspan="5"><div align="left">
-          <?php if ($rowConsultaPresta['nomenclador'] == 1) { $nacional = "selected"; } 
-			  if ($rowConsultaPresta['nomenclador'] == 2) { $noNomencaldo = "selected"; } 
-			  if ($rowConsultaPresta['nomenclador'] == 3) { $ambos = "selected"; }
-			 ?>
-          <select name="selectNomenclador" id="selectNomenclador">
+          <?php 
+		    if ($rowConsultaPresta['nomenclador'] == 1) { $nacional = "selected"; } 
+		    if ($rowConsultaPresta['nomenclador'] == 2) { $noNomencaldo = "selected"; } 
+			if ($rowConsultaPresta['nomenclador'] == 3) { $ambos = "selected"; }
+			
+			$today = date("Y-m-d");
+			$sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin = '0000-00-00' or c.fechafin > '$today')";
+			$resContratoActivo = mysql_query($sqlContratoActivo,$db);
+			$canContratoActivo = mysql_num_rows($resContratoActivo);
+			if ($canContratoActivo > 0) { 
+				$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
+				$cartel = "Existe contratos abiertos<br>";
+			} else {
+				$deshabilitado = '';
+				$cartel = '';
+			} 
+		 print("<font color='#0000CC'>$cartel</font>"); ?>
+          <select name="selectNomenclador" id="selectNomenclador" <?php echo $deshabilitado ?>>
             <option value="0">Seleccione un valor </option>
             <option value="1" <?php echo $nacional ?>>Nacional </option>
             <option value="2" <?php echo $noNomencaldo ?>>No Nomenclado </option>
             <option value="3" <?php echo $ambos ?>>Ambos </option>
           </select>
-</div></td>
+		 
+</div>
+	</td>
       </tr>
     </table>
     <table width="884" border="0">

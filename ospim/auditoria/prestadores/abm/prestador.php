@@ -168,10 +168,10 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         
 		<td width="200"><div align="center">
 		<?php if ($rowConsultaPresta['personeria'] == 3) { ?>
-            <input class="nover" name="profesionales" type="button" value="Modificar Profesionales"  onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
+            <input class="nover" name="profesionales" type="button" value="Modificar Profesionales"  onclick="location.href = 'profesionales/modificarProfesionales.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
         </div></td> 
         <td width="200"><div align="center">
-          <input class="nover" name="modificar2" type="button" value="Modificar Contrato"  onclick="location.href = 'modificarContrato.php?codigo=<?php echo $codigo ?>'" />
+          <input class="nover" name="modificar2" type="button" value="Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
         </div></td>
       </tr>
     </table>

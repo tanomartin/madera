@@ -91,18 +91,7 @@ try {
 			$dbh->exec($sqlInsertJurisdiccion);
 		}
 	}
-	
-	if ($nomenclador == 1) {
-		$sqlDeletePracticas = "DELETE FROM practicaprestador WHERE codigoprestador = $codigo and codigopractica in (SELECT codigopractica FROM practicas WHERE nomenclador = 2)";
-		//print($sqlDeletePracticas."<br>");
-		$dbh->exec($sqlDeletePracticas);
-	} 
-	if ($nomenclador == 2) {
-		$sqlDeletePracticas = "DELETE FROM practicaprestador WHERE codigoprestador = $codigo and codigopractica in (SELECT codigopractica FROM practicas WHERE nomenclador = 1)";
-		//print($sqlDeletePracticas."<br>");
-		$dbh->exec($sqlDeletePracticas);
-	} 
-	
+
 	$dbh->commit();
 	$pagina = "prestador.php?codigo=$codigo";
 	Header("Location: $pagina"); 

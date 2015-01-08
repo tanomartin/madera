@@ -60,7 +60,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-   <input type="reset" name="volver" value="Volver" onclick="location.href = 'prestador.php?codigo=<?php echo $codigo ?>'" align="center"/>
+   <input type="reset" name="volver" value="Volver" onclick="location.href = '../prestador.php?codigo=<?php echo $codigo ?>'" align="center"/>
   </span></p>
   <p class="Estilo2">Modificaci&oacute;n de Pofesionales </p>
   <table width="500" border="1">

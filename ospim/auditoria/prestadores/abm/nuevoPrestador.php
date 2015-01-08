@@ -27,7 +27,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "localidadPorCP.php",
+			url: "lib/localidadPorCP.php",
 			data: {codigo:codigo},
 		}).done(function(respuesta){
 			$("#selectLocali").html(respuesta);
@@ -42,7 +42,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "cambioProvincia.php",
+			url: "lib/cambioProvincia.php",
 			data: {locali:locali},
 		}).done(function(respuesta){
 			$("#indpostal").val(respuesta.indpostal);
@@ -56,7 +56,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "existePrestaCuit.php",
+			url: "lib/existePrestaCuit.php",
 			data: {cuit:cuit},
 		}).done(function(respuesta){
 			if (respuesta == 1) {
@@ -73,7 +73,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "existePrestaNroSSS.php",
+			url: "lib/existePrestaNroSSS.php",
 			data: {nroreg:nroreg},
 		}).done(function(respuesta){
 			if (respuesta == 1) {
@@ -90,7 +90,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "existeMatriculaNac.php",
+			url: "lib/existeMatriculaNac.php",
 			data: {matricula:matricula},
 		}).done(function(respuesta){
 			if (respuesta == 1) {
@@ -107,7 +107,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "existeMatriculaPro.php",
+			url: "lib/existeMatriculaPro.php",
 			data: {matricula:matricula},
 		}).done(function(respuesta){
 			if (respuesta == 1) {
@@ -124,7 +124,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "html",
-			url: "getServicios.php",
+			url: "lib/getServicios.php",
 			data: {personeria:personeria},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
