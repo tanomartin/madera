@@ -52,6 +52,13 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$difCodigos = array_diff($codigosHabilitados, $codigosUsados);
 	$codigoPropuesto = current($difCodigos);
 	
+	$sqlComplejida = "SELECT * FROM tipocomplejidad";
+	$resComplejida = mysql_query($sqlComplejida,$db);
+	$tipoComplejidad = array();
+	while($rowComplejida = mysql_fetch_assoc($resComplejida)) {
+		$tipoComplejidad[$rowComplejida['codigocomplejidad']] = $rowComplejida['descripcion'];	
+	}
+	
 	if ($codigo == -1) {
 		$inptuCodigo = "<p>Codigo Practica: <input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='4'/></p>";
 	} else {
@@ -61,9 +68,13 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 				  $inptuCodigo
 				  <input type='text' id='tipopractica' name='tipopractica' value='$tipo' size='2' readonly style='visibility:hidden'/>	
 				  <input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly style='visibility:hidden'/>
-				  <label> 
-				  		  Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea>
-				  </label>
+				  <label> Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea> </label>
+				  <p> Complejidad: <select name=\"complejidad\" id=\"complejidad\">";
+				  while ($complejidad = current($tipoComplejidad)) {
+						$respuesta.="<option value=".key($tipoComplejidad).">".$complejidad."</option>";
+						next($tipoComplejidad);
+				  }
+				  $respuesta.= "</select></p>
 				  <p><input type='submit' name='Submit' value='Guardar' sub/></p>";
 	echo $respuesta;
 }

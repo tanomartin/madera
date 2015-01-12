@@ -3,6 +3,7 @@ var_dump($_POST);
 $tipopractica = $_POST['tipopractica'];
 $tipo = $_POST['tipo'];
 $codigo = $_POST['codigo'];
+$complejidad = $_POST['complejidad'];
 if($tipo != -1) {
 	$codigo = str_pad($codigo,2,'0',STR_PAD_LEFT);
 	$codigoCompleto = $tipo.".".$codigo;
@@ -16,7 +17,7 @@ $sqlExisteCodigo = "SELECT * FROM practicas WHERE codigopractica = '$codigoCompl
 $resExisteCodigo = mysql_query($sqlExisteCodigo,$db);
 $numExisteCodigo = mysql_num_rows($resExisteCodigo);
 if ($numExisteCodigo == 0) {	
-	$sqlInsertPractica = "INSERT INTO practicas VALUES(DEFAULT,'$codigoCompleto',$tipopractica,2,'$descri',0)";
+	$sqlInsertPractica = "INSERT INTO practicas VALUES(DEFAULT,'$codigoCompleto',$tipopractica,$complejidad,2,'$descri',0)";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
