@@ -7,7 +7,20 @@ $sqlNombrePractica = "SELECT descripcion FROM practicas WHERE codigopractica = '
 $resNombrePractica = mysql_query($sqlNombrePractica,$db);
 $rowNombrePractica = mysql_fetch_array($resNombrePractica);
 
-$sqlPracticas = "SELECT pr.*, p.valornonomenclado, presta.codigoprestador, presta.nombre, presta.cuit FROM practicaprestador p, practicas pr, prestadores presta WHERE p.codigopractica = '$codigo' and p.codigopractica = pr.codigopractica and pr.nomenclador = $nomenclador and p.codigoprestador = presta.codigoprestador";
+$sqlPracticas = "SELECT pr.*, det.valornonomenclado, presta.codigoprestador, presta.nombre, presta.cuit
+FROM
+cabcontratoprestador cab,
+detcontratoprestador det,
+practicas pr,
+prestadores presta
+WHERE
+det.codigopractica = '$codigo' and
+det.idcontrato = cab.idcontrato and
+cab.codigoprestador = presta.codigoprestador and
+det.nomenclador = $nomenclador and
+det.codigopractica = pr.codigopractica and
+det.nomenclador = pr.nomenclador";
+
 $resPracticas = mysql_query($sqlPracticas,$db);
 $i = 0;
 while($rowPracticas = mysql_fetch_array($resPracticas)) {

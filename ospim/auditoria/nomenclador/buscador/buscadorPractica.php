@@ -15,8 +15,8 @@ if ($filtro == 1) {
 $noExiste = 0;
 $resultado = array();
 if (isset($dato)) {
-	if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo FROM practicas p, tipopracticas t WHERE p.codigopractica = '$dato' and p.tipopractica = t.id order by codigopractica DESC";}
-	if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo FROM practicas p, tipopracticas t WHERE p.descripcion like '%$dato%' and p.tipopractica = t.id order by codigopractica DESC"; }
+	if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad FROM practicas p, tipopracticas t, tipocomplejidad c WHERE p.codigopractica = '$dato' and p.tipopractica = t.id and p.codigocomplejidad = c.codigocomplejidad order by codigopractica DESC";}
+	if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad FROM practicas p, tipopracticas t, tipocomplejidad c WHERE p.descripcion like '%$dato%' and p.tipopractica = t.id and p.codigocomplejidad = c.codigocomplejidad order by codigopractica DESC"; }
 	$resPracticas = mysql_query($sqlPracticas,$db);
 	$numPracticas = mysql_num_rows($resPracticas);
 	if ($numPracticas == 0) {
@@ -134,6 +134,7 @@ function validar(formulario) {
 	     <th class="filter-select" data-placeholder="Seleccione Subcapitulo">Subcapitulo</th>
          <th>Descripciones</th>
          <th>Valor ($)</th>
+		 <th>Complejidad</th>
 		 <th>Acciones</th>
        </tr>
      </thead>
@@ -149,6 +150,7 @@ function validar(formulario) {
 			 <td><?php echo $descripPractica['subcapitulo'] ?></td>
 			 <td><?php echo $rowPracticas['descripcion'];?></td>
 			 <td><?php echo $rowPracticas['valornacional']; ?></td>
+			 <td><?php echo $rowPracticas['complejidad']; ?></td>
 			 <td><input name="contrato" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?codigo=<?php echo $rowPracticas['codigopractica'] ?>&nomenclador=<?php echo $rowPracticas['nomenclador'] ?>')"/></td>
 		   </tr>
        <?php
