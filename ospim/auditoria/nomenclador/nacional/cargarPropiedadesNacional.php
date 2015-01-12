@@ -73,7 +73,7 @@ jQuery(function($){
 					$.ajax({
 						type: "POST",
 						dataType: 'html',
-						url: "getPracticasValores.php",
+						url: "getPracticasPropiedades.php",
 						data: {valor:-1, tipo:valor},
 					}).done(function(respuesta){
 						$("#practicas").html(respuesta);
@@ -106,7 +106,7 @@ jQuery(function($){
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
-				url: "getPracticasValores.php",
+				url: "getPracticasPropiedades.php",
 				data: {valor:valor[1], tipo:tipo},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
@@ -127,7 +127,7 @@ jQuery(function($){
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
-				url: "getPracticasValores.php",
+				url: "getPracticasPropiedades.php",
 				data: {valor:valor[1], tipo:tipo},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
@@ -144,7 +144,7 @@ jQuery(function($){
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
-				url: "getPracticasValores.php",
+				url: "getPracticasPropiedades.php",
 				data: {valor:valor[1],tipo:tipo},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
@@ -184,7 +184,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuNacional.php'" align="center"/>
   </p>
   <p><span class="Estilo2">Carga de Valores del Nomenclador Nacional </span>  </p>
-  <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="guardarValoresNacional.php">
+  <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="guardarPropiedadesNacional.php">
     <p>
       <select name="tipo" id="tipo">
 	  		  <option value=0>Seleccione Tipo de Practica</option>

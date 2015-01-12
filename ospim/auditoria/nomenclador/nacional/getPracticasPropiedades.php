@@ -6,6 +6,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
 					 <th>Valor ($)</th>
+					 <th>Complejidad</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
 		$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%' and nomenclador = 1 and tipopractica = $tipo";
@@ -21,12 +22,32 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
 	$i = 0;
+	
+	$sqlComplejida = "SELECT * FROM tipocomplejidad";
+	$resComplejida = mysql_query($sqlComplejida,$db);
+	$tipoComplejidad = array();
+	while($rowComplejida = mysql_fetch_assoc($resComplejida)) {
+		$tipoComplejidad[$rowComplejida['codigocomplejidad']] = $rowComplejida['descripcion'];	
+	}
+	
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
 		$practica = $rowPractica['codigopractica'];
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
 						<td><input name=\"valor".$i."-".$rowPractica['codigopractica']."\" id=\"valor".$i."\" type=\"text\" value=\"".$rowPractica['valornacional']."\" size=\"10\"/></td>
+						<td> <select name=\"complejidad".$i."-".$rowPractica['codigopractica']."\" id=\"complejidad".$i."\">";
+						reset($tipoComplejidad);
+						while ($complejidad = current($tipoComplejidad)) {
+								if (key($tipoComplejidad) == $rowPractica['codigocomplejidad']) {
+									$selected = "selected";
+								} else {
+									$selected = "";
+								}
+								$respuesta.="<option value=".key($tipoComplejidad)." $selected>".$complejidad."</option>";
+								next($tipoComplejidad);
+						}
+		$respuesta.= "</select>
 					</tr>";
 		$i++;
 	}

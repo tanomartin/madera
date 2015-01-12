@@ -28,8 +28,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	  <td width="200"><p align="center">Listador </p>
         <p align="center"><a class="enlace" href="listadorNacional.php"><img src="img/listador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-	   <td width="200"><p align="center">Cargar Valores </p>
-        <p align="center"><a class="enlace" href="cargarValoresNacional.php"><img src="img/valor.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	   <td width="200"><p align="center">Cargar Propiedades </p>
+         <p align="center"><a class="enlace" href="cargarPropiedadesNacional.php"><img src="img/propiedades.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>

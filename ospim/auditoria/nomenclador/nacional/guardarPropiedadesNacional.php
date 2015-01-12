@@ -11,6 +11,19 @@ foreach($_POST as $key => $value) {
 		$i++;
 	}
 }
+reset($_POST);
+$i=0;
+foreach($_POST as $key => $value) {
+	$resultado = strpos($key, "complejidad");
+	if($resultado !== FALSE){
+		$codigoPracticaArray = explode("-",$key);
+		$codigoPractica = str_replace("_",".",$codigoPracticaArray[1]);
+		$codigoComplejidad = $_POST[$key];
+		$sqlUpdateComplejidadArray[$i] = "UPDATE practicas SET codigocomplejidad = $codigoComplejidad WHERE codigopractica = '$codigoPractica'";
+		$i++;
+	}
+}
+
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -22,6 +35,11 @@ try {
 		//print($sqlUpdateValor."<br>");
 		$dbh->exec($sqlUpdateValor);
 	}
+	foreach($sqlUpdateComplejidadArray as $sqlUpdateComplejidad) {
+		//print($sqlUpdateComplejidad."<br>");
+		$dbh->exec($sqlUpdateComplejidad);
+	}
+	
 	$dbh->commit();
 	$pagina = "listadorNacional.php";
 	Header("Location: $pagina"); 
@@ -29,6 +47,5 @@ try {
 	echo $e->getMessage();
 	$dbh->rollback();
 }
-
 
 ?>
