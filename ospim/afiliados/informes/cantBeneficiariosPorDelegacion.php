@@ -119,7 +119,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			  <th>Total Beneficiarios</th>
             </tr>
           </thead>
-          <tbody>
+        <tbody>
 		 <?php foreach ($resultadoFinal as $resultado){ ?>
             	<tr>
 					<td><?php echo $resultado['nombre'] ?></td>
@@ -133,11 +133,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<td><?php echo $totalPorDelega ?></td>
 				</tr>
 		<?php } ?>
+			<tr>
 			<td><b>TOTALES</b></td>
 			<td><b><?php echo $totalTitu ?></b></td>
 			<td><b><?php echo $totalFami ?></b></td>
 			<?php $totalGeneral = (int)$totalTitu + (int)$totalFami; ?>
 			<td><b><?php echo $totalGeneral ?></b></td>
+			</tr>
 		</tbody>
   </table>
      <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
