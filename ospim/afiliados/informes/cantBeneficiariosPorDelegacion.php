@@ -134,7 +134,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				</tr>
 		<?php } ?>
 			<tr>
-			<td><b>TOTALES</b></td>
+			<td><b>- TOTALES - </b></td>
 			<td><b><?php echo $totalTitu ?></b></td>
 			<td><b><?php echo $totalFami ?></b></td>
 			<?php $totalGeneral = (int)$totalTitu + (int)$totalFami; ?>
