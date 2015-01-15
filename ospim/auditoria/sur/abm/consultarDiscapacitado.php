@@ -77,7 +77,7 @@ function verCertificado(dire){
     <p class="Estilo2">Fecha De Emicion: <label><?php echo invertirFecha($rowBeneficiario['emisioncertificado']) ?></label> 
     <p class="Estilo2">Fecha de Vencimiento: <label><?php echo invertirFecha($rowBeneficiario['vencimientocertificado']) ?></label></p>
     <p><input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('verCertificado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>')"/></p>
-	<p><input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>'" /> </p>
+	<?php if ($activo == 1) { ?><p><input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>'" /> <?php } ?></p>
 	
 </div>
 </body>
