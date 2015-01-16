@@ -1,8 +1,13 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionOspim.php"); 
 
+function array_push_key(&$array, $key, $value) { 
+   $array[$key] = $value; 
+}  
+
 $sqlCantTitulares = "SELECT d.codidelega, d.nombre, count(t.nroafiliado) as titulares FROM titulares t, delegaciones d WHERE t.codidelega = d.codidelega GROUP BY t.codidelega";
 $sqlCantFamiliares = "SELECT d.codidelega, d.nombre, count(f.nroorden) as familiares FROM titulares t, familiares f, delegaciones d WHERE t.nroafiliado = f.nroafiliado and  t.codidelega = d.codidelega group by t.codidelega";
+$sqlDelegaciones = "SELECT * FROM delegaciones WHERE codidelega <= 3200";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -13,17 +18,22 @@ try {
 	
 	$resultCanTitulares = $dbh->query($sqlCantTitulares);
 	$resultCanFamiliares = $dbh->query($sqlCantFamiliares);
+	$resultDelegciones = $dbh->query($sqlDelegaciones);
 	
 	$resultadoFinal = array();
+	foreach ($resultDelegciones as $delegaciones){ 
+		$resultadoFinal[$delegaciones['codidelega']] = array('nombre' => $delegaciones['nombre']);
+	}
+	
 	if ($resultCanTitulares){
 		foreach ($resultCanTitulares as $cantTitulares){ 
-			$resultadoFinal[$cantTitulares['codidelega']] = array('nombre' => $cantTitulares['nombre'], 'titulares' => $cantTitulares['titulares']);
+			array_push_key($resultadoFinal[$cantTitulares['codidelega']],'titulares',$cantTitulares['titulares']);
 		}
 	}
 
 	if ($resultCanFamiliares){
 		foreach ($resultCanFamiliares as $cantFamiliares){ 
-			array_push($resultadoFinal[$cantFamiliares['codidelega']], $cantFamiliares['familiares']);
+			array_push_key($resultadoFinal[$cantFamiliares['codidelega']],'familiares',$cantFamiliares['familiares']);
 		}
 	}
 
@@ -123,12 +133,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 		 <?php foreach ($resultadoFinal as $resultado){ ?>
             	<tr>
 					<td><?php echo $resultado['nombre'] ?></td>
-					<td><?php echo $resultado['titulares'] ?></td>
-					<td><?php if ($resultado[0] == '') { echo 0; } else { echo $resultado[0]; }  ?></td>
+					<td><?php if ($resultado['titulares'] == '') { echo 0; } else { echo $resultado['titulares']; } ?></td>
+					<td><?php if ($resultado['familiares'] == '') { echo 0; } else { echo $resultado['familiares']; }  ?></td>
 					<?php 
 						$totalPorDelega = (int)$resultado['titulares'] + (int)$resultado[0]; 
 						$totalTitu += (int)$resultado['titulares'];
-						$totalFami += ( int)$resultado[0];
+						$totalFami += ( int)$resultado['familiares'];
 					?>
 					<td><?php echo $totalPorDelega ?></td>
 				</tr>
