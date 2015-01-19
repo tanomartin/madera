@@ -90,11 +90,11 @@ try{
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('K')->setWidth(30);
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('K1', 'Provincia');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('L')->setWidth(18);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('L1', 'C.U.I.T. Empresa');
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('L1', 'Emision Certificado');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('M')->setWidth(18);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('M1', 'Emisión Certificado');
-	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('N')->setWidth(18);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('N1', 'Vto. Certificado');
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('M1', 'Vto. Certificado');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('N')->setWidth(15);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('N1', 'Certificado Escaneado');
 
 	$fila=1;	
 	$sqlTitulares = "SELECT 
@@ -109,9 +109,9 @@ try{
 					t.numpostal,
 					l.nomlocali,
 					p.descrip as provincia,
-					t.cuitempresa,
 					d.emisioncertificado,
-					d.vencimientocertificado
+					d.vencimientocertificado,
+					d.certificadodiscapacidad
 					FROM discapacitados d, titulares t, tipodocumento tipo, localidades l, provincia p
 					WHERE
 					d.nroorden = 0 and
@@ -137,9 +137,13 @@ try{
 			$objPHPExcelTitular->getActiveSheet()->setCellValue('I'.$fila, $titulares['numpostal']);
 			$objPHPExcelTitular->getActiveSheet()->setCellValue('J'.$fila, $titulares['nomlocali']);
 			$objPHPExcelTitular->getActiveSheet()->setCellValue('K'.$fila, $titulares['provincia']);
-			$objPHPExcelTitular->getActiveSheet()->setCellValue('L'.$fila, $titulares['cuitempresa']);
-			$objPHPExcelTitular->getActiveSheet()->setCellValue('M'.$fila, invertirfecha($titulares['emisioncertificado']));
-			$objPHPExcelTitular->getActiveSheet()->setCellValue('N'.$fila, invertirfecha($titulares['vencimientocertificado']));
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('L'.$fila, invertirfecha($titulares['emisioncertificado']));
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('M'.$fila, invertirfecha($titulares['vencimientocertificado']));
+			if ($titulares['certificadodiscapacidad'] == 1) {
+				$objPHPExcelTitular->getActiveSheet()->setCellValue('N'.$fila, 'SI');
+			} else {
+				$objPHPExcelTitular->getActiveSheet()->setCellValue('N'.$fila, 'NO');
+			}
 		}
 	}
 
@@ -220,10 +224,20 @@ try{
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('G1', 'Sexo');
 	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('H')->setWidth(15);
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('H1', 'C.U.I.L.');
-	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('I')->setWidth(15);
-	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I1', 'Emisión Certificado');
-	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('J1', 'Vto. Certificado');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('I')->setWidth(50);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I1', 'Domicilio');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('J')->setWidth(10);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('J1', 'C.P.');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('K')->setWidth(40);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('K1', 'Localidad');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('L')->setWidth(30);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('L1', 'Provincia');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('M')->setWidth(15);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('M1', 'Emision Certificado');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('N')->setWidth(15);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('N1', 'Vto. Certificado');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('O')->setWidth(10);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O1', 'Certificado Escaneado');
 
 	$fila=1;	
 	$sqlFamiliares = "SELECT 
@@ -235,9 +249,14 @@ try{
 	f.fechanacimiento,
 	f.sexo,
 	f.cuil,
+	t.domicilio,
+	t.numpostal,
+	l.nomlocali,
+	pr.descrip as provincia,
 	d.emisioncertificado, 
-	d.vencimientocertificado
-	FROM discapacitados d, titulares t, familiares f, tipodocumento tipo, parentesco p
+	d.vencimientocertificado,
+	d.certificadodiscapacidad
+	FROM discapacitados d, titulares t, familiares f, tipodocumento tipo, parentesco p, localidades l, provincia pr
 	WHERE
 	d.nroorden != 0 and
 	d.nroafiliado = f.nroafiliado and
@@ -245,7 +264,9 @@ try{
 	f.nroafiliado = t.nroafiliado and
 	f.tipodocumento = tipo.codtipdoc and
 	t.codidelega = $delegacion and
-	f.tipoparentesco = p.codparent";
+	f.tipoparentesco = p.codparent and
+	t.codlocali = l.codlocali and
+	t.codprovin = pr.codprovin";
 	
 	$resultFamiliares = $dbh->query($sqlFamiliares);
 	if ($resultFamiliares){
@@ -260,8 +281,17 @@ try{
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('F'.$fila, invertirfecha($familiar['fechanacimiento']));
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('G'.$fila, $familiar['sexo']);
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('H'.$fila, $familiar['cuil']);
-			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I'.$fila, invertirfecha($familiar['emisioncertificado']));
-			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('J'.$fila, invertirfecha($familiar['vencimientocertificado']));
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I'.$fila, $familiar['domicilio']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('J'.$fila, $familiar['numpostal']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('K'.$fila, $familiar['nomlocali']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('L'.$fila, $familiar['provincia']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('M'.$fila, invertirfecha($familiar['emisioncertificado']));
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('N'.$fila, invertirfecha($familiar['vencimientocertificado']));
+			if ($familiar['certificadodiscapacidad'] == 1) {
+				$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O'.$fila, 'SI');
+			} else {
+				$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O'.$fila, 'NO');
+			}
 		}
 	}
 
@@ -270,10 +300,10 @@ try{
 	$objPHPExcelFamiliar->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:J1')->getFont()->setBold(true);
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:J1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:J1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:O1')->getFont()->setBold(true);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:O1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:O1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:O1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelFamiliar, 'Excel5');

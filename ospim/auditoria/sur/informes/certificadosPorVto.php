@@ -93,10 +93,10 @@ function validar(formulario) {
 			</td>
 		</tr>
 	</table>
-	<p><input class="nover" type="submit" name="Submit" value="Buscar" class="nover"/></p>
+	<p><input type="submit" name="Submit" value="Buscar" class="nover"/></p>
 	</form>
 <?php if (isset($_POST['fechavto'])) { ?>
-	<p><span class="Estilo2">Resultado Certificados Fecha de Vencimiento menor a <?php echo $_POST['fechavto'] ?> </span></p>
+	<p><span class="Estilo2">Resultado Certificados vencidos al <?php echo $_POST['fechavto'] ?> </span></p>
 	<table style="text-align:center; width:800px" id="tabla" class="tablesorter" >
 		<thead>
 			<tr>

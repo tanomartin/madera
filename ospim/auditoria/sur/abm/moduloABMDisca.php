@@ -2,6 +2,7 @@
 include($libPath."controlSessionOspim.php"); 
 
 $busqueda = 0;
+$resultado = 0;
 if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 	$busqueda = 1;
 	$ordenbusqueda = $_POST['seleccion'];
@@ -22,6 +23,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 	$arrayTitulares = array();
 	$i=0;
 	if (mysql_num_rows($restituacti)!=0) {
+		$resultado = 1;
 		while ($rowtituacti = mysql_fetch_assoc($restituacti)) {
 			$arrayTitulares[$i] = $rowtituacti;
 			$i++;
@@ -33,6 +35,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 	$arrayFamiliares = array();
 	$i=0;
 	if (mysql_num_rows($resfamiacti)!=0) {
+		$resultado = 1;
 		while ($rowfamiacti = mysql_fetch_assoc($resfamiacti)) {
 			$arrayFamiliares[$i] = $rowfamiacti;
 			$i++;
@@ -45,6 +48,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 	$arrayTituBaja = array();
 	$i=0;
 	if (mysql_num_rows($restitubaja)!=0) {
+		$resultado = 1;
 		while ($rowtitubaja = mysql_fetch_assoc($restitubaja)) {
 			$arrayTituBaja[$i] = $rowtitubaja;
 			$i++;
@@ -57,6 +61,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 	$arrayFamiBaja = array();
 	$i=0;
 	if (mysql_num_rows($resfamibaja)!=0) {
+		$resultado = 1;
 		while ($rowfamibaja = mysql_fetch_assoc($resfamibaja)) {
 			$arrayFamiBaja[$i] = $rowfamibaja;
 			$i++;
@@ -267,20 +272,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = '../menuSUR.php'" align="center"/> 
 	</div>
 	<p align="center" class="Estilo1">Afiliados Discapacidad </p>
-	<p>
-    <?php 
-		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR NRO DE AFILIADO NO GENERO RESULTADOS </b></div>");
-		}
-		if ($err == 2) {
-			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR NRO DE DOCUMENTO NO GENERO RESULTADOS </b></div>");
-		}
-		if ($err == 3) {
-			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR CUIL NO GENERO RESULTADOS </b></div>");
-		}
-	?>
-	</p>
 	<div align="center">
 		<table width="137" border="0">
 		  <tr>
@@ -303,9 +294,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 </form>
 <div align="center">
 <?php  if ($busqueda == 1) { ?>
-			<p align="center" class="Estilo1">Resultados Busqueda por "<?php echo $cartel ?>" </p>
-			<p align="center" class="Estilo1">Titulares</p>
-	<?php 	if (sizeof($arrayTitulares) > 0) { ?>
+			<p align="center" class="Estilo1">Resultados Busqueda por "<?php echo $cartel ?>" </p>		
+<?php		if($resultado == 0) { 
+		  		print("<p><font color='#0000FF'><b> No Existen Discapacitados con la busqueda realizada </b></font></p>");
+		  	} else {  
+				if (sizeof($arrayTitulares) > 0) { ?>
+				 <p align="center" class="Estilo1">Titulares</p>
 				 <table style="text-align:center; width:1000px" id="tablatitulares" class="tablesorter" >
          		 <thead>
             		<tr>
@@ -335,12 +329,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <?php } ?>
 		  		</tbody> 
 				</table>
-	<?php	} else  { 
-				print("<p><font color='#0000FF'><b> No Existen titulares con la busqueda realizada </b></font></p>");
-			 } ?>
-				
-	<p align="center" class="Estilo1">Familiares</p>
-	<?php if (sizeof($arrayFamiliares) > 0) { ?>
+	<?php	}
+		 if (sizeof($arrayFamiliares) > 0) { ?>
+				<p align="center" class="Estilo1">Familiares</p>
 				 <table style="text-align:center; width:1000px" id="tablafamiliares" class="tablesorter" >
          		 <thead>
             		<tr>
@@ -373,12 +364,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <?php } ?>
 		  		</tbody> 
 				</table>
-	<?php	} else  { 
-				print("<p><font color='#0000FF'><b> No Existen familiares con la busqueda realizada </b></font></p>");
-			 } ?>
-			 
-	<p align="center" class="Estilo1">Titulares Inactivos</p>
-	<?php	if (sizeof($arrayTituBaja) > 0) { ?>
+	<?php	} 
+			if (sizeof($arrayTituBaja) > 0) { ?>
+				<p align="center" class="Estilo1">Titulares Inactivos</p>
 				 <table style="text-align:center; width:1000px" id="tablatitubaja" class="tablesorter" >
          		 <thead>
             		<tr>
@@ -408,12 +396,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <?php } ?>
 		  		</tbody> 
 				</table>
-	<?php	} else  { 
-				print("<p><font color='#0000FF'><b> No Existen titulares inactivos con la busqueda realizada </b></font></p>");
-			 } ?>
-			 
-	<p align="center" class="Estilo1">Familiares Inactivos</p>
-	<?php if (sizeof($arrayFamiBaja) > 0) { ?>
+	<?php	} 
+		if (sizeof($arrayFamiBaja) > 0) { ?>
+				<p align="center" class="Estilo1">Familiares Inactivos</p>
 				 <table style="text-align:center; width:1000px" id="tablafamibaja" class="tablesorter" >
          		 <thead>
             		<tr>
@@ -445,10 +430,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <?php } ?>
 		  		</tbody> 
 				</table>
-	<?php	} else  { 
-				print("<p><font color='#0000FF'><b> No Existen familiares inactivos con la busqueda realizada </b></font></p>");
-			 } ?>
-
+	<?php	} 
+		 }?>
 <?php } ?>
 </div>
 </body>
