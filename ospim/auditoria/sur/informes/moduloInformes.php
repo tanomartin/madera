@@ -20,13 +20,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<h2>Men&uacute; Consultas e Informes</h2>
 </div>
 <div align="center">
-  <table width="420" border="3">
+  <table width="600" border="3">
     <tr>
       <td width="200"><p align="center">Certificado por Fecha Vto. </p>
           <p align="center"><a class="enlace" href="certificadosPorVto.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-		 <td width="200"><p align="center">Discapacitados por Delegación</p>
-          <p align="center"><a class="enlace" href="dicapacitadosPorDelegacion.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		 <td width="200"><p align="center">Cantidad de Discapacitados por Delegación</p>
+          <p align="center"><a class="enlace" href="cantidadDicapacitadosPorDelegacion.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>
+		<td width="200"><p align="center">Discapacitados por Delegación</p>
+          <p align="center"><a class="enlace" href="discapacitadosPorDelegacion.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
