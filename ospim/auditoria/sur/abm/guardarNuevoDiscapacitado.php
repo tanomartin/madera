@@ -17,6 +17,12 @@ if ($fp){
 }
 fclose($fp);
 $sqlInsertDisca = "INSERT INTO discapacitados VALUE(:nroafiliado,:nroorden,1,:fechaemision,:fechavto,:certificado)";
+if ($nroorden == 0) { 
+	$sqlUpdateBene = "UPDATE titulares SET discapacidad = 1, certificadodiscapacidad = 1 WHERE nroafiliado = :nroafiliado";
+} else {
+	$sqlUpdateBene = "UPDATE familiares SET discapacidad = 1, certificadodiscapacidad = 1 WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+} 
+
 
 try {
 	$hostname = $_SESSION['host'];
@@ -27,9 +33,16 @@ try {
 
 	$resInsertDisca = $dbh->prepare($sqlInsertDisca);
 	$resInsertDisca->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden, ':fechaemision' => $fechaEmision, ':fechavto' => $fechaVto, ':certificado' => $certificado));
+	
+	$resUpdateBene = $dbh->prepare($sqlUpdateBene);
+	if ($nroorden == 0) { 
+		$resUpdateBene->execute(array(':nroafiliado' => $nroafiliado));
+	} else {
+		$resUpdateBene->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden));
+	}
 
 	$dbh->commit();
-	$pagina = "consultarDiscapacitado.php?nroafiliado=$nroafiliado&nroorden=$nroorden";
+	$pagina = "consultarDiscapacitado.php?nroafiliado=$nroafiliado&nroorden=$nroorden&activo=1";
 	Header("Location: $pagina"); 
 } catch (PDOException $e) {
 	echo $e->getMessage();

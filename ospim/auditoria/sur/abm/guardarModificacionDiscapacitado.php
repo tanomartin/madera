@@ -39,7 +39,7 @@ try {
 	}
 
 	$dbh->commit();
-	$pagina = "consultarDiscapacitado.php?nroafiliado=$nroafiliado&nroorden=$nroorden";
+	$pagina = "consultarDiscapacitado.php?nroafiliado=$nroafiliado&nroorden=$nroorden&activo=1";
 	Header("Location: $pagina"); 
 } catch (PDOException $e) {
 	echo $e->getMessage();

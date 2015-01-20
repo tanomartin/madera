@@ -18,7 +18,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 	}
 
 	//BUSCO EN TITULARES
-	$sqltituacti = "SELECT t.nroafiliado, t.apellidoynombre, td.descrip as tipodocumento, t.nrodocumento, t.cuil FROM titulares t, tipodocumento td WHERE t.$ordenbusqueda = '$valorbusqueda' and t.tipodocumento = td.codtipdoc";
+	$sqltituacti = "SELECT t.nroafiliado, t.apellidoynombre, td.descrip as tipodocumento, t.nrodocumento, t.cuil, t.discapacidad FROM titulares t, tipodocumento td WHERE t.$ordenbusqueda = '$valorbusqueda' and t.tipodocumento = td.codtipdoc";
 	$restituacti = mysql_query($sqltituacti,$db);
 	$arrayTitulares = array();
 	$i=0;
@@ -30,7 +30,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 		}
 	}
 	//BUSCO EN FAMILIARES
-	$sqlfamiacti = "SELECT f.nroafiliado, f.nroorden, f.apellidoynombre, td.descrip as tipodocumento, f.nrodocumento, f.cuil, p.descrip as parentesco FROM familiares f, tipodocumento td, parentesco p WHERE f.$ordenbusqueda = '$valorbusqueda' and f.tipodocumento = td.codtipdoc and f.tipoparentesco = p.codparent";
+	$sqlfamiacti = "SELECT f.nroafiliado, f.nroorden, f.apellidoynombre, td.descrip as tipodocumento, f.nrodocumento, f.cuil, p.descrip as parentesco, f.discapacidad FROM familiares f, tipodocumento td, parentesco p WHERE f.$ordenbusqueda = '$valorbusqueda' and f.tipodocumento = td.codtipdoc and f.tipoparentesco = p.codparent";
 	$resfamiacti = mysql_query($sqlfamiacti,$db);
 	$arrayFamiliares = array();
 	$i=0;
@@ -43,7 +43,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 	}
 	
 	//BUSCO EN TITU DE BAJA
-	$sqltitubaja = "SELECT t.nroafiliado, t.apellidoynombre, td.descrip as tipodocumento, t.nrodocumento, t.cuil FROM titularesdebaja t, tipodocumento td WHERE t.$ordenbusqueda = '$valorbusqueda' and t.tipodocumento = td.codtipdoc";
+	$sqltitubaja = "SELECT t.nroafiliado, t.apellidoynombre, td.descrip as tipodocumento, t.nrodocumento, t.cuil, t.discapacidad FROM titularesdebaja t, tipodocumento td WHERE t.$ordenbusqueda = '$valorbusqueda' and t.tipodocumento = td.codtipdoc";
 	$restitubaja = mysql_query($sqltitubaja,$db);
 	$arrayTituBaja = array();
 	$i=0;
@@ -56,7 +56,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 	}
 	
 	//BUSCO EN FAMI DE BAJA
-	$sqlfamibaja = "SELECT f.nroafiliado, f.nroorden, f.apellidoynombre, td.descrip as tipodocumento, f.nrodocumento, f.cuil, p.descrip as parentesco FROM familiaresdebaja f, tipodocumento td, parentesco p WHERE f.$ordenbusqueda = '$valorbusqueda' and f.tipodocumento = td.codtipdoc  and f.tipoparentesco = p.codparent";
+	$sqlfamibaja = "SELECT f.nroafiliado, f.nroorden, f.apellidoynombre, td.descrip as tipodocumento, f.nrodocumento, f.cuil, p.descrip as parentesco, f.discapacidad FROM familiaresdebaja f, tipodocumento td, parentesco p WHERE f.$ordenbusqueda = '$valorbusqueda' and f.tipodocumento = td.codtipdoc  and f.tipoparentesco = p.codparent";
 	$resfamibaja = mysql_query($sqlfamibaja,$db);
 	$arrayFamiBaja = array();
 	$i=0;
@@ -66,64 +66,6 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 			$arrayFamiBaja[$i] = $rowfamibaja;
 			$i++;
 		}
-	}
-	
-	//BUSCO SI SON DISCA TITULARES
-	$i=0;
-	foreach ($arrayTitulares as $titular) {
-		$nroafiliado = $titular['nroafiliado'];
-		$sqlDiscaTitular = "SELECT * FROM discapacitados WHERE nroafiliado = $nroafiliado and nroorden = 0";
-		$resDiscaTitular = mysql_query($sqlDiscaTitular,$db);
-		if (mysql_num_rows($resDiscaTitular)!=0) {
-			array_push($arrayTitulares[$i], 1);	
-		} else {
-			array_push($arrayTitulares[$i], 0);	
-		}
-		$i++;
-	}
-	
-	//BUSCO SI SON DISCA FAMILIARES
-	$i=0;
-	foreach ($arrayFamiliares as $familiar) {
-		$nroafiliado = $familiar['nroafiliado'];
-		$nroorden = $familiar['nroorden'];
-		$sqlDiscaFamiliar = "SELECT * FROM discapacitados WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
-		$resDiscaFamiliar = mysql_query($sqlDiscaFamiliar,$db);
-		if (mysql_num_rows($resDiscaFamiliar)!=0) {
-			array_push($arrayFamiliares[$i], 1);	
-		} else {
-			array_push($arrayFamiliares[$i], 0);	
-		}
-		$i++;
-	}
-	
-	//BUSCO SI SON DISCA TITULARES BAJA
-	$i=0;
-	foreach ($arrayTituBaja as $titularBaja) {
-		$nroafiliado = $titularBaja['nroafiliado'];
-		$sqlDiscaTitularBaja = "SELECT * FROM discapacitados WHERE nroafiliado = $nroafiliado and nroorden = 0";
-		$resDiscaTitularBaja = mysql_query($sqlDiscaTitularBaja,$db);
-		if (mysql_num_rows($resDiscaTitularBaja)!=0) {
-			array_push($arrayTituBaja[$i], 1);	
-		} else {
-			array_push($arrayTituBaja[$i], 0);	
-		}
-		$i++;
-	}
-	
-	//BUSCO SI SON DISCA FAMILIARES BAJA
-	$i=0;
-	foreach ($arrayFamiBaja as $familiarBaja) {
-		$nroafiliado = $familiarBaja['nroafiliado'];
-		$nroorden = $familiarBaja['nroorden'];
-		$sqlDiscaFamiliarBaja = "SELECT * FROM discapacitados WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
-		$resDiscaFamiliarBaja = mysql_query($sqlDiscaFamiliarBaja,$db);
-		if (mysql_num_rows($resDiscaFamiliarBaja)!=0) {
-			array_push($arrayFamiBaja[$i], 1);	
-		} else {
-			array_push($arrayFamiBaja[$i], 0);	
-		}
-		$i++;
 	}
 }
 
@@ -318,8 +260,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 						<td><?php echo $titular['apellidoynombre']?> </td>
 						<td><?php echo $titular['tipodocumento'].": ".$titular['nrodocumento']?> </td>
 						<td><?php echo $titular['cuil']?> </td>
-						<td><?php if ($titular[0] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
-						<td><?php if ($titular[0] == 0) { ?>
+						<td><?php if ($titular['discapacidad'] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
+						<td><?php if ($titular['discapacidad'] == 0) { ?>
 									<input type='button' name='alta' value='Alta' onclick="location.href='nuevoDiscapacitado.php?nroafiliado=<?php echo $titular['nroafiliado'] ?>&nroorden=0'" />
 							<?php } else { ?>
 								  	<input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $titular['nroafiliado'] ?>&nroorden=0'" /> - <input type='button' name='consultar' value='Consultar' onclick="location.href='consultarDiscapacitado.php?nroafiliado=<?php echo $titular['nroafiliado'] ?>&nroorden=0&activo=1'" />
@@ -352,8 +294,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 						<td><?php echo $familiar['apellidoynombre']?> </td>
 						<td><?php echo $familiar['tipodocumento'].": ".$familiar['nrodocumento']?> </td>
 						<td><?php echo $familiar['cuil']?> </td>
-						<td><?php if ($familiar[0] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
-						<td><?php if ($familiar[0] == 0) {  ?>
+						<td><?php if ($familiar['discapacidad'] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
+						<td><?php if ($familiar['discapacidad'] == 0) {  ?>
 									<input type='button' name='alta' value='Alta' onclick="location.href='nuevoDiscapacitado.php?nroafiliado=<?php echo $familiar['nroafiliado'] ?>&nroorden=<?php echo $familiar['nroorden'] ?>'" />
 							<?php } else {  ?>
 								  	<input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $familiar['nroafiliado'] ?>&nroorden=<?php echo $familiar['nroorden'] ?>'" /> - 
@@ -385,8 +327,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 						<td><?php echo $titularBaja['apellidoynombre']?> </td>
 						<td><?php echo $titularBaja['tipodocumento'].": ".$titularBaja['nrodocumento']?> </td>
 						<td><?php echo $titularBaja['cuil']?> </td>
-						<td><?php if ($titularBaja[0] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
-						<td><?php if ($titularBaja[0] == 0) { 
+						<td><?php if ($titularBaja['discapacidad'] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
+						<td><?php if ($titularBaja['discapacidad'] == 0) { 
 										echo ("-");
 								  } else { ?>
 								  		<input type='button' name='consultar' value='Consultar' onclick="location.href='consultarDiscapacitado.php?nroafiliado=<?php echo $titularBaja['nroafiliado'] ?>&nroorden=0&activo=0'" />
@@ -419,8 +361,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 						<td><?php echo $familiarBaja['apellidoynombre']?> </td>
 						<td><?php echo $familiarBaja['tipodocumento'].": ".$familiarBaja['nrodocumento']?> </td>
 						<td><?php echo $familiarBaja['cuil']?> </td>
-						<td><?php if ($familiarBaja[0] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
-						<td><?php if ($familiarBaja[0] == 0) { 
+						<td><?php if ($familiarBaja['discapacidad'] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
+						<td><?php if ($familiarBaja['discapacidad'] == 0) { 
 										echo ("-");
 								  } else { ?>
 								  	<input type='button' name='consultar' value='Consultar' onclick="location.href='consultarDiscapacitado.php?nroafiliado=<?php echo $familiarBaja['nroafiliado'] ?>&nroorden=<?php echo $familiarBaja['nroorden'] ?>&activo=0'" />
