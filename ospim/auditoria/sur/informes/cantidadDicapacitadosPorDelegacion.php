@@ -125,9 +125,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 
 <body bgcolor="#CCCCCC">
-<script>
-	$.blockUI({ message: "<h1>Generando Informe. Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" } );
-</script>
 <div align="center">
   <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" align="center"/></p>
   	<p><span class="Estilo2">Cantidad Discapacitados por Delegaci&oacute;n al <?php echo date('d/m/Y') ?> </span></p>
