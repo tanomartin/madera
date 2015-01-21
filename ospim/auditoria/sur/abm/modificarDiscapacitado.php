@@ -44,7 +44,7 @@ jQuery(function($){
 function validar(formulario) {
 	var fechaInicio = formulario.fechaInicio.value;
 	var fechaFin = formulario.fechaFin.value;
-	/*if (fechaInicio == "") {
+	if (fechaInicio == "") {
 		alert("Debe ingresar un fecha de emisión del certificado");
 		return(false)
 	} else {
@@ -65,7 +65,7 @@ function validar(formulario) {
 				return(false);
 			}
 		}
-	}*/
+	}
 	var archivo = formulario.certificado.value;
 	var extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase(); 
 	if (extension != '.jpg' && extension != '' ) {

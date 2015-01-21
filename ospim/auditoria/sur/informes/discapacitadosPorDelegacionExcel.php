@@ -95,6 +95,8 @@ try{
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('M1', 'Vto. Certificado');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('N')->setWidth(15);
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('N1', 'Certificado Escaneado');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('O')->setWidth(15);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('O1', 'Estado');
 
 	$fila=1;	
 	$sqlTitulares = "SELECT 
@@ -144,18 +146,73 @@ try{
 			} else {
 				$objPHPExcelTitular->getActiveSheet()->setCellValue('N'.$fila, 'NO');
 			}
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('O'.$fila, "ACTIVO");
 		}
 	}
+	
+	$sqlTitularesBaja = "SELECT 
+					t.nroafiliado, 
+					t.apellidoynombre, 
+					tipo.descrip as tipodocumento, 
+					t.nrodocumento, 
+					t.fechanacimiento,
+					t.sexo,
+					t.cuil,
+					t.domicilio,
+					t.numpostal,
+					l.nomlocali,
+					p.descrip as provincia,
+					d.emisioncertificado,
+					d.vencimientocertificado,
+					d.certificadodiscapacidad
+					FROM discapacitados d, titularesdebaja t, tipodocumento tipo, localidades l, provincia p
+					WHERE
+					d.nroorden = 0 and
+					d.nroafiliado = t.nroafiliado and
+					t.codidelega = $delegacion and
+					t.tipodocumento = tipo.codtipdoc and
+					t.codlocali = l.codlocali and
+					t.codprovin = p.codprovin";
+					
+	$resultTitularesBaja = $dbh->query($sqlTitularesBaja);
+	if ($resultTitularesBaja){
+		foreach ($resultTitularesBaja as $titularesbaja){
+			$fila++;
+			// Agrega datos a las celdas de datos
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('A'.$fila, $titularesbaja['nroafiliado']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('B'.$fila, $titularesbaja['apellidoynombre']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('C'.$fila, $titularesbaja['tipodocumento']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('D'.$fila, $titularesbaja['nrodocumento']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('E'.$fila, invertirfecha($titularesbaja['fechanacimiento']));
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('F'.$fila, $titularesbaja['sexo']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('G'.$fila, $titularesbaja['cuil']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('H'.$fila, $titularesbaja['domicilio']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('I'.$fila, $titularesbaja['numpostal']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('J'.$fila, $titularesbaja['nomlocali']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('K'.$fila, $titularesbaja['provincia']);
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('L'.$fila, invertirfecha($titularesbaja['emisioncertificado']));
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('M'.$fila, invertirfecha($titularesbaja['vencimientocertificado']));
+			if ($titularesbaja['certificadodiscapacidad'] == 1) {
+				$objPHPExcelTitular->getActiveSheet()->setCellValue('N'.$fila, 'SI');
+			} else {
+				$objPHPExcelTitular->getActiveSheet()->setCellValue('N'.$fila, 'NO');
+			}
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('O'.$fila, "INACTIVO");
+		}
+	}
+	
+	
+	
 
 	// Setea fuente tipo y tamaño a la hoja activa
 	$objPHPExcelTitular->getDefaultStyle()->getFont()->setName('Arial');
 	$objPHPExcelTitular->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:N1')->getFont()->setBold(true);
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:N1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:N1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:N1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:O1')->getFont()->setBold(true);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:O1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:O1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:O1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelTitular, 'Excel5');
@@ -238,6 +295,8 @@ try{
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('N1', 'Vto. Certificado');
 	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('O')->setWidth(10);
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O1', 'Certificado Escaneado');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('P')->setWidth(10);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('P1', 'Estado');
 
 	$fila=1;	
 	$sqlFamiliares = "SELECT 
@@ -292,18 +351,76 @@ try{
 			} else {
 				$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O'.$fila, 'NO');
 			}
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('P'.$fila, "ACTIVO");
 		}
 	}
+
+	$sqlFamiliaresBaja = "SELECT 
+	f.nroafiliado,
+	p.descrip as parentesco, 
+	f.apellidoynombre, 
+	tipo.descrip as tipodocumento, 
+	f.nrodocumento, 
+	f.fechanacimiento,
+	f.sexo,
+	f.cuil,
+	t.domicilio,
+	t.numpostal,
+	l.nomlocali,
+	pr.descrip as provincia,
+	d.emisioncertificado, 
+	d.vencimientocertificado,
+	d.certificadodiscapacidad
+	FROM discapacitados d, titulares t, familiaresdebaja f, tipodocumento tipo, parentesco p, localidades l, provincia pr
+	WHERE
+	d.nroorden != 0 and
+	d.nroafiliado = f.nroafiliado and
+	d.nroorden = f.nroorden and
+	f.nroafiliado = t.nroafiliado and
+	f.tipodocumento = tipo.codtipdoc and
+	t.codidelega = $delegacion and
+	f.tipoparentesco = p.codparent and
+	t.codlocali = l.codlocali and
+	t.codprovin = pr.codprovin";
+	
+	$resultFamiliaresBaja = $dbh->query($sqlFamiliaresBaja);
+	if ($resultFamiliaresBaja){
+		foreach ($resultFamiliaresBaja as $familiarBaja){
+			$fila++;
+			// Agrega datos a las celdas de datos
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('A'.$fila, $familiarBaja['nroafiliado']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('B'.$fila, $familiarBaja['parentesco']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('C'.$fila, $familiarBaja['apellidoynombre']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('D'.$fila, $familiarBaja['tipodocumento']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('E'.$fila, $familiarBaja['nrodocumento']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('F'.$fila, invertirfecha($familiarBaja['fechanacimiento']));
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('G'.$fila, $familiarBaja['sexo']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('H'.$fila, $familiarBaja['cuil']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I'.$fila, $familiarBaja['domicilio']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('J'.$fila, $familiarBaja['numpostal']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('K'.$fila, $familiarBaja['nomlocali']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('L'.$fila, $familiarBaja['provincia']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('M'.$fila, invertirfecha($familiarBaja['emisioncertificado']));
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('N'.$fila, invertirfecha($familiarBaja['vencimientocertificado']));
+			if ($familiarBaja['certificadodiscapacidad'] == 1) {
+				$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O'.$fila, 'SI');
+			} else {
+				$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O'.$fila, 'NO');
+			}
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('P'.$fila, "INACTIVO");
+		}
+	}
+
 
 	// Setea fuente tipo y tamaño a la hoja activa
 	$objPHPExcelFamiliar->getDefaultStyle()->getFont()->setName('Arial');
 	$objPHPExcelFamiliar->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:O1')->getFont()->setBold(true);
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:O1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:O1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:O1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:P1')->getFont()->setBold(true);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:P1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:P1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:P1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelFamiliar, 'Excel5');
