@@ -34,10 +34,10 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
     <tr>
       <td><p align="center">S.U.R. </p>
-        <p align="center"><a href="sur/menuSur.php"><img src="img/sur.jpg" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="sur/menuSur.php"><img src="img/sur.jpg" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td><p align="center">Programa de Prevenci&oacute;n </p>
-      <p align="center"><a href="prevencion/#"><img src="img/prevencion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p align="center"><a class="enlace" href="#"><img src="img/prevencion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
