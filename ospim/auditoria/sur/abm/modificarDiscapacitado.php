@@ -44,7 +44,7 @@ jQuery(function($){
 function validar(formulario) {
 	var fechaInicio = formulario.fechaInicio.value;
 	var fechaFin = formulario.fechaFin.value;
-	if (fechaInicio == "") {
+	/*if (fechaInicio == "") {
 		alert("Debe ingresar un fecha de emisión del certificado");
 		return(false)
 	} else {
@@ -52,7 +52,7 @@ function validar(formulario) {
 			alert("La fecha de Emisión de certificado no es valida");
 			return(false);
 		} 
-	}
+	}*/
 	if (fechaFin != "") {
 		if (!esFechaValida(fechaFin)) {
 			alert("La Fecha de Vencimiento no es valida");
