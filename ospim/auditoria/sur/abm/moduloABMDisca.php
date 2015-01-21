@@ -211,7 +211,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <form id="moduloABM" name="moduloABM" method="post"  onSubmit="return validar(this)" action="moduloABMDisca.php">
 	<div align="center">
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = '../menuSUR.php'" align="center"/> 
+		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = '../menuSur.php'" align="center"/> 
 	</div>
 	<p align="center" class="Estilo1">Afiliados Discapacidad </p>
 	<div align="center">
