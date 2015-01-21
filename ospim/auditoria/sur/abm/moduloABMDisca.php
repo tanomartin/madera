@@ -92,6 +92,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 <script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 	$(function() {
@@ -166,7 +167,6 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 
 
 function validar(formulario) {
-	formulario.buscar.disabled = true;
 	var elementos = formulario.elements;
 	var longitud = formulario.length;
 	var elementoradio = 0;
@@ -176,25 +176,24 @@ function validar(formulario) {
 		}
 	}
 	if(elementoradio == 0) {
-		formulario.buscar.disabled = false;
 		alert("Debe seleccionar una opcion de busqueda");
 		return false;
 	} else {
 		if (formulario.valor.value == "") {
-			formulario.buscar.disabled = false;
 			alert("Debe ingresar algun dato para la busqueda");
 			document.getElementById("valor").focus();
 			return false;
 		} else {
 			if(elementoradio == 3) {
+				alert("lala");
 				if(!verificaCuilCuit(formulario.valor.value)){
 					alert("El C.U.I.L. es invalido");
-					formulario.buscar.disabled = false;
 					return false;
 				}
 			}
 		}
 	}
+	formulario.buscar.disabled = true;
 	$.blockUI({ message: "<h1>Buscando Afiliado. Aguarde por favor...</h1>" });
 	return true;
 };
@@ -242,7 +241,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  	} else {  
 				if (sizeof($arrayTitulares) > 0) { ?>
 				 <p align="center" class="Estilo1">Titulares</p>
-				 <table style="text-align:center; width:1000px" id="tablatitulares" class="tablesorter" >
+				 <table style="text-align:center; width:1100px" id="tablatitulares" class="tablesorter" >
          		 <thead>
             		<tr>
 			  			<th>Nro. Afliado</th>
@@ -274,7 +273,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<?php	}
 		 if (sizeof($arrayFamiliares) > 0) { ?>
 				<p align="center" class="Estilo1">Familiares</p>
-				 <table style="text-align:center; width:1000px" id="tablafamiliares" class="tablesorter" >
+				 <table style="text-align:center; width:1100px" id="tablafamiliares" class="tablesorter" >
          		 <thead>
             		<tr>
 			  			<th>Nro. Afliado</th>
@@ -309,7 +308,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<?php	} 
 			if (sizeof($arrayTituBaja) > 0) { ?>
 				<p align="center" class="Estilo1">Titulares Inactivos</p>
-				 <table style="text-align:center; width:1000px" id="tablatitubaja" class="tablesorter" >
+				 <table style="text-align:center; width:1100px" id="tablatitubaja" class="tablesorter" >
          		 <thead>
             		<tr>
 			  			<th>Nro. Afliado</th>
@@ -341,7 +340,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<?php	} 
 		if (sizeof($arrayFamiBaja) > 0) { ?>
 				<p align="center" class="Estilo1">Familiares Inactivos</p>
-				 <table style="text-align:center; width:1000px" id="tablafamibaja" class="tablesorter" >
+				 <table style="text-align:center; width:1100px" id="tablafamibaja" class="tablesorter" >
          		 <thead>
             		<tr>
 			  			<th>Nro. Afliado</th>
