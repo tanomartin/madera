@@ -297,7 +297,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 									<input type='button' name='alta' value='Alta' onclick="location.href='nuevoDiscapacitado.php?nroafiliado=<?php echo $familiar['nroafiliado'] ?>&nroorden=<?php echo $familiar['nroorden'] ?>'" />
 							<?php } else {  ?>
 								  	<input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $familiar['nroafiliado'] ?>&nroorden=<?php echo $familiar['nroorden'] ?>'" /> - 
-									<input type='button' name='consultar' value='Consultar' onclick="location.href='consultarDiscapacitado.php?nroafiliado=<?php echo $titular['nroafiliado'] ?>&nroorden=<?php echo $familiar['nroorden'] ?>&activo=1'" />
+									<input type='button' name='consultar' value='Consultar' onclick="location.href='consultarDiscapacitado.php?nroafiliado=<?php echo $familiar['nroafiliado'] ?>&nroorden=<?php echo $familiar['nroorden'] ?>&activo=1'" />
 							<?php }?> 
 						</td>
 					</tr>
