@@ -185,7 +185,6 @@ function validar(formulario) {
 			return false;
 		} else {
 			if(elementoradio == 3) {
-				alert("lala");
 				if(!verificaCuilCuit(formulario.valor.value)){
 					alert("El C.U.I.L. es invalido");
 					return false;
