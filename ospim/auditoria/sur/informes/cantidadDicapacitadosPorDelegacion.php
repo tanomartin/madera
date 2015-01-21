@@ -147,7 +147,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<td><?php if ($resultado['titulares'] == '') { echo 0; } else { echo $resultado['titulares']; }  ?></td>
 					<td><?php if ($resultado['familiares'] == '') { echo 0; } else { echo $resultado['familiares']; }  ?></td>
 					<?php 
-						$totalPorDelega = (int)$resultado['titulares'] + (int)$resultado[0]; 
+						$totalPorDelega = (int)$resultado['titulares'] + (int)$resultado['familiares']; 
 						$totalTitu += (int)$resultado['titulares'];
 						$totalFami += ( int)$resultado['familiares'];
 					?>
