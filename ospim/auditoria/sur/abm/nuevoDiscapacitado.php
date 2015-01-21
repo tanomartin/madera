@@ -101,7 +101,8 @@ function validar(formulario) {
   
   <form action="guardarNuevoDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>" method="post" enctype="multipart/form-data" name="nuevoDisca" id="nuevoDisca" onSubmit="return validar(this)">
     <p class="Estilo2">Datos Certificado </p>
-    <p class="Estilo2">Fecha De Emicion: <label><input type="text" name="fechaInicio" id="fechaInicio" size="8"/></label> </p>
+    <p class="Estilo2">Fecha De Emision: 
+      <label><input type="text" name="fechaInicio" id="fechaInicio" size="8"/></label> </p>
     <p class="Estilo2">Fecha de Vencimiento: <label><input type="text" name="fechaFin" id="fechaFin" size="8" /> </label></p>
     <p class="Estilo2">Certificado  <label><input name="certificado" type="file" id="certificado" /></label></p>
     <p><label><input type="submit" name="Submit" value="Guardar" /></label>	</p>

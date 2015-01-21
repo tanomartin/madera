@@ -52,7 +52,7 @@ function validar(formulario) {
 			alert("La fecha de Emisión de certificado no es valida");
 			return(false);
 		} 
-	}*/
+	}
 	if (fechaFin != "") {
 		if (!esFechaValida(fechaFin)) {
 			alert("La Fecha de Vencimiento no es valida");
@@ -65,7 +65,7 @@ function validar(formulario) {
 				return(false);
 			}
 		}
-	}
+	}*/
 	var archivo = formulario.certificado.value;
 	var extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase(); 
 	if (extension != '.jpg' && extension != '' ) {
@@ -104,7 +104,8 @@ function verCertificado(dire){
   <p>
   <form action="guardarModificacionDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>" method="post" enctype="multipart/form-data" name="modifDisca" id="modifDisca" onSubmit="return validar(this)">
 	<p class="Estilo2">Datos Certificado </p>
-    <p><b>Fecha De Emicion:</b> <input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowBeneficiario['emisioncertificado']) ?>"/></p>
+    <p><b>Fecha De Emision:</b> 
+      <input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowBeneficiario['emisioncertificado']) ?>"/></p>
 	
     <p><b>Fecha de Vencimiento:</b> <input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo invertirFecha($rowBeneficiario['vencimientocertificado']) ?>" /></p>
 	
