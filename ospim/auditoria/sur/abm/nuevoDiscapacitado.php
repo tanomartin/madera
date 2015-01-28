@@ -31,6 +31,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 	font-size: 18px;
 }
+.Estilo3 {font-size: 18px}
 </style>
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/funcionControl.js" type="text/javascript"></script>
@@ -42,6 +43,19 @@ jQuery(function($){
 });
 
 function validar(formulario) {
+	var grupo = formulario.tipodisca;
+	var total = grupo.length;
+	var checkeados = 0; 
+	for (i = 0; i < total; i++) {
+		if (grupo[i].checked) {
+			checkeados = 1; 
+		}
+	}
+	if (checkeados == 0) {
+		alert("Debe elegir al menos un tipo de Discapcidad");
+		return false;	
+	}
+	
 	var fechaInicio = formulario.fechaInicio.value;
 	var fechaFin = formulario.fechaFin.value;
 	if (fechaInicio == "") {
@@ -82,7 +96,8 @@ function validar(formulario) {
   <p><span style="text-align:center">
    <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" align="center"/>
   </span></p>
-  <p class="Estilo2">Alta Certificado de Discapacidad </p>
+  <p class="Estilo2">Alta de Discapacidado </p>
+  <p>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
@@ -97,16 +112,167 @@ function validar(formulario) {
       <td><div align="left"><?php echo $tipoBeneficiario." - ".$rowBeneficiario['parentesco'] ?></div></td>
     </tr>
   </table>
-  <p>
-  
+  </p>
   <form action="guardarNuevoDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>" method="post" enctype="multipart/form-data" name="nuevoDisca" id="nuevoDisca" onSubmit="return validar(this)">
-    <p class="Estilo2">Datos Certificado </p>
-    <p class="Estilo2">Fecha De Emision: 
-      <label><input type="text" name="fechaInicio" id="fechaInicio" size="8"/></label> </p>
-    <p class="Estilo2">Fecha de Vencimiento: <label><input type="text" name="fechaFin" id="fechaFin" size="8" /> </label></p>
-    <p class="Estilo2">Certificado  <label><input name="certificado" type="file" id="certificado" /></label></p>
-    <p><label><input type="submit" name="Submit" value="Guardar" /></label>	</p>
-  </form>
+   <table width="400" border="0">
+     <tr>
+       <td width="181"><div align="right"><span class="Estilo2">Tipo Discapacidad</span> </div></td>
+       <td width="209">
+	     <div align="left">
+	       <?php  
+	   		$sqlTipoDiscapacidad = "Select * from tipodiscapacidad";
+	   	    $resTipoDiscapacidad = mysql_query($sqlTipoDiscapacidad,$db);
+			while ($rowTipoDiscapacidad = mysql_fetch_assoc($resTipoDiscapacidad)) {
+				echo ("<input type='checkbox' id='tipodisca' name='tipodisca".$rowTipoDiscapacidad['iddiscapacidad']."' value='".$rowTipoDiscapacidad['iddiscapacidad']."' />".$rowTipoDiscapacidad['descripcion']."<br>");
+			} ?>
+         </div></td>
+     </tr>
+   </table>
+   <table width="900" border="0">
+      <tr>
+        <td height="47" colspan="6"><div align="center"><span class="Estilo2">Datos Certificado </span></div></td>
+      </tr>
+      <tr>
+        <td><div align="right">Fecha De Emision</div></td>
+        <td><div align="left">
+          <input type="text" name="fechaInicio" id="fechaInicio" size="8"/>
+        </div></td>
+        <td><div align="right">Fecha de Vencimiento</div></td>
+        <td><div align="left">
+          <input type="text" name="fechaFin" id="fechaFin" size="8" />
+        </div></td>
+        <td><div align="right">Certificado</div></td>
+        <td><div align="left">
+          <input name="certificado" type="file" id="certificado" />
+        </div></td>
+      </tr>
+    </table>
+    <table width="900" border="0">
+      <tr>
+        <td height="56" colspan="8"><div align="center"><span class="Estilo2">Datos Expediente </span></div></td>
+      </tr>
+      <tr>
+        <td><div align="right">Pedido Medico</div></td>
+        <td><select name="pedidomedico" id="pedidomedico">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+        <td><div align="right">Presupuesto</div></td>
+        <td><select name="presupuesto" id="presupuesto">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+        <td><div align="right">Presupuesto Trasnporte </div></td>
+        <td><select name="presupuestotrasnporte" id="presupuestotrasnporte">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+		  <option value="2">No Requerido</option>
+        </select></td>
+      </tr>
+	  <tr>
+	  	<td><div align="right">Registro SSS </div></td>
+	  	<td><select name="registrosss" id="registrosss">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+		  <option value="2">No Requerido</option>
+        </select></td>
+        <td><div align="right">Resolución SNR</div></td>
+        <td><select name="resolucionsnr" id="resolucionsnr">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+		  <option value="2">No Requerido</option>
+        </select></td>
+        <td><div align="right">Titulo Habilitante</div></td>
+        <td><select name="titulo" id="titulo">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+		  <option value="2">No Requerido</option>
+        </select></td>
+      </tr>
+	  <tr>
+	    <td><div align="right">Plan Tratamiento </div></td>
+        <td><select name="plantratamiento" id="plantratamiento">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+        <td><div align="right">Informe Evolutivo</div></td>
+        <td><select name="informe" id="informe">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+        <td><div align="right">Historia Clinica</div></td>
+        <td><select name="historia" id="historia">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+       </tr>
+	   <tr>
+	     <td><div align="right">Planilla FIM</div></td>
+	     <td><select name="planillafim" id="planillafim">
+             <option value="0">NO</option>
+             <option value="1">SI</option>
+             <option value="2">No Requerido</option>
+         </select></td>
+	     <td><div align="right">Consentimiento Tratamiento </div></td>
+	     <td><select name="consentimientotratamiento" id="consentimientotratamiento">
+             <option value="0">NO</option>
+             <option value="1">SI</option>
+         </select></td>
+	     <td><div align="right">Consentimiento Trasnporte</div></td>
+	     <td><select name="consentimientotransporte" id="consentimientotransporte">
+             <option value="0">NO</option>
+             <option value="1">SI</option>
+             <option value="2">No Requerido</option>
+         </select></td>
+      </tr>
+	   <tr>
+		<td><div align="right">Constacia Alumno </div></td>
+        <td><select name="constancia" id="constancia">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+		  <option value="2">No Requerido</option>
+        </select></td>
+        <td><div align="right">Adaptaciones Curriculares </div></td>
+        <td><select name="adaptaciones" id="adaptaciones">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+          <option value="2">No Requerido</option>
+        </select></td>
+        <td><div align="right">Acta Acuerdo </div></td>
+        <td><select name="acta" id="acta">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+		   <option value="2">No Requerido</option>
+        </select></td>
+      </tr>
+	   <tr>
+		<td><div align="right">Certificado Discapacidad</div></td>
+        <td><select name="certificadodisca" id="certificadodisca">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+        <td><div align="right">Recibo de Sueldo</div></td>
+        <td><select name="recibo" id="recibo">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+          <option value="2">No Requerido</option>
+        </select></td>
+        <td><div align="right">Seguro Desempleo</div></td>
+        <td><select name="seguro" id="seguro">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+		   <option value="2">No Requerido</option>
+        </select></td>
+      </tr>
+	   <tr>
+	     <td><div align="right">Observaciones</div></td>
+	     <td colspan="5"><label>
+         <textarea name="observacion" cols="90" rows="3" id="observacion"></textarea>
+         </label></td>
+      </tr>
+    </table>
+    <p><input type="submit" name="Submit" value="Guardar" /></p>
+    </form>
 </div>
 </body>
 </html>
