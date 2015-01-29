@@ -38,7 +38,7 @@ function informes(dire) {
           <p align="center"><a class="enlace" href="certificadosPorVto.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 		 <td width="200"><p align="center">Cantidad de Discapacitados por Delegación</p>
-          <p align="center"><a class="enlace" href="#"><img onclick="informes('cantidadDicapacitadosPorDelegacion.php')" src="img/consultas.png" width="90" height="90" border="0"/></a></p>
+          <p align="center"><a class="enlace" href="#"><img onclick="informes('cantidadDicapacitadosPorDelegacion.php')" src="img/listado.png" width="90" height="90" border="0"/></a></p>
         <p align="center">&nbsp;</p></td>
 		<td width="200"><p align="center">Discapacitados por Delegación</p>
           <p align="center"><a class="enlace" href="discapacitadosPorDelegacion.php"><img src="img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
