@@ -184,8 +184,7 @@ function verCertificado(dire){
 		<select name="pedidomedico" id="pedidomedico">
             <option value="0" <?php echo $seletedNO ?>>NO</option>
             <option value="1" <?php echo $seletedSI ?>>SI</option>
-        </select>
-		</td>
+        </select>		</td>
         <td><div align="right">Presupuesto</div></td>
         <td>
 		<?php if ($rowExpediente['presupuesto'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; } else { $seletedNO = ''; $seletedSI = 'selected'; } ?>
@@ -370,6 +369,20 @@ function verCertificado(dire){
             <option value="1" <?php echo $seletedSI ?>>SI</option>
             <option value="2" <?php echo $seletedNR ?>>No Requerido</option>
         </select></td>
+      </tr>
+      <tr>
+        <td><div align="right">Dependencia</div></td>
+        <td><label>
+          <?php if ($rowExpediente['dependencia'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; } else { $seletedNO = ''; $seletedSI = 'selected'; } ?>
+          <select name="dependencia" id="dependencia">
+            <option value="0" <?php echo $seletedNO ?>>NO</option>
+            <option value="1" <?php echo $seletedSI ?>>SI</option>
+          </select>
+        </label></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
       </tr>
       <tr>
         <td><div align="right">Observaciones</div></td>

@@ -111,14 +111,13 @@ function verCertificado(dire){
       <td><div align="left"><input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('verCertificado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>')"/></div></td>
     </tr>
   </table>
+  
   <table width="900" border="0">
     <tr>
-      <td height="56" colspan="8">
+      <td height="56" colspan="9">
 	  	<div align="center">
 		     <?php if ($rowExpediente['completo'] == 0) { $estado = "[Incompleto]"; } else { $estado = "[Completo: ".$rowExpediente['fechacierre']."]"; } ?>
-			<span class="Estilo2">Datos Expediente <?php echo $estado ?></span>
-		</div>
-	</td>
+			<span class="Estilo2">Datos Expediente <?php echo $estado ?></span>		</div>	</td>
     </tr>
     <tr>
       <td><div align="right">Pedido Medico: </div></td>
@@ -130,7 +129,7 @@ function verCertificado(dire){
     </tr>
     <tr>
       <td><div align="right">Registro SSS: </div></td>
-      <td><b><?php if ($rowExpediente['resgistrosss'] == 0) { echo "NO"; } if ($rowExpediente['resgistrosss'] == 1) { echo "SI"; }  if ($rowExpediente['resgistrosss'] == 2) { echo "No Requerido"; }?></b></td>
+      <td><b><?php if ($rowExpediente['registrosss'] == 0) { echo "NO"; } if ($rowExpediente['registrosss'] == 1) { echo "SI"; }  if ($rowExpediente['registrosss'] == 2) { echo "No Requerido"; }?></b></td>
       <td><div align="right">Resoluci&oacute;n SNR: </div></td>
       <td><b><?php if ($rowExpediente['resolucionsnr'] == 0) { echo "NO"; } if ($rowExpediente['resolucionsnr'] == 1) { echo "SI"; }  if ($rowExpediente['resolucionsnr'] == 2) { echo "No Requerido"; }?></b></td>
       <td><div align="right">Titulo Habilitante: </div></td>
@@ -169,8 +168,20 @@ function verCertificado(dire){
       <td><b><?php if ($rowExpediente['segurodesempleo'] == 0) { echo "NO"; } if ($rowExpediente['segurodesempleo'] == 1) { echo "SI"; }  if ($rowExpediente['segurodesempleo'] == 2) { echo "No Requerido"; }?></b></td>
     </tr>
     <tr>
+      <td><div align="right">Dependencia:</div></td>
+      <td><b>
+        <?php if ($rowExpediente['dependencia'] == 0) { echo "NO"; } else { echo "SI"; }?>
+      </b></td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+      <td>&nbsp;</td>
+    </tr>
+    <tr>
       <td><div align="right">Observaciones:</div></td>
-      <td colspan="5"><b><?php if ($rowExpediente['observaciones'] != '' ) { echo $rowExpediente['observaciones']; } else { echo "-"; }  ?></b></td>
+      <td colspan="6"><b>
+        <?php if ($rowExpediente['observaciones'] != '' ) { echo $rowExpediente['observaciones']; } else { echo "-"; }  ?>
+      </b></td>
     </tr>
   </table>
   <p><?php if ($activo == 1 && !isset($_GET['nomostrar'])) { ?><p><input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>'" /> <?php } ?></p>

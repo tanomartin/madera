@@ -265,14 +265,27 @@ function validar(formulario) {
         </select></td>
       </tr>
 	   <tr>
+	     <td><div align="right">Dependencia</div></td>
+	     <td><label>
+	       <select name="dependencia" id="dependencia">
+             <option value="0">NO</option>
+             <option value="1">SI</option>
+           </select>
+	     </label></td>
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+         <td>&nbsp;</td>
+      </tr>
+	   <tr>
 	     <td><div align="right">Observaciones</div></td>
 	     <td colspan="5"><label>
-         <textarea name="observacion" cols="90" rows="3" id="observacion"></textarea>
+           <textarea name="observacion" cols="90" rows="3" id="observacion"></textarea>
          </label></td>
       </tr>
     </table>
     <p><input type="submit" name="Submit" value="Guardar" /></p>
-    </form>
+  </form>
 </div>
 </body>
 </html>
