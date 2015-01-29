@@ -87,9 +87,14 @@ function verCertificado(dire){
       <td width="20">&nbsp;</td>
       <td width="186"><div align="left">
         <?php  
-			while ($rowTipoDiscapacidad = mysql_fetch_assoc($resTipoDiscapacidad)) {
-				echo ($rowTipoDiscapacidad['descripcion']."<br>");
-			} ?>
+			$cantTipoDisca = mysql_num_rows($resTipoDiscapacidad);
+			if ($cantTipoDisca == 0) { 
+				echo "No especificado"; 
+			} else {
+				while ($rowTipoDiscapacidad = mysql_fetch_assoc($resTipoDiscapacidad)) {
+					echo ($rowTipoDiscapacidad['descripcion']."<br>");
+				} 
+			}?>
       </div></td>
     </tr>
   </table>

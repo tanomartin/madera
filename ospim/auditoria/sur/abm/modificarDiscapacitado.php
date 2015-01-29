@@ -16,6 +16,7 @@ if ($nroorden == 0) {
 $resBeneficiario = mysql_query($sqlBeneficiario,$db);
 $rowBeneficiario = mysql_fetch_assoc($resBeneficiario);
 
+$arrayTipoBene = array();
 $sqlTipoDiscaBene = "SELECT * FROM discapacidadbeneficiario WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
 $resTipoDiscaBene = mysql_query($sqlTipoDiscaBene,$db);
 while ($rowTipoDiscaBene = mysql_fetch_assoc($resTipoDiscaBene)) {
