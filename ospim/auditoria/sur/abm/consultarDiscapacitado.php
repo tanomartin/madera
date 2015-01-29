@@ -62,7 +62,7 @@ function verCertificado(dire){
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-   <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" align="center"/>
+    <?php if (!isset($_GET['nomostrar'])) { ?> <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" align="center"/> <?php } ?>
   </span></p>
   <p class="Estilo2">Consulta de Discapacidado </p>
   <p>
@@ -168,7 +168,7 @@ function verCertificado(dire){
       <td colspan="5"><b><?php if ($rowExpediente['observaciones'] != '' ) { echo $rowExpediente['observaciones']; } else { echo "-"; }  ?></b></td>
     </tr>
   </table>
-  <p><?php if ($activo == 1) { ?><p><input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>'" /> <?php } ?></p>
+  <p><?php if ($activo == 1 && !isset($_GET['nomostrar'])) { ?><p><input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>'" /> <?php } ?></p>
 	
 </div>
 </body>

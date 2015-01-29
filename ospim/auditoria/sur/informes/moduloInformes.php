@@ -35,14 +35,23 @@ function informes(dire) {
   <table width="600" border="3">
     <tr>
       <td width="200"><p align="center">Certificado por Fecha Vto. </p>
-          <p align="center"><a class="enlace" href="certificadosPorVto.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="certificadosPorVto.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 		 <td width="200"><p align="center">Cantidad de Discapacitados por Delegación</p>
-          <p align="center"><a class="enlace" href="#"><img onclick="informes('cantidadDicapacitadosPorDelegacion.php')" src="img/listado.png" width="90" height="90" border="0"/></a></p>
+          <p align="center"><a class="enlace" href="#"><img onclick="informes('cantidadDicapacitadosPorDelegacion.php')" src="img/consultas.png" width="90" height="90" border="0"/></a></p>
         <p align="center">&nbsp;</p></td>
 		<td width="200"><p align="center">Discapacitados por Delegación</p>
-          <p align="center"><a class="enlace" href="discapacitadosPorDelegacion.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="discapacitadosPorDelegacion.php"><img src="img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
+    </tr>
+    <tr>
+      <td><p align="center">&nbsp;</p>
+        
+      <p>&nbsp;</p></td>
+      <td><p align="center">Expendientes Incompletos </p>
+      <p align="center"><a class="enlace" href="expedientesIncompletos.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p align="center">&nbsp;</p></td>
+      <td>&nbsp;</td>
     </tr>
   </table>
 </div>

@@ -15,6 +15,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 	font-size: 18px;
 }
+.Estilo6 {font-size: 24}
 </style>
 
 <body bgcolor="#CCCCCC">
@@ -22,16 +23,26 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p>
     <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" align="center"/>
   </p>
-  <p><span class="Estilo2">Men&uacute; S.U.R. </span></p>
-  <table width="400" border="3">
+  <h2><span class="Estilo6">Men&uacute; S.U.R. </span></h2>
+  <table width="600" border="3">
     <tr>
-	  <td width="200"><p align="center">A.B.M.C. Discapacitados </p>
-	    <p align="center"><a class="enlace" href="abm/moduloABMDisca.php"><img src="img/abmdisca.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="200"><p align="center">Informes</p>
+	  <td width="200"><p align="center">Discapacitados </p>
+			<p align="center"><a class="enlace" href="abm/moduloABMDisca.php"><img src="img/discapacitados.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p align="center">&nbsp;</p></td>
+		<td width="200"><p align="center">H.I.V</p>
+			<p align="center"><a class="enlace" href="#"><img src="img/hiv.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p align="center">&nbsp;</p></td>
+		<td width="200"><p align="center">Drogadependencia</p>
+			<p align="center"><a class="enlace" href="#"><img src="img/drogadependencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p align="center">&nbsp;</p></td>
+    </tr>  
+	<tr>  
+	<td></td>
+	  <td width="200"><p align="center">Informes</p>
           <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
           <p align="center">&nbsp;</p></td>
-    </tr>
+	<td></td>
+	</tr>
   </table>
 </div>
 </body>
