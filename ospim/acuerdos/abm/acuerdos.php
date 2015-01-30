@@ -61,7 +61,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				if ($rowacuerdos['estadoacuerdo'] == 1) {
 					echo ("<td width=100  align='center'><font face=Verdana size=2><a href='formularioModif.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>MODIFICAR</a></font></td>"); 
 				} else {
-					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
+					echo ("<td width=100  align='center'><font face=Verdana size=2>".$rowacuerdos['descripcion']."</a></font></td>");
 				}
 				
 				$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
