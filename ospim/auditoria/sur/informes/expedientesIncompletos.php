@@ -116,7 +116,7 @@ function validar(formulario) {
 
 
 function abrirConsulta(dire){	
-	window.open(dire,'consultaDiscapacitado','width=800, height=500');
+	window.open(dire,'consultaDiscapacitado','width=800, height=600, resizable=yes');
 }
 
 </script>

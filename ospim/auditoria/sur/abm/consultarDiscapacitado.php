@@ -55,7 +55,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script type="text/javascript">
 
 function verCertificado(dire){	
-	window.open(dire,'Certificado de Discapacidad','width=800, height=500');
+	window.open(dire,'Certificado de Discapacidad','width=800, height=500,resizable=yes');
 }
 
 </script>
