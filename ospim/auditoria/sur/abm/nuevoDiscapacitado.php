@@ -270,6 +270,7 @@ function validar(formulario) {
 	       <select name="dependencia" id="dependencia">
              <option value="0">NO</option>
              <option value="1">SI</option>
+			 <option value="2">No Requerido</option>
            </select>
 	     </label></td>
          <td>&nbsp;</td>

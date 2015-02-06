@@ -169,8 +169,7 @@ function verCertificado(dire){
     </tr>
     <tr>
       <td><div align="right">Dependencia:</div></td>
-      <td><b>
-        <?php if ($rowExpediente['dependencia'] == 0) { echo "NO"; } else { echo "SI"; }?>
+      <td><b><?php if ($rowExpediente['dependencia'] == 0) { echo "NO"; } if ($rowExpediente['dependencia'] == 1) { echo "SI"; }  if ($rowExpediente['dependencia'] == 2) { echo "No Requerido"; }?>
       </b></td>
       <td>&nbsp;</td>
       <td>&nbsp;</td>

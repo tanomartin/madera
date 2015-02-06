@@ -373,10 +373,15 @@ function verCertificado(dire){
       <tr>
         <td><div align="right">Dependencia</div></td>
         <td><label>
-          <?php if ($rowExpediente['dependencia'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; } else { $seletedNO = ''; $seletedSI = 'selected'; } ?>
+          <?php 
+			 if ($rowExpediente['dependencia'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; $seletedNR = ''; } 
+			 if ($rowExpediente['dependencia'] == 1) { $seletedNO = ''; $seletedSI = 'selected'; $seletedNR = ''; } 
+			 if ($rowExpediente['dependencia'] == 2) { $seletedNO = ''; $seletedSI = ''; $seletedNR = 'selected'; }  
+		  ?>
           <select name="dependencia" id="dependencia">
             <option value="0" <?php echo $seletedNO ?>>NO</option>
             <option value="1" <?php echo $seletedSI ?>>SI</option>
+			<option value="2" <?php echo $seletedNR ?>>No Requerido</option>
           </select>
         </label></td>
         <td>&nbsp;</td>
