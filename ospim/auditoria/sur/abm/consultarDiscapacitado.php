@@ -184,8 +184,21 @@ function verCertificado(dire){
       </b></td>
     </tr>
   </table>
-  <p><?php if ($activo == 1 && !isset($_GET['nomostrar'])) { ?><p><input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>'" /> <?php } ?></p>
-	
+  <table width="500" border="0">
+    <tr>
+      <td width="436" height="41">
+        <div align="right">
+          <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+        </div></td>
+      <td width="454"><p align="left">
+        <?php if ($activo == 1 && !isset($_GET['nomostrar'])) { ?>
+        <input type='button' name='modificar' value='Modificar' onclick="location.href='modificarDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>'" />
+      </p>
+      </td>
+    </tr>
+  </table>
+  <p>
+    <?php } ?>
 </div>
 </body>
 </html>
