@@ -64,8 +64,7 @@ function verCertificado(dire){
   <p><span style="text-align:center">
     <?php if (!isset($_GET['nomostrar'])) { ?> <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" align="center"/> <?php } ?>
   </span></p>
-  <p class="Estilo2">Consulta de Discapacidado </p>
-  <p>
+  <p class="Estilo2">Consulta de Discapacidado  </p>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
@@ -152,7 +151,7 @@ function verCertificado(dire){
       <td><b><?php if ($rowExpediente['consentimientotransporte'] == 0) { echo "NO"; } if ($rowExpediente['consentimientotransporte'] == 1) { echo "SI"; }  if ($rowExpediente['consentimientotransporte'] == 2) { echo "No Requerido"; }?></b></td>
     </tr>
     <tr>
-      <td><div align="right">Constacia Alumno: </div></td>
+      <td><div align="right">Constancia Alumno: </div></td>
       <td><b><?php if ($rowExpediente['constanciaalumno'] == 0) { echo "NO"; } if ($rowExpediente['constanciaalumno'] == 1) { echo "SI"; }  if ($rowExpediente['constanciaalumno'] == 2) { echo "No Requerido"; }?></b></td>
       <td><div align="right">Adaptaciones Curriculares: </div></td>
       <td><b><?php if ($rowExpediente['adaptaciones'] == 0) { echo "NO"; } if ($rowExpediente['adaptaciones'] == 1) { echo "SI"; }  if ($rowExpediente['adaptaciones'] == 2) { echo "No Requerido"; }?></b></td>

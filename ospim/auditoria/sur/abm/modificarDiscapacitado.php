@@ -111,8 +111,7 @@ function verCertificado(dire){
   <p><span style="text-align:center">
    <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" align="center"/>
   </span></p>
-  <p class="Estilo2">Modificar Certificado de Discapacidad </p>
-  <p>
+  <p class="Estilo2">Modificar  Discapacitado  </p>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
@@ -300,7 +299,7 @@ function verCertificado(dire){
         </select></td>
       </tr>
       <tr>
-        <td><div align="right">Constacia Alumno </div></td>
+        <td><div align="right">Constancia Alumno </div></td>
         <td>
 		<?php 
 			if ($rowExpediente['constanciaalumno'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; $seletedNR = ''; } 

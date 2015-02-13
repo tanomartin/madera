@@ -96,8 +96,7 @@ function validar(formulario) {
   <p><span style="text-align:center">
    <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" align="center"/>
   </span></p>
-  <p class="Estilo2">Alta de Discapacidado </p>
-  <p>
+  <p class="Estilo2">Alta de Discapacitado  </p>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
@@ -205,7 +204,7 @@ function validar(formulario) {
           <option value="0">NO</option>
           <option value="1">SI</option>
         </select></td>
-       </tr>
+      </tr>
 	   <tr>
 	     <td><div align="right">Planilla FIM</div></td>
 	     <td><select name="planillafim" id="planillafim">
@@ -226,7 +225,7 @@ function validar(formulario) {
          </select></td>
       </tr>
 	   <tr>
-		<td><div align="right">Constacia Alumno </div></td>
+		<td><div align="right">Constancia Alumno </div></td>
         <td><select name="constancia" id="constancia">
           <option value="0">NO</option>
           <option value="1">SI</option>
