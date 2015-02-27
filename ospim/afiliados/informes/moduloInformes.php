@@ -33,7 +33,9 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
+      <td><p align="center">Beneficiarios por Grupo Etario </p>
+        <p align="center"><a class="enlace" href="beneficiariosPorGrupoEtario.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
       <td><p align="center">Cantidad de Beneficiarios por Delegaci&oacute;n </p>
         <p align="center"><a class="enlace" href="cantBeneficiariosPorDelegacion.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
