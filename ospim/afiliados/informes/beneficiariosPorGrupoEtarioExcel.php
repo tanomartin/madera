@@ -6,12 +6,12 @@ $maquina = $_SERVER['SERVER_NAME'];
 $fechagenera = date("d-m-Y");
 $horagenera = date("hms");
 $inWhere = "in (";
+
 foreach($_POST as $delega) {
 	$inWhere .= $delega.',';
 }
 $inWhere = substr($inWhere,0,-1);
 $inWhere .= ')';
-echo $inWhere;
 
 if(strcmp("localhost",$maquina)==0)
 	$archivo_path="informes/";
@@ -20,24 +20,26 @@ else
 
 $sqlTitulares = "SELECT t.codprovin,YEAR(CURDATE())-YEAR(t.fechanacimiento)+IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(t.fechanacimiento,'%m-%d'), 0, -1) AS `edadactual`,
 						t.nroafiliado,
-						t.codidelega,
 						t.sexo
 				FROM titulares t
-				WHERE t.codidelega $inWhere";
+				WHERE t.codprovin $inWhere";
 
 $sqlFamiliares = "SELECT
 					t.codprovin,
 					YEAR(CURDATE())-YEAR(f.fechanacimiento)+IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(f.fechanacimiento,'%m-%d'), 0, -1) AS `edadactual`,
 					f.nroafiliado,
 					f.nroorden,
-					t.codidelega,
 					f.sexo
 				  FROM familiares f, titulares t
 				  WHERE
 					f.nroafiliado = t.nroafiliado and
-					t.codidelega $inWhere";
+					t.codprovin $inWhere";
 
-$sqlDelegaciones = "SELECT * FROM delegaciones WHERE codidelega $inWhere";
+$sqlProvincias = "SELECT * FROM provincia where codprovin > 0 and codprovin < 99";
+
+//print($sqlTitulares."<br>");
+//print($sqlFamiliares."<br>");
+//print($sqlProvincias."<br>");
 
 try {
 	$hostname = $_SESSION['host'];
@@ -48,34 +50,36 @@ try {
 	
 	$resultTitulares = $dbh->query($sqlTitulares);
 	$resultFamiliares = $dbh->query($sqlFamiliares);
-	$resultDelegaciones = $dbh->query($sqlDelegaciones);
+	$resultProvincias = $dbh->query($sqlProvincias);
 	
 	$resultadoFinalHombres = array();
 	$resultadoFinalMujeres = array();
 	
-	foreach ($resultDelegaciones as $delegaciones){ 
+	foreach ($resultProvincias as $provincia){ 
 		for($i=0; $i<100; $i++) {
-			$resultadoFinalHombres[$delegaciones['codidelega']][$i] = 0;
-			$resultadoFinalMujeres[$delegaciones['codidelega']][$i] = 0;
+			$resultadoFinalHombres[$provincia['codprovin']][$i] = 0;
+			$resultadoFinalMujeres[$provincia['codprovin']][$i] = 0;
 		}	
 	}
 	
 	if ($resultTitulares){
 		foreach ($resultTitulares as $titulares){ 
+			$indiceProvincia = str_pad($titulares['codprovin'],2,'0',STR_PAD_LEFT);
 			if ($titulares['sexo'] == 'M') {
-				$resultadoFinalHombres[$titulares['codidelega']][$titulares['edadactual']] += 1;
+				$resultadoFinalHombres[$indiceProvincia][$titulares['edadactual']] += 1;
 			} else {
-				$resultadoFinalMujeres[$titulares['codidelega']][$titulares['edadactual']] += 1;
+				$resultadoFinalMujeres[$indiceProvincia][$titulares['edadactual']] += 1;
 			}
 		}
 	}
 
 	if ($resultFamiliares){
 		foreach ($resultFamiliares as $familiares){ 
+			$indiceProvincia = str_pad($familiares['codprovin'],2,'0',STR_PAD_LEFT);
 			if ($familiares['sexo'] == 'M') {
-				$resultadoFinalHombres[$familiares['codidelega']][$familiares['edadactual']] += 1;
+				$resultadoFinalHombres[$indiceProvincia][$familiares['edadactual']] += 1;
 			} else {
-				$resultadoFinalMujeres[$familiares['codidelega']][$familiares['edadactual']] += 1;
+				$resultadoFinalMujeres[$indiceProvincia][$familiares['edadactual']] += 1;
 			}
 		}
 	}
@@ -93,14 +97,14 @@ try {
 								 ->setDescription("Informe de Afiliados por grupo etario.")
 								 ->setCategory("Informes del Sistema de Afiliados");
 	$positionInExcel=0;
-	$resultDelegaciones = $dbh->query($sqlDelegaciones);	
-	foreach ($resultDelegaciones as $delegaciones){ 
-		$nomdelega = $delegaciones['nombre'];
-		$coddelega = $delegaciones['codidelega'];
+	$resultProvincias = $dbh->query($sqlProvincias);
+	foreach ($resultProvincias as $provincia){ 
+		$nomprovin = $provincia['descrip'];
+		$codprovin = $provincia['codprovin'];
 		$objPHPExcel->createSheet($positionInExcel);
 		$objPHPExcel->setActiveSheetIndex($positionInExcel);
-		$objPHPExcel->getActiveSheet()->setTitle("$nomdelega");
-		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader("&L&BO.S.P.I.M.&G&C&H& Grupo etario $nomdelega al $fechagenera&R&B".$fechagenera);
+		$objPHPExcel->getActiveSheet()->setTitle("$nomprovin");
+		$objPHPExcel->getActiveSheet()->getHeaderFooter()->setOddHeader("&L&BO.S.P.I.M.&G&C&H& Grupo etario $nomprovin al $fechagenera&R&B".$fechagenera);
 	
 		// Setea en configuracion de pagina orientacion y tamaño
 		$objPHPExcel->getActiveSheet()->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_DEFAULT);
@@ -128,22 +132,33 @@ try {
 		$objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
 		$objPHPExcel->getActiveSheet()->getStyle('A1:D1')->getFill()->getStartColor()->setARGB('FF808080');
 		
-		$arrayEdades = $resultadoFinalHombres[$coddelega];
-		$fila = 1;
-		foreach($arrayEdades as $key => $edad) {
-			$fila++;
-			$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, key($arrayEdades));
-			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $edad);
-			next($arrayEdades);
+		if (in_array($codprovin,$_POST)) {
+			$arrayEdades = $resultadoFinalHombres[$codprovin];
+			$fila = 1;
+			foreach($arrayEdades as $key => $edad) {
+				$fila++;
+				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, key($arrayEdades));
+				$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $edad);
+				next($arrayEdades);
+			}
+			$fila = 1;
+			$arrayEdades = $resultadoFinalMujeres[$codprovin];
+			foreach($arrayEdades as $key => $edad) {
+				$fila++;
+				$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $edad);
+				$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, '=SUM(B'.$fila.':C'.$fila.')');
+				next($arrayEdades);
+			}
+		} else {
+			$arrayEdades = $resultadoFinalHombres[$codprovin];
+			$fila = 1;
+			foreach($arrayEdades as $key => $edad) {
+				$fila++;
+				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, key($arrayEdades));
+				next($arrayEdades);
+			}
 		}
-		$fila = 1;
-		$arrayEdades = $resultadoFinalMujeres[$coddelega];
-		foreach($arrayEdades as $key => $edad) {
-			$fila++;
-			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $edad);
-			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, '=SUM(B'.$fila.':C'.$fila.')');
-			next($arrayEdades);
-		}
+		
 		$objPHPExcel->getActiveSheet()->getStyle('A1:D'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);	
 		$objPHPExcel->getActiveSheet()->getStyle('A1:D'.$fila)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
 		$positionInExcel++;
@@ -185,10 +200,10 @@ try {
 		$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $i);
 		$formulaTotalHombre = '=';
 		$formulaTotalMujeres = '=';
-		$resultDelegaciones = $dbh->query($sqlDelegaciones);
-		foreach ($resultDelegaciones as $delegaciones){ 
-			$formulaTotalHombre .= "'".$delegaciones['nombre']."'".'!B'.$fila.'+';
-			$formulaTotalMujeres .= "'".$delegaciones['nombre']."'".'!C'.$fila.'+';
+		$resultProvincias = $dbh->query($sqlProvincias);
+		foreach ($resultProvincias as $provincia){ 
+			$formulaTotalHombre .= "'".$provincia['descrip']."'".'!B'.$fila.'+';
+			$formulaTotalMujeres .= "'".$provincia['descrip']."'".'!C'.$fila.'+';
 		}
 		$formulaTotalHombre = substr($formulaTotalHombre,0,-1);
 		$formulaTotalMujeres = substr($formulaTotalMujeres,0,-1);
@@ -198,7 +213,7 @@ try {
 	}
 	$objPHPExcel->getActiveSheet()->getStyle('A1:D'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);	
 	$objPHPExcel->getActiveSheet()->getStyle('A1:D'.$fila)->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THIN);
-
+	
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 	$archivo_name = $archivo_path."Beneficiarios grupo etario al $fechagenera $horagenera.xls";
@@ -209,7 +224,6 @@ try {
 	$dbh->commit();
 	$pagina = "beneficiariosPorGrupoEtario.php?error=0";
 	Header("Location: $pagina");
-	
 	
 } catch (PDOException $e) {
 	$error = $e->getMessage();

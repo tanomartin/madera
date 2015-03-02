@@ -25,7 +25,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script language="javascript" type="text/javascript">
 
 function checkall(seleccion, formulario) {
-	grupo = formulario.delegaciones;
+	grupo = formulario.provincias;
 	var total = grupo.length;
 	if (total == null) {
 		if (seleccion.checked) {
@@ -47,7 +47,7 @@ function checkall(seleccion, formulario) {
 
 function validar(formulario) {
 	var delegaCheck = 0;
-	delegaciones = formulario.delegaciones;
+	delegaciones = formulario.provincias;
 	if (delegaciones != null) {
 		for (x=0;x<delegaciones.length;x++) {
 			if(delegaciones[x].checked) {
@@ -56,7 +56,7 @@ function validar(formulario) {
 		}
 	}
 	if (delegaCheck == 0) {
-		alert("Debe elegir como mínimo una Delegación para el prestador");
+		alert("Debe elegir como mínimo una Provincia para generar el Informe");
 		return false;
 	}
 	formulario.checkAll.disabled = true;
@@ -88,19 +88,19 @@ function validar(formulario) {
       <tr>
         <td><div align="left">
             <?php 
-				$query="select * from delegaciones where codidelega >= 1000 and codidelega <= 1702";
+				$query="select * from provincia where codprovin > 0 and codprovin <= 12";
 				$result=mysql_query($query,$db);
 				$i = 0;
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
-            		<input type="checkbox" name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" /> <?php echo $rowtipos['nombre']."<br>"; $i++;
+            		<input type="checkbox" name="<?php echo "provincia".$i ?>" id="provincias" value="<?php echo $rowtipos['codprovin'] ?>" /> <?php echo $rowtipos['descrip']."<br>"; $i++;
 			 	} ?>
         </div></td>
         <td><div align="left">
             <?php 
-				$query="select * from delegaciones where codidelega > 1702 and codidelega <= 3200";
+				$query="select * from provincia where codprovin > 12 and codprovin < 99";
 				$result=mysql_query($query,$db);
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
-           		  <input type="checkbox" name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" /><?php echo $rowtipos['nombre']."<br>"; $i++;
+           		  <input type="checkbox" name="<?php echo "provincia".$i  ?>" id="provincias" value="<?php echo $rowtipos['codprovin'] ?>" /><?php echo $rowtipos['descrip']."<br>"; $i++;
 				} ?>
         </div></td>
       </tr>
