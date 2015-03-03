@@ -150,12 +150,10 @@ try {
 				next($arrayEdades);
 			}
 		} else {
-			$arrayEdades = $resultadoFinalHombres[$codprovin];
 			$fila = 1;
-			foreach($arrayEdades as $key => $edad) {
+			for($i=0; $i<100; $i++) {
 				$fila++;
-				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, key($arrayEdades));
-				next($arrayEdades);
+				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $i);
 			}
 		}
 		
