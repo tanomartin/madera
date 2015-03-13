@@ -22,10 +22,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 function validar(formulario) {
-	if(	!document.getElementById("001").checked && !document.getElementById("002").checked && 
-		!document.getElementById("003").checked && !document.getElementById("004").checked &&
-		!document.getElementById("005").checked && !document.getElementById("006").checked && 
-		!document.getElementById("007").checked && !document.getElementById("008").checked) {
+	var prestaCheck = 0;
+	var grupo = formulario.prestadores;
+	var total = grupo.length;
+	if (total != null) {
+		for (x=0; x<total; x++) {
+			if(grupo[x].checked) {
+				prestaCheck = 1;
+			}
+		}
+	}
+	if (prestaCheck == 0) {
 		alert("Debe Seleccionar por lo menos un Prestador");
 		return(false);
 	}
@@ -55,7 +62,7 @@ function validar(formulario) {
 			$codigo = $rowPresta['codigo'];
 			$nombre = $rowPresta['nombre'];
 			echo "<td><div align='left'>$codigo - $nombre</div></td>";
-			echo "<td><input type='checkbox' id=$codigo name=$codigo value=$codigo></td>";
+			echo "<td><input type='checkbox' id=prestadores name=$codigo value=$codigo></td>";
 			echo "</tr>";
 		} 
 	?>  
