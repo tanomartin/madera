@@ -31,7 +31,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra"],
-			headers:{3:{sorter:false, filter: false}, 4:{sorter:false, filter: false},  5:{sorter:false, filter: false}, 6:{sorter:false, filter: false}, 7:{sorter:false, filter: false}},
+			headers:{3:{sorter:false, filter: false}, 4:{sorter:false, filter: false},  5:{sorter:false, filter: false}, 7:{sorter:false, filter: false}, 8:{sorter:false, filter: false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -125,6 +125,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 		  <th>Cant. Pedido</th>
 		  <th>Costo Unitario</th>
 		  <th>Cant. Entregado</th>
+		  <th>Faltantes</th>
 		  <th>Total</th>
 		  <th>Descripcion</th>
 		</tr>
@@ -140,6 +141,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 					<td><input name="cantidad<?php echo $i ?>" id="cantidad<?php echo $i ?>" type="text" size="5" value="<?php echo $rowDetPedido['cantidadpedido'] ?>" readonly="readonly" style="background-color:#CCCCCC"  /></td>
 					<td><input name="costo<?php echo $i ?>" id="costo<?php echo $i ?>" type="text" size="10" value="<?php echo $rowDetPedido['costounitario'] ?>" onchange="calcularTotalFila('<?php echo $i ?>', this.value)"/></td>
 					<td><input name="entregado<?php echo $i ?>" id="entregado<?php echo $i ?>" type="text" size="5" value="<?php echo $rowDetPedido['cantidadentregada'] ?>"/></td>
+					<td><?php echo  $rowDetPedido['cantidadpedido'] -  $rowDetPedido['cantidadentregada'] ?></td>
 					<td>
 						<?php $totalfila = $rowDetPedido['cantidadpedido'] * $rowDetPedido['costounitario']; $total = $total + $totalfila ;?>
 						<input name="totalfila<?php echo $i ?>" id="totalfila<?php echo $i ?>" type="text" size="10" value="<?php echo  $totalfila ?>" readonly="readonly" style="background-color:#CCCCCC"/>					</td>
@@ -147,7 +149,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 		</tr>
 	 <?php $i++;} ?>
 	 	<tr>
-			<td colspan="6"><div align="right"><strong>TOTAL</strong></div></td>
+			<td colspan="7"><div align="right"><strong>TOTAL</strong></div></td>
 			<td><input name="total" id="total" type="text" size="10" value="<?php echo  $total ?>" readonly="readonly" style="background-color:#CCCCCC" /></td>
 			<td>&nbsp;</td>
 		</tr>
