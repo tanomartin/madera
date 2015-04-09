@@ -441,7 +441,7 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
     <td valign="top"><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
-        <p><strong>Tipo:</strong> <?php	if($rowLeeSolicitud['codiparentesco']!=0) {	if($rowLeeSolicitud['codiparentesco']==1) echo "Titular"; else echo "Familiar ".$rowLeeSolicitud['codiparentesco'];	}?></p>
+        <p><strong>Tipo:</strong> <?php	if($rowLeeSolicitud['codiparentesco']>0) {	if($rowLeeSolicitud['codiparentesco']==0) echo "Titular"; else echo "Familiar ".$rowLeeSolicitud['codiparentesco'];	}?></p>
       </td>
     <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" align="center"/><?php }?></p>
 		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']); else echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']);?></p>

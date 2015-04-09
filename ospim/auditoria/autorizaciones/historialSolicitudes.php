@@ -76,7 +76,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $rowLeeAutorizacion['codidelega']." - ".$rowLeeAutorizacion['nombre'];?></td>
 			<td><?php echo $rowLeeAutorizacion['cuil'];?></td>
 			<td><?php if($rowLeeAutorizacion['nroafiliado']==0) echo "-"; else echo $rowLeeAutorizacion['nroafiliado'];?></td>
-			<td><?php if($rowLeeAutorizacion['codiparentesco']==0) echo "-"; else { if($rowLeeAutorizacion['codiparentesco']==1) echo "Titular"; else echo "Familiar ".$rowLeeAutorizacion['codiparentesco'];};?></td>
+			<td><?php if($rowLeeAutorizacion['codiparentesco']<0) echo "-"; else { if($rowLeeAutorizacion['codiparentesco']==0) echo "Titular"; else echo "Familiar ".$rowLeeAutorizacion['codiparentesco'];};?></td>
 			<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
 			<td><?php if($rowLeeAutorizacion['statusverificacion']==1) echo "Aprobada"; if($rowLeeAutorizacion['statusverificacion']==2) echo "Rechazada"; if($rowLeeAutorizacion['statusverificacion']==3) echo "No Reverificada";?></td>
 			<td><?php if($rowLeeAutorizacion['statusautorizacion']==1) echo "Aprobada"; if($rowLeeAutorizacion['statusautorizacion']==2) echo "Rechazada";?></td>

@@ -48,10 +48,10 @@ if ($totalLeeAutorizacion !=0) {
 		else
 			print ("<td width=50><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['nroafiliado']."</font></div></td>");
 
-		if($rowLeeAutorizacion['codiparentesco']==0)
+		if($rowLeeAutorizacion['codiparentesco']<0)
 			print ("<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>");
 		else {
-			if($rowLeeAutorizacion['codiparentesco']==1)
+			if($rowLeeAutorizacion['codiparentesco']==0)
 				print ("<td width=65><div align=center><font size=1 face=Verdana>Titular</font></div></td>");
 			else
 				print ("<td width=65><div align=center><font size=1 face=Verdana>Familiar ".$rowLeeAutorizacion['codiparentesco']."</font></div></td>");			

@@ -435,7 +435,7 @@ if($rowLeeSolicitud['material'] == 1) {
     <td valign="top"><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
-        <p><strong>Tipo:</strong> <?php	if($rowLeeSolicitud['codiparentesco']!=0) {	if($rowLeeSolicitud['codiparentesco']==1) echo "Titular"; else echo "Familiar ".$rowLeeSolicitud['codiparentesco'];	}?>
+        <p><strong>Tipo:</strong> <?php	if($rowLeeSolicitud['codiparentesco']>0) {	if($rowLeeSolicitud['codiparentesco']==0) echo "Titular"; else echo "Familiar ".$rowLeeSolicitud['codiparentesco'];	}?>
           <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly" style="visibility:hidden"/>	
       </p></td>
     <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" align="center"/><?php }?></p>
