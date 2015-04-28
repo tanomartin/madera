@@ -123,52 +123,37 @@ try{
 			$resultAcuerdos = mysql_query( $sqlAcuerdos,$db);						
 			$rowAcuerdos = mysql_fetch_array($resultAcuerdos);
 
+			$fila++;
+			$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $delegacion);
+			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[cuit]);
+			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nroacuerdo]);
+			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $cuotas[nrocuota]);
+			$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $cuotas[montocuota]);
+			$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, invertirFecha($cuotas[fechacuota]));
+			$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[montopagada]);
+			$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[fechapagada]));
+
 			if($cuotas[sistemacancelacion] == 'M'){
 				//if($cuotas[fechacancelacion] >= $fechaini && $cuotas[fechacancelacion] <= $fechafin) {
-					$fila++;
 					// Add some data, we will use printing features
-					$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $delegacion);
-					$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[cuit]);
-					$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nroacuerdo]);
-					$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $cuotas[nrocuota]);
-					$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $cuotas[montocuota]);
-					$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, invertirFecha($cuotas[fechacuota]));
-					$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[montopagada]);
-					$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[fechapagada]));
 					$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, invertirFecha($cuotas[fechacancelacion]));
-					$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, '-'.$cuotas[codigobarra].'-');
-					$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowAcuerdos['gestoracuerdo']);
-					$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowAcuerdos['porcengastoadmin']);
-					$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $rowAcuerdos['inspectorinterviene']);
-					$objPHPExcel->getActiveSheet()->setCellValue('N'.$fila, '=(100-L'.$fila.')/100');
-					$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, '=G'.$fila.'*N'.$fila);
-					$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, '3');
-					$objPHPExcel->getActiveSheet()->setCellValue('Q'.$fila, '=O'.$fila.'*P'.$fila);
 				//}
 			}
 			if($cuotas[sistemacancelacion] == 'E'){
 				//if($cuotas[fechaacreditacion] >= $fechaini && $cuotas[fechaacreditacion] <= $fechafin) {
-					$fila++;
 					// Add some data, we will use printing features
-					$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $delegacion);
-					$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[cuit]);
-					$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nroacuerdo]);
-					$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $cuotas[nrocuota]);
-					$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $cuotas[montocuota]);
-					$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, invertirFecha($cuotas[fechacuota]));
-					$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[montopagada]);
-					$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[fechapagada]));
 					$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, invertirFecha($cuotas[fechaacreditacion]));
-					$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, '-'.$cuotas[codigobarra].'-');
-					$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowAcuerdos['gestoracuerdo']);
-					$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowAcuerdos['porcengastoadmin']);
-					$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $rowAcuerdos['inspectorinterviene']);
-					$objPHPExcel->getActiveSheet()->setCellValue('N'.$fila, '=(100-L'.$fila.')/100');
-					$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, '=G'.$fila.'*N'.$fila);
-					$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, '3');
-					$objPHPExcel->getActiveSheet()->setCellValue('Q'.$fila, '=O'.$fila.'*P'.$fila);
 				//}
 			}
+
+			$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, '-'.$cuotas[codigobarra].'-');
+			$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowAcuerdos['gestoracuerdo']);
+			$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowAcuerdos['porcengastoadmin']);
+			$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $rowAcuerdos['inspectorinterviene']);
+			$objPHPExcel->getActiveSheet()->setCellValue('N'.$fila, '=(100-L'.$fila.')/100');
+			$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, '=G'.$fila.'*N'.$fila);
+			$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, '0.03');
+			$objPHPExcel->getActiveSheet()->setCellValue('Q'.$fila, '=O'.$fila.'*P'.$fila);
 		}
 	}
 
