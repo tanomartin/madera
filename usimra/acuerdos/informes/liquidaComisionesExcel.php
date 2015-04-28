@@ -103,7 +103,7 @@ try{
 
 	$fila=1;
 
-	$sqlCuotas="SELECT * FROM cuoacuerdosusimra WHERE montopagada != 0.00";
+	$sqlCuotas="SELECT * FROM cuoacuerdosusimra WHERE montopagada != 0.00 AND ((sistemacancelacion = 'E' AND fechaacreditacion >= '$fechaini' AND fechaacreditacion <= '$fechafin') OR (sistemacancelacion = 'M' AND fechacancelacion >= '$fechaini' AND fechacancelacion <= '$fechafin'))";
 	$resultCuotas = $dbh->query($sqlCuotas);
 	if ($resultCuotas){
 		set_time_limit(0);
@@ -124,7 +124,7 @@ try{
 			$rowAcuerdos = mysql_fetch_array($resultAcuerdos);
 
 			if($cuotas[sistemacancelacion] == 'M'){
-				if($cuotas[fechacancelacion] >= $fechaini && $cuotas[fechacancelacion] <= $fechafin) {
+				//if($cuotas[fechacancelacion] >= $fechaini && $cuotas[fechacancelacion] <= $fechafin) {
 					$fila++;
 					// Add some data, we will use printing features
 					$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $delegacion);
@@ -144,10 +144,10 @@ try{
 					$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, '=G'.$fila.'*N'.$fila);
 					$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, '3');
 					$objPHPExcel->getActiveSheet()->setCellValue('Q'.$fila, '=O'.$fila.'*P'.$fila);
-				}
+				//}
 			}
 			if($cuotas[sistemacancelacion] == 'E'){
-				if($cuotas[fechaacreditacion] >= $fechaini && $cuotas[fechaacreditacion] <= $fechafin) {
+				//if($cuotas[fechaacreditacion] >= $fechaini && $cuotas[fechaacreditacion] <= $fechafin) {
 					$fila++;
 					// Add some data, we will use printing features
 					$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $delegacion);
@@ -167,7 +167,7 @@ try{
 					$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, '=G'.$fila.'*N'.$fila);
 					$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, '3');
 					$objPHPExcel->getActiveSheet()->setCellValue('Q'.$fila, '=O'.$fila.'*P'.$fila);
-				}
+				//}
 			}
 		}
 	}
