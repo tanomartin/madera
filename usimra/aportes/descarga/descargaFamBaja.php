@@ -2,7 +2,9 @@
 include($libPath."controlSessionUsimra.php"); 
 include($libPath."claves.php"); 
 set_time_limit(0);
+print("<br>");
 
+$nroControl = $_POST['nroControl'];
 $utlimoNroControl = $_POST['ultimocontrol'];
 $totalDdjj = $_POST['totalDdjj'];
 $listadoSerializadoEmpresa = $_POST['empresas'];
@@ -82,7 +84,7 @@ if ($canFamiliarBaja > 0) {
 		$dbh->beginTransaction();
 		
 		foreach($sqlEjecuciones as $sql) {
-			print($sql."<br>");
+			//print($sql."<br>");
 			$dbh->exec($sql);
 		}
 		
@@ -93,11 +95,11 @@ if ($canFamiliarBaja > 0) {
 		$dbhweb->beginTransaction();
 		
 		foreach($sqlUpdateBajadaFamBaja as $sqlUpdate) {
-			print($sqlUpdate."<br>");
+			//print($sqlUpdate."<br>");
 			$dbhweb->exec($sqlUpdate);
 		}
 		
-		print($updateControl."<br>");
+		//print($updateControl."<br>");
 		$dbh->exec($updateControl);
 		
 		$dbh->commit();		
@@ -148,6 +150,7 @@ echo("</pre>");
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
+	$.blockUI({ message: "<h1>Generando Informe de Descasrga... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	function formSubmit() {
 		document.getElementById("resultados").submit();
 	}
@@ -155,6 +158,7 @@ echo("</pre>");
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="informeResultadoDescarga.php" id="resultados" method="POST"> 
+   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
    <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
    <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializadoEmpresa ?>">

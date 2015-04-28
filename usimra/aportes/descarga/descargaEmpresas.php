@@ -4,6 +4,7 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
+$nroControl = $_POST['nroControl'];
 $utlimoNroControl = $_POST['ultimocontrol'];
 $totalDdjj = $_POST['totalDdjj'];
 $idControl = $_POST['idControl'];
@@ -108,16 +109,16 @@ if ($canEmpresas > 0) {
 		$dbhweb->beginTransaction();
 		
 		foreach($sqlInsertEmpresas as $sqlEmpresa) {
-			print($sqlEmpresa['empresa']."<br>");
+			//print($sqlEmpresa['empresa']."<br>");
 			$dbh->exec($sqlEmpresa['empresa']);
-			print($sqlEmpresa['jurisdiccion']."<br>");
+			//print($sqlEmpresa['jurisdiccion']."<br>");
 			$dbh->exec($sqlEmpresa['jurisdiccion']);
 		}
 		
-		print($sqlUpdateBajadaEmpresa."<br>");
+		//print($sqlUpdateBajadaEmpresa."<br>");
 		$dbhweb->exec($sqlUpdateBajadaEmpresa);
 
-		print($updateControl."<br>");
+		//print($updateControl."<br>");
 		$dbh->exec($updateControl);
 
 		$dbh->commit();		
@@ -157,6 +158,7 @@ print("CANTIDAD DE DJJJ: ".$totalDdjj."<br>");*/
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaEmpleados.php" id="descargaEmpleados" method="POST"> 
+   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
    <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
    <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>">

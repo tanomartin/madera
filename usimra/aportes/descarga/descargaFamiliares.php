@@ -4,6 +4,7 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
+$nroControl = $_POST['nroControl'];
 $utlimoNroControl = $_POST['ultimocontrol'];
 $totalDdjj = $_POST['totalDdjj'];
 $listadoSerializadoEmpresa = $_POST['empresas'];
@@ -79,7 +80,7 @@ if ($canFamiliar > 0) {
 		$dbh->beginTransaction();
 		
 		foreach($sqlEjecuciones as $sql) {
-			print($sql."<br>");
+			//print($sql."<br>");
 			$dbh->exec($sql);
 		}
 		
@@ -90,11 +91,11 @@ if ($canFamiliar > 0) {
 		$dbhweb->beginTransaction();
 		
 		foreach($sqlUpdateBajadaFamilia as $sqlUpdate) {
-			print($sqlUpdate."<br>");
+			//print($sqlUpdate."<br>");
 			$dbhweb->exec($sqlUpdate);
 		}
 		
-		print($updateControl."<br>");
+		//print($updateControl."<br>");
 		$dbh->exec($updateControl);
 		
 		$dbh->commit();		
@@ -147,6 +148,7 @@ echo("</pre>");*/
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaEmpBaja.php" id="descargaEmpBaja" method="POST"> 
+   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
    <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
    <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializadoEmpresa ?>">

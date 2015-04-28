@@ -2,6 +2,7 @@
 include($libPath."controlSessionUsimra.php"); 
 include($libPath."claves.php"); 
 
+$nroControl = $_POST['nroControl'];
 $utlimoNroControl = $_POST['ultimocontrol'];
 $totalDdjj = $_POST['totalDdjj'];
 $idControl = $_POST['idControl'];
@@ -83,6 +84,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 		</tr>
 	  </table>
 	  <p><span class="Estilo2">Detalle de Descarga</span></p>
+	  <p><strong>D.D.J.J.</strong></p>
+	  <table width="400" border="1">
+		<tr>
+		  <td><strong>Fecha Desde </strong></td>
+		  <td><?php echo substr($nroControl,6,2)."/".substr($nroControl,4,2)."/".substr($nroControl,0,4)." - ".substr($nroControl,8,2).":".substr($nroControl,10,2).":".substr($nroControl,12,2) ?></td>
+		</tr>
+		<tr>
+		  <td><strong>Fecha Hasta</strong></td>
+		  <td><?php echo substr($utlimoNroControl,6,2)."/".substr($utlimoNroControl,4,2)."/".substr($utlimoNroControl,0,4)." - ".substr($utlimoNroControl,8,2).":".substr($utlimoNroControl,10,2).":".substr($utlimoNroControl,12,2) ?></td>
+		</tr>
+	   </table>
 	  <p><strong>Empresas</strong></p>
 		<?php if (sizeof($listadoEmpresas) != 0) { ?>
 			<table width="600" border="1">

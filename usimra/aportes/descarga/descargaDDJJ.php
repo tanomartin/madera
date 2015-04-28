@@ -52,7 +52,7 @@ if ($canDdjjConDocu > 0) {
 		$dbh->beginTransaction();
 		
 		foreach($ddjjAIngresar as $ddjjInsert) {
-			print($ddjjInsert."<br>");
+			//print($ddjjInsert."<br>");
 			$dbh->exec($ddjjInsert);
 		}
 		
@@ -111,6 +111,7 @@ print("CONTROL: ".$idControl."<br>");*/
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaEmpresas.php" id="descargaEmpresa" method="POST"> 
+   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
    <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
    <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
