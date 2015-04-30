@@ -67,6 +67,7 @@ include($libPath."controlSessionOspimSistemas.php");
 		<tr>
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
+		  <th>Fecha Inicio</th>
 		  <th>Nro de Serie</th>
 		  <th>Valor Original</th>
 	    </tr>
@@ -79,10 +80,11 @@ include($libPath."controlSessionOspimSistemas.php");
 			$canProd = mysql_num_rows($resProd);
 			while ($rowProd = mysql_fetch_assoc($resProd)) { ?>		
 			<tr align="center">
-					<td><?php echo $rowProd['nombre']?></td>
+					<td width="100"><?php echo $rowProd['nombre']?></td>
 					<td><?php echo $rowProd['descripcion'] ?></td>
+					<td width="100"><?php echo $rowProd['fechainicio'] ?></td>
 					<td><?php echo $rowProd['numeroserie'] ?></td>
-					<td><?php echo "$ ".$rowProd['valororiginal'] ?></td>
+					<td width="100"><?php echo "$ ".$rowProd['valororiginal'] ?></td>
 		</tr>
 	 <?php } ?>
 	 
