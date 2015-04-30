@@ -29,7 +29,7 @@ A:hover {text-decoration: none;color:#00FFFF }
          <p align="center"><a class="enlace" href="productos.php"><img src="img/productos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
          <p align="center">&nbsp;</p></td>
 	   <td><p align="center">Seguro</p>
-       <p align="center"><a class="enlace" href="seguro.php"><img src="img/seguro.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+       <p align="center"><a class="enlace" href="moduloSeguro.php"><img src="img/seguro.png" width="90" height="90" border="0" alt="enviar"/></a></p>
        <p align="center">&nbsp;</p></td>
 	   <td><p align="center">Pedidos</p>
          <p align="center"><a class="enlace" href="pedidos.php"><img src="img/pedidos.png" width="90" height="90" border="0" alt="enviar"/></a></p>

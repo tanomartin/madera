@@ -18,19 +18,6 @@ include($libPath."controlSessionOspimSistemas.php");
 <script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script>
 
-function actualizar() {
-	var poliza = prompt("Ingrese Número de Poliza");
-		if (poliza == null) {
-			return false;
-		}
-		if (poliza == "") {
-			alert("Debe ingrear el Número de Poliza");
-			return false;
-		}
-		var pagina = "actualizarPoliza.php?poliza="+poliza;
-		location.href=pagina;
-}
-	
 	$(function() {
 		$("#listado")
 		.tablesorter({
@@ -74,8 +61,7 @@ function actualizar() {
   <p>
     <input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = 'moduloSeguro.php'" align="center"/>
 </p>
-  <p><span class="Estilo1">Listado Para el Seguro</span> </p>
-  <p align="center"><input class="nover" type="button" name="actualizar" value="Actualizar Poliza" onclick="actualizar()"/></p>
+  <p><span class="Estilo1">Productos Sin Poliza</span></p>
   <table id="listado" style="width:800px; font-size:14px" border="1">
 	  <thead>
 		<tr>
@@ -88,7 +74,7 @@ function actualizar() {
 	 <tbody>
 	 	
 		<?php	
-			$sqlProd = "SELECT * FROM producto p, ubicacionproducto u WHERE p.activo = 1 and p.id = u.id and u.pertenencia = 'O'";
+			$sqlProd = "SELECT * FROM producto p, ubicacionproducto u WHERE p.activo = 1 and p.id = u.id and u.pertenencia = 'O' and p.numeropoliza is null";
 			$resProd = mysql_query($sqlProd,$db);
 			$canProd = mysql_num_rows($resProd);
 			while ($rowProd = mysql_fetch_assoc($resProd)) { ?>		
