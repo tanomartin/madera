@@ -23,7 +23,7 @@ include($libPath."controlSessionOspimSistemas.php");
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{9:{sorter:false, filter: false}},
+			headers:{10:{sorter:false, filter: false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -87,7 +87,8 @@ include($libPath."controlSessionOspimSistemas.php");
 		  <th>Codigo</th>
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
-		  <th>Productos - Usuario</th>
+		  <th width="300">Productos - Usuario</th>
+		  <th class="filter-select" data-placeholder="Seleccion Estado">Activo</th>
 		  <th>Pto. Prom</th>
 		  <th>Pto. Ped</th>
 		  <th>Stock Min.</th>
@@ -106,21 +107,26 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php echo $rowInsumos['id'] ?></td>
 					<td><?php echo $rowInsumos['nombre'] ?></td>
 					<td><?php echo $rowInsumos['descripcion'] ?></td>
-					<td>
+					
 					<?php 
 						$idInsumo = $rowInsumos['id'];
 						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, u.usuario FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
+						$nombre = "";
 						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
 							if ($rowInsumoProducto['activo'] == 0) {
-								$color = "#FF0000";
+								$colorProd = "#FF0000";
 							} else {
-								$color = "#000000";
+								$colorProd = "#000000";
 							}
-							print("<font color='$color'> * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto']." - ".$rowInsumoProducto['usuario'].")"."</font></br>");
+							$nombre .= " * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto']." ".$rowInsumoProducto['usuario'].")"."</br>";
+							if ($rowInsumoProducto['activo'] == 1) {  $activo = "SI"; } else { $activo = "NO"; }	
+							
 						}
+						
 					?>
-					</td>
+					<td><font color='<?php echo $colorProd ?>'><?php echo $nombre ?></font></td>
+					<td><?php echo $activo ?></td>
 					<td><?php echo $rowInsumos['puntopromedio'] ?></td>
 					<td><?php echo $rowInsumos['puntopedido'] ?></td>
 					<td><?php echo $rowInsumos['stockminimo'] ?></td>
