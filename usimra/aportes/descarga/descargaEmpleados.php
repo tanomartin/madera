@@ -10,8 +10,8 @@ $totalDdjj = $_POST['totalDdjj'];
 $listadoSerializadoEmpresa = $_POST['empresas'];
 $idControl = $_POST['idControl'];
 
-//$hostaplicativo = $hostUsimra;
-$hostaplicativo = "localhost";
+$hostaplicativo = $hostUsimra;
+//$hostaplicativo = "localhost";
 $usuarioaplicativo = $usuarioUsimra;
 $claveaplicativo = $claveUsimra;
 $dbaplicativo =  mysql_connect($hostaplicativo, $usuarioaplicativo, $claveaplicativo);

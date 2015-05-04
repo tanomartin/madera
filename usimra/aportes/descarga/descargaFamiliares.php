@@ -11,8 +11,8 @@ $listadoSerializadoEmpresa = $_POST['empresas'];
 $listadoSerializadoEmpleados = $_POST['empleados'];
 $idControl = $_POST['idControl'];
 
-//$hostaplicativo = $hostUsimra;
-$hostaplicativo = "localhost";
+$hostaplicativo = $hostUsimra;
+//$hostaplicativo = "localhost";
 $usuarioaplicativo = $usuarioUsimra;
 $claveaplicativo = $claveUsimra;
 $dbaplicativo =  mysql_connect($hostaplicativo, $usuarioaplicativo, $claveaplicativo);

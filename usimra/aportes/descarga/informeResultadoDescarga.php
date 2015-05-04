@@ -166,7 +166,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 							<td><?php echo $familaires['cuil'] ?></td>
 							<td><?php echo $familaires['cuit'] ?></td>
 							<td><?php echo $familaires['parentesco'] ?></td>
-							<td><?php echo $empleados['nombre'] ?></td>
+							<td><?php echo $familaires['nombre'] ?></td>
 						</tr>
 				<?php } ?> 
 				</tbody>

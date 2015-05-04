@@ -4,10 +4,10 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
-//$hostaplicativo = $hostUsimra;
+$hostaplicativo = $hostUsimra;
+//$hostaplicativo = "localhost";
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$hostaplicativo = "localhost";
 $usuarioaplicativo = $usuarioUsimra;
 $claveaplicativo = $claveUsimra;
 $dbaplicativo =  mysql_connect($hostaplicativo, $usuarioaplicativo, $claveaplicativo);
