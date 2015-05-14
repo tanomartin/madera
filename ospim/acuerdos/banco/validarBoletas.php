@@ -84,9 +84,9 @@ try {
 					$importebanco = $validar[importe];
 					$cuitbanco = $validar[cuit];
 
-					$sqlControlaBoleta="SELECT * FROM anuladasospim WHERE nrocontrol = :nrocontrol";
+					$sqlControlaBoleta="SELECT * FROM anuladasospim WHERE cuit = :cuit AND nrocontrol = :nrocontrol";
 					$resultControlaBoleta = $dbh->prepare($sqlControlaBoleta);
-					$resultControlaBoleta->execute(array(':nrocontrol' => $control));
+					$resultControlaBoleta->execute(array(':cuit' => $cuitbanco, ':nrocontrol' => $control));
 					if($resultControlaBoleta)
 					{
 						foreach ($resultControlaBoleta as $anuladas)
@@ -104,10 +104,10 @@ try {
 						}
 					}
 
-					$sqlBuscaBoleta="SELECT * FROM boletasospim WHERE nrocontrol = :nrocontrol";
+					$sqlBuscaBoleta="SELECT * FROM boletasospim WHERE cuit = :cuit AND nrocontrol = :nrocontrol";
 					//echo $sqlBuscaBoleta; echo "<br>";
 					$resultBuscaBoleta = $dbh->prepare($sqlBuscaBoleta);
-					$resultBuscaBoleta->execute(array(':nrocontrol' => $control));
+					$resultBuscaBoleta->execute(array(':cuit' => $cuitbanco, ':nrocontrol' => $control));
 					if ($resultBuscaBoleta)
 					{
 		        		foreach ($resultBuscaBoleta as $boletas)
@@ -144,10 +144,10 @@ try {
 									    print ("<td><div align=center><font size=1 face=Verdana>ERROR CRV - Avise al Depto. Sistemas.</font></div></td>");
 									}
 
-									$sqlBorraBoleta="DELETE FROM boletasospim WHERE nrocontrol = :nrocontrol";
+									$sqlBorraBoleta="DELETE FROM boletasospim WHERE cuit = :cuit AND nrocontrol = :nrocontrol";
 									$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
 									//echo $sqlBorraBoleta; echo "<br>";
-									if ($resultBorraBoleta->execute(array(':nrocontrol' => $control)))
+									if ($resultBorraBoleta->execute(array(':cuit' => $cuitboleta, ':nrocontrol' => $control)))
 									{
 									    //print "<p>Registro Boleta borrado correctamente.</p>\n";
 									}

@@ -89,10 +89,10 @@ try {
 					$codbarrabanco = $imputar[codigobarra];
 					$validadabanco = $imputar[fechavalidacion];
 					
-					$sqlBuscaValida="SELECT * FROM validasospim WHERE nrocontrol = :nrocontrol";
+					$sqlBuscaValida="SELECT * FROM validasospim WHERE cuit = :cuit AND nrocontrol = :nrocontrol";
 					//echo $sqlBuscaValida; echo "<br>";
 					$resultBuscaValida = $dbh->prepare($sqlBuscaValida);
-					$resultBuscaValida->execute(array(':nrocontrol' => $controlbanco));
+					$resultBuscaValida->execute(array(':cuit' => $cuitbanco, ':nrocontrol' => $controlbanco));
 					if ($resultBuscaValida)
 					{
 		        		foreach ($resultBuscaValida as $validas)
