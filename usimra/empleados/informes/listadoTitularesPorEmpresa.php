@@ -16,9 +16,6 @@ if ($canEmpresa == 0) {
 	$sqlEmpleados = "select * from empleadosusimra where nrcuit = $cuit";
 	$resEmpleados = mysql_query($sqlEmpleados,$db);
 	$canEmpleados = mysql_num_rows($resEmpleados);
-	if ($canEmpleados == 0) {
-		header ("Location: titularesPorEmpresa.php?err=1&cuit=$cuit");
-	}
 }
 	
 
@@ -84,6 +81,9 @@ function abrirFicha(dire, cuit, cuil) {
 	<?php if (isset($_POST['cuit'])) { ?> <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'titularesPorEmpresa.php'" align="center"/> <?php } ?>
 	<p><span class="Estilo2"> Empresa  "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> </span></p>
 	<p><span class="Estilo2">N&oacute;mina de Titulares </span></p>
+	
+<?php if ($canEmpleados > 0) { ?>
+
 	<table class="tablesorter" id="listado" style="width:900px; font-size:14px">
 	<thead>
 		<tr>
@@ -138,6 +138,9 @@ function abrirFicha(dire, cuit, cuil) {
     <p>
       <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/>
     </p>
+ <?php } else {
+   		print("<p><span class='Estilo2'>No tiene empleados cargados en la nómina</span><p>");
+    }?>
 </div>
 </body>
 </html>
