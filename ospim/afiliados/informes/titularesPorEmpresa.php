@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
 
 if (isset($_POST['cuit'])) { 
 	$cuit = $_POST['cuit']; 
@@ -88,12 +88,12 @@ function validar(formulario) {
 
 </script>
 
-<body bgcolor=<?php echo $bgcolor ?>>
+<body bgcolor="#CCCCCC">
 <div align="center">
   <p>
   <?php if (!isset($_GET['cuit'])) { ?>
 	  <input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" align="center"/></p>
-		<form name="listadoTitularesEmpresa" id="listadoTitularesEmpresa" method="post" onSubmit="return validar(this)" action="titularesPorEmpresa.php?origen=<?php echo $origen ?>">
+		<form name="listadoTitularesEmpresa" id="listadoTitularesEmpresa" method="post" onSubmit="return validar(this)" action="titularesPorEmpresa.php">
 		<p><span class="Estilo2">Titulares Por Empresas </span></p>
 	  <?php	if (isset($canEmpresa) && $canEmpresa == 0) {
 				print("<p><font color='#FF0000'><b> No existe empresa registrada para el C.U.I.T. $cuit </b></font></p>");

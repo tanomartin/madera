@@ -26,7 +26,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="ddjjAportesCuil.php"><img src="../img/ddjjaportes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Titulares por Empresa</p>
-          <p align="center"><a class="enlace" href="titularesPorEmpresa.php?origen=ospim"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="titularesPorEmpresa.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 		 <td width="200"><p align="center">Beneficiarios por Delegación</p>
           <p align="center"><a class="enlace" href="beneficiariosPorDelegacion.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
