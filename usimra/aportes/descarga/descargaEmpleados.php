@@ -21,7 +21,7 @@ if (!$dbaplicativo) {
 $dbnameaplicativo = $baseUsimraNewAplicativo;
 mysql_select_db($dbnameaplicativo);
 
-$sqlEmpleados = "select * from empleados where bajada = 0";
+$sqlEmpleados = "select e.*, emp.rramaa as rramaa from empleados e, empresa emp where e.bajada = 0 and e.nrcuit = emp.nrcuit";
 $resEmpleados = mysql_query($sqlEmpleados,$dbaplicativo); 
 $canEmpleados = mysql_num_rows($resEmpleados); 
 if ($canEmpleados > 0) {
@@ -39,12 +39,23 @@ if ($canEmpleados > 0) {
 		$resEmpleadoInsert = mysql_query($sqlEmpleadoInsert,$db); 
 		$canEmpleadoInsert = mysql_num_rows($resEmpleadoInsert); 
 		if ($canEmpleadoInsert == 0) {
-
+			
+			$codProvinApli = $rowEmpleados['provin'];
+			$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
+			$resprovin = mysql_query($sqlprovin,$db); 
+			$canprovin = mysql_num_rows($resprovin); 
+			if ($codProvin == 1) {
+				$rowprovin = mysql_fetch_assoc($resprovin);
+				$codProvin = $rowprovin['codprovin'];
+			} else {
+				$codProvin = 0;
+			}
+			
 			$sqlInsertTitu = "INSERT INTO empleadosusimra VALUE(
 			'".$rowEmpleados['nrcuit']."','".$rowEmpleados['nrcuil']."','".$rowEmpleados['apelli']."','".$rowEmpleados['nombre']."','".$rowEmpleados['fecing']."',
 			'".$rowEmpleados['tipdoc']."','".$rowEmpleados['nrodoc']."','".$rowEmpleados['ssexxo']."','".$rowEmpleados['fecnac']."','".$rowEmpleados['estciv']."',
-			'".$rowEmpleados['direcc']."','".$rowEmpleados['locale']."','".$rowEmpleados['copole']."','".$rowEmpleados['provin']."','".$rowEmpleados['nacion']."',
-			'".$rowEmpleados['catego']."','".$rowEmpleados['activo']."','1')";
+			'".$rowEmpleados['direcc']."','".$rowEmpleados['locale']."','".$rowEmpleados['copole']."','".$codProvin."','".$rowEmpleados['nacion']."',
+			'".$rowEmpleados['rramaa']."','".$rowEmpleados['catego']."','".$rowEmpleados['activo']."','1')";
 			
 			$sqlEmpleadoInsert = "select nrcuil, nrcuit from empleadosdebajausimra where nrcuil = $cuilInsert and nrcuit = $cuitInsert";
 			$resEmpleadoInsert = mysql_query($sqlEmpleadoInsert,$db); 

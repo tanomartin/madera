@@ -24,7 +24,7 @@ $dbnameaplicativo = $baseUsimraNewAplicativo;
 mysql_select_db($dbnameaplicativo);
 
 
-$sqlEmpleadosdebaja = "select * from empleadosdebaja where bajada = 0";
+$sqlEmpleadosdebaja = "select e.*, emp.rramaa as rramaa from empleadosdebaja e, empresa emp where e.bajada = 0 and e.nrcuit = emp.nrcuit";
 $resEmpleadosdebaja = mysql_query($sqlEmpleadosdebaja,$dbaplicativo); 
 $canEmpleadosdebaja = mysql_num_rows($resEmpleadosdebaja); 
 if ($canEmpleadosdebaja > 0) {
@@ -42,11 +42,24 @@ if ($canEmpleadosdebaja > 0) {
 		$resEmpleadoInsertBaja = mysql_query($sqlEmpleadoInsertBaja,$db); 
 		$canEmpleadoInsertBaja = mysql_num_rows($resEmpleadoInsertBaja); 
 		if ($canEmpleadoInsertBaja == 0) {
+		
+			$codProvinApli = $rowEmpleadodebaja['provin'];
+			$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
+			$resprovin = mysql_query($sqlprovin,$db); 
+			$canprovin = mysql_num_rows($resprovin); 
+			if ($codProvin == 1) {
+				$rowprovin = mysql_fetch_assoc($resprovin);
+				$codProvin = $rowprovin['codprovin'];
+			} else {
+				$codProvin = 0;
+			}
+			
 			$sqlInsertTituBaja = "INSERT INTO empleadosdebajausimra VALUE(
 			'".$rowEmpleadodebaja['nrcuit']."','".$rowEmpleadodebaja['nrcuil']."','".$rowEmpleadodebaja['apelli']."','".$rowEmpleadodebaja['nombre']."',
 			'".$rowEmpleadodebaja['fecing']."','".$rowEmpleadodebaja['tipdoc']."','".$rowEmpleadodebaja['nrodoc']."','".$rowEmpleadodebaja['ssexxo']."',
 			'".$rowEmpleadodebaja['fecnac']."','".$rowEmpleadodebaja['estciv']."','".$rowEmpleadodebaja['direcc']."','".$rowEmpleadodebaja['locale']."',
-			'".$rowEmpleadodebaja['copole']."','".$rowEmpleadodebaja['provin']."','".$rowEmpleadodebaja['nacion']."','".$rowEmpleadodebaja['catego']."',
+			'".$rowEmpleadodebaja['copole']."','".$codProvin."',
+			'".$rowEmpleadodebaja['nacion']."','".$rowEmpleadodebaja['rramaa']."','".$rowEmpleadodebaja['catego']."',
 			'".$rowEmpleadodebaja['activo']."','1')";
 			
 			$sqlEmpleadoInsertBaja = "select nrcuil from empleadosusimra where nrcuil = $cuilInsert and nrcuit = $cuitInsert";
