@@ -70,7 +70,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	});
 	
 function abrirFicha(dire, cuit, cuil) {
-	var dire = dire + '?cuit=' + cuit + '&cuil=' + cuil;
+	var dire = dire + '?cuit=' + cuit + '&cuil=' + cuil + '&estado=A';
 	c= window.open(dire,"Ficha Empleado",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }

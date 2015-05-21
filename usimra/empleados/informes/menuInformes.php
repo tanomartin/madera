@@ -26,7 +26,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="400" border="3">
     <tr>
       <td width="200"><p align="center">Busqueda </p>
-        <p align="center"><a class="enlace" href="filtrosBusqueda.php"><img src="img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="buscadorEmpleados.php"><img src="img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 	  <td width="200"><p align="center">Por Empresa </p>
         <p align="center"><a class="enlace" href="titularesPorEmpresa.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>

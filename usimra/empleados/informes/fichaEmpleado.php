@@ -3,8 +3,16 @@ include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
 
 $cuil = $_GET['cuil'];
 $cuit = $_GET['cuit'];
+$estado = $_GET['estado'];
 
-$sqlEmpleado = "SELECT e.*, p.descrip as provincia, r.descripcion as rama, c.descri as categoria FROM empleadosusimra e, provincia p, categorias c, rama r WHERE e.nrcuit = '$cuit' and e.nrcuil = '$cuil' and e.provin = p.codprovin and e.rramaa = c.codram and e.catego = c.codcat and e.rramaa = r.id";
+if ($estado == 'A') {
+	$tabla = "empleadosusimra";
+}
+if ($estado == 'E') {
+	$tabla = "empleadosdebajausimra";
+}
+
+$sqlEmpleado = "SELECT e.*, p.descrip as provincia, r.descripcion as rama, c.descri as categoria FROM $tabla e, provincia p, categorias c, rama r WHERE e.nrcuit = '$cuit' and e.nrcuil = '$cuil' and e.provin = p.codprovin and e.rramaa = c.codram and e.catego = c.codcat and e.rramaa = r.id";
 $resEmpleado = mysql_query($sqlEmpleado,$db);
 $rowEmpleado = mysql_fetch_assoc($resEmpleado);
 
@@ -104,6 +112,10 @@ function abrirFicha(dire, cuit, cuil) {
 		  <tr>
 			<td style="text-align:right"><b>Activo:</b></td>
 			<td><?php echo $rowEmpleado['activo'] ?></td>
+		  </tr>
+		  <tr>
+			<td style="text-align:right"><b>Estado:</b></td>
+			<td><?php if ($estado == 'A') { echo 'De Alta'; } else { echo 'De Baja'; } ?></td>
 		  </tr>
 	</table>
 	<?php if ($canFamilia > 0) { ?>
