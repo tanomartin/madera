@@ -95,6 +95,9 @@ A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
 <script src="/lib/jquery.js"></script>
 <script src="/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
@@ -182,9 +185,9 @@ function abrirFicha(dire, cuit, cuil, estado) {
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="buscadorEmpleados.php">
   <div align="center">
-    <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuInformes.php'" align="center"/>
+    <input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = 'menuInformes.php'" align="center"/>
     <p align="center" class="Estilo1">M&oacute;dulo Buscador de Empleados</p>
-    <div align="center"> 
+    <div align="center" class="nover"> 
 		<table width="400" border="0">
 		  <tr>
 		  <td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
@@ -204,16 +207,17 @@ function abrirFicha(dire, cuit, cuil, estado) {
     </div>
 	  <p align="center">
 		<label>
-		<input type="submit" name="Buscar" value="Buscar" />
+		<input type="submit" name="Buscar" value="Buscar" class="nover" />
 		</label>
 	  </p>
 	<?php 
 	if (isset($dato)) {
+		print("<p> $cartel </p>");
 		if ($encontro == 0) {
 			print("<div style='color:#FF0000'><b> NO EXISTE TITULAR O FAMILIAR CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
-		} else { 
-			print("<p> $cartel </p>");
-		} 
+		} else { ?>
+			<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>			
+<?php	} 
 		if ($existe == 1 || $existeBaja == 1) { ?>
 			<table class="tablesorter" id="listaResultado" style="width:900px; font-size:14px">
 			  <thead>
@@ -306,8 +310,8 @@ function abrirFicha(dire, cuit, cuil, estado) {
 			   } ?>
 			  </tbody>
 			</table>
-    <?php }
-	} ?>
+ 	 <?php } 
+ 	} ?>
   </div>
 </form>
 </body>
