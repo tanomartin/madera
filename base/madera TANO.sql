@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 20-05-2015 a las 19:40:31
+-- Tiempo de generación: 21-05-2015 a las 17:18:54
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -298,15 +298,15 @@ CREATE TABLE IF NOT EXISTS `aporcontroldescarga` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `usuariodescarga` char(50) NOT NULL,
   `fechadescarga` datetime NOT NULL,
-  `cantddjj` int(4) unsigned DEFAULT NULL,
+  `cantidadddjj` int(4) unsigned DEFAULT NULL,
   `nrocontrol` char(14) DEFAULT NULL,
-  `cantempresas` int(4) unsigned DEFAULT NULL,
-  `canttitulares` int(4) unsigned DEFAULT NULL,
-  `cantfamiliares` int(4) unsigned DEFAULT NULL,
-  `canttitularesbaja` int(4) unsigned DEFAULT NULL,
-  `cantfamiliaresbaja` int(4) unsigned DEFAULT NULL,
+  `cantidadempresas` int(4) unsigned DEFAULT NULL,
+  `cantidadtitulares` int(4) unsigned DEFAULT NULL,
+  `cantidadfamiliares` int(4) unsigned DEFAULT NULL,
+  `cantidadtitularesbaja` int(4) unsigned DEFAULT NULL,
+  `cantidadfamiliaresbaja` int(4) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 -- --------------------------------------------------------
 
@@ -1647,26 +1647,26 @@ CREATE TABLE IF NOT EXISTS `empleadosbanco` (
 --
 
 CREATE TABLE IF NOT EXISTS `empleadosdebajausimra` (
+  `id` int(5) NOT NULL,
   `nrcuit` varchar(11) NOT NULL,
   `nrcuil` varchar(11) NOT NULL,
-  `apelli` varchar(50) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
-  `fecing` date NOT NULL,
-  `tipdoc` varchar(5) NOT NULL,
-  `nrodoc` varchar(9) NOT NULL,
-  `ssexxo` varchar(10) NOT NULL,
-  `fecnac` date NOT NULL,
-  `estciv` varchar(10) NOT NULL,
-  `direcc` varchar(50) NOT NULL,
-  `locale` varchar(50) NOT NULL,
-  `copole` varchar(12) NOT NULL,
-  `provin` varchar(20) NOT NULL,
-  `nacion` varchar(20) NOT NULL,
-  `rramaa` int(2) NOT NULL,
-  `catego` varchar(20) NOT NULL,
-  `activo` char(2) NOT NULL,
-  `bajada` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`nrcuit`,`nrcuil`)
+  `apelli` varchar(50) DEFAULT NULL,
+  `nombre` varchar(50) DEFAULT NULL,
+  `fecing` date DEFAULT NULL,
+  `tipdoc` varchar(5) DEFAULT NULL,
+  `nrodoc` varchar(9) DEFAULT NULL,
+  `ssexxo` varchar(10) DEFAULT NULL,
+  `fecnac` date DEFAULT NULL,
+  `estciv` varchar(10) DEFAULT NULL,
+  `direcc` varchar(50) DEFAULT NULL,
+  `locale` varchar(50) DEFAULT NULL,
+  `copole` varchar(12) DEFAULT NULL,
+  `provin` varchar(20) DEFAULT NULL,
+  `nacion` varchar(20) DEFAULT NULL,
+  `catego` varchar(20) DEFAULT NULL,
+  `activo` char(2) DEFAULT NULL,
+  `bajada` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1834,8 +1834,7 @@ CREATE TABLE IF NOT EXISTS `familiadebajausimra` (
   `nrodoc` varchar(11) DEFAULT NULL,
   `benefi` char(2) DEFAULT NULL,
   `bajada` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`nrcuil`,`codpar`,`id`),
-  UNIQUE KEY `id` (`id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1941,7 +1940,7 @@ CREATE TABLE IF NOT EXISTS `familiaresdebaja` (
 --
 
 CREATE TABLE IF NOT EXISTS `familiausimra` (
-  `id` int(7) NOT NULL AUTO_INCREMENT,
+  `id` int(7) NOT NULL,
   `nrcuit` varchar(11) NOT NULL DEFAULT '',
   `nrcuil` varchar(11) NOT NULL DEFAULT '',
   `nombre` varchar(50) NOT NULL DEFAULT '',
@@ -1954,9 +1953,8 @@ CREATE TABLE IF NOT EXISTS `familiausimra` (
   `nrodoc` varchar(11) NOT NULL DEFAULT '',
   `benefi` char(2) NOT NULL DEFAULT '',
   `bajada` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`nrcuil`,`codpar`,`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24047 ;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
