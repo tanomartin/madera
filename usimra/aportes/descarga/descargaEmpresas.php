@@ -93,7 +93,7 @@ if ($canEmpresas > 0) {
 	$sqlUpdateBajadaEmpresa = substr($sqlUpdateBajadaEmpresa,0,-1);
 	$sqlUpdateBajadaEmpresa .= ")";
 
-	$updateControl = "UPDATE aporcontroldescarga SET cantempresas = $empresasInsert WHERE id = ".$idControl;
+	$updateControl = "UPDATE aporcontroldescarga SET cantidadempresas = $empresasInsert WHERE id = ".$idControl;
 
 	try {
 		$hostname = $_SESSION['host'];

@@ -60,27 +60,27 @@ A:hover {text-decoration: none;color:#00FFFF }
 		</tr>
 		<tr>
 		  <td><strong>Cant. DDJJ</strong></td>
-		  <td><?php echo $rowControl['cantddjj'] ?></td>
+		  <td><?php echo $rowControl['cantidadddjj'] ?></td>
 		</tr>
 		<tr>
 		  <td><strong>Cant. Empresas</strong></td>
-		  <td><?php echo $rowControl['cantempresas'] ?></td>
+		  <td><?php echo $rowControl['cantidadempresas'] ?></td>
 		</tr>
 		<tr>
 		  <td><strong>Cant. Titulares</strong></td>
-		  <td><?php echo $rowControl['canttitulares'] ?></td>
+		  <td><?php echo $rowControl['cantidadtitulares'] ?></td>
 		</tr>
 		<tr>
 		  <td><strong>Cant. Familiares</strong></td>
-		  <td><?php echo $rowControl['cantfamiliares'] ?></td>
+		  <td><?php echo $rowControl['cantidadfamiliares'] ?></td>
 		</tr>
 		<tr>
 		  <td><strong>Cant. Titulares de Baja</strong></td>
-		  <td><?php echo $rowControl['canttitularesbaja'] ?></td>
+		  <td><?php echo $rowControl['cantidadtitularesbaja'] ?></td>
 		</tr>
 		<tr>
 		  <td><strong>Cant. Familiares de Baja</strong></td>
-		  <td><?php echo $rowControl['cantfamiliaresbaja'] ?></td>
+		  <td><?php echo $rowControl['cantidadfamiliaresbaja'] ?></td>
 		</tr>
 	  </table>
 	  <p><span class="Estilo2">Detalle de Descarga</span></p>

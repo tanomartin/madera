@@ -80,7 +80,7 @@ if ($canEmpleados > 0) {
 		$n++;
 	}
 	
-	$updateControl = "UPDATE aporcontroldescarga SET canttitulares = $empleadosInsert WHERE id = '".$idControl."'";
+	$updateControl = "UPDATE aporcontroldescarga SET cantidadtitulares = $empleadosInsert WHERE id = '".$idControl."'";
 	
 	try {
 		$hostname = $_SESSION['host'];

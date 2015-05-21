@@ -87,7 +87,7 @@ if ($canEmpleadosdebaja > 0) {
 		$u++;
 	}
 	
-	$updateControl = "UPDATE aporcontroldescarga SET canttitularesbaja = $empleadoBajaInsert WHERE id = '".$idControl."'";
+	$updateControl = "UPDATE aporcontroldescarga SET cantidadtitularesbaja = $empleadoBajaInsert WHERE id = '".$idControl."'";
 	
 	try {
 		$hostname = $_SESSION['host'];

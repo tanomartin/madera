@@ -74,7 +74,7 @@ if ($canFamiliarBaja > 0) {
 		$u++;
 	}
 	
-	$updateControl = "UPDATE aporcontroldescarga SET cantfamiliaresbaja = $familiaBajaInsert WHERE id = '".$idControl."'";
+	$updateControl = "UPDATE aporcontroldescarga SET cantidadfamiliaresbaja = $familiaBajaInsert WHERE id = '".$idControl."'";
 	
 	try {
 		$hostname = $_SESSION['host'];
