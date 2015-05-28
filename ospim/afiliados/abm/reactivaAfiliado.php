@@ -25,6 +25,7 @@ $cuilafiliado = $rowLeeAfiliado['cuil'];
 //echo $cuilafiliado; echo "<br>";
 
 $reactiva = 1;
+$reactivaEmpresa = 1;
 
 if($tipafiliado == 1) {
 	$mesfin = (int)date("m");
@@ -41,11 +42,11 @@ if($tipafiliado == 1) {
 //	echo $mesfin; echo "<br>";
 //	echo $anofin; echo "<br>";
 
-	$sqlLeeDDJJ = "SELECT cuil FROM detddjjospim WHERE cuil = '$cuilafiliado' AND ((anoddjj > '$anoini' AND anoddjj <= '$anofin') OR (anoddjj = '$anoini' and mesddjj >= '$mesini'))";
+	$sqlLeeDDJJ = "SELECT cuil, cuit FROM detddjjospim WHERE cuil = '$cuilafiliado' AND ((anoddjj > '$anoini' AND anoddjj <= '$anofin') OR (anoddjj = '$anoini' and mesddjj >= '$mesini'))";
 	$resLeeDDJJ = mysql_query($sqlLeeDDJJ,$db);
 	$cantddjj = mysql_num_rows($resLeeDDJJ);
 
-	$sqlLeeAportes = "SELECT cuil FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND concepto = '381' AND ((anopago > '$anoini' AND anopago <= '$anofin') OR (anopago = '$anoini' and mespago >= '$mesini'))";
+	$sqlLeeAportes = "SELECT cuil, cuit FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND concepto = '381' AND ((anopago > '$anoini' AND anopago <= '$anofin') OR (anopago = '$anoini' and mespago >= '$mesini'))";
 	$resLeeAportes = mysql_query($sqlLeeAportes,$db);
 	$cantapor = mysql_num_rows($resLeeAportes);
 //	echo $sqlLeeDDJJ; echo "<br>";
@@ -56,8 +57,22 @@ if($tipafiliado == 1) {
 	if($cantddjj < 1) {
 		if($cantapor < 1) {
 			$reactiva = 0;
+		} else {
+			$rowLeeAportes = mysql_fetch_array($resLeeAportes);
+			$cuit = $rowLeeAportes['cuit'];
 		}
+	} else {
+		$rowLeeDDJJ = mysql_fetch_array($resLeeDDJJ);
+		$cuit = $rowLeeDDJJ['cuit'];
 	}
+	
+	$sqlJurisEmpresa = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuit' order by disgdinero DESC LIMIT 1";
+	$resJurisEmpresa  = mysql_query($sqlJurisEmpresa,$db);
+	$canJurisEmpresa = mysql_num_rows($resJurisEmpresa);
+	if ($canJurisEmpresa < 1) {
+		$reactivaEmpresa = 0;
+	}
+	
 }
 ?>
 
@@ -128,7 +143,9 @@ else {
       </div></td>
   </tr>
   <tr>
-    <td colspan="2"><div align="center"><h2><?php if(!$reactiva) {?>El titular NO tiene en el &uacute;ltimo trimestre ni las DDJJ ni los APORTES necesarios para su reactivaci&oacute;n.<?php }?></h2></div></td>
+    <td colspan="2"><div align="center"><h2>
+		<?php if($reactiva == 0) {?>El titular NO tiene en el &uacute;ltimo trimestre ni las DDJJ ni los APORTES necesarios para su reactivaci&oacute;n.<?php }?></h2></div></td>
+		<?php if($reactivaEmpresa == 0) {?>La Empresa a la cual hay que activar el empleado no Existe.<?php }?></h2></div></td>
     </tr>
   <tr>
     <td>&nbsp;</td>
@@ -138,7 +155,7 @@ else {
   </tr>
   <tr>
     <td valign="middle"><div align="center">
-        <?php if($reactiva) {?><input class="nover" type="submit" name="guardar" value="Reactivar" align="center"/><?php }?>
+        <?php if($reactiva && $reactivaEmpresa) {?><input class="nover" type="submit" name="guardar" value="Reactivar" align="center"/><?php }?>
         </div></td>
   </tr>
 </table>

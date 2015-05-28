@@ -3,7 +3,7 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 
 if(isset($_POST) && !empty($_POST)) {
-	var_dump($_POST);
+	//var_dump($_POST);
 	$nroafiliado = $_POST['nroafiliado'];
 	$tipafiliado = $_POST['tipafiliado'];
 	$ordafiliado = $_POST['nroorden'];
@@ -65,7 +65,7 @@ if(isset($_POST) && !empty($_POST)) {
 				$fechaempresa = $rowLeeAportes['anopago']."-".$mespago."-01";
 			}
 
-			$sqlLeeJurisdiccion = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuitempresa' AND disgdinero = 100.00";
+			$sqlLeeJurisdiccion = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuitempresa' order by disgdinero DESC LIMIT 1";
 			$resLeeJurisdiccion = mysql_query($sqlLeeJurisdiccion,$db);
 			$rowLeeJurisdiccion = mysql_fetch_array($resLeeJurisdiccion);
 
