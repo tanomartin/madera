@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-05-2015 a las 17:18:54
+-- Tiempo de generación: 29-05-2015 a las 18:22:57
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -299,6 +299,8 @@ CREATE TABLE IF NOT EXISTS `aporcontroldescarga` (
   `usuariodescarga` char(50) NOT NULL,
   `fechadescarga` datetime NOT NULL,
   `cantidadddjj` int(4) unsigned DEFAULT NULL,
+  `cantidadactivos` int(4) DEFAULT NULL,
+  `cantidadinactivos` int(4) DEFAULT NULL,
   `nrocontrol` char(14) DEFAULT NULL,
   `cantidadempresas` int(4) unsigned DEFAULT NULL,
   `cantidadtitulares` int(4) unsigned DEFAULT NULL,
@@ -306,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `aporcontroldescarga` (
   `cantidadtitularesbaja` int(4) unsigned DEFAULT NULL,
   `cantidadfamiliaresbaja` int(4) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
 
 -- --------------------------------------------------------
 
@@ -1159,6 +1161,24 @@ CREATE TABLE IF NOT EXISTS `cuoacuerdosusimra` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `ddjjinactivosusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `ddjjinactivosusimra` (
+  `id` int(6) NOT NULL,
+  `nrcuit` varchar(11) NOT NULL DEFAULT '',
+  `nrcuil` varchar(11) NOT NULL DEFAULT '',
+  `permes` int(2) NOT NULL DEFAULT '0',
+  `perano` int(4) NOT NULL DEFAULT '0',
+  `motivo` varchar(100) DEFAULT NULL,
+  `nrctrl` varchar(14) NOT NULL DEFAULT '',
+  `idControl` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 PACK_KEYS=1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `ddjjusimra`
 --
 
@@ -1178,6 +1198,7 @@ CREATE TABLE IF NOT EXISTS `ddjjusimra` (
   `instrumento` varchar(1) DEFAULT NULL,
   `nrctrl` varchar(14) NOT NULL,
   `observ` varchar(230) NOT NULL,
+  `idControl` int(11) NOT NULL,
   PRIMARY KEY (`id`,`nrcuit`,`nrcuil`,`permes`,`perano`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 PACK_KEYS=0;
 
@@ -3053,33 +3074,6 @@ CREATE TABLE IF NOT EXISTS `subidapadroncapitados` (
   `totalbeneficiarios` int(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`codigoprestador`,`mespadron`,`anopadron`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tempddjjusimra`
---
-
-CREATE TABLE IF NOT EXISTS `tempddjjusimra` (
-  `id` int(9) unsigned NOT NULL COMMENT 'ID de Registro',
-  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. de la Empresa',
-  `cuil` char(11) NOT NULL COMMENT 'C.U.I.L. del Empleado',
-  `mesddjj` int(2) unsigned NOT NULL COMMENT 'Mes de la DDJJ',
-  `anoddjj` int(4) unsigned NOT NULL COMMENT 'Anio de la DDJJ',
-  `remuneraciones` decimal(9,2) unsigned NOT NULL COMMENT 'Remuneraciones Declaradas',
-  `apor060` decimal(9,2) unsigned NOT NULL COMMENT 'Total Aporte 0.60%',
-  `apor100` decimal(9,2) unsigned NOT NULL COMMENT 'Total Contribucion 1.00%',
-  `apor150` decimal(9,2) unsigned NOT NULL COMMENT 'Total Aporte 1.50%',
-  `totalaporte` decimal(9,2) unsigned NOT NULL COMMENT 'Total de Aportes Declarados',
-  `recargo` decimal(9,2) unsigned NOT NULL COMMENT 'Importe de Recargo',
-  `cantidadpersonal` int(5) unsigned NOT NULL COMMENT 'Cantidad de Personal Declarado',
-  `instrumentodepago` char(1) NOT NULL COMMENT 'Instrumento con el que se efectua el Pago',
-  `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control Para Identificacion de la Boleta/Ticket de Pago',
-  `observaciones` char(230) NOT NULL COMMENT 'Observaciones',
-  `fechasubida` date NOT NULL COMMENT 'Fecha de Subida de la DDJJ desde Internet',
-  PRIMARY KEY (`id`),
-  KEY `BUSQUEDA` (`cuit`,`anoddjj`,`mesddjj`,`nrocontrol`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabla Temporal de DDJJ USIMRA Originales de Empresas';
 
 -- --------------------------------------------------------
 
