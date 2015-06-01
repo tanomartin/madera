@@ -4,11 +4,6 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
-$nroControl = $_POST['nroControl'];
-$utlimoNroControl = $_POST['ultimocontrol'];
-$totalDdjj = $_POST['totalDdjj'];
-$listadoSerializadoEmpresa = $_POST['empresas'];
-$listadoSerializadoEmpleados = $_POST['empleados'];
 $idControl = $_POST['idControl'];
 
 $hostaplicativo = $hostUsimra;
@@ -35,10 +30,7 @@ if ($canFamiliar > 0) {
 	
 	while($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
 		$idFamiliaInsert = $rowFamiliar['id'];
-		$cuilFamiliaInsert = $rowFamiliar['nrcuil'];
-		$codparFamiliaInsert = $rowFamiliar['codpar'];
-		
-		$sqlFamiliaInsert = "select nrcuil from familiausimra where id = $idFamiliaInsert and nrcuil = $cuilFamiliaInsert and codpar = '$codparFamiliaInsert'";
+		$sqlFamiliaInsert = "select nrcuil from familiausimra where id = $idFamiliaInsert";
 		$resFamiliaInsert = mysql_query($sqlFamiliaInsert,$db); 
 		$canFamiliaInsert = mysql_num_rows($resFamiliaInsert); 
 		if ($canFamiliaInsert == 0) {
@@ -47,12 +39,12 @@ if ($canFamiliar > 0) {
 			'".$rowFamiliar['codpar']."','".$rowFamiliar['ssexxo']."','".$rowFamiliar['fecnac']."','".$rowFamiliar['fecing']."','".$rowFamiliar['tipdoc']."',
 			'".$rowFamiliar['nrodoc']."','".$rowFamiliar['benefi']."','1')";
 			
-			$sqlFamiliaInsert = "select nrcuil from familiadebajausimra where id = $idFamiliaInsert and nrcuil = $cuilFamiliaInsert and codpar = '$codparFamiliaInsert'";
+			$sqlFamiliaInsert = "select nrcuil from familiadebajausimra where id = $idFamiliaInsert";
 			$resFamiliaInsert = mysql_query($sqlFamiliaInsert,$db); 
 			$canFamiliaInsert = mysql_num_rows($resFamiliaInsert); 
 			if ($canFamiliaInsert > 0) {
 				$listadoFamiliares[$n] = array("estado" => 'B', "cuil" =>  $rowFamiliar['nrcuil'], "cuit" =>  $rowFamiliar['nrcuit'], "parentesco" =>  $rowFamiliar['codpar'],"nombre" => $rowFamiliar['apelli'].", ".$rowFamiliar['nombre']);
-				$sqlDeleteFami = "DELETE from familiadebajausimra where id = $idFamiliaInsert and nrcuil = $cuilFamiliaInsert and codpar = $codparFamiliaInsert";
+				$sqlDeleteFami = "DELETE from familiadebajausimra where id = $idFamiliaInsert";
 				$sqlEjecuciones[$n] = $sqlInsertFami;
 				$n++;
 				$sqlEjecuciones[$n] = $sqlDeleteFami;
@@ -63,7 +55,19 @@ if ($canFamiliar > 0) {
 				$familiaInsert++;
 			}
 		} else {
-			$listadoFamiliares[$n] = array("estado" => 'E', "cuil" =>  $rowFamiliar['nrcuil'], "cuit" =>  $rowFamiliar['nrcuit'], "parentesco" =>  $rowFamiliar['codpar'], "nombre" => $rowFamiliar['apelli'].", ".$rowFamiliar['nombre']);
+			$listadoFamiliares[$n] = array("estado" => 'M', "cuil" =>  $rowFamiliar['nrcuil'], "cuit" =>  $rowFamiliar['nrcuit'], "parentesco" =>  $rowFamiliar['codpar'], "nombre" => $rowFamiliar['apelli'].", ".$rowFamiliar['nombre']);
+			$sqlUpdateFami = "UDPATE familiausimra SET 
+									nombre = '".$rowFamiliar['nombre']."',
+									apelli = '".$rowFamiliar['apelli']."',
+									codpar = '".$rowFamiliar['codpar']."',
+									ssexxo = '".$rowFamiliar['ssexxo']."',
+									fecnac = '".$rowFamiliar['fecnac']."',
+									fecing = '".$rowFamiliar['fecing']."',
+									tipdoc = '".$rowFamiliar['tipdoc']."',
+									nrodoc = '".$rowFamiliar['nrodoc']."',
+									benefi = '".$rowFamiliar['benefi']."'
+								where id = $idFamiliaInsert";
+			$sqlEjecuciones[$n] = $sqlUpdateFami;	
 		}
 		$sqlUpdateBajadaFamilia[$u] = "UPDATE familia SET bajada = 1 WHERE id = $idFamiliaInsert and nrcuil = $cuilFamiliaInsert and codpar = '$codparFamiliaInsert'";
 		$u++;
@@ -102,9 +106,12 @@ if ($canFamiliar > 0) {
 		$dbhweb->commit();	
 		
 	} catch(PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbh->rollback();
 		$dbhweb->rollback();	
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 	
 }
@@ -148,11 +155,9 @@ echo("</pre>");*/
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaEmpBaja.php" id="descargaEmpBaja" method="POST"> 
-   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
-   <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
-   <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
-   <input name="empresas" type="hidden" value="<?php echo $listadoSerializadoEmpresa ?>">
-   <input name="empleados" type="hidden" value="<?php echo $listadoSerializadoEmpleados ?>">
+   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
+   <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>">
+   <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>">
    <input name="familiares" type="hidden" value="<?php echo $listadoSerializadoFamiliares ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
 </form> 

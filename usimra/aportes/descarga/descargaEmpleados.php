@@ -4,10 +4,6 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
-$nroControl = $_POST['nroControl'];
-$utlimoNroControl = $_POST['ultimocontrol'];
-$totalDdjj = $_POST['totalDdjj'];
-$listadoSerializadoEmpresa = $_POST['empresas'];
 $idControl = $_POST['idControl'];
 
 $hostaplicativo = $hostUsimra;
@@ -35,11 +31,12 @@ if ($canEmpleados > 0) {
 	while ($rowEmpleados = mysql_fetch_assoc($resEmpleados)) {
 		$cuilInsert = $rowEmpleados['nrcuil'];
 		$cuitInsert = $rowEmpleados['nrcuit'];
-		$sqlEmpleadoInsert = "select nrcuil, nrcuit from empleadosusimra where nrcuil = $cuilInsert and nrcuil = $cuitInsert";
+		$sqlEmpleadoInsert = "select nrcuil, nrcuit from empleadosusimra where nrcuil = $cuilInsert and nrcuit = $cuitInsert";
+		//print($sqlEmpleadoInsert);
 		$resEmpleadoInsert = mysql_query($sqlEmpleadoInsert,$db); 
 		$canEmpleadoInsert = mysql_num_rows($resEmpleadoInsert); 
 		if ($canEmpleadoInsert == 0) {
-			
+
 			$codProvinApli = $rowEmpleados['provin'];
 			$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
 			$resprovin = mysql_query($sqlprovin,$db); 
@@ -73,7 +70,36 @@ if ($canEmpleados > 0) {
 				$empleadosInsert++;
 			}
 		} else {
-			$listadoEmpleados[$n] = array("estado" => 'E', "cuil" =>  $rowEmpleados['nrcuil'], "cuit" => $rowEmpleados['nrcuit'], "nombre" => $rowEmpleados['apelli'].", ".$rowEmpleados['nombre']);
+			$listadoEmpleados[$n] = array("estado" => 'M', "cuil" =>  $rowEmpleados['nrcuil'], "cuit" => $rowEmpleados['nrcuit'], "nombre" => $rowEmpleados['apelli'].", ".$rowEmpleados['nombre']);
+			$codProvinApli = $rowEmpleados['provin'];
+			$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
+			$resprovin = mysql_query($sqlprovin,$db); 
+			$canprovin = mysql_num_rows($resprovin); 
+			if ($codProvin == 1) {
+				$rowprovin = mysql_fetch_assoc($resprovin);
+				$codProvin = $rowprovin['codprovin'];
+			} else {
+				$codProvin = 0;
+			}
+			$sqlUpdateTitu = "UPDATE empleadosusimra SET 
+										apelli = '".$rowEmpleados['apelli']."',
+										nombre = '".$rowEmpleados['nombre']."',
+										fecing = '".$rowEmpleados['fecing']."',
+										tipdoc = '".$rowEmpleados['tipdoc']."',
+										nrodoc = '".$rowEmpleados['nrodoc']."',
+										ssexxo = '".$rowEmpleados['ssexxo']."',
+										fecnac = '".$rowEmpleados['fecnac']."',
+										estciv = '".$rowEmpleados['estciv']."',
+										direcc = '".$rowEmpleados['direcc']."',
+										locale = '".$rowEmpleados['locale']."',
+										copole = '".$rowEmpleados['copole']."',
+										provin = '".$codProvin."',
+										nacion = '".$rowEmpleados['nacion']."',
+										rramaa = '".$rowEmpleados['rramaa']."',
+										catego = '".$rowEmpleados['catego']."',
+										activo = '".$rowEmpleados['activo']."'
+								WHERE nrcuil = $cuilInsert and nrcuil = $cuitInsert";
+			$sqlEjecuciones[$n] = $sqlUpdateTitu;
 		}
 		$sqlUpdateBajadaEmpleados[$u] = "UPDATE empleados SET bajada = 1 WHERE nrcuil = $cuilInsert and nrcuit = $cuitInsert";
 		$u++;
@@ -112,9 +138,12 @@ if ($canEmpleados > 0) {
 		$dbhweb->commit();	
 		
 	} catch(PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbh->rollback();
 		$dbhweb->rollback();	
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);	
 	}
 }
 
@@ -152,10 +181,8 @@ echo("</pre>");*/
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaFamiliares.php" id="descargaFamliares" method="POST"> 
-   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
-   <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
-   <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
-   <input name="empresas" type="hidden" value="<?php echo $listadoSerializadoEmpresa ?>">
+   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
+   <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>">
    <input name="empleados" type="hidden" value="<?php echo $listadoSerializadoEmpleados ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
 </form> 

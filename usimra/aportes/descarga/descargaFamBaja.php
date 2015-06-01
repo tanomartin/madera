@@ -4,14 +4,6 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
-$nroControl = $_POST['nroControl'];
-$utlimoNroControl = $_POST['ultimocontrol'];
-$totalDdjj = $_POST['totalDdjj'];
-$listadoSerializadoEmpresa = $_POST['empresas'];
-$listadoSerializadoEmpleados = $_POST['empleados'];
-$listadoSerializadoFamiliares = $_POST['familiares'];
-$listadoSerializadoEmpBaja = $_POST['empbaja'];
-
 $idControl = $_POST['idControl'];
 
 $hostaplicativo = $hostUsimra;
@@ -106,9 +98,12 @@ if ($canFamiliarBaja > 0) {
 		$dbhweb->commit();	
 		
 	} catch(PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbh->rollback();
 		$dbhweb->rollback();	
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 	
 }
@@ -158,13 +153,11 @@ echo("</pre>");
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="informeResultadoDescarga.php" id="resultados" method="POST"> 
-   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
-   <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
-   <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
-   <input name="empresas" type="hidden" value="<?php echo $listadoSerializadoEmpresa ?>">
-   <input name="empleados" type="hidden" value="<?php echo $listadoSerializadoEmpleados ?>">
-   <input name="familiares" type="hidden" value="<?php echo $listadoSerializadoFamiliares ?>">
-   <input name="empbaja" type="hidden" value="<?php echo $listadoSerializadoEmpBaja ?>">
+   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
+   <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>">
+   <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>">
+   <input name="familiares" type="hidden" value="<?php echo $_POST['familiares'] ?>">
+   <input name="empbaja" type="hidden" value="<?php echo $_POST['empbaja'] ?>">
    <input name="fambaja" type="hidden" value="<?php echo $listadoSerializadoFamBaja ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
 </form> 

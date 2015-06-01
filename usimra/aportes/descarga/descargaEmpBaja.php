@@ -4,12 +4,6 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
-$nroControl = $_POST['nroControl'];
-$utlimoNroControl = $_POST['ultimocontrol'];
-$totalDdjj = $_POST['totalDdjj'];
-$listadoSerializadoEmpresa = $_POST['empresas'];
-$listadoSerializadoEmpleados = $_POST['empleados'];
-$listadoSerializadoFamiliares = $_POST['familiares'];
 $idControl = $_POST['idControl'];
 
 $hostaplicativo = $hostUsimra;
@@ -36,9 +30,8 @@ if ($canEmpleadosdebaja > 0) {
 	$sqlUpdateBajadaEmpBaja = array();
 	
 	while($rowEmpleadodebaja = mysql_fetch_assoc($resEmpleadosdebaja)) {
-		$cuitInsert = $rowEmpleadodebaja['nrcuit'];
-		$cuilInsert = $rowEmpleadodebaja['nrcuil'];
-		$sqlEmpleadoInsertBaja = "select nrcuil from empleadosdebajausimra where nrcuil = $cuilInsert and nrcuit = $cuitInsert";
+		$id = $rowEmpleadodebaja['id'];
+		$sqlEmpleadoInsertBaja = "select nrcuil from empleadosdebajausimra where id = $id";
 		$resEmpleadoInsertBaja = mysql_query($sqlEmpleadoInsertBaja,$db); 
 		$canEmpleadoInsertBaja = mysql_num_rows($resEmpleadoInsertBaja); 
 		if ($canEmpleadoInsertBaja == 0) {
@@ -55,12 +48,16 @@ if ($canEmpleadosdebaja > 0) {
 			}
 			
 			$sqlInsertTituBaja = "INSERT INTO empleadosdebajausimra VALUE(
+			'".$rowEmpleadodebaja['id']."',
 			'".$rowEmpleadodebaja['nrcuit']."','".$rowEmpleadodebaja['nrcuil']."','".$rowEmpleadodebaja['apelli']."','".$rowEmpleadodebaja['nombre']."',
 			'".$rowEmpleadodebaja['fecing']."','".$rowEmpleadodebaja['tipdoc']."','".$rowEmpleadodebaja['nrodoc']."','".$rowEmpleadodebaja['ssexxo']."',
 			'".$rowEmpleadodebaja['fecnac']."','".$rowEmpleadodebaja['estciv']."','".$rowEmpleadodebaja['direcc']."','".$rowEmpleadodebaja['locale']."',
 			'".$rowEmpleadodebaja['copole']."','".$codProvin."',
 			'".$rowEmpleadodebaja['nacion']."','".$rowEmpleadodebaja['rramaa']."','".$rowEmpleadodebaja['catego']."',
 			'".$rowEmpleadodebaja['activo']."','1')";
+			
+			$cuilInsert = $rowEmpleadodebaja['nrcuil'];
+			$cuitInsert = $rowEmpleadodebaja['nrcuit'];
 			
 			$sqlEmpleadoInsertBaja = "select nrcuil from empleadosusimra where nrcuil = $cuilInsert and nrcuit = $cuitInsert";
 			$resEmpleadoInsertBaja = mysql_query($sqlEmpleadoInsertBaja,$db); 
@@ -82,7 +79,7 @@ if ($canEmpleadosdebaja > 0) {
 			$listadoEmpBaja[$n] = array("estado" => 'E', "cuil" =>  $rowEmpleadodebaja['nrcuil'], "cuit" =>  $rowEmpleadodebaja['nrcuit'], "nombre" => $rowEmpleadodebaja['apelli'].", ".$rowEmpleadodebaja['nombre']);
 		}
 		
-		$sqlUpdateBajadaEmpBaja[$u] = "UPDATE empleadosdebaja SET bajada = 1 WHERE nrcuil = $cuilInsert and nrcuit = $cuitInsert";
+		$sqlUpdateBajadaEmpBaja[$u] = "UPDATE empleadosdebaja SET bajada = 1 WHERE id = $id";
 		$n++;
 		$u++;
 	}
@@ -119,11 +116,14 @@ if ($canEmpleadosdebaja > 0) {
 		$dbhweb->commit();	
 		
 	} catch(PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
+		print($error);
 		$dbh->rollback();
 		$dbhweb->rollback();	
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
-	
 }
 
 
@@ -169,12 +169,10 @@ echo("</pre>");*/
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaFamBaja.php" id="descargaFamBaja" method="POST"> 
-   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
-   <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
-   <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
-   <input name="empresas" type="hidden" value="<?php echo $listadoSerializadoEmpresa ?>">
-   <input name="empleados" type="hidden" value="<?php echo $listadoSerializadoEmpleados ?>">
-   <input name="familiares" type="hidden" value="<?php echo $listadoSerializadoFamiliares ?>">
+   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
+   <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>">
+   <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>">
+   <input name="familiares" type="hidden" value="<?php echo $_POST['familiares'] ?>">
    <input name="empbaja" type="hidden" value="<?php echo $listadoSerializadoEmpBaja ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
 </form> 

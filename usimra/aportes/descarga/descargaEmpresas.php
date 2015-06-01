@@ -4,9 +4,6 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
-$nroControl = $_POST['nroControl'];
-$utlimoNroControl = $_POST['ultimocontrol'];
-$totalDdjj = $_POST['totalDdjj'];
 $idControl = $_POST['idControl'];
 
 $hostaplicativo = $hostUsimra;
@@ -73,7 +70,8 @@ if ($canEmpresas > 0) {
 				} else {
 					$locali = 0;
 				}
-				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".$rowEmpresas['nombre']."',".$rowEmpresas['provin'].",'$indPostal',".$rowEmpresas['copole'].",'','$locali','".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','','','',0,3,'".$rowEmpresas['activi']."','','Importada Por Sistemas','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
+				$descrip = "Alta por proceso actualizador de aplicativo DDJJ (id: $idControl)";
+				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".$rowEmpresas['nombre']."',".$rowEmpresas['provin'].",'$indPostal',".$rowEmpresas['copole'].",'','$locali','".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','','','',0,3,'".$rowEmpresas['activi']."','','$descrip','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
 				$sqlInsertJuris = "INSERT INTO jurisdiccion VALUE('".$rowEmpresas['nrcuit']."','3200',".$rowEmpresas['provin'].",'$indPostal',".$rowEmpresas['copole'].",'',$locali,'".$rowEmpresas['domile']."','','".$rowEmpresas['telfon']."','','".$rowEmpresas['emails']."',100)";
 	
 				$sqlInsertEmpresas[$n] = array("empresa" => $sqlInsertCabe, "jurisdiccion" => $sqlInsertJuris);
@@ -93,7 +91,7 @@ if ($canEmpresas > 0) {
 	$sqlUpdateBajadaEmpresa = substr($sqlUpdateBajadaEmpresa,0,-1);
 	$sqlUpdateBajadaEmpresa .= ")";
 
-	$updateControl = "UPDATE aporcontroldescarga SET cantidadempresas = $empresasInsert WHERE id = ".$idControl;
+	$updateControl = "UPDATE aporcontroldescarga SET cantidadempresas = $empresasInsert WHERE id = '".$idControl."'";
 
 	try {
 		$hostname = $_SESSION['host'];
@@ -125,9 +123,12 @@ if ($canEmpresas > 0) {
 		$dbhweb->commit();	
 		
 	} catch(PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbh->rollback();
-		$dbhweb->rollback();	
+		$dbhweb->rollback();
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);	
 	}
 }
 
@@ -136,7 +137,8 @@ $listadoSerializado = urlencode($listadoSerializado);
 
 /*print("<br>");
 print("ULTIMO: ".$utlimoNroControl."<br>");
-print("CANTIDAD DE DJJJ: ".$totalDdjj."<br>");*/
+print("CANTIDAD DE DJJJ: ".$totalDdjj."<br>");
+print("ID CONTROL: ".$idControl."<br>");*/
 	
 ?>
 
@@ -158,9 +160,7 @@ print("CANTIDAD DE DJJJ: ".$totalDdjj."<br>");*/
 
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaEmpleados.php" id="descargaEmpleados" method="POST"> 
-   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
-   <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
-   <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
+   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
 </form> 

@@ -30,61 +30,68 @@ if ($canControl != 0) {
 $sqlDdjjConDocu = "SELECT * FROM ddjjcondocu WHERE nrctrl > $nroControl ORDER BY nrctrl ASC";
 $resDdjjConDocu = mysql_query($sqlDdjjConDocu,$dbaplicativo); 
 $canDdjjConDocu = mysql_num_rows($resDdjjConDocu); 
+
+$sqlInactivos = "SELECT * FROM inactivos WHERE nrctrl > $nroControl ORDER BY nrctrl ASC";
+$resInactivos = mysql_query($sqlInactivos,$dbaplicativo); 
+$canInactivos = mysql_num_rows($resInactivos); 
+
 $totalDdjj = 0;
-if ($canDdjjConDocu > 0) {
-	$cantDdjj = 0;
-	$ddjjAIngresar = array();
-	while($rowDdjjConDocu = mysql_fetch_assoc($resDdjjConDocu)) {
-		$sqlInsertDdjj = "INSERT INTO ddjjusimra VALUE (".$rowDdjjConDocu['id'].",'".$rowDdjjConDocu['nrcuit']."','".$rowDdjjConDocu['nrcuil']."',".$rowDdjjConDocu['permes'].",".$rowDdjjConDocu['perano'].",".$rowDdjjConDocu['remune'].",".$rowDdjjConDocu['apo060'].",".$rowDdjjConDocu['apo100'].",".$rowDdjjConDocu['apo150'].",".$rowDdjjConDocu['totapo'].",".$rowDdjjConDocu['recarg'].",".$rowDdjjConDocu['nfilas'].",'".$rowDdjjConDocu['instrumento']."','".$rowDdjjConDocu['nrctrl']."','".$rowDdjjConDocu['observ']."')";
-		$ddjjAIngresar[$cantDdjj] = $sqlInsertDdjj;
-		$utlimoNroControl = $rowDdjjConDocu['nrctrl'];
-		$cantDdjj++;
-		if ($rowDdjjConDocu['nrcuil'] == "99999999999") {
-			$totalDdjj++;
-		}
-	}
-	
-	try { 
-		$hostname = $_SESSION['host'];
-		$dbname = $_SESSION['dbname'];
-		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$dbh->beginTransaction();
+$cantDdjj = 0;
+$cantInactivos = 0;
+$ddjjAIngresar = array();
+$inactivosAIngresar = array();
+try { 
+	$hostname = $_SESSION['host'];
+	$dbname = $_SESSION['dbname'];
+	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbh->beginTransaction();
 		
+	$stmt = $dbh->prepare("INSERT INTO aporcontroldescarga VALUE(?,?,?,?,?,?,?,?,?,?,?,?)"); 
+	$stmt->execute(array('DEFAULT', $usuarioregistro,$fecharegistro,0,0,0,0,0,0,0,0,0)); 
+	$idControl = $dbh->lastInsertId(); 	
+	
+	if ($canDdjjConDocu > 0) {
+		while($rowDdjjConDocu = mysql_fetch_assoc($resDdjjConDocu)) {
+			$sqlInsertDdjj = "INSERT INTO ddjjusimra VALUE (".$rowDdjjConDocu['id'].",'".$rowDdjjConDocu['nrcuit']."','".$rowDdjjConDocu['nrcuil']."',".$rowDdjjConDocu['permes'].",".$rowDdjjConDocu['perano'].",".$rowDdjjConDocu['remune'].",".$rowDdjjConDocu['apo060'].",".$rowDdjjConDocu['apo100'].",".$rowDdjjConDocu['apo150'].",".$rowDdjjConDocu['totapo'].",".$rowDdjjConDocu['recarg'].",".$rowDdjjConDocu['nfilas'].",'".$rowDdjjConDocu['instrumento']."','".$rowDdjjConDocu['nrctrl']."','".$rowDdjjConDocu['observ']."','".$idControl."')";
+			$ddjjAIngresar[$cantDdjj] = $sqlInsertDdjj;
+			$utlimoNroControl = $rowDdjjConDocu['nrctrl'];
+			$cantDdjj++;
+			if ($rowDdjjConDocu['nrcuil'] == "99999999999") {
+				$totalDdjj++;
+			}
+		}
 		foreach($ddjjAIngresar as $ddjjInsert) {
 			//print($ddjjInsert."<br>");
 			$dbh->exec($ddjjInsert);
 		}
 		
-		$stmt = $dbh->prepare("INSERT INTO aporcontroldescarga VALUE(?,?,?,?,?,?,?,?,?,?)"); 
-		$stmt->execute(array('DEFAULT', $usuarioregistro,$fecharegistro,$totalDdjj,$utlimoNroControl,0,0,0,0,0)); 
-		$idControl = $dbh->lastInsertId(); 	
-		$dbh->commit();	
-		
-		
-	} catch(PDOException $e) {
-		echo $e->getMessage();
-		$dbh->rollback();
-	}	
-} else {
-	$utlimoNroControl = $nroControl;
-	try { 
-		$hostname = $_SESSION['host'];
-		$dbname = $_SESSION['dbname'];
-		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		
-	    $stmt = $dbh->prepare("INSERT INTO aporcontroldescarga VALUE(?,?,?,?,?,?,?,?,?,?)"); 
-		$dbh->beginTransaction();
-		$stmt->execute(array('DEFAULT', $usuarioregistro,$fecharegistro,$totalDdjj,$utlimoNroControl,0,0,0,0,0)); 
-		$idControl = $dbh->lastInsertId(); 	
-		$dbh->commit();	
-
-	} catch(PDOException $e) {
-		echo $e->getMessage();
-		$dbh->rollback();
+		if ($canInactivos > 0) {
+			while($rowInactivos = mysql_fetch_assoc($resInactivos)) {
+				$sqlInsertInactivos = "INSERT INTO ddjjinactivosusimra VALUE(".$rowInactivos['id'].",'".$rowInactivos['nrcuit']."','".$rowInactivos['nrcuil']."','".$rowInactivos['permes']."','".$rowInactivos['perano']."','".$rowInactivos['motivo']."','".$rowInactivos['nrctrl']."','".$idControl."')";
+				$inactivosAIngresar[$cantInactivos] = $sqlInsertInactivos;
+				$cantInactivos++;
+			}
+			foreach($inactivosAIngresar as $inactivos) {
+				//print($inactivos."<br>");
+				$dbh->exec($inactivos);
+			}
+		}	
+	} else {
+		$utlimoNroControl = $nroControl;
 	}
-}
+	
+	$cantActivos = $cantDdjj - $totalDdjj;
+	$updateControl = "UPDATE aporcontroldescarga SET nrocontrol = $utlimoNroControl, cantidadddjj = $totalDdjj, cantidadactivos = $cantActivos, cantidadinactivos = $cantInactivos  WHERE id = ".$idControl;
+	$dbh->exec($updateControl);
+	$dbh->commit();		
+} catch(PDOException $e) {
+	$error =  $e->getMessage();
+	$dbh->rollback();
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	header ($redire);
+	exit(0);
+}	
 
 /*print("<br>");
 print("ULTIMO: ".$utlimoNroControl."<br>");
@@ -112,8 +119,6 @@ print("CONTROL: ".$idControl."<br>");*/
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaEmpresas.php" id="descargaEmpresa" method="POST"> 
    <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
-   <input name="ultimocontrol" type="hidden" value="<?php echo $utlimoNroControl ?>">
-   <input name="totalDdjj" type="hidden" value="<?php echo $totalDdjj ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
 </form> 
 </body>

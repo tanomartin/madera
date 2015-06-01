@@ -3,8 +3,6 @@ include($libPath."controlSessionUsimra.php");
 include($libPath."claves.php"); 
 
 $nroControl = $_POST['nroControl'];
-$utlimoNroControl = $_POST['ultimocontrol'];
-$totalDdjj = $_POST['totalDdjj'];
 $idControl = $_POST['idControl'];
 
 $listadoSerializadoEmpresa = $_POST['empresas'];
@@ -63,6 +61,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <td><?php echo $rowControl['cantidadddjj'] ?></td>
 		</tr>
 		<tr>
+		  <td><strong>Cant. Activos</strong></td>
+		  <td><?php echo $rowControl['cantidadactivos'] ?></td>
+		</tr>
+		<tr>
+		  <td><strong>Cant. Inactivos</strong></td>
+		  <td><?php echo $rowControl['cantidadinactivos'] ?></td>
+		</tr>
+		<tr>
 		  <td><strong>Cant. Empresas</strong></td>
 		  <td><?php echo $rowControl['cantidadempresas'] ?></td>
 		</tr>
@@ -92,7 +98,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		</tr>
 		<tr>
 		  <td><strong>Fecha Hasta</strong></td>
-		  <td><?php echo substr($utlimoNroControl,6,2)."/".substr($utlimoNroControl,4,2)."/".substr($utlimoNroControl,0,4)." - ".substr($utlimoNroControl,8,2).":".substr($utlimoNroControl,10,2).":".substr($utlimoNroControl,12,2) ?></td>
+		  <td><?php 
+		  		$utlimoNroControl = $rowControl['nrocontrol'];
+		  		echo substr($utlimoNroControl,6,2)."/".substr($utlimoNroControl,4,2)."/".substr($utlimoNroControl,0,4)." - ".substr($utlimoNroControl,8,2).":".substr($utlimoNroControl,10,2).":".substr($utlimoNroControl,12,2) ?></td>
 		</tr>
 	   </table>
 	  <p><strong>Empresas</strong></p>
@@ -142,7 +150,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<?php } ?> 
 				</tbody>
   </table>
-			 <p><b>E:</b> Ya Existia - <b>B:</b> De Baja - <b>I:</b> Insertado</strong></p>
+			 <p><b>M:</b> Ya Existia (Modificación) - <b>B:</b> De Baja - <b>I:</b> Insertado</strong></p>
 		<?php } else { 
 				 echo("No se descargaron Titulares Nuevos");
 			  } ?> 
@@ -171,7 +179,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<?php } ?> 
 				</tbody>
   </table>
-			 <p><b>E:</b> Ya Existia - <b>B:</b> De Baja - <b>I:</b> Insertado</strong></p>
+			 <p><b>M:</b> Ya Existia (Modificación) - <b>B:</b> De Baja - <b>I:</b> Insertado</strong></p>
 		<?php } else { 
 				 echo("No se descargaron Familiares Nuevos");
 			  } ?> 
