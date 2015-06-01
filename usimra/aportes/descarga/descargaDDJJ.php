@@ -31,10 +31,6 @@ $sqlDdjjConDocu = "SELECT * FROM ddjjcondocu WHERE nrctrl > $nroControl ORDER BY
 $resDdjjConDocu = mysql_query($sqlDdjjConDocu,$dbaplicativo); 
 $canDdjjConDocu = mysql_num_rows($resDdjjConDocu); 
 
-$sqlInactivos = "SELECT * FROM inactivos WHERE nrctrl > $nroControl ORDER BY nrctrl ASC";
-$resInactivos = mysql_query($sqlInactivos,$dbaplicativo); 
-$canInactivos = mysql_num_rows($resInactivos); 
-
 $totalDdjj = 0;
 $cantDdjj = 0;
 $cantInactivos = 0;
@@ -66,6 +62,9 @@ try {
 			$dbh->exec($ddjjInsert);
 		}
 		
+		$sqlInactivos = "SELECT * FROM inactivos WHERE nrctrl > $nroControl and nrctrl <= $utlimoNroControl ORDER BY nrctrl ASC";
+		$resInactivos = mysql_query($sqlInactivos,$dbaplicativo); 
+		$canInactivos = mysql_num_rows($resInactivos); 
 		if ($canInactivos > 0) {
 			while($rowInactivos = mysql_fetch_assoc($resInactivos)) {
 				$sqlInsertInactivos = "INSERT INTO ddjjinactivosusimra VALUE(".$rowInactivos['id'].",'".$rowInactivos['nrcuit']."','".$rowInactivos['nrcuil']."','".$rowInactivos['permes']."','".$rowInactivos['perano']."','".$rowInactivos['motivo']."','".$rowInactivos['nrctrl']."','".$idControl."')";
