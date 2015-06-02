@@ -298,9 +298,9 @@ try {
 		$pdf->Cell(183,6,"Documentacion Complementaria: ".$documentacion,1,1,'L');
 		$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 		$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-		if(strcmp($usuauto,"gflongo")==0) {
-			$pdf->Image('../img/Firma Longo.png',160,190,18,50);
-			$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+		if(strcmp($usuauto,"mlberges")==0) {
+			$pdf->Image('../img/Firma Berges.png',160,190,18,50);
+			$pdf->Image('../img/Sello Berges.png',150,220,35,13);
 		} else {
 			$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
 			$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
@@ -316,9 +316,9 @@ try {
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-				if(strcmp($usuauto,"gflongo")==0) {
-					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
-					$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+				if(strcmp($usuauto,"mlberges")==0) {
+					$pdf->Image('../img/Firma Berges.png',160,190,18,50);
+					$pdf->Image('../img/Sello Berges.png',150,220,35,13);
 				} else {
 					$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
 					$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
@@ -336,9 +336,9 @@ try {
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-				if(strcmp($usuauto,"gflongo")==0) {
-					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
-					$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+				if(strcmp($usuauto,"mlberges")==0) {
+					$pdf->Image('../img/Firma Berges.png',160,190,18,50);
+					$pdf->Image('../img/Sello Berges.png',150,220,35,13);
 				} else {
 					$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
 					$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
@@ -356,9 +356,9 @@ try {
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-				if(strcmp($usuauto,"gflongo")==0) {
-					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
-					$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+				if(strcmp($usuauto,"mlberges")==0) {
+					$pdf->Image('../img/Firma Berges.png',160,190,18,50);
+					$pdf->Image('../img/Sello Berges.png',150,220,35,13);
 				} else {
 					$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
 					$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
@@ -376,9 +376,9 @@ try {
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				$pdf->Image('../img/Sello Presupuesto.png',87,130,50,30);
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
-				if(strcmp($usuauto,"gflongo")==0) {
-					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
-					$pdf->Image('../img/Sello Longo.png',150,220,35,13);
+				if(strcmp($usuauto,"mlberges")==0) {
+					$pdf->Image('../img/Firma Berges.png',160,190,18,50);
+					$pdf->Image('../img/Sello Berges.png',150,220,35,13);
 				} else {
 					$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
 					$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
