@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-05-2015 a las 18:22:57
+-- Tiempo de generación: 02-06-2015 a las 14:58:06
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -308,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `aporcontroldescarga` (
   `cantidadtitularesbaja` int(4) unsigned DEFAULT NULL,
   `cantidadfamiliaresbaja` int(4) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=79 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
 
 -- --------------------------------------------------------
 
@@ -1671,21 +1671,22 @@ CREATE TABLE IF NOT EXISTS `empleadosdebajausimra` (
   `id` int(5) NOT NULL,
   `nrcuit` varchar(11) NOT NULL,
   `nrcuil` varchar(11) NOT NULL,
-  `apelli` varchar(50) DEFAULT NULL,
-  `nombre` varchar(50) DEFAULT NULL,
-  `fecing` date DEFAULT NULL,
-  `tipdoc` varchar(5) DEFAULT NULL,
-  `nrodoc` varchar(9) DEFAULT NULL,
-  `ssexxo` varchar(10) DEFAULT NULL,
-  `fecnac` date DEFAULT NULL,
-  `estciv` varchar(10) DEFAULT NULL,
-  `direcc` varchar(50) DEFAULT NULL,
-  `locale` varchar(50) DEFAULT NULL,
-  `copole` varchar(12) DEFAULT NULL,
-  `provin` varchar(20) DEFAULT NULL,
-  `nacion` varchar(20) DEFAULT NULL,
-  `catego` varchar(20) DEFAULT NULL,
-  `activo` char(2) DEFAULT NULL,
+  `apelli` varchar(50) NOT NULL,
+  `nombre` varchar(50) NOT NULL,
+  `fecing` date NOT NULL,
+  `tipdoc` varchar(5) NOT NULL,
+  `nrodoc` varchar(9) NOT NULL,
+  `ssexxo` varchar(10) NOT NULL,
+  `fecnac` date NOT NULL,
+  `estciv` varchar(10) NOT NULL,
+  `direcc` varchar(50) NOT NULL,
+  `locale` varchar(50) NOT NULL,
+  `copole` varchar(12) NOT NULL,
+  `provin` varchar(20) NOT NULL,
+  `nacion` varchar(20) NOT NULL,
+  `rramaa` int(2) NOT NULL,
+  `catego` varchar(20) NOT NULL,
+  `activo` char(2) NOT NULL,
   `bajada` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -1715,7 +1716,7 @@ CREATE TABLE IF NOT EXISTS `empleadosusimra` (
   `rramaa` int(2) NOT NULL,
   `catego` varchar(20) NOT NULL DEFAULT '',
   `activo` char(2) NOT NULL DEFAULT '',
-  `bajada` int(1) NOT NULL DEFAULT '0',
+  `bajada` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`nrcuit`,`nrcuil`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
