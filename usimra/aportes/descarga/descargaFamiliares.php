@@ -69,7 +69,7 @@ if ($canFamiliar > 0) {
 								where id = $idFamiliaInsert";
 			$sqlEjecuciones[$n] = $sqlUpdateFami;	
 		}
-		$sqlUpdateBajadaFamilia[$u] = "UPDATE familia SET bajada = 1 WHERE id = $idFamiliaInsert and nrcuil = $cuilFamiliaInsert and codpar = '$codparFamiliaInsert'";
+		$sqlUpdateBajadaFamilia[$u] = "UPDATE familia SET bajada = 1 WHERE id = $idFamiliaInsert";
 		$u++;
 		$n++;
 	}
