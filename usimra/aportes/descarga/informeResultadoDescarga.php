@@ -1,6 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
 include($libPath."controlSessionUsimra.php"); 
-include($libPath."claves.php"); 
 
 $nroControl = $_POST['nroControl'];
 $idControl = $_POST['idControl'];
@@ -16,6 +15,10 @@ $listadoEmpleados = unserialize(urldecode($_POST['empleados']));
 $listadoFamiliares = unserialize(urldecode($_POST['familiares']));
 $listadoEmpBaja = unserialize(urldecode($_POST['empbaja']));
 $listadoFamBaja = unserialize(urldecode($_POST['fambaja']));
+
+$sqlControl = "SELECT * FROM aporcontroldescarga WHERE id = $idControl";
+$resControl = mysql_query($sqlControl,$db); 
+$rowControl = mysql_fetch_assoc($resControl);
 
 ?>
 
@@ -42,11 +45,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 	  </span></p>
 	  <p><span class="Estilo2">Resultados Descarga Aplicativo DDJJ</span></p>
 	  <p><span class="Estilo2">Resumen de Descarga</span></p>
-	  <?php 
-		$sqlControl = "SELECT * FROM aporcontroldescarga WHERE id = $idControl";
-		$resControl = mysql_query($sqlControl,$db); 
-		$rowControl = mysql_fetch_assoc($resControl);
-	  ?>
 	   <table width="400" border="1">
 		<tr>
 		  <td><strong>Usuario</strong></td>
