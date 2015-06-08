@@ -12,7 +12,7 @@ if ($estado == 'E') {
 	$tabla = "empleadosdebajausimra";
 }
 
-$sqlEmpleado = "SELECT e.*, p.descrip as provincia, r.descripcion as rama, c.descri as categoria FROM $tabla e, provincia p, categorias c, rama r WHERE e.nrcuit = '$cuit' and e.nrcuil = '$cuil' and e.provin = p.codprovin and e.rramaa = c.codram and e.catego = c.codcat and e.rramaa = r.id";
+$sqlEmpleado = "SELECT e.*, p.descrip as provincia, r.descripcion as rama, c.descri as categoria FROM $tabla e, provincia p, categoriasusimra c, ramausimra r WHERE e.nrcuit = '$cuit' and e.nrcuil = '$cuil' and e.provin = p.codprovin and e.rramaa = c.codram and e.catego = c.codcat and e.rramaa = r.id";
 $resEmpleado = mysql_query($sqlEmpleado,$db);
 $rowEmpleado = mysql_fetch_assoc($resEmpleado);
 
