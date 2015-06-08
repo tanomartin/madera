@@ -9,11 +9,11 @@ if ($canEmpresa == 0) {
 	header ("Location: ddjjCuit.php?err=2");
 } else {
 	$rowEmpresa = mysql_fetch_assoc($resEmpresa);
-	$sqlDdjjValidas = "SELECT * FROM cabddjjusimra where cuit = $cuit order by anoddjj DESC, mesddjj DESC";
+	$sqlDdjjValidas = "SELECT c.*, p.descripcion as periodo FROM cabddjjusimra c, periodosusimra p where c.cuit = $cuit and c.anoddjj = p.anio and c.mesddjj = p.mes order by c.id DESC";
 	$resDdjjValidas = mysql_query($sqlDdjjValidas,$db);
 	$canDdjjValidas = mysql_num_rows($resDdjjValidas);
 	
-	$sqlDdjjTemp = "SELECT * FROM tempddjjusimra where cuit = $cuit and cuil = '99999999999' order by anoddjj DESC, mesddjj DESC";
+	$sqlDdjjTemp = "SELECT d.*, p.descripcion as periodo FROM ddjjusimra d, periodosusimra p where d.nrcuit = $cuit and d.nrcuil = '99999999999' and d.perano = p.anio and d.permes = p.mes order by d.id DESC";
 	$resDdjjTemp = mysql_query($sqlDdjjTemp,$db);
 	$canDdjjTemp = mysql_num_rows($resDdjjTemp);
 }
@@ -81,12 +81,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_hideFilters : false,
 			}
 		})
-		//.tablesorterPager({container: $("#paginador")}); 
 	});
 	
 	function detalleDdjj(dire) {
 		c= window.open(dire,"Detalle DDJJ","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 	}
+	
 </script>
 <body bgcolor="#B2A274">
 <div align="center">
@@ -100,7 +100,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<thead>
 			<tr>
 				<th class="filter-select" data-placeholder="Seleccion Año">Año</th>
-				<th class="filter-select" data-placeholder="Seleccion Mes">Mes</th>
+				<th class="filter-select" data-placeholder="Seleccion Mes">Período</th>
 				<th>Personal</th>
 				<th>Remuneracion</th>
 				<th>Aporte 0.6%</th>
@@ -119,7 +119,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			?>
 			<tr align="center">
 				<td><?php echo $rowDdjjValidas['anoddjj'];?></td>
-				<td><?php echo $rowDdjjValidas['mesddjj'];?></td>
+				<td><?php echo $rowDdjjValidas['periodo'];?></td>
 				<td><?php echo $rowDdjjValidas['cantidadpersonal'];?></td>
 				<td align="right"><?php print(number_format($rowDdjjValidas['remuneraciones'],2,',','.')) ?></td>
 				<td align="right"><?php print(number_format($rowDdjjValidas['apor060'],2,',','.')) ?></td>
@@ -144,7 +144,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<thead>
 			<tr>
 				<th class="filter-select" data-placeholder="Seleccion Año">Año</th>
-				<th class="filter-select" data-placeholder="Seleccion Mes">Mes</th>
+				<th class="filter-select" data-placeholder="Seleccion Mes">Período</th>
 				<th>Personal</th>
 				<th>Remuneracion</th>
 				<th>Aporte 0.6%</th>
@@ -159,19 +159,19 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<tbody>
 			<?php
 			while($rowDdjjTemp = mysql_fetch_assoc($resDdjjTemp)) {
-				$linkDetalle = "ddjjDetalleTemp.php?anoddjj=".$rowDdjjTemp['anoddjj']."&mesddjj=".$rowDdjjTemp['mesddjj']."&cuit=".$rowDdjjTemp['cuit']."&control=".$rowDdjjTemp['nrocontrol'];
+				$linkDetalle = "ddjjDetalleTemp.php?anoddjj=".$rowDdjjTemp['perano']."&mesddjj=".$rowDdjjTemp['permes']."&cuit=".$rowDdjjTemp['nrcuit']."&control=".$rowDdjjTemp['nrctrl'];
 			?>
 			<tr align="center">
-				<td><?php echo $rowDdjjTemp['anoddjj'];?></td>
-				<td><?php echo $rowDdjjTemp['mesddjj'];?></td>
-				<td><?php echo $rowDdjjTemp['cantidadpersonal'];?></td>
-				<td align="right"><?php print(number_format($rowDdjjTemp['remuneraciones'],2,',','.')) ?></td>
-				<td align="right"><?php print(number_format($rowDdjjTemp['apor060'],2,',','.')) ?></td>
-				<td align="right"><?php print(number_format($rowDdjjTemp['apor100'],2,',','.')) ?></td>
-				<td align="right"><?php print(number_format($rowDdjjTemp['apor150'],2,',','.')) ?></td>
-				<td align="right"><?php print(number_format($rowDdjjTemp['recargo'],2,',','.')) ?></td>
-				<td align="right"><?php print(number_format($rowDdjjTemp['totalaporte'],2,',','.')) ?></td>
-				<td align="center"><?php print($rowDdjjTemp['observacion']) ?></td>
+				<td><?php echo $rowDdjjTemp['perano'];?></td>
+				<td><?php echo $rowDdjjTemp['periodo'];?></td>
+				<td><?php echo $rowDdjjTemp['nfilas'];?></td>
+				<td align="right"><?php print(number_format($rowDdjjTemp['remune'],2,',','.')) ?></td>
+				<td align="right"><?php print(number_format($rowDdjjTemp['apo060'],2,',','.')) ?></td>
+				<td align="right"><?php print(number_format($rowDdjjTemp['apo100'],2,',','.')) ?></td>
+				<td align="right"><?php print(number_format($rowDdjjTemp['apo150'],2,',','.')) ?></td>
+				<td align="right"><?php print(number_format($rowDdjjTemp['recarg'],2,',','.')) ?></td>
+				<td align="right"><?php print(number_format($rowDdjjTemp['totapo'],2,',','.')) ?></td>
+				<td align="center"><?php print($rowDdjjTemp['observ']) ?></td>
 				<td class="nover"><input type="button" value="Detalle" onclick="detalleDdjj('<?php echo $linkDetalle ?>')" /></td>
 			</tr>
 			<?php

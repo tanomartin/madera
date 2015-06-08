@@ -5,9 +5,14 @@ $cuit = $_GET['cuit'];
 $anoddjj = $_GET['anoddjj'];
 $mesddjj = $_GET['mesddjj'];
 $control = $_GET['control'];
+
 $sqlEmpresa = "SELECT * FROM empresas where cuit = $cuit";
 $resEmpresa = mysql_query($sqlEmpresa,$db);
 $rowEmpresa = mysql_fetch_assoc($resEmpresa);
+
+$sqlPeriodo = "SELECT * FROM periodosusimra where anio = $anoddjj and mes = $mesddjj";
+$resPeriodo = mysql_query($sqlPeriodo,$db);
+$rowPeriodo = mysql_fetch_assoc($resPeriodo);
 	
 $sqlDetalle = "SELECT * FROM detddjjusimra FORCE INDEX (busqueda) where cuit = $cuit and anoddjj = $anoddjj  and mesddjj = $mesddjj and nrocontrol = '$control'";
 $resDetalle = mysql_query($sqlDetalle,$db);
@@ -60,8 +65,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 </script>
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><span class="Estilo2">Detalle de DDJJ Valida Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?></span></p>
-  <p><span class="Estilo2">Periodo: <?php echo $mesddjj ?>-<?php echo $anoddjj ?></span></p>
+  <p><span class="Estilo2">Detalle de DDJJ Valida</span></p>
+  <p><span class="Estilo2">Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?></span></p>
+  <p><span class="Estilo2"><?php echo $rowPeriodo['descripcion'] ?>  <?php echo $rowPeriodo['anio'] ?></span></p>
 	<table class="tablesorter" id="listado" style="width:600px; font-size:14px">
 	<thead>
 		<tr>
