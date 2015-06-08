@@ -1,0 +1,1 @@
+Trabajo en php contra servidor local para la gestion de ospim y usimra.
