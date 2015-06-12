@@ -1,10 +1,11 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
-set_time_limit(0);
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
 $cuit=$_GET['cuit'];
-include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php");
+include($libPath."cabeceraEmpresaConsulta.php");
 $fechaInicio= $row['iniobliosp'];
-include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
+include($libPath."limitesTemporalesEmpresas.php");
+set_time_limit(0);
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -203,7 +204,7 @@ function estado($ano, $me, $db) {
 						$des = "REQ. (".$nroreq.")";
 					} else {
 						// VEO LAS DDJJ REALIZADAS SIN PAGOS
-						$sqlDDJJ = "select * from tempddjjusimra where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
+						$sqlDDJJ = "select * from ddjjusimra where nrcuit = $cuit and perano = $ano and permes = $me";
 						$resDDJJ = mysql_query($sqlDDJJ,$db); 
 						$CantDDJJ = mysql_num_rows($resDDJJ); 
 						if($CantDDJJ > 0) {
@@ -258,7 +259,7 @@ function imprimeTabla($periodo) {
 	<?php } ?>
 	 <p>
     <?php 
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresa.php"); 
 	?>
   </p>
    <p><strong>Cuenta Corriente </strong></p>

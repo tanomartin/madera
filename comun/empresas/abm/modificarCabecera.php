@@ -1,6 +1,6 @@
-<?php 
-include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php"); 
+include($libPath."fechas.php");
 $cuit=$_GET['cuit'];
 
 $sql = "select * from empresas where cuit = $cuit";
@@ -21,9 +21,9 @@ if ($numpostal == "") {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Cabecera Empresa :.</title>
 </head>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -151,10 +151,10 @@ function validar(formulario) {
    <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 	
   <p><strong>Modificacion Cabecera de Empresa</strong>
   <form name="modifCabeEmpresa" id="modifCabeEmpresa" method="post" onSubmit="return validar(this)" action="guardarModifCabecera.php?origen=<?php echo $origen ?>">
-    <table width="723" border="0">
+    <table width="800" border="0">
       <tr>
-        <td width="167"><div align="right"><strong>C.U.I.T. </strong></div></td>
-        <td width="540"><div align="left">
+        <td><div align="right"><strong>C.U.I.T. </strong></div></td>
+        <td><div align="left">
 			<input style="background-color:#CCCCCC" name="cuit" type="text" id="cuit" size="12" value="<?php echo $row['cuit'];?>"  readonly="readonly"/>                
           </div></td>
       </tr>

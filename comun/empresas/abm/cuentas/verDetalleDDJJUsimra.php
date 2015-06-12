@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
 
 $cuit=$_GET['cuit'];
 $sql = "select * from empresas where cuit = $cuit";

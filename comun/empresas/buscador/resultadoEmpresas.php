@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php");
 
 $criterio = $_POST['criterio'];
 $dato = $_POST['dato'];

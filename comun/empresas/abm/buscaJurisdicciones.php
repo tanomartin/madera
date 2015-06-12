@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php"); 
 if(isset($_POST['codigo'])) {
 	$codigo=$_POST['codigo'];
 	$respuesta='<option title ="Seleccione un valor" value="0">Seleccione un valor</option>';

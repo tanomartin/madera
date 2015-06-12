@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php"); 
+include($libPath."fechas.php"); 
 
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion  = $_SESSION['usuario'];

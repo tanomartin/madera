@@ -1,19 +1,12 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php");
 	
 $cuit=$_GET['cuit'];
 $codidelega=$_GET['coddel'];
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query($sql,$db); 
 $row = mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 $sqljuris = "select * from jurisdiccion where cuit = $cuit";
 $resjuris = mysql_query($sqljuris,$db); 
@@ -34,9 +27,9 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
@@ -88,7 +81,7 @@ function validar(formulario) {
   </p>
   	<p>
   	  <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresa.php"); 
 	?>
 </p>
     <input style="visibility:hidden" name="sqlNuevaJuris" type="text" id="sqlNuevaJuris" size="50" value="<?php echo $sqlDeleteJurisdiccion ?>"  readonly="readonly"/>

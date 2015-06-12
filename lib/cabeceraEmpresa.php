@@ -1,4 +1,4 @@
- <p align="center"><strong>Datos de la Empresa </strong></p>
+<p align="center"><strong>Datos de la Empresa </strong></p>
 <div align="center">
   <table width="700" border="2" bordercolor="#000000" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:14px">
     <tr>
@@ -39,7 +39,7 @@
       <?php if ($tipo == "baja") { ?>
     </tr>
     <tr>
-      <td><div align="center"><strong><font color="#FF0000">EMPRESA DE BAJA </strong></div></td>
+      <td colspan="2"><div align="center" style="font-size:16px;font-weight:bold; color:#FF0000">EMPRESA DE BAJA </div></td>
     </tr>
     <?php 	} ?>
   </table>

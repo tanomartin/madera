@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/PHPMailer_5.2.2/class.phpmailer.php"); 
+<?php include("/PHPMailer_5.2.2/class.phpmailer.php"); 
 
 function envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address) {
 	$fechamail=date("d/m/Y");

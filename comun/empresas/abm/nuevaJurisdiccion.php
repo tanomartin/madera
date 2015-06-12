@@ -1,6 +1,6 @@
-<?php 
-include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php"); 
+include($libPath."fechas.php");
 $cuit=$_GET['cuit'];
 $numpostal=$_GET['numpostal'];
 $alfapostal=$_GET['alfapostal'];
@@ -13,9 +13,9 @@ $domicilio=$_GET['domicilio'];
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nueva Jurisdicciones Empresa :.</title>
 </head>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){

@@ -1,23 +1,16 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php");
+include($libPath."fechas.php");
 
 $cuit=$_GET['cuit'];
 if ($cuit=="") {
 	$cuit=$_POST['cuit'];
 }
 
-$sql = "select * from empresasdebaja where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresasdebaja e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query($sql,$db); 
 $row = mysql_fetch_array($result); 
 $tipo = "baja";
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 
 ?>
@@ -36,8 +29,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 function informaTitulares() {
@@ -54,13 +47,20 @@ function informaTitulares() {
 
 
 function rediSabanaCtaCte(origen) {
-	$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	/*$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	var dire = "";
 	if (origen == "ospim") {
-		location.href='cuentas/cuentaCorrienteOspim.php?cuit=<?php echo $cuit ?>';
-	} else {
-		location.href='cuentas/cuentaCorrienteUsimra.php?cuit=<?php echo $cuit ?>';
+		dire = 'cuentas/cuentaCorrienteOspim.php?cuit='+cuit;
 	}
-	
+	if (origen == "usimra") {
+		dire = 'cuentas/cuentaCorrienteUsimra.php?cuit='+cuit;
+	}
+	location.href = dire;*/
+	if (origen == "ospim") {
+		$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+		dire = 'cuentas/cuentaCorrienteOspim.php?cuit='+cuit;
+		location.href = dire;
+	}
 }
 </script>
 
@@ -71,18 +71,18 @@ function rediSabanaCtaCte(origen) {
   <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'" align="center" /> 
   <p>
     <?php 
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($libPath."/cabeceraEmpresa.php"); 
 	?>
   </p>
   <p><strong>Informaci&oacute;n de baja </strong></p>
   <table width="700" border="2">
     <tr>
-      <td width="200" bordercolor="#000000"><div align="right"><strong>Motivo:</strong></div></td>
-      <td width="500" bordercolor="#000000"><div align="left"><?php echo $row['motivobaja'] ?></div></td>
+      <td width="200"><div align="right"><strong>Motivo:</strong></div></td>
+      <td width="500"><div align="left"><?php echo $row['motivobaja'] ?></div></td>
     </tr>
     <tr>
-      <td height="22" width="200" bordercolor="#000000"><div align="right"><strong>Fecha:</strong></div></td>
-      <td width="500" bordercolor="#000000"><div align="left">
+      <td><div align="right"><strong>Fecha:</strong></div></td>
+      <td><div align="left">
         <?php echo (invertirFecha($row['fechabaja'])) ?>
       </div></td>
     </tr>
@@ -96,7 +96,7 @@ function rediSabanaCtaCte(origen) {
   </p>
   <p>
     <?php
-		include($_SERVER['DOCUMENT_ROOT']."/comun/empresas/abm/jurisdicEmpresaBaja.php");
+		include("jurisdicEmpresaBaja.php");
 	?>
   </p>
   <p>

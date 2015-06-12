@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/lib/envioMailGeneral.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php"); 
+include($libPath ."envioMailGeneral.php"); 
 
 $cuit=$_GET['cuit'];
 $cantJuris=$_GET['cantjuris'];

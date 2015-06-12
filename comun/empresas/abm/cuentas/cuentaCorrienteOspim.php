@@ -1,10 +1,11 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspim.php");
 set_time_limit(0);
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+include($libPath."fechas.php");
 $cuit=$_GET['cuit'];
-include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php");
+include($libPath."cabeceraEmpresaConsulta.php");
 $fechaInicio= $row['iniobliosp'];
-include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
+include($libPath."limitesTemporalesEmpresas.php");
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -247,7 +248,7 @@ function imprimeTabla($periodo) {
 	<?php } ?>
 	 <p>
     <?php 
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresa.php"); 
 	?>
   </p>
    <p><strong>Cuenta Corriente </strong></p>

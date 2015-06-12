@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); ?>
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php"); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -14,6 +15,19 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+<script type="text/javascript">
+
+function validar(formulario) {
+	if (formulario.dato.value == "" || formulario.dato.value.length < 3 ) {
+		alert("Debe agregar un dato de busqueda, mínimo de 3 caracteres");
+		return false;
+	}
+	formulario.Submit.disabled = true;
+	return true;
+}
+
+</script>
+
 <body bgcolor=<?php echo $bgcolor ?>>
 <p align="center">
 <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" align="center"/> 
@@ -26,7 +40,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		}
 
   ?>
-<form id="ordena" name="ordena" method="post" action="resultadoEmpresas.php?origen=<?php echo $origen ?>">
+<form id="ordena" name="ordena" method="post" onSubmit="return validar(this)" action="resultadoEmpresas.php?origen=<?php echo $origen ?>">
   <div align="center">
     <table width="336" border="0">
     <tr>
@@ -57,7 +71,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     </table>
     <p>
       <label></label>
-      <input type="submit" name="Submit" value="Buscar" />
+      <input type="submit" name="Submit" id="Submit" value="Buscar" />
       <br />
     </p>
   </div>

@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php"); 
 if(isset($_POST['locali'])){
 	$codlocali=$_POST['locali'];
 	$sqlLocalidad="SELECT codlocali, codprovin FROM localidades WHERE codlocali = '$codlocali'";

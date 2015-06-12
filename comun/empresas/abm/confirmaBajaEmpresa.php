@@ -1,26 +1,19 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php");
+include($libPath."fechas.php");
 
 $cuit=$_GET['cuit'];
 if ($cuit=="") {
 	$cuit=$_POST['cuit'];
 }
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query($sql,$db); 
 $row = mysql_fetch_array($result); 
 
 $sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
 $resDelEmp = mysql_query($sqlDelEmp,$db);
 $rowDelEmp = mysql_fetch_array($resDelEmp); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 ?>
 
@@ -38,10 +31,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 <title>.: Módulo Empresa De Baja :.</title>
 </head>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -74,27 +67,27 @@ function validar(formulario) {
   <p><strong>Confirmaci&oacute;n de Baja de Empresa </strong></p>
   <p>
     <?php 
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresa.php"); 
 	?>
   </p>
   <p>
     <?php
-		include($_SERVER['DOCUMENT_ROOT']."/comun/empresas/abm/jurisdicEmpresaBaja.php");
+		include("jurisdicEmpresaBaja.php");
 	?>
   </p>
   <p><strong>Informaci&oacute;n de baja </strong></p>
  <form name="form1" method="post" onSubmit="return validar(this)" action="desactivarEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>">
-  	<table width="399" border="0">
+  	<table width="400" border="0">
 		<tr>
-		  <td width="64" bordercolor="#000000"><div align="right"><strong>Motivo:</strong></div></td>
-		  <td width="317" bordercolor="#000000"><textarea name="motivo" cols="50" rows="5" id="motivo"></textarea></td>
+		  <td><div align="right"><strong>Motivo:</strong></div></td>
+		  <td><textarea name="motivo" cols="50" rows="5" id="motivo"></textarea></td>
 		</tr>
 		<tr>
-		  <td bordercolor="#000000"><div align="right"><strong>Fecha</strong>:</div></td>
-		  <td bordercolor="#000000"><input name="fechaBaja" type="text" id="fechaBaja" size="12"></td>
+		  <td><div align="right"><strong>Fecha</strong>:</div></td>
+		  <td><input name="fechaBaja" type="text" id="fechaBaja" size="12"></td>
 		</tr>
     <tr>
-      <td colspan="2" bordercolor="#000000">	 
+      <td colspan="2">	 
   			  <div align="center">
   			    <p>
   			      <input type="submit" name="Submit" id="Submit" value="Confirmar Baja">

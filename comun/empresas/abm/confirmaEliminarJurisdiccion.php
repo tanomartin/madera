@@ -1,11 +1,12 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSession.php");
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSession.php");
 	
 	$cuit=$_GET['cuit'];
 	$codidelega=$_GET['coddel'];
 	
 	//TODO: ANTES DE ESTO TENGO QUE VER SI TIENE BENEFICIARIOS, SI LO TIENE NO LOS DEJO ELIMINAR
 
-	$sql = "select * from empresas where cuit = $cuit";
+	$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 	$result = mysql_query($sql,$db); 
 	$row = mysql_fetch_array($result); 
 
@@ -13,17 +14,8 @@
 	$resjuris = mysql_query($sqljuris,$db); 
 	$rowjuris = mysql_fetch_array($resjuris);
 	
-	$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-	$resultlocalidad = mysql_query($sqllocalidad,$db); 
-	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-	
-	$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-	$resultprovi = mysql_query($sqlprovi,$db); 
-	$rowprovi = mysql_fetch_array($resultprovi);
-	
 	
 ?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -36,98 +28,97 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
- <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
-   <p>
-     <?php include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); ?>
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/>
+  <p>
+    <?php include($libPath."cabeceraEmpresa.php"); ?>
   </p>
-   <p><strong>Datos de la Jurisdicci&oacute;n a eliminar </strong></p>
-  <table width="700" height="261" border="2">
-      <tr bordercolor="#000000">
-        <td width="200" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Delegaci&oacute;n:</font></strong></div></td>
-        <td width="500" colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 
+  <p><strong>Datos de la Jurisdicci&oacute;n a eliminar </strong></p>
+  <table width="700" border="2" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:13px">
+    <tr>
+      <td><div align="right"><strong>Delegaci&oacute;n:</strong></div></td>
+      <td colspan="2"><div align="left">
+          <?php 
 			$delega = $rowjuris['codidelega'];
 			$sqldelegacion = "select * from delegaciones where codidelega = $delega";
 			$resultdelegacion = mysql_query($sqldelegacion,$db); 
 			$rowdelegacion = mysql_fetch_array($resultdelegacion); 
 			echo $rowdelegacion['nombre']
 		?>
-        </font></div></td>
-      </tr>
-      
-      <tr bordercolor="#000000">
-        <td width="200" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Domicilio:</font></strong></div></td>
-        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowjuris['domireal'];?></font></div></td>
-      </tr>
-      <tr bordercolor="#000000">
-        <td width="200" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Localidad:</font></strong></div></td>
-        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 
+          </div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Domicilio:</strong></div></td>
+      <td><div align="left"><?php echo $rowjuris['domireal'];?></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Localidad:</strong></div></td>
+      <td><div align="left">
+          <?php 
 			$locali =  $rowjuris['codlocali'];
 			$sqllocalidad = "select * from localidades where codlocali = $locali";
 			$resultlocalidad = mysql_query($sqllocalidad,$db); 
 			$rowlocalidad = mysql_fetch_array($resultlocalidad); 
 			echo $rowlocalidad['nomlocali'];
 		?>
-        </font></div></td>
-      </tr>
-      <tr bordercolor="#000000">
-        <td width="200" height="22" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Provincia</font></strong></div></td>
-        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 	
+          </div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Provincia</strong></div></td>
+      <td><div align="left">
+          <?php 	
 			$provin = $rowjuris['codprovin'] ;
 			$sqlprovi =  "select * from provincia where codprovin = $provin";
 			$resultprovi = mysql_query($sqlprovi,$db); 
 			$rowprovi = mysql_fetch_array($resultprovi);
 			echo $rowprovi['descrip']; 
 		?>
-        </font></div></td>
-      </tr>
-      <tr bordercolor="#000000" >
-        <td width="200" height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo 
-          Postal:</strong></font></div></td>
-        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"> <?php echo $rowjuris['indpostal'].$rowjuris['numpostal'].$rowjuris['alfapostal'];?></font></div></td>
-      </tr>
-      <tr bordercolor="#000000" >
-        <td width="200" height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Telefono:</strong></font></div></td>
-        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 
+          </div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>C&oacute;digo 
+          Postal:</strong></div></td>
+      <td><div align="left"> <?php echo $rowjuris['indpostal'].$rowjuris['numpostal'].$rowjuris['alfapostal'];?></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Telefono:</strong></div></td>
+      <td><div align="left">
+          <?php 
 		if ($rowjuris['telefono'] == 0){
 			echo "-";
 		} else {
 			echo "(".$rowjuris['ddn'].") - ".$rowjuris['telefono'];
 		}
 		?>
-        </font></div></td>
-      </tr>
-      <tr bordercolor="#000000" >
-        <td width="200" height="22" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Contacto Telefonico </strong></font></div></td>
-        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php 
+          </div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Contacto Telefonico </strong></div></td>
+      <td><div align="left">
+          <?php 
 		if ($rowjuris['contactel']!= "") {
 			echo $rowjuris['contactel'];
 		} else {
 			echo "-";
 		}
 		?>
-        </font></div></td>
-      </tr>
-      <tr bordercolor="#000000" >
-        <td width="200" height="22"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Email:</strong></font></div></td>
-        <td width="500"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-            <?php
+          </div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Email:</strong></div></td>
+      <td><div align="left">
+          <?php
 		if ($rowjuris['email']!= "") {
 			echo $rowjuris['email'];
 		} else {
 			echo "-";
 		}
 		 ?>
-        </font></div></td>
-      </tr>
-      <tr bordercolor="#000000" >
-        <td width="200" height="22"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Disgregacion Dineraria:</strong></font></div></td>
-        <td width="500"><div align="left"><?php echo $rowjuris['disgdinero']." %" ?></div></td>
-      </tr>
+          </div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Disgregacion Dineraria:</strong></div></td>
+      <td><div align="left"><?php echo $rowjuris['disgdinero']." %" ?></div></td>
+    </tr>
   </table>
   <p>
     <input name="Input2" type="button" value="Confirmar Eliminacion - Reajustar Digregacion Dineraria" onClick="location.href='disgregaEliminaJurisdiccion.php?origen=<?php echo $origen ?>&amp;cuit=<?php echo $cuit ?>&coddel=<?php echo $codidelega ?> '"/>
