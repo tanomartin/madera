@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php");
 
 $sqlDelega = "select * from delegaciones";
 $resDelega = mysql_query($sqlDelega,$db);
@@ -26,10 +27,10 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){

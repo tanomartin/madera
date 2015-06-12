@@ -1,49 +1,46 @@
  <p align="center"><strong>Datos de la Empresa </strong></p>
-  <div align="center">
-    <table width="700" height="157" border="2">
-      <tr bordercolor="#000000">
-        <td width="200" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">CUIT:</font></strong></div></td>
-        <td width="482" bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['cuit'] ?></font></div></td>
-      </tr>
-      <tr bordercolor="#000000">
-        <td width="200" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Raz&oacute;n 
-        Social:</font></strong></div></td>
-        <td bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['nombre'];?></font></div></td>
-      </tr>
-      
-      <tr bordercolor="#000000">
-        <td width="200" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Domicilio:</font></strong></div></td>
-        <td bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['domilegal'];?></font></div></td>
-      </tr>
-      <tr bordercolor="#000000">
-        <td width="200" height="24" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Localidad:</font></strong></div></td>
-        <td bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowlocalidad['nomlocali'];?></font></div></td>
-      </tr>
-      <tr bordercolor="#000000">
-        <td width="200" bordercolor="#000000"><div align="right"><strong><font size="2" face="Verdana, Arial, Helvetica, sans-serif">Provincia</font></strong></div></td>
-        <td bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $rowprovi['descrip']; ?></font></div></td>
-      </tr>
-      <tr bordercolor="#000000" >
-        <td width="200" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>C&oacute;digo 
-        Postal:</strong></font></div></td>
-        <td bordercolor="#000000"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><?php echo $row['numpostal'];?></font></div></td>
-      </tr>
-      <tr bordercolor="#000000" >
-         <td width="200" bordercolor="#000000"><div align="right"><font size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong>Carpeta en Archivo</strong></font></div></td>
-        <td bordercolor="#000000"><div align="left">
-		<font size="2" face="Verdana, Arial, Helvetica, sans-serif">
-		<?php 
+<div align="center">
+  <table width="700" border="2" bordercolor="#000000" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:14px">
+    <tr>
+      <td><div align="right"><strong>CUIT:</strong></div></td>
+      <td><div align="left"><?php echo $row['cuit'] ?></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Raz&oacute;n Social:</strong></div></td>
+      <td><div align="left"><?php echo $row['nombre'];?></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Domicilio:</strong></div></td>
+      <td><div align="left"><?php echo $row['domilegal'];?></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Localidad:</strong></div></td>
+      <td><div align="left"><?php echo $row['nomlocali'];?></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Provincia</strong></div></td>
+      <td><div align="left"><?php echo $row['nomprovin']; ?></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>C&oacute;digo Postal:</strong></div></td>
+      <td><div align="left"><?php echo $row['numpostal'];?></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Carpeta en Archivo</strong></div></td>
+      <td><div align="left"> 
+          <?php 
 			if ($row['carpetaenarchivo'] != "") {
 				echo $row['carpetaenarchivo'];
 			} else { 
 				echo '-' ;
 			}
-		?></font></div></td>
-	<?php if ($tipo == "baja") { ?>
-<tr bordercolor="#000000" >
-        <td colspan="2" bordercolor="#000000"><div align="center"><strong><font color="#FF0000">EMPRESA DE BAJA </font></strong></div></td>
-      </tr>	
-	<?php 	} ?>
-      </tr>
-    </table>
-  </div>
+		?>
+      </div></td>
+      <?php if ($tipo == "baja") { ?>
+    </tr>
+    <tr>
+      <td><div align="center"><strong><font color="#FF0000">EMPRESA DE BAJA </strong></div></td>
+    </tr>
+    <?php 	} ?>
+  </table>
+</div>

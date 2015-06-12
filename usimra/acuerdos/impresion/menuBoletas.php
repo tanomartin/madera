@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,18 +21,23 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 	
   <p><span class="Estilo2">Men&uacute; Boletas </span></p>
-  <table width="614" border="3">
+  <table width="600" border="3">
     <tr>
-      <td width="196"><p align="center">Anulacion de Boletas </p>
-	  	  <!-- href="cargaAnulacion.php" -->
-		  <!-- href="../../moduloNoDisponible.php" -->
-          <p align="center"><a href="cargaAnulacion.php" ><img src="img/anulacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="196" valign="top"><p align="center">Impresi&oacute;n de Boletas </p>
-      <p align="center"><a class="enlace" href="moduloImpresion.php"><img src="img/impresora.png" width="90" height="90" border="0" alt="enviar"/></a></p></td>
-      <td width="196"><p align="center">Buscador de Boletas </p>
-        <p align="center"><a class="enlace" href="buscadorBoleta.php"><img src="img/lupa.png" width="90" height="90" border="0" /> </a></p>
-        <p align="center">&nbsp;</p></td>
+      <td width="200">
+		  <p align="center">Anulacion de Boletas </p>
+		  <p align="center"><a href="cargaAnulacion.php" ><img src="img/anulacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		  <p align="center">&nbsp;</p>
+	  </td>
+      <td width="200">
+		  <p align="center">Impresi&oacute;n de Boletas </p>
+		  <p align="center"><a href="moduloImpresion.php"><img src="img/impresora.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		  <p align="center">&nbsp;</p>
+	  </td>
+      <td width="200">
+		  <p align="center">Buscador de Boletas </p>
+		  <p align="center"><a href="buscadorBoleta.php"><img src="img/lupa.png" width="90" height="90" border="0" /> </a></p>
+		  <p align="center">&nbsp;</p>
+	  </td>
     </tr>
   </table>
 </div>

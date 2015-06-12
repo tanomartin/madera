@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 $cuit = $_GET['cuit'];
@@ -29,7 +29,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	include($libPath."cabeceraEmpresaConsulta.php"); 
 	include($libPath."cabeceraEmpresa.php"); 
 	
-	$sqlCabecera = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
+	$sqlCabecera = "SELECT c.*, e.descripcion as desestado, t.descripcion as destipo, g.apeynombre as gestor, i.apeynombre as inspector
+					FROM cabacuerdosusimra c, estadosdeacuerdos e, tiposdeacuerdos t, gestoresdeacuerdos g, inspectores i 
+					WHERE c.cuit = $cuit and c.nroacuerdo = $nroacu and c.estadoacuerdo = e.codigo and c.tipoacuerdo = t.codigo and c.gestoracuerdo = g.codigo and c.inspectorinterviene = i.codigo";
 	$resCabecera = mysql_query($sqlCabecera,$db); 
 	$canCabecera = mysql_num_rows($resCabecera); 
 	if ($canCabecera == 1) {
@@ -41,24 +43,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 	?> 
     <p><strong> U.S.I.M.R.A. - Acuerdo Cargado </strong><strong> NUMERO <?php echo $rowCebecera['nroacuerdo'] ?></strong>	</p>
     <p><strong>ESTADO </strong>
-	<?php 
-		$sqlEstado = "select * from estadosdeacuerdos where codigo = $rowCebecera[estadoacuerdo]";
-		$resEstado= mysql_query($sqlEstado,$db); 
-		$rowEstado = mysql_fetch_array($resEstado);
-		echo $rowEstado['descripcion'];
-	?>
+	<?php echo $rowCebecera['desestado']; ?>
 	</p>
     <p><strong>Cabecera</strong></p>
     <table width="954" border="1">
       <tr>
         <td width="126" valign="bottom"><div align="left"><b>Tipo de Acuerdo</b></div></td>
         <td width="225" valign="bottom"><div align="left">
-		<?php 
-			$sqlTipoAcuerdo = "select * from tiposdeacuerdos where codigo = ".$rowCebecera['tipoacuerdo'];
-			$resTipoAcuerdo = mysql_query($sqlTipoAcuerdo,$db);
-			$rowTipoAcuerdo = mysql_fetch_array($resTipoAcuerdo);	
-			echo $rowTipoAcuerdo['descripcion'];
-		?>
+		<?php echo $rowCebecera['destipo']; ?>
 		</div></td>
         <td width="106" valign="bottom"><div align="left"><b>Fecha Acuerdo</b></div></td>
         <td width="144" valign="bottom"><div align="left"><?php echo invertirFecha($rowCebecera['fechaacuerdo']) ?></div></td>
@@ -68,25 +60,11 @@ A:hover {text-decoration: none;color:#00FFFF }
       <tr>
         <td valign="bottom"><div align="left"><b>Gestor</b></div></td>
         <td valign="bottom"><div align="left">
-		<?php 
-			$sqlGestor = "select * from gestoresdeacuerdos where codigo =". $rowCebecera['gestoracuerdo'];
-			$resGestor = mysql_query($sqlGestor,$db);
-			$rowGestor = mysql_fetch_array($resGestor);	
-			echo $rowGestor['apeynombre'];
-		?>
+		<?php echo $rowCebecera['gestor']; ?>
 		</div></td>
 		<td valign="bottom"><div align="left"><b>Inspector</b></div></td>
         <td valign="bottom"><div align="left">
-		<?php 
-			if ($rowCebecera['inspectorinterviene'] == 0) {
-				echo "No Especificado";
-			} else {
-				$sqlInspec = "select * from inspectores where codigo = ".$rowCebecera['inspectorinterviene'];
-				$resInspec = mysql_query($sqlInspec,$db);
-				$rowInspec = mysql_fetch_array($resInspec);	
-				echo $rowInspec['apeynombre'];
-			}
-		?></div></td>
+		<?php echo $rowCebecera['inspector'];?></div></td>
         <td valign="bottom"><div align="left"><b>Requerimiento de Origen</b></div></td>
         <td valign="bottom"><div align="left"><?php if ($rowCebecera['requerimientoorigen'] == 0) { echo "-"; } else { echo $rowCebecera['requerimientoorigen']; }  ?></div></td>
       </tr>

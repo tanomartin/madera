@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 
 $cuit=$_GET['cuit'];
@@ -37,9 +37,9 @@ A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
@@ -227,7 +227,7 @@ function validar(formulario) {
           <td width="106" valign="bottom"><div align="left">Fecha Acuerdo</div></td>
           <td width="144" valign="bottom">
             <div align="left">
-              <input id="fechaAcuerdo" type="text" name="fechaAcuerdo"/>
+              <input name="fechaAcuerdo" type="text" id="fechaAcuerdo" size="12"/>
             </div></td>
           <td width="158" valign="bottom"><div align="left">N&uacute;mero de Acta</div></td>
           <td colspan="2" valign="bottom">

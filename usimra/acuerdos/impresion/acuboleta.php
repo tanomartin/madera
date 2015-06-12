@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 require("numeros.php");
@@ -219,14 +219,13 @@ require("numeros.php");
  </td> 
   </tr>
 </table>
-    <table width="719" border="0">
+<div align="center">
+    <table width="400" border="0">
       <tr>
-          <td width="596"><div align="center"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="impBoletas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>">VOLVER</a></strong></font></div></td>
-          <td width="113">
-            <div align="center">
-              <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
-            </div></td>
+          <td width="200"><div align="left"><input type="button" name="volver" value="Volver" onClick="location.href='impBoletas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'"> </div>
+          <td width="200"><div align="right"><input type="button" name="imprimir" value="Imprimir" onClick="window.print();"></div></td>
       </tr>
 </table>
+</div>
 </body>
 </html>

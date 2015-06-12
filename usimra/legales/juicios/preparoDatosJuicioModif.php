@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 
@@ -129,8 +129,8 @@ if (sizeof($sqlPeriodos) > 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Juicios :.</title>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 	function formSubmit() {
 		$.blockUI({ message: "<h1>Guardando datos del juicio... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });

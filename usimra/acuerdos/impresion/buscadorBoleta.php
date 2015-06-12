@@ -1,17 +1,17 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 
 $dato = $_POST['dato'];
 $filtro = $_POST['filtro'];
 
 if ($filtro == 0) {
-	$cartel = "Resultados de Busqueda por Nro. Control <b>".$dato."</b>";
+	$cartel = "Resultados de Busqueda por Nro. Control <b><".$dato."></b>";
 }
 if ($filtro == 1) {
-	$cartel = "Resultados de Busqueda por Nro. Cheque <b>".$dato."</b>";
+	$cartel = "Resultados de Busqueda por Nro. Cheque <b><".$dato."></b>";
 }
 if ($filtro == 2) {
-	$cartel = "Resultados de Busqueda por C.U.I.T. <b>".$dato."</b>";
+	$cartel = "Resultados de Busqueda por C.U.I.T. <b><".$dato."></b>";
 }
 
 $tipoBoletas = "";
@@ -85,12 +85,12 @@ A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-<script src="/lib/jquery.js"></script>
-<script src="/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
-<script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+<script src="/madera/lib/jquery.js"></script>
+<script src="/madera/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
 
 	$(function() {
@@ -135,7 +135,7 @@ function abrirDetalle(dire) {
   <p align="center" class="Estilo1">M&oacute;dulo Buscador de Bolestas</p>
    <?php 
 		if ($noExiste == 1) {
-			print("<div style='color:#FF0000'><b> NO EXISTE BOLETA CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
+			print("<div style='color:#FF0000'><p><b>NO EXISTE BOLETA CON ESTE FILTRO DE BUSQUEDA</b></p></div><br>");
 		}
   ?>
   </div>

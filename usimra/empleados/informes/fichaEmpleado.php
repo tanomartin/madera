@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
 
 $cuil = $_GET['cuil'];
 $cuit = $_GET['cuit'];
@@ -80,7 +81,7 @@ function abrirFicha(dire, cuit, cuil) {
 <div align="center">
 	<p><span class="Estilo2"> Empleado  "<?php echo $rowEmpleado['apelli'].", ".$rowEmpleado['nombre'] ?>" - C.U.I.L.: <?php echo $rowEmpleado['nrcuil'] ?> </span></p>
 	
-	<table width="700" border="0">
+	<table width="700" border="1">
 		  <tr>
 			<td style="text-align:right"><b>Fecha Nac.:</b></td>
 			<td><?php echo invertirFecha($rowEmpleado['fecnac']) ?></td>
@@ -114,10 +115,10 @@ function abrirFicha(dire, cuit, cuil) {
 			<td><?php echo $rowEmpleado['activo'] ?></td>
 		  </tr>
 		  <tr>
-			<td style="text-align:right"><b>Estado:</b></td>
+			<td bordercolor="1" style="text-align:right"><b>Estado:</b></td>
 			<td><?php if ($estado == 'A') { echo 'De Alta'; } else { echo 'De Baja'; } ?></td>
 		  </tr>
-	</table>
+  </table>
 	<?php if ($canFamilia > 0) { ?>
 		<p><span class="Estilo2">Familiares </span></p>
 		<table class="tablesorter" id="listado" style="width:900px; font-size:14px">

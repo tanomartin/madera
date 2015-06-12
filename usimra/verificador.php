@@ -18,6 +18,7 @@ if (!$dbusuario or $usuario == "" or $clave == "") {
 	$_SESSION['aut'] = 1;
 	$_SESSION['dbname'] = "madera";
 	$_SESSION['ultimoAcceso'] = date("Y-n-j H:i:s");
+	$_SERVER['DOCUMENT_ROOT'] .= "/madera";
 	header ('location:menu.php');	
 }
 ?>

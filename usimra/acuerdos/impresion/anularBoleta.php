@@ -1,11 +1,10 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 $fechaAnulacion = date("Y-m-d H:i:s");
 $usuarioAnulacion = $_SESSION['usuario'];
 
 $idBoleta = $_GET['idboleta'];
-$datos = array_values($_POST);
-$docuMano = $datos[0];
+$docuMano = $_POST['docuMano'];
 
 if ($docuMano == "SI") {
 	$docuMano = 1;
@@ -13,7 +12,7 @@ if ($docuMano == "SI") {
 	$docuMano = 0;
 }
 
-$motivo = $datos[1];
+$motivo = $_POST['motivo'];
 
 $sqlBol = "select * from boletasusimra where idboleta = $idBoleta";
 $resBol = mysql_query($sqlBol,$db); 

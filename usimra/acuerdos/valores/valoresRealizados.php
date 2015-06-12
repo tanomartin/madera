@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php"); 
- include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php"); 
+include($libPath."fechas.php"); 
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -17,12 +18,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-<script src="/lib/jquery.js"></script>
-<script src="/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
-<script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+<script src="/madera/lib/jquery.js"></script>
+<script src="/madera/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
 	$(function() {
 		$("#listado")

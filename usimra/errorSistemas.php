@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); 
 ?>
 <html>
@@ -37,7 +37,7 @@ A:hover {text-decoration:underline; color:FCF63C}
       </tr>
     </table>
     <p><strong>
-      <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+      <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/>
     </strong></p>
   </div>
 </form>

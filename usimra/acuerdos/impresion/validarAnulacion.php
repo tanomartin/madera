@@ -1,12 +1,11 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); 
 
-$datos = array_values($_POST);
-$nroControl = $datos[0];
-$docuMano = $datos[1];
-$motivo = $datos[3];
+$nroControl = $_POST['nroControl'];
+$docuMano = $_POST['docuMano'];
+$motivo = $_POST['motivo'];
 
-$sqlBol = "select * from boletasusimra where nrocontrol = $nroControl";
+$sqlBol = "select b.*, e.nombre from boletasusimra b, empresas e where b.nrocontrol = $nroControl and b.cuit = e.cuit";
 $resBol = mysql_query($sqlBol,$db); 
 $canBol = mysql_num_rows($resBol);
 
@@ -48,12 +47,7 @@ A:hover {text-decoration: none;color:#33CCFF }
       <tr>
         <td width="205"><div align="left">Raz&oacute;n Social </div></td>
         <td><div align="left"><strong>
-          <?php 
-			$sqlEmp = "select * from empresas where cuit = ".$rowBol['cuit'];
-			$resEmp = mysql_query($sqlEmp,$db); 
-			$rowEmp = mysql_fetch_array($resEmp); 
-			echo $rowEmp['nombre']; 
-		?>
+          <?php echo $rowBol['nombre']; ?>
         </strong></div></td>
       </tr>
       <tr>
@@ -81,9 +75,9 @@ A:hover {text-decoration: none;color:#33CCFF }
 	      <div align="center">
 	        <?php 
 			if ($docuMano == 1) {
-				print("<input type='text' id='docuMano' name='docuMano' value='SI' size='2' readonly='readonly' style='background:#CCCCCC' />");
+				print("<input type='text' id='docuMano' name='docuMano' value='SI' size='2' readonly='readonly' style='background:#CCCCCC; text-align:center' />");
 			} else {
-				print("<input type='text' id='docuMano' name='docuMano' value='NO' size='2' readonly='readonly' style='background:#CCCCCC' />");
+				print("<input type='text' id='docuMano' name='docuMano' value='NO' size='2' readonly='readonly' style='background:#CCCCCC; text-align:center' />");
 			}
 			?>
           </div></td>

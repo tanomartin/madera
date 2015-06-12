@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,9 +21,9 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
@@ -41,22 +41,16 @@ jQuery(function($){
   <?php 
 		$err = $_GET['err'];
 		if ($err == 2) {
-			print("<div align='center' style='color:#FF0000'><b> C.U.I.T. NO ENCONTRADO </b></div><br>");
+			print("<div align='center' style='color:#FF0000'><p><b> C.U.I.T. NO ENCONTRADO </b></p></div>");
 		}
 		if ($err == 1) {
 			$cuit = $_GET['cuit'];
-			print("<div align='center' style='color:#FF0000'><b> NO EXISTEN EMPLEADOS PARA EL C.U.I.T. '$cuit' </b></div><br>");
+			print("<div align='center' style='color:#FF0000'><p><b> NO EXISTEN EMPLEADOS PARA EL C.U.I.T. '$cuit' </b></p></div>");
 		}
   ?>
-  <label>
-  <div align="center">C.U.I.T. 
-    <input name="cuit" id="cuit" type="text" size="10" /></div>
-  </label>
-    <p align="center">
-    <label>
-    <input type="submit" name="Submit" value="Buscar" />
-    </label>
-  </p>
+  <div align="center">C.U.I.T. <input name="cuit" id="cuit" type="text" size="10" />
+    <p><input type="submit" name="Submit" value="Buscar" /></p>
+  </div>
 </form>
 </body>
 </html>

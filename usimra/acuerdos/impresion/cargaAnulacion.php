@@ -1,21 +1,20 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
 		$("#nroControl").mask("99999999999999");
 });
 
-function getRadioButtonSelectedValue(ctrl)
-{
+function getRadioButtonSelectedValue(ctrl) {
     for(i=0;i<ctrl.length;i++)
         if(ctrl[i].checked) return ctrl[i].value;
 }
@@ -78,7 +77,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 		}
 		if ($err == 2) {
 			$control = $_GET['control'];
-			print("<div align='center' style='color:#0000000'><b> SE ANULO LA BOLETA CON CODIGO DE IDENTIFICACION ".$control."</b></div>");
+			print("<div align='center' style='color:#0000FF'><b> SE ANULO LA BOLETA CON CODIGO DE IDENTIFICACION <".$control."></b></div>");
 		}
 		
   ?>
@@ -88,42 +87,50 @@ A:hover {text-decoration: none;color:#33CCFF }
   <div align="center">
     <table width="371" border="0">
       <tr>
-        <td height="38" colspan="2"><div align="center"><strong id="internal-source-marker_0.5388788003474474">Codigo de identificacion de boleta</strong> 
-          <input name="nroControl" id="nroControl" type="text" size="17" />
-        </div></td>
+        <td colspan="2">
+			<div align="center"><p><strong id="internal-source-marker_0.5388788003474474">Codigo de identificacion de boleta</strong></p>
+          		<input name="nroControl" id="nroControl" type="text" size="17" style="text-align:center"/>
+       		</div>
+		</td>
       </tr>
       
       <tr>
-        <td width="193" height="36"><div align="right"><strong>&iquest;Documentacion en Mano?</strong> </div></td>
-        <td width="168">
+        <td><div align="right"><p><strong>&iquest;Documentacion en Mano?</strong></p></div></td>
+        <td>
           <div align="left">
             <input name="docuMano" id="docuMano" type="radio" value="1" /> SI
-            <input name="docuMano" id="docuMano" type="radio" value="2" /> NO		 </div>	  </td>
+            <input name="docuMano" id="docuMano" type="radio" value="2" /> NO		 
+		  </div>	  
+		 </td>
       </tr>
       <tr>
-        <td height="37"><div align="right"><strong>&iquest;Fue al Banco? </strong></div></td>
+        <td><div align="right"><p><strong>&iquest;Fue al Banco?</strong></p></div></td>
         <td>
-		<div align="left">
-          	<input name="fueBanco" id="radio" type="radio" value="1" onclick="botonAnular(this.value)"/> SI
-  			<input name="fueBanco" id="radio" type="radio" value="2" onclick="botonAnular(this.value)"/> NO		</div>		</td>
+			<div align="left">
+				<input name="fueBanco" id="radio" type="radio" value="1" onclick="botonAnular(this.value)"/> SI
+				<input name="fueBanco" id="radio" type="radio" value="2" onclick="botonAnular(this.value)"/> NO		
+			</div>		
+		</td>
       </tr>
       <tr>
-        <td colspan="2"><div align="center"><strong>Motivo de Anulaci&oacute;n </strong></div></td>
+        <td colspan="2"><div align="center"><p><strong>Motivo de Anulaci&oacute;n </strong></p></div></td>
       </tr>
       <tr>
-        <td height="98" colspan="2"><div align="center">
-          <textarea name="motivo" cols="50" rows="5" id="motivo"></textarea>
-        </div></td>
+        <td colspan="2">
+			<div align="center">
+          		<textarea name="motivo" id="motivo" cols="50" rows="5"></textarea>
+        	</div>
+		</td>
       </tr>
       <tr>
         <td colspan="2">
           <div align="center">
-            <input type="submit" name="anular" id="anular" value="Anular" disabled="disabled" />
-            </div>       </td>
+            <p><input type="submit" name="anular" id="anular" value="Anular" disabled="disabled" /></p>
+           </div>       
+		 </td>
       </tr>
     </table>
   </div>
 </form>
-<p>&nbsp;</p>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 ?>
 
@@ -20,15 +20,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#B2A274">
 <div align="center">
-<table width="137" border="0">
-	<tr align="center" valign="top">
-      <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
-        </div></td>
-	</tr>
-</table>
-</div>
-<div align="center">
+	<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
   <p><span class="Estilo2">M&oacute;dulo De Informes</span></p>
   <table width="614" height="506" border="3">
     <tr>

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 $cuit = $_GET['cuit'];
 $nroorden = $_GET['nroorden'];
@@ -98,8 +98,8 @@ function validar(formulario) {
     <input name="cuit" type="hidden" value="<?php echo $cuit ?>">
 	<input name="nroorden" type="hidden" value="<?php echo $nroorden ?>">
     <?php 
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php"); 	
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresaConsulta.php"); 
+		include($libPath."cabeceraEmpresa.php");  
 	?>
   </div>
   <p align="center"><strong>M&oacute;dulo de Carga - Tramite Judicial </strong></p>

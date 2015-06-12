@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php");
 //Para que se vea el blockUI
 print("<br>");
 //*************************

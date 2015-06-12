@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php"); 
 $cuit = $_GET['cuit'];
 $nroorden = $_GET['nroorden'];
 ?>
@@ -25,8 +26,8 @@ A:hover {text-decoration: none;color:#00FFFF }
   </div>
   <div align="center">
     <?php 
-	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+	include($libPath."cabeceraEmpresaConsulta.php"); 
+	include($libPath."cabeceraEmpresa.php"); 
 	
 	$sqlCabecera = "select c.*, a.apeynombre as asesor, i.apeynombre as inspector from cabjuiciosusimra c, asesoreslegales a, inspectores i where c.cuit = $cuit and c.nroorden = $nroorden and c.codasesorlegal = a.codigo and c.codinspector = i.codigo limit 1";
 	$resCabecera = mysql_query($sqlCabecera,$db); 

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 $cuit = $_GET["cuit"];
@@ -40,17 +40,9 @@ if ($quees == "remito") {
 	$resRemitoSuelto=mysql_query($sqlRemitoSuelto,$db);
 }
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query( $sql,$db); 
 $row=mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query( $sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query( $sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlCab = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo";
 $resCab = mysql_query($sqlCab,$db); 
@@ -73,9 +65,9 @@ A:visited {text-decoration: none;color:#0033FF}
 A:hover {text-decoration: none;color:#33CCFF }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechapagada").mask("99-99-9999");
@@ -258,6 +250,7 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	formulario.Submit.disabled=true;
 	return true;
 }
 </script>
@@ -425,7 +418,7 @@ function validar(formulario) {
      </p>
      <p>
        <label>
-       <input type="submit" name="Submit" value="Cancelar Cuota">
+       <input type="submit" name="Submit" id="Submit" value="Cancelar Cuota">
        </label>
      </p>
   </div>

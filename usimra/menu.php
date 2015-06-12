@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -49,6 +49,11 @@ function abrirFiscalizacion(dire) {
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 
+function abrirEmpleados(dire) {
+	c= window.open(dire,"EmpleadosUsimra",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+}
+
 </script>
 
 
@@ -71,27 +76,36 @@ function abrirFiscalizacion(dire) {
 	    <p>&nbsp;</p>
       </div></td>
 	 <td><div align="center">
-	  <p>Aportes </p>
-      <p><a href="javascript:abrirAportes('moduloNoDisponible.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
+	  <p>Empleados </p>
+      <p><a href="javascript:abrirEmpleados('moduloNoDisponible.php')"><img src="img/empleados.png" width="90" height="90" border="0"/></a></p>
       <p>&nbsp;</p> 
     </div></td>
     </tr>
     <tr>
      <td><div align="center">
-	  <p>Fiscalizacion </p>
-      <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0"/></a></p>
-      <p>&nbsp;</p> 
-    </div></td>
+       <p>Aportes </p>
+       <p><a href="javascript:abrirAportes('moduloNoDisponible.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
+       <p>&nbsp;</p>
+     </div></td>
       <td><div align="center">
-	  <p>Juicios </p>
-      <p><a href="javascript:abrirLegales('moduloNoDisponible.php')"><img src="img/juicios.png" width="90" height="90" border="0"/></a></p>
-      <p>&nbsp;</p>
-	  </div></td>
+        <p>Fiscalizacion </p>
+        <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0"/></a></p>
+        <p>&nbsp;</p>
+      </div></td>
 	  <td><div align="center">
-	  <p>Banco </p>
-      <p><a href="javascript:abrirBanco('moduloNoDisponible.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
-      <p>&nbsp;</p>
-	   </div></td>
+        <p>Juicios </p>
+	    <p><a href="javascript:abrirLegales('moduloNoDisponible.php')"><img src="img/juicios.png" width="90" height="90" border="0"/></a></p>
+	    <p>&nbsp;</p>
+      </div></td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td><div align="center">
+          <p align="center">Banco </p>
+          <p align="center"><a href="javascript:abrirBanco('moduloNoDisponible.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
+          <p>&nbsp;</p>
+      </div>        </td>
+      <td>&nbsp;</td>
     </tr>
   </table>
    <p><strong><a href="logout.php">

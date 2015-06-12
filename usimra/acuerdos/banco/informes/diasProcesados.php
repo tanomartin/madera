@@ -1,6 +1,6 @@
-<?php 
-include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php");  
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php");  
+include($libPath."fechas.php"); 
 
 $diasArray = array("Domingo","Lunes","Martes","Mi&eacute;rcoles","Jueves","Viernes","S&aacute;bado");
 
@@ -79,7 +79,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 			$mes = $datossplit[0];
 			?>
 			<p><span class="Estilo1">Resultado Per&iacute;odo "<?php echo $periodo ?>" </strong></span> </p>
-			<table border="1" width="600">
+			<table border="1" width="600" style="text-align:center">
 				  	<th>D&iacute;a </th>
 				    <th>Estado </th>
 				    <th>Fecha Proceso </th>

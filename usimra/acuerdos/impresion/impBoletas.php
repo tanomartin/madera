@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 $cuit= $_POST['cuit'];
@@ -6,22 +6,13 @@ if ($cuit == NULL) {
 	$cuit = $_GET['cuit'];
 }
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query( $sql,$db); 
 $cant = mysql_num_rows($result); 
 if ($cant != 1) {
 	header('Location: moduloImpresion.php?err=2');
 } else {
-	$row=mysql_fetch_array($result); 
-	
-	$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-	$resultlocalidad = mysql_query( $sqllocalidad,$db); 
-	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-	
-	$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-	$resultprovi = mysql_query( $sqlprovi,$db); 
-	$rowprovi = mysql_fetch_array($resultprovi);
-	
+	$row=mysql_fetch_array($result); 	
 	$sqlacuerdos =  "select * from cabacuerdosusimra c, estadosdeacuerdos e where cuit = $cuit and c.estadoacuerdo = e.codigo order by nroacuerdo";
 	$resulacuerdos= mysql_query( $sqlacuerdos,$db); 
 	$cant = mysql_num_rows($resulacuerdos); 

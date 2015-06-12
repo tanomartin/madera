@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 
@@ -98,15 +98,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
-<script src="/lib/jquery.js"></script>
-<script src="/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css">
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
-<script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js"></script>
+<script src="/madera/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 	$(function() {

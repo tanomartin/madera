@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 
 $cuit=$_GET['cuit'];
@@ -13,18 +13,6 @@ if ($cant != 1) {
 	header ("Location: moduloABM.php?err=1");
 }
 $row = mysql_fetch_array($result); 
-$sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp = mysql_query($sqlDelEmp,$db);
-$rowDelEmp = mysql_fetch_array($resDelEmp); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
-
 $sqlacuerdos =  "select * from cabacuerdosusimra c, estadosdeacuerdos e where c.cuit = $cuit and c.estadoacuerdo = e.codigo order by nroacuerdo";
 $resulacuerdos= mysql_query($sqlacuerdos); 
 
@@ -46,6 +34,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/> 
   <?php 	
+  		include($libPath."cabeceraEmpresaConsulta.php"); 
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>

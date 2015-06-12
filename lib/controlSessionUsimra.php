@@ -1,4 +1,4 @@
-<?php session_save_path($_SERVER['DOCUMENT_ROOT']."/usimra/sessiones");
+<?php session_save_path($_SERVER['DOCUMENT_ROOT']."/madera/usimra/sessiones");
 //si es necesario cambiar la config. del php.ini desde tu script 
 ini_set("session.use_only_cookies","1"); 
 ini_set("session.use_trans_sid","0"); 
@@ -9,12 +9,8 @@ session_start();
 //antes de hacer los cálculos, compruebo que el usuario está logueado 
 //utilizamos el mismo script que antes 
 
-$maquina = $_SERVER['SERVER_NAME'];
-if(strcmp("localhost",$maquina) == 0) {
-	$redire = "Location://localhost/usimra/logout.php";
-} else {
-	$redire = "Location://Poseidon/usimra/logout.php";
-}
+
+$redire = "Location:../usimra/logout.php";
 if ($_SESSION['aut'] != 1) { 
     //si no está logueado lo envío a la página de autentificación 
 	//TODO que vaya a una pantalla de session caducada....

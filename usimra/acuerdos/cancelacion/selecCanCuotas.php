@@ -1,30 +1,22 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); 
 include($libPath."fechas.php");
-$cuit= $_POST['cuit'];
-if ($cuit == NULL) {
+
+if (isset($_POST['cuit'])) {
+	$cuit = $_POST['cuit'];
+} else {
 	$cuit = $_GET['cuit'];
 }
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query( $sql,$db); 
 $cant = mysql_num_rows($result); 
 if ($cant != 1) {
 	header('Location: moduloCancelacion.php?err=2');
 } else {
 	$row=mysql_fetch_array($result); 
-	
-	$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-	$resultlocalidad = mysql_query( $sqllocalidad,$db); 
-	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-	
-	$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-	$resultprovi = mysql_query( $sqlprovi,$db); 
-	$rowprovi = mysql_fetch_array($resultprovi);
-	
-	$sqlacuerdos =  "select * from cabacuerdosusimra where cuit = $cuit";
+	$sqlacuerdos =  "select c.*, t.descripcion from cabacuerdosusimra c, tiposdeacuerdos t where c.cuit = $cuit and c.tipoacuerdo = t.codigo";
 	$resulacuerdos= mysql_query( $sqlacuerdos,$db); 
-	
 	$cant = mysql_num_rows($resulacuerdos); 
 	if ($cant == 0) {
 		header('Location: moduloCancelacion.php?err=1');
@@ -55,10 +47,7 @@ A:hover {text-decoration: none;color:#33CCFF }
   <table width="340" border="1">
      <?php 
 		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
-			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
-			$result=mysql_query( $query,$db);
-			$rowtipos=mysql_fetch_array($result);
-			echo ('<td width=340  align="center"><font face=Verdana size=3><a href="selecCanCuotas.php?acuerdo='.$rowacuerdos['nroacuerdo'].'&cuit='.$cuit.'"> Acuerdo '.$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
+			echo ('<td width=340  align="center"><font face=Verdana size=3><a href="selecCanCuotas.php?acuerdo='.$rowacuerdos['nroacuerdo'].'&cuit='.$cuit.'"> Acuerdo '.$rowacuerdos['nroacuerdo']." - ".$rowacuerdos['descripcion']."</a></font></td>");
 			print ("</tr>");
 		}
 		

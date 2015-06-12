@@ -1,9 +1,9 @@
 <?php
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query($sql,$db);
 $cant = mysql_num_rows($result);
 if ($cant == 0) {
-	$sql = "select * from empresasdebaja where cuit = $cuit";
+	$sql = "select e.*, l.nomlocali, p.descri as nomprovin from empresasdebaja e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 	$result = mysql_query($sql,$db);
 	$row = mysql_fetch_array($result); 
 	$fechaBaja = $row['fechabaja'];
@@ -12,12 +12,4 @@ if ($cant == 0) {
 	$row = mysql_fetch_array($result); 
 	$tipo = "activa";
 }
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 ?>

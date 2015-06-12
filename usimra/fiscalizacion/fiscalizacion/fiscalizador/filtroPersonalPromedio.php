@@ -1,4 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionUsimra.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionUsimra.php");
 set_time_limit(0);
 //Para que se vea el blockUI
 print("<br>");
@@ -24,7 +25,7 @@ $n = 0;
 for ($i=0; $i < sizeof($listadoEmpresas); $i++) {
 	$cuit = $listadoEmpresas[$i]['cuit'];
 	$fechaInicio = $listadoEmpresas[$i]['iniobliosp'];
-	include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
+	include($libPath."limitesTemporalesEmpresas.php");
 	$empleadosPromedio =  calculoPersonalPromedio($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
 	if ($empleadosPromedio >= $filtros['empleados']) {
 		$listadoEmpresasEmpleados[$n] = $listadoEmpresas[$i];

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 $cuit = $_GET["cuit"];
@@ -101,9 +101,9 @@ A:visited {text-decoration: none;color:#0033FF}
 A:hover {text-decoration: none;color:#33CCFF }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fecharemesa").mask("99-99-9999");
@@ -278,6 +278,7 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	formulario.Submit.disabled=true;
 	return true;
 }
 </script>
@@ -446,7 +447,7 @@ function validar(formulario) {
      </p>
      <p>
        <label>
-       <input type="submit" name="Submit" value="Modificar Datos Conciliacion">
+       <input type="submit" name="Submit" id="Submit" value="Modificar Datos Conciliacion">
        </label>
      </p>
   </div>

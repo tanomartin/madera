@@ -1,20 +1,8 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
-
-$sql = "select * from empresas where cuit = $cuit";
-$result =  mysql_query( $sql,$db); 
-$row = mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad =  mysql_query( $sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi =  mysql_query( $sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlacu = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 $resulacu=  mysql_query( $sqlacu,$db); 
@@ -28,9 +16,9 @@ $rowacu = mysql_fetch_array($resulacu);
 <title>Modificacion de Acuerdos</title>
 </head>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
@@ -39,6 +27,26 @@ jQuery(function($){
 		$("#anio"+i).mask("9999");
 	}
 });
+
+function cargarLiqui(requerimiento) {
+	var cargado = false;
+	<?php 
+		$sqlLiqui = "SELECT c.nrorequerimiento, c.liquidacionorigen FROM reqfiscalizusimra r , cabliquiusimra c where r.cuit = $cuit and r.nrorequerimiento = c.nrorequerimiento;";
+		$resLiqui= mysql_query($sqlLiqui,$db); 
+		$canLiqui = mysql_num_rows($resLiqui); 
+		if ($canLiqui != 0) {
+			while ($rowLiqui = mysql_fetch_assoc($resLiqui)) { ?>
+				if (requerimiento == <?php echo $rowLiqui['nrorequerimiento'] ?> ) {
+					document.getElementById("nombreArcReq").value = "<?php echo $rowLiqui['liquidacionorigen'] ?>";
+					cargado = true;
+				} 
+	 <?php }
+		}
+	?>
+	if (cargado == false) {
+		document.getElementById("nombreArcReq").value = "";
+	}
+}
 
 function validar(formulario) {
 	if (!isNumberPositivo(formulario.nroacu.value)) {
@@ -129,6 +137,7 @@ function mostrarPeriodos() {
 	<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/>
 	</div>
 	 <?php 	
+	    include($libPath."cabeceraEmpresaConsulta.php"); 
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
 	<p align="center"><strong>M&oacute;dulo de Modificación</strong></p>
@@ -229,9 +238,9 @@ function mostrarPeriodos() {
           </div></td>
         </tr>
         <tr>
-          <td valign="bottom"><label>
+          <td valign="bottom">
           <div align="left">Liquidacion Origen </div>
-          </label></td>
+          </td>
           <td valign="bottom"><div align="left">
 	  	    <input name="nombreArcReq"  value="<?php echo $rowacu['liquidacionorigen']?>"  type="text" id="nombreArcReq" size="40" readonly="readonly" />
           </div></td>

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 
@@ -37,9 +37,9 @@ $cantidad = sizeof($datos);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -183,7 +183,7 @@ function validar(formulario) {
     </table>
     <p>
       <label>
-      <input class="nover" type="submit" name="Submit" value="Enviar" />
+      <input class="nover" type="submit" name="Submit" value="Guardar" />
       </label>
     </p>
   </form>

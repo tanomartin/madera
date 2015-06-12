@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,9 +21,9 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
@@ -41,11 +41,12 @@ jQuery(function($){
   <?php 
 		$err = $_GET['err'];
 		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
+			print("<p><div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO</b></div></p>");
 		}
   ?>
   <label>
-  <div align="center">CUIT<input name="cuit" id="cuit" type="text" size="10" /></div>
+  <div align="center">CUIT 
+    <input name="cuit" id="cuit" type="text" size="10" /></div>
   </label>
     <p align="center">
     <label>
