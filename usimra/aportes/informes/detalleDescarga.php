@@ -13,7 +13,7 @@ $rowControl = mysql_fetch_assoc($resControl);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Resultados Descarga Aplicativo DDJJ :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -23,7 +23,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
+</head>
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span class="Estilo2">Resumen de Descarga</span></p>
@@ -69,6 +69,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <td><?php echo $rowControl['cantidadfamiliaresbaja'] ?></td>
 		</tr>
   </table>
-	   <p> <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+	   <p> <input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 </div>
 </body>
+</html>

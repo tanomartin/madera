@@ -6,7 +6,6 @@ include($libPath."controlSessionUsimra.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Empleados :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -16,11 +15,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+</head>
 
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuEmpleados.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuEmpleados.php'"/>
   </span></p>
   <p><span class="Estilo2">Men&uacute; Informes </span></p>
   <table width="400" border="3">

@@ -12,7 +12,7 @@ $fechaInspec=date("d-m-Y");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Inspeccion de Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -22,7 +22,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -42,13 +41,14 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'"/>
   </span></p>
-  <form name="inspecReq" onSubmit="return validar(this)" method="post" action="guardaInspeccion.php" >
+  <form name="inspecReq" onsubmit="return validar(this)" method="post" action="guardaInspeccion.php" >
 		<input name="fechareq" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
 	  <p class="Estilo2">Inpecci&oacute;n  del  Requerimiento Nro. <?php echo $nroreq ?></p>
@@ -71,7 +71,7 @@ function validar(formulario) {
 	          <div align="right">Inspector:	           </div></td>
 		    <td><div align="left">
 		      <select name="inpector" id="inspector" >
-		        <option value=0>Seleccionar Inspector</option>
+		        <option value='0'>Seleccionar Inspector</option>
 		        <?php 
 				$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
 				$resInspec=mysql_query($sqlInspec,$db);

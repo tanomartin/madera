@@ -13,14 +13,10 @@ include($libPath."controlSessionUsimra.php");  ?>
 	font-weight: bold;
 }
 -->
-</style>
-</head>
-<style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -31,11 +27,12 @@ jQuery(function($){
 });
 
 </script>
+</head>
 
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="aportesListado.php">
   <p align="center">
-   <input type="reset" name="volver" value="Volver" onClick="location.href = '../moduloInformes.php'" align="center"/>
+   <input type="button" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'" />
   </p>
   <p align="center" class="Estilo1">Consulta de Aportes por C.U.I.T.</p>
   <p> 
@@ -49,9 +46,7 @@ jQuery(function($){
 		}
   ?>
   </p>
-  <label> 
-  <div align="center">CUIT <input name="cuit" id="cuit" type="text" size="13" /> </div>
-  </label>
+  <div align="center"><label> CUIT <input name="cuit" id="cuit" type="text" size="13" /> </label></div>
   <p align="center">
     <label>
     <input type="submit" name="Submit" value="Buscar" />

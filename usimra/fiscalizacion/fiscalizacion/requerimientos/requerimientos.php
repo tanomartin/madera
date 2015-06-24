@@ -8,7 +8,7 @@ $today = date("d-m-Y");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -38,14 +38,15 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" />
   </span></p>
   	<span class="Estilo2">Men&uacute; Requerimiento </span>
-        <form id="form1" name="form1" onSubmit="return validar(this)" method="post" action="listarRequerimientos.php">
+        <form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="listarRequerimientos.php">
 			<p><strong>Ingrese la Fecha de los requermientos a listar</strong></p>
 			<?php 
 				if (isset($_GET['err'])) {

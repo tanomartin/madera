@@ -16,7 +16,7 @@ $cuit = $rowInspe['cuit'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -148,21 +148,22 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#B2A274" onload="formatoFormulario()">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarInspecciones.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'listarInspecciones.php'" />
   </span></p>
   	<p class="Estilo2">Datos de Requerimiento en Inspecci&oacute;n Nro. <?php echo $nroreq ?></p>
-	<form id="datosInsp" name="datosInsp" method="post" onSubmit="return validar(this)" action="guardarDatosInpseccion.php">
+	<form id="datosInsp" name="datosInsp" method="post" onsubmit="return validar(this)" action="guardarDatosInpseccion.php">
 		<input name="nroreq" type="text" id="nroreq" value="<?php echo  $nroreq ?>" style="display:none"/>
 		<table width="800" border="0">
 		  <tr>
 			<td><div align="right">Inspector </div></td>
 			<td><div align="left">
 			 <select name="inpector" id="inspector" >
-			      <option value=0>Seleccionar Inspector</option>
+			      <option value='0'>Seleccionar Inspector</option>
 			<?php 
 				$sqlInspector="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
 				$resInspector=mysql_query($sqlInspector,$db);
@@ -255,7 +256,6 @@ function validar(formulario) {
 
 	<p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
   </form>
-	</p>
 </div>
 </body>
 </html>

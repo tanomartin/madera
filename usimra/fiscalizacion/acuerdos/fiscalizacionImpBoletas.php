@@ -38,7 +38,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'fiscalizacionImpresion.php'" align="center"/>
+  <input type="button" name="volver" value="Volver" onclick="location.href = 'fiscalizacionImpresion.php'" />
 	 <?php 	
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
@@ -66,7 +66,7 @@ A:hover {text-decoration: none;color:#33CCFF }
   </p>
 <form id="FIBOlettas" name="FIBoletas" method="post" action="acuboletapdf.php?acuerdo=<?php echo $acuerdo?>&cuit=<?php echo $cuit?>">
   <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
-  <table border="1" width="935" bordercolorlight="#000099" bordercolordark="#0066FF" bordercolor="#000000" cellpadding="2" cellspacing="0">
+  <table style="border-color: '#000000'" border="1" width="935" cellpadding="2" cellspacing="0">
 				<tr>
     				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cuota</font></strong></div></td>
    					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
@@ -165,7 +165,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 
   </p>
   <p>
-    <input type="submit" name="enviar" value="Enviar Archivos" align="center"/>
+    <input type="submit" name="enviar" value="Enviar Archivos" />
    <?php
 	} 
 }?>

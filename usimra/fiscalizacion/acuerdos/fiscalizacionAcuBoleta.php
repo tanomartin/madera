@@ -13,10 +13,9 @@ require($libPath."numeros.php");
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 
 <meta http-equiv="" content="text/html; charset=iso-8859-1"></head>
-<p><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
 <body topmargin="0" leftmargin="0">
 
-<table border="0" width="100%" height="90%">
+<table style="width: 100%; height: 90%; border: none;">
   <tr>
     <td width="100%" valign="top" align="center"> 
 <?php	
@@ -222,14 +221,14 @@ require($libPath."numeros.php");
     </td> 
   </tr>
 </table>
-    <table width="719" border="0">
+    <table style="width: 719; border: none;">
       <tr>
           <td width="596"><font color="#000000" size="2" face="Verdana, Arial, Helvetica, sans-serif"><strong><a href="fiscalizacionImpBoletas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>">VOLVER</a></strong></font></td>
           <td width="113"><div align="right">
-            <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
+            <input type="button" name="imprimir" value="Imprimir" onClick="window.print();">
         </div></td>
       </tr>
-</table>
+	</table>
 	  <p align="right">&nbsp; </p>
     <p>&nbsp;</p>
 </body>

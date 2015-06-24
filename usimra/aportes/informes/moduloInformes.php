@@ -14,18 +14,15 @@ include($libPath."controlSessionUsimra.php");
 	font-weight: bold;
 }
 -->
-</style>
-</head>
-<style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-
+</head>
 <body bgcolor="#B2A274">
 	<div align="center">
 	  <p>
-	    <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAportes.php'" align="center"/>
+	    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAportes.php'" />
       </p>
 	  <p><span class="Estilo1">Men&uacute; Informes </span></p>
 	  <table width="214" border="3">

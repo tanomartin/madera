@@ -114,10 +114,11 @@ print("CONTROL: ".$idControl."<br>");*/
 		document.getElementById("descargaEmpresa").submit();
 	}
 </script>
-
+</head>
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaEmpresas.php" id="descargaEmpresa" method="post"> 
-   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
-   <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
+   <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>" />
+   <input name="idControl" type="hidden" value="<?php echo $idControl ?>" />
 </form> 
 </body>
+</html>

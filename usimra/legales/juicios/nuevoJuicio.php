@@ -296,8 +296,8 @@ function validar(formulario) {
 <body bgcolor="#B2A274" >
 <form id="nuevoJuicio" name="nuevoJuicio" method="post" action="preparoDatosJuicio.php" >
   <div align="center">
-    <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
-    <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>
+    <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>
     <?php 	
 		include($libPath."cabeceraEmpresaConsulta.php"); 
 		include($libPath."cabeceraEmpresa.php"); 
@@ -305,7 +305,7 @@ function validar(formulario) {
   </div>
   <p align="center"><strong>M&oacute;dulo de Carga - Nuevo Juicio </strong></p>
    	<p align="center"><strong>NRO ORDEN </strong>
-      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center">
+      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center"/>
 </p>
    	<div align="center">
    	<table width="1000" border="0" style="text-align:left">
@@ -315,7 +315,7 @@ function validar(formulario) {
         <td width="70">Status Deuda</td>
         <td width="156"><label>
           <select name="status" id="status">
-            <option value="0" selected>Seleccione Status</option>
+            <option value="0" selected="selected">Seleccione Status</option>
             <option value="1">EJECUCION</option>
             <option value="2">CONVOCATORIA</option>
             <option value="3">QUIEBRA</option>
@@ -335,7 +335,7 @@ function validar(formulario) {
       <tr>
         <td>Asesor Legal</td>
         <td><select name="asesor" id="asesor">
-            <option value=0 selected>Seleccione Asesor</option>
+            <option value='0' selected="selected">Seleccione Asesor</option>
             <?php 
 					$resAsesor = mysql_query($sqlAsesor,$db);
 					while ($rowAsesor=mysql_fetch_assoc($resAsesor)) { ?>
@@ -344,7 +344,7 @@ function validar(formulario) {
           </select>        </td>
         <td>Inspector</td>
         <td><select name="inspector" id="inspector">
-            <option value=0 selected>Seleccione Inspector</option>
+            <option value='0' selected="selected">Seleccione Inspector</option>
             <?php 			
 				$resInspe = mysql_query($sqlInsp,$db);
 				while ($rowInspe=mysql_fetch_assoc($resInspe)) { ?>

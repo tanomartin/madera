@@ -150,15 +150,16 @@ echo("</pre>");
 		document.getElementById("resultados").submit();
 	}
 </script>
-
+</head>
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="informeResultadoDescarga.php" id="resultados" method="post"> 
-   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
-   <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>">
-   <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>">
-   <input name="familiares" type="hidden" value="<?php echo $_POST['familiares'] ?>">
-   <input name="empbaja" type="hidden" value="<?php echo $_POST['empbaja'] ?>">
-   <input name="fambaja" type="hidden" value="<?php echo $listadoSerializadoFamBaja ?>">
-   <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
+   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>"/>
+   <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>"/>
+   <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>"/>
+   <input name="familiares" type="hidden" value="<?php echo $_POST['familiares'] ?>"/>
+   <input name="empbaja" type="hidden" value="<?php echo $_POST['empbaja'] ?>"/>
+   <input name="fambaja" type="hidden" value="<?php echo $listadoSerializadoFamBaja ?>"/>
+   <input name="idControl" type="hidden" value="<?php echo $idControl ?>"/>
 </form> 
 </body>
+</html>

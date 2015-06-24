@@ -14,13 +14,12 @@ include($libPath."controlSessionUsimra.php"); ?>
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -31,11 +30,11 @@ jQuery(function($){
 });
 
 </script>
-
+</head>
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="listadoTitularesPorEmpresa.php">
 <div align="center">
-<input type="reset" name="volver" value="Volver" onClick="location.href = 'menuInformes.php'" align="center"/> 
+<input type="button" name="volver" value="Volver" onclick="location.href = 'menuInformes.php'" /> 
 </div>
   <p align="center" class="Estilo1"> Titulares por Empresa </p>
   <?php 

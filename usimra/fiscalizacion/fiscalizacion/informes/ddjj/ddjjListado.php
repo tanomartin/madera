@@ -29,7 +29,7 @@ if ($canDdjjValidas == 0 && $canDdjjTemp == 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de DDJJ por C.U.I.T. :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -44,7 +44,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -90,10 +90,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 	}
 	
 </script>
+</head>
 <body bgcolor="#B2A274">
 <div align="center">
-	 <input type="reset" name="volver" class="nover" value="Volver" onclick="location.href = 'ddjjCuit.php'" align="center"/>
-	
+	 <input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'ddjjCuit.php'" />
 	<p><span class="Estilo2">D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> </span></p>
 	<p><span class="Estilo2">DDJJ Validas</span></p>
 	

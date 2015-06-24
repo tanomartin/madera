@@ -37,7 +37,7 @@ if ($canReque == 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -50,10 +50,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
-
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -77,9 +76,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 </script>
+</head>
 <body bgcolor="#B2A274">
 <div align="center">
-	 <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'" align="center"/>
+	 <input type="button" class="nover" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'" />
 	<p><span class="Estilo2">Requerimientos "<?php echo $titulo?>" </span></p>
 	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	<thead>

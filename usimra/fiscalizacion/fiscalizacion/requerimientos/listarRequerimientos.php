@@ -21,7 +21,7 @@ if ($canReque == 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -63,15 +63,15 @@ function validar(formulario) {
 }
 
 </script>
-
+</head>
 
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'"/>
   </span></p>
   	<p class="Estilo2">Listado de  Requerimiento del d&iacute;a <?php echo $fecha ?>  </p>
-	<form id="listadoReque" name="listadoReque" method="post" onSubmit="return validar(this)" action="liquidar.php?fecha=<?php echo $fecha ?>">
+	<form id="listadoReque" name="listadoReque" method="post" onsubmit="return validar(this)" action="liquidar.php?fecha=<?php echo $fecha ?>">
 	  <table width="1000" border="1" align="center">
         <tr>
           <th>N&uacute;mero</th>
@@ -114,7 +114,7 @@ function validar(formulario) {
 			}
 	  ?>
       </table>
-        <p><table width="999" border="0">
+        <table width="999" border="0">
           <tr>
             <td width="928">&nbsp;</td>
             <td width="61">
@@ -122,7 +122,7 @@ function validar(formulario) {
                 <input type="submit" name="Submit" value="Liquidar" />
               </div></td>
           </tr>
-        </table></p>
+        </table>
 	</form>
 </div>
 </body>

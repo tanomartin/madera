@@ -27,7 +27,7 @@ $rowControl = mysql_fetch_assoc($resControl);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Resultados Descarga Aplicativo DDJJ :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -37,11 +37,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
+</head>
 <body bgcolor="#B2A274">
 <div align="center">
 	  <p><span style="text-align:center">
-		<input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloDescarga.php'" align="center"/>
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloDescarga.php'" />
 	  </span></p>
 	  <p><span class="Estilo2">Resultados Descarga Aplicativo DDJJ</span></p>
 	  <p><span class="Estilo2">Resumen de Descarga</span></p>
@@ -121,7 +121,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<?php } ?> 
 				</tbody>
   </table>
-			 <p><b>E:</b> Ya Existia - <b>B:</b> De Baja - <b>I:</b> Insertada</strong></p>
+			 <p><b>E:</b> Ya Existia - <b>B:</b> De Baja - <b>I:</b> Insertada</p>
 		<?php } else { 
 				 echo("No se descargaron Empresas Nuevas");
 			  } ?> 
@@ -148,7 +148,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<?php } ?> 
 				</tbody>
   </table>
-			 <p><b>M:</b> Ya Existia (Modificación) - <b>B:</b> De Baja - <b>I:</b> Insertado</strong></p>
+			 <p><b>M:</b> Ya Existia (Modificación) - <b>B:</b> De Baja - <b>I:</b> Insertado</p>
 		<?php } else { 
 				 echo("No se descargaron Titulares Nuevos");
 			  } ?> 
@@ -177,7 +177,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<?php } ?> 
 				</tbody>
   </table>
-			 <p><b>M:</b> Ya Existia (Modificación) - <b>B:</b> De Baja - <b>I:</b> Insertado</strong></p>
+			 <p><b>M:</b> Ya Existia (Modificación) - <b>B:</b> De Baja - <b>I:</b> Insertado</p>
 		<?php } else { 
 				 echo("No se descargaron Familiares Nuevos");
 			  } ?> 
@@ -204,7 +204,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<?php } ?> 
 				</tbody>
   </table>
-			 <p><b>E:</b> Ya Existia - <b>A:</b> De Alta - <b>I:</b> Insertado</strong></p>
+			 <p><b>E:</b> Ya Existia - <b>A:</b> De Alta - <b>I:</b> Insertado</p>
 		<?php } else { 
 				 echo("No se descargaron Titulares Nuevos de Baja");
 			  } ?> 
@@ -233,14 +233,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<?php } ?> 
 				</tbody>
   </table>
-			 <p><b>E:</b> Ya Existia - <b>A:</b> De Alta - <b>I:</b> Insertado</strong></p>
+			 <p><b>E:</b> Ya Existia - <b>A:</b> De Alta - <b>I:</b> Insertado</p>
 		     <p>
 		       <?php } else { 
 				 echo("No se descargaron Familiares Nuevos de Baja");
 			  } ?> 
   </p>
 		     <p>
-		       <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+		       <input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>
 </p>
 </div>
 </body>
+</html>

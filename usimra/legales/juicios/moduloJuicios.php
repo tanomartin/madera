@@ -13,14 +13,10 @@ include($libPath."controlSessionUsimra.php");?>
 	font-weight: bold;
 }
 -->
-</style>
-</head>
-<style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -31,6 +27,7 @@ jQuery(function($){
 });
 
 </script>
+</head>
 
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="juicios.php">
@@ -38,7 +35,7 @@ jQuery(function($){
 <table width="137" border="0">
 	<tr align="center" valign="top">
       <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuLegales.php'" align="center"/> 
+        <input type="button" name="volver" value="Volver" onclick="location.href = '../menuLegales.php'" /> 
         </div></td>
 	</tr>
 </table>

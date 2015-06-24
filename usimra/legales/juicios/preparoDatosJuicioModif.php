@@ -137,35 +137,36 @@ if (sizeof($sqlPeriodos) > 0) {
 		document.getElementById("datosJuicio").submit();
 	}
 </script>
-
+</head>
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="guardarModificarJuicio.php" id="datosJuicio" method="post" style="visibility:hidden"> 
     <p>
-      <input name="cuit" size='200' type="visible" value="<?php echo $cuit ?>">
+      <input name="cuit" size='200' value="<?php echo $cuit ?>"/>
   </p>
     <p>  
-      <input name="nroorden" size='200' type="visible" value="<?php echo $nroorden ?>">
+      <input name="nroorden" size='200' value="<?php echo $nroorden ?>"/>
   </p>
     <p>
-      <input name="insertPerAcuQuitado" size='200' type="visible" value="<?php echo $listadoPeriodosAcuQuitadoSerializado ?>">
+      <input name="insertPerAcuQuitado" size='200' value="<?php echo $listadoPeriodosAcuQuitadoSerializado ?>"/>
   </p>
     <p>
-      <input name="updateCabeceraAcuQuitado" size='200' type="visible" value="<?php echo $sqlUpdateAcuQuitado ?>">
+      <input name="updateCabeceraAcuQuitado" size='200' value="<?php echo $sqlUpdateAcuQuitado ?>"/>
   </p>
     <p>
-      <input name="deletePeriodos" size='200' type="visible" value="<?php echo $sqlDeletePeriodos ?>">
+      <input name="deletePeriodos" size='200' value="<?php echo $sqlDeletePeriodos ?>"/>
   </p>
     <p>
-      <input name="updateCabeceraAcuAbs" size='200' type="visible" value="<?php echo $sqlUpdateAcuAbs ?>">
+      <input name="updateCabeceraAcuAbs" size='200' value="<?php echo $sqlUpdateAcuAbs ?>"/>
   </p>
     <p>
-      <input name="updateCabeceraJui" size='200' type="visible" value="<?php echo $sqlCabecera ?>">
+      <input name="updateCabeceraJui" size='200' value="<?php echo $sqlCabecera ?>"/>
   </p>
     <p>
-      <input name="insertPeriodosJui" size='200' type="visible" value="<?php echo $listadoPeriodosJuiSerializado ?>">
+      <input name="insertPeriodosJui" size='200' value="<?php echo $listadoPeriodosJuiSerializado ?>"/>
   </p>
     <p>
-      <input name="deletePeriodosAcuAbs" size='200' type="visible" value="<?php echo $listadoPeriodosAcuAbsSerializado ?>"> 
+      <input name="deletePeriodosAcuAbs" size='200' value="<?php echo $listadoPeriodosAcuAbsSerializado ?>"/> 
      </p>
 </form> 
 </body>
+</html>

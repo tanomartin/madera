@@ -16,7 +16,7 @@ $resDeta = mysql_query($sqlDeta,$db);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Detalle de Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -60,13 +60,14 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" />
   </span></p>
-  	<form name="editarReque" onSubmit="return validar(this)" method="post" action="eliminarPeriodos.php" >
+  	<form name="editarReque" onsubmit="return validar(this)" method="post" action="eliminarPeriodos.php" >
 		<input name="cuit" type="text" value="<?php echo $cuit?>" style="display:none"/>
 		<input name="fecha" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
@@ -160,7 +161,6 @@ function validar(formulario) {
 				}
 		  ?>
 		</table>
-		</p>
 		<p><input type="submit" name="eliminar" id="eliminar" value="Eliminar Seleccionados" /></p>
 	</form>
 </div>

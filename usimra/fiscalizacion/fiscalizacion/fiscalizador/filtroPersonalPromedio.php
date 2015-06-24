@@ -60,10 +60,11 @@ print($listadoSerializado);
 	//	document.getElementById("filtroEmpresasEmpleados").submit();
 	//}
 </script>
-
+</head>
 <body onload="formSubmit();">
 <form action="filtroDeudaNominal.php" id="filtroEmpresasEmpleados" method="post"> 
-   <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>">
-   <input name="filtros" type="hidden" value="<?php echo $filtrosSerializado ?>">
+   <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>"/>
+   <input name="filtros" type="hidden" value="<?php echo $filtrosSerializado ?>"/>
 </form> 
 </body>
+</html>

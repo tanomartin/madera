@@ -89,7 +89,7 @@ if (isset($dato)) {
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -100,7 +100,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
@@ -182,15 +182,17 @@ function abrirFicha(dire, cuit, cuil, estado) {
 }
 
 </script>
+</head>
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="buscadorEmpleados.php">
+<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorEmpleados.php">
   <div align="center">
-    <input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = 'menuInformes.php'" align="center"/>
+    <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'menuInformes.php'" />
     <p align="center" class="Estilo1">M&oacute;dulo Buscador de Empleados</p>
     <div align="center" class="nover"> 
 		<table width="400" border="0">
 		  <tr>
 		  <td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
+		  </tr>
 		  <tr>
 			<td><div align="left"><input type="radio" name="filtro" value="0" checked="checked"/> C.U.I.L. Empleado</div></td>
 		  </tr>

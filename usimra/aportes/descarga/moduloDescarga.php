@@ -6,7 +6,7 @@ include($libPath."controlSessionUsimra.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Descasrga Aplicativo :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -21,18 +21,18 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-
 function importar() {
 	$.blockUI({ message: "<h1>Descargando DDJJ... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	location.href='descargaDDJJ.php';
 }
 
 </script>
+</head>
 
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAportes.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAportes.php'" />
   </span></p>
   <p><span class="Estilo2">M&oacute;dulo Descarga Aplicativo </span></p>
   <table width="214" border="3">

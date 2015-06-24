@@ -96,15 +96,15 @@ function validar(formulario) {
 <title>.: Nuevo Juicio - Tramite Judicial :.</title>
 </head>
 <body bgcolor="#B2A274" >
-<form id="nuevoTramiteJudicial" name="nuevoTramiteJudicial" method="post" action="guardarModifTramite.php?cuit=<?php echo $cuit ?>" onSubmit="return validar(this)" >
+<form id="nuevoTramiteJudicial" name="nuevoTramiteJudicial" method="post" action="guardarModifTramite.php?cuit=<?php echo $cuit ?>" onsubmit="return validar(this)" >
   <div align="center">
-   	<input type="reset" name="volver" value="Volver" onClick="location.href = 'modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/>
-    <input name="cuit" type="hidden" value="<?php echo $cuit ?>">
-	<input name="nroorden" type="hidden" value="<?php echo $nroorden ?>">
-   	<input name="insertCabeceraJui" type="hidden" value="<?php echo $sqlCabecera ?>">
-   	<input name="insertPeriodosJui" type="hidden" value="<?php echo $listadoPeriodosSerializado ?>">
-   	<input name="updateCabeceraAcu" type="hidden" value="<?php echo $sqlUpdateAcu ?>">
-   	<input name="deletePeriodosAcu" type="hidden" value="<?php echo $listadoPeriodosAcuSerializado ?>">
+   	<input type="button" name="volver" value="Volver" onclick="location.href = 'modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/>
+    <input name="cuit" type="hidden" value="<?php echo $cuit ?>"/>
+	<input name="nroorden" type="hidden" value="<?php echo $nroorden ?>"/>
+   	<input name="insertCabeceraJui" type="hidden" value="<?php echo $sqlCabecera ?>"/>
+   	<input name="insertPeriodosJui" type="hidden" value="<?php echo $listadoPeriodosSerializado ?>"/>
+   	<input name="updateCabeceraAcu" type="hidden" value="<?php echo $sqlUpdateAcu ?>"/>
+   	<input name="deletePeriodosAcu" type="hidden" value="<?php echo $listadoPeriodosAcuSerializado ?>"/>
     <?php 	
 		include($libPath."cabeceraEmpresaConsulta.php"); 
 		include($libPath."cabeceraEmpresa.php");  
@@ -112,7 +112,7 @@ function validar(formulario) {
   </div>
   <p align="center"><strong>Modifcación Tramite Judicial </strong></p>
    	<p align="center"><strong>NRO ORDEN </strong>
-      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color:#CCCCCC; text-align:center">
+      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color:#CCCCCC; text-align:center"/>
   </p>
   	<table align="center">
 		<tr>
@@ -125,7 +125,7 @@ function validar(formulario) {
 			<td>Juzgado</td>
 			<td colspan="4">
 			<select name="juzgado" id="juzgado" onchange="cargoSecretarias(document.forms.nuevoTramiteJudicial.juzgado[selectedIndex].value)">
-				<option value=0 selected>Seleccione Juzgado</option>
+				<option value='0' selected="selected">Seleccione Juzgado</option>
 				<?php 
 					$sqlJuzgado ="select * from juzgados";
 					$resJuzgado = mysql_query($sqlJuzgado,$db);
@@ -140,7 +140,7 @@ function validar(formulario) {
 		<tr>
 		  <td>Secretaria</td>
 		  <td><select name="secretaria" id="secretaria">
-		  <option value=0 selected>Seleccione Secretaría</option>
+		  <option value='0' selected="selected">Seleccione Secretaría</option>
 		 	 <?php 
 				$sqlSecretaria ="select * from secretarias where codigojuzgado = ".$rowTramite['codigojuzgado']." and codigosecretaria = ".$rowTramite['codigosecretaria'];
 				$resSecretaria = mysql_query($sqlSecretaria,$db);
@@ -155,7 +155,7 @@ function validar(formulario) {
 			<td>Estado Procesal</td>
 			<td>
 			<select name="estado" id="estado">
-				<option value=0 selected>Seleccione Estado Procesal</option>
+				<option value='0' selected="selected">Seleccione Estado Procesal</option>
 				<?php 
 					$sqlEstados ="select * from estadosprocesales";
 					$resEstados = mysql_query($sqlEstados,$db);
@@ -169,7 +169,7 @@ function validar(formulario) {
 			   <td><textarea name="bienes" id="bienes" cols="50" rows="2"><?php echo $rowTramite['bienesembargados'] ?></textarea></td>
 	    </tr>
 		<tr>
-		  <td colspan="4"><div align="center"><strong><p>FINALIZACION DE TRAMITE JUDCIAL</p> </strong></div></td>
+		  <td colspan="4"><div align="center"><strong>FINALIZACION DE TRAMITE JUDCIAL</strong></div></td>
 	  </tr>
 		<tr>
 			<td>Fecha Finalizaci&oacute;n </td>
@@ -180,7 +180,7 @@ function validar(formulario) {
 </table>
 
     <div align="center">
-      <p><input type="submit" name="Submit" value="Guardar" sub/></p>
+      <p><input type="submit" name="Submit" value="Guardar"/></p>
     </div>
 </form>
 </body>

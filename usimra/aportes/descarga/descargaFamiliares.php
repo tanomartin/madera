@@ -152,13 +152,14 @@ echo("</pre>");*/
 		document.getElementById("descargaEmpBaja").submit();
 	}
 </script>
-
+</head>
 <body bgcolor="#B2A274" onload="formSubmit();">
 <form action="descargaEmpBaja.php" id="descargaEmpBaja" method="post"> 
-   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
-   <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>">
-   <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>">
-   <input name="familiares" type="hidden" value="<?php echo $listadoSerializadoFamiliares ?>">
-   <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
+   <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>"/>
+   <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>"/>
+   <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>"/>
+   <input name="familiares" type="hidden" value="<?php echo $listadoSerializadoFamiliares ?>"/>
+   <input name="idControl" type="hidden" value="<?php echo $idControl ?>"/>
 </form> 
 </body>
+</html>
