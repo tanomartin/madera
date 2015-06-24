@@ -5,7 +5,7 @@ include($libPath."controlSession.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado Empresas :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -18,11 +18,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" />
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -56,11 +55,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
-<body bgcolor=<?php echo $bgcolor ?>>
+<body style="background-color: <?php echo $bgcolor ?>">
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" align="center"/></p>
-  	<form name="listadoEmpresa" id="listadoEmpresa" method="post" onSubmit="return validar(this)" action="listadoEmpresas.php?origen=<?php echo $origen ?>">
+  <form name="listadoEmpresa" id="listadoEmpresa" method="post" onsubmit="return validar(this)" action="listadoEmpresas.php?origen=<?php echo $origen ?>">  
+    <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" /></p>
   	<p><span class="Estilo2">Empresas por Delegaci&oacute;n </span></p>
 	<table>
 		<tr>

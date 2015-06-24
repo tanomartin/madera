@@ -12,7 +12,6 @@ $domicilio=$_GET['domicilio'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nueva Jurisdicciones Empresa :.</title>
-</head>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -110,14 +109,15 @@ function validar(formulario) {
 	return true;
 }
 
-
 </script>
+</head>
 
-<body bgcolor=<?php echo $bgcolor ?>>
+<body style="background-color: <?php echo $bgcolor ?>">
 <div align="center">
-	<input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
-  <p><strong>Nueva  Jurisdicci&oacute;n de Empresa</strong>
-  <form name="nuevaJurisdiccion" id="nuevaJurisdiccion" method="post" onSubmit="return validar(this)" action="disgregaNuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>">	
+  <form name="nuevaJurisdiccion" id="nuevaJurisdiccion" method="post" onsubmit="return validar(this)" action="disgregaNuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>">	
+	<input type="reset" name="volver" value="Volver" onclick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'"/> 
+  	<p><strong>Nueva  Jurisdicci&oacute;n de Empresa</strong></p>
+  
 	 	<table width="723" border="0">
 		  <tr>
 			<td width="167"><div align="right"><strong>C.U.I.T. </strong></div></td>
@@ -195,11 +195,10 @@ function validar(formulario) {
 	</table>
     <p>
       <label>
-      <input type="submit" name="Submit" id="Submit" value="Reasingar Disgregacion Dineraria">
+      <input type="submit" name="Submit" id="Submit" value="Reasingar Disgregacion Dineraria" />
       </label>
     </p>
   </form>
-  </p>
 </div>
 </body>
 </html>

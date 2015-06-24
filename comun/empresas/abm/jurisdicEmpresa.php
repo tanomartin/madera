@@ -24,33 +24,34 @@
 			$canTotalReq = $canRequeOspim + $canRequeUsimra;
 ?>
 <div align="center">
-    <table width="700" border="2" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:13px">
+    <table border="1" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:13px; width: 700">
       <tr>
-        <td width="300"><div align="right"><strong>Delegaci&oacute;n:</strong></div></td>
-        <td colspan="2"><div align="left"><?php echo $rowjuris['delegacion']; ?>
+        <td width="350"><div align="right"><strong>Delegaci&oacute;n:</strong></div></td>
+        <td><div align="left"><?php echo $rowjuris['delegacion']; ?>
         </div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Domicilio:</strong></div></td>
-        <td colspan="2"><div align="left"><?php echo $rowjuris['domireal'];?></div></td>
+        <td><div align="left"><?php echo $rowjuris['domireal'];?></div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Localidad:</strong></div></td>
-        <td colspan="2"><div align="left"><?php echo $rowjuris['localidad'];?>
+        <td><div align="left"><?php echo $rowjuris['localidad'];?>
         </div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Provincia</strong></div></td>
-        <td colspan="2"><div align="left"><?php echo $rowjuris['provincia']; ?>
+        <td><div align="left"><?php echo $rowjuris['provincia']; ?>
         </div></td>
       </tr>
       <tr >
         <td><div align="right"><strong>C&oacute;digo Postal:</strong></div></td>
-        <td colspan="2"><div align="left"><?php echo $rowjuris['indpostal'].$rowjuris['numpostal'].$rowjuris['alfapostal'];?></div></td>
+        <td><div align="left"><?php echo $rowjuris['indpostal'].$rowjuris['numpostal'].$rowjuris['alfapostal'];?></div></td>
       </tr>
       <tr >
         <td><div align="right"><strong>Telefono:</strong></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td><div align="left">
+        <font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php 
 		if ($rowjuris['telefono'] == 0){
 			echo "-";
@@ -58,11 +59,12 @@
 			echo "(".$rowjuris['ddn'].") - ".$rowjuris['telefono'];
 		}
 		?>
+		</font>
         </div></td>
       </tr>
       <tr >
         <td><div align="right"><strong>Contacto Telefonico </strong></div></td>
-        <td colspan="2"><div align="left">
+        <td><div align="left">
             <?php 
 		if ($rowjuris['contactel']!= "") {
 			echo $rowjuris['contactel'];
@@ -74,7 +76,7 @@
       </tr>
       <tr >
         <td><div align="right"><strong>Email:</strong></div></td>
-        <td colspan="2"><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+        <td><div align="left"><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
             <?php
 		if ($rowjuris['email']!= "") {
 			echo $rowjuris['email'];
@@ -82,22 +84,17 @@
 			echo "-";
 		}
 		 ?>
+		 </font>
         </div></td>
       </tr>
       <tr >
         <td><div align="right"><strong>Disgregacion Dineraria:</strong></div></td>
-        <td colspan="2"><div align="left"><?php echo $rowjuris['disgdinero']." %" ?></div></td>
+        <td><div align="left"><?php echo $rowjuris['disgdinero']." %" ?></div></td>
       </tr>
       <tr >
-        <td>&nbsp;</td>
-        <td width="200"><div align="center">
-            <p>
-				 <?php if (($canTotalReq == 0)) { ?>
-              <input name="Input2" type="button" value="Modificar Datos" onclick="location.href='modificarJurisdiccion.php?origen=<?php echo $origen ?>&amp;cuit=<?php echo $cuit ?>&amp;coddel=<?php echo $delega ?> '"/>
-			   <?php } ?>
-            </p>
-        </div></td>
-        <td width="200"><p align="center">
+        <td><p align="center"><input name="Input2" type="button" value="Modificar Datos" onclick="location.href='modificarJurisdiccion.php?origen=&lt;?php echo $origen ?&gt;&amp;cuit=&lt;?php echo $cuit ?&gt;&amp;coddel=&lt;?php echo $delega ?&gt; '"></p></td>
+        
+        <td width="350" style="height: 60px; "><p align="center">
             <?php if (($canjuris > 1) and ($cantitu == 0) and ($canTotalReq == 0)) { ?>
             <input name="Input" type="button" value="Eliminar Jurisdiccion" onclick="location.href='confirmaEliminarJurisdiccion.php?origen=<?php echo $origen ?>&amp;cuit=<?php echo $cuit ?>&amp;coddel=<?php echo $delega ?> '"/>
             <?php } ?>

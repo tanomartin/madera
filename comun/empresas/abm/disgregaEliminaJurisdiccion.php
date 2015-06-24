@@ -77,7 +77,7 @@ function validar(formulario) {
 <div align="center">
 <form id="disDinero" name="disDinero" method="post" onSubmit="return validar(this)" action="guardarDisgregacionElimina.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&cantjuris=<?php echo $canjuris ?>&coddel=<?php echo $codidelega ?>">
     <p>
-	 <input type="reset" name="volver" value="Volver" onClick="location.href = 'confirmaEliminarJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&coddel=<?php echo $codidelega ?>'" align="center"/> 
+	 <input type="reset" name="volver" value="Volver" onClick="location.href = 'confirmaEliminarJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&coddel=<?php echo $codidelega ?>'"/> 
   </p>
   	<p>
   	  <?php 	

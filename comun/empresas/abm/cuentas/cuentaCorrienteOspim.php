@@ -242,9 +242,9 @@ function imprimeTabla($periodo) {
 <body bgcolor="#CCCCCC">
 <div align="center">
 	<?php if ($tipo == "activa") { ?>
-			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresa.php?origen=ospim&cuit=<?php echo $cuit ?>'" align="center"/> 
+			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresa.php?origen=ospim&cuit=<?php echo $cuit ?>'" /> 
 	<?php } else { ?>
-			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresaBaja.php?origen=ospim&cuit=<?php echo $cuit ?>'" align="center"/> 
+			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresaBaja.php?origen=ospim&cuit=<?php echo $cuit ?>'" /> 
 	<?php } ?>
 	 <p>
     <?php 

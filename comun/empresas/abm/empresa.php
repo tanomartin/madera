@@ -75,7 +75,7 @@ function rediBeneficiarios(origen, cuit) {
 </head>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'" align="center"/>
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'"/>
   <p>
     <?php 
 		$err = $_GET['err'];

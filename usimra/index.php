@@ -20,7 +20,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 <form method="post" action="verificador.php">
   <div align="center">
     <p class="Estilo1">Ingreso Sistema U.S.I.M.R.A. </p>
-    <p><img src="img/logo.png" width="350" height="350"> </p>
+    <p><img src="img/logo.png" width="350" height="350" /> </p>
     <p><?php  
 		$error = $_GET['error'];
 		if ($error == 1) {
@@ -33,20 +33,20 @@ A:hover {text-decoration:underline; color:FCF63C}
     <table border="0" width="26%">
       <tr>
         <td width="50%" align="right"><font face="Verdana" size="2"><b>Usuario:&nbsp;&nbsp;</b></font></td>
-        <td width="50%"><p align="left">
-          <input name="user" type="text" id="user" style="background-color: #FFFFFF" size="20">
+        <td width="50%">
+          <input name="user" type="text" id="user" style="background-color: #FFFFFF" size="20" />
         </td>
       </tr>
       <tr>
         <td width="50%" align="right"><font face="Verdana" size="2"><b>Contraseña:&nbsp;&nbsp;</b></font></td>
-        <td width="50%"><p align="left">
-          <input name="pass" type="password" id="pass" style="background-color: #FFFFFF" size="20">
+        <td width="50%">
+          <input name="pass" type="password" id="pass" style="background-color: #FFFFFF" size="20" />
         </td>
       </tr>
       <tr>
         <td colspan="4"><div align="center">
             <p>
-              <input type="submit" value="Ingresar" name="B1" >
+              <input type="submit" value="Ingresar" name="B1" />
             </p>
             </div></td>
       </tr>

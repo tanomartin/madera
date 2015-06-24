@@ -71,7 +71,7 @@ function validar(formulario) {
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
 <form id="disDinero" name="disDinero" method="post" onSubmit="return validar(this)" action="guardarDisgregacion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&cantjuris=<?php echo $canjuris ?>">
-       <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 
+       <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'"/> 
   	<p>
   	  <?php 	
 		include($libPath."cabeceraEmpresa.php"); 

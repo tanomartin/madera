@@ -23,7 +23,6 @@ $alfapostal=$_GET['alfapostal'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Alta Empresa :.</title>
-</head>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -166,12 +165,13 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
-<body bgcolor=<?php echo $bgcolor ?>>
+<body style="background-color: <?php echo $bgcolor ?>">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'" align="center"/> 
-  <p><strong>Alta Cabecera de Empresa</strong>
-  <form name="nuevaCabeEmpresa" id="nuevaCabeEmpresa" method="post" onSubmit="return validar(this)" action="guardarEmpresa.php?origen=<?php echo $origen ?>">
+  <form name="nuevaCabeEmpresa" id="nuevaCabeEmpresa" method="post" onsubmit="return validar(this)" action="guardarEmpresa.php?origen=<?php echo $origen ?>">
+  <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'"/> 
+  <p><strong>Alta Cabecera de Empresa</strong></p>
     <table width="800" border="0">
       <tr>
         <td><div align="right"><strong>C.U.I.T. </strong></div></td>
@@ -335,11 +335,10 @@ function validar(formulario) {
     </table>
     <p>
       <label>
-      <input type="submit" name="Submit" id="Submit" value="Guardar">
+      <input type="submit" name="Submit" id="Submit" value="Guardar"/>
       </label>
     </p>
   </form>
-  </p>
 </div>
 </body>
 </html>

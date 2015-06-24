@@ -20,7 +20,7 @@ A:hover {text-decoration:underline; color:FCF63C}
     <p class="Estilo1">Ingreso Sistema U.S.I.M.R.A.</p>
     <p><img src="img/logo.jpg" width="300" height="300"> </p>
     <p>SU SESION A CADUCADO VUELVA A INGRESAR </p> 	
-    <p><input type="button" name="salir" value="SALIR" onClick="window.close();" /></strong></p>
+    <p><input type="button" name="salir" value="SALIR" onClick="window.close();" /></p>
   </div>
 </body>
 </html>

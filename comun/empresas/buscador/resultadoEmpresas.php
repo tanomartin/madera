@@ -27,7 +27,6 @@ $canbusquedabaja = mysql_num_rows($resbusquedabaja);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Resultado Busqueda Empresa :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -37,15 +36,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-<body bgcolor=<?php echo $bgcolor ?>>
+</head>
+
+<body style="background-color: <?php echo $bgcolor ?>">
 <p align="center">
-<input type="reset" name="volver" value="Volver" onClick="location.href = 'buscador.php?origen=<?php echo $origen ?>'" align="center"/> 
+<input type="reset" name="volver" value="Volver" onclick="location.href = 'buscador.php?origen=<?php echo $origen ?>'"/> 
 </p>
 <p align="center" class="Estilo2">Resultado de la Busqueda</p>
 <div align="center">
 	<p><span class="Estilo2">Empresas Activas </span></p>
 	<table border="1" >
-  <tr bordercolor="#000000">
+  <tr>
     <td width="104"><div align="center"><strong>C.U.I.T.</strong></div></td>
     <td width="349"><div align="center"><strong>Razón Social</strong></div></td>
     <td width="351"><div align="center"><strong>Dirección</strong></div></td>
@@ -69,26 +70,27 @@ if ($canbusqueda > 0) {
 </table>
     <p><strong>Empresas de Baja </strong></p>
     <table border="1" >
-      <tr bordercolor="#000000">
+      <tr>
         <td width="104"><div align="center"><strong>C.U.I.T.</strong></div></td>
         <td width="349"><div align="center"><strong>Raz&oacute;n Social</strong></div></td>
         <td width="351"><div align="center"><strong>Direcci&oacute;n</strong></div></td>
         <td width="74"><div align="center"></div></td>
       </tr>
       <?php 
-if ($canbusquedabaja > 0) {	  
-	  while ($rowbusquedabaja = mysql_fetch_array($resbusquedabaja)) {  
-		$cuit = $rowbusquedabaja['cuit'];
-		print ("<td><div align=center>".$rowbusquedabaja['cuit']."</div></td>");
-		print ("<td><div align=center>".$rowbusquedabaja['nombre']."</div></td>");
-		print ("<td><div align=center>".$rowbusquedabaja['domilegal']."</div></td>");
-		print ("<td><div align=center><a href=../abm/empresaBaja.php?origen=$origen&cuit=$cuit>+ INFO</a></div></td>");
-		print ("</tr>"); 	
-
-	}
-} else {
-		print ("<td colspan='4'><div align=center>No hay empresas de baja para esta busqueda</div></td>");
-}?>
+			if ($canbusquedabaja > 0) {	  
+				  while ($rowbusquedabaja = mysql_fetch_array($resbusquedabaja)) {  
+					$cuit = $rowbusquedabaja['cuit'];
+					print ("<td><div align=center>".$rowbusquedabaja['cuit']."</div></td>");
+					print ("<td><div align=center>".$rowbusquedabaja['nombre']."</div></td>");
+					print ("<td><div align=center>".$rowbusquedabaja['domilegal']."</div></td>");
+					print ("<td><div align=center><a href=../abm/empresaBaja.php?origen=$origen&cuit=$cuit>+ INFO</a></div></td>");
+					print ("</tr>"); 	
+			
+				}
+			} else {
+					print ("<td colspan='4'><div align=center>No hay empresas de baja para esta busqueda</div></td>");
+			}
+		?>
     </table>
     </div>
 

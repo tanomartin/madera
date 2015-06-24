@@ -24,7 +24,6 @@ $cantitu = mysql_num_rows($restitu);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Jurisdicciones Empresa :.</title>
-</head>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -129,14 +128,13 @@ function validar(formulario, deleAnterior, cantTitulares) {
 	return true;
 }
 
-
 </script>
-
-<body bgcolor=<?php echo $bgcolor ?>>
+</head>
+<body style="background-color: <?php echo $bgcolor ?>">
 <div align="center">
-       <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 	
-  <p><strong>Modificacion Jurisdicciones de Empresa</strong>
-  <form name="modifJurisEmpresa" id="modifJurisEmpresa" method="post" onSubmit="return validar(this, <?php echo $delega ?>, <?php echo $cantitu ?>)" action="guardarModifJurisdiccion.php?origen=<?php echo $origen ?>&coddelega=<?php echo $delega ?>">	
+   <form name="modifJurisEmpresa" id="modifJurisEmpresa" method="post" onsubmit="return validar(this, <?php echo $delega ?>, <?php echo $cantitu ?>)" action="guardarModifJurisdiccion.php?origen=<?php echo $origen ?>&coddelega=<?php echo $delega ?>">	
+	   <input type="reset" name="volver" value="Volver" onclick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" /> 	
+	   <p><strong>Modificacion Jurisdicciones de Empresa</strong></p>
 	 	<table width="723" border="0">
 		  <tr>
 			<td width="167"><div align="right"><strong>C.U.I.T. </strong></div></td>
@@ -237,12 +235,9 @@ function validar(formulario, deleAnterior, cantTitulares) {
 		  </tr>
 	</table>
     <p>
-      <label>
-      <input type="submit" name="Submit" value="Guardar">
-      </label>
+      <label><input type="submit" name="Submit" value="Guardar" /> </label>
     </p>
   </form>
-  </p>
 </div>
 </body>
 </html>

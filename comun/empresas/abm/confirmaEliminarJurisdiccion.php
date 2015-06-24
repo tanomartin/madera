@@ -28,7 +28,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/>
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'"/>
   <p>
     <?php include($libPath."cabeceraEmpresa.php"); ?>
   </p>

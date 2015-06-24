@@ -63,7 +63,7 @@ function validar(formulario) {
 
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-     <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 	
+     <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'"/> 	
   <p><strong>Confirmaci&oacute;n de Baja de Empresa </strong></p>
   <p>
     <?php 

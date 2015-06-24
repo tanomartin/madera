@@ -6,7 +6,6 @@ include($libPath."controlSession.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Empresas :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -16,11 +15,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
-<body bgcolor=<?php echo $bgcolor ?>>
+</head>
+<body style="background-color: <?php echo $bgcolor ?>">
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Empresas </span></p>
-  <table width="600" border="1" bordercolor="1">
+  <table width="600" border="1">
     <tr>
       <td width="200"><p align="center">Alta, Modificaci&oacute;n y Consulta </p>
         <p align="center"><a class="enlace" href="abm/moduloABM.php?origen=<?php echo $origen?>"><img src="img/abemp.png" width="90" height="90" border="0" alt="enviar"/></a></p>

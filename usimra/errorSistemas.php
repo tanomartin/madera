@@ -26,7 +26,7 @@ A:hover {text-decoration:underline; color:FCF63C}
     <p class="Estilo1">&iexcl;&iexcl;ERROR de Sistema!!</p>
     <p class="Estilo2">Por favor imprimir esta pantalla y llevarla al Dpto. de Sistemas</p>
     <p><img src="img/stop.png" width="128" height="128"> </p>
-    <table width="200" border="1">
+    <table border="1" style="width: 200">
       <tr>
         <td><strong>P&aacute;gina: </strong></td>
         <td><?php echo $_GET['error']; ?></td>
@@ -37,7 +37,7 @@ A:hover {text-decoration:underline; color:FCF63C}
       </tr>
     </table>
     <p><strong>
-      <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/>
+      <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" />
     </strong></p>
   </div>
 </form>

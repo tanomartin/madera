@@ -5,7 +5,7 @@ include($libPath."controlSession.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Buscador de Empresas :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -15,8 +15,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-<script type="text/javascript">
 
+<script type="text/javascript">
 function validar(formulario) {
 	if (formulario.dato.value == "" || formulario.dato.value.length < 3 ) {
 		alert("Debe agregar un dato de busqueda, mínimo de 3 caracteres");
@@ -27,10 +27,10 @@ function validar(formulario) {
 }
 
 </script>
-
-<body bgcolor=<?php echo $bgcolor ?>>
+</head>
+<body style="background-color: <?php echo $bgcolor ?>">
 <p align="center">
-<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" align="center"/> 
+<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" /> 
 </p>
 <p align="center" class="Estilo2">Buscador de Empresas </p>
  <?php 
@@ -40,13 +40,13 @@ function validar(formulario) {
 		}
 
   ?>
-<form id="ordena" name="ordena" method="post" onSubmit="return validar(this)" action="resultadoEmpresas.php?origen=<?php echo $origen ?>">
+<form id="ordena" name="ordena" method="post" onsubmit="return validar(this)" action="resultadoEmpresas.php?origen=<?php echo $origen ?>">
   <div align="center">
     <table width="336" border="0">
     <tr>
       <td width="152" rowspan="3"><strong>Criterio de Busqueda </strong></td>
       <td width="20"><div align="center">
-        <input name="criterio"  id="orden" type="radio" value="cuit" checked/>
+        <input name="criterio"  id="orden" type="radio" value="cuit" checked="checked"/>
       </div></td>
       <td width="150"><div align="left">CUIT</div></td>
     </tr>

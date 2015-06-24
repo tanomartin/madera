@@ -13,10 +13,10 @@
 	if ($canjuris != 0) {
 		while ($rowjuris = mysql_fetch_array($resjuris)) { ?>
     </p>
-    <table width="700" border="2" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:13px">
+    <table border="1" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:13px; width: 700">
       <tr>
         <td width="350"><div align="right"><strong>Delegaci&oacute;n:</strong></div></td>
-        <td><div align="left"><?php echo $rowjuris['delegacion'] ?></div></td>
+        <td width="350"><div align="left"><?php echo $rowjuris['delegacion'] ?></div></td>
       </tr>
       
       <tr>

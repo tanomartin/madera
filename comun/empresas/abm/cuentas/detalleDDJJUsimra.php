@@ -11,12 +11,12 @@ $anio=$_GET['anio'];
 $mes=$_GET['mes'];
 
 $sqlDdjj = "select *
-			from tempddjjusimra 
+			from ddjjusimra 
 			where 
-			cuit = $cuit and 
-			anoddjj = $anio and 
-			mesddjj = $mes and
-			cuil = '99999999999' order by nrocontrol ASC";
+			nrcuit = $cuit and 
+			perano = $anio and 
+			permes = $mes and
+			nrcuil = '99999999999' order by nrctrl ASC";
 
 $resDdjj = mysql_query($sqlDdjj,$db);
 ?>
@@ -69,20 +69,19 @@ function abrirInfo(dire) {
 
 <?php while ($rowDdjj = mysql_fetch_assoc($resDdjj)) {	 ?>	
 	 <tr>
-	    <td><?php print(substr($rowDdjj['nrocontrol'],6,2)."-".substr($rowDdjj['nrocontrol'],4,2)."-".substr($rowDdjj['nrocontrol'],0,4)." ".substr($rowDdjj['nrocontrol'],8,2).":".substr($rowDdjj['nrocontrol'],10,2).":".substr($rowDdjj['nrocontrol'],12,2))?></td>
-	  	<td align="center"><?php print($rowDdjj['cantidadpersonal']) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['remuneraciones'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['apor060'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['apor100'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['apor150'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['recargo'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['totalaporte'],2,',','.')) ?></td>
+	    <td><?php print(substr($rowDdjj['nrctrl'],6,2)."-".substr($rowDdjj['nrctrl'],4,2)."-".substr($rowDdjj['nrctrl'],0,4)." ".substr($rowDdjj['nrctrl'],8,2).":".substr($rowDdjj['nrctrl'],10,2).":".substr($rowDdjj['nrctrl'],12,2))?></td>
+	  	<td align="center"><?php print($rowDdjj['nfilas']) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['remune'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['apo060'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['apo100'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['apo150'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['recarg'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['totapo'],2,',','.')) ?></td>
 		<td align="center"><?php print($rowDdjj['observacion']) ?></td>
-		<td align="center"><a href=javascript:abrirInfo('verDetalleDDJJUsimra.php?nrocontrol=<?php echo $rowDdjj['nrocontrol'] ?>&cuit=<?php echo $rowDdjj['cuit'] ?>&mes=<?php echo $rowDdjj['mesddjj'] ?>&anio=<?php echo $rowDdjj['anoddjj'] ?>')>Detalle</a></td>
+		<td align="center"><input type="button" onclick="javascript:abrirInfo('verDetalleDDJJUsimra.php?nrocontrol=<?php echo $rowDdjj['nrctrl'] ?>&cuit=<?php echo $rowDdjj['nrcuit'] ?>&mes=<?php echo $rowDdjj['permes'] ?>&anio=<?php echo $rowDdjj['perano'] ?>')" value="Detalle" />
 	 </tr>
 <?php } ?>
   </table>
-  
 </div>
 </body>
 

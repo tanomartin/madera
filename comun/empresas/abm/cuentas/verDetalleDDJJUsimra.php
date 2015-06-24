@@ -14,14 +14,13 @@ $nrocontrol=$_GET['nrocontrol'];
 $generacion = substr($nrocontrol,6,2)."-".substr($nrocontrol,4,2)."-".substr($nrocontrol,0,4)." ".substr($nrocontrol,8,2).":".substr($nrocontrol,10,2).":".substr($nrocontrol,12,2);
 
 $sqlDdjj = "select *
-			from tempddjjusimra 
+			from ddjjusimra 
 			where 
-			cuit = '$cuit' and 
-			anoddjj = $anio and 
-			mesddjj = $mes and
-			nrocontrol = '$nrocontrol' and
-			cuil != '99999999999' order by cuil ASC";
-
+			nrcuit = '$cuit' and 
+			perano = $anio and 
+			permes = $mes and
+			nrctrl = '$nrocontrol' and
+			nrcuil != '99999999999' order by nrcuil ASC";
 $resDdjj = mysql_query($sqlDdjj,$db);
 ?>
 
@@ -34,12 +33,6 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
-<script language="javascript">
-function abrirInfo(dire) {
-	a= window.open(dire,"DetalleDDJJUsimra",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
-}
-</script>
 </head>
 
 <title>.: DDJJ Empresa :.</title>
@@ -69,12 +62,12 @@ function abrirInfo(dire) {
 
 <?php while ($rowDdjj = mysql_fetch_assoc($resDdjj)) {	 ?>	
 	 <tr>
-	    <td align="center"><?php print($rowDdjj['cuil']) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['remuneraciones'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['apor060'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['apor100'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['apor150'],2,',','.')) ?></td>
-		<td align="right"><?php print(number_format($rowDdjj['totalaporte'],2,',','.')) ?></td>
+	    <td align="center"><?php print($rowDdjj['nrcuil']) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['remune'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['apo060'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['apo100'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['apo150'],2,',','.')) ?></td>
+		<td align="right"><?php print(number_format($rowDdjj['totapo'],2,',','.')) ?></td>
 	 </tr>
 <?php } ?>
   </table>

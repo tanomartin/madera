@@ -20,7 +20,6 @@ if ($numpostal == "") {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Cabecera Empresa :.</title>
-</head>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -145,12 +144,12 @@ function validar(formulario) {
 
 
 </script>
-
-<body bgcolor=<?php echo $bgcolor ?>>
+</head>
+<body style="background-color: <?php echo $bgcolor ?>" >
 <div align="center">
-   <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" align="center"/> 	
-  <p><strong>Modificacion Cabecera de Empresa</strong>
-  <form name="modifCabeEmpresa" id="modifCabeEmpresa" method="post" onSubmit="return validar(this)" action="guardarModifCabecera.php?origen=<?php echo $origen ?>">
+   <form name="modifCabeEmpresa" id="modifCabeEmpresa" method="post" onsubmit="return validar(this)" action="guardarModifCabecera.php?origen=<?php echo $origen ?>">
+   <input type="button" name="volver" value="Volver" onclick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" /> 	
+   <p><strong>Modificacion Cabecera de Empresa</strong></p>
     <table width="800" border="0">
       <tr>
         <td><div align="right"><strong>C.U.I.T. </strong></div></td>
@@ -330,13 +329,7 @@ function validar(formulario) {
         </div></td>
       </tr>
     </table>
-    <p>&nbsp;</p>
-    <p>
-      <label></label>
-    </p>
-    <p>&nbsp;</p>
   </form>
-  </p>
 </div>
 </body>
 </html>
