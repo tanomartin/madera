@@ -159,7 +159,7 @@ print("ID CONTROL: ".$idControl."<br>");*/
 </script>
 
 <body bgcolor="#B2A274" onload="formSubmit();">
-<form action="descargaEmpleados.php" id="descargaEmpleados" method="POST"> 
+<form action="descargaEmpleados.php" id="descargaEmpleados" method="post"> 
    <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">

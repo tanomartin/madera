@@ -47,7 +47,7 @@ function informaTitulares() {
 
 
 function rediSabanaCtaCte(origen) {
-	/*$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	var dire = "";
 	if (origen == "ospim") {
 		dire = 'cuentas/cuentaCorrienteOspim.php?cuit='+cuit;
@@ -55,12 +55,7 @@ function rediSabanaCtaCte(origen) {
 	if (origen == "usimra") {
 		dire = 'cuentas/cuentaCorrienteUsimra.php?cuit='+cuit;
 	}
-	location.href = dire;*/
-	if (origen == "ospim") {
-		$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
-		dire = 'cuentas/cuentaCorrienteOspim.php?cuit='+cuit;
-		location.href = dire;
-	}
+	location.href = dire;
 }
 </script>
 

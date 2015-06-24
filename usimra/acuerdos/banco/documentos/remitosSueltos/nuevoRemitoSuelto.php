@@ -125,7 +125,7 @@ function validar(formulario) {
   <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRemitosSueltos.php?ctaRemito=<?php echo $cuentaRemito?>&amp;fecRemito=<?php echo $fechaCargada?>'" align="left"/>
 </p>
 <p align="center"><strong>Nuevo Remito Suelto</strong></p>
-<form id="nuevoRemito" name="nuevoRemito" method="POST" action="guardaNuevoRemitoSuelto.php" onSubmit="return validar(this)">
+<form id="nuevoRemito" name="nuevoRemito" method="post" action="guardaNuevoRemitoSuelto.php" onSubmit="return validar(this)">
   <table width="500" border="1" align="center">
     <tr>
       <td colspan="2"><div align="right">Cuenta: </div></td>

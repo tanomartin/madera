@@ -109,7 +109,7 @@ function validar(formulario) {
   <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRemesas.php?ctaRemesa=<?php echo $cuentaRemesa?>&amp;fecRemesa=<?php echo $fechaCargada?>'" align="left"/>
 </p>
 <p align="center"><strong>Nueva Remesa</strong></p>
-<form id="nuevaRemesa" name="nuevaRemesa" method="POST" action="guardaNuevaRemesa.php" onSubmit="return validar(this)">
+<form id="nuevaRemesa" name="nuevaRemesa" method="post" action="guardaNuevaRemesa.php" onSubmit="return validar(this)">
   <table width="500" border="1" align="center">
     <tr>
       <td colspan="2"><div align="right">Cuenta: </div></td>

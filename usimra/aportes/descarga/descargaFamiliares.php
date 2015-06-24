@@ -154,7 +154,7 @@ echo("</pre>");*/
 </script>
 
 <body bgcolor="#B2A274" onload="formSubmit();">
-<form action="descargaEmpBaja.php" id="descargaEmpBaja" method="POST"> 
+<form action="descargaEmpBaja.php" id="descargaEmpBaja" method="post"> 
    <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
    <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>">
    <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>">

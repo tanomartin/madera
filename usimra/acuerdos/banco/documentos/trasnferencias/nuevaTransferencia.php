@@ -154,7 +154,7 @@ function validar(formulario) {
           </div></td>
         </tr>
       </table>
-      <p><input type="Submit" name="Submit" value="Guardar Transferencia"/></p>
+      <p><input type="submit" name="Submit" value="Guardar Transferencia"/></p>
   </form>
 </div>
 </body>

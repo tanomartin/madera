@@ -62,7 +62,7 @@ print($listadoSerializado);
 </script>
 
 <body onload="formSubmit();">
-<form action="filtroDeudaNominal.php" id="filtroEmpresasEmpleados" method="POST"> 
+<form action="filtroDeudaNominal.php" id="filtroEmpresasEmpleados" method="post"> 
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>">
    <input name="filtros" type="hidden" value="<?php echo $filtrosSerializado ?>">
 </form> 

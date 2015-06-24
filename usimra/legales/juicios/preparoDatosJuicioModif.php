@@ -139,7 +139,7 @@ if (sizeof($sqlPeriodos) > 0) {
 </script>
 
 <body bgcolor="#B2A274" onload="formSubmit();">
-<form action="guardarModificarJuicio.php" id="datosJuicio" method="POST" style="visibility:hidden"> 
+<form action="guardarModificarJuicio.php" id="datosJuicio" method="post" style="visibility:hidden"> 
     <p>
       <input name="cuit" size='200' type="visible" value="<?php echo $cuit ?>">
   </p>

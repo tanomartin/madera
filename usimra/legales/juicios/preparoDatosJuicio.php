@@ -96,7 +96,7 @@ if (sizeof($sqlDelPer) > 0) {
 </script>
 
 <body bgcolor="#B2A274" onload="formSubmit();">
-<form action="guardarJuicio.php" id="datosJuicio" method="POST"> 
+<form action="guardarJuicio.php" id="datosJuicio" method="post"> 
     <input name="cuit" type="hidden" value="<?php echo $cuit ?>">
 	<input name="nroorden" type="hidden" value="<?php echo $nroorden ?>">
    	<input name="insertCabeceraJui" type="hidden" value="<?php echo $sqlCabecera ?>">

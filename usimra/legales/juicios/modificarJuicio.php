@@ -316,7 +316,7 @@ function validar(formulario) {
 <title>.: Nuevo Juicio :.</title>
 </head>
 <body bgcolor="#B2A274" >
-<form id="nuevoJuicio" name="nuevoJuicio" method="POST" action="preparoDatosJuicioModif.php" >
+<form id="nuevoJuicio" name="nuevoJuicio" method="post" action="preparoDatosJuicioModif.php" >
   <div align="center">
     <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
     <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>

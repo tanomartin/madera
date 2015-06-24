@@ -152,7 +152,7 @@ echo("</pre>");
 </script>
 
 <body bgcolor="#B2A274" onload="formSubmit();">
-<form action="informeResultadoDescarga.php" id="resultados" method="POST"> 
+<form action="informeResultadoDescarga.php" id="resultados" method="post"> 
    <input name="nroControl" type="hidden" value="<?php echo $_POST['nroControl'] ?>">
    <input name="empresas" type="hidden" value="<?php echo $_POST['empresas'] ?>">
    <input name="empleados" type="hidden" value="<?php echo $_POST['empleados'] ?>">

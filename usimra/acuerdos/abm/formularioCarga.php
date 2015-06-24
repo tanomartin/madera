@@ -195,7 +195,7 @@ function validar(formulario) {
 <title>.: Carga de Acuerdos :.</title>
 </head>
 <body bgcolor="#B2A274" >
-<form id="nuevoAcuerdo" name="nuevoAcuerdo" method="POST" action="cargarCuotas.php"  onSubmit="return validar(this)" style="visibility:visible" >
+<form id="nuevoAcuerdo" name="nuevoAcuerdo" method="post" action="cargarCuotas.php"  onsubmit="return validar(this)" style="visibility:visible" >
   <input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
    <div align="center">
    <input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/> 
@@ -269,7 +269,7 @@ function validar(formulario) {
           <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
 		  <td colspan="2" valign="bottom">
 		    <div align="left">
-		      <select name="requerimiento" id="requerimiento">
+		      <select name="requerimiento" id="requerimiento" onChange="cargarLiqui(document.forms.nuevoAcuerdo.requerimiento[selectedIndex].value)">
 		        <option value=0>Seleccione un valor </option>
 	            <?php 
 				$sqlNroReq = "select * from reqfiscalizusimra where cuit = ".$cuit;

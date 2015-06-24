@@ -17,7 +17,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 </head>
 
 <body bgcolor="#B2A274" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
-<form method="POST" action="verificador.php">
+<form method="post" action="verificador.php">
   <div align="center">
     <p class="Estilo1">Ingreso Sistema U.S.I.M.R.A. </p>
     <p><img src="img/logo.png" width="350" height="350"> </p>

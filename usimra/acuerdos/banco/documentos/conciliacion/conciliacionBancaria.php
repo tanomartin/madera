@@ -24,7 +24,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" onSubmit="return MsgWait(this)" method="POST" action="ajustaConciliados.php" enctype="multipart/form-data" >
+<form id="form1" name="form1" onSubmit="return MsgWait(this)" method="post" action="ajustaConciliados.php" enctype="multipart/form-data" >
   
   <div align="center">
     <p>

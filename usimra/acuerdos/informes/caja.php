@@ -39,7 +39,7 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" onSubmit="return validar(this)" method="POST" action="cajaExcel.php" enctype="multipart/form-data" >
+<form id="form1" name="form1" onSubmit="return validar(this)" method="post" action="cajaExcel.php" enctype="multipart/form-data" >
 <div align="center">
 <table width="137" border="0">
 	<tr align="center" valign="top">

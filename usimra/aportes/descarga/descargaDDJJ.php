@@ -116,7 +116,7 @@ print("CONTROL: ".$idControl."<br>");*/
 </script>
 
 <body bgcolor="#B2A274" onload="formSubmit();">
-<form action="descargaEmpresas.php" id="descargaEmpresa" method="POST"> 
+<form action="descargaEmpresas.php" id="descargaEmpresa" method="post"> 
    <input name="nroControl" type="hidden" value="<?php echo $nroControl ?>">
    <input name="idControl" type="hidden" value="<?php echo $idControl ?>">
 </form> 

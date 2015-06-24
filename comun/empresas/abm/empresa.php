@@ -48,7 +48,7 @@ function validarBaja() {
 }
 
 function rediSabanaCtaCte(origen, cuit) {
-	/*$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	var dire = "";
 	if (origen == "ospim") {
 		dire = 'cuentas/cuentaCorrienteOspim.php?cuit='+cuit;
@@ -56,29 +56,18 @@ function rediSabanaCtaCte(origen, cuit) {
 	if (origen == "usimra") {
 		dire = 'cuentas/cuentaCorrienteUsimra.php?cuit='+cuit;
 	}
-	location.href = dire;*/
-	if (origen == "ospim") {
-		var dire = "";
-		$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
-		dire = 'cuentas/cuentaCorrienteOspim.php?cuit='+cuit;
-		location.href = dire;
-	}
+	location.href = dire;
 }
 
 function rediBeneficiarios(origen, cuit) {
-	/*var dire = "";
+	var dire = "";
 	if (origen == "ospim") { 
 		dire = "/madera/ospim/afiliados/informes/titularesPorEmpresa.php?cuit="+cuit;
 	}
 	if (origen == "usimra") { 
 		dire = "/madera/usimra/empleados/informes/listadoTitularesPorEmpresa.php?cuit="+cuit;
 	}
-	a= window.open(dire,"","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");*/
-	if (origen == "ospim") { 
-		var dire = "";
-		dire = "/madera/ospim/afiliados/informes/titularesPorEmpresa.php?cuit="+cuit;
-		a= window.open(dire,"","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
-	}
+	a= window.open(dire,"","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 
 </script>

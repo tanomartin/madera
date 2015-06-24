@@ -56,7 +56,7 @@ function validar(formulario) {
   <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarImputaciones.php?ctaResumen=<?php echo $cuentaResumen?>&amp;fecEmision=<?php echo $fechaCargada?>'" align="left"/>
 </p>
 <p align="center"><strong>Nueva Imputacion</strong></p>
-<form id="nuevaImputacion" name="nuevaImputacion" method="POST" action="guardaNuevaImputacion.php" onSubmit="return validar(this)">
+<form id="nuevaImputacion" name="nuevaImputacion" method="post" action="guardaNuevaImputacion.php" onSubmit="return validar(this)">
   <table width="400" border="1" align="center">
     <tr>
       <td><div align="right">Cuenta: </div></td>

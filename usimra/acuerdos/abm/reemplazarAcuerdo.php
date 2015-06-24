@@ -176,7 +176,7 @@ function validar(formulario) {
         </div></td>
         <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
         <td colspan="2" valign="bottom"><div align="left">
-            <select name="requerimiento" id="requerimiento">
+            <select name="requerimiento" id="requerimiento" onchange="cargarLiqui(document.forms.reemAcuerdo.requerimiento[selectedIndex].value)">
               <option value=0>Seleccione un valor </option>
               <?php 
 				$sqlNroReq = "select * from reqfiscalizusimra where cuit = ".$cuit;
