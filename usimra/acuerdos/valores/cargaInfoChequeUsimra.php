@@ -98,10 +98,10 @@ function validar(formulario) {
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" align="center"/>
+  <input type="button" class="nover" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" />
 </div>
 <div align="center">
-  <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="guardoValorAlCobro.php">
+  <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardoValorAlCobro.php">
   	<p>
   	  <input type="hidden" value="<?php echo $datosArrayEnvia  ?>" name="datos" />
     </p>
@@ -120,7 +120,7 @@ function validar(formulario) {
   	  <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>
   	</p>
   	<p><strong>Informaci&oacute;n Valores al Cobro </strong></p>
-  	<table border="1" width="1000" bordercolorlight="#000000" bordercolordark="#000000" bordercolor="#000000" cellpadding="2" cellspacing="0">
+  	<table border="1" width="1000" cellpadding="2" cellspacing="0">
       <tr>
         <td width="150"><div align="center"><strong><font size="1" face="Verdana">CUIT</font></strong></div></td>
         <td width="400"><div align="center"><strong><font size="1" face="Verdana">Raz&oacute;n Social </font></strong></div></td>

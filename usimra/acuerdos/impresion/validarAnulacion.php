@@ -35,7 +35,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'cargaAnulacion.php'" align="center"/>
+  <input type="button" name="volver" value="Volver" onclick="location.href = 'cargaAnulacion.php'" />
   <p class="Estilo1"><strong>Verificacion Anulacion</strong> </p>
   <form id="form1" name="form1" method="post" action="anularBoleta.php?idboleta=<?php echo $rowBol['idboleta']; ?> ">
 	<p><strong>Datos Boleta </strong></p>

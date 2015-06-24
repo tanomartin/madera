@@ -13,9 +13,7 @@ include($libPath."controlSessionUsimra.php"); ?>
 	font-weight: bold;
 }
 -->
-</style>
-</head>
-<style>
+
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
@@ -31,12 +29,13 @@ jQuery(function($){
 });
 
 </script>
+</head>
 
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="selecCanCuotas.php">
   
   <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
+  <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /> 
   </div>
   <p align="center" class="Estilo1">M&oacute;dulo de Cancelaci&oacute;n de Cuotas </p>
    <?php 
@@ -48,9 +47,9 @@ jQuery(function($){
 			print("<div align='center' style='color:#FF0000'><p><b> CUIT NO ENCONTRADO </b></p></div>");
 		}
   ?>
-  <label> 
-  <div align="center">CUIT <input name="cuit" id="cuit" type="text" size="10" /></div>
-  </label>
+  
+  <div align="center"><label> CUIT <input name="cuit" id="cuit" type="text" size="10" /></label></div>
+  
   <p align="center">
     <label>
     <input type="submit" name="Submit" value="Buscar" />

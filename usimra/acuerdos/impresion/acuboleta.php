@@ -10,10 +10,10 @@ require("numeros.php");
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 
 <meta http-equiv="" content="text/html; charset=iso-8859-1"></head>
-<p><font size="2" face="Verdana, Arial, Helvetica, sans-serif">
+
 <body topmargin="0" leftmargin="0">
 
-<table border="0" width="100%" height="90%">
+<table style="width=100%; height=90%; border: none;" >
   <tr>
     <td width="100%" align="center" valign="top"> 
 <?php	
@@ -220,7 +220,7 @@ require("numeros.php");
   </tr>
 </table>
 <div align="center">
-    <table width="400" border="0">
+    <table style="width: 400; border: none;">
       <tr>
           <td width="200"><div align="left"><input type="button" name="volver" value="Volver" onClick="location.href='impBoletas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'"> </div>
           <td width="200"><div align="right"><input type="button" name="imprimir" value="Imprimir" onClick="window.print();"></div></td>

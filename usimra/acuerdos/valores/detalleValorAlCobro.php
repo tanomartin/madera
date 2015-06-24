@@ -9,7 +9,7 @@ $nrocheque = $_GET['nrocheque'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Detalle Valor al Cobro Realizado :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -21,7 +21,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -45,6 +45,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	});
 	
 </script>
+</head>
+
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span class="Estilo2">Valor al Cobro Cheque Nro. '<?php echo $nrocheque ?>' </span></p>
@@ -87,7 +89,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	 		<tr>
 				<td colspan="6" align="right">TOTAL</td>
 				<td align="right"><b><?php echo number_format($total,2,',','.') ?></b></td>
-			<tr>
+			</tr>
 			
     </tbody>
   </table>

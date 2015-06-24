@@ -67,7 +67,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuBoletas.php'" align="center"/> 
+  <input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" /> 
   <p><span class="Estilo1">M&oacute;dulo Anulacion de Bolestas Impresas</span> </p>
   <p>
   <?php 
@@ -83,7 +83,7 @@ A:hover {text-decoration: none;color:#33CCFF }
   ?>
   </p>
 </div>
-<form id="anulacion" name="anulacion" method="post" onSubmit="return validar(this)" action="validarAnulacion.php">
+<form id="anulacion" name="anulacion" method="post" onsubmit="return validar(this)" action="validarAnulacion.php">
   <div align="center">
     <table width="371" border="0">
       <tr>

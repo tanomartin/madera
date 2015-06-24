@@ -20,7 +20,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 <form method="POST" action="verificador.php">
   <div align="center">
     <p class="Estilo1">Ingreso Sistema</p>
-    <table width="512" border="0">
+    <table style="width: 512; border: none">
       <tr>
         <td width="250"><div align="center" class="Estilo2">
           <p><a href="ospim/index.php"><img src="ospim/img/logo.png" width="220" height="200" border="0" /></a></p>

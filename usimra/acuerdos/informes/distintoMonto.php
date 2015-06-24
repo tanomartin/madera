@@ -19,12 +19,12 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" onSubmit="return validar(this)" method="post" action="distintoMontoExcel.php" enctype="multipart/form-data" >
+<form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="distintoMontoExcel.php" enctype="multipart/form-data" >
 <div align="center">
 <table width="137" border="0">
 	<tr align="center" valign="top">
       <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloInformes.php'" align="center"/> 
+        <input type="button" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" /> 
         </div></td>
 	</tr>
 </table>

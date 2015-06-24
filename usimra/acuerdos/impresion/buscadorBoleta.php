@@ -79,7 +79,7 @@ if (isset($dato)) {
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -87,7 +87,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -128,10 +128,12 @@ function abrirDetalle(dire) {
 }
 
 </script>
+</head>
+
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="buscadorBoleta.php">
+<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorBoleta.php">
   <div align="center" >
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuBoletas.php'" align="center"/>
+  <input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'"/>
   <p align="center" class="Estilo1">M&oacute;dulo Buscador de Bolestas</p>
    <?php 
 		if ($noExiste == 1) {
@@ -139,7 +141,6 @@ function abrirDetalle(dire) {
 		}
   ?>
   </div>
-  <label> 
   <div align="center"> 
     <table width="300" border="0">
       <tr>
@@ -186,7 +187,7 @@ function abrirDetalle(dire) {
 			<td><?php echo $boleta['cuota'];?></td>	
 			<td><?php echo $boleta['importe'];?></td>	
 			<td><?php echo $boleta['estado'];?></td>
-			<td><a href=javascript:abrirDetalle("detalleBoleta.php?nrocontrol=<?php echo $boleta['nrocontrol']?>&estado=<?php echo $boleta['estado'] ?>")>Detalle</a></td>
+			<td><input type="button" onclick="javascript:abrirDetalle('detalleBoleta.php?nrocontrol=<?php echo $boleta['nrocontrol']?>&estado=<?php echo $boleta['estado'] ?>')" value="Detalle" /></td>
 		</tr>
 	<?php } ?>
   </table>

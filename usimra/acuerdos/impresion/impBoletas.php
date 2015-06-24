@@ -37,7 +37,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-   <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloImpresion.php'" align="center"/> 
+   <input type="button" name="volver" value="Volver" onclick="location.href = 'moduloImpresion.php'" /> 
  	 <?php 	
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
@@ -64,7 +64,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 		if ($acuerdo != 0) { ?>
   </p>
   <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
-  <table border="1" width="935" bordercolorlight="#000099" bordercolordark="#0066FF" bordercolor="#000000" cellpadding="2" cellspacing="0">
+  <table border="1" width="935" bordercolor="#000000" cellpadding="2" cellspacing="0">
 				<tr>
     				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cuota</font></strong></div></td>
    					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
