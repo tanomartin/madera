@@ -1,6 +1,6 @@
 <p align="center"><strong>Datos de la Empresa </strong></p>
 <div align="center">
-  <table border="1" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:14px; width: 700">
+  <table border="1" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:14px; width: 700px">
     <tr>
       <td><div align="right"><strong>CUIT:</strong></div></td>
       <td><div align="left"><?php echo $row['cuit'] ?></div></td>

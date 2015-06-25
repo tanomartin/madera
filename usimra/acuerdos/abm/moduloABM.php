@@ -14,7 +14,7 @@ include($libPath."controlSessionUsimra.php"); ?>
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -31,11 +31,12 @@ jQuery(function($){
 });
 
 </script>
+</head>
 
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="acuerdos.php">
 <div align="center">
-<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
+<input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /> 
 </div>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos U.S.I.M.R.A </p>
   <?php 
@@ -44,15 +45,9 @@ jQuery(function($){
 			print("<p><div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO</b></div></p>");
 		}
   ?>
-  <label>
-  <div align="center">CUIT 
-    <input name="cuit" id="cuit" type="text" size="10" /></div>
-  </label>
-    <p align="center">
-    <label>
-    <input type="submit" name="Submit" value="Buscar" />
-    </label>
-  </p>
+  
+  <div align="center"><label>CUIT <input name="cuit" id="cuit" type="text" size="10" /></label></div>
+  <p align="center"><input type="submit" name="Submit" value="Buscar" /></p>
 </form>
 </body>
 </html>

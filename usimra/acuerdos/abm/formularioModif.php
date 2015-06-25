@@ -9,17 +9,16 @@ $resulacu=  mysql_query( $sqlacu,$db);
 $rowacu = mysql_fetch_array($resulacu);
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Modificacion de Acuerdos</title>
-</head>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
 	for (i=0; i<= 120; i++) {
@@ -128,13 +127,13 @@ function mostrarPeriodos() {
 
 
 </script>
+</head>
 
 <body  bgcolor="#B2A274" >
-
-<form id="modifAcuerdo" name="modifAcuerdo" method="post" action="actualizarAcuerdo.php" onSubmit="return validar(this)"  style="visibility:visible">
-   	<input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>" />
+<form id="modifAcuerdo" name="modifAcuerdo" method="post" action="actualizarAcuerdo.php" onsubmit="return validar(this)" style="visibility:visible">
+   	<input name="nrcuit" type="text" id="nrcuit" size="4" readonly="readonly" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>" />
 	<div align="center">
-	<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/>
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'"/>
 	</div>
 	 <?php 	
 	    include($libPath."cabeceraEmpresaConsulta.php"); 
@@ -142,7 +141,7 @@ function mostrarPeriodos() {
 	?>
 	<p align="center"><strong>M&oacute;dulo de Modificación</strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong> 
-   	  <input name="nroacu" type="text" id="nroacu" value="<?php echo $nroacu ?>" size="2" readonly="true"  />
+   	  <input name="nroacu" type="text" id="nroacu" value="<?php echo $nroacu ?>" size="2" readonly="readonly"  />
   </p>
    	<p align="center"><strong>ESTADO</strong> 
 	<?php 
@@ -158,7 +157,7 @@ function mostrarPeriodos() {
           <td width="118" valign="bottom"><div align="left">Tipo de Acuerdo</div></td>
           <td width="247" valign="bottom"><div align="left">
             <select name="tipoAcuerdo" size="1" id="tipoAcuerdo">
-              <option value=0>Seleccione un valor </option>
+              <option value="0">Seleccione un valor </option>
               <?php 
 					$query="select * from tiposdeacuerdos";
 					$result= mysql_query( $query,$db);
@@ -202,9 +201,9 @@ function mostrarPeriodos() {
           <td valign="bottom"><div align="left">
             <select name="inpector" id="inspector" >
 		          <?php if ($rowacu['inspectorinterviene'] == 0) { ?>
-						  <option value=0 selected="selected">No Especificado </option>
+						  <option value="0" selected="selected">No Especificado </option>
 					<?php } else { ?>
-						  <option value=0>No Especificado </option>
+						  <option value="0">No Especificado </option>
 					<?php } 
 					$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
 					$resInspec= mysql_query( $sqlInspec,$db);
@@ -219,11 +218,11 @@ function mostrarPeriodos() {
           </div></td>
           <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
           <td valign="bottom"><div align="left">
-            <select name="requerimiento" id="requerimiento" onChange="cargarLiqui(document.forms.modifAcuerdo.requerimiento[selectedIndex].value)">
+            <select name="requerimiento" id="requerimiento" onchange="cargarLiqui(document.forms.modifAcuerdo.requerimiento[selectedIndex].value)">
 		         <?php if ($rowacu['requerimientoorigen'] == 0) { ?>
-						<option value=0 selected="selected">Seleccione un valor </option>
+						<option value="0" selected="selected">Seleccione un valor </option>
 			     <?php } else { ?>
-						  <option value=0>Seleccione un valor </option>
+						  <option value="0">Seleccione un valor </option>
 				<?php } 
 				$sqlNroReq = "select * from reqfiscalizusimra where cuit = ".$cuit;
 				$resNroReq =  mysql_query( $sqlNroReq,$db);
@@ -242,7 +241,7 @@ function mostrarPeriodos() {
           <div align="left">Liquidacion Origen </div>
           </td>
           <td valign="bottom"><div align="left">
-	  	    <input name="nombreArcReq"  value="<?php echo $rowacu['liquidacionorigen']?>"  type="text" id="nombreArcReq" size="40" readonly="readonly" />
+	  	    <input name="nombreArcReq"  value="<?php echo $rowacu['liquidacionorigen']?>" style="background-color: silver;"  type="text" id="nombreArcReq" size="40" readonly="readonly" />
           </div></td>
           <td valign="bottom"><div align="left">Monto Acuerdo </div></td>
           <td valign="bottom"><div align="left">
@@ -250,7 +249,7 @@ function mostrarPeriodos() {
           </div></td>
           <td valign="bottom"><div align="left">Gastos Administrativos </div></td>
           <td valign="bottom"><div align="left">
-          <input name="porcentaje" type="text" id="porcentaje" size="5" value="<?php echo $rowacu['porcengastoadmin']?>" readonly="readonly"/>%</div></td>
+          <input name="porcentaje" type="text" id="porcentaje" style="background-color: silver;" size="5" value="<?php echo $rowacu['porcengastoadmin']?>" readonly="readonly"/>%</div></td>
         </tr>
         <tr>
           <td valign="bottom"> <div align="left">Obervaciones</div></td>
@@ -273,174 +272,96 @@ function mostrarPeriodos() {
         </div></td>
         <td width="400">
           <div align="right">
-            <input type="submit" name="guardar2" value="Guardar Cambios" sub />
+            <input type="submit" name="guardar2" value="Guardar Cambios" />
           </div></td>
       </tr>
     </table>
-    <table width="468" height="29" border="0">
-       
+    <?php 
+    	$sqlPeridos = "select * from detacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
+		$resPeridos =  mysql_query( $sqlPeridos,$db);
+		$canPeridos = mysql_num_rows($resPeridos); 
+	?>
+	<input  name="mostrar" type="text" id="mostrar" size="4" value="<?php echo $canPeridos?>" readonly="readonly" style="visibility:hidden"/>
+    <table style="width: 468; height: 29" border="0">
         <tr>
           <td width="113" height="11"> <div align="center">Mes</div></td>
           <td width="105"><div align="center">A&ntilde;o</div></td>
           <td width="236"><div align="center">Concepto de deuda </div></td>
         </tr>
-       
 	    <tr>
-			<?php 
-				$sqlPeridos = "select * from detacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
-				$resPeridos =  mysql_query( $sqlPeridos,$db);
-				$canPeridos = mysql_num_rows($resPeridos); 
-			?>
-			<input  name="mostrar" type="text" id="mostrar" size="4" value="<?php echo $canPeridos?>" readonly="readonly" style="visibility:hidden"/>
-            <?php
-			$i = 0;
 			
+			  <?php
+			$i = 0;
 			if ($canPeridos > 0) {
-				while ($rowPeridos=mysql_fetch_array($resPeridos)) { 
+				while ($rowPeridos=mysql_fetch_array($resPeridos)) {  
 					if ($rowPeridos['mesacuerdo'] < 10) {
 						$mes = "0".$rowPeridos['mesacuerdo'];
 					} else {
 						$mes = $rowPeridos['mesacuerdo'];
-					}
-					print("<td height='11'><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' value='".$mes."' size='2' onfocusout='validoMes(".$i.")'/></div></td>");
-					print("<td height='11'><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' value='".$rowPeridos['anoacuerdo']."' size='4' onfocusout='validoAnio(".$i.")' /></div></td>");
+					} ?>
+					<td height='11'><div align='center'><input name='mes<?php echo  $i ?>' type='text' id='mes<?php echo  $i ?>' value='<?php echo  $mes ?>' size='2' onfocusout='validoMes("<?php echo  $i ?>")'/></div></td>
+					<td height='11'><div align='center'><input name='anio<?php echo  $i ?>' type='text' id='anio<?php echo  $i ?>' value='<?php echo $rowPeridos['anoacuerdo'] ?>' size='4' onfocusout='validoAnio("<?php echo  $i ?>")' /></div></td>
 					
-					//TODO: Ver de hacerlo mas prolijo....
-					if ($rowPeridos['conceptodeuda'] == "A") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-								<option selected value='A'>Período no Pagado</option>
-								<option value='B'>Pagado Fuera de Término</option>
-								<option value='C'>Aporte y Contribución 3.1%</option>
-								<option value='D'>Aporte 1.5%</option>
-								<option value='E'>Contribución 1.6%</option>
-								<option value='F'>No Remunerativo</option>
-								<option value='G'>Contribución 0.6%</option>
-								<option value='H'>Aporte y Contribución 2.5%</option>
-							  </select> </div></td>");
-					} 
-					if ($rowPeridos['conceptodeuda'] == "B") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>Período no Pagado</option>
-									<option selected value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución 3.1%</option>
-									<option value='D'>Aporte 1.5%</option>
-									<option value='E'>Contribución 1.6%</option>
-									<option value='F'>No Remunerativo</option>
-									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Aporte y Contribución 2.5%</option>
-							  </select> </div></td>");
-					}
-					if ($rowPeridos['conceptodeuda'] == "C") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>Período no Pagado</option>
-									<option value='B'>Pagado Fuera de Término</option>
-									<option selected value='C'>Aporte y Contribución 3.1%</option>
-									<option value='D'>Aporte 1.5%</option>
-									<option value='E'>Contribución 1.6%</option>
-									<option value='F'>No Remunerativo</option>
-									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Aporte y Contribución 2.5%</option>
-							  </select> </div></td>");
-					}
-					if ($rowPeridos['conceptodeuda'] == "D") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>Período no Pagado</option>
-									<option value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución 3.1%</option>
-									<option selected value='D'>Aporte 1.5%</option>
-									<option value='E'>Contribución 1.6%</option>
-									<option value='F'>No Remunerativo</option>
-									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Aporte y Contribución 2.5%</option>
-							  </select> </div></td>");
-					}
-					if ($rowPeridos['conceptodeuda'] == "E") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>Período no Pagado</option>
-									<option value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución 3.1%</option>
-									<option value='D'>Aporte 1.5%</option>
-									<option selected value='E'>Contribución 1.6%</option>
-									<option value='F'>No Remunerativo</option>
-									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Aporte y Contribución 2.5%</option>
-							  </select> </div></td>");
-					}
-					if ($rowPeridos['conceptodeuda'] == "F") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>Período no Pagado</option>
-									<option value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución 3.1%</option>
-									<option value='D'>Aporte 1.5%</option>
-									<option value='E'>Contribución 1.6%</option>
-									<option selected value='F'>No Remunerativo</option>
-									<option value='G'>Contribución 0.6%</option>
-									<option value='H'>Aporte y Contribución 2.5%</option>
-							  </select> </div></td>");
-					}
-					if ($rowPeridos['conceptodeuda'] == "G") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>Período no Pagado</option>
-									<option value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución 3.1%</option>
-									<option value='D'>Aporte 1.5%</option>
-									<option value='E'>Contribución 1.6%</option>
-									<option value='F'>No Remunerativo</option>
-									<option selected value='G'>Contribución 0.6%</option>
-									<option value='H'>Aporte y Contribución 2.5%</option>
-							  </select> </div></td>");
-					}
-					if ($rowPeridos['conceptodeuda'] == "H") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>Período no Pagado</option>
-									<option value='B'>Pagado Fuera de Término</option>
-									<option value='C'>Aporte y Contribución 3.1%</option>
-									<option value='D'>Aporte 1.5%</option>
-									<option value='E'>Contribución 1.6%</option>
-									<option value='F'>No Remunerativo</option>
-									<option value='G'>Contribución 0.6%</option>
-									<option selected value='H'>Aporte y Contribución 2.5%</option>
-							  </select> </div></td>");
-					}
-					//FIN TODO
-					print("</tr>");
-					$i = $i + 1;
+				<?php 
+					  $selectA = "";
+					  $selectB = "";
+					  $selectC = "";
+					  $selectD = "";
+					  $selectE = "";
+					  $selectF = "";
+					  $selectG = "";
+					  $selectH = "";
+					  if ($rowPeridos['conceptodeuda'] == "A") { $selectA = 'selected="selected"'; }
+					  if ($rowPeridos['conceptodeuda'] == "B") { $selectB = 'selected="selected"'; }
+					  if ($rowPeridos['conceptodeuda'] == "C") { $selectC = 'selected="selected"'; }
+					  if ($rowPeridos['conceptodeuda'] == "D") { $selectD = 'selected="selected"'; }
+					  if ($rowPeridos['conceptodeuda'] == "E") { $selectE = 'selected="selected"'; }
+					  if ($rowPeridos['conceptodeuda'] == "F") { $selectF = 'selected="selected"'; }
+					  if ($rowPeridos['conceptodeuda'] == "G") { $selectG = 'selected="selected"'; }
+					  if ($rowPeridos['conceptodeuda'] == "H") { $selectH = 'selected="selected"'; }
+					  ?>
+						<td height='11'>
+							<div align='center'>
+							  <select id='conDeuda<?php echo  $i ?>' name='conDeuda<?php echo  $i ?>'>
+								<option value='A' <?php echo $selectA ?>>Período no Pagado</option>
+								<option value='B' <?php echo $selectB ?>>Pagado Fuera de Término</option>
+								<option value='C' <?php echo $selectC ?>>Aporte y Contribución 3.1%</option>
+								<option value='D' <?php echo $selectD ?>>Aporte 1.5%</option>
+								<option value='E' <?php echo $selectE ?>>Contribución 1.6%</option>
+								<option value='F' <?php echo $selectF ?>>No Remunerativo</option>
+								<option value='G' <?php echo $selectG ?>>Contribución 0.6%</option>
+								<option value='H' <?php echo $selectH ?>>Aporte y Contribución 2.5%</option>
+							  </select> 
+							 </div>
+						</td>
+					 </tr>
+				<?php $i = $i + 1;
 				} 
 			} else {
 				print("No hay periodos");
 			}
 			
-			while ($i < 120 ) {
-				print("<td height='11'><div align='center'><input name='mes".$i."' id='mes".$i."' type='text' size='2' style='visibility:hidden'  onfocusout='validoMes(".$i.")'/></div></td>");
-				print("<td height='11'><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")'/></div></td>");
-				print("<td height='11'><div align='center'>
-							<select id='conDeuda".$i."' name='conDeuda".$i."' style='visibility:hidden'>
-								<option selected value='A'>Período no Pagado</option>
-								<option value='B'>Pagado Fuera de Término</option>
-								<option value='C'>Aporte y Contribución</option>
-								<option value='D'>Aporte</option>
-								<option value='E'>Contribución</option>
-								<option value='F'>No Remunerativo</option>
-							</select> </div></td>");
-				print("</tr>");
-				$i = $i + 1;
-			}	
-			
-			?>
+			while ($i < 120 ) { ?>
+				<tr>
+				<td height='11'><div align='center'><input name='mes<?php echo  $i ?>' id='mes<?php echo  $i ?>' type='text' size='2' style='visibility:hidden'  onfocusout='validoMes("<?php echo  $i ?>")'/></div></td>
+				<td height='11'><div align='center'><input name='anio<?php echo  $i ?>' id='anio<?php echo  $i ?>' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio("<?php echo  $i ?>")'/></div></td>
+				<td height='11'>
+				  <div align='center'>
+					<select id='conDeuda<?php echo  $i ?>' name='conDeuda<?php echo  $i ?>' style='visibility:hidden'>
+						<option selected="selected" value='A'>Período no Pagado</option>
+						<option value='B'>Pagado Fuera de Término</option>
+						<option value='C'>Aporte y Contribución</option>
+						<option value='D'>Aporte</option>
+						<option value='E'>Contribución</option>
+						<option value='F'>No Remunerativo</option>
+					</select> 
+				  </div>
+				 </td>
+				</tr>
+		<?php $i = $i + 1;
+			} ?>
     </table>
-  
-   	<p align="center">&nbsp;</p>
   </div>
 </form>
-
-
 </body>
 </html>
