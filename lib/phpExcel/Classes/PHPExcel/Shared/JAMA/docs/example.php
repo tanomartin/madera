@@ -9,7 +9,7 @@ test and benchmark the LU, QR, SVD and symmetric Eig decompositions.
 The example outputs a multi-column table with these column headings:
 </p>
 
-<table border='1' cellpadding='5' cellspacing='0' align='center'>
+<table border='1'>
   <tr>
     <td><b>n</b></td>
     <td>Order of magic square.</td>
@@ -43,7 +43,7 @@ The example outputs a multi-column table with these column headings:
 Running the Java-based version of the matix square example produces these results:
 </p>
 
-<table border='1' align='center'>
+<table border='1' >
   <tr>
     <th> n </th>
     <th> trace </th>       
