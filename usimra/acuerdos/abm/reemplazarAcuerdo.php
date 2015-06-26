@@ -186,9 +186,9 @@ function validar(formulario) {
         <td valign="bottom"><div align="left">Gastos Administrativos </div></td>
         <td width="62" valign="bottom">
             <div align="left"><label>
-              <input name="gasAdmi" type="radio" value="0" checked="checked" onfocusout="cargarPor()"/>
+              <input name="gasAdmi" type="radio" value="0" checked="checked" onblur="cargarPor()"/>
               NO<br />
-              <input name="gasAdmi" type="radio" value="1" onfocusout="cargarPor()"/>
+              <input name="gasAdmi" type="radio" value="1" onblur="cargarPor()"/>
               SI </label></div>
           </td>
         <td width="88" valign="bottom"><div align="left">

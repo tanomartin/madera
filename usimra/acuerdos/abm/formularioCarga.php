@@ -42,7 +42,7 @@ A:hover {
 
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
-	for (i=0; i<= 120; i++) {
+	for (var i=0; i<= 120; i++) {
 		$("#mes"+i).mask("99");
 		$("#anio"+i).mask("9999");
 	}
@@ -57,7 +57,7 @@ function mostrarPeriodos() {
 		var m = 0;
 		var a = 0;
 		var s = 0;
-		for (i=0; i<=12; i++){
+		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoAcuerdo.mostrar.value) + i;
 			m = "mes" + o;
 			a = "anio" + o;
@@ -102,7 +102,8 @@ function validoMes(id) {
 		alert(errorMes);
 		document.getElementById(nombreMes).focus();
 		return false;
-	} 
+	}
+	return true;
 }
 
 function validoAnio(id){
@@ -114,6 +115,7 @@ function validoAnio(id){
 		document.getElementById(nombreAnio).focus();
 		return false;
 	}
+	return true;
 }
 
 function cargarLiqui(requerimiento) {
@@ -166,7 +168,7 @@ function validar(formulario) {
 	var totalPeriodos = parseInt(formulario.mostrar.value) + 12;
 	var errorMes = "Error en la carga del mes";
 	var errorAnio = "Error en la carga del año";
-	for (i=0; i<=totalPeriodos; i++) {
+	for (var i=0; i<=totalPeriodos; i++) {
 		nombreMes = "mes" + i;
 		nombreAnio = "anio" + i;
 		valorMes = document.getElementById(nombreMes).value;
@@ -187,7 +189,7 @@ function validar(formulario) {
 			return (false);
 		}
 	}
-	
+	return true;
 }
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -309,7 +311,8 @@ function validar(formulario) {
 						</td>
 						<td width="49" valign="bottom">
 							<div align="left">
-								<input name="gasAdmi" type="radio" value="0" checked="checked" onfocusout="cargarPor()" /> NO<br /> <input name="gasAdmi" type="radio" value="1" onfocusout="cargarPor()" /> SI
+								<input name="gasAdmi" type="radio" value="0" checked="checked" onblur="cargarPor()" /> NO<br /> 
+								<input name="gasAdmi" type="radio" value="1" onblur="cargarPor()" /> SI
 							</div>
 						</td>
 						<td width="100" valign="bottom">
@@ -332,7 +335,7 @@ function validar(formulario) {
 				<b>Carga Períodos y Cuotas </b>
 			</p>
 			<p>
-				Cantidad de Cuotas <input name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="habilitarCarga()" />
+				Cantidad de Cuotas <input name="cantCuotas" type="text" id="cantCuotas" size="4" onblur="habilitarCarga()" />
 			</p>
 			<p>
 				<input type="submit" name="guardar" id="guardar" value="Cargar Cuotas" disabled="disabled" />
@@ -359,10 +362,10 @@ function validar(formulario) {
 				if ($i < 12) { ?>
 				<tr>
 					<td height='11'><div align='center'>
-						<input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' onfocusout='validoMes("<?php echo $i ?>")' />
+						<input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' onblur='validoMes("<?php echo $i ?>")' />
 					</div></td>
 					<td height='11'><div align='center'>
-						<input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' size='4' onfocusout='validoAnio("<?php echo $i ?>")' />
+						<input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' size='4' onblur='validoAnio("<?php echo $i ?>")' />
 						</div></td>
 					<td height='11'><div align='center'>
 							<select id='conDeuda<?php echo $i ?>'
@@ -381,10 +384,10 @@ function validar(formulario) {
 				<?php } else { ?>
 				<tr>
 					<td height='11'><div align='center'>
-						<input name='mes<?php echo $i ?>' id='mes<?php echo $i ?>' type='text' size='2' style='visibility: hidden' onfocusout='validoMes("<?php echo $i ?>")' />
+						<input name='mes<?php echo $i ?>' id='mes<?php echo $i ?>' type='text' size='2' style='visibility: hidden' onblur='validoMes("<?php echo $i ?>")' />
 					</div></td>
 					<td height='11'><div align='center'>
-						<input name='anio<?php echo $i ?>' id='anio<?php echo $i ?>' type='text' size='4' style='visibility: hidden' onfocusout='validoAnio("<?php echo $i ?>")' />
+						<input name='anio<?php echo $i ?>' id='anio<?php echo $i ?>' type='text' size='4' style='visibility: hidden' onblur='validoAnio("<?php echo $i ?>")' />
 					</div></td>
 					<td height='11'><div align='center'>
 							<select id='conDeuda<?php echo $i ?>'

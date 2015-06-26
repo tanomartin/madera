@@ -51,7 +51,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script type="text/javascript">
 
 jQuery(function($){
-	for (i=0; i<=<?php echo $candCuotasTotal ?>; i++) {
+	for (var i=0; i<=<?php echo $candCuotasTotal ?>; i++) {
 		$("#fecha"+i).mask("99-99-9999");
 		$("#fcheque"+i).mask("99-99-9999");
 	}
@@ -134,7 +134,7 @@ function desbloquear(){
 function cartelCantidadCuotas(){
 	var cantCuotasAgregar = prompt("Introduzca cantidad de cuotas","0");
 	if (isNumberPositivo(cantCuotasAgregar)) {
-		location.href = "modificarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu ?>&cantAgregar=" + cantCuotasAgregar 
+		location.href = "modificarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu ?>&cantAgregar=" + cantCuotasAgregar;
 	} else {
 		alert("Debe ser un numero positivo");
 		return false;
@@ -144,7 +144,7 @@ function cartelCantidadCuotas(){
 function validoMontos() {
 	var monto = 0;
 	var cantCuotas = document.getElementById("cantCuotas").value;
-	for (i=1; i<=cantCuotas; i++) {
+	for (var i=1; i<=cantCuotas; i++) {
 		monto = monto + parseFloat(document.getElementById("monto"+i).value);
 	}
 	monto = Math.round(monto*100)/100;
@@ -170,7 +170,7 @@ function validarYGuardar(formulario) {
 	document.body.style.cursor = 'wait';
 	
 
-	for (i=1; i<=finfor; i++) {
+	for (var i=1; i<=finfor; i++) {
 		nombreMonto = "monto"+i;
 		monto = document.getElementById(nombreMonto).value;
 		nombreFecha = "fecha"+i;
@@ -205,7 +205,7 @@ function validarYGuardar(formulario) {
 	}
 	if (validoMontos() == false) {
 		desbloquear();
-		return false
+		return false;
 	} else {
 		return true;
 	}

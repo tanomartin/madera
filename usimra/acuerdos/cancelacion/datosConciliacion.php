@@ -145,7 +145,7 @@ function LogicaCargaRemesa(Cuenta) {
 		document.forms.formularioSeleCuotas.selectCuentaRemito.disabled = true;
 		document.forms.formularioSeleCuotas.fecharemesa.value = "";
 		document.forms.formularioSeleCuotas.fecharemesa.disabled = false;
-		document.forms.formularioSeleCuotas.quees.value = "remesa"
+		document.forms.formularioSeleCuotas.quees.value = "remesa";
 	}
 }
 
@@ -391,12 +391,12 @@ function validar(formulario) {
          <td>
            <div align="right">Fecha de la Remesa</div></td>
          <td><label>
-          <input name="fecharemesa" type="text" id="fecharemesa" size="8" disabled="disabled" value="<?php if ($fechaRemesa!="0000-00-00" && $fechaRemesa!="00/00/0000") echo $fechaRemesa ?>" onFocusOut="validarFechaHabilitaBoton(this.value)" onFocus="limpiarSelect()">
+          <input name="fecharemesa" type="text" id="fecharemesa" size="8" disabled="disabled" value="<?php if ($fechaRemesa!="0000-00-00" && $fechaRemesa!="00/00/0000") echo $fechaRemesa ?>" onblur="validarFechaHabilitaBoton(this.value)" onFocus="limpiarSelect()">
            <input name="botonRemesas" type="button" id="botonRemesas" value="Ver Remesas" disabled="disabled" onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();">
            </label></td>
          <td>
            <div align="right">Fecha Remito Suelto</div></td>
-         <td> <input name="fecharemito" type="text" id="fecharemito" size="8" disabled="disabled" value="<?php if ($fechaRemito!="0000-00-00" && $fechaRemito!="00/00/0000") echo $fechaRemito ?>" onFocusOut="validarFechaHabilitaBotonRemitoSuelto(this.value)" onFocus="limpiarSelectRemitoSuelto()">
+         <td> <input name="fecharemito" type="text" id="fecharemito" size="8" disabled="disabled" value="<?php if ($fechaRemito!="0000-00-00" && $fechaRemito!="00/00/0000") echo $fechaRemito ?>" onblur="validarFechaHabilitaBotonRemitoSuelto(this.value)" onFocus="limpiarSelectRemitoSuelto()">
          <input name="botonRemitos" type="button" id="botonRemitos" value="Ver Remitos" disabled="disabled"  onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();"></td>
        </tr>
        <tr>

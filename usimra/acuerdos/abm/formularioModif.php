@@ -21,7 +21,7 @@ $rowacu = mysql_fetch_array($resulacu);
 
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
-	for (i=0; i<= 120; i++) {
+	for (var i=0; i<= 120; i++) {
 		$("#mes"+i).mask("99");
 		$("#anio"+i).mask("9999");
 	}
@@ -77,7 +77,7 @@ function validar(formulario) {
 	var totalPeriodos = parseInt(formulario.mostrar.value);
 	var errorMes = "Error en la carga del mes";
 	var errorAnio = "Error en la carga del año";
-	for (i=0; i<totalPeriodos; i++) {
+	for (var i=0; i<totalPeriodos; i++) {
 		nombreMes = "mes" + i;
 		nombreAnio = "anio" + i;
 		valorMes = document.getElementById(nombreMes).value;
@@ -110,7 +110,7 @@ function mostrarPeriodos() {
 		var m = 0;
 		var a = 0;
 		var s = 0;
-		for (i=0; i<=12; i++){
+		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.modifAcuerdo.mostrar.value) + i;
 			m = "mes" + o;
 			a = "anio" + o;
@@ -299,8 +299,8 @@ function mostrarPeriodos() {
 					} else {
 						$mes = $rowPeridos['mesacuerdo'];
 					} ?>
-					<td height='11'><div align='center'><input name='mes<?php echo  $i ?>' type='text' id='mes<?php echo  $i ?>' value='<?php echo  $mes ?>' size='2' onfocusout='validoMes("<?php echo  $i ?>")'/></div></td>
-					<td height='11'><div align='center'><input name='anio<?php echo  $i ?>' type='text' id='anio<?php echo  $i ?>' value='<?php echo $rowPeridos['anoacuerdo'] ?>' size='4' onfocusout='validoAnio("<?php echo  $i ?>")' /></div></td>
+					<td height='11'><div align='center'><input name='mes<?php echo  $i ?>' type='text' id='mes<?php echo  $i ?>' value='<?php echo  $mes ?>' size='2' onblur='validoMes("<?php echo  $i ?>")'/></div></td>
+					<td height='11'><div align='center'><input name='anio<?php echo  $i ?>' type='text' id='anio<?php echo  $i ?>' value='<?php echo $rowPeridos['anoacuerdo'] ?>' size='4' onblur='validoAnio("<?php echo  $i ?>")' /></div></td>
 					
 				<?php 
 					  $selectA = "";
@@ -343,8 +343,8 @@ function mostrarPeriodos() {
 			
 			while ($i < 120 ) { ?>
 				<tr>
-				<td height='11'><div align='center'><input name='mes<?php echo  $i ?>' id='mes<?php echo  $i ?>' type='text' size='2' style='visibility:hidden'  onfocusout='validoMes("<?php echo  $i ?>")'/></div></td>
-				<td height='11'><div align='center'><input name='anio<?php echo  $i ?>' id='anio<?php echo  $i ?>' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio("<?php echo  $i ?>")'/></div></td>
+				<td height='11'><div align='center'><input name='mes<?php echo  $i ?>' id='mes<?php echo  $i ?>' type='text' size='2' style='visibility:hidden'  onblur='validoMes("<?php echo  $i ?>")'/></div></td>
+				<td height='11'><div align='center'><input name='anio<?php echo  $i ?>' id='anio<?php echo  $i ?>' type='text'  size='4' style='visibility:hidden' onblur='validoAnio("<?php echo  $i ?>")'/></div></td>
 				<td height='11'>
 				  <div align='center'>
 					<select id='conDeuda<?php echo  $i ?>' name='conDeuda<?php echo  $i ?>' style='visibility:hidden'>
