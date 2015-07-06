@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 $tipo = $_POST['tipo'];
 $codigo = $_POST['codigo'];
 $codigo = str_pad($codigo,2,'0',STR_PAD_LEFT);

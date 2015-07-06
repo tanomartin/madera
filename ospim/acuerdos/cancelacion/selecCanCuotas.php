@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
 $cuit= $_POST['cuit'];
 if ($cuit == NULL) {
 	$cuit = $_GET['cuit'];
@@ -49,7 +49,7 @@ A:hover {text-decoration: none;color:#33CCFF }
   <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloCancelacion.php'" align="center"/>
   </p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="340" border="1">

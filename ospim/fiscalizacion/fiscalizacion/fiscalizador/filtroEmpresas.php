@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 //Para que se vea el blockUI
 print("<br>");
 //*************************
@@ -77,8 +77,8 @@ $_SESSION["ultimoAcceso"] = $ahora;
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Fiscalizador OSPIM :.</title>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 	$.blockUI({ message: "<h1>Filtrando Personal Promedio... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	function formSubmit() {

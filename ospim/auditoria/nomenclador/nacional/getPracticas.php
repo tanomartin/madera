@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$codigo=$_POST['valor'];
 	$tipo = $_POST['tipo'];

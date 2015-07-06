@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
@@ -39,9 +39,9 @@ $nroacuNuevo = $rowacu['nroacuerdo'] + 1;
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
@@ -119,7 +119,7 @@ function validar(formulario) {
   <input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" align="center"/>
   </p>
   <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
   ?>
   <p align="center"><strong>M&oacute;dulo de Reemplazo de Acuerdo </strong></p>
   <p align="center"><strong>ACUERDO NUMERO</strong>

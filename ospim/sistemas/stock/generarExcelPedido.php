@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 require_once($libPath."phpExcel/Classes/PHPExcel.php");
 
@@ -8,7 +8,7 @@ $fechapedido = date("d-m-Y His");
 $nombre = "Pedido De Insumos OSPIM ".$fechapedido.".xls";
 
 if(strcmp("localhost",$maquina)==0) {
-	$archivoPedido=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/stock/Pedidos/$nombre";
+	$archivoPedido=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/stock/Pedidos/$nombre";
 }
 else {
 	$archivoPedido="/home/sistemas/Stock/Pedidos/$nombre";

@@ -1,5 +1,5 @@
-<?php  include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
-	include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); ?>
+<?php  include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php");
+	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); ?>
 <script type="text/javascript">document.body.style.cursor = 'wait';</script>		
 <?php	
 	$fechamodificacion = date("Y-m-d H:i:s");

@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 set_time_limit(0);
 //Para que se vea el blockUI
 print("C<br>");
@@ -139,7 +139,7 @@ $sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cui
 $resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
 $rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
 $fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
-include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresas.php");
 
 //PAGOS (ESTADO P) --> Se tienen que fiscalizar para estado F o M
 $arrayPagos = encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
@@ -250,8 +250,8 @@ $listadoDatosReq = urlencode($listadoDatosReq);
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Fiscalizador OSPIM :.</title>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 	$.blockUI({ message: "<h1>Grabando Requerimientos de Fiscalización... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	function formSubmit() {

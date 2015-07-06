@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 
@@ -20,9 +20,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function validar(formulario) {

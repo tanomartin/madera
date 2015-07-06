@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php");
 if (isset($_GET['fecha'])) {
@@ -31,10 +31,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-<link rel="stylesheet" href="/lib/tablas.css">
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/madera/lib/tablas.css">
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function redireccion(tipo ,nroreque, fecha, cuit) {

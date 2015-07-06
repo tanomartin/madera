@@ -1,7 +1,7 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php");
-include($_SERVER['DOCUMENT_ROOT']."/lib/envioMailGeneral.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/envioMailGeneral.php"); 
 $nrodisco=$_GET['nroDis'];
 $codigotipo = 0;
 $codpertene = 3;

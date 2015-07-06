@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 $fechadescarga = date("Y-m-d H:m:s");
 $usuariodescarga = $_SESSION['usuario'];

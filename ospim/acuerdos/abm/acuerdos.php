@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
 $cuit=$_GET['cuit'];
@@ -46,7 +46,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/></p>
   <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="600" border="1">

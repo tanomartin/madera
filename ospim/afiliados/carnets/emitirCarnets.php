@@ -1,11 +1,11 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 require($libPath."fpdf.php");
 $maquina = $_SERVER['SERVER_NAME'];
 
 if(strcmp("localhost",$maquina)==0)
-	$carpetaLote=$_SERVER['DOCUMENT_ROOT']."/ospim/afiliados/carnets/lotesimpresion/";
+	$carpetaLote=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/afiliados/carnets/lotesimpresion/";
 else
 	$carpetaLote="/home/sistemas/Documentos/Repositorio/LotesImpresion/";
 

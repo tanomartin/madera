@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php");
 $base = $_SESSION['dbname'];
@@ -12,8 +12,8 @@ $fechahoy=date("YmdHis",time());
 $usuarioproceso = $_SESSION['usuario'];
 
 if(strcmp("localhost",$maquina)==0) {
-	$archivo_ddjj=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Nominas/DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip";
-	$carpeta_ddjj=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Nominas/";
+	$archivo_ddjj=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Nominas/DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip";
+	$carpeta_ddjj=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Nominas/";
 } else {
 	$archivo_ddjj="/home/sistemas/ArchivosAfip/Nominas/DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip";
 	$carpeta_ddjj="/home/sistemas/ArchivosAfip/Nominas/";
@@ -66,7 +66,7 @@ if($noHayDDJJ) {
 								$proximonro = $rowBuscaNroDisco['AUTO_INCREMENT'];
 
 								if(strcmp("localhost",$maquina)==0) {
-									$destino_ddjj=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Nominas/DDJJ/Disco".$proximonro."/";
+									$destino_ddjj=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Nominas/DDJJ/Disco".$proximonro."/";
 								} else {
 									$destino_ddjj="/home/sistemas/ArchivosAfip/Nominas/DDJJ/Disco".$proximonro."/";
 								}
@@ -317,8 +317,8 @@ if($noHayDDJJ) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
-<link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Transferencias AFIP :.</title>
 </head>

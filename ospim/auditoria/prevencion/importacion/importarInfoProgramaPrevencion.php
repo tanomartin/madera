@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."claves.php"); 
 set_time_limit(0);
@@ -91,7 +91,7 @@ foreach($arrayTablas as $tabla) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Empresas dasdas de alta :.</title>
-<link rel="stylesheet" href="/lib/tablas.css">
+<link rel="stylesheet" href="/madera/lib/tablas.css">
 </head>
 <style>
 A:link {text-decoration: none;color:#0033FF}

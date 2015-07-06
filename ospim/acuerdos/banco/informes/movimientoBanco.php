@@ -1,15 +1,15 @@
 <?php 
-include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");  
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");  
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php");  
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");  
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){

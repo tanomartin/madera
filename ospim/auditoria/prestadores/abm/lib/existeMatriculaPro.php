@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['matricula'])) {
 	$matricula = $_POST['matricula'];
 	$sqlPresta = "SELECT codigoprestador FROM prestadores WHERE matriculaprovincial = '$matricula'";

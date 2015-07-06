@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 set_time_limit(0);
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php"); 
@@ -123,7 +123,7 @@ function deudaAnterior($cuit, $db) {
 	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
 	$anioInicioActi = substr($fechaInicio,0,4);
 	$mesInicioActi = substr($fechaInicio,5,2);
-	include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
+	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresas.php");
 	
 	//print("ANO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
 	//print("MES INICIO ACTIVIDAD: ".$mesInicioActi."<br>");
@@ -200,7 +200,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
 	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
 	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
-	include($_SERVER['DOCUMENT_ROOT']."/lib/limitesTemporalesEmpresas.php");
+	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresas.php");
 	
 	/*print("CUIT: ".$cuit."<br>");
 	print("INICIO MES: ".$mesinicio."<br>");
@@ -261,7 +261,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina) == 0) {
-		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArcCUIL;
+		$direArc = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArcCUIL;
 	} else {
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArcCUIL;
 	}
@@ -575,7 +575,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina) == 0) {
-		$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArc;
+		$direArc = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/fiscalizacion/fiscalizacion/requerimientos/liqui/".$nombreArc;
 	} else {
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArc;
 	}

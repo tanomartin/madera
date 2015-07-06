@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $nrosolicitud=$_GET['nroSolicitud'];
@@ -27,9 +27,9 @@ body {
 }
 -->
 </style>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function muestraArchivo(solicitud, archivo) {

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 set_time_limit(0);
 ini_set('memory_limit', '-1');
 include($libPath."controlSessionOspimSistemas.php"); 

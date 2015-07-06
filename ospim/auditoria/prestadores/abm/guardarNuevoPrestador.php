@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 $nombre = $_POST['nombre'];
 $domicilio = $_POST['domicilio'];

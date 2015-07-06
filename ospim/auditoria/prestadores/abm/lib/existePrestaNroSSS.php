@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['nroreg'])) {
 	$nroreg = $_POST['nroreg'];
 	$sqlPresta = "SELECT codigoprestador FROM prestadores WHERE numeroregistrosss = '$nroreg'";

@@ -1,7 +1,7 @@
 <?php 
-	include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
-	require ($_SERVER['DOCUMENT_ROOT']."/lib/numeros.php");
+	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
+	require ($_SERVER['DOCUMENT_ROOT']."/madera/lib/numeros.php");
 ?>
 
 <html>

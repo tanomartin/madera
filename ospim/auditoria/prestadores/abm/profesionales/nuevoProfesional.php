@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 $codigopresta = $_GET['codigopresta'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre, nomenclador FROM prestadores WHERE codigoprestador = $codigopresta";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
@@ -23,9 +23,9 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 -->
 </style>
 </head>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 include($libPath."claves.php"); 
@@ -15,7 +15,7 @@ if(!file_exists($directorioBK)) {
 }
 print($directorioBK."<br><br>");
 /*if(strcmp("localhost",$maquina)==0) {
-	$pathBkup=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/intraospim/backupintraospim/$carpetames/$delega";
+	$pathBkup=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/intraospim/backupintraospim/$carpetames/$delega";
 } else {
 	$pathBkup="/home/sistemas/IntraOspim/bkup/$carpetames";
 }*/

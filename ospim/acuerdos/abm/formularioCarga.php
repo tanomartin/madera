@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
 $cuit=$_GET['cuit'];
@@ -37,9 +37,9 @@ A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
@@ -201,7 +201,7 @@ function validar(formulario) {
    <input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/>
   </div>
    <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
   <p align="center"><strong>M&oacute;dulo de Carga - Acuerdos Nuevos </strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong>

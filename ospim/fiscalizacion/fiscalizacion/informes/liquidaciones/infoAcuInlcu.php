@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php");
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 $req=$_GET['req'];
 $cuit=$_GET['cuit'];
@@ -50,7 +50,7 @@ function abrirInfo(dire) {
 	   <?php while ($row = mysql_fetch_array($result)) { 
 		   print("<tr>");
 		   print("<td>".$row['nroacuerdo']."</td>");
-		   print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$row['nroacuerdo']."&origen=fiscalizacion')>Ver</a></td>"); 
+		   print ("<td width=81><a href=javascript:abrirInfo('/madera/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$row['nroacuerdo']."&origen=fiscalizacion')>Ver</a></td>"); 
 		   print("</tr>");
 	 	}
 		?>

@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 ?>
@@ -15,12 +15,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 <title>.: Emision de Carnets :.</title>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css" type="text/css" id="" media="print, projection, screen" />
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery-ui.min.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.js" type="text/javascript"></script>
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" type="text/css" id="" media="print, projection, screen" />
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery-ui.min.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 $(document).ready(function(){
 	var nombredelegacion;

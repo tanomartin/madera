@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 include($libPath."claves.php");
 
@@ -9,7 +9,7 @@ $nombreArcProc = "DE".$carpetaMes.".txt";
 $nombreArc = "Desempleo.txt";
 
 if(strcmp("localhost",$maquina) == 0) {
-	$direDirectorio = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/desempleo/Desempleo/";
+	$direDirectorio = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/desempleo/Desempleo/";
 } else {
 	$direDirectorio="/home/sistemas/Documentos/Repositorio/DescargasSSS/Desempleo/";
 }

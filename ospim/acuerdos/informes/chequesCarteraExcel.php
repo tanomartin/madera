@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 require_once($libPath."phpExcel/Classes/PHPExcel.php");
@@ -67,29 +67,34 @@ try{
 	// Setea tamaño de la columna y agrega datos a las celdas de titulos
 	$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(12);
 	$objPHPExcel->getActiveSheet()->setCellValue('A1', 'C.U.I.T.');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(8);
-	$objPHPExcel->getActiveSheet()->setCellValue('B1', 'Acuerdo');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(6);
-	$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Cuota');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(12);
-	$objPHPExcel->getActiveSheet()->setCellValue('D1', 'Monto Cuota');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(11);
-	$objPHPExcel->getActiveSheet()->setCellValue('E1', 'Vto. Cuota');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(11);
-	$objPHPExcel->getActiveSheet()->setCellValue('F1', 'Cheque Nro.');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(13);
-	$objPHPExcel->getActiveSheet()->setCellValue('G1', 'Cheque Banco');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(13);
-	$objPHPExcel->getActiveSheet()->setCellValue('H1', 'Cheque Fecha');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(33);
-	$objPHPExcel->getActiveSheet()->setCellValue('I1', 'Observaciones');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(48);
-	$objPHPExcel->getActiveSheet()->setCellValue('J1', 'Estado');
-
+	$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(50);
+	$objPHPExcel->getActiveSheet()->setCellValue('B1', 'Nombre / Razon Social');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(8);
+	$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Acuerdo');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(13);
+	$objPHPExcel->getActiveSheet()->setCellValue('D1', 'Fecha Acuerdo');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(6);
+	$objPHPExcel->getActiveSheet()->setCellValue('E1', 'Cuota');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(13);
+	$objPHPExcel->getActiveSheet()->setCellValue('F1', 'Cuota Cargada');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(12);
+	$objPHPExcel->getActiveSheet()->setCellValue('G1', 'Monto Cuota');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(11);
+	$objPHPExcel->getActiveSheet()->setCellValue('H1', 'Vto. Cuota');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(11);
+	$objPHPExcel->getActiveSheet()->setCellValue('I1', 'Cheque Nro.');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(13);
+	$objPHPExcel->getActiveSheet()->setCellValue('J1', 'Cheque Banco');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(13);
+	$objPHPExcel->getActiveSheet()->setCellValue('K1', 'Cheque Fecha');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(33);
+	$objPHPExcel->getActiveSheet()->setCellValue('L1', 'Observaciones');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(48);
+	$objPHPExcel->getActiveSheet()->setCellValue('M1', 'Estado');
 
 	$fila=1;	
 
-	$sqlCuotas="SELECT * FROM cuoacuerdosospim WHERE tipocancelacion IN(1,3) order by cuit, nroacuerdo, nrocuota";
+	$sqlCuotas="SELECT c.cuit, e.nombre, c.nroacuerdo, a.fechaacuerdo, c.nrocuota, DATE_FORMAT(c.fecharegistro, '%Y-%m-%d') AS fecharegistro, c.montocuota, c.fechacuota, c.chequenro, c.chequebanco, c.chequefecha, c.observaciones, c.fechacancelacion, c.codigobarra, c.fechaacreditacion FROM cuoacuerdosospim c, empresas e, cabacuerdosospim a WHERE c.tipocancelacion IN(1,3) AND c.cuit = e.cuit AND c.cuit = a.cuit AND c.nroacuerdo = a.nroacuerdo ORDER BY c.cuit, c.nroacuerdo, c.nrocuota;";
 	$resultCuotas = $dbh->query($sqlCuotas);
 	if ($resultCuotas){
 		foreach ($resultCuotas as $cuotas){
@@ -99,18 +104,24 @@ try{
 						$fila++;
 						// Agrega datos a las celdas de datos
 						$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $cuotas[cuit]);
-						$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[nroacuerdo]);
-						$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nrocuota]);
-						$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $cuotas[montocuota]);
-						$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, invertirFecha($cuotas[fechacuota]));
-						$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $cuotas[chequenro]);
-						$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[chequebanco]);
-						if($cuotas[chequefecha]!='0000-00-00')
-							$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[chequefecha]));
+						$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[nombre]);
+						$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nroacuerdo]);
+						if($cuotas[fechaacuerdo]!='0000-00-00')
+							$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, invertirFecha($cuotas[fechaacuerdo]));
 						else
-							$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, '');
-						$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $cuotas[observaciones]);
-						$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, 'Cancelado Manualmente el '.invertirFecha($cuotas[fechacancelacion]));
+							$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, '');
+						$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $cuotas[nrocuota]);
+						$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, invertirFecha($cuotas[fecharegistro]));
+						$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[montocuota]);
+						$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[fechacuota]));
+						$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $cuotas[chequenro]);
+						$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $cuotas[chequebanco]);
+						if($cuotas[chequefecha]!='0000-00-00')
+							$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, invertirFecha($cuotas[chequefecha]));
+						else
+							$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, '');
+						$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $cuotas[observaciones]);
+						$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, 'Cancelado Manualmente el '.invertirFecha($cuotas[fechacancelacion]));
 					}
 				}
 
@@ -119,22 +130,28 @@ try{
 						$fila++;
 						// Agrega datos a las celdas de datos
 						$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $cuotas[cuit]);
-						$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[nroacuerdo]);
-						$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nrocuota]);
-						$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $cuotas[montocuota]);
-						$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, invertirFecha($cuotas[fechacuota]));
-						$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $cuotas[chequenro]);
-						$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[chequebanco]);
-						if($cuotas[chequefecha]!='0000-00-00')
-							$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[chequefecha]));
+						$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[nombre]);
+						$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nroacuerdo]);
+						if($cuotas[fechaacuerdo]!='0000-00-00')
+							$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, invertirFecha($cuotas[fechaacuerdo]));
 						else
-							$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, '');
-						$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $cuotas[observaciones]);
+							$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, '');
+						$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $cuotas[nrocuota]);
+						$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, invertirFecha($cuotas[fecharegistro]));
+						$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[montocuota]);
+						$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[fechacuota]));
+						$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $cuotas[chequenro]);
+						$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $cuotas[chequebanco]);
+						if($cuotas[chequefecha]!='0000-00-00')
+							$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, invertirFecha($cuotas[chequefecha]));
+						else
+							$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, '');
+						$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $cuotas[observaciones]);
 						$fechaboleta="20".substr($cuotas[codigobarra], 17, 2)."-".substr($cuotas[codigobarra], 19, 2)."-".substr($cuotas[codigobarra], 21,2);
 						if($fechaboleta>=$fechafin)
-							$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, 'Hasta el '.substr($fechacargada, 0, 2).'/'.substr($fechacargada, 3, 2).'/'.substr($fechacargada, 6, 4).' en cartera. Acreditado el '.invertirFecha($cuotas[fechaacreditacion]));
+							$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, 'Hasta el '.substr($fechacargada, 0, 2).'/'.substr($fechacargada, 3, 2).'/'.substr($fechacargada, 6, 4).' en cartera. Acreditado el '.invertirFecha($cuotas[fechaacreditacion]));
 						else
-							$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, 'Presentado al Banco. Acreditado el '.invertirFecha($cuotas[fechaacreditacion]));
+							$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, 'Presentado al Banco. Acreditado el '.invertirFecha($cuotas[fechaacreditacion]));
 					}
 				}
 			}
@@ -142,21 +159,27 @@ try{
 				$fila++;
 				// Agrega datos a las celdas de datos
 				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $cuotas[cuit]);
-				$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[nroacuerdo]);
-				$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nrocuota]);
-				$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $cuotas[montocuota]);
-				$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, invertirFecha($cuotas[fechacuota]));
-				$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $cuotas[chequenro]);
-				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[chequebanco]);
+				$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $cuotas[nombre]);
+				$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $cuotas[nroacuerdo]);
+				if($cuotas[fechaacuerdo]!='0000-00-00')
+					$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, invertirFecha($cuotas[fechaacuerdo]));
+				else
+					$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, '');
+				$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $cuotas[nrocuota]);
+				$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, invertirFecha($cuotas[fecharegistro]));
+				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $cuotas[montocuota]);
+				$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[fechacuota]));
+				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $cuotas[chequenro]);
+				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $cuotas[chequebanco]);
 				if($cuotas[chequefecha]!='0000-00-00')
-					$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, invertirFecha($cuotas[chequefecha]));
+					$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, invertirFecha($cuotas[chequefecha]));
 				else
-					$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, '');
-				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $cuotas[observaciones]);
+					$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, '');
+				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $cuotas[observaciones]);
 				if($cuotas[boletaimpresa]==0)
-					$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, 'Hasta la actualidad en cartera.');
+					$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, 'Hasta la actualidad en cartera.');
 				else
-					$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, 'Presentado al Banco. Aun sin acreditar');
+					$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, 'Presentado al Banco. Aun sin acreditar');
 			}
 		}
 	}
@@ -166,33 +189,39 @@ try{
 	$objPHPExcel->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcel->getActiveSheet()->getStyle('A1:M1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	
 	// Setea tipo de dato y alineamiento horizontal a las celdas de datos
 	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
-	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+	$objPHPExcel->getActiveSheet()->getStyle('B2:B'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('C2:C'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 	$objPHPExcel->getActiveSheet()->getStyle('C2:C'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
 	$objPHPExcel->getActiveSheet()->getStyle('D2:D'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	$objPHPExcel->getActiveSheet()->getStyle('E2:E'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
+	$objPHPExcel->getActiveSheet()->getStyle('E2:E'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
 	$objPHPExcel->getActiveSheet()->getStyle('E2:E'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	$objPHPExcel->getActiveSheet()->getStyle('F2:F'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-	$objPHPExcel->getActiveSheet()->getStyle('F2:F'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	$objPHPExcel->getActiveSheet()->getStyle('G2:G'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
-	$objPHPExcel->getActiveSheet()->getStyle('G2:G'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('F2:F'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
+	$objPHPExcel->getActiveSheet()->getStyle('F2:F'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+	$objPHPExcel->getActiveSheet()->getStyle('G2:G'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+	$objPHPExcel->getActiveSheet()->getStyle('G2:G'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 	$objPHPExcel->getActiveSheet()->getStyle('H2:H'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
 	$objPHPExcel->getActiveSheet()->getStyle('H2:H'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 	$objPHPExcel->getActiveSheet()->getStyle('I2:I'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 	$objPHPExcel->getActiveSheet()->getStyle('I2:I'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-	$objPHPExcel->getActiveSheet()->getStyle('I2:I'.$fila)->getAlignment()->setWrapText(true);
 	$objPHPExcel->getActiveSheet()->getStyle('J2:J'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 	$objPHPExcel->getActiveSheet()->getStyle('J2:J'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('K2:K'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
+	$objPHPExcel->getActiveSheet()->getStyle('K2:K'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+	$objPHPExcel->getActiveSheet()->getStyle('L2:L'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+	$objPHPExcel->getActiveSheet()->getStyle('L2:L'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('L2:L'.$fila)->getAlignment()->setWrapText(true);
+	$objPHPExcel->getActiveSheet()->getStyle('M2:M'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+	$objPHPExcel->getActiveSheet()->getStyle('M2:M'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
