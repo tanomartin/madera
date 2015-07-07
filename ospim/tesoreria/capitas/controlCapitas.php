@@ -111,7 +111,7 @@ function abrirDetelle(dire) {
   <p class="Estilo2">Informacion de Subida y Descarga de Padrones - Capitas </p>
   <p class="nover"><b>Seleccione Per&iacute;odo</b></p>
   
-  <form name="controlCapitas" action="controlCapitas.php" method="POST">	 
+  <form name="controlCapitas" action="controlCapitas.php" method="post">	 
 	  <select class="nover" name="periodo" id="periodo">
 	  <option selected="selected" value=0> Seleccione Periodo </option>
 		  <?php 

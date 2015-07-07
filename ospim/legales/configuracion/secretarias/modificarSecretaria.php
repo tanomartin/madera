@@ -49,7 +49,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'secretarias.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Modificar Juzgado </span></p>
-  <form id="modifSecre" name="modifSecre" method="POST" action="guardarModifSecretaria.php?codsecre=<?php echo $codigosecre ?>&codjuz=<?php echo $codigoJuzga ?>" onSubmit="return validar(this)">
+  <form id="modifSecre" name="modifSecre" method="post" action="guardarModifSecretaria.php?codsecre=<?php echo $codigosecre ?>&codjuz=<?php echo $codigoJuzga ?>" onSubmit="return validar(this)">
 				
 				<p>
 				  <label>Codigo Secretaría: <b> <?php echo $codigosecre ?> </b></label>

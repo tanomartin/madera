@@ -101,7 +101,7 @@ function validar(formulario) {
   <p class="Estilo2">Subida de Archivo de Desempleo de A.N.S.E.S.</p>
   <p class="nover"><b>Seleccione Per&iacute;odo</b></p>
   
-  <form name="seleccionPeriodo" action="subidaArchivoDesempleo.php" onsubmit="return validar(this)" method="POST">	 
+  <form name="seleccionPeriodo" action="subidaArchivoDesempleo.php" onsubmit="return validar(this)" method="post">	 
 	  <?php if (isset($_GET['existe'])) { ?><p><div style="color:#FF0000"><b>Período "<?php echo substr($_GET['existe'],4,2)."-".substr($_GET['existe'],0,4) ?>" ya procesado</b></div></p>  <?php } ?>
 	  <?php if (isset($_GET['nocarpeta'])) { ?><p><div style="color:#FF0000"><b>No existe la Carpeta "<?php echo $_GET['nocarpeta']?>"</b></div></p>  <?php } ?>
 	  <?php if (isset($_GET['noexiste'])) { ?><p><div style="color:#FF0000"><b>No existe el archivo "<?php echo $_GET['noexiste']?>" del periodo "<?php echo substr($_GET['carpeta'],4,2)."-".substr($_GET['carpeta'],0,4) ?>"</b></div></p>  <?php } ?>

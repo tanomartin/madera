@@ -266,7 +266,7 @@ jQuery(function($){
   
   <!--******************************************************************************************************************************************************************** -->
  
-  <form name="editarContrato" id="editarContrato" onSubmit="return validar(this)" method="POST" action="eliminarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
+  <form name="editarContrato" id="editarContrato" onSubmit="return validar(this)" method="post" action="eliminarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
     <p><strong>Pr&aacute;cticas dentro del contrato </strong></p>
 		<?php 
   		$sqlPracticas = "SELECT pr.*, p.valornonomenclado, t.descripcion as tipo, tc.descripcion as complejidad FROM cabcontratoprestador c, detcontratoprestador p, practicas pr, tipopracticas t, tipocomplejidad tc WHERE c.codigoprestador = $codigo and c.idcontrato = $idcontrato and c.idcontrato = p.idcontrato and p.codigopractica = pr.codigopractica and p.nomenclador = pr.nomenclador and pr.tipopractica = t.id and pr.codigocomplejidad = tc.codigocomplejidad";
@@ -314,7 +314,7 @@ jQuery(function($){
 	
 	<!--******************************************************************************************************************************************************************** -->	
 	
-	<form name="agregarContrato" id="agregarContrato" onSubmit="return validarAdd(this)" method="POST" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
+	<form name="agregarContrato" id="agregarContrato" onSubmit="return validarAdd(this)" method="post" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
 	  <input type="text" id="prestanomenclador" name="prestanomenclador" value="<?php echo $rowConsultaPresta['nomenclador'] ?>" style="display:none"/>
 	  <p><strong>Pr&aacute;cticas para Agregar al contrato </strong></p>
 	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> ERROR: NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS CON EL MISMO CODIGO</b></div><br>");} ?>

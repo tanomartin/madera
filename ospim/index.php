@@ -18,7 +18,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 </head>
 
 <body bgcolor="#CCCCCC" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
-<form method="POST" action="verificador.php">
+<form method="post" action="verificador.php">
   <div align="center">
     <p class="Estilo1">Ingreso Sistema O.S.P.I.M.</p>
     <p><img src="img/logo.png" width="407" height="350"> </p>

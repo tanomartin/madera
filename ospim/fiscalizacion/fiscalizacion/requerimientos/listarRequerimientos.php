@@ -142,7 +142,7 @@ function validarCheck(tipo,formulario, fecha) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" align="center"/>
   </span></p>
   	<p class="Estilo2">Listado de  Requerimiento del d&iacute;a <?php echo $fecha ?>  </p>
-	<form id="listadoReque" name="listadoReque" method="POST" onSubmit="return validar(this)" />
+	<form id="listadoReque" name="listadoReque" method="post" onSubmit="return validar(this)" />
 	  <div class="grilla">
 	  <table width="1000" border="1" align="center">
         <thead>

@@ -107,7 +107,7 @@ function validar(formulario) {
 <title>.: Nuevo Juicio - Tramite Judicial :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="nuevoTramiteJudicial" name="nuevoTramiteJudicial" method="POST" action="guardarTramite.php" onSubmit="return validar(this)" >
+<form id="nuevoTramiteJudicial" name="nuevoTramiteJudicial" method="post" action="guardarTramite.php" onSubmit="return validar(this)" >
   <div align="center">
    	<input type="reset" name="volver" value="Volver" onClick="location.href = 'modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/>
     <input name="cuit" type="hidden" value="<?php echo $cuit ?>">

@@ -86,7 +86,7 @@ function validar(formulario) {
   <p><span style="text-align:center">
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" align="center"/>
   </span></p>
-  	<form name="editarReque" onSubmit="return validar(this)" method="POST" action="eliminarPeriodos.php" >
+  	<form name="editarReque" onSubmit="return validar(this)" method="post" action="eliminarPeriodos.php" >
 		<input name="cuit" type="text" value="<?php echo $cuit?>" style="display:none"/>
 		<input name="fecha" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>

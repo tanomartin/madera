@@ -90,7 +90,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'productos.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Nuevo Producto</span></p>
-  <form id="nuevoProducto" name="nuevoProducto" method="POST" action="guardarNuevoProducto.php" onSubmit="return validar(this)">		
+  <form id="nuevoProducto" name="nuevoProducto" method="post" action="guardarNuevoProducto.php" onSubmit="return validar(this)">		
 				<table width="850" border="0" style="text-align:left">
                   <tr>
                     <td>Nombre</td>

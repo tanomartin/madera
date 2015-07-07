@@ -102,7 +102,7 @@ $canInsumo = mysql_num_rows($resInsumo);
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'pedidos.php'" align="center"/>
 </p>
   <p><span class="Estilo1">Modificar Pedido </span></p>
-  <form name="nuevoPedido" id="nuevoPedido" method="POST" action="guardarModifPedido.php?cant=<?php echo  $canInsumo?>&id=<?php echo $id ?>" onSubmit="return validar(this)">
+  <form name="nuevoPedido" id="nuevoPedido" method="post" action="guardarModifPedido.php?cant=<?php echo  $canInsumo?>&id=<?php echo $id ?>" onSubmit="return validar(this)">
   <table width="800" border="0">
     <tr>
       <td>Fecha Solicitud </td>

@@ -43,7 +43,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'estados.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Modificar Estado Procesal </span></p>
-  <form id="modifEstado" name="modifEstado" method="POST" action="guardarModifEstado.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
+  <form id="modifEstado" name="modifEstado" method="post" action="guardarModifEstado.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
 				
 				<p>
 				  <label>Codigo: <b> <?php echo $rowEstado['codigo']; ?> </b></label>

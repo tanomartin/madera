@@ -40,7 +40,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'estados.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Nuevo Estado </span></p>
-  <form id="nuevoEstado" name="nuevoEstado" method="POST" action="guardarNuevoEstado.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
+  <form id="nuevoEstado" name="nuevoEstado" method="post" action="guardarNuevoEstado.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
 						
 			<p>
 			  <label>Nuevo Código: <b><?php echo $codigo ?></b></label>

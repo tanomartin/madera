@@ -87,7 +87,7 @@ $_SESSION["ultimoAcceso"] = $ahora;
 </script>
 
 <body onload="formSubmit();">
-<form action="filtroPersonalPromedio.php" id="filtroEmpresas" method="POST"> 
+<form action="filtroPersonalPromedio.php" id="filtroEmpresas" method="post"> 
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>">
    <input name="filtros" type="hidden" value="<?php echo $filtrosSerializado ?>">
 </form> 

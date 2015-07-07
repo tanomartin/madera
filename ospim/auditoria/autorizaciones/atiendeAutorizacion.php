@@ -404,7 +404,7 @@ if($rowLeeSolicitud['material'] == 1) {
 ?>
 
 <body>
-<form id="atiendeAutorizacion" name="atiendeAutorizacion" method="POST" action="guardaAutorizacion.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
+<form id="atiendeAutorizacion" name="atiendeAutorizacion" method="post" action="guardaAutorizacion.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
 <table width="1100" border="0">
   <tr>
     <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="img/logoSolo.jpg" width="92" height="81" /></span></div></td>

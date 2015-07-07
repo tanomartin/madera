@@ -260,7 +260,7 @@ $listadoDatosReq = urlencode($listadoDatosReq);
 </script>
 
 <body onload="formSubmit();">
-<form action="grabaRequerimientos.php" id="fiscalizador" method="POST"> 
+<form action="grabaRequerimientos.php" id="fiscalizador" method="post"> 
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>">
    <input name="datosReq" type="hidden" value="<?php echo $listadoDatosReq ?>">
 </form> 

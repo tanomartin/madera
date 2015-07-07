@@ -19,7 +19,7 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" onSubmit="return validar(this)" method="POST" action="distintoMontoExcel.php" enctype="multipart/form-data" >
+<form id="form1" name="form1" onSubmit="return validar(this)" method="post" action="distintoMontoExcel.php" enctype="multipart/form-data" >
 <div align="center">
 <table width="137" border="0">
 	<tr align="center" valign="top">

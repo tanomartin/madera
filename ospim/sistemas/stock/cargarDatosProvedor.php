@@ -115,7 +115,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
     <input class="nover"  type="reset" name="volver" value="Volver" onclick="location.href = 'pedidos.php'" align="center"/>
 </p>
   <p><span class="Estilo1">Detalle del Pedido <?php echo $id ?> </span></p>
-  <form id="modifDetPedido" name="modifDetPedido"  method="POST" action="guardarModifDetallePedido.php?id=<?php echo  $id?>&cantinsumos=<?php echo $canDetPedido?>" onSubmit="return validar(this)">
+  <form id="modifDetPedido" name="modifDetPedido"  method="post" action="guardarModifDetallePedido.php?id=<?php echo  $id?>&cantinsumos=<?php echo $canDetPedido?>" onSubmit="return validar(this)">
   <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	  <thead>
 		<tr>

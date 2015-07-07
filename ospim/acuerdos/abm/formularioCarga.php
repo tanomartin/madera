@@ -195,7 +195,7 @@ function validar(formulario) {
 <title>.: Carga de Acuerdos :.</title>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="nuevoAcuerdo" name="nuevoAcuerdo" method="POST" action="cargarCuotas.php"  onSubmit="return validar(this)" style="visibility:visible" >
+<form id="nuevoAcuerdo" name="nuevoAcuerdo" method="post" action="cargarCuotas.php"  onSubmit="return validar(this)" style="visibility:visible" >
   <input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
    <div align="center">
    <input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/>

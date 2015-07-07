@@ -75,7 +75,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'insumos.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Modificar Insumo</span></p>
-  <form id="nuevoInsumo" name="nuevoInsumo" method="POST" action="guardarModifInsumo.php" onSubmit="return validar(this)">		
+  <form id="nuevoInsumo" name="nuevoInsumo" method="post" action="guardarModifInsumo.php" onSubmit="return validar(this)">		
 			 <input name="idInsumo" id="idInsumo" type="hidden" value="<?php echo $rowInsumo['id'] ?>" />
 			<table width="850" border="0" style="text-align:left">
               <tr>

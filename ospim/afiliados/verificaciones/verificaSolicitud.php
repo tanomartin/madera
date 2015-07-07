@@ -64,7 +64,7 @@ $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db);
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 ?>
 <body>
-<form id="verificaSolicitud" name="verificaSolicitud" method="POST" action="guardaVerificacion.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
+<form id="verificaSolicitud" name="verificaSolicitud" method="post" action="guardaVerificacion.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
 <table width="1100" border="0">
   <tr>
     <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.jpg" width="92" height="81" /></span></div></td>

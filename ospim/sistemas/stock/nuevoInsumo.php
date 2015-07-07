@@ -70,7 +70,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'insumos.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Nuevo Insumo </span></p>
-  <form id="nuevoInsumo" name="nuevoInsumo" method="POST" action="guardarNuevoInsumo.php" onSubmit="return validar(this)">		
+  <form id="nuevoInsumo" name="nuevoInsumo" method="post" action="guardarNuevoInsumo.php" onSubmit="return validar(this)">		
 			<table width="850" border="0" style="text-align:left">
               <tr>
                 <td>Nombre</td>

@@ -118,7 +118,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'productos.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Modificar Producto</span></p>
-  <form id="modifProducto" name="modifProducto" method="POST" action="guardarModifProducto.php" onSubmit="return validar(this)">
+  <form id="modifProducto" name="modifProducto" method="post" action="guardarModifProducto.php" onSubmit="return validar(this)">
   	<input name="id" type="text" id="id" size="3" maxlength="3" value="<?php echo $rowProd['id'] ?>" style="visibility:hidden"/>	
 				<table width="850" border="0" style="text-align:left">
                   <tr>

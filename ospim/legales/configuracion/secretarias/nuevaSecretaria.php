@@ -39,7 +39,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'secretarias.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Nueva Secretaria </span></p>
-  <form id="nuevaSecre" name="nuevaSecre" method="POST" action="guardarNuevaSecretaria.php" onSubmit="return validar(this)">
+  <form id="nuevaSecre" name="nuevaSecre" method="post" action="guardarNuevaSecretaria.php" onSubmit="return validar(this)">
 				
 	<p>
 	  <label></label>

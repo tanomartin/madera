@@ -47,7 +47,7 @@ function validar(formulario) {
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'juzgados.php'" align="center"/>
  </p>
   <p><span class="Estilo2">Modificar Juzgado </span></p>
-  <form id="modifGestor" name="modifGestor" method="POST" action="guardarModifJuzgado.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
+  <form id="modifGestor" name="modifGestor" method="post" action="guardarModifJuzgado.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
 				
 				<p>
 				  <label>Codigo: <b> <?php echo $rowJuzgado['codigo']; ?> </b></label>
