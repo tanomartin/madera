@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-07-2015 a las 15:50:52
+-- Tiempo de generación: 07-07-2015 a las 16:31:19
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -471,6 +471,37 @@ CREATE TABLE IF NOT EXISTS `banacuerdosusimra` (
 --
 
 CREATE TABLE IF NOT EXISTS `banaportesusimra` (
+  `nromovimiento` int(6) unsigned NOT NULL COMMENT 'Numero de Movimiento en el Banco',
+  `sucursalorigen` char(4) NOT NULL COMMENT 'Sucursal de Origen del Movimiento',
+  `fecharecaudacion` date NOT NULL COMMENT 'Fecha en que se Deposita',
+  `fechaacreditacion` date NOT NULL COMMENT 'Fecha en que Acredita el Banco',
+  `estadomovimiento` char(1) NOT NULL COMMENT 'Tipo/Status del Movimiento',
+  `sucursalbcra` char(4) NOT NULL COMMENT 'Sucursal del Banco Central',
+  `codigomovimiento` int(2) unsigned NOT NULL COMMENT 'Codigo de Movimiento',
+  `importe` decimal(15,2) NOT NULL COMMENT 'Importe Acreditado',
+  `moneda` int(1) unsigned NOT NULL COMMENT 'Moneda del Deposito',
+  `codigobarra` char(80) NOT NULL COMMENT 'Codigo de Barra de la Boleta de Pago',
+  `cuit` char(11) NOT NULL COMMENT 'CUIT de la Empresa - En Tabla Empresas',
+  `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control Univoco para Identificacion de la Boleta',
+  `chequebanco` int(4) unsigned DEFAULT NULL COMMENT 'Codigo del Banco del Cheque',
+  `chequesucursal` int(4) unsigned DEFAULT NULL COMMENT 'Codigo de Sucursal del Banco del Cheque',
+  `chequenro` int(8) unsigned DEFAULT NULL COMMENT 'Nro. de Cheque',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha en que se carga el Registro en la Tabla',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que carga el Registro en la Tabla',
+  `fechavalidacion` datetime DEFAULT NULL COMMENT 'Fecha del Proceso de Validacion de la Boleta',
+  `usuariovalidacion` char(50) DEFAULT NULL COMMENT 'Usuario que Genera el Proceso de Validacion de la Boleta',
+  `fechaimputacion` datetime DEFAULT NULL COMMENT 'Fecha del Proceso de Imputacion del Pago en la Tabla seguvidausimra',
+  `usuarioimputacion` char(50) DEFAULT NULL COMMENT 'Usuario que Genera el Proceso de Imputacion del Pago en la Tabla seguvidausimra',
+  PRIMARY KEY (`nromovimiento`,`sucursalorigen`,`fecharecaudacion`,`fechaacreditacion`,`estadomovimiento`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `banextraordinariausimra`
+--
+
+CREATE TABLE IF NOT EXISTS `banextraordinariausimra` (
   `nromovimiento` int(6) unsigned NOT NULL COMMENT 'Numero de Movimiento en el Banco',
   `sucursalorigen` char(4) NOT NULL COMMENT 'Sucursal de Origen del Movimiento',
   `fecharecaudacion` date NOT NULL COMMENT 'Fecha en que se Deposita',
@@ -1098,6 +1129,19 @@ CREATE TABLE IF NOT EXISTS `consumoinsumo` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `conveniosbancousimra`
+--
+
+CREATE TABLE IF NOT EXISTS `conveniosbancousimra` (
+  `nrocovenio` int(10) unsigned NOT NULL COMMENT 'Nro. de Convenio',
+  `descripcion` text NOT NULL COMMENT 'Descripcion del Convenio',
+  `cuentaasociada` int(2) DEFAULT NULL COMMENT 'Nro. de Cuenta Bancaria Asociada (Tabla: cuentasusimra)',
+  PRIMARY KEY (`nrocovenio`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Convenios de Boletas Electronicas USIMRA-Bco. Nacion';
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `cuentasusimra`
 --
 
@@ -1168,6 +1212,33 @@ CREATE TABLE IF NOT EXISTS `cuoacuerdosusimra` (
   `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
   PRIMARY KEY (`cuit`,`nroacuerdo`,`nrocuota`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Cuotas de Acuerdos de USIMRA';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cuotaextraordinariausimra`
+--
+
+CREATE TABLE IF NOT EXISTS `cuotaextraordinariausimra` (
+  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. de la Empresa',
+  `mespago` int(2) unsigned NOT NULL COMMENT 'Mes del Pago',
+  `anopago` int(4) unsigned NOT NULL COMMENT 'Anio del Pago',
+  `nropago` int(3) unsigned NOT NULL COMMENT 'Nro de Pago',
+  `fechapago` date NOT NULL COMMENT 'Fecha de Pago',
+  `cantidadaportantes` int(5) unsigned NOT NULL COMMENT 'Cantidad de Aportantes',
+  `totalaporte` decimal(12,2) unsigned NOT NULL COMMENT 'Total de Aporte',
+  `montorecargo` decimal(9,2) unsigned NOT NULL COMMENT 'Importe de Recargo Incluido',
+  `montopagado` decimal(9,2) unsigned NOT NULL COMMENT 'Total Pagado',
+  `observaciones` text COMMENT 'Observaciones',
+  `sistemacancelacion` char(1) NOT NULL COMMENT 'Sistema de Cancelacion del Pago - En tabla sistemascancelacion',
+  `codigobarra` char(39) DEFAULT NULL COMMENT 'Codigo de Barra de la Boleta de Pago',
+  `fechaacreditacion` date NOT NULL COMMENT 'Fecha en que se acredita el Pago',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que inicializa el Registro',
+  `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de ultima modificacion del Registro',
+  `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de ultima modificacion del Registro',
+  PRIMARY KEY (`cuit`,`anopago`,`mespago`,`nropago`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Cabecera de Pagos Para Cuota Excepcional y Extraordinaria USIMRA';
 
 -- --------------------------------------------------------
 
@@ -1576,6 +1647,7 @@ CREATE TABLE IF NOT EXISTS `diasbancousimra` (
   `ano` int(4) NOT NULL,
   `mes` int(2) NOT NULL,
   `dia` int(2) NOT NULL,
+  `nroconvenio` int(10) unsigned NOT NULL,
   `procesado` int(1) NOT NULL DEFAULT '0',
   `exceptuado` int(1) NOT NULL DEFAULT '0',
   `observacion` char(100) DEFAULT NULL,
@@ -1583,7 +1655,7 @@ CREATE TABLE IF NOT EXISTS `diasbancousimra` (
   `usuarioregistro` char(50) NOT NULL,
   `fechamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` char(50) DEFAULT NULL,
-  PRIMARY KEY (`ano`,`mes`,`dia`)
+  PRIMARY KEY (`ano`,`mes`,`dia`,`nroconvenio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Tabla donde se cargan los días a procesar del banco en USIMRA';
 
 -- --------------------------------------------------------
@@ -3061,7 +3133,7 @@ CREATE TABLE IF NOT EXISTS `seguvidausimra` (
   `montopagado` decimal(9,2) unsigned NOT NULL COMMENT 'Total Pagado',
   `observaciones` text COMMENT 'Observaciones',
   `sistemacancelacion` char(1) NOT NULL COMMENT 'Sistema de Cancelacion del Pago - En tabla sistemascancelacion',
-  `codigobarra` char(30) DEFAULT NULL COMMENT 'Codigo de Barra de la Boleta de Pago',
+  `codigobarra` char(39) DEFAULT NULL COMMENT 'Codigo de Barra de la Boleta de Pago',
   `fechaacreditacion` date NOT NULL COMMENT 'Fecha en que se acredita el Pago',
   `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que inicializa el Registro',
