@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 02-06-2015 a las 14:58:06
+-- Tiempo de generación: 07-07-2015 a las 15:50:52
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -204,6 +204,17 @@ CREATE TABLE IF NOT EXISTS `agrufiscalizusimra` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `aniosusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `aniosusimra` (
+  `anio` int(4) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`anio`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora para habilitacion de años en Aplicativo DDJJ';
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `anuladasospim`
 --
 
@@ -308,7 +319,7 @@ CREATE TABLE IF NOT EXISTS `aporcontroldescarga` (
   `cantidadtitularesbaja` int(4) unsigned DEFAULT NULL,
   `cantidadfamiliaresbaja` int(4) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=99 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=106 ;
 
 -- --------------------------------------------------------
 
@@ -545,7 +556,7 @@ CREATE TABLE IF NOT EXISTS `boletasusimra` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=31852 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=31860 ;
 
 -- --------------------------------------------------------
 
@@ -919,15 +930,15 @@ CREATE TABLE IF NOT EXISTS `capitulosdepracticas` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `categorias`
+-- Estructura de tabla para la tabla `categoriasusimra`
 --
 
-CREATE TABLE IF NOT EXISTS `categorias` (
+CREATE TABLE IF NOT EXISTS `categoriasusimra` (
   `codram` int(3) NOT NULL DEFAULT '0',
   `codcat` int(3) NOT NULL,
-  `descri` varchar(100) NOT NULL DEFAULT '',
+  `descri` char(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`codram`,`codcat`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Categorias de empleados segun rama del Aplicativo DDJJ';
 
 -- --------------------------------------------------------
 
@@ -1815,6 +1826,27 @@ CREATE TABLE IF NOT EXISTS `estadocivil` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `estadocontablecontrol`
+--
+
+CREATE TABLE IF NOT EXISTS `estadocontablecontrol` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `anio` int(4) NOT NULL,
+  `mes` int(2) NOT NULL,
+  `remuneracion` decimal(20,2) NOT NULL,
+  `obligacion` decimal(20,2) NOT NULL,
+  `pagos` decimal(20,2) NOT NULL,
+  `patharchivo` varchar(100) CHARACTER SET latin1 NOT NULL,
+  `discoinicio` int(4) NOT NULL,
+  `discofin` int(4) NOT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) CHARACTER SET latin1 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=11 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `estadosdeacuerdos`
 --
 
@@ -1835,6 +1867,25 @@ CREATE TABLE IF NOT EXISTS `estadosprocesales` (
   `descripcion` char(100) NOT NULL COMMENT 'Descripcion',
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Codificadora de Estados Procesales' AUTO_INCREMENT=9 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `extraordinariosusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `extraordinariosusimra` (
+  `anio` int(4) unsigned NOT NULL DEFAULT '0',
+  `mes` int(2) unsigned NOT NULL DEFAULT '0',
+  `relacionmes` int(2) unsigned NOT NULL DEFAULT '0',
+  `tipo` int(1) unsigned NOT NULL DEFAULT '0',
+  `valor` decimal(7,3) unsigned NOT NULL DEFAULT '0.000',
+  `retiene060` int(1) unsigned NOT NULL DEFAULT '0',
+  `retiene100` int(1) unsigned NOT NULL DEFAULT '0',
+  `retiene150` int(1) unsigned NOT NULL DEFAULT '0',
+  `mensaje` text,
+  PRIMARY KEY (`anio`,`mes`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora de periodos para pagos extraordinarios Aplicativo DDJJ';
 
 -- --------------------------------------------------------
 
@@ -2284,7 +2335,7 @@ CREATE TABLE IF NOT EXISTS `nominasddjj` (
   `registrosprocesoospim` int(6) unsigned DEFAULT NULL COMMENT 'Cantidad Total de Registros Resultantes del proceso del Archivo en OSPIM',
   `carpetaarchivoospim` text COMMENT 'Carpeta en el Servidor donde se almacena el Archivo Procesado en OSPIM',
   PRIMARY KEY (`nrodisco`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Identificacion en OSPIM Archivos de Nominas AFIP por DDJJ' AUTO_INCREMENT=319 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Identificacion en OSPIM Archivos de Nominas AFIP por DDJJ' AUTO_INCREMENT=358 ;
 
 -- --------------------------------------------------------
 
@@ -2524,6 +2575,19 @@ CREATE TABLE IF NOT EXISTS `periodosanterioresusimra` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `periodosusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `periodosusimra` (
+  `anio` int(4) unsigned NOT NULL DEFAULT '0',
+  `mes` int(2) unsigned NOT NULL DEFAULT '0',
+  `descripcion` char(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`anio`,`mes`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora para habilitacion de meses en Aplicativo DDJJ';
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `practicas`
 --
 
@@ -2738,14 +2802,14 @@ CREATE TABLE IF NOT EXISTS `provincia` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `rama`
+-- Estructura de tabla para la tabla `ramausimra`
 --
 
-CREATE TABLE IF NOT EXISTS `rama` (
-  `id` int(2) unsigned NOT NULL AUTO_INCREMENT,
-  `descripcion` varchar(100) NOT NULL,
+CREATE TABLE IF NOT EXISTS `ramausimra` (
+  `id` int(2) unsigned NOT NULL,
+  `descripcion` char(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Ramas de empresas del Aplicativo DDJJ';
 
 -- --------------------------------------------------------
 
@@ -3415,7 +3479,7 @@ CREATE TABLE IF NOT EXISTS `transferenciasusimra` (
   `fechamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` char(50) DEFAULT NULL,
   PRIMARY KEY (`idtransferencia`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
