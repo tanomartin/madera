@@ -6,7 +6,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Informes SUR OSPIM :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -15,7 +15,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 function informes(dire) {
@@ -23,10 +23,11 @@ function informes(dire) {
 	location.href = dire;
 }
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuSur.php'" align="center"/> 
+	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuSur.php'" /> 
 </div>
 <div align="center">
 	<h2>Men&uacute; Consultas e Informes</h2>

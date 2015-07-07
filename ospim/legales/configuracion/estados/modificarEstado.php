@@ -12,7 +12,7 @@ $rowEstado = mysql_fetch_array($resEstado);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Estado Procesal :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -36,14 +36,15 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'estados.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'estados.php'" />
  </p>
   <p><span class="Estilo2">Modificar Estado Procesal </span></p>
-  <form id="modifEstado" name="modifEstado" method="post" action="guardarModifEstado.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
+  <form id="modifEstado" name="modifEstado" method="post" action="guardarModifEstado.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">
 				
 				<p>
 				  <label>Codigo: <b> <?php echo $rowEstado['codigo']; ?> </b></label>
@@ -68,7 +69,7 @@ function validar(formulario) {
 			   <?php } ?>
                     
                     <td><div align="center">
-                      <input type="submit" name="guardar" value="Guardar Cambios" sub/>
+                      <input type="submit" name="guardar" value="Guardar Cambios" />
                     </div></td>
                   </tr>
                 </table>

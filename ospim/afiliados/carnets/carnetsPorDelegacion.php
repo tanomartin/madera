@@ -109,7 +109,7 @@ function validar(formulario) {
 <div align="center">
 	<p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloImpresion.php'"/></p>
   	<form name="carnetsPorDelegacion" id="carnetsPorDelegacion" method="post" onSubmit="return validar(this)" action="emitirCarnets.php">
-  	<p><h2>Carnets por Delegaci&oacute;n</h2></p>
+  	<h2>Carnets por Delegaci&oacute;n</h2>
 	<table>
 		<tr>
 			<td width="96"><strong>Delegación</strong></td>
@@ -124,7 +124,7 @@ function validar(formulario) {
 		    			}
 					?>
 	        	</select>
-	      	    <input name="delegacion" type="text" id="delegacion" value="" size="6" readonly=" true"style="visibility:hidden" />
+	      	    <input name="delegacion" type="text" id="delegacion" value="" size="6" readonly="readonly" style="visibility:hidden" />
 		  	</div></td>
 		</tr>
 	</table>

@@ -6,15 +6,17 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Afiliados OSPIM :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAfiliados.php'" align="center"/> 
+	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuAfiliados.php'" /> 
 </div>
 <div align="center">
 	<h2>Men&uacute; Consultas e Informes</h2>

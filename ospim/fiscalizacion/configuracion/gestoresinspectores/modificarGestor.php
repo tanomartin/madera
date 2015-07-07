@@ -12,7 +12,7 @@ $rowGestor = mysql_fetch_array($resGestor);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Gestores :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -34,14 +34,15 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'gestores.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'gestores.php'" />
  </p>
   <p><span class="Estilo2">Modificar Gestor de Acuerdos </span></p>
-  <form id="modifGestor" name="modifGestor" method="post" action="guardarModifGestor.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
+  <form id="modifGestor" name="modifGestor" method="post" action="guardarModifGestor.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">
 				
 				<p>
 				  <label>Codigo: <b> <?php echo $rowGestor['codigo']; ?> </b></label>
@@ -70,7 +71,7 @@ function validar(formulario) {
 			   <?php } ?>
                     </div></td>
                     <td width="167"><div align="center">
-                      <input type="submit" name="guardar" value="Guardar Cambios" sub/>
+                      <input type="submit" name="guardar" value="Guardar Cambios" />
                     </div></td>
                     <td width="167">
 					  <div align="center">

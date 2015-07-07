@@ -42,7 +42,7 @@ $rowExpediente = mysql_fetch_assoc($resExpediente);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Consulta Discapacitado :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -59,10 +59,12 @@ function verCertificado(dire){
 }
 
 </script>
+</head>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <?php if (!isset($_GET['nomostrar'])) { ?> <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" align="center"/> <?php } ?>
+    <?php if (!isset($_GET['nomostrar'])) { ?> <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" /> <?php } ?>
   </span></p>
   <p class="Estilo2">Consulta de Discapacidado  </p>
   <table width="500" border="1">
@@ -79,7 +81,6 @@ function verCertificado(dire){
       <td><div align="left"><?php echo $tipoBeneficiario." - ".$rowBeneficiario['parentesco'] ?></div></td>
     </tr>
   </table>
- </p>
   <table width="400" border="0">
     <tr>
       <td width="180"><div align="right"><span class="Estilo2">Tipo Discapacidad</span> </div></td>
@@ -186,7 +187,7 @@ function verCertificado(dire){
     <tr>
       <td width="436" height="41">
         <div align="right">
-          <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+          <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
         </div></td>
       <td width="454"><p align="left">
         <?php if ($activo == 1 && !isset($_GET['nomostrar'])) { ?>
@@ -195,7 +196,6 @@ function verCertificado(dire){
       </td>
     </tr>
   </table>
-  <p>
     <?php } ?>
 </div>
 </body>

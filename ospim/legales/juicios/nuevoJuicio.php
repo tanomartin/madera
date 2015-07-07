@@ -72,7 +72,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
-	for (i=0; i<= 120; i++) {
+	for (var i=0; i<= 120; i++) {
 		$("#mes"+i).mask("99");
 		$("#anio"+i).mask("9999");
 	}
@@ -112,9 +112,9 @@ function limpiarAcuerdos() {
 	formatoPeriodoInicio();
 	var limite = <?php echo sizeof($acuAbs) ?>;
 	if (limite == 1) {
-		document.forms.nuevoJuicio.nroacu.checked = false
+		document.forms.nuevoJuicio.nroacu.checked = false;
 	} else {
-		for (i=0; i < limite; i++) {
+		for (var i=0; i < limite; i++) {
 			document.forms.nuevoJuicio.nroacu[i].checked = false;
 		}
 	}
@@ -130,7 +130,7 @@ function mostrarAcuerdos() {
 }
 
 function formatoPeriodoInicio() {
-	for(i=0; i<12; i++) {
+	for(var i=0; i<12; i++) {
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
@@ -140,7 +140,7 @@ function formatoPeriodoInicio() {
 		document.getElementById(a).value="";
 		document.getElementById(con).value="";
 	}
-	for (i=12; i<120; i++){
+	for (var i=12; i<120; i++){
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
@@ -174,6 +174,7 @@ function validoMes(id) {
 		document.getElementById(nombreMes).focus();
 		return false;
 	} 
+	return true;
 }
 
 function validoAnio(id){
@@ -185,6 +186,7 @@ function validoAnio(id){
 		document.getElementById(nombreAnio).focus();
 		return false;
 	}
+	return true;
 }
 
 function limpioid(id) {
@@ -198,7 +200,7 @@ function limpioid(id) {
 	anio = document.getElementById(anionombre).value;
 	
 	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
-	for (i=0; i<n; i++){
+	for (var i=0; i<n; i++){
 		if (i != id) {
 			mescom = "mes" + i;
 			aniocom = "anio" + i;
@@ -222,7 +224,7 @@ function mostrarPeriodos() {
 		var o = 0;
 		var m = 0;
 		var a = 0;
-		for (i=0; i<=12; i++){
+		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
 			m = "mes" + o;
 			a = "anio" + o;
@@ -284,7 +286,7 @@ function validar(formulario) {
 				}
 			} else {
 				var algunCheck = false;
-				for (i=0; i < limite; i++) {
+				for (var i=0; i < limite; i++) {
 					if(document.forms.nuevoJuicio.nroacu[i].checked) {
 						algunCheck = true;
 					}
@@ -308,15 +310,15 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC" >
 <form id="nuevoJuicio" name="nuevoJuicio" method="post" action="preparoDatosJuicio.php" >
   <div align="center">
-    <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
-    <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>
+    <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>
     <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
   </div>
   <p align="center"><strong>M&oacute;dulo de Carga - Nuevo Juicio </strong></p>
    	<p align="center"><strong>NRO ORDEN </strong>
-      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center">
+      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center" />
 </p>
    	<div align="center">
    	<table width="1000" border="0" style="text-align:left">
@@ -326,7 +328,7 @@ function validar(formulario) {
         <td width="70">Status Deuda</td>
         <td width="156"><label>
           <select name="status" id="status">
-            <option value="0" selected>Seleccione Status</option>
+            <option value="0" selected="selected">Seleccione Status</option>
             <option value="1">EJECUCION</option>
             <option value="2">CONVOCATORIA</option>
             <option value="3">QUIEBRA</option>
@@ -346,7 +348,7 @@ function validar(formulario) {
       <tr>
         <td>Asesor Legal</td>
         <td><select name="asesor" id="asesor">
-            <option value=0 selected>Seleccione Asesor</option>
+            <option value='0' selected="selected">Seleccione Asesor</option>
             <?php 
 					$resAsesor = mysql_query($sqlAsesor,$db);
 					while ($rowAsesor=mysql_fetch_assoc($resAsesor)) { ?>
@@ -355,7 +357,7 @@ function validar(formulario) {
           </select>        </td>
         <td>Inspector</td>
         <td><select name="inspector" id="inspector">
-            <option value=0 selected>Seleccione Inspector</option>
+            <option value='0' selected="selected">Seleccione Inspector</option>
             <?php  				
 				$resInspe = mysql_query($sqlInsp,$db);
 				while ($rowInspe=mysql_fetch_assoc($resInspe)) { ?>

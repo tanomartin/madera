@@ -23,7 +23,7 @@ A:hover {text-decoration:underline; color:FCF63C}
     <p>SU SESION A CADUCADO VUELVA A INGRESAR </p>
    	
     <p><strong><a href="logout.php">
-      <input type="button" name="salir" value="SALIR" onClick="window.close();" />
+      <input type="button" name="salir" value="SALIR" onclick="window.close();" />
     </a></strong></p>
   </div>
 </form>

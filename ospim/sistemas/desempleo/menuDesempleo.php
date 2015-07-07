@@ -77,7 +77,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
-</head>
+
 
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
@@ -94,19 +94,20 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center"><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" align="center"/></span></p>
+  <p><span style="text-align:center"><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" /></span></p>
   <p class="Estilo2">Subida de Archivo de Desempleo de A.N.S.E.S.</p>
   <p class="nover"><b>Seleccione Per&iacute;odo</b></p>
   
   <form name="seleccionPeriodo" action="subidaArchivoDesempleo.php" onsubmit="return validar(this)" method="post">	 
-	  <?php if (isset($_GET['existe'])) { ?><p><div style="color:#FF0000"><b>Período "<?php echo substr($_GET['existe'],4,2)."-".substr($_GET['existe'],0,4) ?>" ya procesado</b></div></p>  <?php } ?>
-	  <?php if (isset($_GET['nocarpeta'])) { ?><p><div style="color:#FF0000"><b>No existe la Carpeta "<?php echo $_GET['nocarpeta']?>"</b></div></p>  <?php } ?>
-	  <?php if (isset($_GET['noexiste'])) { ?><p><div style="color:#FF0000"><b>No existe el archivo "<?php echo $_GET['noexiste']?>" del periodo "<?php echo substr($_GET['carpeta'],4,2)."-".substr($_GET['carpeta'],0,4) ?>"</b></div></p>  <?php } ?>
+	  <?php if (isset($_GET['existe'])) { ?><div style="color: #FF0000"><b>Período "<?php echo substr($_GET['existe'],4,2)."-".substr($_GET['existe'],0,4) ?>" ya procesado</b></div> <?php } ?>
+	  <?php if (isset($_GET['nocarpeta'])) { ?><div style="color:#FF0000"><b>No existe la Carpeta "<?php echo $_GET['nocarpeta']?>"</b></div>  <?php } ?>
+	  <?php if (isset($_GET['noexiste'])) { ?><div style="color:#FF0000"><b>No existe el archivo "<?php echo $_GET['noexiste']?>" del periodo "<?php echo substr($_GET['carpeta'],4,2)."-".substr($_GET['carpeta'],0,4) ?>"</b></div>  <?php } ?>
 	  <select class="nover" name="periodo" id="periodo">
-	  <option name="periodo" id="periodo" selected="selected" value=0> Seleccione Periodo </option>
+	  <option id="periodo" selected="selected" value="0"> Seleccione Periodo </option>
 		  <?php 
 			for ($i=$inicio;$i<=$fin;$i++){
 				$valor = $anioArc[$i].$mesArc[$i];

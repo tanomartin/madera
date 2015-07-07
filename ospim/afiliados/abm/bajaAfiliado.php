@@ -106,17 +106,17 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#CCCCCC" >
-<form enctype="multipart/form-data" id="formBajaAfiliado" name="formBajaAfiliado" method="post" onSubmit="return validar(this)" action="guardarBaja.php">
+<form enctype="multipart/form-data" id="formBajaAfiliado" name="formBajaAfiliado" method="post" onsubmit="return validar(this)" action="guardarBaja.php">
 	<div align="center">
 	<?php
 	if($tipafiliado == 1) {
 	?>
-			<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1'" align="center"/>
+			<input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1'" />
 	<?php
 	}
 	else {
 	?>
-			<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&estFam=1&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+			<input class="nover" type="button" name="volver" value="Volver" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&estFam=1&nroOrd=<?php echo $ordafiliado?>'" />
 	<?php
 	}
 	?>
@@ -127,10 +127,10 @@ function validar(formulario) {
 	</div>
 	<p></p>
 	<div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span>
-	  <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="true" style="background-color:#CCCCCC" />
-	  <input name="apellidoynombre" type="text" id="nroafiliado" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="100" readonly="true" style="background-color:#CCCCCC" />
-	  <input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="1" readonly="true" style="visibility:hidden" />
-	  <input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="true" style="visibility:hidden" />
+	  <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="readonly" style="background-color:#CCCCCC" />
+	  <input name="apellidoynombre" type="text" id="nroafiliado" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="100" readonly="readonly" style="background-color:#CCCCCC" />
+	  <input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="1" readonly="readonly" style="visibility:hidden" />
+	  <input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="readonly" style="visibility:hidden" />
     </div>
 	<p></p>
 	<table width="100%" border="0">
@@ -145,7 +145,7 @@ function validar(formulario) {
 	</table>
 	<p></p>
 	<div align="center">
-		<input class="nover" type="submit" name="guardar" value="Bajar" align="center"/> 
+		<input class="nover" type="submit" name="guardar" value="Bajar" /> 
 	</div>
 </form>
 </body>

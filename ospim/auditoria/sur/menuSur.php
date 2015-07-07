@@ -6,7 +6,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo SUR OSPIM :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -17,11 +17,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 .Estilo6 {font-size: 24}
 </style>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" />
   </p>
   <h2><span class="Estilo6">Men&uacute; S.U.R. </span></h2>
   <table width="600" border="3">

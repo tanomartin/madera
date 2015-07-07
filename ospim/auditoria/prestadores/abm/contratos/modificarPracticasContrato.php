@@ -15,7 +15,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Contrato :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -27,7 +27,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -74,8 +74,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	});
 	
 	function habilitarValor(nomenclador,practica,check) {
-		var idNomencaldor = "N"+nomenclador+practica
-		tipoNomenclador = document.getElementById(idNomencaldor);
+		var idNomencaldor = "N"+nomenclador+practica;
+		var tipoNomenclador = document.getElementById(idNomencaldor);
 		if (check.checked) {
 			tipoNomenclador.disabled = false;
 		} else {
@@ -116,8 +116,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				}
 			}
 		} else {
-			var checkeados = 0; 
-			for (i = 0; i < total; i++) {
+			for (var i = 0; i < total; i++) {
 				if (grupo[i].checked && grupo[i].accessKey == 2) {
 					var name = grupo[i].name;
 					var idValor = "valorNN"+name;
@@ -241,8 +240,8 @@ jQuery(function($){
 	});
 });
 
-	
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <script>
@@ -250,7 +249,7 @@ jQuery(function($){
 </script>
 <div align="center">
   <p><span style="text-align:center">
-   <input type="reset" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" align="center"/>
+   <input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
   </span></p>
   <p class="Estilo2">ABM de Contratos </p>
   <table width="500" border="1">
@@ -266,7 +265,7 @@ jQuery(function($){
   
   <!--******************************************************************************************************************************************************************** -->
  
-  <form name="editarContrato" id="editarContrato" onSubmit="return validar(this)" method="post" action="eliminarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
+  <form name="editarContrato" id="editarContrato" onsubmit="return validar(this)" method="post" action="eliminarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
     <p><strong>Pr&aacute;cticas dentro del contrato </strong></p>
 		<?php 
   		$sqlPracticas = "SELECT pr.*, p.valornonomenclado, t.descripcion as tipo, tc.descripcion as complejidad FROM cabcontratoprestador c, detcontratoprestador p, practicas pr, tipopracticas t, tipocomplejidad tc WHERE c.codigoprestador = $codigo and c.idcontrato = $idcontrato and c.idcontrato = p.idcontrato and p.codigopractica = pr.codigopractica and p.nomenclador = pr.nomenclador and pr.tipopractica = t.id and pr.codigocomplejidad = tc.codigocomplejidad";
@@ -301,7 +300,7 @@ jQuery(function($){
 				  <td><?php echo $rowPracticas['descripcion'];?></td>
 				  <td><?php echo $rowPracticas['complejidad'];?></td>
 				   <td><?php if ($rowPracticas['nomenclador'] == 1) { echo $rowPracticas['valornacional']; } else { echo $rowPracticas['valornonomenclado']; }?></td>
-				  <td><input type='checkbox' name='<?php echo $rowPracticas["codigopractica"]; ?>' id='practicasactuales' value='<?php echo $rowPracticas["codigopractica"]; ?>'></td>	   
+				  <td><input type='checkbox' name='<?php echo $rowPracticas["codigopractica"]; ?>' id='practicasactuales' value='<?php echo $rowPracticas["codigopractica"]; ?>' /></td>	   
 				</tr>
          <?php } ?>
           </tbody>
@@ -314,7 +313,7 @@ jQuery(function($){
 	
 	<!--******************************************************************************************************************************************************************** -->	
 	
-	<form name="agregarContrato" id="agregarContrato" onSubmit="return validarAdd(this)" method="post" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
+	<form name="agregarContrato" id="agregarContrato" onsubmit="return validarAdd(this)" method="post" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
 	  <input type="text" id="prestanomenclador" name="prestanomenclador" value="<?php echo $rowConsultaPresta['nomenclador'] ?>" style="display:none"/>
 	  <p><strong>Pr&aacute;cticas para Agregar al contrato </strong></p>
 	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> ERROR: NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS CON EL MISMO CODIGO</b></div><br>");} ?>

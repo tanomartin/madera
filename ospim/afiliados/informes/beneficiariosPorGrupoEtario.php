@@ -6,7 +6,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado De Beneficiarios por Delegacion :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -35,11 +35,11 @@ function checkall(seleccion, formulario) {
 		}
 	}
 	if (seleccion.checked) {
-		 for (i=0;i< grupo.length;i++) 
+		 for (var i=0;i< grupo.length;i++) 
 			 if(grupo[i].type == "checkbox")	
 				 grupo[i].checked=1;  
 	} else {
-		 for (i=0;i<grupo.length;i++) 
+		 for (var i=0;i<grupo.length;i++) 
 			 if(grupo[i].type == "checkbox")	
 				 grupo[i].checked=0;  
 	}
@@ -47,9 +47,9 @@ function checkall(seleccion, formulario) {
 
 function validar(formulario) {
 	var delegaCheck = 0;
-	delegaciones = formulario.provincias;
+	var delegaciones = formulario.provincias;
 	if (delegaciones != null) {
-		for (x=0;x<delegaciones.length;x++) {
+		for (var x=0;x<delegaciones.length;x++) {
 			if(delegaciones[x].checked) {
 				delegaCheck = 1;
 			}
@@ -66,11 +66,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php?origen=<?php echo $origen ?>'" align="center"/></p>
-	<form  name="listadoEmpresa" id="listadoEmpresa" method="post" onSubmit="return validar(this)" action="beneficiariosPorGrupoEtarioExcel.php">
+  <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php?origen=<?php echo $origen ?>'" /></p>
+	<form  name="listadoEmpresa" id="listadoEmpresa" method="post" onsubmit="return validar(this)" action="beneficiariosPorGrupoEtarioExcel.php">
   	<p><span class="Estilo2">Beneficiarios por Grupo Etario </span></p>
   	<p>
   	  <?php if (isset($_GET['error'])) { 

@@ -489,9 +489,9 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="formFichaFamiliar" name="formFichaFamiliar" method="post" onSubmit="return validar(this)" action="guardaModificacionFamiliar.php">
+<form id="formFichaFamiliar" name="formFichaFamiliar" method="post" onsubmit="return validar(this)" action="guardaModificacionFamiliar.php">
 	<div align="center">
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" align="center"/> 
+		<input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" /> 
 	</div>
 	<p></p>
 	<div align="center" class="Estilo4">
@@ -502,7 +502,7 @@ function validar(formulario) {
 			<td width="165" align="left" valign="middle"><?php echo "<img src='mostrarFotoFamiliar.php?nroAfi=".$nroafiliado."&estFam=".$estfamilia."&nroOrd=".$ordafiliado."' alt='Foto' width='115' height='115'>" ?>
 			</td>
 			<td align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span>
-		<input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowFamilia['nroafiliado'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" />    <input name="nroorden" type="text" id="nroorden" value="<?php echo $rowFamilia['nroorden'] ?>" size="3" readonly="true" style="visibility:hidden" /></div>
+		<input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowFamilia['nroafiliado'] ?>" size="9" readonly="readonly" style="background-color:#CCCCCC" />    <input name="nroorden" type="text" id="nroorden" value="<?php echo $rowFamilia['nroorden'] ?>" size="3" readonly="readonly" style="visibility:hidden" /></div>
 			</td>
 		</tr>
 	</table>
@@ -533,7 +533,7 @@ function validar(formulario) {
 				<input name="nrodocumento" type="text" id="nrodocumento" value="<?php echo $rowFamilia['nrodocumento'] ?>" size="12" maxlength="10" />
 			</td>
 			<td width="165">Fecha de Nacimiento:</td>
-			<td><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo invertirFecha($rowFamilia['fechanacimiento']) ?>" size="12" /> Edad: <input name="edad" type="text" id="edad" value="" size="2" readonly="true" style="background-color:#CCCCCC"/>
+			<td><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo invertirFecha($rowFamilia['fechanacimiento']) ?>" size="12" /> Edad: <input name="edad" type="text" id="edad" value="" size="2" readonly="readonly" style="background-color:#CCCCCC"/>
 			</td>
 		</tr>
 		<tr>
@@ -611,13 +611,13 @@ function validar(formulario) {
 		<tr>
 			<td>Discapacidad:</td>
 			<td>
-				<input name="discapacidad" type="text" id="discapacidad" value="<?php echo $discapacidad?>" size="2" readonly="true" style="background-color:#CCCCCC" />
+				<input name="discapacidad" type="text" id="discapacidad" value="<?php echo $discapacidad?>" size="2" readonly="readonly" style="background-color:#CCCCCC" />
 			  Certif:
-				<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $certificadodiscapacidad?>" size="2" readonly="true" style="background-color:#CCCCCC" />
+				<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $certificadodiscapacidad?>" size="2" readonly="readonly" style="background-color:#CCCCCC" />
 			  Emision:
-				<input name="emisiondiscapacidad" type="text" id="emisiondiscapacidad" value="<?php echo $emisiondiscapacidad?>" size="10" readonly="true" style="background-color:#CCCCCC" />
+				<input name="emisiondiscapacidad" type="text" id="emisiondiscapacidad" value="<?php echo $emisiondiscapacidad?>" size="10" readonly="readonly" style="background-color:#CCCCCC" />
 			  Vto:
-				<input name="vencimientodiscapacidad" type="text" id="vencimientodiscapacidad" value="<?php echo $vencimientodiscapacidad?>" size="10" readonly="true" style="background-color:#CCCCCC" />
+				<input name="vencimientodiscapacidad" type="text" id="vencimientodiscapacidad" value="<?php echo $vencimientodiscapacidad?>" size="10" readonly="readonly" style="background-color:#CCCCCC" />
 			</td>
 			<td colspan="2"></td>
 		</tr>
@@ -681,23 +681,23 @@ function validar(formulario) {
 			</td>
 			<td>Cantidad Emitida:</td>
 			<td>
-				<input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowFamilia['cantidadcarnet'] ?>" size="4" readonly="true" style="background-color:#CCCCCC" />
+				<input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowFamilia['cantidadcarnet'] ?>" size="4" readonly="readonly" style="background-color:#CCCCCC" />
 			</td>
 		</tr>
 		<tr>
 			<td>Fecha Ultima Emision:</td>
 			<td>
-				<input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo invertirFecha($rowFamilia['fechacarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />
+				<input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo invertirFecha($rowFamilia['fechacarnet']) ?>" size="10" readonly="readonly" style="background-color:#CCCCCC" />
 			</td>
 			<td>Tipo Credencial:</td>
 			<td>
-				<input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowFamilia['tipocarnet'] ?>" size="1" readonly="true" style="background-color:#CCCCCC" />
+				<input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowFamilia['tipocarnet'] ?>" size="1" readonly="readonly" style="background-color:#CCCCCC" />
 			</td>
 		</tr>
 		<tr>
 			<td>Vencimiento:</td>
 			<td colspan="3">
-				<input name="vencimientocarnet" type="text" id="vencimientocarnet" value="<?php echo invertirFecha($rowFamilia['vencimientocarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />
+				<input name="vencimientocarnet" type="text" id="vencimientocarnet" value="<?php echo invertirFecha($rowFamilia['vencimientocarnet']) ?>" size="10" readonly="readonly" style="background-color:#CCCCCC" />
 			</td>
 		</tr>
 		<tr>
@@ -729,13 +729,13 @@ if($estfamilia == 1) {
 	<table width="100%" border="0">
 	  <tr>
 		<td width="402" valign="middle"><div align="center">
-			<input class="nover" type="submit" name="guardar" value="Guardar Cambios" align="center"/> 
+			<input class="nover" type="submit" name="guardar" value="Guardar Cambios" /> 
 			</div></td>
 		<td width="402" valign="middle"><div align="center">
-			<input class="nover" type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=<?php echo $estfamilia?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>&fotAfi=0'" align="center"/>
+			<input class="nover" type="button" name="foto" value="Cargar Foto" onclick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=<?php echo $estfamilia?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>&fotAfi=0'" />
 			</div></td>
 		<td width="401" valign="middle"><div align="center">
-			<input class="nover" type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>'" align="center"/> 
+			<input class="nover" type="button" name="bajar" value="Dar de Baja" onclick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>'"/> 
 			</div></td>
 	  </tr>
 	</table>
@@ -745,14 +745,14 @@ if($estafiliado == 1 && $estfamilia == 0) {
 ?>
 	<p></p>
 	<div align="center">
-		<input class="nover" type="button" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>'" align="center"/> 
+		<input class="nover" type="button" name="reactiva" value="Reactivar" onclick="location.href = 'reactivaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=2&nroOrd=<?php echo $ordafiliado?>'" /> 
 	</div>
 <?php
 }
 ?>
 	<p></p>
 	<div align="center">
-		<input class="nover" type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/> 
+		<input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /> 
 	</div>
 </form>
 </body>

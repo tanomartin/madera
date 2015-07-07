@@ -309,27 +309,27 @@ if($lotecerrado) {
 } else {
 ?>
 <div align="left">
-	<p><h3>Composici&oacute;n del Lote</h3></p>
+	<h3>Composici&oacute;n del Lote</h3>
 	<table>
 		<tr>
 			<td><h4>Identificador</h4></td>
-			<td><h4>: <input type="text" name="idlote"  id="idlote" value="<?php echo $rowLeeLote['lote']?>" size="14" readonly="true" style="background-color:#CCCCCC"/></h4></td>
+			<td><h4>: <input type="text" name="idlote"  id="idlote" value="<?php echo $rowLeeLote['lote']?>" size="14" readonly="readonly" style="background-color:#CCCCCC"/></h4></td>
 		</tr>
 		<tr>
 			<td><h4>Delegaci&oacute;n</h4></td>
-			<td><h4>: <input type="text" name="codidelega"  id="codidelega" value="<?php echo $rowLeeLote['codidelega']?>" size="4" readonly="true" style="background-color:#CCCCCC"/></h4></td>
+			<td><h4>: <input type="text" name="codidelega"  id="codidelega" value="<?php echo $rowLeeLote['codidelega']?>" size="4" readonly="readonly" style="background-color:#CCCCCC"/></h4></td>
 		</tr>
 		<tr>
 			<td><h4>Usuario Emisor</h4></td>
-			<td><h4>: <input type="text" name="usuarioemision"  id="usuarioemision" value="<?php echo $rowLeeLote['usuarioemision']?>" size="50" readonly="true" style="background-color:#CCCCCC"/></h4></td>
+			<td><h4>: <input type="text" name="usuarioemision"  id="usuarioemision" value="<?php echo $rowLeeLote['usuarioemision']?>" size="50" readonly="readonly" style="background-color:#CCCCCC"/></h4></td>
 		</tr>
 		<tr>
 			<td><h4>Fecha de Emisi&oacute;n</h4></td>
-			<td><h4>: <input type="text" name="fechaemision"  id="fechaemision" value="<?php echo invertirFecha(substr($rowLeeLote['fechaemision'],0,10));?>" size="10" readonly="true" style="background-color:#CCCCCC"/></h4></td>
+			<td><h4>: <input type="text" name="fechaemision"  id="fechaemision" value="<?php echo invertirFecha(substr($rowLeeLote['fechaemision'],0,10));?>" size="10" readonly="readonly" style="background-color:#CCCCCC"/></h4></td>
 		</tr>
 		<tr>
 			<td><h4>Total de Titulares</h4></td>
-			<td><h4>: <input type="text" name="totaltitulares"  id="totaltitulares" value="<?php echo $rowLeeLote['totaltitulares']?>" size="4" readonly="true" style="background-color:#CCCCCC"/></h4></td>
+			<td><h4>: <input type="text" name="totaltitulares"  id="totaltitulares" value="<?php echo $rowLeeLote['totaltitulares']?>" size="4" readonly="readonly" style="background-color:#CCCCCC"/></h4></td>
 		</tr>
 	</table>
 </div>
@@ -352,9 +352,9 @@ if($lotecerrado) {
 if($rowLeeLote['totalcarnetsazul'] != 0) {
 ?>
 		<tr>
-			<td>Regular [Azul]<input type="text" name="marcacarnetsazul"  id="marcacarnetsazul" value="<?php echo $rowLeeLote['marcaimpresionazul']?>" size="1" readonly="true" style="visibility:hidden"/></td>
-			<td><input type="text" name="totalcarnetsazul"  id="totalcarnetsazul" value="<?php echo $rowLeeLote['totalcarnetsazul']?>" size="4" readonly="true" style="background-color:#CCCCCC; text-align:center"/></td>
-			<td><input type="text" name="totalhojasazul"  id="totalhojasazul" value="<?php echo $rowLeeLote['totalhojasazul']?>" size="4" readonly="true" style="background-color:#CCCCCC; text-align:center"/></td>
+			<td>Regular [Azul]<input type="text" name="marcacarnetsazul"  id="marcacarnetsazul" value="<?php echo $rowLeeLote['marcaimpresionazul']?>" size="1" readonly="readonly" style="visibility:hidden"/></td>
+			<td><input type="text" name="totalcarnetsazul"  id="totalcarnetsazul" value="<?php echo $rowLeeLote['totalcarnetsazul']?>" size="4" readonly="readonly" style="background-color:#CCCCCC; text-align:center"/></td>
+			<td><input type="text" name="totalhojasazul"  id="totalhojasazul" value="<?php echo $rowLeeLote['totalhojasazul']?>" size="4" readonly="readonly" style="background-color:#CCCCCC; text-align:center"/></td>
 			<td><input type="button" name="imprimeazul" id="imprimeazul" value="Imprimir"></td>
 		</tr>
 		
@@ -363,9 +363,9 @@ if($rowLeeLote['totalcarnetsazul'] != 0) {
 if($rowLeeLote['totalcarnetsbordo'] != 0) {
 ?>
 		<tr>
-			<td>Solo OSPIM [Bordo]<input type="text" name="marcacarnetsbordo"  id="marcacarnetsbordo" value="<?php echo $rowLeeLote['marcaimpresionbordo']?>" size="1" readonly="true" style="visibility:hidden"/></td>
-			<td><input type="text" name="totalcarnetsbordo"  id="totalcarnetsbordo" value="<?php echo $rowLeeLote['totalcarnetsbordo']?>" size="4" readonly="true" style="background-color:#CCCCCC; text-align:center"/></td>
-			<td><input type="text" name="totalhojasbordo"  id="totalhojasbordo" value="<?php echo $rowLeeLote['totalhojasbordo']?>" size="4" readonly="true" style="background-color:#CCCCCC; text-align:center"/></td>
+			<td>Solo OSPIM [Bordo]<input type="text" name="marcacarnetsbordo"  id="marcacarnetsbordo" value="<?php echo $rowLeeLote['marcaimpresionbordo']?>" size="1" readonly="readonly" style="visibility:hidden"/></td>
+			<td><input type="text" name="totalcarnetsbordo"  id="totalcarnetsbordo" value="<?php echo $rowLeeLote['totalcarnetsbordo']?>" size="4" readonly="readonly" style="background-color:#CCCCCC; text-align:center"/></td>
+			<td><input type="text" name="totalhojasbordo"  id="totalhojasbordo" value="<?php echo $rowLeeLote['totalhojasbordo']?>" size="4" readonly="readonly" style="background-color:#CCCCCC; text-align:center"/></td>
 			<td><input type="button" name="imprimebordo" id="imprimebordo" value="Imprimir"></td>
 		</tr>
 <?php 
@@ -373,9 +373,9 @@ if($rowLeeLote['totalcarnetsbordo'] != 0) {
 if($rowLeeLote['totalcarnetsrojo'] != 0) {
 ?>
 		<tr>
-			<td>Opci&oacute;n [Rojo]<input type="text" name="marcacarnetsrojo"  id="marcacarnetsrojo" value="<?php echo $rowLeeLote['marcaimpresionrojo']?>" size="1" readonly="true" style="visibility:hidden"/></td>
-			<td><input type="text" name="totalcarnetsrojo"  id="totalcarnetsrojo" value="<?php echo $rowLeeLote['totalcarnetsrojo']?>" size="4" readonly="true" style="background-color:#CCCCCC; text-align:center"/></td>
-			<td><input type="text" name="totalhojasrojo"  id="totalhojasrojo" value="<?php echo $rowLeeLote['totalhojasrojo']?>" size="4" readonly="true" style="background-color:#CCCCCC; text-align:center"/></td>
+			<td>Opci&oacute;n [Rojo]<input type="text" name="marcacarnetsrojo"  id="marcacarnetsrojo" value="<?php echo $rowLeeLote['marcaimpresionrojo']?>" size="1" readonly="readonly" style="visibility:hidden"/></td>
+			<td><input type="text" name="totalcarnetsrojo"  id="totalcarnetsrojo" value="<?php echo $rowLeeLote['totalcarnetsrojo']?>" size="4" readonly="readonly" style="background-color:#CCCCCC; text-align:center"/></td>
+			<td><input type="text" name="totalhojasrojo"  id="totalhojasrojo" value="<?php echo $rowLeeLote['totalhojasrojo']?>" size="4" readonly="readonly" style="background-color:#CCCCCC; text-align:center"/></td>
 			<td><input type="button" name="imprimerojo" id="imprimerojo" value="Imprimir"></td>
 		</tr>
 <?php 
@@ -383,9 +383,9 @@ if($rowLeeLote['totalcarnetsrojo'] != 0) {
 if($rowLeeLote['totalcarnetsverde'] != 0) {
 ?>
 		<tr>
-			<td>USIMRA [Verde]<input type="text" name="marcacarnetsverde"  id="marcacarnetsverde" value="<?php echo $rowLeeLote['marcaimpresionverde']?>" size="1" readonly="true" style="visibility:hidden"/></td>
-			<td><input type="text" name="totalcarnetsverde"  id="totalcarnetsverde" value="<?php echo $rowLeeLote['totalcarnetsverde']?>" size="4" readonly="true" style="background-color:#CCCCCC; text-align:center"/></td>
-			<td><input type="text" name="totalhojasverde"  id="totalhojasverde" value="<?php echo $rowLeeLote['totalhojasverde']?>" size="4" readonly="true" style="background-color:#CCCCCC; text-align:center"/></td>
+			<td>USIMRA [Verde]<input type="text" name="marcacarnetsverde"  id="marcacarnetsverde" value="<?php echo $rowLeeLote['marcaimpresionverde']?>" size="1" readonly="readonly" style="visibility:hidden"/></td>
+			<td><input type="text" name="totalcarnetsverde"  id="totalcarnetsverde" value="<?php echo $rowLeeLote['totalcarnetsverde']?>" size="4" readonly="readonly" style="background-color:#CCCCCC; text-align:center"/></td>
+			<td><input type="text" name="totalhojasverde"  id="totalhojasverde" value="<?php echo $rowLeeLote['totalhojasverde']?>" size="4" readonly="readonly" style="background-color:#CCCCCC; text-align:center"/></td>
 			<td><input type="button" name="imprimeverde" id="imprimeverde" value="Imprimir"></td>
 		</tr>
 <?php 
@@ -408,11 +408,11 @@ if($rowLeeLote['totalcarnetsverde'] != 0) {
 	 	</thead>
 		<tbody >
 		<tr>
-			<td>Listado de Titulares<input type="text" name="marcalistado"  id="marcalistado" value="<?php echo $rowLeeLote['marcaimpresionlistado']?>" size="1" readonly="true" style="visibility:hidden"/></td>
+			<td>Listado de Titulares<input type="text" name="marcalistado"  id="marcalistado" value="<?php echo $rowLeeLote['marcaimpresionlistado']?>" size="1" readonly="readonly" style="visibility:hidden"/></td>
 			<td><input type="button" name="imprimelistado" id="imprimelistado" value="Imprimir"></td>
 		</tr>
 		<tr>
-			<td>Nota de Entrega de Carnets<input type="text" name="marcanota"  id="marcanota" value="<?php echo $rowLeeLote['marcaimpresionnota']?>" size="1" readonly="true" style="visibility:hidden"/></td>
+			<td>Nota de Entrega de Carnets<input type="text" name="marcanota"  id="marcanota" value="<?php echo $rowLeeLote['marcaimpresionnota']?>" size="1" readonly="readonly" style="visibility:hidden"/></td>
 			<td><input type="button" name="imprimenota" id="imprimenota" value="Imprimir"></td>
 		</tr>
 		</tbody>

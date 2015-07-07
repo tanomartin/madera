@@ -13,7 +13,7 @@
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -29,10 +29,12 @@ jQuery(function($){
 });
 
 </script>
+</head>
+
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="impBoletas.php">
   <p align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuBoletas.php'" align="center"/>
+  <input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" />
   </p>
   <p align="center" class="Estilo1">M&oacute;dulo Impresi&oacute;n de Bolestas</p>
    <?php 
@@ -45,9 +47,9 @@ jQuery(function($){
 		}
 
   ?>
-  <label> 
-  <div align="center">CUIT <input name="cuit" type="text" id="cuit" size="10" /></div>
-  </label>
+   
+  <div align="center"><label>CUIT <input name="cuit" type="text" id="cuit" size="10" /></label></div>
+  
   <p align="center">
     <label>
     <input type="submit" name="Submit" value="Buscar" />

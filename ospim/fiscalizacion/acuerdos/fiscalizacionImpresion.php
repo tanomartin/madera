@@ -13,7 +13,7 @@
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -30,11 +30,12 @@ jQuery(function($){
 });
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="fiscalizacionImpBoletas.php">
   <p align="center">
-   <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuFiscalizacion.php'" align="center"/>
+   <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuFiscalizacion.php'" />
   </p>
   <p align="center" class="Estilo1">M&oacute;dulo Impresi&oacute;n de Bolestas</p>
    <?php 
@@ -46,16 +47,11 @@ jQuery(function($){
 			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
 		}
   ?>
-  <label> 
-  <div align="center">CUIT <input name="cuit" id="cuit" type="text" size="10" /> </div>
-  </label>
+  <div align="center"> <label> CUIT <input name="cuit" id="cuit" type="text" size="10" /> </label></div>
   <p align="center">
-    <label>
-    <input type="submit" name="Submit" value="Buscar" />
-    </label>
+    <label><input type="submit" name="Submit" value="Buscar" /></label>
   </p>
   <p>&nbsp;</p>
 </form>
-<p align="center">&nbsp;</p>
 </body>
 </html>

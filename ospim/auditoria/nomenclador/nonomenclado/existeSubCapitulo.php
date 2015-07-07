@@ -12,7 +12,7 @@ $rowSubCapitulo = mysql_fetch_assoc($resSubCapitulo);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Capitulo Existe :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -22,12 +22,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'nuevaPractica.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'nuevaPractica.php'" />
   </p>
   <p><span class="Estilo2" style="color:#FF0000">El SubCapitulo de codigo <b><?php echo $rowSubCapitulo['codigo'] ?></b> ya existe</span></p>
   <p><span class="Estilo2"><?php echo $rowSubCapitulo['codigo']." - ".$rowSubCapitulo['descripcion'] ?></span></p>

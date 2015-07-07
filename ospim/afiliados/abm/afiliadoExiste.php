@@ -27,13 +27,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#CCCCCC" >
 	<div align="center">
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/> 
+		<input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'moduloABM.php'" /> 
 	</div>
 	<p></p>
 	<div align="center" class="Estilo4">El afiliado que intenta dar de alta ya EXISTE con el Nro: <?php echo $nroafiliado ?></div>
 	<p></p>
 	<div align="center">
-		<input class="nover" type="button" name="iratitular" value="Ir a Afiliado" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" align="center"/>
+		<input class="nover" type="button" name="iratitular" value="Ir a Afiliado" onclick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" />
 	</div>
 </body>
 </html>

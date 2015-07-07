@@ -418,7 +418,7 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
       <p class="Estilo3">Consulta de Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
     </div></td>
     <td width="550"><div align="right">
-      <table width="450" height="60" border="2">
+      <table style="width: 450; height: 60" border="2">
         <tr>
           <td width="143" height="25"><div align="center"><strong>Fecha Solicitud</strong> </div></td>
           <td width="289"><div align="center"><?php echo invertirFecha($rowLeeSolicitud['fechasolicitud']);?></div></td>
@@ -443,7 +443,7 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
         <p><strong>Tipo:</strong> <?php	if($rowLeeSolicitud['codiparentesco']>0) {	if($rowLeeSolicitud['codiparentesco']==0) echo "Titular"; else echo "Familiar ".$rowLeeSolicitud['codiparentesco'];	}?></p>
       </td>
-    <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" align="center"/><?php }?></p>
+    <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)"/><?php }?></p>
 		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']); else echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']);?></p>
    	  <p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p></td>
   </tr>
@@ -453,15 +453,15 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
   </tr>
   <tr>
     <td valign="top"><p><strong>Tipo:</strong> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeMaterial['descripcion']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
-      <p><strong>Pedido Medico:</strong> <?php if($rowLeeSolicitud['pedidomedico']!=NULL) {?><input type="button" name="pedidomedico" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,1)" align="center"/><?php }?></p>
-      <p><strong>Historia Cl&iacute;nica:</strong> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?><input type="button" name="historiaclinica" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" align="center"/><?php }?></p>
-      <p><strong>Estudios:</strong> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" align="center"/><?php }?></p>
+      <p><strong>Pedido Medico:</strong> <?php if($rowLeeSolicitud['pedidomedico']!=NULL) {?><input type="button" name="pedidomedico" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,1)" /><?php }?></p>
+      <p><strong>Historia Cl&iacute;nica:</strong> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?><input type="button" name="historiaclinica" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" /><?php }?></p>
+      <p><strong>Estudios:</strong> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" /><?php }?></p>
       <p><strong>Presupuestos:</strong></p>
-      <p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" align="center"/><?php if($rowLeeSolicitud['aprobado1']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" align="center"/><?php if($rowLeeSolicitud['aprobado2']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" align="center"/><?php if($rowLeeSolicitud['aprobado3']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" align="center"/><?php if($rowLeeSolicitud['aprobado4']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-      <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" align="center"/><?php if($rowLeeSolicitud['aprobado5']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" /><?php if($rowLeeSolicitud['aprobado1']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" /><?php if($rowLeeSolicitud['aprobado2']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" /><?php if($rowLeeSolicitud['aprobado3']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" /><?php if($rowLeeSolicitud['aprobado4']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
+      <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" /><?php if($rowLeeSolicitud['aprobado5']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
 	</td>
 	<td valign="top">
 	  <p><strong>Autorizaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusautorizacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']); else { if($rowLeeSolicitud['statusautorizacion']==2) echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']);}?></p>
@@ -485,7 +485,7 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
 	<?php }?>
 - Email: <?php echo $rowLeeSolicitud['emailprestador'];?></p>
       <p><strong>Monto Autorizado:</strong> <?php echo $rowLeeSolicitud['montoautorizacion'];?></p>
-      <p><p><strong>Documento Autorizacion:</strong> <?php if($rowLeeDocumento['documentofinal']!=NULL) {?><input type="button" name="docuauto" value="Ver" onClick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,10)" align="center"/><?php }?></p></p></td>
+      <p><strong>Documento Autorizacion:</strong> <?php if($rowLeeDocumento['documentofinal']!=NULL) {?><input type="button" name="docuauto" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,10)" /><?php }?></p></td>
   </tr>
 </table>
 </body>

@@ -113,7 +113,7 @@ if (file_exists($direArcUsimra)) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Cierre de Liquidacion :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -129,11 +129,12 @@ function borrarArchivo(dire){
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p class="Estilo2"><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuFiscalizacion.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuFiscalizacion.php'"/>
   </span></p>
   <p class="Estilo2">Resultado del proceso de cierra de liquidación </p>
   <?php if ($liqCargadas != 0) { ?>
@@ -189,7 +190,7 @@ function borrarArchivo(dire){
 		  }	
 		  if ($liqUsimra == 1) {
 				print("<p><div align='center' style='color:#0033FF'><b> SE SUBIO EL ARCHIVO SegUSIMRA.txt </b></div></p>"); ?>
-				<input type="button" name="borrar" value="Borrar Archivo U.S.I.M.R.A." onclick="borrarArchivo('borrarArchivo.php')" align="center"/> 
+				<input type="button" name="borrar" value="Borrar Archivo U.S.I.M.R.A." onclick="borrarArchivo('borrarArchivo.php')" /> 
     <?php } 
 		  if ($liqUsimra == 2) {
 				print("<p><div align='center' style='color:#FF0000'><b> SE PRODUJO UN ERROR INTENTANDO SUBIR EL ARCHIVO SegUSIMRA.txt </b></div></p>");
@@ -197,7 +198,7 @@ function borrarArchivo(dire){
 		  
 	?>
   </p>
-			  <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+			  <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 </div>
 </body>
 </html>

@@ -45,9 +45,9 @@ function abrirDetelle(dire) {
 		 <table width="600" border="1" align="center">
 			<tr>
 			  <td><div align="center"><strong>Delegación</strong></div></td>
-			  <td><div align="center"><strong>Cant.<br> Titulares</strong></div></td>
-			  <td><div align="center"><strong>Cant.<br> Familiares</strong></div></td>
-			  <td><div align="center"><strong>Total<br> Beneficiarios</strong></div></td>
+			  <td><div align="center"><strong>Cant.<br/> Titulares</strong></div></td>
+			  <td><div align="center"><strong>Cant.<br/> Familiares</strong></div></td>
+			  <td><div align="center"><strong>Total<br/> Beneficiarios</strong></div></td>
 			</tr>
 		<?php while($rowDetallePadron=mysql_fetch_array($resDetallePadron)) {
 				print ("<tr>");
@@ -66,7 +66,7 @@ function abrirDetelle(dire) {
 		?>
 			  
 		</table>
-		<p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+		<p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>

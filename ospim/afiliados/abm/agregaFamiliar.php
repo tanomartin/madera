@@ -400,9 +400,9 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="formAgregaFamiliar" name="formAgregaFamiliar" method="post" onSubmit="return validar(this)" action="guardaAltaFamiliar.php">
+<form id="formAgregaFamiliar" name="formAgregaFamiliar" method="post" onsubmit="return validar(this)" action="guardaAltaFamiliar.php">
 	<div align="center">
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1'" align="center"/> 
+		<input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1'" /> 
 	</div>
 	<p></p>
 	<div align="center" class="Estilo4">Alta de Familiar</div>
@@ -411,7 +411,7 @@ function validar(formulario) {
   <tr>
 	<td width="212" align="left" valign="middle"><img src="../img/Familiar sin Foto.jpg" alt="Foto" width="115" height="115"></td>
     <td width="983" align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span>
-	<input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="true" style="background-color:#CCCCCC" />
+	<input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="readonly" style="background-color:#CCCCCC" />
     </div></td>
   </tr>
 </table>
@@ -440,7 +440,7 @@ function validar(formulario) {
 					<input name="nrodocumento" type="text" id="nrodocumento" value="" size="10" maxlength="10" /></td>
     <td width="162">Fecha Nacimiento:</td>
     <td width="474"><input name="fechanacimiento" type="text" id="fechanacimiento" value="" size="12" /> Edad:
-					<input name="edad" type="text" id="edad" value="" size="2" readonly="true" style="background-color:#CCCCCC"/></td>
+					<input name="edad" type="text" id="edad" value="" size="2" readonly="readonly" style="background-color:#CCCCCC"/></td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
@@ -530,7 +530,7 @@ function validar(formulario) {
 <table width="1205" border="0">
   <tr>
     <td valign="middle"><div align="center">
-        <input class="nover" type="submit" name="guardar" value="Guardar" align="center"/> 
+        <input class="nover" type="submit" name="guardar" value="Guardar" /> 
         </div></td>
     </tr>
 </table>

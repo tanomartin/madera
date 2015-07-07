@@ -263,7 +263,7 @@ else {
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Transferencias AFIP :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -273,14 +273,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+</head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="button" name="volver" value="Volver" onClick="location.href = 'menuAfip.php'" /></p>
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuAfip.php'" /></p>
 	<h1><?php echo $tituloform;?></h1>
 	<h3><?php echo $mensaje;?></h3>
 	<h3><?php echo $tituloaviso;?></h3>
 	<h4><?php echo $aviso;?></h4>
-	<p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();"/></p>
+	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 </div>
 </body>
 </html>

@@ -30,19 +30,21 @@ function validar(formulario) {
 	} 
 }
 </script>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
-<form id="form1" onSubmit="return validar(this)"  name="form1" method="post" action="verificacionArchivo.php">
+<form id="form1" onsubmit="return validar(this)"  name="form1" method="post" action="verificacionArchivo.php">
 <div align="center">
 <table width="137" border="0">
 	<tr align="center" valign="top">
       <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloBanco.php'" align="center"/> 
+        <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloBanco.php'" /> 
         </div></td>
 	</tr>
 </table>

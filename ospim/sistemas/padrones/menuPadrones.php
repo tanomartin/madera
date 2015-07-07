@@ -6,7 +6,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Stock :.</title>
-</head>
+
 
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -26,7 +26,7 @@ function validar(formulario) {
 	var grupo = formulario.prestadores;
 	var total = grupo.length;
 	if (total != null) {
-		for (x=0; x<total; x++) {
+		for (var x=0; x<total; x++) {
 			if(grupo[x].checked) {
 				prestaCheck = 1;
 			}
@@ -45,11 +45,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" />
   </span></p>
   <p><span class="Estilo2">Men&uacute; Padrones</span></p>
   <form id="form1" name="form1" method="post" action="generarPadrones.php" onsubmit="return validar(this)">

@@ -11,7 +11,7 @@ $requerimientos = urlencode($requerimientos);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Anular Requerimiento :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -38,15 +38,15 @@ function validar(formulario) {
 		return false;
 	}
 	formulario.Submit.disabled = true;
-	return true
+	return true;
 }
 
 </script>
-
+</head>
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" />
   </span></p>
   	<p><span class="Estilo2">Anulaci&oacute;n de los Requerimientos Número </span></p>
 	<p><span class="Estilo2"><?php foreach($reques as $reque) { 
@@ -55,8 +55,8 @@ function validar(formulario) {
 								$listaReque = substr($listaReque, 0, -2);
 						 		echo $listaReque; ?>
 	</span></p>
-  <form id="form1" name="form1" onSubmit="return validar(this)" method="post" action="guardaAnulacionRequerimiento.php?fecha=<?php echo $fecha ?>">
-	  <input name="requerimientos" id="requerimientos" type="hidden" value="<?php echo $requerimientos ?>">
+  <form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="guardaAnulacionRequerimiento.php?fecha=<?php echo $fecha ?>">
+	  <input name="requerimientos" id="requerimientos" type="hidden" value="<?php echo $requerimientos ?>" />
 	  <p>
 	    <label>Motivo
 	    <textarea name="motivo" id="motivo" cols="50" rows="5"></textarea>

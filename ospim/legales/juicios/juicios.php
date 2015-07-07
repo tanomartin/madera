@@ -44,7 +44,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#CCCCCC" > 
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloJuicios.php'" align="center"/></p>
+  <p><input type="button" name="volver" value="Volver" onClick="location.href = 'moduloJuicios.php'" /></p>
   <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); ?>
   <p><strong>Juicios Existentes </strong></p>
   <?php if($cantJuicios > 0) { ?>
@@ -77,7 +77,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </table>
    <?php } ?>
   <p>
-    <input type="submit" name="nuevoJuicio" value="Nuevo Juicio" onClick="location.href = 'nuevoJuicio.php?cuit=<?php echo $cuit ?> '" sub>
+    <input type="submit" name="nuevoJuicio" value="Nuevo Juicio" onClick="location.href = 'nuevoJuicio.php?cuit=<?php echo $cuit ?> '" >
   </p>
 </div>
 </body>

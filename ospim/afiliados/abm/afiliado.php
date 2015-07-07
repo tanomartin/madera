@@ -275,7 +275,7 @@ $(document).ready(function(){
 
 function consultaDdjjAportes(cuilafi) {
 	param = "cuiAfi=" + cuilafi;
-	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no"
+	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no";
 	window.open("ddjjAportesAfiliado.php?" + param, "", opciones);
 };
 
@@ -522,7 +522,7 @@ function validar(formulario) {
 		document.getElementById("selectEmiteCarnet").focus();
 		return false;
 	}
-
+	
 	$.blockUI({ message: "<h1>Guardando cambios. Aguarde por favor...</h1>" });
 
 	return true;
@@ -531,9 +531,9 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="formAfiliado" name="formAfiliado" method="post" onSubmit="return validar(this)" action="guardaModificacionAfiliado.php">
+<form id="formAfiliado" name="formAfiliado" method="post" onsubmit="return validar(this)" action="guardaModificacionAfiliado.php">
 <div align="center">
-	<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/> 
+	<input class="nover" type="button" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" /> 
 </div>
 <p></p>
 <div align="center" class="Estilo4">
@@ -543,7 +543,7 @@ function validar(formulario) {
   <tr>
 	<td width="165" align="left" valign="middle"><?php echo "<img src='mostrarFoto.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."' alt='Foto' width='115' height='115'>" ?></td>
     <td align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span><strong>  
-    <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowTitular['nroafiliado'] ?>" size="9" readonly="true" style="background-color:#CCCCCC" /></strong></div></td>
+    <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowTitular['nroafiliado'] ?>" size="9" readonly="readonly" style="background-color:#CCCCCC" /></strong></div></td>
   </tr>
 </table>
 <table width="100%" border="0">
@@ -574,7 +574,7 @@ function validar(formulario) {
 					<input name="nrodocumento" type="text" id="nrodocumento" value="<?php echo $rowTitular['nrodocumento'] ?>" size="12" maxlength="10" />	</td>
     <td width="173">Fecha de Nacimiento:</td>
     <td><input name="fechanacimiento" type="text" id="fechanacimiento" value="<?php echo invertirFecha($rowTitular['fechanacimiento']) ?>" size="12" /> Edad:
-					<input name="edad" type="text" id="edad" value="" size="2" readonly="true" style="background-color:#CCCCCC"/></td>
+					<input name="edad" type="text" id="edad" value="" size="2" readonly="readonly" style="background-color:#CCCCCC"/></td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
@@ -634,7 +634,7 @@ function validar(formulario) {
     <td>Domicilio:</td>
     <td><input name="domicilio" type="text" id="domicilio" value="<?php echo $rowTitular['domicilio'] ?>" size="50" maxlength="50" />	</td>
     <td>C.P.</td>
-    <td><input name="indpostal" type="text" id="indpostal" value="<?php echo $rowTitular['indpostal'] ?>" size="1" readonly="true" style="background-color:#CCCCCC" />
+    <td><input name="indpostal" type="text" id="indpostal" value="<?php echo $rowTitular['indpostal'] ?>" size="1" readonly="readonly" style="background-color:#CCCCCC" />
 		<input name="numpostal" type="text" id="numpostal" value="<?php echo $rowTitular['numpostal'] ?>" size="4" maxlength="4" />
 		<input name="alfapostal" type="text" id="alfapostal" value="<?php echo $rowTitular['alfapostal'] ?>" size="3" />	</td>
   </tr>
@@ -652,8 +652,8 @@ function validar(formulario) {
         </select>
 	</td>
     <td>Provincia:</td>
-    <td><input name="nomprovin" type="text" id="nomprovin" value="<?php echo $rowProvi['descrip'] ?>" size="50" readonly="true" style="background-color:#CCCCCC" />
-		<input name="codprovin" type="text" id="codprovin" value="<?php echo $rowTitular['codprovin'] ?>" size="2" readonly="true" style="visibility:hidden" />
+    <td><input name="nomprovin" type="text" id="nomprovin" value="<?php echo $rowProvi['descrip'] ?>" size="50" readonly="readonly" style="background-color:#CCCCCC" />
+		<input name="codprovin" type="text" id="codprovin" value="<?php echo $rowTitular['codprovin'] ?>" size="2" readonly="readonly" style="visibility:hidden" />
 	</td>
   </tr>
   <tr>
@@ -691,7 +691,7 @@ function validar(formulario) {
 			echo "<option title='Por Opcion' value='O'>Por Opcion</option>";
 	 	?>	 
    		</select>
-	<input name="solicitudopcion" type="text" id="solicitudopcion" value="<?php echo $rowTitular['solicitudopcion'] ?>" size="8" maxlength="8" readonly="true" style="background-color:#CCCCCC" />
+	<input name="solicitudopcion" type="text" id="solicitudopcion" value="<?php echo $rowTitular['solicitudopcion'] ?>" size="8" maxlength="8" readonly="readonly" style="background-color:#CCCCCC" />
 	</td>
   </tr>
   <tr>
@@ -711,12 +711,12 @@ function validar(formulario) {
 		</select>
 	</td>
     <td>Discapacidad:</td>
-    <td><input name="discapacidad" type="text" id="discapacidad" value="<?php echo $discapacidad?>" size="2" readonly="true" style="background-color:#CCCCCC" /> 
+    <td><input name="discapacidad" type="text" id="discapacidad" value="<?php echo $discapacidad?>" size="2" readonly="readonly" style="background-color:#CCCCCC" /> 
     Certif:
-		<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $certificadodiscapacidad?>" size="2" readonly="true" style="background-color:#CCCCCC" /> Emision:
-		<input name="emisiondiscapacidad" type="text" id="emisiondiscapacidad" value="<?php echo $emisiondiscapacidad?>" size="10" readonly="true" style="background-color:#CCCCCC" /> 
+		<input name="certificadodiscapacidad" type="text" id="certificadodiscapacidad" value="<?php echo $certificadodiscapacidad?>" size="2" readonly="readonly" style="background-color:#CCCCCC" /> Emision:
+		<input name="emisiondiscapacidad" type="text" id="emisiondiscapacidad" value="<?php echo $emisiondiscapacidad?>" size="10" readonly="readonly" style="background-color:#CCCCCC" /> 
 		Vto:
-		<input name="vencimientodiscapacidad" type="text" id="vencimientodiscapacidad" value="<?php echo $vencimientodiscapacidad?>" size="10" readonly="true" style="background-color:#CCCCCC" /></td>
+		<input name="vencimientodiscapacidad" type="text" id="vencimientodiscapacidad" value="<?php echo $vencimientodiscapacidad?>" size="10" readonly="readonly" style="background-color:#CCCCCC" /></td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -728,7 +728,7 @@ function validar(formulario) {
     <td><input name="cuil" type="text" id="cuil" value="<?php echo $rowTitular['cuil'] ?>" size="13" maxlength="11" />	</td>
     <td>Empresa:</td>
     <td><input name="cuitempresa" type="text" id="cuitempresa" value="<?php echo $rowTitular['cuitempresa'] ?>" size="13" maxlength="11" />
-    <input name="nombreempresa" type="text" id="nombreempresa" value="<?php echo $rowEmpresa['nombre'] ?>" size="50" readonly="true" style="background-color:#CCCCCC" />    </td>
+    <input name="nombreempresa" type="text" id="nombreempresa" value="<?php echo $rowEmpresa['nombre'] ?>" size="50" readonly="readonly" style="background-color:#CCCCCC" />    </td>
   </tr>
   <tr>
     <td>Fecha  Ingreso Empresa:</td>
@@ -782,17 +782,17 @@ function validar(formulario) {
 		</select>
 	</td>
     <td>Cantidad Emitida:</td>
-    <td><input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowTitular['cantidadcarnet'] ?>" size="4" readonly="true" style="background-color:#CCCCCC" />	</td>
+    <td><input name="cantidadcarnet" type="text" id="cantidadcarnet" value="<?php echo $rowTitular['cantidadcarnet'] ?>" size="4" readonly="readonly" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td>Fecha Ultima Emision:</td>
-    <td><input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo invertirFecha($rowTitular['fechacarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
+    <td><input name="fechacarnet" type="text" id="fechacarnet" value="<?php echo invertirFecha($rowTitular['fechacarnet']) ?>" size="10" readonly="readonly" style="background-color:#CCCCCC" />	</td>
     <td>Tipo Credencial:</td>
-    <td><input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowTitular['tipocarnet'] ?>" size="1" readonly="true" style="background-color:#CCCCCC" />	</td>
+    <td><input name="tipocarnet" type="text" id="tipocarnet" value="<?php echo $rowTitular['tipocarnet'] ?>" size="1" readonly="readonly" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td>Vencimiento:</td>
-    <td colspan="3"><input name="vencimientocarnet" type="text" id="vencimientocarnet" value="<?php echo invertirFecha($rowTitular['vencimientocarnet']) ?>" size="10" readonly="true" style="background-color:#CCCCCC" />	</td>
+    <td colspan="3"><input name="vencimientocarnet" type="text" id="vencimientocarnet" value="<?php echo invertirFecha($rowTitular['vencimientocarnet']) ?>" size="10" readonly="readonly" style="background-color:#CCCCCC" />	</td>
   </tr>
   <tr>
     <td colspan="4"><div align="center" class="Estilo4">
@@ -885,19 +885,19 @@ if($estafiliado == 1) {
 <table width="100%" border="0">
   <tr>
     <td width="241" valign="middle"><div align="center">
-        <input class="nover" type="submit" name="guardar" value="Guardar Cambios" align="center"/> 
+        <input class="nover" type="submit" name="guardar" value="Guardar Cambios" /> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input class="nover" type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&nueOrd=<?php echo $canfamilia?>'" align="center"/> 
+        <input class="nover" type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&nueOrd=<?php echo $canfamilia?>'" /> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input class="nover" type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1&fotAfi=0'" align="center"/> 
+        <input class="nover" type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1&fotAfi=0'" /> 
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" align="center"/>
+        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
         </div></td>
     <td width="241" valign="middle"><div align="center">
-        <input class="nover" type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" align="center"/> 
+        <input class="nover" type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" /> 
         </div></td>
   </tr>
 </table>
@@ -909,10 +909,10 @@ if($estafiliado == 0) {
 <table width="100%" border="0">
   <tr>
     <td width="603" valign="middle"><div align="center">
-        <input class="nover" type="button" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" align="center"/> 
+        <input class="nover" type="button" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" /> 
       </div></td>
     <td width="602" valign="middle"><div align="center">
-        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" align="center"/>
+        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
       </div></td>
   </tr>
 </table>
@@ -920,7 +920,7 @@ if($estafiliado == 0) {
 }
 ?>
 <div align="center">
-	<input class="nover" type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/> 
+	<input class="nover" type="button" name="imprimir" value="Imprimir" onClick="window.print();" /> 
 </div>
 </form>
 </body>

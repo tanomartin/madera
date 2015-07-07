@@ -1,4 +1,4 @@
-<?php session_save_path($_SERVER['DOCUMENT_ROOT']."/usimra/sessiones");
+<?php session_save_path($_SERVER['DOCUMENT_ROOT']."/madera/usimra/sessiones");
 //si es necesario cambiar la config. del php.ini desde tu script 
 ini_set("session.use_only_cookies","1"); 
 ini_set("session.use_trans_sid","0"); 

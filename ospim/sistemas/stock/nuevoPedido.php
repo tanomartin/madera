@@ -16,7 +16,7 @@ $canInsumo = mysql_num_rows($resInsumo);
 
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -43,12 +43,11 @@ $canInsumo = mysql_num_rows($resInsumo);
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-			
-		})
+		});
 	});
 	
 	function validar(formulario) {
-		cantidadInsumo = <?php echo $canInsumo ?>;
+		var cantidadInsumo = <?php echo $canInsumo ?>;
 		if (formulario.fecsoli.value != "") {
 			if (!esFechaValida(formulario.fecsoli.value)) {
 				alert("Fecha de Inicio invalida");
@@ -59,7 +58,7 @@ $canInsumo = mysql_num_rows($resInsumo);
 			return false;
 		}
 		var seleccion = false;
-		for (i=0; i<cantidadInsumo; i++) {
+		for (var i=0; i<cantidadInsumo; i++) {
 			var campo = "cantidad"+i;
 			if (document.getElementById(campo).value != 0) {
 				if (!esEnteroPositivo(document.getElementById(campo).value)) {
@@ -92,10 +91,10 @@ $canInsumo = mysql_num_rows($resInsumo);
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'pedidos.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'pedidos.php'" />
 </p>
   <p><span class="Estilo1">Nuevo Pedido </span></p>
-  <form name="nuevoPedido" id="nuevoPedido" method="post" action="guardarNuevoPedido.php?cant=<?php echo  $canInsumo?>" onSubmit="return validar(this)">
+  <form name="nuevoPedido" id="nuevoPedido" method="post" action="guardarNuevoPedido.php?cant=<?php echo  $canInsumo?>" onsubmit="return validar(this)">
   <table width="800" border="0">
     <tr>
       <td>Fecha Solicitud </td>
@@ -170,7 +169,7 @@ $canInsumo = mysql_num_rows($resInsumo);
 		</tbody>
 	  </table>
       <p>
-        <input type="submit" name="Submit" value="Guardar" sub="sub"/>
+        <input type="submit" name="Submit" value="Guardar" />
       </p>
   </form>
 </div>

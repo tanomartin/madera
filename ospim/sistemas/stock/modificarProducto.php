@@ -14,7 +14,7 @@ $rowProd = mysql_fetch_assoc($resProd)
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Producto :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -37,10 +37,9 @@ jQuery(function($){
 
 function cargoSector(ubicacion) {
 	document.forms.modifProducto.sector.length = 0;
-	var o
-	o = document.createElement("OPTION");
+	var o = document.createElement("OPTION");
 	o.text = 'Seleccione Sector';
-	o.value = 0
+	o.value = '0';
 	document.forms.modifProducto.sector.options.add(o);
 	if (ubicacion == 'U') {
 		o = document.createElement("OPTION");
@@ -111,14 +110,15 @@ function validar(formulario) {
 }
 
 </script>
-
+</head>
+  
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'productos.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'productos.php'" />
  </p>
   <p><span class="Estilo2">Modificar Producto</span></p>
-  <form id="modifProducto" name="modifProducto" method="post" action="guardarModifProducto.php" onSubmit="return validar(this)">
+  <form id="modifProducto" name="modifProducto" method="post" action="guardarModifProducto.php" onsubmit="return validar(this)">
   	<input name="id" type="text" id="id" size="3" maxlength="3" value="<?php echo $rowProd['id'] ?>" style="visibility:hidden"/>	
 				<table width="850" border="0" style="text-align:left">
                   <tr>
@@ -162,7 +162,7 @@ function validar(formulario) {
                     <td>Sector</td>
                     <td>
 					<select name="sector">
-           				<option value=0>Seleccione Sector</option>
+           				<option value="0">Seleccione Sector</option>
 				   <?php 
 						$sqlSector ="select * from departamentos";
 						$resSector = mysql_query($sqlSector,$db);
@@ -231,7 +231,7 @@ function validar(formulario) {
 							}	?>     
 						</table>					</td>
                     <td colspan="2"><div align="center">
-                      <input type="submit" name="Submit" value="Guardar" sub/>
+                      <input type="submit" name="Submit" value="Guardar" />
                     </div></td>
                   </tr>
                 </table>

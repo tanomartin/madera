@@ -51,7 +51,7 @@ if (isset($dato)) {
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -59,7 +59,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -83,9 +83,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_searchDelay : 300,
 				filter_startsWith  : false,
 				filter_hideFilters : false,
-				
 			}
-		
 		})
 	});
 
@@ -134,10 +132,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
+
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="buscadorAutorizacion.php">
+<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorAutorizacion.php">
   <div align="center" >
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'" align="center"/>
+  <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloAutorizaciones.php'"/>
   <p align="center" class="Estilo1">M&oacute;dulo Buscador de Autorizaciones</p>
    <?php 
 		if ($noExiste == 1) {
@@ -208,7 +208,7 @@ function validar(formulario) {
 			<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
 			<td><?php if($rowLeeAutorizacion['statusverificacion']==1) echo "Aprobada"; if($rowLeeAutorizacion['statusverificacion']==2) echo "Rechazada"; if($rowLeeAutorizacion['statusverificacion']==3) echo "No Reverificada";?></td>
 			<td><?php if($rowLeeAutorizacion['statusautorizacion']==1) echo "Aprobada"; if($rowLeeAutorizacion['statusautorizacion']==2) echo "Rechazada";?></td>
-			<td><a href="consultaAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']; ?>" target="popup" onClick="window.open(this.href, this.target, 'width=1100,height=800,scrollbars=yes'); return false;">Consultar</a></td>
+			<td><a href="consultaAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']; ?>" target="popup" onclick="window.open(this.href, this.target, 'width=1100,height=800,scrollbars=yes'); return false;">Consultar</a></td>
 		</tr>
 <?php
 		}

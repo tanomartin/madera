@@ -7,7 +7,7 @@ include($libPath."controlSessionOspim.php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Informes de Acuerdos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -17,20 +17,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-<table width="137" border="0">
-	<tr align="center" valign="top">
-      <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
-        </div></td>
-	</tr>
-</table>
+	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /> 
 </div>
 <div align="center">
   <p><span class="Estilo2">M&oacute;dulo De Informes</span></p>
-  <table width="614" height="506" border="3">
+  <table style="width: 614; height: 506" border="3">
     <tr>
      <td width="196" height="164"><p align="center">Cheques en Cartera</p>
         <p align="center"><a class="enlace" href="chequesCartera.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>

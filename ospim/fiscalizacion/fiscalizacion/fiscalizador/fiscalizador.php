@@ -19,7 +19,7 @@ $err = $_GET['err'];
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -117,15 +117,16 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
-<form id="fisaclizador" name="fisaclizador" method="post" onSubmit="return validar(this)" action="filtroEmpresas.php" style="text-align:center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuFiscalizaciones.php'" align="center"/>
+<form id="fisaclizador" name="fisaclizador" method="post" onsubmit="return validar(this)" action="filtroEmpresas.php" style="text-align:center">
+  <input type="button" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" />
   <p class="Estilo1">M&oacute;dulo Fiscalizador </p>
     <p><strong>Seleccionar Tipo de Fiscalización</strong></p>
 	 <table width="150" border="0" align="center">
        <tr>
-         <td width="34"><input type="radio" name="tipo" value="delega" onchange="fomularios()" checked /></td>
+         <td width="34"><input type="radio" name="tipo" value="delega" onchange="fomularios()" checked="checked" /></td>
          <td width="106"><div align="left">Por Delegaci&oacute;n </div></td>
        </tr>
        <tr>

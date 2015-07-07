@@ -14,7 +14,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: ABM Contrato :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -25,7 +25,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 <script src="/madera/lib/jquery.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -52,11 +52,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 	
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-   <input type="reset" name="volver" value="Volver" onclick="location.href = '../prestador.php?codigo=<?php echo $codigo ?>'" align="center"/>
+   <input type="button" name="volver" value="Volver" onclick="location.href = '../prestador.php?codigo=<?php echo $codigo ?>'" />
   </span></p>
   <p class="Estilo2">ABM de Contratos </p>
   <table width="500" border="1">

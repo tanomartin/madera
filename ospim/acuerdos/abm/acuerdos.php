@@ -44,7 +44,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#CCCCCC" > 
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/></p>
+  <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" /></p>
   <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
@@ -95,7 +95,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	?>	
   </table>
   <p>
-    <input type="submit" name="nuevoAcuerdo" value="Nuevo Acuerdo" onClick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?> '" sub>
+    <input type="submit" name="nuevoAcuerdo" value="Nuevo Acuerdo" onClick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?> '" />
   </p>
 </div>
 </body>

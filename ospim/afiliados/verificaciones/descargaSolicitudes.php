@@ -98,12 +98,12 @@ try{
 	<tr align="center" valign="top">
     <td width="385" valign="middle">
 	<div align="left">
-	<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAfiliados.php'" align="left"/>
+	<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAfiliados.php'" align="left"/>
 	</div>
 	</td>
     <td width="384" valign="middle">
 	<div align="right">
-    <input type="submit" name="listar" value="Listar Solicitudes" onClick="location.href = 'listarSolicitudes.php'" align="left"/>
+    <input type="submit" name="listar" value="Listar Solicitudes" onclick="location.href = 'listarSolicitudes.php'" align="left"/>
     </div>
 	</td>
 	</tr>
@@ -122,7 +122,6 @@ catch (PDOException $e) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Solicitudes de Autorizacion :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -133,6 +132,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
 </body>
 </html>

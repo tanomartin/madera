@@ -21,7 +21,7 @@ if (isset($cuit)) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado Titulares Por Empresas :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -39,7 +39,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -85,15 +85,15 @@ function validar(formulario) {
 	return true;
 }
 
-
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
   <?php if (!isset($_GET['cuit'])) { ?>
-	  <input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" align="center"/></p>
-		<form name="listadoTitularesEmpresa" id="listadoTitularesEmpresa" method="post" onSubmit="return validar(this)" action="titularesPorEmpresa.php">
+	  <input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" /></p>
+		<form name="listadoTitularesEmpresa" id="listadoTitularesEmpresa" method="post" onsubmit="return validar(this)" action="titularesPorEmpresa.php">
 		<p><span class="Estilo2">Titulares Por Empresas </span></p>
 	  <?php	if (isset($canEmpresa) && $canEmpresa == 0) {
 				print("<p><font color='#FF0000'><b> No existe empresa registrada para el C.U.I.T. $cuit </b></font></p>");

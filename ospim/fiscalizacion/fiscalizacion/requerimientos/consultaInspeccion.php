@@ -15,7 +15,7 @@ $rowInspe = mysql_fetch_assoc($resInspe);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -25,6 +25,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
@@ -107,7 +108,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 		    <td><div align="left"><?php if ($rowInspe['fechainspeccion'] != '') echo  invertirFecha($rowInspe['fechainspeccion']) ?></div></td>
 	      </tr>
   </table>
-	</p>
 </div>
 </body>
 </html>

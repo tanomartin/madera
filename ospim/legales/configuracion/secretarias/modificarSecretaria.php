@@ -18,7 +18,7 @@ $rowSecretaria = mysql_fetch_array($resSecretaria);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Secretaria :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -42,14 +42,15 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'secretarias.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'secretarias.php'" />
  </p>
   <p><span class="Estilo2">Modificar Juzgado </span></p>
-  <form id="modifSecre" name="modifSecre" method="post" action="guardarModifSecretaria.php?codsecre=<?php echo $codigosecre ?>&codjuz=<?php echo $codigoJuzga ?>" onSubmit="return validar(this)">
+  <form id="modifSecre" name="modifSecre" method="post" action="guardarModifSecretaria.php?codsecre=<?php echo $codigosecre ?>&codjuz=<?php echo $codigoJuzga ?>" onsubmit="return validar(this)">
 				
 				<p>
 				  <label>Codigo Secretaría: <b> <?php echo $codigosecre ?> </b></label>
@@ -77,7 +78,7 @@ function validar(formulario) {
 			   <?php } ?>
                     
                     <td><div align="center">
-                      <input type="submit" name="guardar" value="Guardar Cambios" sub/>
+                      <input type="submit" name="guardar" value="Guardar Cambios" />
                     </div></td>
                   </tr>
                 </table>

@@ -6,7 +6,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado De Discapacitados por Delegacion :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -34,12 +34,13 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php?origen=<?php echo $origen ?>'" align="center"/></p>
+  <p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php?origen=<?php echo $origen ?>'" /></p>
   	
-	<form  name="listadoEmpresa" id="listadoEmpresa" method="post" onSubmit="return validar(this)" action="discapacitadosPorDelegacionExcel.php">
+	<form  name="listadoEmpresa" id="listadoEmpresa" method="post" onsubmit="return validar(this)" action="discapacitadosPorDelegacionExcel.php">
   	<p><span class="Estilo2">Discapacitdos por Delegaci&oacute;n </span></p>
   	<?php if (isset($_GET['error'])) { 
 			if ($_GET['error'] == 0) {

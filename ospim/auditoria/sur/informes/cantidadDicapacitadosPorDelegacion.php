@@ -62,7 +62,7 @@ try {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado De Discapacitados por Delegacion :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -78,7 +78,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -122,11 +122,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 	$.unblockUI(); 
 	});
 </script>
-
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" align="center"/></p>
+  <p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" /></p>
   	<p><span class="Estilo2">Cantidad Discapacitados por Delegaci&oacute;n al <?php echo date('d/m/Y') ?> </span></p>
 	 <table style="text-align:center; width:800px" id="tabla" class="tablesorter" >
           <thead>
@@ -160,7 +160,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			</tr>
 		</tbody>
   </table>
-     <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+     <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>

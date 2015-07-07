@@ -41,7 +41,7 @@ if (isset($dato)) {
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -49,7 +49,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -106,10 +106,12 @@ function abrirPantalla(dire) {
 }
 
 </script>
+</head>
+
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="moduloAbmPrestadores.php">
+<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="moduloAbmPrestadores.php">
   <div align="center">
-	  <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuPrestadores.php'" align="center"/>
+	  <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuPrestadores.php'" />
 	  <p class="Estilo1">M&oacute;dulo Prestadores </p>
 	  <p><label><input type="button" name="nuevo" value="Nuevo Prestador" onclick="abrirPantalla('nuevoPrestador.php')" /></label></p>
 	  <?php 

@@ -20,7 +20,7 @@ A:hover {text-decoration: none;color:#00FFFF }
    <?php 
 		$origen = $_GET['origen'];
 		if (is_null($origen)) { ?>
-			 <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit ?>'" align="center"/> 
+			 <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit ?>'" /> 
 	<?php } ?>  
   </div>
   <div align="center">
@@ -175,7 +175,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	?>
 	
   </div>
-  <div align="center"><p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/> </p></div>
+  <div align="center"><p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();" /> </p></div>
 </form>
 </body>
 </html>

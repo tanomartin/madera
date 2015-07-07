@@ -27,7 +27,6 @@ try {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Generaci&oacute;n Archivos Intranet OSPIM :.</title>
-</head>
 
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -41,7 +40,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
@@ -64,23 +63,23 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_hideFilters : false,
 				
 			}
-		
-		})
+		});
 	});
 	
 	function cartelEspere(nombre, dele) {
-		var mensaje = "<h1>Generando Archivos Delegacion "+ nombre + " ("+dele+")"+" <br>Aguarde por favor...</h1>"
+		var mensaje = "<h1>Generando Archivos Delegacion "+ nombre + " ("+dele+")"+" <br>Aguarde por favor...</h1>";
 		var pagina = 'generarIntraDelegacion.php?delcod='+dele;
 		location.href=pagina;
 		$.blockUI({ message: mensaje });
 	}
 	
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuActualizacionOspim.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuActualizacionOspim.php'" />
   </span></p>
   <p><span class="Estilo2">Men&uacute; Generaci&oacute;n de Archivos Intranet O.S.P.I.M. </span></p>
     <p><strong>Seleccionar Delegaci&oacute;n para Generar Archivos </strong></p>
@@ -114,9 +113,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><input name="generar" type="button" value="Generar Archivos" onclick="cartelEspere('<?php echo $res['nombre'] ?>','<?php echo $res['delcod'] ?>')"/></td>
 			</tr> 
 	<?php } ?>
+	</tbody>
   </table>
     <p>
-      <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+      <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
     </p>
 </div>
 </body>

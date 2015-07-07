@@ -41,10 +41,10 @@ A:hover {text-decoration: none;color:#33CCFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloInformes.php'" align="center"/>
+  <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" />
   <p><span class="Estilo1">Consulta Movimiento Bancario</span> </p>
 </div>
-<form id="anulacion" name="anulacion" method="post" onSubmit="return validar(this)" action="movimientoBanco.php">
+<form id="anulacion" name="anulacion" method="post" onsubmit="return validar(this)" action="movimientoBanco.php">
   <div align="center">
     <table width="371" border="0">
       <tr>
@@ -66,7 +66,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 	<?php 
 		if(isset($_POST['nroControl'])) { 
 			$nroControl = $_POST['nroControl'];?>
-			<p><span class="Estilo1">Resultado Codigo de identificacion de boleta "<?php echo $nroControl ?>" </strong></span> </p>
+			<p><span class="Estilo1"><strong>Resultado Codigo de identificacion de boleta "<?php echo $nroControl ?>" </strong></span> </p>
 			<table border="1" width="1000">
 				<th>Fecha Recepción </th>
 				<th>Fecha Acreditacion </th>

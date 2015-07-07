@@ -39,20 +39,20 @@ A:hover {text-decoration: none;color:#00FFFF }
 if($tipafiliado == 1) {
 	$etiquetafoto = $nroafiliado."T";
 ?>
-        <input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&tipAfi=<?php echo $tipafiliado?>&fotAfi=1'" align="center"/>
+        <input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&tipAfi=<?php echo $tipafiliado?>&fotAfi=1'" />
 <?php
 }
 else {
 	$etiquetafoto = $nroafiliado."F".$ordafiliado;
 ?>
-        <input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&estFam=1&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>&fotAfi=1'" align="center"/>
+        <input class="nover" type="button" name="volver" value="Volver" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&estFam=1&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>&fotAfi=1'" />
 <?php
 }
 ?>
 </div>
 <p></p>
 <div align="left"><span class="Estilo4"><strong>Etiqueta Para Importar La Foto:</strong></span>
-	<input name="etiquetafoto" type="text" id="etiquetafoto" value="<?php echo $etiquetafoto ?>" size="9" readonly="true" style="background-color:#CCCCCC" />
+	<input name="etiquetafoto" type="text" id="etiquetafoto" value="<?php echo $etiquetafoto ?>" size="9" readonly="readonly" style="background-color:#CCCCCC" />
 </div>
 </body>
 </html>

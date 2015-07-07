@@ -21,7 +21,7 @@ if ($canReque == 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -31,23 +31,25 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-<link rel="stylesheet" href="/madera/lib/tablas.css">
+<link rel="stylesheet" href="/madera/lib/tablas.css"/>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 function redireccion(tipo ,nroreque, fecha, cuit) {
+	var pagina = '';
 	if (tipo == 'edicion') {
-		var pagina = "detalleRequerimiento.php?nroreq="+nroreque+"&fecha="+fecha+"&cuit="+cuit;
+		pagina = "detalleRequerimiento.php?nroreq="+nroreque+"&fecha="+fecha+"&cuit="+cuit;
 	}
 	if (tipo == 'inspeccion') {
-		var pagina = "inspeccion.php?nroreq="+nroreque+"&fecha="+fecha+"&cuit="+cuit;
+		pagina = "inspeccion.php?nroreq="+nroreque+"&fecha="+fecha+"&cuit="+cuit;
 	}
 	location.href=pagina;
 }
 
 function checkall(tipo, seleccion, formulario) {
+ 	var grupo = '';
 	if (tipo == "anular") {
 		grupo = formulario.anular;
 	}
@@ -63,11 +65,11 @@ function checkall(tipo, seleccion, formulario) {
 		}
 	}
 	if (seleccion.checked) {
-		 for (i=0;i< grupo.length;i++) 
+		 for (var i=0;i< grupo.length;i++) 
 			 if(grupo[i].type == "checkbox")	
 				 grupo[i].checked=1;  
 	} else {
-		 for (i=0;i<grupo.length;i++) 
+		 for (var i=0;i<grupo.length;i++) 
 			 if(grupo[i].type == "checkbox")	
 				 grupo[i].checked=0;  
 	}
@@ -84,14 +86,15 @@ function deshabilitarCheck(tipo,formulario) {
 	if (total == null) {
 		grupo.disabled = true;
 	} else {
-		for (i = 0; i < total; i++) {
+		for (var i = 0; i < total; i++) {
 			grupo[i].disabled = true;
 		}
 	}
 }
 
 function validarCheck(tipo,formulario, fecha) {
-	var grupo, mensaje, pagina;
+	var grupo = '';
+	var mensaje = ''; 
 	if (tipo == 'liquidar') {
 		grupo = formulario.liquidar;
 		mensaje = "Debe seleccionar el o los requerimientos a liquidar";
@@ -110,7 +113,7 @@ function validarCheck(tipo,formulario, fecha) {
 		}
 	} else {
 		var checkeados = 0; 
-		for (i = 0; i < total; i++) {
+		for (var i = 0; i < total; i++) {
 			if (grupo[i].checked) {
 				checkeados++;
 			}
@@ -135,14 +138,13 @@ function validarCheck(tipo,formulario, fecha) {
 	formulario.submit();
 }
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" align="center"/>
-  </span></p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'requerimientos.php'" /></p>
   	<p class="Estilo2">Listado de  Requerimiento del d&iacute;a <?php echo $fecha ?>  </p>
-	<form id="listadoReque" name="listadoReque" method="post" onSubmit="return validar(this)" />
+	<form id="listadoReque" name="listadoReque" method="post">
 	  <div class="grilla">
 	  <table width="1000" border="1" align="center">
         <thead>
@@ -184,13 +186,15 @@ function validarCheck(tipo,formulario, fecha) {
 						<td>Inspección En Curso</td>  
 			<?php	}  	
 				}?>
-				<td><input type="checkbox" name="<?php echo $rowReque['nrorequerimiento'] ?>" id="anular" value="<?php echo $rowReque['nrorequerimiento'] ?>"></td>   
-				<td><input type="checkbox" name="<?php echo $rowReque['nrorequerimiento'] ?>" id="liquidar" value="<?php echo $rowReque['nrorequerimiento'] ?>"></td>
+				<td><input type="checkbox" name="<?php echo $rowReque['nrorequerimiento'] ?>" id="anular" value="<?php echo $rowReque['nrorequerimiento'] ?>"/></td>   
+				<td><input type="checkbox" name="<?php echo $rowReque['nrorequerimiento'] ?>" id="liquidar" value="<?php echo $rowReque['nrorequerimiento'] ?>"/></td>
 			</tr>
 	<?php	} ?>
-			<td colspan='8'></td>
-			<td><input type='button' name='anularboton' value='Anular' onclick="validarCheck('anular',this.form,'<?php echo $fecha ?>')"/></td>
-			<td><input type='button' name='liquidarboton' value='Liquidar' onclick="validarCheck('liquidar',this.form,'<?php echo $fecha ?>')"/></td>
+			<tr>
+				<td colspan='8'></td>
+				<td><input type='button' name='anularboton' value='Anular' onclick="validarCheck('anular',this.form,'<?php echo $fecha ?>')"/></td>
+				<td><input type='button' name='liquidarboton' value='Liquidar' onclick="validarCheck('liquidar',this.form,'<?php echo $fecha ?>')"/></td>
+			</tr>
 	  </tbody>
       </table>
 	</div>

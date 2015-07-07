@@ -107,13 +107,13 @@ function abrirDetelle(dire) {
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center"><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = '../menuTesoreria.php'" align="center"/></span></p>
+  <p><span style="text-align:center"><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = '../menuTesoreria.php'" /></span></p>
   <p class="Estilo2">Informacion de Subida y Descarga de Padrones - Capitas </p>
   <p class="nover"><b>Seleccione Per&iacute;odo</b></p>
   
   <form name="controlCapitas" action="controlCapitas.php" method="post">	 
 	  <select class="nover" name="periodo" id="periodo">
-	  <option selected="selected" value=0> Seleccione Periodo </option>
+	  <option selected="selected" value="0"> Seleccione Periodo </option>
 		  <?php 
 			for ($i=$inicio;$i<=$fin;$i++){
 				$valor = $mesArc[$i]."-".$anioArc[$i];
@@ -175,7 +175,7 @@ function abrirDetelle(dire) {
 			?>
         <?php } ?>
 		</table>
-		 <p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+		 <p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
   <?php	} ?> 
 </div>
 </body>

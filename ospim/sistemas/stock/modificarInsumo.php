@@ -15,7 +15,7 @@ $rowInsumo = mysql_fetch_assoc($resInsumo);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Producto :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -68,14 +68,15 @@ function validar(formulario) {
 	return true;
 }
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'insumos.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'insumos.php'" />
  </p>
   <p><span class="Estilo2">Modificar Insumo</span></p>
-  <form id="nuevoInsumo" name="nuevoInsumo" method="post" action="guardarModifInsumo.php" onSubmit="return validar(this)">		
+  <form id="nuevoInsumo" name="nuevoInsumo" method="post" action="guardarModifInsumo.php" onsubmit="return validar(this)">		
 			 <input name="idInsumo" id="idInsumo" type="hidden" value="<?php echo $rowInsumo['id'] ?>" />
 			<table width="850" border="0" style="text-align:left">
               <tr>
@@ -99,7 +100,7 @@ function validar(formulario) {
                 <td><input name="ptoPromedio" type="text" id="ptoPromedio" value="<?php echo $rowInsumo['puntopromedio'] ?>" size="14" maxlength="14"/></td>
               </tr>
             </table>
-			<p><input type="submit" name="Submit" value="Guardar" sub/></p>
+			<p><input type="submit" name="Submit" value="Guardar" /></p>
   </form>
 </div>
 </body>

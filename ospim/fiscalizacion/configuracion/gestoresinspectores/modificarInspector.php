@@ -12,7 +12,7 @@ $rowInspector = mysql_fetch_array($resInspector);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Inspector :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -36,14 +36,15 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'inspectores.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'inspectores.php'" />
  </p>
   <p><span class="Estilo2">Modificar Inspector </span></p>
-  <form id="modifInspector" name="modifInspector" method="post" action="guardarModifInspector.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
+  <form id="modifInspector" name="modifInspector" method="post" action="guardarModifInspector.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">
 				
 				<p>
 				  <label>Codigo: <b> <?php echo $codigo ?> </b></label>
@@ -54,13 +55,13 @@ function validar(formulario) {
 				  </label>
 				</p>
 				<p>
+					<label>
 					<?php 
 						$error = $_GET['error'];
 						if ($error == 1) {
 							print("<div align='center' style='color:#FF0000'><b> Debe elegir una o varias delegaciones </b></div>");
 						}
 					?>
-					 <br/>
 					</label>
 				</p>
 				<table width="300" border="1">
@@ -111,7 +112,7 @@ function validar(formulario) {
 			   <?php } ?>
                     </div></td>
                     <td width="167"><div align="center">
-                      <input type="submit" name="guardar" value="Guardar Cambios" sub/>
+                      <input type="submit" name="guardar" value="Guardar Cambios" />
                     </div></td>
                     <td width="167">
 					  <div align="center">

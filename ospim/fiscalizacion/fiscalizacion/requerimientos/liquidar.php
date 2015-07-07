@@ -659,7 +659,7 @@ $_SESSION["ultimoAcceso"] = $ahora;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Requerimientos Liquidados:.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -677,11 +677,12 @@ function abrirInfo(dire) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" />
   </span></p>
   	<p class="Estilo2">Resultado del proceso de liquidación los los requerimientos del d&iacute;a <?php echo $fecha ?>  </p>
 	  <table width="800" border="1" align="center">
@@ -704,7 +705,7 @@ function abrirInfo(dire) {
 		} ?>
       </table>
       <p>
-        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
   </p>
 </div>
 </body>

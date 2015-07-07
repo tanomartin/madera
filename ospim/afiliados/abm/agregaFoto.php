@@ -50,12 +50,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<?php
 	if($tipafiliado == 1) {
 	?>
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1'" align="center"/>
+		<input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1'"/>
 	<?php
 	}
 	else {
 	?>
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&estFam=1&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+		<input class="nover" type="button" name="volver" value="Volver" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=1&estFam=1&nroOrd=<?php echo $ordafiliado?>'"/>
 	<?php
 	}
 	?>
@@ -64,9 +64,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<div align="center" class="Estilo4"><?php if ($tipafiliado == 1) echo "Agregar Foto de Titular"; else echo "Agregar Foto de Familiar";?></div>
 	<p></p>
 	<div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span>
-		<input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="true" style="background-color:#CCCCCC" />
-		<input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="1" readonly="true" style="visibility:hidden" />
-		<input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="true" style="visibility:hidden" />
+		<input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="readonly" style="background-color:#CCCCCC" />
+		<input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="1" readonly="readonly" style="visibility:hidden" />
+		<input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="readonly" style="visibility:hidden" />
     </div>
 	<p></p>
 	<table width="100%" border="0">
@@ -74,7 +74,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td colspan="2">&nbsp;</td>
 			<td rowspan="3">
 				<div align="center">
-					<input class="nover" type="button" name="scanear2" value="Scanear Foto" disabled="disabled" onClick="location.href = 'scanearFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=<?php echo $estfamilia?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+					<input class="nover" type="button" name="scanear2" value="Scanear Foto" disabled="disabled" onClick="location.href = 'scanearFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=<?php echo $estfamilia?>&tipAfi=<?php echo $tipafiliado?>&nroOrd=<?php echo $ordafiliado?>'" />
 				</div>
 			</td>
 		</tr>
@@ -89,7 +89,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	</table>
 	<p></p>
 	<div align="center">
-		<input class="nover" type="submit" name="guardar" value="Guardar Foto" align="center"/> 
+		<input class="nover" type="submit" name="guardar" value="Guardar Foto" /> 
 	</div>
 </form>
 </body>

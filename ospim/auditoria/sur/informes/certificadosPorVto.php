@@ -15,7 +15,7 @@ if (isset($_POST['fechavto'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado De Certificados por Fecha Vto. :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -32,7 +32,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -56,7 +56,7 @@ jQuery(function($){
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		})
+		});
 	});
 
 
@@ -64,7 +64,7 @@ function validar(formulario) {
 	var fechavto = formulario.fechavto.value;
 	if (fechavto == "") {
 		alert("Debe ingresar un fecha de vencimiento de certificado");
-		return(false)
+		return(false);
 	} else {
 		if (!esFechaValida(fechavto)) {
 			alert("La fecha de fecha de vencimiento no es valida");
@@ -76,11 +76,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" align="center"/></p>
-	<form  name="listadoEmpresa" id="listadoEmpresa" method="post" onSubmit="return validar(this)" action="certificadosPorVto.php">
+  <p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" /></p>
+	<form  name="listadoEmpresa" id="listadoEmpresa" method="post" onsubmit="return validar(this)" action="certificadosPorVto.php">
   	<p><span class="Estilo2">Certificados  por Fecha de Vencimiento </span></p>
 	<table>
 		<tr>
@@ -167,7 +168,7 @@ function validar(formulario) {
 		</tbody>
 	</table>
     <p>
-      <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/>
+      <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
   </p>
  <?php } ?>
 </div>

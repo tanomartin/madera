@@ -86,7 +86,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -162,7 +162,7 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		})
+		});
 	});
 
 
@@ -197,7 +197,7 @@ function validar(formulario) {
 	return true;
 };
 </script>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -206,10 +206,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
-<form id="moduloABM" name="moduloABM" method="post"  onSubmit="return validar(this)" action="moduloABMDisca.php">
+<form id="moduloABM" name="moduloABM" method="post" onsubmit="return validar(this)" action="moduloABMDisca.php">
 	<div align="center">
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = '../menuSur.php'" align="center"/> 
+		<input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = '../menuSur.php'" /> 
 	</div>
 	<p align="center" class="Estilo1">Afiliados Discapacidad </p>
 	<div align="center">

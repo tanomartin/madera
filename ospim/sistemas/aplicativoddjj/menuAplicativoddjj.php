@@ -6,7 +6,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Sistemas Aplicativo :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -28,11 +28,12 @@ function importar() {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" />
   </span></p>
   <p><span class="Estilo2">Men&uacute; Aplicativo DDJJ - Sistemas </span></p>
   <table width="214" border="3">

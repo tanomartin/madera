@@ -18,7 +18,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -42,12 +42,12 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 				filter_hideFilters : false,
 			}
 			
-		})
+		});
 	});
 	
 	function calcularTotalFila(fila, costo) {
 		var campo = "cantidad"+fila;
-		canti = document.getElementById(campo).value
+		canti = document.getElementById(campo).value;
 		total = canti * costo;
 		campo = "totalfila"+fila;
 		document.getElementById(campo).value = total;
@@ -57,7 +57,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 	function calcularTotal() {
 		cantidadInsumo = <?php echo $canDetPedido ?>;
 		var total = 0;
-		for (i=0; i<cantidadInsumo; i++) {
+		for (var i=0; i<cantidadInsumo; i++) {
 			var campo = "totalfila"+i;
 			totFila = document.getElementById(campo).value;
 			total = parseFloat(total) + parseFloat(totFila);
@@ -67,7 +67,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 	
 	function validar(formulario) {
 		cantidadInsumo = <?php echo $canDetPedido ?>;
-		for (i=0; i<cantidadInsumo; i++) {
+		for (var i=0; i<cantidadInsumo; i++) {
 			var campo = "costo"+i;
 			costo = document.getElementById(campo).value;		
 			if (costo != "") {
@@ -112,10 +112,10 @@ $canDetPedido = mysql_num_rows($resDetPedido);
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input class="nover"  type="reset" name="volver" value="Volver" onclick="location.href = 'pedidos.php'" align="center"/>
+    <input class="nover"  type="reset" name="volver" value="Volver" onclick="location.href = 'pedidos.php'"/>
 </p>
   <p><span class="Estilo1">Detalle del Pedido <?php echo $id ?> </span></p>
-  <form id="modifDetPedido" name="modifDetPedido"  method="post" action="guardarModifDetallePedido.php?id=<?php echo  $id?>&cantinsumos=<?php echo $canDetPedido?>" onSubmit="return validar(this)">
+  <form id="modifDetPedido" name="modifDetPedido"  method="post" action="guardarModifDetallePedido.php?id=<?php echo  $id?>&cantinsumos=<?php echo $canDetPedido?>" onsubmit="return validar(this)">
   <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	  <thead>
 		<tr>
@@ -156,7 +156,7 @@ $canDetPedido = mysql_num_rows($resDetPedido);
     </tbody>
   </table>
   <p>
-    <input class="nover" type="submit" name="Submit" value="Guardar Cambios" sub="sub"/>
+    <input class="nover" type="submit" name="Submit" value="Guardar Cambios"/>
   </p>
   <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
   </form>

@@ -37,11 +37,11 @@ $(function() {
 
 function consultaDetallesArchivo(fecmen, nromai) {
 	param = "fechaMens="+fecmen+"&nroMail="+nromai;
-	opciones = "top=50,left=50,width=1080,height=640,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=yes"
+	opciones = "top=50,left=50,width=1080,height=640,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=yes";
 	window.open("detallesDDJJ.php?"+param, "", opciones);
 };
 </script>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -51,6 +51,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
 <h1>Mensajes de N&oacute;mina AFIP</h1>
@@ -96,9 +98,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><?php echo "{$asunto}";?></td>
 				<td><?php echo "{$estadoMail}";?></td>
 		<?php if($indicaMail == 0) { ?>
-				<td><input type="button" value="Procesar Archivo" onClick="window.location.href='archivosDDJJ.php?fechaArch=<?php echo $fechaArch;?>&fechaMens=<?php echo $fechaMens;?>&nroMail=<?php echo $nroMail;?>'"></td>
+				<td><input type="button" value="Procesar Archivo" onclick="window.location.href='archivosDDJJ.php?fechaArch=<?php echo $fechaArch;?>&fechaMens=<?php echo $fechaMens;?>&nroMail=<?php echo $nroMail;?>'"/></td>
 		<?php } else { ?>
-				<td><input type="button" value="Archivo Procesado" onClick="javascript:consultaDetallesArchivo(<?php echo $fechaMens;?>,<?php echo $nroMail;?>)"/></td>
+				<td><input type="button" value="Archivo Procesado" onclick="javascript:consultaDetallesArchivo(<?php echo $fechaMens;?>,<?php echo $nroMail;?>)"/></td>
 		<?php } ?>
 			</tr>
 	<?php }?>
@@ -114,7 +116,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <img src="img/next.png" width="16" height="16" class="next"/>
 		  <img src="img/last.png" width="16" height="16" class="last"/>
 			<select class="pagesize">
-			  <option selected value="10">10 por pagina</option>
+			  <option selected="selected" value="10">10 por pagina</option>
 			  <option value="20">20 por pagina</option>
 			  <option value="30">30 por pagina</option>
 			  <option value="<?php echo $total_emails;?>">Todos</option>
@@ -123,12 +125,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<tr>
 		  <td width="599">
 			<div align="left">
-			  <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuAfip.php'" align="left"/>
+			  <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuAfip.php'" align="left"/>
 			</div>
+		  </td>
 		  <td width="620">
 			<div align="right">
-			  <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
+			  <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/>
 			</div>
+		  </td>
 		</tr>
 	  </table>
 	</form>

@@ -39,11 +39,11 @@ function validar(formulario) {
 	}
 
 	param = "cuiAfi=" + formulario.cuil.value;
-	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no"
+	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no";
 	window.open("../abm/ddjjAportesAfiliado.php?" + param, "", opciones);
 };
 </script>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -52,16 +52,18 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
-<form id="ddjjAportesCuil" name="ddjjAportesCuil" method="post"  onSubmit="return validar(this)">
+<form id="ddjjAportesCuil" name="ddjjAportesCuil" method="post"  onsubmit="return validar(this)">
 	<div align="center">
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'moduloInformes.php'" align="center"/> 
+		<input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" /> 
 	</div>
 	<p align="center" class="Estilo1">Consulta DDJJ / Aportes</p>
 	<div align="center">
 		<p>C.U.I.L. <input name="cuil" id="cuil" type="text" size="11" /></p>
 	</div>
-	<p align="center"><input class="nover" type="submit" id="aportes" name="aportes" value="Consultar" align="center"/></p>
+	<p align="center"><input class="nover" type="submit" id="aportes" name="aportes" value="Consultar" /></p>
 </form>
 </body>
 </html>

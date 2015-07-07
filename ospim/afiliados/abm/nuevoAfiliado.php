@@ -437,9 +437,9 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#CCCCCC" >
-<form id="formAfiliado" name="formAfiliado" method="post" onSubmit="return validar(this)" action="guardaAltaAfiliado.php">
+<form id="formAfiliado" name="formAfiliado" method="post" onsubmit="return validar(this)" action="guardaAltaAfiliado.php">
 <div align="center">
-	<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" align="center"/> 
+	<input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'moduloABM.php'" /> 
 </div>
 <p></p>
 <div align="center" class="Estilo4">Nuevo Afiliado</div>
@@ -474,7 +474,7 @@ function validar(formulario) {
 					<input name="nrodocumento" type="text" id="nrodocumento" value="" size="10" maxlength="10" /></td>
     <td width="173">Fecha de Nacimiento:</td>
     <td width="460"><input name="fechanacimiento" type="text" id="fechanacimiento" value="" size="12" /> Edad:
-					<input name="edad" type="text" id="edad" value="" size="2" readonly="true" style="background-color:#CCCCCC"/></td>
+					<input name="edad" type="text" id="edad" value="" size="2" readonly="readonly" style="background-color:#CCCCCC"/></td>
   </tr>
   <tr>
     <td>Nacionalidad:</td>
@@ -520,7 +520,7 @@ function validar(formulario) {
     <td>Domicilio:</td>
     <td><input name="domicilio" type="text" id="domicilio" value="" size="50" maxlength="50" /></td>
     <td>C.P.</td>
-    <td><input name="indpostal" type="text" id="indpostal" value="" size="1" readonly="true" style="background-color:#CCCCCC" />
+    <td><input name="indpostal" type="text" id="indpostal" value="" size="1" readonly="readonly" style="background-color:#CCCCCC" />
 		<input name="numpostal" type="text" id="numpostal" value="" size="4" maxlength="4" />
 		<input name="alfapostal" type="text" id="alfapostal" value="" size="3" maxlength="3" /></td>
   </tr>
@@ -531,8 +531,8 @@ function validar(formulario) {
         </select>
 	</td>
     <td>Provincia:</td>
-    <td><input name="nomprovin" type="text" id="nomprovin" value="" size="50" readonly="true" style="background-color:#CCCCCC" />
-		<input name="codprovin" type="text" id="codprovin" value="" size="2" readonly="true" style="visibility:hidden" />
+    <td><input name="nomprovin" type="text" id="nomprovin" value="" size="50" readonly="readonly" style="background-color:#CCCCCC" />
+		<input name="codprovin" type="text" id="codprovin" value="" size="2" readonly="readonly" style="visibility:hidden" />
 	</td>
   </tr>
   <tr>
@@ -558,7 +558,7 @@ function validar(formulario) {
              <option title="Solo OSPIM" value="S">Solo OSPIM</option>
              <option title="Por Opcion" value="O">Por Opcion</option>
    		</select>
-		<input name="solicitudopcion" type="text" id="solicitudopcion" value="" size="8" maxlength="8" readonly="true" style="background-color:#CCCCCC" />
+		<input name="solicitudopcion" type="text" id="solicitudopcion" value="" size="8" maxlength="8" readonly="readonly" style="background-color:#CCCCCC" />
 	</td>
   </tr>
   <tr>
@@ -584,7 +584,7 @@ function validar(formulario) {
     <td><input name="cuil" type="text" id="cuil" value="" size="13" maxlength="11" /></td>
     <td>C.U.I.T. Empresa:</td>
     <td><input name="cuitempresa" type="text" id="cuitempresa" value="" size="13" maxlength="11" />
-	    <input name="nombreempresa" type="text" id="nombreempresa" value="" size="50" readonly="true" style="background-color:#CCCCCC" />
+	    <input name="nombreempresa" type="text" id="nombreempresa" value="" size="50" readonly="readonly" style="background-color:#CCCCCC" />
 	</td>
   </tr>
   <tr>
@@ -617,7 +617,7 @@ function validar(formulario) {
 </table>
 <p></p>
 <div align="center">
-	<input class="nover" type="submit" name="guardar" value="Guardar" align="center"/>
+	<input class="nover" type="submit" name="guardar" value="Guardar" />
 </div>
 </form>
 </body>

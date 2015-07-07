@@ -71,16 +71,17 @@ if (!file_exists($archivo_name))
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title></head>
+<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 .Estilo2 {font-weight: bold}
 </style>
+</head>
 
 <body bgcolor="#CCCCCC">
-  <table width="762" height="241" border="1" align="center">
+  <table style="width: 762; height: 241" border="1" align="center">
   <tr align="center" valign="top">
     <td height="23" colspan="3"><div align="center"><em><strong><font face="Arial, Helvetica, sans-serif">Control de Archivo del Banco </font></strong></em></div></td>
   </tr>
@@ -131,9 +132,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	  <input type="submit" name="ingresar" value="Ingresar" onclick="location.href = 'procesarArchivo.php?nombreArc=<?php echo $archivo_name ?> '" align="left" />
     </div></td>
     <td width="157"><div align="right">
-        <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
+        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />
       </div>
-    </label></td>
+    </td>
   </tr>
 </table>
 </body>

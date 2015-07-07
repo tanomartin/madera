@@ -114,12 +114,12 @@ function validar(formulario) {
 <?php
 if($tipafiliado == 1) {
 ?>
-        <input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" align="center"/>
+        <input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" />
 <?php
 }
 else {
 ?>
-        <input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=0&nroOrd=<?php echo $ordafiliado?>'" align="center"/>
+        <input class="nover" type="button" name="volver" value="Volver" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=0&nroOrd=<?php echo $ordafiliado?>'" />
 <?php
 }
 ?>
@@ -131,10 +131,10 @@ else {
 	</tr>
   <tr>
 	<td align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span>
-	  <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="true" style="background-color:#CCCCCC" />
-	  <input name="apellidoynombre" type="text" id="nroafiliado" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="100" readonly="true" style="background-color:#CCCCCC" />
-	  <input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="1" readonly="true" style="visibility:hidden" />
-	  <input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="true" style="visibility:hidden" />
+	  <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $nroafiliado ?>" size="9" readonly="readonly" style="background-color:#CCCCCC" />
+	  <input name="apellidoynombre" type="text" id="nroafiliado" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="100" readonly="readonly" style="background-color:#CCCCCC" />
+	  <input name="tipafiliado" type="text" id="tipafiliado" value="<?php echo $tipafiliado ?>" size="1" readonly="readonly" style="visibility:hidden" />
+	  <input name="nroorden" type="text" id="nroorden" value="<?php echo $ordafiliado ?>" size="3" readonly="readonly" style="visibility:hidden" />
     </div></td>
   </tr>
   <tr>
@@ -143,9 +143,11 @@ else {
       </div></td>
   </tr>
   <tr>
-    <td colspan="2"><div align="center"><h2>
-		<?php if($reactiva == 0) {?>El titular NO tiene en el &uacute;ltimo trimestre ni las DDJJ ni los APORTES necesarios para su reactivaci&oacute;n.<?php }?></h2></div></td>
-		<?php if($reactivaEmpresa == 0) {?>La Empresa a la cual hay que activar el empleado no Existe.<?php }?></h2></div></td>
+    <td colspan="2">
+    	<div align="center"><h2>
+		<?php if($reactiva == 0) {?>El titular NO tiene en el &uacute;ltimo trimestre ni las DDJJ ni los APORTES necesarios para su reactivaci&oacute;n.<?php }?>
+		<?php if($reactivaEmpresa == 0) {?>La Empresa a la cual hay que activar el empleado no Existe.<?php }?>
+		</h2></div></td>
     </tr>
   <tr>
     <td>&nbsp;</td>
@@ -155,7 +157,7 @@ else {
   </tr>
   <tr>
     <td valign="middle"><div align="center">
-        <?php if($reactiva && $reactivaEmpresa) {?><input class="nover" type="submit" name="guardar" value="Reactivar" align="center"/><?php }?>
+        <?php if($reactiva && $reactivaEmpresa) {?><input class="nover" type="submit" name="guardar" value="Reactivar" /><?php }?>
         </div></td>
   </tr>
 </table>

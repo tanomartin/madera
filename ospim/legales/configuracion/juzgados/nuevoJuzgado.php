@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Juzgado :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -32,14 +32,15 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'juzgados.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'juzgados.php'" />
  </p>
   <p><span class="Estilo2">Nuevo Juzgado </span></p>
-  <form id="nuevoJuzgado" name="nuevoJuzgado" method="post" action="guardarNuevoJuzgado.php" onSubmit="return validar(this)">
+  <form id="nuevoJuzgado" name="nuevoJuzgado" method="post" action="guardarNuevoJuzgado.php" onsubmit="return validar(this)">
 				
 	<p>
 	  <label></label>
@@ -64,7 +65,7 @@ function validar(formulario) {
 				<table width="173" border="0">
                   <tr>
                     <td width="167"><div align="center">
-                      <input type="submit" name="Submit" value="Guardar" sub/>
+                      <input type="submit" name="Submit" value="Guardar" />
                     </div></td>
                   </tr>
                 </table>

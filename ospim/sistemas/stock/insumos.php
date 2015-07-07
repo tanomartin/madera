@@ -12,7 +12,7 @@ include($libPath."controlSessionOspimSistemas.php");
 
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -53,7 +53,7 @@ include($libPath."controlSessionOspimSistemas.php");
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuStock.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuStock.php'" />
 </p>
   <p><span class="Estilo1">Listado de Insumo </span></p>
   <input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevoInsumo.php'"  value="Nuevo" />

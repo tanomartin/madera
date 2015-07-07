@@ -19,18 +19,12 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" onSubmit="return validar(this)" method="post" action="repeticionPeriodosExcel.php" enctype="multipart/form-data" >
+<form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="repeticionPeriodosExcel.php" enctype="multipart/form-data" >
 <div align="center">
-<table width="137" border="0">
-	<tr align="center" valign="top">
-      <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloInformes.php'" align="center"/> 
-        </div></td>
-	</tr>
-</table>
+	<input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" /> 
+	<p><strong>Empresas con Acuerdos que repetien Per&iacute;odos </strong></p>
+	<p><label><input type="submit" name="Submit" value="Generar Informe"/></label></p>
 </div>
-<p align="center"><strong>Empresas con Acuerdos que repetien Per&iacute;odos </strong></p>
-<p align="center"><label><input type="submit" name="Submit" value="Generar Informe"/></label></p>
 </form>
 </body>
 </html>

@@ -10,7 +10,7 @@ if ($row = mysql_fetch_row($rs)) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Gestor :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -33,14 +33,15 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'asesores.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'asesores.php'" />
  </p>
   <p><span class="Estilo2">Nuevo Asesor Legal </span></p>
-  <form id="modifGestor" name="modifGestor" method="post" action="guardarNuevoAsesor.php?codigo=<?php echo $codigo ?>" onSubmit="return validar(this)">
+  <form id="modifGestor" name="modifGestor" method="post" action="guardarNuevoAsesor.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">
 				
 	<p>
 	  <label></label>
@@ -76,7 +77,7 @@ function validar(formulario) {
 					} 
 					?>
                 </table>
-               <p><input type="submit" name="Submit" value="Guardar" sub/></p>
+               <p><input type="submit" name="Submit" value="Guardar" /></p>
                
   </form>
 </div>

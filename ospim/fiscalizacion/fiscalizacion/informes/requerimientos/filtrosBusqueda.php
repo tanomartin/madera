@@ -13,7 +13,7 @@
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -69,11 +69,12 @@ function validar(formulario) {
 } 
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="requeListado.php">
   <p align="center">
-   <input type="reset" name="volver" value="Volver" onClick="location.href = '../moduloInformes.php'" align="center"/>
+   <input type="button" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'"/>
   </p>
   <p align="center" class="Estilo1">Consulta de Requerimientos </p>
   <p> 

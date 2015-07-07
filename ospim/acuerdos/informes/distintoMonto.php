@@ -19,18 +19,13 @@ function validar(formulario) {
 </script>
 </head>
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" onSubmit="return validar(this)" method="post" action="distintoMontoExcel.php" enctype="multipart/form-data" >
+<form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="distintoMontoExcel.php" enctype="multipart/form-data" >
 <div align="center">
-<table width="137" border="0">
-	<tr align="center" valign="top">
-      <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloInformes.php'" align="center"/> 
-        </div></td>
-	</tr>
-</table>
+	<input type="button" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" /> 
+
+<p><strong>Acuerdos con suma de cuotas distintas a monto de Cabecera </strong></p>
+<p><label><input type="submit" name="Submit" value="Generar Informe"/></label></p>
 </div>
-<p align="center"><strong>Acuerdos con suma de cuotas distintas a monto de Cabecera </strong></p>
-<p align="center"><label><input type="submit" name="Submit" value="Generar Informe"/></label></p>
 </form>
 </body>
 </html>

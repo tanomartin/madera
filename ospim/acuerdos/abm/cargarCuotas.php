@@ -89,7 +89,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script type="text/javascript">
 
 jQuery(function($){
-	for (i=0; i<=<?php echo $cuotasapagar ?>; i++) {
+	for (var i=0; i<=<?php echo $cuotasapagar ?>; i++) {
 		$("#fecha"+i).mask("99-99-9999");
 		$("#fcheque"+i).mask("99-99-9999");
 	}
@@ -135,7 +135,7 @@ function hayInfoCheque(id) {
 
 function validoMontos(formulario) {
 	var monto = 0;
-	for (i=1; i<=<?php echo $cuotasapagar ?>; i++) {
+	for (var i=1; i<=<?php echo $cuotasapagar ?>; i++) {
 		monto = monto + parseFloat(document.getElementById("monto"+i).value);
 	}
 	monto = Math.round(monto*100)/100;
@@ -151,7 +151,7 @@ function validoMontos(formulario) {
 function validarYGuardar(formulario) {
 	var nombreMonto, nombreFecha, nombreTipo;
 	var monto, fecha, tipoCance;
-	for (i=1; i<=<?php echo $cuotasapagar ?>; i++) {
+	for (var i=1; i<=<?php echo $cuotasapagar ?>; i++) {
 		nombreMonto = "monto"+i;
 		monto = document.getElementById(nombreMonto).value;
 		nombreFecha = "fecha"+i;
@@ -189,7 +189,7 @@ function validarYGuardar(formulario) {
 </head>
 <body bgcolor="#CCCCCC" >
 <p  align="center">
-   <input type="reset" name="volver" value="Volver" onClick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?>'" align="center"/>
+   <input type="reset" name="volver" value="Volver" onClick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?>'" />
 </p>
 <p  align="center"><strong>Cuotas del Acuerdo </strong></p>
 <form id="cuotas" name="cuotas" onSubmit="return validarYGuardar(this)" method="POST" action="guardoAcuerdo.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacuerdo?>">
@@ -216,7 +216,6 @@ function validarYGuardar(formulario) {
 		<td width="212"><div align="center">Banco </div></td>
 		<td width="212"><div align="center">Fecha Cheque </div></td>
   	 </tr>
-  <p>
     <?php
 	for ( $i = 1 ; $i <= $cuotasapagar ; $i ++) {
 		print ("<td width=134 align='center'><font face=Verdana size=1>".$i."</font></td>");
@@ -248,9 +247,8 @@ function validarYGuardar(formulario) {
   ?>
     </table>
   </div>
-  </p>
   <p align="center"> 
-  	<input type="submit" id="Submit" name="Submit" value="Guardar" sub />
+  	<input type="submit" id="Submit" name="Submit" value="Guardar" />
 	<label></label>
   </p>
 </form>

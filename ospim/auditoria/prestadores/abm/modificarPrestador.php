@@ -29,7 +29,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 }
 -->
 </style>
-</head>
+
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -237,14 +237,15 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC" onload="habilitarServicios('<?php echo $rowConsultaPresta['personeria'] ?>')">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'prestador.php?codigo=<?php echo $codigo ?>'" align="center"/>
-  </span>  
-  <p><strong>Modificar Prestador</strong>
-  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onSubmit="return validar(this)" action="guardarModificacionPrestador.php">
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'prestador.php?codigo=<?php echo $codigo ?>'" />
+  </span></p>
+  <p><strong>Modificar Prestador</strong></p>
+  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarModificacionPrestador.php">
     <table border="0">
       <tr>
         <td><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -508,10 +509,9 @@ SI </div></td>
       </tr>
     </table>
     <p>&nbsp;</p>
-    <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n">
+    <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n"/>
     </p>
   </form>
-  </p>
 </div>
 </body>
 </html>

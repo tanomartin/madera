@@ -29,7 +29,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
-<link rel="stylesheet" href="/madera/lib/tablas.css">
+<link rel="stylesheet" href="/madera/lib/tablas.css"/>
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
@@ -138,8 +138,8 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 	  <table width="794" border="1">
         <thead>
 		<tr>
-          <th width="392" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></td>
-          <th width="386"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></td>
+          <th width="392" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></th>
+          <th width="386"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></th>
         </tr>
 		</thead>
         <tbody>
@@ -159,11 +159,10 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 		</tbody>
 	</table>
 	</div>
-	 <p>
 	  <table width="600" border="0">
       <tr>
         <td width="200"><div align="left">
-          <input class="nover" name="modificar" type="button" value="Modificar Prestador"  onClick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
+          <input class="nover" name="modificar" type="button" value="Modificar Prestador" onclick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
         </div></td>
         
 		<td width="200"><div align="center">
@@ -175,8 +174,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         </div></td>
       </tr>
     </table>
-	</p>
-    <p> <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+    <p> <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>

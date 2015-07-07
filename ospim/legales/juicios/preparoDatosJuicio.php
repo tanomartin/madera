@@ -94,14 +94,15 @@ if (sizeof($sqlDelPer) > 0) {
 		document.getElementById("datosJuicio").submit();
 	}
 </script>
-
+</head>
 <body onload="formSubmit();">
 <form action="guardarJuicio.php" id="datosJuicio" method="post"> 
-    <input name="cuit" type="hidden" value="<?php echo $cuit ?>">
-	<input name="nroorden" type="hidden" value="<?php echo $nroorden ?>">
-   	<input name="insertCabeceraJui" type="hidden" value="<?php echo $sqlCabecera ?>">
-   	<input name="insertPeriodosJui" type="hidden" value="<?php echo $listadoPeriodosJuiSerializado ?>">
-   	<input name="updateCabeceraAcu" type="hidden" value="<?php echo $sqlUpdateAcu ?>">
-   	<input name="deletePeriodosAcu" type="hidden" value="<?php echo $listadoPeriodosAcuSerializado ?>">
+    <input name="cuit" type="hidden" value="<?php echo $cuit ?>"/>
+	<input name="nroorden" type="hidden" value="<?php echo $nroorden ?>"/>
+   	<input name="insertCabeceraJui" type="hidden" value="<?php echo $sqlCabecera ?>"/>
+   	<input name="insertPeriodosJui" type="hidden" value="<?php echo $listadoPeriodosJuiSerializado ?>"/>
+   	<input name="updateCabeceraAcu" type="hidden" value="<?php echo $sqlUpdateAcu ?>"/>
+   	<input name="deletePeriodosAcu" type="hidden" value="<?php echo $listadoPeriodosAcuSerializado ?>"/>
 </form> 
 </body>
+</html>

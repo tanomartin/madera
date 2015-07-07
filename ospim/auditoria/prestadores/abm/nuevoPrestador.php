@@ -13,7 +13,7 @@
 }
 -->
 </style>
-</head>
+
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -259,9 +259,9 @@ function validar(formulario) {
 	}
 	
 	var servicioCheck = 0;
-	servicios = formulario.servicios;
+	var servicios = formulario.servicios;
 	if (servicios != null) {
-		for (x=0;x<servicios.length;x++) {
+		for (var x=0;x<servicios.length;x++) {
 			if(servicios[x].checked) {
 				servicioCheck = 1;
 			}
@@ -291,11 +291,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><strong>Nuevo Prestador </strong>
-  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onSubmit="return validar(this)" action="guardarNuevoPrestador.php">
+  <p><strong>Nuevo Prestador </strong></p>
+  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarNuevoPrestador.php">
     <table border="0">
       <tr>
         <td width="129"><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
@@ -455,9 +456,8 @@ function validar(formulario) {
         </div></td>
       </tr>
     </table>
-    <p><input type="submit" name="Submit" id="Submit" value="Guardar"></p>
+    <p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
   </form>
-  </p>
 </div>
 </body>
 </html>

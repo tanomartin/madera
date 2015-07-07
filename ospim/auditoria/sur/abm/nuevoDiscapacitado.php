@@ -22,7 +22,7 @@ $rowBeneficiario = mysql_fetch_assoc($resBeneficiario);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Discapacitado :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -46,7 +46,7 @@ function validar(formulario) {
 	var grupo = formulario.tipodisca;
 	var total = grupo.length;
 	var checkeados = 0; 
-	for (i = 0; i < total; i++) {
+	for (var i = 0; i < total; i++) {
 		if (grupo[i].checked) {
 			checkeados = 1; 
 		}
@@ -60,7 +60,7 @@ function validar(formulario) {
 	var fechaFin = formulario.fechaFin.value;
 	if (fechaInicio == "") {
 		alert("Debe ingresar un fecha de emisión del certificado");
-		return(false)
+		return(false);
 	} else {
 		if (!esFechaValida(fechaInicio)) {
 			alert("La fecha de Emisión de certificado no es valida");
@@ -91,10 +91,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-   <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" align="center"/>
+   <input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" />
   </span></p>
   <p class="Estilo2">Alta de Discapacitado  </p>
   <table width="500" border="1">
@@ -111,8 +113,7 @@ function validar(formulario) {
       <td><div align="left"><?php echo $tipoBeneficiario." - ".$rowBeneficiario['parentesco'] ?></div></td>
     </tr>
   </table>
-  </p>
-  <form action="guardarNuevoDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>" method="post" enctype="multipart/form-data" name="nuevoDisca" id="nuevoDisca" onSubmit="return validar(this)">
+  <form action="guardarNuevoDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>" method="post" enctype="multipart/form-data" name="nuevoDisca" id="nuevoDisca" onsubmit="return validar(this)">
    <table width="400" border="0">
      <tr>
        <td width="181"><div align="right"><span class="Estilo2">Tipo Discapacidad</span> </div></td>

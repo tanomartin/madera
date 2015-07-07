@@ -14,22 +14,23 @@
 -->
 </style>
 
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
+</head>
 
 <body bgcolor="#CCCCCC">
 	<div align="center">
 	  <p>
-	    <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuFiscalizaciones.php'" align="center"/>
+	    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" />
       </p>
 	  <p><span class="Estilo1">Men&uacute; Consultas </span></p>
 	  <table width="626" border="3">
         <tr>
-          <td width="200"><p align="center">Aportes<a class="enlace" href="#"></p>
+          <td width="200"><p align="center">Aportes</p>
               <p align="center"><a class="enlace" href="aportes/consultaAportes.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p align="center">&nbsp;</p></td>
           <td width="200"><p align="center">DDJJ</p>

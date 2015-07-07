@@ -25,7 +25,6 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 }
 -->
 </style>
-</head>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -161,11 +160,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC" onload="habilitarServicios('<?php echo $rowConsultaPresta['personeria'] ?>')">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'profesional.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'profesional.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" />
   </span>  
   </p>
    <p class="Estilo1">Modificar Prestador</p>
@@ -179,8 +179,7 @@ function validar(formulario) {
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
-  <p>  
-  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onSubmit="return validar(this)" action="guardarModificacionProfesional.php?codigopresta=<?php echo $codigopresta ?>">
+  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarModificacionProfesional.php?codigopresta=<?php echo $codigopresta ?>">
     <table border="0">
       <tr>
         <td><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -264,9 +263,8 @@ function validar(formulario) {
 		</td>
 	  </tr>
     </table>
-    <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n"></p>
+    <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n" /></p>
   </form>
-	</p>
   </div>
 </body>
 </html>

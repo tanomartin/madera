@@ -24,7 +24,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC" >
 <div align="center">
 	<p><h2>Lote de Impresi&oacute;n</h2>
-	<h3>Su Lote de Impresion a sido marcado con el Identificador: <?php echo $lote ?></h3></p>
+	<h3>Su Lote de Impresion a sido marcado con el Identificador: <?php echo $lote ?></h3>
 <table width="600" border="0">
 	<tr>
     	<td width="200">
@@ -35,7 +35,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <div align="center">
             <input class="nover" type="button" name="iralote" id="iralote" value="Ir a Lote" onClick="location.href = 'impresionLotes.php?nroLote=<?php echo $lote?>'"/> 
           </div></td>
-    	<td width="200" valign="right">
+    	<td width="200" align="right">
           <div align="right">
             <input class="nover" type="button" name="cerrar" id="cerrar" value="Cerrar" onClick="location.href = 'moduloImpresion.php'"/> 
           </div></td>

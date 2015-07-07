@@ -43,7 +43,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Detalle Procesamiento Transferencias AFIP :.</title>
-<link href="/madera/lib/tablas.css" rel="stylesheet">
+<link href="/madera/lib/tablas.css" rel="stylesheet"/>
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
@@ -80,7 +80,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </table>
 </div>
 <p align="center">
-	<input class="nover" type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
+	<input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/>
 </p>
 </body>
 </html>

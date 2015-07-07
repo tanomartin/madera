@@ -33,7 +33,7 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><span style="text-align:center"><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigopresta ?>'" align="center"/></span></p>
+	<p><span style="text-align:center"><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigopresta ?>'" /></span></p>
   <p class="Estilo2">Ficha Pofesional </p>
   <table width="500" border="1">
     <tr>
@@ -45,7 +45,6 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
-  <p>
 	  <table border="1">
         <tr>
           <td><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -110,9 +109,8 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 		  <td colspan="3"><?php if ($rowConsultaProf['activo'] == 0 ) { echo "NO"; } else { echo "SI"; } ?></td>
 		</tr>
   </table>
-  </p>
-<p><input class="nover" name="modificar" type="button" value="Modificar Profesional"  onClick="location.href='modificarProfesional.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" /></p>
-<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center" /></p>
+<p><input class="nover" name="modificar" type="button" value="Modificar Profesional" onclick="location.href='modificarProfesional.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" /></p>
+<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>

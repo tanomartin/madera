@@ -20,7 +20,7 @@ $rowEmpresa  = mysql_fetch_array($resEmpresa)
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Detalle de Requerimientos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -44,11 +44,11 @@ function abrirMasInfo(dire) {
 
 function checkall(seleccion) {
 	if (seleccion.checked) {
-    	 for (i=0;i<document.editarReque.elements.length;i++) 
+    	 for (var i=0;i<document.editarReque.elements.length;i++) 
      		 if(document.editarReque.elements[i].type == "checkbox")	
 				 document.editarReque.elements[i].checked=1;  
 	} else {
-		 for (i=0;i<document.editarReque.elements.length;i++) 
+		 for (var i=0;i<document.editarReque.elements.length;i++) 
      		 if(document.editarReque.elements[i].type == "checkbox")	
 				 document.editarReque.elements[i].checked=0;  
 	}
@@ -62,7 +62,7 @@ function validar(formulario) {
 		return false;
 	}
 	var checkeados = 0; 
-	for (i = 0; i < total; i++) {
+	for (var i = 0; i < total; i++) {
 		if (grupo[i].checked) {
 			checkeados++;
 		}
@@ -80,13 +80,14 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" />
   </span></p>
-  	<form name="editarReque" onSubmit="return validar(this)" method="post" action="eliminarPeriodos.php" >
+  	<form name="editarReque" onsubmit="return validar(this)" method="post" action="eliminarPeriodos.php" >
 		<input name="cuit" type="text" value="<?php echo $cuit?>" style="display:none"/>
 		<input name="fecha" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
@@ -100,7 +101,7 @@ function validar(formulario) {
 			<th rowspan="2">Deuda Nominal</th>
 			<th rowspan="2"></th>
 			<th rowspan="2"></th>
-			<th rowspan="2"><input type="checkbox" name="selecAll" id="selecAll" onchange="checkall(this)"></th>
+			<th rowspan="2"><input type="checkbox" name="selecAll" id="selecAll" onchange="checkall(this)" /></th>
 		  </tr>
 		  <tr style="font-size:12px">
 		 	 <th>Remun.</th>
@@ -146,7 +147,6 @@ function validar(formulario) {
 				}
 		  ?>
 		</table>
-		</p>
 		<p><input type="submit" name="eliminar" id="eliminar" value="Eliminar Seleccionados" /></p>
 	</form>
 </div>

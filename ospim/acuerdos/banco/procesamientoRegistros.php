@@ -5,16 +5,17 @@ include($libPath."controlSessionOspim.php");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title></head>
+<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 .Estilo2 {font-weight: bold}
 </style>
+</head>
 
 <body bgcolor="#CCCCCC">
-  <table width="762" height="107" border="1" align="center">
+  <table style="width: 762; height: 107" border="1" align="center">
   <tr align="center" valign="top">
     <td height="23" colspan="3"><div align="center"><em><strong><font face="Arial, Helvetica, sans-serif">Imputaciones </font></strong></em></div></td>
   </tr>
@@ -31,7 +32,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <td width="245" height="47" valign="middle"><div align="center">
       <input type="submit" name="registrar" value="Registrar Pagos" onclick="location.href = 'registrarPagos.php'" align="left" />
     </div>
-    </label></td>
+    </td>
   </tr>
 </table>
 </body>

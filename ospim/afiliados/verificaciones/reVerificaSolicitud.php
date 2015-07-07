@@ -34,7 +34,7 @@ body {
 function muestraArchivo(solicitud, archivo) {
 	param = "nroSolicitud=" + solicitud;
 	param += "&archivo=" + archivo;
-	opciones = "top=50,left=50,width=1205,height=800,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=no,resizable=no"
+	opciones = "top=50,left=50,width=1205,height=800,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=no,resizable=no";
 	window.open ("mostrarArchivo.php?" + param, "", opciones);
 }
 
@@ -74,7 +74,7 @@ $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 ?>
 
 <body>
-<form id="verificaSolicitud" name="verificaSolicitud" method="post" action="guardaReVerificacion.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
+<form id="verificaSolicitud" name="verificaSolicitud" method="post" action="guardaReVerificacion.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 <table width="1100" border="0">
   <tr>
     <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.jpg" width="92" height="81" /></span></div></td>
@@ -82,7 +82,7 @@ $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
       <p class="Estilo3">Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
     </div></td>
     <td width="550"><div align="right">
-      <table width="450" height="60" border="2">
+      <table style="width: 450; height: 60" border="2">
         <tr>
           <td width="143" height="25"><div align="center"><strong>Fecha Solicitud</strong> </div></td>
           <td width="289"><div align="center"><?php echo invertirFecha($rowLeeSolicitud['fechasolicitud']);?></div></td>
@@ -113,7 +113,7 @@ $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
       <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/></td>
     <td><p><strong>Consulta SSS:</strong>
           <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?>
-      <input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" align="center"/>
+      <input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" />
       <?php }?>
     </p>
       <p><strong>Verificaci&oacute;n:</strong>
@@ -134,7 +134,7 @@ $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
       	<br />
       	<label><input name="veri" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada</label>
       	<p>
-          <textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo" disabled></textarea>
+          <textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo" disabled="disabled"></textarea>
     	</p>	</td>
   </tr>
   <tr>

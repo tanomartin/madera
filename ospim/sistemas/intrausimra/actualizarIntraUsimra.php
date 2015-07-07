@@ -234,7 +234,7 @@ $enMintuos = number_format($tiempoTranscurrido,2,',','.');
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Actualizacion Intra USIMRA :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -244,10 +244,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
    <p class="Estilo2"><span style="text-align:center">
-     <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'" align="center"/>
+     <input type="button" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'"/>
    </span></p>
    <p class="Estilo2">Resultado del Actualizacion Intranet U.S.I.M.R.A. </p>
    <p class="Estilo2">Delegación <?php echo $delegacion ?> - Fecha <?php echo invertirFecha($today) ?> </p>
@@ -295,9 +297,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 <?php }
 
 	if ($resultados[5]['estado'] == "Error" or $resultados[6]['estado'] == "Error" or $resultados[7]['estado'] == "Error") { ?>
-	  <p><input type="reset" name="volver2" value="Forzar Cierre Proceso" onclick="location.href = 'guardarArchivosBkup.php?delega=<?php echo $delegacion ?>'" align="center"/></p
+	  <p><input type="reset" name="volver2" value="Forzar Cierre Proceso" onclick="location.href = 'guardarArchivosBkup.php?delega=<?php echo $delegacion ?>'" /></p
 ><?php	} ?>
-	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>

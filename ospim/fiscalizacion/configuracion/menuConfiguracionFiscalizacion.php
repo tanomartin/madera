@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Configuracion Fiscalizacion :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -15,11 +15,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuFiscalizacion.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuFiscalizacion.php'" />
 </p>
   <p><span class="Estilo2">Men&uacute; Configuraci&oacute;n Fiscalzaci&oacute;n </span></p>
   <table width="412" border="3">
@@ -28,7 +29,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <p align="center"><a class="enlace" href="gestoresinspectores/inspectores.php"><img src="img/inspector.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Gestores</p>
-          <p align="center"><a class="enlace" href="gestoresinspectores/gestores.php"><img src="img/gestor.png"" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="gestoresinspectores/gestores.php"><img src="img/gestor.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>

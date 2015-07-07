@@ -6,7 +6,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Autorizaciones :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -16,13 +16,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
 <table width="137" border="0">
 	<tr align="center" valign="top">
       <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAuditoria.php'" align="center"/> 
+        <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" /> 
         </div></td>
 	</tr>
 </table>

@@ -56,7 +56,7 @@ function validar(formulario) {
 	return true;
 };
 </script>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -65,10 +65,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
-<form id="moduloABM" name="moduloABM" method="post"  onSubmit="return validar(this)" action="buscaAfiliado.php">
+<form id="moduloABM" name="moduloABM" method="post"  onsubmit="return validar(this)" action="buscaAfiliado.php">
 	<div align="center">
-		<input class="nover" type="reset" name="volver" value="Volver" onClick="location.href = '../menuAfiliados.php'" align="center"/> 
+		<input class="nover" type="button" name="volver" value="Volver" onclick="location.href = '../menuAfiliados.php'" /> 
 	</div>
 	<p align="center" class="Estilo1">Afiliados</p>
 	<p>

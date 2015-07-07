@@ -20,7 +20,7 @@ $rowContrato = mysql_fetch_assoc($resContrato);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Contrato :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -44,7 +44,7 @@ function validar(formulario) {
 	var fechaFin = formulario.fechaFin.value;
 	if (fechaInicio == "") {
 		alert("Debe ingresar un fecha de inicio de contrato");
-		return(false)
+		return(false);
 	} else {
 		if (!esFechaValida(fechaInicio)) {
 			alert("La fecha de Inicio no es valida");
@@ -69,10 +69,12 @@ function validar(formulario) {
 }
 
 </script>
+</head>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-   <input type="reset" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" align="center"/>
+   <input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
   </span></p>
   <p class="Estilo2">Modificación Contratos </p>
   <table width="500" border="1">
@@ -85,11 +87,10 @@ function validar(formulario) {
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
-  <p>
   <?php if (isset($_GET['err'])) {
   			print("<font color='#FF0000'><b>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</b></font>");
  		 } ?>
-  <form id="modifContrato" name="modifContrato" method="post" onSubmit="return validar(this)" action="guardarModificacionContrato.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo  $rowContrato['idcontrato'] ?>">
+  <form id="modifContrato" name="modifContrato" method="post" onsubmit="return validar(this)" action="guardarModificacionContrato.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo  $rowContrato['idcontrato'] ?>">
     <p class="Estilo2">Datos Contrato</p>
     <p class="Estilo2">
 	Fecha Inicio: <label><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowContrato['fechainicio']) ?>"/></label> - 

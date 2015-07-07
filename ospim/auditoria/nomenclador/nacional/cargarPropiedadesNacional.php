@@ -6,7 +6,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Carga de Valores Nomenclador Nacional :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -17,7 +17,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
@@ -160,10 +160,9 @@ jQuery(function($){
 function validar(formulario) {
 	var tabla = document.getElementById('practicas');
 	var nombre = "";
-	var valor = 0;
 	cantFilas = tabla.rows.length;
 	cantFilas--;
-	for (i = 0; i < cantFilas; i++){
+	for (var i = 0; i < cantFilas; i++){
 		nombre = "valor" + i;
 		inputElement = document.getElementById(nombre);
 		if(!isNumberPositivo(inputElement.value)) {
@@ -177,32 +176,33 @@ function validar(formulario) {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuNacional.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNacional.php'" />
   </p>
   <p><span class="Estilo2">Carga de Valores del Nomenclador Nacional </span>  </p>
-  <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="guardarPropiedadesNacional.php">
+  <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardarPropiedadesNacional.php">
     <p>
       <select name="tipo" id="tipo">
-	  		  <option value=0>Seleccione Tipo de Practica</option>
+	  		  <option value='0'>Seleccione Tipo de Practica</option>
 		<?php $sqlTipos = "SELECT * FROM tipopracticas";
 			  $resTipos = mysql_query($sqlTipos,$db);
 			  while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
-			  <option value=<?php echo $rowTipos['id'] ?>><?php echo $rowTipos['descripcion'] ?></option>
+			  <option value='<?php echo $rowTipos['id'] ?>'><?php echo $rowTipos['descripcion'] ?></option>
 		<?php } ?>
       </select>
     </p>
 	<p>
       <select name="capitulo" id="capitulo" disabled="disabled">
-	  	<option value=0>Seleccione Capitulo</option>
+	  	<option value='0'>Seleccione Capitulo</option>
       </select>
     </p>
 	<p>
       <select name="subcapitulo" id="subcapitulo" disabled="disabled">
-	  	<option value=0>Seleccione SubCapitulo</option>
+	  	<option value='0'>Seleccione SubCapitulo</option>
       </select>
 	</p>
 	<table style="text-align:center; width:1000px" id="practicas" class="tablesorter" >

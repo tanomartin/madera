@@ -6,8 +6,6 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Stock :.</title>
-</head>
-
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -28,11 +26,13 @@ function validar(formulario) {
 }
 
 </script>
+</head>
+
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuActualizacionUsimra.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuActualizacionUsimra.php'" />
   </span></p>
   <p><span class="Estilo2">Men&uacute; Actualizacion Intranet U.S.I.M.R.A. </span></p>
   <form action="actualizarIntraUsimra.php" method="post" enctype="multipart/form-data" name="form1" id="form1" onsubmit="return validar(this)">

@@ -91,8 +91,8 @@ foreach($arrayTablas as $tabla) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Empresas dasdas de alta :.</title>
-<link rel="stylesheet" href="/madera/lib/tablas.css">
-</head>
+<link rel="stylesheet" href="/madera/lib/tablas.css" />
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -105,10 +105,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 	.nover {display:none}
 </style>
+</head>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = '../menuProgramaPrevencion.php'" align="center"/>
+    <input type="button" class="nover" name="volver" value="Volver" onclick="location.href = '../menuProgramaPrevencion.php'" />
   </span></p>
   	<p class="Estilo2">Resultado del proceso de descarga de información de programa de prevención <?php echo date("m/d/Y");?>  </p>
 <?php 
@@ -144,7 +146,7 @@ foreach($resultados as $resultado) { ?>
 	} 
 }
 ?>
-      <p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+      <p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>

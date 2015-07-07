@@ -107,3 +107,4 @@ $rowAMostrar = mysql_fetch_array($resBoleta);
     </p>
 </div>
 </body>
+</html>

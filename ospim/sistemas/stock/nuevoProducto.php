@@ -7,7 +7,7 @@ include($libPath."controlSessionOspimSistemas.php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Producto :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -29,10 +29,9 @@ jQuery(function($){
 
 function cargoSector(ubicacion) {
 	document.forms.nuevoProducto.sector.length = 0;
-	var o
-	o = document.createElement("OPTION");
+	var o = document.createElement("OPTION");
 	o.text = 'Seleccione Sector';
-	o.value = 0
+	o.value = '0';
 	document.forms.nuevoProducto.sector.options.add(o);
 	if (ubicacion == 'U') {
 		o = document.createElement("OPTION");
@@ -83,14 +82,15 @@ function validar(formulario) {
 }
 
 </script>
-
+</head>
+  
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'productos.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = 'productos.php'" />
  </p>
   <p><span class="Estilo2">Nuevo Producto</span></p>
-  <form id="nuevoProducto" name="nuevoProducto" method="post" action="guardarNuevoProducto.php" onSubmit="return validar(this)">		
+  <form id="nuevoProducto" name="nuevoProducto" method="post" action="guardarNuevoProducto.php" onsubmit="return validar(this)">		
 				<table width="850" border="0" style="text-align:left">
                   <tr>
                     <td>Nombre</td>
@@ -145,7 +145,7 @@ function validar(formulario) {
 				  	</table>					</td>
                   
 				    <td colspan="2"><div align="center">
-				      <input type="submit" name="Submit" value="Guardar" sub/>
+				      <input type="submit" name="Submit" value="Guardar" />
 			        </div></td>
 			      </tr>
                 </table>

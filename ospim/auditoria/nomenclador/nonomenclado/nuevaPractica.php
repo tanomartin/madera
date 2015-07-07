@@ -6,7 +6,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nueva Practica :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -215,11 +215,12 @@ function validarCapituloSubcapitulo(formulario) {
 
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuNoNomenclado.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNoNomenclado.php'"/>
   </p>
   <p><span class="Estilo2">Nueva Practica No Nomenclada </span>  </p>
   <form id="form1" name="form1">
@@ -227,12 +228,12 @@ function validarCapituloSubcapitulo(formulario) {
       <tr>
         <td width="195"><div align="right">
           <select name="tipo" id="tipo">
-            <option value=0>Seleccione Tipo de Practica</option>
+            <option value='0'>Seleccione Tipo de Practica</option>
             <?php 
 				$sqlTipos = "SELECT * FROM tipopracticas";
 				$resTipos = mysql_query($sqlTipos,$db);
 				while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
-            <option value=<?php echo $rowTipos['id'] ?>><?php echo $rowTipos['descripcion'] ?></option>
+            <option value='<?php echo $rowTipos['id'] ?>'><?php echo $rowTipos['descripcion'] ?></option>
             <?php } ?>
           </select>
         </div></td>
@@ -241,7 +242,7 @@ function validarCapituloSubcapitulo(formulario) {
       <tr>
         <td><div align="right">
           <select name="capitulo" id="capitulo" onchange="deshabilitarNuevoCap(this.value)" disabled="disabled">
-            <option value=0>Seleccione Capitulo</option>
+            <option value='0'>Seleccione Capitulo</option>
           </select>
         </div></td>
         <td>
@@ -253,7 +254,7 @@ function validarCapituloSubcapitulo(formulario) {
       <tr>
         <td><div align="right">
           <select name="subcapitulo" id="subcapitulo" onchange="deshabilitarNuevoSub(this.value)" disabled="disabled">
-            <option value=0>Seleccione SubCapitulo</option>
+            <option value='0'>Seleccione SubCapitulo</option>
           </select>
         </div></td>
         <td><div align="left">
@@ -264,11 +265,11 @@ function validarCapituloSubcapitulo(formulario) {
 	</form>
 	
 	<!--Formulario de Carga -->
-	<form id="formularioCargaCapitulo" name="formularioCargaCapitulo" onSubmit='return validarCapituloSubcapitulo(this)' method="post" action="guardarNuevoCapitulo.php">
+	<form id="formularioCargaCapitulo" name="formularioCargaCapitulo" onsubmit='return validarCapituloSubcapitulo(this)' method="post" action="guardarNuevoCapitulo.php">
 	</form>
-	<form id="formularioCargaSubCapitulo" name="formularioCargaSubCapitulo" onSubmit='return validarCapituloSubcapitulo(this)' method="post" action="guardarNuevoSubCapitulo.php">
+	<form id="formularioCargaSubCapitulo" name="formularioCargaSubCapitulo" onsubmit='return validarCapituloSubcapitulo(this)' method="post" action="guardarNuevoSubCapitulo.php">
 	</form>
-    <form id="formularioCargaPractica" name="formularioCargaPractica" onSubmit='return validarPractica(this)' method="post" action="guardarNuevaPractica.php">
+    <form id="formularioCargaPractica" name="formularioCargaPractica" onsubmit='return validarPractica(this)' method="post" action="guardarNuevaPractica.php">
 	</form>
 	<!------------------------->
 </div>

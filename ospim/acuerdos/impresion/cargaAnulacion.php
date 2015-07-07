@@ -15,14 +15,14 @@ jQuery(function($){
 
 function getRadioButtonSelectedValue(ctrl)
 {
-    for(i=0;i<ctrl.length;i++)
+    for(var i=0;i<ctrl.length;i++)
         if(ctrl[i].checked) return ctrl[i].value;
 }
 
 function validar() {
 	var nroControl = document.getElementById("nroControl").value;
 	var docuMano = "0";
-	for(i=0; i < document.anulacion.docuMano.length; i++)
+	for(var i=0; i < document.anulacion.docuMano.length; i++)
     	if(document.anulacion.docuMano[i].checked) docuMano = document.anulacion.docuMano[i].value;
 	var motivo = document.getElementById("motivo").value;
 	
@@ -67,7 +67,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'menuBoletas.php'" align="center"/>
+  <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" />
   <p><span class="Estilo1">M&oacute;dulo Anulacion de Bolestas Impresas</span> </p>
   <p>
   <?php 
@@ -83,7 +83,7 @@ A:hover {text-decoration: none;color:#33CCFF }
   ?>
   </p>
 </div>
-<form id="anulacion" name="anulacion" method="post" onSubmit="return validar(this)" action="validarAnulacion.php">
+<form id="anulacion" name="anulacion" method="post" onsubmit="return validar(this)" action="validarAnulacion.php">
   <div align="center">
     <table width="432" border="0">
       <tr>

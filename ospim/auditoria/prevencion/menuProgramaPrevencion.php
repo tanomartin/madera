@@ -6,7 +6,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Sistemas Prevencion :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -26,11 +26,12 @@ function importar() {
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" align="center"/>
+    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" />
   </span></p>
   <p><span class="Estilo2">Men&uacute; Programa Prevenci&oacute;n </span></p>
   <table width="600" border="3">

@@ -67,7 +67,7 @@ if (isset($_POST['delegacion'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado De Expedientes Incompletos :.</title>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -83,7 +83,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -104,7 +104,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		})
+		});
 	});
 
 
@@ -120,11 +120,12 @@ function abrirConsulta(dire){
 }
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" align="center"/></p>
-	<form  name="listadoExpedientes" id="listadoExpedientes" method="post" onSubmit="return validar(this)" action="expedientesIncompletos.php">
+  <p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" /></p>
+	<form  name="listadoExpedientes" id="listadoExpedientes" method="post" onsubmit="return validar(this)" action="expedientesIncompletos.php">
 	<p><span class="Estilo2">Expendientes Incompletos </span></p>
 	<table>
       <tr>
@@ -165,7 +166,7 @@ function abrirConsulta(dire){
 				<?php } ?>
 				</tbody>
 			</table>
-			<p> <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="center"/></p>
+			<p> <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
  <?php } else {
 			echo "<font color='#FF0000'><b>No existen Expedientes Incompletos</b></font>";
  	   }
