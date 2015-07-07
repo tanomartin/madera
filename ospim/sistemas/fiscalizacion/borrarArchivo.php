@@ -1,10 +1,10 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 
 $archivoUsimra = "SegUSIMRA.txt";
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina) == 0) {
-	$direArcUsimra = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivoUsimra;
+	$direArcUsimra = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/fiscalizacion/liqui/".$archivoUsimra;
 } else {
 	$direArcUsimra = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$archivoUsimra;
 }

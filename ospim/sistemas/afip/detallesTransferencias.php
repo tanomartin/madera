@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php");
 $fechamensaje=$_GET['fechaMens'];
@@ -55,7 +55,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Detalle Procesamiento Transferencias AFIP :.</title>
-<link href="/lib/tablas.css" rel="stylesheet">
+<link href="/madera/lib/tablas.css" rel="stylesheet">
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">

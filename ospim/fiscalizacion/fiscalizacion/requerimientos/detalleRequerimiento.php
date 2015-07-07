@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php");
 
@@ -30,8 +30,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript">
 function abrirDDJJPagos(dire) {
 	a= window.open(dire,"InfoPeriodoCuentaCorrienteEmpresa",
@@ -131,11 +131,11 @@ function validar(formulario) {
 					$dire = "infoRequerimiento.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;     
 					print ("<td><a href=javascript:abrirMasInfo('".$dire."')>+ Info</a></td>");
 					if ($rowDeta['statusfiscalizacion'] == 'M' || $rowDeta['statusfiscalizacion'] == 'F') {
-						$dire = "/comun/empresas/abm/cuentas/detallePagos.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
+						$dire = "/madera/comun/empresas/abm/cuentas/detallePagos.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
 						print ("<td><a href=javascript:abrirDDJJPagos('".$dire."')>Pago</a></td>");
 					} else {
 						if ($rowDeta['statusfiscalizacion'] == 'A') {
-							$dire = "/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
+							$dire = "madera/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
 							print ("<td><a href=javascript:abrirDDJJPagos('".$dire."')>DDJJ</a></td>");
 						} else {
 							print("<td>-</td>"); 

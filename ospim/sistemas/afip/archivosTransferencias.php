@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php");
 $base = $_SESSION['dbname'];
@@ -13,9 +13,9 @@ $fechahoy=date("YmdHis",time());
 $usuarioproceso = $_SESSION['usuario'];
 
 if(strcmp("localhost",$maquina)==0) {
-	$archivo_aporte=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/ORGANS_TRANSFER_ORG1110_F".$nombrearchivo.".txt.zip";
-	$carpeta_aporte=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/";
-	$archivo_autogestion=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/Detalledemovimientos";
+	$archivo_aporte=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Transferencias/ORGANS_TRANSFER_ORG1110_F".$nombrearchivo.".txt.zip";
+	$carpeta_aporte=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Transferencias/";
+	$archivo_autogestion=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Transferencias/Detalledemovimientos";
 }
 else {
 	$archivo_aporte="/home/sistemas/ArchivosAfip/Transferencias/ORGANS_TRANSFER_ORG1110_F".$nombrearchivo.".txt.zip";
@@ -75,8 +75,8 @@ else {
 								$proximonro = $rowBuscaNroDisco['AUTO_INCREMENT'];
 
 								if(strcmp("localhost",$maquina)==0) {
-									$destino_aporte=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/Aportes/Disco".$proximonro."/";
-									$destino_autogestion=$_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/afip/Transferencias/Autogestion/Disco".$proximonro."/";
+									$destino_aporte=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Transferencias/Aportes/Disco".$proximonro."/";
+									$destino_autogestion=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Transferencias/Autogestion/Disco".$proximonro."/";
 								}
 								else {
 									$destino_aporte="/home/sistemas/ArchivosAfip/Transferencias/Aportes/Disco".$proximonro."/";
@@ -259,8 +259,8 @@ else {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
-<link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/blue/style.css" type="text/css" id="" media="print, projection, screen" />
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Transferencias AFIP :.</title>
 </head>

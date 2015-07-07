@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 //var_dump($_GET);
 //var_dump($_POST);

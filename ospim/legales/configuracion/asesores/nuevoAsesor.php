@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php");
 $rs = mysql_query("SELECT MAX(codigo) FROM asesoreslegales");
 if ($row = mysql_fetch_row($rs)) {
 	$codigo = trim($row[0]) + 1;

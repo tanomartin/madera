@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 $fechaAnulacion = date("Y-m-d H:mi:s");
 $usuarioAnulacion = $_SESSION['usuario'];
 

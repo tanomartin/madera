@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $lote=$_GET['nroLote'];
@@ -29,11 +29,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 .nover {display:none}
 </style>
 <title>.: Lote de Impresion :.</title>
-<link href="/lib/jquery-ui-1.11.1/jquery-ui.css" rel="stylesheet">
-<link href="/lib/tablas.css" rel="stylesheet">
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery-ui-1.11.1/jquery-ui.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<link href="/madera/lib/jquery-ui-1.11.1/jquery-ui.css" rel="stylesheet">
+<link href="/madera/lib/tablas.css" rel="stylesheet">
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery-ui-1.11.1/jquery-ui.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 $(document).ready(function(){
 	var lote = $("#idlote").val();

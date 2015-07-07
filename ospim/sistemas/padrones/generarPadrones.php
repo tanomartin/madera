@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 set_time_limit(0);
 ini_set('memory_limit', '448M');
 include($libPath."controlSessionOspimSistemas.php");
@@ -29,7 +29,7 @@ $maquina = $_SERVER['SERVER_NAME'];
 $carpeta = $mes.$anio;
 
 if(strcmp("localhost",$maquina) == 0) {
-	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/padrones/archivos/".$carpeta;
+	$direArc = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/padrones/archivos/".$carpeta;
 } else {
 	$direArc = "/home/sistemas/Documentos/Repositorio/Capitados/".$carpeta;
 }

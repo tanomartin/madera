@@ -1,5 +1,5 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php");
-include($_SERVER['DOCUMENT_ROOT']."/lib/fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php");
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
 $cuit = $_GET['cuit'];
 $nroacu = $_GET['nroacu'];
 ?>
@@ -25,8 +25,8 @@ A:hover {text-decoration: none;color:#00FFFF }
   </div>
   <div align="center">
     <?php 
-	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresaConsulta.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresaConsulta.php"); 
+	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	
 	$sqlCabecera = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 	$resCabecera = mysql_query($sqlCabecera,$db); 

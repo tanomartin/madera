@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
 $cuit=$_GET['cuit'];
@@ -45,7 +45,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC" > 
 <div align="center">
   <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloJuicios.php'" align="center"/></p>
-  <?php include($_SERVER['DOCUMENT_ROOT']."/lib/cabeceraEmpresa.php"); ?>
+  <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); ?>
   <p><strong>Juicios Existentes </strong></p>
   <?php if($cantJuicios > 0) { ?>
   <table width="600" border="1">

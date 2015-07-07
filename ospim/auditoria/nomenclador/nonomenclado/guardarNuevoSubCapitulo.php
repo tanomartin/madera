@@ -1,4 +1,4 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/lib/controlSessionOspim.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 //var_dump($_POST);
 $codcapitulo = $_POST['codcapitulo'];
 $idcapitulo = $_POST['idcapitulo'];

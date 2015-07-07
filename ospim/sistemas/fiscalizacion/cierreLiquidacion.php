@@ -1,4 +1,4 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/lib/";
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 include($libPath."ftpZeus.php"); 
@@ -8,8 +8,8 @@ $archivo = "Seguimiento.txt";
 $archivoUsimra = "SegUSIMRA.txt";
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina) == 0) {
-	$direArc = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivo;
-	$direArcUsimra = $_SERVER['DOCUMENT_ROOT']."/ospim/sistemas/fiscalizacion/liqui/".$archivoUsimra;
+	$direArc = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/fiscalizacion/liqui/".$archivo;
+	$direArcUsimra = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/fiscalizacion/liqui/".$archivoUsimra;
 } else {
 	$direArc = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$archivo;
 	$direArcUsimra = "/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$archivoUsimra;
