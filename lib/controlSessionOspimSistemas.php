@@ -9,12 +9,7 @@ session_start();
 //antes de hacer los cálculos, compruebo que el usuario está logueado 
 //utilizamos el mismo script que antes 
 
-$maquina = $_SERVER['SERVER_NAME'];
-if(strcmp("localhost",$maquina) == 0) {
-	$redire = "Location://localhost/ospim/logout.php";
-} else {
-	$redire = "Location://Poseidon/ospim/logout.php";
-}
+$redire = "Location: http://".$_SERVER['SERVER_NAME']."/madera/ospim/sesionCaducada.php";
 if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') { 
     //si no está logueado lo envío a la página de autentificación 
 	//TODO que vaya a una pantalla de session caducada....

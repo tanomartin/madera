@@ -431,7 +431,6 @@ function validar(formulario) {
 	}
 
 	$.blockUI({ message: "<h1>Guardando datos. Aguarde por favor...</h1>" });
-
 	return true;
 }
 </script>

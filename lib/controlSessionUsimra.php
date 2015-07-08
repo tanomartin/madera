@@ -9,7 +9,7 @@ session_start();
 //antes de hacer los cálculos, compruebo que el usuario está logueado 
 //utilizamos el mismo script que antes 
 
-$redire = "Location: ../../usimra/sesionCaducada.php";
+$redire = "Location: http://".$_SERVER['SERVER_NAME']."/madera/usimra/sesionCaducada.php";
 if ($_SESSION['aut'] != 1) { 
     //si no está logueado lo envío a la página de autentificación 
 	//TODO que vaya a una pantalla de session caducada....
