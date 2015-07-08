@@ -6,24 +6,13 @@ if ($cuit=="") {
 	$cuit=$_POST['cuit'];
 }
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query($sql,$db); 
 $cant = mysql_num_rows($result); 
 if ($cant != 1) {
 	header ("Location: moduloABM.php?err=1");
 }
 $row = mysql_fetch_array($result); 
-$sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp = mysql_query($sqlDelEmp,$db);
-$rowDelEmp = mysql_fetch_array($resDelEmp); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlacuerdos =  "select * from cabacuerdosospim c, estadosdeacuerdos e where c.cuit = $cuit and c.estadoacuerdo = e.codigo order by nroacuerdo";
 $resulacuerdos= mysql_query($sqlacuerdos); 
@@ -49,20 +38,21 @@ A:hover {text-decoration: none;color:#00FFFF }
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
-  <table width="600" border="1">
+  <table width="600" border="1" style="text-align: center;">
      <?php 
-		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
-			$nroacu = $rowacuerdos['nroacuerdo'];
-			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
+		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) { ?>
+			<tr>
+	<?php 	$nroacu = $rowacuerdos['nroacuerdo'];
+			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo] ";
 			$result=mysql_query($query,$db);
-			$rowtipos=mysql_fetch_array($result);
-			echo ("<td width=300  align='center'><font face=Verdana size=2> ".$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']." - Acta: ".$rowacuerdos['nroacta']."</a></font></td>");
-			if ($rowacuerdos['estadoacuerdo'] == 1 || $rowacuerdos['estadoacuerdo'] == 5) {
-				if ($rowacuerdos['estadoacuerdo'] == 1) {
-					echo ("<td width=100  align='center'><font face=Verdana size=2><a href='formularioModif.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>MODIFICAR</a></font></td>"); 
-				} else {
-					echo ("<td width=100  align='center'><font face=Verdana size=2>".$rowacuerdos['descripcion']."</a></font></td>");
-				}
+			$rowtipos=mysql_fetch_array($result); ?>
+			<td width=300><font face=Verdana size=2><?php echo $rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']." - Acta: ".$rowacuerdos['nroacta'] ?></font></td>
+	<?php	if ($rowacuerdos['estadoacuerdo'] == 1 || $rowacuerdos['estadoacuerdo'] == 5) {
+				if ($rowacuerdos['estadoacuerdo'] == 1) { ?>
+					<td><input type="button" onclick="location.href = 'formularioModif.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $rowacuerdos['nroacuerdo'] ?>'" value="MODIFICAR" /></td>
+	<?php 		} else { ?>
+					<td width=100><font face=Verdana size=2><?php echo $rowacuerdos['descripcion'] ?></font></td>
+	<?php 		}
 				
 				$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 				$resCuotas = mysql_query($sqlCuotas,$db); 
@@ -76,26 +66,24 @@ A:hover {text-decoration: none;color:#00FFFF }
 							}	
 						}										
 					}
-					if ($reemplazable == true) {
-						echo ("<td width=100  align='center'><font face=Verdana size=2><a href='reemplazarAcuerdo.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>REEMPLAZAR</a></font></td>");
-					} else {
-						echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
-					}
-				} else {
-					echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
-				}
-			} else {
-				echo ("<td width=100  align='center'><font face=Verdana size=2>".$rowacuerdos['descripcion']."</a></font></td>");
-				echo ("<td width=100  align='center'><font face=Verdana size=2>-</a></font></td>");
-			}
-			echo ("<td width=100  align='center'><font face=Verdana size=2><a href='consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$rowacuerdos['nroacuerdo']."'>CONSULTAR</a></font></td>");
-			print ("</tr>");
-		}
-		
-	?>	
+					if ($reemplazable == true) { ?>
+						<td><input type="button" onclick="location.href = 'reemplazarAcuerdo.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $rowacuerdos['nroacuerdo'] ?>'" value="REEMPLAZAR" /></td>
+	<?php 			} else { ?>
+						<td width=100><font face=Verdana size=2>-</font></td>
+	<?php 			}
+				} else { ?>
+					<td width=100><font face=Verdana size=2>-</font></td>
+	<?php 		}
+			} else { ?>
+				<td width=100><font face=Verdana size=2><?php echo $rowacuerdos['descripcion'] ?></font></td>
+				<td width=100><font face=Verdana size=2>-</font></td>
+	<?php	} ?>
+			<td><input type="button" onclick="location.href = 'consultaAcuerdo.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $rowacuerdos['nroacuerdo'] ?>'" value="CONSULTAR" /></td>
+			</tr>
+<?php	} ?>	
   </table>
   <p>
-    <input type="submit" name="nuevoAcuerdo" value="Nuevo Acuerdo" onClick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?> '" />
+    <input type="submit" name="nuevoAcuerdo" value="Nuevo Acuerdo" onclick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?> '" />
   </p>
 </div>
 </body>

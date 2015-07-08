@@ -13,7 +13,7 @@
 }
 -->
 </style>
-</head>
+
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -30,17 +30,12 @@ jQuery(function($){
 });
 
 </script>
+</head>
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="acuerdos.php">
 <div align="center">
-<table width="137" border="0">
-	<tr align="center" valign="top">
-      <td width="137" valign="middle"><div align="center">
-        <input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAcuerdos.php'" align="center"/> 
-        </div></td>
-	</tr>
-</table>
+	<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /> 
 </div>
   <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos O.S.P.I.M. </p>
   <?php 

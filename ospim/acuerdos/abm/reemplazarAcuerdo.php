@@ -9,21 +9,9 @@ $resCabeViejo =  mysql_query($sqlCabeViejo,$db);
 $rowCabeViejo = mysql_fetch_array($resCabeViejo);
 $actaVieja = $rowCabeViejo['nroacta'];
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result =  mysql_query( $sql,$db); 
 $row = mysql_fetch_array($result); 
-
-$sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp =  mysql_query( $sqlDelEmp,$db);
-$rowDelEmp = mysql_fetch_array($resDelEmp); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad =  mysql_query( $sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi =  mysql_query( $sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu order by fechacuota ASC";
 $resCuotas = mysql_query($sqlCuotas,$db);
@@ -116,16 +104,16 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <form id="reemAcuerdo" name="reemAcuerdo" method="post" action="reemplazoAcuerdEfectivo.php?cuit=<?php echo $cuit ?>" onsubmit="return validar(this)">
   <p align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" align="center"/>
+  <input type="reset" name="volver" value="Volver" onclick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" />
   </p>
   <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
   ?>
   <p align="center"><strong>M&oacute;dulo de Reemplazo de Acuerdo </strong></p>
   <p align="center"><strong>ACUERDO NUMERO</strong>
-      <input name="nroacu" type="text" id="nroacu" value="<?php echo $nroacu ?>" size="2" readonly="true">
+      <input name="nroacu" type="text" id="nroacu" value="<?php echo $nroacu ?>" size="2" readonly="readonly"/>
       <strong> REEMPLAZADO POR ACUERDO NUMERO </strong>  
-      <input name="nroacunuevo" type="text" id="nroacunuevo" value="<?php echo $nroacuNuevo ?>" size="2" readonly="true" />
+      <input name="nroacunuevo" type="text" id="nroacunuevo" value="<?php echo $nroacuNuevo ?>" size="2" readonly="readonly" />
   </p>
   <div align="center">
     <table width="1023" border="0">
@@ -133,7 +121,7 @@ function validar(formulario) {
         <td width="119" valign="bottom"><div align="left">Tipo de Acuerdo</div></td>
         <td width="247" valign="bottom"><div align="left">
             <select name="tipoAcuerdo" size="1" id="tipoAcuerdo">
-              <option value=0 selected="selected">Seleccione un valor </option>
+              <option value="0" selected="selected">Seleccione un valor </option>
               <?php 
 					$query="select * from tiposdeacuerdos";
 					$result=mysql_query($query,$db);
@@ -166,9 +154,9 @@ function validar(formulario) {
         <td valign="bottom"><div align="left">Inpector</div></td>
         <td valign="bottom"><div align="left">
             <select name="inpector" id="inspector" >
-              <option value=0>No Especificado </option>
+              <option value="0">No Especificado </option>
               <?php 
-					$sqlInspec="select * from inspectores where codidelega = ".$rowDelEmp['codidelega'];
+					$sqlInspec = "select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
 					$resInspec=mysql_query($sqlInspec,$db);
 					while ($rowInspec=mysql_fetch_array($resInspec)) { ?>
               <option value="<?php echo $rowInspec['codigo'] ?>"><?php echo $rowInspec['apeynombre'] ?></option>
@@ -178,7 +166,7 @@ function validar(formulario) {
         <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
         <td colspan="2" valign="bottom"><div align="left">
             <select name="requerimiento" id="requerimiento" onchange="cargarLiqui(document.forms.reemAcuerdo.requerimiento[selectedIndex].value)">
-              <option value=0>Seleccione un valor </option>
+              <option value="0">Seleccione un valor </option>
               <?php 
 				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
 				$resNroReq = mysql_query($sqlNroReq,$db);
@@ -189,9 +177,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td valign="bottom"><label>
-            <div align="left">Liquidacion Origen </div>
-          </label></td>
+        <td valign="bottom" align="left"><label> Liquidacion Origen </label></td>
         <td valign="bottom"><div align="left">
             <input name="nombreArcReq" type="text" id="nombreArcReq" size="40" readonly="readonly" />
         </div></td>
@@ -200,12 +186,11 @@ function validar(formulario) {
             <input id="monto" type="text" name="monto"/>
         </div></td>
         <td valign="bottom"><div align="left">Gastos Administrativos </div></td>
-        <td width="62" valign="bottom"><label>
-            <div align="left">
-              <input name="gasAdmi" type="radio" value="0" checked="checked" onfocusout="cargarPor()"/>
+        <td width="62" valign="bottom" align="left"><label>
+              <input name="gasAdmi" type="radio" value="0" checked="checked" onblur="cargarPor()"/>
               NO<br />
-              <input name="gasAdmi" type="radio" value="1" onfocusout="cargarPor()"/>
-              SI </div>
+              <input name="gasAdmi" type="radio" value="1" onblur="cargarPor()"/>
+              SI 
           </label></td>
         <td width="88" valign="bottom"><div align="left">
             <input name="porcentaje" type="text" id="porcentaje" size="5" readonly="readonly"/>
@@ -221,79 +206,75 @@ function validar(formulario) {
   </div>
   <div align="center">
     <p><b>Cuotas</b></p>
-    <table width="600" border="1">
+    <table width="600" border="1" style="text-align: center;">
       <tr>
-        <td width="134"><div align="center">Cuota </div></td>
-        <td width="107"><div align="center">Monto</div></td>
-        <td width="116"><div align="center">Fecha</div></td>
-        <td width="300"><div align="center">Cancelacion</div></td>
+        <td width="134"><b>Cuota</b></td>
+        <td width="107"><b>Monto</b></td>
+        <td width="116"><b>Fecha</b></td>
+        <td width="300"><b>Cancelacion</b></td>
       </tr>
-      <p>
         <?php
 	$contadorCuotas = 0;
 	while ($rowCuotas=mysql_fetch_array($resCuotas)) {
 		if ($rowCuotas['montopagada'] == 0 && $rowCuotas['fechapagada'] == '0000-00-00') {
 			
-			$contadorCuotas = $contadorCuotas + 1;	
-			
-			print ("<td width=134>". $contadorCuotas."</td>");
-			print ("<td width=107>".$rowCuotas['montocuota']."</td>");
-			print ("<td width=116>".invertirFecha($rowCuotas['fechacuota'])."</td>");
-			
+			$contadorCuotas = $contadorCuotas + 1;	 
 			$query="select * from tiposcancelaciones where codigo = ".$rowCuotas['tipocancelacion'];
 			$result=mysql_query($query,$db);
 			$rowtipos=mysql_fetch_array($result);
-			print ("<td width=300>".$rowtipos['descripcion']."</td>");
-	
-			print ("<tr>");
-			print ("<td width=134 align='center'><font face=Verdana size=1>Obs.</font></td>");
-			print ("<td colspan='6' align='left'>".$rowCuotas['observaciones']."</td>");
-			print ("</tr>");
-		} 
-		} ?>
-            </p>
+			?>
+			<tr>
+				<td width='134'><?php echo $contadorCuotas ?></td>
+				<td width='107'><?php echo $rowCuotas['montocuota'] ?></td>
+				<td width='116'><?php echo invertirFecha($rowCuotas['fechacuota']) ?></td>
+				<td width='300'><?php echo $rowtipos['descripcion'] ?></td>
+			</tr>
+			<tr>
+				<td width='134'><b>Obs.</b></td>
+				<td colspan='6' align='left'><?php echo $rowCuotas['observaciones'] ?></td>
+			</tr>
+<?php	} 
+	} ?>
         </table>
     <p><b>Per&iacute;odos </b> </p>
-    <table width="468" height="29" border="1">
+    <input  name="mostrar" type="text" id="mostrar" size="4" value="<?php echo $canPeridos?>" readonly="readonly" style="visibility:hidden"/>
+    <table style="width: 468; height: 29; text-align: center;" border="1">
       <tr>
-        <td width="113"><div align="center">Mes</div></td>
-        <td width="105"><div align="center">A&ntilde;o</div></td>
-        <td width="236"><div align="center">Concepto de deuda </div></td>
+        <td width="113"><div align="center"><b>Mes</b></div></td>
+        <td width="105"><div align="center"><b>A&ntilde;o</b></div></td>
+        <td width="236"><div align="center"><b>Concepto de deuda </b></div></td>
       </tr>
-      <tr>
+      
         <?php 
 				$sqlPeridos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 				$resPeridos =  mysql_query( $sqlPeridos,$db);
 				$canPeridos = mysql_num_rows($resPeridos); 
+				$i = 0;
+				if ($canPeridos > 0) {
+					while ($rowPeridos=mysql_fetch_array($resPeridos)) { 
+						if ($rowPeridos['mesacuerdo'] < 10) {
+							$mes = "0".$rowPeridos['mesacuerdo'];
+						} else {
+							$mes = $rowPeridos['mesacuerdo'];
+						} ?>
+						<tr>
+						<td height='11'><?php echo $rowPeridos['mesacuerdo'] ?></td>
+						<td height='11'><?php echo $rowPeridos['anoacuerdo'] ?></td>
+		<?php			if ($rowPeridos['conceptodeuda'] == "A") { ?>
+							<td height='11'>No Pago</td>
+		<?php			} else { ?>
+							<td height='11'>Fuera de Termino</td>
+		<?php			} ?>
+						</tr>
+		<?php			$i = $i + 1;
+					} 
+				} else {
+					print("No hay periodos");
+				}
 			?>
-        <input  name="mostrar" type="text" id="mostrar" size="4" value="<?php echo $canPeridos?>" readonly="readonly" style="visibility:hidden"/>
-        <?php
-			$i = 0;
-			if ($canPeridos > 0) {
-				while ($rowPeridos=mysql_fetch_array($resPeridos)) { 
-					if ($rowPeridos['mesacuerdo'] < 10) {
-						$mes = "0".$rowPeridos['mesacuerdo'];
-					} else {
-						$mes = $rowPeridos['mesacuerdo'];
-					}
-					print("<td height='11'>".$rowPeridos['mesacuerdo']."</td>");
-					print("<td height='11'>".$rowPeridos['anoacuerdo']."</td>");
-					if ($rowPeridos['conceptodeuda'] == "A") {
-						print("<td height='11'>No Pago</td>");
-					} else {
-						print("<td height='11'>Fuera de Termino</td>");
-					}
-					print("</tr>");
-					$i = $i + 1;
-				} 
-			} else {
-				print("No hay periodos");
-			}
-			?>
-      </tr>
     </table>
     <p align="center">
-      <input type="submit" name="reemplazar" value="Reemplazar Acuerdo" sub="sub" />
+      <input type="submit" name="reemplazar" value="Reemplazar Acuerdo" />
     </p>
   </div>
 </form>

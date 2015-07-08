@@ -4,17 +4,9 @@ include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result =  mysql_query( $sql,$db); 
 $row = mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad =  mysql_query( $sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi =  mysql_query( $sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlacu = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 $resulacu=  mysql_query( $sqlacu,$db); 
@@ -26,7 +18,6 @@ $rowacu = mysql_fetch_array($resulacu);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Modificacion de Acuerdos</title>
-</head>
 
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -34,7 +25,7 @@ $rowacu = mysql_fetch_array($resulacu);
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
-	for (i=0; i<= 120; i++) {
+	for (var i=0; i<= 120; i++) {
 		$("#mes"+i).mask("99");
 		$("#anio"+i).mask("9999");
 	}
@@ -90,7 +81,7 @@ function validar(formulario) {
 	var totalPeriodos = parseInt(formulario.mostrar.value);
 	var errorMes = "Error en la carga del mes";
 	var errorAnio = "Error en la carga del año";
-	for (i=0; i<totalPeriodos; i++) {
+	for (var i=0; i<totalPeriodos; i++) {
 		nombreMes = "mes" + i;
 		nombreAnio = "anio" + i;
 		valorMes = document.getElementById(nombreMes).value;
@@ -118,19 +109,23 @@ function mostrarPeriodos() {
 	if (parseInt(document.forms.modifAcuerdo.mostrar.value) < 120) 
 	{
 		var n = parseInt(document.forms.modifAcuerdo.mostrar.value);
-		document.forms.modifAcuerdo.mostrar.value = n;
 		var o = 0;
 		var m = 0;
 		var a = 0;
 		var s = 0;
-		for (i=0; i<=12; i++){
+		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.modifAcuerdo.mostrar.value) + i;
-			m = "mes" + o;
-			a = "anio" + o;
-			s = "conDeuda" + o;
-			document.getElementById(m).style.visibility="visible";
-			document.getElementById(a).style.visibility="visible";
-			document.getElementById(s).style.visibility="visible";
+			if (o < 120) {
+				m = "mes" + o;
+				a = "anio" + o;
+				s = "conDeuda" + o;
+				document.getElementById(m).style.visibility="visible";
+				document.getElementById(a).style.visibility="visible";
+				document.getElementById(s).style.visibility="visible";
+				document.getElementById(m).style.display="display";
+				document.getElementById(a).style.display="display";
+				document.getElementById(s).style.display="display";
+			}
 		}
 		document.forms.modifAcuerdo.mostrar.value = n + 12;
 	} else { 
@@ -140,19 +135,19 @@ function mostrarPeriodos() {
 
 
 </script>
-
+</head>
+	
 <body  bgcolor="#CCCCCC" >
-
-<form id="modifAcuerdo" name="modifAcuerdo" method="post" action="actualizarAcuerdo.php" onSubmit="return validar(this)"  style="visibility:visible">
-   	<input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>" />
+<form id="modifAcuerdo" name="modifAcuerdo" method="post" action="actualizarAcuerdo.php" onsubmit="return validar(this)"  style="visibility:visible">
+   	<input name="nrcuit" type="text" id="nrcuit" size="4" readonly="readonly" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>" />
 	<p align="center">
-	   <input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" align="center"/></p>
+	   <input type="reset" name="volver" value="Volver" onclick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" /></p>
 	 <?php 	
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
 	<p align="center"><strong>M&oacute;dulo de Modificación</strong></p>
    	<p align="center"><strong>ACUERDO NUMERO</strong> 
-   	  <input name="nroacu" type="text" id="nroacu" value="<?php echo $nroacu ?>" size="2" readonly="true"  />
+   	  <input name="nroacu" type="text" id="nroacu" value="<?php echo $nroacu ?>" size="2" readonly="readonly" style="background-color:silver; text-align: center;" />
   </p>
    	<p align="center"><strong>ESTADO</strong> 
 	<?php 
@@ -168,7 +163,7 @@ function mostrarPeriodos() {
           <td width="118" valign="bottom"><div align="left">Tipo de Acuerdo</div></td>
           <td width="247" valign="bottom"><div align="left">
             <select name="tipoAcuerdo" size="1" id="tipoAcuerdo">
-              <option value=0>Seleccione un valor </option>
+              <option value='0'>Seleccione un valor </option>
               <?php 
 					$query="select * from tiposdeacuerdos";
 					$result= mysql_query( $query,$db);
@@ -212,9 +207,9 @@ function mostrarPeriodos() {
           <td valign="bottom"><div align="left">
             <select name="inpector" id="inspector" >
 		          <?php if ($rowacu['inspectorinterviene'] == 0) { ?>
-						  <option value=0 selected="selected">No Especificado </option>
+						  <option value='0' selected="selected">No Especificado </option>
 					<?php } else { ?>
-						  <option value=0>No Especificado </option>
+						  <option value='0'>No Especificado </option>
 					<?php } 
 					$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
 					$resInspec= mysql_query( $sqlInspec,$db);
@@ -229,11 +224,11 @@ function mostrarPeriodos() {
           </div></td>
           <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
           <td valign="bottom"><div align="left">
-            <select name="requerimiento" id="requerimiento" onChange="cargarLiqui(document.forms.modifAcuerdo.requerimiento[selectedIndex].value)">
+            <select name="requerimiento" id="requerimiento" onchange="cargarLiqui(document.forms.modifAcuerdo.requerimiento[selectedIndex].value)">
 		         <?php if ($rowacu['requerimientoorigen'] == 0) { ?>
-						<option value=0 selected="selected">Seleccione un valor </option>
+						<option value="0" selected="selected">Seleccione un valor </option>
 			     <?php } else { ?>
-						  <option value=0>Seleccione un valor </option>
+						  <option value="0">Seleccione un valor </option>
 				<?php } 
 				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
 				$resNroReq =  mysql_query( $sqlNroReq,$db);
@@ -271,7 +266,7 @@ function mostrarPeriodos() {
       </table>
    	</div>
 	<div align="center">
-    <p><b>Carga Períodos y Cuotas </b>      </p>
+    <p><b>Carga Períodos y Cuotas </b></p>
     <table width="905" border="0">
       <tr>
         <td width="399">
@@ -283,73 +278,73 @@ function mostrarPeriodos() {
         </div></td>
         <td width="400">
           <div align="right">
-            <input type="submit" name="guardar2" value="Guardar Cambios" sub />
+            <input type="submit" name="guardar2" value="Guardar Cambios" />
           </div></td>
       </tr>
     </table>
-    <table width="468" height="29" border="0">
-       
+    <?php 
+    	$sqlPeridos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+		$resPeridos =  mysql_query( $sqlPeridos,$db);
+		$canPeridos = mysql_num_rows($resPeridos); 
+	?>
+    <input  name="mostrar" type="text" id="mostrar" size="4" value="<?php echo $canPeridos?>" readonly="readonly" style="visibility:hidden"/>
+    <table style="width: 468; height: 29" border="0">
         <tr>
           <td width="113" height="11"> <div align="center">Mes</div></td>
           <td width="105"><div align="center">A&ntilde;o</div></td>
           <td width="236"><div align="center">Concepto de deuda </div></td>
         </tr>
-       
-	    <tr>
 			<?php 
-				$sqlPeridos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-				$resPeridos =  mysql_query( $sqlPeridos,$db);
-				$canPeridos = mysql_num_rows($resPeridos); 
-			?>
-			<input  name="mostrar" type="text" id="mostrar" size="4" value="<?php echo $canPeridos?>" readonly="readonly" style="visibility:hidden"/>
-            <?php
-			$i = 0;
-			
-			if ($canPeridos > 0) {
-				while ($rowPeridos=mysql_fetch_array($resPeridos)) { 
-					if ($rowPeridos['mesacuerdo'] < 10) {
-						$mes = "0".$rowPeridos['mesacuerdo'];
-					} else {
-						$mes = $rowPeridos['mesacuerdo'];
+				$i = 0;
+				if ($canPeridos > 0) {
+					while ($rowPeridos=mysql_fetch_array($resPeridos)) { 
+						if ($rowPeridos['mesacuerdo'] < 10) {
+							$mes = "0".$rowPeridos['mesacuerdo'];
+						} else {
+							$mes = $rowPeridos['mesacuerdo'];
+						} ?>
+						<tr>
+						<td height='11'><div align='center'><input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' value='<?php echo $mes ?>' size='2' onblur='validoMes("<?php echo $i ?>")'/></div></td>
+						<td height='11'><div align='center'><input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' value='<?php echo $rowPeridos['anoacuerdo'] ?>' size='4' onblur='validoAnio("<?php echo $i ?>")' /></div></td>
+				<?php	if ($rowPeridos['conceptodeuda'] == "A") {
+							$selectedA = "selected='selected'";
+							$selectedB = "";
+						} 
+						if ($rowPeridos['conceptodeuda'] == "B") {
+							$selectedA = "";
+							$selectedB = "selected='selected'";
+						}
+						
+						 ?>
+							<td height='11'><div align='center'>
+								  <select id='conDeuda<?php echo $i ?>' name='conDeuda<?php echo $i ?>'>
+										<option <?php echo $selectedA ?> value='A'>No Pago</option>
+										<option <?php echo $selectedB ?> value='B'>Fuera de Termino</option>
+								  </select>
+							</div></td>	  
+						</tr>
+			<?php	$i = $i + 1;
 					}
-					print("<td height='11'><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' value='".$mes."' size='2' onfocusout='validoMes(".$i.")'/></div></td>");
-					print("<td height='11'><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' value='".$rowPeridos['anoacuerdo']."' size='4' onfocusout='validoAnio(".$i.")' /></div></td>");
-					if ($rowPeridos['conceptodeuda'] == "A") {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option selected value='A'>No Pago</option>
-									<option value='B'>Fuera de Termino</option>
-							  </select> </div></td>");
-					} else {
-						print("<td height='11'><div align='center'>
-							  <select id='conDeuda".$i."' name='conDeuda".$i."'>
-									<option value='A'>No Pago</option>
-									<option selected value='B'>Fuera de Termino</option>
-							  </select> </div></td>");
-					}
-					print("</tr>");
-					$i = $i + 1;
-				} 
-			} else {
-				print("No hay periodos");
-			}
-			
-			while ($i < 120 ) {
-				print("<td height='11'><div align='center'><input name='mes".$i."' id='mes".$i."' type='text' size='2' style='visibility:hidden'  onfocusout='validoMes(".$i.")'/></div></td>");
-				print("<td height='11'><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")'/></div></td>");
-				print("<td height='11'><div align='center'>
-							<select id='conDeuda".$i."' name='conDeuda".$i."' style='visibility:hidden'>
-								<option selected value='A'>No Pago</option>
-								<option value='B'>Fuera de Termino</option>
-							</select> </div></td>");
-				print("</tr>");
-				$i = $i + 1;
-			}	
-			
+				} else {
+					print("No hay periodos");
+				}
+				
+				while ($i < 120 ) { ?>
+					<tr>
+					<td height='11'><div align='center'><input name='mes<?php echo $i ?>' id='mes<?php echo $i ?>' type='text' size='2' style='visibility:hidden;'  onblur='validoMes("<?php echo $i ?>")'/></div></td>
+					<td height='11'><div align='center'><input name='anio<?php echo $i ?>' id='anio<?php echo $i ?>' type='text'  size='4' style='visibility:hidden;' onblur='validoAnio("<?php echo $i ?>")'/></div></td>
+					<td height='11'><div align='center'>
+						<select id='conDeuda<?php echo $i ?>' name='conDeuda<?php echo $i ?>' style='visibility:hidden;'>
+							<option selected="selected" value='A'>No Pago</option>
+							<option value='B'>Fuera de Termino</option>
+						</select> 
+					</div></td>
+					</tr>
+			<?php	$i = $i + 1;
+				}	
 			?>
+			
     </table>
-  
-   	<p align="center">&nbsp;</p>
   </div>
 </form>
 

@@ -1,31 +1,25 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspim.php");
+<?php
 
-$cuit=$_GET['cuit'];
-if ($cuit=="") {
-	$cuit=$_POST['cuit'];
+$libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
+include ($libPath . "controlSessionOspim.php");
+
+$cuit = $_GET ['cuit'];
+if ($cuit == "") {
+	$cuit = $_POST ['cuit'];
 }
 
-$sql = "select * from empresas where cuit = $cuit";
-$result = mysql_query($sql,$db); 
-$row = mysql_fetch_array($result); 
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
+$result = mysql_query ( $sql, $db );
+$row = mysql_fetch_array ( $result );
 
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
-
-$sqlacu =  "select * from cabacuerdosospim where cuit = $cuit order by nroacuerdo DESC";
-$resulacu= mysql_query($sqlacu,$db); 
-$cant = mysql_num_rows($resulacu); 
+$sqlacu = "select * from cabacuerdosospim where cuit = $cuit order by nroacuerdo DESC";
+$resulacu = mysql_query ( $sqlacu, $db );
+$cant = mysql_num_rows ( $resulacu );
 if ($cant == 0) {
 	$nacuNuevo = 1;
 } else {
-	$rowacu = mysql_fetch_array($resulacu);
-	$nacuNuevo = $rowacu['nroacuerdo'] + 1;
+	$rowacu = mysql_fetch_array ( $resulacu );
+	$nacuNuevo = $rowacu ['nroacuerdo'] + 1;
 }
 ?>
 
@@ -33,9 +27,19 @@ if ($cant == 0) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
+A:link {
+	text-decoration: none;
+	color: #0033FF
+}
+
+A:visited {
+	text-decoration: none
+}
+
+A:hover {
+	text-decoration: none;
+	color: #00FFFF
+}
 </style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -43,7 +47,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script language="javascript" type="text/javascript">
 jQuery(function($){
 	$("#fechaAcuerdo").mask("99-99-9999");
-	for (i=0; i<= 120; i++) {
+	for (var i=0; i<= 120; i++) {
 		$("#mes"+i).mask("99");
 		$("#anio"+i).mask("9999");
 	}
@@ -51,21 +55,22 @@ jQuery(function($){
 
 function mostrarPeriodos() {
 	if (parseInt(document.forms.nuevoAcuerdo.mostrar.value) < 120) 
-	{
+	{	
 		var n = parseInt(document.forms.nuevoAcuerdo.mostrar.value);
-		document.forms.nuevoAcuerdo.mostrar.value = n;
 		var o = 0;
 		var m = 0;
 		var a = 0;
 		var s = 0;
-		for (i=0; i<=12; i++){
+		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoAcuerdo.mostrar.value) + i;
-			m = "mes" + o;
-			a = "anio" + o;
-			s = "conDeuda" + o;
-			document.getElementById(m).style.visibility="visible";
-			document.getElementById(a).style.visibility="visible";
-			document.getElementById(s).style.visibility="visible";
+			if (o < 120) {
+				m = "mes" + o;
+				a = "anio" + o;
+				s = "conDeuda" + o;
+				document.getElementById(m).style.visibility="visible";
+				document.getElementById(a).style.visibility="visible";
+				document.getElementById(s).style.visibility="visible";
+			}
 		}
 		document.forms.nuevoAcuerdo.mostrar.value = n + 12;
 	} else { 
@@ -83,10 +88,10 @@ function habilitarCarga() {
 }
 
 function cargarPor(){
-	<?php 
-		$sqlPor = "select * from parametros where id = 1";
-		$resPor= mysql_query($sqlPor,$db); 
-		$rowPor = mysql_fetch_array($resPor);
+	<?php
+	$sqlPor = "select * from parametros where id = 1";
+	$resPor = mysql_query ( $sqlPor, $db );
+	$rowPor = mysql_fetch_array ( $resPor );
 	?>
 	if (document.forms.nuevoAcuerdo.gasAdmi[1].checked) {
 		document.forms.nuevoAcuerdo.porcentaje.value = "<?php echo $rowPor['valorgastoadmin']?>";
@@ -97,13 +102,14 @@ function cargarPor(){
 
 function validoMes(id) {
 	var errorMes = "Error en la carga del mes";
-	nombreMes = "mes" + id;
-	valorMes = document.getElementById(nombreMes).value;
+	var nombreMes = "mes" + id;
+	var valorMes = document.getElementById(nombreMes).value;
 	if (valorMes < 0 || valorMes > 12) {
 		alert(errorMes);
 		document.getElementById(nombreMes).focus();
 		return false;
-	} 
+	}
+	return true;
 }
 
 function validoAnio(id){
@@ -115,22 +121,26 @@ function validoAnio(id){
 		document.getElementById(nombreAnio).focus();
 		return false;
 	}
+	return true;
 }
 
 function cargarLiqui(requerimiento) {
 	var cargado = false;
-	<?php 
-		$sqlLiqui = "SELECT c.nrorequerimiento, c.liquidacionorigen FROM reqfiscalizospim r , cabliquiospim c where r.cuit = $cuit and r.nrorequerimiento = c.nrorequerimiento;";
-		$resLiqui= mysql_query($sqlLiqui,$db); 
-		$canLiqui = mysql_num_rows($resLiqui); 
-		if ($canLiqui != 0) {
-			while ($rowLiqui = mysql_fetch_assoc($resLiqui)) { ?>
+	<?php
+	$sqlLiqui = "SELECT c.nrorequerimiento, c.liquidacionorigen FROM reqfiscalizospim r , cabliquiospim c where r.cuit = $cuit and r.nrorequerimiento = c.nrorequerimiento;";
+	$resLiqui = mysql_query ( $sqlLiqui, $db );
+	$canLiqui = mysql_num_rows ( $resLiqui );
+	if ($canLiqui != 0) {
+		while ( $rowLiqui = mysql_fetch_assoc ( $resLiqui ) ) {
+			?>
 				if (requerimiento == <?php echo $rowLiqui['nrorequerimiento'] ?> ) {
 					document.getElementById("nombreArcReq").value = "<?php echo $rowLiqui['liquidacionorigen'] ?>";
 					cargado = true;
 				}
-	 <?php }
-		}
+	 <?php
+		
+}
+	}
 	?>
 	if (cargado == false) {
 		document.getElementById("nombreArcReq").value = "";
@@ -167,7 +177,7 @@ function validar(formulario) {
 	var totalPeriodos = parseInt(formulario.mostrar.value) + 12;
 	var errorMes = "Error en la carga del mes";
 	var errorAnio = "Error en la carga del año";
-	for (i=0; i<=totalPeriodos; i++) {
+	for (var i=0; i<=totalPeriodos; i++) {
 		nombreMes = "mes" + i;
 		nombreAnio = "anio" + i;
 		valorMes = document.getElementById(nombreMes).value;
@@ -188,185 +198,244 @@ function validar(formulario) {
 			return (false);
 		}
 	}
+	return true;
 	
 }
 </script>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Carga de Acuerdos :.</title>
 </head>
-<body bgcolor="#CCCCCC" >
-<form id="nuevoAcuerdo" name="nuevoAcuerdo" method="post" action="cargarCuotas.php"  onSubmit="return validar(this)" style="visibility:visible" >
-  <input name="nrcuit" type="text" id="nrcuit" size="4" readonly="true" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>">
-   <div align="center">
-   <input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" align="center"/>
-  </div>
-   <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
-	?>
-  <p align="center"><strong>M&oacute;dulo de Carga - Acuerdos Nuevos </strong></p>
-   	<p align="center"><strong>ACUERDO NUMERO</strong>
-      <input name="nroacu" type="text" id="nroacu" size="4" readonly="true" value="<?php echo $nacuNuevo ?>">
-</p>
-   	<div align="center">
-   	  <table width="954" border="0">
-        <tr>
-          <td width="111" valign="bottom"><div align="left">Tipo de Acuerdo</div></td>
-          <td width="240" valign="bottom">
-		    
-	        <div align="left">
-		        <select name="tipoAcuerdo" size="1" id="tipoAcuerdo">
-		          <option value=0 selected="selected">Seleccione un valor </option>
-		          <?php 
-					$query="select * from tiposdeacuerdos";
-					$result=mysql_query($query,$db);
-					while ($rowtipos=mysql_fetch_array($result)) { ?>
+<body bgcolor="#CCCCCC">
+	<form id="nuevoAcuerdo" name="nuevoAcuerdo" method="post"
+		action="cargarCuotas.php" onsubmit="return validar(this)"
+		style="visibility: visible">
+		<input name="nrcuit" type="text" id="nrcuit" size="4"
+			readonly="readonly"
+			style="visibility: hidden; position: absolute; z-index: 1"
+			value="<?php echo $cuit ?>" />
+		<div align="center">
+			<input type="reset" name="volver" value="Volver"
+				onclick="location.href = 'acuerdos.php?cuit=<?php echo $cuit?>'" />
+		</div>
+   <?php
+			include ($_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/cabeceraEmpresa.php");
+			?>
+  <p align="center">
+			<strong>M&oacute;dulo de Carga - Acuerdos Nuevos </strong>
+		</p>
+		<p align="center">
+			<strong>ACUERDO NUMERO</strong> <input name="nroacu" type="text"
+				id="nroacu" size="4" readonly="readonly" style="background-color: silver;text-align: center;"
+				value="<?php echo $nacuNuevo ?>" />
+		</p>
+		<div align="center">
+			<table width="954" border="0">
+				<tr>
+					<td width="111" valign="bottom"><div align="left">Tipo de Acuerdo</div></td>
+					<td width="240" valign="bottom">
+
+						<div align="left">
+							<select name="tipoAcuerdo" size="1" id="tipoAcuerdo">
+								<option value='0' selected="selected">Seleccione un valor</option>
+		          <?php
+												$query = "select * from tiposdeacuerdos";
+												$result = mysql_query ( $query, $db );
+												while ( $rowtipos = mysql_fetch_array ( $result ) ) {
+													?>
 		          <option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['descripcion']  ?></option>
 		          <?php } ?>
 	          </select>
-            </div></td>
-          <td width="106" valign="bottom"><div align="left">Fecha Acuerdo</div></td>
-          <td width="144" valign="bottom">
-            <div align="left">
-              <input id="fechaAcuerdo" type="text" name="fechaAcuerdo"/>
-            </div></td>
-          <td width="158" valign="bottom"><div align="left">N&uacute;mero de Acta</div></td>
-          <td colspan="2" valign="bottom">
-            <div align="left">
-              <input id="numeroActa" type="text" name="numeroActa"/>
-            </div></td>
-        </tr>
-        <tr>
-          <td valign="bottom"><div align="left">Gestor</div></td>
-          <td valign="bottom">
-            <div align="left">
-              <select name="gestor" id="gestor" >
-                <?php 
-					$sqlGestor="select * from gestoresdeacuerdos";
-					$resGestor=mysql_query($sqlGestor,$db);
-					while ($rowGestor=mysql_fetch_array($resGestor)) { ?>
+						</div>
+					</td>
+					<td width="106" valign="bottom"><div align="left">Fecha Acuerdo</div></td>
+					<td width="144" valign="bottom">
+						<div align="left">
+							<input id="fechaAcuerdo" type="text" name="fechaAcuerdo" />
+						</div>
+					</td>
+					<td width="158" valign="bottom"><div align="left">N&uacute;mero de
+							Acta</div></td>
+					<td colspan="2" valign="bottom">
+						<div align="left">
+							<input id="numeroActa" type="text" name="numeroActa" />
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td valign="bottom"><div align="left">Gestor</div></td>
+					<td valign="bottom">
+						<div align="left">
+							<select name="gestor" id="gestor">
+                <?php
+																$sqlGestor = "select * from gestoresdeacuerdos";
+																$resGestor = mysql_query ( $sqlGestor, $db );
+																while ( $rowGestor = mysql_fetch_array ( $resGestor ) ) {
+																	?>
                   <option value="<?php echo $rowGestor['codigo'] ?>"><?php echo $rowGestor['apeynombre'] ?></option>
                 <?php } ?>
               </select>
-            </div></td>
-          <td valign="bottom"><div align="left">Inpector</div></td>
-          <td valign="bottom">
-		    
-	        <div align="left">
-		        <select name="inpector" id="inspector" >
-		          <option value=0>No Especificado </option>
-	              <?php 
-				  	$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
-					$resInspec=mysql_query($sqlInspec,$db);
-					while ($rowInspec=mysql_fetch_array($resInspec)) { 
-						if ($rowInspec['codigo'] == "35") {?>
-							<option value="<?php echo $rowInspec['codigo'] ?>" selected="selected"><?php echo $rowInspec['apeynombre'] ?></option>
+						</div>
+					</td>
+					<td valign="bottom"><div align="left">Inpector</div></td>
+					<td valign="bottom">
+
+						<div align="left">
+							<select name="inpector" id="inspector">
+								<option value='0'>No Especificado</option>
+	              <?php
+															$sqlInspec = "select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
+															$resInspec = mysql_query ( $sqlInspec, $db );
+															while ( $rowInspec = mysql_fetch_array ( $resInspec ) ) {
+																if ($rowInspec ['codigo'] == "35") {
+																	?>
+							<option value="<?php echo $rowInspec['codigo'] ?>"
+									selected="selected"><?php echo $rowInspec['apeynombre'] ?></option>
 	              <?php } else { ?>	
 				  			<option value="<?php echo $rowInspec['codigo'] ?>"><?php echo $rowInspec['apeynombre'] ?></option>
-				  <?php }
-				 } ?>
+				  <?php
+																
+}
+															}
+															?>
 	          </select>
-            </div></td>
-          <td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
-		  <td colspan="2" valign="bottom">
-		    <div align="left">
-		      <select name="requerimiento" id="requerimiento" onChange="cargarLiqui(document.forms.nuevoAcuerdo.requerimiento[selectedIndex].value)">
-		        <option value=0>Seleccione un valor </option>
-	            <?php 
-				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
-				$resNroReq = mysql_query($sqlNroReq,$db);
-				while ($rowNroReq=mysql_fetch_array($resNroReq)) { ?>
-		           <option value="<?php echo $rowNroReq['nrorequerimiento'] ?>"><?php echo $rowNroReq['nrorequerimiento'] ?></option>
+						</div>
+					</td>
+					<td valign="bottom"><div align="left">Requerimiento de Origen</div></td>
+					<td colspan="2" valign="bottom">
+						<div align="left">
+							<select name="requerimiento" id="requerimiento"
+								onchange="cargarLiqui(document.forms.nuevoAcuerdo.requerimiento[selectedIndex].value)">
+								<option value='0'>Seleccione un valor</option>
+	            <?php
+													$sqlNroReq = "select * from reqfiscalizospim where cuit = " . $cuit;
+													$resNroReq = mysql_query ( $sqlNroReq, $db );
+													while ( $rowNroReq = mysql_fetch_array ( $resNroReq ) ) {
+														?>
+		           <option
+									value="<?php echo $rowNroReq['nrorequerimiento'] ?>"><?php echo $rowNroReq['nrorequerimiento'] ?></option>
 	            <?php } ?>
 	          </select>
-            </div></td>
-        </tr>
-        <tr>
-          <td valign="bottom">
-            <div align="left">Liquidacion Origen </div>
-         </td>
-          <td valign="bottom">    
-            <div align="left">
-              <input name="nombreArcReq" type="text" id="nombreArcReq" size="40" readonly="readonly" />
-            </div></td>
-          <td valign="bottom"><div align="left">Monto Acuerdo </div></td>
-          <td valign="bottom">
-            <div align="left">
-              <input id="monto" type="text" name="monto"/>
-            </div></td>
-          <td valign="bottom"><div align="left">Gastos Administrativos </div></td>
-          <td width="49" valign="bottom">
-          	<div align="left">
-          	  <input name="gasAdmi" type="radio" value=0 checked onfocusout="cargarPor()"/>
-          	NO<br />
-          		<input name="gasAdmi" type="radio" value=1 onfocusout="cargarPor()"/>
-          	SI            </div>
-         </td>
-          <td width="100" valign="bottom">
-            <div align="left">
-            <input name="porcentaje" type="text" id="porcentaje" size="5" readonly="readonly"/>
-          %</div></td>
-        </tr>
-        <tr>
-          <td height="87" valign="bottom"> <div align="left">Obervaciones </div></td>
-          <td colspan="6" valign="bottom"><p align="left">
-              <textarea name="observaciones" cols="110" rows="5" id="observaciones"></textarea>
-          </p></td>
-        </tr>
-      </table>
-   	</div>
-  <div align="center">
-    <p><b>Carga Períodos y Cuotas </b> </p>
-    <p>Cantidad de Cuotas
-      <input  name="cantCuotas" type="text" id="cantCuotas" size="4" onfocusout="habilitarCarga()"/>
-    </p>
-    <p>
-      <input type="submit" name="guardar" id="guardar" value="Cargar Cuotas" disabled="disabled" sub />
-    </p>
-    <table width="484" border="0">
-      <tr>
-        <td width="478"><div align="center">
-          <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
-        </div></td>
-      </tr>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td valign="bottom">
+						<div align="left">Liquidacion Origen</div>
+					</td>
+					<td valign="bottom">
+						<div align="left">
+							<input name="nombreArcReq" type="text" id="nombreArcReq"
+								size="40" readonly="readonly" />
+						</div>
+					</td>
+					<td valign="bottom"><div align="left">Monto Acuerdo</div></td>
+					<td valign="bottom">
+						<div align="left">
+							<input id="monto" type="text" name="monto" />
+						</div>
+					</td>
+					<td valign="bottom"><div align="left">Gastos Administrativos</div></td>
+					<td width="49" valign="bottom">
+						<div align="left">
+							<input name="gasAdmi" type="radio" value='0' checked="checked"
+								onblur="cargarPor()" /> NO<br /> <input name="gasAdmi"
+								type="radio" value='1' onblur="cargarPor()" /> SI
+						</div>
+					</td>
+					<td width="100" valign="bottom">
+						<div align="left">
+							<input name="porcentaje" type="text" id="porcentaje" size="5"
+								readonly="readonly" /> %
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td height="87" valign="bottom"><div align="left">Obervaciones</div></td>
+					<td colspan="6" valign="bottom"><textarea name="observaciones"
+							cols="110" rows="5" id="observaciones"></textarea></td>
+				</tr>
+			</table>
+		</div>
+		<div align="center">
+			<p>
+				<b>Carga Períodos y Cuotas </b>
+			</p>
+			<p>
+				Cantidad de Cuotas <input name="cantCuotas" type="text"
+					id="cantCuotas" size="4" onblur="habilitarCarga()" />
+			</p>
+			<p>
+				<input type="submit" name="guardar" id="guardar"
+					value="Cargar Cuotas" disabled="disabled" />
+			</p>
+			<table width="484" border="0">
+				<tr>
+					<td width="478"><div align="center">
+							<input name="masPeridos" type="button" id="masPeridos"
+								value="Mas Periodos" onclick="mostrarPeriodos()" />
+						</div></td>
+				</tr>
+			</table>
+			<input name="mostrar" type="text" id="mostrar" size="4" value="12"
+				readonly="readonly" style="visibility: hidden;" />
+			<table style="width: 492; height: 32" border="0">
+				<tr>
+					<td width="115" height="11">
+						<div align="center">Mes</div>
+					</td>
+					<td width="114"><div align="center">A&ntilde;o</div></td>
+					<td width="249"><div align="center">Concepto de deuda</div></td>
+				</tr>
+            <?php for($i = 0; $i < 120; $i ++) {
+						if ($i < 12) { ?>
+				<tr>
+					<td height='11'><div align='center'>
+							<input name='mes<?php echo $i ?>' type='text'
+								id='mes<?php echo $i ?>' size='2'
+								onblur='validoMes("<?php echo $i ?>")' />
+						</div></td>
+					<td height='11'><div align='center'>
+							<input name='anio<?php echo $i ?>' type='text'
+								id='anio<?php echo $i ?>' size='4'
+								onblur='validoAnio("<?php echo $i ?>")' />
+						</div></td>
+					<td height='11'>
+						<div align='center'>
+							<select id='conDeuda<?php echo $i ?>'
+								name='conDeuda<?php echo $i ?>'>
+								<option selected="selected" value='A'>No Pago</option>
+								<option value='B'>Fuera de Termino</option>
+							</select>
+						</div>
+					</td>
+			<?php } else { ?>
+				 	<td height='11'><div align='center'>
+							<input name='mes<?php echo $i ?>' id='mes<?php echo $i ?>'
+								type='text' size='2' style='visibility: hidden'
+								onblur='validoMes("<?php echo $i ?>")' />
+						</div></td>
+					<td height='11'><div align='center'>
+							<input name='anio<?php echo $i ?>' id='anio<?php echo $i ?>'
+								type='text' size='4' style='visibility: hidden'
+								onblur='validoAnio("<?php echo $i ?>")' />
+						</div></td>
+					<td height='11'>
+						<div align='center'>
+							<select id='conDeuda<?php echo $i ?>'
+								name='conDeuda<?php echo $i ?>' style='visibility: hidden'>
+								<option selected="selected" value='A'>No Pago</option>
+								<option value='B'>Fuera de Termino</option>
+							</select>
+						</div>
+					</td>
+			<?php } ?>
+				</tr>
+	<?php
+												
+}
+												?>
     </table>
-    <table width="492" height="32" border="0">
-       
-        <tr>
-          <td width="115" height="11"> <div align="center">Mes</div></td>
-          <td width="114"><div align="center">A&ntilde;o</div></td>
-          <td width="249"><div align="center">Concepto de deuda </div></td>
-        </tr>
-       
-	    <tr>
-			<input  name="mostrar" type="text" id="mostrar" size="4" value="12" readonly="readonly" style="visibility:hidden"/>
-            <?php
-            for ($i = 0 ; $i <= 120; $i ++) {
-				if ($i < 12) {
-				print("<td height='11'><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' onfocusout='validoMes(".$i.")'/></div></td>");
-           		print("<td height='11'><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' onfocusout='validoAnio(".$i.")' /></div></td>");
-            	print("<td height='11'><div align='center'><select id='conDeuda".$i."' name='conDeuda".$i."'>
-              		<option selected value='A'>No Pago</option>
-              		<option value='B'>Fuera de Termino</option>
-            	   </select> </div></td>");
-				 print("</tr>");
-				 } else {
-				 	print("<td height='11'><div align='center'><input name='mes".$i."' id='mes".$i."' type='text' size='2' style='visibility:hidden'  onfocusout='validoMes(".$i.")'/></div></td>");
-					print("<td height='11'><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")'/></div></td>");
-					print("<td height='11'><div align='center'>
-					<select id='conDeuda".$i."' name='conDeuda".$i."' style='visibility:hidden'>
-              		<option selected value='A'>No Pago</option>
-              		<option value='B'>Fuera de Termino</option>
-            	   </select> </div></td>");
-				 	 print("</tr>");
-					 
-				 }
-			}
-			?>
-    </table>
-  </div>
-   	<p align="center">&nbsp;</p>
-</form>
-<div>
-
+		</div>
+	</form>
 </body>
 </html>

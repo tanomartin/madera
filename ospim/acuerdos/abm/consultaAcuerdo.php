@@ -20,7 +20,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   	<?php 
 		$origen = $_GET['origen'];
 		if (is_null($origen)) { ?>
-			<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" align="center"/>
+			<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" />
 	<?php } ?>
   </div>
   <div align="center">
@@ -145,90 +145,86 @@ A:hover {text-decoration: none;color:#00FFFF }
 	
 	
     <p><strong>Cuotas</strong></p>
-    <table width="972" border="1">
-      <tr>
-        <td width="79"><div align="center"><b>N&deg; </b></div></td>
-        <td width="78"><div align="center"><b>Monto </b></div></td>
-        <td width="71"><div align="center"><b>Fecha </b></div></td>
-        <td width="102"><div align="center"><b>Cancelacion</b></div></td>
-        <td width="85"><div align="center"><b>Nro Cheque</b> </div></td>
-        <td width="78"><div align="center"><b>Banco </b></div></td>
-        <td width="100"><div align="center"><b>Fecha Cheque </b></div></td>
-		<td width="114"><div align="center"><b>Observaciones</b> </div></td>
-		<td width="109"><div align="center"><b>Estado</b> </div></td>
-		<td width="92"><div align="center"><b>Fecha Pago</b> </div></td>
-      </tr>
+    
 	<?php 
 		$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 		$resCuotas = mysql_query($sqlCuotas,$db); 
 		$canCuotas = mysql_num_rows($resCuotas); 
-		if ($canCuotas != 0) {
-			while ($rowCuotas = mysql_fetch_array($resCuotas)) {
-				print ("<td width=28 align='center'><font face=Verdana size=2>".$rowCuotas['nrocuota']."</font></td>");
-				print ("<td width=81 align='center'><font face=Verdana size=2>".$rowCuotas['montocuota']."</font></td>");
-				print ("<td width=82 align='center'><font face=Verdana size=2>".invertirFecha($rowCuotas['fechacuota'])."</font></td>");
-				
-				$sqlTipo = "select * from tiposcancelaciones where codigo =".$rowCuotas['tipocancelacion'];
+		if ($canCuotas != 0) { ?>
+			<table width="972" border="1">
+		      <tr>
+		        <td width="79"><div align="center"><b>N&deg; </b></div></td>
+		        <td width="78"><div align="center"><b>Monto </b></div></td>
+		        <td width="71"><div align="center"><b>Fecha </b></div></td>
+		        <td width="102"><div align="center"><b>Cancelacion</b></div></td>
+		        <td width="85"><div align="center"><b>Nro Cheque</b> </div></td>
+		        <td width="78"><div align="center"><b>Banco </b></div></td>
+		        <td width="100"><div align="center"><b>Fecha Cheque </b></div></td>
+				<td width="114"><div align="center"><b>Observaciones</b> </div></td>
+				<td width="109"><div align="center"><b>Estado</b> </div></td>
+				<td width="92"><div align="center"><b>Fecha Pago</b> </div></td>
+		      </tr> 
+	<?php 	while ($rowCuotas = mysql_fetch_array($resCuotas)) { ?>
+			<tr>
+				<td width=28 align='center'><font face=Verdana size=2><?php echo $rowCuotas['nrocuota'] ?></font></td>
+				<td width=81 align='center'><font face=Verdana size=2><?php echo $rowCuotas['montocuota'] ?></font></td>
+				<td width=82 align='center'><font face=Verdana size=2><?php echo invertirFecha($rowCuotas['fechacuota']) ?></font></td>		
+<?php 			$sqlTipo = "select * from tiposcancelaciones where codigo =".$rowCuotas['tipocancelacion'];
 				$resTipo = mysql_query($sqlTipo,$db);  
-				$rowTipo = mysql_fetch_array($resTipo);
-				print ("<td width=106 align='center'><font face=Verdana size=2>".$rowTipo['descripcion']."</font></td>");
-				
-				if ($rowCuotas['chequenro'] != 0) {
-					print ("<td width=91 align='center'><font face=Verdana size=2>".$rowCuotas['chequenro']."</font></td>");
-					print ("<td width=83 align='center'><font face=Verdana size=2>".$rowCuotas['chequebanco']."</font></td>");
-					print ("<td width=99 align='center'><font face=Verdana size=2>".invertirFecha($rowCuotas['chequefecha'])."</font></td>");
-				} else {
-					print ("<td width=91 align='center'><font face=Verdana size=2>-</font></td>");
-					print ("<td width=83 align='center'><font face=Verdana size=2>-</font></td>");
-					print ("<td width=99 align='center'><font face=Verdana size=2>-</font></td>");
-				}
-				
-				if ($rowCuotas['observaciones'] == "") {
-					print ("<td width=125 align='center'><font face=Verdana size=2>-</font></td>");
-				} else {
-					print ("<td width=125 align='center'><font face=Verdana size=2>".$rowCuotas['observaciones']."</font></td>");
-				}
-				if ($rowCuotas['montopagada'] != 0 || $rowCuotas['fechapagada'] != '0000-00-00') {
-					print ("<td width=119 align='center'><font face=Verdana size=2>CANCELADA (".$rowCuotas['sistemacancelacion'].")</font></td>");
-					print ("<td width=94 align='center'><font face=Verdana size=2>".invertirFecha($rowCuotas['fechapagada'])."</font></td>");
-				} else {
-					if ($rowCuotas['boletaimpresa'] != 0) {
-						print ("<td width=119 align='center'><font face=Verdana size=2>BOLETA IMPRESA</font></td>");
-						print ("<td width=94 align='center'><font face=Verdana size=2>-</font></td>");
-					} else {
-						print ("<td width=119 align='center'><font face=Verdana size=2>A PAGAR</font></td>");
-						print ("<td width=94 align='center'><font face=Verdana size=2>-</font></td>");
-					}
-				}
-				
-				print ("</tr>");
-			}
-		} else {
-			echo ("<div align='center'>Error al leer las cuotas recien cargadas.</div>");
-		}
+				$rowTipo = mysql_fetch_array($resTipo); ?>
+					<td width=106 align='center'><font face=Verdana size=2><?php echo $rowTipo['descripcion'] ?></font></td>
+		<?php 		if ($rowCuotas['chequenro'] != 0) { ?>
+						<td width=91 align='center'><font face=Verdana size=2><?php echo $rowCuotas['chequenro'] ?></font></td>
+						<td width=83 align='center'><font face=Verdana size=2><?php echo $rowCuotas['chequebanco'] ?></font></td>
+						<td width=99 align='center'><font face=Verdana size=2><?php echo invertirFecha($rowCuotas['chequefecha']) ?></font></td>
+		<?php 		} else { ?>
+						<td width=91 align='center'><font face=Verdana size=2>-</font></td>
+						<td width=83 align='center'><font face=Verdana size=2>-</font></td>
+						<td width=99 align='center'><font face=Verdana size=2>-</font></td>
+		<?php 	 	}
+					if ($rowCuotas['observaciones'] == "") { ?>
+						<td width=125 align='center'><font face=Verdana size=2>-</font></td>
+	<?php			} else { ?>
+						<td width=125 align='center'><font face=Verdana size=2><?php echo $rowCuotas['observaciones'] ?></font></td>
+	<?php			}
+					if ($rowCuotas['montopagada'] != 0 || $rowCuotas['fechapagada'] != '0000-00-00') { ?>
+						<td width=119 align='center'><font face=Verdana size=2>CANCELADA (<?php echo $rowCuotas['sistemacancelacion'] ?>)</font></td>
+						<td width=94 align='center'><font face=Verdana size=2><?php echo invertirFecha($rowCuotas['fechapagada'])  ?></font></td>
+	<?php			} else {
+						if ($rowCuotas['boletaimpresa'] != 0) { ?>
+							<td width=119 align='center'><font face=Verdana size=2>BOLETA IMPRESA</font></td>
+							<td width=94 align='center'><font face=Verdana size=2>-</font></td>
+	<?php				} else { ?>
+							<td width=119 align='center'><font face=Verdana size=2>A PAGAR</font></td>
+							<td width=94 align='center'><font face=Verdana size=2>-</font></td>
+	<?php				}
+					} ?>
+				</tr>
+<?php	} ?>
+				<tr>
+				    <td width="79"><div align="center"><b>Total Cuotas</b></div></td>
+					<td width=79 align='center'><font face=Verdana size=2><b><?php echo $rowCebecera['montoapagar'] ?></b></font></td>
+				</tr>
+				<tr>
+				    <td width="79"><div align="center"><b>Total Pagado</b></div></td>
+					<td width=79 align='center'><font face=Verdana size=2><b><?php echo $rowCebecera['montopagadas'] ?></b></font></td>
+				</tr>
+				<tr>
+				    <td width="79"><div align="center"><b>Saldo</b></div></td>
+					 <?php $saldoRestante = $rowCebecera['montoapagar'] - $rowCebecera['montopagadas']; ?>
+					<td width=79 align='center'><font face=Verdana size=2><b><?php echo number_format($saldoRestante,2,'.','') ?></b></font></td> 
+				</tr>
+		</table>
+<?php  } else { ?>
+			<div align='center'>No existen cuotas cargadas.</div>
+<?php	}
 	?>
-	<tr>
-	    <td width="79"><div align="center"><b>Total Cuotas</b></div></td>
-		 		<?php print ("<td width=79 align='center'><font face=Verdana size=2><b>".$rowCebecera['montoapagar']."</b></font></td>"); ?>
-	</tr>
-	<tr>
-	    <td width="79"><div align="center"><b>Total Pagado</b></div></td>
-		 		<?php print ("<td width=79 align='center'><font face=Verdana size=2><b>".$rowCebecera['montopagadas']."</b></font></td>"); ?>
-	</tr>
-	<tr>
-	    <td width="79"><div align="center"><b>Saldo</b></div></td>
-		 	<?php 
-				$saldoRestante = $rowCebecera['montoapagar'] - $rowCebecera['montopagadas'];
-				print ("<td width=79 align='center'><font face=Verdana size=2><b>".number_format($saldoRestante,2,'.','')."</b></font></td>"); 
-			?>
-	</tr>
-	</table>
   </div>
   <div align="center">
         <p>
        	<?php 
 		if (is_null($origen)) { ?>
-			 <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/> 
+			 <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" /> 
 	<?php } ?>
         </p>
   </div>

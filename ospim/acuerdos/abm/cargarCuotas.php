@@ -115,7 +115,7 @@ function hayInfoCheque(id) {
 	NChe = document.getElementById("ncheque"+id).value;
 	BChe = document.getElementById("bcheque"+id).value;
 	FChe = document.getElementById("fcheque"+id).value;
-	if (!esEnteroPositivo(NChe)) {
+	if (!esEnteroPositivo(NChe) || NChe == "") {
 		alert("Error número de Cheque");
 		document.getElementById("ncheque"+id).focus();
 		return false;
@@ -217,34 +217,31 @@ function validarYGuardar(formulario) {
 		<td width="212"><div align="center">Fecha Cheque </div></td>
   	 </tr>
     <?php
-	for ( $i = 1 ; $i <= $cuotasapagar ; $i ++) {
-		print ("<td width=134 align='center'><font face=Verdana size=1>".$i."</font></td>");
-		print ("<td width=107> <input name='monto".$i."' id='monto".$i."' type='text' size='10'></td>");
-		print ("<td width=116> <input name='fecha".$i."' id='fecha".$i."' type='text' size='10'></td>");
-		print ("<td width=212>"); ?>
-	<select name=<?php print("tipo".$i);?> id=<?php print("tipo".$i);?> onChange="verInfoCheques(document.forms.cuotas.<?php print("tipo".$i."[selectedIndex]");?>.value ,<?php echo $i ?>)">
-      <option value=-1>Seleccione un valor </option>
-      <?php
-					$query="select * from tiposcancelaciones";
-					$result=mysql_query($query,$db);
-					while ($rowtipos=mysql_fetch_array($result)) { ?>
-      <option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
-        <?php } ?>
-    </select>
-      <?php
-	    print("</td>");
-		print ("<div align='center' id='infoCheques".$i."'>");
-			print ("<td width=212> <input name=ncheque".$i." id=ncheque".$i." type='text' size='12' style='visibility: hidden'> </td>");
-			print ("<td width=212> <input name=bcheque".$i." id=bcheque".$i." type='text' size='12'  style='visibility: hidden'> </td>"); 
-			print ("<td width=212> <input name=fcheque".$i." id=fcheque".$i." type='text' size='12' style='visibility: hidden'> </td>");
-		print ("</div>");
-		print ("</tr>");
-		print ("<tr>");
-		print ("<td width=134 align='center'><font face=Verdana size=1>Obs.</font></td>");
-		print ("<td colspan='6'> <textarea name='obs".$i."' id='obs".$i."' cols='93' rows='2' ></textarea> </td>");
-		print ("</tr>");
-	}
-  ?>
+	for ( $i = 1 ; $i <= $cuotasapagar ; $i ++) { ?>
+	<tr>
+		<td width=134 align='center'><font face=Verdana size=1><?php echo $i ?></font></td>
+		<td width=107> <input name='monto<?php echo $i ?>' id='monto<?php echo $i ?>' type='text' size='10'></td>
+		<td width=116> <input name='fecha<?php echo $i ?>' id='fecha<?php echo $i ?>' type='text' size='10'></td>
+		<td width=212>
+			<select name=<?php echo("tipo".$i);?> id=<?php echo("tipo".$i);?> onChange="verInfoCheques(document.forms.cuotas.<?php print("tipo".$i."[selectedIndex]");?>.value ,<?php echo $i ?>)">
+		      <option value=-1>Seleccione un valor </option>
+      		<?php
+				$query="select * from tiposcancelaciones";
+				$result=mysql_query($query,$db);
+				while ($rowtipos=mysql_fetch_array($result)) { ?>
+     		  	  <option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
+          <?php } ?>
+    		</select>
+    	</td>
+		<td width=212> <input name='ncheque<?php echo $i ?>' id='ncheque<?php echo $i ?>' type='text' size='12' style='visibility: hidden'> </td>
+		<td width=212> <input name='bcheque<?php echo $i ?>' id='bcheque<?php echo $i ?>' type='text' size='12'  style='visibility: hidden'> </td>
+		<td width=212> <input name='fcheque<?php echo $i ?>' id='fcheque<?php echo $i ?>' type='text' size='12' style='visibility: hidden'> </td>
+	</tr>
+	<tr>
+		<td width=134 align='center'><font face=Verdana size=1>Obs.</font></td>
+		<td colspan='6'> <textarea name='obs<?php echo $i ?>' id='obs<?php echo $i ?>' cols='93' rows='2' ></textarea> </td>
+	</tr>
+<?php } ?>
     </table>
   </div>
   <p align="center"> 
