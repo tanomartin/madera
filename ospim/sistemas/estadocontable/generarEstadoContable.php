@@ -1,4 +1,6 @@
 <?php
+$libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspimSistemas.php");
 set_time_limit ( 0 );
 ini_set ( 'memory_limit', '-1' );
 $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
@@ -24,17 +26,15 @@ $fechadesde = date ( 'Y-m-d', $fechadesde );
 $maquina = $_SERVER ['SERVER_NAME'];
 
 if (strcmp ( "localhost", $maquina ) == 0) 
-	$archivo_name = "Estado Contable " . $fechageneracion . ".xls";
+	$archivo_name = "../../contaduria/estadocontable/Estado Contable " . $fechageneracion . ".xls";
 else 
 	$archivo_name = "/home/sistemas/Documentos/Repositorio/ffff1208311301sys/Estado Contable " . $fechageneracion . ".xls";
 
-
-try {
-	
-	$hostname = 'localhost';
-	$dbname = 'madera';
-	$usuario = 'sistemas';
-	$pass = 'blam7326';
+try {	
+	$hostname = $_SESSION['host'];
+	$dbname = $_SESSION['dbname'];
+	$usuario = $_SESSION['usuario'];
+	$pass = $_SESSION['clave'];
 	$dbh = new PDO ( "mysql:host=$hostname;dbname=$dbname", $usuario, $pass );
 	$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 	$dbh->beginTransaction ();
@@ -44,6 +44,8 @@ try {
 	$resConsultaEstado->execute ();
 	$rowConsultaEstado = $resConsultaEstado->fetch ( PDO::FETCH_LAZY );
 	if ($rowConsultaEstado['existe'] != 0) {
+		$pagina = "estadoContable.php?ok=0";
+		Header("Location: $pagina");
 		exit(0);
 	}
 	
@@ -67,8 +69,7 @@ try {
 	$mesHasta = substr ( $fechageneracion, 5, 2 );
 	
 	// OBTENEMOS LAS DDJJ
-	// TODO rellenar todos los discos.
-	$discoDesde = 100;
+	
 	$anolimite = 2009;
 	$meslimite = 3;
 	
@@ -171,27 +172,37 @@ try {
 		unset ( $resDDJJ );
 	}
 	
-	// ARMO EL ESTADO CONTABLE
-	$estadoContable = array ();
-	foreach ( $arrayDDJJ as $cuit => $ddjjCuit ) {
-		$totalRemuneracion = 0;
-		$totalObligacion = 0;
-		foreach ( $ddjjCuit as $ddjjperido ) {
-			$nombre = $ddjjperido ['nombre'];
-			$totalRemuneracion += $ddjjperido ['remuneracion'];
-			$totalObligacion += $ddjjperido ['obligacion'];
-		}
-		$estadoContable [$cuit] = array (
-				'nombre' => $nombre,
-				'totremune' => $totalRemuneracion,
-				'totobligacion' => $totalObligacion 
-		);
-	}
-	unset ( $arrayDDJJ );
 	
+	// OBTENEMOS LOS ACUERDOS Y SE LOS SACO A LAS DDJJ
+	$sqlAcuerdos = "SELECT
+				 	 acuerdos.cuit,
+					 acuerdos.anoacuerdo,
+					 acuerdos.mesacuerdo
+					FROM
+					      detacuerdosospim acuerdos
+					WHERE
+					   ((acuerdos.anoacuerdo > " . $anoDesde . ") OR (acuerdos.anoacuerdo = " . $anoDesde . " AND acuerdos.mesacuerdo >= " . $mesDesde . "))
+					GROUP by acuerdos.cuit, acuerdos.anoacuerdo, acuerdos.mesacuerdo
+				    ORDER by acuerdos.cuit, acuerdos.anoacuerdo, acuerdos.mesacuerdo";
+	$resAcuerdos = $dbh->prepare ( $sqlAcuerdos );
+	$resAcuerdos->execute ();
+	
+	while ( $rowAcuerdos = $resAcuerdos->fetch ( PDO::FETCH_LAZY ) ) {
+		$cuitAcuerdo = $rowAcuerdos ['cuit'];
+		$indexPeriodo = $rowAcuerdos ['anoacuerdo'] . $rowAcuerdos ['mesacuerdo'];
+		if (array_key_exists ( $cuitAcuerdo, $arrayDDJJ )) {
+			$arrayDDJJperiodos = $arrayDDJJ[$cuitAcuerdo];
+			if(array_key_exists ( $indexPeriodo, $arrayDDJJperiodos)) {
+				unset($arrayDDJJ[$cuitAcuerdo][$indexPeriodo]);
+			}
+		}
+	}
+		
 	// OBTENEMOS LOS PAGOS
 	$sqlPagos = "SELECT
 				  pagos.cuit,
+			      pagos.anopago,
+			      pagos.mespago,
 				  e.nombre,
 				  ROUND(SUM(IF(pagos.debitocredito = 'C', pagos.importe, pagos.importe * -1)),2) AS importepagos
 				FROM
@@ -202,27 +213,120 @@ try {
 				      pagos.concepto != 'REM' AND
 				      ((pagos.anopago = " . $anoDesde . " AND pagos.mespago > " . $mesDesde . ") OR (pagos.anopago > " . $anoDesde . ")) AND
 				      pagos.cuit = e.cuit 
-				GROUP by pagos.cuit
-				ORDER by pagos.cuit";
+				GROUP by pagos.cuit, pagos.anopago, pagos.mespago
+				ORDER by pagos.cuit, pagos.anopago ASC, pagos.mespago ASC";
 	$resPagos = $dbh->prepare ( $sqlPagos );
 	$resPagos->execute ();
+	
+	$arrayPagos = array();
 	while ( $rowPagos = $resPagos->fetch ( PDO::FETCH_LAZY ) ) {
 		$cuit = $rowPagos ['cuit'];
-		if (array_key_exists ( $cuit, $estadoContable )) {
-			$estadoContable [$cuit] += array (
-					'totpagos' => $rowPagos ['importepagos'] 
+		$indexPeriodo = $rowPagos ['anopago'] . $rowPagos ['mespago'];
+		$arrayPagos [$rowPagos ['cuit']] [$indexPeriodo] =  array (
+					'pagos' => $rowPagos ['importepagos'],
+					'nombre' => $rowPagos ['nombre'] 
 			);
-		} else {
-			$estadoContable [$cuit] = array (
-					'nombre' => $rowPagos ['nombre'],
-					'totpagos' => $rowPagos ['importepagos'] 
-			);
+	}
+	unset ($resPagos);
+	
+	
+	// OBTENEMOS LOS ACUERDOS Y SE LOS SACO A LOS PAGOS
+	$resAcuerdos->execute ();
+	while ( $rowAcuerdos = $resAcuerdos->fetch ( PDO::FETCH_LAZY ) ) {
+		$cuitAcuerdo = $rowAcuerdos ['cuit'];
+		$indexPeriodo = $rowAcuerdos ['anoacuerdo'] . $rowAcuerdos ['mesacuerdo'];
+		if (array_key_exists ( $cuitAcuerdo, $arrayPagos )) {
+			$arrayPagosperiodos = $arrayPagos[$cuitAcuerdo];
+			if(array_key_exists ( $indexPeriodo, $arrayPagosperiodos)) {
+				unset($arrayPagos[$cuitAcuerdo][$indexPeriodo]);
+			}
 		}
 	}
-	unset ( $resPagos );
+	unset($resAcuerdos);
 	
-	//TODO AGREGAR $fechadesde y $fechageneracion
-	$sqlInsertControl = "INSERT INTO estadocontablecontrol VALUE(DEFAULT,".$anoEstado.", ".$mesEstado.", 0, 0, 0,'".$archivo_name."',".$discoDesde.",".$discoHasta.",'".$fecharegistro ."','".$usuarioregistro."')";
+	
+	//REDONDEO LOS QUE LA DIFERENCIA SE ENTRE -50 y +50
+	foreach ( $arrayDDJJ as $cuit => $ddjjCuit ) {
+		if (array_key_exists($cuit,$arrayPagos)) {
+			foreach ( $ddjjCuit as $periodo => $ddjjperido ) {
+				if (array_key_exists($periodo,$arrayPagos[$cuit])) {
+					$pago = $arrayPagos[$cuit][$periodo]['pagos'];
+					$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
+					$dife = $pago - $obli;
+					if ($dife < 50 && $dife > -50) {
+						$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
+					} else {
+						$arrayDDJJ[$cuit][$periodo]['dife'] = $dife;
+					}
+				} else {
+					$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
+					if ($obli < 50) {
+						$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
+					} else {
+						$arrayDDJJ[$cuit][$periodo]['dife'] = -$obli;
+					}
+				}
+			}	
+		} else {
+			foreach ( $ddjjCuit as $periodo => $ddjjperido ) {
+				$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
+				if ($obli < 50) {
+					$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
+				} else {
+					$arrayDDJJ[$cuit][$periodo]['dife'] = -$obli;
+				}
+			}
+		}
+	}
+	
+	
+	
+	
+	// ARMO EL ESTADO CONTABLE
+	$estadoContable = array ();
+	reset($arrayDDJJ);
+	foreach ( $arrayDDJJ as $cuit => $ddjjCuit ) {
+		$totalRemuneracion = 0;
+		$totalObligacion = 0;
+		$totalDiferencia = 0;
+		foreach ( $ddjjCuit as $ddjjperido ) {
+			$nombre = $ddjjperido ['nombre'];
+			$totalRemuneracion += $ddjjperido ['remuneracion'];
+			$totalObligacion += $ddjjperido ['obligacion'];
+			$totalDiferencia += $ddjjperido ['dife'];
+		}
+		$estadoContable [$cuit] = array (
+				'nombre' => $nombre,
+				'totremune' => $totalRemuneracion,
+				'totobligacion' => $totalObligacion,
+				'totaldiferencia' => $totalDiferencia
+		);
+	}
+	unset ( $arrayDDJJ );
+	
+	reset($arrayPagos);
+	foreach ($arrayPagos as $cuit => $pagosCuit) {
+		$totalPagos = 0;
+		foreach ( $pagosCuit as $pagosperido ) {
+			$nombre = $pagosperido ['nombre'];
+			$totalPagos += $pagosperido ['pagos'];
+		}
+		if (array_key_exists ( $cuit, $estadoContable )) {
+			$estadoContable [$cuit] += array (
+					'totpagos' => $totalPagos
+			);
+		} 
+		//TODO ver si se saca cuando no hay ddjj
+		/*else {
+			$estadoContable [$cuit] = array (
+					'nombre' => $nombre,
+					'totpagos' => $totalPagos
+			);
+		}*/
+	}
+	unset ( $arrayPagos );
+	
+	$sqlInsertControl = "INSERT INTO estadocontablecontrol VALUE(DEFAULT,".$anoEstado.", ".$mesEstado.", 0, 0, 0, 0,'".$archivo_name."',".$discoDesde.",".$discoHasta.",'".$fechadesde ."','".$fechageneracion ."','".$fecharegistro ."','".$usuarioregistro."')";
 	$resInsertControl = $dbh->prepare ( $sqlInsertControl );
 	$resInsertControl->execute ();
 	$lastId = $dbh->lastInsertId();
@@ -280,11 +384,12 @@ try {
 	$totRem = 0;
 	$totObl = 0;
 	$totPag = 0;
+	$totDif = 0;
 	foreach ( $estadoContable as $cuit => $estado ) {
 		$totRem +=  $estado ['totremune'];
 		$totObl +=  $estado ['totobligacion'];
 		$totPag +=  $estado ['totpagos'];
-		
+		$totDif +=  $estado ['totaldiferencia'];
 		$fila ++;
 		// Agrega datos a las celdas de datos
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'A' . $fila, $cuit );
@@ -293,14 +398,12 @@ try {
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, $estado ['totremune'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, $estado ['totobligacion'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'E' . $fila, $estado ['totpagos'] );
-		$difefencia = $estado ['totpagos'] - $estado ['totobligacion'];
-		$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $difefencia );
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $estado ['totaldiferencia'] );
 	}
 	$fila ++;
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, $totRem );
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, $totObl );
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'E' . $fila, $totPag );
-	$totDif = $totPag - $totObl;
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $totDif );
 	
 	// Setea fuente tipo y tamaño a la hoja activa
@@ -327,7 +430,7 @@ try {
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'F2:F' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'F2:F' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
 	
-	$sqlUdapteControl = "UPDATE estadocontablecontrol SET remuneracion = $totRem, obligacion = $totObl, pagos = $totPag WHERE id = $lastId";
+	$sqlUdapteControl = "UPDATE estadocontablecontrol SET remuneracion = $totRem, obligacion = $totObl, pagos = $totPag, diferencia = $totDif WHERE id = $lastId";
 	$resUdapteControl = $dbh->prepare ( $sqlUdapteControl );
 	$resUdapteControl->execute ();
 	
@@ -336,7 +439,10 @@ try {
 	$objWriter->save ( $archivo_name );
 	
 	$dbh->commit ();
-	exit ( 0 );
+	
+	$pagina = "estadoContable.php?ok=1";
+	Header("Location: $pagina");
+
 } catch ( PDOException $e ) {
 	echo $e->getMessage ();
 	$dbh->rollback ();
