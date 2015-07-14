@@ -52,7 +52,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a href="intrausimra/menuActualizacionUsimra.php"><img src="img/intrausimra.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td><p align="center">Estado Contable</p>
-        <p align="center"><a href="estadocontable/estadocontable.php"><img src="img/estadocontable.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a href="estadocontable/estadoContable.php"><img src="img/estadocontable.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
     </tr>
   </table>
