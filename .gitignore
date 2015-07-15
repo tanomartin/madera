@@ -5,4 +5,5 @@
 /usimra/sessiones
 /.project
 /.buildpath
-/lib/generaSessionDebug.php/usimra/banco/ProcesadosBanco
+/lib/generaSessionDebug.php
+/usimra/banco/ProcesadosBanco

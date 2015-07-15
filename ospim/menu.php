@@ -87,7 +87,11 @@ function abrirModulo(dire, titulo) {
 	    <p>&nbsp;</p>
       </div>
 	  </td>
-	  <td>&nbsp;</td>
+	  <td> <div align="center">
+	    <p>Contaduría </p>
+	    <p><a href="javascript:abrirModulo('contaduria/menuContaduria.php','ContaduriaOspim')"><img src="img/contaduria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    <p>&nbsp;</p>
+      </div></td>
     </tr>
   </table>
    <p><strong><a href="logout.php">

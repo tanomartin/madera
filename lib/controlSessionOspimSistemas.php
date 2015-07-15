@@ -9,10 +9,13 @@ session_start();
 //antes de hacer los cálculos, compruebo que el usuario está logueado 
 //utilizamos el mismo script que antes 
 
+if(isset($_GET['XDEBUG_SESSION_START'])) {
+	include_once ($_SERVER['DOCUMENT_ROOT'].'/madera/lib/generaSessionDebug.php');
+}
+
 $redire = "Location: http://".$_SERVER['SERVER_NAME']."/madera/ospim/sesionCaducada.php";
 if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') { 
     //si no está logueado lo envío a la página de autentificación 
-	//TODO que vaya a una pantalla de session caducada....
 	header($redire); 
 	exit(0);
 } else { 
@@ -23,7 +26,6 @@ if ($_SESSION['aut'] != 1 || $_SESSION['usuario'] != 'sistemas') {
     //comparamos el tiempo transcurrido 
     if($tiempo_transcurrido >= 1200) { 
        //si pasaron 10 minutos o más 
-	   //TODO que vaya a una pantalla de session caducada....	
    	   header($redire); //envío al usuario a la pag. de autenticación 
 	   exit(0);        	
 	  //sino, actualizo la fecha de la sesión 
