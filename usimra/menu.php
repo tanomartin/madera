@@ -77,14 +77,14 @@ function abrirEmpleados(dire) {
       </div></td>
 	 <td><div align="center">
 	  <p>Empleados </p>
-      <p><a href="javascript:abrirEmpleados('moduloNoDisponible.php')"><img src="img/empleados.png" width="90" height="90" border="0"/></a></p>
+      <p><a href="javascript:abrirEmpleados('empleados/menuEmpleados.php')"><img src="img/empleados.png" width="90" height="90" border="0"/></a></p>
       <p>&nbsp;</p> 
     </div></td>
     </tr>
     <tr>
      <td><div align="center">
        <p>Aportes </p>
-       <p><a href="javascript:abrirAportes('moduloNoDisponible.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
+       <p><a href="javascript:abrirAportes('aportes/menuAportes.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
        <p>&nbsp;</p>
      </div></td>
       <td><div align="center">
@@ -94,7 +94,7 @@ function abrirEmpleados(dire) {
       </div></td>
 	  <td><div align="center">
         <p>Juicios </p>
-	    <p><a href="javascript:abrirLegales('moduloNoDisponible.php')"><img src="img/juicios.png" width="90" height="90" border="0"/></a></p>
+	    <p><a href="javascript:abrirLegales('legales/menuLegales.php')"><img src="img/juicios.png" width="90" height="90" border="0"/></a></p>
 	    <p>&nbsp;</p>
       </div></td>
     </tr>
