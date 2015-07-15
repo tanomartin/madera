@@ -84,8 +84,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td align="center"><?php echo invertirFecha($rowTransfe['fecha']);?></td>
 				<td align="right"><?php echo $rowTransfe['monto'];?></td>
 				<td align="center">
-					<input type="button" name="consultar" value="Consultar" onclick="location.href='consultaTransferencia.php?nrotrans=<?php echo $nroTrans ?>'">
-					<input type="button" name="modificar" value="Modificar" onclick="location.href='modificaTransferencia.php?nrotrans=<?php echo $nroTrans ?>'">
+					<input type="button" name="consultar" value="Consultar" onclick="location.href='consultaTransferencia.php?nrotrans=<?php echo $nroTrans ?>'" />
+					<input type="button" name="modificar" value="Modificar" onclick="location.href='modificaTransferencia.php?nrotrans=<?php echo $nroTrans ?>'" />
 				</td>
 			</tr>
 			<?php

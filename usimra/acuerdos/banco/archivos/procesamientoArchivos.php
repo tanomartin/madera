@@ -118,8 +118,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </p>
   <?php  if(isset($_GET['err'])) { ?>
   <div align='center' style='color:#CC3333'><b>Error en Archivo - El Archivo solicitado no existe.</b></div>
-  <div align='center'><b>Verifique si el banco no envió el archivo o el día debe ser exceptuado de procesamiento</b><br>
-    <br>
+  <div align='center'><b>Verifique si el banco no envió el archivo o el día debe ser exceptuado de procesamiento</b><br/><br/>
     <input type="button" name="exceptuar" value="Exceptuar" onclick="location.href = 'exceptuarDia.php?dia=<?php echo $diaProcesar ?>'"/>
   </div>
   <?php  } else {
