@@ -32,7 +32,6 @@ else
 
 try {	
 	$hostname = $_SESSION['host'];
-	$hostname = 'cronos';
 	$dbname = $_SESSION['dbname'];
 	$usuario = $_SESSION['usuario'];
 	$pass = $_SESSION['clave'];
