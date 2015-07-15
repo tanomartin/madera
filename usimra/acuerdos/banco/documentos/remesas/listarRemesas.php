@@ -167,7 +167,7 @@ $numeroremesa=$ultimaremesa+1;
     <table width="800" border="0">
       <tr>
         <td width="400"><div align="left">
-            <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/>
+            <input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>
           </div>
         <td width="400"><div align="right">
             <input type="submit" name="nuevaremesa" value="Nueva Remesa" align="right"/>

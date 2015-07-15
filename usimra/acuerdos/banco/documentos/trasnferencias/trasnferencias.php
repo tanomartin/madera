@@ -14,7 +14,6 @@ $canTransfe = mysql_num_rows($resTransfe);
 <link rel="stylesheet" href="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.css" type="text/css" id="" media="print, projection, screen" />
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Trasnferencia USIMRA :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -24,10 +23,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css">
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
@@ -52,10 +50,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 </script>
-
+</head>
 <body bgcolor="#B2A274">
 <div align="center">
-	 <input type="reset" name="volver" value="Volver" onclick="location.href = '../documentosBancarios.php'" align="center"/>
+	 <input type="reset" name="volver" value="Volver" onclick="location.href = '../documentosBancarios.php'"/>
 	<p><span class="Estilo2">Transferencias Bancarias</span></p>
 	<p>
 	  <label>
@@ -86,8 +84,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td align="center"><?php echo invertirFecha($rowTransfe['fecha']);?></td>
 				<td align="right"><?php echo $rowTransfe['monto'];?></td>
 				<td align="center">
-					<input type="button" name="consultar" value="Consultar" onClick="location.href='consultaTransferencia.php?nrotrans=<?php echo $nroTrans ?>'">
-					<input type="button" name="modificar" value="Modificar" onClick="location.href='modificaTransferencia.php?nrotrans=<?php echo $nroTrans ?>'">
+					<input type="button" name="consultar" value="Consultar" onclick="location.href='consultaTransferencia.php?nrotrans=<?php echo $nroTrans ?>'"/>
+					<input type="button" name="modificar" value="Modificar" onclick="location.href='modificaTransferencia.php?nrotrans=<?php echo $nroTrans ?>'"/>
 				</td>
 			</tr>
 			<?php

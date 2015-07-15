@@ -6,12 +6,20 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>.: Anulacion de Boleta :.</title>
+<style>
+A:link {text-decoration: none;color:#0033FF}
+A:visited {text-decoration: none;color:#0033FF}
+A:hover {text-decoration: none;color:#33CCFF }
+.Estilo1 {	font-size: 18px;
+	font-weight: bold;
+}
+</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
-
 jQuery(function($){
 		$("#nroControl").mask("99999999999999");
 });
@@ -23,22 +31,8 @@ function validar(formulario) {
 	}
 	return true;
 }
-
 </script>
-
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none;color:#0033FF}
-A:hover {text-decoration: none;color:#33CCFF }
-.Estilo1 {	font-size: 18px;
-	font-weight: bold;
-}
-</style>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Anulacion de Boleta :.</title>
 </head>
-
 <body bgcolor="#CCCCCC">
 <div align="center">
   <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" />
@@ -68,14 +62,16 @@ A:hover {text-decoration: none;color:#33CCFF }
 			$nroControl = $_POST['nroControl'];?>
 			<p><span class="Estilo1"><strong>Resultado Codigo de identificacion de boleta "<?php echo $nroControl ?>" </strong></span> </p>
 			<table border="1" width="1000">
-				<th>Fecha Recepción </th>
-				<th>Fecha Acreditacion </th>
-				<th>Tipo Movimiento</th>
-				<th>Importe</th>
-				<th>C.U.I.T. - Razón Social</th>
-				<th>Tipo Pago</th>
-				<th>Fecha Validacion</th>
-				<th>Fecha Imputacion</th>
+				<tr>
+					<th>Fecha Recepción </th>
+					<th>Fecha Acreditacion </th>
+					<th>Tipo Movimiento</th>
+					<th>Importe</th>
+					<th>C.U.I.T. - Razón Social</th>
+					<th>Tipo Pago</th>
+					<th>Fecha Validacion</th>
+					<th>Fecha Imputacion</th>
+				</tr>
 	<?php	$sqlBanco = "SELECT b.*, e.nombre as empresa FROM banacuerdosospim b, empresas e WHERE b.nrocontrol = $nroControl and b.cuit = e.cuit ORDER BY b.fecharecaudacion, b.fechaacreditacion";
 			$resBanco = mysql_query($sqlBanco,$db); 
 			$canBanco = mysql_num_rows($resBanco);

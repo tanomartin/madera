@@ -102,7 +102,7 @@ function abrirEmpleados(dire) {
       <td>&nbsp;</td>
       <td><div align="center">
           <p align="center">Banco </p>
-          <p align="center"><a href="javascript:abrirBanco('moduloNoDisponible.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
+          <p align="center"><a href="javascript:abrirBanco('banco/moduloBanco.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
           <p>&nbsp;</p>
       </div>        </td>
       <td>&nbsp;</td>

@@ -6,7 +6,6 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modulo Nomencladores :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -16,11 +15,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
+</head>
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'"/>
   </p>
   <p><span class="Estilo2">Men&uacute; Nomencladores </span></p>
   <table width="626" border="3">

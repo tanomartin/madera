@@ -5,6 +5,14 @@ include($libPath."fechas.php");
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<style>
+A:link {text-decoration: none;color:#0033FF}
+A:visited {text-decoration: none;color:#0033FF}
+A:hover {text-decoration: none;color:#33CCFF }
+.Estilo1 {	font-size: 18px;
+	font-weight: bold;
+}
+</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -23,23 +31,15 @@ function validar(formulario) {
 }
 
 </script>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none;color:#0033FF}
-A:hover {text-decoration: none;color:#33CCFF }
-.Estilo1 {	font-size: 18px;
-	font-weight: bold;
-}
-</style>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Anulacion de Boleta :.</title>
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloInformes.php'" align="center"/>
+  <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'"/>
   <p><span class="Estilo1">Consulta Movimiento Bancario</span> </p>
 </div>
-<form id="anulacion" name="anulacion" method="post" onSubmit="return validar(this)" action="movimientoBanco.php">
+<form id="anulacion" name="anulacion" method="post" onsubmit="return validar(this)" action="movimientoBanco.php">
   <div align="center">
     <table width="371" border="0">
       <tr>
@@ -59,16 +59,18 @@ A:hover {text-decoration: none;color:#33CCFF }
     <?php 
 		if(isset($_POST['nroControl'])) { 
 			$nroControl = $_POST['nroControl'];?>
-    <p><span class="Estilo1">Resultado Codigo de identificacion de boleta "<?php echo $nroControl ?>" </strong></span> </p>
+    <p><span class="Estilo1">Resultado Codigo de identificacion de boleta "<?php echo $nroControl ?>"</span> </p>
     <table border="1" width="1000" style="text-align:center">
-      <th>Fecha Recepción </th>
-        <th>Fecha Acreditacion </th>
-        <th>Tipo Movimiento</th>
-        <th>Importe</th>
-        <th>C.U.I.T. - Razón Social</th>
-        <th>Tipo Pago</th>
-        <th>Fecha Validacion</th>
-        <th>Fecha Imputacion</th>
+		<tr>
+	      	<th>Fecha Recepción </th>
+	        <th>Fecha Acreditacion </th>
+	        <th>Tipo Movimiento</th>
+	        <th>Importe</th>
+	        <th>C.U.I.T. - Razón Social</th>
+	        <th>Tipo Pago</th>
+	        <th>Fecha Validacion</th>
+	        <th>Fecha Imputacion</th>
+        </tr>
         <?php	$sqlBanco = "SELECT b.*, e.nombre as empresa FROM banacuerdosusimra b, empresas e WHERE b.nrocontrol = $nroControl and b.cuit = e.cuit ORDER BY b.fecharecaudacion, b.fechaacreditacion";
 			$resBanco = mysql_query($sqlBanco,$db); 
 			$canBanco = mysql_num_rows($resBanco);

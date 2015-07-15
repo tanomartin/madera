@@ -142,7 +142,7 @@ else
 	<p>&nbsp;</p>
 	<table width="769" border="1" align="center">
 	<tr align="center" valign="top">
-    <td width="769" valign="middle"><input type="reset" name="volver" value="Volver" onClick="location.href = 'listarSolicitudes.php'" align="center"/>
+    <td width="769" valign="middle"><input type="reset" name="volver" value="Volver" onclick="location.href = 'listarSolicitudes.php'"/>
 	</td>
 	</tr>
 	</table>
@@ -155,7 +155,6 @@ else
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Guarda Verificacion :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -166,6 +165,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
+</head>
 <body bgcolor="#CCCCCC">
 </body>
 </html>
