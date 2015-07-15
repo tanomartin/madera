@@ -115,7 +115,7 @@ $numeroRemito=$ultimoremito+1;
       <td width="400">
         
           <div align="left">
-            <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="center"/>
+            <input type="button" name="imprimir" value="Imprimir" onClick="window.print();"/>
             </div>
       <td width="400">
         <div align="right">
@@ -123,7 +123,7 @@ $numeroRemito=$ultimoremito+1;
 	          <input type="submit" name="nuevoremito" value="Nuevo Remito" align="right"/>
     	  <?php }
     	  		else {?>
-	          <input type="submit" name="nuevoremito" value="Nuevo Remito" align="right"  disabled="disabled" sub/>
+	          <input type="submit" name="nuevoremito" value="Nuevo Remito" align="right"  disabled="disabled"/>
     	  <?php }?>
 	    </div></td>
     </tr>

@@ -13,20 +13,18 @@ $rowLeeCuenta=mysql_fetch_array($resultLeeCuenta);
 $sqlLeeRemito="SELECT * FROM remitossueltosusimra WHERE codigocuenta = $cuentaRemito and sistemaremito = 'M' and fecharemito = $fechaRemito and nroremito = $ultimoRemito";
 $resultLeeRemito=mysql_query($sqlLeeRemito,$db);
 $rowLeeRemito=mysql_fetch_array($resultLeeRemito);
-
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Banco USIMRA :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
+</head>
 <body bgcolor="#B2A274">
 <p align="center">
   <input type="reset" name="volver" value="Volver" onclick="location.href = 'listarRemitosSueltos.php?ctaRemito=<?php echo $cuentaRemito?>&amp;fecRemito=<?php echo $fechaCargada?>'" align="left"/>

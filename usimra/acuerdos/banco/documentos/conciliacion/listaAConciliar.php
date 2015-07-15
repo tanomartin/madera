@@ -29,7 +29,7 @@ function MsgWait(formulario) {
 </script>
 </head>
 <body bgcolor="#B2A274">
-<div align="center"><input type="reset" name="volver" value="Volver" onClick="location.href = '../documentosBancarios.php'" align="center"/> </div>
+<div align="center"><input type="reset" name="volver" value="Volver" onclick="location.href = '../documentosBancarios.php'"/></div>
 
 <p align="center">
   <?php
@@ -73,10 +73,5 @@ else {
 }
 
 ?>
-</p>
-<p>
-  
-  </div>
-</p>
 </body>
 </html>

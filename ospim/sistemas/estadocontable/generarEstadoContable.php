@@ -32,6 +32,7 @@ else
 
 try {	
 	$hostname = $_SESSION['host'];
+	$hostname = 'cronos';
 	$dbname = $_SESSION['dbname'];
 	$usuario = $_SESSION['usuario'];
 	$pass = $_SESSION['clave'];
@@ -316,13 +317,6 @@ try {
 					'totpagos' => $totalPagos
 			);
 		} 
-		//TODO ver si se saca cuando no hay ddjj
-		/*else {
-			$estadoContable [$cuit] = array (
-					'nombre' => $nombre,
-					'totpagos' => $totalPagos
-			);
-		}*/
 	}
 	unset ( $arrayPagos );
 	

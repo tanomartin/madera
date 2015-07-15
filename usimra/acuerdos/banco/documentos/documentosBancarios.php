@@ -7,7 +7,6 @@ include($libPath."controlSessionUsimra.php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Banco USIMRA :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -17,12 +16,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
+</head>
 <body bgcolor="#B2A274">
-<div align="center"><input type="reset" name="volver" value="Volver" onClick="location.href = '../moduloBanco.php'" align="center"/> </div>
+<div align="center"><input type="reset" name="volver" value="Volver" onclick="location.href = '../moduloBanco.php'"/></div>
 <div align="center">
   <p><span class="Estilo2">Documentacion Bancaria</span></p>
-  <table width="614" height="340" border="3">
+  <table width="614" border="3">
     <tr>
      <td width="196" height="164"><p align="center">Resumenes</p>
         <p align="center"><a class="enlace" href="resumenes/resumenBancario.php"><img src="img/resumen.png" width="105" height="105" border="0" alt="enviar"/></a></p>

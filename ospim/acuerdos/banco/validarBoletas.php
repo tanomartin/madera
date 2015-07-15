@@ -208,12 +208,12 @@ try {
 		<tr align="center" valign="top">
 	    <td width="385" valign="middle">
 		<div align="left">
-		<input type="reset" name="volver" value="Volver" onClick="location.href = 'procesamientoRegistros.php'" align="left"/>
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistros.php'"/>
 		</div>
 		</td>
 	    <td width="384" valign="middle">
 		<div align="right">
-        <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
+        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>
 	    </div>
 		</td>
 		</tr>
@@ -225,7 +225,7 @@ try {
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
-	    <td width="769" valign="middle"><input type="reset" name="volver" value="Volver" onClick="location.href = 'procesamientoRegistros.php'" align="center"/>
+	    <td width="769" valign="middle"><input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistros.php'"/>
 		</td>
 		</tr>
 		</table>
@@ -242,7 +242,7 @@ try {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title></head>
+<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -253,6 +253,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
+</head>
 <body bgcolor="#CCCCCC">
 </body>
 </html>

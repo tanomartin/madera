@@ -13,7 +13,6 @@ $rowTransfe = mysql_fetch_assoc($resTransfe);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modifica Trasnferencia USIMRA :.</title>
-</head>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
@@ -23,7 +22,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -95,12 +93,12 @@ function validar(formulario) {
 }
 
 </script>
-
+</head>
 <body bgcolor="#B2A274">
 <div align="center">
-	 <input type="reset" name="volver" value="Volver" onclick="location.href = 'trasnferencias.php'" align="center"/>
+	 <input type="reset" name="volver" value="Volver" onclick="location.href = 'trasnferencias.php'"/>
 	<p><span class="Estilo2">Modificar Transferencia</span></p>
-	<form id="nuevaTransf" name="nuevaTransf" method="post" action="guardaModificaTrasnferencia.php?nrotrans=<?php echo $nroTrans ?>" onSubmit="return validar(this)">
+	<form id="nuevaTransf" name="nuevaTransf" method="post" action="guardaModificaTrasnferencia.php?nrotrans=<?php echo $nroTrans ?>" onsubmit="return validar(this)">
 	  <table width="400" border="0">
         <tr>
           <td><div align="right"><strong>Banco</strong></div></td>

@@ -100,17 +100,15 @@ if ($canDias == 0) {
 	font-weight: bold;
 }
 -->
-</style>
-</head>
-<style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
+</head>
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="verificacionArchivo.php">
   <div align="center">
-    <input type="reset" name="volver" value="Volver" onClick="location.href = '../moduloBanco.php'" align="center"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = '../moduloBanco.php'"/>
   </div>
   <p align="center" class="Estilo1">Procesamiento de Archivos Transferidos</p>
   <p align="center">
@@ -120,7 +118,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </p>
   <?php  if(isset($_GET['err'])) { ?>
   <div align='center' style='color:#CC3333'><b>Error en Archivo - El Archivo solicitado no existe.</b></div>
-  <div align='center'> <b>Verifique si el banco no envió el archivo o el día debe ser exceptuado de procesamiento</b><br>
+  <div align='center'><b>Verifique si el banco no envió el archivo o el día debe ser exceptuado de procesamiento</b><br>
     <br>
     <input type="button" name="exceptuar" value="Exceptuar" onclick="location.href = 'exceptuarDia.php?dia=<?php echo $diaProcesar ?>'"/>
   </div>

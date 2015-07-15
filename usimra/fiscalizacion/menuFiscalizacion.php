@@ -15,9 +15,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-size: 18px;
 }
 </style>
-</head>
-
-<body bgcolor="#B2A274">
+</head><body bgcolor="#B2A274">
 <div align="center">
   <p><span class="Estilo2">Men&uacute; Fiscalizacion </span></p>
   <table width="400" border="3">
