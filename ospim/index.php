@@ -34,14 +34,12 @@ A:hover {text-decoration:underline; color:FCF63C}
     <table border="0" width="26%">
       <tr>
         <td width="50%" align="right"><font face="Verdana" size="2"><b>Usuario:&nbsp;&nbsp;</b></font></td>
-        <td width="50%"><p align="left">
-          <input name="user" type="text" id="user" style="background-color: #FFFFFF" size="20" /> </p>
+        <td width="50%"><p align="left"><input name="user" type="text" id="user" style="background-color: #FFFFFF" size="20" /></p>
         </td>
       </tr>
       <tr>
         <td width="50%" align="right"><font face="Verdana" size="2"><b>Contraseña:&nbsp;&nbsp;</b></font></td>
-        <td width="50%"><p align="left">
-          <input name="pass" type="password" id="pass" style="background-color: #FFFFFF" size="20" /> </p>
+        <td width="50%"><p align="left"><input name="pass" type="password" id="pass" style="background-color: #FFFFFF" size="20" /></p>
         </td>
       </tr>
       <tr>
