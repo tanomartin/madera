@@ -28,7 +28,7 @@ $maquina = $_SERVER ['SERVER_NAME'];
 if (strcmp ( "localhost", $maquina ) == 0) 
 	$archivo_name = "../../contaduria/estadocontable/Estado Contable " . $fechageneracion . ".xls";
 else 
-	$archivo_name = "/home/sistemas/Documentos/Repositorio/ffff1208311301sys/Estado Contable " . $fechageneracion . ".xls";
+	$archivo_name = "/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Estado Contable " . $fechageneracion . ".xls";
 
 try {	
 	$hostname = $_SESSION['host'];
