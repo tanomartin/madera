@@ -102,8 +102,8 @@ try {
 			$arrayDDJJ [$rowDDJJ ['cuit']] [$indexPeriodo] = array (
 					'remuneracion' => $rowDDJJ ['totremune'],
 					'obligacion' => $rowDDJJ ['obligacion'],
-					'nombre' => $rowDDJJ ['nombre'] 
 			);
+			$arrayDDJJ [$rowDDJJ ['cuit']] ['nombre'] = $rowDDJJ ['nombre'];
 		}
 		unset ( $resDDJJ );
 		
@@ -133,8 +133,8 @@ try {
 			$arrayDDJJ [$rowDDJJ ['cuit']] [$indexPeriodo] = array (
 					'remuneracion' => $rowDDJJ ['totremune'],
 					'obligacion' => $rowDDJJ ['obligacion'],
-					'nombre' => $rowDDJJ ['nombre'] 
 			);
+			$arrayDDJJ [$rowDDJJ ['cuit']] ['nombre'] = $rowDDJJ ['nombre'];
 		}
 		unset ( $resDDJJ );
 	} else {
@@ -166,8 +166,8 @@ try {
 			$arrayDDJJ [$rowDDJJ ['cuit']] [$indexPeriodo] = array (
 					'remuneracion' => $rowDDJJ ['totremune'],
 					'obligacion' => $rowDDJJ ['obligacion'],
-					'nombre' => $rowDDJJ ['nombre'] 
 			);
+			$arrayDDJJ [$rowDDJJ ['cuit']] ['nombre'] = $rowDDJJ ['nombre'];
 		}
 		unset ( $resDDJJ );
 	}
@@ -224,7 +224,6 @@ try {
 		$indexPeriodo = $rowPagos ['anopago'] . $rowPagos ['mespago'];
 		$arrayPagos [$rowPagos ['cuit']] [$indexPeriodo] =  array (
 					'pagos' => $rowPagos ['importepagos'],
-					'nombre' => $rowPagos ['nombre'] 
 			);
 	}
 	unset ($resPagos);
@@ -249,31 +248,35 @@ try {
 	foreach ( $arrayDDJJ as $cuit => $ddjjCuit ) {
 		if (array_key_exists($cuit,$arrayPagos)) {
 			foreach ( $ddjjCuit as $periodo => $ddjjperido ) {
-				if (array_key_exists($periodo,$arrayPagos[$cuit])) {
-					$pago = $arrayPagos[$cuit][$periodo]['pagos'];
-					$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
-					$dife = $pago - $obli;
-					if ($dife < 50 && $dife > -50) {
-						$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
+				if ($periodo != 'nombre') {
+					if (array_key_exists($periodo,$arrayPagos[$cuit])) {
+						$pago = $arrayPagos[$cuit][$periodo]['pagos'];
+						$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
+						$dife = $pago - $obli;
+						if ($dife < 50 && $dife > -50) {
+							$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
+						} else {
+							$arrayDDJJ[$cuit][$periodo]['dife'] = $dife;
+						}
 					} else {
-						$arrayDDJJ[$cuit][$periodo]['dife'] = $dife;
+						$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
+						if ($obli < 50) {
+							$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
+						} else {
+							$arrayDDJJ[$cuit][$periodo]['dife'] = -$obli;
+						}
 					}
-				} else {
+				}
+			}	
+		} else {
+			foreach ( $ddjjCuit as $periodo => $ddjjperido ) {
+				if ($periodo != 'nombre') {
 					$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
 					if ($obli < 50) {
 						$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
 					} else {
 						$arrayDDJJ[$cuit][$periodo]['dife'] = -$obli;
 					}
-				}
-			}	
-		} else {
-			foreach ( $ddjjCuit as $periodo => $ddjjperido ) {
-				$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
-				if ($obli < 50) {
-					$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
-				} else {
-					$arrayDDJJ[$cuit][$periodo]['dife'] = -$obli;
 				}
 			}
 		}
@@ -289,15 +292,13 @@ try {
 		$totalRemuneracion = 0;
 		$totalObligacion = 0;
 		$totalDiferencia = 0;
-		$nombre = "";
 		foreach ( $ddjjCuit as $ddjjperido ) {
-			$nombre = $ddjjperido ['nombre'];
 			$totalRemuneracion += $ddjjperido ['remuneracion'];
 			$totalObligacion += $ddjjperido ['obligacion'];
 			$totalDiferencia += $ddjjperido ['dife'];
 		}
 		$estadoContable [$cuit] = array (
-				'nombre' => $nombre,
+				'nombre' => $arrayDDJJ[$cuit]['nombre'],
 				'totremune' => $totalRemuneracion,
 				'totobligacion' => $totalObligacion,
 				'totaldiferencia' => $totalDiferencia
