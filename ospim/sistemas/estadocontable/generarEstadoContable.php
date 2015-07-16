@@ -365,7 +365,7 @@ try {
 	// Setea tamaño de la columna y agrega datos a las celdas de titulos
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'A' )->setWidth ( 13 );
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'A1', 'C.U.I.T.' );
-	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'B' )->setWidth ( 50 );
+	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'B' )->setWidth ( 120 );
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'B1', 'Razon Social' );
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'C' )->setWidth ( 20 );
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'C1', 'Total DDJJ' );
