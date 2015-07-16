@@ -289,6 +289,7 @@ try {
 		$totalRemuneracion = 0;
 		$totalObligacion = 0;
 		$totalDiferencia = 0;
+		$nombre = "";
 		foreach ( $ddjjCuit as $ddjjperido ) {
 			$nombre = $ddjjperido ['nombre'];
 			$totalRemuneracion += $ddjjperido ['remuneracion'];
@@ -308,7 +309,6 @@ try {
 	foreach ($arrayPagos as $cuit => $pagosCuit) {
 		$totalPagos = 0;
 		foreach ( $pagosCuit as $pagosperido ) {
-			$nombre = $pagosperido ['nombre'];
 			$totalPagos += $pagosperido ['pagos'];
 		}
 		if (array_key_exists ( $cuit, $estadoContable )) {
