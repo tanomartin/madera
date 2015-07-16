@@ -22,8 +22,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script language="javascript">
 function abrirExcel(dire) {
-	redire = 'mostrarEstadoArchivo.php?path='+dire;
-	a= window.open(redire,"InfoEstado",
+	a= window.open(dire,"InfoEstado",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 </script>
@@ -57,10 +56,9 @@ function abrirExcel(dire) {
 					<?php 
 						$maquina = $_SERVER ['SERVER_NAME'];
 						$archivo_name = $rowEstadoContable['patharchivo'];
-						if (strcmp ( "localhost", $maquina ) == 0) {
-							$arrayName = explode("/", $archivo_name);
-							$archivo_name = array_pop($arrayName);
-						}
+						$arrayName = explode("/", $archivo_name);
+						$archivo_name = array_pop($arrayName);
+						$archivo_name = 'archivosHtm/'.$archivo_name;
 					?>
 					<input type="button" value="Ver Archivo" onclick="javascript:abrirExcel('<?php echo $archivo_name ?>')" />
 				</td>

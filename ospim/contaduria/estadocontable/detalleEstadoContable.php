@@ -53,6 +53,12 @@ try {
 	$anolimite = 2009;
 	$meslimite = 3;
 	
+	//volver al archivo si corresponde
+	$archivo_name = $rowControl ['patharchivo'];
+	$arrayName = explode("/", $archivo_name);
+	$archivo_name = array_pop($arrayName);
+	$archivo_name = 'archivosHtm/'.$archivo_name;
+	
 	$detalleEstado = array ();
 	if ($anoDesde < $anolimite or ($anolimite == $anoDesde and $meslimite < $mesDesde)) {
 		$sqlDDJJPrimera = "SELECT
@@ -273,6 +279,7 @@ $(function() {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 	<?php if (isset($_POST['cuit'])) { ?><p><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = 'filtrosDetalleContable.php'" /></p> <?php } ?>
+	<?php if (isset($_GET['cuit'])) { ?><p><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = '<?php echo $archivo_name ?>'" /></p> <?php } ?>
 	<p><span class="Estilo2"> Empresa  "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $cuit ?> </span></p>
 	<p><span class="Estilo2"> Estado Contable  "<?php echo $rowControl['mes'] ?> - <?php echo  $rowControl['anio'] ?>" </span></p>
 	

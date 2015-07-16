@@ -26,9 +26,11 @@ $fechadesde = date ( 'Y-m-d', $fechadesde );
 $maquina = $_SERVER ['SERVER_NAME'];
 
 if (strcmp ( "localhost", $maquina ) == 0) 
-	$archivo_name = "../../contaduria/estadocontable/Estado Contable " . $fechageneracion . ".xls";
+	$archivo_name_xls = "../../contaduria/estadocontable/Estado Contable " . $fechageneracion . ".xls";
 else 
-	$archivo_name = "/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Estado Contable " . $fechageneracion . ".xls";
+	$archivo_name_xls = "/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Estado Contable " . $fechageneracion . ".xls";
+
+$archivo_name_htm = "../../contaduria/estadocontable/archivosHtm/Estado Contable " . $fechageneracion . ".htm";
 
 try {	
 	$hostname = $_SESSION['host'];
@@ -320,7 +322,7 @@ try {
 	}
 	unset ( $arrayPagos );
 	
-	$sqlInsertControl = "INSERT INTO estadocontablecontrol VALUE(DEFAULT,".$anoEstado.", ".$mesEstado.", 0, 0, 0, 0,'".$archivo_name."',".$discoDesde.",".$discoHasta.",'".$fechadesde ."','".$fechageneracion ."','".$fecharegistro ."','".$usuarioregistro."')";
+	$sqlInsertControl = "INSERT INTO estadocontablecontrol VALUE(DEFAULT,".$anoEstado.", ".$mesEstado.", 0, 0, 0, 0,'".$archivo_name_htm."',".$discoDesde.",".$discoHasta.",'".$fechadesde ."','".$fechageneracion ."','".$fecharegistro ."','".$usuarioregistro."')";
 	$resInsertControl = $dbh->prepare ( $sqlInsertControl );
 	$resInsertControl->execute ();
 	$lastId = $dbh->lastInsertId();
@@ -387,8 +389,8 @@ try {
 		$fila ++;
 		// Agrega datos a las celdas de datos
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'A' . $fila, $cuit );
-		$objPHPExcel->getActiveSheet ()->getCellByColumnAndRow('A',$fila)->getHyperlink()->setUrl("detalleEstadoContable.php?cuit=$cuit&id=$lastId");
-		$objPHPExcel->getActiveSheet ()->setCellValue ( 'B' . $fila, $estado ['nombre'] );
+		$objPHPExcel->getActiveSheet ()->getCellByColumnAndRow('A',$fila)->getHyperlink()->setUrl("../detalleEstadoContable.php?cuit=$cuit&id=$lastId");
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'B' . $fila, utf8_encode($estado ['nombre']));
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, $estado ['totremune'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, $estado ['totobligacion'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'E' . $fila, $estado ['totpagos'] );
@@ -428,9 +430,18 @@ try {
 	$resUdapteControl = $dbh->prepare ( $sqlUdapteControl );
 	$resUdapteControl->execute ();
 	
+	// Guarda Archivo en Formato HTML
+	$objWriterXtm = PHPExcel_IOFactory::createWriter($objPHPExcel, 'HTML');
+	$objWriterXtm->save ( $archivo_name_htm ); 
+	
+	for( $i=2; $i<$fila; $i++ ) {
+		$objPHPExcel->getActiveSheet ()->getCellByColumnAndRow('A',$i)->setHyperlink();
+	}
+	
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter ( $objPHPExcel, 'Excel5' );
-	$objWriter->save ( $archivo_name );
+	$objWriter->save ( $archivo_name_xls );
+	
 	
 	$dbh->commit ();
 	
