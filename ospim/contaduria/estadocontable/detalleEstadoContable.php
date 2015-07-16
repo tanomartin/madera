@@ -310,7 +310,7 @@ $(function() {
 				$totalRemune += $detalle['remuneracion'];
 				$totalObliga += $detalle['obligacion'];
 				$totalPagos += $detalle['totpagos'];
-				$dife = $detalle['totpagos'] - $detalle['obligacion'];
+				$dife = $detalle['obligacion'] - $detalle['totpagos'];
 				if ($dife < 50 && $dife > -50) {
 					$dife = 0;
 				}

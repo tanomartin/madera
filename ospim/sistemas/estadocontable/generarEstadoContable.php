@@ -254,7 +254,7 @@ try {
 					if (array_key_exists($periodo,$arrayPagos[$cuit])) {
 						$pago = $arrayPagos[$cuit][$periodo]['pagos'];
 						$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
-						$dife = $pago - $obli;
+						$dife = $obli - $pago;
 						if ($dife < 50 && $dife > -50) {
 							$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
 						} else {
@@ -265,7 +265,7 @@ try {
 						if ($obli < 50) {
 							$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
 						} else {
-							$arrayDDJJ[$cuit][$periodo]['dife'] = -$obli;
+							$arrayDDJJ[$cuit][$periodo]['dife'] = $obli;
 						}
 					}
 				}
@@ -277,7 +277,7 @@ try {
 					if ($obli < 50) {
 						$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
 					} else {
-						$arrayDDJJ[$cuit][$periodo]['dife'] = -$obli;
+						$arrayDDJJ[$cuit][$periodo]['dife'] = $obli;
 					}
 				}
 			}
