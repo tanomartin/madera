@@ -374,7 +374,7 @@ try {
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'E' )->setWidth ( 20 );
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'E1', 'Total Pagos' );
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'F' )->setWidth ( 20 );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'F1', 'Diferencia' );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'F1', 'Debito/Credito' );
 	
 	$fila = 1;
 	$totRem = 0;

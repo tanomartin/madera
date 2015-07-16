@@ -294,7 +294,7 @@ $(function() {
 					<th>Remuneración</th>
 					<th>Obligación</th>
 					<th>Pagos</th>
-					<th>Diferencia</th>
+					<th>Debito/Credito</th>
 				</tr>
 			</thead>
 			<tbody>

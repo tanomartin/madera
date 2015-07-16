@@ -39,8 +39,8 @@ function abrirExcel(dire) {
 			  <td><strong>Remuneración</strong></td>
 			  <td><strong>Obligación</strong></td>
 			  <td><strong>Pagos</strong></td>
-			  <td><strong>Diferencia</strong></td>
-			  <td><strong></strong></td>
+			  <td><strong>Debito/Credito</strong></td>
+			  <td></td>
 			</tr>
 		<?php 
 			$sqlEstadosContables = "SELECT * FROM estadocontablecontrol ORDER BY anio DESC, mes DESC LIMIT 12";
