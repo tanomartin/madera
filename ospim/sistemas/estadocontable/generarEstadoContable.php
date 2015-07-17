@@ -1,12 +1,11 @@
 <?php
 $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php");
+require_once ($libPath . "phpExcel/Classes/PHPExcel.php");
 set_time_limit ( 0 );
 ini_set ( 'memory_limit', '-1' );
-$libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
-require_once ($libPath . "phpExcel/Classes/PHPExcel.php");
 $fecharegistro = date ( "Y-m-d H:i:s" );
-$usuarioregistro = "sistemas";
+$usuarioregistro = $_SESSION['usuario'];
 
 if (isset ( $_POST ['fechaHasta'] )) {
 	$fechageneracion = $_POST ['fechaHasta'];
