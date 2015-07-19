@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."claves.php");
 include($libPath."fechas.php");
 require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
 $datos = array_values($_POST);
@@ -96,11 +97,12 @@ if($archivoOk==0) {
 		$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbl->beginTransaction();
 		
-		$hostremoto = "ospim.com.ar";
-		$dbremota = "sistem22_intranet";
+		$hostremoto = $hostOspim;
+		//$hostremoto = "localhost";
+		$dbremota = $baseOspimIntranet;
 		//echo "$hostremoto"; echo "<br>";
 		//echo "$dbremota"; echo "<br>";
-		$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","sistem22_charly","bsdf5762");
+		$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota",$usuarioOspim,$claveOspim);
 		//echo 'Connected to database remota<br/>';
 	    $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbr->beginTransaction();
