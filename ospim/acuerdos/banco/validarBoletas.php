@@ -2,7 +2,25 @@
 include($libPath."controlSessionOspim.php");
 $fechavalidacion = date("Y-m-d H:m:s");
 $usuariovalidacion = $_SESSION['usuario'];
-
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title>
+<style>
+A:link {text-decoration: none;color:#0033FF}
+A:visited {text-decoration: none}
+A:hover {text-decoration: none;color:#00FFFF }
+.Estilo1 {
+	font-family: Arial, Helvetica, sans-serif;
+	font-style: italic;
+	font-weight: bold;
+}
+</style>
+</head>
+<body bgcolor="#CCCCCC">
+<?php
 //conexion y creacion de transaccion.
 try {
 	$hostname = $_SESSION['host'];
@@ -237,23 +255,5 @@ try {
 	$dbh->rollback();
 }
 ?>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Recaudaci&oacute;n Bancaria :.</title>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo1 {
-	font-family: Arial, Helvetica, sans-serif;
-	font-style: italic;
-	font-weight: bold;
-}
-</style>
-</head>
-<body bgcolor="#CCCCCC">
 </body>
 </html>
