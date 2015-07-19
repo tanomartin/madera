@@ -1,15 +1,17 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."claves.php");
 $fechadescarga = date("Y-m-d H:m:s");
 $usuariodescarga = $_SESSION['usuario'];
 
 //conexion remota y creacion de transaccion.
 try{
-	$hostremoto = "ospim.com.ar";
-	$dbremota = "sistem22_intranet";
+	$hostremoto = $hostOspim;
+	//$hostremoto = "localhost";
+	$dbremota = $baseOspimIntranet;
 	//echo "$hostremoto"; echo "<br>";
 	//echo "$dbremota"; echo "<br>";
-	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","sistem22_charly","bsdf5762");
+	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota",$usuarioOspim,$claveOspim);
 	//echo 'Connected to database remota<br/>';
     $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbr->beginTransaction();
@@ -92,23 +94,6 @@ try{
 
 	$dbr->commit();
 	$dbl->commit();
-?>
-	<p>&nbsp;</p>
-	<table width="769" border="1" align="center">
-	<tr align="center" valign="top">
-    <td width="385" valign="middle">
-	<div align="left">
-	<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAfiliados.php'" align="left"/>
-	</div>
-	</td>
-    <td width="384" valign="middle">
-	<div align="right">
-    <input type="submit" name="listar" value="Listar Solicitudes" onclick="location.href = 'listarSolicitudes.php'" align="left"/>
-    </div>
-	</td>
-	</tr>
-	</table>
-<?php
 }
 catch (PDOException $e) {
 	echo $e->getMessage();
@@ -116,7 +101,6 @@ catch (PDOException $e) {
 	$dbl->rollback();
 }
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -133,7 +117,21 @@ A:hover {text-decoration: none;color:#00FFFF }
 }
 </style>
 </head>
-
 <body bgcolor="#CCCCCC">
+	<p>&nbsp;</p>
+	<table width="769" border="1" align="center">
+	<tr align="center" valign="top">
+    <td width="385" valign="middle">
+	<div align="left">
+	<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAfiliados.php'" align="left"/>
+	</div>
+	</td>
+    <td width="384" valign="middle">
+	<div align="right">
+    <input type="submit" name="listar" value="Listar Solicitudes" onclick="location.href = 'listarSolicitudes.php'" align="left"/>
+    </div>
+	</td>
+	</tr>
+	</table>
 </body>
 </html>
