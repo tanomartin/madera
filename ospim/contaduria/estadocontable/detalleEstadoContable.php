@@ -184,7 +184,6 @@ try {
 	
 	// OBTENEMOS LOS ACUERDOS Y SE LOS SACO AL DETALLE
 	$sqlAcuerdos = "SELECT
-				 	 acuerdos.cuit,
 					 acuerdos.anoacuerdo,
 					 acuerdos.mesacuerdo
 					FROM
@@ -197,8 +196,28 @@ try {
 	$resAcuerdos = $dbh->prepare ( $sqlAcuerdos );
 	$resAcuerdos->execute ();
 	while ( $rowAcuerdos = $resAcuerdos->fetch ( PDO::FETCH_LAZY ) ) {
-		$cuitAcuerdo = $rowAcuerdos ['cuit'];
 		$indexPeriodo = $rowAcuerdos ['anoacuerdo'] . $rowAcuerdos ['mesacuerdo'];
+		if (array_key_exists ( $indexPeriodo, $detalleEstado )) {
+			unset($detalleEstado[$indexPeriodo]);
+		}
+	}
+	
+	// OBTENEMOS LOS JUICIOS Y SE LOS SACO AL DETALLE
+	$sqlJuicios = "SELECT
+					 det.anojuicio,
+					 det.mesjuicio
+					FROM
+					      detjuiciosospim det, cabjuiciosospim cab
+					WHERE
+					   cab.cuit = ". $cuit ."  AND det.nroorden = cab.nroorden  AND
+					   ((det.anojuicio > " . $anoDesde . ") OR (det.anojuicio = " . $anoDesde . " AND det.mesjuicio >= " . $mesDesde . "))				  
+					GROUP by cab.cuit, det.anojuicio, det.mesjuicio
+				    ORDER by cab.cuit, det.anojuicio, det.mesjuicio";
+	
+	$resJuicios = $dbh->prepare ( $sqlJuicios );
+	$resJuicios->execute ();
+	while ( $rowJuicios = $resJuicios->fetch ( PDO::FETCH_LAZY ) ) {
+		$indexPeriodo = $rowJuicios ['anojuicio'] . $rowJuicios ['mesjuicio'];
 		if (array_key_exists ( $indexPeriodo, $detalleEstado )) {
 			unset($detalleEstado[$indexPeriodo]);
 		}

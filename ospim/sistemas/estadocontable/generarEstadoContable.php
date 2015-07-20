@@ -198,6 +198,32 @@ try {
 			}
 		}
 	}
+	
+	// OBTENEMOS LOS JUICIOS Y SE LOS SACO A LAS DDJJ
+	$sqlJuicios = "SELECT
+				 	 cab.cuit,
+					 det.anojuicio,
+					 det.mesjuicio
+					FROM
+					      detjuiciosospim det, cabjuiciosospim cab
+					WHERE
+					   ((det.anojuicio > " . $anoDesde . ") OR (det.anojuicio = " . $anoDesde . " AND det.mesjuicio >= " . $mesDesde . "))
+					   AND det.nroorden = cab.nroorden
+					GROUP by cab.cuit, det.anojuicio, det.mesjuicio
+				    ORDER by cab.cuit, det.anojuicio, det.mesjuicio";
+	$resJuicios = $dbh->prepare ( $sqlJuicios );
+	$resJuicios->execute ();
+	
+	while ( $rowJuicios = $resJuicios->fetch ( PDO::FETCH_LAZY ) ) {
+		$cuitJuicio = $rowJuicios ['cuit'];
+		$indexPeriodo = $rowJuicios ['anojuicio'] . $rowJuicios ['mesjuicio'];
+		if (array_key_exists ( $cuitJuicio, $arrayDDJJ )) {
+			$arrayDDJJperiodos = $arrayDDJJ[$cuitJuicio];
+			if(array_key_exists ( $indexPeriodo, $arrayDDJJperiodos)) {
+				unset($arrayDDJJ[$cuitJuicio][$indexPeriodo]);
+			}
+		}
+	}
 		
 	// OBTENEMOS LOS PAGOS
 	$sqlPagos = "SELECT
@@ -243,6 +269,20 @@ try {
 		}
 	}
 	unset($resAcuerdos);
+	
+	// OBTENEMOS LOS JUICIOS Y SE LOS SACO A LOS PAGOS
+	$resJuicios->execute ();
+	while ( $rowJuicios = $resJuicios->fetch ( PDO::FETCH_LAZY ) ) {
+		$cuitJuicios = $rowJuicios ['cuit'];
+		$indexPeriodo = $rowJuicios ['anojuicio'] . $rowJuicios ['mesjuicio'];
+		if (array_key_exists ( $cuitJuicios, $arrayPagos )) {
+			$arrayPagosperiodos = $arrayPagos[$cuitJuicios];
+			if(array_key_exists ( $indexPeriodo, $arrayPagosperiodos)) {
+				unset($arrayPagos[$cuitJuicios][$indexPeriodo]);
+			}
+		}
+	}
+	unset($resJuicios);
 	
 	
 	//REDONDEO LOS QUE LA DIFERENCIA SE ENTRE -50 y +50
