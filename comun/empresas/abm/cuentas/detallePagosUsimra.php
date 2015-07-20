@@ -45,9 +45,11 @@ while ($rowPagos = mysql_fetch_assoc($resPagos)) {
 }
 
 $sqlDetDDJJ = "SELECT * FROM detddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
-
 $resDetDDJJ = mysql_query($sqlDetDDJJ,$db);
 $canDetDDJJ = mysql_num_rows($resDetDDJJ);
+
+$sqlCabDDJJ = "SELECT * FROM cabddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
+$resCabDDJJ = mysql_query($sqlCabDDJJ,$db);
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -124,7 +126,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   					<th>Total</th>
   				</tr>
   	<?php  while ($rowDDJJ = mysql_fetch_assoc($resDetDDJJ)) {
-  				$total = $rowDDJJ['apor060'] + $rowDDJJ['apor100'] + $rowDDJJ['apor150'];  ?>	
+  				$total = $rowDDJJ['apor060'] + $rowDDJJ['apor100'] + $rowDDJJ['apor150']; ?>	
   				<tr>
 	  				<td><?php echo $rowDDJJ['cuil'] ?></td>
 	  				<td align='right'><?php  echo number_format($rowDDJJ['remuneraciones'],2,',','.') ?></td>
@@ -133,8 +135,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 	  				<td align='right'><?php  echo number_format($rowDDJJ['apor150'],2,',','.') ?></td>
 	  				<td align='right'><?php  echo number_format($total,2,',','.') ?></td>
   				</tr>
-  	<?php }?>		
- 
+  	<?php }
+  			$rowCabDDJJ = mysql_fetch_assoc($resCabDDJJ);
+  			?>		
+			 <tr>
+			 	<td><b>TOTAL</b></td>
+			 	<td align='right'><?php  echo number_format($rowCabDDJJ['remuneraciones'],2,',','.') ?></td>
+	  			<td align='right'><?php  echo number_format($rowCabDDJJ['apor060'],2,',','.') ?></td>
+	  			<td align='right'><?php  echo number_format($rowCabDDJJ['apor100'],2,',','.') ?></td>
+	  			<td align='right'><?php  echo number_format($rowCabDDJJ['apor150'],2,',','.') ?></td>
+	  			<td align='right'><?php  echo number_format($rowCabDDJJ['totalaporte'],2,',','.') ?></td>
+			 </tr>
   			</table>
   <?php } else { ?>
   <div style="text-align: center;">No se pudo leer el detalle de la DDJJ de este periodo</div>
