@@ -44,6 +44,10 @@ while ($rowPagos = mysql_fetch_assoc($resPagos)) {
 	$i = $i + 1;
 }
 
+$sqlDetDDJJ = "SELECT * FROM detddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
+
+$resDetDDJJ = mysql_query($sqlDetDDJJ,$db);
+$canDetDDJJ = mysql_num_rows($resDetDDJJ);
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -86,28 +90,55 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
 	<?php
 	for ($n=0; $n < sizeof($pagos); $n++) { 
-		$nroPago = $n+1; 
-		print("<tr align='center'>");
-		print("<td>".$nroPago."</td>");
-		print("<td>".invertirFecha($pagos[$n]['fechapago'])."</td>");
-		print("<td>".$pagos[$n]['cantidadpersonal']."</td>");
-		print("<td align='right'>".number_format($pagos[$n]['remuneraciones'],2,',','.')."</td>");
-		print("<td align='right'>".number_format($pagos[$n]['importeap6'],2,',','.')."</td>");
-		print("<td align='right'>".number_format($pagos[$n]['importeap1'],2,',','.')."</td>");
-		print("<td align='right'>".number_format($pagos[$n]['importeap15'],2,',','.')."</td>");
-		print("<td align='right'>".number_format($pagos[$n]['montorecargo'],2,',','.')."</td>");
-		print("<td align='right'>".number_format($pagos[$n]['montopagado'],2,',','.')."</td>");
-		print("<td>".$pagos[$n]['codigobarra']."</td>");
-		print("<td>".$pagos[$n]['observaciones']."</td>");
-		print("</tr>");
-	}?>
+		$nroPago = $n+1; ?>
+		<tr align='center'>
+		<td><?php echo $nroPago ?></td>
+		<td><?php echo invertirFecha($pagos[$n]['fechapago']) ?></td>
+		<td><?php echo $pagos[$n]['cantidadpersonal'] ?></td>
+		<td align='right'><?php echo number_format($pagos[$n]['remuneraciones'],2,',','.') ?></td>
+		<td align='right'><?php echo number_format($pagos[$n]['importeap6'],2,',','.') ?></td>
+		<td align='right'><?php echo number_format($pagos[$n]['importeap1'],2,',','.') ?></td>
+		<td align='right'><?php echo number_format($pagos[$n]['importeap15'],2,',','.') ?></td>
+		<td align='right'><?php echo number_format($pagos[$n]['montorecargo'],2,',','.') ?></td>
+		<td align='right'><?php echo number_format($pagos[$n]['montopagado'],2,',','.') ?></td>
+		<td><?php echo $pagos[$n]['codigobarra'] ?></td>
+		<td><?php echo $pagos[$n]['observaciones'] ?></td>
+		</tr>
+<?php }?>
 	<tr>
       <td colspan="8"><div align="right"><strong>TOTAL</strong></div></td>
-<?php print("<td><div align='right'><b>".number_format($totalPagado,2,',','.')."</b></div></td>");?>
+	  <td><div align='right'><b><?php echo number_format($totalPagado,2,',','.') ?></b></div></td>
 	<td colspan="2"></td>
     </tr>
   </table>
   
+  <p><strong>Detalles DDJJ</strong></p>
+  <?php if ($canDetDDJJ > 0) {?>
+  			<table border="1">
+  				<tr>
+  					<th>C.U.I.L.</th>
+  					<th>Remuneracion</th>
+  					<th>Aporte 0.6%</th>
+  					<th>Aporte 1%</th>
+  					<th>Aporte 1.5%</th>
+  					<th>Total</th>
+  				</tr>
+  	<?php  while ($rowDDJJ = mysql_fetch_assoc($resDetDDJJ)) {
+  				$total = $rowDDJJ['apor060'] + $rowDDJJ['apor100'] + $rowDDJJ['apor150'];  ?>	
+  				<tr>
+	  				<td><?php echo $rowDDJJ['cuil'] ?></td>
+	  				<td align='right'><?php  echo number_format($rowDDJJ['remuneraciones'],2,',','.') ?></td>
+	  				<td align='right'><?php  echo number_format($rowDDJJ['apor060'],2,',','.') ?></td>
+	  				<td align='right'><?php  echo number_format($rowDDJJ['apor100'],2,',','.') ?></td>
+	  				<td align='right'><?php  echo number_format($rowDDJJ['apor150'],2,',','.') ?></td>
+	  				<td align='right'><?php  echo number_format($total,2,',','.') ?></td>
+  				</tr>
+  	<?php }?>		
+ 
+  			</table>
+  <?php } else { ?>
+  <div style="text-align: center;">No se pudo leer el detalle de la DDJJ de este periodo</div>
+  <?php }?>
 </div>
 </body>
 

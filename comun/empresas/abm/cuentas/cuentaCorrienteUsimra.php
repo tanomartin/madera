@@ -4,7 +4,8 @@ include($libPath."fechas.php");
 $cuit=$_GET['cuit'];
 include($libPath."cabeceraEmpresaConsulta.php");
 $fechaInicio= $row['iniobliosp'];
-include($libPath."limitesTemporalesEmpresas.php");
+include($libPath."limitesTemporalesEmpresasUsimra.php");
+// sumamos 5 años a los limites temporales.
 set_time_limit(0);
 ?>
 
@@ -113,21 +114,27 @@ function reverificaFueraTermino($ano, $me, $db) {
 function encuentroPagos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
 	//CAMBIAR A USIMRA
-	$sqlPagos = "select anopago, mespago, fechapago from seguvidausimra where cuit = $cuit and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
+	$sqlPagos = "select anopago, mespago, fechapago, remuneraciones, montopagado from seguvidausimra where cuit = $cuit and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
 		while ($rowPagos = mysql_fetch_assoc($resPagos)) { 
 			$id=$rowPagos['anopago'].$rowPagos['mespago'];
-			$arrayPagos[$id] = array('anio' => $rowPagos['anopago'], 'mes' => $rowPagos['mespago'], 'fechapago' =>  $rowPagos['fechapago']);
+			$arrayPagos[$id] = array('anio' => $rowPagos['anopago'], 'mes' => $rowPagos['mespago'], 'fechapago' =>  $rowPagos['fechapago'], 'remuneraciones' =>  $rowPagos['remuneraciones'], 'montopagado' =>  $rowPagos['montopagado'], );
 		}
 		$resPagos = array(); 
 		foreach ($arrayPagos as $pago) {
 			$id=$pago['anio'].$pago['mes'];
-			if (estaVencido($pago['fechapago'], $pago['mes'], $pago['anio'])) {
-				$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'P.F.T.');		
+			$pagoExacto = $pago['remuneraciones'] * 0.031;
+			$diferencia = $pagoExacto - $pago['montopagado'];
+			if ($diferencia < -1 || $diferencia > 1 ) {
+				$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'P.M.');
 			} else {
-				$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'PAGO');
+				if (estaVencido($pago['fechapago'], $pago['mes'], $pago['anio'])) {
+					$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'P.F.T.');		
+				} else {
+					$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'PAGO');
+				}
 			}
 		}
 		return($resPagos);
@@ -225,7 +232,7 @@ function imprimeTabla($periodo) {
 	$estado = $periodo['estado'];
 	$ano = $periodo['anio'];
 	$me = $periodo['mes'];
-	if ($estado == 'P.F.T.' or $estado == 'PAGO') {
+	if ($estado == 'P.F.T.' or $estado == 'PAGO' or $estado == 'P.M.') {
 		print ("<td><a href=javascript:abrirInfo('detallePagosUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
 	} else {
 		if ($estado == 'NO PAGO') {
@@ -268,7 +275,7 @@ function imprimeTabla($periodo) {
    		<p><strong>Fecha Baja Empresa: <?php echo invertirFecha($fechaBaja) ?></strong></p>
 	<?php } ?>	
 	
-   <table width="1132" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
+<table width="1132" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
   <tr>
     <td  width='40' rowspan="2"><span class="Estilo6">A&Ntilde;OS</span></td>
     <td colspan="12"><span class="Estilo6">MESES</span></td>
@@ -321,22 +328,22 @@ while($ano<=$anofin) {
 <br>
 <table width="1130" border="0" style="font-size:12px">
   <tr>
-  	<td>*PAGO =  PAGO CON DDJJ</td>
-	<td>*P. ACUER. =  PAGO POR ACUERDO </td>
+  	<td>*PAGO = PAGO</td>
     <td>*P.F.T. = PAGO FUERA DE TERMINO </td>
-	<td>*ACUER. =  EN ACUERDO</td>
+    <td>*P.M.. = PAGO MENOR</td>
+    <td>*P. ACUER. =  PAGO POR ACUERDO </td>
   </tr>
   <tr>
+  	<td>*P. DIF. (Per. Pago) = PAGO EN PERIODO POSTERIOR </td>
+  	<td>*ACUER. =  EN ACUERDO</td>
     <td>*NO PAGO =  NO PAGO CON DDJJ</td>
 	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
-	<td>*REQ. (nro. req.) = FISCALIZADO</td>
-    <td>*J.EJEC (nro. orden) = EN JUICIO EJECUCI&Oacute;N </td>
   </tr>
   <tr>
+  	<td>*REQ. (nro. req.) = FISCALIZADO</td>
+  	<td>*J.EJEC (nro. orden) = EN JUICIO EJECUCI&Oacute;N </td>
     <td>*J.CONV (nro. orden) = EN JUICIO CONVOCATORIA </td>
     <td>*J.QUIEB (nro. orden) = EN JUICIO QUIEBRA </td>
-    <td>*P. DIF. (Per. Pago) = PAGO EN PERIODO POSTERIOR </td>
-    <td>&nbsp;</td>
   </tr>
 </table>
 <br>
