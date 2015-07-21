@@ -90,7 +90,7 @@ $(function() {
 						<td><?php echo $rowReque['solicitarequerimiento'] ?></td>   
 						<td><?php echo $rowReque['motivorequerimiento'] ?></td>   
 						<td><?php echo $rowReque['cuit'] ?></td>   
-						<td><a href='datosInspeccion.php?nroreq=<?php echo $rowReque['nrorequerimiento'] ?>'>Modificar</a></td>   
+						<td><input type="button" value="Modificar" onclick="location.href='datosInspeccion.php?nroreq=<?php echo $rowReque['nrorequerimiento'] ?>'" /></td>   
 				  </tr>
 		<?php }?>
      	</tbody>

@@ -48,7 +48,7 @@ function validar(formulario) {
 		}
 	} else {
 		var checkeados = 0; 
-		for (i = 0; i < total; i++) {
+		for (var i = 0; i < total; i++) {
 			if (grupo[i].checked) {
 				checkeados++;
 			}
@@ -72,7 +72,7 @@ function validar(formulario) {
   </span></p>
   	<p class="Estilo2">Listado de  Requerimiento del d&iacute;a <?php echo $fecha ?>  </p>
 	<form id="listadoReque" name="listadoReque" method="post" onsubmit="return validar(this)" action="liquidar.php?fecha=<?php echo $fecha ?>">
-	  <table width="1000" border="1" align="center">
+	  <table width="999" border="1" align="center" style="text-align: center;">
         <tr>
           <th>N&uacute;mero</th>
           <th>Origen</th>
@@ -84,43 +84,49 @@ function validar(formulario) {
 		  <th>Liquidar</th>
         </tr>
         <?php while($rowReque = mysql_fetch_array($resReque)) { 
-				print("<tr>");
-				print("<td>".$rowReque['nrorequerimiento']."</td>");
-				if ($rowReque['origenrequerimiento'] == 1) {
-					$origen = "Fiscalizaci&oacute;n";
-				}
-				if ($rowReque['origenrequerimiento'] == 2) {
-					$origen = "Afiliaciones";
-				}
-				if ($rowReque['origenrequerimiento'] == 3) {
-					$origen = "Prestaci&oacute;n";
-				}  
-				print("<td>".$origen."</td>");   
-				print("<td>".$rowReque['solicitarequerimiento']."</td>");   
-				print("<td>".$rowReque['motivorequerimiento']."</td>"); 
-				print("<td>".$rowReque['cuit']."</td>"); 
-				print("<td><a href='detalleRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Editar</a></td>");
-				if ($rowReque['procesoasignado'] == 0) {		
-					print("<td><a href='inspeccion.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."&cuit=".$rowReque['cuit']."'>Inspecci&oacute;n</a><br><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>"); 
-					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' id='requerimientos' value='".$rowReque['nrorequerimiento']."'></td>"); 
-				} else {
-					$sqlInsp = "SELECT * from inspecfiscalizospim where nrorequerimiento = ".$rowReque['nrorequerimiento'];
+	        	if ($rowReque['origenrequerimiento'] == 1) {
+	        		$origen = "Fiscalizaci&oacute;n";
+	        	}
+	        	if ($rowReque['origenrequerimiento'] == 2) {
+	        		$origen = "Afiliaciones";
+	        	}
+	        	if ($rowReque['origenrequerimiento'] == 3) {
+	        		$origen = "Prestaci&oacute;n";
+	        	} ?>
+				<tr>
+				<td><?php echo $rowReque['nrorequerimiento'] ?></td>
+				<td><?php echo $origen ?></td>   
+				<td><?php echo $rowReque['solicitarequerimiento'] ?></td>   
+				<td><?php echo $rowReque['motivorequerimiento'] ?></td>
+				<td><?php echo $rowReque['cuit'] ?></td>
+				<td><input type="button" onclick="location.href='detalleRequerimiento.php?nroreq=<?php echo $rowReque['nrorequerimiento'] ?>&fecha=<?php echo $fecha ?>&cuit=<?php echo $rowReque['cuit'] ?>'" value="Editar" /></td>
+		<?php	if ($rowReque['procesoasignado'] == 0) {		?>
+					<td><input type="button" onclick="location.href='inspeccion.php?nroreq=<?php echo $rowReque['nrorequerimiento'] ?>&fecha=<?php echo $fecha ?>&cuit=<?php echo $rowReque['cuit'] ?>'" value="Inspección" />
+						-
+						<input type="button" onclick="location.href='anulaRequerimiento.php?nroreq=<?php echo $rowReque['nrorequerimiento'] ?>&fecha=<?php echo $fecha ?>'" value="Anular" />
+					</td> 
+					<td><input type='checkbox' name='<?php echo $rowReque['nrorequerimiento'] ?>' id='requerimientos' value='<?php echo $rowReque['nrorequerimiento'] ?>'/></td>
+		<?php	} else { 
+					$sqlInsp = "SELECT * from inspecfiscalizusimra where nrorequerimiento = ".$rowReque['nrorequerimiento'];
 					$resInsp = mysql_query($sqlInsp,$db);
-					$rowInsp = mysql_fetch_array($resInsp);
-					print("<td><a href='anulaRequerimiento.php?nroreq=".$rowReque['nrorequerimiento']."&fecha=".$fecha."'>Anular</a></td>");  
-					print("<td><input type='checkbox' name='".$rowReque['nrorequerimiento']."' id='requerimientos' value='".$rowReque['nrorequerimiento']."'></td>"); 
-				}        
-				print("</tr>");
-			}
-	  ?>
+					$rowInsp = mysql_fetch_array($resInsp); 
+	        		if ($rowInsp['inspeccionefectuada'] == 0) { ?>
+						<td>Inspección En Curso</td>  
+						<td></td>
+			<?php	} else { ?>
+					<td><input type="button" onclick="location.href='anulaRequerimiento.php?nroreq=<?php echo $rowReque['nrorequerimiento'] ?>&fecha=<?php echo $fecha  ?>'" value="Anular" /></td> 
+					<td><input type='checkbox' name='<?php echo $rowReque['nrorequerimiento'] ?>' id='requerimientos' value='<?php echo $rowReque['nrorequerimiento']  ?>'/></td>
+		<?php		}
+        		}   ?>      
+				</tr>
+	<?php	}  ?>
       </table>
         <table width="999" border="0">
           <tr>
-            <td width="928">&nbsp;</td>
-            <td width="61">
-              <div align="right">
+            <td width="900">&nbsp;</td>
+            <td width="100" style="text-align: center;">
                 <input type="submit" name="Submit" value="Liquidar" />
-              </div></td>
+             </td>
           </tr>
         </table>
 	</form>

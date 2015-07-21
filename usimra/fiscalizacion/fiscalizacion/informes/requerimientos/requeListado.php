@@ -1,33 +1,27 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionUsimra.php");
-include($libPath."fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionUsimra.php");
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
 
-$tipo = $_POST['group1'];
-if ($tipo == 0) {
-	$titulo = "NO ATENDIDOS";
-	$sqlReque = "SELECT * from reqfiscalizusimra WHERE procesoasignado = 0";
-}
-if ($tipo == 1) {
-	$titulo = "ATENDIDOS";
-	$sqlReque = "SELECT * from reqfiscalizusimra WHERE procesoasignado != 0";
-}
-if ($tipo == 2) {
-	$titulo = "ATENDIDOS Y NO ATENDIDOS";
-	$sqlReque = "SELECT * from reqfiscalizusimra";
-}
+$consulta = $_POST['group1'];
 
+if ($consulta == "noatendidos") {
+	$sqlReque = "SELECT r.*, e.cuit, e.nombre, d.nombre as delega
+	from reqfiscalizusimra r, empresas e, delegaciones d
+	WHERE r.procesoasignado = 0 and r.requerimientoanulado = 0 and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY r.nrorequerimiento DESC";
+} else {
+	$valor = $_POST['dato'];
+	if ($consulta == "fecharequerimiento") {
+		$valor = fechaParaGuardar($valor);
+	}
+	$sqlReque = "SELECT r.*, e.cuit, e.nombre, d.nombre as delega
+	from reqfiscalizusimra r, empresas e, delegaciones d
+	WHERE r.$consulta = '$valor' and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY r.nrorequerimiento DESC";
+}
+	
+//print($sqlReque);
 $resReque = mysql_query($sqlReque,$db);
 $canReque = mysql_num_rows($resReque);	
 if ($canReque == 0) {
-	if ($tipo == 0) {
-		header ("Location: filtrosBusqueda.php?err=1");
-	}
-	if ($tipo == 1) {
-		header ("Location: filtrosBusqueda.php?err=2");
-	}
-	if ($tipo == 2) {
-		header ("Location: filtrosBusqueda.php?err=3");
-	}
+	header ("Location: filtrosBusqueda.php?err=1");
 }
 
 ?>
@@ -50,6 +44,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
+
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -77,17 +72,22 @@ A:hover {text-decoration: none;color:#00FFFF }
 	});
 </script>
 </head>
+
 <body bgcolor="#B2A274">
 <div align="center">
 	 <input type="button" class="nover" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'" />
-	<p><span class="Estilo2">Requerimientos "<?php echo $titulo?>" </span></p>
-	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+	<p><span class="Estilo2">Resultado de Busqueda de Requerimientos </span></p>
+	<table class="tablesorter" id="listado" style="width:900px; font-size:14px">
 	<thead>
 		<tr>
 			<th>Nro.</th>
 			<th>Fecha</th>
 			<th>C.U.I.T.</th>
+			<th>Razón Social</th>
+			<th>Delegación</th>
 			<th>Proceso Asignado</th>
+			<th>U. Registro</th>
+			<th>U. Modificación</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -98,18 +98,29 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<td><?php echo $rowReque['nrorequerimiento'];?></td>
 			<td><?php echo invertirFecha($rowReque['fecharequerimiento']);?></td>
 			<td><?php echo $rowReque['cuit'];?></td>
+			<td><?php echo $rowReque['nombre'];?></td>
+			<td><?php echo $rowReque['delega'];?></td>
 			<td><?php 
-					if ($rowReque['procesoasignado'] == 0) {
-						echo "No Atendido";
-					}
-					if ($rowReque['procesoasignado'] == 1) {
-						echo "Liquidado";
-					}
-					if ($rowReque['procesoasignado'] == 2) {
-						echo "En Inspección";
+					if ($rowReque['requerimientoanulado'] == 1) {
+						echo "Anulado - ".$rowReque['motivoanulacion'];
+					} else {	
+						if ($rowReque['procesoasignado'] == 0) {
+							echo "No Atendido";
+						}
+						if ($rowReque['procesoasignado'] == 1) {
+							echo "Liquidado";
+						}
+						if ($rowReque['procesoasignado'] == 2) {
+							echo "En Inspección";
+						}
+						if ($rowReque['requerimientoanulado'] == 1) {
+							echo "Anulado - ".$rowReque['motivoanulacion'];
+						}	
 					}	
 				?>
 			</td>
+			<td><?php echo $rowReque['usuarioregistro'];?></td>
+			<td><?php echo $rowReque['usuariomodificacion'];?></td>
 		</tr>
 		<?php
 		}
