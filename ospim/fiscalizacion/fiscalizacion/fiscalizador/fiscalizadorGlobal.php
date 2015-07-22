@@ -137,10 +137,16 @@ function deudaNominal($arrayFinal) {
 	$alicuota = 0.081;
 	foreach ($arrayFinal as $perido){
 		if($perido['estado'] == "A") {
-			$totalDeuda = $totalDeuda + $perido['remu'];
+			$valor81 = (float)($perido['remu'] * $alicuota );
+			$totalDeuda = $totalDeuda + $valor81;
+		}
+		if ($perido['estado'] == "M") {
+			$valor81 = (float)($perido['remu'] * $alicuota );
+			$diferencia = $valor81 - $perido['importe'];
+			$totalDeuda = $totalDeuda + $diferencia;
 		}
 	}
-	return($totalDeuda * $alicuota);
+	return($totalDeuda);
 }
 
 /****************************************************************************************/
