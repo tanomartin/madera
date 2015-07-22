@@ -129,9 +129,9 @@ function encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, &$a
 	$canDdjj = mysql_num_rows($resDdjj); 
 	if($canDdjj > 0) {
 		while ($rowDdjj = mysql_fetch_assoc($resDdjj)) { 
-			$id=$rowDdjj['anoddjj'].$rowDdjj['mesddjj'];	
+			$id=$rowDdjj['perano'].$rowDdjj['permes'];	
 			$montopagar = $rowDdjj['totapo'] + $rowDdjj['recarg'];	
-			$arrayDdjj[$id] = array('anio' => (int)$rowDdjj['anoddjj'], 'mes' => (int)$rowDdjj['mesddjj'], 'remu' => (float)$rowDdjj['remune'], 'montopagar' => (float)$montopagar,'totper' => (int)$rowDdjj['nfilas'], 'estado' => 'A');
+			$arrayDdjj[$id] = array('anio' => (int)$rowDdjj['perano'], 'mes' => (int)$rowDdjj['permes'], 'remu' => (float)$rowDdjj['remune'], 'montopagar' => (float)$montopagar,'totper' => (int)$rowDdjj['nfilas'], 'estado' => 'A');
 		}
 	} else {
 		return 0;
@@ -142,7 +142,6 @@ function encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, &$a
 /****************************************************************************************/
 
 $cuit = $_GET['cuit'];
-$cuit = '30530705117';
 $sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
 $resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
 $rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);

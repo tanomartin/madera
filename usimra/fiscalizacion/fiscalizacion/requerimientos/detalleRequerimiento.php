@@ -42,7 +42,7 @@ function validar(formulario) {
 		return false;
 	}
 	var checkeados = 0; 
-	for (i = 0; i < total; i++) {
+	for (var i = 0; i < total; i++) {
 		if (grupo[i].checked) {
 			checkeados++;
 		}
@@ -110,12 +110,12 @@ function validar(formulario) {
 						<td><?php echo number_format($rowDeta['deudanominal'],2,',','.'); ?></td>        
 						<?php
 						if ($rowDeta['statusfiscalizacion'] == 'M' || $rowDeta['statusfiscalizacion'] == 'F') {
-							$dire = "/madera/comun/empresas/abm/cuentas/detallePagosUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
-							<td><a href="javascript:abrirInfo('<?php echo $dire ?>')">Pago</a></td>
+							$dire = "/madera/comun/empresas/abm/cuentas/detallePagosUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;?>
+							<td><input type="button" value="Ver Pago" onclick="javascript:abrirInfo('<?php echo $dire ?>')"/></td>
 			<?php		} else {
 							if ($rowDeta['statusfiscalizacion'] == 'A') {
-								$dire = "/comun/empresas/abm/cuentas/detalleDDJJUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
-								<td><a href="javascript:abrirInfo('<?php echo $dire ?>')">DDJJ</a></td>
+								$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
+								<td><input type="button" value="Ver DDJJ" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
 		<?php			} else { ?>
 								<td>-</td> 
 		<?php		 		}
