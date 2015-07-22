@@ -73,7 +73,7 @@ function encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 	if($canAcuerdos > 0) {
 		while ($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) { 
 			$id=$rowAcuerdos['anoacuerdo'].$rowAcuerdos['mesacuerdo'];	
-			$arrayAcuerdos[$id] = array('anio' => (int)$rowPagos['anopago'], 'mes' => (int)$rowPagos['mespago'], 'estado' => 'N');
+			$arrayAcuerdos[$id] = array('anio' => (int)$rowAcuerdos['anoacuerdo'], 'mes' => (int)$rowAcuerdos['mesacuerdo'], 'estado' => 'N');
 		}
 	} else {
 		return 0;
