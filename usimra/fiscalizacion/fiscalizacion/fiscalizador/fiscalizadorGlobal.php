@@ -41,6 +41,7 @@ function encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
+		$idanterior = "";
 		while ($rowPagos = mysql_fetch_assoc($resPagos)) { 
 			$id=$rowPagos['anopago'].$rowPagos['mespago'];		
 			$arrayPagos[$id] = array('anio' => (int)$rowPagos['anopago'], 'mes' => (int)$rowPagos['mespago'], 'remu' => (float)$rowPagos['remune'], 'importe' => $rowPagos['importe'], 'fechapago' => $rowPagos['fechapago'],  'totper' => $rowPagos['cantidadpersonal'] ,'estado' => 'P');
@@ -139,121 +140,142 @@ function encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, &$a
 	return($arrayDdjj);
 }
 
-/****************************************************************************************/
-
-$cuit = $_GET['cuit'];
-$cuit = '30530705117';
-$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
-$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
-$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
-$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
-include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
-
-//PAGOS (ESTADO P) --> Se tienen que fiscalizar para estado F o M
-$arrayPagos = encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
-if ($arrayPagos == 0){ 
-	$arrayPagos = array();
-} 
-
-$arrayPagosAnteriores = encuentroPagosAnteriores($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
-if ($arrayPagosAnteriores == 0){
-	$arrayPagosAnteriores = array();
-}
-
-$arrayAcuerdos = encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
-if ($arrayAcuerdos == 0){ 
-	$arrayAcuerdos = array();
-} 
-//var_dump($arrayAcuerdos);
-
-$arrayJuicios = encuentroJuicios($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
-if ($arrayJuicios == 0){ 
-	$arrayJuicios = array();
-} 
-//var_dump($arrayJuicios);
-
-$arrayRequerimientos = encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
-if ($arrayRequerimientos == 0){ 
-	$arrayRequerimientos = array();
-}
-//var_dump($arrayRequerimientos);
- 
-//ADEUDADO (ESTADO A)
-$arrayDdjj = encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, $arrayPagos);
-if ($arrayDdjj == 0){ 
-	$arrayDdjj = array();
-} 
-//var_dump($arrayDdjj);
-//var_dump($arrayPagos);
-
-$arrayFinal = array();
-$redirec = 1;
-while($ano<=$anofin) {
-	for ($i=1;$i<13;$i++){
-		$doit = 1;
-		if ($ano == $anoinicio) {
-			if ($i < $mesinicio) {
-				$doit = 0;
-			}
+function deudaNominal($arrayFinal) {
+	$totalDeuda = 0;
+	$alicuota = 0.031;
+	foreach ($arrayFinal as $perido){
+		$valor31 = (float)($perido['remu'] * $alicuota );
+		if($perido['estado'] == "A") {
+			$totalDeuda = $totalDeuda + $valor31;
 		}
-		if ($ano == $anofin) {
-			if ($i > $mesfin) {
-				$doit = 0;
-			}
-		}
-		if ($doit == 1) {
-			$idArray = $ano.$i;
-			if (!array_key_exists($idArray, $arrayAcuerdos) && !array_key_exists($idArray, $arrayJuicios) && !array_key_exists($idArray, $arrayRequerimientos) && !array_key_exists($idArray, $arrayPagosAnteriores)) {
-				if (array_key_exists($idArray, $arrayPagos)) {
-					if (esMontoMenor((float)$arrayPagos[$idArray]['remu'], (float)$arrayPagos[$idArray]['importe'])) {
-						$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'estado' => 'M');
-						$redirec = 0;
-					} else {
-						if (estaVencido($arrayPagos[$idArray]['fechapago'], $arrayPagos[$idArray]['mes'], $arrayPagos[$idArray]['anio'])) {
-							$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'estado' => 'F');
-							$redirec = 0;
-						} else {
-							$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'P');
-						}
-					}
-				} else {
-					$redirec = 0;
-					if (array_key_exists($idArray, $arrayDdjj)) {
-						$arrayFinal[$idArray] =  $arrayDdjj[$idArray];
-					} else {
-						$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'S');
-					}
-				}
-			} else {
-				$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'P');
-			}
+		if ($perido['estado'] == "M") {
+			$diferencia = $valor31 - $perido['importe'];
+			$totalDeuda = $totalDeuda + $diferencia;
 		}
 	}
-$ano++;
+	return($totalDeuda);
 }
 
-//var_dump($arrayFinal);
+/****************************************************************************************/
 
-$origen = $_GET['origen'];
-$solicitante = $_GET['soli'];
-$motivo = $_GET['motivo'];
+$listadoSerializado=$_POST['empresas'];
+$listadoEmpresas = unserialize(urldecode($listadoSerializado));
+$filtrosSerializado=$_POST['filtros'];
+$filtros = unserialize(urldecode($filtrosSerializado));
 
-if ($redirec == 0) {
-	$listadoFinal[0] = array('cuit' => $cuit, 'deudas' => $arrayFinal);
-} else {
+//var_dump($listadoEmpresas);
+//var_dump($filtros);
+
+$empre = 0;
+for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
+	if ($empre < $filtros['empresas']) {
+		$cuit = $listadoEmpresas[$e]['cuit'];
+		$fechaInicio = $listadoEmpresas[$e]['iniobliosp'];
+		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
+		
+		$arrayPagos = encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+		if ($arrayPagos == 0){ 
+			$arrayPagos = array();
+		}
+		$arrayPagosAnteriores = encuentroPagosAnteriores($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+		if ($arrayPagosAnteriores == 0){
+			$arrayPagosAnteriores = array();
+		}
+		$arrayAcuerdos = encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+		if ($arrayAcuerdos == 0){ 
+			$arrayAcuerdos = array();
+		} 
+		$arrayJuicios = encuentroJuicios($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+		if ($arrayJuicios == 0){ 
+			$arrayJuicios = array();
+		} 
+		$arrayRequerimientos = encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+		if ($arrayRequerimientos == 0){ 
+			$arrayRequerimientos = array();
+		}
+		$arrayDdjj = encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, $arrayPagos);
+		if ($arrayDdjj == 0){ 
+			$arrayDdjj = array();
+		} 
+		
+		$arrayFinal = array();
+		$redirec = 1;
+		while($ano<=$anofin) {
+			for ($i=1;$i<13;$i++){
+				$doit = 1;
+				if ($ano == $anoinicio) {
+					if ($i < $mesinicio) {
+						$doit = 0;
+					}
+				}
+				if ($ano == $anofin) {
+					if ($i > $mesfin) {
+						$doit = 0;
+					}
+				}
+				if ($doit == 1) {
+					$idArray = $ano.$i;
+					if (!array_key_exists($idArray, $arrayAcuerdos) && !array_key_exists($idArray, $arrayJuicios) && !array_key_exists($idArray, $arrayRequerimientos) && !array_key_exists($idArray, $arrayPagosAnteriores)) {
+						if (array_key_exists($idArray, $arrayPagos)) {
+							if (esMontoMenor((float)$arrayPagos[$idArray]['remu'], (float)$arrayPagos[$idArray]['importe'])) {
+								$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'estado' => 'M');
+								$redirec = 0;
+							} else {
+								if (estaVencido($arrayPagos[$idArray]['fechapago'], $arrayPagos[$idArray]['mes'], $arrayPagos[$idArray]['anio'])) {
+									$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'estado' => 'F');
+									$redirec = 0;
+								} else {
+									$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'P');
+								}
+							}
+						} else {
+							$redirec = 0;
+							if (array_key_exists($idArray, $arrayDdjj)) {
+								$arrayFinal[$idArray] =  $arrayDdjj[$idArray];
+							} else {
+								$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'S');
+							}
+						}
+					} else {
+						$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'P');
+					}
+				}
+			}
+			$ano++;
+		}
+		//var_dump($arrayFinal);
+		
+		$deudaNominal = deudaNominal($arrayFinal);
+		//print("CUIT: ".$cuit." - DEUDA: ".$deudaNominal."<br>");
+		if($deudaNominal > $filtros['deuda']) {
+			$empresasDefinitivas[$empre] = array('cuit' => $cuit, 'deudas' => $arrayFinal);
+			$empre = $empre + 1;
+		}
+	} else {
+		$e = sizeof($listadoEmpresas);
+	}
+}
+
+//var_dump($empresasDefinitivas);
+
+if(sizeof($empresasDefinitivas) == 0) {
 	header ("Location: fiscalizador.php?err=5");
 	exit(0);
+} else {
+	$datosReque['origen'] = 1;
+	$datosReque['motivo'] = "Selección Automática";
+	$datosReque['solicitante'] = $filtros['solicitante'];
+	
+	$listadoSerializado = serialize($empresasDefinitivas);
+	$listadoSerializado = urlencode($listadoSerializado);
+	
+	$listadoDatosReq = serialize($datosReque);
+	$listadoDatosReq = urlencode($listadoDatosReq);
 }
 
-$datosReque['origen'] = $origen;
-$datosReque['motivo'] = $motivo;
-$datosReque['solicitante'] = $solicitante;
-	
-$listadoSerializado = serialize($listadoFinal);
-$listadoSerializado = urlencode($listadoSerializado);
-	
-$listadoDatosReq = serialize($datosReque);
-$listadoDatosReq = urlencode($listadoDatosReq);
+//cambio la hora de secion por ahora para no perder la misma
+$ahora = date("Y-n-j H:i:s"); 
+$_SESSION["ultimoAcceso"] = $ahora;
 
 ?>
 

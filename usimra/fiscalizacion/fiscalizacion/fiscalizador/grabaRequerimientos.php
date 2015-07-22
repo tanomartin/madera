@@ -12,10 +12,6 @@ $listadoEmpresas = unserialize(urldecode($listadoSerializado));
 $datosSerializado=$_POST['datosReq'];
 $listadoDatosReq = unserialize(urldecode($datosSerializado));
 
-
-$solicitante=$listadoDatosReq['solicitante'];
-$motivo = $listadoDatosReq['motivo'];
-$origen = $listadoDatosReq['origen'];
 //print("DATOS FILSCALIZACION");
 //var_dump($listadoDatosReq);
 

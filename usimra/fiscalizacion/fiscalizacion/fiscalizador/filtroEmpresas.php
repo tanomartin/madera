@@ -3,16 +3,14 @@ include($libPath."controlSessionUsimra.php");
 //Para que se vea el blockUI
 print("<br>");
 //*************************
-$datos = array_values($_POST);
 
-$tipo = $datos[0];
+$tipo = $_POST['tipo'];
 if ($tipo == "delega") {
- 	$delega = $datos[1];
-	$codpos = $datos[2];
-	$empleados = $datos[3];
-	$empresas = $datos[4];
-	$deuda = $datos[5];
-	$solic = $datos[6];
+ 	$delega = $_POST['selectDelegacion'];
+	$codpos = $_POST['codpos'];
+	$empresas = $_POST['empresas'];
+	$deuda = $_POST['deuda'];
+	$solic = $_POST['solicDele'];
 	if ($codpos != "") {
 		$sqlEmpresasJuris = "select e.cuit, e.iniobliosp, e.nombre, j.codidelega from jurisdiccion j, empresas e where j.codidelega = $delega and j.numpostal = $codpos and j.cuit = e.cuit ";
 	} else {
@@ -26,31 +24,33 @@ if ($tipo == "delega") {
 	}
 	if (sizeof($listadoEmpresas) == 0) {
 		header ("Location: fiscalizador.php?err=2");
+		exit(0);
 	}
 } else {
-	$cuit = $datos[7];
-	$origen = $datos[8];
-	$solicitante = $datos[9];
-	$motivo = $datos[10];
+	$cuit = $_POST['cuit'];
+	$origen = $_POST['origenRequerimento'];
+	$solicitante = $_POST['solicitante'];
+	$motivo = $_POST['motivo'];
 	$sqlEmpresas = "select cuit from empresas where cuit = $cuit ";
 	$resEmpresas = mysql_query($sqlEmpresas,$db);
 	$cant = mysql_num_rows($resEmpresas);
 	if ($cant != 0) {
 			header ("Location: fiscalizadorPorCuit.php?cuit=$cuit&origen=$origen&soli=$solicitante&motivo=$motivo&tipo=activa");
+			exit(0);
 	} else {
 		$sqlEmpresas = "select cuit from empresasdebaja where cuit = $cuit ";
 		$resEmpresas = mysql_query($sqlEmpresas,$db);
 		$cant = mysql_num_rows($resEmpresas);
 		if ($cant != 0) {
  			header ("Location: fiscalizador.php?err=6");
+ 			exit(0);
 		} else {	
 			header ("Location: fiscalizador.php?err=1");
+			exit(0);
 		}
 	}
 }
 
-
-$filtros['empleados'] = $empleados;
 $filtros['empresas'] = $empresas;
 $filtros['deuda'] = $deuda;
 $filtros['solicitante'] = $solic;
@@ -68,17 +68,17 @@ $filtrosSerializado = urlencode($filtrosSerializado);
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Fiscalizador USIMRA :.</title>
 
-<script src="/lib/jquery.js" type="text/javascript"></script>
-<script src="/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-	$.blockUI({ message: "<h1>Filtrando Personal Promedio... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	$.blockUI({ message: "<h1>Filtrando Por Deuda Nominal y Cantidad de Empresas a Fiscalizar... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	function formSubmit() {
 		document.getElementById("filtroEmpresas").submit();
 	}
 </script>
 </head>
-<body onload="formSubmit();">
-<form action="filtroPersonalPromedio.php" id="filtroEmpresas" method="post"> 
+<body bgcolor="#B2A274" onload="formSubmit();">
+<form action="fiscalizadorGlobal.php" id="filtroEmpresas" method="post"> 
    <input name="empresas" type="hidden" value="<?php echo $listadoSerializado ?>"/>
    <input name="filtros" type="hidden" value="<?php echo $filtrosSerializado ?>"/>
 </form> 

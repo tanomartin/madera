@@ -166,7 +166,7 @@ function estado($ano, $me, $db) {
 		if($CantPagDif > 0) {
 			$rowPagDif = mysql_fetch_array($resPagDif); 
 			$perPago = $rowPagDif['mespago']."-".$rowPagDif['anopago'];
-			$des = "P. DIF. (".$perPago.")";
+			$des = "P. DIF. <br/>(".$perPago.")";
 		} else {
 			// VEO LOS PERIODOS ABARCADOS POR ACUERDO
 			$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosusimra c, detacuerdosusimra d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";

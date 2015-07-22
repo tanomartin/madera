@@ -57,15 +57,6 @@ function validar(formulario) {
 			alert("Debe seleccionar una Delegación");
 			return false;
 		}
-		if (formulario.personal.value == "") {
-			alert("La Cantidad de Personal Promedio debe ser ingresada");
-			return false;
-		} else {
-			if (!esEnteroPositivo(formulario.personal.value)) {
-				alert("La Cantidad de Personal Promedio debe ser un numero entero postivo");
-				return false;
-			}
-		}
 		if (formulario.empresas.value == "") {
 			alert("La Cantidad de Empresas a fiscalizar debe ser ingresada");
 			return false;
@@ -84,7 +75,7 @@ function validar(formulario) {
 				return false;
 			}
 		}
-		if (formulario.soliFiltro.value == "") {
+		if (formulario.solicDele.value == "") {
 			alert("Debe ingresar el Solicitante");
 			return false;
 		}
@@ -182,12 +173,6 @@ function validar(formulario) {
 		</div></td>
 	  </tr>
 	  <tr>
-		<td><div align="right">Cantidad de Personal Promedio </div></td>
-		<td><div align="left">
-		  <input name="personal" type="text" id="personal" size="5" />
-		</div></td>
-	  </tr>
-	  <tr>
 		<td><div align="right">Cantidad de Empresas </div></td>
 		<td><div align="left">
 		  <input name="empresas" type="text" id="empresas" size="5" />
@@ -201,7 +186,7 @@ function validar(formulario) {
       </tr>
 	  <tr>
 		<td><div align="right">Solicitante</div></td>
-		<td><div align="left"><input name="soliFiltro" id="soliFiltro" type="text" size="50"/></div></td>
+		<td><div align="left"><input name="solicDele" id="solicDele" type="text" size="50"/></div></td>
   	  </tr>
 </table>
 <br />
