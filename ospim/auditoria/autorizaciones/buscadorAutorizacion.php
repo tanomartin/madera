@@ -38,7 +38,7 @@ if (isset($dato)) {
 }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -84,7 +84,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		})
+		});
 	});
 
 function validar(formulario) {
@@ -146,7 +146,7 @@ function validar(formulario) {
   ?>
   </div>
   <div align="center"> 
-    <table width="400" border="0">
+    <table style="width: 400; border: 0">
       <tr>
         <td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
         <td><div align="left"><input type="radio" name="filtro"  value="0" checked="checked" /> Nro. Autorización </div></td>

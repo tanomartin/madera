@@ -7,7 +7,7 @@ $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
 $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 ?>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html>
 <html>
 <head>
 <style>
@@ -102,15 +102,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 	      <option value="30">30 por pagina</option>
 	      <option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
 		</select>
-  <table width="1229" border="0">
+  <table style="width: 1229; border: 0">
     <tr>
       <td width="599">
         <div align="left">
-          <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'" align="left"/>
+          <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'"/>
         </div>
       <td width="620">
         <div align="right">
-          <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
+          <input type="button" name="imprimir" value="Imprimir" onClick="window.print();"/>
         </div>
     </tr>
   </table>

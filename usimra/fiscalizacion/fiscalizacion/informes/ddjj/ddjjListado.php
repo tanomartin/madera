@@ -24,7 +24,7 @@ if ($canDdjjValidas == 0 && $canDdjjTemp == 0) {
 }	
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -65,7 +65,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		})
+		});
 		
 		$("#listadoTemp")
 		.tablesorter({
@@ -184,7 +184,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <?php } else { ?>
   		<p><strong>La empresa no tiene DDJJ No Pagas</strong></p>
   <?php } ?>
-  <p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
+  <p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 </div>
 </body>
 </html>

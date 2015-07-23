@@ -76,7 +76,7 @@ if (isset($dato)) {
 	$encontro = $existe + $existeBaja + $existeFamilia +$existeFamiliaBaja;
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -124,13 +124,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_searchDelay : 300,
 				filter_startsWith  : false,
 				filter_hideFilters : false,
-				
 			}
-		
-		})
-	});
+		});
 	
-	$(function() {
 		$("#listaResultadoFami")
 		.tablesorter({
 			theme: 'blue', 
@@ -145,10 +141,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_searchDelay : 300,
 				filter_startsWith  : false,
 				filter_hideFilters : false,
-				
 			}
-		
-		})
+		});
 	});
 
 function validar(formulario) {
@@ -176,8 +170,8 @@ function validar(formulario) {
 }
 
 function abrirFicha(dire, cuit, cuil, estado) {
-	var dire = dire + '?cuit=' + cuit + '&cuil=' + cuil + '&estado=' + estado;
-	c= window.open(dire,"Ficha Empleado",
+	var direc = dire + '?cuit=' + cuit + '&cuil=' + cuil + '&estado=' + estado;
+	c= window.open(direc,"Ficha Empleado",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 
@@ -189,7 +183,7 @@ function abrirFicha(dire, cuit, cuil, estado) {
     <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'menuInformes.php'" />
     <p align="center" class="Estilo1">M&oacute;dulo Buscador de Empleados</p>
     <div align="center" class="nover"> 
-		<table width="400" border="0">
+		<table style="width: 400; border: 0">
 		  <tr>
 		  <td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
 		  </tr>
@@ -218,7 +212,7 @@ function abrirFicha(dire, cuit, cuil, estado) {
 		if ($encontro == 0) {
 			print("<div style='color:#FF0000'><b> NO EXISTE TITULAR O FAMILIAR CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
 		} else { ?>
-			<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>			
+			<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>			
 <?php	} 
 		if ($existe == 1 || $existeBaja == 1) { ?>
 			<table class="tablesorter" id="listaResultado" style="width:900px; font-size:14px">

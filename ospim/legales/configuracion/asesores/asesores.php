@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -74,7 +74,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	 <?php } ?>
     </tbody>
   </table>
-   <table width="245" border="0">
+   <table style="width: 245; border: 0">
       <tr>
         <td width="239">
 		<div id="paginador" class="pager">
@@ -90,7 +90,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		      <option value="<?php echo $canGestores;?>">Todos</option>
 		      </select>
 		    </p>
-			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
+			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 		  </form>	
 		</div>
 	</td>

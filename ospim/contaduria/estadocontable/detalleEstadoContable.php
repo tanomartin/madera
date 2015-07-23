@@ -39,8 +39,6 @@ try {
 	$rowControl = $resControl->fetch ();
 	
 	$discoDesde = $rowControl ['discoinicio'];
-	// TODO rellenar todos los discos.
-	$discoDesde = 100;
 	$discoHasta = $rowControl ['discofin'];
 	$fechadesde = $rowControl ['fechadesde'];
 	$fechahasta = $rowControl ['fechahasta'];
@@ -230,7 +228,7 @@ try {
 }
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -349,7 +347,7 @@ $(function() {
 			?>
 			</tbody>
 	</table>
-	<table bgcolor="#3399CC" style="width: 900px; font-size: 16px; border: 1px solid black" >
+	<table style="width: 900px; font-size: 16px; border: 1px solid black; background-color:'#3399CC' " >
 		<tbody>
 			<tr align="center">
 				<td colspan="2" width="100"><strong>TOTALES</strong></td>
@@ -360,7 +358,7 @@ $(function() {
 			</tr>
 		</tbody>
 	</table>
-	<table width="245" border="0">
+	<table style="width: 245; border: 0">
 		<tr>
 			<td width="239">
 				<div id="paginador" class="pager">
@@ -385,8 +383,7 @@ $(function() {
 			</td>
 		</tr>
 	</table>
-	<p><input class="nover" type="button" name="imprimir" value="Imprimir"
-				onclick="window.print();" align="right" /></p>
+	<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
  <?php } else { ?>
    		<p><span class='Estilo2'><font color="red">No Existe Detalle de Estado Contable para esta Empresa</font></span></p>
  <?php  }?>
