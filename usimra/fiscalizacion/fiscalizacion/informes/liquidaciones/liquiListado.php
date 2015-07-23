@@ -1,43 +1,32 @@
-<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionUsimra.php");
-include($libPath."fechas.php"); 
+<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionUsimra.php");
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
 
-/*$tipo = $_POST['group1'];
-if ($tipo == 0) {
-	$titulo = "A REPARTIR";
-	$sqlLiqui = "SELECT * from cabliquiospim";
+$consulta = 'c.'.$_POST['group1'];
+$valor = $_POST['dato'];
+if ($consulta == "c.fechaliquidacion") {
+	$valor = fechaParaGuardar($valor);
 }
-if ($tipo == 1) {
-	$titulo = "REPARTIDAS";
-	$sqlLiqui = "SELECT * from cabliquiospim";
+if ($consulta == "c.cuit") {
+	$consulta = 'e.'.$_POST['group1'];
 }
-if ($tipo == 2) {
-	$titulo = "NO NOTIFICADAS";
-	$sqlLiqui = "SELECT * from cabliquiospim";
-}*/
-$sqlLiqui = "SELECT * from cabliquiusimra ORDER BY fechaliquidacion DESC";
+$sqlLiqui = "SELECT c.*, e.cuit, e.nombre, d.nombre as delega
+from cabliquiusimra c, reqfiscalizusimra r, empresas e, delegaciones d
+WHERE $consulta = '$valor' and c.nrorequerimiento = r.nrorequerimiento and r.cuit = e.cuit and r.codidelega = d.codidelega ORDER BY c.nrorequerimiento DESC";
+//print($sqlLiqui);
 $resLiqui = mysql_query($sqlLiqui,$db);
 $canLiqui = mysql_num_rows($resLiqui);	
-/*if ($canLiqui == 0) {
-	if ($tipo == 0) {
-		header ("Location: filtrosBusqueda.php?err=1");
-	}
-	if ($tipo == 1) {
-		header ("Location: filtrosBusqueda.php?err=2");
-	}
-	if ($tipo == 2) {
-		header ("Location: filtrosBusqueda.php?err=3");
-	}
-}*/
+if ($canLiqui == 0) {
+	header ("Location: filtrosBusqueda.php?err=1");
+}
 
 
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Listado Requerimientos :.</title>
+<title>.: Listado Liquidaciones :.</title>
 
 <style>
 A:link {text-decoration: none;color:#0033FF}
@@ -65,7 +54,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{3:{sorter:false, filter:false}, 4:{sorter:false, filter:false}, 5:{sorter:false, filter:false}, 6:{sorter:false, filter:false}},
+			headers:{7:{sorter:false, filter:false}, 8:{sorter:false, filter:false}, 9:{sorter:false, filter:false}, 10:{sorter:false, filter:false}, 11:{sorter:false, filter:false}, 15:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -78,49 +67,85 @@ A:hover {text-decoration: none;color:#00FFFF }
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
+	
+function abrirAcuInclu(dire) {
+	a= window.open(dire,"InfoAcuIncluidos",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+}
+
 </script>
 </head>
+
 <body bgcolor="#B2A274">
 <div align="center">
-	 <input type="button" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'" />
+	 <input type="button" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'"/>
 	<p><span class="Estilo2">Liquidaciones</span></p>
-	<table class="tablesorter" id="listado" style="width:1300px; font-size:14px">
+	<table class="tablesorter" id="listado" style="width:1200px; font-size:14px">
 	<thead>
 		<tr>
-			<th>Nro. Requerimiento</th>
-			<th>Fecha - Hora Liquidación</th>
+			<th>Nro. Req.</th>
+			<th>C.U.I.T.</th>
+			<th>Razon Social</th>
+			<th>Delegacion</th>
+			<th>Fecha Liq.</th>
+			<th>Hora Liq.</th>
 			<th>Liquidación Origen</th>
-			<th>Fecha Inspección</th>
+			<th>Acu. Incluidos</th>
+			<th style="width:80px">Fecha Inspección</th>
 			<th>Deuda Nominal</th>
 			<th>Intereses</th>
 			<th>Gastos Admin.</th>
 			<th>Total</th>
 			<th>Resolución</th>
 			<th>Certificado Deuda</th>
+			<th>Acciones</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
 		while($rowLiqui = mysql_fetch_assoc($resLiqui)) {
 		?>
-		<tr align="center">
-			<td><?php echo $rowLiqui['nrorequerimiento'];?></td>
-			<td><?php echo invertirFecha($rowLiqui['fechaliquidacion'])." - ".$rowLiqui['horaliquidacion'] ?></td>
-			<td><?php echo $rowLiqui['liquidacionorigen'];?></td>
-			<td><?php if ($rowLiqui['fechainspeccion'] != NULL) echo invertirFecha($rowLiqui['fechainspeccion']);?></td>
-			<td><?php echo $rowLiqui['deudanominal'];?></td>
-			<td><?php echo $rowLiqui['intereses'];?></td>
-			<td><?php echo $rowLiqui['gtosadmin'];?></td>
-			<td><?php echo $rowLiqui['totalliquidado'];?></td>
-			<td><?php echo $rowLiqui['nroresolucioninspeccion'];?></td>
-			<td><?php echo $rowLiqui['nrocertificadodeuda'];?></td>
-		</tr>
-		<?php
+			<tr align="center">
+				<td><?php echo $rowLiqui['nrorequerimiento'];?></td>
+				<td><?php echo $rowLiqui['cuit'];?></td>
+				<td><?php echo $rowLiqui['nombre'];?></td>
+				<td><?php echo $rowLiqui['delega'];?></td>
+				<td style="width:80px"><?php echo $rowLiqui['fechaliquidacion'] ?></td>
+				<td><?php echo $rowLiqui['horaliquidacion'] ?></td>
+				<td><?php echo $rowLiqui['liquidacionorigen'];?></td>
+				<td>
+				<?php 
+					$nroreque = $rowLiqui['nrorequerimiento'];	
+					$cuit = $rowLiqui['cuit'];	
+					$sqlAcuInc = "SELECT * from aculiquiusimra WHERE nrorequerimiento = $nroreque";
+					$resAcuInc = mysql_query($sqlAcuInc,$db);
+					$canAcuInc = mysql_num_rows($resAcuInc);
+					if ($canAcuInc == 0) {
+						echo "-";
+					} else {
+						print("<a href=javascript:abrirAcuInclu('infoAcuInlcu.php?req=".$nroreque."&cuit=".$cuit."')>".$canAcuInc." Acuer.</a>");
+					}
+				?></td>
+				<td><?php if ($rowLiqui['fechainspeccion'] != NULL && $rowLiqui['fechainspeccion'] != "0000-00-00") { echo invertirFecha($rowLiqui['fechainspeccion']); } else { echo "-"; }?></td>
+				<td><?php echo $rowLiqui['deudanominal'];?></td>
+				<td><?php echo $rowLiqui['intereses'];?></td>
+				<td><?php echo $rowLiqui['gtosadmin'];?></td>
+				<td><?php echo $rowLiqui['totalliquidado'];?></td>
+				<td><?php echo $rowLiqui['nroresolucioninspeccion'];?></td>
+				<td><?php echo $rowLiqui['nrocertificadodeuda'];?></td>
+				<td><?php if ($rowLiqui['liquidacionanulada'] == 0) { ?>
+					<input name="anular" value="Anular" type="button" onclick="location.href='moduloEliminarLiquidacion.php?nroreq=<?php echo $nroreque ?>&dato=<?php echo $_POST['dato'] ?>&group1=<?php echo $_POST['group1'] ?>&cuit=<?php echo $cuit ?>'" />
+					<?php } else { 
+							print("ANULADA");
+						 } ?>	
+				</td>
+			</tr>
+			<?php
 		}
 		?>
 	</tbody>
   </table>
-    <table width="245" border="0">
+    <table style="width: 245; border: 0;">
       <tr>
         <td width="239">
 		<div id="paginador" class="pager">
@@ -137,7 +162,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		      <option value="<?php echo $canLiqui;?>">Todos</option>
 		      </select>
 		    </p>
-			<p align="center"><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
+			<p align="center"><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 		  </form>	
 		</div>
 	</td>
