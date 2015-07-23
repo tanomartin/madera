@@ -1,7 +1,9 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 
-$sqlReque = "SELECT * from reqfiscalizospim where procesoasignado = 2 and requerimientoanulado = 0 order by nrorequerimiento DESC";
+$sqlReque = "SELECT * from reqfiscalizospim r, inspecfiscalizospim i  
+		where r.procesoasignado = 2 and r.requerimientoanulado = 0 and r.nrorequerimiento = i.nrorequerimiento
+		order by r.nrorequerimiento DESC";
 $resReque = mysql_query($sqlReque,$db);
 $canReque = mysql_num_rows($resReque);
 
@@ -51,15 +53,18 @@ $(function() {
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
-	
+
+function verInspeccion(reque) {
+	var dire = 'consultaInspeccion.php?nroreq='+reque;
+	window.open(dire, "", "directories=no, location=no, menubar=no, scrollbars=yes, statusbar=no, tittlebar=no, width=800, height=400");
+}
+
 </script>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" />
-  </span></p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" /></p>
   	<p class="Estilo2">Listado de  Requerimiento en Inspecci&oacute;n  </p>
 	<table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 		<thead>
@@ -90,7 +95,11 @@ $(function() {
 						<td><?php echo $rowReque['solicitarequerimiento'] ?></td>   
 						<td><?php echo $rowReque['motivorequerimiento'] ?></td>   
 						<td><?php echo $rowReque['cuit'] ?></td>   
-						<td><a href='datosInspeccion.php?nroreq=<?php echo $rowReque['nrorequerimiento'] ?>'>Modificar</a></td>   
+						<?php if ($rowReque['inspeccionefectuada'] == 0) { ?>
+							<td><input type="button" value="Modificar" onclick="location.href='datosInspeccion.php?nroreq=<?php echo $rowReque['nrorequerimiento'] ?>'" /></td>
+				  		<?php } else { ?>
+				  			<td><input type="button" value="Consultar" onclick="verInspeccion('<?php echo $rowReque['nrorequerimiento'] ?>')" /></td> 
+				  		<?php } ?>
 				  </tr>
 		<?php }?>
      	</tbody>

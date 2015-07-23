@@ -92,6 +92,11 @@ function deshabilitarCheck(tipo,formulario) {
 	}
 }
 
+function verInspeccion(reque) {
+	var dire = 'consultaInspeccion.php?nroreq='+reque;
+	window.open(dire, "", "directories=no, location=no, menubar=no, scrollbars=yes, statusbar=no, tittlebar=no, width=800, height=400");
+}
+
 function validarCheck(tipo,formulario, fecha) {
 	var grupo = '';
 	var mensaje = ''; 
@@ -184,7 +189,9 @@ function validarCheck(tipo,formulario, fecha) {
 					$rowInsp = mysql_fetch_array($resInsp);
 					if ($rowInsp['inspeccionefectuada'] == 0) { ?>
 						<td>Inspección En Curso</td>  
-			<?php	}  	
+			<?php	} else { ?>
+						<td><input type="button" value="Datos Inspeccion" onclick="verInspeccion('<?php echo $rowReque['nrorequerimiento'] ?>')" /></td>
+			<?php	}
 				}?>
 				<td><input type="checkbox" name="<?php echo $rowReque['nrorequerimiento'] ?>" id="anular" value="<?php echo $rowReque['nrorequerimiento'] ?>"/></td>   
 				<td><input type="checkbox" name="<?php echo $rowReque['nrorequerimiento'] ?>" id="liquidar" value="<?php echo $rowReque['nrorequerimiento'] ?>"/></td>

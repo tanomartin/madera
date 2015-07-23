@@ -29,8 +29,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-  </span></p>
   	<p class="Estilo2">Datos de Requerimiento en Inspecci&oacute;n Nro. <?php echo $nroreq ?></p>
 		<table width="579" border="1">
 		  <tr>
