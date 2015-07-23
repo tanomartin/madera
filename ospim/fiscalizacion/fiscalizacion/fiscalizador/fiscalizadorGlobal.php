@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 set_time_limit(0);
 //Para que se vea el blockUI
-print("G<br>");
+print("<br>");
 //*************************
 
 function esMontoMenor($remuDDJJ, $importe) {
