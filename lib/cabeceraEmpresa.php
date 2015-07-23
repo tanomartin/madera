@@ -25,6 +25,10 @@
       <td><div align="right"><strong>C&oacute;digo Postal:</strong></div></td>
       <td><div align="left"><?php echo $row['numpostal'];?></div></td>
     </tr>
+     <tr>
+      <td><div align="right"><strong>Telefono:</strong></div></td>
+      <td><div align="left"><?php echo "(".$row['ddn1'].") ".$row['telefono1'];?></div></td>
+    </tr>
     <tr>
       <td><div align="right"><strong>Carpeta en Archivo</strong></div></td>
       <td><div align="left"> 
