@@ -245,17 +245,15 @@ function popUpcambio(confi) {
 						<?php } ?>
 					</select>
 				</td>
-				<td width=212> <input name='ncheque<?php echo $contadorCuotas ?>' id='ncheque<?php echo $contadorCuotas ?>' value='<?php echo $rowCuotas['chequenro'] ?>' type='text' size='12' style='visibility: hidden'> </td>
-				<td width=212> <input name='bcheque<?php echo $contadorCuotas ?>' id='bcheque<?php echo $contadorCuotas ?>' value='<?php echo $rowCuotas['chequebanco'] ?> ' type='text' size='12'  style='visibility: hidden'> </td> 
-				<td width=212> <input name='fcheque<?php echo $contadorCuotas ?>' id='fcheque<?php echo $contadorCuotas ?>' value='<?php echo invertirFecha($rowCuotas['chequefecha']) ?>' type='text' size='12' style='visibility: hidden'> </td>
+				<?php if ($rowCuotas['tipocancelacion'] == 3 || $rowCuotas['tipocancelacion'] == 1) { $visible = 'visible'; } else { $visible = 'hidden'; } ?>
+				<td width=212> <input name='ncheque<?php echo $contadorCuotas ?>' id='ncheque<?php echo $contadorCuotas ?>' value='<?php echo $rowCuotas['chequenro'] ?>' type='text' size='12' style='visibility: <?php echo $visible ?>'> </td>
+				<td width=212> <input name='bcheque<?php echo $contadorCuotas ?>' id='bcheque<?php echo $contadorCuotas ?>' value='<?php echo $rowCuotas['chequebanco'] ?> ' type='text' size='12'  style='visibility: <?php echo $visible ?>'> </td> 
+				<td width=212> <input name='fcheque<?php echo $contadorCuotas ?>' id='fcheque<?php echo $contadorCuotas ?>' value='<?php echo invertirFecha($rowCuotas['chequefecha']) ?>' type='text' size='12' style='visibility: <?php echo $visible ?>'> </td>
 			</tr>
 			<tr>
 				<td width=134 align='center'><font face=Verdana size=1>Obs.</font></td>
 				<td colspan='6'> <textarea name='obs<?php echo $contadorCuotas ?>' id='obs<?php echo $contadorCuotas ?>' cols='93' rows='2' ><?php echo $rowCuotas['observaciones'] ?></textarea> </td>
 			</tr>
-			<script type="text/javascript">
-					verInfoCheques(document.getElementById("<?php echo("tipo".$contadorCuotas)?>").value ,<?php echo $contadorCuotas ?>);
-			</script>	
 	  <?php 
 			} 
 		} 

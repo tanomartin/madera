@@ -121,7 +121,7 @@ function validoAnio(id){
 function cargarLiqui(requerimiento) {
 	var cargado = false;
 	<?php 
-		$sqlLiqui = "SELECT c.nrorequerimiento, c.liquidacionorigen FROM reqfiscalizusimra r , cabliquiusimra c where r.cuit = $cuit and r.nrorequerimiento = c.nrorequerimiento;";
+		$sqlLiqui = "SELECT c.nrorequerimiento, c.liquidacionorigen FROM reqfiscalizusimra r , cabliquiusimra c where r.cuit = $cuit and r.nrorequerimiento = c.nrorequerimiento";
 		$resLiqui= mysql_query($sqlLiqui,$db); 
 		$canLiqui = mysql_num_rows($resLiqui); 
 		if ($canLiqui != 0) {
@@ -282,7 +282,7 @@ function validar(formulario) {
 									onchange="cargarLiqui(document.forms.nuevoAcuerdo.requerimiento[selectedIndex].value)">
 									<option value='0'>Seleccione un valor</option>
 									<?php 
-									$sqlNroReq = "select * from reqfiscalizusimra where cuit = ".$cuit;
+									$sqlNroReq = "select * from reqfiscalizusimra where cuit = $cuit and requerimientoanulado = 0";
 									$resNroReq = mysql_query($sqlNroReq,$db);
 									while ($rowNroReq=mysql_fetch_array($resNroReq)) { ?>
 										<option value="<?php echo $rowNroReq['nrorequerimiento'] ?>"><?php echo $rowNroReq['nrorequerimiento'] ?></option>
@@ -298,7 +298,7 @@ function validar(formulario) {
 						<td valign="bottom">
 							<div align="left">
 								<input name="nombreArcReq" type="text" id="nombreArcReq"
-									size="40" readonly="readonly" />
+									size="40" readonly="readonly" style="background-color: silver;" />
 							</div>
 						</td>
 						<td valign="bottom"><div align="left">Monto Acuerdo</div></td>
@@ -317,7 +317,7 @@ function validar(formulario) {
 						</td>
 						<td width="100" valign="bottom">
 							<div align="left">
-								<input name="porcentaje" type="text" id="porcentaje" size="5" readonly="readonly" /> %
+								<input name="porcentaje" type="text" id="porcentaje" size="5" readonly="readonly" style="background-color: silver;" /> %
 							</div>
 						</td>
 					</tr>

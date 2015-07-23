@@ -230,7 +230,7 @@ function mostrarPeriodos() {
 			     <?php } else { ?>
 						  <option value="0">Seleccione un valor </option>
 				<?php } 
-				$sqlNroReq = "select * from reqfiscalizospim where cuit = ".$cuit;
+				$sqlNroReq = "select * from reqfiscalizospim where cuit = $cuit and requerimientoanulado = 0";
 				$resNroReq =  mysql_query( $sqlNroReq,$db);
 				while ($rowNroReq=mysql_fetch_array($resNroReq)) { 
 					if ($rowNroReq['nrorequerimiento'] == $rowacu['requerimientoorigen']) { ?>
@@ -247,7 +247,7 @@ function mostrarPeriodos() {
           <div align="left">Liquidacion Origen </div>
           </td>
           <td valign="bottom"><div align="left">
-	  	    <input name="nombreArcReq"  value="<?php echo $rowacu['liquidacionorigen']?>"  type="text" id="nombreArcReq" size="40" readonly="readonly" />
+	  	    <input name="nombreArcReq"  value="<?php echo $rowacu['liquidacionorigen']?>"  type="text" id="nombreArcReq" size="40" readonly="readonly" style="background-color: silver;"/>
           </div></td>
           <td valign="bottom"><div align="left">Monto Acuerdo </div></td>
           <td valign="bottom"><div align="left">
@@ -255,7 +255,7 @@ function mostrarPeriodos() {
           </div></td>
           <td valign="bottom"><div align="left">Gastos Administrativos </div></td>
           <td valign="bottom"><div align="left">
-          <input name="porcentaje" type="text" id="porcentaje" size="5" value="<?php echo $rowacu['porcengastoadmin']?>" readonly="readonly"/>%</div></td>
+          <input name="porcentaje" type="text" id="porcentaje" size="5" value="<?php echo $rowacu['porcengastoadmin']?>" readonly="readonly" style="background-color: silver;"/>%</div></td>
         </tr>
         <tr>
           <td valign="bottom"> <div align="left">Obervaciones</div></td>

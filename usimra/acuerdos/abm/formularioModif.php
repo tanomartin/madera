@@ -224,7 +224,7 @@ function mostrarPeriodos() {
 			     <?php } else { ?>
 						  <option value="0">Seleccione un valor </option>
 				<?php } 
-				$sqlNroReq = "select * from reqfiscalizusimra where cuit = ".$cuit;
+				$sqlNroReq = "select * from reqfiscalizusimra where cuit = $cuit and requerimientoanulado = 0";
 				$resNroReq =  mysql_query( $sqlNroReq,$db);
 				while ($rowNroReq=mysql_fetch_array($resNroReq)) { 
 					if ($rowNroReq['nrorequerimiento'] == $rowacu['requerimientoorigen']) { ?>
