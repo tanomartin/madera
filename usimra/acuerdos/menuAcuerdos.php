@@ -39,10 +39,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><p align="center">Valores al Cobro</p>
       <p align="center"><a href="valores/menuValores.php"><img src="img/valores.png" width="90" height="90" border="0" /></a></p>
       <p align="center">&nbsp;</p></td>
-      <td><p align="center"></p>
-	  	  <p align="center"></p>
-	  	  <p align="center">&nbsp;</p></td>
-      
+      <td><p align="center">&nbsp;</p></td>
     </tr>
   </table>
 </div>
