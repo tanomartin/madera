@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-07-2015 a las 16:31:19
+-- Tiempo de generación: 04-08-2015 a las 17:07:48
 -- Versión del servidor: 5.6.11-log
--- Versión de PHP: 5.3.27
+-- Versión de PHP: 5.2.17
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -27,6 +27,18 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `aculiquiospim` (
+  `nrorequerimiento` int(8) unsigned NOT NULL COMMENT 'Nro de Requerimiento de Fiscalizacion OSPIM que da origen a la Liquidacion de Deuda',
+  `nroacuerdo` int(3) unsigned NOT NULL COMMENT 'Nro de Acuerdo Caido Incluido en la Liquidacion de Deuda',
+  PRIMARY KEY (`nrorequerimiento`,`nroacuerdo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Acuerdos Caidos incluidos en Liquidacion de Deuda de OSPIM';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `aculiquiusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `aculiquiusimra` (
   `nrorequerimiento` int(8) unsigned NOT NULL COMMENT 'Nro de Requerimiento de Fiscalizacion OSPIM que da origen a la Liquidacion de Deuda',
   `nroacuerdo` int(3) unsigned NOT NULL COMMENT 'Nro de Acuerdo Caido Incluido en la Liquidacion de Deuda',
   PRIMARY KEY (`nrorequerimiento`,`nroacuerdo`)
@@ -816,6 +828,10 @@ CREATE TABLE IF NOT EXISTS `cabliquiusimra` (
   `nroresolucioninspeccion` char(20) DEFAULT NULL COMMENT 'Nro. de Resolucion de Inspeccion',
   `nrocertificadodeuda` int(8) unsigned DEFAULT NULL COMMENT 'Nro. de Certificado de Deuda',
   `operadorliquidador` char(100) DEFAULT NULL COMMENT 'Operador que Efectua la Liquidacion',
+  `liquidacionanulada` int(1) NOT NULL DEFAULT '0',
+  `motivoanulacion` text,
+  `fechaanulacion` datetime DEFAULT NULL,
+  `usuarioanulacion` char(50) DEFAULT NULL,
   PRIMARY KEY (`nrorequerimiento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Cabecera de Liquidaciones de Deuda USIMRA';
 
@@ -1908,13 +1924,16 @@ CREATE TABLE IF NOT EXISTS `estadocontablecontrol` (
   `remuneracion` decimal(20,2) NOT NULL,
   `obligacion` decimal(20,2) NOT NULL,
   `pagos` decimal(20,2) NOT NULL,
+  `diferencia` decimal(20,2) NOT NULL,
   `patharchivo` varchar(100) CHARACTER SET latin1 NOT NULL,
   `discoinicio` int(4) NOT NULL,
   `discofin` int(4) NOT NULL,
+  `fechadesde` date NOT NULL,
+  `fechahasta` date NOT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=31 ;
 
 -- --------------------------------------------------------
 
@@ -3041,7 +3060,7 @@ CREATE TABLE IF NOT EXISTS `reqfiscalizusimra` (
   `fechaanulacion` datetime DEFAULT NULL COMMENT 'Fecha de Anulacion del Requerimiento',
   `usuarioanulacion` char(50) DEFAULT NULL COMMENT 'Usuario que Anula el Requerimiento',
   PRIMARY KEY (`nrorequerimiento`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de USIMRA' AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de USIMRA' AUTO_INCREMENT=43 ;
 
 -- --------------------------------------------------------
 
