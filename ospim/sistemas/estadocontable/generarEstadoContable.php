@@ -33,6 +33,7 @@ $archivo_name_htm = "../../contaduria/estadocontable/archivosHtm/Estado Contable
 
 try {	
 	$hostname = $_SESSION['host'];
+	$hostname = 'cronos';
 	$dbname = $_SESSION['dbname'];
 	$usuario = $_SESSION['usuario'];
 	$pass = $_SESSION['clave'];
@@ -345,7 +346,8 @@ try {
 	unset ( $arrayPagos );
 	
 	//SACO LOS INCOBRABLES
-	$fechaInco = strtotime ( '-26 month', strtotime ( $fechageneracion ) );
+	$fechaInco = strtotime ( '-25 month', strtotime ( $fechageneracion ) );
+	$fechaInco = date ( 'Y-m-d', $fechaInco );
 	$sqlDiscoInco = "SELECT nrodisco FROM nominasddjj
 								where fechaarchivoafip >= '" . $fechaInco . "' and fechaarchivoafip < '" . $fechageneracion . "' LIMIT 1";
 	$resDiscoInco = $dbh->query ( $sqlDiscoInco );
