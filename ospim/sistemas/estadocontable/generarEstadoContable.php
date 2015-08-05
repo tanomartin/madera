@@ -344,7 +344,43 @@ try {
 	}
 	unset ( $arrayPagos );
 	
-	$sqlInsertControl = "INSERT INTO estadocontablecontrol VALUE(DEFAULT,".$anoEstado.", ".$mesEstado.", 0, 0, 0, 0,'".$archivo_name_htm."',".$discoDesde.",".$discoHasta.",'".$fechadesde ."','".$fechageneracion ."','".$fecharegistro ."','".$usuarioregistro."')";
+	//SACO LOS INCOBRABLES
+	$fechaInco = strtotime ( '-26 month', strtotime ( $fechageneracion ) );
+	$sqlDiscoInco = "SELECT nrodisco FROM nominasddjj
+								where fechaarchivoafip >= '" . $fechaInco . "' and fechaarchivoafip < '" . $fechageneracion . "' LIMIT 1";
+	$resDiscoInco = $dbh->query ( $sqlDiscoInco );
+	$rowDiscoInco = $resDiscoInco->fetch ();
+	$discoInco = $rowDiscoInco ['nrodisco'];
+	
+	$sqlEmpresasTotal = "SELECT cuit FROM empresas";
+	$resEmpresasTotal = $dbh->prepare ( $sqlEmpresasTotal );
+	$resEmpresasTotal->execute ();
+	$empresasTotal = array();
+	while ( $rowEmpresas = $resEmpresasTotal->fetch ( PDO::FETCH_LAZY ) ) {
+		$empresasTotal[$rowEmpresas['cuit']] = $rowEmpresas['cuit'];
+	}
+	
+	$sqlEmpresasActivas = "SELECT DISTINCT cuit FROM afipddjj WHERE nrodisco >= $discoInco";
+	$resEmpresasActivas = $dbh->prepare ( $sqlEmpresasActivas );
+	$resEmpresasActivas->execute ();
+	$empresasActivas = array();
+	while ( $rowEmpresasActivas = $resEmpresasActivas->fetch ( PDO::FETCH_LAZY ) ) {
+		$empresasActivas[$rowEmpresasActivas['cuit']] = $rowEmpresasActivas['cuit'];
+	}
+	
+	$empresasInco = array_diff($empresasTotal,$empresasActivas);
+	unset($empresasTotal);
+	unset($empresasActivas);
+	
+	foreach($empresasInco as $cuitInco) {
+		$cuitInco = $rowEmpresasInco['cuit'];
+		if (array_key_exists ( $cuitInco, $estadoContable )) {
+			$estadoContable [$cuitInco] += array ('incobrable' => 'S');
+		}
+	}
+	unset($empresasInco);
+	
+	$sqlInsertControl = "INSERT INTO estadocontablecontrol VALUE(DEFAULT,".$anoEstado.", ".$mesEstado.", 0, 0, 0, 0, 0,'".$archivo_name_htm."',".$discoDesde.",".$discoHasta.",'".$fechadesde ."','".$fechageneracion ."','".$fecharegistro ."','".$usuarioregistro."')";
 	$resInsertControl = $dbh->prepare ( $sqlInsertControl );
 	$resInsertControl->execute ();
 	$lastId = $dbh->lastInsertId();
@@ -397,18 +433,25 @@ try {
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'E1', 'Total Pagos' );
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'F' )->setWidth ( 20 );
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'F1', 'Debito/Credito' );
+	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'G' )->setWidth ( 5 );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'G1', 'Incobrable' );
 	
 	$fila = 1;
 	$totRem = 0;
 	$totObl = 0;
 	$totPag = 0;
 	$totDif = 0;
+	$totInc = 0;
 	foreach ( $estadoContable as $cuit => $estado ) {
 		$totRem +=  $estado ['totremune'];
 		$totObl +=  $estado ['totobligacion'];
 		$totPag +=  $estado ['totpagos'];
 		$totDif +=  $estado ['totaldiferencia'];
+		if ($estado ['incobrable'] == 'S') {
+			$totInc += $estado ['totaldiferencia'];
+		}
 		$fila ++;
+		
 		// Agrega datos a las celdas de datos
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'A' . $fila, $cuit );
 		$objPHPExcel->getActiveSheet ()->getCellByColumnAndRow('A',$fila)->getHyperlink()->setUrl("../detalleEstadoContable.php?cuit=$cuit&id=$lastId");
@@ -417,6 +460,7 @@ try {
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, $estado ['totobligacion'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'E' . $fila, $estado ['totpagos'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $estado ['totaldiferencia'] );
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'G' . $fila, $estado ['incobrable'] );
 	}
 	$fila ++;
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, $totRem );
@@ -429,10 +473,10 @@ try {
 	$objPHPExcel->getDefaultStyle ()->getFont ()->setSize ( 8 );
 	
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:F1' )->getFont ()->setBold ( true );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:F1' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:F1' )->getFill ()->getStartColor ()->setARGB ( 'FF808080' );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:F1' )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_CENTER );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:G1' )->getFont ()->setBold ( true );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:G1' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:G1' )->getFill ()->getStartColor ()->setARGB ( 'FF808080' );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:G1' )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_CENTER );
 	
 	// Setea tipo de dato y alineamiento horizontal a las celdas de datos
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'A2:A' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
@@ -447,8 +491,10 @@ try {
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'E2:E' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'F2:F' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'F2:F' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'G2:G' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'G2:G' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_CENTER );
 	
-	$sqlUdapteControl = "UPDATE estadocontablecontrol SET remuneracion = $totRem, obligacion = $totObl, pagos = $totPag, diferencia = $totDif WHERE id = $lastId";
+	$sqlUdapteControl = "UPDATE estadocontablecontrol SET remuneracion = $totRem, obligacion = $totObl, pagos = $totPag, incobrables = $totInc, diferencia = $totDif WHERE id = $lastId";
 	$resUdapteControl = $dbh->prepare ( $sqlUdapteControl );
 	$resUdapteControl->execute ();
 	
