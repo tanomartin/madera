@@ -436,7 +436,8 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 				$fechaOrdinario = $rowAfipProc['fechapago'];
 				$importeOrdinario = $rowAfipProc['sum(montopagado)'];
 				$importeOrdinario = number_format((float)$importeOrdinario,2,',','');
-				$pagos[$pOrd] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaOrdinario)."|".$importeOrdinario."|0000|000000000,00|0000|000000000,00|0000|000000000,00|0000|000000000,00";
+				$importeOrdinario = str_pad($importeOrdinario,12,'0',STR_PAD_LEFT);
+				$pagos[$pOrd] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaOrdinario)."|".$importeOrdinario;
 				$personal = "0000";
 				$remunDec = "000000000,00";
 				$pOrd++;
@@ -445,9 +446,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		} else {
 			unset($pagos);	
 			if ($rowRequeDet['statusfiscalizacion'] == 'A') {	
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|          |            |0000|000000000,00|0000|000000000,00|0000|000000000,00|0000|000000000,00";
+				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|          |            ";
 			} else {
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            |0000|000000000,00|0000|000000000,00|0000|000000000,00|0000|000000000,00";
+				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            ";
 			}
 		}
 		
@@ -501,7 +502,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	fclose($ar);
 	
 	//**********************************
-	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
+	//creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
 	
 	//Grabamos cabecera de liquidación
 	grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
