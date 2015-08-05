@@ -33,7 +33,6 @@ $archivo_name_htm = "../../contaduria/estadocontable/archivosHtm/Estado Contable
 
 try {	
 	$hostname = $_SESSION['host'];
-	$hostname = 'cronos';
 	$dbname = $_SESSION['dbname'];
 	$usuario = $_SESSION['usuario'];
 	$pass = $_SESSION['clave'];
@@ -307,9 +306,6 @@ try {
 		}
 	}
 	
-	
-	
-	
 	// ARMO EL ESTADO CONTABLE
 	$estadoContable = array ();
 	reset($arrayDDJJ);
@@ -345,7 +341,7 @@ try {
 	}
 	unset ( $arrayPagos );
 	
-	//SACO LOS INCOBRABLES
+	//MARCO LOS INCOBRABLES
 	$fechaInco = strtotime ( '-25 month', strtotime ( $fechageneracion ) );
 	$fechaInco = date ( 'Y-m-d', $fechaInco );
 	$sqlDiscoInco = "SELECT nrodisco FROM nominasddjj
@@ -375,7 +371,6 @@ try {
 	unset($empresasActivas);
 	
 	foreach($empresasInco as $cuitInco) {
-		$cuitInco = $rowEmpresasInco['cuit'];
 		if (array_key_exists ( $cuitInco, $estadoContable )) {
 			$estadoContable [$cuitInco] += array ('incobrable' => 'S');
 		}
