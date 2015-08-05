@@ -40,18 +40,23 @@ function abrirExcel(dire) {
 			  <td><strong>Obligación</strong></td>
 			  <td><strong>Pagos</strong></td>
 			  <td><strong>Debito/Credito</strong></td>
+			  <td><strong>Incobrables</strong></td>
+			  <td><strong>Diferencia</strong></td>
 			  <td></td>
 			</tr>
 		<?php 
 			$sqlEstadosContables = "SELECT * FROM estadocontablecontrol ORDER BY anio DESC, mes DESC LIMIT 12";
 			$resEstadosContables = mysql_query($sqlEstadosContables,$db);
-			while($rowEstadoContable = mysql_fetch_array($resEstadosContables)) { ?>
+			while($rowEstadoContable = mysql_fetch_array($resEstadosContables)) { 
+				$resta = $rowEstadoContable['diferencia'] - $rowEstadoContable['incobrables']; ?>
 				<tr>
 				<td><?php echo $rowEstadoContable['mes']."-".$rowEstadoContable['anio'] ?></td>
 				<td><?php echo number_format($rowEstadoContable['remuneracion'],2,',','.') ?></td>
 				<td><?php echo number_format($rowEstadoContable['obligacion'],2,',','.')  ?></td>
 				<td><?php echo number_format($rowEstadoContable['pagos'],2,',','.')  ?></td>
 				<td><?php echo number_format($rowEstadoContable['diferencia'],2,',','.')  ?></td>
+				<td><?php echo number_format($rowEstadoContable['incobrables'],2,',','.')  ?></td>
+				<td><?php echo number_format($resta,2,',','.')  ?></td>
 				<td>
 					<?php 
 						$maquina = $_SERVER ['SERVER_NAME'];
