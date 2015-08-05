@@ -240,8 +240,7 @@ function abrirFicha(dire, cuit, cuil, estado) {
 				  <td><?php echo $rowEmpleados['ssexxo']; ?></td>
 				  <td><?php echo $rowEmpleados['activo']; ?></td>
 				  <td><?php echo "NO" ?></td>
-				  <td><input type="button" onclick="abrirFicha('fichaEmpleado.php','<?php echo $rowEmpleados['nrcuit'] ?>','<?php echo $rowEmpleados['nrcuil'] ?>','A')" value='Ficha'>
-					</input></td>
+				  <td><input type="button" onclick="abrirFicha('fichaEmpleado.php','<?php echo $rowEmpleados['nrcuit'] ?>','<?php echo $rowEmpleados['nrcuil'] ?>','A')" value='Ficha' /></td>
 				</tr>
 			<?php } 
 			   } ?>
@@ -255,8 +254,7 @@ function abrirFicha(dire, cuit, cuil, estado) {
 				  <td><?php echo $rowEmpleadosBaja['ssexxo']; ?></td>
 				  <td><?php echo $rowEmpleadosBaja['activo']; ?></td>
 				  <td><?php echo "SI" ?></td>
-				  <td><input type="button" onclick="abrirFicha('fichaEmpleado.php','<?php echo $rowEmpleadosBaja['nrcuit'] ?>','<?php echo $rowEmpleadosBaja['nrcuil'] ?>','E')" value='Ficha'>
-					</input></td>
+				  <td><input type="button" onclick="abrirFicha('fichaEmpleado.php','<?php echo $rowEmpleadosBaja['nrcuit'] ?>','<?php echo $rowEmpleadosBaja['nrcuil'] ?>','E')" value='Ficha'/></td>
 				</tr>
 				<?php } 
 			   } ?>
