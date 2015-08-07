@@ -70,7 +70,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<tr align="center">
 				<td><?php echo $rowInspectores['codigo'] ?></td>
 				<td><?php echo $rowInspectores['apeynombre'] ?></td>
-				<td><a href='modificarInspector.php?codigo=<?php echo $rowInspectores['codigo'] ?>'>Modificar</a></td>
+				<td><input type="button" value="Modificar" onclick="location.href='modificarInspector.php?codigo=<?php echo $rowInspectores['codigo'] ?>'" /></td>
 			</tr> 
 	<?php } ?>
 	</tbody>

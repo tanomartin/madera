@@ -5,8 +5,8 @@ $criterio = $_POST['criterio'];
 $dato = $_POST['dato'];
 
 if ($criterio == "cuit") {
-	$sqlbusqueda = "select * from empresas where cuit = $dato";
-	$sqlbusquedabaja = "select * from empresasdebaja where cuit = $dato";
+	$sqlbusqueda = "select * from empresas where cuit = '$dato'";
+	$sqlbusquedabaja = "select * from empresasdebaja where cuit = '$dato'";
 }
 if ($criterio == "razonsocial") {
 	$sqlbusqueda = "select * from empresas where nombre like '%$dato%'";
@@ -45,7 +45,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <p align="center" class="Estilo2">Resultado de la Busqueda</p>
 <div align="center">
 	<p><span class="Estilo2">Empresas Activas </span></p>
-	<table border="1" >
+	<table border="1" style="text-align: center;" >
   <tr>
     <td width="104"><div align="center"><strong>C.U.I.T.</strong></div></td>
     <td width="349"><div align="center"><strong>Razón Social</strong></div></td>
@@ -56,20 +56,20 @@ A:hover {text-decoration: none;color:#00FFFF }
 <?php 
 if ($canbusqueda > 0) {
 	while ($rowbusqueda = mysql_fetch_array($resbusqueda)) {  
-		$cuit = $rowbusqueda['cuit'];
-		print ("<td><div align=center>".$rowbusqueda['cuit']."</div></td>");
-		print ("<td><div align=center>".$rowbusqueda['nombre']."</div></td>");
-		print ("<td><div align=center>".$rowbusqueda['domilegal']."</div></td>");
-		print ("<td><div align=center><a href=../abm/empresa.php?origen=$origen&cuit=$cuit>+ INFO</a></div></td>");
-		print ("</tr>"); 	
-
-	}
-} else {
-		print ("<td colspan='4'><div align=center>No hay empresas activas para esta busqueda</div></td>");
-}?>
+		$cuit = $rowbusqueda['cuit']; ?>
+		<tr>
+		<td><?php echo $rowbusqueda['cuit'] ?></td>
+		<td><?php echo $rowbusqueda['nombre'] ?></td>
+		<td><?php echo $rowbusqueda['domilegal'] ?></td>
+		<td><input type="button" value="+ INFO" onclick="location.href='../abm/empresa.php?origen=<?php echo $origen?>&cuit=<?php echo $cuit ?>'" /></td>
+		</tr>
+<?php 	}
+} else { ?>
+		<tr><td colspan='4'>No hay empresas activas para esta busqueda</td></tr>
+<?php } ?>
 </table>
     <p><strong>Empresas de Baja </strong></p>
-    <table border="1" >
+    <table border="1" style="text-align: center;">
       <tr>
         <td width="104"><div align="center"><strong>C.U.I.T.</strong></div></td>
         <td width="349"><div align="center"><strong>Raz&oacute;n Social</strong></div></td>
@@ -79,17 +79,17 @@ if ($canbusqueda > 0) {
       <?php 
 			if ($canbusquedabaja > 0) {	  
 				  while ($rowbusquedabaja = mysql_fetch_array($resbusquedabaja)) {  
-					$cuit = $rowbusquedabaja['cuit'];
-					print ("<td><div align=center>".$rowbusquedabaja['cuit']."</div></td>");
-					print ("<td><div align=center>".$rowbusquedabaja['nombre']."</div></td>");
-					print ("<td><div align=center>".$rowbusquedabaja['domilegal']."</div></td>");
-					print ("<td><div align=center><a href=../abm/empresaBaja.php?origen=$origen&cuit=$cuit>+ INFO</a></div></td>");
-					print ("</tr>"); 	
-			
-				}
-			} else {
-					print ("<td colspan='4'><div align=center>No hay empresas de baja para esta busqueda</div></td>");
-			}
+					$cuit = $rowbusquedabaja['cuit']; ?>
+					<tr>
+					<td><?php echo $rowbusquedabaja['cuit'] ?></td>
+					<td><?php echo $rowbusquedabaja['nombre'] ?></td>
+					<td><?php echo $rowbusquedabaja['domilegal'] ?></td>
+					<td><input type="button" value="+ INFO" onclick="location.href='../abm/empresaBaja.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'" /></td>
+					</tr>	
+	<?php		}
+			} else { ?>
+					<tr><td colspan='4'>No hay empresas de baja para esta busqueda</td></tr>
+<?php		}
 		?>
     </table>
     </div>
