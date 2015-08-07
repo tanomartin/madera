@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-08-2015 a las 17:07:48
+-- Tiempo de generación: 07-08-2015 a las 17:15:35
 -- Versión del servidor: 5.6.11-log
--- Versión de PHP: 5.2.17
+-- Versión de PHP: 5.3.27
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -1924,6 +1924,7 @@ CREATE TABLE IF NOT EXISTS `estadocontablecontrol` (
   `remuneracion` decimal(20,2) NOT NULL,
   `obligacion` decimal(20,2) NOT NULL,
   `pagos` decimal(20,2) NOT NULL,
+  `incobrables` decimal(20,2) NOT NULL,
   `diferencia` decimal(20,2) NOT NULL,
   `patharchivo` varchar(100) CHARACTER SET latin1 NOT NULL,
   `discoinicio` int(4) NOT NULL,
@@ -1933,7 +1934,7 @@ CREATE TABLE IF NOT EXISTS `estadocontablecontrol` (
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=31 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=32 ;
 
 -- --------------------------------------------------------
 
