@@ -87,14 +87,14 @@ try{
 	$objPHPExcel->getActiveSheet()->setCellValue('J1', 'Cheque Banco');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(13);
 	$objPHPExcel->getActiveSheet()->setCellValue('K1', 'Cheque Fecha');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(33);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(31);
 	$objPHPExcel->getActiveSheet()->setCellValue('L1', 'Observaciones');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(48);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(28);
 	$objPHPExcel->getActiveSheet()->setCellValue('M1', 'Estado');
 
 	$fila=1;	
 
-	$sqlCuotas="SELECT c.cuit, e.nombre, c.nroacuerdo, a.fechaacuerdo, c.nrocuota, DATE_FORMAT(c.fecharegistro, '%Y-%m-%d') AS fecharegistro, c.montocuota, c.fechacuota, c.chequenro, c.chequebanco, c.chequefecha, c.observaciones, c.fechacancelacion, c.codigobarra, c.fechaacreditacion FROM cuoacuerdosospim c, empresas e, cabacuerdosospim a WHERE c.tipocancelacion IN(1,3) AND c.cuit = e.cuit AND c.cuit = a.cuit AND c.nroacuerdo = a.nroacuerdo ORDER BY c.cuit, c.nroacuerdo, c.nrocuota;";
+	$sqlCuotas="SELECT c.cuit, e.nombre, c.nroacuerdo, a.fechaacuerdo, c.nrocuota, DATE_FORMAT(c.fecharegistro, '%Y-%m-%d') AS fecharegistro, c.montocuota, c.fechacuota, c.chequenro, c.chequebanco, c.chequefecha, c.observaciones, c.fechacancelacion, c.codigobarra, c.fechaacreditacion, c.sistemacancelacion, c.montopagada FROM cuoacuerdosospim c, empresas e, cabacuerdosospim a WHERE c.tipocancelacion IN(1,3) AND c.cuit = e.cuit AND c.cuit = a.cuit AND c.nroacuerdo = a.nroacuerdo ORDER BY c.cuit, c.nroacuerdo, c.nrocuota";
 	$resultCuotas = $dbh->query($sqlCuotas);
 	if ($resultCuotas){
 		foreach ($resultCuotas as $cuotas){
@@ -222,6 +222,7 @@ try{
 	$objPHPExcel->getActiveSheet()->getStyle('L2:L'.$fila)->getAlignment()->setWrapText(true);
 	$objPHPExcel->getActiveSheet()->getStyle('M2:M'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
 	$objPHPExcel->getActiveSheet()->getStyle('M2:M'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('M2:M'.$fila)->getAlignment()->setWrapText(true);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
