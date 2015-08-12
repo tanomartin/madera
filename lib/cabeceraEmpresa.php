@@ -18,7 +18,7 @@
       <td><div align="left"><?php echo $row['nomlocali'];?></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Provincia</strong></div></td>
+      <td><div align="right"><strong>Provincia:</strong></div></td>
       <td><div align="left"><?php echo $row['nomprovin']; ?></div></td>
     </tr>
     <tr>

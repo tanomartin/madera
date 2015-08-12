@@ -1,11 +1,12 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspim.php"); 
+include($libPath."fechas.php"); 
 $cuit= $_POST['cuit'];
 if ($cuit == NULL) {
 	$cuit = $_GET['cuit'];
 }
 
-$sql = "select * from empresas where cuit = $cuit";
+$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
 $result = mysql_query( $sql,$db); 
 $cant = mysql_num_rows($result); 
 if ($cant != 1) {
@@ -50,7 +51,7 @@ A:hover {text-decoration: none;color:#33CCFF }
   <input type="reset" name="volver" value="Volver" onclick="location.href = 'fiscalizacionImpresion.php'" />
   </p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
+	    include($libPath."cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="550" border="1">

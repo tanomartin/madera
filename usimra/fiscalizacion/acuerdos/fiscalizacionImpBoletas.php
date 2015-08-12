@@ -40,8 +40,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 <div align="center">
   <input type="button" name="volver" value="Volver" onclick="location.href = 'fiscalizacionImpresion.php'" />
 	 <?php 	
-	 include($libPath."cabeceraEmpresaConsulta.php");
-	 include($libPath."cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresa.php"); 
 	?>
   <p><strong>Acuerdos Existentes </strong></p>
   <table width="550" border="1">
