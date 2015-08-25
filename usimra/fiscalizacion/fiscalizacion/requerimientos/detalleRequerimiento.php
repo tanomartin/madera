@@ -101,6 +101,9 @@ function validar(formulario) {
 					if ($rowDeta['statusfiscalizacion'] == 'M') {
 						$status = "A.M.";
 					}
+					if ($rowDeta['statusfiscalizacion'] == 'O') {
+						$status = "Deuda OSPIM";
+					}
 					?>
 					<tr>
 						<td width='65'><?php echo $rowDeta['mesfiscalizacion']."-".$ano ?></td>
@@ -116,9 +119,14 @@ function validar(formulario) {
 							if ($rowDeta['statusfiscalizacion'] == 'A') {
 								$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
 								<td><input type="button" value="Ver DDJJ" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
-		<?php			} else { ?>
-								<td>-</td> 
-		<?php		 		}
+			<?php			} else { 
+								if ($rowDeta['statusfiscalizacion'] == 'O') {
+									$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
+									<td><input type="button" value="Ver DDJJ OSPIM" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
+			<?php				} else { ?>
+									<td>-</td> 
+			<?php		 		}
+							}
 						} ?>
 						<td><input type='checkbox' name='<?php echo $id ?>' id='periodos' value='<?php echo $id ?>' /></td> 
 					</tr>

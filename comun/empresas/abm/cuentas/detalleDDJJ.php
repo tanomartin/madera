@@ -1,5 +1,10 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspim.php");
+$pos = strpos($_SERVER['HTTP_REFERER'], 'usimra');
+if ($pos === false) {
+	include($libPath."controlSessionOspim.php");
+} else {
+	include($libPath."controlSessionUsimra.php");
+}
 include($libPath."fechas.php");
 
 $cuit=$_GET['cuit'];
@@ -20,8 +25,17 @@ $sqlDdjj = "select *
 //print($sqlDdjj );
 $resDdjj = mysql_query($sqlDdjj,$db); 
 $rowDdjj = mysql_fetch_array($resDdjj); 
-
 //var_dump($rowDdjj);
+
+$sqlDdjjDet = "select *
+from detddjjospim
+where
+cuit = $cuit and
+anoddjj = $anio and
+mesddjj = $mes";
+
+$resDdjjDet = mysql_query($sqlDdjjDet,$db);
+
 
 ?>
 
@@ -39,25 +53,38 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <table width="774" border="1">
+  <table width="800" border="1">
     <tr>
-      <td width="242">C.U.I.T.: <b><?php echo $cuit ?></b></td>
-      <td width="516">Nombre: <b><?php echo $row['nombre'] ?></b></td>
+      <td width="300">C.U.I.T.: <b><?php echo $cuit ?></b></td>
+      <td width="500">Nombre: <b><?php echo $row['nombre'] ?></b></td>
     </tr>
 	 <tr>
       <td colspan="2">Peridodo: <b><?php echo $mes."-".$anio ?></b></td>
 	</tr>
   </table>
   <p><strong>Infomación DDJJ</strong></p>
-   <table width="363" border="1">
+   <table width="400" border="1">
     <tr>
-      <td width="225">Total De Personal:</td>
-      <td width="122"><div align="center"><b><?php echo $rowDdjj['totalpersonal'] ?></b></div></td>
+      <td>Total De Personal:</td>
+      <td><div align="center"><b><?php echo $rowDdjj['totalpersonal'] ?></b></div></td>
     </tr>
 	 <tr>
-	   <td width="225">Total Remuneraci&oacute;n Declarada: </td>
-	  <td width="122"><div align="center"><b><?php echo number_format($rowDdjj['totalremundeclarada'],2,',','.')?></b></div></td>
+	  <td>Total Remuneraci&oacute;n Declarada: </td>
+	  <td><div align="center"><b><?php echo number_format($rowDdjj['totalremundeclarada'],2,',','.')?></b></div></td>
 	 </tr>
+  </table>
+   <p><strong>Detalle DDJJ</strong></p>
+  <table width="400" border="1">
+    <tr>
+      <th>C.U.I.L.</th>
+      <th>Remuneracion</th>
+    </tr>
+	 <?php while ($rowDetDDJJ = mysql_fetch_array($resDdjjDet)) {?>
+		 <tr>
+		  <td align="center"><?php echo $rowDetDDJJ['cuil'] ?></td>
+		  <td><div align="center"><b><?php echo number_format($rowDetDDJJ['remundeclarada'],2,',','.')?></b></div></td>
+		 </tr>
+	<?php } ?>
   </table>
   
 </div>

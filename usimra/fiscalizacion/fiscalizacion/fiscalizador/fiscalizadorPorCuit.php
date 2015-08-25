@@ -122,7 +122,7 @@ function encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin
 	return($arrayRequerimientos);
 }
 
-function encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, &$arrayPagos) {
+function encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	$sqlDdjj = "select perano, permes, remune, totapo, recarg, nfilas from ddjjusimra where nrcuit = $cuit and nrcuil = 99999999999 and permes < 13 and ((perano > $anoinicio and perano <= $anofin) or (perano = $anoinicio and permes >= $mesinicio)) order by perano, permes, id ASC";
 	//print($sqlDdjj);
 	$resDdjj = mysql_query($sqlDdjj,$db);
@@ -137,6 +137,21 @@ function encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, &$a
 		return 0;
 	}
 	return($arrayDdjj);
+}
+
+function encuentroDdjjOspim($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
+	$sqlDdjjOspim = "select anoddjj, mesddjj, sum(totalremundeclarada + totalremundecreto) as remu, totalpersonal from cabddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj <= $anofin) or (anoddjj = $anoinicio and mesddjj >= $mesinicio)) group by anoddjj, mesddjj order by anoddjj, mesddjj";
+	$resDdjjOspim = mysql_query($sqlDdjjOspim,$db);
+	$canDdjjOspim = mysql_num_rows($resDdjjOspim);
+	if($canDdjjOspim > 0) {
+		while ($rowDdjjOspim = mysql_fetch_assoc($resDdjjOspim)) {
+			$id=$rowDdjjOspim['anoddjj'].$rowDdjjOspim['mesddjj'];
+			$arrayDdjjOspim[$id] = array('anio' => (int)$rowDdjjOspim['anoddjj'], 'mes' => (int)$rowDdjjOspim['mesddjj'], 'remu' => (float)$rowDdjjOspim['remu'], 'totper' => (int)$rowDdjjOspim['totalpersonal'], 'estado' => 'O');
+		}
+	} else {
+		return 0;
+	}
+	return($arrayDdjjOspim);
 }
 
 /****************************************************************************************/
@@ -178,10 +193,18 @@ if ($arrayRequerimientos == 0){
 //var_dump($arrayRequerimientos);
  
 //ADEUDADO (ESTADO A)
-$arrayDdjj = encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, $arrayPagos);
+$arrayDdjj = encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
 if ($arrayDdjj == 0){ 
 	$arrayDdjj = array();
 } 
+//var_dump($arrayDdjj);
+//var_dump($arrayPagos);
+
+//ADEUDADO (ESTADO O)
+$arrayDdjjOspim = encuentroDdjjOspim($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+if ($arrayDdjjOspim == 0){
+	$arrayDdjjOspim = array();
+}
 //var_dump($arrayDdjj);
 //var_dump($arrayPagos);
 
@@ -220,7 +243,11 @@ while($ano<=$anofin) {
 					if (array_key_exists($idArray, $arrayDdjj)) {
 						$arrayFinal[$idArray] =  $arrayDdjj[$idArray];
 					} else {
-						$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'S');
+						if (array_key_exists($idArray, $arrayDdjjOspim)) {
+							$arrayFinal[$idArray] =  $arrayDdjjOspim[$idArray];
+						} else {
+							$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'S');
+						}
 					}
 				}
 			} else {
