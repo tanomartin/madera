@@ -252,7 +252,7 @@ A:hover {text-decoration: none;color:#00FFFF }
      <input type="button" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'"/>
    </span></p>
    <p class="Estilo2">Resultado del Actualizacion Intranet U.S.I.M.R.A. </p>
-   <p class="Estilo2">Delegación <?php echo $delegacion ?> - Fecha <?php echo invertirFecha($today) ?> </p>
+   <p class="Estilo2">Fecha <?php echo invertirFecha($today) ?> </p>
   <p class="Estilo2" style="color:#0000FF">Tiempo de Proceso: <?php echo $enMintuos ?> Minutos</p>
   <p class="Estilo2">Procesos</p>
    <table border="1" align="center" width="800">
@@ -297,7 +297,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <?php }
 
 	if ($resultados[5]['estado'] == "Error" or $resultados[6]['estado'] == "Error" or $resultados[7]['estado'] == "Error") { ?>
-	  <p><input type="reset" name="volver2" value="Forzar Cierre Proceso" onclick="location.href = 'guardarArchivosBkup.php?delega=<?php echo $delegacion ?>'" /></p
+	  <p><input type="reset" name="volver2" value="Forzar Cierre Proceso" onclick="location.href = 'guardarArchivosBkup.php'" /></p
 ><?php	} ?>
 	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>

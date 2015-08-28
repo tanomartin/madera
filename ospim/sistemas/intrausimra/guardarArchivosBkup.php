@@ -2,7 +2,6 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 include($libPath."claves.php"); 
-$delega = $_GET['delega'];
 $today = date('Y-m-d');
 $carpetames = date("YmdGis");
 
@@ -13,13 +12,6 @@ if(!file_exists($directorioBK)) {
 } else {
 	echo "la ruta: ".$directorioBK." ya existe<br>";
 }
-print($directorioBK."<br><br>");
-/*if(strcmp("localhost",$maquina)==0) {
-	$pathBkup=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/intraospim/backupintraospim/$carpetames/$delega";
-} else {
-	$pathBkup="/home/sistemas/IntraOspim/bkup/$carpetames";
-}*/
-
 $pathDirectorio = "archivos/";
 $directorio = opendir($pathDirectorio);
 $error = 0;
