@@ -35,13 +35,51 @@ s.cuit = $cuit and
 s.anopago = $anio and 
 s.mespago = $mes";
 
-$resPagos = mysql_query($sqlPagos,$db); 
+$resPagos = mysql_query($sqlPagos,$db);
 $i = 0;
 $totalPagado = 0;
 while ($rowPagos = mysql_fetch_assoc($resPagos)) {
 	$pagos[$i] = $rowPagos;
 	$totalPagado = (float) ($totalPagado + $pagos[$i]['montopagado']);
 	$i = $i + 1;
+}
+
+$sqlExtraordinarioMes = "select mes from extraordinariosusimra where anio = $anio and relacionmes = $mes";
+$resExtraordinarioMes = mysql_query($sqlExtraordinarioMes,$db);
+$canExtraordinarioMes = mysql_num_rows($resExtraordinarioMes);
+if ($canExtraordinarioMes > 0) {
+	$rowExtraordinarioMes = mysql_fetch_assoc($resExtraordinarioMes);
+	$mesExtra = $rowExtraordinarioMes['mes'];
+	$sqlPagosNoRem = "select s.*, ap6.importe as importeap6, ap1.importe as importeap1, ap15.importe as importeap15
+						from seguvidausimra s
+						LEFT OUTER JOIN
+						apor060usimra ap6 on
+						s.cuit = ap6.cuit and
+						s.anopago = ap6.anopago and
+						s.mespago = ap6.mespago and
+						s.nropago = ap6.nropago
+						LEFT OUTER JOIN
+						apor100usimra ap1 on
+						s.cuit = ap1.cuit and
+						s.anopago = ap1.anopago and
+						s.mespago = ap1.mespago and
+						s.nropago = ap1.nropago
+						LEFT OUTER JOIN
+						apor150usimra ap15 on
+						s.cuit = ap15.cuit and
+						s.anopago = ap15.anopago and
+						s.mespago = ap15.mespago and
+						s.nropago = ap15.nropago
+						where 
+						s.cuit = $cuit and 
+						s.anopago = $anio and 
+						s.mespago = $mesExtra";
+	$resPagosNoRem = mysql_query($sqlPagosNoRem,$db);
+	while ($rowPagosNoRem = mysql_fetch_assoc($resPagosNoRem)) {
+		$pagos[$i] = $rowPagosNoRem;
+		$totalPagado = (float) ($totalPagado + $pagos[$i]['montopagado']);
+		$i = $i + 1;
+	}
 }
 
 $sqlDetDDJJ = "SELECT * FROM detddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
@@ -71,14 +109,12 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="242">C.U.I.T.: <b><?php echo $cuit ?></b></td>
       <td width="516">Nombre: <b><?php echo $row['nombre'] ?></b></td>
     </tr>
-	 <tr>
-      <td colspan="2">Peridodo: <b><?php echo $mes."-".$anio ?></b></td>
-	</tr>
   </table>
   <p><strong>Detalles del Pago</strong></p>
   <table border="1">
     <tr>
       <th>Nro. Pago</th>
+      <th>Periodo</th>
       <th>Fecha de Pago </th>
 	  <th>Personal</th>
 	  <th>Remuneraci&oacute;n</th>
@@ -95,6 +131,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		$nroPago = $n+1; ?>
 		<tr align='center'>
 		<td><?php echo $nroPago ?></td>
+		<td><?php echo $pagos[$n]['mespago']."-".$pagos[$n]['anopago'] ?></td>
 		<td><?php echo invertirFecha($pagos[$n]['fechapago']) ?></td>
 		<td><?php echo $pagos[$n]['cantidadpersonal'] ?></td>
 		<td align='right'><?php echo number_format($pagos[$n]['remuneraciones'],2,',','.') ?></td>
@@ -108,7 +145,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		</tr>
 <?php }?>
 	<tr>
-      <td colspan="8"><div align="right"><strong>TOTAL</strong></div></td>
+      <td colspan="9"><div align="right"><strong>TOTAL</strong></div></td>
 	  <td><div align='right'><b><?php echo number_format($totalPagado,2,',','.') ?></b></div></td>
 	<td colspan="2"></td>
     </tr>

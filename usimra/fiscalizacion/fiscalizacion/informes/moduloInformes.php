@@ -27,25 +27,26 @@ A:hover {text-decoration: none;color:#00FFFF }
 	    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" />
       </p>
 	  <p><span class="Estilo1">Men&uacute; Consultas </span></p>
-	  <table width="626" border="3">
+	  <table width="600" border="3">
         <tr>
           <td width="200"><p align="center">Aportes</p>
               <p align="center"><a class="enlace" href="aportes/aportesCuit.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p align="center">&nbsp;</p></td>
-          <td width="200"><p align="center">DDJJ</p>
+          <td width="200"><p align="center">DDJJs</p>
               <p align="center"><a class="enlace" href="ddjj/ddjjCuit.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
             <p align="center">&nbsp;</p></td>
-          <td width="200"><p align="center">Requerimientos </p>
-              <p align="center"><a class="enlace" href="requerimientos/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-            <p align="center">&nbsp;</p></td>
+            <td width="200"><p align="center">Cuotas Excepcionales</p>
+              <p align="center"><a class="enlace" href="extraordinarias/extraordinariasCuit.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+              <p>&nbsp;</p></td>
         </tr>
         <tr>
-          <td><p align="center">&nbsp;</p>
-              <p align="center">&nbsp;</p></td>
-          <td><p align="center">Liquidaciones</p>
+           <td width="200"><p align="center">Requerimientos </p>
+              <p align="center"><a class="enlace" href="requerimientos/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+            <p align="center">&nbsp;</p></td>
+          <td width="200"><p align="center">Liquidaciones</p>
               <p align="center"><a class="enlace" href="liquidaciones/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-            <p>&nbsp;</p></td>
-          <td>&nbsp;</td>
+              <p>&nbsp;</p></td>
+          <td width="200">&nbsp;</td>
         </tr>
       </table>
 	  </div>

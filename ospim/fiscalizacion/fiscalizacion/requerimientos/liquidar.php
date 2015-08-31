@@ -15,39 +15,6 @@ function agregaGuiones($cuit) {
 	return $conguiones;
 }
 
-function compeltarNroReq($nroreq) {
-	if ($nroreq<10) {
-		$nrocompleto = "0000000".$nroreq;
-	} else {
-		if ($nroreq<100) {
-			$nrocompleto = "000000".$nroreq;
-		} else {
-			if ($nroreq<1000) {
-				$nrocompleto = "00000".$nroreq;
-			} else {
-				if ($nroreq<10000) {
-					$nrocompleto = "0000".$nroreq;
-				} else {
-					if ($nroreq<100000) {
-						$nrocompleto = "000".$nroreq;
-					} else {
-						if ($nroreq<1000000) {
-							$nrocompleto = "00".$nroreq;
-						} else {
-							if ($nroreq<10000000) {
-								$nrocompleto = "0".$nroreq;
-							} else {
-								$nrocompleto = $nroreq;
-							}
-						}
-					}
-				}
-			}
-		} 
-	} 
-	return($nrocompleto);
-}
-
 function encuentroPagos($cuit, $anoInicioActivida, $mesInicioActividad, $anoInicioDeuda, $mesInicioDeuda, $db) {
 	if ($anoInicioActivida == $anoInicioDeuda) {
 		$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and (anopago = $anoInicioDeuda and mespago < $mesInicioDeuda and mespago >= $mesInicioActividad) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
@@ -569,7 +536,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	
 	//CREAMOS EL ARCHIVO DE DEUDA
 	$ultanoArch = substr ($ultano,2,2);
-	$nroreqCompleto = compeltarNroReq($nroreq); 
+	$nroreqCompleto = str_pad($nroreq,8,'0',STR_PAD_LEFT);
 	$nombreArc = $cuit.$ultmes.$ultanoArch."O".$nroreqCompleto.".txt";
 	$nombreArcExc = $cuit.$ultmes.$ultanoArch."O".$nroreqCompleto.".xls";
 	//print("ARCHIVO: ".$nombreArc."<br><br>");

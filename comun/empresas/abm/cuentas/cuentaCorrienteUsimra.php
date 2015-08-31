@@ -143,6 +143,23 @@ function encuentroPagos($db) {
 	}
 }
 
+function encuentroPagosExtraor($db, &$arrayPagos) {
+	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+	$sqlPagosExt = "SELECT s.anopago, s.mespago, e.relacionmes, s.fechapago, s.remuneraciones, s.montopagado
+					FROM seguvidausimra s, extraordinariosusimra e
+					WHERE s.cuit = $cuit and s.anopago = e.anio and s.mespago = e.mes and
+					 ((s.anopago > $anoinicio and s.anopago <= $anofin) or (s.anopago = $anoinicio and e.relacionmes >= $mesinicio))
+					group by anopago, mespago, fechapago";
+	$resPagosExt = mysql_query($sqlPagosExt,$db);
+	$canPagosExt = mysql_num_rows($resPagosExt);
+	if($canPagosExt > 0) {
+		while ($rowPagosExt = mysql_fetch_assoc($resPagosExt)) {
+			$id=$rowPagosExt['anopago'].$rowPagosExt['relacionmes'];
+			$arrayPagos[$id]['estado'] = $arrayPagos[$id]['estado']." | NR";
+		}
+	}
+}
+
 function estado($ano, $me, $db) {
 		global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
 		//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
@@ -232,7 +249,7 @@ function imprimeTabla($periodo) {
 	$estado = $periodo['estado'];
 	$ano = $periodo['anio'];
 	$me = $periodo['mes'];
-	if ($estado == 'P.F.T.' or $estado == 'PAGO' or $estado == 'P.M.') {
+	if ($estado == 'P.F.T.' or $estado == 'PAGO' or $estado == 'P.M.' or $estado == 'P.F.T. | NR' or $estado == 'PAGO | NR' or $estado == 'P.M. | NR') {
 		print ("<td><a href=javascript:abrirInfo('detallePagosUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
 	} else {
 		if ($estado == 'NO PAGO') {
@@ -275,7 +292,7 @@ function imprimeTabla($periodo) {
    		<p><strong>Fecha Baja Empresa: <?php echo invertirFecha($fechaBaja) ?></strong></p>
 	<?php } ?>	
 	
-<table width="1132" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
+<table width="1132" border="1" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
   <tr>
     <td  width='40' rowspan="2"><span class="Estilo6">A&Ntilde;OS</span></td>
     <td colspan="12"><span class="Estilo6">MESES</span></td>
@@ -297,13 +314,14 @@ function imprimeTabla($periodo) {
 <?php
 
 $arrayPagos = encuentroPagos($db);
+encuentroPagosExtraor($db, $arrayPagos);
 if ($arrayPagos==0){ 
 	$arrayPagos = array();
 }
-while($ano<=$anofin) {
-  	print("<tr>");
-  	print("<td><strong>".$ano."</strong></td>");
-	for ($i=1;$i<13;$i++){
+while($ano<=$anofin) { ?>
+  	<tr>
+  		<td><strong><?php echo $ano ?></strong></td>
+<?php	for ($i=1;$i<13;$i++){
 		$idArray = $ano.$i;
 		if (!array_key_exists($idArray, $arrayPagos)) {
 			$resultado = estado($ano, $i, $db);
@@ -318,12 +336,10 @@ while($ano<=$anofin) {
 			}
 		}
 		imprimeTabla($arrayPagos[$idArray]);
-	}
-	print("</tr>");
-	$ano++;
-}
-
-?>
+	} ?>
+	</tr>
+<?php 	$ano++;
+} ?>
 </table>
 <br>
 <table width="1130" border="0" style="font-size:12px">
@@ -331,21 +347,60 @@ while($ano<=$anofin) {
   	<td>*PAGO = PAGO</td>
     <td>*P.F.T. = PAGO FUERA DE TERMINO </td>
     <td>*P.M.. = PAGO MENOR</td>
-    <td>*P. ACUER. =  PAGO POR ACUERDO </td>
+    <td>*X | NR = [PAGO | P.F.T. | P.M ] CON NO REMUNERATIVO</td>
   </tr>
   <tr>
+  	<td>*P. ACUER. =  PAGO POR ACUERDO </td>
   	<td>*P. DIF. (Per. Pago) = PAGO EN PERIODO POSTERIOR </td>
   	<td>*ACUER. =  EN ACUERDO</td>
     <td>*NO PAGO =  NO PAGO CON DDJJ</td>
-	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
   </tr>
   <tr>
+  	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
   	<td>*REQ. (nro. req.) = FISCALIZADO</td>
   	<td>*J.EJEC (nro. orden) = EN JUICIO EJECUCI&Oacute;N </td>
     <td>*J.CONV (nro. orden) = EN JUICIO CONVOCATORIA </td>
-    <td>*J.QUIEB (nro. orden) = EN JUICIO QUIEBRA </td>
+  </tr>
+  <tr>
+  	 <td>*J.QUIEB (nro. orden) = EN JUICIO QUIEBRA </td>
+  	 <td></td>
+  	 <td></td>
+  	 <td></td>
   </tr>
 </table>
+
+<?php 
+	$sqlCuotasExcpecional = "SELECT * FROM  cuotaextraordinariausimra c, extraordinariosusimra e WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago  "; 
+	$resCuotasExcpecional = mysql_query($sqlCuotasExcpecional,$db);
+	$canCuotasExcpecional = mysql_num_rows($resCuotasExcpecional);
+?>
+
+<p><strong>Cuotas Excepcionales </strong></p>
+<table width="800" border="1" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
+	<tr>
+		<th>Cuota</th>
+		<th>Fecha</th>
+		<th>Personal</th>
+		<th>Monto</th>
+		<th>Recargo</th>
+		<th>Total</th>
+	<tr>
+	<?php  if ($canCuotasExcpecional > 0) { 
+				while ($rowCuotasExcpecional = mysql_fetch_assoc($resCuotasExcpecional)) { ?>
+					<tr>
+						<td><?php echo $rowCuotasExcpecional['relacionmes']."-". $rowCuotasExcpecional['anio']." | ".$rowCuotasExcpecional['mensaje'] ?></td>
+						<td><?php echo invertirfecha($rowCuotasExcpecional['fechapago']) ?></td>
+						<td><?php echo $rowCuotasExcpecional['cantidadaportantes'] ?></td>
+						<td><?php echo $rowCuotasExcpecional['totalaporte'] ?></td>
+						<td><?php echo $rowCuotasExcpecional['montorecargo'] ?></td>
+						<td><?php echo $rowCuotasExcpecional['montopagado'] ?></td>
+					</tr>
+		<?php  	} 
+		   } else { ?>
+				<tr><td colspan=6 align="center"><b>No tiene pagos de Cuotas Excepcionales</b></td></tr>
+	<?php  } ?>
+</table>
+
 <br>
 <input type="button" class="nover" name="imprimir" value="Imprimir" onClick="window.print();" />
 </div>
