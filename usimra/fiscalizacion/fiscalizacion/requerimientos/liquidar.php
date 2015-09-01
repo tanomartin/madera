@@ -172,37 +172,35 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	$arrayDDJJ = array();
 	$resDDJJ = mysql_query($sqlDDJJ,$db);
-	$indexddjj = 0;
 	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
 		$mes = str_pad($rowDDJJ['mesddjj'],2,'0',STR_PAD_LEFT);
 		$id = $rowDDJJ['anoddjj'].$mes;
-		$arrayDDJJ[$indexddjj] = array ('origen' =>  1, 'datos' => $rowDDJJ, 'id' => $id);
-		$indexddjj++;
+		$idArray = $rowDDJJ['anoddjj'].$mes.$rowDDJJ['cuil'];
+		$arrayDDJJ[$idArray] = array ('origen' =>  1, 'datos' => $rowDDJJ, 'id' => $id);
 	}
 	
 	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, remundeclarada from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	$resDDJJOspim = mysql_query($sqlDDJJOspim,$db);
-	$indexddjjOspim = 0;
 	while ($rowDDJJOspim = mysql_fetch_assoc($resDDJJOspim)) {
 		$mes = str_pad($rowDDJJOspim['mesddjj'],2,'0',STR_PAD_LEFT);
-		$id = $rowDDJJOspim['anoddjj'].$mes;
-		if(!in_array($id,$arrayDDJJ)) { 
-			$arrayDDJJ[$indexddjj] = array ('origen' =>  2, 'datos' => $rowDDJJOspim, 'id' => $id);
-			$indexddjj++;
+		$id = $rowDDJJ['anoddjj'].$mes;
+		$idArray = $rowDDJJOspim['anoddjj'].$mes.$rowDDJJOspim['cuil'];
+		if (!array_key_exists($idArray, $arrayDDJJ)) {
+			$arrayDDJJ[$idArray] = array ('origen' =>  2, 'datos' => $rowDDJJOspim, 'id' => $id);
 		}
 	}
 	
+	sort($arrayDDJJ);
+	
 	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, d.remuneraciones 
 						from detddjjusimra d, extraordinariosusimra e
-						where d.cuit = $cuit and d.anoddjj > $anoinicio and d.anoddjj <= $ultano and d.mesddjj > 12 and d.anoddjj = e.anio and d.mesddjj = e.relacionmes"; 
+						where d.cuit = $cuit and d.anoddjj > $anoinicio and d.anoddjj <= $ultano and d.mesddjj > 12 and d.anoddjj = e.anio and d.mesddjj = e.mes"; 
 	$resDDJJNR = mysql_query($sqlDDJJNR,$db);
 	$arrayNR = array();
-	$indexNR = 0;
 	while ($rowDDJJNR = mysql_fetch_assoc($resDDJJNR)) {
 		$mes = str_pad($rowDDJJNR['relacionmes'],2,'0',STR_PAD_LEFT);
 		$id = $rowDDJJNR['cuil'].$rowDDJJNR['anoddjj'].$mes;
-		$arrayNR[$indexNR] =  array ('datos' => $rowDDJJNR, 'id' => $id);;
-		$indexNR++;
+		$arrayNR[$id] =  array ('datos' => $rowDDJJNR);;
 	}
 	
 	
@@ -215,21 +213,21 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	//var_dump($idBuscar);
 	
 	$c = 0;
-	for ($i=0; $i < sizeof($arrayDDJJ); $i++) {
-		$id = $arrayDDJJ[$i]['id'];
+	foreach($arrayDDJJ as $ddjj) {
+		$id = $ddjj['id'];
 		if (array_key_exists($id, $idBuscar)) {
-			$mes = str_pad($arrayDDJJ[$i]['datos']['mesddjj'],2,'0',STR_PAD_LEFT);
-			$ano = $arrayDDJJ[$i]['datos']['anoddjj'];
-			$idNR = $arrayDDJJ[$i]['datos']['cuil'].$ano.$mes;
+			$mes = str_pad($ddjj['datos']['mesddjj'],2,'0',STR_PAD_LEFT);
+			$ano = $ddjj['datos']['anoddjj'];
+			$idNR = $ddjj['datos']['cuil'].$ano.$mes;
 			
 			if (array_key_exists($idNR, $arrayNR)) {
-				$norem = str_pad($arrayNR[$id]['datos']['remuneraciones'],12,'0',STR_PAD_LEFT);
+				$norem = str_pad($arrayNR[$idNR]['datos']['remuneraciones'],12,'0',STR_PAD_LEFT);
 			}			
 			$norem = number_format($norem,2,',','');
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
-			$remuDecl = number_format((float)$arrayDDJJ[$i]['datos']['remuneraciones'],2,',','');
+			$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');
 			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
-			$cuerpoCUIL[$c] = "01/".$mes."/".$ano."|".agregaGuiones($arrayDDJJ[$i]['datos']['cuil'])."|".$remuDecl."|".$norem."|".$arrayDDJJ[$i]['origen'];
+			$cuerpoCUIL[$c] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen'];
 			$c++;
 		}
 	}
