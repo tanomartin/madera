@@ -174,12 +174,8 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	print("INICIO ANO: ".$anoinicio."<br>");
 	print("FIN MES: ".$ultmes."<br>");
 	print("FIN ANO: ".$ultano."<br>");*/
-	
-	if ($anoinicio == $mesinicio) {
-		$sqlDDJJ = "select anoddjj, mesddjj, cuil, remundeclarada, adherentes from detddjjospim where cuit = $cuit and (anoddjj = $anoInicioDeuda and mesddjj <= $ultmes and mesddjj >= $mesinicio)";
-	} else {
-		$sqlDDJJ = "select anoddjj, mesddjj, cuil, remundeclarada, adherentes from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
-	}
+
+	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remundeclarada, adherentes from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	
 	//print($sqlDDJJ."<br>");
 	$arrayDDJJ = array();

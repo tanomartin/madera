@@ -168,34 +168,43 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
 	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
 	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
-	
-	/*print("CUIT: ".$cuit."<br>");
-	print("INICIO MES: ".$mesinicio."<br>");
-	print("INICIO ANO: ".$anoinicio."<br>");
-	print("FIN MES: ".$ultmes."<br>");
-	print("FIN ANO: ".$ultano."<br>");*/
-	
-	if ($anoinicio == $mesinicio) {
-		$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra where cuit = $cuit and (anoddjj = $anoInicioDeuda and mesddjj <= $ultmes and mesddjj >= $mesinicio)";
-	} else {
-		$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
-	}
-	
-	//print($sqlDDJJ."<br>");
+		
+	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	$arrayDDJJ = array();
 	$resDDJJ = mysql_query($sqlDDJJ,$db);
-	$b = 0;
+	$indexddjj = 0;
 	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
-		if ($rowDDJJ['mesddjj'] < 10) {
-			$mes = "0".$rowDDJJ['mesddjj'];
-		} else {
-			$mes = $rowDDJJ['mesddjj'];
-		}
+		$mes = str_pad($rowDDJJ['mesddjj'],2,'0',STR_PAD_LEFT);
 		$id = $rowDDJJ['anoddjj'].$mes;
-		$arrayDDJJ[$b] = array ('id' =>  $id, 'datos' => $rowDDJJ);
-		$b++;
+		$arrayDDJJ[$indexddjj] = array ('origen' =>  1, 'datos' => $rowDDJJ, 'id' => $id);
+		$indexddjj++;
 	}
-	//var_dump($arrayDDJJ);
+	
+	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, remundeclarada from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
+	$resDDJJOspim = mysql_query($sqlDDJJOspim,$db);
+	$indexddjjOspim = 0;
+	while ($rowDDJJOspim = mysql_fetch_assoc($resDDJJOspim)) {
+		$mes = str_pad($rowDDJJOspim['mesddjj'],2,'0',STR_PAD_LEFT);
+		$id = $rowDDJJOspim['anoddjj'].$mes;
+		if(!in_array($id,$arrayDDJJ)) { 
+			$arrayDDJJ[$indexddjj] = array ('origen' =>  2, 'datos' => $rowDDJJOspim, 'id' => $id);
+			$indexddjj++;
+		}
+	}
+	
+	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, d.remuneraciones 
+						from detddjjusimra d, extraordinariosusimra e
+						where d.cuit = $cuit and d.anoddjj > $anoinicio and d.anoddjj <= $ultano and d.mesddjj > 12 and d.anoddjj = e.anio and d.mesddjj = e.relacionmes"; 
+	$resDDJJNR = mysql_query($sqlDDJJNR,$db);
+	$arrayNR = array();
+	$indexNR = 0;
+	while ($rowDDJJNR = mysql_fetch_assoc($resDDJJNR)) {
+		$mes = str_pad($rowDDJJNR['relacionmes'],2,'0',STR_PAD_LEFT);
+		$id = $rowDDJJNR['cuil'].$rowDDJJNR['anoddjj'].$mes;
+		$arrayNR[$indexNR] =  array ('datos' => $rowDDJJNR, 'id' => $id);;
+		$indexNR++;
+	}
+	
 	
 	for ($i=0; $i < sizeof($cuerpo); $i++) {
 		$fecha = explode("|",$cuerpo[$i]);
@@ -209,22 +218,25 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	for ($i=0; $i < sizeof($arrayDDJJ); $i++) {
 		$id = $arrayDDJJ[$i]['id'];
 		if (array_key_exists($id, $idBuscar)) {
-			if ($arrayDDJJ[$i]['datos']['mesddjj'] < 10) {
-				$mes = "0".$arrayDDJJ[$i]['datos']['mesddjj'];
-			} else {
-				$mes = $arrayDDJJ[$i]['datos']['mesddjj'];
-			}
+			$mes = str_pad($arrayDDJJ[$i]['datos']['mesddjj'],2,'0',STR_PAD_LEFT);
+			$ano = $arrayDDJJ[$i]['datos']['anoddjj'];
+			$idNR = $arrayDDJJ[$i]['datos']['cuil'].$ano.$mes;
+			
+			if (array_key_exists($idNR, $arrayNR)) {
+				$norem = str_pad($arrayNR[$id]['datos']['remuneraciones'],12,'0',STR_PAD_LEFT);
+			}			
+			$norem = number_format($norem,2,',','');
+			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
 			$remuDecl = number_format((float)$arrayDDJJ[$i]['datos']['remuneraciones'],2,',','');
 			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
-			$cantAdhe = 0;
-			$cuerpoCUIL[$c] = "01/".$mes."/".$arrayDDJJ[$i]['datos']['anoddjj']."|".agregaGuiones($arrayDDJJ[$i]['datos']['cuil'])."|".$remuDecl."|".$cantAdhe;
+			$cuerpoCUIL[$c] = "01/".$mes."/".$ano."|".agregaGuiones($arrayDDJJ[$i]['datos']['cuil'])."|".$remuDecl."|".$norem."|".$arrayDDJJ[$i]['origen'];
 			$c++;
 		}
 	}
 	
 	//CREAMOS EL ARCHIVO
 	$ultanoArch = substr ($ultano,2,2);
-	$nombreArcCUIL = $cuit.$ultmes.$ultanoArch.'D'.$nroreqArc.".txt";
+	$nombreArcCUIL = $cuit.$ultmes.$ultanoArch.'S'.$nroreqArc.".txt";
 	//print("ARCHIVO: ".$nombreArc."<br><br>");
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina) == 0) {
@@ -233,8 +245,6 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArcCUIL;
 	}
 	//print($primeraLinea."<br>");
-	//solo para probar y eliminar lo recien hecho... en producción NO...
-	//unlink($direArc);
 	//****************
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de detalle de CUILES en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
 	for ($i=0; $i < sizeof($cuerpoCUIL); $i++) {
@@ -368,9 +378,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$telefono = $rowJuris['ddn'].$rowJuris['telefono'];
 		$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
 	}
-	$deuda = deudaAnterior($cuit, $db);
+	//$deuda = deudaAnterior($cuit, $db);
 	
-	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono."|".$deuda;
+	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono;
 	//**********************************************************************************************************
 	
 	//ACUERDOS CAIDOS
@@ -472,7 +482,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	fclose($ar);
 	
 	//**********************************
-	//creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
+	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
 	
 	//Grabamos cabecera de liquidación
 	grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
