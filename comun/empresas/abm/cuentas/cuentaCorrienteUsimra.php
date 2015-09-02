@@ -35,6 +35,13 @@ function abrirInfo(dire) {
 	a= window.open(dire,"InfoPeriodoCuentaCorrienteEmpresa",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
+
+function abrirInfoCuotas(dire) {
+	a= window.open(dire,"InfoCuotasCuentaCorrienteEmpresa",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+}
+
+
 </script>
 </head>
 <?php
@@ -370,7 +377,7 @@ while($ano<=$anofin) { ?>
 </table>
 
 <?php 
-	$sqlCuotasExcpecional = "SELECT * FROM  cuotaextraordinariausimra c, extraordinariosusimra e WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago  "; 
+	$sqlCuotasExcpecional = "SELECT * FROM  cuotaextraordinariausimra c, extraordinariosusimra e WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago"; 
 	$resCuotasExcpecional = mysql_query($sqlCuotasExcpecional,$db);
 	$canCuotasExcpecional = mysql_num_rows($resCuotasExcpecional);
 ?>
@@ -384,9 +391,11 @@ while($ano<=$anofin) { ?>
 		<th>Monto</th>
 		<th>Recargo</th>
 		<th>Total</th>
+		<th>+Info</th>
 	<tr>
 	<?php  if ($canCuotasExcpecional > 0) { 
-				while ($rowCuotasExcpecional = mysql_fetch_assoc($resCuotasExcpecional)) { ?>
+				while ($rowCuotasExcpecional = mysql_fetch_assoc($resCuotasExcpecional)) { 
+					dire ?>
 					<tr>
 						<td><?php echo $rowCuotasExcpecional['relacionmes']."-". $rowCuotasExcpecional['anio']." | ".$rowCuotasExcpecional['mensaje'] ?></td>
 						<td><?php echo invertirfecha($rowCuotasExcpecional['fechapago']) ?></td>
@@ -394,10 +403,11 @@ while($ano<=$anofin) { ?>
 						<td><?php echo $rowCuotasExcpecional['totalaporte'] ?></td>
 						<td><?php echo $rowCuotasExcpecional['montorecargo'] ?></td>
 						<td><?php echo $rowCuotasExcpecional['montopagado'] ?></td>
+						<td><input type="button" value="DDJJ" onclick='javascript:abrirInfoCuotas("detalleCuotaUsimra.php?cuit=<?php echo $cuit?>&anio=<?php echo $rowCuotasExcpecional['mes'] ?>&mes=<?php echo $rowCuotasExcpecional['anio'] ?>")'/></td>
 					</tr>
 		<?php  	} 
 		   } else { ?>
-				<tr><td colspan=6 align="center"><b>No tiene pagos de Cuotas Excepcionales</b></td></tr>
+				<tr><td colspan=7 align="center"><b>No tiene pagos de Cuotas Excepcionales</b></td></tr>
 	<?php  } ?>
 </table>
 

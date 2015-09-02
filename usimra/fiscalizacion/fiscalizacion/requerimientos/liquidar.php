@@ -36,7 +36,6 @@ function encuentroPagos($cuit, $anoInicioActivida, $mesInicioActividad, $anoInic
 
 function encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	$sqlAcuerdos = "select anoacuerdo, mesacuerdo from detacuerdosusimra where cuit = $cuit and ((anoacuerdo > $anoinicio and anoacuerdo <= $anofin) or (anoacuerdo = $anoinicio and mesacuerdo >= $mesinicio)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
-	//print($sqlAcuerdos);
 	$resAcuerdos = mysql_query($sqlAcuerdos,$db);
 	$canAcuerdos = mysql_num_rows($resAcuerdos); 
 	if($canAcuerdos > 0) {
@@ -52,7 +51,6 @@ function encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 
 function encuentroJuicios($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	$sqlJuicios = "select d.anojuicio, d.mesjuicio from cabjuiciosusimra c, detjuiciosusimra d  where c.cuit = $cuit and c.nroorden = d.nroorden and ((d.anojuicio > $anoinicio and d.anojuicio <= $anofin) or (d.anojuicio = $anoinicio and d.mesjuicio >= $mesinicio)) group by d.anojuicio, d.mesjuicio order by d.anojuicio, d.mesjuicio";
-	//print($sqlJuicios);
 	$resJuicios = mysql_query($sqlJuicios,$db);
 	$canJuicios = mysql_num_rows($resJuicios); 
 	if($canJuicios > 0) {
@@ -68,7 +66,6 @@ function encuentroJuicios($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) 
 
 function encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	$sqlRequerimientos = "select d.anofiscalizacion, d.mesfiscalizacion from reqfiscalizusimra r, detfiscalizusimra d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and ((d.anofiscalizacion > $anoinicio and d.anofiscalizacion <= $anofin) or (d.anofiscalizacion = $anoinicio and d.mesfiscalizacion >= $mesinicio)) group by d.anofiscalizacion, d.mesfiscalizacion order by d.anofiscalizacion, d.mesfiscalizacion";
-	//print($sqlRequerimientos);
 	$resRequerimientos = mysql_query($sqlRequerimientos,$db);
 	$canRequerimientos = mysql_num_rows($resRequerimientos); 
 	if($canRequerimientos > 0) {
@@ -92,11 +89,6 @@ function deudaAnterior($cuit, $db) {
 	$mesInicioActi = substr($fechaInicio,5,2);
 	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
 	
-	//print("ANO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
-	//print("MES INICIO ACTIVIDAD: ".$mesInicioActi."<br>");
-	//print("ANO INICIO CALCULO DEUDA: ".$anoinicio."<br>");
-	//print("MES INICIO CALCULO DEUDA: ".$mesinicio."<br>");
-	
 	if ($anioInicioActi == $anoinicio) {
 		if ($mesInicioActi == $mesinicio) {
 			return "N";
@@ -114,31 +106,25 @@ function deudaAnterior($cuit, $db) {
 			foreach($pagos as $pago) {
 				$anioInicioActi = $pago['anio'];
 				$mesInicioActi = $pago['mes'];
-				//print("ANO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
-				//print("MES INICIO ACTIVIDAD: ".$mesInicioActi."<br>");
 				break;
 			}
 		}
 	}
-	//var_dump($pagos);
 	
 	$arrayAcuerdos = encuentroAcuerdos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
 	if ($arrayAcuerdos == 0){ 
 		$arrayAcuerdos = array();
 	} 
-	//var_dump($arrayAcuerdos);
 	
 	$arrayJuicios = encuentroJuicios($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
 	if ($arrayJuicios == 0){ 
 		$arrayJuicios = array();
 	} 
-	//var_dump($arrayJuicios);
 	
 	$arrayRequerimientos = encuentroRequerimientos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
 	if ($arrayRequerimientos == 0){ 
 		$arrayRequerimientos = array();
 	}
-	//var_dump($arrayRequerimientos);
 	
 	$deuda = 0;
 	if ($pagos != 0) {
@@ -148,7 +134,6 @@ function deudaAnterior($cuit, $db) {
 				$idArray = $ano.$i;
 				if (!array_key_exists($idArray, $pagos) && !array_key_exists($idArray, $arrayAcuerdos) && !array_key_exists($idArray, $arrayJuicios) && !array_key_exists($idArray, $arrayRequerimientos)) {
 					$deuda = $deuda + 1;
-					//print("DEUDA ACUMULA: ".$deuda."<br>");
 				}
 			}
 			$ano++;
@@ -169,7 +154,12 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
 	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
 		
-	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
+	//DDJJ VALIDAS
+	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra 
+					where cuit = $cuit and 
+					((anoddjj > $anoinicio and anoddjj < $ultano) or 
+	   				 (anoddjj = $ultano and mesddjj <= $ultmes) or 
+	  				 (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	$arrayDDJJ = array();
 	$resDDJJ = mysql_query($sqlDDJJ,$db);
 	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
@@ -179,7 +169,43 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		$arrayDDJJ[$idArray] = array ('origen' =>  1, 'datos' => $rowDDJJ, 'id' => $id);
 	}
 	
-	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, remundeclarada from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
+	//DDJJ TEMPORALES
+	$sqlDDJJNroControl = "select perano, permes, nrctrl from ddjjusimra 
+					   where nrcuit = $cuit and nrcuil = '99999999999' and
+					   ((perano > $anoinicio and perano < $ultano) or 
+	   				 	(perano = $ultano and permes <= $ultmes) or 
+	  				 	(perano = $anoinicio and permes >= $mesinicio)) order by nrctrl, nrcuil DESC";
+	$arrayNroControl = array();
+	$resDDJJNroControl = mysql_query($sqlDDJJNroControl,$db);
+	while ($rowDDJJNroControl = mysql_fetch_assoc($resDDJJNroControl)) {
+		$idNrocontrol = $rowDDJJNroControl['perano'].$rowDDJJNroControl['permes'];
+		$arrayNroControl[$idNrocontrol] =  $rowDDJJNroControl['nrctrl'];
+	}
+	foreach($arrayNroControl as $nrocontrol) {
+		$wherein = $wherein."'".$nrocontrol."',";
+	}
+	$wherein = substr($wherein, 0, -1);
+	$wherein = "(".$wherein.")";
+	if ($wherein != "") {
+		$sqlDDJJTemp = "select perano as anoddjj, permes as mesddjj, nrcuil as cuil, remune as remuneraciones from ddjjusimra 
+							where nrcuit = $cuit and nrctrl in $wherein";
+		$resDDJJTemp = mysql_query($sqlDDJJTemp,$db);
+		while ($rowDDJJTemp = mysql_fetch_assoc($resDDJJTemp)) {
+			$mes = str_pad($rowDDJJTemp['mesddjj'],2,'0',STR_PAD_LEFT);
+			$id = $rowDDJJTemp['anoddjj'].$mes;
+			$idArray = $rowDDJJTemp['anoddjj'].$mes.$rowDDJJTemp['cuil'];
+			if (!array_key_exists($idArray, $arrayDDJJ)) {
+				$arrayDDJJ[$idArray] = array ('origen' =>  1, 'datos' => $rowDDJJTemp, 'id' => $id);
+			}
+		}
+	}
+	
+	//DDJJ OSPIM			 	
+	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, remundeclarada as remuneraciones from detddjjospim 
+						where cuit = $cuit and 
+							((anoddjj > $anoinicio and anoddjj < $ultano) or 
+							 (anoddjj = $ultano and mesddjj <= $ultmes) or 
+							 (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	$resDDJJOspim = mysql_query($sqlDDJJOspim,$db);
 	while ($rowDDJJOspim = mysql_fetch_assoc($resDDJJOspim)) {
 		$mes = str_pad($rowDDJJOspim['mesddjj'],2,'0',STR_PAD_LEFT);
@@ -192,6 +218,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	
 	sort($arrayDDJJ);
 	
+	//NO REMUNERATIVO
 	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, d.remuneraciones 
 						from detddjjusimra d, extraordinariosusimra e
 						where d.cuit = $cuit and d.anoddjj > $anoinicio and d.anoddjj <= $ultano and d.mesddjj > 12 and d.anoddjj = e.anio and d.mesddjj = e.mes"; 
@@ -203,14 +230,12 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		$arrayNR[$id] =  array ('datos' => $rowDDJJNR);;
 	}
 	
-	
 	for ($i=0; $i < sizeof($cuerpo); $i++) {
 		$fecha = explode("|",$cuerpo[$i]);
 		$fechaArray =  explode("/",$fecha[0]);
 		$id = $fechaArray[2].$fechaArray[1];
 		$idBuscar[$id] = $id;
 	}
-	//var_dump($idBuscar);
 	
 	$c = 0;
 	foreach($arrayDDJJ as $ddjj) {
@@ -235,21 +260,20 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	//CREAMOS EL ARCHIVO
 	$ultanoArch = substr ($ultano,2,2);
 	$nombreArcCUIL = $cuit.$ultmes.$ultanoArch.'S'.$nroreqArc.".txt";
-	//print("ARCHIVO: ".$nombreArc."<br><br>");
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = "liqui/".$nombreArcCUIL;
 	} else {
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArcCUIL;
 	}
-	//print($primeraLinea."<br>");
-	//****************
+
+	//**********************************//
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de detalle de CUILES en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
 	for ($i=0; $i < sizeof($cuerpoCUIL); $i++) {
 		fputs($ar,$cuerpoCUIL[$i]."\r\n");
 	}
 	fclose($ar);
-	//**********************************
+	//**********************************//
 }
 
 function cambioEstadoReq($nroreq) {
@@ -376,16 +400,15 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$telefono = $rowJuris['ddn'].$rowJuris['telefono'];
 		$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
 	}
+	//DEUDA ANTERIOR
 	//$deuda = deudaAnterior($cuit, $db);
 	
 	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono;
-	//**********************************************************************************************************
 	
 	//ACUERDOS CAIDOS
 	//$cuerpoAcuerdoCaidos = acuerdosCaidos($cuit, $db);
-	$cuerpoAcuerdoCaidos = array();
-	//CREAMOS EL CUERPO DEL ARCHIVO CON LA DEUDA ************************************************************************
 	
+	//CREAMOS EL CUERPO DEL ARCHIVO CON LA DEUDA
 	$cuerpo = array();
 	$pagos = array();
 	$l = 0;
@@ -417,7 +440,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 				$remunDec = "000000000,00";
 				$pOrd++;
 			} 
-			//********************//
+			//****************//
 		} else {
 			unset($pagos);	
 			if ($rowRequeDet['statusfiscalizacion'] == 'A') {	
@@ -449,32 +472,25 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$ultmes = $mes;
 		$ultano = $rowRequeDet['anofiscalizacion'];
 	}
-	//************************************************************************************************************************
-	
+
 	//CREAMOS EL ARCHIVO DE DEUDA
 	$ultanoArch = substr ($ultano,2,2);
 	$nroreqCompleto = str_pad($nroreq,8,'0',STR_PAD_LEFT);
 	$nombreArc = $cuit.$ultmes.$ultanoArch."U".$nroreqCompleto.".txt";
 	$nombreArcExc = $cuit.$ultmes.$ultanoArch."U".$nroreqCompleto.".xls";
-	//print("ARCHIVO: ".$nombreArc."<br><br>");
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = "liqui/".$nombreArc;
 	} else {
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArc;
 	}
-	//print($primeraLinea."<br>");
-	//solo por ahora...
-	//unlink($direArc);
-	//****************
+	
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de Deuda en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
 	fputs($ar,$primeraLinea."\r\n");
-	for ($i=0; $i < sizeof($cuerpoAcuerdoCaidos); $i++) {
-		//print($cuerpoAcuerdoCaidos[$i]."<br>");
+	/*for ($i=0; $i < sizeof($cuerpoAcuerdoCaidos); $i++) {
 		fputs($ar,$cuerpoAcuerdoCaidos[$i]."\r\n");
-	}
+	}*/
 	for ($i=0; $i < sizeof($cuerpo); $i++) {
-		//print($cuerpo[$i]."<br>");
 		fputs($ar,$cuerpo[$i]."\r\n");
 	}
 	fclose($ar);
@@ -482,7 +498,6 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//**********************************
 	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
 	
-	//Grabamos cabecera de liquidación
 	grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
 	
 	//ACTULIZAMOS EL ESTADO DEL REQUERIMIENTO A 1.
@@ -575,7 +590,7 @@ function abrirInfo(dire) {
           <th>Resolución</th>
 		  <th>Acción</th>
         </tr>
-  <?php for ($i=0; $i < sizeof($resultado); $i++) { ?>
+<?php 	for ($i=0; $i < sizeof($resultado); $i++) { ?>
 			<tr align='center'>
 			<td><?php echo $resultado[$i]['nroreq'] ?></td>
 			<td><?php echo $resultado[$i]['estado'] ?></td>  
