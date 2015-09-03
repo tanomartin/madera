@@ -44,6 +44,15 @@ while ($rowPagos = mysql_fetch_assoc($resPagos)) {
 	$i = $i + 1;
 }
 
+
+$sqlDetDDJJ = "SELECT * FROM detddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
+$resDetDDJJ = mysql_query($sqlDetDDJJ,$db);
+$canDetDDJJ = mysql_num_rows($resDetDDJJ);
+
+$sqlCabDDJJ = "SELECT * FROM cabddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
+$resCabDDJJ = mysql_query($sqlCabDDJJ,$db);
+
+
 $sqlExtraordinarioMes = "select mes from extraordinariosusimra where anio = $anio and relacionmes = $mes";
 $resExtraordinarioMes = mysql_query($sqlExtraordinarioMes,$db);
 $canExtraordinarioMes = mysql_num_rows($resExtraordinarioMes);
@@ -80,22 +89,14 @@ if ($canExtraordinarioMes > 0) {
 		$totalPagado = (float) ($totalPagado + $pagos[$i]['montopagado']);
 		$i = $i + 1;
 	}
+	
+	$sqlDetDDJJNoRem = "SELECT * FROM detddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mesExtra";
+	$resDetDDJJNoRem = mysql_query($sqlDetDDJJNoRem,$db);
+	$canDetDDJJNoRem = mysql_num_rows($resDetDDJJNoRem);
+	
+	$sqlCabDDJJNoRem = "SELECT * FROM cabddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mesExtra";
+	$resCabDDJJNoRem = mysql_query($sqlCabDDJJNoRem,$db);
 }
-
-$sqlDetDDJJ = "SELECT * FROM detddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
-$resDetDDJJ = mysql_query($sqlDetDDJJ,$db);
-$canDetDDJJ = mysql_num_rows($resDetDDJJ);
-
-$sqlCabDDJJ = "SELECT * FROM cabddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
-$resCabDDJJ = mysql_query($sqlCabDDJJ,$db);
-
-$sqlDetDDJJNoRem = "SELECT * FROM detddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mesExtra";
-$resDetDDJJNoRem = mysql_query($sqlDetDDJJNoRem,$db);
-$canDetDDJJNoRem = mysql_num_rows($resDetDDJJNoRem);
-
-$sqlCabDDJJNoRem = "SELECT * FROM cabddjjusimra WHERE cuit = $cuit and anoddjj = $anio and mesddjj = $mesExtra";
-$resCabDDJJNoRem = mysql_query($sqlCabDDJJNoRem,$db);
-
 
 ?>
 
@@ -197,6 +198,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   			<div style="text-align: center;">No se pudo leer el detalle de la DDJJ de este periodo</div>
   <?php }?>
   
+  <?php if ($canExtraordinarioMes > 0) {?>
     <p><strong>Detalles DDJJ No Remunerativo</strong></p>
   <?php if ($canDetDDJJNoRem > 0) {?>
   			<table border="1" width="600">
@@ -232,8 +234,8 @@ A:hover {text-decoration: none;color:#00FFFF }
   			</table>
   <?php } else { ?>
 		  	<div style="text-align: center;">No se pudo leer el detalle de la DDJJ No Remunerativo de este periodo</div>
-  <?php }?>
-  
+  <?php }
+  	}?>
 </div>
 </body>
 
