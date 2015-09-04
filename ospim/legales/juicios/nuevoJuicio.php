@@ -210,11 +210,11 @@ function limpioid(id) {
 				if (anio == aniocom && mes == mescomp) {
 					alert("Este periódo ya se encuentra en la lista");
 					document.getElementById(mesnombre).value = "";
-					document.getElementById(anionombre).value = "";;
+					document.getElementById(anionombre).value = "";
 					document.getElementById(mesnombre).focus();
 				}
 			}
-		}	
+		}
 	}
 }
 
@@ -297,7 +297,7 @@ function validar(formulario) {
 				}
 			}
 		}
-	} 
+	}
 	$.blockUI({ message: "<h1>Preparando datos del juicio... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	formulario.submit();
 }
