@@ -20,6 +20,23 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" type="text/css" id="" media="print, projection, screen" />
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery-ui.min.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#resultados")
+		.tablesorter({
+			theme: 'blue',
+			widthFixed: true, 
+			widgets: ["zebra"],
+			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}, 7:{sorter:false}}
+		});
+});
+</script>
 </head>
 <body bgcolor="#B2A274">
 <?php
@@ -32,58 +49,39 @@ try {
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 	//echo 'Connected to database<br/>';
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbh->beginTransaction();
-
-	print ("<table width=769 border=1 align=center>");
-	print ("<tr>");
-	print ("<td width=769><div align=center class=Estilo1>Resultados de la Imputaci&oacute;n de Pagos</div></td>");
-	print ("</tr>");
-	print ("</table>");
-
+	$dbh->beginTransaction(); ?>
+	<div align="center">
+		<h1>Resultados de la Imputaci&oacute;n de Pagos por Acuerdos</h1>
+	</div>
+<?php
 	$sqlControlImputar="SELECT COUNT(*) FROM banacuerdosusimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
 	$sqlLeeAImputar="SELECT * FROM banacuerdosusimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
-
 	$resultControlImputar = $dbh->query($sqlControlImputar);
-
-	if (!$resultControlImputar)
-	{
-		print ("<p>&nbsp;</p>\n");
-		print ("<table width=769 border=1 align=center>");
-		print ("<tr>");
-		print ("<td width=769><div align=center class=Estilo1>Error en la consulta de BANACUERDOSUSIMRA. Comuniquese con el Depto. de Sistemas.</div></td>");
-		print ("</tr>");
-		print ("</table>");
+	if(!$resultControlImputar) { ?>
+		<div align="center">
+			<h3>Error en la consulta de la tabla BANACUERDOSUSIMRA. Comuniquese con el Depto. de Sistemas.</h3>
+		</div>
+<?php
 	}
-	else
-	{
+	else {
 		//Verifica si hay registros a validar
-		if ($resultControlImputar->fetchColumn()==0)
-		{
-			$haypago=0;
-			
-			print ("<p>&nbsp;</p>\n");
-			print ("<table width=769 border=1 align=center>");
-			print ("<tr>");
-			print ("<td width=769><div align=center class=Estilo1>No hay Pagos que deban ser Imputados.</div></td>");
-			print ("</tr>");
-			print ("</table>");
+		if($resultControlImputar->fetchColumn()==0) {
+			$haypago=0; ?>
+			<div align="center">
+				<h2>No hay pagos que deban ser imputados.</h2>
+			</div>
+<?php
 		}
-		else
-		{
+		else {
 			$haypago=1;
-
-    		$resultLeeAImputar = $dbh->query($sqlLeeAImputar);
-    		if (!$resultLeeAImputar)
-			{
-				print ("<p>&nbsp;</p>\n");
-				print ("<table width=769 border=1 align=center>");
-				print ("<tr>");
-				print ("<td width=769><div align=center class=Estilo1>Error en la consulta de Informacion del Banco. Comuniquese con el Depto. de Sistemas.</div></td>");
-				print ("</tr>");
-				print ("</table>");
+    		$resultLeeAImputar=$dbh->query($sqlLeeAImputar);
+    		if(!$resultLeeAImputar) { ?>
+				<div align="center">
+					<h3>Error en la consulta de Informaci&oacute;n del Banco. Comuniquese con el Depto. de Sistemas.</h3>
+				</div>
+<?php
 			}
-			else
-			{
+			else {
 				$cuentaboleta = '2';
 				$cuentaremesa = '2';
 				$nroremesa = '1';
@@ -96,23 +94,25 @@ try {
 				$usuarioconciliacion=$usuariocancelacion;
 				$fechamodificacion='00000000000000';
 				$usuariomodificacion='';
-
 				$totacanc=0.00;
-				$cantcanc=0;
+				$cantcanc=0; ?>
 
-				print ("<table width=769 border=1 align=center>");
-				print ("<tr>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Codigo de Barra</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>C.U.I.T.</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Acuerdo</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Cuota</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Importe</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Status</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Fecha</font></strong></div></td>");
-				print ("</tr>");
-
-        		foreach ($resultLeeAImputar as $imputar)
-				{
+				<table id="resultados" class="tablesorter" style="font-size:14px; text-align:center">
+					<thead>
+						<tr>
+							<th>Codigo de Barra</th>
+							<th>C.U.I.T.</th>
+							<th>Acuerdo</th>
+							<th>Cuota</th>
+							<th>Importe</th>
+							<th>Status</th>
+							<th>Mensaje</th>
+							<th>Fecha Acreditacion</th>
+						</tr>
+					</thead>
+					<tbody>
+<?php
+        		foreach($resultLeeAImputar as $imputar) {
 					$controlbanco = $imputar[nrocontrol];
 					$estado = $imputar[estadomovimiento];
 					$importebanco = $imputar[importe];
@@ -127,33 +127,27 @@ try {
 					//echo $sqlBuscaValida; echo "<br>";
 					$resultBuscaValida = $dbh->prepare($sqlBuscaValida);
 					$resultBuscaValida->execute(array(':nrocontrol' => $controlbanco));
-					if ($resultBuscaValida)
-					{
-		        		foreach ($resultBuscaValida as $validas)
-						{
+					if($resultBuscaValida) {
+		        		foreach($resultBuscaValida as $validas) {
 							$cuitboleta = $validas[cuit];
 							$acuerdo = $validas[nroacuerdo];
 							$cuota = $validas[nrocuota];
 							$importeboleta = $validas[importe];
-							$controlboleta = $validas[nrocontrol];
+							$controlboleta = $validas[nrocontrol]; ?>
 
-							print ("<tr>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$codbarrabanco."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$cuitboleta."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$acuerdo."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$cuota."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$importeboleta."</font></div></td>");
-
-							if($importebanco==$importeboleta)
-							{
-								if($cuitbanco==$cuitboleta)
-								{
+						<tr>
+						    <td><?php echo $codbarrabanco; ?></td>
+						    <td><?php echo $cuitboleta; ?></td>
+						    <td><?php echo $acuerdo; ?></td>
+						    <td><?php echo $cuota; ?></td>
+						    <td><?php echo $importeboleta; ?></td>
+<?php
+							if($importebanco==$importeboleta) {
+								if($cuitbanco==$cuitboleta) {
 									$sqlVerificaCuota="SELECT * from cuoacuerdosusimra WHERE cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
 									$resultVerificaCuota = $dbh->prepare($sqlVerificaCuota);
-									if ($resultVerificaCuota->execute(array(':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota)))
-									{
-						        		foreach ($resultVerificaCuota as $cuotas)
-										{
+									if($resultVerificaCuota->execute(array(':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota))) {
+						        		foreach($resultVerificaCuota as $cuotas) {
 											$cuitcuota = $cuotas[cuit];
 											$acuerdocuota = $cuotas[nroacuerdo];
 											$cuotacuota = $cuotas[nrocuota];
@@ -165,8 +159,7 @@ try {
 
 											$puedecancelar = 0;
 
-											if($estado=='R' && $cancelacion==1)
-											{
+											if($estado=='R' && $cancelacion==1) {
 												$tiposcanc = '10';
 												$observaci = "Rechazo Electronico-Cheque: ".$cuotas[chequenro]." ".$cuotas[chequebanco]." ".invertirFecha($cuotas[chequefecha]);
 												$boletaimp = '0';
@@ -178,8 +171,7 @@ try {
 												$puedecancelar = 1;
 											}
 
-											if($estado=='L' && $cancelacion==1)
-											{
+											if($estado=='L' && $cancelacion==1) {
 												$tiposcanc = $cancelacion;
 												$observaci = '';
 												$boletaimp = $boleta;
@@ -191,15 +183,12 @@ try {
 												$puedecancelar = 1;
 											}
 
-											if($estado=='L' && $cancelacion==3)
-											{
+											if($estado=='L' && $cancelacion==3) {
 												//lee valoresalcobro
 												$sqlLeeValorAlCobro = "SELECT * from valoresalcobrousimra where cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
 												$resultLeeValorAlCobro = $dbh->prepare($sqlLeeValorAlCobro); 
-												if ($resultLeeValorAlCobro->execute(array(':cuit' => $cuitcuota, ':nroacuerdo' => $acuerdocuota, ':nrocuota' => $cuotacuota)))
-												{
-						        					foreach ($resultLeeValorAlCobro as $valoralcobro)
-													{
+												if($resultLeeValorAlCobro->execute(array(':cuit' => $cuitcuota, ':nroacuerdo' => $acuerdocuota, ':nrocuota' => $cuotacuota))) {
+						        					foreach($resultLeeValorAlCobro as $valoralcobro) {
 														$nrocheque = $valoralcobro[chequenrousimra];
 														$fechaChe = invertirFecha($valoralcobro[chequefechausimra]);
 													}
@@ -214,16 +203,13 @@ try {
 													$codibarra = $codbarrabanco;
 													$puedecancelar = 1;
 												}
-												else
-												{
+												else {
 													$puedecancelar = 0;
 												}
 											}
 
-											if($estado=='E' && $cancelacion==2)
-											{
-												if($validadabanco!='00000000000000')
-												{
+											if($estado=='E' && $cancelacion==2) {
+												if($validadabanco!='00000000000000') {
 													$tiposcanc = $cancelacion;
 													$observaci = '';
 													$boletaimp = $boleta;
@@ -234,23 +220,18 @@ try {
 													$codibarra = $codbarrabanco;
 													$puedecancelar = 1;
 												}
-												else
-												{
+												else {
 													$puedecancelar = 0;
 												}
 											}
 
-											if($estado=='E' && $cancelacion==3)
-											{
-												if($validadabanco!='00000000000000')
-												{
+											if($estado=='E' && $cancelacion==3) {
+												if($validadabanco!='00000000000000') {
 													//lee valoresalcobro
 													$sqlLeeValorAlCobro = "SELECT * from valoresalcobrousimra where cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
 													$resultLeeValorAlCobro = $dbh->prepare($sqlLeeValorAlCobro); 
-													if ($resultLeeValorAlCobro->execute(array(':cuit' => $cuitcuota, ':nroacuerdo' => $acuerdocuota, ':nrocuota' => $cuotacuota)))
-													{
-							        					foreach ($resultLeeValorAlCobro as $valoralcobro)
-														{
+													if($resultLeeValorAlCobro->execute(array(':cuit' => $cuitcuota, ':nroacuerdo' => $acuerdocuota, ':nrocuota' => $cuotacuota))) {
+							        					foreach($resultLeeValorAlCobro as $valoralcobro) {
 															$nrocheque = $valoralcobro[chequenrousimra];
 															$fechaChe = invertirFecha($valoralcobro[chequefechausimra]);
 														}
@@ -265,49 +246,40 @@ try {
 														$codibarra = $codbarrabanco;
 														$puedecancelar = 1;
 													}
-													else
-													{
+													else {
 														$puedecancelar = 0;
 													}
 												}
-												else
-												{
+												else {
 													$puedecancelar = 0;
 												}
 											}
 
 											$cancelacuota = 0;
 
-											if($importecuota==$importebanco)
-											{
-												if($cancelacion<='3')
-												{
-													if($pagada=='0')
-													{
-														if($sistema=='')
+											if($importecuota==$importebanco) {
+												if($cancelacion<='3') {
+													if($pagada=='0') {
+														if($sistema=='') {
 															$cancelacuota = 1;
+														}
 													}
 												}
 											}
 
-											if($cancelacuota==1 && $puedecancelar==1)
-											{
+											if($cancelacuota==1 && $puedecancelar==1) {
 												$sqlActualizaCuota="UPDATE cuoacuerdosusimra SET tipocancelacion = :tipocancelacion, observaciones = :observaciones, boletaimpresa = :boletaimpresa, montopagada = :montopagada, fechapagada = :fechapagada, fechacancelacion = :fechacancelacion, sistemacancelacion = :sistemacancelacion, codigobarra = :codigobarra, fechaacreditacion = :fechaacreditacion WHERE cuit = :cuit and nroacuerdo = :nroacuerdo and nrocuota = :nrocuota";
 												$resultActualizaCuota = $dbh->prepare($sqlActualizaCuota);
 												//echo $sqlActualizaCuota; echo "<br>";
-												if ($resultActualizaCuota->execute(array(':tipocancelacion' => $tiposcanc, ':observaciones' => $observaci, ':boletaimpresa' => $boletaimp, ':montopagada' => $montopago, ':fechapagada' => $fechapago, ':fechacancelacion' => $fechacanc, ':sistemacancelacion' => $sistecanc, ':codigobarra' => $codibarra, ':fechaacreditacion' => $acreditabanco, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota)))
-												{
-													if($tiposcanc=='10')
-													{
-														print ("<td><div align=center><font size=1 face=Verdana>Cheque Rechazado</font></div></td>");
-													    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
+												if($resultActualizaCuota->execute(array(':tipocancelacion' => $tiposcanc, ':observaciones' => $observaci, ':boletaimpresa' => $boletaimp, ':montopagada' => $montopago, ':fechapagada' => $fechapago, ':fechacancelacion' => $fechacanc, ':sistemacancelacion' => $sistecanc, ':codigobarra' => $codibarra, ':fechaacreditacion' => $acreditabanco, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota))) {
+													if($tiposcanc=='10') {
+														$listastatus="Cheque Rechazado";
+														$listamensaje="EL RECHAZO DEL CHEQUE HA SIDO IMPUTADO EN LA CUOTA DEL ACUERDO.";
 													}
-													else
-													{
+													else {
 														$sqlLeeRemitosRemesas="SELECT * FROM remitosremesasusimra WHERE codigocuenta = '$cuentaremesa' and sistemaremesa = 'E' and fecharemesa = '$acreditabanco' and nroremesa = '$nroremesa' and nrocontrol = '$controlboleta' and importebruto = '$montopago'";
 														$resultLeeRemitosRemesas = $dbh->query($sqlLeeRemitosRemesas);
-														foreach ($resultLeeRemitosRemesas as $remitos)
-														{
+														foreach($resultLeeRemitosRemesas as $remitos) {
 															$nroremitoremesa = $remitos[nroremito];
 															$sqlAddConcilia="INSERT INTO conciliacuotasusimra (cuit, nroacuerdo, nrocuota, cuentaboleta, cuentaremesa, fecharemesa, nroremesa, nroremitoremesa, cuentaremitosuelto, fecharemitosuelto, nroremitosuelto, estadoconciliacion, fechaconciliacion, usuarioconciliacion, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES ('$cuitboleta','$acuerdo','$cuota','$cuentaboleta','$cuentaremesa','$acreditabanco','$nroremesa','$nroremitoremesa','$cuentaremitosuelto','$fecharemitosuelto','$nroremitosuelto','$estadoconciliacion','$fechaconciliacion','$usuarioconciliacion','$fechacancelacion','$usuariocancelacion','$fechamodificacion','$usuariomodificacion')";
 															$resultAddConcilia = $dbh->query($sqlAddConcilia);
@@ -316,24 +288,22 @@ try {
 
 														$totacanc=$totacanc+$montopago;
 														$cantcanc++;
-														print ("<td><div align=center><font size=1 face=Verdana>Cuota Cancelada</font></div></td>");
-													    print ("<td><div align=center><font size=1 face=Verdana>----------</font></div></td>");
+														$listastatus="Cuota Cancelada";
+														$listamensaje="IMPUTACION CORRECTA DEL PAGO EN LA CUOTA DEL ACUERDO.";
 													}
 												}
-												else
-												{
-													print ("<td><div align=center><font size=1 face=Verdana>ERROR URC - Avise al Depto. Sistemas.</font></div></td>");
+												else {
+													$listastatus="ERROR CAU";
+													$listamensaje="COMUNIQUESE CON EL DEPTO. DE SISTEMAS PARA INFORMAR EL ERROR.";
 												}
 
 												$sqlActualizaBanco="UPDATE banacuerdosusimra SET fechaimputacion = :fechaimputacion, usuarioimputacion = :usuarioimputacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
 												$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
 												//echo $sqlActualizaBanco; echo "<br>";
-												if ($resultActualizaBanco->execute(array(':fechaimputacion' => $fechacancelacion, ':usuarioimputacion' => $usuariocancelacion, ':nrocontrol' => $controlboleta, ':estadomovimiento' => $estado)))
-												{
+												if($resultActualizaBanco->execute(array(':fechaimputacion' => $fechacancelacion, ':usuarioimputacion' => $usuariocancelacion, ':nrocontrol' => $controlboleta, ':estadomovimiento' => $estado))) {
 													//print "<p>Registro Banco actualizado correctamente.</p>\n";
 												}
-												else
-												{
+												else {
 													//print "<p>Error al actualizar el registro Banco.</p>\n";
 												}
 
@@ -343,10 +313,8 @@ try {
 
 												$sqlLeeCuotas="SELECT * FROM cuoacuerdosusimra WHERE cuit = $cuitboleta and nroacuerdo = $acuerdo";
 												$resultLeeCuotas = $dbh->query($sqlLeeCuotas);
-												foreach ($resultLeeCuotas as $leidas)
-												{
-													if($leidas[montopagada]!=0 && $leidas[fechapagada]!='00000000')
-													{
+												foreach($resultLeeCuotas as $leidas) {
+													if($leidas[montopagada]!=0 && $leidas[fechapagada]!='00000000') {
 														$cantidadcuotaspagas = $cantidadcuotaspagas + 1;
 														$montocuotaspagas = $montocuotaspagas + $leidas[montopagada];
 													}
@@ -354,78 +322,68 @@ try {
 
 												$sqlActualizaCabecera="UPDATE cabacuerdosusimra SET cuotaspagadas = :cuotaspagadas, montopagadas = :montopagadas, fechapagadas = :fechapagadas WHERE cuit = :cuit and nroacuerdo = :nroacuerdo";
 												$resultActualizaCabecera = $dbh->prepare($sqlActualizaCabecera);
-												if ($resultActualizaCabecera->execute(array(':cuotaspagadas' => $cantidadcuotaspagas, ':montopagadas' => $montocuotaspagas, ':fechapagadas' => $fechacancela,':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo)))
-												{
+												if($resultActualizaCabecera->execute(array(':cuotaspagadas' => $cantidadcuotaspagas, ':montopagadas' => $montocuotaspagas, ':fechapagadas' => $fechacancela,':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo))) {
 													//print "<p>Registro Cabecera Acuerdo actualizado correctamente.</p>\n";
 												}
-												else
-												{
+												else {
 													//print "<p>Error al actualizar el registro Cabecera Acuerdo.</p>\n";
 												}
 
 												$sqlLeeCabecera="SELECT * FROM cabacuerdosusimra WHERE cuit = $cuitboleta and nroacuerdo = $acuerdo";
 												$resultLeeCabecera = $dbh->query($sqlLeeCabecera);
-												foreach ($resultLeeCabecera as $cabecera)
-												{
+												foreach($resultLeeCabecera as $cabecera) {
 													$estadodeacuerdo=$cabecera[estadoacuerdo];
-
-													if($cabecera[cuotasapagar]==$cabecera[cuotaspagadas])
-													{
+													if($cabecera[cuotasapagar]==$cabecera[cuotaspagadas]) {
 														if($cabecera[montoapagar]==$cabecera[montopagadas])
 															$estadodeacuerdo=0;
 													}
-
 													$saldodeacuerdo=$cabecera[montoapagar]-$cabecera[montopagadas];
 												}
 
 												$sqlActualizaCabecera="UPDATE cabacuerdosusimra SET estadoacuerdo = :estadoacuerdo, saldoacuerdo = :saldoacuerdo WHERE cuit = :cuit and nroacuerdo = :nroacuerdo";
 												$resultActualizaCabecera = $dbh->prepare($sqlActualizaCabecera);
-												if ($resultActualizaCabecera->execute(array(':estadoacuerdo' => $estadodeacuerdo, ':saldoacuerdo' => $saldodeacuerdo, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo)))
-												{
+												if($resultActualizaCabecera->execute(array(':estadoacuerdo' => $estadodeacuerdo, ':saldoacuerdo' => $saldodeacuerdo, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo))) {
 													//print "<p>Registro Cabecera Acuerdo actualizado correctamente.</p>\n";
 												}
-												else
-												{
+												else {
 													//print "<p>Error al actualizar el registro Cabecera Acuerdo.</p>\n";
 												}
 											}
-											else
-											{
-												print ("<td><div align=center><font size=1 face=Verdana>La Cuota no puede ser Cancelada</font></div></td>");
-											    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
+											else {
+												$listastatus="Cuota No Cancelada";
+												$listamensaje="ANOMALIA EN EL ESTADO DE LA IMPUTACION O EN LOS DATOS DE LA CUOTA.";
 											}
 										}
 									}
-									else
-									{
-										print ("<td><div align=center><font size=1 face=Verdana>El ACUERDO/CUOTA No Existe</font></div></td>");
-									    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
+									else {
+										$listastatus="Cuota No Cancelada";
+										$listamensaje="EL ACUERDO/CUOTA A QUE REFIERE LA IMPUTACION NO EXISTE.";
 									}
 								}
-								else
-								{
-									print ("<td><div align=center><font size=1 face=Verdana>CUIT BANCO ".$cuitbanco." Erroneo - Pago No Imputado</font></div></td>");
-								    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
+								else {
+									$listastatus="Pago No Imputado";
+									$listamensaje="EL CUIT (".$cuitbanco.") EN QUE IMPUTA EL BANCO ES DISTINTO AL DE LA BOLETA GENERADA.";
 								}
 							}
-							else
-							{
-								print ("<td><div align=center><font size=1 face=Verdana>IMPORTE BANCO ".$importebanco." Erroneo - Pago No Imputado</font></div></td>");
-							    print ("<td><div align=center><font size=1 face=Verdana>".$fechabanco."</font></div></td>");
-							}
-							print ("</tr>");
+							else {
+								$listastatus="Pago No Imputado";
+								$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR EL BANCO ES DISTINTO AL DE LA BOLETA GENERADA.";
+							} ?>
+							<td><?php echo $listastatus; ?></td>
+							<td><?php echo $listamensaje; ?></td>
+							<td><?php echo $fechabanco; ?></td>
+						</tr>
+<?php
 						}
 					}
-        		}
-				print ("</table>");
-
-				if($totacanc!=0.00)
-				{
-					print ("<table width=769 border=1 align=center>");
-					print ("<tr>");
-					print ("<td width=769><div align=right class=Estilo1>".$cantcanc." Cuotas canceladas por un Total de $".$totacanc."</div></td>");
-					print ("</tr>");
-					print ("</table>");
+        		} ?>
+				</table>
+<?php
+				if($totacanc!=0.00) { ?>
+					<div align="center">
+						<h3><?php echo $cantcanc." cuotas CANCELADAS por un TOTAL IMPUTADO de $".$totacanc; ?></h3>
+					</div>
+<?php
 				}
     		}
 		}
@@ -433,8 +391,7 @@ try {
 	
 	$dbh->commit();
 	
-	if($haypago==1) { 
-	?>
+	if($haypago==1) { ?>
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
@@ -450,10 +407,9 @@ try {
 		</td>
 		</tr>
 		</table>
-	<?php
+<?php
 	}
-	else
-	{ ?>
+	else { ?>
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
@@ -461,14 +417,12 @@ try {
 		</td>
 		</tr>
 		</table>
-	<?php
+<?php
 	}
 
 }catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
-}
-?>
-
+} ?>
 </body>
 </html>

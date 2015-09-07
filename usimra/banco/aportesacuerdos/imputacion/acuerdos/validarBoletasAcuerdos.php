@@ -20,6 +20,23 @@ A:hover {text-decoration: none;color:#00FFFF }
 	font-weight: bold;
 }
 </style>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" type="text/css" id="" media="print, projection, screen" />
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery-ui.min.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#resultados")
+		.tablesorter({
+			theme: 'blue',
+			widthFixed: true, 
+			widgets: ["zebra"],
+			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}}
+		});
+});
+</script>
 </head>
 <body bgcolor="#B2A274">
 <?php
@@ -32,73 +49,57 @@ try {
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 	//echo 'Connected to database<br/>';
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbh->beginTransaction();
-
-	print ("<table width=769 border=1 align=center>");
-	print ("<tr>");
-	print ("<td width=769><div align=center class=Estilo1>Resultados de la Validaci&oacute;n de Boletas</div></td>");
-	print ("</tr>");
-	print ("</table>");
-
+	$dbh->beginTransaction(); ?>
+	<div align="center">
+		<h1>Resultados de la Validaci&oacute;n de Boletas por Pagos de Acuerdos</h1>
+	</div>
+<?php
 	$sqlControlValidar="SELECT COUNT(*) FROM banacuerdosusimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in ('P','E')";
 	$sqlLeeAValidar="SELECT * FROM banacuerdosusimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in ('P','E')";
-
 	$resultControlValidar = $dbh->query($sqlControlValidar);
-
-	if (!$resultControlValidar)
-	{
-		print ("<p>&nbsp;</p>\n");
-		print ("<table width=769 border=1 align=center>");
-		print ("<tr>");
-		print ("<td width=769><div align=center class=Estilo1>Error en la consulta de BANACUERDOSUSIMRA. Comuniquese con el Depto. de Sistemas.</div></td>");
-		print ("</tr>");
-		print ("</table>");	
+	if(!$resultControlValidar) { ?>
+		<div align="center">
+			<h3>Error en la consulta de la tabla BANACUERDOSUSIMRA. Comuniquese con el Depto. de Sistemas.</h3>
+		</div>
+<?php
 	}
-	else
-	{
+	else {
 		//Verifica si hay registros a validar
-		if ($resultControlValidar->fetchColumn()==0)
-		{
-			$hayboleta=0;
-
-			print ("<p>&nbsp;</p>\n");
-			print ("<table width=769 border=1 align=center>");
-			print ("<tr>");
-			print ("<td width=769><div align=center class=Estilo1>No hay Boletas que deban ser Validadas.</div></td>");
-			print ("</tr>");
-			print ("</table>");
+		if($resultControlValidar->fetchColumn()==0) {
+			$hayboleta=0; ?>
+			<div align="center">
+				<h2>No hay boletas que deban ser validadas.</h2>
+			</div>
+<?php
 		}
-		else
-		{
+		else {
 			$hayboleta=1;
-
     		$resultLeeAValidar = $dbh->query($sqlLeeAValidar);
-    		if (!$resultLeeAValidar)
-			{
-				print ("<p>&nbsp;</p>\n");
-				print ("<table width=769 border=1 align=center>");
-				print ("<tr>");
-				print ("<td width=769><div align=center class=Estilo1>Error en la consulta de Informacion del Banco. Comuniquese con el Depto. de Sistemas.</div></td>");
-				print ("</tr>");
-				print ("</table>");
+    		if(!$resultLeeAValidar) { ?>
+				<div align="center">
+					<h3>Error en la consulta de Informaci&oacute;n del Banco. Comuniquese con el Depto. de Sistemas.</h3>
+				</div>
+<?php
 			}
-			else
-			{
+			else {
 				$cantvali=0;
-				$cantnova=0;
+				$cantnova=0; ?>
 
-				print ("<table width=769 border=1 align=center>");
-				print ("<tr>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Id. Boleta</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>C.U.I.T.</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Acuerdo</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Cuota</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Importe</font></strong></div></td>");
-				print ("<td><div align=center><strong><font size=1 face=Verdana>Status</font></strong></div></td>");
-				print ("</tr>");
-
-        		foreach ($resultLeeAValidar as $validar)
-				{
+				<table id="resultados" class="tablesorter" style="font-size:14px; text-align:center">
+					<thead>
+						<tr>
+							<th>Id. Boleta</th>
+							<th>C.U.I.T.</th>
+							<th>Acuerdo</th>
+							<th>Cuota</th>
+							<th>Importe</th>
+							<th>Status</th>
+							<th>Mensaje</th>
+						</tr>
+					</thead>
+					<tbody>
+<?php
+        		foreach ($resultLeeAValidar as $validar) {
 					$control = $validar[nrocontrol];
 					$estado = $validar[estadomovimiento];
 					$importebanco = $validar[importe];
@@ -108,20 +109,20 @@ try {
 					$sqlControlaBoleta="SELECT * FROM anuladasusimra WHERE nrocontrol = :nrocontrol";
 					$resultControlaBoleta = $dbh->prepare($sqlControlaBoleta);
 					$resultControlaBoleta->execute(array(':nrocontrol' => $control));
-					if($resultControlaBoleta)
-					{
-						foreach ($resultControlaBoleta as $anuladas)
-						{
+					if($resultControlaBoleta) {
+						foreach($resultControlaBoleta as $anuladas) {
 							$controlanulada = $anuladas[nrocontrol];
-							$cantnova++;
-							print ("<tr>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$controlanulada."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>-</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>-</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>-</font></div></td>");
-				    		print ("<td><div align=center><font size=1 face=Verdana>-</font></div></td>");
-							print ("<td><div align=center><font size=1 face=Verdana>BOLETA ANULADA - No Validada</font></div></td>");
-							print ("</tr>");
+							$cantnova++; ?>
+						<tr>
+							<td><?php echo $controlanulada; ?></td>
+						    <td><?php echo "-"; ?></td>
+						    <td><?php echo "-"; ?></td>
+						    <td><?php echo "-"; ?></td>
+				    		<td><?php echo "-"; ?></td>
+							<td><?php echo "No Validada"; ?></td>
+							<td><?php echo "LA BOLETA SE ENCUENTRA ANULADA"; ?></td>
+						</tr>
+<?php
 						}
 					}
 
@@ -129,92 +130,84 @@ try {
 					//echo $sqlBuscaBoleta; echo "<br>";
 					$resultBuscaBoleta = $dbh->prepare($sqlBuscaBoleta);
 					$resultBuscaBoleta->execute(array(':nrocontrol' => $control));
-					if ($resultBuscaBoleta)
-					{
-		        		foreach ($resultBuscaBoleta as $boletas)
-						{
+					if($resultBuscaBoleta) {
+		        		foreach($resultBuscaBoleta as $boletas) {
 							$id = $boletas[idboleta];
 							$cuitboleta = $boletas[cuit];
 							$acuerdo = $boletas[nroacuerdo];
 							$cuota = $boletas[nrocuota];
 							$importeboleta = $boletas[importe];
 							$control = $boletas[nrocontrol];
-							$usuario = $boletas[usuarioregistro];
-							
-							print ("<tr>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$control."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$cuitboleta."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$acuerdo."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$cuota."</font></div></td>");
-						    print ("<td><div align=center><font size=1 face=Verdana>".$importeboleta."</font></div></td>");
-
-							if($importebanco==$importeboleta)
-							{
-								if($cuitbanco==$cuitboleta)
-								{
+							$usuario = $boletas[usuarioregistro]; ?>
+						<tr>
+							<td><?php echo $control; ?></td>
+						    <td><?php echo $cuitboleta; ?></td>
+						    <td><?php echo $acuerdo; ?></td>
+						    <td><?php echo $cuota; ?></td>
+						    <td><?php echo $importeboleta; ?></td>
+<?php
+							if($importebanco==$importeboleta) {
+								if($cuitbanco==$cuitboleta) {
 									$sqlAgregaValida="INSERT INTO validasusimra (idboleta, cuit, nroacuerdo, nrocuota, importe, nrocontrol, usuarioregistro) VALUES (:idboleta,:cuit,:nroacuerdo,:nrocuota,:importe,:nrocontrol,:usuarioregistro)";
 									$resultAgregaValida = $dbh->prepare($sqlAgregaValida);
 									//echo $sqlAgregaValida; echo "<br>";
-									if ($resultAgregaValida->execute(array(':idboleta' => $id, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':importe' => $importeboleta, ':nrocontrol' => $control, ':usuarioregistro' => $usuario)))
-									{
-										$cantvali++;
-									    print ("<td><div align=center><font size=1 face=Verdana>Boleta Validada</font></div></td>");
+									if($resultAgregaValida->execute(array(':idboleta' => $id, ':cuit' => $cuitboleta, ':nroacuerdo' => $acuerdo, ':nrocuota' => $cuota, ':importe' => $importeboleta, ':nrocontrol' => $control, ':usuarioregistro' => $usuario))) {
+										$cantvali++; 
+										$listastatus="Boleta Validada";
+										$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DEL BANCO SON CORRECTOS.";
 									}
-									else
-									{
-									    print ("<td><div align=center><font size=1 face=Verdana>ERROR CRV - Avise al Depto. Sistemas.</font></div></td>");
+									else {
+										$listastatus="Error VAI";
+										$listamensaje="COMUNIQUESE CON EL DEPTO. DE SISTEMAS.";
 									}
 
 									$sqlBorraBoleta="DELETE FROM boletasusimra WHERE nrocontrol = :nrocontrol";
 									$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
 									//echo $sqlBorraBoleta; echo "<br>";
-									if ($resultBorraBoleta->execute(array(':nrocontrol' => $control)))
-									{
+									if($resultBorraBoleta->execute(array(':nrocontrol' => $control))) {
 									    //print "<p>Registro Boleta borrado correctamente.</p>\n";
 									}
-									else
-									{
+									else {
 									    //print "<p>Error al borrar el registro Boleta.</p>\n";
 									}
 
 									$sqlActualizaBanco="UPDATE banacuerdosusimra SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
 									$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
 									//echo $sqlActualizaBanco; echo "<br>";
-									if ($resultActualizaBanco->execute(array(':fechavalidacion' => $fechavalidacion, ':usuariovalidacion' => $usuariovalidacion, ':nrocontrol' => $control, ':estadomovimiento' => $estado)))
-									{
+									if($resultActualizaBanco->execute(array(':fechavalidacion' => $fechavalidacion, ':usuariovalidacion' => $usuariovalidacion, ':nrocontrol' => $control, ':estadomovimiento' => $estado))) {
 									    //print "<p>Registro Banco actualizado correctamente.</p>\n";
 									}
-									else
-									{
+									else {
 									    //print "<p>Error al actualizar el registro Banco.</p>\n";
 									}
 								}
-								else
-								{
-									$cantnova++;
-									print ("<td><div align=center><font size=1 face=Verdana>CUIT BANCO ".$cuitbanco." Erroneo - No Validada</font></div></td>");
+								else {
+									$cantnova++; 
+									$listastatus="Boleta No Validada";
+									$listamensaje="EL CUIT (".$cuitbanco.") EN QUE IMPUTA EL BANCO ES DISTINTO AL DE LA BOLETA GENERADA.";
 								}
 							}
-							else
-							{
-								$cantnova++;
-								print ("<td><div align=center><font size=1 face=Verdana>IMPORTE BANCO ".$importebanco." Erroneo - No Validada</font></div></td>");
-							}
-							print ("</tr>");
+							else {
+								$cantnova++; 
+								$listastatus="Boleta No Validada";
+								$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR EL BANCO ES DISTINTO AL DE LA BOLETA GENERADA.";
+							} ?>
+							<td><?php echo $listastatus; ?></td>
+							<td><?php echo $listamensaje; ?></td>
+						</tr>
+<?php
 						}
 					}
-        		}
-				print ("</table>");
-
+        		} ?>
+					</tbody>
+				</table>
+<?php
 				$totabole=$cantvali+$cantnova;
-
-				if($totabole!=0)
-				{
-					print ("<table width=769 border=1 align=center>");
-					print ("<tr>");
-					print ("<td width=769><div align=right class=Estilo1>TOTAL DE BOLETAS: ".$totabole." -- ".$cantvali." Validadas ".$cantnova." No Validadas</div></td>");
-					print ("</tr>");
-					print ("</table>");
+				if($totabole!=0) { ?>
+					<div align="center">
+						<h3><?php echo $cantvali." boletas VALIDADAS y ".$cantnova." boletas NO VALIDADAS, sobre un TOTAL de ".$totabole." boletas."; ?></h3>
+					</div>
+<?php
 				}
 	   		}
 		}
@@ -222,8 +215,7 @@ try {
 	
 	$dbh->commit();
 
-	if($hayboleta==1) { 
-	?>
+	if($hayboleta==1) { ?>
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
@@ -239,10 +231,9 @@ try {
 		</td>
 		</tr>
 		</table>
-	<?php
+<?php
 	}
-	else
-	{ ?>
+	else { ?>
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
@@ -250,14 +241,12 @@ try {
 		</td>
 		</tr>
 		</table>
-	<?php
+<?php
 	}
-
 }catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
 }
 ?>
-
 </body>
 </html>

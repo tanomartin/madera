@@ -4,11 +4,17 @@ $fechaExceptuar = explode("-",$_POST['fecha']);
 $ano = $fechaExceptuar[2];
 $mes = $fechaExceptuar[1];
 $dia = $fechaExceptuar[0];
+$origenExceptuar = $_POST['origen'];
+$convenio = $_POST['selectConvenio'];
 $motivo = $_POST['motivo'];
 $fechaModif = date("Y-m-d H:i:s");
 $usuarioModif = $_SESSION['usuario'];
 
-$sqlUpdateDia = "UPDATE diasbancousimra SET exceptuado = 1, observacion = '$motivo', fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarioModif' WHERE ano = $ano and mes = $mes and dia = $dia and procesado = 0";
+if(strcmp("0000", $convenio)==0) {
+	$sqlUpdateDia = "UPDATE diasbancousimra SET exceptuado = 1, observacion = '$motivo', fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarioModif' WHERE nroconvenio IN(3617,5866) AND ano = $ano AND mes = $mes AND dia = $dia AND procesado = 0";
+} else {
+	$sqlUpdateDia = "UPDATE diasbancousimra SET exceptuado = 1, observacion = '$motivo', fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarioModif' WHERE nroconvenio = $convenio AND ano = $ano AND mes = $mes AND dia = $dia AND procesado = 0";
+}
 
 try {
 	$hostname = $_SESSION['host'];
@@ -19,7 +25,12 @@ try {
 	//print($sqlUpdateDia);
 	$dbh->exec($sqlUpdateDia);
 	$dbh->commit();
-	$pagina = "procesamientoArchivos.php";
+	if(strcmp("A", $origenExceptuar)==0) {
+		$pagina = "../aportesacuerdos/archivos/procesamientoArchivosAportes.php";
+	}
+	if(strcmp("E", $origenExceptuar)==0) {
+		$pagina = "../cuotaextraordinaria/archivos/procesamientoArchivosExtraordinarias.php";
+	}
 	Header("Location: $pagina"); 
 } catch (PDOException $e) {
 	echo $e->getMessage();

@@ -27,12 +27,12 @@ $nroConvenio = 3617;
 $fechaRegistro = date("Y-m-d H:i:s");
 $usuarioRegistro = $_SESSION['usuario'];
 $sqlInsertDia = array();
-$sqlDias = "SELECT ano,mes,dia FROM diasbancousimra WHERE procesado = 0 and exceptuado = 0 ORDER BY ano, mes, dia limit 1";
+$sqlDias = "SELECT ano,mes,dia FROM diasbancousimra WHERE nroconvenio = $nroConvenio and procesado = 0 and exceptuado = 0 ORDER BY ano, mes, dia limit 1";
 $resDias = mysql_query($sqlDias,$db); 
 $canDias = mysql_num_rows($resDias);
 //print("Cantida dias: ".$canDias."<br>");
 if ($canDias == 0) {
-	$sqlPeriodos = "SELECT mes, ano from diasbancousimra GROUP BY ano, mes ORDER BY ano DESC, mes DESC limit 1";
+	$sqlPeriodos = "SELECT mes, ano from diasbancousimra WHERE nroconvenio = $nroConvenio GROUP BY ano, mes ORDER BY ano DESC, mes DESC limit 1";
 	$resPeriodos = mysql_query($sqlPeriodos,$db); 
 	$rowPeriodos = mysql_fetch_assoc($resPeriodos);
 	if ($rowPeriodos['mes'] == 12) {
@@ -120,7 +120,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 if(isset($_GET['err'])) {?>
 	<div align='center' style='color:#CC3333'><b>Error en Archivo - El Archivo solicitado no existe.</b></div>
 	<div align='center'><b>Verifique si el banco no envió el archivo o el día debe ser exceptuado de procesamiento</b></div>
-	<div align='center'><input type="button" name="exceptuar" value="Exceptuar" onclick="location.href = '../../excepciondias/exceptuarDia.php?dia=<?php echo $diaProcesar ?>'"/>
+	<div align='center'><input type="button" name="exceptuar" value="Exceptuar" onclick="location.href = '../../excepciondias/exceptuarDia.php?origen=A&dia=<?php echo $diaProcesar ?>'"/>
 	</div>
 <?php
 }
