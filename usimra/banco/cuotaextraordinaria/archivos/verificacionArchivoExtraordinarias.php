@@ -136,7 +136,11 @@ A:hover {text-decoration: none;color:#00FFFF }
       <input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoArchivosExtraordinarias.php'"/>
     </div></td>
     <td width="426" height="27"><div align="center">
+<?php 
+	if ($hayErrores == 0) { ?>
 	  <input type="submit" name="ingresar" value="Ingresar" onclick="location.href = 'procesarArchivoExtraordinarias.php?nombreArc=<?php echo $archivo_name ?> '"/>
+<?php 
+	} ?>
     </div></td>
     <td width="157"><div align="right">
         <input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>

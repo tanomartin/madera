@@ -29,7 +29,7 @@ else{
 			$impodeci=substr($registros[$i], 55, 2);
 			$impdepdb=$impoente.".".$impodeci;
 			$monedadb=substr($registros[$i], 57, 1);
-			$codbardb=substr($registros[$i], 58, 30);
+			$codbardb=substr($registros[$i], 58, 39);
 			$cuibardb=substr($registros[$i], 62, 11);
 			$ctrbardb=substr($registros[$i], 73, 14);
 			$chebandb=substr($registros[$i], 138, 4);

@@ -30,6 +30,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#resultados")
+		.tablesorter({
+			theme: 'blue',
+			widthFixed: true, 
+			widgets: ["zebra"],
+			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}, 7:{sorter:false}}
+		});
+});
+</script>
 </head>
 <body bgcolor="#B2A274">
 <?php
@@ -44,14 +55,12 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction(); ?>
 	<div align="center">
-		<h1>Resultados de la Imputaci&oacute;n de Pagos</h1>
+		<h1>Resultados de la Imputaci&oacute;n de Pagos por Cuota Excepcional</h1>
 	</div>
 <?php
 	$sqlControlImputar="SELECT COUNT(*) FROM banextraordinariausimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
-	$sqlLeeAImputar="SELECT * FROM banextraordinariausimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
-
+	$sqlLeeAImputar="SELECT * FROM banextraordinariausimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R') ORDER BY fechaacreditacion ASC";
 	$resultControlImputar = $dbh->query($sqlControlImputar);
-
 	if(!$resultControlImputar) { ?>
 		<div align="center">
 			<h3>Error en la consulta de la tabla BANEXTRAORDINARIAUSIMRA. Comuniquese con el Depto. de Sistemas.</h3>
@@ -77,9 +86,8 @@ try {
 <?php
 			}
 			else {
+				set_time_limit(0);
 				$cuil="99999999999";
-				$fechamodificacion='00000000000000';
-				$usuariomodificacion='';
 				$totacanc=0.00;
 				$cantcanc=0; ?>
 
@@ -118,149 +126,155 @@ try {
 							<td><?php echo $codbarrabanco; ?></td>
 							<td><?php echo $cuitbanco; ?></td>
 <?php
-					$sqlBuscaEmpresa="SELECT * FROM empresas WHERE cuit = :cuit";
-					//echo $sqlBuscaEmpresa; echo "<br>";
-					$resultBuscaEmpresa = $dbh->prepare($sqlBuscaEmpresa);
-					$resultBuscaEmpresa->execute(array(':cuit' => $cuitbanco));
-					if($resultBuscaEmpresa) {
-						if($estadobanco=='E') {
-							if(strcmp($validadabanco,"00000000000000")!=0) {
-								$puedeimputar=1;
+					$sqlControlBuscaEmpresa="SELECT COUNT(*) FROM empresas WHERE cuit = '$cuitbanco'";
+					$resultControlBuscaEmpresa=$dbh->query($sqlControlBuscaEmpresa);
+					if($resultControlBuscaEmpresa->fetchColumn()!=0) {
+						$sqlBuscaEmpresa="SELECT * FROM empresas WHERE cuit = :cuit";
+						//echo $sqlBuscaEmpresa; echo "<br>";
+						$resultBuscaEmpresa = $dbh->prepare($sqlBuscaEmpresa);
+						$resultBuscaEmpresa->execute(array(':cuit' => $cuitbanco));
+						if($resultBuscaEmpresa) {
+							if($estadobanco=='E') {
+								if(strcmp($validadabanco,"0000-00-00 00:00:00")!=0) {
+									$puedeimputar=1;
+								}
+								else {
+									$listacuota="-";
+									$listaanio="-";
+									$listaimporte=$importebanco;
+									$listastatus="Pago No Imputado";
+									$listamensaje="LA BOLETA RELACIONADA A ESTE PAGO NO FUE VALIDADA.";
+								}
 							}
 							else {
-								$listacuota="-";
-								$listaanio="-";
-								$listaimporte=$importebanco;
-								$listastatus="Pago No Imputado";
-								$listamensaje="LA BOLETA RELACIONADA A ESTE PAGO NO FUE VALIDADA";
-							}
-						}
-						else {
-							$sqlBuscaValidacion="SELECT * FROM banextraordinariausimra WHERE nromovimiento = :nromovimiento AND sucursalorigen = :sucursalorigen AND fecharecaudacion = :fecharecaudacion AND estadomovimiento = :estadomovimiento";
-							//echo $sqlBuscaValidacion; echo "<br>";
-							$resultBuscaValidacion = $dbh->prepare($sqlBuscaValidacion);
-							$resultBuscaValidacion->execute(array(':nromovimiento' => $nrobanco, ':sucursalorigen' => $sucursalbanco, ':fecharecaudacion' => $recaudabanco, ':estadomovimiento' => $presentada));
-							if($resultBuscaValidacion) {
-								foreach($resultBuscaValidacion as $buscavalidacion) {
-									if(strcmp($buscavalidacion[fechavalidacion],"00000000000000")!=0) {
-										if($estadobanco=='R') {
-											$actualizabanco=1;
+								$encontropresentada=0;
+								$sqlBuscaValidacion="SELECT * FROM banextraordinariausimra WHERE nromovimiento = :nromovimiento AND sucursalorigen = :sucursalorigen AND fecharecaudacion = :fecharecaudacion AND estadomovimiento = :estadomovimiento";
+								//echo $sqlBuscaValidacion; echo "<br>";
+								$resultBuscaValidacion = $dbh->prepare($sqlBuscaValidacion);
+								$resultBuscaValidacion->execute(array(':nromovimiento' => $nrobanco, ':sucursalorigen' => $sucursalbanco, ':fecharecaudacion' => $recaudabanco, ':estadomovimiento' => $presentada));
+								if($resultBuscaValidacion) {
+									foreach($resultBuscaValidacion as $buscavalidacion) {
+										if(strcmp($buscavalidacion[fechavalidacion],"0000-00-00 00:00:00")!=0) {
+											if($estadobanco=='R') {
+												$actualizabanco=1;
+												$listacuota="-";
+												$listaanio="-";
+												$listaimporte=$importebanco;
+												$listastatus="Pago No Imputado";
+												$listamensaje="EL CHEQUE ".$chequebanco." ASIGNADO A ESTE PAGO HA SIDO RECHAZADO.";
+											}
+											if($estadobanco=='L') {
+												$puedeimputar=1;
+											}
+										}
+										else {
 											$listacuota="-";
 											$listaanio="-";
 											$listaimporte=$importebanco;
 											$listastatus="Pago No Imputado";
-											$listamensaje="EL CHEQUE ".$chequebanco." ASIGNADO A ESTE PAGO HA SIDO RECHAZADO";
+											$listamensaje="LA BOLETA RELACIONADA A ESTE PAGO NO FUE VALIDADA.";
 										}
-										if($estadobanco=='L') {
-											$puedeimputar=1;
-										}
-									}
-									else {
-										$listacuota="-";
-										$listaanio="-";
-										$listaimporte=$importebanco;
-										$listastatus="Pago No Imputado";
-										$listamensaje="LA BOLETA RELACIONADA A ESTE PAGO NO FUE VALIDADA";
+										$encontropresentada=1;
 									}
 								}
+								if(!$encontropresentada) {
+									$listacuota="-";
+									$listaanio="-";
+									$listaimporte=$importebanco;
+									$listastatus="Pago No Imputado";
+									$listamensaje="FALTA LA PRESENTACION DE LA BOLETA RELACIONADA A ESTE PAGO. RECLAME AL BANCO.";
+								}
 							}
-							else {
-								$listacuota="-";
-								$listaanio="-";
-								$listaimporte=$importebanco;
-								$listastatus="Pago No Imputado";
-								$listamensaje="FALTA LA PRESENTACION DE LA BOLETA RELACIONADA A ESTE PAGO. RECLAME AL BANCO";
-							}
-						}
-						if($puedeimputar)
-						{
-							$sqlBuscaCabBoleta="SELECT * FROM ddjjusimra WHERE nrcuit = :nrcuit AND nrcuil = :nrcuil AND nrctrl = :nrctrl";
-							//echo $sqlBuscaCabBoleta; echo "<br>";
-							$resultBuscaCabBoleta=$dbh->prepare($sqlBuscaCabBoleta);
-							$resultBuscaCabBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrcuil' => $cuil, ':nrctrl' => $controlbanco));
-							if($resultBuscaCabBoleta) {
-				        		foreach($resultBuscaCabBoleta as $cabboleta) {
-									$totalboleta = $cabboleta[totapo]+$cabboleta[recarg];
-									if($importebanco==$totalboleta) {
-										$ultimopago=0;
-										$sqlBuscaUltimoPago="SELECT * FROM cuotaextraordinariausimra WHERE cuit = :cuit AND anopago = :anopago AND mespago = :mespago ORDER BY nropago desc LIMIT 1";
-										//echo $sqlBuscaUltimoPago; echo "<br>";
-										$resultBuscaUltimoPago=$dbh->prepare($sqlBuscaUltimoPago);
-										$resultBuscaUltimoPago->execute(array(':cuit' => $cuitbanco, ':anopago' => $cabboleta[perano], ':mespago' => $cabboleta[permes]));
-										if($resultBuscaUltimoPago) {
-							        		foreach($resultBuscaUltimoPago as $pagofinal) {
-												$ultimopago=$pagofinal[nropago];
+							if($puedeimputar) {
+								$sqlBuscaCabBoleta="SELECT * FROM ddjjusimra WHERE nrcuit = :nrcuit AND nrcuil = :nrcuil AND nrctrl = :nrctrl";
+								//echo $sqlBuscaCabBoleta; echo "<br>";
+								$resultBuscaCabBoleta=$dbh->prepare($sqlBuscaCabBoleta);
+								$resultBuscaCabBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrcuil' => $cuil, ':nrctrl' => $controlbanco));
+								if($resultBuscaCabBoleta) {
+									foreach($resultBuscaCabBoleta as $cabboleta) {
+										$totalboleta = $cabboleta[totapo]+$cabboleta[recarg];
+										if($importebanco==$totalboleta) {
+											$ultimopago=0;
+											$sqlBuscaUltimoPago="SELECT * FROM cuotaextraordinariausimra WHERE cuit = :cuit AND anopago = :anopago AND mespago = :mespago ORDER BY nropago desc LIMIT 1";
+											//echo $sqlBuscaUltimoPago; echo "<br>";
+											$resultBuscaUltimoPago=$dbh->prepare($sqlBuscaUltimoPago);
+											$resultBuscaUltimoPago->execute(array(':cuit' => $cuitbanco, ':anopago' => $cabboleta[perano], ':mespago' => $cabboleta[permes]));
+											if($resultBuscaUltimoPago) {
+												foreach($resultBuscaUltimoPago as $pagofinal) {
+													$ultimopago=$pagofinal[nropago];
+												}
 											}
-										}
-										$ultimopago=$ultimopago+1;
-
-										$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra (id,cuit,cuil,mesddjj,anoddjj,remuneraciones,apor060,apor100,apor150,totalaporte,recargo,cantidadpersonal,instrumentodepago,nrocontrol,observaciones,fechasubida) VALUES (:id,:cuit,:cuil,:mesddjj,:anodjj,:remuneraciones,:apor060,:apor100,:apor150,:totalaporte,:recargo,:cantidadpersonal,:instrumentodepago,:nrocontrol,:observaciones,:fechasubida)";
-										//echo $sqlAgregaCabDDJJ; echo "<br>";
-										$resultAgregaCabDDJJ = $dbh->prepare($sqlAgregaCabDDJJ);
-										if($resultAgregaCabDDJJ->execute(array(':id' => $cabboleta[id], ':cuit' => $cabboleta[nrcuit], ':cuil' => $cabboleta[nrcuil], ':mesddjj' => $cabboleta[permes], ':anoddjj' => $cabboleta[perano], ':remuneraciones' => $cabboleta[remune], ':apor060' => $cabboleta[apo060], ':apor100' => $cabboleta[apo100], ':apor150' => $cabboleta[apo150], ':totalaporte' => $cabboleta[totapo], ':recargo' => $cabboleta[recarg], ':cantidadpersonal' => $cabboleta[nfilas], ':instrumentodepago' => $cabboleta[instrumento], ':nrocontrol' => $cabboleta[nrctrl], ':observaciones' => $cabboleta[observ], ':fechasubida' => $fechasubida))) {
-											//print "<p>Registro de Cabecera de Boleta insertado correctamente.</p>\n";
-											$sqlBuscaDetBoleta="SELECT * FROM ddjjusimra WHERE nrcuit = :nrcuit AND nrcuil != :nrcuil AND nrctrl = :nrctrl";
-											//echo $sqlBuscaDetBoleta; echo "<br>";
-											$resultBuscaDetBoleta=$dbh->prepare($sqlBuscaDetBoleta);
-											$resultBuscaDetBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrcuil' => $cuil, ':nrctrl' => $controlbanco));
-											if($resultBuscaDetBoleta) {
-												foreach($resultBuscaDetBoleta as $detboleta) {
-													$sqlAgregaDetDDJJ="INSERT INTO detddjjusimra (id,cuit,cuil,mesddjj,anoddjj,remuneraciones,apor060,apor100,apor150,nrocontrol,fechasubida) VALUES (:id,:cuit,:cuil,:mesddjj,:anoddjj,:remuneraciones,:apor060,:apor100,:apor150,:nrocontrol,:fechasubida)";
-													//echo $sqlAgregaDetDDJJ; echo "<br>";
-													$resultAgregaDetDDJJ = $dbh->prepare($sqlAgregaDetDDJJ);
-													if($resultAgregaDetDDJJ->execute(array(':id' => $detboleta[id], ':cuit' => $detboleta[nrcuit], ':cuil' => $detboleta[nrcuil], ':mesddjj' => $detboleta[permes], ':anoddjj' => $detboleta[perano], ':remuneraciones' => $detboleta[remune], ':apor060' => $detboleta[apo060], ':apor100' => $detboleta[apo100], ':apor150' => $detboleta[apo150], ':nrocontrol' => $detboleta[nrctrl], ':fechasubida' => $fechasubida))) {
-														//print "<p>Registro de Detalle de Boleta insertado correctamente.</p>\n";
-														$sqlBorraBoleta="DELETE FROM ddjjusimra WHERE nrcuit = :nrcuit AND nrctrl = :nrctrl";
-														//echo $sqlBorraBoleta; echo "<br>";
-														$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
-														if($resultBorraBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrctrl' => $controlbanco))) {
-															//print "<p>Registros de Boleta borrado correctamente.</p>\n";
-															$sqlAgregaPago="INSERT INTO cuotaextraordinariausimra (cuit,mespago,nopago,nropago,fechapago,cantidadaportantes,totalaporte,montorecargo,montopagado,observaciones,sistemacancelacion,codigobarra,fechaacreditacion,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES (:cuit,:mespago,:anopago,:nropago,:fechapago,:cantidadaportantes,:totalaporte,:montorecargo,:montopagado,:observaciones,:sistemacancelacion,:codigobarra,:fechaacreditacion,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
-															//echo $sqlAgregaPago; echo "<br>";
-															$resultAgregaPago = $dbh->prepare($sqlAgregaPago);
-															if($resultAgregaPago->execute(array(':cuit' => $cuitbanco, ':mespago' => $cabboleta[permes], ':anopago' => $cabboleta[perano], ':nropago' => $ultimopago, ':fechapago' => $recaudabanco, ':cantidadaportantes' => $cabboleta[nfilas], ':totalaporte' => $cabboleta[totapo], ':montorecargo' => $cabboleta[recarg], ':montopagado' => $totalboleta, ':observaciones' => $cabboleta[observ], ':sistemacancelacion' => $sistemacancelacion, ':codigobarra' => $codbarrabanco, ':fechaacreditacion' => $acreditabanco, ':fecharegistro' => $fechacancelacion, ':usuarioregistro' => $usuariocancelacion, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion))) {
-																//print "<p>Registro de Pago insertado correctamente.</p>\n";
-																$totacanc=$totacanc+$totalboleta;
-																$cantcanc++;
-																$actualizabanco=1;
-																$listacuota=$cabboleta[permes];
-																$listaanio=$cabboleta[perano];
-																$listaimporte=$totalboleta;
-																$listastatus="Pago Imputado";
-																$listamensaje="IMPUTACION CORRECTA DEL PAGO";
-															}
-														}
-														else {
-														   //print "<p>Error al borrar los registros de Boleta.</p>\n";
+											$ultimopago=$ultimopago+1;
+											//echo $ultimopago; echo "<br>";
+											$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra VALUES ('$cabboleta[id]','$cabboleta[nrcuit]','$cabboleta[nrcuil]','$cabboleta[permes]','$cabboleta[perano]','$cabboleta[remune]','$cabboleta[apo060]','$cabboleta[apo100]','$cabboleta[apo150]','$cabboleta[totapo]','$cabboleta[recarg]','$cabboleta[nfilas]','$cabboleta[instrumento]','$cabboleta[nrctrl]','$cabboleta[observ]','$fechasubida')";
+											//echo $sqlAgregaCabDDJJ; echo "<br>";
+											if($resultAgregaCabDDJJ = $dbh->query($sqlAgregaCabDDJJ)) {
+											//$resultAgregaCabDDJJ = $dbh->prepare($sqlAgregaCabDDJJ);
+											//if($resultAgregaCabDDJJ->execute(array(':id' => $cabboleta[id], ':cuit' => $cabboleta[nrcuit], ':cuil' => $cabboleta[nrcuil], ':mesddjj' => $cabboleta[permes], ':anoddjj' => $cabboleta[perano], ':remuneraciones' => $cabboleta[remune], ':apor060' => $cabboleta[apo060], ':apor100' => $cabboleta[apo100], ':apor150' => $cabboleta[apo150], ':totalaporte' => $cabboleta[totapo], ':recargo' => $cabboleta[recarg], ':cantidadpersonal' => $cabboleta[nfilas], ':instrumentodepago' => $cabboleta[instrumento], ':nrocontrol' => $cabboleta[nrctrl], ':observaciones' => $cabboleta[observ], ':fechasubida' => $fechasubida))) {
+												//print "<p>Registro de Cabecera de Boleta insertado correctamente.</p>\n";
+												$sqlBuscaDetBoleta="SELECT * FROM ddjjusimra WHERE nrcuit = :nrcuit AND nrcuil != :nrcuil AND nrctrl = :nrctrl";
+												//echo $sqlBuscaDetBoleta; echo "<br>";
+												$resultBuscaDetBoleta=$dbh->prepare($sqlBuscaDetBoleta);
+												$resultBuscaDetBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrcuil' => $cuil, ':nrctrl' => $controlbanco));
+												if($resultBuscaDetBoleta) {
+													foreach($resultBuscaDetBoleta as $detboleta) {
+														$sqlAgregaDetDDJJ="INSERT INTO detddjjusimra (id,cuit,cuil,mesddjj,anoddjj,remuneraciones,apor060,apor100,apor150,nrocontrol,fechasubida) VALUES (:id,:cuit,:cuil,:mesddjj,:anoddjj,:remuneraciones,:apor060,:apor100,:apor150,:nrocontrol,:fechasubida)";
+														//echo $sqlAgregaDetDDJJ; echo "<br>";
+														$resultAgregaDetDDJJ = $dbh->prepare($sqlAgregaDetDDJJ);
+														if($resultAgregaDetDDJJ->execute(array(':id' => $detboleta[id], ':cuit' => $detboleta[nrcuit], ':cuil' => $detboleta[nrcuil], ':mesddjj' => $detboleta[permes], ':anoddjj' => $detboleta[perano], ':remuneraciones' => $detboleta[remune], ':apor060' => $detboleta[apo060], ':apor100' => $detboleta[apo100], ':apor150' => $detboleta[apo150], ':nrocontrol' => $detboleta[nrctrl], ':fechasubida' => $fechasubida))) {
+															//print "<p>Registro de Detalle de Boleta insertado correctamente.</p>\n";
 														}
 													}
 												}
+												$sqlBorraBoleta="DELETE FROM ddjjusimra WHERE nrcuit = :nrcuit AND nrctrl = :nrctrl";
+												//echo $sqlBorraBoleta; echo "<br>";
+												$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
+												if($resultBorraBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrctrl' => $controlbanco))) {
+													//print "<p>Registros de Boleta borrado correctamente.</p>\n";
+													$sqlAgregaPago="INSERT INTO cuotaextraordinariausimra (cuit,mespago,anopago,nropago,fechapago,cantidadaportantes,totalaporte,montorecargo,montopagado,observaciones,sistemacancelacion,codigobarra,fechaacreditacion,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES (:cuit,:mespago,:anopago,:nropago,:fechapago,:cantidadaportantes,:totalaporte,:montorecargo,:montopagado,:observaciones,:sistemacancelacion,:codigobarra,:fechaacreditacion,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
+													//echo $sqlAgregaPago; echo "<br>";
+													$resultAgregaPago = $dbh->prepare($sqlAgregaPago);
+													if($resultAgregaPago->execute(array(':cuit' => $cuitbanco, ':mespago' => $cabboleta[permes], ':anopago' => $cabboleta[perano], ':nropago' => $ultimopago, ':fechapago' => $recaudabanco, ':cantidadaportantes' => $cabboleta[nfilas], ':totalaporte' => $cabboleta[totapo], ':montorecargo' => $cabboleta[recarg], ':montopagado' => $totalboleta, ':observaciones' => $cabboleta[observ], ':sistemacancelacion' => $sistemacancelacion, ':codigobarra' => $codbarrabanco, ':fechaacreditacion' => $acreditabanco, ':fecharegistro' => $fechacancelacion, ':usuarioregistro' => $usuariocancelacion, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion))) {
+														//print "<p>Registro de Pago insertado correctamente.</p>\n";
+														$totacanc=$totacanc+$totalboleta;
+														$cantcanc++;
+														$actualizabanco=1;
+														$listacuota=$cabboleta[permes];
+														$listaanio=$cabboleta[perano];
+														$listaimporte=$totalboleta;
+														$listastatus="Pago Imputado";
+														$listamensaje="IMPUTACION CORRECTA DEL PAGO.";
+													}
+												}
+												else {
+												   //print "<p>Error al borrar los registros de Boleta.</p>\n";
+												}
+											}
+											else {
+												$listacuota=$cabboleta[permes];
+												$listaanio=$cabboleta[perano];
+												$listaimporte=$totalboleta;
+												$listastatus="ERROR CRV";
+												$listamensaje="COMUNIQUESE CON EL DEPTO. DE SISTEMAS PARA INFORMAR EL ERROR.";
 											}
 										}
 										else {
 											$listacuota=$cabboleta[permes];
 											$listaanio=$cabboleta[perano];
 											$listaimporte=$totalboleta;
-											$listastatus="ERROR CRV";
-											$listamensaje="COMUNIQUESE CON EL DEPTO. DE SISTEMAS PARA INFORMAR EL ERROR.";
+											$listastatus="Pago No Imputado";
+											$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR EL BANCO ES DISTINTO AL DE LA BOLETA GENERADA.";
 										}
-									}
-									else {
-										$listacuota=$cabboleta[permes];
-										$listaanio=$cabboleta[perano];
-										$listaimporte=$totalboleta;
-										$listastatus="Pago No Imputado";
-										$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR EL BANCO ES DISTINTO AL DE LA BOLETA GENERADA.";
 									}
 								}
 							}
-						}
-						if($actualizabanco) {
-							$sqlActualizaBanco="UPDATE banextraordinariausimra SET fechaimputacion = :fechaimputacion, usuarioimputacion = :usuarioimputacion WHERE cuit = :cuit AND nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
-							$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
-							//echo $sqlActualizaBanco; echo "<br>";
-							if($resultActualizaBanco->execute(array(':fechaimputacion' => $fechacancelacion, ':usuarioimputacion' => $usuariocancelacion, ':cuit' => $cuitbanco, ':nrocontrol' => $controlbanco, ':estadomovimiento' => $estadobanco))) {
-							    //print "<p>Registro de Banco actualizado correctamente.</p>\n";
+							if($actualizabanco) {
+								$sqlActualizaBanco="UPDATE banextraordinariausimra SET fechaimputacion = :fechaimputacion, usuarioimputacion = :usuarioimputacion WHERE cuit = :cuit AND nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
+								$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
+								//echo $sqlActualizaBanco; echo "<br>";
+								if($resultActualizaBanco->execute(array(':fechaimputacion' => $fechacancelacion, ':usuarioimputacion' => $usuariocancelacion, ':cuit' => $cuitbanco, ':nrocontrol' => $controlbanco, ':estadomovimiento' => $estadobanco))) {
+									//print "<p>Registro de Banco actualizado correctamente.</p>\n";
+								}
 							}
 						}
 					}
@@ -269,7 +283,7 @@ try {
 						$listaanio="-";
 						$listaimporte=$importebanco;
 						$listastatus="Pago No Imputado";
-						$listamensaje="EMPRESA INEXISTENTE EN LA BASE DE DATOS DE USIMRA";
+						$listamensaje="EMPRESA INEXISTENTE EN LA BASE DE DATOS DE USIMRA.";
 					} ?>
 							<td><?php echo $listacuota; ?></td>
 							<td><?php echo $listaanio; ?></td>

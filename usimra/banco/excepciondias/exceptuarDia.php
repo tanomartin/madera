@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
+$origenExceptuar = $_GET['origen'];
 $fechaExceptuar = $_GET['dia'];
 ?>
 
@@ -21,8 +22,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 <script type="text/javascript">
 function validar(formulario) {
+	if (formulario.selectConvenio.options[formulario.selectConvenio.selectedIndex].value == "") {
+		alert("Debe seleccionar un convenio al que aplicar la excepcion");
+		document.getElementById("selectConvenio").focus();
+		return false;
+	}
 	if(formulario.motivo.value == "") {
 		alert("Debe ingresar el motivo por el cual se exceptua del proceso bancario");
+		document.getElementById("motivo").focus();
 		return false;
 	}
 	formulario.exceptuar.disabled = true;
@@ -32,10 +39,32 @@ function validar(formulario) {
 </head>
 <body bgcolor="#B2A274">
 <form id="form1" onsubmit="return validar(this)"  name="form1" method="post" action="guardaExcepcionDia.php">
-<div align="center"><input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoArchivos.php'"/> 
+<div align="center">
+<?php
+if(strcmp("A", $origenExceptuar)==0) {
+?>
+	<input type="reset" name="volver" value="Volver" onclick="location.href = '../aportesacuerdos/archivos/procesamientoArchivosAportes.php'"/>
+<?php
+}
+if(strcmp("A", $origenExceptuar)==0) {
+?>
+	<input type="reset" name="volver" value="Volver" onclick="location.href = '../cuotaextraordinaria/archivos/procesamientoArchivosExtraordinarias.php'"/>
+<?php
+}
+?>
 	<p class="Estilo1">Exceptuar Proceso Bancario</p>
 	<p>D&iacute;a a Exceptuar
-    <input type="text" name="fecha" id="fecha" size="10" readonly="readonly" style="background-color:#CCCCCC; text-align:center" value="<?php echo $fechaExceptuar ?>"/></p>
+    <input type="text" name="fecha" id="fecha" size="10" readonly="readonly" style="background-color:#CCCCCC; text-align:center" value="<?php echo $fechaExceptuar ?>"/>
+	<input type="text" name="origen" id="origen" size="1" readonly="readonly" style="visibility:hidden" value="<?php echo $origenExceptuar ?>"/>
+</p>
+	<p>Convenio a Aplicar 
+		<select name="selectConvenio" id="selectConvenio">
+			<option title="Seleccione un valor" value="">Seleccione un valor</option>
+			<option title="3617 - Aportes / Acuerdos" value="3617">3617 - Aportes / Acuerdos</option>
+			<option title="5866 - Cuota Excepcional" value="5866">5866 - Cuota Excepcional</option>
+			<option title="Ambos Convenios" value="0000">Ambos Convenios</option>
+   		</select>
+	</p>
 	<p>Motivo de Excepción</p>
 	<p>
 	  <textarea name="motivo" id="motivo" cols="40" rows="4"></textarea>

@@ -12,6 +12,14 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 .Estilo2 {font-weight: bold}
 </style>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+function MsgWait(formulario) {
+	$.blockUI({ message: "<h1>Imputando Pagos de Aportes. Aguarde por favor...</h1>" });
+	return true;
+}
+</script>
 </head>
 <body bgcolor="#B2A274">
   

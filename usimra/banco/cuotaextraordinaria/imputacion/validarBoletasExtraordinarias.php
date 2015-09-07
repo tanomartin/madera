@@ -52,11 +52,11 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction(); ?>
 	<div align="center">
-		<h1>Resultados de la Validaci&oacute;n de Boletas</h1>
+		<h1>Resultados de la Validaci&oacute;n de Boletas por Pagos de Cuota Excepcional</h1>
 	</div>
 <?php
 	$sqlControlValidar="SELECT COUNT(*) FROM banextraordinariausimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in('P','E')";
-	$sqlLeeAValidar="SELECT * FROM banextraordinariausimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in('P','E')";
+	$sqlLeeAValidar="SELECT * FROM banextraordinariausimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in('P','E') ORDER BY fechaacreditacion ASC";
 	$resultControlValidar=$dbh->query($sqlControlValidar);
 	if(!$resultControlValidar) { ?>
 		<div align="center">
@@ -83,6 +83,7 @@ try {
 <?php
 			}
 			else {
+				set_time_limit(0);
 				$cuil="99999999999";
 				$cantvali=0;
 				$cantnova=0; ?>
@@ -131,7 +132,7 @@ try {
 										//print "<p>Registro de Banco actualizado correctamente.</p>\n";
 										$cantvali++;
 										$listastatus="Boleta Validada";
-										$listamensaje="-";
+										$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DEL BANCO SON CORRECTOS.";
 									}
 									else {
 										//print "<p>Error al actualizar el registro de Banco.</p>\n";
@@ -209,8 +210,7 @@ try {
 	
 	$dbh->commit();
 
-	if($hayboleta==1) { 
-	?>
+	if($hayboleta==1) { ?>
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
@@ -226,10 +226,9 @@ try {
 		</td>
 		</tr>
 		</table>
-	<?php
+<?php
 	}
-	else
-	{ ?>
+	else { ?>
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
@@ -237,14 +236,12 @@ try {
 		</td>
 		</tr>
 		</table>
-	<?php
+<?php
 	}
-
 }catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
 }
 ?>
-
 </body>
 </html>
