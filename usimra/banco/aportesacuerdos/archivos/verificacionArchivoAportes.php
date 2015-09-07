@@ -137,7 +137,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 </head>
 <body bgcolor="#B2A274">
-  <table width="762" height="237" border="1" align="center">
+  <table style="height: 237; width: 762" border="1" align="center">
   <tr align="center" valign="top">
     <td height="23" colspan="3"><div align="center"><em><strong><font face="Arial, Helvetica, sans-serif">Control de Archivo del Banco </font></strong></em></div></td>
   </tr>
@@ -189,7 +189,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	?></div></td>
     </tr>
 </table>
-<table width="762" height="23" border="1" align="center">
+<table style="width: 762; height: 23" border="1" align="center">
   <tr align="center" valign="top">
     <td height="27"><div align="left">
       <input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoArchivosAportes.php'" align="left" />
@@ -201,10 +201,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 <?php 
 	} ?>
     </div></td>
-    <td width="157"><div align="right">
-        <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="left">
-      </div>
-    </label></td>
+    <td width="157">
+    	<div align="right">
+        	<input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left"/>
+    	</div>
+    </td>
   </tr>
 </table>
 </body>

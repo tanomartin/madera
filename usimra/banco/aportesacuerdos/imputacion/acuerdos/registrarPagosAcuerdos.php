@@ -377,6 +377,7 @@ try {
 						}
 					}
         		} ?>
+        		</tbody>
 				</table>
 <?php
 				if($totacanc!=0.00) { ?>
