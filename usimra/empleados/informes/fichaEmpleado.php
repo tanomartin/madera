@@ -41,13 +41,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
-<script src="/lib/funcionControl.js" type="text/javascript"></script>
-<script src="/lib/jquery.js"></script>
-<script src="/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="/lib/jquery.tablesorter/themes/theme.blue.css"/>
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
-<script src="/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
-<script src="/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.js"></script>
+<script src="/madera/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
 	$(function() {
 		$("#listado")
@@ -69,12 +69,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
-	
-function abrirFicha(dire, cuit, cuil) {
-	var dire = dire + '?cuit=' + cuit + '&cuil=' + cuil;
-	c= window.open(dire,"Ficha Empleado",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
-}
 	
 </script>
 </head>
@@ -166,7 +160,7 @@ function abrirFicha(dire, cuit, cuil) {
 				  <option selected="selected" value="10">10 por pagina</option>
 				  <option value="20">20 por pagina</option>
 				  <option value="30">30 por pagina</option>
-				  <option value="<?php echo $canEmpleados;?>">Todos</option>
+				  <option value="<?php echo $canFamilia;?>">Todos</option>
 				  </select>
 				</p>
 			  </form>	
