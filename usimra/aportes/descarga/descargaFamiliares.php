@@ -56,7 +56,7 @@ if ($canFamiliar > 0) {
 			}
 		} else {
 			$listadoFamiliares[$n] = array("estado" => 'M', "cuil" =>  $rowFamiliar['nrcuil'], "cuit" =>  $rowFamiliar['nrcuit'], "parentesco" =>  $rowFamiliar['codpar'], "nombre" => $rowFamiliar['apelli'].", ".$rowFamiliar['nombre']);
-			$sqlUpdateFami = "UDPATE familiausimra SET 
+			$sqlUpdateFami = "UPDATE familiausimra SET 
 									nombre = '".$rowFamiliar['nombre']."',
 									apelli = '".$rowFamiliar['apelli']."',
 									codpar = '".$rowFamiliar['codpar']."',
