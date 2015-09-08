@@ -49,7 +49,7 @@ else{
 			$impodepo=$impoente.".".$impodeci;
 
 			$codimovi=substr($registros[$i], 34, 2);
-			if(strcmp("50", $codimovi)==0){
+			if(strcmp("50", $codimovi)==0 || strcmp("52", $codimovi)==0){
 				$validas++;
 				$deposit++;
 				$efectiv++;

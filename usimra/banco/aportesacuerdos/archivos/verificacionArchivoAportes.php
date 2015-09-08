@@ -60,7 +60,7 @@ else {
 
 			$codimovic=substr($registros[$i], 34, 2);
 
-			if(strcmp("50", $codimovic)==0) {
+			if(strcmp("50", $codimovic)==0 || strcmp("52", $codimovic)==0) {
 				$validasc++;
 				$depositc++;
 				$efectivc++;
@@ -95,7 +95,7 @@ else {
 
 			$codimovip=substr($registros[$i], 34, 2);
 
-			if(strcmp("50", $codimovip)==0) {
+			if(strcmp("50", $codimovip)==0 || strcmp("52", $codimovip)==0) {
 				$validasp++;
 				$depositp++;
 				$efectivp++;
