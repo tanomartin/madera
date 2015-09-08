@@ -7,9 +7,7 @@ if ($cuit=="") {
 	$cuit=$_POST['cuit'];
 }
 
-$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresasdebaja e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
-$result = mysql_query($sql,$db); 
-$row = mysql_fetch_array($result); 
+include($libPath."cabeceraEmpresaConsulta.php"); 
 $tipo = "baja";
 
 
