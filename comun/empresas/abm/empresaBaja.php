@@ -44,7 +44,7 @@ function informaTitulares() {
 }
 
 
-function rediSabanaCtaCte(origen) {
+function rediSabanaCtaCte(origen, cuit) {
 	$.blockUI({ message: "<h1>Generando Cuenta Corriente... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	var dire = "";
 	if (origen == "ospim") {
@@ -81,11 +81,7 @@ function rediSabanaCtaCte(origen) {
     </tr>
   </table>
   <p>
-    	<?php if ($origen == "ospim") { ?>
-			<input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('ospim')" />
-		<?php } else {?>
-			<input name="ctacteUsimra" type="button" value="Cuenta Corriente" />
-		<?php } ?>
+    <input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('<?php echo $origen ?>','<?php echo $cuit ?>')"/>
   </p>
   <p>
     <?php

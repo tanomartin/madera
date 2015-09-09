@@ -8,9 +8,7 @@ if ($pos === false) {
 include($libPath."fechas.php");
 
 $cuit=$_GET['cuit'];
-$sql = "select * from empresas where cuit = $cuit";
-$result = mysql_query($sql,$db); 
-$row = mysql_fetch_array($result); 
+include($libPath."cabeceraEmpresaConsulta.php"); 
 
 $anio=$_GET['anio'];
 $mes=$_GET['mes'];

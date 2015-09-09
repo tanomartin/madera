@@ -222,13 +222,13 @@ function imprimeTabla($periodo) {
 		} else {
 			$pacuerdo = explode('-',$estado);
 			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {
-				print ("<td width=81><a href=javascript:abrirInfo('/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>"); 
+				print ("<td width=81><a href=javascript:abrirInfo('/madera/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>"); 
 			} else {
 				$juicioEstado = explode('-',$estado);
 				$pjuicio = explode('(',$juicioEstado[0]);
 				if ($pjuicio[0] == 'J.CONV ' or $pjuicio[0] == 'J.QUIEB ' or $pjuicio[0] == 'J.EJEC ') {
 					$nroorden = $juicioEstado[1];
-					print ("<td><a href=javascript:abrirInfo('/ospim/legales/juicios/consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."&origen=empresa')>".$juicioEstado[0]."</a></td>"); 
+					print ("<td><a href=javascript:abrirInfo('/madera/ospim/legales/juicios/consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."&origen=empresa')>".$juicioEstado[0]."</a></td>"); 
 				} else {
 					print ("<td>".$estado."</a></td>");
 				}
