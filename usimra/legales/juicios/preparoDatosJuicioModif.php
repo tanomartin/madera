@@ -25,7 +25,7 @@ $usuariomodificacion =  $_SESSION['usuario'];
 
 if ($rowJuicio['acuerdorelacionado'] == 1) {
 	$nroAcuQuit = $rowJuicio['nroacuerdo'];
-	$sqlDetalleQuitar = "SELECT * FROM detjuiciosusimra WHERE nroacuerdo = $nroAcuQuit";
+	$sqlDetalleQuitar = "SELECT * FROM detjuiciosusimra WHERE nroorden = $nroorden and nroacuerdo = $nroAcuQuit";
 	$resDetalleQuitar = mysql_query($sqlDetalleQuitar,$db);
 	$per = 0;
 	while ($rowDetalleQuitar=mysql_fetch_assoc($resDetalleQuitar)) {
