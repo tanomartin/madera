@@ -348,7 +348,7 @@ try {
 		<tr align="center" valign="top">
 	    <td width="385" valign="middle">
 		<div align="left">
-		<input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistrosExtraordinarias.php'"/>
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistrosAportes.php'"/>
 		</div>
 		</td>
 	    <td width="385" valign="middle">
