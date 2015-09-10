@@ -42,7 +42,7 @@ function irARegistrar() {
 		<input type="submit" name="validar" value="Validar Boletas" onclick="javascript:irAValidar()" align="left" />
 </div></td>
     <td><div align="center">
-		<input type="submit" name="registrar" value="Registrar Pagos" onclick="javascript:irARegistrar()" align="left" /
+		<input type="submit" name="registrar" value="Registrar Pagos" onclick="javascript:irARegistrar()" align="left" />
     </div>
     </td>
   </tr>
