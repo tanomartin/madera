@@ -12,6 +12,18 @@ A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 .Estilo2 {font-weight: bold}
 </style>
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+function irAValidar() {
+	$.blockUI({ message: "<h1>Procesando la Validacion de Boletas.<br>Aguarde por favor...</h1>" });
+	document.location.href = "validarBoletasAcuerdos.php";
+}
+function irARegistrar() {
+	$.blockUI({ message: "<h1>Procesando el Registro de Pagos.<br>Aguarde por favor...</h1>" });
+	document.location.href = "registrarPagosAcuerdos.php";
+}
+</script>
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
@@ -26,10 +38,10 @@ A:hover {text-decoration: none;color:#00FFFF }
   
   <tr align="center" valign="top">
     <td><div align="center">
-      <input type="submit" name="validar" value="Validar Boletas" onclick="location.href = 'validarBoletasAcuerdos.php'" align="left" />
+	  <input type="submit" name="validar" value="Validar Boletas" onclick="javascript:irAValidar()" align="left" />
 </div></td>
     <td><div align="center">
-      <input type="submit" name="registrar" value="Registrar Pagos" onclick="location.href = 'registrarPagosAcuerdos.php'" align="left" />
+	  <input type="submit" name="registrar" value="Registrar Pagos" onclick="javascript:irARegistrar()" align="left" />
     </div>
     </td>
   </tr>

@@ -55,7 +55,7 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction(); ?>
 	<div align="center">
-		<h1>Resultados de la Imputaci&oacute;n de Pagos por Cuota Excepcional</h1>
+		<h1>Resultados de la Imputaci&oacute;n de Pagos por Aportes</h1>
 	</div>
 <?php
 	$sqlControlImputar="SELECT COUNT(*) FROM banaportesusimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
@@ -217,10 +217,13 @@ try {
 											}
 											$ultimopago=$ultimopago+1;
 											//echo $ultimopago; echo "<br>";	
-											$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra (id,cuit,cuil,mesddjj,anoddjj,remuneraciones,apor060,apor100,apor150,totalaporte,recargo,cantidadpersonal,instrumentodepago,nrocontrol,observaciones,fechasubida) VALUES (:id,:cuit,:cuil,:mesddjj,:anodjj,:remuneraciones,:apor060,:apor100,:apor150,:totalaporte,:recargo,:cantidadpersonal,:instrumentodepago,:nrocontrol,:observaciones,:fechasubida)";
+											$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra VALUES ('$cabboleta[id]','$cabboleta[nrcuit]','$cabboleta[nrcuil]','$cabboleta[permes]','$cabboleta[perano]','$cabboleta[remune]','$cabboleta[apo060]','$cabboleta[apo100]','$cabboleta[apo150]','$cabboleta[totapo]','$cabboleta[recarg]','$cabboleta[nfilas]','$cabboleta[instrumento]','$cabboleta[nrctrl]','$cabboleta[observ]','$fechasubida')";
 											//echo $sqlAgregaCabDDJJ; echo "<br>";
-											$resultAgregaCabDDJJ = $dbh->prepare($sqlAgregaCabDDJJ);
-											if($resultAgregaCabDDJJ->execute(array(':id' => $cabboleta[id], ':cuit' => $cabboleta[nrcuit], ':cuil' => $cabboleta[nrcuil], ':mesddjj' => $cabboleta[permes], ':anoddjj' => $cabboleta[perano], ':remuneraciones' => $cabboleta[remune], ':apor060' => $cabboleta[apo060], ':apor100' => $cabboleta[apo100], ':apor150' => $cabboleta[apo150], ':totalaporte' => $cabboleta[totapo], ':recargo' => $cabboleta[recarg], ':cantidadpersonal' => $cabboleta[nfilas], ':instrumentodepago' => $cabboleta[instrumento], ':nrocontrol' => $cabboleta[nrctrl], ':observaciones' => $cabboleta[observ], ':fechasubida' => $fechasubida))) {
+											if($resultAgregaCabDDJJ = $dbh->query($sqlAgregaCabDDJJ)) {
+											//$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra (id,cuit,cuil,mesddjj,anoddjj,remuneraciones,apor060,apor100,apor150,totalaporte,recargo,cantidadpersonal,instrumentodepago,nrocontrol,observaciones,fechasubida) VALUES (:id,:cuit,:cuil,:mesddjj,:anodjj,:remuneraciones,:apor060,:apor100,:apor150,:totalaporte,:recargo,:cantidadpersonal,:instrumentodepago,:nrocontrol,:observaciones,:fechasubida)";
+											//echo $sqlAgregaCabDDJJ; echo "<br>";
+											//$resultAgregaCabDDJJ = $dbh->prepare($sqlAgregaCabDDJJ);
+											//if($resultAgregaCabDDJJ->execute(array(':id' => $cabboleta[id], ':cuit' => $cabboleta[nrcuit], ':cuil' => $cabboleta[nrcuil], ':mesddjj' => $cabboleta[permes], ':anoddjj' => $cabboleta[perano], ':remuneraciones' => $cabboleta[remune], ':apor060' => $cabboleta[apo060], ':apor100' => $cabboleta[apo100], ':apor150' => $cabboleta[apo150], ':totalaporte' => $cabboleta[totapo], ':recargo' => $cabboleta[recarg], ':cantidadpersonal' => $cabboleta[nfilas], ':instrumentodepago' => $cabboleta[instrumento], ':nrocontrol' => $cabboleta[nrctrl], ':observaciones' => $cabboleta[observ], ':fechasubida' => $fechasubida))) {
 												//print "<p>Registro de Cabecera de Boleta insertado correctamente.</p>\n";
 												$sqlBuscaDetBoleta="SELECT * FROM ddjjusimra WHERE nrcuit = :nrcuit AND nrcuil != :nrcuil AND nrctrl = :nrctrl";
 												//echo $sqlBuscaDetBoleta; echo "<br>";
@@ -348,7 +351,7 @@ try {
 		<tr align="center" valign="top">
 	    <td width="385" valign="middle">
 		<div align="left">
-		<input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistrosExtraordinarias.php'"/>
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistrosAportes.php'"/>
 		</div>
 		</td>
 	    <td width="385" valign="middle">
@@ -364,7 +367,7 @@ try {
 		<p>&nbsp;</p>
 		<table width="770" border="1" align="center">
 		<tr align="center" valign="top">
-	    <td width="770" valign="middle"><input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistrosExtraordinarias.php'"/>
+	    <td width="770" valign="middle"><input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistrosAportes.php'"/>
 		</td>
 		</tr>
 		</table>
