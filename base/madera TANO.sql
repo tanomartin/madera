@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-09-2015 a las 19:55:39
+-- Tiempo de generación: 10-09-2015 a las 18:11:14
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -212,17 +212,6 @@ CREATE TABLE IF NOT EXISTS `agrufiscalizusimra` (
   `cantadhemayor1000` int(5) unsigned NOT NULL DEFAULT '0' COMMENT 'Cantidad de Adherentes de Cuiles con Remuneracion mayor a 1000 pesos',
   PRIMARY KEY (`cuit`,`anoddjj`,`mesddjj`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Agrupamiento de Valores para el Detalle de Fiscalizacion de USIMRA';
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `aniosusimra`
---
-
-CREATE TABLE IF NOT EXISTS `aniosusimra` (
-  `anio` int(4) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`anio`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora para habilitacion de años en Aplicativo DDJJ';
 
 -- --------------------------------------------------------
 
