@@ -156,7 +156,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		
 	//DDJJ VALIDAS
 	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra 
-					where cuit = $cuit and 
+					where cuit = $cuit and cuil != '9999999999' and
 					((anoddjj > $anoinicio and anoddjj < $ultano) or 
 	   				 (anoddjj = $ultano and mesddjj <= $ultmes) or 
 	  				 (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
@@ -188,7 +188,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	$wherein = "(".$wherein.")";
 	if ($wherein != "") {
 		$sqlDDJJTemp = "select perano as anoddjj, permes as mesddjj, nrcuil as cuil, remune as remuneraciones from ddjjusimra 
-							where nrcuit = $cuit and nrctrl in $wherein";
+							where nrcuit = $cuit and nrcuil != '9999999999' and nrctrl in $wherein";
 		$resDDJJTemp = mysql_query($sqlDDJJTemp,$db);
 		while ($rowDDJJTemp = mysql_fetch_assoc($resDDJJTemp)) {
 			$mes = str_pad($rowDDJJTemp['mesddjj'],2,'0',STR_PAD_LEFT);
@@ -202,14 +202,14 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	
 	//DDJJ OSPIM			 	
 	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, remundeclarada as remuneraciones from detddjjospim 
-						where cuit = $cuit and 
+						where cuit = $cuit and cuil != '9999999999' and
 							((anoddjj > $anoinicio and anoddjj < $ultano) or 
 							 (anoddjj = $ultano and mesddjj <= $ultmes) or 
 							 (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	$resDDJJOspim = mysql_query($sqlDDJJOspim,$db);
 	while ($rowDDJJOspim = mysql_fetch_assoc($resDDJJOspim)) {
 		$mes = str_pad($rowDDJJOspim['mesddjj'],2,'0',STR_PAD_LEFT);
-		$id = $rowDDJJ['anoddjj'].$mes;
+		$id = $rowDDJJOspim['anoddjj'].$mes;
 		$idArray = $rowDDJJOspim['anoddjj'].$mes.$rowDDJJOspim['cuil'];
 		if (!array_key_exists($idArray, $arrayDDJJ)) {
 			$arrayDDJJ[$idArray] = array ('origen' =>  2, 'datos' => $rowDDJJOspim, 'id' => $id);
