@@ -247,7 +247,9 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			
 			if (array_key_exists($idNR, $arrayNR)) {
 				$norem = str_pad($arrayNR[$idNR]['datos']['remuneraciones'],12,'0',STR_PAD_LEFT);
-			}			
+			} else {
+				$norem = str_pad('0',12,'0',STR_PAD_LEFT);
+			}		
 			$norem = number_format($norem,2,',','');
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
 			$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');
