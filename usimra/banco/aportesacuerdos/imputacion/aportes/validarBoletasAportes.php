@@ -232,7 +232,7 @@ try {
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
-	    <td width="769" valign="middle"><input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistrosExtraordinarias.php'"/>
+	    <td width="769" valign="middle"><input type="reset" name="volver" value="Volver" onclick="location.href = 'procesamientoRegistrosAportes.php'"/>
 		</td>
 		</tr>
 		</table>

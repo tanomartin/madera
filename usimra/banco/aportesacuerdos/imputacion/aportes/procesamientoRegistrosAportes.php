@@ -15,9 +15,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-function MsgWait(formulario) {
-	$.blockUI({ message: "<h1>Imputando Pagos de Aportes. Aguarde por favor...</h1>" });
-	return true;
+function irAValidar() {
+	$.blockUI({ message: "<h1>Procesando la Validacion de Boletas.<br>Aguarde por favor...</h1>" });
+	document.location.href = "validarBoletasAportes.php";
+}
+function irARegistrar() {
+	$.blockUI({ message: "<h1>Procesando el Registro de Pagos.<br>Aguarde por favor...</h1>" });
+	document.location.href = "registrarPagosAportes.php";
 }
 </script>
 </head>
@@ -35,10 +39,10 @@ function MsgWait(formulario) {
   
   <tr align="center" valign="top">
     <td><div align="center">
-      <input type="submit" name="validar" value="Validar Boletas" onclick="location.href = 'validarBoletasAportes.php'" align="left" />
+		<input type="submit" name="validar" value="Validar Boletas" onclick="javascript:irAValidar()" align="left" />
 </div></td>
     <td><div align="center">
-      <input type="submit" name="registrar" value="Registrar Pagos" onclick="location.href = 'registrarPagosAportes.php'" align="left" />
+		<input type="submit" name="registrar" value="Registrar Pagos" onclick="javascript:irARegistrar()" align="left" /
     </div>
     </td>
   </tr>
