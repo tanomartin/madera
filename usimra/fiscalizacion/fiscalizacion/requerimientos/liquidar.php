@@ -156,7 +156,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		
 	//DDJJ VALIDAS
 	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra 
-					where cuit = $cuit and cuil != '99999999999'
+					where cuit = $cuit and cuil != '99999999999' and
 					((anoddjj > $anoinicio and anoddjj < $ultano) or 
 	   				 (anoddjj = $ultano and mesddjj <= $ultmes) or 
 	  				 (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
