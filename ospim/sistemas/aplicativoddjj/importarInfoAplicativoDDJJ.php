@@ -2,6 +2,10 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."claves.php"); 
 set_time_limit(0);
+
+//PARA PROBAR CONTRA LOCALHOST TODO::
+$hostUsimra = "localhost";
+
 /********************* FUNCIONES *******************************/
 function ejectuarDoble($sql1, $sql2) {
 	try {
@@ -10,9 +14,7 @@ function ejectuarDoble($sql1, $sql2) {
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
-		//print($sql1."<br>");
 		$dbh->exec($sql1);
-		//print($sql2."<br>");
 		$dbh->exec($sql2);
 		$dbh->commit();
 		return 0;
@@ -30,7 +32,6 @@ function ejectuarSimple($sql) {
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
-		//print($sql."<br>");
 		$dbh->exec($sql);
 		$dbh->commit();
 		return 0;
@@ -43,19 +44,36 @@ function ejectuarSimple($sql) {
 
 function ejecutarUpdate($sql) {
 	try {
-		$hostname = $hostUsimra;
-		$dbname = $baseUsimraNewAplicativo;
-		$usuarioaplicativo = $usuarioUsimra;
-		$claveaplicativo = $claveUsimra;
-		$dbhInternet = new PDO("mysql:host=$hostname;dbname=$dbname",$usuarioaplicativo,$claveaplicativo);
+		global $hostUsimra, $baseUsimraNewAplicativo, $usuarioUsimra, $claveUsimra;
+		$dbhInternet = new PDO("mysql:host=$hostUsimra;dbname=$baseUsimraNewAplicativo",$usuarioUsimra,$claveUsimra);
 		$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbhInternet->beginTransaction();
-		//print($sql."<br>");
 		$dbhInternet->exec($sql);
 		$dbhInternet->commit();
 	} catch (PDOException $e) {
 		echo $e->getMessage();
 		$dbhInternet->rollback();
+	}
+}
+
+function getRama($cuit) {
+	try {
+		global $hostUsimra, $baseUsimraNewAplicativo, $usuarioUsimra, $claveUsimra;
+		$sql = "SELECT rramaa FROM empresa WHERE nrcuit = :cuit"; 
+		$dbhInternet = new PDO("mysql:host=$hostUsimra;dbname=$baseUsimraNewAplicativo",$usuarioUsimra,$claveUsimra);
+		$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbhInternet->beginTransaction();
+		
+		$query = $dbhInternet->prepare($sql);
+		$query->execute(array(':cuit' => $cuit));
+		$row = $query->fetch();
+		
+		$dbhInternet->commit();
+		return $row['rramaa'];
+	} catch (PDOException $e) {
+		echo $e->getMessage();
+		$dbhInternet->rollback();
+		return 0;
 	}
 }
 /****************************************************************/
@@ -156,11 +174,13 @@ if ($canEmpleados > 0) {
 		$canEmpleadoInsert = mysql_num_rows($resEmpleadoInsert); 
 		if ($canEmpleadoInsert == 0) {
 			
+			$rramaa = getRama($rowEmpleados['nrcuit']);
+			
 			$sqlInsertTitu = "INSERT INTO empleadosusimra VALUE(
 			'".$rowEmpleados['nrcuit']."','".$rowEmpleados['nrcuil']."','".$rowEmpleados['apelli']."','".$rowEmpleados['nombre']."','".$rowEmpleados['fecing']."',
 			'".$rowEmpleados['tipdoc']."','".$rowEmpleados['nrodoc']."','".$rowEmpleados['ssexxo']."','".$rowEmpleados['fecnac']."','".$rowEmpleados['estciv']."',
 			'".$rowEmpleados['direcc']."','".$rowEmpleados['locale']."','".$rowEmpleados['copole']."','".$rowEmpleados['provin']."','".$rowEmpleados['nacion']."',
-			'".$rowEmpleados['catego']."','".$rowEmpleados['activo']."','1')";
+			'".$rramaa."','".$rowEmpleados['catego']."','".$rowEmpleados['activo']."','1')";
 			
 			$sqlEmpleadoInsert = "select nrcuil from empleadosdebajausimra where nrcuil = $cuilInsert";
 			$resEmpleadoInsert = mysql_query($sqlEmpleadoInsert,$db); 
@@ -232,12 +252,15 @@ if ($canEmpleadosdebaja > 0) {
 		$resEmpleadoInsertBaja = mysql_query($sqlEmpleadoInsertBaja,$db); 
 		$canEmpleadoInsertBaja = mysql_num_rows($resEmpleadoInsertBaja); 
 		if ($canEmpleadoInsertBaja == 0) {
-			$sqlInsertTituBaja = "INSERT INTO empleadosdebajausimra VALUE(
+			
+			$rramaa = getRama($rowEmpleadodebaja['nrcuit']);
+			
+			$sqlInsertTituBaja = "INSERT INTO empleadosdebajausimra VALUE('DEFAULT',
 			'".$rowEmpleadodebaja['nrcuit']."','".$rowEmpleadodebaja['nrcuil']."','".$rowEmpleadodebaja['apelli']."','".$rowEmpleadodebaja['nombre']."',
 			'".$rowEmpleadodebaja['fecing']."','".$rowEmpleadodebaja['tipdoc']."','".$rowEmpleadodebaja['nrodoc']."','".$rowEmpleadodebaja['ssexxo']."',
 			'".$rowEmpleadodebaja['fecnac']."','".$rowEmpleadodebaja['estciv']."','".$rowEmpleadodebaja['direcc']."','".$rowEmpleadodebaja['locale']."',
-			'".$rowEmpleadodebaja['copole']."','".$rowEmpleadodebaja['provin']."','".$rowEmpleadodebaja['nacion']."','".$rowEmpleadodebaja['catego']."',
-			'".$rowEmpleadodebaja['activo']."','1')";
+			'".$rowEmpleadodebaja['copole']."','".$rowEmpleadodebaja['provin']."','".$rowEmpleadodebaja['nacion']."','".$rramaa."',
+			'".$rowEmpleadodebaja['catego']."','".$rowEmpleadodebaja['activo']."','1')";
 			
 			$sqlEmpleadoInsertBaja = "select nrcuil from empleadosusimra where nrcuil = $cuilInsert";
 			$resEmpleadoInsertBaja = mysql_query($sqlEmpleadoInsertBaja,$db); 
@@ -331,12 +354,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <th>C.U.I.T.</th>
 			  <th>Raz&oacute;n Social </th>
 			</tr>
-	  <?php for ($i=0; $i < sizeof($listadoIngresadas); $i++) {
-				print("<tr align='center'>");
-				print("<td>".$listadoIngresadas[$i]['cuit']."</td>");
-				print("<td>".$listadoIngresadas[$i]['nombre']."</td>");   
-				print("</tr>");
-	} ?>
+	  <?php for ($i=0; $i < sizeof($listadoIngresadas); $i++) { ?>
+				<tr align='center'>
+					<td><?php echo $listadoIngresadas[$i]['cuit'] ?></td>
+					<td><?php echo $listadoIngresadas[$i]['nombre'] ?></td>  
+				</tr>
+ 	<?php	} ?>
 	  </table>
 	<?php } else {
 		print("<div align='center' style='color:#FF0000'><b> NO SE CARGO NINGUNA EMPRESA </b></div>");
