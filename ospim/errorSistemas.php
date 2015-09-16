@@ -1,5 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionUsimra.php"); 
+include($libPath."controlSessionOspim.php"); 
 ?>
 <html>
 <head>
@@ -17,10 +17,10 @@ A:hover {text-decoration:underline; color:FCF63C}
 .Estilo2 {font-size: 24px; font-weight: bold; color: #000000; }
 </style>
 
-<title>.: U.S.I.M.R.A. :.</title>
+<title>.: O.S.P.I.M. :.</title>
 </head>
 
-<body bgcolor="#B2A274" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
+<body bgcolor="#CCCCCC" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
   <div align="center">
     <p class="Estilo1">&iexcl;&iexcl;ERROR de Sistema!!</p>
     <p class="Estilo2">Por favor imprimir esta pantalla y llevarla al Dpto. de Sistemas</p>
@@ -37,7 +37,6 @@ A:hover {text-decoration:underline; color:FCF63C}
     </table>
     <p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();" /></p>
   </div>
-
 </body>
 
 </html>
