@@ -34,6 +34,19 @@ function abrirInfo(dire) {
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 
+function checkall(seleccion) {
+	if (seleccion.checked) {
+    	 for (var i=0;i<document.editarReque.elements.length;i++) 
+     		 if(document.editarReque.elements[i].type == "checkbox")	
+				 document.editarReque.elements[i].checked=1;  
+	} else {
+		 for (var i=0;i<document.editarReque.elements.length;i++) 
+     		 if(document.editarReque.elements[i].type == "checkbox")	
+				 document.editarReque.elements[i].checked=0;  
+	}
+} 
+
+
 function validar(formulario) {
 	var grupo = formulario.periodos;
 	var total = grupo.length;
@@ -79,7 +92,7 @@ function validar(formulario) {
 			<th colspan="2">DDJJ</th>
 			<th rowspan="2">Deuda Nominal</th>
 			<th rowspan="2">+Info</th>
-			<th rowspan="2"></th>
+			<th rowspan="2"><input type="checkbox" name="selecAll" id="selecAll" onchange="checkall(this)" /></th>
 		  </tr>
 		  <tr style="font-size:12px">
 			<th>Remun.</th>

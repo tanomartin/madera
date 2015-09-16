@@ -1,7 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 
-//var_dump($_POST);
 $cuit = $_POST['cuit'];
 $fecha = $_POST['fecha'];
 $nroreq = $_POST['nroreq'];
@@ -11,7 +10,7 @@ if (isset($_POST['selecAll'])) {
 } else {
 	$inicio = 3;
 }
-//print($inicio."<br>");
+
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
