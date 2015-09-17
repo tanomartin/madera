@@ -60,7 +60,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
-	for (i=0; i<= 120; i++) {
+	for (var i=0; i<= 120; i++) {
 		$("#mes"+i).mask("99");
 		$("#anio"+i).mask("9999");
 	}
@@ -102,7 +102,7 @@ function limpiarAcuerdos() {
 	if (limite == 1) {
 		document.forms.nuevoJuicio.nroacu.checked = false
 	} else {
-		for (i=0; i < limite; i++) {
+		for (var i=0; i < limite; i++) {
 			document.forms.nuevoJuicio.nroacu[i].checked = false;
 		}
 	}
@@ -118,7 +118,7 @@ function mostrarAcuerdos() {
 }
 
 function formatoPeriodoInicio() {
-	for(i=0; i<12; i++) {
+	for(var i=0; i<12; i++) {
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
@@ -128,7 +128,7 @@ function formatoPeriodoInicio() {
 		document.getElementById(a).value="";
 		document.getElementById(con).value="";
 	}
-	for (i=12; i<120; i++){
+	for (var i=12; i<120; i++){
 		id = "id" + i;
 		m = "mes" + i;
 		a = "anio" + i;
@@ -186,7 +186,7 @@ function limpioid(id) {
 	anio = document.getElementById(anionombre).value;
 	
 	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
-	for (i=0; i<n; i++){
+	for (var i=0; i<n; i++){
 		if (i != id) {
 			mescom = "mes" + i;
 			aniocom = "anio" + i;
@@ -210,7 +210,7 @@ function mostrarPeriodos() {
 		var o = 0;
 		var m = 0;
 		var a = 0;
-		for (i=0; i<=12; i++){
+		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
 			m = "mes" + o;
 			a = "anio" + o;
@@ -272,7 +272,7 @@ function validar(formulario) {
 				}
 			} else {
 				var algunCheck = false;
-				for (i=0; i < limite; i++) {
+				for (var i=0; i < limite; i++) {
 					if(document.forms.nuevoJuicio.nroacu[i].checked) {
 						algunCheck = true;
 					}

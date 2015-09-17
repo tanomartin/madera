@@ -108,12 +108,28 @@ A:hover {text-decoration: none;color:#00FFFF }
 		}	
 	?>
 	  <p><strong>Tramite Judicial</strong></p>
-    <?php 
-		$sqlTramite = "select t.*, j.denominacion as juzgado, s.denominacion as secretaria, e.descripcion as estadoprocesal from trajuiciosusimra t, juzgados j, secretarias s, estadosprocesales e where nroorden = $nroorden and t.codigojuzgado = j.codigojuzgado and t.codigojuzgado = s.codigojuzgado and t.codigosecretaria = s.codigosecretaria and t.estadoprocesal = e.codigo";
+       <?php 
+		$sqlTramite = "select t.*, e.descripcion as estadoprocesaldescri from trajuiciosusimra t, estadosprocesales e where t.nroorden = $nroorden and t.estadoprocesal = e.codigo";
 		$resTramite = mysql_query($sqlTramite,$db); 
 		$canTramite = mysql_num_rows($resTramite); 
 		if ($canTramite != 0 ) { 
-			$rowTramite = mysql_fetch_array($resTramite)
+			$rowTramite = mysql_fetch_array($resTramite);
+			if ($rowTramite['estadoprocesal'] != 3) {
+				$sqlJuzgadoSecretaria = "select j.denominacion as juzgado, s.denominacion as secretaria from juzgados j, secretarias s where j.codigojuzgado = ".$rowTramite['codigojuzgado']." and s.codigojuzgado = ".$rowTramite['codigojuzgado']." and s.codigosecretaria = ".$rowTramite['codigosecretaria'];
+				$resJuzgadoSecretaria = mysql_query($sqlJuzgadoSecretaria,$db); 
+				$canJuzgadoSecretaria = mysql_num_rows($resJuzgadoSecretaria); 
+				if ($canJuzgadoSecretaria != 0) {
+					$rowJuzgadoSecretaria = mysql_fetch_array($resJuzgadoSecretaria);
+					$juzgado = $rowJuzgadoSecretaria['juzgado'];
+					$secretaria = $rowJuzgadoSecretaria['secretaria'];
+				} else {
+					$juzgado = "No se encontró Juzgado";
+					$secretaria = "No se encontró Secretaría";
+				}
+			} else {
+				$juzgado = "-";
+				$secretaria = "-";
+			}
 			?>
 			<table width="954" border="1" style="text-align:left">
 			  <tr>
@@ -124,13 +140,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 			  </tr>
 			  <tr>
 				<td><b>Juzgado</b></td>
-				<td colspan="3"><?php echo $rowTramite['juzgado'] ?></td>
+				<td colspan="3"><?php echo $juzgado ?></td>
 			  </tr>
 			  <tr>
 			    <td><b>Secretaria</b></td>
-			    <td><?php echo $rowTramite['secretaria'];?></td>
+			    <td><?php echo $secretaria ?></td>
 			    <td><b>Estado Procesal</b></td>
-			    <td><?php echo $rowTramite['estadoprocesal'];?></td>
+			    <td><?php echo $rowTramite['estadoprocesaldescri'];?></td>
 		      </tr>
 			  <tr>
 			    <td><b>Auto Caso </b></td>
