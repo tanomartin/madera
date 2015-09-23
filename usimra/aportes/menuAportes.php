@@ -28,7 +28,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
           <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Cancelaci&oacute;n Manual</p>
-	  	  <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
+	  	  <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
 	  	  <p align="center">&nbsp;</p></td>
     </tr>
   </table>
