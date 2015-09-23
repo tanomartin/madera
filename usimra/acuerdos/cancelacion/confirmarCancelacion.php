@@ -298,15 +298,10 @@ function validar(formulario) {
 	</table>
 	
      <p>Fecha de Pago 
-       <label>
-       <input name="fechapagada" type="text" id="fechapagada" size="8" value="<?php echo $fechapagada ?>">
-       </label>
+       <label><input name="fechapagada" type="text" id="fechapagada" size="8" value="<?php echo $fechapagada ?>"></label>
      </p>
      <p>Cuenta de la Boleta
        <label>
-	   <?php 
-	   		
-	   ?>
         <select name="selectCuenta"  id="selectCuenta">
 		          <option value=0 selected="selected">Seleccione una Cuenta </option>
 		          <?php 
@@ -320,12 +315,9 @@ function validar(formulario) {
 						<?php } 
 		            } ?>
        </select>
-       </label>
-       <label>
        <input type="text" name="quees" id="quees" value="<?php echo $quees ?>" style="visibility:hidden" size="1">
        </label>
      </p>
-     <label></label>
      <table width="834" border="0">
        <tr>
          <td colspan="2"><div align="center"><strong>REMESA </strong></div></td>
@@ -411,8 +403,7 @@ function validar(formulario) {
        </tr>
     </table>
      <p>
-       <label></label>
-       <label></label><label>Observacion
+       <label>Observacion
 	   <textarea name="textarea" cols="50" rows="4"></textarea>
        </label>
      </p>

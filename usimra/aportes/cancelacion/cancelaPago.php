@@ -22,6 +22,8 @@ A:hover {text-decoration: none;color:#33CCFF }
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechapago").mask("99-99-9999");
+	$("#fecharemesa").mask("99-99-9999");
+	$("#fecharemito").mask("99-99-9999");
 });
 $(document).ready(function(){
 	$("#codigobarra").attr('disabled', true);
@@ -53,7 +55,7 @@ $(document).ready(function(){
 	});
 	$("#poseebarra").change(function(){
 		var poseebarra = $(this).val();
-		if(poseebarra=="1") {
+		if(poseebarra == "1") {
 			var mensaje = '';
 			$('#msgcodigobarra').html(mensaje);
 			$("#msgcodigobarra").css({"color": "#000000"});
@@ -72,6 +74,7 @@ $(document).ready(function(){
 			$("#nocubre150").attr('checked',false);
 			$("#montorecargo").attr('readonly', true);
 			$("#montorecargo").css({"background-color": "#cccccc"});
+			$("#selectCuenta").attr('disabled', true);
 			$("#cancelapago").attr('disabled', true);
 		} else {
 			$("#codigobarra").attr('disabled', true);
@@ -94,6 +97,7 @@ $(document).ready(function(){
 			$("#nocubre150").attr('checked',false);
 			$("#montorecargo").attr('readonly', false);
 			$("#montorecargo").css({"background-color": "#ffffff"});
+			$("#selectCuenta").attr('disabled', false);
 			$("#cancelapago").attr('disabled', false);
 		}
 	});
@@ -373,11 +377,164 @@ $(document).ready(function(){
 			$("#montopagado").val(totpago);
 		}
 	});
+
+	
+	$("#fecharemesa").change(function(){
+		var fecharemesa = $(this).val();
+		var cuentaremesa = $("#selectCuentaRemesa").val();
+		$.ajax({
+			type: "POST",
+			dataType: "html",
+			url: "buscaRemesas.php",
+			data: {fecharemesa:fecharemesa, cuentaremesa:cuentaremesa},
+		}).done(function(respuesta){
+			$("#selectRemesa").attr('disabled', false);
+			$("#selectRemesa").html(respuesta);
+		});
+	});
+
+	$("#selectRemesa").change(function(){
+		var nroremesa = $(this).val();
+		var cuentaremesa = $("#selectCuentaRemesa").val();
+		var fecharemesa = $("#fecharemesa").val();
+		$.ajax({
+			type: "POST",
+			dataType: "html",
+			url: "buscaRemito.php",
+			data: {nroremesa:nroremesa, cuentaremesa:cuentaremesa, fecharemesa:fecharemesa},
+		}).done(function(respuesta){
+			$("#selectRemito").attr('disabled', false);
+			$("#selectRemito").html(respuesta);
+		});
+	});
+
+	$("#fecharemito").change(function(){
+		var fecharemito = $(this).val();
+		var cuentaremito = $("#selectCuentaRemito").val();
+		$.ajax({
+			type: "POST",
+			dataType: "html",
+			url: "buscaRemitoSuelto.php",
+			data: {fecharemito:fecharemito, cuentaremito:cuentaremito},
+		}).done(function(respuesta){
+			$("#selectRemitoSuelto").attr('disabled', false);
+			$("#selectRemitoSuelto").html(respuesta);
+		});
+	});
+	
 });
-function msgWaitDDJJ()
-{
+
+function msgWaitDDJJ() {
   $.blockUI({ message: "<h1>Verificando DDJJ.<br>Aguarde por favor...</h1>" });
 };
+
+//REMITOS Y REMESAS
+
+function LogicaHabilitaDocu(cuentaBoleta){
+	document.forms.formularioCancelaPago.selectCuentaRemesa.disabled = true;
+	document.forms.formularioCancelaPago.selectCuentaRemesa.selectedIndex = '0';
+	limpiarFechaRemesa();
+	limpiarRemesas();
+	document.forms.formularioCancelaPago.selectCuentaRemito.disabled = true;
+	document.forms.formularioCancelaPago.selectCuentaRemito.selectedIndex = '0';
+	limpiarFechaRemito();
+	limpiarRemitoSuelto();
+	if (cuentaBoleta != 0) {
+		document.forms.formularioCancelaPago.selectCuentaRemesa.disabled = false;
+		document.forms.formularioCancelaPago.selectCuentaRemito.disabled = false;
+	} 
+}
+
+function limpiarFechaRemesa(){
+	document.forms.formularioCancelaPago.fecharemesa.value = "";
+	document.forms.formularioCancelaPago.fecharemesa.disabled = true;
+}
+
+function limpiarFechaRemito(){
+	document.forms.formularioCancelaPago.fecharemito.value = "";
+	document.forms.formularioCancelaPago.fecharemito.disabled = true;
+}
+
+function limpiarRemesas(){
+	document.forms.formularioCancelaPago.selectRemesa.length = 0;
+	document.forms.formularioCancelaPago.selectRemito.length = 0;
+	document.forms.formularioCancelaPago.selectRemesa.disabled = true;
+	document.forms.formularioCancelaPago.selectRemito.disabled = true;
+}
+
+function limpiarRemitoSuelto(){
+	document.forms.formularioCancelaPago.selectRemitoSuelto.length = 0;
+	document.forms.formularioCancelaPago.selectRemitoSuelto.disabled = true;
+}
+
+function LogicaCargaRemesa(Cuenta) {
+	document.forms.formularioCancelaPago.selectCuentaRemito.disabled = false;
+	limpiarFechaRemesa();
+	limpiarRemesas();
+	if (Cuenta != 0) {
+		document.forms.formularioCancelaPago.selectCuentaRemito.disabled = true;
+		document.forms.formularioCancelaPago.fecharemesa.value = "";
+		document.forms.formularioCancelaPago.fecharemesa.disabled = false;
+	}
+}
+
+function LogicaCargaRemito(Cuenta) {
+	document.forms.formularioCancelaPago.selectCuentaRemesa.disabled = false;
+	limpiarFechaRemito();
+	limpiarRemitoSuelto();
+	if (Cuenta != 0) {
+		document.forms.formularioCancelaPago.selectCuentaRemesa.disabled = true;
+		document.forms.formularioCancelaPago.fecharemito.value = "";		
+		document.forms.formularioCancelaPago.fecharemito.disabled = false;
+	}
+}
+
+function validarFechaHabilitaBoton(fecha) {
+	document.forms.formularioCancelaPago.selectRemesa.length = 0;
+	document.forms.formularioCancelaPago.selectRemito.length = 0;
+	if (!esFechaValida(fecha)){
+		document.forms.formularioCancelaPago.selectRemito.disabled = true;
+	} 
+}
+
+function limpiarSelect(){
+	document.forms.formularioCancelaPago.selectRemesa.length = 0;
+	document.forms.formularioCancelaPago.selectRemito.length = 0;
+	document.forms.formularioCancelaPago.selectRemesa.disabled = true;
+	document.forms.formularioCancelaPago.selectRemito.disabled = true;
+}
+
+function validarFechaHabilitaBotonRemitoSuelto(fecha) {
+	document.forms.formularioCancelaPago.selectRemitoSuelto.length = 0;
+	esFechaValida(fecha);
+}
+
+function limpiarSelectRemitoSuelto(){
+	document.forms.formularioCancelaPago.selectRemitoSuelto.length = 0;
+	document.forms.formularioCancelaPago.selectRemitoSuelto.disabled = true;
+}
+
+function logicaHabilitacion() {
+	if (document.forms.formularioCancelaPago.selectCuentaRemesa.value != 0) {
+		document.forms.formularioCancelaPago.selectCuentaRemito.disabled = true;
+		document.forms.formularioCancelaPago.fecharemesa.disabled = false;
+		if (document.forms.formularioCancelaPago.fecharemesa.value != "") {
+			document.forms.formularioCancelaPago.selectRemesa.disabled = false;
+			if (document.forms.formularioCancelaPago.selectRemesa.value != 0) {
+				document.forms.formularioCancelaPago.selectRemito.disabled = false;
+			}
+		}
+	}
+	if (document.forms.formularioCancelaPago.selectCuentaRemito.value != 0) {
+		document.forms.formularioCancelaPago.selectCuentaRemesa.disabled = true;
+		document.forms.formularioCancelaPago.fecharemito.disabled = false;
+		if (document.forms.formularioCancelaPago.fecharemito.value != "") {
+			document.forms.formularioCancelaPago.selectRemitoSuelto.disabled = false;
+		}
+	}
+}
+
+//************************************************************************************//
 
 function validar(formulario) {
 	if(formulario.poseebarra.options[formulario.poseebarra.selectedIndex].value == "") {
@@ -475,6 +632,52 @@ function validar(formulario) {
 			}
 		}
 	}
+	
+	var cuentaBoleta = formulario.selectCuenta.value;
+	var cuentaRemesa = formulario.selectCuentaRemesa.value;
+	var cuentaRemito = formulario.selectCuentaRemito.value;
+	var fechaRemesa = formulario.fecharemesa.value;
+	var fechaRemito = formulario.fecharemito.value;
+	var nroRemesa = formulario.selectRemesa.value;
+	var nroRemito = formulario.selectRemito.value;
+	var nroRemitoSuelto = formulario.selectRemitoSuelto.value;
+
+	if (cuentaBoleta != 0) {
+		if (cuentaRemesa == 0 && cuentaRemito == 0) {
+			alert("Debe elegir cuenta de remesa o de remito suelto");
+			document.body.style.cursor = 'default';
+			return false;
+		}
+		
+		if (cuentaRemesa != 0) {
+			if (!esFechaValida(fechaRemesa)) {
+				return false;
+			}
+			if (nroRemesa == 0) {
+				alert("Debe elegir un nro de remesa");
+				document.body.style.cursor = 'default';
+				return false;
+			}
+			if (nroRemito == 0) {
+				alert("Debe elegir un nro de remito");
+				document.body.style.cursor = 'default';
+				return false;
+			}
+		}
+		
+		if (cuentaRemito != 0) {
+			if (!esFechaValida(fechaRemito)) {
+				document.body.style.cursor = 'default';
+				return false;
+			}
+			if (nroRemitoSuelto == 0) {
+			  	alert("Debe elegir un nro de remito suelto");
+				document.body.style.cursor = 'default';
+				return false;
+			}
+		}
+	}
+	
 	$.blockUI({ message: "<h1>Registrando Cancelaci&oacute;n.<br>Aguarde por favor...</h1>" });
 	return true;
 }
@@ -578,6 +781,89 @@ include($libPath."cabeceraEmpresa.php");
 				<textarea name="observaciones" cols="85" rows="3" id="observaciones"></textarea>
 			</span>
 			<p></p>
+		</div>
+		<div align="center">	
+		<h2>Información Bancaria</h2>
+		<p>Cuenta de la Boleta
+        <label>
+        <select disabled="disabled" name="selectCuenta"  id="selectCuenta" onchange="LogicaHabilitaDocu(document.forms.formularioCancelaPago.selectCuenta[selectedIndex].value)" >
+		          <option value=0 selected="selected">Seleccione una Cuenta </option>
+		          <?php 
+					$query="select * from cuentasusimra";
+					$result=mysql_query($query,$db);
+					while ($rowcuentas=mysql_fetch_array($result)) {
+						if ($rowcuentas['codigocuenta'] == $cuentaBoleta ) { ?>
+		                	<option value="<?php echo $rowcuentas['codigocuenta'] ?>" selected="selected"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
+						<?php } else { ?>
+							 <option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>			
+						<?php } 
+		            } ?>
+       </select>
+       <input type="text" name="quees" id="quees" value="<?php echo $quees ?>" style="visibility:hidden" size="1">
+       </label>
+     </p>
+	
+	   <table width="834" border="0">
+       <tr>
+         <td colspan="2"><div align="center"><strong>REMESA </strong></div></td>
+         <td colspan="2"><div align="center"><strong>REMITO SUELTO </strong></div></td>
+       </tr>
+       <tr>
+         <td width="142"><div align="right">Cuenta de la Remesa
+         </div></td>
+         <td width="263">  
+		 	<select disabled="disabled" name="selectCuentaRemesa" id="selectCuentaRemesa" onChange="LogicaCargaRemesa(document.forms.formularioCancelaPago.selectCuentaRemesa[selectedIndex].value);">
+		          <option value=0 selected="selected">Seleccione Cuenta de Remesa </option>
+		          <?php 
+					$query="select * from cuentasusimra";
+					$result=mysql_query($query,$db);
+					while ($rowcuentas=mysql_fetch_array($result)) { ?>
+		               <option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>	 
+			<?php } ?>
+           </select>
+	     </td>
+         <td width="143">
+         <div align="right">Cuenta Reminto Suelto</div></td>
+         <td width="268">	
+		    <select disabled="disabled" name="selectCuentaRemito" id="selectCuentaRemito" onChange="LogicaCargaRemito(document.forms.formularioCancelaPago.selectCuentaRemesa[selectedIndex].value);">
+		          <option value=0 selected="selected">Seleccione Cuenta de Remito </option>
+		          <?php 
+					$query="select * from cuentasusimra";
+					$result=mysql_query($query,$db);
+					while ($rowcuentas=mysql_fetch_array($result)) {  ?>
+				  		<option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
+			<?php	} ?>
+         </select></td>
+       </tr>
+       <tr>
+         <td>
+           <div align="right">Fecha de la Remesa</div></td>
+         <td><label>
+           <input name="fecharemesa" type="text" id="fecharemesa" size="8" disabled="disabled" value="" onFocus="limpiarSelect()">
+           </label></td>
+         <td>
+           <div align="right">Fecha Remito Suelto</div></td>
+         <td> <input name="fecharemito" type="text" id="fecharemito" size="8" disabled="disabled" value="" onFocus="limpiarSelectRemitoSuelto()">
+       </tr>
+       <tr>
+		 <td><div align="right">Nro Remesa</div></td>
+         <td><select name="selectRemesa" id="selectRemesa" disabled="disabled"> 
+		  </select>
+         <td>
+           <div align="right">Nro Remito Suelto</div></td>
+         <td><select name="selectRemitoSuelto" id="selectRemitoSuelto" disabled="disabled"> 
+		  </select></td>
+       </tr>
+       <tr>
+         <td>
+          <div align="right">Nro Remito</div></td>
+         <td>
+         	<select name="selectRemito" id="selectRemito" disabled="disabled">
+         	</select>
+         </td>
+         <td colspan="2">&nbsp;</td>
+       </tr>
+      </table>
 		</div>
 		<div align="center">
 			<p><input class="nover" type="submit" id="cancelapago" name="cancelapago" value="Cancelar Período"/></p>

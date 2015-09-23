@@ -4,7 +4,7 @@ include($libPath."fechas.php");
 if(isset($_POST) && !empty($_POST) && isset($_GET) && !empty($_GET))
 {
 	//var_dump($_GET);
-	//var_dump($_POST);
+	//svar_dump($_POST);
 	$fechacancelacion=date("Y-m-d H:i:s");
 	$fechasubida=date("Y-m-d");
 	$usuariocancelacion=$_SESSION['usuario'];
@@ -61,13 +61,51 @@ if(isset($_POST) && !empty($_POST) && isset($_GET) && !empty($_GET))
 				}
 			}
 
-			//
-			//TODO: Aca van los datos de conciliacion que trae el formulario por metodo POST
-			//
-			//$sqlAgregaConcilia="INSERT INTO conciliapagosusimra (cuit, mespago, anopago, nropago, cuentaboleta, cuentaremesa, fecharemesa, nroremesa, nroremitoremesa, cuentaremitosuelto, fecharemitosuelto, nroremitosuelto, estadoconciliacion, fechaconciliacion, usuarioconciliacion, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion) VALUES (:cuit, :mespago, :anopago, :nropago, :cuentaboleta, :cuentaremesa, :fecharemesa, :nroremesa, :nroremitoremesa, :cuentaremitosuelto, :fecharemitosuelto, :nroremitosuelto, :estadoconciliacion, :fechaconciliacion, :usuarioconciliacion, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion)";
-			//$resAgregaConcilia = $dbh->query($sqlAgregaConcilia);
-			//if($resAgregaConcilia->execute(array(':cuit' => $_GET['cuit'], ':mespago' => $_POST['mespago'], ':anopago' => $_POST['anopago'], ':nropago' => $ultimopago, ':cuentaboleta' => $_POST[''], ':cuentaremesa' => $_POST[''], ':fecharemesa' => $_POST[''], ':nroremesa' => $_POST[''], ':nroremitoremesa' => $_POST[''], ':cuentaremitosuelto' => $_POST[''], ':fecharemitosuelto' => $_POST[''], ':nroremitosuelto' => $_POST[''], ':estadoconciliacion' => $estadoconciliacion, ':fechaconciliacion' => $fechamodificacion, ':usuarioconciliacion' => $usuariomodificacion, ':fecharegistro' => $fechacancelacion, ':usuarioregistro' => $usuariocancelacion, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion))) {
-			//}
+			if($_POST['selectCuenta'] != 0) {			
+				$cuentaRemesa = 0;
+				$fechaRemesa = '0000-00-00';
+				$nroremesa = 0;
+				$nroremito = 0;
+				$cuetanRemito = 0;
+				$fechaRemito = '0000-00-00';
+				$nroRemito = 0;
+				if(isset($_POST['selectCuentaRemesa'])) {
+					$cuentaRemesa = $_POST['selectCuentaRemesa'];
+					$fechaRemesa = fechaParaGuardar($_POST['fecharemesa']);
+					$nroremesa = $_POST['selectRemesa'];
+					$nroremito = $_POST['selectRemito'];
+				} 
+				if(isset($_POST['selectCuentaRemito'])) {
+					$cuetanRemito = $_POST['selectCuentaRemito'];
+					$fechaRemito = fechaParaGuardar($_POST['fecharemito']);
+					$nroRemito = $_POST['selectRemitoSuelto'];
+				} 
+					
+				$sqlAgregaConcilia="INSERT INTO conciliapagosusimra VALUES 
+							(:cuit,:mespago,:anopago,:nropago,:cuentaboleta,:cuentaremesa,:fecharemesa,:nroremesa,:nroremitoremesa,:cuentaremitosuelto,:fecharemitosuelto,:nroremitosuelto,:estadoconciliacion,:fechaconciliacion,:usuarioconciliacion,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
+				$resAgregaConcilia = $dbh->prepare($sqlAgregaConcilia);
+				
+				if($resAgregaConcilia->execute(array(':cuit' => $_GET['cuit'], 
+													 ':mespago' => $_POST['mespago'], 
+													 ':anopago' => $_POST['anopago'], 
+													 ':nropago' => $ultimopago, 
+													 ':cuentaboleta' => $_POST['selectCuenta'], 
+													 ':cuentaremesa' => $cuentaRemesa, 
+													 ':fecharemesa' => $fechaRemesa, 
+													 ':nroremesa' => $nroremesa, 
+													 ':nroremitoremesa' => $nroremito, 
+													 ':cuentaremitosuelto' => $cuetanRemito, 
+													 ':fecharemitosuelto' => $fechaRemito, 
+													 ':nroremitosuelto' => $nroRemito, 
+													 ':estadoconciliacion' => $estadoconciliacion, 
+													 ':fechaconciliacion' => $fechamodificacion, 
+													 ':usuarioconciliacion' => $usuariomodificacion, 
+													 ':fecharegistro' => $fechacancelacion, 
+													 ':usuarioregistro' => $usuariocancelacion, 
+													 ':fechamodificacion' => $fechamodificacion, 
+													 ':usuariomodificacion' => $usuariomodificacion))) {
+				}
+			}
 
 			if(strcmp($_POST['ddjjvalidada'],"1")==0) {
 				$sqlBuscaCabDDJJ="SELECT * FROM ddjjusimra WHERE nrcuit = :nrcuit AND nrcuil = :nrcuil AND nrctrl = :nrctrl";
