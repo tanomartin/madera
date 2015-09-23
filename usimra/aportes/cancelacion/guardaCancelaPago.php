@@ -32,7 +32,7 @@ if(isset($_POST) && !empty($_POST) && isset($_GET) && !empty($_GET))
 		$ultimopago=$ultimopago+1;
 		$periodoanterior=0;
 		$cuil="99999999999";
-		if(!empty($_POST['codigobarra']) {
+		if(!empty($_POST['codigobarra'])) {
 			$codigobarra=$_POST['codigobarra'];
 			$nrctrl=substr($_POST['codigobarra'],15,14);
 		} else {

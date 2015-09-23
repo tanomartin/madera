@@ -38,13 +38,13 @@ jQuery(function($){
 	$err = $_GET['err'];
 	if($err == 1) { ?>
 	<div align='center' style='color:#FF0000'>
-		<p><b><h2> CUIT NO ENCONTRADO </h2></b></p>
+		<h2><b> CUIT NO ENCONTRADO </b></h2>
 	</div>
 <?php 
 	}
 ?>
 	<div align="center">
-		<label><h3>CUIT <input name="cuit" id="cuit" type="text" size="10" /></h3></label>
+		<h3><label>CUIT <input name="cuit" id="cuit" type="text" size="10" /></label></h3>
 	</div>
 	<p align="center"><input type="submit" name="Submit" value="Buscar" /></p>
 </form>
