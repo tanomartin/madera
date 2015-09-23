@@ -445,7 +445,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			//****************//
 		} else {
 			unset($pagos);	
-			if ($rowRequeDet['statusfiscalizacion'] == 'A') {	
+			if ($rowRequeDet['statusfiscalizacion'] == 'A' || $rowRequeDet['statusfiscalizacion'] == 'O') {	
 				$personal = str_pad($rowRequeDet['cantidadpersonal'],4,'0',STR_PAD_LEFT);
 				$remunDec = number_format((float)$rowRequeDet['remundeclarada'],2,',','');
 				$remunDec = str_pad($remunDec,12,'0',STR_PAD_LEFT);
