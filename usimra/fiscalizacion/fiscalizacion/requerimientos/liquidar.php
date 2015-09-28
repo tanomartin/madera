@@ -186,16 +186,19 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	}
 	$wherein = substr($wherein, 0, -1);
 	$wherein = "(".$wherein.")";
-	if ($wherein != "") {
+	if ($wherein != "()") {
 		$sqlDDJJTemp = "select perano as anoddjj, permes as mesddjj, nrcuil as cuil, remune as remuneraciones from ddjjusimra 
 							where nrcuit = $cuit and nrcuil != '99999999999' and nrctrl in $wherein";
 		$resDDJJTemp = mysql_query($sqlDDJJTemp,$db);
-		while ($rowDDJJTemp = mysql_fetch_assoc($resDDJJTemp)) {
-			$mes = str_pad($rowDDJJTemp['mesddjj'],2,'0',STR_PAD_LEFT);
-			$id = $rowDDJJTemp['anoddjj'].$mes;
-			$idArray = $rowDDJJTemp['anoddjj'].$mes.$rowDDJJTemp['cuil'];
-			if (!array_key_exists($idArray, $arrayDDJJ)) {
-				$arrayDDJJ[$idArray] = array ('origen' =>  1, 'datos' => $rowDDJJTemp, 'id' => $id);
+		$canDDJJTemp = mysql_num_rows($resDDJJTemp);
+		if ($canDDJJTemp != 0) {
+			while ($rowDDJJTemp = mysql_fetch_assoc($resDDJJTemp)) {
+				$mes = str_pad($rowDDJJTemp['mesddjj'],2,'0',STR_PAD_LEFT);
+				$id = $rowDDJJTemp['anoddjj'].$mes;
+				$idArray = $rowDDJJTemp['anoddjj'].$mes.$rowDDJJTemp['cuil'];
+				if (!array_key_exists($idArray, $arrayDDJJ)) {
+					$arrayDDJJ[$idArray] = array ('origen' =>  1, 'datos' => $rowDDJJTemp, 'id' => $id);
+				}
 			}
 		}
 	}

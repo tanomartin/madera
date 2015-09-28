@@ -4,13 +4,59 @@ set_time_limit(0);
 print("<br>");
 //*************************
 
+function consultaPeriodos($db) {
+	$sqlPerExtra = "SELECT p.anio,p.mes,e.relacionmes FROM periodosusimra p, extraordinariosusimra e where p.mes = e.mes and p.anio = e.anio and e.tipo != 2";
+	$resPerExtra = mysql_query($sqlPerExtra,$db);
+	while ($rowPerExtra = mysql_fetch_assoc($resPerExtra)) {
+		$id=$rowPerExtra['anio'].$rowPerExtra['mes'];
+		$arrayPeriodos[$rowPerExtra['anio']][$id] = array('anio' => $rowPerExtra['anio'], 'mes' => $rowPerExtra['mes'], 'relacionmes' => $rowPerExtra['relacionmes']);
+	}
+
+	$sqlPerComun = "SELECT anio,mes FROM periodosusimra p where mes < 13";
+	$resPerComun = mysql_query($sqlPerComun,$db);
+	while ($rowPerComun = mysql_fetch_assoc($resPerComun)) {
+		$id=$rowPerComun['anio'].$rowPerComun['mes'];
+		$arrayPeriodos[$rowPerComun['anio']][$id] = array('anio' => $rowPerComun['anio'], 'mes' => $rowPerComun['mes']);
+	}
+	return($arrayPeriodos);
+}
+
+function consultaExtra($db) {
+	$sqlExtra = "SELECT relacionmes, anio, mes, tipo, valor, retiene060*0.06 + retiene100*0.1 + retiene150*0.15 as porcentaje FROM extraordinariosusimra WHERE tipo != 2";
+	$resExtra = mysql_query($sqlExtra,$db);
+	while ($rowExtra = mysql_fetch_assoc($resExtra)) {
+		$id=$rowExtra['anio'].$rowExtra['mes'];
+		$arrayExtra[$id] = array('anio' => (int)$rowExtra['anio'], 'mes' => (int)$rowExtra['mes'], 'tipo' => (int)$rowExtra['tipo'], 'valor' => (float)$rowExtra['valor'], 'porcentaje' => (float)$rowExtra['porcentaje']);
+	}
+	return $arrayExtra;
+}
+
+function esMontoMenorNoRemu($remu, $importe, $personal, $extra) {
+	$apagar = 0;
+	$limiteDif = 0.01;
+	if ($extra['tipo'] == 0) {
+		$apagar = $extra['valor'] * $extra['porcentaje'] * $personal;
+	}
+	if ($extra['tipo'] == 1) {
+		$apagar = $remu * $extra['valor'] * $extra['porcentaje'];
+	}
+	if ($extra['tipo'] == 2) {
+		$apagar =  $extra['valor'] * $personal;
+	}
+	$diferencia = $apagar - $importe;
+	if ($diferencia > $limiteDif) {
+		return($diferencia);
+	}
+	return(0);
+}
+
 function esMontoMenor($remuDDJJ, $importe) {
 	$alicuota = 0.031;
 	$limiteDif = 0.01;
 	$valor81 = (float)($remuDDJJ * $alicuota );
 	$diferencia = $valor81 - $importe;
 	if ($diferencia > $limiteDif) {
-		return(1);
+		return($diferencia);
 	}
 	return(0);
 }
@@ -36,7 +82,7 @@ function estaVencido($fechaPago, $me, $ano) {
 
 function encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
 	$sqlPagos = "select anopago, mespago, fechapago, sum(remuneraciones) as remune, sum(montopagado) as importe, cantidadpersonal from seguvidausimra 
-					where cuit = $cuit and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) and mespago < 13
+					where cuit = $cuit and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio))
 					group by anopago, mespago order by anopago, mespago";
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
@@ -159,13 +205,12 @@ function deudaNominal($arrayFinal) {
 	$totalDeuda = 0;
 	$alicuota = 0.031;
 	foreach ($arrayFinal as $perido){
-		$valor31 = (float)($perido['remu'] * $alicuota );
 		if($perido['estado'] == "A") {
+			$valor31 = (float)($perido['remu'] * $alicuota );
 			$totalDeuda = $totalDeuda + $valor31;
 		}
 		if ($perido['estado'] == "M") {
-			$diferencia = $valor31 - $perido['importe'];
-			$totalDeuda = $totalDeuda + $diferencia;
+			$totalDeuda = $totalDeuda + (float)$perido['deuda'];
 		}
 	}
 	return($totalDeuda);
@@ -180,6 +225,10 @@ $filtros = unserialize(urldecode($filtrosSerializado));
 
 //var_dump($listadoEmpresas);
 //var_dump($filtros);
+
+$arrayExtraordinarios = consultaExtra($db);
+
+$arrayPerdiosXAnio = consultaPeriodos($db);
 
 $empre = 0;
 for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
@@ -220,33 +269,54 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 		$arrayFinal = array();
 		$redirec = 1;
 		while($ano<=$anofin) {
-			for ($i=1;$i<13;$i++){
-				$doit = 1;
-				if ($ano == $anoinicio) {
-					if ($i < $mesinicio) {
-						$doit = 0;
+			$arrayPerdiosAFiscali = $arrayPerdiosXAnio[$ano];
+				foreach ($arrayPerdiosAFiscali as $perido){
+					if ($perido['mes'] > 12) {
+						$mes = $perido['relacionmes'];
+					} else {
+						$mes = $perido['mes'];
+					}
+					$doit = 1;
+					if ($ano == $anoinicio) {
+						if ($mes < $mesinicio) {
+							$doit = 0;
 					}
 				}
 				if ($ano == $anofin) {
-					if ($i > $mesfin) {
+					if ($mes > $mesfin) {
 						$doit = 0;
 					}
 				}
 				if ($doit == 1) {
-					$idArray = $ano.$i;
+					$idArray = $ano.$perido['mes'];
 					if (!array_key_exists($idArray, $arrayAcuerdos) && !array_key_exists($idArray, $arrayJuicios) && !array_key_exists($idArray, $arrayRequerimientos) && !array_key_exists($idArray, $arrayPagosAnteriores)) {
 						if (array_key_exists($idArray, $arrayPagos)) {
-							if (esMontoMenor((float)$arrayPagos[$idArray]['remu'], (float)$arrayPagos[$idArray]['importe'])) {
-								$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'estado' => 'M');
-								$redirec = 0;
+							//PAGO MENOR
+							$esMenor = 0;
+							if ($arrayPagos[$idArray]['mes'] > 12) {
+								$diferencia = esMontoMenorNoRemu((float)$arrayPagos[$idArray]['remu'], (float)$arrayPagos[$idArray]['importe'], (int)$arrayPagos[$idArray]['totper'], $arrayExtraordinarios[$idArray]);
+								if ($diferencia > 0) {
+									$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'deuda' => $diferencia, 'estado' => 'M');
+									$redirec = 0;
+									$esMenor = 1;
+								}
 							} else {
+								$diferencia = esMontoMenor((float)$arrayPagos[$idArray]['remu'], (float)$arrayPagos[$idArray]['importe']);
+								if ($diferencia > 0) {
+									$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'deuda' => $diferencia, 'estado' => 'M');
+									$redirec = 0;
+									$esMenor = 1;
+								}
+							}
+							if($esMenor == 0) {
+								//PAGO VENCIDO
 								if (estaVencido($arrayPagos[$idArray]['fechapago'], $arrayPagos[$idArray]['mes'], $arrayPagos[$idArray]['anio'])) {
 									$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'estado' => 'F');
 									$redirec = 0;
 								} else {
-									$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'P');
+									$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $perido['mes'], 'estado' => 'P');
 								}
-							}
+							}	
 						} else {
 							$redirec = 0;
 							if (array_key_exists($idArray, $arrayDdjj)) {
@@ -255,12 +325,12 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 								if (array_key_exists($idArray, $arrayDdjjOspim)) {
 									$arrayFinal[$idArray] =  $arrayDdjjOspim[$idArray];
 								} else {
-									$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'S');
+									$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $perido['mes'], 'estado' => 'S');
 								}
 							}
 						}
 					} else {
-						$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => 'P');
+						$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $perido['mes'], 'estado' => 'P');
 					}
 				}
 			}

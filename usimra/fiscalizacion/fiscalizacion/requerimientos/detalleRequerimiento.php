@@ -6,7 +6,8 @@ $fecha = $_GET['fecha'];
 $nroreq = $_GET['nroreq'];
 $cuit = $_GET['cuit'];
 
-$sqlDeta = "SELECT * from detfiscalizusimra where nrorequerimiento = '$nroreq'";
+$sqlDeta = "SELECT * from detfiscalizusimra d, periodosusimra p where nrorequerimiento = '$nroreq' and 
+				 d.anofiscalizacion = p.anio and d.mesfiscalizacion = p.mes ";
 $resDeta = mysql_query($sqlDeta,$db);
 
 ?>
@@ -87,7 +88,8 @@ function validar(formulario) {
 		<p class="Estilo2">Edici&oacute;n de Periodos  del  Requerimiento Nro. <?php echo $nroreq ?></p>
 		<table width="800" border="1" align="center" style="text-align: center;">
 		  <tr style="font-size:12px">
-			<th rowspan="2" width="65">Período</th>
+		  	<th rowspan="2">Año</th>
+		  	<th rowspan="2">Mes</th>
 			<th rowspan="2">Status</th>
 			<th colspan="2">DDJJ</th>
 			<th rowspan="2">Deuda Nominal</th>
@@ -119,7 +121,8 @@ function validar(formulario) {
 					}
 					?>
 					<tr>
-						<td width='65'><?php echo $rowDeta['mesfiscalizacion']."-".$ano ?></td>
+						<td><?php echo $ano ?></td>
+						<td><?php echo $mes." - ".$rowDeta['descripcion']?></td>
 						<td><?php echo $status ?></td>   
 						<td><?php echo number_format($rowDeta['remundeclarada'],2,',','.'); ?></td> 
 						<td><?php echo $rowDeta['cantidadpersonal'] ?></td> 
