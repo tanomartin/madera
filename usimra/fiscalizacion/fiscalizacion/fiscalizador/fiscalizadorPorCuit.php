@@ -80,10 +80,9 @@ function estaVencido($fechaPago, $me, $ano) {
 	return(0);
 }
 
-function encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
+function encuentroPagos($cuit, $anoinicio, $anofin, $db) {
 	$sqlPagos = "select anopago, mespago, fechapago, sum(remuneraciones) as remune, sum(montopagado) as importe, cantidadpersonal from seguvidausimra 
-					where cuit = $cuit and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio))
-					group by anopago, mespago order by anopago, mespago";
+					where cuit = $cuit and anopago >= $anoinicio and anopago <= $anofin group by anopago, mespago order by anopago, mespago";
 	$resPagos = mysql_query($sqlPagos,$db);
 	$CantPagos = mysql_num_rows($resPagos); 
 	if($CantPagos > 0) {
@@ -211,7 +210,7 @@ $fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
 
 //PAGOS (ESTADO P) --> Se tienen que fiscalizar para estado F o M
-$arrayPagos = encuentroPagos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+$arrayPagos = encuentroPagos($cuit, $anoinicio, $anofin, $db);
 if ($arrayPagos == 0){ 
 	$arrayPagos = array();
 } 

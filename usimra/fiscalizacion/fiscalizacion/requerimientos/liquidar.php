@@ -405,7 +405,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$telefono = $rowJuris['ddn'].$rowJuris['telefono'];
 		$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
 	}
-	//DEUDA ANTERIOR
+	//TODO: DEUDA ANTERIOR VER DE SACAR
 	//$deuda = deudaAnterior($cuit, $db);
 	
 	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono;
