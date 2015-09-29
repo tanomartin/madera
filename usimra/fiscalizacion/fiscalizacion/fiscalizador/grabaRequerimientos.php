@@ -6,11 +6,28 @@ print("<br>");
 
 /****************************************************************************************/
 
+function calculoDeudaNr($remu, $personal, $mes, $anio, $db) {
+	$sqlExtra = "SELECT anio, mes, tipo, valor, retiene060*0.06 + retiene100*0.1 + retiene150*0.15 as porcentaje FROM extraordinariosusimra 
+					WHERE anio = $anio and mes = $mes and tipo != 2";
+	$resExtra = mysql_query($sqlExtra,$db);
+	$rowExtra = mysql_fetch_assoc($resExtra);
+	$apagar = 0;
+	if ($rowExtra['tipo'] == 0) {
+		$apagar = $rowExtra['valor'] * $rowExtra['porcentaje'] * $personal;
+	}
+	if ($rowExtra['tipo'] == 1) {
+		$apagar = $remu * $rowExtra['valor'] * $rowExtra['porcentaje'];
+	}
+	return $apagar;
+}
+
 $listadoSerializado=$_POST['empresas'];
 $listadoEmpresas = unserialize(urldecode($listadoSerializado));
+unset($listadoSerializado);
 
 $datosSerializado=$_POST['datosReq'];
 $listadoDatosReq = unserialize(urldecode($datosSerializado));
+unset($datosSerializado);
 
 //print("DATOS FILSCALIZACION");
 //var_dump($listadoDatosReq);
@@ -23,17 +40,29 @@ for($i=0; $i < sizeof($listadoEmpresas); $i++) {
 	$deudaFinal = array();
 	$cuit = $listadoEmpresas[$i]['cuit'];
 	$deudas = $listadoEmpresas[$i]['deudas'];
-	foreach ($deudas as $deuda){
+	foreach ($deudas as $key=>$deuda){
 		$estado = $deuda['estado'];
 		if ($estado != 'P') {
+			if (strlen($key) == 6) {
+				$mes = substr($key,4,2);
+			} else {
+				$mes = substr($key,4,1);
+			}
 			$anio = $deuda['anio'];
-			$mes = $deuda['mes'];
 			$id = $anio.$mes;
 			if ($estado != 'S') {
-				$deudaNominal = (float)($deuda['remu'] * $alicuota);
+				$deudaNominal = 0;
 				if ($estado == 'M') {
 					$deudaNominal = (float)($deuda['deuda']);
-				}
+				} else {
+					if ($mes <= 12) {
+						$deudaNominal = (float)($deuda['remu'] * $alicuota);
+					} else {
+						if ($estado == 'A') {
+							$deudaNominal = calculoDeudaNr($deuda['remu'],$deuda['totper'],$mes, $anio, $db);
+						} 
+					}
+				}	
 				$deuda['deudaNominal'] = (float)number_format($deudaNominal,2,'.','');
 			} else {
 				$deuda['remu'] = 0.00;
@@ -75,9 +104,13 @@ foreach ($listadoFinal as $lista){
 		$dbh->beginTransaction();
 		$dbh->exec($sqlReqFis);
 		$nroreq = $dbh->lastInsertId();
-		foreach ($peridosDeuda as $deuda){
+		foreach ($peridosDeuda as $key=>$deuda){
 			$anofis = $deuda['anio'];
-			$mesfis = $deuda['mes'];
+			if (strlen($key) == 6) {
+				$mesfis = substr($key,4,2);
+			} else {
+				$mesfis = substr($key,4,1);
+			}
 			$stafis = $deuda['estado'];
 			$remfis = $deuda['remu'];
 			$canper = $deuda['totper'];

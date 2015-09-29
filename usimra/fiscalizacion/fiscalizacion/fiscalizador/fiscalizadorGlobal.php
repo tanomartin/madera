@@ -40,9 +40,6 @@ function esMontoMenorNoRemu($remu, $importe, $personal, $extra) {
 	if ($extra['tipo'] == 1) {
 		$apagar = $remu * $extra['valor'] * $extra['porcentaje'];
 	}
-	if ($extra['tipo'] == 2) {
-		$apagar =  $extra['valor'] * $personal;
-	}
 	$diferencia = $apagar - $importe;
 	if ($diferencia > $limiteDif) {
 		return($diferencia);
@@ -168,8 +165,8 @@ function encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin
 	return($arrayRequerimientos);
 }
 
-function encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	$sqlDdjj = "select perano, permes, remune, totapo, recarg, nfilas from ddjjusimra where nrcuit = $cuit and nrcuil = 99999999999 and permes < 13 and ((perano > $anoinicio and perano <= $anofin) or (perano = $anoinicio and permes >= $mesinicio)) order by perano, permes, id ASC";
+function encuentroDdjj($cuit, $anoinicio, $anofin, $db) {
+	$sqlDdjj = "select perano, permes, remune, totapo, recarg, nfilas from ddjjusimra where nrcuit = $cuit and nrcuil = 99999999999 and perano >= $anoinicio and perano <= $anofin order by perano, permes, id ASC";
 	//print($sqlDdjj);
 	$resDdjj = mysql_query($sqlDdjj,$db);
 	$canDdjj = mysql_num_rows($resDdjj); 
@@ -256,7 +253,7 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 		if ($arrayRequerimientos == 0){ 
 			$arrayRequerimientos = array();
 		}
-		$arrayDdjj = encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
+		$arrayDdjj = encuentroDdjj($cuit, $anoinicio, $anofin, $db);
 		if ($arrayDdjj == 0){ 
 			$arrayDdjj = array();
 		} 
@@ -317,14 +314,28 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 								}
 							}	
 						} else {
+						//NO PAGO
 							$redirec = 0;
 							if (array_key_exists($idArray, $arrayDdjj)) {
 								$arrayFinal[$idArray] =  $arrayDdjj[$idArray];
 							} else {
-								if (array_key_exists($idArray, $arrayDdjjOspim)) {
-									$arrayFinal[$idArray] =  $arrayDdjjOspim[$idArray];
-								} else {
-									$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $perido['mes'], 'estado' => 'S');
+								if($perido['mes'] > 12) {
+									$idBusqueda = $ano.$mes;
+									if (array_key_exists($idBusqueda, $arrayDdjj)) {
+										$arrayFinal[$idArray] =  $arrayDdjj[$idBusqueda];
+									} else {
+										if (array_key_exists($idBusqueda, $arrayDdjjOspim)) {
+											$arrayFinal[$idArray] =  $arrayDdjjOspim[$idBusqueda];
+										} else {
+											$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $perido['mes'], 'estado' => 'S');
+										}
+									}
+								} else { 
+									if (array_key_exists($idArray, $arrayDdjjOspim)) {
+										$arrayFinal[$idArray] =  $arrayDdjjOspim[$idArray];
+									} else {
+										$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $perido['mes'], 'estado' => 'S');
+									}
 								}
 							}
 						}

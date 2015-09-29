@@ -86,7 +86,7 @@ function validar(formulario) {
 		<input name="fecha" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
 		<p class="Estilo2">Edici&oacute;n de Periodos  del  Requerimiento Nro. <?php echo $nroreq ?></p>
-		<table width="800" border="1" align="center" style="text-align: center;">
+		<table width="900" border="1" align="center" style="text-align: center;">
 		  <tr style="font-size:12px">
 		  	<th rowspan="2">Año</th>
 		  	<th rowspan="2">Mes</th>
@@ -117,7 +117,7 @@ function validar(formulario) {
 						$status = "A.M.";
 					}
 					if ($rowDeta['statusfiscalizacion'] == 'O') {
-						$status = "Deuda OSPIM";
+						$status = "Base OSPIM";
 					}
 					?>
 					<tr>
@@ -130,15 +130,15 @@ function validar(formulario) {
 						<?php
 						if ($rowDeta['statusfiscalizacion'] == 'M' || $rowDeta['statusfiscalizacion'] == 'F') {
 							$dire = "/madera/comun/empresas/abm/cuentas/detallePagosUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;?>
-							<td><input type="button" value="Ver Pago" onclick="javascript:abrirInfo('<?php echo $dire ?>')"/></td>
+							<td><input type="button" value="VER PAGO" onclick="javascript:abrirInfo('<?php echo $dire ?>')"/></td>
 			<?php		} else {
 							if ($rowDeta['statusfiscalizacion'] == 'A') {
 								$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
-								<td><input type="button" value="Ver DDJJ" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
+								<td><input type="button" value="VER DDJJ" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
 			<?php			} else { 
 								if ($rowDeta['statusfiscalizacion'] == 'O') {
 									$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
-									<td><input type="button" value="Ver DDJJ OSPIM" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
+									<td><input type="button" value="VER DDJJ OSPIM" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
 			<?php				} else { ?>
 									<td>-</td> 
 			<?php		 		}
