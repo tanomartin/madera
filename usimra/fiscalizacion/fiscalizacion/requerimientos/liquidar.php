@@ -7,6 +7,13 @@ $usuariomodif = $_SESSION['usuario'];
 $fecha = $_GET['fecha'];
 /**********************************************************************************/
 
+function obtenerMesRelacion($mes, $anio, $db) {
+	$sqlExtra = "SELECT relacionmes FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
+	$resExtra = mysql_query($sqlExtra,$db);
+	$rowExtra = mysql_fetch_assoc($resExtra);
+	return $rowExtra['relacionmes'];
+}
+
 function agregaGuiones($cuit) {
 	$primero = substr ($cuit,0,2);
 	$segundo = substr ($cuit,2,8);
@@ -217,11 +224,11 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	$sqlRequeDet = "SELECT * from detfiscalizusimra where nrorequerimiento = $nroreq";
 	$resRequeDet = mysql_query($sqlRequeDet,$db);
 	while ($rowRequeDet = mysql_fetch_assoc($resRequeDet)) {
-		if ($rowRequeDet['mesfiscalizacion'] < 10) {
-			$mes = "0".$rowRequeDet['mesfiscalizacion'];
-		} else {
-			$mes = $rowRequeDet['mesfiscalizacion'];
+		$mes = $rowRequeDet['mesfiscalizacion'];
+		if ($mes > 12) {
+			$mes = obtenerMesRelacion($mes,$rowRequeDet['anofiscalizacion'],$db);
 		}
+		$mes = str_pad($mes,2,'0',STR_PAD_LEFT);
 		if ($rowRequeDet['statusfiscalizacion'] == 'F' || $rowRequeDet['statusfiscalizacion'] == 'M') {
 			//ACA PODEMOS PONER lA LINEA 0 ya que la data viene del detalle y de la consulta de agrupfisca linea de información.
 			unset($pagos);		
