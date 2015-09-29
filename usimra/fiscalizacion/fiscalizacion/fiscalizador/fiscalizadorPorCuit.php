@@ -198,8 +198,7 @@ function encuentroDdjjOspim($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db
 
 /****************************************************************************************/
 
-//$cuit = $_GET['cuit'];
-$cuit = "30530705117";
+$cuit = $_GET['cuit'];
 $sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
 $resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
 $rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
