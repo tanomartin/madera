@@ -10,6 +10,13 @@ $sqlDeta = "SELECT * from detfiscalizusimra d, periodosusimra p where nrorequeri
 				 d.anofiscalizacion = p.anio and d.mesfiscalizacion = p.mes ";
 $resDeta = mysql_query($sqlDeta,$db);
 
+function obtenerMesRelacion($mes, $anio, $db) {
+	$sqlExtra = "SELECT relacionmes FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
+	$resExtra = mysql_query($sqlExtra,$db);
+	$rowExtra = mysql_fetch_assoc($resExtra);
+	return $rowExtra['relacionmes'];
+}
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -128,6 +135,11 @@ function validar(formulario) {
 						<td><?php echo $rowDeta['cantidadpersonal'] ?></td> 
 						<td><?php echo number_format($rowDeta['deudanominal'],2,',','.'); ?></td>        
 						<?php
+						
+						if ($mes > 12) {
+							$mes = obtenerMesRelacion($mes, $ano, $db);
+						}
+						
 						if ($rowDeta['statusfiscalizacion'] == 'M' || $rowDeta['statusfiscalizacion'] == 'F') {
 							$dire = "/madera/comun/empresas/abm/cuentas/detallePagosUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;?>
 							<td><input type="button" value="VER PAGO" onclick="javascript:abrirInfo('<?php echo $dire ?>')"/></td>
