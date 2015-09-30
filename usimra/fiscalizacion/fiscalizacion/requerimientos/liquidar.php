@@ -23,7 +23,6 @@ function agregaGuiones($cuit) {
 }
 
 function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc) {	
-	$tipo = 'activa';
 	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit";
 	$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
 	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
@@ -94,8 +93,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$arrayDDJJ[$idArray] = array ('origen' =>  2, 'datos' => $rowDDJJOspim, 'id' => $id);
 		}
 	}
-	
-	sort($arrayDDJJ);
+	ksort($arrayDDJJ);
 	
 	//NO REMUNERATIVO
 	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, d.remuneraciones 
@@ -109,14 +107,15 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		$arrayNR[$id] =  array ('datos' => $rowDDJJNR);;
 	}
 	
-	for ($i=0; $i < sizeof($cuerpo); $i++) {
-		$fecha = explode("|",$cuerpo[$i]);
+	foreach ($cuerpo as $lineaCuerpo) {
+		$fecha = explode("|",$lineaCuerpo);
 		$fechaArray =  explode("/",$fecha[0]);
 		$id = $fechaArray[2].$fechaArray[1];
 		$idBuscar[$id] = $id;
 	}
 	
 	$c = 0;
+	$cuerpoCUIL = array();
 	foreach($arrayDDJJ as $ddjj) {
 		$id = $ddjj['id'];
 		if (array_key_exists($id, $idBuscar)) {
@@ -133,7 +132,8 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
 			$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');
 			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
-			$cuerpoCUIL[$c] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen'];
+			$indexCuerpo = $ano.$mes.$ddjj['origen'].$c;
+			$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen'];
 			$c++;
 		}
 	}
@@ -149,9 +149,10 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	}
 
 	//**********************************//
+	ksort($cuerpoCUIL);
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de detalle de CUILES en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
-	for ($i=0; $i < sizeof($cuerpoCUIL); $i++) {
-		fputs($ar,$cuerpoCUIL[$i]."\r\n");
+	foreach ($cuerpoCUIL as $lineaCuil) {
+		fputs($ar,$lineaCuil."\r\n");
 	}
 	fclose($ar);
 	//**********************************//
@@ -261,22 +262,17 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            ";
 			}
 		}
-		
-		
+		$indexFecha = $rowRequeDet['anofiscalizacion'].$mes;
 		if (sizeof($pagos) > 0) {
 			for ($n = 0; $n < sizeof($pagos); $n++) {
-				$cuerpo[$l] = $pagos[$n];
+				$indexCuerpo = $indexFecha.$l;
+				$cuerpo[$indexCuerpo] = $pagos[$n];
 				$l++;
 			}
 		} else  {
-			$cuerpo[$l] = $linea;
+			$indexCuerpo = $indexFecha.$l;
+			$cuerpo[$indexCuerpo] = $linea;
 			$l++;
-			if (sizeof($pagosExtr) > 0) {
-				for ($n = 0; $n < sizeof($pagosExtr); $n++) {
-					$cuerpo[$l] = $pagosExtr[$n];
-					$l++;
-				}
-			}
 		}
 		$ultmes = $mes;
 		$ultano = $rowRequeDet['anofiscalizacion'];
@@ -294,10 +290,11 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArc;
 	}
 	
+	ksort($cuerpo);
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de Deuda en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
 	fputs($ar,$primeraLinea."\r\n");
-	for ($i=0; $i < sizeof($cuerpo); $i++) {
-		fputs($ar,$cuerpo[$i]."\r\n");
+	foreach ($cuerpo as $linea) {
+		fputs($ar,$linea."\r\n");
 	}
 	fclose($ar);
 	
