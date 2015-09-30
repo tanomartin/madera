@@ -14,6 +14,20 @@ function obtenerMesRelacion($mes, $anio, $db) {
 	return $rowExtra['relacionmes'];
 }
 
+function calculoBaseCalculoNR($remu, $mes, $anio, $db) {
+	$sqlExtra = "SELECT tipo, valor FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
+	$resExtra = mysql_query($sqlExtra,$db);
+	$rowExtra = mysql_fetch_assoc($resExtra);
+	$baseCalculoNR = 0;
+	if ($rowExtra['tipo'] == 0) {
+		$baseCalculoNR = $rowExtra['valor'];
+	}
+	if ($rowExtra['tipo'] == 1) {
+		$baseCalculoNR = $remu * $rowExtra['valor'];
+	}
+	return $baseCalculoNR;
+}
+
 function agregaGuiones($cuit) {
 	$primero = substr ($cuit,0,2);
 	$segundo = substr ($cuit,2,8);
@@ -96,7 +110,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	ksort($arrayDDJJ);
 	
 	//NO REMUNERATIVO
-	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, d.remuneraciones 
+	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, d.remuneraciones
 						from detddjjusimra d, extraordinariosusimra e
 						where d.cuit = $cuit and d.anoddjj > $anoinicio and d.anoddjj <= $ultano and d.mesddjj > 12 and d.anoddjj = e.anio and d.mesddjj = e.mes"; 
 	$resDDJJNR = mysql_query($sqlDDJJNR,$db);
@@ -121,17 +135,18 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		if (array_key_exists($id, $idBuscar)) {
 			$mes = str_pad($ddjj['datos']['mesddjj'],2,'0',STR_PAD_LEFT);
 			$ano = $ddjj['datos']['anoddjj'];
+			$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');
+			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
+				
 			$idNR = $ddjj['datos']['cuil'].$ano.$mes;
-			
 			if (array_key_exists($idNR, $arrayNR)) {
 				$norem = str_pad($arrayNR[$idNR]['datos']['remuneraciones'],12,'0',STR_PAD_LEFT);
 			} else {
-				$norem = str_pad('0',12,'0',STR_PAD_LEFT);
-			}		
+				$norem = calculoBaseCalculoNR($remuDecl, $mes, $ano, $db);
+			}
 			$norem = number_format($norem,2,',','');
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
-			$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');
-			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
+			
 			$indexCuerpo = $ano.$mes.$ddjj['origen'].$c;
 			$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen'];
 			$c++;
