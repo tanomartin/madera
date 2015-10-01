@@ -25,13 +25,13 @@ function calculoDeudaNr($remu, $personal, $mes, $anio, $db) {
 	return $apagar;
 }
 
-function calculoBaseCalculoNR($remu, $mes, $anio, $db) {
+function calculoBaseCalculoNR($remu, $mes, $personal, $anio, $db) {
 	$sqlExtra = "SELECT tipo, valor FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
 	$resExtra = mysql_query($sqlExtra,$db);
 	$rowExtra = mysql_fetch_assoc($resExtra);
 	$baseCalculoNR = 0;
 	if ($rowExtra['tipo'] == 0) {
-		$baseCalculoNR = $rowExtra['valor'];
+		$baseCalculoNR = $rowExtra['valor'] * $personal;
 	}
 	if ($rowExtra['tipo'] == 1) {
 		$baseCalculoNR = $remu * $rowExtra['valor'];
@@ -364,13 +364,13 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 									$idBusqueda = $ano.$mes;
 									if (array_key_exists($idBusqueda, $arrayDdjj)) {
 										$registroDDJJ = $arrayDdjj[$idBusqueda];
-										$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjj[$idBusqueda]['remu'], $perido['mes'], $ano, $db);
+										$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjj[$idBusqueda]['remu'], $perido['mes'], $arrayDdjj[$idBusqueda]['totper'], $ano, $db);
 										$registroDDJJ['deuda'] = calculoDeudaNr($registroDDJJ['remu'],$registroDDJJ['totper'],$perido['mes'], $ano, $db);
 										$arrayFinal[$idArray] =  $registroDDJJ;
 									} else {
 										if (array_key_exists($idBusqueda, $arrayDdjjOspim)) {			
 											$registroDDJJ = $arrayDdjjOspim[$idBusqueda];
-											$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjjOspim[$idBusqueda]['remu'], $perido['mes'], $ano, $db);
+											$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjjOspim[$idBusqueda]['remu'], $perido['mes'], $arrayDdjjOspim[$idBusqueda]['totper'], $ano, $db);
 											$registroDDJJ['deuda'] = calculoDeudaNr($registroDDJJ['remu'],$registroDDJJ['totper'],$perido['mes'], $ano, $db);
 											$arrayFinal[$idArray] =  $registroDDJJ;
 										} else {

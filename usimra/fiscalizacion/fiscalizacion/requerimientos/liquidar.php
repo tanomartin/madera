@@ -14,6 +14,13 @@ function obtenerMesRelacion($mes, $anio, $db) {
 	return $rowExtra['relacionmes'];
 }
 
+function obtenerMesNoRem($mesrelacion, $anio, $db) {
+	$sqlExtra = "SELECT mes FROM extraordinariosusimra WHERE anio = $anio and relacionmes = $mesrelacion and tipo != 2";
+	$resExtra = mysql_query($sqlExtra,$db);
+	$rowExtra = mysql_fetch_assoc($resExtra);
+	return $rowExtra['mes'];
+}
+
 function calculoBaseCalculoNR($remu, $mes, $anio, $db) {
 	$sqlExtra = "SELECT tipo, valor FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
 	$resExtra = mysql_query($sqlExtra,$db);
@@ -140,9 +147,14 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 				
 			$idNR = $ddjj['datos']['cuil'].$ano.$mes;
 			if (array_key_exists($idNR, $arrayNR)) {
-				$norem = str_pad($arrayNR[$idNR]['datos']['remuneraciones'],12,'0',STR_PAD_LEFT);
+				$norem = $arrayNR[$idNR]['datos']['remuneraciones'];
 			} else {
-				$norem = calculoBaseCalculoNR($remuDecl, $mes, $ano, $db);
+				$mesNoRem = obtenerMesNoRem($mes, $ano, $db);
+				if ($mesNoRem == 0) {
+					$norem = 0;
+				} else {
+					$norem = calculoBaseCalculoNR($remuDecl, $mesNoRem, $ano, $db);
+				}
 			}
 			$norem = number_format($norem,2,',','');
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
@@ -316,9 +328,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//**********************************
 	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
 	
-	grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
+	//grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
 	
-	cambioEstadoReq($nroreq);
+	//cambioEstadoReq($nroreq);
 	//**********************************
 	
 	return $nombreArc;

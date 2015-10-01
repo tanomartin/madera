@@ -3,7 +3,7 @@ include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
 $cuit=$_GET['cuit'];
 include($libPath."cabeceraEmpresaConsulta.php");
-$fechaInicio= $row['iniobliosp'];
+$fechaInicio= $row['iniobliusi'];
 include($libPath."limitesTemporalesEmpresasUsimra.php");
 // sumamos 5 años a los limites temporales.
 set_time_limit(0);
