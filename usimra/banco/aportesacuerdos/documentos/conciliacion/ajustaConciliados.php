@@ -139,23 +139,22 @@ try {
 											$usuconapo=$aportes[usuarioconciliacion];
 										}
 
-										//TODO: Aca iria el sqlLeePagos cuando se sume al sistema todo el modulo de aportes
-										//$sqlLeePagos="SELECT * FROM xxxxxxxxxxxx WHERE cuit = :cuit and mespago = :mespago and anopago = :anopago and nropago = :nropago";
-										//$resultLeePagos = $dbh->prepare($sqlLeePagos);
-										//if ($resultLeePagos->execute(array(':cuit' => $cuiapo, ':mespago' => $mesapo, ':anopago' => $anoapo, ':nropago' => $nroapo)))
-										//{
-											//	foreach ($resultLeePagos as $pagos)
-											//	{
-											//		if($pagos[]!=0.00)
-											//		{
-											//			$importeboletasapo=$importeboletasapo+$pagos[];
-											//		 	$importeboletasrec=$importeboletasrec+$pagos[];
-											//			$importeboletasvar=$importeboletasvar+$pagos[];
-											//			$importeboletaspag=$importeboletaspag+$pagos[];
-											//			$totalboletaspag++;
-											//		}
-											//	}
-										//}
+										$sqlLeePagos="SELECT * FROM seguvidausimra WHERE cuit = :cuit and mespago = :mespago and anopago = :anopago and nropago = :nropago";
+										$resultLeePagos = $dbh->prepare($sqlLeePagos);
+										if ($resultLeePagos->execute(array(':cuit' => $cuiapo, ':mespago' => $mesapo, ':anopago' => $anoapo, ':nropago' => $nroapo)))
+										{
+												foreach ($resultLeePagos as $pagos)
+												{
+													if($pagos[montopagado]!=0.00)
+													{
+														$importeboletasapo=$importeboletasapo+$pagos[montopagado];
+													 	$importeboletasrec=$importeboletasrec+$pagos[montorecargo];
+														$importeboletasvar=$importeboletasvar+0.00;
+														$importeboletaspag=$importeboletaspag+$pagos[montopagado]+$pagos[montorecargo];
+														$totalboletaspag++;
+													}
+												}
+										}
 
 										$sqlAjustaConPagos="UPDATE conciliapagosusimra SET estadoconciliacion = :estadoconciliacion, fechaconciliacion = :fechaconciliacion, usuarioconciliacion = :usuarioconciliacion WHERE cuit = :cuit and mespago = :mespago and anopago = :anopago and nropago = :nropago and cuentaboleta = :cuentaboleta and cuentaremesa = :cuentaremesa and fecharemesa = :fecharemesa and nroremesa = :nroremesa and nroremitoremesa = :nroremito";
 										$resultAjustaConPagos = $dbh->prepare($sqlAjustaConPagos);
@@ -325,23 +324,22 @@ try {
 											$usuconapo=$aportes[usuarioconciliacion];
 										}
 
-										//TODO: Aca iria el sqlLeePagos cuando se sume al sistema todo el modulo de aportes
-										//$sqlLeePagos="SELECT * FROM xxxxxxxxxxxx WHERE cuit = :cuit and mespago = :mespago and anopago = :anopago and nropago = :nropago";
-										//$resultLeePagos = $dbh->prepare($sqlLeePagos);
-										//if ($resultLeePagos->execute(array(':cuit' => $cuiapo, ':mespago' => $mesapo, ':anopago' => $anoapo, ':nropago' => $nroapo)))
-										//{
-											//	foreach ($resultLeePagos as $pagos)
-											//	{
-											//		if($pagos[]!=0.00)
-											//		{
-											//			$importeboletasapo=$importeboletasapo+$pagos[];
-											//		 	$importeboletasrec=$importeboletasrec+$pagos[];
-											//			$importeboletasvar=$importeboletasvar+$pagos[];
-											//			$importeboletaspag=$importeboletaspag+$pagos[];
-											//			$totalboletaspag++;
-											//		}
-											//	}
-										//}
+										$sqlLeePagos="SELECT * FROM seguvidausimra WHERE cuit = :cuit and mespago = :mespago and anopago = :anopago and nropago = :nropago";
+										$resultLeePagos = $dbh->prepare($sqlLeePagos);
+										if ($resultLeePagos->execute(array(':cuit' => $cuiapo, ':mespago' => $mesapo, ':anopago' => $anoapo, ':nropago' => $nroapo)))
+										{
+												foreach ($resultLeePagos as $pagos)
+												{
+													if($pagos[montopagado]!=0.00)
+													{
+														$importeboletasapo=$importeboletasapo+$pagos[montopagado];
+													 	$importeboletasrec=$importeboletasrec+$pagos[montorecargo];
+														$importeboletasvar=$importeboletasvar+0.00;
+														$importeboletaspag=$importeboletaspag+$pagos[montopagado]+$pagos[montorecargo];
+														$totalboletaspag++;
+													}
+												}
+										}
 
 										$sqlAjustaConPagos="UPDATE conciliapagosusimra SET estadoconciliacion = :estadoconciliacion, fechaconciliacion = :fechaconciliacion, usuarioconciliacion = :usuarioconciliacion WHERE cuit = :cuit and mespago = :mespago and anopago = :anopago and nropago = :nropago and cuentaboleta = :cuentaboleta and cuentaremitosuelto = :cuentaremitosuelto and fecharemitosuelto = :fecharemitosuelto nroremitosuelto = :nroremitosuelto";
 										$resultAjustaConPagos = $dbh->prepare($sqlAjustaConPagos);

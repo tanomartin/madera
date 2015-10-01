@@ -4,7 +4,7 @@ include($libPath."fechas.php");
 if(isset($_POST) && !empty($_POST) && isset($_GET) && !empty($_GET))
 {
 	//var_dump($_GET);
-	//svar_dump($_POST);
+	//var_dump($_POST);
 	$fechacancelacion=date("Y-m-d H:i:s");
 	$fechasubida=date("Y-m-d");
 	$usuariocancelacion=$_SESSION['usuario'];

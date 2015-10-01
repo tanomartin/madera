@@ -212,6 +212,7 @@ $(document).ready(function(){
 				$("#montorecargo").val(respuesta.recarg);
 				$("#montopagado").val(respuesta.totapo);
 				$("#observaciones").val(respuesta.observ);
+				$("#selectCuenta").attr('disabled', false);
 				$("#cancelapago").attr('disabled', false);
 				$.unblockUI();
 			} else {
@@ -377,8 +378,6 @@ $(document).ready(function(){
 			$("#montopagado").val(totpago);
 		}
 	});
-
-	
 	$("#fecharemesa").change(function(){
 		var fecharemesa = $(this).val();
 		var cuentaremesa = $("#selectCuentaRemesa").val();
@@ -392,7 +391,6 @@ $(document).ready(function(){
 			$("#selectRemesa").html(respuesta);
 		});
 	});
-
 	$("#selectRemesa").change(function(){
 		var nroremesa = $(this).val();
 		var cuentaremesa = $("#selectCuentaRemesa").val();
@@ -407,7 +405,6 @@ $(document).ready(function(){
 			$("#selectRemito").html(respuesta);
 		});
 	});
-
 	$("#fecharemito").change(function(){
 		var fecharemito = $(this).val();
 		var cuentaremito = $("#selectCuentaRemito").val();
@@ -421,7 +418,6 @@ $(document).ready(function(){
 			$("#selectRemitoSuelto").html(respuesta);
 		});
 	});
-	
 });
 
 function msgWaitDDJJ() {
@@ -632,7 +628,6 @@ function validar(formulario) {
 			}
 		}
 	}
-	
 	var cuentaBoleta = formulario.selectCuenta.value;
 	var cuentaRemesa = formulario.selectCuentaRemesa.value;
 	var cuentaRemito = formulario.selectCuentaRemito.value;
@@ -641,43 +636,54 @@ function validar(formulario) {
 	var nroRemesa = formulario.selectRemesa.value;
 	var nroRemito = formulario.selectRemito.value;
 	var nroRemitoSuelto = formulario.selectRemitoSuelto.value;
-
-	if (cuentaBoleta != 0) {
-		if (cuentaRemesa == 0 && cuentaRemito == 0) {
+	if(cuentaBoleta != 0) {
+		if(cuentaRemesa == 0 && cuentaRemito == 0) {
 			alert("Debe elegir cuenta de remesa o de remito suelto");
 			document.body.style.cursor = 'default';
 			return false;
 		}
-		
-		if (cuentaRemesa != 0) {
-			if (!esFechaValida(fechaRemesa)) {
+		if(cuentaRemesa != 0) {
+			if(fechaRemesa == "") {
+				alert("Debe ingresar la fecha de la remesa");
+				document.getElementById("fecharemesa").focus();
+				return false;
+			} else {
+				if(!esFechaValida(fechaRemesa)) {
+					alert("La fecha de remesa ingresada no es válida");
+					document.getElementById("fecharemesa").focus();
+					return false;
+				}
+			}
+			if(nroRemesa == 0) {
+				alert("Debe seleccionar un nro. de remesa");
+				document.getElementById("selectRemesa").focus();
 				return false;
 			}
-			if (nroRemesa == 0) {
-				alert("Debe elegir un nro de remesa");
-				document.body.style.cursor = 'default';
-				return false;
-			}
-			if (nroRemito == 0) {
-				alert("Debe elegir un nro de remito");
-				document.body.style.cursor = 'default';
+			if(nroRemito == 0) {
+				alert("Debe seleccionar un nro. de remito");
+				document.getElementById("selectRemito").focus();
 				return false;
 			}
 		}
-		
-		if (cuentaRemito != 0) {
-			if (!esFechaValida(fechaRemito)) {
-				document.body.style.cursor = 'default';
+		if(cuentaRemito != 0) {
+			if(fechaRemito == "") {
+				alert("Debe ingresar la fecha del remito suelto");
+				document.getElementById("fecharemito").focus();
 				return false;
+			} else {
+				if(!esFechaValida(fechaRemito)) {
+					alert("La fecha del remito suelto ingresada no es válida");
+					document.getElementById("fecharemito").focus();
+					return false;
+				}
 			}
-			if (nroRemitoSuelto == 0) {
-			  	alert("Debe elegir un nro de remito suelto");
-				document.body.style.cursor = 'default';
+			if(nroRemitoSuelto == 0) {
+			  	alert("Debe seleccionar un nro. de remito suelto");
+				document.getElementById("selectRemitoSuelto").focus();
 				return false;
 			}
 		}
 	}
-	
 	$.blockUI({ message: "<h1>Registrando Cancelaci&oacute;n.<br>Aguarde por favor...</h1>" });
 	return true;
 }
@@ -783,23 +789,18 @@ include($libPath."cabeceraEmpresa.php");
 			<p></p>
 		</div>
 		<div align="center">	
-		<h2>Información Bancaria</h2>
+		<h3>Información Bancaria</h3>
 		<p>Cuenta de la Boleta
         <label>
-        <select disabled="disabled" name="selectCuenta"  id="selectCuenta" onchange="LogicaHabilitaDocu(document.forms.formularioCancelaPago.selectCuenta[selectedIndex].value)" >
+        <select disabled="disabled" name="selectCuenta"  id="selectCuenta" onChange="LogicaHabilitaDocu(document.forms.formularioCancelaPago.selectCuenta[selectedIndex].value)" >
 		          <option value=0 selected="selected">Seleccione una Cuenta </option>
 		          <?php 
 					$query="select * from cuentasusimra";
 					$result=mysql_query($query,$db);
-					while ($rowcuentas=mysql_fetch_array($result)) {
-						if ($rowcuentas['codigocuenta'] == $cuentaBoleta ) { ?>
-		                	<option value="<?php echo $rowcuentas['codigocuenta'] ?>" selected="selected"><?php echo $rowcuentas['descripcioncuenta']  ?></option>
-						<?php } else { ?>
+					while ($rowcuentas=mysql_fetch_array($result)) { ?>
 							 <option value="<?php echo $rowcuentas['codigocuenta'] ?>"><?php echo $rowcuentas['descripcioncuenta']  ?></option>			
-						<?php } 
-		            } ?>
+		            <?php } ?>
        </select>
-       <input type="text" name="quees" id="quees" value="<?php echo $quees ?>" style="visibility:hidden" size="1">
        </label>
      </p>
 	
@@ -823,7 +824,7 @@ include($libPath."cabeceraEmpresa.php");
            </select>
 	     </td>
          <td width="143">
-         <div align="right">Cuenta Reminto Suelto</div></td>
+         <div align="right">Cuenta Remito Suelto</div></td>
          <td width="268">	
 		    <select disabled="disabled" name="selectCuentaRemito" id="selectCuentaRemito" onChange="LogicaCargaRemito(document.forms.formularioCancelaPago.selectCuentaRemesa[selectedIndex].value);">
 		          <option value=0 selected="selected">Seleccione Cuenta de Remito </option>

@@ -481,20 +481,22 @@ try {
 														$anoapo=$aportes[anopago];
 														$nroapo=$aportes[nropago];
 
-														//TODO: Aca iria el sqlLeePagos cuando se sume al sistema todo el modulo de aportes
-														//$sqlLeePagos="SELECT * FROM seguvidausimra WHERE cuit = :cuit and mespago = :mespago and anopago = :anopago and nropago = :nropago";
-														//$resultLeePagos = $dbh->prepare($sqlLeePagos);
-														//if ($resultLeePagos->execute(array(':cuit' => $cuiapo, ':mespago' => $mesapo, ':anopago' => $anoapo, ':nropago' => $nroapo)))
-														//{
-														//	foreach ($resultLeePagos as $pagos)
-														//	{
-														//			$importeboletasapo=$importeboletasapo+$pagos[];
-														//		 	$importeboletasrec=$importeboletasrec+$pagos[];
-														//			$importeboletasvar=$importeboletasvar+$pagos[];
-														//			$importeboletaspag=$importeboletaspag+$pagos[];
-														//			$totalboletaspag++;
-														//	}
-														//}
+														$sqlLeePagos="SELECT * FROM seguvidausimra WHERE cuit = :cuit and mespago = :mespago and anopago = :anopago and nropago = :nropago";
+														$resultLeePagos = $dbh->prepare($sqlLeePagos);
+														if ($resultLeePagos->execute(array(':cuit' => $cuiapo, ':mespago' => $mesapo, ':anopago' => $anoapo, ':nropago' => $nroapo)))
+														{
+																foreach ($resultLeePagos as $pagos)
+																{
+																	if($pagos[montopagado]!=0.00)
+																	{
+																		$importeboletasapo=$importeboletasapo+$pagos[montopagado];
+																		$importeboletasrec=$importeboletasrec+$pagos[montorecargo];
+																		$importeboletasvar=$importeboletasvar+0.00;
+																		$importeboletaspag=$importeboletaspag+$pagos[montopagado]+$pagos[montorecargo];
+																		$totalboletaspag++;
+																	}
+																}
+														}
 													}
 												}
 
