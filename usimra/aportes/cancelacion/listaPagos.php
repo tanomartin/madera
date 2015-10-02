@@ -13,7 +13,7 @@ if($tipo=="noexiste") {
 	header('Location: moduloCancelacion.php?err=1');
 }
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE>
 <html>
 <head>
 <title>.: Selecci&oacute;n de Periodo a Cancelar :.</title>
@@ -109,7 +109,6 @@ while($rowListaPagos=mysql_fetch_array($resListaPagos)) {
 				  <option value="30">30 por pagina</option>
 				  <option value="<?php echo $totalpagos;?>">Todos</option>
 				</select>
-		  <table width="1229" border="0">
 		</form>
 	</div>
 	<div align="center">
