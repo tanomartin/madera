@@ -8,9 +8,6 @@ $tipo = $_POST['tipo'];
 if ($tipo == "delega") {
  	$delega = $_POST['selectDelegacion'];
 	$codpos = $_POST['codpos'];
-	$empresas = $_POST['empresas'];
-	$deuda = $_POST['deuda'];
-	$solic = $_POST['solicDele'];
 	if ($codpos != "") {
 		$sqlEmpresasJuris = "select e.cuit, e.iniobliosp, e.nombre, j.codidelega from jurisdiccion j, empresas e where j.codidelega = $delega and j.numpostal = $codpos and j.cuit = e.cuit ";
 	} else {
@@ -26,17 +23,20 @@ if ($tipo == "delega") {
 		header ("Location: fiscalizador.php?err=2");
 		exit(0);
 	}
+	
+	$filtros['empresas'] = $_POST['empresas'];
+	$filtros['deuda'] = $_POST['deuda'];
+	$filtros['solicitante'] = $_POST['solicDele'];
+	$filtros['origen'] = 1;
+	$filtros['motivo'] = "Selección Automática";
+	
 } else {
 	$cuit = $_POST['cuit'];
-	$origen = $_POST['origenRequerimento'];
-	$solicitante = $_POST['solicitante'];
-	$motivo = $_POST['motivo'];
 	$sqlEmpresas = "select cuit from empresas where cuit = $cuit ";
 	$resEmpresas = mysql_query($sqlEmpresas,$db);
 	$cant = mysql_num_rows($resEmpresas);
 	if ($cant != 0) {
-			header ("Location: fiscalizadorPorCuit.php?cuit=$cuit&origen=$origen&soli=$solicitante&motivo=$motivo&tipo=activa");
-			exit(0);
+		$listadoEmpresas[0]['cuit'] = $cuit;
 	} else {
 		$sqlEmpresas = "select cuit from empresasdebaja where cuit = $cuit ";
 		$resEmpresas = mysql_query($sqlEmpresas,$db);
@@ -49,11 +49,13 @@ if ($tipo == "delega") {
 			exit(0);
 		}
 	}
+	
+	$filtros['empresas'] = 1;
+	$filtros['deuda'] = 0;
+	$filtros['solicitante'] = $_POST['solicitante'];
+	$filtros['origen'] = $_POST['origenRequerimento'];
+	$filtros['motivo'] = $_POST['motivo'];
 }
-
-$filtros['empresas'] = $empresas;
-$filtros['deuda'] = $deuda;
-$filtros['solicitante'] = $solic;
 
 $listadoSerializado = serialize($listadoEmpresas);
 $listadoSerializado = urlencode($listadoSerializado);

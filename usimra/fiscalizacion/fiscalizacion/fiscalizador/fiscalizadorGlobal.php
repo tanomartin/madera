@@ -251,6 +251,7 @@ function deudaNominal($arrayFinal) {
 
 $listadoSerializado=$_POST['empresas'];
 $listadoEmpresas = unserialize(urldecode($listadoSerializado));
+
 $filtrosSerializado=$_POST['filtros'];
 $filtros = unserialize(urldecode($filtrosSerializado));
 
@@ -407,14 +408,12 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 	}
 }
 
-//var_dump($empresasDefinitivas);
-
 if(sizeof($empresasDefinitivas) == 0) {
 	header ("Location: fiscalizador.php?err=5");
 	exit(0);
 } else {
-	$datosReque['origen'] = 1;
-	$datosReque['motivo'] = "Selección Automática";
+	$datosReque['origen'] = $filtros['origen'];
+	$datosReque['motivo'] = $filtros['motivo'];
 	$datosReque['solicitante'] = $filtros['solicitante'];
 	
 	$listadoSerializado = serialize($empresasDefinitivas);

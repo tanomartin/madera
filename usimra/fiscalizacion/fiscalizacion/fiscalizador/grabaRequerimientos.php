@@ -13,9 +13,6 @@ $datosSerializado=$_POST['datosReq'];
 $listadoDatosReq = unserialize(urldecode($datosSerializado));
 unset($datosSerializado);
 
-//print("DATOS FILSCALIZACION");
-//var_dump($listadoDatosReq);
-
 //print("DEUDA DE EMPRESAS FILSCALIZDAS<br><br>");
 $empre = 0; 
 $alicuota = 0.031;
@@ -23,6 +20,7 @@ $listadoFinal = array();
 for($i=0; $i < sizeof($listadoEmpresas); $i++) {
 	$deudaFinal = array();
 	$cuit = $listadoEmpresas[$i]['cuit'];
+	print($cuit."<br>");
 	$deudas = $listadoEmpresas[$i]['deudas'];
 	foreach ($deudas as $key=>$deuda){
 		$estado = $deuda['estado'];
@@ -48,6 +46,8 @@ for($i=0; $i < sizeof($listadoEmpresas); $i++) {
 	}
 }
 
+print("Emrpesa: ".$empre);
+
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
@@ -58,7 +58,9 @@ $solici = $listadoDatosReq['solicitante'];
 $motivo = $listadoDatosReq['motivo'];
 $hostname = $_SESSION['host'];
 $dbname = $_SESSION['dbname'];
+
 foreach ($listadoFinal as $lista){
+	print($lista."<br>");
 	$cuit = $lista['cuit'];
 	$sqlJuris = "SELECT codidelega from jurisdiccion where cuit = '$cuit' order by disgdinero DESC limit 1";
 	$resJuris = mysql_query($sqlJuris,$db);
