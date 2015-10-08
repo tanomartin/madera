@@ -21,6 +21,16 @@ function obtenerMesNoRem($mesrelacion, $anio, $db) {
 	return $rowExtra['mes'];
 }
 
+function incluyeNoRem($mesNoRem, $anio, $nroreque, $db) {
+	$sqlRequeDet = "SELECT * from detfiscalizusimra where nrorequerimiento = $nroreque and anofiscalizacion = $anio and mesfiscalizacion = $mesNoRem";
+	$resRequeDet = mysql_query($sqlRequeDet,$db);
+	$canRequeDet = mysql_num_rows($resRequeDet);
+	if ($canRequeDet > 0) {
+		return true;
+	} 
+	return false;
+}
+
 function calculoBaseCalculoNR($remu, $mes, $anio, $db) {
 	$sqlExtra = "SELECT tipo, valor FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
 	$resExtra = mysql_query($sqlExtra,$db);
@@ -150,7 +160,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 				$norem = $arrayNR[$idNR]['datos']['remuneraciones'];
 			} else {
 				$mesNoRem = obtenerMesNoRem($mes, $ano, $db);
-				if ($mesNoRem == 0) {
+				if ($mesNoRem == 0 || !incluyeNoRem($mesNoRem, $ano, $nroreqArc, $db)) {
 					$norem = 0;
 				} else {
 					$norem = calculoBaseCalculoNR($remuDecl, $mesNoRem, $ano, $db);
@@ -253,8 +263,10 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	$resRequeDet = mysql_query($sqlRequeDet,$db);
 	while ($rowRequeDet = mysql_fetch_assoc($resRequeDet)) {
 		$mes = $rowRequeDet['mesfiscalizacion'];
+		$tipoPeriodo = 0;
 		if ($mes > 12) {
 			$mes = obtenerMesRelacion($mes,$rowRequeDet['anofiscalizacion'],$db);
+			$tipoPeriodo = 1;
 		}
 		$mes = str_pad($mes,2,'0',STR_PAD_LEFT);
 		if ($rowRequeDet['statusfiscalizacion'] == 'F' || $rowRequeDet['statusfiscalizacion'] == 'M') {
@@ -272,7 +284,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 				$importeOrdinario = $rowAfipProc['sum(montopagado)'];
 				$importeOrdinario = number_format((float)$importeOrdinario,2,',','');
 				$importeOrdinario = str_pad($importeOrdinario,12,'0',STR_PAD_LEFT);
-				$pagos[$pOrd] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaOrdinario)."|".$importeOrdinario;
+				$pagos[$pOrd] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaOrdinario)."|".$importeOrdinario."|".$tipoPeriodo;
 				$personal = "0000";
 				$remunDec = "000000000,00";
 				$pOrd++;
@@ -284,9 +296,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 				$personal = str_pad($rowRequeDet['cantidadpersonal'],4,'0',STR_PAD_LEFT);
 				$remunDec = number_format((float)$rowRequeDet['remundeclarada'],2,',','');
 				$remunDec = str_pad($remunDec,12,'0',STR_PAD_LEFT);
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|          |            ";
+				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|          |            |".$tipoPeriodo;
 			} else {
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            ";
+				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            |".$tipoPeriodo;
 			}
 		}
 		$indexFecha = $rowRequeDet['anofiscalizacion'].$mes;
@@ -328,9 +340,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//**********************************
 	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
 	
-	grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
+	//grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
 	
-	cambioEstadoReq($nroreq);
+	//cambioEstadoReq($nroreq);
 	//**********************************
 	
 	return $nombreArc;
