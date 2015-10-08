@@ -340,9 +340,9 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//**********************************
 	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
 	
-	//grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
+	grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
 	
-	//cambioEstadoReq($nroreq);
+	cambioEstadoReq($nroreq);
 	//**********************************
 	
 	return $nombreArc;
