@@ -79,7 +79,7 @@ function reverificaPeriodoPago($estado, $ano, $me, $db) {
 		} else {
 			$des = "ACUER.-".$nroacuerdo;
 		}
-		return($estado."<br>".$des);
+		return($des);
 	} else {
 		//VEO LOS JUICIOS
 		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosusimra c, detjuiciosusimra d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
@@ -100,7 +100,7 @@ function reverificaPeriodoPago($estado, $ano, $me, $db) {
 				$des = "J.QUIEB";
 			}
 			$des = $des." (".$nrocertificado.")-".$nroorden;
-			return($estado."<br>".$des);
+			return($des);
 		} else {
 			// VEO LOS REQ DE FISC
 			$sqlReq = "select r.nrorequerimiento from reqfiscalizusimra r, detfiscalizusimra d where r.cuit = $cuit and r.procesoasignado = 1 and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
@@ -256,27 +256,29 @@ function imprimeTabla($periodo) {
 	$estado = $periodo['estado'];
 	$ano = $periodo['anio'];
 	$me = $periodo['mes'];
+	print("<td>");
 	if (strpos($estado, 'P.F.T.') !== false or strpos($estado, 'PAGO') !== false or strpos($estado, 'P.M.') !== false) {
-		print ("<td><a href=javascript:abrirInfo('detallePagosUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
+		print ("<a href=javascript:abrirInfo('detallePagosUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
 	} else {
 		if ($estado == 'NO PAGO') {
-			print ("<td><a href=javascript:abrirInfo('detalleDDJJUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
+			print ("<a href=javascript:abrirInfo('detalleDDJJUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
 		} else {
 			$pacuerdo = explode('-',$estado);
 			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {
-				print ("<td><a href=javascript:abrirInfo('/madera/usimra/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$pacuerdo[0]."</a></td>"); 
+				print ("<a href=javascript:abrirInfo('/madera/usimra/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$estado."</a>"); 
 			} else {
 				$juicioEstado = explode('-',$estado);
 				$pjuicio = explode('(',$juicioEstado[0]);
 				if ($pjuicio[0] == 'J.CONV ' or $pjuicio[0] == 'J.QUIEB ' or $pjuicio[0] == 'J.EJEC ') {
 					$nroorden = $juicioEstado[1];
-					print ("<td><a href=javascript:abrirInfo('/madera/usimra/legales/juicios/consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."&origen=empresa')>".$juicioEstado[0]."</a></td>"); 
+					print ("<a href=javascript:abrirInfo('/madera/usimra/legales/juicios/consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."&origen=empresa')>".$juicioEstado[0]."</a>"); 
 				} else {
-					print ("<td>".$estado."</a></td>");
+					print ($estado);
 				}
 			}
 		}
 	}
+	print("</td>");
 }
 
 ?>
