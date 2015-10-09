@@ -65,7 +65,7 @@ function estaVencido($fechaPago, $me, $ano) {
 	return(0);
 }
 
-function reverificaFueraTermino($ano, $me, $db) {
+function reverificaPeriodoPago($estado, $ano, $me, $db) {
 	global $cuit;
 	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
 	$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosusimra c, detacuerdosusimra d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
@@ -79,7 +79,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 		} else {
 			$des = "ACUER.-".$nroacuerdo;
 		}
-		return($des);
+		return($estado."<br>".$des);
 	} else {
 		//VEO LOS JUICIOS
 		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosusimra c, detjuiciosusimra d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
@@ -100,7 +100,7 @@ function reverificaFueraTermino($ano, $me, $db) {
 				$des = "J.QUIEB";
 			}
 			$des = $des." (".$nrocertificado.")-".$nroorden;
-			return($des);
+			return($estado."<br>".$des);
 		} else {
 			// VEO LOS REQ DE FISC
 			$sqlReq = "select r.nrorequerimiento from reqfiscalizusimra r, detfiscalizusimra d where r.cuit = $cuit and r.procesoasignado = 1 and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
@@ -110,11 +110,11 @@ function reverificaFueraTermino($ano, $me, $db) {
 				$rowReq = mysql_fetch_array($resReq); 
 				$nroreq = $rowReq['nrorequerimiento'];
 				$des = "REQ. (".$nroreq.")";
-				return($des);
+				return($estado."<br>".$des);
 			} // IF REQUERMINETOS
 		} // ELSE JUICIOS
 	} // ELSE ACUERDOS
-	return ('P.F.T.');
+	return ($estado);
 }
 
 
@@ -256,7 +256,7 @@ function imprimeTabla($periodo) {
 	$estado = $periodo['estado'];
 	$ano = $periodo['anio'];
 	$me = $periodo['mes'];
-	if ($estado == 'P.F.T.' or $estado == 'PAGO' or $estado == 'P.M.' or $estado == 'P.F.T. | NR' or $estado == 'PAGO | NR' or $estado == 'P.M. | NR') {
+	if (strpos($estado, 'P.F.T.') !== false or strpos($estado, 'PAGO') !== false or strpos($estado, 'P.M.') !== false) {
 		print ("<td><a href=javascript:abrirInfo('detallePagosUsimra.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a></td>");
 	} else {
 		if ($estado == 'NO PAGO') {
@@ -335,12 +335,8 @@ while($ano<=$anofin) { ?>
 			$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
 		} else {
 			$estado = $arrayPagos[$idArray]['estado'];
-			if($estado == 'P.F.T.') {
-				$resultado = reverificaFueraTermino($ano, $i, $db);
-				if ($resultado != 'P.F.T.') {
-					$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
-				}
-			}
+			$resultado = reverificaPeriodoPago($estado, $ano, $i, $db);
+			$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
 		}
 		imprimeTabla($arrayPagos[$idArray]);
 	} ?>
@@ -375,13 +371,6 @@ while($ano<=$anofin) { ?>
   	 <td></td>
   </tr>
 </table>
-
-<?php 
-	$sqlCuotasExcpecional = "SELECT * FROM  cuotaextraordinariausimra c, extraordinariosusimra e WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago"; 
-	$resCuotasExcpecional = mysql_query($sqlCuotasExcpecional,$db);
-	$canCuotasExcpecional = mysql_num_rows($resCuotasExcpecional);
-?>
-
 <p><strong>Cuotas Excepcionales </strong></p>
 <table width="800" border="1" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
 	<tr>
@@ -393,9 +382,13 @@ while($ano<=$anofin) { ?>
 		<th>Total</th>
 		<th>+Info</th>
 	<tr>
-	<?php  if ($canCuotasExcpecional > 0) { 
-				while ($rowCuotasExcpecional = mysql_fetch_assoc($resCuotasExcpecional)) { 
-					dire ?>
+	<?php  
+	
+		$sqlCuotasExcpecional = "SELECT * FROM  cuotaextraordinariausimra c, extraordinariosusimra e WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago";
+		$resCuotasExcpecional = mysql_query($sqlCuotasExcpecional,$db);
+		$canCuotasExcpecional = mysql_num_rows($resCuotasExcpecional);
+		if ($canCuotasExcpecional > 0) { 
+			while ($rowCuotasExcpecional = mysql_fetch_assoc($resCuotasExcpecional)) { ?>
 					<tr>
 						<td><?php echo $rowCuotasExcpecional['relacionmes']."-". $rowCuotasExcpecional['anio']." | ".$rowCuotasExcpecional['mensaje'] ?></td>
 						<td><?php echo invertirfecha($rowCuotasExcpecional['fechapago']) ?></td>
@@ -405,10 +398,10 @@ while($ano<=$anofin) { ?>
 						<td><?php echo $rowCuotasExcpecional['montopagado'] ?></td>
 						<td><input type="button" value="DDJJ" onclick='javascript:abrirInfoCuotas("detalleCuotaUsimra.php?cuit=<?php echo $cuit?>&anio=<?php echo $rowCuotasExcpecional['mes'] ?>&mes=<?php echo $rowCuotasExcpecional['anio'] ?>")'/></td>
 					</tr>
-		<?php  	} 
-		   } else { ?>
+	<?php  	} 
+		} else { ?>
 				<tr><td colspan=7 align="center"><b>No tiene pagos de Cuotas Excepcionales</b></td></tr>
-	<?php  } ?>
+<?php   } ?>
 </table>
 
 <br>
