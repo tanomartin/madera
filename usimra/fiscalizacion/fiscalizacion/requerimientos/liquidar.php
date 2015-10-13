@@ -302,16 +302,16 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			}
 		}
 		$indexFecha = $rowRequeDet['anofiscalizacion'].$mes;
+		$l = 0;
 		if (sizeof($pagos) > 0) {
 			for ($n = 0; $n < sizeof($pagos); $n++) {
-				$indexCuerpo = $indexFecha.$l;
+				$indexCuerpo = $indexFecha.$l.$tipoPeriodo;
 				$cuerpo[$indexCuerpo] = $pagos[$n];
 				$l++;
 			}
 		} else  {
-			$indexCuerpo = $indexFecha.$l;
+			$indexCuerpo = $indexFecha.$l.$tipoPeriodo;
 			$cuerpo[$indexCuerpo] = $linea;
-			$l++;
 		}
 		$ultmes = $mes;
 		$ultano = $rowRequeDet['anofiscalizacion'];
