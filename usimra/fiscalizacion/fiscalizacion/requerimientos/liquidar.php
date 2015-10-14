@@ -156,16 +156,21 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
 				
 			$idNR = $ddjj['datos']['cuil'].$ano.$mes;
-			if (array_key_exists($idNR, $arrayNR)) {
-				$norem = $arrayNR[$idNR]['datos']['remuneraciones'];
+			$mesNoRem = obtenerMesNoRem($mes, $ano, $db);
+			if ($mesNoRem == 0) {
+				$debeIncluirNR = false;
 			} else {
-				$mesNoRem = obtenerMesNoRem($mes, $ano, $db);
-				if ($mesNoRem == 0 || !incluyeNoRem($mesNoRem, $ano, $nroreqArc, $db)) {
-					$norem = 0;
+				$debeIncluirNR = incluyeNoRem($mesNoRem, $ano, $nroreqArc, $db);
+			}
+			
+			if ($debeIncluirNR) {
+				if (array_key_exists($idNR, $arrayNR)) {
+					$norem = $arrayNR[$idNR]['datos']['remuneraciones'];
 				} else {
 					$norem = calculoBaseCalculoNR($remuDecl, $mesNoRem, $ano, $db);
 				}
 			}
+			
 			$norem = number_format($norem,2,',','');
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
 			

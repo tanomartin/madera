@@ -339,7 +339,7 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 							}
 							if($esMenor == 0) {
 								//PAGO VENCIDO
-								if (estaVencido($arrayPagos[$idArray]['fechapago'], $arrayPagos[$idArray]['mes'], $arrayPagos[$idArray]['anio'])) {
+								if (estaVencido($arrayPagos[$idArray]['fechapago'], $mes, $arrayPagos[$idArray]['anio'])) {
 									$arrayFinal[$idArray] = array('anio' => (int)$arrayPagos[$idArray]['anio'], 'mes' => (int)$arrayPagos[$idArray]['mes'], 'remu' => (float)$arrayPagos[$idArray]['remu'], 'totper' => (int)$arrayPagos[$idArray]['totper'], 'importe' => (float)$arrayPagos[$idArray]['importe'], 'estado' => 'F');
 									$redirec = 0;
 								} else {
