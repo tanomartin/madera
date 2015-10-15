@@ -131,6 +131,10 @@ try {
 					$chequebanco = $imputar[chequenro];
 					$presentada='P';
 					$puedeimputar=0;
+					$importeadmitido=0;
+					$difdeposito=0.00;
+					$montopagado=0.00;
+					$recargo=0.00;
 					$actualizabanco=0;
 					$anterior=0; ?>
 						<tr>
@@ -203,8 +207,16 @@ try {
 								$resultBuscaCabBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrcuil' => $cuil, ':nrctrl' => $controlbanco));
 								if($resultBuscaCabBoleta) {
 									foreach($resultBuscaCabBoleta as $cabboleta) {
-										$totalboleta = $cabboleta[totapo]+$cabboleta[recarg];
+										$totalboleta = round(($cabboleta[totapo]+$cabboleta[recarg]),2);
 										if($importebanco==$totalboleta) {
+											$importeadmitido=1;
+										} else {
+											$difdeposito=$importebanco-$totalboleta;
+											if($difdeposito >= -50.00 && $difdeposito <= 50.00) {
+												$importeadmitido=1;
+											}
+										}
+										if($importeadmitido) {
 											$ultimopago=0;
 											$sqlBuscaUltimoPago="SELECT * FROM seguvidausimra WHERE cuit = :cuit AND anopago = :anopago AND mespago = :mespago ORDER BY nropago desc LIMIT 1";
 											//echo $sqlBuscaUltimoPago; echo "<br>";
@@ -244,10 +256,17 @@ try {
 												$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
 												if($resultBorraBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrctrl' => $controlbanco))) {
 													//print "<p>Registros de Boleta borrado correctamente.</p>\n";
+													if($difdeposito < 0.00) {
+														$montopagado=$importebanco;
+														$recargo=($cabboleta[recarg])-($difdeposito);
+													} else {
+														$montopagado=$totalboleta;
+														$recargo=($cabboleta[recarg])+($difdeposito);
+													}
 													$sqlAgregaPago="INSERT INTO seguvidausimra (cuit,mespago,anopago,nropago,periodoanterior,fechapago,cantidadpersonal,remuneraciones,montorecargo,montopagado,observaciones,sistemacancelacion,codigobarra,fechaacreditacion,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES (:cuit,:mespago,:anopago,:nropago,:periodoanterior,:fechapago,:cantidadpersonal,:remuneraciones,:montorecargo,:montopagado,:observaciones,:sistemacancelacion,:codigobarra,:fechaacreditacion,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
 													//echo $sqlAgregaPago; echo "<br>";
 													$resultAgregaPago = $dbh->prepare($sqlAgregaPago);
-													if($resultAgregaPago->execute(array(':cuit' => $cuitbanco, ':mespago' => $cabboleta[permes], ':anopago' => $cabboleta[perano], ':nropago' => $ultimopago, ':periodoanterior' => $anterior,':fechapago' => $recaudabanco, ':cantidadpersonal' => $cabboleta[nfilas], ':remuneraciones' => $cabboleta[remune], ':montorecargo' => $cabboleta[recarg], ':montopagado' => $totalboleta, ':observaciones' => $cabboleta[observ], ':sistemacancelacion' => $sistemacancelacion, ':codigobarra' => $codbarrabanco, ':fechaacreditacion' => $acreditabanco, ':fecharegistro' => $fechacancelacion, ':usuarioregistro' => $usuariocancelacion, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion))) {
+													if($resultAgregaPago->execute(array(':cuit' => $cuitbanco, ':mespago' => $cabboleta[permes], ':anopago' => $cabboleta[perano], ':nropago' => $ultimopago, ':periodoanterior' => $anterior,':fechapago' => $recaudabanco, ':cantidadpersonal' => $cabboleta[nfilas], ':remuneraciones' => $cabboleta[remune], ':montorecargo' => $recargo, ':montopagado' => $montopagado, ':observaciones' => $cabboleta[observ], ':sistemacancelacion' => $sistemacancelacion, ':codigobarra' => $codbarrabanco, ':fechaacreditacion' => $acreditabanco, ':fecharegistro' => $fechacancelacion, ':usuarioregistro' => $usuariocancelacion, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion))) {
 														//print "<p>Registro de Pago insertado correctamente.</p>\n";
 														$sqlAgregaApo060="INSERT INTO apor060usimra (cuit,mespago,anopago,nropago,importe) VALUES (:cuit,:mespago,:anopago,:nropago,:importe)";
 														//echo $sqlAgregaApo060; echo "<br>";
@@ -272,14 +291,18 @@ try {
 															$resultAddConcilia = $dbh->query($sqlAddConcilia);
 															//echo $sqlAddConcilia; echo "<br>";
 														}
-														$totacanc=$totacanc+$totalboleta;
+														$totacanc=$totacanc+$montopagado;
 														$cantcanc++;
 														$actualizabanco=1;
 														$listacuota=$cabboleta[permes];
 														$listaanio=$cabboleta[perano];
-														$listaimporte=$totalboleta;
+														$listaimporte=$montopagado;
 														$listastatus="Pago Imputado";
-														$listamensaje="IMPUTACION CORRECTA DEL PAGO.";
+														if($difdeposito==0.00) {
+															$listamensaje="IMPUTACION CORRECTA DEL PAGO.";
+														} else {
+															$listamensaje="IMPUTACION CORRECTA DEL PAGO. DIFERENCIA (".$difdeposito.") CON LA DDJJ.";
+														}
 													}
 												}
 												else {

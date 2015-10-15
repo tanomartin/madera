@@ -116,7 +116,9 @@ try {
 						$resultBuscaCabBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrcuil' => $cuil, ':nrctrl' => $controlbanco));
 						if($resultBuscaCabBoleta) {
 							foreach($resultBuscaCabBoleta as $cabboleta) {
-								$totalboleta = $cabboleta[totapo]+$cabboleta[recarg]; ?>
+								$totalboleta = round(($cabboleta[totapo]+$cabboleta[recarg]),2);
+								$importeadmitido=0; 
+								$difdeposito=0.00; ?>
 							<tr>
 								<td><?php echo $cabboleta[nrctrl]; ?></td>
 								<td><?php echo $cabboleta[nrcuit]; ?></td>
@@ -125,6 +127,15 @@ try {
 								<td><?php echo $totalboleta; ?></td>
 <?php
 								if($importebanco==$totalboleta) {
+									$importeadmitido=1;
+								} else {
+									$difdeposito=$importebanco-$totalboleta;
+									if($difdeposito >= -50.00 && $difdeposito <= 50.00) {
+										$importeadmitido=1;
+									}
+								}
+
+								if($importeadmitido) {
 									$sqlActualizaBanco="UPDATE banaportesusimra SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE cuit = :cuit AND nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
 									$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
 									//echo $sqlActualizaBanco; echo "<br>";
@@ -132,7 +143,11 @@ try {
 										//print "<p>Registro de Banco actualizado correctamente.</p>\n";
 										$cantvali++;
 										$listastatus="Boleta Validada";
-										$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DEL BANCO SON CORRECTOS.";
+										if($difdeposito==0.00) {
+											$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DEL BANCO SON CORRECTOS.";
+										} else {
+											$listamensaje="DIFERENCIA (".$difdeposito.") EN EL IMPORTE (".$importebanco.") ACREDITADO POR EL BANCO.";
+										}
 									}
 									else {
 										//print "<p>Error al actualizar el registro de Banco.</p>\n";
