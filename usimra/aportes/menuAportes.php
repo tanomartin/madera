@@ -22,7 +22,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="614" border="3">
     <tr>
       <td width="196"><p align="center">Descarga Aplicativo DDJJ </p>
-        <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="descarga/moduloDescarga.php"><img src="img/download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="196"><p align="center">Informes</p>
           <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
