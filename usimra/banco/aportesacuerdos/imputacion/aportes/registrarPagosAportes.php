@@ -256,11 +256,10 @@ try {
 												$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
 												if($resultBorraBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrctrl' => $controlbanco))) {
 													//print "<p>Registros de Boleta borrado correctamente.</p>\n";
+													$montopagado=$importebanco;
 													if($difdeposito < 0.00) {
-														$montopagado=$importebanco;
 														$recargo=($cabboleta[recarg])-($difdeposito);
 													} else {
-														$montopagado=$totalboleta;
 														$recargo=($cabboleta[recarg])+($difdeposito);
 													}
 													$sqlAgregaPago="INSERT INTO seguvidausimra (cuit,mespago,anopago,nropago,periodoanterior,fechapago,cantidadpersonal,remuneraciones,montorecargo,montopagado,observaciones,sistemacancelacion,codigobarra,fechaacreditacion,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES (:cuit,:mespago,:anopago,:nropago,:periodoanterior,:fechapago,:cantidadpersonal,:remuneraciones,:montorecargo,:montopagado,:observaciones,:sistemacancelacion,:codigobarra,:fechaacreditacion,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
