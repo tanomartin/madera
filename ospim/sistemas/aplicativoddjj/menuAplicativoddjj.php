@@ -1,5 +1,10 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspimSistemas.php"); ?>
+include($libPath."controlSessionOspimSistemas.php"); 
+if($_SERVER['SERVER_NAME'] != "poseidon") {
+	header('location: /madera/ospim/moduloNoDisponible.php');
+	exit(0);
+}
+?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
