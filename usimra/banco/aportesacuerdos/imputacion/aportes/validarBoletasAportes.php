@@ -34,7 +34,7 @@ $(document).ready(function(){
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra"],
-			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}}
+			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:true}, 6:{sorter:true}}
 		});
 });
 </script>
@@ -129,7 +129,7 @@ try {
 								if($importebanco==$totalboleta) {
 									$importeadmitido=1;
 								} else {
-									$difdeposito=$importebanco-$totalboleta;
+									$difdeposito=round(($importebanco-$totalboleta),2);
 									if($difdeposito >= -50.00 && $difdeposito <= 50.00) {
 										$importeadmitido=1;
 									}
