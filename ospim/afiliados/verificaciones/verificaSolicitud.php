@@ -59,6 +59,12 @@ $sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosolicitu
 $resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
 $rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
 
+if($rowLeeSolicitud['codiparentesco']>0) {
+	$sqlLeeParentesco = "SELECT * FROM parentesco where codparent = $rowLeeSolicitud[codiparentesco]";
+	$resultLeeParentesco = mysql_query($sqlLeeParentesco,$db); 
+	$rowLeeParentesco = mysql_fetch_array($resultLeeParentesco);
+}
+
 $sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
@@ -95,7 +101,18 @@ $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
     <td><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
-        <p><strong>Tipo:</strong> <?php	if($rowLeeSolicitud['codiparentesco']>=0) { if($rowLeeSolicitud['codiparentesco']==0) echo "Titular"; else echo "Familiar ".$rowLeeSolicitud['codiparentesco'];}?></p><input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/>
+        <p><strong>Tipo:</strong>
+<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
+			if($rowLeeSolicitud['codiparentesco']==0) {
+				echo "Titular";
+			} else {
+				echo "Familiar ".$rowLeeParentesco['descrip'];
+			}
+		} else {
+			echo "No Empadronado";
+		}
+?>
+		</p><input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/>
 	</td>
     <td><p><strong>Consulta SSS:</strong> 
         <input name="consultaSSS" type="file" id="consultaSSS" size="65" /> </p>

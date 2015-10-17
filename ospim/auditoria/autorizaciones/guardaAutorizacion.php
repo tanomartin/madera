@@ -164,6 +164,12 @@ $sqlLeeDeleg = "SELECT nombre FROM delegaciones where codidelega = $rowLeeSolici
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
+if($rowLeeSolicitud['nroafiliado'] == 0) {
+	$nrobeneficiario = "-/-";
+} else {
+	$nrobeneficiario = $rowLeeSolicitud['nroafiliado']."/".$rowLeeSolicitud['codiparentesco'];
+}
+
 if($rowLeeSolicitud['practica']==1)
 	$tiposoli="Practica";
 else {
@@ -239,7 +245,7 @@ try {
 		$pdf->SetFont('Arial','',10);
 		$pdf->Cell(10);
 		$pdf->Cell(113,6,"Beneficiario: ".$rowLeeSolicitud['apellidoynombre'],1,0,'L');
-		$pdf->Cell(30,6,"Nro: ".$rowLeeSolicitud['nroafiliado']."/".$rowLeeSolicitud['codiparentesco'],1,0,'L');
+		$pdf->Cell(30,6,"Nro: ".$nrobeneficiario,1,0,'L');
 		$pdf->Cell(40,6,"C.U.I.L.: ".$rowLeeSolicitud['cuil'],1,1,'L');
 		$pdf->Cell(10);
 		$pdf->Cell(183,6,"Tipo: ".$tiposoli,1,1,'L');
