@@ -83,7 +83,7 @@ $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 <form id="verificaSolicitud" name="verificaSolicitud" method="post" action="guardaReVerificacion.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 <table width="1100" border="0">
   <tr>
-    <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.jpg" width="92" height="81" /></span></div></td>
+    <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.JPG" width="92" height="81" /></span></div></td>
     <td colspan="2" scope="row"><div align="left">
       <p class="Estilo3">Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
     </div></td>
