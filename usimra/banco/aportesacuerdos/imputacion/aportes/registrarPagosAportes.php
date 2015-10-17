@@ -257,11 +257,7 @@ try {
 												if($resultBorraBoleta->execute(array(':nrcuit' => $cuitbanco, ':nrctrl' => $controlbanco))) {
 													//print "<p>Registros de Boleta borrado correctamente.</p>\n";
 													$montopagado=$importebanco;
-													if($difdeposito < 0.00) {
-														$recargo=($cabboleta[recarg])-($difdeposito);
-													} else {
-														$recargo=($cabboleta[recarg])+($difdeposito);
-													}
+													$recargo=($cabboleta[recarg])+($difdeposito);
 													$sqlAgregaPago="INSERT INTO seguvidausimra (cuit,mespago,anopago,nropago,periodoanterior,fechapago,cantidadpersonal,remuneraciones,montorecargo,montopagado,observaciones,sistemacancelacion,codigobarra,fechaacreditacion,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES (:cuit,:mespago,:anopago,:nropago,:periodoanterior,:fechapago,:cantidadpersonal,:remuneraciones,:montorecargo,:montopagado,:observaciones,:sistemacancelacion,:codigobarra,:fechaacreditacion,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
 													//echo $sqlAgregaPago; echo "<br>";
 													$resultAgregaPago = $dbh->prepare($sqlAgregaPago);
@@ -396,8 +392,11 @@ try {
 <?php
 	}
 }catch (PDOException $e) {
-	echo $e->getMessage();
+	$error =  $e->getMessage();
 	$dbh->rollback();
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	header ($redire);
+	exit(0);
 }
 ?>
 </body>
