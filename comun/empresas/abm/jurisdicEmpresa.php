@@ -92,11 +92,10 @@
         <td><div align="left"><?php echo $rowjuris['disgdinero']." %" ?></div></td>
       </tr>
       <tr >
-        <td><p align="center"><input name="Input2" type="button" value="Modificar Datos" onclick="location.href='modificarJurisdiccion.php?origen=&lt;?php echo $origen ?&gt;&amp;cuit=&lt;?php echo $cuit ?&gt;&amp;coddel=&lt;?php echo $delega ?&gt; '"></p></td>
-        
+        <td><p align="center"><input name="Input2" type="button" value="Modificar Datos" onclick="location.href='modificarJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&coddel=<?php echo $delega ?>'"/></p></td>
         <td width="350" style="height: 60px; "><p align="center">
             <?php if (($canjuris > 1) and ($cantitu == 0) and ($canTotalReq == 0)) { ?>
-            <input name="Input" type="button" value="Eliminar Jurisdiccion" onclick="location.href='confirmaEliminarJurisdiccion.php?origen=<?php echo $origen ?>&amp;cuit=<?php echo $cuit ?>&amp;coddel=<?php echo $delega ?> '"/>
+           	 	<input name="Input" type="button" value="Eliminar Jurisdiccion" onclick="location.href='confirmaEliminarJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>&coddel=<?php echo $delega ?>'"/>
             <?php } ?>
         </p></td>
       </tr>
