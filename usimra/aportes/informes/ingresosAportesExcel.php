@@ -17,11 +17,11 @@ if(strcmp("A",$tipoingreso)==0) {
 }
 if(strcmp("E",$tipoingreso)==0) {
 	$tipoinforme="Electronicos";
-	$cancelacion="E";
+	$cancelacion="'E'";
 }
 if(strcmp("M",$tipoingreso)==0) {
 	$tipoinforme="Manuales";
-	$cancelacion="M";
+	$cancelacion="'M'";
 }
 
 if(strcmp("localhost",$maquina)==0)
@@ -153,7 +153,7 @@ c.nropago = s.nropago)
 WHERE
 s.fechaacreditacion >= '$fechaini' AND
 s.fechaacreditacion <= '$fechafin' AND
-s.sistemacancelacion IN('$cancelacion') AND
+s.sistemacancelacion IN($cancelacion) AND
 s.cuit = e.cuit AND
 e.cuit = j.cuit AND
 j.disgdinero != 0.00
