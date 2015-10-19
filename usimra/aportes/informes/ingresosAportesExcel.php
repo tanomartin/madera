@@ -174,7 +174,7 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 			$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $aportes[aporte100]);
 			$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $aportes[aporte150]);
 			$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $aportes[montorecargo]);
-			$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $aportes[disgdinero]);
+			$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, ($aportes[disgdinero]/100.00));
 			$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $aportes[totaldeposito]);
 			$objPHPExcel->getActiveSheet()->setCellValue('N'.$fila, $aportes[sistemacancelacion]);
 			$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, $aportes[codigobarra]);
