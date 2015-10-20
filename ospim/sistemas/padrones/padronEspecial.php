@@ -150,7 +150,8 @@
 			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
 		
-		$totalTitulares = $fila;
+		//resto el titulo del excel
+		$totalTitulares = $fila - 1;
 			
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 		$objWriter->save($direCompletaTitulares);
@@ -235,9 +236,9 @@
 		for($col = 'A'; $col !== 'M'; $col++) {
 			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
-				
-		$totalFamiliares = $fila;
-	
+
+		//resto el titulo del excel
+		$totalFamiliares = $fila - 1;
 		$totalBeneficiarios = $totalTitulares + $totalFamiliares;
 		
 		$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
