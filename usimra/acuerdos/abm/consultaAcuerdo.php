@@ -36,8 +36,7 @@ A:hover {
 			include($libPath."cabeceraEmpresaConsulta.php");
 			include($libPath."cabeceraEmpresa.php"); ?>
 			<p>
-				<strong> U.S.I.M.R.A. - Acuerdo Cargado </strong><strong> NUMERO <?php echo $rowCebecera['nroacuerdo'] ?>
-				</strong>
+				<strong>U.S.I.M.R.A. - Acuerdo Nº "<?php echo $nroacu ?>"</strong>
 			</p>
 			<p>
 				<strong>ESTADO </strong>
