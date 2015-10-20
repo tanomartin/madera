@@ -109,7 +109,7 @@ try{
 	$objPHPExcel->getActiveSheet()->setCellValue('M1', 'Total Depositado');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
 	$objPHPExcel->getActiveSheet()->setCellValue('N1', 'Sistema Cancelacion');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(30);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(33);
 	$objPHPExcel->getActiveSheet()->setCellValue('O1', 'Codigo de Barra');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(18);
 	$objPHPExcel->getActiveSheet()->setCellValue('P1', 'Fecha Acreditacion');
@@ -225,6 +225,37 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 	$objPHPExcel->getActiveSheet()->getStyle('O2:O'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	$objPHPExcel->getActiveSheet()->getStyle('P2:P'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
 	$objPHPExcel->getActiveSheet()->getStyle('P2:P'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+
+	$desde = 2;
+	for( $i=2; $i<$fila; $i++ ) {
+		$celdaactual = $objPHPExcel->getActiveSheet()->getCell('A'.$i);
+		$celdaposter = $objPHPExcel->getActiveSheet()->getCell('A'.($i+1));
+		$valoractual = $celdaactual->getValue();
+		$valorposter = $celdaposter->getValue();
+		if( $valoractual != $valorposter ) {
+			$filaagregada++;
+			$salto=$i+1;
+			$objPHPExcel->getActiveSheet()->insertNewRowBefore($salto, 1);
+			$objPHPExcel->getActiveSheet()->setCellValue('H'.$salto, '=SUM(H'.$desde.':H'.$i.')');
+			$objPHPExcel->getActiveSheet()->setCellValue('A'.$salto, 'Total para la delegacion '.$valoractual);
+			$objPHPExcel->getActiveSheet()->mergeCells('A'.$salto.':G'.$salto);
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$salto)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$salto)->getFont()->setBold(true);
+			$objPHPExcel->getActiveSheet()->getStyle('H'.$salto)->getFont()->setBold(true);
+			$i=$i+1;
+			$objPHPExcel->getActiveSheet()->setBreak('H'.$i, PHPExcel_Worksheet::BREAK_ROW);
+			$desde=$i+1;
+		}
+	}
+
+	$objPHPExcel->getActiveSheet()->setCellValue('H'.($fila+$filaagregada+1), '=SUM(H'.$desde.':H'.($fila+$filaagregada).')');
+	$objPHPExcel->getActiveSheet()->setCellValue('A'.($fila+$filaagregada+1), 'Total para la delegacion '.$valoractual);
+	$objPHPExcel->getActiveSheet()->mergeCells('A'.($fila+$filaagregada+1).':G'.($fila+$filaagregada+1));
+	$objPHPExcel->getActiveSheet()->getStyle('A'.($fila+$filaagregada+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+	$objPHPExcel->getActiveSheet()->getStyle('A'.($fila+$filaagregada+1))->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('H'.($fila+$filaagregada+1))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+	$objPHPExcel->getActiveSheet()->getStyle('H'.($fila+$filaagregada+1))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+	$objPHPExcel->getActiveSheet()->getStyle('H'.($fila+$filaagregada+1))->getFont()->setBold(true);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
