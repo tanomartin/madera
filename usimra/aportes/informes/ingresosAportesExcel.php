@@ -265,14 +265,14 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 	$objPHPExcel->getActiveSheet()->getStyle('M'.($fila+$filaagregada+1))->getFont()->setBold(true);
 	$objPHPExcel->getActiveSheet()->setBreak('A'.($fila+$filaagregada+1), PHPExcel_Worksheet::BREAK_ROW);
 	
-	$objPHPExcel->getActiveSheet()->setCellValue('M'.($fila+$filaagregada+2), $totalgeneral);
-	$objPHPExcel->getActiveSheet()->setCellValue('A'.($fila+$filaagregada+2), 'Total General');
-	$objPHPExcel->getActiveSheet()->mergeCells('A'.($fila+$filaagregada+2).':L'.($fila+$filaagregada+2));
-	$objPHPExcel->getActiveSheet()->getStyle('A'.($fila+$filaagregada+2))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	$objPHPExcel->getActiveSheet()->getStyle('A'.($fila+$filaagregada+2))->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('M'.($fila+$filaagregada+2))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
-	$objPHPExcel->getActiveSheet()->getStyle('M'.($fila+$filaagregada+2))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-	$objPHPExcel->getActiveSheet()->getStyle('M'.($fila+$filaagregada+2))->getFont()->setBold(true);
+//	$objPHPExcel->getActiveSheet()->setCellValue('M'.($fila+$filaagregada+2), $totalgeneral);
+//	$objPHPExcel->getActiveSheet()->setCellValue('A'.($fila+$filaagregada+2), 'Total General');
+//	$objPHPExcel->getActiveSheet()->mergeCells('A'.($fila+$filaagregada+2).':L'.($fila+$filaagregada+2));
+//	$objPHPExcel->getActiveSheet()->getStyle('A'.($fila+$filaagregada+2))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+//	$objPHPExcel->getActiveSheet()->getStyle('A'.($fila+$filaagregada+2))->getFont()->setBold(true);
+//	$objPHPExcel->getActiveSheet()->getStyle('M'.($fila+$filaagregada+2))->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
+//	$objPHPExcel->getActiveSheet()->getStyle('M'.($fila+$filaagregada+2))->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+//	$objPHPExcel->getActiveSheet()->getStyle('M'.($fila+$filaagregada+2))->getFont()->setBold(true);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
