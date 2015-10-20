@@ -143,7 +143,7 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 			// Agrega datos a las celdas de datos
 			$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $aportes[codidelega]);
 			$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, $aportes[cuit]);
-			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $aportes[mespago]);
+			$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, utf8_decode($aportes[mespago]));
 			$objPHPExcel->getActiveSheet()->setCellValue('D'.$fila, $aportes[anopago]);
 			$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, $aportes[fechapago]);
 			$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $aportes[cantidadaportantes]);
