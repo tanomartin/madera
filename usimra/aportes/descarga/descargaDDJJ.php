@@ -5,7 +5,7 @@ set_time_limit(0);
 print("<br>");
 
 $hostaplicativo = $hostUsimra;
-//$hostaplicativo = "localhost";
+$hostaplicativo = "localhost";
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $usuarioaplicativo = $usuarioUsimra;
@@ -20,6 +20,16 @@ mysql_select_db($dbnameaplicativo);
 $sqlDdjjConDocu = "SELECT * FROM ddjjcondocu WHERE bajada = 0 ORDER BY nrctrl ASC";
 $resDdjjConDocu = mysql_query($sqlDdjjConDocu,$dbaplicativo); 
 $canDdjjConDocu = mysql_num_rows($resDdjjConDocu); 
+
+$sqlControl = "SELECT nrocontrol FROM aporcontroldescarga ORDER BY nrocontrol DESC LIMIT 1";
+$resControl = mysql_query($sqlControl,$db);
+$canControl = mysql_num_rows($resControl);
+if ($canControl != 0) {
+	$rowControl = mysql_fetch_assoc($resControl);
+	$nroControl = $rowControl['nrocontrol'];
+} else {
+	$nroControl = 0;
+}
 
 $totalDdjj = 0;
 $cantDdjj = 0;
@@ -77,15 +87,7 @@ try {
 			}
 		}	
 	} else {
-		$sqlControl = "SELECT nrocontrol FROM aporcontroldescarga ORDER BY nrocontrol DESC LIMIT 1";
-		$resControl = mysql_query($sqlControl,$db);
-		$canControl = mysql_num_rows($resControl);
-		if ($canControl != 0) {
-			$rowControl = mysql_fetch_assoc($resControl);
-			$utlimoNroControl = $rowControl['nrocontrol'];
-		} else {
-			$utlimoNroControl = 0;
-		}
+		$utlimoNroControl = $nroControl;
 	}
 	
 	$cantActivos = $cantDdjj - $totalDdjj;
