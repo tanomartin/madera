@@ -126,7 +126,7 @@ if ($canEmpresas > 0) {
 		$error =  $e->getMessage();
 		$dbh->rollback();
 		$dbhweb->rollback();
-		$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
 		header ($redire);
 		exit(0);	
 	}
