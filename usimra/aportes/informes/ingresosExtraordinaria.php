@@ -51,7 +51,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 </head>
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="ingresosAportesExcel.php" enctype="multipart/form-data" >
+<form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="ingresosExtraordinariaExcel.php" enctype="multipart/form-data" >
 <div align="center">
 <table width="137" border="0">
 	<tr align="center" valign="top">
@@ -61,7 +61,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	</tr>
 </table>
 </div>
-<p align="center" class="Estilo1">Ingresos por Aportes</p>
+<p align="center" class="Estilo1">Ingresos por Cuota Excepcional</p>
 <p align="center">Desde el : <input id="fechadesde" name="fechadesde" type="text" value="<?php echo date("d/m/Y",time());?>" size="10"/></p>
 <p align="center">Hasta el : <input id="fechahasta" name="fechahasta" type="text" value="<?php echo date("d/m/Y",time());?>" size="10"/></p>
 <p align="center">Tipo de Ingresos 
