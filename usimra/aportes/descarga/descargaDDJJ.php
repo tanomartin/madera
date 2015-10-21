@@ -15,19 +15,9 @@ if (!$dbaplicativo) {
     die('No pudo conectarse: ' . mysql_error());
 }
 $dbnameaplicativo = $baseUsimraNewAplicativo;
-mysql_select_db($dbnameaplicativo);
+mysql_select_db($dbnameaplicativo);	
 
-$sqlControl = "SELECT nrocontrol FROM aporcontroldescarga ORDER BY nrocontrol DESC LIMIT 1";
-$resControl = mysql_query($sqlControl,$db); 
-$canControl = mysql_num_rows($resControl); 
-if ($canControl != 0) {
-	$rowControl = mysql_fetch_assoc($resControl);
-	$nroControl = $rowControl['nrocontrol'];
-} else {
-	$nroControl = 0;
-}	
-
-$sqlDdjjConDocu = "SELECT * FROM ddjjcondocu WHERE nrctrl > $nroControl ORDER BY nrctrl ASC";
+$sqlDdjjConDocu = "SELECT * FROM ddjjcondocu WHERE bajada = 0 ORDER BY nrctrl ASC";
 $resDdjjConDocu = mysql_query($sqlDdjjConDocu,$dbaplicativo); 
 $canDdjjConDocu = mysql_num_rows($resDdjjConDocu); 
 
@@ -43,6 +33,12 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 		
+	$hostname = $hostaplicativo;
+	$dbnameweb = $baseUsimraNewAplicativo;
+	$dbhweb = new PDO("mysql:host=$hostname;dbname=$dbnameweb",$usuarioaplicativo,$claveaplicativo);
+	$dbhweb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbhweb->beginTransaction();
+	
 	$stmt = $dbh->prepare("INSERT INTO aporcontroldescarga VALUE(?,?,?,?,?,?,?,?,?,?,?,?)"); 
 	$stmt->execute(array('DEFAULT', $usuarioregistro,$fecharegistro,0,0,0,0,0,0,0,0,0)); 
 	$idControl = $dbh->lastInsertId(); 	
@@ -55,14 +51,17 @@ try {
 			$cantDdjj++;
 			if ($rowDdjjConDocu['nrcuil'] == "99999999999") {
 				$totalDdjj++;
+				$wherein .= $rowDdjjConDocu['nrctrl'].",";
 			}
 		}
+		$wherein = substr($wherein, 0, -1);
+		
 		foreach($ddjjAIngresar as $ddjjInsert) {
 			//print($ddjjInsert."<br>");
 			$dbh->exec($ddjjInsert);
 		}
 		
-		$sqlInactivos = "SELECT * FROM inactivos WHERE nrctrl > $nroControl and nrctrl <= $utlimoNroControl ORDER BY nrctrl ASC";
+		$sqlInactivos = "SELECT * FROM inactivos WHERE nrctrl in ($wherein)";
 		$resInactivos = mysql_query($sqlInactivos,$dbaplicativo); 
 		$canInactivos = mysql_num_rows($resInactivos); 
 		if ($canInactivos > 0) {
@@ -77,8 +76,20 @@ try {
 			}
 		}	
 	} else {
-		$utlimoNroControl = $nroControl;
+		$sqlControl = "SELECT nrocontrol FROM aporcontroldescarga ORDER BY nrocontrol DESC LIMIT 1";
+		$resControl = mysql_query($sqlControl,$db);
+		$canControl = mysql_num_rows($resControl);
+		if ($canControl != 0) {
+			$rowControl = mysql_fetch_assoc($resControl);
+			$utlimoNroControl = $rowControl['nrocontrol'];
+		} else {
+			$utlimoNroControl = 0;
+		}
 	}
+	
+	$sqlUpdateDDJJBajada = "UPDATE ddjjcondocu SET bajada = 1 WHERE nrctrl in ($wherein)";
+	$dbhweb->exec($sqlUpdateDDJJBajada);
+	$dbhweb->commit();
 	
 	$cantActivos = $cantDdjj - $totalDdjj;
 	$updateControl = "UPDATE aporcontroldescarga SET nrocontrol = $utlimoNroControl, cantidadddjj = $totalDdjj, cantidadactivos = $cantActivos, cantidadinactivos = $cantInactivos  WHERE id = ".$idControl;
@@ -87,6 +98,7 @@ try {
 } catch(PDOException $e) {
 	$error =  $e->getMessage();
 	$dbh->rollback();
+	$dbhweb->rollback();
 	$redire = "Location://".$_SERVER['SERVER_NAME']."/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
 	header ($redire);
 	exit(0);
