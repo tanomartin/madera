@@ -59,6 +59,10 @@ try {
 			$dbh->exec($ddjjInsert);
 		}
 		
+		$sqlUpdateDDJJBajada = "UPDATE ddjjcondocu SET bajada = 1 WHERE nrctrl in ($wherein)";
+		$dbhweb->exec($sqlUpdateDDJJBajada);
+		$dbhweb->commit();
+
 		$sqlInactivos = "SELECT * FROM inactivos WHERE nrctrl in ($wherein)";
 		$resInactivos = mysql_query($sqlInactivos,$dbaplicativo); 
 		$canInactivos = mysql_num_rows($resInactivos); 
@@ -84,10 +88,6 @@ try {
 			$utlimoNroControl = 0;
 		}
 	}
-	
-	$sqlUpdateDDJJBajada = "UPDATE ddjjcondocu SET bajada = 1 WHERE nrctrl in ($wherein)";
-	$dbhweb->exec($sqlUpdateDDJJBajada);
-	$dbhweb->commit();
 	
 	$cantActivos = $cantDdjj - $totalDdjj;
 	$updateControl = "UPDATE aporcontroldescarga SET nrocontrol = $utlimoNroControl, cantidadddjj = $totalDdjj, cantidadactivos = $cantActivos, cantidadinactivos = $cantInactivos  WHERE id = ".$idControl;
