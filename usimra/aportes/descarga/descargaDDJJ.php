@@ -34,7 +34,7 @@ try {
 	$dbh->beginTransaction();
 		
 	$hostname = $hostaplicativo;
-	$dbnameweb = $baseUsimraNewAplicativo;
+	$dbnameweb = $dbnameaplicativo;
 	$dbhweb = new PDO("mysql:host=$hostname;dbname=$dbnameweb",$usuarioaplicativo,$claveaplicativo);
 	$dbhweb->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbhweb->beginTransaction();
