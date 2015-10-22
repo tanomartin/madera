@@ -182,7 +182,8 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	
 	//CREAMOS EL ARCHIVO
 	$ultanoArch = substr ($ultano,2,2);
-	$nombreArcCUIL = $cuit.$ultmes.$ultanoArch.'S'.$nroreqArc.".txt";
+	$ultmesArch = str_pad($ultmes,2,'0',STR_PAD_LEFT);
+	$nombreArcCUIL = $cuit.$ultmesArch.$ultanoArch.'S'.$nroreqArc.".txt";
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = "liqui/".$nombreArcCUIL;
@@ -318,15 +319,24 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			$indexCuerpo = $indexFecha.$l.$tipoPeriodo;
 			$cuerpo[$indexCuerpo] = $linea;
 		}
-		$ultmes = $mes;
-		$ultano = $rowRequeDet['anofiscalizacion'];
+		
 	}
-
+	
+	$sqlUltimoMes = "SELECT d.anofiscalizacion,  IFNULL(e.relacionmes,d.mesfiscalizacion) as mesorden
+						FROM detfiscalizusimra d LEFT JOIN extraordinariosusimra e on d.mesfiscalizacion = e.mes and d.anofiscalizacion = e.anio
+						where d.nrorequerimiento = $nroreq
+						order by d.anofiscalizacion DESC, mesorden DESC limit 1";
+	$resUltimoMes = mysql_query($sqlUltimoMes,$db);
+	$rowUltimoMes = mysql_fetch_assoc($resUltimoMes);
+	$ultano = $rowUltimoMes['anofiscalizacion'];
+	$ultmes = $rowUltimoMes['mesorden'];
+	
 	//CREAMOS EL ARCHIVO DE DEUDA
 	$ultanoArch = substr ($ultano,2,2);
+	$ultmesArch = str_pad($ultmes,2,'0',STR_PAD_LEFT);
 	$nroreqCompleto = str_pad($nroreq,8,'0',STR_PAD_LEFT);
-	$nombreArc = $cuit.$ultmes.$ultanoArch."U".$nroreqCompleto.".txt";
-	$nombreArcExc = $cuit.$ultmes.$ultanoArch."U".$nroreqCompleto.".xls";
+	$nombreArc = $cuit.$ultmesArch.$ultanoArch."U".$nroreqCompleto.".txt";
+	$nombreArcExc = $cuit.$ultmesArch.$ultanoArch."U".$nroreqCompleto.".xls";
 	$maquina = $_SERVER['SERVER_NAME'];
 	if(strcmp("localhost",$maquina) == 0) {
 		$direArc = "liqui/".$nombreArc;
