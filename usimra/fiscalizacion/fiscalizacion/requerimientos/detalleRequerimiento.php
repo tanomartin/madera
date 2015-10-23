@@ -154,9 +154,13 @@ function validar(formulario) {
 								if ($rowDeta['statusfiscalizacion'] == 'O') {
 									$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
 									<td><input type="button" value="VER DDJJ OSPIM" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
-			<?php				} else { ?>
+			<?php				} else { 
+									if ($rowDeta['statusfiscalizacion'] == 'O') { ?>
+										<td>Ver Periodo Ord.</td> 
+						      <?php } else { ?>
 									<td>-</td> 
-			<?php		 		}
+							<?php	}
+					 			}
 							}
 						} ?>
 						<td><input type='checkbox' name='<?php echo $id ?>' id='periodos' value='<?php echo $id ?>' /></td> 
