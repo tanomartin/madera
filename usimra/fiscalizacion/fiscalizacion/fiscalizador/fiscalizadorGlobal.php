@@ -202,7 +202,6 @@ function encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin
 
 function encuentroDdjj($cuit, $anoinicio, $anofin, $db) {
 	$sqlDdjj = "select perano, permes, remune, totapo, recarg, nfilas from ddjjusimra where nrcuit = $cuit and nrcuil = 99999999999 and perano >= $anoinicio and perano <= $anofin order by perano, permes, id ASC";
-	//print($sqlDdjj);
 	$resDdjj = mysql_query($sqlDdjj,$db);
 	$canDdjj = mysql_num_rows($resDdjj); 
 	if($canDdjj > 0) {
@@ -211,7 +210,20 @@ function encuentroDdjj($cuit, $anoinicio, $anofin, $db) {
 			$montopagar = $rowDdjj['totapo'] + $rowDdjj['recarg'];	
 			$arrayDdjj[$id] = array('anio' => (int)$rowDdjj['perano'], 'mes' => (int)$rowDdjj['permes'], 'remu' => (float)$rowDdjj['remune'], 'montopagar' => (float)$montopagar,'totper' => (int)$rowDdjj['nfilas'], 'estado' => 'A');
 		}
-	} else {
+	} 
+	
+	$sqlDdjjValidas = "select anoddjj, mesddjj, remuneraciones, totalaporte, recargo, cantidadpersonal from cabddjjusimra where cuit = $cuit and anoddjj >= $anoinicio and anoddjj <= $anofin order by anoddjj, mesddjj, id ASC";
+	$resDdjjValidas = mysql_query($sqlDdjjValidas,$db);
+	$canDdjjValidas = mysql_num_rows($resDdjj);
+	if($canDdjjValidas > 0) {
+		while ($rowDdjjValidas = mysql_fetch_assoc($resDdjjValidas)) {
+			$id=$rowDdjjValidas['anoddjj'].$rowDdjjValidas['mesddjj'];
+			$montopagar = $rowDdjjValidas['totalaporte'] + $rowDdjjValidas['recargo'];
+			$arrayDdjj[$id] = array('anio' => (int)$rowDdjjValidas['anoddjj'], 'mes' => (int)$rowDdjjValidas['mesddjj'], 'remu' => (float)$rowDdjjValidas['remuneraciones'], 'montopagar' => (float)$montopagar,'totper' => (int)$rowDdjjValidas['cantidadpersonal'], 'estado' => 'A');
+		}
+	}
+	
+	if (sizeof($arrayDdjj) == 0) {
 		return 0;
 	}
 	return($arrayDdjj);
