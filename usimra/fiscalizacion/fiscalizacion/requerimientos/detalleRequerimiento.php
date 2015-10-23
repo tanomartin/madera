@@ -156,7 +156,7 @@ function validar(formulario) {
 									<td><input type="button" value="VER DDJJ OSPIM" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
 			<?php				} else { 
 									if ($rowDeta['statusfiscalizacion'] == 'U') { ?>
-										<td>Ver Periodo Ord.</td> 
+										<td>VER PAGO P.Ord.</td> 
 						      <?php } else { ?>
 										<td>-</td> 
 							<?php	}
