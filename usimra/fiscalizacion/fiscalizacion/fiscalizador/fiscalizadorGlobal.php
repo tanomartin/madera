@@ -347,7 +347,7 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 								}
 							}	
 						} else {
-						//NO PAGO
+							//NO PAGO
 							$redirec = 0;
 							if (array_key_exists($idArray, $arrayDdjj)) {
 								$arrayFinal[$idArray] =  $arrayDdjj[$idArray];
@@ -358,16 +358,15 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 								}
 							} else {
 								if($perido['mes'] > 12) {
-									$idBusqueda = $ano.$mes;
-									if (array_key_exists($idBusqueda, $arrayDdjj)) {
-										$registroDDJJ = $arrayDdjj[$idBusqueda];
-										$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjj[$idBusqueda]['remu'], $perido['mes'], $arrayDdjj[$idBusqueda]['totper'], $ano, $db);
+									if (array_key_exists($idBuscador, $arrayDdjj)) {
+										$registroDDJJ = $arrayDdjj[$idBuscador];
+										$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjj[$idBuscador]['remu'], $perido['mes'], $arrayDdjj[$idBuscador]['totper'], $ano, $db);
 										$registroDDJJ['deuda'] = calculoDeudaNr($registroDDJJ['remu'],$registroDDJJ['totper'],$perido['mes'], $ano, $db);
 										$arrayFinal[$idArray] =  $registroDDJJ;
 									} else {
-										if (array_key_exists($idBusqueda, $arrayDdjjOspim)) {			
-											$registroDDJJ = $arrayDdjjOspim[$idBusqueda];
-											$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjjOspim[$idBusqueda]['remu'], $perido['mes'], $arrayDdjjOspim[$idBusqueda]['totper'], $ano, $db);
+										if (array_key_exists($idBuscador, $arrayDdjjOspim)) {			
+											$registroDDJJ = $arrayDdjjOspim[$idBuscador];
+											$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjjOspim[$idBuscador]['remu'], $perido['mes'], $arrayDdjjOspim[$idBuscador]['totper'], $ano, $db);
 											$registroDDJJ['deuda'] = calculoDeudaNr($registroDDJJ['remu'],$registroDDJJ['totper'],$perido['mes'], $ano, $db);
 											$arrayFinal[$idArray] =  $registroDDJJ;
 										} else {
