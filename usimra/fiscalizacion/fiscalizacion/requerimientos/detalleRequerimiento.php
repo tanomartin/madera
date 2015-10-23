@@ -158,7 +158,7 @@ function validar(formulario) {
 									if ($rowDeta['statusfiscalizacion'] == 'O') { ?>
 										<td>Ver Periodo Ord.</td> 
 						      <?php } else { ?>
-									<td>-</td> 
+										<td>-</td> 
 							<?php	}
 					 			}
 							}
