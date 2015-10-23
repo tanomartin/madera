@@ -117,6 +117,9 @@ function validar(formulario) {
 					if ($rowDeta['statusfiscalizacion'] == 'A') {
 						$status = "Deuda";
 					}
+					if ($rowDeta['statusfiscalizacion'] == 'U') {
+						$status = "Base USIMRA";
+					}
 					if ($rowDeta['statusfiscalizacion'] == 'F') {
 						$status = "P.F.T.";
 					}

@@ -219,7 +219,7 @@ function encuentroDdjj($cuit, $anoinicio, $anofin, $db) {
 		while ($rowDdjjValidas = mysql_fetch_assoc($resDdjjValidas)) {
 			$id=$rowDdjjValidas['anoddjj'].$rowDdjjValidas['mesddjj'];
 			$montopagar = $rowDdjjValidas['totalaporte'] + $rowDdjjValidas['recargo'];
-			$arrayDdjj[$id] = array('anio' => (int)$rowDdjjValidas['anoddjj'], 'mes' => (int)$rowDdjjValidas['mesddjj'], 'remu' => (float)$rowDdjjValidas['remuneraciones'], 'montopagar' => (float)$montopagar,'totper' => (int)$rowDdjjValidas['cantidadpersonal'], 'estado' => 'A');
+			$arrayDdjj[$id] = array('anio' => (int)$rowDdjjValidas['anoddjj'], 'mes' => (int)$rowDdjjValidas['mesddjj'], 'remu' => (float)$rowDdjjValidas['remuneraciones'], 'montopagar' => (float)$montopagar,'totper' => (int)$rowDdjjValidas['cantidadpersonal'], 'estado' => 'U');
 		}
 	}
 	
