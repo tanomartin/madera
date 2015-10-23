@@ -155,7 +155,7 @@ function validar(formulario) {
 									$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
 									<td><input type="button" value="VER DDJJ OSPIM" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
 			<?php				} else { 
-									if ($rowDeta['statusfiscalizacion'] == 'O') { ?>
+									if ($rowDeta['statusfiscalizacion'] == 'U') { ?>
 										<td>Ver Periodo Ord.</td> 
 						      <?php } else { ?>
 										<td>-</td> 
