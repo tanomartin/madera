@@ -171,7 +171,6 @@ e.cuit = j.cuit AND
 j.disgdinero != 0.00
 ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 	$resLeeAportes=$dbh->query($sqlLeeAportes);
-	var_dump($resLeeAportes);
 	foreach($resLeeAportes as $aportes) {
 		$fila++;
 		// Agrega datos a las celdas de datos
@@ -192,8 +191,6 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 		$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, "-".$aportes[codigobarra]."-");
 		$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, $aportes[fechaacreditacion]);
 	}
-
-	echo($fila);
 
 	if($fila > 1) {
 		// Setea tipo de dato y alineamiento horizontal a las celdas de datos
