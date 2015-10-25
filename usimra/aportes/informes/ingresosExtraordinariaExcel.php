@@ -147,7 +147,13 @@ s.mespago = p.mes AND
 s.anopago = p.anio
 ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 	$resLeeAportes=$dbh->query($sqlLeeAportes);
+
+
+var_dump($resLeeAportes);
+
 	if($resLeeAportes) {
+	
+		echo("Encontro datos");
 		foreach($resLeeAportes as $aportes) {
 			$fila++;
 			// Agrega datos a las celdas de datos
@@ -249,8 +255,8 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 	$objWriter->save($archivo_name);
 
 	$dbh->commit();
-	$pagina = "moduloInformes.php";
-	Header("Location: $pagina");
+	//$pagina = "moduloInformes.php";
+	//Header("Location: $pagina");
 
 }
 catch (PDOException $e) {
