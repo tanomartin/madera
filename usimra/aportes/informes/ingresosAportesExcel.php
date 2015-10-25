@@ -190,6 +190,9 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 		$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, "-".$aportes[codigobarra]."-");
 		$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, $aportes[fechaacreditacion]);
 	}
+
+	echo($fila);
+
 	if($fila > 1) {
 		// Setea tipo de dato y alineamiento horizontal a las celdas de datos
 		$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
