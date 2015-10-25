@@ -11,6 +11,8 @@ $fechaini=substr($fechacargadadesde, 6, 4)."-".substr($fechacargadadesde, 3, 2).
 $fechafin=substr($fechacargadahasta, 6, 4)."-".substr($fechacargadahasta, 3, 2)."-".substr($fechacargadahasta, 0, 2);
 $fechagenera=date("d/m/Y");
 
+set_time_limit(0);
+
 if(strcmp("A",$tipoingreso)==0) {
 	$tipoinforme="Electronicos y Manuales";
 	$cancelacion="'E','M'";
