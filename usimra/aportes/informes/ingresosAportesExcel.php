@@ -169,6 +169,7 @@ e.cuit = j.cuit AND
 j.disgdinero != 0.00
 ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 	$resLeeAportes=$dbh->query($sqlLeeAportes);
+	var_dump($resLeeAportes);
 	foreach($resLeeAportes as $aportes) {
 		$fila++;
 		// Agrega datos a las celdas de datos
@@ -278,8 +279,8 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 	$objWriter->save($archivo_name);
 
 	$dbh->commit();
-	$pagina = "moduloInformes.php";
-	Header("Location: $pagina");
+	//$pagina = "moduloInformes.php";
+	//Header("Location: $pagina");
 }
 catch (PDOException $e) {
 	$error =  $e->getMessage();
