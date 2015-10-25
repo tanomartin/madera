@@ -233,8 +233,8 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 		for( $i=2; $i<($fila+$filaagregada); $i++ ) {
 			$celdaactual = $objPHPExcel->getActiveSheet()->getCell('A'.$i);
 			$celdaposter = $objPHPExcel->getActiveSheet()->getCell('A'.($i+1));
-			$valoractual = $celdaactual->getValue();
-			$valorposter = $celdaposter->getValue();
+			$valoractual = $celdaactual->getCalculatedValue();
+			$valorposter = $celdaposter->getCalculatedValue();
 			if( $valoractual != $valorposter ) {
 				$filaagregada++;
 				$salto=$i+1;
