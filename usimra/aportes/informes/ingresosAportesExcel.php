@@ -243,13 +243,13 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 //				$celdatotal = $objPHPExcel->getActiveSheet()->getCell('M'.$salto);
 //				$valortotal = $celdatotal->getCalculatedValue();
 //				$totalgeneral = $totalgeneral+$valortotal;
-				$objPHPExcel->getActiveSheet()->setCellValue('A'.$salto, 'Total para la delegacion '.$valoractual);
-				$objPHPExcel->getActiveSheet()->mergeCells('A'.$salto.':L'.$salto);
-				$objPHPExcel->getActiveSheet()->getStyle('A'.$salto)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-				$objPHPExcel->getActiveSheet()->getStyle('A'.$salto)->getFont()->setBold(true);
+//				$objPHPExcel->getActiveSheet()->setCellValue('A'.$salto, 'Total para la delegacion '.$valoractual);
+//				$objPHPExcel->getActiveSheet()->mergeCells('A'.$salto.':L'.$salto);
+//				$objPHPExcel->getActiveSheet()->getStyle('A'.$salto)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+//				$objPHPExcel->getActiveSheet()->getStyle('A'.$salto)->getFont()->setBold(true);
 //				$objPHPExcel->getActiveSheet()->getStyle('M'.$salto)->getFont()->setBold(true);
 				$i=$i+1;
-				$objPHPExcel->getActiveSheet()->setBreak('A'.$i, PHPExcel_Worksheet::BREAK_ROW);
+//				$objPHPExcel->getActiveSheet()->setBreak('A'.$i, PHPExcel_Worksheet::BREAK_ROW);
 				$desde=$i+1;
 			}
 		}
