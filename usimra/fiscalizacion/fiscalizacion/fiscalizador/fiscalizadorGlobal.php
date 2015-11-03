@@ -330,7 +330,9 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 				if ($doit == 1) {
 					$idArray = $ano.$perido['mes'];
 					$idBuscador = $ano.$mes;
-					if (!array_key_exists($idBuscador, $arrayAcuerdos) && !array_key_exists($idBuscador, $arrayJuicios) && !array_key_exists($idBuscador, $arrayRequerimientos) && !array_key_exists($idBuscador, $arrayPagosAnteriores)) {
+					if (!array_key_exists($idBuscador, $arrayAcuerdos) && !array_key_exists($idBuscador, $arrayJuicios) && 
+					    !array_key_exists($idArray, $arrayRequerimientos)  && !array_key_exists($idBuscador, $arrayRequerimientos) && 
+					    !array_key_exists($idBuscador, $arrayPagosAnteriores)) {
 						if (array_key_exists($idArray, $arrayPagos)) {
 							//PAGO MENOR
 							$esMenor = 0;
