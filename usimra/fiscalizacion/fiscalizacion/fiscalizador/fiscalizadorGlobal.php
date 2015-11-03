@@ -267,7 +267,6 @@ $filtros = unserialize(urldecode($filtrosSerializado));
 //var_dump($filtros);
 
 $arrayExtraordinarios = consultaExtra($db);
-
 $arrayPerdiosXAnio = consultaPeriodos($db);
 
 $empre = 0;
