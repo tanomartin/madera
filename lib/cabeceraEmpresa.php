@@ -23,7 +23,7 @@
     </tr>
     <tr>
       <td><div align="right"><strong>C&oacute;digo Postal:</strong></div></td>
-      <td><div align="left"><?php echo $row['numpostal'];?></div></td>
+      <td><div align="left"><?php echo $row['indpostal'].$row['numpostal'].$row['alfapostal'];?></div></td>
     </tr>
      <tr>
       <td><div align="right"><strong>Telefono:</strong></div></td>
