@@ -248,9 +248,7 @@ function deudaNominal($arrayFinal) {
 	$totalDeuda = 0;
 	$alicuota = 0.031;
 	foreach ($arrayFinal as $perido){
-		if($perido['estado'] == "A" || $perido['estado'] == "O" || $perido['estado'] == "M") {
-			$totalDeuda = $perido['deuda'];
-		}
+		$totalDeuda = $totalDeuda + $perido['deuda'];
 	}
 	return($totalDeuda);
 }
