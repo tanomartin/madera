@@ -59,61 +59,112 @@ A:hover {text-decoration: none;color:#33CCFF }
     <?php 
 		if(isset($_POST['nroControl'])) { 
 			$nroControl = $_POST['nroControl'];?>
-    <p><span class="Estilo1">Resultado Codigo de identificacion de boleta "<?php echo $nroControl ?>"</span></p>
-    <table border="1" width="1000" style="text-align:center">
-		<tr>
-			<th>Fecha Recepción </th>
-	        <th>Fecha Acreditacion </th>
-	        <th>Tipo Movimiento</th>
-	        <th>Importe</th>
-	        <th>C.U.I.T. - Razón Social</th>
-	        <th>Tipo Pago</th>
-	        <th>Fecha Validacion</th>
-	        <th>Fecha Imputacion</th>
-        </tr>
-        <?php	$sqlBanco = "SELECT b.*, e.nombre as empresa FROM banacuerdosusimra b, empresas e WHERE b.nrocontrol = $nroControl and b.cuit = e.cuit ORDER BY b.fecharecaudacion, b.fechaacreditacion";
-			$resBanco = mysql_query($sqlBanco,$db); 
-			$canBanco = mysql_num_rows($resBanco);
-			if ($canBanco != 0) {
-				while($rowBanco = mysql_fetch_array($resBanco)) {
-					print("<tr>");
-					print("<td>".invertirFecha($rowBanco['fecharecaudacion'])."</td>");
-					if ($rowBanco['estadomovimiento'] != 'P') {
-						print("<td>".invertirFecha($rowBanco['fechaacreditacion'])."</td>");
-					} else {
-						print("<td>-</td>");
-					}	
-					print("<td>".$rowBanco['estadomovimiento']."</td>");
-					print("<td>".$rowBanco['importe']."</td>");
-					print("<td>".$rowBanco['cuit']."<br>".$rowBanco['empresa']."</td>");
-					if ($rowBanco['estadomovimiento'] == 'E') {
-						print("<td>EFECTIVO</td>");
-					} else {
-						print("<td>CHEQUE Nº: ".$rowBanco['chequenro']."</td>");
-					}	
-					if ($rowBanco['estadomovimiento'] == 'P' or $rowBanco['estadomovimiento'] == 'E') {
-						print("<td>".$rowBanco['fechavalidacion']."</td>");
-					} else {
-						print("<td>-</td>");
-					}
-					if ($rowBanco['estadomovimiento'] != 'P') {
-						print("<td>".$rowBanco['fechaimputacion']."</td>");
-					} else {
-						print("<td>-</td>");
-					}
-					
-					print("</tr>");
-				}
-			} else {
-				print("<tr><td colspan='8' style='color:#FF0000'><b>No Existen movimientos para este código</b></td></tr>");
-			} ?>
-    </table>
-    <p>
-      <input type='button' name='imprimir' value='Imprimir' onclick='window.print();'/>
-    </p>
+		    <p><span class="Estilo1">Resultado Codigo de identificacion de boleta "<?php echo $nroControl ?>"</span></p>
+		    <p><span class="Estilo1">Acuerdos</span></p>
+		    <table border="1" width="1000" style="text-align:center">
+				<tr>
+					<th>Fecha Recepción </th>
+			        <th>Fecha Acreditacion </th>
+			        <th>Tipo Movimiento</th>
+			        <th>Importe</th>
+			        <th>C.U.I.T. - Razón Social</th>
+			        <th>Tipo Pago</th>
+			        <th>Fecha Validacion</th>
+			        <th>Fecha Imputacion</th>
+		        </tr>
+		        <?php
+			        //ACUERDOS
+			        $sqlBanco = "SELECT b.*, e.nombre as empresa FROM banacuerdosusimra b, empresas e WHERE b.nrocontrol = $nroControl and b.cuit = e.cuit ORDER BY b.fecharecaudacion, b.fechaacreditacion";
+			        $resBanco = mysql_query($sqlBanco,$db);
+			        $canBanco = mysql_num_rows($resBanco);
+					if ($canBanco != 0) {
+						while($rowBanco = mysql_fetch_array($resBanco)) { ?>
+							<tr>
+								<td><?php echo invertirFecha($rowBanco['fecharecaudacion']) ?></td>
+					<?php		if ($rowBanco['estadomovimiento'] != 'P') { ?>
+									<td><?php echo invertirFecha($rowBanco['fechaacreditacion']) ?></td>
+					<?php		} else {  ?>
+									<td>-</td>
+					<?php		}	?>
+								<td><?php echo $rowBanco['estadomovimiento'] ?></td>
+								<td><?php echo $rowBanco['importe'] ?></td>
+								<td><?php echo $rowBanco['cuit']."<br>".$rowBanco['empresa']?> </td>
+					<?php		if ($rowBanco['estadomovimiento'] == 'E') { ?>
+									<td>EFECTIVO</td>
+					<?php		} else { ?>
+									<td>CHEQUE Nº: <?php echo $rowBanco['chequenro'] ?></td>
+					<?php		}	
+								if ($rowBanco['estadomovimiento'] == 'P' or $rowBanco['estadomovimiento'] == 'E') { ?>
+									<td><?php echo $rowBanco['fechavalidacion'] ?></td>
+					<?php		} else { ?>
+									<td>-</td>
+					<?php		}
+								if ($rowBanco['estadomovimiento'] != 'P') { ?>
+									<td><?php echo $rowBanco['fechaimputacion'] ?></td>
+					<?php		} else { ?>
+									<td>-</td>
+					<?php		} ?>
+							</tr>
+				<?php	}
+					} else { ?>
+						<tr><td colspan='8' style='color:#FF0000'><b>No Existen movimientos de acuerdos para este código</b></td></tr>
+			<?php	} ?>
+		    </table>
+    		
+    		<?php 
+    		//APORTES
+			$sqlBanco = "SELECT b.*, e.nombre as empresa FROM banaportesusimra b, empresas e WHERE b.nrocontrol = $nroControl and b.cuit = e.cuit ORDER BY b.fecharecaudacion, b.fechaacreditacion";
+			$resBanco = mysql_query($sqlBanco,$db);
+			$canBanco = mysql_num_rows($resBanco); ?>
+		    <p><span class="Estilo1">Aportes</span></p>
+		    <table border="1" width="1000" style="text-align:center">
+				<tr>
+					<th>Fecha Recepción </th>
+			        <th>Fecha Acreditacion </th>
+			        <th>Tipo Movimiento</th>
+			        <th>Importe</th>
+			        <th>C.U.I.T. - Razón Social</th>
+			        <th>Tipo Pago</th>
+			        <th>Fecha Validacion</th>
+			        <th>Fecha Imputacion</th>
+		        </tr>
+		        <?php	
+					if ($canBanco != 0) {
+						while($rowBanco = mysql_fetch_array($resBanco)) { ?>
+							<tr>
+								<td><?php echo invertirFecha($rowBanco['fecharecaudacion']) ?></td>
+					<?php		if ($rowBanco['estadomovimiento'] != 'P') { ?>
+									<td><?php echo invertirFecha($rowBanco['fechaacreditacion']) ?></td>
+					<?php		} else {  ?>
+									<td>-</td>
+					<?php		}	?>
+								<td><?php echo $rowBanco['estadomovimiento'] ?></td>
+								<td><?php echo $rowBanco['importe'] ?></td>
+								<td><?php echo $rowBanco['cuit']."<br>".$rowBanco['empresa']?> </td>
+					<?php		if ($rowBanco['estadomovimiento'] == 'E') { ?>
+									<td>EFECTIVO</td>
+					<?php		} else { ?>
+									<td>CHEQUE Nº: <?php echo $rowBanco['chequenro'] ?></td>
+					<?php		}	
+								if ($rowBanco['estadomovimiento'] == 'P' or $rowBanco['estadomovimiento'] == 'E') { ?>
+									<td><?php echo $rowBanco['fechavalidacion'] ?></td>
+					<?php		} else { ?>
+									<td>-</td>
+					<?php		}
+								if ($rowBanco['estadomovimiento'] != 'P') { ?>
+									<td><?php echo $rowBanco['fechaimputacion'] ?></td>
+					<?php		} else { ?>
+									<td>-</td>
+					<?php		} ?>
+							</tr>
+				<?php	}
+					} else { ?>
+						<tr><td colspan='8' style='color:#FF0000'><b>No Existen movimientos de aportes para este código</b></td></tr>
+			<?php	} ?>
+		    </table>
+    	<p><input type='button' name='imprimir' value='Imprimir' onclick='window.print();'/></p>
     <?php } ?>
   </div>
 </form>
-<p>&nbsp;</p>
 </body>
 </html>
