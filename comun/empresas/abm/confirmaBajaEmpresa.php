@@ -7,14 +7,51 @@ if ($cuit=="") {
 	$cuit=$_POST['cuit'];
 }
 
-$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
-$result = mysql_query($sql,$db); 
-$row = mysql_fetch_array($result); 
+$sqlCantAcuOspim = "select * from cabacuerdosospim where cuit = $cuit and estadoacuerdo = 1";
+$resCantAcuOspim = mysql_query($sqlCantAcuOspim,$db);
+$CantAcuOspim = mysql_num_rows($resCantAcuOspim);
 
-$sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp = mysql_query($sqlDelEmp,$db);
-$rowDelEmp = mysql_fetch_array($resDelEmp); 
+$sqlCantAcuUsimra = "select * from cabacuerdosusimra where cuit = $cuit and estadoacuerdo = 1";
+$resCantAcuUsimra = mysql_query($sqlCantAcuUsimra,$db);
+$CantAcuUsimra = mysql_num_rows($resCantAcuUsimra);
 
+$sqlCabJuicios = "select * from cabjuiciosospim where cuit = $cuit";
+$resCabJuicios = mysql_query($sqlCabJuicios,$db);
+$canCabJuicios = mysql_num_rows($resCabJuicios);
+
+$sqlCabJuiciosUsimra = "select * from cabjuiciosusimra where cuit = $cuit";
+$resCabJuiciosUsimra = mysql_query($sqlCabJuiciosUsimra,$db);
+$canCabJuiciosUsimra = mysql_num_rows($resCabJuiciosUsimra);
+
+$controlAcuYJuicios = $CantAcuOspim + $CantAcuUsimra + $canCabJuicios + $canCabJuiciosUsimra;
+
+$controlDDjj = 0;
+if ($controlAcuYJuicios == 0) {
+	//TOMO LOS LIMIETES DE MES Y ANIO
+	$mesActual = date("n");
+	$meslimite = date("n", (strtotime ("-6 month")));
+	if ($mesActual < 8) {
+		$anioLimite = date("Y") - 1;
+	} else {
+		$anioLimite = date("Y");
+	}
+	$sqlCantDdjj = "select * from cabddjjospim where cuit = $cuit and anoddjj >= $anioLimite and mesddjj >= $meslimite";
+	$resCantDdjj = mysql_query($sqlCantDdjj,$db);
+	$CanDdjj = mysql_num_rows($resCantDdjj);
+	
+	$sqlCantDdjjUsimra = "select * from cabddjjusimra where cuit = $cuit and anoddjj >= $anioLimite and mesddjj >= $meslimite";
+	$resCantDdjjUsimra = mysql_query($sqlCantDdjjUsimra,$db);
+	$CanDdjjUsimra = mysql_num_rows($resCantDdjjUsimra);
+	
+	$controlDDjj = $CanDdjj + $CanDdjjUsimra;
+}
+
+$control = $controlAcuYJuicios + $controlDDjj;
+
+if ($control > 0) {
+	header ("Location: empresa.php?origen=$origen&cuit=$cuit&bajaempre=0");
+	exit(0);
+}
 ?>
 
 
@@ -67,6 +104,7 @@ function validar(formulario) {
   <p><strong>Confirmaci&oacute;n de Baja de Empresa </strong></p>
   <p>
     <?php 
+   		include($libPath."cabeceraEmpresaConsulta.php");
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
   </p>

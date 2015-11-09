@@ -31,11 +31,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 function validarBaja() {
 	<?php 
+		//TODO: ver los titulares de usimra
 		$sqlTitulares = "select nroafiliado from titulares where cuitempresa = $cuit";
 		$resTitulares = mysql_query($sqlTitulares,$db); 
 		$canTitulares = mysql_num_rows($resTitulares); 
-		if ($canTitulares > 0) {
-			?>
+		if ($canTitulares > 0) { ?>
 			if (confirm('Hay titulares activos para esta empresa.\nQuiere confirmar la baja')) {
 				alert('Se dará de baja la empresa con sus titulares y sus respectivos familiares');
 				location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
@@ -44,7 +44,8 @@ function validarBaja() {
 			}
  <?php } else { ?>
  	   		location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
-<?php }   ?>
+ <?php }   ?>
+	document.getElementById('bajaEmpresa').disabled = true;
 }
 
 function rediSabanaCtaCte(origen, cuit) {
@@ -108,39 +109,9 @@ function rediBeneficiarios(origen, cuit) {
     </tr>
   </table>
   <p>
-    <?php
-		$sqlCantAcuOspim = "select * from cabacuerdosospim where cuit = $cuit and estadoacuerdo = 1";
-		$resCantAcuOspim = mysql_query($sqlCantAcuOspim,$db); 
-		$CantAcuOspim = mysql_num_rows($resCantAcuOspim); 
-		
-		$sqlCantAcuUsimra = "select * from cabacuerdosusimra where cuit = $cuit and estadoacuerdo = 1";
-		$resCantAcuUsimra = mysql_query($sqlCantAcuUsimra,$db); 
-		$CantAcuUsimra = mysql_num_rows($resCantAcuUsimra); 
-		
-		$sqlCabJuicios = "select * from cabjuiciosospim where cuit = $cuit";
-		$resCabJuicios = mysql_query($sqlCabJuicios,$db); 
-		$canCabJuicios = mysql_num_rows($resCabJuicios); 
-	
-		$controlAcuYJuicios = $CantAcuOspim + $CantAcuUsimra + $canCabJuicios;
-		$CanDdjj = 0;
-		if ($controlAcuYJuicios == 0) {
-			//TOMO LOS LIMIETES DE MES Y ANIO
-			$mesActual = date("n");
-			$meslimite = date("n", (strtotime ("-6 month")));
-			if ($mesActual < 8) {
-				$anioLimite = date("Y") - 1;
-			} else {
-				$anioLimite = date("Y");
-			}
-			$sqlCantDdjj = "select * from cabddjjospim where cuit = $cuit and anoddjj >= $anioLimite and mesddjj >= $meslimite";
-			$resCantDdjj = mysql_query($sqlCantDdjj,$db); 
-			$CanDdjj = mysql_num_rows($resCantDdjj); 
-			
-			//TODO VER ddjj de USIMRA TAMBIEN
-		}
-		if ($controlAcuYJuicios == 0 and $CanDdjj == 0) { ?>
-    <input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()"/>
-    <?php } ?>
+  <?php if (isset($_GET['bajaempre'])) { ?>  <font color="red"><b>No se puede dar de baja la empresa</b></font>  <?php } else { ?>
+   	 	<input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()"/>
+  <?php } ?>
   </p>
   <p>
     <?php
