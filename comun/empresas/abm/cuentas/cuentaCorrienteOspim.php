@@ -59,13 +59,12 @@ function estaVencido($fechaPago, $me, $ano) {
 
 function reverificaFueraTermino($estado, $ano, $me, $db) {
 	global $cuit;
+	global $arrayAcuerdos, $arrayJuicios, $arrayRequerimientos;
+	
 	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-	$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
-	$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
-	$CantAcuerdos = mysql_num_rows($resAcuerdos); 
-	if($CantAcuerdos > 0) {
-		$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
-		$nroacuerdo = $rowAcuerdos['nroacuerdo'];
+	$idArray = $ano.$me;
+	if(array_key_exists($idArray, $arrayAcuerdos)) {
+		$nroacuerdo = $arrayAcuerdos[$idArray]['nroacuerdo'];
 		if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
 			$des = "P. ACUER.-".$nroacuerdo;
 		} else {
@@ -74,14 +73,10 @@ function reverificaFueraTermino($estado, $ano, $me, $db) {
 		return($des);
 	} else {
 		//VEO LOS JUICIOS
-		$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
-		$resJuicio = mysql_query($sqlJuicio,$db); 
-		$CantJuicio = mysql_num_rows($resJuicio); 
-		if ($CantJuicio > 0) {
-			$rowJuicio = mysql_fetch_array($resJuicio); 
-			$statusDeuda = $rowJuicio['statusdeuda'];
-			$nrocertificado = $rowJuicio['nrocertificado'];
-			$nroorden = $rowJuicio['nroorden'];
+		if (array_key_exists($idArray, $arrayJuicios)) {
+			$statusDeuda = $arrayJuicios[$idArray]['statusdeuda'];
+			$nrocertificado = $arrayJuicios[$idArray]['nrocertificado'];
+			$nroorden = $arrayJuicios[$idArray]['nroorden'];
 			if ($statusDeuda == 1) {
 				$des = "J.EJEC";
 			}
@@ -95,12 +90,8 @@ function reverificaFueraTermino($estado, $ano, $me, $db) {
 			return($des);
 		} else {
 			// VEO LOS REQ DE FISC
-			$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.procesoasignado = 1 and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
-			$resReq = mysql_query($sqlReq,$db); 
-			$CantReq = mysql_num_rows($resReq); 
-			if($CantReq > 0) {
-				$rowReq = mysql_fetch_array($resReq); 
-				$nroreq = $rowReq['nrorequerimiento'];
+			if(array_key_exists($idArray, $arrayRequerimientos)) {
+				$nroreq = $arrayRequerimientos[$idArray]['nrorequerimiento'];
 				$des = "REQ. (".$nroreq.")";
 				return($estado."<br>".$des);
 			} // IF REQUERMINETOS
@@ -108,7 +99,6 @@ function reverificaFueraTermino($estado, $ano, $me, $db) {
 	} // ELSE ACUERDOS
 	return ($estado);
 }
-
 
 function encuentroPagos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
@@ -135,8 +125,73 @@ function encuentroPagos($db) {
 	}
 }
 
+function encuentroAcuerdos($db) {
+	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+	$sqlAcuerdos = "select anoacuerdo, mesacuerdo, nroacuerdo from detacuerdosospim where cuit = $cuit and ((anoacuerdo > $anoinicio and anoacuerdo <= $anofin) or (anoacuerdo = $anoinicio and mesacuerdo >= $mesinicio)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
+	$resAcuerdos = mysql_query($sqlAcuerdos,$db);
+	$canAcuerdos = mysql_num_rows($resAcuerdos);
+	if($canAcuerdos > 0) {
+		while ($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) {
+			$id=$rowAcuerdos['anoacuerdo'].$rowAcuerdos['mesacuerdo'];
+			$arrayAcuerdos[$id] = array('anio' => (int)$rowAcuerdos['anoacuerdo'], 'mes' => (int)$rowAcuerdos['mesacuerdo'], 'nroacuerdo' => (int)$rowAcuerdos['nroacuerdo']);
+		}
+	} else {
+		return 0;
+	}
+	return($arrayAcuerdos);
+}
+
+function encuentroJuicios($db) {
+	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+	$sqlJuicios = "select d.anojuicio, d.mesjuicio, c.nrocertificado, c.statusdeuda, c.nroorden from cabjuiciosospim c, detjuiciosospim d  where c.cuit = $cuit and c.nroorden = d.nroorden and ((d.anojuicio > $anoinicio and d.anojuicio <= $anofin) or (d.anojuicio = $anoinicio and d.mesjuicio >= $mesinicio)) group by d.anojuicio, d.mesjuicio order by d.anojuicio, d.mesjuicio";
+	$resJuicios = mysql_query($sqlJuicios,$db);
+	$canJuicios = mysql_num_rows($resJuicios);
+	if($canJuicios > 0) {
+		while ($rowJuicios = mysql_fetch_assoc($resJuicios)) {
+			$id=$rowJuicios['anojuicio'].$rowJuicios['mesjuicio'];
+			$arrayJuicios[$id] = array('anio' => (int)$rowJuicios['anojuicio'], 'mes' => (int)$rowJuicios['mesjuicio'], 'nrocertificado' => $rowJuicios ['nrocertificado'], 'statusdeuda' => $rowJuicios ['statusdeuda'],'nroorden' => $rowJuicios ['nroorden']);
+		}
+	} else {
+		return 0;
+	}
+	return($arrayJuicios);
+}
+
+function encuentroRequerimientos($db) {
+	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+	$sqlRequerimientos = "select d.anofiscalizacion, d.mesfiscalizacion, r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and ((d.anofiscalizacion > $anoinicio and d.anofiscalizacion <= $anofin) or (d.anofiscalizacion = $anoinicio and d.mesfiscalizacion >= $mesinicio)) group by d.anofiscalizacion, d.mesfiscalizacion order by d.anofiscalizacion, d.mesfiscalizacion";
+	$resRequerimientos = mysql_query($sqlRequerimientos,$db);
+	$canRequerimientos = mysql_num_rows($resRequerimientos);
+	if($canRequerimientos > 0) {
+		while ($rowRequerimientos = mysql_fetch_assoc($resRequerimientos)) {
+			$id=$rowRequerimientos['anofiscalizacion'].$rowRequerimientos['mesfiscalizacion'];
+			$arrayRequerimientos[$id] = array('anio' => (int)$rowRequerimientos['anofiscalizacion'], 'mes' => (int)$rowRequerimientos['mesfiscalizacion'], 'nrorequerimiento' => ( int ) $rowRequerimientos ['nrorequerimiento'] );
+		}
+	} else {
+		return 0;
+	}
+	return($arrayRequerimientos);
+}
+
+function encuentroDdjj($db) {
+	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+	$sqlDdjj = "select anoddjj, mesddjj from cabddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj <= $anofin) or (anoddjj = $anoinicio and mesddjj >= $mesinicio)) group by anoddjj, mesddjj order by anoddjj, mesddjj";
+	$resDdjj = mysql_query($sqlDdjj,$db);
+	$canDdjj = mysql_num_rows($resDdjj);
+	if($canDdjj > 0) {
+		while ($rowDdjj = mysql_fetch_assoc($resDdjj)) {
+			$id=$rowDdjj['anoddjj'].$rowDdjj['mesddjj'];
+			$arrayDdjj[$id] = array('anio' => (int)$rowDdjj['anoddjj'], 'mes' => (int)$rowDdjj['mesddjj']);
+		}
+	} else {
+		return 0;
+	}
+	return($arrayDdjj);
+}
+
 function estado($ano, $me, $db) {
 		global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+		global $arrayAcuerdos, $arrayJuicios, $arrayRequerimientos, $arrayDdjj;
 		//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
 		if ($ano == $anoinicio) {
 			if ($me < $mesinicio) {
@@ -150,14 +205,11 @@ function estado($ano, $me, $db) {
 				return($des);
 			}
 		}
-	
+		
+		$idArray = $ano.$me;
 		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-		$sqlAcuerdos = "select c.nroacuerdo, c.estadoacuerdo from cabacuerdosospim c, detacuerdosospim d where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and d.anoacuerdo = $ano and d.mesacuerdo = $me";
-		$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
-		$CantAcuerdos = mysql_num_rows($resAcuerdos); 
-		if($CantAcuerdos > 0) {
-			$rowAcuerdos = mysql_fetch_array($resAcuerdos); 
-			$nroacuerdo = $rowAcuerdos['nroacuerdo'];
+		if(array_key_exists($idArray, $arrayAcuerdos)) {
+			$nroacuerdo = $rowAcuerdos[$idArray]['nroacuerdo'];
 			if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
 				$des = "P. ACUER.-".$nroacuerdo;
 			} else {
@@ -165,14 +217,10 @@ function estado($ano, $me, $db) {
 			}
 		} else {
 			//VEO LOS JUICIOS
-			$sqlJuicio = "select c.nroorden, c.statusdeuda, c.nrocertificado from cabjuiciosospim c, detjuiciosospim d where c.cuit = $cuit and c.nroorden = d.nroorden and d.anojuicio = $ano and d.mesjuicio = $me";
-			$resJuicio = mysql_query($sqlJuicio,$db); 
-			$CantJuicio = mysql_num_rows($resJuicio); 
-			if ($CantJuicio > 0) {
-				$rowJuicio = mysql_fetch_array($resJuicio); 
-				$statusDeuda = $rowJuicio['statusdeuda'];
-				$nrocertificado = $rowJuicio['nrocertificado'];
-				$nroorden = $rowJuicio['nroorden'];
+			if (array_key_exists($idArray, $arrayJuicios)) {
+				$statusDeuda = $arrayJuicios[$idArray]['statusdeuda'];
+				$nrocertificado = $arrayJuicios[$idArray]['nrocertificado'];
+				$nroorden = $arrayJuicios[$idArray]['nroorden'];
 				if ($statusDeuda == 1) {
 					$des = "J.EJEC";
 				}
@@ -185,19 +233,12 @@ function estado($ano, $me, $db) {
 				$des = $des." (".$nrocertificado.")-".$nroorden;
 			} else {
 				// VEO LOS REQ DE FISC
-				$sqlReq = "select r.nrorequerimiento from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.procesoasignado = 1 and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion = $ano and d.mesfiscalizacion = $me";
-				$resReq = mysql_query($sqlReq,$db); 
-				$CantReq = mysql_num_rows($resReq); 
-				if($CantReq > 0) {
-					$rowReq = mysql_fetch_array($resReq); 
-					$nroreq = $rowReq['nrorequerimiento'];
+				if(array_key_exists($idArray, $arrayRequerimientos)) {
+					$nroreq = $arrayRequerimientos[$idArray]['nrorequerimiento'];
 					$des = "REQ. (".$nroreq.")";
 				} else {
 					// VEO LAS DDJJ REALIZADAS SIN PAGOS
-					$sqlDDJJ = "select * from cabddjjospim where cuit = $cuit and anoddjj = $ano and mesddjj = $me" ;
-					$resDDJJ = mysql_query($sqlDDJJ,$db); 
-					$CantDDJJ = mysql_num_rows($resDDJJ); 
-					if($CantDDJJ > 0) {
+					if(array_key_exists($idArray, $arrayDdjj)) {
 						$des = "NO PAGO";
 					} else {
 						// NO HAY DDJJ SIN PAGOS
@@ -284,6 +325,27 @@ $arrayPagos = encuentroPagos($db);
 if ($arrayPagos==0){ 
 	$arrayPagos = array();
 }
+
+$arrayAcuerdos = encuentroAcuerdos($db);
+if ($arrayAcuerdos == 0){
+	$arrayAcuerdos = array();
+}
+
+$arrayJuicios = encuentroJuicios($db);
+if ($arrayJuicios == 0){
+	$arrayJuicios = array();
+}
+
+$arrayRequerimientos = encuentroRequerimientos($db);
+if ($arrayRequerimientos == 0){
+	$arrayRequerimientos = array();
+}
+
+$arrayDdjj = encuentroDdjj($db, $arrayPagos);
+if ($arrayDdjj == 0){
+	$arrayDdjj = array();
+}
+
 while($ano<=$anofin) {
   	print("<tr>");
   	print("<td width='52'><strong>".$ano."</strong></td>");
