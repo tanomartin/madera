@@ -37,6 +37,10 @@ $(document).ready(function(){
 			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:true}, 6:{sorter:true}}
 		});
 });
+function irARegistrar() {
+	$.blockUI({ message: "<h1>Procesando el Registro de Pagos.<br>Aguarde por favor...</h1>" });
+	document.location.href = "registrarPagosAportes.php";
+}
 </script>
 </head>
 <body bgcolor="#B2A274">
@@ -242,6 +246,13 @@ try {
 		</tr>
 		</table>
 <?php
+		if($cantvali!=0) { ?>
+			<p>&nbsp;</p>
+			<div align="center">
+				<h2>No OLVIDE <input type="submit" name="registrar" value="Registrar Pagos" onclick="javascript:irARegistrar()" align="left" /> de las boletas que acaban de ser validadas.</h2>
+			</div>
+<?php
+		}
 	}
 	else { ?>
 		<p>&nbsp;</p>

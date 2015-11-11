@@ -59,7 +59,7 @@ try {
 	</div>
 <?php
 	$sqlControlImputar="SELECT COUNT(*) FROM banaportesusimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R')";
-	$sqlLeeAImputar="SELECT * FROM banaportesusimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R') ORDER BY fechaacreditacion ASC";
+	$sqlLeeAImputar="SELECT * FROM banaportesusimra WHERE fechaimputacion = '00000000000000' and estadomovimiento in ('L','E','R') ORDER BY fechaacreditacion ASC, nromovimiento ASC";
 	$resultControlImputar = $dbh->query($sqlControlImputar);
 	if(!$resultControlImputar) { ?>
 		<div align="center">
