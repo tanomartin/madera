@@ -80,7 +80,7 @@ function estaVencido($fechaPago, $me, $ano) {
 	return (0);
 }
 
-function reverificaPeriodoPago($estado, $ano, $me, $db) {
+function reverificaPeriodo($estado, $ano, $me, $db) {
 	global $cuit;
 	global $arrayAcuerdos, $arrayJuicios, $arrayRequerimientos;
 	
@@ -362,19 +362,13 @@ function estado($ano, $me, $db) {
 				}
 				$des = $des . " (" . $nrocertificado . ")-" . $nroorden;
 			} else {
-				// VEO LOS REQ DE FISC
-				if (array_key_exists ( $idArray, $arrayRequerimientos )) {
-					$nroreq = $arrayRequerimientos [$idArray] ['nrorequerimiento'];
-					$des = "REQ. (" . $nroreq . ")";
+				// VEO LAS DDJJ REALIZADAS SIN PAGOS
+				if (array_key_exists ( $idArray, $arrayDdjj )) {
+					$des = "NO PAGO";
 				} else {
-					// VEO LAS DDJJ REALIZADAS SIN PAGOS
-					if (array_key_exists ( $idArray, $arrayDdjj )) {
-						$des = "NO PAGO";
-					} else {
-						// NO HAY DDJJ SIN PAGOS
-						$des = "S.DJ.";
-					} // else DDJJ
-				} // else REQ
+					// NO HAY DDJJ SIN PAGOS
+					$des = "S.DJ.";
+				} // else DDJJ
 			} // else JUICIOS
 		} // else ACUERDOS
 	} // else PAGO DIF
@@ -437,8 +431,7 @@ function imprimeTabla($periodo) {
 		</p>
 	<?php } ?>	
 	
-<table width="1132" border="1"
-			style="text-align: center; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px">
+<table width="1132" border="1" style="text-align: center; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px">
 			<tr>
 				<td width='40' rowspan="2"><span class="Estilo6">A&Ntilde;OS</span></td>
 				<td colspan="12"><span class="Estilo6">MESES</span></td>
@@ -486,39 +479,30 @@ if ($arrayDdjj == 0) {
 	$arrayDdjj = array ();
 }
 
-while ( $ano <= $anofin ) {
-	?>
-  	<tr>
-				<td><strong><?php echo $ano ?></strong></td>
+while ( $ano <= $anofin ) { ?>
+  	<tr><td><strong><?php echo $ano ?></strong></td>
 <?php
-	
 for($i = 1; $i < 13; $i ++) {
 		$idArray = $ano . $i;
 		if (! array_key_exists ( $idArray, $arrayPagos )) {
-			$resultado = estado ( $ano, $i, $db );
-			$arrayPagos [$idArray] = array (
-					'anio' => $ano,
-					'mes' => $i,
-					'estado' => $resultado 
-			);
+			$estado = estado ( $ano, $i, $db );
+			if ($estado == 'NO PAGO' || $estado == 'S.DJ.') {
+				$resultado = reverificaPeriodo ( $estado, $ano, $i, $db );
+			} else {
+				$resultado = $estado;
+			}
+			$arrayPagos [$idArray] = array ('anio' => $ano,'mes' => $i,'estado' => $resultado );
 		} else {
 			$estado = $arrayPagos [$idArray] ['estado'];
-			$resultado = reverificaPeriodoPago ( $estado, $ano, $i, $db );
-			$arrayPagos [$idArray] = array (
-					'anio' => $ano,
-					'mes' => $i,
-					'estado' => $resultado 
-			);
+			$resultado = reverificaPeriodo ( $estado, $ano, $i, $db );
+			$arrayPagos [$idArray] = array ('anio' => $ano,'mes' => $i,'estado' => $resultado );
 		}
 		imprimeTabla ( $arrayPagos [$idArray] );
-	}
-	?>
+	} ?>
 	</tr>
 <?php
-	
 $ano ++;
-}
-?>
+} ?>
 </table>
 		<br>
 		<table width="1130" border="0" style="font-size: 12px">
@@ -547,9 +531,7 @@ $ano ++;
 				<td></td>
 			</tr>
 		</table>
-		<p>
-			<strong>Cuotas Excepcionales </strong>
-		</p>
+		<p><strong>Cuotas Excepcionales </strong></p>
 		<table width="800" border="1"
 			style="text-align: center; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px">
 			<tr>
@@ -560,8 +542,6 @@ $ano ++;
 				<th>Recargo</th>
 				<th>Total</th>
 				<th>+Info</th>
-			
-			
 			<tr>
 	<?php   $sqlCuotasExcpecional = "SELECT * FROM  cuotaextraordinariausimra c, extraordinariosusimra e WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago";
 			$resCuotasExcpecional = mysql_query ( $sqlCuotasExcpecional, $db );
@@ -575,8 +555,7 @@ $ano ++;
 						<td><?php echo $rowCuotasExcpecional['totalaporte'] ?></td>
 						<td><?php echo $rowCuotasExcpecional['montorecargo'] ?></td>
 						<td><?php echo $rowCuotasExcpecional['montopagado'] ?></td>
-						<td><input type="button" value="DDJJ"
-							onclick='javascript:abrirInfoCuotas("detalleCuotaUsimra.php?cuit=<?php echo $cuit?>&anio=<?php echo $rowCuotasExcpecional['mes'] ?>&mes=<?php echo $rowCuotasExcpecional['anio'] ?>")' /></td>
+						<td><input type="button" value="DDJJ" onclick='javascript:abrirInfoCuotas("detalleCuotaUsimra.php?cuit=<?php echo $cuit?>&anio=<?php echo $rowCuotasExcpecional['mes'] ?>&mes=<?php echo $rowCuotasExcpecional['anio'] ?>")' /></td>
 					</tr>
 			<?php }
 			} else { ?>

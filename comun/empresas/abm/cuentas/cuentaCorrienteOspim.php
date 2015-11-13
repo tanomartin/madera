@@ -57,7 +57,7 @@ function estaVencido($fechaPago, $me, $ano) {
 	return(0);
 }
 
-function reverificaFueraTermino($estado, $ano, $me, $db) {
+function reverificaPeriodo($estado, $ano, $me, $db) {
 	global $cuit;
 	global $arrayAcuerdos, $arrayJuicios, $arrayRequerimientos;
 	
@@ -232,19 +232,13 @@ function estado($ano, $me, $db) {
 				}
 				$des = $des." (".$nrocertificado.")-".$nroorden;
 			} else {
-				// VEO LOS REQ DE FISC
-				if(array_key_exists($idArray, $arrayRequerimientos)) {
-					$nroreq = $arrayRequerimientos[$idArray]['nrorequerimiento'];
-					$des = "REQ. (".$nroreq.")";
+				// VEO LAS DDJJ REALIZADAS SIN PAGOS
+				if(array_key_exists($idArray, $arrayDdjj)) {
+					$des = "NO PAGO";
 				} else {
-					// VEO LAS DDJJ REALIZADAS SIN PAGOS
-					if(array_key_exists($idArray, $arrayDdjj)) {
-						$des = "NO PAGO";
-					} else {
-						// NO HAY DDJJ SIN PAGOS
-						$des = "S.DJ.";
-					} //else DDJJ
-				}//else REQ
+					// NO HAY DDJJ SIN PAGOS
+					$des = "S.DJ.";
+				} //else DDJJ
 			} //else JUICIOS
 		}//else ACUERDOS
 		return $des;
@@ -352,12 +346,17 @@ while($ano<=$anofin) {
 	for ($i=1;$i<13;$i++){
 		$idArray = $ano.$i;
 		if (!array_key_exists($idArray, $arrayPagos)) {
-			$resultado = estado($ano, $i, $db);
+			$estado = estado($ano, $i, $db);
+			if ($estado == 'NO PAGO' || $estado == 'S.DJ.') {
+				$resultado = reverificaPeriodo ( $estado, $ano, $i, $db );
+			} else {
+				$resultado = $estado;
+			}
 			$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
 		} else {
 			$estado = $arrayPagos[$idArray]['estado'];
 			if($estado == 'P.F.T.') {
-				$resultado = reverificaFueraTermino($estado, $ano, $i, $db);
+				$resultado = reverificaPeriodo($estado, $ano, $i, $db);
 				$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
 			}
 		}
