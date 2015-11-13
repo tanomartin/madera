@@ -65,7 +65,7 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 	
-	
+	//TODO BAJAR A LOS DE USIMRA TAMBIEN
 	$sqlLeeTitular = "SELECT * FROM titulares WHERE cuitempresa = '$cuit'";
 	$resLeeTitular = mysql_query($sqlLeeTitular,$db);
 	while($rowLeeTitular = mysql_fetch_array($resLeeTitular)) {

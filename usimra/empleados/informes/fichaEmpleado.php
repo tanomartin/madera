@@ -13,13 +13,41 @@ if ($estado == 'E') {
 	$tabla = "empleadosdebajausimra";
 }
 
-$sqlEmpleado = "SELECT e.*, p.descrip as provincia, r.descripcion as rama, c.descri as categoria FROM $tabla e, provincia p, categoriasusimra c, ramausimra r WHERE e.nrcuit = '$cuit' and e.nrcuil = '$cuil' and e.provin = p.codprovin and e.rramaa = c.codram and e.catego = c.codcat and e.rramaa = r.id";
+$sqlEmpleado = "SELECT 
+					e.*, p.descrip as provincia, r.descripcion as rama, c.descri as categoria 
+				FROM 
+					$tabla e, provincia p, categoriasusimra c, ramausimra r
+				WHERE 
+					e.nrcuit = '$cuit' and 
+					e.nrcuil = '$cuil' and 
+					e.provin = p.codprovin and 
+					e.rramaa = c.codram and 
+					e.catego = c.codcat and 
+					e.rramaa = r.id";
 $resEmpleado = mysql_query($sqlEmpleado,$db);
 $rowEmpleado = mysql_fetch_assoc($resEmpleado);
 
 $sqlFamilia = "SELECT * FROM familiausimra WHERE nrcuit = '$cuit' and nrcuil = '$cuil'";
 $resFamilia = mysql_query($sqlFamilia,$db);
 $canFamilia = mysql_num_rows($resFamilia);
+
+$sqlEmpresa = "SELECT * FROM empresas WHERE cuit = '$cuit'";
+$resEmpresa = mysql_query($sqlEmpresa,$db);
+$canEmpresa = mysql_num_rows($resEmpresa);
+if ($canEmpresa == 0) {
+	$sqlEmpresa = "SELECT * FROM empresasdebaja WHERE cuit = '$cuit'";
+	$resEmpresa = mysql_query($sqlEmpresa,$db);
+	$canEmpresa = mysql_num_rows($resEmpresa);
+	if ($canEmpresa == 0) {
+		$nombreEmpresa = "No existe empresa";
+	} else {
+		$rowEmpresa = mysql_fetch_assoc($resEmpresa);
+		$nombreEmpresa = $rowEmpresa['nombre']." <font color='red'> (De Baja)</font>";
+	}
+} else {
+	$rowEmpresa = mysql_fetch_assoc($resEmpresa);
+	$nombreEmpresa = $rowEmpresa['nombre'];
+}
 
 ?>
 
@@ -76,8 +104,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#B2A274">
 <div align="center">
 	<p><span class="Estilo2"> Empleado  "<?php echo $rowEmpleado['apelli'].", ".$rowEmpleado['nombre'] ?>" - C.U.I.L.: <?php echo $rowEmpleado['nrcuil'] ?> </span></p>
-	
-	<table width="700" border="1">
+	<p><span class="Estilo2"> Empresa  "<?php echo $nombreEmpresa ?>" - C.U.I.T.: <?php echo $cuit ?> </span></p>
+	<table width="700" border="1"> 
 		  <tr>
 			<td style="text-align:right"><b>Fecha Nac.:</b></td>
 			<td><?php echo invertirFecha($rowEmpleado['fecnac']) ?></td>
