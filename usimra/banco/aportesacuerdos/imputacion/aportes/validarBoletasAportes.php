@@ -34,7 +34,7 @@ $(document).ready(function(){
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra"],
-			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:true}, 6:{sorter:true}}
+			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:true}, 6:{sorter:true}, 7:{sorter:true}}
 		});
 });
 function irARegistrar() {
@@ -60,7 +60,7 @@ try {
 	</div>
 <?php
 	$sqlControlValidar="SELECT COUNT(*) FROM banaportesusimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in('P','E')";
-	$sqlLeeAValidar="SELECT * FROM banaportesusimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in('P','E') ORDER BY fechaacreditacion ASC";
+	$sqlLeeAValidar="SELECT * FROM banaportesusimra WHERE fechavalidacion = '00000000000000' and estadomovimiento in('P','E') ORDER BY fecharecaudacion ASC, nromovimiento ASC";
 	$resultControlValidar=$dbh->query($sqlControlValidar);
 	if(!$resultControlValidar) { ?>
 		<div align="center">
@@ -102,6 +102,7 @@ try {
 							<th>Importe</th>
 							<th>Status</th>
 							<th>Mensaje</th>
+							<th>Fecha Presentacion</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -111,6 +112,7 @@ try {
 					$controlbanco = $validar[nrocontrol];
 					$importebanco = $validar[importe];
 					$estadobanco = $validar[estadomovimiento];
+					$fechabanco = invertirFecha($validar[fecharecaudacion]);
 					$sqlControlBuscaCabBoleta="SELECT COUNT(*) FROM ddjjusimra WHERE nrcuit = '$cuitbanco' AND nrcuil = '$cuil' AND nrctrl = '$controlbanco'";
 					$resultControlBuscaCabBoleta=$dbh->query($sqlControlBuscaCabBoleta);
 					if($resultControlBuscaCabBoleta->fetchColumn()!=0) {
@@ -164,6 +166,7 @@ try {
 								} ?>
 								<td><?php echo $listastatus; ?></td>
 								<td><?php echo $listamensaje; ?></td>
+								<td><?php echo $fechabanco; ?></td>
 							</tr>
 	<?php
 							}
@@ -209,6 +212,7 @@ try {
 							<td><?php echo $listaimporte; ?></td>
 							<td><?php echo $listastatus; ?></td>
 							<td><?php echo $listamensaje; ?></td>
+							<td><?php echo $fechabanco; ?></td>
 						</tr>
 <?php
 						}
