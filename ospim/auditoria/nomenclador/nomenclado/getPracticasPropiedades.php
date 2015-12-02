@@ -37,14 +37,14 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
 		$practica = $rowPractica['codigopractica'];
 		$respuesta.="<tr>
-						<td>".$rowPractica['codigopractica']."</td>
+						<td><input name=\"codigopractica".$i."\" id=\"codigopractica".$i."\" type=\"text\" value=\"".$rowPractica['codigopractica']."\" size=\"5\" readonly=\"readonly\" style=\"background-color: #CCCCCC; text-align:center\"  /></td>
 						<td>".$rowPractica['descripcion']."</td>
-						<td><input name=\"unihonorario".$i."-".$rowPractica['codigopractica']."\" id=\"unihonorario".$i."\" type=\"text\" value=\"".$rowPractica['unihonorario']."\" size=\"10\"/></td>
-						<td><input name=\"unihonorarioespecialista".$i."-".$rowPractica['codigopractica']."\" id=\"unihonorarioespecialista".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioespecialista']."\" size=\"10\"/></td>
-						<td><input name=\"unihonorarioayudante".$i."-".$rowPractica['codigopractica']."\" id=\"unihonorarioayudante".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioayudante']."\" size=\"10\"/></td>
-						<td><input name=\"unihonorarioanestesista".$i."-".$rowPractica['codigopractica']."\" id=\"unihonorarioanestesista".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioanestesista']."\" size=\"10\"/></td>
-						<td><input name=\"unigastos".$i."-".$rowPractica['codigopractica']."\" id=\"unigastos".$i."\" type=\"text\" value=\"".$rowPractica['unigastos']."\" size=\"10\"/></td>
-						<td><select name=\"complejidad".$i."-".$rowPractica['codigopractica']."\" id=\"complejidad".$i."\">";
+						<td><input name=\"unihonorario".$i."\" id=\"unihonorario".$i."\" type=\"text\" value=\"".$rowPractica['unihonorario']."\" size=\"10\"/></td>
+						<td><input name=\"unihonorarioespecialista".$i."\" id=\"unihonorarioespecialista".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioespecialista']."\" size=\"10\"/></td>
+						<td><input name=\"unihonorarioayudante".$i."\" id=\"unihonorarioayudante".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioayudante']."\" size=\"10\"/></td>
+						<td><input name=\"unihonorarioanestesista".$i."\" id=\"unihonorarioanestesista".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioanestesista']."\" size=\"10\"/></td>
+						<td><input name=\"unigastos".$i."\" id=\"unigastos".$i."\" type=\"text\" value=\"".$rowPractica['unigastos']."\" size=\"10\"/></td>
+						<td><select name=\"complejidad".$i."\" id=\"complejidad".$i."\">";
 						reset($tipoComplejidad);
 						while ($complejidad = current($tipoComplejidad)) {
 								if (key($tipoComplejidad) == $rowPractica['codigocomplejidad']) {

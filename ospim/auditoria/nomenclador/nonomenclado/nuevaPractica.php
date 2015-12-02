@@ -230,7 +230,7 @@ function validarCapituloSubcapitulo(formulario) {
           <select name="tipo" id="tipo">
             <option value='0'>Seleccione Tipo de Practica</option>
             <?php 
-				$sqlTipos = "SELECT * FROM tipopracticas";
+				$sqlTipos = "SELECT * FROM tipopracticas WHERE codigonomenclador = 2";
 				$resTipos = mysql_query($sqlTipos,$db);
 				while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
             <option value='<?php echo $rowTipos['id'] ?>'><?php echo $rowTipos['descripcion'] ?></option>

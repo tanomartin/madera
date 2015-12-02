@@ -24,13 +24,26 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p><span class="Estilo2">Men&uacute; Nomencladores </span></p>
   <table width="626" border="3">
     <tr>
-	  <td width="200"><p align="center">Nacional</p>
-          <p align="center"><a class="enlace" href="nacional/menuNacional.php"><img src="img/nacional.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	  <td width="200"><p align="center">Nacional / P.M.O.</p>
+          <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=1"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">No Nomenclado </p>
-        <p align="center"><a class="enlace" href="nonomenclado/menuNoNomenclado.php"><img src="img/nonomenclado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="nonomenclado/menuNoNomenclado.php?codigo=2"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p>
-        
+      </td>
+      <td width="200"><p align="center">Bioquimico </p>
+        <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=3"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p>
+      </td>
+   </tr>
+   <tr>
+   	 <td width="200"><p align="center">Municipal</p>
+        <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=4"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p>
+      </td>
+      <td width="200"><p align="center">Hospitales Publicos </p>
+        <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=5"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p>
       </td>
       <td width="200"><p align="center">Buscador</p>
         <p align="center"><a class="enlace" href="buscador/buscadorPractica.php"><img src="img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
