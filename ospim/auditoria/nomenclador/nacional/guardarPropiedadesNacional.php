@@ -1,6 +1,9 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 //var_dump($_POST);
 $i=0;
+
+
+
 foreach($_POST as $key => $value) {
 	$resultado = strpos($key, "valor");
 	if($resultado !== FALSE){
@@ -11,6 +14,10 @@ foreach($_POST as $key => $value) {
 		$i++;
 	}
 }
+
+
+
+
 reset($_POST);
 $i=0;
 foreach($_POST as $key => $value) {

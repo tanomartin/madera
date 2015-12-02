@@ -22,13 +22,12 @@ $matriculaNac = $_POST['matriculaNac'];
 $matriculaPro = $_POST['matriculaPro'];
 $nroRegistro = $_POST['nroRegistro'];
 $capitado = $_POST['capitado'];
-$nomenclador = $_POST['selectNomenclador'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email','$cuit','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistro','$capitado','$nomenclador','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email','$cuit','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistro','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -47,6 +46,15 @@ try {
 			$sqlInsertServicio = "INSERT INTO prestadorservicio VALUE($codigoNextPresta, $servicio)";
 			//print($sqlInsertServicio."<br>");
 			$dbh->exec($sqlInsertServicio);
+		}
+	}
+	
+	foreach($_POST as $key => $value) {
+		if (strpos($key ,'nomenclador') !== false) {
+			$nomenclador = $_POST[$key];
+			$sqlInsertNomenclador = "INSERT INTO prestadornomenclador VALUE($codigoNextPresta, $nomenclador)";
+			//print($sqlInsertNomenclador."<br>");
+			$dbh->exec($sqlInsertNomenclador);
 		}
 	}
 	

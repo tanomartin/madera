@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 
 $codigopresta = $_GET['codigopresta'];
-$sqlConsultaPresta = "SELECT codigoprestador, nombre, nomenclador FROM prestadores WHERE codigoprestador = $codigopresta";
+$sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigopresta";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
@@ -35,13 +35,13 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 <div align="center">
 	<p><span style="text-align:center"><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigopresta ?>'" /></span></p>
   <p class="Estilo2">Ficha Pofesional </p>
-  <table width="500" border="1">
+  <table width="500" border="1" style="margin-bottom: 20px">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>

@@ -69,16 +69,14 @@ function activarDesactivar(accion, codigoprof, codigopresta) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><strong>Profesionales del  Prestador</strong></p>
-	  <table width="500" border="1">
+	  <table width="500" border="1" style="margin-bottom: 20px">
         <tr>
           <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
           <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
-          <td><div align="left">
-              <div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
-          </div></td>
+          <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
         </tr>
   </table>
   	  <?php 

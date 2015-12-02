@@ -4,7 +4,7 @@ include($libPath."fechas.php");
 include($libPath."funcionespracticas.php");
 
 $codigo = $_GET['codigo'];
-$sqlConsultaPresta = "SELECT codigoprestador, nombre, nomenclador FROM prestadores WHERE codigoprestador = $codigo";
+$sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
@@ -70,7 +70,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>

@@ -4,11 +4,15 @@ $sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provinc
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
+$sqlConsultaNomenclador = "SELECT n.id, n.nombre FROM prestadornomenclador p, nomencladores n WHERE p.codigoprestador = $codigo and p.codigonomenclador = n.id";
+$resConsultaNomenclador = mysql_query($sqlConsultaNomenclador,$db);
+
 $sqlConsultaServcio = "SELECT s.descripcion FROM prestadorservicio p, tiposervicio s WHERE p.codigoprestador = $codigo and p.codigoservicio = s.codigoservicio";
 $resConsultaServcio = mysql_query($sqlConsultaServcio,$db);
 
 $sqlConsultaJuris = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $codigo and p.codidelega = d.codidelega";
 $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
+
 
 
 ?>
@@ -40,7 +44,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td colspan="6"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+          <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
           <td colspan="6"><div align="left">
               <div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
           </div></td>
@@ -123,39 +127,34 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
             <?php if ($rowConsultaPresta['capitado'] == 1) { echo "SI"; } else { echo "NO"; } ?>
           </div></td>
         </tr>
-        <tr>
-          <td><div align="right"><strong>Nomenclador </strong></div></td>
-          <td colspan="6"><div align="left">
-            <?php if ($rowConsultaPresta['nomenclador'] == 1) { echo "Nacional"; } 
-									if ($rowConsultaPresta['nomenclador'] == 2) { echo "No Nomenclado"; }
-									if ($rowConsultaPresta['nomenclador'] == 3) { echo "Ambos"; }
-							?>
-          </div></td>
-        </tr>
   	</table>
-	  <p>&nbsp;</p>
-	  <div class="grilla">
-	  <table width="794" border="1">
+	  <div class="grilla" style="margin-top: 20px;margin-bottom: 20px">
+	  <table width="700" border="1">
         <thead>
-		<tr>
-          <th width="392" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></th>
-          <th width="386"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></th>
-        </tr>
+			<tr>
+			  <th width="233"><div align="center" class="Estilo1"><strong>Nomencladores </strong></div></th>
+	          <th width="233"><div align="center" class="Estilo1"><strong>Servicios </strong></div></th>
+	          <th width="233"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></th>
+	        </tr>
 		</thead>
         <tbody>
-		<tr>
-          <td valign="top"><div align="left">
-            <?php while ($rowConsultaServcio = mysql_fetch_assoc($resConsultaServcio)) {
-				echo $rowConsultaServcio['descripcion']."<br>";
-		} ?>
-          </div></td>
-          <td valign="top"><div align="left">
-            <?php 
-			while ($rowConsultaJuris = mysql_fetch_assoc($resConsultaJuris)) {
-				echo $rowConsultaJuris['codidelega']." - ".$rowConsultaJuris['nombre']."<br>";
-		} ?>
-          </div></td>
-        </tr>
+			<tr>
+			 <td valign="top"><div align="left">
+	            <?php while ($rowConsultaNomenclador = mysql_fetch_assoc($resConsultaNomenclador)) {
+						echo $rowConsultaNomenclador['nombre']."<br>";
+					  } ?>
+	          </div></td>		
+	          <td valign="top"><div align="left">
+	            <?php while ($rowConsultaServcio = mysql_fetch_assoc($resConsultaServcio)) {
+						echo $rowConsultaServcio['descripcion']."<br>";
+					  } ?>
+	          </div></td>
+	          <td valign="top"><div align="left">
+	            <?php while ($rowConsultaJuris = mysql_fetch_assoc($resConsultaJuris)) {
+						echo $rowConsultaJuris['codidelega']." - ".$rowConsultaJuris['nombre']."<br>";
+					  } ?>
+	          </div></td>
+	        </tr>
 		</tbody>
 	</table>
 	</div>

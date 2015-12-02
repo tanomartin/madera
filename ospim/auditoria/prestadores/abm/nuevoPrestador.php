@@ -252,12 +252,21 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	var nomenclador = formulario.selectNomenclador.options[formulario.selectNomenclador.selectedIndex].value;
-	if (nomenclador == 0) {
-		alert("Debe elegir un tipo de Nomenclador");
+
+	var nomencladorCheck = 0;
+	var nomenclador = formulario.nomenclador;
+	if (nomenclador != null) {
+		for (var x=0;x<nomenclador.length;x++) {
+			if(nomenclador[x].checked) {
+				nomencladorCheck = 1;
+			}
+		}
+	}
+	if (nomencladorCheck == 0) {
+		alert("Debe elegir como mínimo un nomenclador para el prestador");
 		return false;
 	}
-	
+
 	var servicioCheck = 0;
 	var servicios = formulario.servicios;
 	if (servicios != null) {
@@ -299,7 +308,7 @@ function validar(formulario) {
   <form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarNuevoPrestador.php">
     <table border="0">
       <tr>
-        <td width="129"><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+        <td width="129"><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
         <td colspan="5"><div align="left">
           <input name="nombre" type="text" id="nombre" size="120" />
         </div></td>
@@ -313,10 +322,10 @@ function validar(formulario) {
       <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
         <td colspan="5">
-		<div id="errorCuit" style="color:#FF0000"></div>
-		<div align="left">
-			<input name="cuit" type="text" id="cuit" size="13" />
-        </div>
+			<div align="left">
+				<input name="cuit" type="text" id="cuit" size="10" />
+				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
+	        </div>
 		</td>
       </tr>
       <tr>
@@ -338,14 +347,14 @@ function validar(formulario) {
       <tr>
         <td><div align="right"><strong>Telefono 1 </strong></div></td>
         <td><div align="left">(
-            <input name="ddn1" type="text" id="ddn1" size="5" />
+            <input name="ddn1" type="text" id="ddn1" size="3" />
             )-
-            <input name="telefono1" type="text" id="telefono1" size="20" />
+            <input name="telefono1" type="text" id="telefono1" size="15" />
 </div></td>
         <td colspan="4"><div align="left"><strong>Telefono 2 </strong>(
-            <input name="ddn2" type="text" id="ddn2" size="5"/>
+            <input name="ddn2" type="text" id="ddn2" size="3"/>
 )-
-<input name="telefono2" type="text" id="telefono2" size="20"/>
+<input name="telefono2" type="text" id="telefono2" size="15"/>
 </div></td>
       </tr>
 	  <tr>
@@ -353,9 +362,9 @@ function validar(formulario) {
           <div align="right"><strong>Telefono FAX </strong></div>
         </div></td>
         <td><div align="left">(
-          <input name="ddnfax" type="text" id="ddnfax" size="5"/>
+          <input name="ddnfax" type="text" id="ddnfax" size="3"/>
           )-
-  <input name="telefonofax" type="text" id="telefonofax" size="20" />
+  <input name="telefonofax" type="text" id="telefonofax" size="15" />
         </div></td>
         <td colspan="4"><div align="left"><strong>Email</strong>
           <input name="email" type="text" id="email" size="40" />
@@ -414,12 +423,13 @@ function validar(formulario) {
 	  <tr>
 	    <td><div align="right"><strong>Nomenclador </strong></div></td>
 	    <td colspan="5"><div align="left">
-            <select name="selectNomenclador" id="selectNomenclador">
-              <option value="0">Seleccione un valor </option>
-			  <option value="1">Nacional </option>
-			  <option value="2">No Nomenclado </option>
-			  <option value="3">Ambos </option>
-            </select>
+            	<?php 	$query="select * from nomencladores"; 
+	    	  			$result=mysql_query($query,$db);  
+	    	  			$i = 0;
+            			while ($rownom=mysql_fetch_array($result)) { ?>
+						  	<input name="<?php echo "nomenclador".$i ?>" id="nomenclador" type="checkbox"/><?php echo $rownom['nombre']." | "; ?>
+				  <?php 	$i++;
+						} ?>
         </div></td>
       </tr>
     </table>

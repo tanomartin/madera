@@ -198,16 +198,25 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	var nomenclador = formulario.selectNomenclador.options[formulario.selectNomenclador.selectedIndex].value;
-	if (nomenclador == 0) {
-		alert("Debe elegir un tipo de Nomenclador");
+	
+	var nomencladorCheck = 0;
+	var nomenclador = formulario.nomenclador;
+	if (nomenclador != null) {
+		for (var x=0;x<nomenclador.length;x++) {
+			if(nomenclador[x].checked) {
+				nomencladorCheck = 1;
+			}
+		}
+	}
+	if (nomencladorCheck == 0) {
+		alert("Debe elegir como mínimo un nomenclador para el prestador");
 		return false;
 	}
 	
 	var servicioCheck = 0;
 	servicios = formulario.servicios;
 	if (servicios != null) {
-		for (x=0;x<servicios.length;x++) {
+		for (var x=0;x<servicios.length;x++) {
 			if(servicios[x].checked) {
 				servicioCheck = 1;
 			}
@@ -254,7 +263,7 @@ function validar(formulario) {
         </div></td>
       </tr>
       <tr>
-        <td width="129"><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+        <td width="129"><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
         <td colspan="5"><div align="left">
           <div align="left">
             <input name="nombre" type="text" id="nombre" size="120" value="<?php echo $rowConsultaPresta['nombre'] ?>"/>
@@ -351,19 +360,18 @@ function validar(formulario) {
 				$cantidad = mysql_num_rows($resNumProfesional);
 				if ($cantidad > 0 and $rowConsultaPresta['personeria'] == 3) { 
 					$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
-					$cartel = "Existe profesionales activos<br>";
+					$cartel = "Existe prof. activos<br>";
 				} else {
 					$deshabilitado = '';
 					$castel = '';
 				}
-				print("<font color='#0000CC'>$cartel</font>"); ?>
+				print("<span><font color='#0000CC'>$cartel</font></span>"); ?>
 		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" <?php echo $deshabilitado ?>>
 					<option value="0">Seleccione un valor </option>
 					<option value="1" <?php echo $profesional ?>>Profesional </option>
 					<option value="2" <?php echo $establecimiento ?>>Establecimiento </option>
 					<option value="3" <?php echo $ciculo ?>>Círculo </option>
-				  </select>
-				  
+				  </select>	  
 </div></td>
         <td colspan="4"><div align="left">
             <div align="left"><strong>Numero Registro SSS</strong>
@@ -395,43 +403,51 @@ function validar(formulario) {
       </tr>
       <tr>
         <td><div align="right"><strong>Capitado</strong></div></td>
-        <td colspan="5"><div align="left">
-          <?php if ($rowConsultaPresta['capitado'] == 0) { $nocapitado = "checked"; } else { $capitado = "checked"; } ?>
-          <input name="capitado" type="radio" value="0" <?php echo $nocapitado ?> />
-NO
-<input name="capitado" type="radio" value="1" <?php echo $capitado ?> />
-SI </div></td>
+        <td colspan="5">
+        	<div align="left">
+	          	<?php if ($rowConsultaPresta['capitado'] == 0) { $nocapitado = "checked"; } else { $capitado = "checked"; } ?>
+	          	<input name="capitado" type="radio" value="0" <?php echo $nocapitado ?> /> NO
+				<input name="capitado" type="radio" value="1" <?php echo $capitado ?> /> SI 
+			</div>
+		</td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Nomenclador </strong></div></td>
-        <td colspan="5"><div align="left">
-          <?php 
-		    if ($rowConsultaPresta['nomenclador'] == 1) { $nacional = "selected"; } 
-		    if ($rowConsultaPresta['nomenclador'] == 2) { $noNomencaldo = "selected"; } 
-			if ($rowConsultaPresta['nomenclador'] == 3) { $ambos = "selected"; }
-			
-			$today = date("Y-m-d");
-			$sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin = '0000-00-00' or c.fechafin > '$today')";
-			$resContratoActivo = mysql_query($sqlContratoActivo,$db);
-			$canContratoActivo = mysql_num_rows($resContratoActivo);
-			if ($canContratoActivo > 0) { 
-				$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
-				$cartel = "Existe contratos abiertos<br>";
-			} else {
-				$deshabilitado = '';
-				$cartel = '';
-			} 
-		 print("<font color='#0000CC'>$cartel</font>"); ?>
-          <select name="selectNomenclador" id="selectNomenclador" <?php echo $deshabilitado ?>>
-            <option value="0">Seleccione un valor </option>
-            <option value="1" <?php echo $nacional ?>>Nacional </option>
-            <option value="2" <?php echo $noNomencaldo ?>>No Nomenclado </option>
-            <option value="3" <?php echo $ambos ?>>Ambos </option>
-          </select>
-		 
-</div>
-	</td>
-      </tr>
+	    <td><div align="right"><strong>Nomenclador </strong></div></td>
+	    <td colspan="5"><div align="left">
+            <?php 	
+		          $today = date("Y-m-d");
+		          $sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin = '0000-00-00' or c.fechafin > '$today')";
+		          $resContratoActivo = mysql_query($sqlContratoActivo,$db);
+		          $canContratoActivo = mysql_num_rows($resContratoActivo);
+		          if ($canContratoActivo > 0) {
+		            $onclick = 'return false';
+		            $cartel = "Existe contratos abiertos<br>";
+		          } else {
+		            $onclick = '';
+		            $cartel = '';
+		          }
+
+            	  $query="select * from nomencladores"; 
+	    	  	  $result=mysql_query($query,$db);  
+	    	  	  $i = 0;
+	    	  	  
+            	  while ($rownom=mysql_fetch_array($result)) {
+					$codigoNomenclador = $rownom['id'];
+					$sqlExiste = "select * from prestadornomenclador where codigoprestador = $codigo and codigonomenclador = $codigoNomenclador";
+					$resExiste = mysql_query($sqlExiste,$db);
+					$numExiste = mysql_num_rows($resExiste);
+					if ($numExiste == 1) {
+						$checked = "checked";
+					} else {
+						$checked = "";
+					} ?>
+					<input name="<?php echo "nomenclador".$i ?>" id="nomenclador" type="checkbox" <?php echo $checked ?> onclick="<?php echo $onclick ?>" value="<?php echo $rownom['id'] ?>" /><?php echo $rownom['nombre']." | "; ?>
+				  	<?php $i++;
+				  } 
+				  print("<span><font color='#0000CC'>$cartel</font></span>");
+				?>
+        </div></td>
+      </tr>	 
     </table>
     <table width="884" border="0">
       <tr>

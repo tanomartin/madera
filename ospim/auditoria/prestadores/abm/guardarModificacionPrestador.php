@@ -25,7 +25,6 @@ $matriculaNac = $_POST['matriculaNac'];
 $matriculaPro = $_POST['matriculaPro'];
 $nroRegistro = $_POST['nroRegistro'];
 $capitado = $_POST['capitado'];
-$nomenclador = $_POST['selectNomenclador'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -52,11 +51,11 @@ matriculanacional = '$matriculaNac' ,
 matriculaprovincial = '$matriculaPro', 
 numeroregistrosss = '$nroRegistro', 
 capitado = '$capitado', 
-nomenclador = '$nomenclador', 
 fehamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'
 WHERE codigoprestador = $codigo";
 
+$sqlDeleteNomenclador = "DELETE FROM prestadornomenclador WHERE codigoprestador = $codigo";
 $sqlDeleteJurisdiccion = "DELETE FROM prestadorjurisdiccion WHERE codigoprestador = $codigo";
 $sqlDeleteServicio = "DELETE FROM prestadorservicio WHERE codigoprestador = $codigo";
 
@@ -67,6 +66,8 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
+	//print($sqlDeleteNomenclador."<br>");
+	$dbh->exec($sqlDeleteNomenclador);
 	//print($sqlUpdatePresta."<br>");
 	$dbh->exec($sqlUpdatePresta);
 	//print($sqlDeleteJurisdiccion."<br>");
@@ -80,6 +81,15 @@ try {
 			$sqlInsertServicio = "INSERT INTO prestadorservicio VALUE($codigo, $servicio)";
 			//print($sqlInsertServicio."<br>");
 			$dbh->exec($sqlInsertServicio);
+		}
+	}
+	
+	foreach($_POST as $key => $value) {
+		if (strpos($key ,'nomenclador') !== false) {
+			$nomenclador = $_POST[$key];
+			$sqlInsertNomenclador = "INSERT INTO prestadornomenclador VALUE($codigo, $nomenclador)";
+			//print($sqlInsertNomenclador."<br>");
+			$dbh->exec($sqlInsertNomenclador);
 		}
 	}
 	

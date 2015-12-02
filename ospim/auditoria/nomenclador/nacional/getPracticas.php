@@ -5,7 +5,11 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
-					 <th>Valor ($)</th>
+					 <th>U. Honorarios</th>
+					 <th>U. Honorarios </br> Especialista</th>
+					 <th>U. Honorarios </br> Ayudante</th>
+			 		 <th>U. Honorarios </br> Anestesista</th>
+			  		 <th>U. Gastos</th>
 					 <th>Complejidad</th>
 					 <th>Acciones</th>
        			</tr></thead><tbody>";
@@ -28,7 +32,11 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
-						<td>".$rowPractica['valornacional']."</td>
+						<td>".$rowPractica['unihonorario']."</td>
+						<td>".$rowPractica['unihonorarioespecialista']."</td>
+						<td>".$rowPractica['unihonorarioayudante']."</td>
+						<td>".$rowPractica['unihonorarioanestesista']."</td>
+						<td>".$rowPractica['unigastos']."</td>
 						<td>".$rowPractica['complejidad']."</td>
 						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?codigo=$practica&nomenclador=1')\"/></td>
 					</tr>";

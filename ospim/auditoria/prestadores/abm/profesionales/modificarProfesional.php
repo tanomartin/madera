@@ -175,7 +175,7 @@ function validar(formulario) {
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
@@ -217,12 +217,12 @@ function validar(formulario) {
       </tr>
       <tr>
         <td><div align="right"><strong>Telefono 1 </strong></div></td>
-        <td><div align="left">(<input name="ddn1" type="text" id="ddn1" size="5" value="<?php echo $rowConsultaProf['ddn1'] ?>"/>)-<input name="telefono1" type="text" id="telefono1" size="20" value="<?php echo $rowConsultaProf['telefono1'] ?>"/></div></td>
-        <td colspan="4"><div align="left"><strong>Telefono 2 </strong>( <strong><input name="ddn2" type="text" id="ddn2" size="5" value="<?php echo $rowConsultaProf['ddn2'] ?>"/></strong> )-<strong><input name="telefono2" type="text" id="telefono2" size="20" value="<?php echo $rowConsultaProf['telefono2'] ?>"/></strong></div></td>
+        <td><div align="left">(<input name="ddn1" type="text" id="ddn1" size="3" value="<?php echo $rowConsultaProf['ddn1'] ?>"/>)-<input name="telefono1" type="text" id="telefono1" size="15" value="<?php echo $rowConsultaProf['telefono1'] ?>"/></div></td>
+        <td colspan="4"><div align="left"><strong>Telefono 2 </strong>( <strong><input name="ddn2" type="text" id="ddn2" size="3" value="<?php echo $rowConsultaProf['ddn2'] ?>"/></strong> )-<strong><input name="telefono2" type="text" id="telefono2" size="15" value="<?php echo $rowConsultaProf['telefono2'] ?>"/></strong></div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Telefono FAX </strong></div></td>
-        <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="5" value="<?php echo $rowConsultaProf['ddnfax'] ?>"/>)-<input name="telefonofax" type="text" id="telefonofax" size="20" value="<?php echo $rowConsultaProf['telefonofax'] ?>"/>
+        <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="3" value="<?php echo $rowConsultaProf['ddnfax'] ?>"/>)-<input name="telefonofax" type="text" id="telefonofax" size="15" value="<?php echo $rowConsultaProf['telefonofax'] ?>"/>
 </div></td>
         <td colspan="4"><div align="left"><strong>Email</strong> <input name="email" type="text" id="email" size="30" value="<?php echo $rowConsultaProf['email'] ?>"/></div></td>
       </tr>
