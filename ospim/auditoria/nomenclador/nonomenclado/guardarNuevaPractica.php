@@ -17,7 +17,7 @@ $sqlExisteCodigo = "SELECT * FROM practicas WHERE codigopractica = '$codigoCompl
 $resExisteCodigo = mysql_query($sqlExisteCodigo,$db);
 $numExisteCodigo = mysql_num_rows($resExisteCodigo);
 if ($numExisteCodigo == 0) {	
-	$sqlInsertPractica = "INSERT INTO practicas VALUES(DEFAULT,'$codigoCompleto',$tipopractica,$complejidad,2,'$descri',0)";
+	$sqlInsertPractica = "INSERT INTO practicas VALUES(DEFAULT,'$codigoCompleto',$tipopractica,$complejidad,2,'$descri',DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT)";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];

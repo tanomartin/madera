@@ -6,9 +6,9 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
 					 <th>U. Honorarios</th>
-					 <th>U. Honorarios </br> Especialista</th>
-					 <th>U. Honorarios </br> Ayudante</th>
-			 		 <th>U. Honorarios </br> Anestesista</th>
+					 <th>U. Honorarios Especialista</th>
+					 <th>U. Honorarios Ayudante</th>
+			 		 <th>U. Honorarios Anestesista</th>
 			  		 <th>U. Gastos</th>
 					 <th>Complejidad</th>
 					 <th>Acciones</th>

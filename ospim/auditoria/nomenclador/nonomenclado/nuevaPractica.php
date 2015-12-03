@@ -29,11 +29,17 @@ function abrirPantalla(dire) {
 }
 	
 jQuery(function($){	
+	
 	$("#tipo").change(function(){
+		var valor = $(this).val();
 		//reset Capitulo
 		$("#capitulo").html("<option value='0'>Seleccione Capitulo</option>");
 		$("#capitulo").prop("disabled",true);
-		$("#nuevoCap").prop("disabled",true);
+		if (valor != 0) {
+			$("#nuevoCap").prop("disabled",false);
+		} else {
+			$("#nuevoCap").prop("disabled",true);
+		}
 		//reset Subcatiulo
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
 		$("#subcapitulo").prop("disabled",true);
@@ -70,18 +76,22 @@ jQuery(function($){
 	});
 	
 	$("#capitulo").change(function(){
+		var valor = $(this).val();
+		valor = valor.split('-');
+		var tipo = $("#tipo").val();
 		//reset SubCapitulo
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
 		$("#subcapitulo").prop("disabled",true);
-		$("#nuevoSub").prop("disabled",true);
+		if (valor != 0) {
+			$("#nuevoSub").prop("disabled",false);
+		} else {
+			$("#nuevoSub").prop("disabled",true);
+		}
 		//reset formulario de carga
 		$("#formularioCargaCapitulo").html("");
 		$("#formularioCargaSubCapitulo").html("");
 		$("#formularioCargaPractica").html("");
 		
-		var valor = $(this).val();
-		valor = valor.split('-');
-		var tipo = $("#tipo").val();
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
@@ -124,6 +134,10 @@ jQuery(function($){
 	});
 	
 	$("#nuevoCap").click(function() {
+		//reset formulario de carga
+		$("#formularioCargaCapitulo").html("");
+		$("#formularioCargaSubCapitulo").html("");
+		$("#formularioCargaPractica").html("");
 		tipo = $("#tipo").val();
 		$.ajax({
 			type: "POST",
@@ -136,6 +150,10 @@ jQuery(function($){
 	});
 	
 	$("#nuevoSub").click(function() {
+		//reset formulario de carga
+		$("#formularioCargaCapitulo").html("");
+		$("#formularioCargaSubCapitulo").html("");
+		$("#formularioCargaPractica").html("");
 		tipo = $("#tipo").val();
 		capitulo = $("#capitulo").val();
 		$.ajax({

@@ -7,26 +7,30 @@ $sqlNombrePractica = "SELECT descripcion FROM practicas WHERE codigopractica = '
 $resNombrePractica = mysql_query($sqlNombrePractica,$db);
 $rowNombrePractica = mysql_fetch_array($resNombrePractica);
 
-$sqlPracticas = "SELECT pr.*, det.valornonomenclado, presta.codigoprestador, presta.nombre, presta.cuit
-FROM
-cabcontratoprestador cab,
-detcontratoprestador det,
-practicas pr,
-prestadores presta
-WHERE
-det.codigopractica = '$codigo' and
-det.idcontrato = cab.idcontrato and
-cab.codigoprestador = presta.codigoprestador and
-det.nomenclador = $nomenclador and
-det.codigopractica = pr.codigopractica and
-det.nomenclador = pr.nomenclador";
-
+$sqlPracticas = "SELECT pr.*, det.*, presta.codigoprestador, presta.nombre, presta.cuit, nom.nombre as nombrenomenclador
+				 FROM
+					cabcontratoprestador cab,
+					detcontratoprestador det,
+					practicas pr,
+					prestadores presta,
+					nomencladores nom
+				 WHERE
+					det.codigopractica = '$codigo' and
+					det.idcontrato = cab.idcontrato and
+					cab.codigoprestador = presta.codigoprestador and
+					det.nomenclador = $nomenclador and
+					det.codigopractica = pr.codigopractica and
+					det.nomenclador = pr.nomenclador and
+					pr.nomenclador = nom.id";
 $resPracticas = mysql_query($sqlPracticas,$db);
-$i = 0;
-while($rowPracticas = mysql_fetch_array($resPracticas)) {
-	$descriPractica = $rowPracticas['descripcion'];
-	$resultado[$i] = $rowPracticas;
-	$i++;
+$catPracticas = mysql_num_rows($resPracticas);
+if ($catPracticas > 0) {
+	$i = 0;
+	while($rowPracticas = mysql_fetch_array($resPracticas)) {
+		$descriPractica = $rowPracticas['descripcion'];
+		$resultado[$i] = $rowPracticas;
+		$i++;
+	}
 }
 ?>
 
@@ -92,7 +96,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 			 <th>Nombre / Razón Social</th>
 			 <th>C.U.I.T.</th>
 			 <th>Nomenclador</th>
-			 <th>Valor ($)</th>
+			 <th>Modulo Consultorio ($)</th>
+			 <th>Modulo Urgencia ($)</th>
+			 <th>G. Honorarios ($)</th>
+			 <th>G. Honorarios Especialista ($)</th>
+			 <th>G. Honorarios Ayudante ($)</th>
+			 <th>G. Honorarios Anestesista ($)</th>
+			 <th>G. Gastos ($)</th>
 		   </tr>
 		 </thead>
 		 <tbody>
@@ -101,15 +111,23 @@ A:hover {text-decoration: none;color:#00FFFF }
 				 <td><?php echo $practica['codigoprestador'];?></td>
 				 <td><?php echo $practica['nombre'] ?></td>
 				 <td><?php echo $practica['cuit'] ?></td>
-				 <td><?php if ($practica['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?></td>
-				 <td><?php if ($practica['nomenclador'] == 1) { echo $practica['valornacional']; } else { echo $practica['valornonomenclado']; }?></td>
+				 <td><?php echo $practica['nombrenomenclador'] ?></td>
+				 <td><?php echo $practica['moduloconsultorio'] ?></td>
+				 <td><?php echo $practica['modulourgencia'] ?></td>
+				 <td><?php echo $practica['galenohonorario'] ?></td>
+				 <td><?php echo $practica['galenohonorarioespecialista'] ?></td>
+				 <td><?php echo $practica['galenohonorarioayudante'] ?></td>
+				 <td><?php echo $practica['galenohonorarioanestesista'] ?></td>
+				 <td><?php echo $practica['galenogastos'] ?></td>
 			   </tr>
 		   <?php
 				}
 			?>
 		 </tbody>
 	   </table>
-	  <?php } else { 	print("<div style='color:#FF0000'><b> ESTA PRACTICA NO ESTA CARGADAD EN NINGÚN PRESTADOR </b></div><br>"); } ?>
+	  <?php } else {
+	  			print("<div style='color:#FF0000'><b> ESTA PRACTICA NO ESTA CARGADAD EN NINGÚN PRESTADOR </b></div><br>"); 
+	 		} ?>
   </div>
 </form>
 </body>

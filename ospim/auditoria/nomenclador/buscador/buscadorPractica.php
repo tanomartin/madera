@@ -15,8 +15,8 @@ if ($filtro == 1) {
 $noExiste = 0;
 $resultado = array();
 if (isset($dato)) {
-	if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad FROM practicas p, tipopracticas t, tipocomplejidad c WHERE p.codigopractica = '$dato' and p.tipopractica = t.id and p.codigocomplejidad = c.codigocomplejidad order by codigopractica DESC";}
-	if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad FROM practicas p, tipopracticas t, tipocomplejidad c WHERE p.descripcion like '%$dato%' and p.tipopractica = t.id and p.codigocomplejidad = c.codigocomplejidad order by codigopractica DESC"; }
+	if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.codigopractica = '$dato' and p.tipopractica = t.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id order by codigopractica DESC";}
+	if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.descripcion like '%$dato%' and p.tipopractica = t.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id order by codigopractica DESC"; }
 	$resPracticas = mysql_query($sqlPracticas,$db);
 	$numPracticas = mysql_num_rows($resPracticas);
 	if ($numPracticas == 0) {
@@ -60,7 +60,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 		.tablesorter({
 			theme: 'blue', 
 			widthFixed: true, 
-			headers:{5:{sorter:false},6:{sorter:false, filter: false},7:{sorter:false, filter: false}},
+			headers:{5:{sorter:false},
+					 6:{sorter:false, filter: false},
+					 7:{sorter:false, filter: false},
+					 8:{sorter:false, filter: false},
+					 9:{sorter:false, filter: false},
+					 10:{sorter:false, filter: false},
+					 12:{sorter:false, filter: false},
+					},
 			widgets: ["zebra", "filter"], 
 			widgetOptions : { 
 				filter_cssFilter   : '',
@@ -135,7 +142,11 @@ function validar(formulario) {
 	     <th class="filter-select" data-placeholder="Seleccione Capitulo">Capitulo</th>
 	     <th class="filter-select" data-placeholder="Seleccione Subcapitulo">Subcapitulo</th>
          <th>Descripciones</th>
-         <th>Valor ($)</th>
+         <th>U. Honorarios</th>
+         <th>U. Honorarios Especialista</th>
+		 <th>U. Honorarios Ayudante</th>
+		 <th>U. Honorarios Anestesista</th>
+		 <th>U. Gastos</th>
 		 <th>Complejidad</th>
 		 <th>Acciones</th>
        </tr>
@@ -146,12 +157,16 @@ function validar(formulario) {
 				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
 		   <tr>
 			 <td><?php echo $rowPracticas['codigopractica'];?></td>
-			 <td><?php if ($rowPracticas['nomenclador'] == 1) { echo "NN"; } else { echo "NP"; }?></td>
+			 <td><?php echo $rowPracticas['nombrenomenclador']; ?></td>
 			 <td><?php echo $rowPracticas['tipo'] ?></td>
 			 <td><?php echo $descripPractica['capitulo'] ?></td>
 			 <td><?php echo $descripPractica['subcapitulo'] ?></td>
 			 <td><?php echo $rowPracticas['descripcion'];?></td>
-			 <td><?php echo $rowPracticas['valornacional']; ?></td>
+			 <td><?php echo $rowPractica['unihonorario'];?></td>
+			 <td><?php echo $rowPractica['unihonorarioespecialista'];?></td>
+			 <td><?php echo $rowPractica['unihonorarioayudante'];?></td>
+			 <td><?php echo $rowPractica['unihonorarioanestesista'];?></td>
+			 <td><?php echo $rowPractica['unigastos'];?></td>
 			 <td><?php echo $rowPracticas['complejidad']; ?></td>
 			 <td><input name="contrato" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?codigo=<?php echo $rowPracticas['codigopractica'] ?>&nomenclador=<?php echo $rowPracticas['nomenclador'] ?>')"/></td>
 		   </tr>

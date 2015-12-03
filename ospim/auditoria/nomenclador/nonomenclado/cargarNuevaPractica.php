@@ -11,7 +11,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 			$codigosHabilitados[$i] = str_pad($codPosibles,4,'0',STR_PAD_LEFT);
 			$codPosibles++;
 		}
-		$sqlCodigosUsados = "SELECT codigopractica FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%' and tipopractica = $tipo";
+		$sqlCodigosUsados = "SELECT codigopractica FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%'";
 		$resCodigosUsados = mysql_query($sqlCodigosUsados,$db);
 		$codigosUsados = array();
 		while($rowCodigosUsados = mysql_fetch_array($resCodigosUsados)) {
@@ -26,10 +26,10 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 		}
 		$cantidaPuntos = substr_count($codigo,'.');
 		if ($cantidaPuntos == 0) {
-			$sqlCodigosUsados="SELECT codigopractica FROM practicas WHERE `codigopractica` like '$codigo.%' and `codigopractica` not like '$codigo.%.%' and tipopractica = $tipo";
+			$sqlCodigosUsados="SELECT codigopractica FROM practicas WHERE `codigopractica` like '$codigo.%' and `codigopractica` not like '$codigo.%.%'";
 		}
 		if ($cantidaPuntos == 1) {
-			$sqlCodigosUsados="SELECT codigopractica FROM practicas WHERE `codigopractica` like '$codigo.%' and tipopractica = $tipo";
+			$sqlCodigosUsados="SELECT codigopractica FROM practicas WHERE `codigopractica` like '$codigo.%'";
 		}
 		$resCodigosUsados = mysql_query($sqlCodigosUsados,$db);
 		$codigosUsados = array();
