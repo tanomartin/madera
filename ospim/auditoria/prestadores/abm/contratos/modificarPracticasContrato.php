@@ -356,7 +356,7 @@ jQuery(function($){
         </table>
         <p> 
 			<input type="submit" name="eliminar" id="eliminar" value="Eliminar Seleccionados" />
-        	<?php } else { 	print("<div style='color:#000099'><b> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </b></div><br>"); } ?>
+        	<?php } else { 	print("<div style='color:#000099'><b> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </b></div>"); } ?>
 		</p>
     </form>
 	
@@ -364,7 +364,7 @@ jQuery(function($){
 	
 	<form name="agregarContrato" id="agregarContrato" onsubmit="return validarAdd(this)" method="post" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
 	  <p><strong>Pr&aacute;cticas para Agregar al contrato </strong></p>
-	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> ERROR: NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS CON EL MISMO CODIGO</b></div><br>");} ?>
+	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?>
 	  <p>
         <select name="tipo" id="tipo">
           <option value="0">Seleccione Tipo de Practica</option>

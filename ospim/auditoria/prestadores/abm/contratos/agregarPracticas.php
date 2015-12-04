@@ -56,20 +56,18 @@ try {
 		//print($sqlInsert."<br>");
 		$dbh->exec($sqlInsert);
 	}
-	
 	$dbh->commit();
 	$pagina = "modificarPracticasContrato.php?codigo=$idPrestador&idcontrato=$idcontrato";
 	Header("Location: $pagina"); 
 } catch (PDOException $e) {
 	$dbh->rollback();
 	$error = $e->getMessage();
-	if (stripos($error,'Integrity constraint violation: 1062 Entrada duplicada') !== FALSE ) {
-		$pagina = "modificarContrato.php?codigo=$idPrestador&error=1";
+	if (stripos($error,'Integrity constraint violation') !== FALSE ) {
+		$pagina = "modificarPracticasContrato.php?codigo=$idPrestador&idcontrato=$idcontrato&error=1";
 		Header("Location: $pagina"); 
 	} else {
 		echo $error;
 	}
-	
 }
 
 ?>
