@@ -3,33 +3,48 @@ include($libPath."controlSessionOspim.php");
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 
-var_dump($_POST);
-$codigo = $_GET['codigo'];
+$idPrestador = $_GET['codigo'];
 $idcontrato = $_GET['idcontrato'];
-$datos = array();
 $i=0;
 $arranca = 0;
-while ($dato = current($_POST)) {
-	$key = key($_POST);
-	print($key." -> ".$dato."<br>");
-	if ($arranca == 0) {
-		if (strcmp($key, "arranca") !== 0) {
-			next($_POST);
-		} else {
-			next($_POST);
-			$arranca = 1;
-		}
-	} else {
-		if (strcmp($key, "agregar") !== 0) {
-			$datos[$i] = $dato;
-			$i++;
-			next($_POST);
-		} else {
-			next($_POST);
+
+$selectTipo = $_POST['tipo'];
+$arrayTipo = explode("-",$selectTipo);
+$nomenclador = $arrayTipo[1];
+foreach($_POST as $key => $value) {
+	$tipoCarga = strpos($key, "tipoCarga");
+	if($tipoCarga !== FALSE) {
+		if ($value != 0) {
+			$arrayKey = explode("-",$key);
+			$codigo = $arrayKey[1];
+			if ($value == 1) {
+				$id = "moduloConultorio-".$codigo;
+				$moduloConsultorio = $_POST[$id];
+				$id = "moduloUrgencia-".$codigo;
+				$moduloUrgencia = $_POST[$id];
+				$codigo = str_replace("_",".",$codigo);
+				$arrayInsert[$i] = "INSERT INTO detcontratoprestador VALUES
+									($idcontrato,'$codigo',$nomenclador,$moduloConsultorio,$moduloUrgencia,'NULL','NULL','NULL','NULL','NULL','$fecharegistro','$usuarioregistro')";
+				$i++;
+			} else {
+				$id = "gHono-".$codigo;
+				$gHono = $_POST[$id];
+				$id = "gHonoEspe-".$codigo;
+				$gHonoEspe = $_POST[$id];
+				$id = "gHonoAyud-".$codigo;
+				$gHonoAyud = $_POST[$id];
+				$id = "gHonoAnes-".$codigo;
+				$gHonoAnes = $_POST[$id];
+				$id = "gGastos-".$codigo;
+				$gGastos = $_POST[$id];
+				$codigo = str_replace("_",".",$codigo);
+				$arrayInsert[$i] = "INSERT INTO detcontratoprestador VALUES
+									($idcontrato,'$codigo',$nomenclador,'NULL','NULL',$gHono,$gHonoEspe,$gHonoAyud,$gHonoAnes,$gGastos,'$fecharegistro','$usuarioregistro')";
+				$i++;	
+			}
 		}
 	}
 }
-var_dump($datos);
 
 try {
 	$hostname = $_SESSION['host'];
@@ -37,30 +52,19 @@ try {
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
-	for ($i = 0; $i < sizeof($datos); $i++) {
-		$nomenclador = $datos[$i];
-		$i++;
-		if ($nomenclador == 1) {
-			$valor = "0.00";
-			$codigopractica = $datos[$i];
-		}
-		if ($nomenclador == 2) {
-			$valor = number_format($datos[$i],2,'.','');
-			$i++;
-			$codigopractica = $datos[$i];
-		}
-		$sqlInsertPractica = "INSERT INTO detcontratoprestador VALUES($idcontrato,'$codigopractica',$nomenclador,$valor,'$fecharegistro','$usuarioregistro')";
-		//print($sqlInsertPractica."<br>");
-		$dbh->exec($sqlInsertPractica);
+	foreach ($arrayInsert as $sqlInsert) {
+		//print($sqlInsert."<br>");
+		$dbh->exec($sqlInsert);
 	}
+	
 	$dbh->commit();
-	$pagina = "modificarPracticasContrato.php?codigo=$codigo&idcontrato=$idcontrato";
+	$pagina = "modificarPracticasContrato.php?codigo=$idPrestador&idcontrato=$idcontrato";
 	Header("Location: $pagina"); 
 } catch (PDOException $e) {
 	$dbh->rollback();
 	$error = $e->getMessage();
 	if (stripos($error,'Integrity constraint violation: 1062 Entrada duplicada') !== FALSE ) {
-		$pagina = "modificarContrato.php?codigo=$codigo&error=1";
+		$pagina = "modificarContrato.php?codigo=$idPrestador&error=1";
 		Header("Location: $pagina"); 
 	} else {
 		echo $error;

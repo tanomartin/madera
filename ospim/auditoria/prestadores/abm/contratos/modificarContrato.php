@@ -5,7 +5,7 @@ include($libPath."funcionespracticas.php");
 
 $codigo = $_GET['codigo'];
 $idcontrato = $_GET['idcontrato'];
-$sqlConsultaPresta = "SELECT codigoprestador, nombre, nomenclador FROM prestadores WHERE codigoprestador = $codigo";
+$sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
