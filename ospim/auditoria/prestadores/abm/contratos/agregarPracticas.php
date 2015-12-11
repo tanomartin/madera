@@ -20,8 +20,10 @@ foreach($_POST as $key => $value) {
 			if ($value == 1) {
 				$id = "moduloConultorio-".$codigo;
 				$moduloConsultorio = $_POST[$id];
+				if($moduloConsultorio == '') { $moduloConsultorio = 0; }
 				$id = "moduloUrgencia-".$codigo;
 				$moduloUrgencia = $_POST[$id];
+				if($moduloUrgencia == '') { $moduloUrgencia = 0; }
 				$codigo = str_replace("_",".",$codigo);
 				$arrayInsert[$i] = "INSERT INTO detcontratoprestador VALUES
 									($idcontrato,'$codigo',$nomenclador,$moduloConsultorio,$moduloUrgencia,'NULL','NULL','NULL','NULL','NULL','$fecharegistro','$usuarioregistro')";
@@ -29,14 +31,19 @@ foreach($_POST as $key => $value) {
 			} else {
 				$id = "gHono-".$codigo;
 				$gHono = $_POST[$id];
+				if($gHono == '') { $gHono = 0; }
 				$id = "gHonoEspe-".$codigo;
 				$gHonoEspe = $_POST[$id];
+				if($gHonoEspe == '') { $gHonoEspe = 0; }
 				$id = "gHonoAyud-".$codigo;
 				$gHonoAyud = $_POST[$id];
+				if($gHonoAyud == '') { $gHonoAyud = 0; }
 				$id = "gHonoAnes-".$codigo;
 				$gHonoAnes = $_POST[$id];
+				if($gHonoAnes == '') { $gHonoAnes = 0; }
 				$id = "gGastos-".$codigo;
 				$gGastos = $_POST[$id];
+				if($gGastos == '') { $gGastos = 0; }
 				$codigo = str_replace("_",".",$codigo);
 				$arrayInsert[$i] = "INSERT INTO detcontratoprestador VALUES
 									($idcontrato,'$codigo',$nomenclador,'NULL','NULL',$gHono,$gHonoEspe,$gHonoAyud,$gHonoAnes,$gGastos,'$fecharegistro','$usuarioregistro')";

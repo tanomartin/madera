@@ -134,12 +134,47 @@ A:hover {text-decoration: none;color:#00FFFF }
 		} 
 	}
 	
-	function validar(formulario) {
+	function validarDelete(formulario) {
 		$.blockUI({ message: "<h1>Eliminando Practicas Seleccionadas</h1>" });
 		return true;
 	}
 	
 	function validarAdd(formulario) {
+		for (var i=0;i<formulario.elements.length;i++) {
+			var elemento = formulario.elements[i];
+			if (elemento.id.indexOf("tipoCarga") !== -1 && elemento.value != 0) {
+				var idArray = elemento.id.split("-");
+				if (elemento.value == 1) {
+					var consultorioId = "moduloConultorio-"+idArray[1];
+					var urgenciaId = "moduloUrgencia-"+idArray[1];
+					var moduloConsu = document.getElementById(consultorioId);
+					var moduloUrgen = document.getElementById(urgenciaId);
+					if (!isNumberPositivo(moduloConsu.value) || !isNumberPositivo(moduloUrgen.value)) {
+						alert("Los valores por modulo deben ser numeros positivos");
+						moduloConsu.focus();
+						return false;
+					}
+				} else {
+					var honoId = "gHono-"+idArray[1];
+					var honoEspeId = "gHonoEspe-"+idArray[1];
+					var honoAyudId = "gHonoAyud-"+idArray[1];
+					var honoAnesId = "gHonoAnes-"+idArray[1];
+					var honoGastosid = "gGastos-"+idArray[1];
+					var hono = document.getElementById(honoId);
+					var honoEspe = document.getElementById(honoEspeId);
+					var honoAyud = document.getElementById(honoAyudId);
+					var honoAnes = document.getElementById(honoAnesId);
+					var honoGastos = document.getElementById(honoGastosid);
+					if (!isNumberPositivo(hono.value) || !isNumberPositivo(honoEspe.value) || 
+						!isNumberPositivo(honoAyud.value) || !isNumberPositivo(honoAnes.value) || 
+						!isNumberPositivo(honoGastos.value)) {
+						alert("Los valores por galeno deben ser numeros positivos");
+						hono.focus();
+						return false;
+					}
+				}
+			}
+		}
 		$.blockUI({ message: "<h1>Agregando Practicas Seleccionadas</h1>" });
 		return true;
 	}
@@ -282,7 +317,7 @@ jQuery(function($){
   
   <!--******************************************************************************************************************************************************************** -->
  
-  <form name="editarContrato" id="editarContrato" onsubmit="return validar(this)" method="post" action="eliminarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
+  <form name="editarContrato" id="editarContrato" onsubmit="return validarDelete(this)" method="post" action="eliminarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
     <p><strong>Pr&aacute;cticas dentro del contrato </strong></p>
 		<?php 
   		$sqlPracticas = "SELECT pr.*,
