@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-12-2015 a las 17:29:18
+-- Tiempo de generación: 14-12-2015 a las 18:31:58
 -- Versión del servidor: 5.6.11-log
--- Versión de PHP: 5.2.17
+-- Versión de PHP: 5.3.27
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -672,7 +672,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 -- --------------------------------------------------------
 
@@ -1431,8 +1431,7 @@ CREATE TABLE IF NOT EXISTS `detallepadroncapitados` (
 
 CREATE TABLE IF NOT EXISTS `detcontratoprestador` (
   `idcontrato` int(4) NOT NULL,
-  `codigopractica` char(8) NOT NULL,
-  `nomenclador` int(1) unsigned NOT NULL,
+  `idpractica` int(8) NOT NULL,
   `moduloconsultorio` decimal(10,2) DEFAULT NULL,
   `modulourgencia` decimal(10,2) DEFAULT NULL,
   `galenohonorario` decimal(6,0) DEFAULT NULL,
@@ -1442,7 +1441,7 @@ CREATE TABLE IF NOT EXISTS `detcontratoprestador` (
   `galenogastos` decimal(6,2) DEFAULT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
-  PRIMARY KEY (`idcontrato`,`codigopractica`,`nomenclador`)
+  PRIMARY KEY (`idcontrato`,`idpractica`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
