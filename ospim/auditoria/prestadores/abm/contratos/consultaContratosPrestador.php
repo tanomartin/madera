@@ -89,8 +89,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 			</thead>
 			<tbody>
 			  <?php
-			while($rowCabContrato = mysql_fetch_array($resCabContrato)) {
-		?>
+			while($rowCabContrato = mysql_fetch_array($resCabContrato)) { ?>
 			  <tr>
 				<td><?php echo $rowCabContrato['idcontrato'];?></td>
 				<td><?php echo invertirFecha($rowCabContrato['fechainicio']);?></td>
@@ -101,7 +100,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 						  }
 						 ?>
 				</td>
-				<td><input type="button" value="Ver Practicas" name="verpracticas" id="verpracticas" /></td>
+				<td><input type="button" value="Practicas" name="verpracticas" id="verpracticas" onclick="location.href = 'consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>' " /></td>
 			  </tr>
 			  <?php
 			}

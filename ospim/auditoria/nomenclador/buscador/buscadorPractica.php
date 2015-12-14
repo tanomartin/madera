@@ -168,7 +168,7 @@ function validar(formulario) {
 			 <td><?php echo $rowPractica['unihonorarioanestesista'];?></td>
 			 <td><?php echo $rowPractica['unigastos'];?></td>
 			 <td><?php echo $rowPracticas['complejidad']; ?></td>
-			 <td><input name="contrato" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?codigo=<?php echo $rowPracticas['codigopractica'] ?>&nomenclador=<?php echo $rowPracticas['nomenclador'] ?>')"/></td>
+			 <td><input name="contrato" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/></td>
 		   </tr>
        <?php
 			}

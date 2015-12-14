@@ -1,9 +1,8 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
-$codigo = $_GET['codigo'];
-$nomenclador = $_GET['nomenclador'];
+$idpractica = $_GET['idpractica'];
 
-$sqlNombrePractica = "SELECT descripcion FROM practicas WHERE codigopractica = '$codigo'";
+$sqlNombrePractica = "SELECT codigopractica, descripcion FROM practicas WHERE idpractica = $idpractica";
 $resNombrePractica = mysql_query($sqlNombrePractica,$db);
 $rowNombrePractica = mysql_fetch_array($resNombrePractica);
 
@@ -15,12 +14,11 @@ $sqlPracticas = "SELECT pr.*, det.*, presta.codigoprestador, presta.nombre, pres
 					prestadores presta,
 					nomencladores nom
 				 WHERE
-					det.codigopractica = '$codigo' and
+					det.idpractica = $idpractica and
 					det.idcontrato = cab.idcontrato and
 					cab.codigoprestador = presta.codigoprestador and
-					det.nomenclador = $nomenclador and
-					det.codigopractica = pr.codigopractica and
-					det.nomenclador = pr.nomenclador and
+					pr.nomenclador = nom.id and
+					det.idpractica = pr.idpractica and
 					pr.nomenclador = nom.id";
 $resPracticas = mysql_query($sqlPracticas,$db);
 $catPracticas = mysql_num_rows($resPracticas);
@@ -86,7 +84,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorPractica.php">
   <p align="center"><span class="Estilo1">Listado de Prestadores que contiene la Pr&aacute;ctica </span></p>
-  <p align="center" class="Estilo1"><?php echo $codigo." - ".$rowNombrePractica['descripcion'] ?></p>
+  <p align="center" class="Estilo1"><?php echo $rowNombrePractica['codigopractica']." - ".$rowNombrePractica['descripcion'] ?></p>
   <div align="center">
   <?php if (sizeof($resultado) > 0) { ?>
 	  <table style="text-align:center; width:1000px" id="prestadores" class="tablesorter" >
