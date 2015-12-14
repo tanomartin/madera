@@ -89,22 +89,22 @@ A:hover {text-decoration: none;color:#00FFFF }
 		$.unblockUI(); 
 	});
 	
-	function habilitarValores(nomenclador,practica,seleccion) {
+	function habilitarValores(idpractica,seleccion) {
 		var opcion = seleccion.options[seleccion.selectedIndex].value;
 
-		var idname = "moduloConultorio-"+practica;
+		var idname = "moduloConultorio-"+idpractica;
 		var modCons = document.getElementById(idname);
-		idname = "moduloUrgencia-"+practica;
+		idname = "moduloUrgencia-"+idpractica;
 		var modUrge = document.getElementById(idname);
-		idname = "gHono-"+practica;
+		idname = "gHono-"+idpractica;
 		var gHono = document.getElementById(idname);
-		idname = "gHonoEspe-"+practica;
+		idname = "gHonoEspe-"+idpractica;
 		var gHonoEspe = document.getElementById(idname);
-		idname = "gHonoAyud-"+practica;
+		idname = "gHonoAyud-"+idpractica;
 		var gHonoAyud = document.getElementById(idname);
-		idname = "gHonoAnes-"+practica;
+		idname = "gHonoAnes-"+idpractica;
 		var gHonoAnes = document.getElementById(idname);
-		idname = "gGastos-"+practica;
+		idname = "gGastos-"+idpractica;
 		var gGastos = document.getElementById(idname);
 		gHono.value = '';
 		gHonoEspe.value = '';
@@ -336,8 +336,7 @@ jQuery(function($){
   									c.codigoprestador = $codigo and 
   									c.idcontrato = $idcontrato and 
   									c.idcontrato = p.idcontrato and 
-  									p.codigopractica = pr.codigopractica and 
-  									p.nomenclador = pr.nomenclador and 
+  									p.idpractica = pr.idpractica and 
   									pr.nomenclador = n.id and
   									pr.tipopractica = t.id and 
   									pr.codigocomplejidad = tc.codigocomplejidad";
@@ -345,7 +344,7 @@ jQuery(function($){
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas > 0) {
  		 ?>
-        <table style="text-align:center; width:1000px" id="practicaencontrato" class="tablesorter" >
+        <table style="text-align:center; width:1000px; font-size: 13px" id="practicaencontrato" class="tablesorter" >
           <thead>
             <tr>
               <th>C&oacute;digo</th>
@@ -384,7 +383,7 @@ jQuery(function($){
 				  <td><?php echo $rowPracticas['galenohonorarioayudante'];?></td>
 				  <td><?php echo $rowPracticas['galenohonorarioanestesista'];?></td>
 				  <td><?php echo $rowPracticas['galenogastos'];?></td>
-				  <td><input type='checkbox' name='<?php echo $rowPracticas["codigopractica"]; ?>' id='practicasactuales' value='<?php echo $rowPracticas["codigopractica"]; ?>' /></td>	   
+				  <td><input type='checkbox' name='<?php echo $rowPracticas["idpractica"]; ?>' id='practicasactuales' value='<?php echo $rowPracticas["idpractica"]; ?>' /></td>	   
 				</tr>
          <?php } ?>
           </tbody>
@@ -420,7 +419,7 @@ jQuery(function($){
           <option value="0">Seleccione SubCapitulo</option>
         </select>
       </p>
-	 <table style="text-align:center; width:1000px" id="practicas" class="tablesorter" >
+	 <table style="text-align:center; width:1000px; font-size: 13px" id="practicas" class="tablesorter" >
 		 <thead>
 		 </thead>
 		 <tbody>

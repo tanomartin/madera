@@ -11,8 +11,8 @@ try {
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
-	foreach ($datos as $codigopractica) {
-		$sqlDeletePractica = "DELETE FROM detcontratoprestador WHERE idcontrato = $idcontrato and codigopractica = '$codigopractica'";
+	foreach ($datos as $idpractica) {
+		$sqlDeletePractica = "DELETE FROM detcontratoprestador WHERE idcontrato = $idcontrato and idpractica = $idpractica";
 		//print($sqlDeletePeriodo."<br>");
 		$dbh->exec($sqlDeletePractica);
 	}

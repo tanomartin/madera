@@ -39,13 +39,13 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
-		$id = $rowPractica['codigopractica'];
+		$id = $rowPractica['idpractica'];
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['nombrenomenclador']."</td>
 						<td>".$rowPractica['descripcion']."</td>
 						<td>".$rowPractica['complejidad']."</td>
-						<td><select id='tipoCarga-".$id."' name='tipoCarga-".$id."' onchange=habilitarValores('".$rowPractica['nomenclador']."','".$rowPractica['codigopractica']."',this)>
+						<td><select id='tipoCarga-".$id."' name='tipoCarga-".$id."' onchange=habilitarValores('".$id."',this)>
 								<option value='0'>Tipo Carga</opction>
 								<option value='1'>Por Modulo</opction>
 								<option value='2'>Por Galeno</opction>

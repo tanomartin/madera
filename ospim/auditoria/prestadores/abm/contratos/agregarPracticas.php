@@ -16,37 +16,35 @@ foreach($_POST as $key => $value) {
 	if($tipoCarga !== FALSE) {
 		if ($value != 0) {
 			$arrayKey = explode("-",$key);
-			$codigo = $arrayKey[1];
+			$idpractica = $arrayKey[1];
 			if ($value == 1) {
-				$id = "moduloConultorio-".$codigo;
+				$id = "moduloConultorio-".$idpractica;
 				$moduloConsultorio = $_POST[$id];
 				if($moduloConsultorio == '') { $moduloConsultorio = 0; }
-				$id = "moduloUrgencia-".$codigo;
+				$id = "moduloUrgencia-".$idpractica;
 				$moduloUrgencia = $_POST[$id];
 				if($moduloUrgencia == '') { $moduloUrgencia = 0; }
-				$codigo = str_replace("_",".",$codigo);
 				$arrayInsert[$i] = "INSERT INTO detcontratoprestador VALUES
-									($idcontrato,'$codigo',$nomenclador,$moduloConsultorio,$moduloUrgencia,'NULL','NULL','NULL','NULL','NULL','$fecharegistro','$usuarioregistro')";
+									($idcontrato,$idpractica,$moduloConsultorio,$moduloUrgencia,'NULL','NULL','NULL','NULL','NULL','$fecharegistro','$usuarioregistro')";
 				$i++;
 			} else {
-				$id = "gHono-".$codigo;
+				$id = "gHono-".$idpractica;
 				$gHono = $_POST[$id];
 				if($gHono == '') { $gHono = 0; }
-				$id = "gHonoEspe-".$codigo;
+				$id = "gHonoEspe-".$idpractica;
 				$gHonoEspe = $_POST[$id];
 				if($gHonoEspe == '') { $gHonoEspe = 0; }
-				$id = "gHonoAyud-".$codigo;
+				$id = "gHonoAyud-".$idpractica;
 				$gHonoAyud = $_POST[$id];
 				if($gHonoAyud == '') { $gHonoAyud = 0; }
-				$id = "gHonoAnes-".$codigo;
+				$id = "gHonoAnes-".$idpractica;
 				$gHonoAnes = $_POST[$id];
 				if($gHonoAnes == '') { $gHonoAnes = 0; }
-				$id = "gGastos-".$codigo;
+				$id = "gGastos-".$idpractica;
 				$gGastos = $_POST[$id];
 				if($gGastos == '') { $gGastos = 0; }
-				$codigo = str_replace("_",".",$codigo);
 				$arrayInsert[$i] = "INSERT INTO detcontratoprestador VALUES
-									($idcontrato,'$codigo',$nomenclador,'NULL','NULL',$gHono,$gHonoEspe,$gHonoAyud,$gHonoAnes,$gGastos,'$fecharegistro','$usuarioregistro')";
+									($idcontrato,$idpractica,'NULL','NULL',$gHono,$gHonoEspe,$gHonoAyud,$gHonoAnes,$gGastos,'$fecharegistro','$usuarioregistro')";
 				$i++;	
 			}
 		}
