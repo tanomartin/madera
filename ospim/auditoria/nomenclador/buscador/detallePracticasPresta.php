@@ -118,9 +118,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				 <td><?php echo $practica['galenohonorarioanestesista'] ?></td>
 				 <td><?php echo $practica['galenogastos'] ?></td>
 			   </tr>
-		   <?php
-				}
-			?>
+		   <?php } ?>
 		 </tbody>
 	   </table>
 	  <?php } else {

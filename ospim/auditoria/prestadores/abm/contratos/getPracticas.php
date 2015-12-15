@@ -46,9 +46,9 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 						<td>".$rowPractica['descripcion']."</td>
 						<td>".$rowPractica['complejidad']."</td>
 						<td><select id='tipoCarga-".$id."' name='tipoCarga-".$id."' onchange=habilitarValores('".$id."',this)>
-								<option value='0'>Tipo Carga</opction>
-								<option value='1'>Por Modulo</opction>
-								<option value='2'>Por Galeno</opction>
+								<option value='0'>Tipo Carga</option>
+								<option value='1'>Por Modulo</option>
+								<option value='2'>Por Galeno</option>
 							</select>
 						</td>
 						<td><input id='moduloConultorio-".$id."' name='moduloConultorio-".$id."' type='text' disabled=true size='7'/></td>

@@ -133,7 +133,7 @@ function validar(formulario) {
   </p>
   <div align="center">
    <?php if ($noExiste == 0 and isset($dato)) { 
-  ?>    <table style="text-align:center; width:1000px" id="practicas" class="tablesorter" >
+  ?>    <table style="text-align:center; width:1000px; font-size: 13px" id="practicas" class="tablesorter" >
      <thead>
        <tr>
          <th>C&oacute;digo</th>
@@ -162,13 +162,16 @@ function validar(formulario) {
 			 <td><?php echo $descripPractica['capitulo'] ?></td>
 			 <td><?php echo $descripPractica['subcapitulo'] ?></td>
 			 <td><?php echo $rowPracticas['descripcion'];?></td>
-			 <td><?php echo $rowPractica['unihonorario'];?></td>
-			 <td><?php echo $rowPractica['unihonorarioespecialista'];?></td>
-			 <td><?php echo $rowPractica['unihonorarioayudante'];?></td>
-			 <td><?php echo $rowPractica['unihonorarioanestesista'];?></td>
-			 <td><?php echo $rowPractica['unigastos'];?></td>
+			 <td><?php echo $rowPracticas['unihonorario'];?></td>
+			 <td><?php echo $rowPracticas['unihonorarioespecialista'];?></td>
+			 <td><?php echo $rowPracticas['unihonorarioayudante'];?></td>
+			 <td><?php echo $rowPracticas['unihonorarioanestesista'];?></td>
+			 <td><?php echo $rowPracticas['unigastos'];?></td>
 			 <td><?php echo $rowPracticas['complejidad']; ?></td>
-			 <td><input name="contrato" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/></td>
+			 <td>
+			 	 <input name="prestadores" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>
+			 	 <input name="agregar" type="button" value="Agregar Prestador" onclick="abrirPantalla('agregarPracticaPrestador.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>
+			 </td>
 		   </tr>
        <?php
 			}
