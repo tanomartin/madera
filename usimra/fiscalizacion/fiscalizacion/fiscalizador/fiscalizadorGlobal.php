@@ -248,6 +248,7 @@ function deudaNominal($arrayFinal) {
 	$totalDeuda = 0;
 	$alicuota = 0.031;
 	foreach ($arrayFinal as $perido){
+		//var_dump($perido);echo("<br>");
 		$totalDeuda = $totalDeuda + $perido['deuda'];
 	}
 	return($totalDeuda);
@@ -401,7 +402,6 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 			}
 			$ano++;
 		}
-		//var_dump($arrayFinal);
 		
 		$deudaNominal = deudaNominal($arrayFinal);
 		//print("CUIT: ".$cuit." - DEUDA: ".$deudaNominal."<br>");
