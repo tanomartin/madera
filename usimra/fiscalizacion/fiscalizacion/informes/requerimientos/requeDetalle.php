@@ -5,7 +5,7 @@ include($libPath."fechas.php");
 $nroreq = $_GET['nroreq'];
 $cuit = $_GET['cuit'];
 
-$sqlDeta = "SELECT * from detfiscalizospim where nrorequerimiento = '$nroreq'";
+$sqlDeta = "SELECT * from detfiscalizusimra where nrorequerimiento = '$nroreq'";
 $resDeta = mysql_query($sqlDeta,$db);
 
 
