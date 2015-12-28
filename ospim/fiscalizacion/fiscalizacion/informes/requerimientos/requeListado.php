@@ -70,6 +70,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
+
+	function detalleRequerimiento(dire) {
+		c= window.open(dire,"Detalle Requerimiento","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+	}
+	
 </script>
 </head>
 
@@ -77,7 +82,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
 	 <input type="button" class="nover" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'" />
 	<p><span class="Estilo2">Resultado de Busqueda de Requerimientos </span></p>
-	<table class="tablesorter" id="listado" style="width:900px; font-size:14px">
+	<table class="tablesorter" id="listado" style="width:900px; font-size:14px; text-align: center;">
 	<thead>
 		<tr>
 			<th>Nro.</th>
@@ -88,40 +93,42 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<th>Proceso Asignado</th>
 			<th>U. Registro</th>
 			<th>U. Modificación</th>
+			<th>Accion</th>
 		</tr>
 	</thead>
 	<tbody>
 		<?php
 		while($rowReque = mysql_fetch_assoc($resReque)) {
-		?>
-		<tr align="center">
-			<td><?php echo $rowReque['nrorequerimiento'];?></td>
-			<td><?php echo invertirFecha($rowReque['fecharequerimiento']);?></td>
-			<td><?php echo $rowReque['cuit'];?></td>
-			<td><?php echo $rowReque['nombre'];?></td>
-			<td><?php echo $rowReque['delega'];?></td>
-			<td><?php 
-					if ($rowReque['requerimientoanulado'] == 1) {
-						echo "Anulado - ".$rowReque['motivoanulacion'];
-					} else {	
-						if ($rowReque['procesoasignado'] == 0) {
-							echo "No Atendido";
-						}
-						if ($rowReque['procesoasignado'] == 1) {
-							echo "Liquidado";
-						}
-						if ($rowReque['procesoasignado'] == 2) {
-							echo "En Inspección";
-						}
+			$linkDetalle = "requeDetalle.php?nroreq=".$rowReque['nrorequerimiento']."&cuit=".$rowReque['cuit']; ?>
+			<tr align="center">
+				<td><?php echo $rowReque['nrorequerimiento'];?></td>
+				<td><?php echo invertirFecha($rowReque['fecharequerimiento']);?></td>
+				<td><?php echo $rowReque['cuit'];?></td>
+				<td><?php echo $rowReque['nombre'];?></td>
+				<td><?php echo $rowReque['delega'];?></td>
+				<td><?php 
 						if ($rowReque['requerimientoanulado'] == 1) {
 							echo "Anulado - ".$rowReque['motivoanulacion'];
+						} else {	
+							if ($rowReque['procesoasignado'] == 0) {
+								echo "No Atendido";
+							}
+							if ($rowReque['procesoasignado'] == 1) {
+								echo "Liquidado";
+							}
+							if ($rowReque['procesoasignado'] == 2) {
+								echo "En Inspección";
+							}
+							if ($rowReque['requerimientoanulado'] == 1) {
+								echo "Anulado - ".$rowReque['motivoanulacion'];
+							}	
 						}	
-					}	
-				?>
-			</td>
-			<td><?php echo $rowReque['usuarioregistro'];?></td>
-			<td><?php echo $rowReque['usuariomodificacion'];?></td>
-		</tr>
+					?>
+				</td>
+				<td><?php echo $rowReque['usuarioregistro'];?></td>
+				<td><?php echo $rowReque['usuariomodificacion'];?></td>
+				<td class="nover"><input type="button" value="Detalle" onclick="detalleRequerimiento('<?php echo $linkDetalle ?>')" /></td>
+			</tr>
 		<?php
 		}
 		?>
