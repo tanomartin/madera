@@ -28,7 +28,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
-		$practica = $rowPractica['codigopractica'];
+		$practica = $rowPractica['idpractica'];
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
@@ -38,7 +38,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 						<td>".$rowPractica['unihonorarioanestesista']."</td>
 						<td>".$rowPractica['unigastos']."</td>
 						<td>".$rowPractica['complejidad']."</td>
-						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?codigo=$practica&nomenclador=1')\"/></td>
+						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?idpractica=$practica&nomenclador=1')\"/></td>
 					</tr>";
 	}
 	$respuesta.="</tbody>";
