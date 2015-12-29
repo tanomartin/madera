@@ -53,18 +53,24 @@ A:hover {text-decoration: none;color:#00FFFF }
 					$mes = $rowDeta['mesfiscalizacion'];
 					$id = $ano."-".$mes;
 					print("<td width='65'>".$rowDeta['mesfiscalizacion']."-".$ano."</td>");
-					if ($rowDeta['statusfiscalizacion'] == 'S') {
+		  			if ($rowDeta['statusfiscalizacion'] == 'S') {
 						$status = "S/DDJJ";
 					}
 					if ($rowDeta['statusfiscalizacion'] == 'A') {
 						$status = "Deuda";
 					}
+					if ($rowDeta['statusfiscalizacion'] == 'U') {
+						$status = "Base USIMRA";
+					}
 					if ($rowDeta['statusfiscalizacion'] == 'F') {
 						$status = "P.F.T.";
-					} 
+					}
 					if ($rowDeta['statusfiscalizacion'] == 'M') {
-						$status = "Ap.Menor.";
-					}  
+						$status = "A.M.";
+					}
+					if ($rowDeta['statusfiscalizacion'] == 'O') {
+						$status = "Base OSPIM";
+					} 
 					print("<td>".$status."</td>");   
 					print("<td>".$rowDeta['remundeclarada']."</td>");   
 					print("<td>".$rowDeta['cantidadpersonal']."</td>"); 
