@@ -427,7 +427,7 @@ function validar(formulario) {
 	    	  			$result=mysql_query($query,$db);  
 	    	  			$i = 0;
             			while ($rownom=mysql_fetch_array($result)) { ?>
-						  	<input name="<?php echo "nomenclador".$i ?>" id="nomenclador" type="checkbox"/><?php echo $rownom['nombre']." | "; ?>
+						  	<input value="<?php echo $rownom['id']?>" name="<?php echo "nomenclador".$i ?>" id="nomenclador" type="checkbox"/><?php echo $rownom['nombre']." | "; ?>
 				  <?php 	$i++;
 						} ?>
         </div></td>

@@ -44,7 +44,7 @@ try {
 		if (strpos($key ,'servicio') !== false) {
 			$servicio = $_POST[$key];
 			$sqlInsertServicio = "INSERT INTO prestadorservicio VALUE($codigoNextPresta, $servicio)";
-			//print($sqlInsertServicio."<br>");
+			print($sqlInsertServicio."<br>");
 			$dbh->exec($sqlInsertServicio);
 		}
 	}
