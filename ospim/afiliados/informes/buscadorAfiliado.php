@@ -25,7 +25,7 @@ $existeFamiliaBaja = 0;
 $encontro = 0;
 $resultado = array();
 if (isset($dato)) {
-	$sqlSele = "select * from ";
+	$sqlSele = "select nroafiliado,cuil,apellidoynombre,tipodocumento,nrodocumento,sexo from ";
 	if ($filtro == 0) {
 		$where = "where nroafiliado = $dato";
 	}
