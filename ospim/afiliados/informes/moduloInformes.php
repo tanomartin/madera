@@ -41,7 +41,9 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><p align="center">Cantidad de Beneficiarios por Delegaci&oacute;n </p>
         <p align="center"><a class="enlace" href="cantBeneficiariosPorDelegacion.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
-      <td>&nbsp;</td>
+      <td><p align="center">Busqueda </p>
+        <p align="center"><a class="enlace" href="buscadorAfiliado.php"><img src="../img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>
     </tr>
   </table>
 </div>
