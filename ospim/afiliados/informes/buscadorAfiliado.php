@@ -175,6 +175,13 @@ function validar(formulario) {
 			return false;
 		} 
 	}
+	if (formulario.filtro[3].checked) {
+		var busqueda = formulario.dato.value;
+		if (busqueda.length < 4) {
+			alert("Debe buscar por lo menos con 4 caracteres por nombre");
+			return false;
+		} 
+	}
 	
 	$.blockUI({ message: "<h1>Generando Busqueda... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 	return true;
