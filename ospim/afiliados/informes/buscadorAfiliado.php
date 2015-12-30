@@ -192,7 +192,7 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorAfiliado.php">
   <div align="center">
-    <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'menuInformes.php'" />
+    <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" />
     <p align="center" class="Estilo1">M&oacute;dulo Buscador de Afiliado</p>
     <div align="center" class="nover"> 
 		<table style="width: 400; border: 0">
