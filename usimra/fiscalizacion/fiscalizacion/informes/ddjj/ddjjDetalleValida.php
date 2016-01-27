@@ -16,7 +16,7 @@ $sqlPeriodo = "SELECT * FROM periodosusimra where anio = $anoddjj and mes = $mes
 $resPeriodo = mysql_query($sqlPeriodo,$db);
 $rowPeriodo = mysql_fetch_assoc($resPeriodo);
 	
-$sqlDetalle = "SELECT * FROM detddjjusimra FORCE INDEX (busqueda) where cuit = $cuit and anoddjj = $anoddjj  and mesddjj = $mesddjj and nrocontrol = '$control'";
+$sqlDetalle = "SELECT * FROM detddjjusimra where cuit = $cuit and anoddjj = $anoddjj  and mesddjj = $mesddjj and nrocontrol = '$control'";
 $resDetalle = mysql_query($sqlDetalle,$db);
 $canDetalle = mysql_num_rows($resDetalle);
 
