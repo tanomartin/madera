@@ -11,7 +11,7 @@ try {
 	$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
 	$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbhInternet->beginTransaction();
-	$sth = $dbhInternet->prepare("SELECT delcod, nombre, acceso, fechaactualizacion FROM usuarios where delcod >= 1002 and delcod <= 3101 order by delcod");
+	$sth = $dbhInternet->prepare("SELECT delcod, nombre, acceso, fechaactualizacion FROM usuarios where delcod <= 3101 order by delcod");
 	$sth->execute();
 	$resultado = $sth->fetchAll();
 } catch (PDOException $e) {
