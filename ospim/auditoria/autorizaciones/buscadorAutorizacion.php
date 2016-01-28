@@ -21,15 +21,15 @@ if ($filtro == 3) {
 $noExiste = 0;
 $resultado = array();
 if (isset($dato)) {
-	if ($filtro == 0) { $sqlAutoriza = "SELECT a.*, d.nombre from autorizaciones a, delegaciones d where a.nrosolicitud = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+	if ($filtro == 0) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion, d.nombre from autorizaciones a, delegaciones d where a.nrosolicitud = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
 	if ($filtro == 1) { 
 		$dato = fechaParaGuardar($dato);
-		$sqlAutoriza = "SELECT a.*, d.nombre from autorizaciones a, delegaciones d where a.fechasolicitud = '$dato' and a.codidelega = d.codidelega order by nrosolicitud DESC"; 
+		$sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion, d.nombre from autorizaciones a, delegaciones d where a.fechasolicitud = '$dato' and a.codidelega = d.codidelega order by nrosolicitud DESC"; 
 	}
-	if ($filtro == 2) { $sqlAutoriza = "SELECT a.*, d.nombre from autorizaciones a, delegaciones d where a.cuil = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-	if ($filtro == 3) { $sqlAutoriza = "SELECT a.*, d.nombre from autorizaciones a, delegaciones d where a.codidelega = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-	if ($filtro == 4) { $sqlAutoriza = "SELECT a.*, d.nombre from autorizaciones a, delegaciones d where a.nroafiliado = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-	if ($filtro == 5) { $sqlAutoriza = "SELECT a.*, d.nombre from autorizaciones a, delegaciones d where a.apellidoynombre like '%$dato%' and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+	if ($filtro == 2) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion, d.nombre from autorizaciones a, delegaciones d where a.cuil = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+	if ($filtro == 3) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion, d.nombre from autorizaciones a, delegaciones d where a.codidelega = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+	if ($filtro == 4) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion, d.nombre from autorizaciones a, delegaciones d where a.nroafiliado = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+	if ($filtro == 5) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion, d.nombre from autorizaciones a, delegaciones d where a.apellidoynombre like '%$dato%' and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
 	$resAutoriza = mysql_query($sqlAutoriza,$db); 
 	$canAutoriza = mysql_num_rows($resAutoriza); 
 	if ($canAutoriza == 0) {
