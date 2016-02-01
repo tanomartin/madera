@@ -61,11 +61,12 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
 		
 	//DDJJ VALIDAS
-	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remuneraciones from detddjjusimra 
+	$sqlDDJJ = "select anoddjj, mesddjj, cuil, sum(remuneraciones) as remuneraciones from detddjjusimra 
 					where cuit = $cuit and cuil != '99999999999' and
 					((anoddjj > $anoinicio and anoddjj < $ultano) or 
 	   				 (anoddjj = $ultano and mesddjj <= $ultmes) or 
-	  				 (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
+	  				 (anoddjj = $anoinicio and mesddjj >= $mesinicio)) 
+					group by anoddjj, mesddjj, cuil";
 	$arrayDDJJ = array();
 	$resDDJJ = mysql_query($sqlDDJJ,$db);
 	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
@@ -73,6 +74,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		$id = $rowDDJJ['anoddjj'].$mes;
 		$idArray = $rowDDJJ['anoddjj'].$mes.$rowDDJJ['cuil'];
 		$arrayDDJJ[$idArray] = array ('origen' =>  1, 'datos' => $rowDDJJ, 'id' => $id);
+		$idArray++;
 	}
 	
 	//DDJJ TEMPORALES
@@ -110,11 +112,12 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	}
 	
 	//DDJJ OSPIM			 	
-	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, remundeclarada as remuneraciones from detddjjospim 
+	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, sum(remundeclarada) as remuneraciones from detddjjospim 
 						where cuit = $cuit and cuil != '99999999999' and
 							((anoddjj > $anoinicio and anoddjj < $ultano) or 
 							 (anoddjj = $ultano and mesddjj <= $ultmes) or 
-							 (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
+							 (anoddjj = $anoinicio and mesddjj >= $mesinicio))
+						group by anoddjj, mesddjj, cuil";
 	$resDDJJOspim = mysql_query($sqlDDJJOspim,$db);
 	while ($rowDDJJOspim = mysql_fetch_assoc($resDDJJOspim)) {
 		$mes = str_pad($rowDDJJOspim['mesddjj'],2,'0',STR_PAD_LEFT);
@@ -124,31 +127,38 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$arrayDDJJ[$idArray] = array ('origen' =>  2, 'datos' => $rowDDJJOspim, 'id' => $id);
 		}
 	}
+	
+	
 	ksort($arrayDDJJ);
 	
 	//NO REMUNERATIVO
-	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, d.remuneraciones
+	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, sum(d.remuneraciones) as remuneraciones
 						from detddjjusimra d, extraordinariosusimra e
-						where d.cuit = $cuit and d.anoddjj > $anoinicio and d.anoddjj <= $ultano and d.mesddjj > 12 and d.anoddjj = e.anio and d.mesddjj = e.mes"; 
+						where d.cuit = $cuit and d.anoddjj > $anoinicio and 
+							d.anoddjj <= $ultano and 
+							d.mesddjj > 12 and 
+							d.anoddjj = e.anio and 
+							d.mesddjj = e.mes
+						group by d.anoddjj, d.mesddjj, d.cuil"; 
+	print($sqlDDJJNR);
 	$resDDJJNR = mysql_query($sqlDDJJNR,$db);
 	$arrayNR = array();
 	while ($rowDDJJNR = mysql_fetch_assoc($resDDJJNR)) {
 		$mes = str_pad($rowDDJJNR['relacionmes'],2,'0',STR_PAD_LEFT);
 		$id = $rowDDJJNR['cuil'].$rowDDJJNR['anoddjj'].$mes;
-		$arrayNR[$id] =  array ('datos' => $rowDDJJNR);;
+		$arrayNR[$id] =  array ('datos' => $rowDDJJNR);
 	}
 	
 	foreach ($cuerpo as $lineaCuerpo) {
 		$linea = explode("|",$lineaCuerpo);
 		$fechaArray =  explode("/",$linea[0]);
+		$id = $fechaArray[2].$fechaArray[1];	
 		$tipoPeriodo = $linea[5];
-		$id = $fechaArray[2].$fechaArray[1];
-		$idBuscar[$id] = array('remun' => 0, 'norem' => 0);
 		if ($tipoPeriodo == 0) {
-			$idBuscar[$id]['remu'] += 1; 
+			$idBuscar[$id]['remun'] = 1; 
 		}
 		if ($tipoPeriodo == 1) {
-			$idBuscar[$id]['norem'] += 1; 
+			$idBuscar[$id]['norem'] = 1; 
 		}
 	}
 	
@@ -161,7 +171,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$ano = $ddjj['datos']['anoddjj'];
 			
 			//veo si tengo que incluir el remunerativo
-			if ($idBuscar[$id]['rem'] > 0) {
+			if ($idBuscar[$id]['remun'] == 1) {
 				$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');	
 			} else {
 				$remuDecl = 0;
@@ -169,13 +179,16 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
 				
 			//veo si tengo que incluir el no remunerativo
-			$idNR = $ddjj['datos']['cuil'].$ano.$mes;
-			if ($idBuscar[$id]['norem'] > 0) {
+			if ($idBuscar[$id]['norem'] == 1) {
+				$idNR = $ddjj['datos']['cuil'].$ano.$mes;
+				$mesNoRem = obtenerMesNoRem($mes, $ano, $db);
 				if (array_key_exists($idNR, $arrayNR)) {
 					$norem = $arrayNR[$idNR]['datos']['remuneraciones'];
 				} else {
-					$norem = calculoBaseCalculoNR($remuDecl, $mesNoRem, $ano, $db);
+					$norem = calculoBaseCalculoNR($ddjj['datos']['remuneraciones'], $mesNoRem, $ano, $db);
 				}
+			} else {
+				$norem = 0;
 			}
 			$norem = number_format($norem,2,',','');
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
