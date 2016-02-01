@@ -139,10 +139,17 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	}
 	
 	foreach ($cuerpo as $lineaCuerpo) {
-		$fecha = explode("|",$lineaCuerpo);
-		$fechaArray =  explode("/",$fecha[0]);
+		$linea = explode("|",$lineaCuerpo);
+		$fechaArray =  explode("/",$linea[0]);
+		$tipoPeriodo = $linea[5];
 		$id = $fechaArray[2].$fechaArray[1];
-		$idBuscar[$id] = $id;
+		$idBuscar[$id] = array('remun' => 0, 'norem' => 0);
+		if ($tipoPeriodo == 0) {
+			$idBuscar[$id]['remu'] += 1; 
+		}
+		if ($tipoPeriodo == 1) {
+			$idBuscar[$id]['norem'] += 1; 
+		}
 	}
 	
 	$c = 0;
@@ -152,25 +159,24 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		if (array_key_exists($id, $idBuscar)) {
 			$mes = str_pad($ddjj['datos']['mesddjj'],2,'0',STR_PAD_LEFT);
 			$ano = $ddjj['datos']['anoddjj'];
-			$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');
+			
+			//veo si tengo que incluir el remunerativo
+			if ($idBuscar[$id]['rem'] > 0) {
+				$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');	
+			} else {
+				$remuDecl = 0;
+			}
 			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
 				
+			//veo si tengo que incluir el no remunerativo
 			$idNR = $ddjj['datos']['cuil'].$ano.$mes;
-			$mesNoRem = obtenerMesNoRem($mes, $ano, $db);
-			if ($mesNoRem == 0) {
-				$debeIncluirNR = false;
-			} else {
-				$debeIncluirNR = incluyeNoRem($mesNoRem, $ano, $nroreqArc, $db);
-			}
-			
-			if ($debeIncluirNR) {
+			if ($idBuscar[$id]['norem'] > 0) {
 				if (array_key_exists($idNR, $arrayNR)) {
 					$norem = $arrayNR[$idNR]['datos']['remuneraciones'];
 				} else {
 					$norem = calculoBaseCalculoNR($remuDecl, $mesNoRem, $ano, $db);
 				}
 			}
-			
 			$norem = number_format($norem,2,',','');
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
 			
