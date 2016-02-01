@@ -35,7 +35,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<input name="cuit" type="text" value="<?php echo $cuit?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
 		<p class="Estilo2">Detalle del  Requerimiento Nro. <?php echo $nroreq ?></p>
-		<p class="Estilo2"><?php echo $cuit." - ".$rowEmpresa['nombre'] ?></p>
+		<p class="Estilo2"><?php echo $cuit." - ".$rowEmpresa['nombre'] ?> (U.S.I.M.R.A.)</p>
 		<table width="600" border="1" align="center" style="text-align: center;">
 		  <tr style="font-size:12px">
 			<th rowspan="2" width="65">Período</th>

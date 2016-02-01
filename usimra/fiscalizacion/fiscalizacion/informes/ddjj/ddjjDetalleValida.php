@@ -70,7 +70,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span class="Estilo2">Detalle de DDJJ Valida</span></p>
-  <p><span class="Estilo2">Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?></span></p>
+  <p><span class="Estilo2">Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (U.S.I.M.R.A.)</span></p>
   <p><span class="Estilo2"><?php echo $rowPeriodo['descripcion'] ?>  <?php echo $rowPeriodo['anio'] ?></span></p>
 	<table class="tablesorter" id="listado" style="width:600px; font-size:14px">
 	<thead>

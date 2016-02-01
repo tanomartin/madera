@@ -94,7 +94,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#B2A274">
 <div align="center">
 	 <input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'ddjjCuit.php'" />
-	<p><span class="Estilo2">D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> </span></p>
+	<p><span class="Estilo2">D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (U.S.I.M.R.A.) </span></p>
 	<p><span class="Estilo2">DDJJ Validas</span></p>
 	
 	<?php if ($canDdjjValidas != 0) { ?>

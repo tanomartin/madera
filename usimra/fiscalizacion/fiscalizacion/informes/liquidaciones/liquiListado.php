@@ -79,7 +79,7 @@ function abrirAcuInclu(dire) {
 <body bgcolor="#B2A274">
 <div align="center">
 	 <input type="button" name="volver" value="Volver" onclick="location.href = 'filtrosBusqueda.php'"/>
-	<p><span class="Estilo2">Liquidaciones</span></p>
+	<p><span class="Estilo2">Liquidaciones (U.S.I.M.R.A.)</span></p>
 	<table class="tablesorter" id="listado" style="width:1200px; font-size:14px">
 	<thead>
 		<tr>
