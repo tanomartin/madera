@@ -74,7 +74,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
 	 <input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'consultaddjj.php'" />
-	<p><span class="Estilo2">D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> </span></p>
+	<p><span class="Estilo2">D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (O.S.P.I.M.) </span></p>
 	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	<thead>
 		<tr>

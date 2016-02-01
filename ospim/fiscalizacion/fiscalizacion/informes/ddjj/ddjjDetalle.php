@@ -63,7 +63,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span class="Estilo2">Detalle de DDJJ Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?></span></p>
+  <p><span class="Estilo2">Detalle de DDJJ Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (O.S.P.I.M.)</span></p>
   <p><span class="Estilo2">Periodo: <?php echo $mesddjj ?>-<?php echo $anoddjj ?></span></p>
 	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	<thead>

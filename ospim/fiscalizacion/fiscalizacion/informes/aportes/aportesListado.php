@@ -73,7 +73,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
 	 <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'consultaAportes.php'" />
-	<p><span class="Estilo2">Aportes Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> </span></p>
+	<p><span class="Estilo2">Aportes Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (O.S.P.I.M.) </span></p>
 	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	<thead>
 		<tr>
