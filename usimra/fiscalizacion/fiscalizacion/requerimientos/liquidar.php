@@ -384,7 +384,6 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 
 /***********************************************************************************/
 
-
 $datos = array_values($_POST);
 $reqALiquidar = array();
 $resultado = array();
