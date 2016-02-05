@@ -6,7 +6,7 @@ $estafiliado=$_GET['estAfi'];
 $tipafiliado=$_GET['tipAfi'];
 
 if($tipafiliado == 1) {
-	$sqlLeeAfiliado = "SELECT apellidoynombre, cuil FROM titularesdebaja WHERE nroafiliado = $nroafiliado";
+	$sqlLeeAfiliado = "SELECT apellidoynombre, cuil, tipoafiliado, situaciontitularidad FROM titularesdebaja WHERE nroafiliado = $nroafiliado";
 }
 else {
 	$ordafiliado=$_GET['nroOrd'];
@@ -21,13 +21,17 @@ else {
 $resLeeAfiliado = mysql_query($sqlLeeAfiliado,$db);
 $rowLeeAfiliado = mysql_fetch_array($resLeeAfiliado);
 
-$cuilafiliado = $rowLeeAfiliado['cuil'];
-//echo $cuilafiliado; echo "<br>";
-
 $reactiva = 1;
 $reactivaEmpresa = 1;
 
 if($tipafiliado == 1) {
+	$cuilafiliado = $rowLeeAfiliado['cuil'];
+	//echo $cuilafiliado; echo "<br>";
+	$tipotitular = $rowLeeAfiliado['tipoafiliado'];
+	//echo $tipotitular; echo "<br>";
+	$situtitular = $rowLeeAfiliado['situaciontitularidad'];
+	//echo $situtitular; echo "<br>";
+
 	$mesfin = (int)date("m");
 	$anofin = date("Y");
 	if($mesfin > 2) {
@@ -56,7 +60,11 @@ if($tipafiliado == 1) {
 
 	if($cantddjj < 1) {
 		if($cantapor < 1) {
-			$reactiva = 0;
+			if(strcmp($tipotitular,"U")!=0) {
+				if($situtitular != 4) {
+					$reactiva = 0;
+				}
+			}
 		} else {
 			$rowLeeAportes = mysql_fetch_array($resLeeAportes);
 			$cuit = $rowLeeAportes['cuit'];
@@ -69,8 +77,12 @@ if($tipafiliado == 1) {
 	$sqlJurisEmpresa = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuit' order by disgdinero DESC LIMIT 1";
 	$resJurisEmpresa  = mysql_query($sqlJurisEmpresa,$db);
 	$canJurisEmpresa = mysql_num_rows($resJurisEmpresa);
-	if ($canJurisEmpresa < 1) {
-		$reactivaEmpresa = 0;
+	if($canJurisEmpresa < 1) {
+		if(strcmp($tipotitular,"U")!=0) {
+			if($situtitular != 4) {
+				$reactivaEmpresa = 0;
+			}
+		}
 	}
 	
 }
@@ -114,7 +126,7 @@ function validar(formulario) {
 <?php
 if($tipafiliado == 1) {
 ?>
-        <input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" />
+        <input class="nover" type="button" name="volver" value="Volver" onClick="location.href = 'afiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>'" />
 <?php
 }
 else {
