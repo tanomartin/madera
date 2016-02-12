@@ -36,6 +36,19 @@ if(isset($_POST) && !empty($_POST)) {
 			$sqlLeeDDJJ = "SELECT cuit, anoddjj, mesddjj FROM detddjjospim WHERE cuil = '$cuilafiliado' ORDER BY anoddjj DESC, mesddjj DESC LIMIT 1";
 			$resLeeDDJJ = mysql_query($sqlLeeDDJJ,$db);
 			$cantddjj = mysql_num_rows($resLeeDDJJ);
+
+			if($rowLeeTitular['situaciontitularidad']==4) {
+				$cuitempresa = $rowLeeTitular['cuil'];
+				$fechaempresa = date("Y-m-d");
+				$cantddjj == 0;
+			}
+			
+			if(strcmp($rowLeeTitular['tipoafiliado'],"U")==0) {
+				$cuitempresa = $rowLeeTitular['cuitempresa'];
+				$fechaempresa = $rowLeeTitular['fechaempresa'];
+				$cantddjj == 0;
+			}
+
 			if($cantddjj > 0) {
 				$rowLeeDDJJ = mysql_fetch_array($resLeeDDJJ);
 
@@ -50,7 +63,7 @@ if(isset($_POST) && !empty($_POST)) {
 				$fechaempresa = $rowLeeDDJJ['anoddjj']."-".$mesddjj."-01";
 			}
 			else {
-				$sqlLeeAportes = "SELECT cuit, anoddjj, mesddjj FROM afiptransferencias WHERE cuil = '$cuilafiliado' ORDER BY anoddjj DESC, mesddjj DESC LIMIT 1";
+				$sqlLeeAportes = "SELECT cuit, anopago, mespago FROM afiptransferencias WHERE cuil = '$cuilafiliado' ORDER BY anopago DESC, mespago DESC LIMIT 1";
 				$resLeeAportes = mysql_query($sqlLeeAportes,$db);
 				$rowLeeAportes = mysql_fetch_array($resLeeAportes);
 
