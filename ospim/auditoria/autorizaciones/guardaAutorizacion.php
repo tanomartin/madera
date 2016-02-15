@@ -158,16 +158,35 @@ $sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosoli";
 $resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
 $rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
 
+$cuilSolicitud = $rowLeeSolicitud['cuil'];
+
 //echo "Apellido y Nombre: "; echo $rowLeeSolicitud['apellidoynombre']; echo "<br>";
 
 $sqlLeeDeleg = "SELECT nombre FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
-if($rowLeeSolicitud['nroafiliado'] == 0) {
-	$nrobeneficiario = "-/-";
+$sqlLeeTitular = "SELECT nroafiliado, tipodocumento, nrodocumento FROM titulares where cuil = $cuilSolicitud";
+$resultLeeTitular = mysql_query($sqlLeeTitular,$db); 
+if(mysql_num_rows($resultLeeTitular)!=0) {
+	$rowLeeAfiliado = mysql_fetch_array($resultLeeTitular);
+	$nrobeneficiario = $rowLeeAfiliado['nroafiliado']."/0";
+	$docuTyNro = $rowLeeAfiliado['tipodocumento']." ".$rowLeeAfiliado['nrodocumento'];
 } else {
-	$nrobeneficiario = $rowLeeSolicitud['nroafiliado']."/".$rowLeeSolicitud['codiparentesco'];
+	$sqlLeeFamiliar = "SELECT nroafiliado, tipoparentesco, tipodocumento, nrodocumento FROM familiares where cuil = $cuilSolicitud";
+	$resultLeeFamiliar = mysql_query($sqlLeeFamiliar,$db);
+	if(mysql_num_rows($resultLeeFamiliar)!=0) {
+		$rowLeeAfiliado = mysql_fetch_array($resultLeeFamiliar);
+		$nrobeneficiario = $rowLeeAfiliado['nroafiliado']."/".$rowLeeAfiliado['tipoparentesco'];
+		$docuTyNro = $rowLeeAfiliado['tipodocumento']." ".$rowLeeAfiliado['nrodocumento'];
+	} else {
+		if($rowLeeSolicitud['nroafiliado'] == 0) {
+			$nrobeneficiario = "-/-";
+		} else {
+			$nrobeneficiario = $rowLeeSolicitud['nroafiliado']."/".$rowLeeSolicitud['codiparentesco'];
+		}
+		$docuTyNro = " ";
+	}
 }
 
 if($rowLeeSolicitud['practica']==1)
@@ -248,7 +267,8 @@ try {
 		$pdf->Cell(30,6,"Nro: ".$nrobeneficiario,1,0,'L');
 		$pdf->Cell(40,6,"C.U.I.L.: ".$rowLeeSolicitud['cuil'],1,1,'L');
 		$pdf->Cell(10);
-		$pdf->Cell(183,6,"Tipo: ".$tiposoli,1,1,'L');
+		$pdf->Cell(113,6,"Tipo: ".$tiposoli,1,0,'L');
+		$pdf->Cell(70,6,"Documento: ".$docuTyNro,1,1,'L');
 		$pdf->Cell(10);
 		$pdf->Cell(183,6,"Monto Autorizado: ".$montauto,1,1,'L');
 
