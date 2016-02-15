@@ -450,7 +450,6 @@ function abrirInfo(dire) {
 
 </script>
 </head>
-
 <body bgcolor="#B2A274">
 <div align="center">
   <p><span style="text-align:center">
