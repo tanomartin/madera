@@ -22,19 +22,19 @@ $existeFamiliaBaja = 0;
 $encontro = 0;
 $resultado = array();
 if (isset($dato)) {
-	$sqlSele = "select * from ";
+	$sqlSele = "select e.*, empresas.nombre empresa from ";
 	if ($filtro == 0) { 
-		$where = "where nrcuil = $dato"; 
+		$where = "where e.nrcuil = $dato"; 
 	}
 	if ($filtro == 1) { 
-		$where = "where nrodoc = $dato"; 
+		$where = "where e.nrodoc = $dato"; 
 	}
 	if ($filtro == 2) { 
-		$where = "where apelli like '%$dato%' or nombre like '%$dato%'"; 	
+		$where = "where (e.apelli like '%$dato%' or e.nombre like '%$dato%')"; 	
 	}
 	
 	//TITULARES//
-	$tabla = "empleadosusimra ";
+	$tabla = "empleadosusimra e LEFT JOIN empresas ON e.nrcuit=empresas.cuit ";
 	$sqlEmpleados = $sqlSele.$tabla.$where;
 	//print($sqlEmpleados."<br>");
 	$resEmpleados = mysql_query($sqlEmpleados,$db); 
@@ -44,7 +44,7 @@ if (isset($dato)) {
 	}
 	
 	//TITULARES DE BAJA//
-	$tabla = "empleadosdebajausimra ";
+	$tabla = "empleadosdebajausimra e LEFT JOIN empresas ON e.nrcuit = empresas.cuit ";
 	$sqlEmpleadosBaja = $sqlSele.$tabla.$where;
 	//print($sqlEmpleadosBaja."<br>");
 	$resEmpleadosBaja = mysql_query($sqlEmpleadosBaja,$db); 
@@ -54,7 +54,7 @@ if (isset($dato)) {
 	}
 	
 	//FAMILIARES//
-	$tabla = "familiausimra ";
+	$tabla = "familiausimra e LEFT JOIN empresas ON e.nrcuit = empresas.cuit ";
 	$sqlFamiliares = $sqlSele.$tabla.$where;
 	//print($sqlFamiliares."<br>");
 	$resFamiliares = mysql_query($sqlFamiliares,$db); 
@@ -64,7 +64,7 @@ if (isset($dato)) {
 	}
 	
 	//FAMILIARES//
-	$tabla = "familiadebajausimra ";
+	$tabla = "familiadebajausimra e LEFT JOIN empresas ON e.nrcuit = empresas.cuit ";
 	$sqlFamiliaBaja = $sqlSele.$tabla.$where;
 	//print($sqlFamiliaBaja."<br>");
 	$resFamiliaresBaja = mysql_query($sqlFamiliaBaja,$db); 
@@ -115,7 +115,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue', 
 			widthFixed: true, 
 			widgets: ["zebra", "filter"], 
-			headers:{4:{sorter:false},5:{sorter:false},7:{sorter:false, filter:false}},
+			headers:{5:{sorter:false},6:{sorter:false},8:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -215,10 +215,11 @@ function abrirFicha(dire, cuit, cuil, estado) {
 			<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>			
 <?php	} 
 		if ($existe == 1 || $existeBaja == 1) { ?>
-			<table class="tablesorter" id="listaResultado" style="width:900px; font-size:14px">
+			<table class="tablesorter" id="listaResultado" style="width:1200px; font-size:14px">
 			  <thead>
 				<tr>
 				  <th>C.U.I.L.</th>
+				  <th>Empresa</th>
 				  <th>Apellido y Nombre</th>
 				  <th>Fecha Ingreso</th>
 				  <th>Tipo y Nro Doc</th>
@@ -230,10 +231,11 @@ function abrirFicha(dire, cuit, cuil, estado) {
 			  </thead>
 			  <tbody>
 		<?php if ($existe == 1) { 
-					 print("<p><b>TITULARES</b></p>");
+				print("<p><b>TITULARES</b></p>");
 				 while($rowEmpleados = mysql_fetch_assoc($resEmpleados)) { ?>
 				<tr align="center">
 				  <td><?php echo $rowEmpleados['nrcuil'];?></td>
+				  <td><?php echo $rowEmpleados['nrcuit']." - ".$rowEmpleados['empresa'] ; ?></td>
 				  <td><?php echo $rowEmpleados['apelli'].", ".$rowEmpleados['nombre'];?></td>
 				  <td><?php echo invertirFecha($rowEmpleados['fecing']);?></td>
 				  <td><?php echo $rowEmpleados['tipdoc'].": ".$rowEmpleados['nrodoc'];?></td>
@@ -248,6 +250,7 @@ function abrirFicha(dire, cuit, cuil, estado) {
 			   	while($rowEmpleadosBaja = mysql_fetch_assoc($resEmpleadosBaja)) { ?>
 				<tr align="center">
 				  <td><?php echo $rowEmpleadosBaja['nrcuil'];?></td>
+				  <td><?php echo $rowEmpleadosBaja['nrcuit']." - ".$rowEmpleadosBaja['empresa'] ; ?></td>
 				  <td><?php echo $rowEmpleadosBaja['apelli'].", ".$rowEmpleadosBaja['nombre'];?></td>
 				  <td><?php echo invertirFecha($rowEmpleadosBaja['fecing']);?></td>
 				  <td><?php echo $rowEmpleadosBaja['tipdoc'].": ".$rowEmpleadosBaja['nrodoc'];?></td>
@@ -263,10 +266,11 @@ function abrirFicha(dire, cuit, cuil, estado) {
     <?php }
 		if ($existeFamilia == 1 || $existeFamiliaBaja == 1) { 
 			 print("<p><b>FAMILIARES</b><p>");?>
-			<table class="tablesorter" id="listaResultadoFami" style="width:900px; font-size:14px">
+			<table class="tablesorter" id="listaResultadoFami" style="width:1200px; font-size:14px">
 			  <thead>
 				<tr>
 				  <th>C.U.I.L. TITULAR</th>
+				  <th>Empresa</th>
 				  <th>Apellido y Nombre</th>
 				  <th>Fecha Ingreso</th>
 				  <th>Tipo y Nro Doc</th>
@@ -280,6 +284,7 @@ function abrirFicha(dire, cuit, cuil, estado) {
 				 while($rowFamiliares = mysql_fetch_assoc($resFamiliares)) { ?>
 				<tr align="center">
 				  <td><?php echo $rowFamiliares['nrcuil'];?></td>
+				  <td><?php echo $rowFamiliares['nrcuit']." - ".$rowFamiliares['empresa'] ; ?></td>
 				  <td><?php echo $rowFamiliares['apelli'].", ".$rowFamiliares['nombre'];?></td>
 				  <td><?php echo invertirFecha($rowFamiliares['fecing']);?></td>
 				  <td><?php echo $rowFamiliares['tipdoc'].": ".$rowFamiliares['nrodoc'];?></td>
@@ -293,6 +298,7 @@ function abrirFicha(dire, cuit, cuil, estado) {
 			   	while($rowFamiliaresBaha = mysql_fetch_assoc($resFamiliaresBaja)) { ?>
 				<tr align="center">
 				  <td><?php echo $rowFamiliaresBaha['nrcuil'];?></td>
+				  <td><?php echo $rowFamiliaresBaha['nrcuit']." - ".$rowEmpleados['empresa'] ; ?></td>
 				  <td><?php echo $rowFamiliaresBaha['apelli'].", ".$rowFamiliaresBaha['nombre'];?></td>
 				  <td><?php echo invertirFecha($rowFamiliaresBaha['fecing']);?></td>
 				  <td><?php echo $rowFamiliaresBaha['tipdoc'].": ".$rowFamiliaresBaha['nrodoc'];?></td>
