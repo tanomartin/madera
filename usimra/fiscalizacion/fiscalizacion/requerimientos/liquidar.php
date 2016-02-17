@@ -140,7 +140,6 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 							d.anoddjj = e.anio and 
 							d.mesddjj = e.mes
 						group by d.anoddjj, d.mesddjj, d.cuil"; 
-	print($sqlDDJJNR);
 	$resDDJJNR = mysql_query($sqlDDJJNR,$db);
 	$arrayNR = array();
 	while ($rowDDJJNR = mysql_fetch_assoc($resDDJJNR)) {
