@@ -40,13 +40,13 @@ if(isset($_POST) && !empty($_POST)) {
 			if($rowLeeTitular['situaciontitularidad']==4) {
 				$cuitempresa = $rowLeeTitular['cuil'];
 				$fechaempresa = date("Y-m-d");
-				$cantddjj == 0;
+				$cantddjj = 0;
 			}
 			
 			if(strcmp($rowLeeTitular['tipoafiliado'],"U")==0) {
 				$cuitempresa = $rowLeeTitular['cuitempresa'];
 				$fechaempresa = $rowLeeTitular['fechaempresa'];
-				$cantddjj == 0;
+				$cantddjj = 0;
 			}
 
 			if($cantddjj > 0) {
