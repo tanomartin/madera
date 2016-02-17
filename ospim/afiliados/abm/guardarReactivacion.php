@@ -41,12 +41,14 @@ if(isset($_POST) && !empty($_POST)) {
 				$cuitempresa = $rowLeeTitular['cuil'];
 				$fechaempresa = date("Y-m-d");
 				$cantddjj = 0;
+				$cantapor = 0;
 			}
 			
 			if(strcmp($rowLeeTitular['tipoafiliado'],"U")==0) {
 				$cuitempresa = $rowLeeTitular['cuitempresa'];
 				$fechaempresa = $rowLeeTitular['fechaempresa'];
 				$cantddjj = 0;
+				$cantapor = 0;
 			}
 
 			if($cantddjj > 0) {
@@ -63,19 +65,35 @@ if(isset($_POST) && !empty($_POST)) {
 				$fechaempresa = $rowLeeDDJJ['anoddjj']."-".$mesddjj."-01";
 			}
 			else {
+				if($rowLeeTitular['situaciontitularidad']==4) {
+					$cuitempresa = $rowLeeTitular['cuil'];
+					$fechaempresa = date("Y-m-d");
+					$cantapor = 0;
+				}
+
 				$sqlLeeAportes = "SELECT cuit, anopago, mespago FROM afiptransferencias WHERE cuil = '$cuilafiliado' ORDER BY anopago DESC, mespago DESC LIMIT 1";
 				$resLeeAportes = mysql_query($sqlLeeAportes,$db);
-				$rowLeeAportes = mysql_fetch_array($resLeeAportes);
+				$cantapor = mysql_num_rows($resLeeAportes);
 
-				$cuitempresa = $rowLeeAportes['cuit'];
-	
-				if($rowLeeAportes['mespago'] < 10) {
-					$mespago = "0".$rowLeeAportes['mespago'];
-				} else {
-					$mespago = $rowLeeAportes['mespago'];
+				if(strcmp($rowLeeTitular['tipoafiliado'],"U")==0) {
+					$cuitempresa = $rowLeeTitular['cuitempresa'];
+					$fechaempresa = $rowLeeTitular['fechaempresa'];
+					$cantapor = 0;
 				}
+
+				if($cantapor > 0) {
+					$rowLeeAportes = mysql_fetch_array($resLeeAportes);
 	
-				$fechaempresa = $rowLeeAportes['anopago']."-".$mespago."-01";
+					$cuitempresa = $rowLeeAportes['cuit'];
+		
+					if($rowLeeAportes['mespago'] < 10) {
+						$mespago = "0".$rowLeeAportes['mespago'];
+					} else {
+						$mespago = $rowLeeAportes['mespago'];
+					}
+		
+					$fechaempresa = $rowLeeAportes['anopago']."-".$mespago."-01";
+				}
 			}
 
 			$sqlLeeJurisdiccion = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuitempresa' order by disgdinero DESC LIMIT 1";
