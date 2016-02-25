@@ -47,7 +47,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="detalleEstadoContable.php" >
 	<div align="center">
-		<input type="button" name="volver" value="Volver" onclick="location.href = '../menuContaduria.php'" /> 
+		<input type="button" name="volver" value="Volver" onclick="location.href = 'moduloEstadoContable.php'" /> 
 		<p class="Estilo1">Detalle Estado Contable</p>
 		<?php if(isset($_GET['err'])) { ?> <p align="center" style="color: red;"><b>No existe empresa con el C.U.I.T.: <?php echo $_GET['cuit']?></b></p>   <?php } ?>
 		<p><b>C.U.I.T.: </b><label><input id="cuit" name="cuit" type="text" size="10"/></label></p>
