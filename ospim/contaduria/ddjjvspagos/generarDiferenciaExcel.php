@@ -178,7 +178,7 @@ try {
 	unset ($resPagos);
 	
 	//REDONDEO LOS QUE LA DIFERENCIA SE ENTRE -50 y +50
-	foreach ( $arrayDDJJ as $cuit => $ddjjCuit ) {
+/*	foreach ( $arrayDDJJ as $cuit => $ddjjCuit ) {
 		if (array_key_exists($cuit,$arrayPagos)) {
 			foreach ( $ddjjCuit as $periodo => $ddjjperido ) {
 				if ($periodo != 'nombre') {
@@ -213,7 +213,7 @@ try {
 				}
 			}
 		}
-	}
+	}*/
 	
 	// ARMO EL ESTADO CONTABLE
 	$estadoContable = array ();
@@ -225,13 +225,11 @@ try {
 		foreach ( $ddjjCuit as $ddjjperido ) {
 			$totalRemuneracion += $ddjjperido ['remuneracion'];
 			$totalObligacion += $ddjjperido ['obligacion'];
-			$totalDiferencia += $ddjjperido ['dife'];
 		}
 		$estadoContable [$cuit] = array (
 				'nombre' => $arrayDDJJ[$cuit]['nombre'],
 				'totremune' => $totalRemuneracion,
-				'totobligacion' => $totalObligacion,
-				'totaldiferencia' => $totalDiferencia
+				'totobligacion' => $totalObligacion
 		);
 	}
 	unset ( $arrayDDJJ );
@@ -306,15 +304,7 @@ try {
 	$totDif = 0;
 	$totInc = 0;
 	foreach ( $estadoContable as $cuit => $estado ) {
-		$totRem +=  $estado ['totremune'];
-		$totObl +=  $estado ['totobligacion'];
-		$totPag +=  $estado ['totpagos'];
-		$totDif +=  $estado ['totaldiferencia'];
-		if ($estado ['incobrable'] == 'S') {
-			$totInc += $estado ['totaldiferencia'];
-		}
 		$fila ++;
-		
 		// Agrega datos a las celdas de datos
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'A' . $fila, $cuit );
 		$objPHPExcel->getActiveSheet ()->getCellByColumnAndRow('A',$fila)->getHyperlink()->setUrl("../detalleEstadoContable.php?cuit=$cuit&id=$lastId");
@@ -322,13 +312,9 @@ try {
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, $estado ['totremune'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, $estado ['totobligacion'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'E' . $fila, $estado ['totpagos'] );
-		$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $estado ['totaldiferencia'] );
+		$diferencia = $estado ['totobligacion'] - $estado ['totpagos'];
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $diferencia);
 	}
-	$fila ++;
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, $totRem );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, $totObl );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'E' . $fila, $totPag );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $totDif );
 	
 	// Setea fuente tipo y tamaño a la hoja activa
 	$objPHPExcel->getDefaultStyle ()->getFont ()->setName ( 'Arial' );
