@@ -7,12 +7,13 @@ ini_set ( 'memory_limit', '-1' );
 
 $fechahasta = $_POST['fechahasta'];
 $fechadesde = $_POST['fechadesde'];
+$fechainforme=date("dmY Hms");
 $maquina = $_SERVER ['SERVER_NAME'];
 
 if (strcmp ( "localhost", $maquina ) == 0) 
-	$archivo_name_xls = "Diferencia Contable del ".$fechadesde." al ".$fechahasta.".xls";
+	$archivo_name_xls = "Diferencia Contable del ".$fechadesde." al ".$fechahasta." (".$fechainforme.").xls";
 else 
-	$archivo_name_xls = "/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Diferencia Contable del ".$fechadesde." al ".$fechahasta.".xls";
+	$archivo_name_xls = "/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Diferencia Contable del ".$fechadesde." al ".$fechahasta." (".$fechainforme.").xls";
 
 $fechadesde=substr($fechadesde, 6, 4)."-".substr($fechadesde, 3, 2)."-".substr($fechadesde, 0, 2);
 $fechahasta=substr($fechahasta, 6, 4)."-".substr($fechahasta, 3, 2)."-".substr($fechahasta, 0, 2);
