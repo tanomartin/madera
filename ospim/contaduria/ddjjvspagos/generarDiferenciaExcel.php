@@ -165,7 +165,6 @@ try {
 				ORDER by pagos.cuit, pagos.anopago ASC, pagos.mespago ASC";
 	$resPagos = $dbh->prepare ( $sqlPagos );
 	$resPagos->execute ();
-	print($sqlPagos);
 	
 	$arrayPagos = array();
 	while ( $rowPagos = $resPagos->fetch ( PDO::FETCH_LAZY ) ) {
