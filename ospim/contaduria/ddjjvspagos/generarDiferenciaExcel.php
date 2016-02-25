@@ -14,8 +14,9 @@ if (strcmp ( "localhost", $maquina ) == 0)
 else 
 	$archivo_name_xls = "/home/sistemas/Documentos/Repositorio/FFFF1208311301SYS/Diferencia Contable del ".$fechadesde." al ".$fechahasta.".xls";
 
-$fechahasta=substr($fechahasta, 6, 4)."-".substr($fechahasta, 3, 2)."-".substr($fechahasta, 0, 2);
 $fechadesde=substr($fechadesde, 6, 4)."-".substr($fechadesde, 3, 2)."-".substr($fechadesde, 0, 2);
+$fechahasta=substr($fechahasta, 6, 4)."-".substr($fechahasta, 3, 2)."-".substr($fechahasta, 0, 2);
+
 
 try {	
 	$hostname = $_SESSION['host'];
@@ -44,9 +45,6 @@ try {
 	$anoDesde = substr ( $fechadesde, 0, 4 );
 	$mesDesde = substr ( $fechadesde, 5, 2 );
 	
-	$anoHasta = substr ( $fechahasta, 0, 4 );
-	$mesHasta = substr ( $fechahasta, 5, 2 );
-	
 	// OBTENEMOS LAS DDJJ
 	
 	$anolimite = 2009;
@@ -67,8 +65,7 @@ try {
 				WHERE
 					  ddjj.nrodisco >= " . $discoDesde . " AND
 				      ddjj.nrodisco <= " . $discoHasta . " AND
-				      ((ddjj.anoddjj = " . $anoDesde . " AND ddjj.mesddjj > " . $mesDesde . ") OR 
-				       (ddjj.anoddjj > " . $anoDesde . " AND ddjj.anoddjj < " . $anolimite . ") OR 
+				      ((ddjj.anoddjj < " . $anolimite . ") OR 
 					   (ddjj.anoddjj = " . $anolimite . " AND ddjj.mesddjj < " . $meslimite . ")) AND
 					  ddjj.cuit = e.cuit
 				GROUP by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion
@@ -130,8 +127,6 @@ try {
 				WHERE
 					  ddjj.nrodisco >= " . $discoDesde . " AND
 				      ddjj.nrodisco <= " . $discoHasta . " AND
-				      ((ddjj.anoddjj > " . $anoDesde . ") OR 
-					   (ddjj.anoddjj = " . $anoDesde . " AND ddjj.mesddjj >= " . $mesDesde . ")) AND
 					  ddjj.cuit = e.cuit
 				GROUP by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion
 				ORDER by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion ASC";
@@ -164,12 +159,12 @@ try {
 					  pagos.fechaprocesoafip >= '" . $fechadesde . "' AND
 				      pagos.fechaprocesoafip <= '" . $fechahasta . "' AND
 				      pagos.concepto != 'REM' AND
-				      ((pagos.anopago = " . $anoDesde . " AND pagos.mespago > " . $mesDesde . ") OR (pagos.anopago > " . $anoDesde . ")) AND
 				      pagos.cuit = e.cuit 
 				GROUP by pagos.cuit, pagos.anopago, pagos.mespago
 				ORDER by pagos.cuit, pagos.anopago ASC, pagos.mespago ASC";
 	$resPagos = $dbh->prepare ( $sqlPagos );
 	$resPagos->execute ();
+	print($sqlPagos);
 	
 	$arrayPagos = array();
 	while ( $rowPagos = $resPagos->fetch ( PDO::FETCH_LAZY ) ) {
@@ -365,8 +360,8 @@ try {
 	
 	$dbh->commit ();
 	
-	$pagina = "moduloDiferencia.php?ok=1";
-	Header("Location: $pagina");
+	//$pagina = "moduloDiferencia.php?ok=1";
+	//Header("Location: $pagina");
 
 } catch ( PDOException $e ) {
 	echo $e->getMessage ();
