@@ -346,8 +346,8 @@ try {
 	
 	$dbh->commit ();
 	
-	//$pagina = "moduloDiferencia.php?ok=1";
-	//Header("Location: $pagina");
+	$pagina = "moduloDiferencia.php?ok=1";
+	Header("Location: $pagina");
 
 } catch ( PDOException $e ) {
 	echo $e->getMessage ();
