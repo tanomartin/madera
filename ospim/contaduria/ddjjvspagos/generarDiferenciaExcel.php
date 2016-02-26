@@ -306,7 +306,6 @@ try {
 		$fila ++;
 		// Agrega datos a las celdas de datos
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'A' . $fila, $cuit );
-		$objPHPExcel->getActiveSheet ()->getCellByColumnAndRow('A',$fila)->getHyperlink()->setUrl("../detalleEstadoContable.php?cuit=$cuit&id=$lastId");
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'B' . $fila, utf8_encode($estado ['nombre']));
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, $estado ['totremune'] );
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, $estado ['totobligacion'] );
