@@ -364,13 +364,13 @@ $(function() {
 				<div id="paginador" class="pager">
 					<form class="nover">
 						<p align="center">
-							<img src="../img/first.png" width="16" height="16" class="first" />
-							<img src="../img/prev.png" width="16" height="16" class="prev" />
+							<img src="img/first.png" width="16" height="16" class="first" />
+							<img src="img/prev.png" width="16" height="16" class="prev" />
 							<input name="text" type="text" class="pagedisplay" 
 								style="background: #CCCCCC; text-align: center" size="8"
 								readonly="readonly" /> 
-								<img src="../img/next.png" width="16" height="16" class="next" /> 
-								<img src="../img/last.png" width="16" height="16" class="last" /> 
+								<img src="img/next.png" width="16" height="16" class="next" /> 
+								<img src="img/last.png" width="16" height="16" class="last" /> 
 								<select name="select" class="pagesize">
 								<option selected="selected" value="10">10 por pagina</option>
 								<option value="20">20 por pagina</option>
