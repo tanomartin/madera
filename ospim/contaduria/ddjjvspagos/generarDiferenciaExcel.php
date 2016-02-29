@@ -1,6 +1,6 @@
 <?php
 $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspimSistemas.php");
+include($libPath."controlSessionOspim.php");
 require_once ($libPath . "phpExcel/Classes/PHPExcel.php");
 set_time_limit ( 0 );
 ini_set ( 'memory_limit', '-1' );
