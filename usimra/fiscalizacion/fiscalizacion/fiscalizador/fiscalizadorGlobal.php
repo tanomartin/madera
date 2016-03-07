@@ -11,7 +11,7 @@ function calculoDeuda($remu) {
 }
 
 function calculoDeudaNr($remu, $personal, $mes, $anio, $db) {
-	$sqlExtra = "SELECT anio, mes, tipo, valor, retiene060*0.06 + retiene100*0.1 + retiene150*0.15 as porcentaje FROM extraordinariosusimra
+	$sqlExtra = "SELECT anio, mes, tipo, valor, retiene060*0.006 + retiene100*0.01 + retiene150*0.015 as porcentaje FROM extraordinariosusimra
 	WHERE anio = $anio and mes = $mes and tipo != 2";
 	$resExtra = mysql_query($sqlExtra,$db);
 	$rowExtra = mysql_fetch_assoc($resExtra);
