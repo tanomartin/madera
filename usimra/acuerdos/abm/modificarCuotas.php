@@ -243,7 +243,6 @@ function validarYGuardar(formulario) {
 			} else {
 				$precuota = false;
 			}
-		
 			$contadorCuotas = $contadorCuotas + 1;	 ?>
 			<tr>
 				<td width=134> <input style='background-color:#B2A274' name='nroCuota<?php echo $contadorCuotas ?>' id='nroCuota<?php echo $contadorCuotas ?>' type='text' size='2' value='<?php echo $rowCuotas['nrocuota'] ?>' readonly='readonly'></td>
