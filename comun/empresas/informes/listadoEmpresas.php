@@ -117,7 +117,7 @@ function validar(formulario) {
 			</p>
 
 			<table class="tablesorter" id="listado"
-				style="width: 1100px; font-size: 14px">
+				style="width: 1024px; font-size: 14px">
 				<thead>
 					<tr>
 						<th>C.U.I.T.</th>
@@ -128,12 +128,13 @@ function validar(formulario) {
 						<th>Domicilio Real</th>
 						<th class="filter-select" data-placeholder="Seleccione Localidad">Localidad
 							Real</th>
+						<th>Fecha Registro</th>
 						<th>Disg. Dinero</th>
-						<th>Otra Jurisdiccion (Disg. Dinero)</th>
+						<th>Otra Juris. (Disg. Dinero)</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php $sqlEmpre = "select e.cuit, e.nombre, e.domilegal, e.numpostal as numlegal, l.nomlocali as localidad, j.domireal, j.numpostal as numreal, lreal.nomlocali as localidadReal, j.disgdinero from empresas e, jurisdiccion j, localidades l, localidades lreal where j.codidelega = $codidelega and j.cuit = e.cuit and e.codlocali = l.codlocali and j.codlocali = lreal.codlocali";
+					<?php $sqlEmpre = "select e.cuit, e.nombre, e.domilegal, e.numpostal as numlegal, e.fecharegistro as creacion, l.nomlocali as localidad, j.domireal, j.numpostal as numreal, lreal.nomlocali as localidadReal, j.disgdinero from empresas e, jurisdiccion j, localidades l, localidades lreal where j.codidelega = $codidelega and j.cuit = e.cuit and e.codlocali = l.codlocali and j.codlocali = lreal.codlocali";
 					$resEmpre = mysql_query($sqlEmpre,$db);
 			while ($rowEmpre = mysql_fetch_assoc($resEmpre)) { ?>
 					<tr align="center">
@@ -145,6 +146,7 @@ function validar(formulario) {
 						<td><?php echo $rowEmpre['domireal']." [".$rowEmpre['numreal']."]" ?>
 						</td>
 						<td><?php echo $rowEmpre['localidadReal'] ?></td>
+						<td><?php echo substr($rowEmpre['creacion'],0,10) ?></td>
 						<td><?php echo $rowEmpre['disgdinero']."%" ?></td>
 						<td><?php 
 						$cuit =  $rowEmpre['cuit'];
