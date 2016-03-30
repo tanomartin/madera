@@ -250,11 +250,11 @@ function imprimeTabla($periodo) {
 	$ano = $periodo['anio'];
 	$me = $periodo['mes'];
 	print("<td>");
-	if (strpos($estado, 'P.F.T.') !== false or strpos($estado, 'PAGO') !== false) {
-		print ("<a href=javascript:abrirInfo('detallePagos.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
+	if ($estado == 'NO PAGO') {
+		print ("<a href=javascript:abrirInfo('detalleDDJJ.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
 	} else {
-		if ($estado == 'NO PAGO') {
-			print ("<a href=javascript:abrirInfo('detalleDDJJ.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
+		if (strpos($estado, 'P.F.T.') !== false or strpos($estado, 'PAGO') !== false) {
+			print ("<a href=javascript:abrirInfo('detallePagos.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
 		} else {
 			$pacuerdo = explode('-',$estado);
 			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {

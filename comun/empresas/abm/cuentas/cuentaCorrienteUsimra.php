@@ -381,11 +381,11 @@ function imprimeTabla($periodo) {
 	$ano = $periodo ['anio'];
 	$me = $periodo ['mes'];
 	print ("<td>") ;
-	if (strpos ( $estado, 'P.F.T.' ) !== false or strpos ( $estado, 'PAGO' ) !== false or strpos ( $estado, 'P.M.' ) !== false) {
-		print ("<a href=javascript:abrirInfo('detallePagosUsimra.php?origen=" . $_GET ['origen'] . "&cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
+	if ($estado == 'NO PAGO') {
+		print ("<a href=javascript:abrirInfo('detalleDDJJUsimra.php?origen=" . $_GET ['origen'] . "&cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
 	} else {
-		if ($estado == 'NO PAGO') {
-			print ("<a href=javascript:abrirInfo('detalleDDJJUsimra.php?origen=" . $_GET ['origen'] . "&cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
+		if (strpos ( $estado, 'P.F.T.' ) !== false or strpos ( $estado, 'PAGO' ) !== false or strpos ( $estado, 'P.M.' ) !== false) {
+			print ("<a href=javascript:abrirInfo('detallePagosUsimra.php?origen=" . $_GET ['origen'] . "&cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
 		} else {
 			$pacuerdo = explode ( '-', $estado );
 			if ($pacuerdo [0] == 'P. ACUER.' or $pacuerdo [0] == 'ACUER.') {
