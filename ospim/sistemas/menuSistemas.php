@@ -30,7 +30,7 @@ A:hover {text-decoration: none;color:#00FFFF }
       <p align="center"><a class="enlace" href="aplicativoddjj/menuAplicativoddjj.php"><img src="img/aplicativoddjj.png" width="97" height="85" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Tratamiento A.F.I.P.</p>
-        <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.jpg" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.png" width="110" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
@@ -40,16 +40,16 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><p align="center">Stock</p>
       <p align="center"><a class="enlace" href="stock/menuStock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
-      <td><p align="center">Desempleo A.N.S.E.S.</p>
-      <p align="center"><a class="enlace" href="desempleo/menuDesempleo.php"><img src="img/desempleo.jpg" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td><p align="center">Desempleo</p>
+      <p align="center"><a class="enlace" href="desempleo/menuDesempleo.php"><img src="img/anses.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
-      <td><p align="center">Intranet O.S.P.I.M. </p>
-        <p align="center"><a class="enlace" href="intraospim/menuActualizacionOspim.php"><img src="img/intraospim.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td><p align="center">Intranets</p>
+        <p align="center"><a class="enlace" href="intranets/menuIntranet.php"><img src="img/intranets.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
-      <td><p align="center">Intranet U.S.I.M.R.A. </p>
-        <p align="center"><a href="intrausimra/menuActualizacionUsimra.php"><img src="img/intrausimra.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td><p align="center">Usuarios</p>
+        <p align="center"><a href="usuarios/menuUsuarios.php"><img src="img/users.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td><p align="center">Estado Contable</p>
         <p align="center"><a href="estadocontable/estadoContable.php"><img src="img/estadocontable.png" width="90" height="90" border="0" alt="enviar"/></a></p>
