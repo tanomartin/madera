@@ -48,6 +48,9 @@ include($libPath."controlSessionOspimSistemas.php");
 }
 -->
 </style>
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
 </head>
 
 <body bgcolor="#CCCCCC">
@@ -85,9 +88,9 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php echo $rowUsuario['usuariosistema'] ?></td>
 					<td><?php echo $rowUsuario['passsistema'] ?></td>
 					<td>
-						<input type="button" value="+Info" onclick="location.href = 'fichaUsuario.php?id=<?php echo $rowUsuario['id'] ?>'" />
+						<input type="button" value="+Info" onclick="location.href = 'fichaEliminacionUsuario.php?id=<?php echo $rowUsuario['id'] ?>'" />
 						<input type="button" value="Modificar" onclick="location.href = 'modificarUsuario.php?id=<?php echo $rowUsuario['id'] ?>'" />
-						<input type="button" value="Eliminar" onclick="location.href = 'eliminarUsuario.php?id=<?php echo $rowUsuario['id'] ?>'" />
+						<input type="button" value="Eliminar" onclick="location.href = 'fichaEliminacionUsuario.php?id=<?php echo $rowUsuario['id'] ?>&eli=1'" />
 					</td>
 		</tr>
 	 <?php } ?>
@@ -112,7 +115,7 @@ include($libPath."controlSessionOspimSistemas.php");
 			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 		  </form>	
 		</div>
-	</td>
+	  </td>
       </tr>
   </table>
 </div>
