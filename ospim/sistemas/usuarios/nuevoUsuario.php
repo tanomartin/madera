@@ -57,7 +57,7 @@ function validar(formulario) {
     <input type="button" name="volver" value="Volver" onclick="location.href = 'usuarios.php'" />
  </p>
   <p><span class="Estilo2">Nuevo Usuario </span></p>
-  <form id="nuevoInsumo" name="nuevoInsumo" method="post" action="guardarNuevoUsuario.php" onsubmit="return validar(this)">		
+  <form id="nuevoUsuario" name="nuevoUsuario" method="post" action="guardarNuevoUsuario.php" onsubmit="return validar(this)">		
 			<table width="850" border="0" style="text-align:left">
               <tr>
                 <td>Nombre</td>

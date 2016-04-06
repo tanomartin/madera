@@ -28,7 +28,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="usuarios.php"><img src="img/users.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td  width="200"><p align="center">E-mails </p>
-        <p align="center"><a href="#"><img src="img/email.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a href="emails.php"><img src="img/email.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
     </tr>
   </table>
