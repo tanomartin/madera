@@ -5,7 +5,7 @@ include($libPath."fechas.php");
 $id = $_GET['id'];
 $sqlProd = "SELECT p.*, u.* FROM producto p, ubicacionproducto u, departamentos d WHERE p.id = $id and p.id = u.id";
 $resProd = mysql_query($sqlProd,$db);
-$rowProd = mysql_fetch_assoc($resProd)
+$rowProd = mysql_fetch_assoc($resProd);
 
 ?>
 
@@ -57,6 +57,25 @@ function cargoSector(ubicacion) {
 			document.forms.modifProducto.sector.options.add(o);
   <?php } ?> 
 	}
+}
+
+function cargoUsuario(sector) {
+		document.forms.modifProducto.usuario.length = 0;
+		var o = document.createElement("OPTION");
+		o.text = 'Seleccione Usuario';
+		o.value = '0';
+		document.forms.modifProducto.usuario.options.add(o);
+
+<?php	$sqlUsuario = "select * from usuarios";
+		$resUsuario = mysql_query($sqlUsuario,$db); 
+		while ($rowUsuario = mysql_fetch_array($resUsuario)) { ?> 
+			o = document.createElement("OPTION");
+			o.text = '<?php echo $rowUsuario["nombre"]; ?>';
+			o.value = <?php echo $rowUsuario["id"]; ?>;
+			if (sector == <?php echo $rowUsuario["departamento"]; ?>) {
+				document.forms.modifProducto.usuario.options.add(o);
+			}
+<?php } ?> 
 }
 
 function fechaBaja(valor) {
@@ -130,7 +149,7 @@ function validar(formulario) {
                   <tr>
                     <td>Descripcion</td>
                     <td><label>
-                      <textarea name="descrip" cols="30" rows="3" id="descrip"><?php echo $rowProd['descripcion'] ?></textarea>
+                      <textarea name="descrip" cols="30" style="width: 378px; height: 80px;" rows="3" id="descrip"><?php echo $rowProd['descripcion'] ?></textarea>
                     </label></td>
                     <td>Valor Original </td>
                     <td><input name="valor" type="text" id="valor" size="14" maxlength="14" value="<?php echo $rowProd['valororiginal'] ?>"/></td>
@@ -161,7 +180,7 @@ function validar(formulario) {
                     </label></td>
                     <td>Sector</td>
                     <td>
-					<select name="sector">
+					<select name="sector" onchange="cargoUsuario(document.forms.modifProducto.sector[selectedIndex].value)">
            				<option value="0">Seleccione Sector</option>
 				   <?php 
 						$sqlSector ="select * from departamentos";
@@ -176,7 +195,18 @@ function validar(formulario) {
                   </tr>
                   <tr>
                     <td>Usuario</td>
-                    <td><input name="usuario" type="text" id="usuario" size="50" maxlength="50" value="<?php echo $rowProd['usuario'] ?>"/></td>
+                    <td><select name="usuario">
+           				<option value="0">Seleccione Usuario</option>
+					   <?php 
+							$sqlUsuario ="select * from usuarios where departamento = ".$rowProd['departamento'];
+							$resUsuario = mysql_query($sqlUsuario,$db);
+							while ($rowUsuario = mysql_fetch_assoc($resUsuario)) { 
+								$selected = '';
+								if ($rowProd['idusuario'] == $rowUsuario['id']) { $selected = 'selected'; }
+							?>
+								<option value="<?php echo $rowUsuario['id']?>" <?php echo $selected ?>><?php echo $rowUsuario['nombre'] ?></option>
+					  <?php } ?>
+          			</select></td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>

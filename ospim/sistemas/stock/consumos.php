@@ -70,7 +70,7 @@ include($libPath."fechas.php");
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlConsumo = "SELECT c.*, i.nombre as nombre, i.descripcion as descri FROM consumoinsumo c, insumo i WHERE i.id = c.idinsumo";
+			$sqlConsumo = "SELECT c.*, i.nombre as nombre, i.descripcion as descri, u.nombre as usuario FROM consumoinsumo c, insumo i, usuarios u WHERE i.id = c.idinsumo and c.idusuario = u.id";
 			$resConsumo = mysql_query($sqlConsumo,$db);
 			$canConsumo = mysql_num_rows($resConsumo);
 			while ($rowConsumo = mysql_fetch_assoc($resConsumo)) { ?>

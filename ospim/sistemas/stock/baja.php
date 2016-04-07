@@ -3,13 +3,13 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php"); 
 
 $idInsumo = $_GET['idInsumo'];
-$usuario = $_GET['usuario'];
+$usuario = $_POST['usuario'];
 $stock = $_GET['stock'];
 $fechaconsumo = date("Y-m-d H:m:s");
 $usuariomodif = $_SESSION['usuario'];
 $nuevoStock = $stock - 1;
 
-$sqlInsertConsumo = "INSERT INTO consumoinsumo VALUE(DEFAULT, $idInsumo, '$usuario', '$fechaconsumo')";
+$sqlInsertConsumo = "INSERT INTO consumoinsumo VALUE(DEFAULT, $idInsumo, $usuario, '$fechaconsumo')";
 $sqlUpdateStock = "UPDATE stock SET cantidad = $nuevoStock, fechamodificacion = '$fechaconsumo', usuariomodificacion = '$usuariomodif'  WHERE id = $idInsumo";
 
 try {
@@ -24,7 +24,7 @@ try {
 	$dbh->exec($sqlUpdateStock);
 	$dbh->commit();
 	
-	$pagina = "stock.php";
+	$pagina = "cargarUsuarioBaja.php?idInsumo=".$idInsumo;
 	Header("Location: $pagina"); 
 	
 }catch (PDOException $e) {

@@ -24,7 +24,7 @@ if ($activo == 0) {
 $fechamodificacion = date("Y-m-d H:i:s");
 
 $sqlUpdateProducto = "UPDATE producto SET nombre = '$nombre', numeroserie = '$nroserie', valororiginal = $valor, activo = $activo, descripcion = '$descrip', fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
-$sqlUpdateUbicacion = "UPDATE ubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, usuario = '$usuario' WHERE id = $id"; 
+$sqlUpdateUbicacion = "UPDATE ubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, idusuario = $usuario WHERE id = $id"; 
 $deleteInsumoPrducto = "DELETE from insumoproducto WHERE idproducto = $id";
 
 $datos = array_values($_POST);

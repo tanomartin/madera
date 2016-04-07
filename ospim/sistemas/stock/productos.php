@@ -71,7 +71,7 @@ include($libPath."controlSessionOspimSistemas.php");
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlProd = "SELECT p.*, d.nombre as deptos, u.usuario FROM ubicacionproducto u, departamentos d, producto p WHERE u.id = p.id and u.departamento = d.id";
+			$sqlProd = "SELECT p.*, d.nombre as deptos, s.nombre as usuario FROM ubicacionproducto u, departamentos d, producto p, usuarios s WHERE u.id = p.id and u.departamento = d.id and u.idusuario = s.id";
 			$resProd = mysql_query($sqlProd,$db);
 			$canProd = mysql_num_rows($resProd);
 			while ($rowProd = mysql_fetch_assoc($resProd)) { ?>
@@ -82,7 +82,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php if ($rowProd['activo'] == 1) { echo "SI"; } else { echo "NO"; } ?></td>
 					<td><?php echo $rowProd['deptos'] ?></td>
 					<td><?php echo $rowProd['usuario'] ?></td>
-					<td><a href='modificarProducto.php?id=<?php echo $rowProd['id'] ?>'>Modificar</a></td>
+					<td><input type="button" value="Modificar" onclick="location.href = 'modificarProducto.php?id=<?php echo $rowProd['id'] ?>' "/></td>
 		</tr>
 	 <?php } ?>
     </tbody>

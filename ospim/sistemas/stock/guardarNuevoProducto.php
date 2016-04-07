@@ -32,7 +32,7 @@ try {
 	$dbh->exec($sqlInsertProducto);
 	$idProd = $dbh->lastInsertId('id'); 
 	//print($idProd."<br>");
-	$sqlInsertUbicacion = "INSERT INTO ubicacionproducto VALUE($idProd,$sector,'$ubicacion','$usuario')";
+	$sqlInsertUbicacion = "INSERT INTO ubicacionproducto VALUE($idProd,$sector,'$ubicacion',$usuario)";
 	//print($sqlInsertUbicacion."<br>");
 	$dbh->exec($sqlInsertUbicacion);
 	

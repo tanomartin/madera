@@ -51,19 +51,6 @@ include($libPath."controlSessionOspimSistemas.php");
 		location.href=pagina;
 	}
 	
-	function baja(idInsumo, stock) {
-		var usuario = prompt("Ingrese Usuario que pidio el Insumo: ");
-		if (usuario == null) {
-			return false;
-		}
-		if (usuario == "") {
-			alert("Debe ingrear el usuario que pidio el Insumo");
-			return false;
-		}
-		var pagina = "baja.php?idInsumo="+idInsumo+"&usuario="+usuario+"&stock="+stock;
-		location.href=pagina;
-	}
-	
 </script>
 <style type="text/css">
 <!--
@@ -110,7 +97,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					
 					<?php 
 						$idInsumo = $rowInsumos['id'];
-						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, u.usuario FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, s.nombre as usuario FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d, usuarios s WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id and u.idusuario = u.id";
 						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 						$nombre = "";
 						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
@@ -119,7 +106,7 @@ include($libPath."controlSessionOspimSistemas.php");
 							} else {
 								$colorProd = "#000000";
 							}
-							$nombre .= " * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto']." ".$rowInsumoProducto['usuario'].")"."</br>";
+							$nombre .= " * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto']."-".$rowInsumoProducto['usuario'].")"."</br>";
 							if ($rowInsumoProducto['activo'] == 1) {  $activo = "SI"; } else { $activo = "NO"; }	
 							
 						}
@@ -150,7 +137,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td style="color:<?php echo $color ?>"><?php echo $estado ?></td>
 					<td>
 				  <?php if ($rowInsumos['cantidad'] > $rowInsumos['stockminimo']) { ?>
-						<img src="img/baja.png" width="20" height="20" border="0" alt="enviar" onclick="baja(<?php echo $rowInsumos['id']?>,<?php echo $rowInsumos['cantidad']?>)"/><br/>
+						<img src="img/baja.png" width="20" height="20" border="0" alt="enviar" onclick="location.href='cargarUsuarioBaja.php?idInsumo=<?php echo $rowInsumos['id']?>'"/><br/>
 				  <?php } ?> 
 						<img src="img/alta.png" width="20" height="20" border="0" alt="enviar" onclick="alta(<?php echo $rowInsumos['id']?>,<?php echo $rowInsumos['cantidad']?>)"/>
 					</td>

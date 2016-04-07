@@ -96,7 +96,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php echo $rowInsumo['puntopromedio'] ?></td>
 					<td><?php echo $rowInsumo['puntopedido'] ?></td>
 					<td><?php echo $rowInsumo['stockminimo'] ?></td>
-					<td><a href='modificarInsumo.php?id=<?php echo $rowInsumo['id'] ?>'>Modificar</a></td>
+					<td><input type="button" value="Modificar" onclick="location.href = 'modificarInsumo.php?id=<?php echo $rowInsumo['id'] ?>' "/></td>
 		</tr>
 	 <?php } ?>
     </tbody>

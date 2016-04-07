@@ -95,9 +95,12 @@ include($libPath."fechas.php");
 					<td><?php echo $rowPedido['costototal'] ?></td>
 					<td><?php if($rowPedido['fechacierre'] != "0000-00-00") {echo invertirFecha($rowPedido['fechacierre']); } ?></td>
 					<td><?php if($rowPedido['fechacierre'] == "0000-00-00") { ?>
-								<a href='modificarPedido.php?id=<?php echo $rowPedido['id'] ?>'>Modificar Pedido</a> - <a href='cargarDatosProvedor.php?id=<?php echo $rowPedido['id'] ?>'>Datos Proveedor</a> - <a href='javascript:generarExcel("<?php echo $rowPedido['id'] ?>","cotiza")'>Cotizacion </a> - <a href='javascript:generarExcel("<?php echo $rowPedido['id'] ?>","pedido")'>Pedido</a>
+								<input type="button" value="Modificar Pedido" onclick="location.href = 'modificarPedido.php?id=<?php echo $rowPedido['id'] ?>' "/>
+								<input type="button" value="Datos Proveedor" onclick="location.href = 'cargarDatosProvedor.php?id=<?php echo $rowPedido['id'] ?>' "/>
+								<input type="button" value="Cotizacion" onclick='generarExcel("<?php echo $rowPedido['id'] ?>","cotiza") '/>
+								<input type="button" value="Pedido" onclick='generarExcel("<?php echo $rowPedido['id'] ?>","pedido") '/>
 					 	<?php } else { ?>
-					  			<a href='verDetallePedido.php?id=<?php echo $rowPedido['id'] ?>'>Ver Detalle</a>
+					 			<input type="button" value="Ver Detalle" onclick="location.href = 'verDetallePedido.php?id=<?php echo $rowPedido['id'] ?>' "/>
 					  <?php } ?>
 					</td>
 		</tr>
