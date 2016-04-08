@@ -21,6 +21,26 @@ $rowInsumo = mysql_fetch_assoc($resInsumo);
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script>
+
+function cargoUsuario(sector) {
+	document.forms.consumo.usuario.length = 0;
+	var o = document.createElement("OPTION");
+	o.text = 'Seleccione Usuario';
+	o.value = '0';
+	document.forms.consumo.usuario.options.add(o);
+
+<?php	$sqlUsuario = "select * from usuarios";
+		$resUsuario = mysql_query($sqlUsuario,$db); 
+		while ($rowUsuario = mysql_fetch_array($resUsuario)) { ?> 
+			o = document.createElement("OPTION");
+			o.text = '<?php echo $rowUsuario["nombre"]; ?>';
+			o.value = <?php echo $rowUsuario["id"]; ?>;
+			if (sector == <?php echo $rowUsuario["departamento"]; ?>) {
+				document.forms.consumo.usuario.options.add(o);
+			}
+<?php } ?> 
+}
+
 function validar(formulario) {
 	if (formulario.usuario.value == 0) {
 		alert("Debe Seleccionar un usuario");
@@ -65,17 +85,20 @@ function validar(formulario) {
 	  		</tr>
 	  	</tbody>
 	  </table>
-	  <form method="post" action="baja.php?idInsumo=<?php echo  $idInsumo?>&stock=<?php echo  $rowInsumo['cantidad'] ?>" onsubmit="return validar(this)">
+	  <form id="consumo" name="consumo" method="post" action="baja.php?idInsumo=<?php echo  $idInsumo?>&stock=<?php echo  $rowInsumo['cantidad'] ?>" onsubmit="return validar(this)">
 	  		<p><span class="Estilo1">Usuario</span></p>
+	  		<p><select name="depto" id="depto" onchange="cargoUsuario(document.forms.consumo.depto[selectedIndex].value)">
+                <option value="0">Seleccione Sector</option>
+                	<?php 
+						$sqlDepto = "Select * from departamentos";
+						$resDepto = mysql_query($sqlDepto,$db);
+						while ($rowDepto = mysql_fetch_assoc($resDepto)) { ?>
+                			<option value="<?php echo $rowDepto['id'] ?>"><?php echo $rowDepto['nombre'] ?></option>
+                  <?php } ?>
+                </select></p>
 	  		<p><select name="usuario">
-		  			<option value="0">Seleccione Usuario</option>
-		  			<?php 
-		  				$sqlUsuario = "select * from usuarios"; 
-		  				$resUsuario = mysql_query($sqlUsuario,$db);
-		  				while ($rowUsuario = mysql_fetch_assoc($resUsuario)) { ?>
-		  					<option value="<?php echo $rowUsuario['id'] ?>"><?php echo $rowUsuario['nombre'] ?></option>
-		  			<?php } ?>
-		  		</select></p>
+                      <option value="0">Seleccione Usuario</option>
+					</select></p>
 	  		<p><input type="submit" id="Submit" value="Guardar"/></p>
 	  </form>
 	</div>
