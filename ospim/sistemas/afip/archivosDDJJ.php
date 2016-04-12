@@ -241,7 +241,7 @@ if($noHayDDJJ) {
 																			$aviso = 'El archivo descomprimido desde el ZIP NO pudo ser eliminado.';
 																		}
 	
-																		rename($archivo_ddjj,$destino_ddjj."DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip");
+																		rename($archivo_ddjj,$destino_ddjj."DDJJ_NOMINA_OS111001_F".$nombrearchivo.".zip");
 	
 																		$sqlAddMensaje = "INSERT INTO afipmensajes (nromensaje, fechaemailafip, cuentaderecepcion, tipoarchivo, nrodisco) VALUES (:nromensaje,:fechaemailafip,:cuentaderecepcion,:tipoarchivo,:nrodisco)";
 																		$resAddMensaje = $dbl->prepare($sqlAddMensaje);
