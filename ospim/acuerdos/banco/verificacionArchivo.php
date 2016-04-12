@@ -113,7 +113,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		else
 		{
 			if ($hayErrores == 1)
-				print("Error en Archivo -- El Archivo solicitado no existe.<br/>\n");
+				//print("Error en Archivo -- El Archivo solicitado no existe.<br/>\n");
+				$pagina = "procesamientoArchivos.php?err=1";
+				Header("Location: $pagina");
 			if ($hayErrores == 2)
 				print("Error en Archivo -- Las fechas en el contenido del archivo son incorrectas.<br/>\n");
 			if ($hayErrores == 3)
