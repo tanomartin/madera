@@ -12,10 +12,10 @@ $fechahoy=date("YmdHis",time());
 $usuarioproceso = $_SESSION['usuario'];
 
 if(strcmp("localhost",$maquina)==0) {
-	$archivo_ddjj=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Nominas/DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip";
+	$archivo_ddjj=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Nominas/DDJJ_NOMINA_OS111001_F".$nombrearchivo.".zip";
 	$carpeta_ddjj=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Nominas/";
 } else {
-	$archivo_ddjj="/home/sistemas/ArchivosAfip/Nominas/DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip";
+	$archivo_ddjj="/home/sistemas/ArchivosAfip/Nominas/DDJJ_NOMINA_OS111001_F".$nombrearchivo.".zip";
 	$carpeta_ddjj="/home/sistemas/ArchivosAfip/Nominas/";
 }
 
@@ -32,7 +32,7 @@ if($noHayDDJJ) {
 		if ($zipDDJJ->open($archivo_ddjj) === TRUE) {
 			$zipDDJJ->extractTo($carpeta_ddjj);
 			$zipDDJJ->close();
-			$archivo_descom = $carpeta_ddjj."DDJJ_NOMINA_OS111001_Q".$nombrearchivo;
+			$archivo_descom = $carpeta_ddjj."DDJJ_NOMINA_OS111001_F".$nombrearchivo.".txt";
 			$registros = file($archivo_descom, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 			for($i=0; $i < count($registros); $i++) {
 				if($i == 0) {
@@ -241,7 +241,7 @@ if($noHayDDJJ) {
 																			$aviso = 'El archivo descomprimido desde el ZIP NO pudo ser eliminado.';
 																		}
 	
-																		rename($archivo_ddjj,$destino_ddjj."DDJJ_NOMINA_OS111001_Q".$nombrearchivo.".zip");
+																		rename($archivo_ddjj,$destino_ddjj."DDJJ_NOMINA_OS111001_F".$nombrearchivo.".zip");
 	
 																		$sqlAddMensaje = "INSERT INTO afipmensajes (nromensaje, fechaemailafip, cuentaderecepcion, tipoarchivo, nrodisco) VALUES (:nromensaje,:fechaemailafip,:cuentaderecepcion,:tipoarchivo,:nrodisco)";
 																		$resAddMensaje = $dbl->prepare($sqlAddMensaje);
