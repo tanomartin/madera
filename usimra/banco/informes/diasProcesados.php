@@ -78,9 +78,10 @@ A:hover {text-decoration: none;color:#33CCFF }
 			$mes = $datossplit[0];
 			?>
 			<p><span class="Estilo1">Resultado Per&iacute;odo "<?php echo $periodo ?>"</span> </p>
-			<table border="1" width="600" style="text-align:center">
+			<table border="1" width="800" style="text-align:center">
 				<tr>
 				  	<th>D&iacute;a </th>
+				  	<th>Convenio </th>
 				    <th>Estado </th>
 				    <th>Fecha Proceso </th>
 					<th>Observación </th>
@@ -95,6 +96,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 					$fecha = $ano."-".$mes."-".$rowDias['dia'];
 					$diaSemana = $diasArray[date('N', strtotime($fecha))];
 					print("<td>".$diaSemana." ".str_pad($rowDias['dia'],2,'0',STR_PAD_LEFT)."/".str_pad($mes,2,'0',STR_PAD_LEFT)."/".$ano."</td>");
+					print("<td>".$rowDias['nroconvenio']."</td>");
 					if ($rowDias['procesado'] == '1') {
 						print("<td>Procesado</td>");
 					}
