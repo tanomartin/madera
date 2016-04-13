@@ -57,20 +57,21 @@ include($libPath."fechas.php");
     <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuStock.php'" />
 </p>
   <p><span class="Estilo1">Listado de Consumo </span></p>
-  <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+  <table class="tablesorter" id="listado" style="width:900px; font-size:14px">
 	  <thead>
 		<tr>
 		  <th>Codigo Consumo</th>
 		  <th>Nombre</th>
 		  <th>Descripción</th>
 		  <th>Productos</th>
+		  <th class="filter-select" data-placeholder="Seleccione Usuario">Departamento </th>
 		  <th class="filter-select" data-placeholder="Seleccione Usuario">Usuario Consumo </th>
 		  <th>Fecha Consumo </th>
 	    </tr>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlConsumo = "SELECT c.*, i.nombre as nombre, i.descripcion as descri, u.nombre as usuario FROM consumoinsumo c, insumo i, usuarios u WHERE i.id = c.idinsumo and c.idusuario = u.id";
+			$sqlConsumo = "SELECT c.*, i.nombre as nombre, i.descripcion as descri, u.nombre as usuario, d.nombre as depto FROM consumoinsumo c, insumo i, usuarios u, departamentos d WHERE i.id = c.idinsumo and c.idusuario = u.id and u.departamento = d.id";
 			$resConsumo = mysql_query($sqlConsumo,$db);
 			$canConsumo = mysql_num_rows($resConsumo);
 			while ($rowConsumo = mysql_fetch_assoc($resConsumo)) { ?>
@@ -86,6 +87,7 @@ include($libPath."fechas.php");
 							print("* ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto'].")"."</br>");
 						}
 					?></td>	
+					<td><?php echo $rowConsumo['depto'] ?></td>		
 					<td><?php echo $rowConsumo['usuario'] ?></td>			
 					<td><?php echo invertirFecha($rowConsumo['fechaconsumo']) ?></td>
 		</tr>
