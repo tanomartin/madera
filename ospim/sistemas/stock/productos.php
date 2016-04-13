@@ -71,7 +71,9 @@ include($libPath."controlSessionOspimSistemas.php");
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlProd = "SELECT p.*, d.nombre as deptos, s.nombre as usuario FROM ubicacionproducto u, departamentos d, producto p, usuarios s WHERE u.id = p.id and u.departamento = d.id and u.idusuario = s.id";
+			$sqlProd = "SELECT p.*, u.* ,usuarios.nombre as usuario, d.nombre as deptos
+						  FROM ubicacionproducto u LEFT OUTER JOIN usuarios on u.idusuario = usuarios.id, producto p, departamentos d
+						  where u.id = p.id and u.departamento = d.id order by p.id";
 			$resProd = mysql_query($sqlProd,$db);
 			$canProd = mysql_num_rows($resProd);
 			while ($rowProd = mysql_fetch_assoc($resProd)) { ?>
