@@ -44,6 +44,15 @@ else{
 		$destino="/home/sistemas/Documentos/Repositorio/ArchivosBanco/Procesados/".substr($archivo_name,52,20);
 		//$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".substr($archivo_name,52,20);
 	rename($origen,$destino);
+
+	$fechaModif = date("Y-m-d H:i:s");
+	$usuarModif = $_SESSION['usuario'];
+	$dia = substr($archivo_name,-12,2);
+	$mes = substr($archivo_name,-10,2);
+	$ano = substr($archivo_name,-8,4);
+	$sqlUpdateDia = "UPDATE diasbanco SET procesado = 1, fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarModif' WHERE ano = $ano and mes = $mes and dia = $dia";
+	//print($sqlUpdateDia);
+	$resUpdateDia = mysql_query($sqlUpdateDia,$db);
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
