@@ -97,7 +97,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '"),';
 						}
-						$registroTabla = '('.$contenidoTabla[codidelega].',"'.$contenidoTabla[cuit].'","'.$contenidoTabla[nombre].'","'.$contenidoTabla[domireal].'",'.$contenidoTabla[nomlocali].','.$contenidoTabla[codzeus].',"'.$contenidoTabla[numpostal].'","'.$contenidoTabla[telefono1].'","'.$contenidoTabla[iniobliusi].$finRegistro;
+						$registroTabla = '('.$contenidoTabla[codidelega].',"'.$contenidoTabla[cuit].'","'.$contenidoTabla[nombre].'","'.$contenidoTabla[domireal].'","'.$contenidoTabla[nomlocali].'",'.$contenidoTabla[codzeus].','.$contenidoTabla[numpostal].','.$contenidoTabla[telefono1].',"'.$contenidoTabla[iniobliusi].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -117,11 +117,11 @@ if ($errorArchivos == 0) {
 					$totalLineas = 1;
 					foreach($resLeeTablas as $contenidoTabla){
 						if($totalLineas == $totalRegistros) {
-							$finRegistro = '");';
+							$finRegistro = ');';
 						} else {
-							$finRegistro = '"),';
+							$finRegistro = '),';
 						}
-						$registroTabla = '('.$contenidoTabla[cuit].',"'.$contenidoTabla[nroacuerdo].'","'.$contenidoTabla[estadoacuerdo].'","'.$contenidoTabla[fechaacuerdo].'",'.$contenidoTabla[montoacuerdo].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla[cuit].'",'.$contenidoTabla[nroacuerdo].','.$contenidoTabla[estadoacuerdo].',"'.$contenidoTabla[fechaacuerdo].'",'.$contenidoTabla[montoacuerdo].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -141,11 +141,11 @@ if ($errorArchivos == 0) {
 					$totalLineas = 1;
 					foreach($resLeeTablas as $contenidoTabla){
 						if($totalLineas == $totalRegistros) {
-							$finRegistro = '");';
+							$finRegistro = ');';
 						} else {
-							$finRegistro = '"),';
+							$finRegistro = '),';
 						}
-						$registroTabla = '('.$contenidoTabla[cuit].',"'.$contenidoTabla[nroacuerdo].'","'.$contenidoTabla[anoacuerdo].'","'.$contenidoTabla[mesacuerdo].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla[cuit].'",'.$contenidoTabla[nroacuerdo].','.$contenidoTabla[anoacuerdo].','.$contenidoTabla[mesacuerdo].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -169,7 +169,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '"),';
 						}
-						$registroTabla = '('.$contenidoTabla[cuit].',"'.$contenidoTabla[nroacuerdo].'","'.$contenidoTabla[nrocuota].'","'.$contenidoTabla[montocuota].'",'.$contenidoTabla[fechacuota].','.$contenidoTabla[montopagada].',"'.$contenidoTabla[fechapagada].'","'.$contenidoTabla[sistemacancelacion].'","'.$contenidoTabla[codigobarra].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla[cuit].'",'.$contenidoTabla[nroacuerdo].','.$contenidoTabla[nrocuota].','.$contenidoTabla[montocuota].',"'.$contenidoTabla[fechacuota].'",'.$contenidoTabla[montopagada].',"'.$contenidoTabla[fechapagada].'","'.$contenidoTabla[sistemacancelacion].'","'.$contenidoTabla[codigobarra].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -189,11 +189,11 @@ if ($errorArchivos == 0) {
 					$totalLineas = 1;
 					foreach($resLeeTablas as $contenidoTabla){
 						if($totalLineas == $totalRegistros) {
-							$finRegistro = '");';
+							$finRegistro = ');';
 						} else {
-							$finRegistro = '"),';
+							$finRegistro = '),';
 						}
-						$registroTabla = '('.$contenidoTabla[nrcuit].',"'.$contenidoTabla[perano].'","'.$contenidoTabla[permes].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla[nrcuit].'",'.$contenidoTabla[perano].','.$contenidoTabla[permes].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -213,11 +213,11 @@ if ($errorArchivos == 0) {
 					$totalLineas = 1;
 					foreach($resLeeTablas as $contenidoTabla){
 						if($totalLineas == $totalRegistros) {
-							$finRegistro = '");';
+							$finRegistro = ');';
 						} else {
-							$finRegistro = '"),';
+							$finRegistro = '),';
 						}
-						$registroTabla = '('.$contenidoTabla[cuit].',"'.$contenidoTabla[anojuicio].'","'.$contenidoTabla[mesjuicio].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla[cuit].'",'.$contenidoTabla[anojuicio].','.$contenidoTabla[mesjuicio].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
