@@ -97,7 +97,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					
 					<?php 
 						$idInsumo = $rowInsumos['id'];
-						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, s.nombre as usuario FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d, usuarios s WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id and u.idusuario = u.id";
+						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, s.nombre as usuario FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d, usuarios s WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id and u.idusuario = s.id";
 						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 						$nombre = "";
 						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
