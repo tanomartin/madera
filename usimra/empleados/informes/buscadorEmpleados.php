@@ -295,15 +295,15 @@ function abrirFicha(dire, cuit, cuil, estado) {
 			<?php } 
 			   } ?>
 		 <?php if ($existeFamiliaBaja == 1) { 
-			   	while($rowFamiliaresBaha = mysql_fetch_assoc($resFamiliaresBaja)) { ?>
+			   	while($rowFamiliaresBaja = mysql_fetch_assoc($resFamiliaresBaja)) { ?>
 				<tr align="center">
-				  <td><?php echo $rowFamiliaresBaha['nrcuil'];?></td>
-				  <td><?php echo $rowFamiliaresBaha['nrcuit']." - ".$rowEmpleados['empresa'] ; ?></td>
-				  <td><?php echo $rowFamiliaresBaha['apelli'].", ".$rowFamiliaresBaha['nombre'];?></td>
-				  <td><?php echo invertirFecha($rowFamiliaresBaha['fecing']);?></td>
-				  <td><?php echo $rowFamiliaresBaha['tipdoc'].": ".$rowFamiliaresBaha['nrodoc'];?></td>
-				  <td><?php echo $rowFamiliaresBaha['ssexxo']; ?></td>
-				  <td><?php echo $rowFamiliaresBaha['benefi']; ?></td>
+				  <td><?php echo $rowFamiliaresBaja['nrcuil'];?></td>
+				  <td><?php echo $rowFamiliaresBaja['nrcuit']." - ".$rowFamiliaresBaja['empresa'] ; ?></td>
+				  <td><?php echo $rowFamiliaresBaja['apelli'].", ".$rowFamiliaresBaja['nombre'];?></td>
+				  <td><?php echo invertirFecha($rowFamiliaresBaja['fecing']);?></td>
+				  <td><?php echo $rowFamiliaresBaja['tipdoc'].": ".$rowFamiliaresBaja['nrodoc'];?></td>
+				  <td><?php echo $rowFamiliaresBaja['ssexxo']; ?></td>
+				  <td><?php echo $rowFamiliaresBaja['benefi']; ?></td>
 				  <td><?php echo "SI" ?></td>
 				</tr>
 				<?php } 
