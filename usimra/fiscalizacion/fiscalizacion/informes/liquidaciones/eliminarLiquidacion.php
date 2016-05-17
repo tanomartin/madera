@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionUsimra.php");
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
 
-var_dump($_POST);
+//var_dump($_POST);
 $fechaanulacion = date("Y-m-d H:i:s");
 $usuarioanulacion = $_SESSION['usuario'];
 
@@ -12,7 +12,7 @@ $sqlUpdateAnulaReque = "UPDATE reqfiscalizusimra SET requerimientoanulado = 1, m
 $r = 0;
 $sqlUpdateAcuerdo = array();
 $sqlAcuerdos = "SELECT nroacuerdo FROM aculiquiusimra where nrorequerimiento = ".$_POST['nroreq'];
-print($sqlAcuerdos."<br>");
+//print($sqlAcuerdos."<br>");
 $resAcuerdos = mysql_query($sqlAcuerdos,$db);
 while ($rowAcuerdos = mysql_fetch_array($resAcuerdos)) {
 	$nroacuActivar = $rowAcuerdos['nroacuerdo'];
