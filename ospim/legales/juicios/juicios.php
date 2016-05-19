@@ -12,18 +12,8 @@ $cant = mysql_num_rows($result);
 if ($cant != 1) {
 	header ("Location: moduloJuicios.php?err=1");
 }
-$row = mysql_fetch_array($result); 
-$sqlDelEmp = "select * from delegaempresa where cuit = $cuit";
-$resDelEmp = mysql_query($sqlDelEmp,$db);
-$rowDelEmp = mysql_fetch_array($resDelEmp); 
 
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query($sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query($sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
+include($libPath."cabeceraEmpresaConsulta.php");
 
 $sqlJuicios =  "select * from cabjuiciosospim where cuit = $cuit";
 $resJuicios = mysql_query($sqlJuicios); 
