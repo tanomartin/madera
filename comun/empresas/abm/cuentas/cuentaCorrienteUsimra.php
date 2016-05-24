@@ -542,14 +542,16 @@ $ano ++;
 				<th>Recargo</th>
 				<th>Total</th>
 				<th>+Info</th>
-			<tr>
-	<?php   $sqlCuotasExcpecional = "SELECT * FROM  cuotaextraordinariausimra c, extraordinariosusimra e WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago";
+			</tr>
+	<?php   $sqlCuotasExcpecional = "SELECT e.relacionmes, e.anio, e.mensaje, c.fechapago, c.cantidadaportantes, c.totalaporte, c.montorecargo, c.montopagado, p.descripcion
+										FROM  cuotaextraordinariausimra c, extraordinariosusimra e, periodosusimra p 
+										WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago and e.anio = p.anio and e.mes = p.mes";
 			$resCuotasExcpecional = mysql_query ( $sqlCuotasExcpecional, $db );
 			$canCuotasExcpecional = mysql_num_rows ( $resCuotasExcpecional );
 			if ($canCuotasExcpecional > 0) {
 				while ( $rowCuotasExcpecional = mysql_fetch_assoc ( $resCuotasExcpecional ) ) { ?>
 					<tr>
-						<td><?php echo $rowCuotasExcpecional['relacionmes']."-". $rowCuotasExcpecional['anio']." | ".$rowCuotasExcpecional['mensaje'] ?></td>
+						<td><?php echo $rowCuotasExcpecional['relacionmes']."-". $rowCuotasExcpecional['anio']." | ".$rowCuotasExcpecional['mensaje']." - ".$rowCuotasExcpecional['descripcion']; ?></td>
 						<td><?php echo invertirfecha($rowCuotasExcpecional['fechapago']) ?></td>
 						<td><?php echo $rowCuotasExcpecional['cantidadaportantes'] ?></td>
 						<td><?php echo $rowCuotasExcpecional['totalaporte'] ?></td>
