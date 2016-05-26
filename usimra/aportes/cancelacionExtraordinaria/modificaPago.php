@@ -112,7 +112,7 @@ $(document).ready(function(){
 						var cuitphp = "<?php echo $cuit;?>";
 						var cuitjvs = codigobarra.substring(4,15);
 						if(cuitphp == cuitjvs) {
-							var idboljvs = codigobarra.substring(15,38);
+							var idboljvs = codigobarra.substring(15,29);
 							var dverijvs = codigobarra.substring(38,39);
 							$.ajax({
 								type: "POST",
