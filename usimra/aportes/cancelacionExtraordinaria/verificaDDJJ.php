@@ -8,7 +8,7 @@ if(isset($_POST) && !empty($_POST) && isset($_POST['cuitbarra']) && isset($_POST
 	$resBuscaDDJJ=mysql_query($sqlBuscaDDJJ,$db);
 	if(mysql_num_rows($resBuscaDDJJ)==1) {
 		$rowBuscaDDJJ=mysql_fetch_array($resBuscaDDJJ);
-		$respuesta = array("permes" => $rowBuscaDDJJ['permes'], "mesnombre" => $rowBuscaDDJJ['mesnombre'], "perano" => $rowBuscaDDJJ['perano'], "totapo" => ($rowBuscaDDJJ['totapo'], "recarg" => $rowBuscaDDJJ['recarg'], "totpag" => ($rowBuscaDDJJ['totapo']+$rowBuscaDDJJ['recarg']), "nfilas" => $rowBuscaDDJJ['nfilas'], "observ" => $rowBuscaDDJJ['observ']);
+		$respuesta = array("permes" => $rowBuscaDDJJ['permes'], "mesnombre" => $rowBuscaDDJJ['mesnombre'], "perano" => $rowBuscaDDJJ['perano'], "totapo" => $rowBuscaDDJJ['totapo'], "recarg" => $rowBuscaDDJJ['recarg'], "totpag" => ($rowBuscaDDJJ['totapo']+$rowBuscaDDJJ['recarg']), "nfilas" => $rowBuscaDDJJ['nfilas'], "observ" => $rowBuscaDDJJ['observ']);
 	}
 	echo json_encode($respuesta);
 }
