@@ -139,7 +139,7 @@ $(document).ready(function(){
 	});
 	$("#verificacodigobarra").click(function(){
 		var cuitbarra = $("#codigobarra").val().substring(4,15);
-		var controlbarra = $("#codigobarra").val().substring(15,38);
+		var controlbarra = $("#codigobarra").val().substring(15,29);
 		$.ajax({
 			type: "POST",
 			dataType: "json",
