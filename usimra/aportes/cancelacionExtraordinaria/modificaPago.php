@@ -390,7 +390,7 @@ include($libPath."cabeceraEmpresa.php");
 			<table border="0">
 			  <tr>
 				<td><strong>Total Aporte</strong></td>
-				<td><input name="totalaporte" type="text" id="totalaporte" value="<?php echo $rowBuscaPago['remuneraciones']?>" size="14" maxlength="10"/></td>
+				<td><input name="totalaporte" type="text" id="totalaporte" value="<?php echo $rowBuscaPago['totalaporte']?>" size="14" maxlength="10"/></td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 			  </tr>
