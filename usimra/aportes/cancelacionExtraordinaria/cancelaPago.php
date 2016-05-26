@@ -365,7 +365,7 @@ include($libPath."cabeceraEmpresa.php");
 				</select>
 			</span>
 			<span><strong>C&oacute;digo de Barra :</strong>
-				<input name="codigobarra" type="text" id="codigobarra" value="" size="30" maxlength="30"/>
+				<input name="codigobarra" type="text" id="codigobarra" value="" size="39" maxlength="39"/>
 			</span>
 			<p></p>
 			<strong><span id="msgcodigobarra" style="font-size:18px"></span></strong>
