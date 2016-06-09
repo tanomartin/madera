@@ -4,7 +4,11 @@ include($libPath."fechas.php");
 require($libPath."fpdf.php");
 $maquina = $_SERVER['SERVER_NAME'];
 
-$carpetaMinuta="C:/temp/";
+if(strcmp("localhost",$maquina)==0)
+		$carpetaMinuta="C:/temp/";
+	else
+		$carpetaMinuta="/temp/";
+
 
 //OPCION A4
 //$pdf = new FPDF('P','mm', 'A4');
