@@ -112,7 +112,7 @@ $(document).ready(function(){
 						var cuitphp = "<?php echo $cuit;?>";
 						var cuitjvs = codigobarra.substring(4,15);
 						if(cuitphp == cuitjvs) {
-							var idboljvs = codigobarra.substring(15,38);
+							var idboljvs = codigobarra.substring(15,29);
 							var dverijvs = codigobarra.substring(38,39);
 							$.ajax({
 								type: "POST",
@@ -165,7 +165,7 @@ $(document).ready(function(){
 	});
 	$("#verificacodigobarra").click(function(){
 		var cuitbarra = $("#codigobarra").val().substring(4,15);
-		var controlbarra = $("#codigobarra").val().substring(15,38);
+		var controlbarra = $("#codigobarra").val().substring(15,29);
 		$.ajax({
 			type: "POST",
 			dataType: "json",
@@ -364,7 +364,7 @@ include($libPath."cabeceraEmpresa.php");
 				</select>
 			</span>
 		  <span><strong>C&oacute;digo de Barra :</strong>
-				<input name="codigobarra" type="text" id="codigobarra" value="<?php echo $rowBuscaPago['codigobarra']?>" size="30" maxlength="30"/>
+				<input name="codigobarra" type="text" id="codigobarra" value="<?php echo $rowBuscaPago['codigobarra']?>" size="39" maxlength="39"/>
 			</span>
 			<p></p>
 			<strong><span id="msgcodigobarra" style="font-size:18px"></span></strong>
@@ -390,7 +390,7 @@ include($libPath."cabeceraEmpresa.php");
 			<table border="0">
 			  <tr>
 				<td><strong>Total Aporte</strong></td>
-				<td><input name="totalaporte" type="text" id="totalaporte" value="<?php echo $rowBuscaPago['remuneraciones']?>" size="14" maxlength="10"/></td>
+				<td><input name="totalaporte" type="text" id="totalaporte" value="<?php echo $rowBuscaPago['totalaporte']?>" size="14" maxlength="10"/></td>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
 			  </tr>
