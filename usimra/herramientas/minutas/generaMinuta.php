@@ -43,21 +43,21 @@ $pdf->SetXY(91, 42);
 $pdf->Cell(35,10, $_POST['cheque'],0,0,'R');
 
 $pdf->SetFont('Courier','B',10);
-//if ($_POST['tipo'] == 'deposito') {
+if ($_POST['tipo'] == 'deposito') {
 	//$pdf->SetXY(140, 45);
 	$pdf->SetXY(127, 42);
 	$pdf->Cell(32,5,"X",0,0,'R');
-//}
-//if ($_POST['tipo'] == 'debito') {
+}
+if ($_POST['tipo'] == 'debito') {
 	//$pdf->SetXY(105, 55);
 	$pdf->SetXY(91, 52);
 	$pdf->Cell(35,5,"X",0,0,'R');
-//}
-//if ($_POST['tipo'] == 'credito') {
+}
+if ($_POST['tipo'] == 'credito') {
 	//$pdf->SetXY(140, 45);
 	$pdf->SetXY(127, 52);
 	$pdf->Cell(32,5,"X",0,0,'R');
-//}
+}
 
 //$pdf->SetXY(172, 45);
 $pdf->SetXY(155, 45);
