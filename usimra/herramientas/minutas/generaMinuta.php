@@ -80,12 +80,12 @@ $debe = explode("\n", $_POST['debe']);
 //$y=123;
 $y=121;
 foreach ($debe as $lineaDebe) {
-	if ($y >= 140) {
+	if ($y >= 136) {
 		break;
 	}
 	//$pdf->SetXY(57, $y);
 	$pdf->SetXY(39, $y);
-	$pdf->Cell(146,5, $lineaDebe,0,1,'L');
+	$pdf->Cell(146,5,$lineaDebe,0,1,'L');
 	$y += 5;
 }
 

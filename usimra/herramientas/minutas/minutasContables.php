@@ -21,7 +21,99 @@ jQuery(function($){
 	$("#fecha").mask("99-99-9999");
 });
 
+
+function cargarContadores(objeto) {
+	
+}
+
 function validar(formulario) {
+
+	if (!esFechaValida(formulario.fecha.value)) {
+		alert("La Fecha de la minúta no es valida");
+		return false;
+	}
+	
+	if (formulario.asiento.value != '') {
+		if (!isNumberPositivo(formulario.asiento.value)) {
+			alert("El Asiente debe ser un número entero positvo o vació");
+			return false;
+		}
+	}
+
+	if (!isNumberPositivo(formulario.cuenta.value) || formulario.cuenta.value == '') {
+		alert("La cuenta debe ser un número positvo entero");
+		return false;
+	}
+
+	if (!isNumberPositivo(formulario.cheque.value) || formulario.cheque.value == '') {
+		alert("El Nro de cheque debe ser un número entero positvo");
+		return false;
+	}
+
+	if (!isNumber(formulario.importe.value) || formulario.importe.value == '') {
+		alert("El importe debe ser un número positvo");
+		return false;
+	}
+
+	if (formulario.detalle.value == '') {
+		alert("El Detalle es obligatorio");
+		return false;
+	} else {
+		maximo_lineas = 12;
+		lineas=formulario.detalle.value.split("\n");
+		if(lineas.length > maximo_lineas){
+			alert("El Detalle tiene como máximo 12 lineas");
+			return false;
+		} else {
+			maximo_linea = 70;	
+			for (var i = 0; i < lineas.length; i++) {
+				if (lineas[i].length > maximo_linea) {
+					var nroLinea = i + 1;
+					alert("La linea "+nroLinea+" del Detalle debe tener como máximo 70 caracteres");
+					return false;
+				}
+			}
+		}
+	}	
+
+	if (formulario.debe.value != '') {
+		maximo_lineas = 3;
+		lineas=formulario.debe.value.split("\n");
+		if(lineas.length > maximo_lineas){
+			alert("El Debe tiene como máximo 3 lineas");
+			return false;
+		} else {
+			maximo_linea = 60;	
+			for (var i = 0; i < lineas.length; i++) {
+				if (lineas[i].length > maximo_linea) {
+					var nroLinea = i + 1;
+					alert("La linea "+nroLinea+" del Debe debe tener como máximo 60 caracteres");
+					return false;
+				}
+			}
+		}
+		
+	}	
+
+	if (formulario.haber.value != '') {
+		maximo_lineas = 3;
+		lineas=formulario.haber.value.split("\n");
+		if(lineas.length > maximo_lineas){
+			alert("El Haber tiene como máximo 3 lineas");
+			return false;
+		} else {
+			maximo_linea = 60;	
+			for (var i = 0; i < lineas.length; i++) {
+				if (lineas[i].length > maximo_linea) {
+					var nroLinea = i + 1;
+					alert("La linea "+nroLinea+" del Haber debe tener como máximo 60 caracteres");
+					return false;
+				}
+			}
+		}
+	}
+	
+	
 	window.open("", "formpopup", "width=800,height=570");
 	formulario.target = 'formpopup';
 }
@@ -33,65 +125,47 @@ function validar(formulario) {
 <body bgcolor="#B2A274">
 	<div align="center">
 		<p><span class="Estilo2">Minutas Contables</span></p>
-	  	<form id="minutasContables" name="minutasContables" method="post" action="generaMinuta.php" onsubmit="validar(this)">
+	  	<form id="minutasContables" name="minutasContables" method="post" action="generaMinuta.php" onsubmit="return validar(this)">
 	  		<table>
 	  			<tr>
 	  				<td>Fecha</td>
-	  				<td><input id="fecha" name="fecha" type="text" size="6" value="01-12-2012"/></td>
+	  				<td><input id="fecha" name="fecha" type="text" size="6"/></td>
 	  			</tr>
 	  			<tr>
 	  				<td>Asiento Nº</td>
-	  				<td><input id="asiento" name="asiento" type="text" value="4548148"/></td>
+	  				<td><input id="asiento" name="asiento" type="text"/></td>
 	  			</tr>
 	  			<tr>
 	  				<td>Cuenta</td>
-	  				<td><input id="cuenta" name="cuenta" type="text" value="13231"/></td>
+	  				<td><input id="cuenta" name="cuenta" type="text"/></td>
 	  			</tr>
 	  			<tr>
 	  				<td>Chece Nº</td>
-	  				<td><input id="cheque" name="cheque" type="text" value="1131213"/></td>
+	  				<td><input id="cheque" name="cheque" type="text"/></td>
 	  			</tr>
 	  			<tr>
 	  				<td colspan="2">
-	  					<input type="radio" name="tipo" value="deposito"/> Depósito
-	  					<input type="radio" name="tipo" value="debito" checked="checked"/> Débito
+	  					<input type="radio" name="tipo" value="deposito" checked="checked"/> Depósito
+	  					<input type="radio" name="tipo" value="debito"/> Débito
 	  					<input type="radio" name="tipo" value="credito"/> Crédito
 	  				</td>
 	  			</tr>
 	  			<tr>
 	  				<td>Importe</td>
-	  				<td><input id="importe" name="importe" type="text" size="6" value="15.25"/></td>
+	  				<td><input id="importe" name="importe" type="text" size="6"/></td>
 	  			</tr>
 	  			<tr>
-	  				<td>Detalle</td>
-	  				<td><textarea style="resize:none;" name="detalle" id="detalle" cols="65" rows="13">vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa
-	  				
-	  				
-	  				
-	  				
-	  				
-
-vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa
-
-
-vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa
-vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa
-	  				</textarea>  </td>
+	  				<td>Detalle <br />(12 Lineas) </td>
+	  				<td><textarea style="resize:none;" name="detalle" id="detalle" cols="71" rows="13"></textarea>  </td>
 	  			</tr>
 	  			<tr>
-	  				<td>Cuenta Debe</td>
-	  				<td><textarea style="resize:none;" name="debe" id="debe" cols="65" rows="4">asfdaewrioe no se qpue noersdfsdafdsafddfsaasdffasfadsfdsafs
-
-asfdaewrioe no se qpue noersdfsdafdsafddfsaasdffasfadsfdsafs
-						</textarea> </td>
+	  				<td>Cuenta Debe <br /> (3 Lineas)</td>
+	  				<td><textarea style="resize:none;" name="debe" id="debe" cols="61" rows="4"></textarea> </td>
 	  			</tr>
 	  			<tr>
-	  				<td>Cuenta Haber</td>
+	  				<td>Cuenta Haber <br /> (3 Lineas)</td>
 	  				<td>
-	  					<textarea style="resize:none;" name="haber" id="haber" cols="65" rows="4">2431342143 afsdfdasf4321 1234312431234 rqwqreqr qw441323423s
-
-2431342143 afsdfdasf4321 1234312431234 rqwqreqr qw4413234232
-	  					</textarea>  
+	  					<textarea style="resize:none;" name="haber" id="haber" cols="61" rows="4"></textarea>  
 	  				</td>
 	  			</tr>
 	  		</table>

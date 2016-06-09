@@ -31,7 +31,11 @@ A:hover {text-decoration: none;color:#00FFFF }
       <p align="center">&nbsp;</p></td>
     </tr>
 	<tr>
-      <td width="196"><p align="center">&nbsp;</p></td>
+      <td width="196">
+      	<p align="center">Procesos</p>
+      	 <p align="center"><a class="enlace" href="procesos/moduloProcesos.php"><img src="img/procesos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      	<p>&nbsp;</p>
+      </td>
       <td width="196"><p align="center">Consultas e Informes</p>
           <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
