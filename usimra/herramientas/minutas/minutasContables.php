@@ -64,18 +64,33 @@ function validar(formulario) {
 	  			</tr>
 	  			<tr>
 	  				<td>Detalle</td>
-	  				<td><textarea style="resize:none;" name="detalle" id="detalle" cols="65" rows="12">vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa</textarea>  </td>
+	  				<td><textarea style="resize:none;" name="detalle" id="detalle" cols="65" rows="13">vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa
+	  				
+	  				
+	  				
+	  				
+	  				
+
+vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa
+
+
+vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa
+vajvaoispjepajwawvajvaoispjepajwawvajvaoispjepajwawvajvaoispjepa
+	  				</textarea>  </td>
 	  			</tr>
 	  			<tr>
 	  				<td>Cuenta Debe</td>
-	  				<td><textarea style="resize:none;" name="debe" id="debe" cols="65" rows="4">asfdaewrioe no se qpue noersdfsdafdsafddfsaasdffasfadsfdsafsad</textarea> </td>
+	  				<td><textarea style="resize:none;" name="debe" id="debe" cols="65" rows="4">asfdaewrioe no se qpue noersdfsdafdsafddfsaasdffasfadsfdsafs
+
+asfdaewrioe no se qpue noersdfsdafdsafddfsaasdffasfadsfdsafs
+						</textarea> </td>
 	  			</tr>
 	  			<tr>
 	  				<td>Cuenta Haber</td>
 	  				<td>
 	  					<textarea style="resize:none;" name="haber" id="haber" cols="65" rows="4">2431342143 afsdfdasf4321 1234312431234 rqwqreqr qw441323423s
-	  	
-	  						2431342143 afsdfdasf4321 1234312431234 rqwqreqr qw4413234232
+
+2431342143 afsdfdasf4321 1234312431234 rqwqreqr qw4413234232
 	  					</textarea>  
 	  				</td>
 	  			</tr>
