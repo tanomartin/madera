@@ -14,73 +14,77 @@ if(strcmp("localhost",$maquina)==0)
 //$pdf = new FPDF('P','mm', 'A4');
 
 //OPCION Personalizada
-$pdf = new FPDF('L','mm', array(200,185));
+$pdf = new FPDF('L','mm', array(200,190));
 
 $pdf->AddPage();
-$pdf->SetFont('Courier','B',11);
+$pdf->SetFont('Courier','B',10);
 
 $fechaArray = explode("-",$_POST['fecha']);
 
 //$pdf->SetXY(152, 31);
-$pdf->SetXY(142, 31);
+$pdf->SetXY(134, 28);
 $pdf->Cell(17,7, $fechaArray[0],0,0,'R');
+$pdf->SetXY(149, 28);
 $pdf->Cell(17,7, $fechaArray[1],0,0,'R');
+$pdf->SetXY(169, 28);
 $pdf->Cell(17,7, $fechaArray[2],0,0,'R');
 
 //$pdf->SetXY(152, 38);
-$pdf->SetXY(142, 38);
+$pdf->SetXY(134, 35);
 $pdf->Cell(51,7, $_POST['asiento'],0,0,'R');
 
 //$pdf->SetXY(35, 45);
-$pdf->SetXY(25, 45);
+$pdf->SetXY(15, 45);
 $pdf->Cell(70,18, $_POST['cuenta'],0,0,'C');
 
 //$pdf->SetXY(105, 45);
-$pdf->SetXY(95, 45);
+$pdf->SetFont('Courier','B',12);
+$pdf->SetXY(91, 42);
 $pdf->Cell(35,10, $_POST['cheque'],0,0,'R');
 
-if ($_POST['tipo'] == 'deposito') {
+$pdf->SetFont('Courier','B',10);
+//if ($_POST['tipo'] == 'deposito') {
 	//$pdf->SetXY(140, 45);
-	$pdf->SetXY(130, 45);
+	$pdf->SetXY(127, 42);
 	$pdf->Cell(32,5,"X",0,0,'R');
-}
-if ($_POST['tipo'] == 'debito') {
+//}
+//if ($_POST['tipo'] == 'debito') {
 	//$pdf->SetXY(105, 55);
-	$pdf->SetXY(95, 55);
+	$pdf->SetXY(91, 52);
 	$pdf->Cell(35,5,"X",0,0,'R');
-}
-if ($_POST['tipo'] == 'credito') {
+//}
+//if ($_POST['tipo'] == 'credito') {
 	//$pdf->SetXY(140, 45);
-	$pdf->SetXY(130, 45);
+	$pdf->SetXY(127, 52);
 	$pdf->Cell(32,5,"X",0,0,'R');
-}
+//}
 
 //$pdf->SetXY(172, 45);
-$pdf->SetXY(162, 45);
+$pdf->SetXY(155, 45);
 $pdf->Cell(31,18, $_POST['importe'],0,0,'R');
 
 $detalle = explode("\n", $_POST['detalle']);
 //$y=63;
 $y=63;
 foreach ($detalle as $lineaDetalle) {
-	if ($y >= 123) {
+	if ($y >= 118) {
 		break;
 	}
 	//$pdf->SetXY(49, $y);
-	$pdf->SetXY(41, $y);
+	$pdf->SetXY(31, $y);
 	$pdf->Cell(154,5, $lineaDetalle,0,1,'L');
 	$y += 5;
 }
 
 $debe = explode("\n", $_POST['debe']);
 //$y=123;
-$y=125;
+$y=121;
 foreach ($debe as $lineaDebe) {
 	if ($y >= 140) {
 		break;
 	}
 	//$pdf->SetXY(57, $y);
-	$pdf->SetXY(49, $y);
+	$pdf->SetXY(39, $y);
 	$pdf->Cell(146,5, $lineaDebe,0,1,'L');
 	$y += 5;
 }
@@ -93,7 +97,7 @@ foreach ($haber as $lineaHaber) {
 		break;
 	}
 	//$pdf->SetXY(57, $y);
-	$pdf->SetXY(49, $y);
+	$pdf->SetXY(39, $y);
 	$pdf->Cell(146,5, $lineaHaber,0,1,'L');
 	$y += 5;
 }
