@@ -54,6 +54,11 @@ function abrirEmpleados(dire) {
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
 }
 
+function abrirMinutas(dire) {
+	c= window.open(dire,"HerramientasUsimra",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=30, left=40");
+}
+
 </script>
 
 
@@ -99,12 +104,16 @@ function abrirEmpleados(dire) {
       </div></td>
     </tr>
     <tr>
-      <td>&nbsp;</td>
       <td><div align="center">
-          <p align="center">Banco </p>
-          <p align="center"><a href="javascript:abrirBanco('banco/moduloBanco.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
+          <p>Herramientas</p>
+          <p><a href="javascript:abrirMinutas('herramientas/menuHerramientas.php')"><img src="img/herramientas.png" width="90" height="90" border="0"/></a></p>
           <p>&nbsp;</p>
-      </div>        </td>
+      </div></td>
+      <td><div align="center">
+          <p>Banco </p>
+          <p><a href="javascript:abrirBanco('banco/moduloBanco.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
+          <p>&nbsp;</p>
+      </div></td>
       <td>&nbsp;</td>
     </tr>
   </table>
