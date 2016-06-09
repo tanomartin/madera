@@ -7,7 +7,7 @@ $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
 		$carpetaMinuta="C:/temp/";
 	else
-		$carpetaMinuta="/temp/";
+		$carpetaMinuta="/tmp/";
 
 
 //OPCION A4
