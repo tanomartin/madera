@@ -40,7 +40,7 @@ $canInsumo = mysql_num_rows($resInsumo);
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra","filter"],
-			headers:{2:{sorter:false, filter: false}, 7:{sorter:false, filter: false}},
+			headers:{2:{sorter:false, filter: false}, 9:{sorter:false, filter: false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -113,12 +113,14 @@ $canInsumo = mysql_num_rows($resInsumo);
     </tr>
   </table>
   <p class="Estilo1">Insumos</p>  
-	  <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+	  <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 		  <thead>
 			<tr>
 			  <th>Codigo</th>
 			  <th>Nombre</th>
 			  <th>Descripcion</th>
+			  <th>Producto</th>
+			  <th class="filter-select" data-placeholder="Seleccion Estado">Estado</th>
 			  <th>Pto. Promedio</th>
 			  <th>Pto. Pedido</th>
 			  <th>Stock Min.</th>
@@ -134,6 +136,31 @@ $canInsumo = mysql_num_rows($resInsumo);
 						<td><?php echo $rowInsumo['id'] ?></td>
 						<td><?php echo $rowInsumo['nombre']?></td>
 						<td><?php echo $rowInsumo['descripcion'] ?></td>
+						<td>
+							<?php 	
+								$idInsumo = $rowInsumo['id'];
+								$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+								$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
+								$canInsumoProducto = mysql_num_rows($resInsumoProducto);
+								if ($canInsumoProducto == 0) {
+									$activo = 1;
+								} else {
+									$activo = 0;
+									while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
+										if ($rowInsumoProducto['activo'] == 0) {
+											$color = "#FF0000";
+											$activoTexto = "[INACTIVO]";
+										} else {
+											$color = "#000000";
+											$activo += 1;
+											$activoTexto = "";
+										}
+										print("<font color='$color'> * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto'].") ".$activoTexto."</font></br>");
+									}
+								}
+						?>
+						</td>
+						<td><?php if ($activo == 0) { echo "INACTIVO"; } else { echo "ACTIVO"; } ?></td>
 						<td><?php echo $rowInsumo['puntopromedio'] ?></td>
 						<td><?php echo $rowInsumo['puntopedido'] ?></td>
 						<td><?php echo $rowInsumo['stockminimo'] ?></td>
