@@ -69,7 +69,6 @@ while($rowTituDese = mysql_fetch_array($resTituDese)) {
 //echo("DESEMPLEO <br>");
 //var_dump($dese);
 //echo("<br><br>");
-
 ?>
 
 
