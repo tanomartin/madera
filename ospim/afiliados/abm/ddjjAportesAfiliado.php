@@ -35,7 +35,7 @@ if (mysql_num_rows($resTituActi)==0) {
 }
 
 (int)$indTituDDJJ = 0;
-$sqlTituDDJJ = "SELECT anoddjj, mesddjj, cuit, remundeclarada FROM detddjjospim WHERE anoddjj >= '$anoini' AND cuil = '$cuilafiliado' ORDER BY anoddjj DESC, mesddjj DESC, cuit ASC";
+$sqlTituDDJJ = "SELECT anoddjj, mesddjj, cuit, remundeclarada FROM detddjjospim WHERE cuil = '$cuilafiliado' AND anoddjj >= '$anoini' ORDER BY anoddjj DESC, mesddjj DESC, cuit ASC";
 $resTituDDJJ = mysql_query($sqlTituDDJJ,$db);
 while($rowTituDDJJ = mysql_fetch_array($resTituDDJJ)) {
 	$ddjj[$indTituDDJJ] = array('cuit' => $rowTituDDJJ['cuit'], 'remu' => $rowTituDDJJ['remundeclarada'],'ano' => $rowTituDDJJ['anoddjj'], 'mes' => $rowTituDDJJ['mesddjj']);
@@ -45,7 +45,7 @@ while($rowTituDDJJ = mysql_fetch_array($resTituDDJJ)) {
 //var_dump($ddjj);
 
 (int)$indTituApor = 0;
-$sqlTituApor = "SELECT anopago, mespago, cuit, importe FROM afiptransferencias WHERE anopago >= '$anoini' AND (concepto = '381' OR concepto = 'C14' OR concepto = 'O02' OR concepto = 'T14' OR concepto = 'T55') AND cuil = '$cuilafiliado' ORDER BY anopago DESC, mespago DESC, cuit ASC";
+$sqlTituApor = "SELECT anopago, mespago, cuit, importe FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND anopago >= '$anoini' AND (concepto = '381' OR concepto = 'C14' OR concepto = 'O02' OR concepto = 'T14' OR concepto = 'T55') ORDER BY anopago DESC, mespago DESC, cuit ASC";
 $resTituApor = mysql_query($sqlTituApor,$db);
 while($rowTituApor = mysql_fetch_array($resTituApor)) {
 	$apor[$indTituApor] = array('cuit' => $rowTituApor['cuit'], 'impo' => $rowTituApor['importe'],'ano' => $rowTituApor['anopago'], 'mes' => $rowTituApor['mespago']);
@@ -55,7 +55,7 @@ while($rowTituApor = mysql_fetch_array($resTituApor)) {
 //var_dump($apor);
 
 (int)$indTituDese = 0;
-$sqlTituDese = "SELECT anodesempleo, mesdesempleo, fechainformesss, clave FROM desempleosss WHERE anodesempleo >= '$anoini' AND cuiltitular = '$cuilafiliado' AND parentesco = 0 ORDER BY anodesempleo DESC, mesdesempleo DESC";
+$sqlTituDese = "SELECT anodesempleo, mesdesempleo, fechainformesss, clave FROM desempleosss WHERE cuiltitular = '$cuilafiliado' AND parentesco = 0 AND anodesempleo >= '$anoini' ORDER BY anodesempleo DESC, mesdesempleo DESC";
 $resTituDese = mysql_query($sqlTituDese,$db);
 while($rowTituDese = mysql_fetch_array($resTituDese)) {
 	$dese[$indTituDese] = array('fech' => $rowTituDese['fechainformesss'], 'clav' => $rowTituDese['clave'],'ano' => $rowTituDese['anodesempleo'], 'mes' => $rowTituDese['mesdesempleo']);
