@@ -1,8 +1,7 @@
-<?php
-$libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
+<?php $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
 include ($libPath . "fechas.php");
-
+set_time_limit(0);
 
 $wherein = "(";
 foreach ( $_POST as $value ) {
@@ -108,6 +107,8 @@ try {
 	$dbh->rollback();
 }
 
+$ahora = date("Y-n-j H:i:s");
+$_SESSION["ultimoAcceso"] = $ahora;
 ?>
 
 <!DOCTYPE html>

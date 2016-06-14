@@ -2,6 +2,7 @@
 $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
 include ($libPath . "fechas.php");
+set_time_limit(0);
 
 $wherein = "(";
 $arrayFechaBaja = array();
@@ -127,8 +128,8 @@ while ( $rowBajarFami = mysql_fetch_assoc ( $resBajarFami ) ) {
 						'".$rowBajarFami['lote']."',
 						'".$rowBajarFami['tipocarnet']."',
 						'".$rowBajarFami['vencimientocarnet']."',
-						'".$rowBajarFami['informesss']."',
-						'".$rowBajarFami['tipoinformesss']."',
+						'1',
+						'B',
 						'".$rowBajarFami['fechainformesss']."',	
 						'".$rowBajarFami['usuarioinformesss']."',
 						'',
@@ -180,6 +181,9 @@ try {
 	echo $e->getMessage();
 	$dbh->rollback();
 }
+
+$ahora = date("Y-n-j H:i:s");
+$_SESSION["ultimoAcceso"] = $ahora;
 
 ?>
 

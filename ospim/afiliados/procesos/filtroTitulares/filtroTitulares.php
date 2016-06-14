@@ -1,6 +1,7 @@
 <?php
 $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
+set_time_limit(0);
 
 function mayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
 	if (($fechaDDJJ>=$fechaPago) and ($fechaDDJJ>=$fechaDesempleo)) {
@@ -91,7 +92,7 @@ $wherein .= ")";
 unset($tituParaBajar);
 
 // $sqlTituParaBajar = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,DATE_FORMAT(fechacarnet,'%d/%m/%Y') as fechacarnet,codidelega FROM titulares WHERE cuil IN ".$wherein;
-$sqlTituParaBajar = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,fechacarnet,codidelega FROM titulares  WHERE cuil IN " . $wherein ." LIMIT 1000";
+$sqlTituParaBajar = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,fechacarnet,codidelega FROM titulares  WHERE cuil IN " . $wherein ." LIMIT 100";
 $resTituParaBajar = mysql_query ( $sqlTituParaBajar, $db );
 $canTituParaBajar = mysql_num_rows ( $resTituParaBajar );
 //echo "CANT TITULARES: ".$canTituParaBajar . "<br>";
@@ -149,6 +150,8 @@ unset($sqlDesempleo);
 unset($resDesempleo);
 //var_dump($fechaDesemp);echo"<br><br>";
 
+$ahora = date("Y-n-j H:i:s");
+$_SESSION["ultimoAcceso"] = $ahora;
 
 ?>
 

@@ -1,9 +1,9 @@
-<?php
-$libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
+<?php $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
 include ($libPath . "fechas.php");
+set_time_limit(0);
 
-var_dump($_POST);echo "<br>";
+//var_dump($_POST);echo "<br>";
 
 $fechaBaja = date ( "Y-m-d" );
 $motivoBaja = "Depuración de Padrón - Proceso automatico de Baja de Familiares";
@@ -18,7 +18,7 @@ foreach ( $_POST as $value ) {
     $valueArray = explode ("-",$value);
 	$nroafiliado = $valueArray[0];
     $nroorden = $valueArray[1];
-    echo $nroafiliado." - ".$nroorden."<br><br><br>";
+    //echo $nroafiliado." - ".$nroorden."<br><br><br>";
     
     $sqlBajarFami = "SELECT * FROM familiares WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
     //echo $sqlBajarFami;echo "<br>";
@@ -83,13 +83,13 @@ try {
 	$dbh->beginTransaction();
 
 	foreach ($arraySqlBajaFamiliares as $bajaSqlFami) {
-		print($bajaSqlFami."<br>");
+		//print($bajaSqlFami."<br>");
 		//$dbh->exec($bajaSqlFami);
 	}
 	unset($arraySqlBajaFamiliares);
 	
 	foreach ($arraySqlDeleteFamiliares as $deleteSql) {
-		print($deleteSql."<br>");
+		//print($deleteSql."<br>");
 		//$dbh->exec($deleteSql);
 	}	
 	unset($arraySqlDeleteFamiliares);
@@ -100,6 +100,9 @@ try {
 	echo $e->getMessage();
 	$dbh->rollback();
 }
+
+$ahora = date("Y-n-j H:i:s");
+$_SESSION["ultimoAcceso"] = $ahora;
 
 ?>
 

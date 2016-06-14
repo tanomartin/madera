@@ -1,7 +1,6 @@
-<?php
-
-$libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
+<?php $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
+set_time_limit(0);
 
 $sqlFamiFiltro = "SELECT
 nroafiliado,
@@ -23,6 +22,9 @@ YEAR(CURDATE())-YEAR(fechanacimiento) > 20";
 $resFamiFiltro = mysql_query ( $sqlFamiFiltro, $db );
 $canFamiFiltro = mysql_num_rows ( $resFamiFiltro );
 $hoy = date("Y-m-d");
+
+$ahora = date("Y-n-j H:i:s");
+$_SESSION["ultimoAcceso"] = $ahora;
 
 ?>
 
