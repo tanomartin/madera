@@ -81,6 +81,7 @@ $arrayFinal = array_unique ( $arraySuma );
 $tituParaBajar = array_diff ( $arrayTitulares, $arrayFinal );
 unset ( $arrayTitulares );
 unset ( $arrayFinal );
+$cantidadTotal = count ( $tituParaBajar );
 //echo "Resta: " . count ( $tituParaBajar ) . "<br>";
 
 $wherein = "(";
@@ -231,7 +232,7 @@ A:hover {
 	<div align="center">
 		<p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../moduloProcesos.php'" /></p>
 		<p><span class="Estilo2">Titulares para dar de Baja</span></p>
-		<p><span class="Estilo2"><?php echo $canTituParaBajar ?> Titulares de <?php echo count ( $arrayInforme )?> a Bajar </span></p>
+		<p><span class="Estilo2"><?php echo $canTituParaBajar ?> Titulares de <?php echo $cantidadTotal ?> a Bajar </span></p>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="bajarTitulares.php">
 			<table style="text-align: center; width: 800px" id="tabla"
 				class="tablesorter">
