@@ -84,13 +84,13 @@ try {
 
 	foreach ($arraySqlBajaFamiliares as $bajaSqlFami) {
 		//print($bajaSqlFami."<br>");
-		//$dbh->exec($bajaSqlFami);
+		$dbh->exec($bajaSqlFami);
 	}
 	unset($arraySqlBajaFamiliares);
 	
 	foreach ($arraySqlDeleteFamiliares as $deleteSql) {
 		//print($deleteSql."<br>");
-		//$dbh->exec($deleteSql);
+		$dbh->exec($deleteSql);
 	}	
 	unset($arraySqlDeleteFamiliares);
 

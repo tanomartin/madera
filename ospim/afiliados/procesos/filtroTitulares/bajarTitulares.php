@@ -159,21 +159,21 @@ try {
 
 	foreach ($arraySqlBajaFamiliares as $bajaSqlFami) {
 		//print($bajaSqlFami."<br>");
-		//$dbh->exec($bajaSqlFami);
+		$dbh->exec($bajaSqlFami);
 	}
 	unset($arraySqlBajaFamiliares);
 	
 	foreach ($arraySqlBaja as $bajaSql) {
 		//print($bajaSql."<br>");
-		//$dbh->exec($bajaSql);
+		$dbh->exec($bajaSql);
 	}	
 	unset($arraySqlBaja);
 	
 	//print($sqlDeleteFami."<br>");
-	//$dbh->exec($sqlDeleteFami);
+	$dbh->exec($sqlDeleteFami);
 	
 	//print($sqlDeleteTitu."<br>");
-	//$dbh->exec($sqlDeleteTitu);
+	$dbh->exec($sqlDeleteTitu);
 	
 	$dbh->commit();
 

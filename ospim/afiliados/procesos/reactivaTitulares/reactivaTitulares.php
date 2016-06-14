@@ -6,65 +6,65 @@ include ($libPath . "controlSessionOspim.php");
 $fecha = date ( 'Y-m-j' );
 $fechaInicio = strtotime ( '-4 month', strtotime ( $fecha ) );
 $fechaInicio = date ( 'Y-m-j', $fechaInicio );
-echo $fechaInicio . "<br>";
+//echo $fechaInicio . "<br>";
 
 $fechaDesempleo = strtotime ( '-1 month', strtotime ( $fecha ) );
 $fechaDesempleo = date ( 'Y-m-j', $fechaDesempleo );
-echo $fechaDesempleo . "<br>";
+//echo $fechaDesempleo . "<br>";
 
 $sqlTitulares = "SELECT DISTINCT cuil FROM titularesdebaja t where tipoafiliado != 'U'";
-echo $sqlTitulares . "<br>";
+//echo $sqlTitulares . "<br>";
 
 $sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where (anoddjj = " . date ( "Y", strtotime ( $fechaInicio ) ) . " and mesddjj > " . date ( "n", strtotime ( $fechaInicio ) ) . ") or (anoddjj = " . date ( "Y", strtotime ( $fecha ) ) . " and mesddjj < " . date ( "n", strtotime ( $fecha ) ) . ")";
-echo $sqlDDJJ . "<br>";
+//echo $sqlDDJJ . "<br>";
 
 $sqlPagos = "SELECT DISTINCT cuil FROM afiptransferencias d where (anopago = " . date ( "Y", strtotime ( $fechaInicio ) ) . " and mespago > " . date ( "n", strtotime ( $fechaInicio ) ) . ") or (anopago = " . date ( "Y", strtotime ( $fecha ) ) . " and mespago < " . date ( "n", strtotime ( $fecha ) ) . ")";
-echo $sqlPagos . "<br>";
+//echo $sqlPagos . "<br>";
 
 //$sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where anodesempleo = " . date ( "Y", strtotime ( $fechaDesempleo ) ) . " and mesdesempleo = " . date ( "n", strtotime ( $fechaDesempleo ) ) . " and parentesco = 0";
 $sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where (anodesempleo = ".date("Y", strtotime($fechaInicio))." and mesdesempleo > ".date("n", strtotime($fechaInicio)).") or (anodesempleo = ".date("Y", strtotime($fecha))." and mesdesempleo < ".date("n", strtotime($fecha)).")";
-echo $sqlDesempleo . "<br><br>";
+//echo $sqlDesempleo . "<br><br>";
 
 $resTitulares = mysql_query ( $sqlTitulares, $db );
 $arrayTitulares = array ();
 while ( $rowTitulares = mysql_fetch_assoc ( $resTitulares ) ) {
 	array_push ( $arrayTitulares, $rowTitulares ['cuil'] );
 }
-echo "Titualres: " . count ( $arrayTitulares ) . "<br>";
+//echo "Titualres: " . count ( $arrayTitulares ) . "<br>";
 
 $arrayDDJJ = array ();
 $resDDJJ = mysql_query ( $sqlDDJJ, $db );
 while ( $rowDDJJ = mysql_fetch_assoc ( $resDDJJ ) ) {
 	array_push ( $arrayDDJJ, $rowDDJJ ['cuil'] );
 }
-echo "DDJJ: " . count ( $arrayDDJJ ) . "<br>";
+//echo "DDJJ: " . count ( $arrayDDJJ ) . "<br>";
 $resPagos = mysql_query ( $sqlPagos, $db );
 $arrayPagos = array ();
 while ( $rowPagos = mysql_fetch_assoc ( $resPagos ) ) {
 	array_push ( $arrayPagos, $rowPagos ['cuil'] );
 }
-echo "Pagos: " . count ( $arrayPagos ) . "<br>";
+//echo "Pagos: " . count ( $arrayPagos ) . "<br>";
 
 $resDesempleo = mysql_query ( $sqlDesempleo, $db );
 $arrayDesempleo = array ();
 while ( $rowDesempleo = mysql_fetch_assoc ( $resDesempleo ) ) {
 	array_push ( $arrayDesempleo, $rowDesempleo ['cuilbeneficiario'] );
 }
-echo "Desempelo: " . count ( $arrayDesempleo ) . "<br>";
+//echo "Desempelo: " . count ( $arrayDesempleo ) . "<br>";
 
 $arraySuma = array_merge ( $arrayDDJJ, $arrayPagos, $arrayDesempleo );
 unset ( $arrayDDJJ );
 unset ( $arrayPagos );
 unset ( $arrayDesempleo );
-echo "Suma: " . count ( $arraySuma ) . "<br>";
+//echo "Suma: " . count ( $arraySuma ) . "<br>";
 
 $arrayFinal = array_unique ( $arraySuma );
-echo "Final: " . count ( $arrayFinal ) . "<br>";
+//echo "Final: " . count ( $arrayFinal ) . "<br>";
 
 $tituParaSubir = array_intersect ( $arrayTitulares, $arrayFinal );
 unset ( $arrayTitulares );
 unset ( $arrayFinal );
-echo "Interseccion: " . count ( $tituParaSubir ) . "<br>";
+//echo "Interseccion: " . count ( $tituParaSubir ) . "<br>";
 
 
 if (sizeof($tituParaSubir) != 0) {
@@ -77,10 +77,10 @@ if (sizeof($tituParaSubir) != 0) {
 	
 	// $sqlTituParaBajar = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,DATE_FORMAT(fechacarnet,'%d/%m/%Y') as fechacarnet,codidelega FROM titulares WHERE cuil IN ".$wherein;
 	$sqlTituParaSubir = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,fechabaja,motivobaja,codidelega FROM titularesdebaja  WHERE cuil IN " . $wherein ." LIMIT 1000";
-	print($sqlTituParaSubir);
+	//print($sqlTituParaSubir);
 	$resTituParaSubir = mysql_query ( $sqlTituParaSubir, $db );
 	$canTituParaSubir = mysql_num_rows ( $resTituParaSubir );
-	echo $canTituParaSubir . "<br>";
+	//echo $canTituParaSubir . "<br>";
 } else {
 	$canTituParaSubir = 0;
 }
