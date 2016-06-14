@@ -18,7 +18,7 @@ function mayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
 $fecha = date ( 'Y-m-j' );
 $fechaInicio = strtotime ( '-36 month', strtotime ( $fecha ) );
 $fechaInicio = date ( 'Y-m-j', $fechaInicio );
-echo $fechaInicio . "<br>";
+//echo $fechaInicio . "<br>";
 
 $fechaDesempleo = strtotime ( '-1 month', strtotime ( $fecha ) );
 $fechaDesempleo = date ( 'Y-m-j', $fechaDesempleo );
@@ -233,6 +233,7 @@ A:hover {
 		<p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../moduloProcesos.php'" /></p>
 		<p><span class="Estilo2">Titulares para dar de Baja</span></p>
 		<p><span class="Estilo2"><?php echo $canTituParaBajar ?> Titulares de <?php echo $cantidadTotal ?> a Bajar </span></p>
+		<p><span class="Estilo2">Sin Movimientos desde <?php echo invertirFecha($fechaInicio) ?> </span></p>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="bajarTitulares.php">
 			<table style="text-align: center; width: 800px" id="tabla"
 				class="tablesorter">
