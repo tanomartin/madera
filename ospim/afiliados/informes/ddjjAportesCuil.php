@@ -40,7 +40,7 @@ function validar(formulario) {
 
 	param = "cuiAfi=" + formulario.cuil.value;
 	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no";
-	window.open("../abm/ddjjAportesAfiliado2.php?" + param, "", opciones);
+	window.open("../abm/ddjjAportesAfiliado.php?" + param, "", opciones);
 };
 </script>
 

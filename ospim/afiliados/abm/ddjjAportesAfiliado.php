@@ -34,37 +34,44 @@ if (mysql_num_rows($resTituActi)==0) {
 	$nomafiliado = $rowTituActi['apellidoynombre'];
 }
 
-(int)$indTituDDJJ = 0;
-$sqlTituDDJJ = "SELECT anoddjj, mesddjj, cuit, remundeclarada FROM detddjjospim WHERE cuil = '$cuilafiliado' AND anoddjj >= '$anoini' ORDER BY anoddjj DESC, mesddjj DESC, cuit ASC";
+$sqlTituDDJJ = "SELECT anoddjj, mesddjj, cuit, remundeclarada FROM detddjjospim WHERE cuil = '$cuilafiliado' AND anoddjj >= '$anoini'";
 $resTituDDJJ = mysql_query($sqlTituDDJJ,$db);
+$i=0;
 while($rowTituDDJJ = mysql_fetch_array($resTituDDJJ)) {
-	$ddjj[$indTituDDJJ] = array('cuit' => $rowTituDDJJ['cuit'], 'remu' => $rowTituDDJJ['remundeclarada'],'ano' => $rowTituDDJJ['anoddjj'], 'mes' => $rowTituDDJJ['mesddjj']);
-	$indTituDDJJ++;
+	$indTituDDJJ = $rowTituDDJJ['anoddjj'].$rowTituDDJJ['mesddjj'];
+	$ddjj[$indTituDDJJ][$i] = array('cuit' => $rowTituDDJJ['cuit'], 'remu' => $rowTituDDJJ['remundeclarada'],'ano' => $rowTituDDJJ['anoddjj'], 'mes' => $rowTituDDJJ['mesddjj']);
+	$i++;
 }
 //echo("DDJJ <br>");
 //var_dump($ddjj);
+//echo("<br><br>");
 
-(int)$indTituApor = 0;
+$i=0;
 $sqlTituApor = "SELECT anopago, mespago, cuit, importe FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND anopago >= '$anoini' AND (concepto = '381' OR concepto = 'C14' OR concepto = 'O02' OR concepto = 'T14' OR concepto = 'T55') ORDER BY anopago DESC, mespago DESC, cuit ASC";
 $resTituApor = mysql_query($sqlTituApor,$db);
 while($rowTituApor = mysql_fetch_array($resTituApor)) {
-	$apor[$indTituApor] = array('cuit' => $rowTituApor['cuit'], 'impo' => $rowTituApor['importe'],'ano' => $rowTituApor['anopago'], 'mes' => $rowTituApor['mespago']);
-	$indTituApor++;
+	$indTituApor = $rowTituApor['anopago'].$rowTituApor['mespago'];
+	$apor[$indTituApor][$i] = array('cuit' => $rowTituApor['cuit'], 'impo' => $rowTituApor['importe'],'ano' => $rowTituApor['anopago'], 'mes' => $rowTituApor['mespago']);
+	$i++;
 }
 //echo("APORTES <br>");
 //var_dump($apor);
+//echo("<br><br>");
 
-(int)$indTituDese = 0;
+$i=0;
 $sqlTituDese = "SELECT anodesempleo, mesdesempleo, fechainformesss, clave FROM desempleosss WHERE cuiltitular = '$cuilafiliado' AND parentesco = 0 AND anodesempleo >= '$anoini' ORDER BY anodesempleo DESC, mesdesempleo DESC";
 $resTituDese = mysql_query($sqlTituDese,$db);
 while($rowTituDese = mysql_fetch_array($resTituDese)) {
-	$dese[$indTituDese] = array('fech' => $rowTituDese['fechainformesss'], 'clav' => $rowTituDese['clave'],'ano' => $rowTituDese['anodesempleo'], 'mes' => $rowTituDese['mesdesempleo']);
-	$indTituDese++;
+	$indTituDese = $rowTituDese['anodesempleo'].$rowTituDese['mesdesempleo'];
+	$dese[$indTituDese][$i] = array('fech' => $rowTituDese['fechainformesss'], 'clav' => $rowTituDese['clave'],'ano' => $rowTituDese['anodesempleo'], 'mes' => $rowTituDese['mesdesempleo']);
+	$i++;
 }
 //echo("DESEMPLEO <br>");
 //var_dump($dese);
+//echo("<br><br>");
 
 ?>
+
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -140,13 +147,17 @@ while($ano>=$anoini) {
 		$lcuiddjj = '';
 		$lremddjj = '';
 		$existe = 0; 
-		foreach($ddjj as $dj) {
+		
+		$indice = $ano.$mes;
+		
+		foreach($ddjj[$indice] as $dj) {
 			if($dj['ano'] == $ano && $dj['mes'] == $mes) {
 				$lcuiddjj .= (string)$dj['cuit']."<br>";
 				$lremddjj .= (string)$dj['remu']."<br>";
 				$existe = 1; 
 			}
 		} 
+		
 		if ($existe == 0) {
 			$lcuiddjj = '-';
 			$lremddjj = '-';
@@ -155,7 +166,8 @@ while($ano>=$anoini) {
 		$lcuiapor = '';
 		$limpapor = '';
 		$existe = 0; 
-		foreach($apor as $ap) {
+
+		foreach($apor[$indice] as $ap) {
 			if($ap['ano'] == $ano && $ap['mes'] == $mes) {
 				$lcuiapor .= (string)$ap['cuit']."<br>";
 				$limpapor .= (string)$ap['impo']."<br>";
@@ -170,7 +182,8 @@ while($ano>=$anoini) {
 		$lfecdese = '';
 		$lcladese = '';
 		$existe = 0; 
-		foreach($dese as $de) {
+		
+		foreach($dese[$indice] as $de) {
 			if($de['ano'] == $ano && $de['mes'] == $mes) {
 				$lfecdese .= (string)invertirFecha($de['fech'])."<br>";
 				$lcladese .= (string)$de['clav']."<br>";
@@ -238,4 +251,3 @@ while($ano>=$anoini) {
 </table>
 </body>
 </html>
-
