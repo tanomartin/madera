@@ -16,7 +16,7 @@ function mayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
 }
 
 $fecha = date ( 'Y-m-j' );
-$fechaInicio = strtotime ( '-24 month', strtotime ( $fecha ) );
+$fechaInicio = strtotime ( '-36 month', strtotime ( $fecha ) );
 $fechaInicio = date ( 'Y-m-j', $fechaInicio );
 echo $fechaInicio . "<br>";
 
