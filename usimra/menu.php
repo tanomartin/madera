@@ -105,7 +105,7 @@ function abrirMinutas(dire) {
     </tr>
     <tr>
        <td> 
-       	<?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'dbarreiro') { ?> 
+       	<?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'dbarreiro' || $_SESSION['usuario'] == 'mvoilhaborda') { ?> 
 			      <div align="center">
 			          <p>Herramientas</p>
 			          <p><a href="javascript:abrirMinutas('herramientas/menuHerramientas.php')"><img src="img/herramientas.png" width="90" height="90" border="0"/></a></p>
