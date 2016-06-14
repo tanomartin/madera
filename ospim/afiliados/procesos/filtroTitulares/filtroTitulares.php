@@ -17,7 +17,7 @@ function mayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
 }
 
 $fecha = date ( 'Y-m-j' );
-$fechaInicio = strtotime ( '-36 month', strtotime ( $fecha ) );
+$fechaInicio = strtotime ( '-48 month', strtotime ( $fecha ) );
 $fechaInicio = date ( 'Y-m-j', $fechaInicio );
 //echo $fechaInicio . "<br>";
 
@@ -25,7 +25,7 @@ $fechaDesempleo = strtotime ( '-1 month', strtotime ( $fecha ) );
 $fechaDesempleo = date ( 'Y-m-j', $fechaDesempleo );
 //echo $fechaDesempleo . "<br>";
 
-$sqlTitulares = "SELECT DISTINCT cuil FROM titulares t where fechacarnet <= '" . $fechaInicio . "' and tipoafiliado != 'U'";
+$sqlTitulares = "SELECT DISTINCT cuil FROM titulares t where fechacarnet <= '" . $fechaInicio . "' and tipoafiliado != 'U' and codidelega not in (1000,1001)";
 echo $sqlTitulares . "<br>";
 
 $sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where (anoddjj = " . date ( "Y", strtotime ( $fechaInicio ) ) . " and mesddjj > " . date ( "n", strtotime ( $fechaInicio ) ) . ") or (anoddjj = " . date ( "Y", strtotime ( $fecha ) ) . " and mesddjj < " . date ( "n", strtotime ( $fecha ) ) . ") or (anoddjj > ".date ( "Y", strtotime ( $fechaInicio ) ). " and anoddjj < ".date ( "Y", strtotime ( $fecha ) ).")";
