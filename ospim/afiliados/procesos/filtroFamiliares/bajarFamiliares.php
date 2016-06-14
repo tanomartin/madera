@@ -6,7 +6,7 @@ include ($libPath . "fechas.php");
 var_dump($_POST);echo "<br>";
 
 $fechaBaja = date ( "Y-m-d" );
-$motivoBaja = "Filtro Familiares";
+$motivoBaja = "Depuración de Padrón - Proceso automatico de Baja de Familiares";
 $fechaefectivizacion = date ( "Y-m-d H:i:s" );
 $usuarioefectivizacion = $_SESSION ['usuario'];
 

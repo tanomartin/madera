@@ -3,67 +3,17 @@ $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
 include ($libPath . "fechas.php");
 
-function majorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
-	if (($fechaDDJJ>=$fechaPago) and ($fechaDDJJ>=$fechaDesempleo)) { 
-		return $fechaDDJJ;
-	} 
-	if (($fechaPago>=$fechaDDJJ) and ($fechaPago>=$fechaDesempleo)) { 
-		return $fechaPago;
-	} 
-	if (($fechaDesempleo>=$fechaPago) and ($fechaDesempleo>=$fechaDDJJ)) { 
-		return $fechaDesempleo;
-	}  
-}
-
 $wherein = "(";
+$arrayFechaBaja = array();
 foreach ( $_POST as $value ) {
-	$wherein .= "'" . $value . "',";
+	$valueArray = explode('|',$value);
+	$wherein .= "'".$valueArray[0]."',";
+	$arrayFechaBaja[$valueArray[0]] = $valueArray[1];
 }
 $wherein = substr ( $wherein, 0, - 1 );
 $wherein .= ")";
 
-$sqlDDJJ = "SELECT cuil, anoddjj, mesddjj FROM detddjjospim d where cuil in $wherein order by cuil, anoddjj ASC ,mesddjj ASC"; 
-//echo $sqlDDJJ . "<br>";
-$resDDJJ = mysql_query ( $sqlDDJJ, $db );
-while ( $rowDDJJ = mysql_fetch_assoc ( $resDDJJ ) ) {
-	$fecha = $rowDDJJ['anoddjj']."-".$rowDDJJ['mesddjj']."-1";
-	$fecha = strtotime ( '+1 month' , strtotime ($fecha)) ;
-	$fecha = strtotime ( '-1 day' , strtotime (date ( 'Y-m-j' , $fecha ))) ;
-	$fechaDDJJ[$rowDDJJ['cuil']] = date ( 'Y-m-j' , $fecha );
-}
-var_dump($fechaDDJJ);echo"<br><br>";
-
-$sqlPagos = "SELECT cuil, anopago, mespago FROM afiptransferencias d where cuil in $wherein order by cuil, anopago ASC ,mespago ASC";
-//echo $sqlPagos . "<br>";
-$resPagos = mysql_query ( $sqlPagos, $db );
-while ( $rowPagos = mysql_fetch_assoc ( $resPagos ) ) {
-	$fecha = $rowPagos['anopago']."-".$rowPagos['mespago']."-1";
-	$fecha = strtotime ( '+1 month' , strtotime ($fecha)) ;
-	$fecha = strtotime ( '-1 day' , strtotime (date ( 'Y-m-j' , $fecha ))) ;
-	$fechaPago[$rowPagos['cuil']] = date ( 'Y-m-j' , $fecha );
-}
-var_dump($fechaPago);echo"<br><br>";
-
-$sqlDesempleo = "SELECT cuilbeneficiario, anodesempleo, mesdesempleo FROM desempleosss d where cuilbeneficiario in $wherein order by cuilbeneficiario, anodesempleo ASC ,mesdesempleo ASC";
-//echo $sqlDesempleo . "<br>";
-$resDesempleo = mysql_query ( $sqlDesempleo, $db );
-while ( $rowDesempleo = mysql_fetch_assoc ( $resDesempleo ) ) {
-	$fecha = $rowDesempleo['anodesempleo']."-".$rowDesempleo['mesdesempleo']."-1";
-	$fecha = strtotime ( '+1 month' , strtotime ($fecha)) ;
-	$fecha = strtotime ( '-1 day' , strtotime (date ( 'Y-m-j' , $fecha ))) ;
-	$fechaDesempleo[$rowDesempleo['cuilbeneficiario']] = date ( 'Y-m-j' , $fecha );
-}
-var_dump($fechaDesempleo);echo"<br><br>";
-
-
-foreach ( $_POST as $value ) {
-	$arrayFechasBaja[$value] = majorFecha($fechaDDJJ[$value],$fechaPago[$value],$fechaDesempleo[$value]);
-}
-unset($fechaDDJJ);
-unset($fechaPago);
-unset($fechaDesempleo);
-
-$motivoBaja = "Filtro Titulares";
+$motivoBaja = "Depuración de Padrón - Proceso automatico de Baja de Titulares";
 $fechaefectivizacion = date ( "Y-m-d H:i:s" );
 $usuarioefectivizacion = $_SESSION ['usuario'];
 
@@ -76,15 +26,9 @@ $resBajar = mysql_query ( $sqlBajar, $db );
 $whereinfamilia = "(";
 while ( $rowBajar = mysql_fetch_assoc ( $resBajar ) ) {
 	
-	$fechaBaja = $arrayFechasBaja[$rowBajar['cuil']];
+	$fechaBaja = $arrayFechaBaja[$rowBajar['cuil']];
 	$arrayFechaBajaFamiliar[$rowBajar['nroafiliado']] = $fechaBaja;
-	
 	$whereinfamilia .= "'" . $rowBajar['nroafiliado'] . "',";
-	
-	if ($fechaBaja == NULL) {
-		//VER QUE PONEMOS
-		$fechaBaja = "1000-01-01";
-	}
 	
 	//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 	$sqlBaja = "INSERT INTO titularesdebaja VALUE(
@@ -122,8 +66,8 @@ while ( $rowBajar = mysql_fetch_assoc ( $resBajar ) ) {
 					'".$rowBajar['lote']."',
 					'".$rowBajar['tipocarnet']."',
 					'".$rowBajar['vencimientocarnet']."',
-					'".$rowBajar['informesss']."',
-					'".$rowBajar['tipoinformesss']."',
+					'1',
+					'B',
 					'".$rowBajar['fechainformesss']."',
 					'".$rowBajar['usuarioinformesss']."',
 					'',		
@@ -155,10 +99,6 @@ $sqlBajarFami = "SELECT * FROM familiares WHERE nroafiliado IN $whereinfamilia";
 $resBajarFami = mysql_query ( $sqlBajarFami, $db );
 while ( $rowBajarFami = mysql_fetch_assoc ( $resBajarFami ) ) {
 	$fechaBajaFami = $arrayFechaBajaFamiliar[$rowBajarFami['nroafiliado']];
-	if ($fechaBajaFami == NULL) {
-		//VER QUE PONEMOS
-		$fechaBajaFami = "1000-01-01";
-	}
 	//'".$rowBajarFami['foto']."', -> ¿¿¿¿FOTO????
 	$sqlBajaFamilia = "INSERT INTO familiaresdebaja VALUE(
 						'".$rowBajarFami['nroafiliado']."',

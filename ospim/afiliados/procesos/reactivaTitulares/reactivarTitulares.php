@@ -22,6 +22,13 @@ $resAlta = mysql_query ( $sqlAlta, $db );
 
 while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 	
+	$carnet = 1;
+	$fechacarnet = $rowAlta['fechabaja'];
+	if ($rowAlta['cantidadcarnet'] == 0) {
+		$carnet = $rowAlta['cantidadcarnet'];
+		$fechacarnet = $rowAlta['fechacarnet'];
+	}
+	
 	//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 	$sqlReactiva = "INSERT INTO titulares VALUE(
 					'".$rowAlta['nroafiliado']."',
@@ -53,13 +60,13 @@ while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 					'".$rowAlta['codidelega']."',
 					'".$rowAlta['categoria']."',
 					'".$rowAlta['emitecarnet']."',
-					'".$rowAlta['cantidadcarnet']."',
-					'".$rowAlta['fechacarnet']."',
+					'".$carnet."',
+					'".$fechacarnet."',
 					'".$rowAlta['lote']."',
 					'".$rowAlta['tipocarnet']."',
 					'".$rowAlta['vencimientocarnet']."',
-					'".$rowAlta['informesss']."',
-					'".$rowAlta['tipoinformesss']."',
+					'1',
+					'A',
 					'".$rowAlta['fechainformesss']."',
 					'".$rowAlta['usuarioinformesss']."',
 					'',		
