@@ -1,15 +1,12 @@
 <?php $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
 
-function cuitMayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
-	if (($fechaDDJJ['fecha']>=$fechaPago['fecha']) and ($fechaDDJJ['fecha']>=$fechaDesempleo['fecha'])) {
+function cuitMayorFecha($fechaDDJJ, $fechaPago) {
+	if (($fechaDDJJ['fecha']>=$fechaPago['fecha'])) {
 		return $fechaDDJJ['cuit'];
 	}
-	if (($fechaPago['fecha']>=$fechaDDJJ['fecha']) and ($fechaPago['fecha']>=$fechaDesempleo['fecha'])) {
+	if (($fechaPago['fecha']>=$fechaDDJJ['fecha'])) {
 		return $fechaPago['cuit'];
-	}
-	if (($fechaDesempleo['fecha']>=$fechaPago['fecha']) and ($fechaDesempleo['fecha']>=$fechaDDJJ['fecha'])) {
-		return $fechaDesempleo['cuit'];
 	}
 }
 
@@ -224,17 +221,17 @@ A:hover {
 				 <?php if ($canTituParaSubir != 0) {
 				 		while ( $rowTituParaSubir = mysql_fetch_assoc ( $resTituParaSubir ) ) { 
 				 			$cuil = $rowTituParaSubir['cuil'];
-				 			$cuitAlta = cuitMayorFecha($fechaDDJJ[$cuil],$fechaPago[$cuil],$fechaDesemp[$cuil]);?>
-		            	<tr>
-							<td><?php echo $rowTituParaSubir['nroafiliado'] ?></td>
-							<td><?php echo $rowTituParaSubir['codidelega'] ?></td>
-							<td><?php echo $rowTituParaSubir['cuil']   ?></td>
-							<td><?php echo $rowTituParaSubir['apellidoynombre']   ?></td>
-							<td><?php echo $rowTituParaSubir['cuitempresa']   ?></td>
-							<td><?php echo $rowTituParaSubir['fechabaja']   ?></td>
-							<td><?php echo $rowTituParaSubir['motivobaja']   ?></td>
-							<td><input type="checkbox" name="<?php echo $rowTituParaSubir['nroafiliado'] ?>" id="reactiva" value="<?php echo $rowTituParaSubir['cuil']."|".$cuit ?>" /></td>
-						</tr>
+				 			$cuitAlta = cuitMayorFecha($fechaDDJJ[$cuil],$fechaPago[$cuil]);?>
+			            	<tr>
+								<td><?php echo $rowTituParaSubir['nroafiliado'] ?></td>
+								<td><?php echo $rowTituParaSubir['codidelega'] ?></td>
+								<td><?php echo $rowTituParaSubir['cuil']   ?></td>
+								<td><?php echo $rowTituParaSubir['apellidoynombre']   ?></td>
+								<td><?php echo $rowTituParaSubir['cuitempresa']   ?></td>
+								<td><?php echo $rowTituParaSubir['fechabaja']   ?></td>
+								<td><?php echo $rowTituParaSubir['motivobaja']   ?></td>
+								<td><input type="checkbox" name="<?php echo $rowTituParaSubir['nroafiliado'] ?>" id="reactiva" value="<?php echo $rowTituParaSubir['cuil']."|".$cuitAlta ?>" /></td>
+							</tr>
 				<?php 	}
 					} ?>
 				</tbody>
