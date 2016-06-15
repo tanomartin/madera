@@ -3,7 +3,7 @@ include ($libPath . "controlSessionOspim.php");
 include ($libPath . "fechas.php");
 set_time_limit(0);
 
-var_dump($_POST);
+//var_dump($_POST);
 
 $wherein = "(";
 foreach ( $_POST as $value ) {
@@ -87,9 +87,9 @@ while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 	$arraySqlReactiva[$rowAlta ['nroafiliado']] = $sqlReactiva;
 	$arrayInforme[$rowAlta ['nroafiliado']] = array('nroafiliado'=>$rowAlta['nroafiliado'],
 													 'apellidoynombre'=>$rowAlta['apellidoynombre'],
-													 'codidelega'=>$rowAlta['codidelega'],
+													 'codidelega'=>$codidelega,
 													 'cuil'=>$rowAlta['cuil'],
-													 'cuitempresa'=>$rowAlta['cuitempresa']);
+													 'cuitempresa'=>$cuitEmpresa);
 }
 
 $sqlDeleteTitu = "DELETE FROM titularesdebaja WHERE cuil IN $wherein";
@@ -102,13 +102,13 @@ try {
 	$dbh->beginTransaction();
 
 	foreach ($arraySqlReactiva as $altaSql) {
-		print($altaSql."<br>");
-		//$dbh->exec($altaSql);
+		//print($altaSql."<br>");
+		$dbh->exec($altaSql);
 	}	
 	unset($arraySqlReactiva);
 	
-	print($sqlDeleteTitu."<br>");
-	//$dbh->exec($sqlDeleteTitu);
+	//print($sqlDeleteTitu."<br>");
+	$dbh->exec($sqlDeleteTitu);
 	
 	$dbh->commit();
 
