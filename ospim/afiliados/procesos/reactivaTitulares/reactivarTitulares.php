@@ -103,13 +103,13 @@ try {
 	$dbh->beginTransaction();
 
 	foreach ($arraySqlReactiva as $altaSql) {
-		//print($altaSql."<br>");
-		$dbh->exec($altaSql);
+		print($altaSql."<br>");
+		//$dbh->exec($altaSql);
 	}	
 	unset($arraySqlReactiva);
 	
-	//print($sqlDeleteTitu."<br>");
-	$dbh->exec($sqlDeleteTitu);
+	print($sqlDeleteTitu."<br>");
+	//$dbh->exec($sqlDeleteTitu);
 	
 	$dbh->commit();
 
