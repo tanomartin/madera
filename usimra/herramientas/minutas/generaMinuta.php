@@ -5,7 +5,7 @@ require($libPath."fpdf.php");
 $maquina = $_SERVER['SERVER_NAME'];
 
 if(strcmp("localhost",$maquina)==0)
-		$carpetaMinuta="C:/temp/";
+		$carpetaMinuta="C:/tmp/";
 	else
 		$carpetaMinuta="/tmp/";
 
@@ -110,4 +110,5 @@ $pdf->Output($nombrearchivo,'F');
 header('Content-type: application/pdf');
 header('Content-Disposition: inline; filename="'.$nombrearchivo.'"');
 readfile($nombrearchivo);
+unlink($nombrearchivo);
 ?>

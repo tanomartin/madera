@@ -40,13 +40,13 @@ function validar(formulario) {
 		}
 	}
 
-	if (!isNumberPositivo(formulario.cuenta.value) || formulario.cuenta.value == '') {
-		alert("La cuenta debe ser un número positvo entero");
+	if (formulario.cuenta.value == '') {
+		alert("La cuenta es obligatorio");
 		return false;
 	}
 
-	if (!isNumberPositivo(formulario.cheque.value) || formulario.cheque.value == '') {
-		alert("El Nro de cheque debe ser un número entero positvo");
+	if (formulario.cheque.value == '') {
+		alert("El Nro de cheque es obligatorio");
 		return false;
 	}
 
@@ -113,9 +113,9 @@ function validar(formulario) {
 		}
 	}
 	
-	
 	window.open("", "formpopup", "width=800,height=570");
 	formulario.target = 'formpopup';
+	
 }
 
 </script>
@@ -140,11 +140,12 @@ function validar(formulario) {
 	  				<td><input id="cuenta" name="cuenta" type="text"/></td>
 	  			</tr>
 	  			<tr>
-	  				<td>Chece Nº</td>
+	  				<td>Cheque Nº</td>
 	  				<td><input id="cheque" name="cheque" type="text"/></td>
 	  			</tr>
 	  			<tr>
-	  				<td colspan="2">
+	  				<td></td>
+	  				<td>
 	  					<input type="radio" name="tipo" value="deposito" checked="checked"/> Depósito
 	  					<input type="radio" name="tipo" value="debito"/> Débito
 	  					<input type="radio" name="tipo" value="credito"/> Crédito
