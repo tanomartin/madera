@@ -5,9 +5,11 @@ set_time_limit(0);
 
 var_dump($_POST);
 
-/*$wherein = "(";
+$wherein = "(";
 foreach ( $_POST as $value ) {
-	$wherein .= "'" . $value . "',";
+	$valueArray = explode("|",$value);
+	$cuitAlta[$valueArray[0]] = $valueArray[1];
+	$wherein .= "'" . $valueArray[0] . "',";
 }
 $wherein = substr ( $wherein, 0, - 1 );
 $wherein .= ")";
@@ -30,7 +32,8 @@ while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 		$fechacarnet = $rowAlta['fechacarnet'];
 	}
 	
-	//TODO: VER CUIT DE ULTIMO MOVIMIENTO (¿¿SI ES DESEMPLEO??)
+	$sqlJurisdiccion = "SELECT * from jurisdiccion WHERE cuit = ".$cuitAlta[$rowAlta['cuil']];
+	echo $sqlJurisdiccion."<br>";
 	
 	//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 	$sqlReactiva = "INSERT INTO titulares VALUE(
@@ -109,7 +112,7 @@ try {
 }catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
-}*/
+}
 
 $ahora = date("Y-n-j H:i:s");
 $_SESSION["ultimoAcceso"] = $ahora;
