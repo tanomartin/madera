@@ -34,6 +34,7 @@ while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 	
 	$cuitEmpresa = $cuitAlta[$rowAlta['cuil']];
 	$sqlJurisdiccion = "SELECT codidelega from jurisdiccion WHERE cuit = ".$cuitEmpresa. "order by disgdinero DESC LIMIT 1";
+	print($sqlJurisdiccion."<br>");
 	$resJurisdiccion = mysql_query ( $sqlJurisdiccion, $db );
 	$rowJurisdiccion = mysql_fetch_assoc ( $resJurisdiccion );
 	$codidelega = $rowJurisdiccion['codidelega'];
