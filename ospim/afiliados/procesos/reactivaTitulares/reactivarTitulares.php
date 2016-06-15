@@ -3,7 +3,9 @@ include ($libPath . "controlSessionOspim.php");
 include ($libPath . "fechas.php");
 set_time_limit(0);
 
-$wherein = "(";
+var_dump($_POST);
+
+/*$wherein = "(";
 foreach ( $_POST as $value ) {
 	$wherein .= "'" . $value . "',";
 }
@@ -27,6 +29,8 @@ while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 		$carnet = $rowAlta['cantidadcarnet'];
 		$fechacarnet = $rowAlta['fechacarnet'];
 	}
+	
+	//TODO: VER CUIT DE ULTIMO MOVIMIENTO (¿¿SI ES DESEMPLEO??)
 	
 	//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 	$sqlReactiva = "INSERT INTO titulares VALUE(
@@ -105,7 +109,7 @@ try {
 }catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
-}
+}*/
 
 $ahora = date("Y-n-j H:i:s");
 $_SESSION["ultimoAcceso"] = $ahora;

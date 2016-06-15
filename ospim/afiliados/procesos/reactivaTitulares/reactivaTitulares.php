@@ -1,7 +1,17 @@
-<?php
-
-$libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
+<?php $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
+
+function cuitMayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
+	if (($fechaDDJJ['fecha']>=$fechaPago['fecha']) and ($fechaDDJJ['fecha']>=$fechaDesempleo['fecha'])) {
+		return $fechaDDJJ['cuit'];
+	}
+	if (($fechaPago['fecha']>=$fechaDDJJ['fecha']) and ($fechaPago['fecha']>=$fechaDesempleo['fecha'])) {
+		return $fechaPago['cuit'];
+	}
+	if (($fechaDesempleo['fecha']>=$fechaPago['fecha']) and ($fechaDesempleo['fecha']>=$fechaDDJJ['fecha'])) {
+		return $fechaDesempleo['cuit'];
+	}
+}
 
 $fecha = date ( 'Y-m-j' );
 $fechaInicio = strtotime ( '-4 month', strtotime ( $fecha ) );
@@ -70,7 +80,9 @@ unset ( $arrayFinal );
 if (sizeof($tituParaSubir) != 0) {
 	$wherein = "(";
 	foreach ( $tituParaSubir as $titu ) {
-		$wherein .= "'" . $titu . "',";
+		if ($titu != '00000000000') {
+			$wherein .= "'" . $titu . "',";
+		}
 	}
 	$wherein = substr ( $wherein, 0, - 1 );
 	$wherein .= ")";
@@ -81,6 +93,35 @@ if (sizeof($tituParaSubir) != 0) {
 	$resTituParaSubir = mysql_query ( $sqlTituParaSubir, $db );
 	$canTituParaSubir = mysql_num_rows ( $resTituParaSubir );
 	//echo $canTituParaSubir . "<br>";
+
+	$fechaDDJJ = array();
+	$sqlDDJJ = "SELECT cuil, anoddjj, mesddjj, cuit FROM detddjjospim d where cuil in $wherein order by cuil, anoddjj ASC ,mesddjj ASC";
+	//echo $sqlDDJJ . "<br><br>";
+	$resDDJJ = mysql_query ( $sqlDDJJ, $db );
+	while ( $rowDDJJ = mysql_fetch_assoc ( $resDDJJ ) ) {
+		$fecha = $rowDDJJ['anoddjj']."-".$rowDDJJ['mesddjj']."-1";
+		$fecha = strtotime ( '+1 month' , strtotime ($fecha)) ;
+		$fecha = strtotime ( '-1 day' , strtotime (date ( 'Y-m-j' , $fecha ))) ;
+		$fechaDDJJ[$rowDDJJ['cuil']] = array('fecha'=> date ( 'Y-m-j' , $fecha ), 'cuit'=> $rowDDJJ['cuit']);
+	}
+	unset($sqlDDJJ);
+	unset($resDDJJ);
+	//var_dump($fechaDDJJ);echo"<br><br>";
+	
+	$fechaPago = array();
+	$sqlPagos = "SELECT cuil, anopago, mespago, cuit FROM afiptransferencias d where cuil in $wherein order by cuil, anopago ASC ,mespago ASC";
+	//echo $sqlPagos . "<br><br>";
+	$resPagos = mysql_query ( $sqlPagos, $db );
+	while ( $rowPagos = mysql_fetch_assoc ( $resPagos ) ) {
+		$fecha = $rowPagos['anopago']."-".$rowPagos['mespago']."-1";
+		$fecha = strtotime ( '+1 month' , strtotime ($fecha)) ;
+		$fecha = strtotime ( '-1 day' , strtotime (date ( 'Y-m-j' , $fecha ))) ;
+		$fechaPago[$rowPagos['cuil']] = array('fecha'=> date ( 'Y-m-j' , $fecha ), 'cuit'=> $rowPagos['cuit']);
+	}
+	unset($sqlPagos);
+	unset($resPagos);
+	//var_dump($fechaPago);echo"<br><br>";
+	
 } else {
 	$canTituParaSubir = 0;
 }
@@ -181,7 +222,9 @@ A:hover {
 				</thead>
 				<tbody>
 				 <?php if ($canTituParaSubir != 0) {
-				 		while ( $rowTituParaSubir = mysql_fetch_assoc ( $resTituParaSubir ) ) { ?>
+				 		while ( $rowTituParaSubir = mysql_fetch_assoc ( $resTituParaSubir ) ) { 
+				 			$cuil = $rowTituParaSubir['cuil'];
+				 			$cuitAlta = cuitMayorFecha($fechaDDJJ[$cuil],$fechaPago[$cuil],$fechaDesemp[$cuil]);?>
 		            	<tr>
 							<td><?php echo $rowTituParaSubir['nroafiliado'] ?></td>
 							<td><?php echo $rowTituParaSubir['codidelega'] ?></td>
@@ -190,7 +233,7 @@ A:hover {
 							<td><?php echo $rowTituParaSubir['cuitempresa']   ?></td>
 							<td><?php echo $rowTituParaSubir['fechabaja']   ?></td>
 							<td><?php echo $rowTituParaSubir['motivobaja']   ?></td>
-							<td><input type="checkbox" name="<?php echo $rowTituParaSubir['nroafiliado'] ?>" id="reactiva" value="<?php echo $rowTituParaSubir['cuil'] ?>" /></td>
+							<td><input type="checkbox" name="<?php echo $rowTituParaSubir['nroafiliado'] ?>" id="reactiva" value="<?php echo $rowTituParaSubir['cuil']."|".$cuit ?>" /></td>
 						</tr>
 				<?php 	}
 					} ?>

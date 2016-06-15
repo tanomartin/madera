@@ -87,7 +87,9 @@ $cantidadTotal = count ( $tituParaBajar );
 
 $wherein = "(";
 foreach($tituParaBajar as $titu) {
-	$wherein .= "'".$titu."',";
+	if ($titu != '00000000000') {
+		$wherein .= "'".$titu."',";
+	}
 }
 $wherein = substr ( $wherein, 0, - 1 );
 $wherein .= ")";
