@@ -32,8 +32,11 @@ while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 		$fechacarnet = $rowAlta['fechacarnet'];
 	}
 	
-	$sqlJurisdiccion = "SELECT * from jurisdiccion WHERE cuit = ".$cuitAlta[$rowAlta['cuil']];
-	echo $sqlJurisdiccion."<br>";
+	$cuitEmpresa = $cuitAlta[$rowAlta['cuil']];
+	$sqlJurisdiccion = "SELECT codidelega from jurisdiccion WHERE cuit = ".$cuitEmpresa. "order by disgdinero DESC LIMIT 1";
+	$resJurisdiccion = mysql_query ( $sqlJurisdiccion, $db );
+	$rowJurisdiccion = mysql_fetch_assoc ( $resJurisdiccion );
+	$codidelega = $rowJurisdiccion['codidelega'];
 	
 	//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 	$sqlReactiva = "INSERT INTO titulares VALUE(
@@ -61,9 +64,9 @@ while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 					'".$rowAlta['discapacidad']."',
 					'".$rowAlta['certificadodiscapacidad']."',
 					'".$rowAlta['cuil']."',
-					'".$rowAlta['cuitempresa']."',
+					'".$cuitEmpresa."',
 					'".$rowAlta['fechaempresa']."',
-					'".$rowAlta['codidelega']."',
+					'".$codidelega."',
 					'".$rowAlta['categoria']."',
 					'".$rowAlta['emitecarnet']."',
 					'".$carnet."',
@@ -99,13 +102,13 @@ try {
 	$dbh->beginTransaction();
 
 	foreach ($arraySqlReactiva as $altaSql) {
-		//print($altaSql."<br>");
-		$dbh->exec($altaSql);
+		print($altaSql."<br>");
+		//$dbh->exec($altaSql);
 	}	
 	unset($arraySqlReactiva);
 	
-	//print($sqlDeleteTitu."<br>");
-	$dbh->exec($sqlDeleteTitu);
+	print($sqlDeleteTitu."<br>");
+	//$dbh->exec($sqlDeleteTitu);
 	
 	$dbh->commit();
 
