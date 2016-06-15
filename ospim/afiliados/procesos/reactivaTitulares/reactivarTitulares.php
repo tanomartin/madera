@@ -33,8 +33,7 @@ while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
 	}
 	
 	$cuitEmpresa = $cuitAlta[$rowAlta['cuil']];
-	$sqlJurisdiccion = "SELECT codidelega from jurisdiccion WHERE cuit = ".$cuitEmpresa. "order by disgdinero DESC LIMIT 1";
-	print($sqlJurisdiccion."<br>");
+	$sqlJurisdiccion = "SELECT codidelega from jurisdiccion WHERE cuit = ".$cuitEmpresa. " order by disgdinero DESC LIMIT 1";
 	$resJurisdiccion = mysql_query ( $sqlJurisdiccion, $db );
 	$rowJurisdiccion = mysql_fetch_assoc ( $resJurisdiccion );
 	$codidelega = $rowJurisdiccion['codidelega'];
@@ -103,13 +102,13 @@ try {
 	$dbh->beginTransaction();
 
 	foreach ($arraySqlReactiva as $altaSql) {
-		print($altaSql."<br>");
-		//$dbh->exec($altaSql);
+		//print($altaSql."<br>");
+		$dbh->exec($altaSql);
 	}	
 	unset($arraySqlReactiva);
 	
-	print($sqlDeleteTitu."<br>");
-	//$dbh->exec($sqlDeleteTitu);
+	//print($sqlDeleteTitu."<br>");
+	$dbh->exec($sqlDeleteTitu);
 	
 	$dbh->commit();
 
