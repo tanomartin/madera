@@ -193,6 +193,27 @@ A:hover {
 		formulario.submit.disabled = "true";
 		return true;
 	}
+
+	function checkall(seleccion, formulario) {
+	 	var grupo = formulario.reactiva;
+		var total = grupo.length;
+		if (total == null) {
+			if (seleccion.checked) {
+				grupo.checked = 1;
+			} else {
+				grupo.checked = 0;
+			}
+		}
+		if (seleccion.checked) {
+			 for (var i=0;i< grupo.length;i++) 
+				 if(grupo[i].type == "checkbox")	
+					 grupo[i].checked=1;  
+		} else {
+			 for (var i=0;i<grupo.length;i++) 
+				 if(grupo[i].type == "checkbox")	
+					 grupo[i].checked=0;  
+		}
+	} 
 	
 </script>
 </head>
@@ -214,7 +235,7 @@ A:hover {
 						<th>C.U.I.T. Empresa</th>
 						<th width="80px">Fecha de Baja</th>
 						<th>Motivo de Baja</th>
-						<th></th>
+						<th><input type="checkbox" name="selecAll" id="selecAll" onchange="checkall(this, this.form)" /></th>
 					</tr>
 				</thead>
 				<tbody>

@@ -100,6 +100,27 @@ function validar(formulario) {
 	return true;
 }
 
+function checkall(seleccion, formulario) {
+ 	var grupo = formulario.baja;
+	var total = grupo.length;
+	if (total == null) {
+		if (seleccion.checked) {
+			grupo.checked = 1;
+		} else {
+			grupo.checked = 0;
+		}
+	}
+	if (seleccion.checked) {
+		 for (var i=0;i< grupo.length;i++) 
+			 if(grupo[i].type == "checkbox")	
+				 grupo[i].checked=1;  
+	} else {
+		 for (var i=0;i<grupo.length;i++) 
+			 if(grupo[i].type == "checkbox")	
+				 grupo[i].checked=0;  
+	}
+} 
+
 </script>
 </head>
 <body bgcolor="#CCCCCC">
@@ -116,7 +137,7 @@ function validar(formulario) {
 						<th class="filter-select" data-placeholder="Seleccion">Estudia</th>
 						<th class="filter-select" data-placeholder="Seleccion">Certificado</th>
 						<th>Vto. Cert.</th>
-						<th></th>
+						<th><input type="checkbox" name="selecAll" id="selecAll" onchange="checkall(this, this.form)" /></th>
 					</tr>
 				</thead>
 				<tbody>
