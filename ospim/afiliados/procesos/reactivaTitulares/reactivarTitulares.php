@@ -4,6 +4,8 @@ include ($libPath . "fechas.php");
 set_time_limit(0);
 
 //var_dump($_POST);
+$arrayInforme = array ();
+
 
 $wherein = "(";
 foreach ( $_POST as $value ) {
@@ -15,106 +17,106 @@ $wherein = substr ( $wherein, 0, - 1 );
 $wherein .= ")";
 
 $fechaeModif= date ( "Y-m-d H:i:s" );
-$usuarioModif = $_SESSION ['usuario'];
 
-$arraySqlReactiva = array ();
-$arrayInforme = array ();
-
-$sqlAlta = "SELECT * FROM titularesdebaja  WHERE cuil IN " . $wherein;
-$resAlta = mysql_query ( $sqlAlta, $db );
-
-while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
+if ($wherein != ')') {
+	$usuarioModif = $_SESSION ['usuario'];
+	$arraySqlReactiva = array ();
+	$sqlAlta = "SELECT * FROM titularesdebaja  WHERE cuil IN " . $wherein;
+	$resAlta = mysql_query ( $sqlAlta, $db );
 	
-	$carnet = 1;
-	$fechacarnet = $rowAlta['fechabaja'];
-	if ($rowAlta['cantidadcarnet'] == 0) {
-		$carnet = $rowAlta['cantidadcarnet'];
-		$fechacarnet = $rowAlta['fechacarnet'];
+	while ( $rowAlta = mysql_fetch_assoc ( $resAlta ) ) {
+		
+		$carnet = 1;
+		$fechacarnet = $rowAlta['fechabaja'];
+		if ($rowAlta['cantidadcarnet'] == 0) {
+			$carnet = $rowAlta['cantidadcarnet'];
+			$fechacarnet = $rowAlta['fechacarnet'];
+		}
+		
+		$cuitEmpresa = $cuitAlta[$rowAlta['cuil']];
+		$sqlJurisdiccion = "SELECT codidelega from jurisdiccion WHERE cuit = ".$cuitEmpresa. " order by disgdinero DESC LIMIT 1";
+		$resJurisdiccion = mysql_query ( $sqlJurisdiccion, $db );
+		$rowJurisdiccion = mysql_fetch_assoc ( $resJurisdiccion );
+		$codidelega = $rowJurisdiccion['codidelega'];
+		
+		//'".$rowBajar['foto']."', -> 真真FOTO????
+		$sqlReactiva = "INSERT INTO titulares VALUE(
+						'".$rowAlta['nroafiliado']."',
+						'".$rowAlta['apellidoynombre']."',
+						'".$rowAlta['tipodocumento']."',
+						'".$rowAlta['nrodocumento']."',
+						'".$rowAlta['fechanacimiento']."',
+						'".$rowAlta['nacionalidad']."',
+						'".$rowAlta['sexo']."',
+						'".$rowAlta['estadocivil']."',
+						'".$rowAlta['codprovin']."',
+						'".$rowAlta['indpostal']."',
+						'".$rowAlta['numpostal']."',
+						'".$rowAlta['alfapostal']."',
+						'".$rowAlta['codlocali']."',
+						'".$rowAlta['domicilio']."',
+						'".$rowAlta['ddn']."',
+						'".$rowAlta['telefono']."',
+						'".$rowAlta['email']."',
+						'".$rowAlta['fechaobrasocial']."',
+						'".$rowAlta['tipoafiliado']."',
+						'".$rowAlta['solicitudopcion']."',
+						'".$rowAlta['situaciontitularidad']."',
+						'".$rowAlta['discapacidad']."',
+						'".$rowAlta['certificadodiscapacidad']."',
+						'".$rowAlta['cuil']."',
+						'".$cuitEmpresa."',
+						'".$rowAlta['fechaempresa']."',
+						'".$codidelega."',
+						'".$rowAlta['categoria']."',
+						'".$rowAlta['emitecarnet']."',
+						'".$carnet."',
+						'".$fechacarnet."',
+						'".$rowAlta['lote']."',
+						'".$rowAlta['tipocarnet']."',
+						'".$rowAlta['vencimientocarnet']."',
+						'1',
+						'A',
+						'".$rowAlta['fechainformesss']."',
+						'".$rowAlta['usuarioinformesss']."',
+						'',		
+						'".$rowAlta['fecharegistro']."',
+						'".$rowAlta['usuarioregistro']."',
+						'".$fechaeModif."',
+						'".$usuarioModif."',
+						'".$rowAlta['mirroring']."')";
+		$arraySqlReactiva[$rowAlta ['nroafiliado']] = $sqlReactiva;
+		$arrayInforme[$rowAlta ['nroafiliado']] = array('nroafiliado'=>$rowAlta['nroafiliado'],
+														 'apellidoynombre'=>$rowAlta['apellidoynombre'],
+														 'codidelega'=>$codidelega,
+														 'cuil'=>$rowAlta['cuil'],
+														 'cuitempresa'=>$cuitEmpresa);
 	}
 	
-	$cuitEmpresa = $cuitAlta[$rowAlta['cuil']];
-	$sqlJurisdiccion = "SELECT codidelega from jurisdiccion WHERE cuit = ".$cuitEmpresa. " order by disgdinero DESC LIMIT 1";
-	$resJurisdiccion = mysql_query ( $sqlJurisdiccion, $db );
-	$rowJurisdiccion = mysql_fetch_assoc ( $resJurisdiccion );
-	$codidelega = $rowJurisdiccion['codidelega'];
+	$sqlDeleteTitu = "DELETE FROM titularesdebaja WHERE cuil IN $wherein";
 	
-	//'".$rowBajar['foto']."', -> 真真FOTO????
-	$sqlReactiva = "INSERT INTO titulares VALUE(
-					'".$rowAlta['nroafiliado']."',
-					'".$rowAlta['apellidoynombre']."',
-					'".$rowAlta['tipodocumento']."',
-					'".$rowAlta['nrodocumento']."',
-					'".$rowAlta['fechanacimiento']."',
-					'".$rowAlta['nacionalidad']."',
-					'".$rowAlta['sexo']."',
-					'".$rowAlta['estadocivil']."',
-					'".$rowAlta['codprovin']."',
-					'".$rowAlta['indpostal']."',
-					'".$rowAlta['numpostal']."',
-					'".$rowAlta['alfapostal']."',
-					'".$rowAlta['codlocali']."',
-					'".$rowAlta['domicilio']."',
-					'".$rowAlta['ddn']."',
-					'".$rowAlta['telefono']."',
-					'".$rowAlta['email']."',
-					'".$rowAlta['fechaobrasocial']."',
-					'".$rowAlta['tipoafiliado']."',
-					'".$rowAlta['solicitudopcion']."',
-					'".$rowAlta['situaciontitularidad']."',
-					'".$rowAlta['discapacidad']."',
-					'".$rowAlta['certificadodiscapacidad']."',
-					'".$rowAlta['cuil']."',
-					'".$cuitEmpresa."',
-					'".$rowAlta['fechaempresa']."',
-					'".$codidelega."',
-					'".$rowAlta['categoria']."',
-					'".$rowAlta['emitecarnet']."',
-					'".$carnet."',
-					'".$fechacarnet."',
-					'".$rowAlta['lote']."',
-					'".$rowAlta['tipocarnet']."',
-					'".$rowAlta['vencimientocarnet']."',
-					'1',
-					'A',
-					'".$rowAlta['fechainformesss']."',
-					'".$rowAlta['usuarioinformesss']."',
-					'',		
-					'".$rowAlta['fecharegistro']."',
-					'".$rowAlta['usuarioregistro']."',
-					'".$fechaeModif."',
-					'".$usuarioModif."',
-					'".$rowAlta['mirroring']."')";
-	$arraySqlReactiva[$rowAlta ['nroafiliado']] = $sqlReactiva;
-	$arrayInforme[$rowAlta ['nroafiliado']] = array('nroafiliado'=>$rowAlta['nroafiliado'],
-													 'apellidoynombre'=>$rowAlta['apellidoynombre'],
-													 'codidelega'=>$codidelega,
-													 'cuil'=>$rowAlta['cuil'],
-													 'cuitempresa'=>$cuitEmpresa);
-}
-
-$sqlDeleteTitu = "DELETE FROM titularesdebaja WHERE cuil IN $wherein";
-
-try {
-	$hostname = $_SESSION['host'];
-	$dbname = $_SESSION['dbname'];
-	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	$dbh->beginTransaction();
-
-	foreach ($arraySqlReactiva as $altaSql) {
-		//print($altaSql."<br>");
-		$dbh->exec($altaSql);
-	}	
-	unset($arraySqlReactiva);
+	try {
+		$hostname = $_SESSION['host'];
+		$dbname = $_SESSION['dbname'];
+		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbh->beginTransaction();
 	
-	//print($sqlDeleteTitu."<br>");
-	$dbh->exec($sqlDeleteTitu);
+		foreach ($arraySqlReactiva as $altaSql) {
+			//print($altaSql."<br>");
+			$dbh->exec($altaSql);
+		}	
+		unset($arraySqlReactiva);
+		
+		//print($sqlDeleteTitu."<br>");
+		$dbh->exec($sqlDeleteTitu);
+		
+		$dbh->commit();
 	
-	$dbh->commit();
-
-}catch (PDOException $e) {
-	echo $e->getMessage();
-	$dbh->rollback();
+	}catch (PDOException $e) {
+		echo $e->getMessage();
+		$dbh->rollback();
+	}
 }
 
 $ahora = date("Y-n-j H:i:s");
@@ -125,7 +127,7 @@ $_SESSION["ultimoAcceso"] = $ahora;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Informe Baja Filtro de Titualres :.</title>
+<title>.: Informe Reactivacion de Titualres :.</title>
 
 <style>
 A:link {

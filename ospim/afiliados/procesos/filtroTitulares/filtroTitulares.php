@@ -224,6 +224,26 @@ A:hover {
 	});
 
 	function validar(formulario) {
+		var grupo = formulario.baja;
+		var total = grupo.length;
+		var mensaje = "Debe seleccionar algun titular para dar de baja";
+		if (total == null) {
+			if (!grupo.checked) {
+				alert(mensaje);
+				return false;
+			}
+		} else {
+			var checkeados = 0; 
+			for (var i = 0; i < total; i++) {
+				if (grupo[i].checked) {
+					checkeados++;
+				}
+			}
+			if (checkeados == 0) {
+				alert(mensaje);
+				return false;
+			}
+		}
 		formulario.submit.disabled = "true";
 		return true;
 	}
