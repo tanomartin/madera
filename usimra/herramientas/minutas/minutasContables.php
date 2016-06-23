@@ -146,14 +146,14 @@ function validar(formulario) {
 	  			<tr>
 	  				<td></td>
 	  				<td>
-	  					<input type="radio" name="tipo" value="deposito" checked="checked"/> Depósito
+	  					<input type="radio" name="tipo" value="deposito"/> Depósito
 	  					<input type="radio" name="tipo" value="debito"/> Débito
 	  					<input type="radio" name="tipo" value="credito"/> Crédito
 	  				</td>
 	  			</tr>
 	  			<tr>
 	  				<td>Importe</td>
-	  				<td><input id="importe" name="importe" type="text" size="6"/></td>
+	  				<td><b>$</b> <input id="importe" name="importe" type="text" size="18"/></td>
 	  			</tr>
 	  			<tr>
 	  				<td>Detalle <br />(12 Lineas) </td>

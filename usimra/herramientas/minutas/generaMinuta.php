@@ -61,7 +61,7 @@ if ($_POST['tipo'] == 'credito') {
 
 //$pdf->SetXY(172, 45);
 $pdf->SetXY(155, 45);
-$pdf->Cell(31,18, $_POST['importe'],0,0,'R');
+$pdf->Cell(31,18, "$ ".number_format($_POST['importe'],"2",",","."),0,0,'R');
 
 $detalle = explode("\n", $_POST['detalle']);
 //$y=63;
