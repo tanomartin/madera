@@ -45,11 +45,6 @@ function validar(formulario) {
 		return false;
 	}
 
-	if (formulario.cheque.value == '') {
-		alert("El Nro de cheque es obligatorio");
-		return false;
-	}
-
 	if (!isNumber(formulario.importe.value) || formulario.importe.value == '') {
 		alert("El importe debe ser un número positvo");
 		return false;
