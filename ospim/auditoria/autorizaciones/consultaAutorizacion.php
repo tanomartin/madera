@@ -481,7 +481,7 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
 	</td>
 	<td valign="top">
 	  <p><strong>Autorizaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusautorizacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']); else { if($rowLeeSolicitud['statusautorizacion']==2) echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']);}?></p>
-   	  <p><?php echo "".$rowLeeSolicitud['rechazoautorizacion'];?></p>
+   	  <p><strong>Observacion / Motivo de Rechazo:</strong><?php echo " ".$rowLeeSolicitud['rechazoautorizacion'];?></p>
       <p><strong>Expediente SUR:</strong>
 	<?php if($rowLeeSolicitud['clasificacionape']==1) {?>
         <label><input name="ape" id="apeSi" type="radio" value="1" checked="checked" disabled="disabled"/>Si</label>
