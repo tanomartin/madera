@@ -49,9 +49,9 @@ if ($canEmpleados > 0) {
 			}
 			
 			$sqlInsertTitu = "INSERT INTO empleadosusimra VALUE(
-			'".$rowEmpleados['nrcuit']."','".$rowEmpleados['nrcuil']."','".$rowEmpleados['apelli']."','".$rowEmpleados['nombre']."','".$rowEmpleados['fecing']."',
+			'".$rowEmpleados['nrcuit']."','".$rowEmpleados['nrcuil']."','".addslashes($rowEmpleados['apelli'])."','".addslashes($rowEmpleados['nombre'])."','".$rowEmpleados['fecing']."',
 			'".$rowEmpleados['tipdoc']."','".$rowEmpleados['nrodoc']."','".$rowEmpleados['ssexxo']."','".$rowEmpleados['fecnac']."','".$rowEmpleados['estciv']."',
-			'".$rowEmpleados['direcc']."','".$rowEmpleados['locale']."','".$rowEmpleados['copole']."','".$codProvin."','".$rowEmpleados['nacion']."',
+			'".addslashes($rowEmpleados['direcc'])."','".addslashes($rowEmpleados['locale'])."','".$rowEmpleados['copole']."','".$codProvin."','".addslashes($rowEmpleados['nacion'])."',
 			'".$rowEmpleados['rramaa']."','".$rowEmpleados['catego']."','".$rowEmpleados['activo']."','1')";
 			
 			$sqlEmpleadoInsert = "select nrcuil, nrcuit from empleadosdebajausimra where nrcuil = $cuilInsert and nrcuit = $cuitInsert";
@@ -82,19 +82,19 @@ if ($canEmpleados > 0) {
 				$codProvin = 0;
 			}
 			$sqlUpdateTitu = "UPDATE empleadosusimra SET 
-										apelli = '".$rowEmpleados['apelli']."',
-										nombre = '".$rowEmpleados['nombre']."',
+										apelli = '".addslashes($rowEmpleados['apelli'])."',
+										nombre = '".addslashes($rowEmpleados['nombre'])."',
 										fecing = '".$rowEmpleados['fecing']."',
 										tipdoc = '".$rowEmpleados['tipdoc']."',
 										nrodoc = '".$rowEmpleados['nrodoc']."',
 										ssexxo = '".$rowEmpleados['ssexxo']."',
 										fecnac = '".$rowEmpleados['fecnac']."',
 										estciv = '".$rowEmpleados['estciv']."',
-										direcc = '".$rowEmpleados['direcc']."',
-										locale = '".$rowEmpleados['locale']."',
+										direcc = '".addslashes($rowEmpleados['direcc'])."',
+										locale = '".addslashes($rowEmpleados['locale'])."',
 										copole = '".$rowEmpleados['copole']."',
 										provin = '".$codProvin."',
-										nacion = '".$rowEmpleados['nacion']."',
+										nacion = '".addslashes($rowEmpleados['nacion'])."',
 										rramaa = '".$rowEmpleados['rramaa']."',
 										catego = '".$rowEmpleados['catego']."',
 										activo = '".$rowEmpleados['activo']."'

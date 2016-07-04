@@ -38,7 +38,7 @@ if ($canFamiliarBaja > 0) {
 		$canFamiliaInsertBaja = mysql_num_rows($resFamiliaInsertBaja); 
 		if ($canFamiliaInsertBaja == 0) {
 			$sqlInsertFamiBaja = "INSERT INTO familiadebajausimra VALUE(
-			'".$rowFamiliarBaja['id']."','".$rowFamiliarBaja['nrcuit']."','".$rowFamiliarBaja['nrcuil']."','".$rowFamiliarBaja['nombre']."','".$rowFamiliarBaja['apelli']."',
+			'".$rowFamiliarBaja['id']."','".$rowFamiliarBaja['nrcuit']."','".$rowFamiliarBaja['nrcuil']."','".addslashes($rowFamiliarBaja['nombre'])."','".addslashes($rowFamiliarBaja['apelli'])."',
 			'".$rowFamiliarBaja['codpar']."','".$rowFamiliarBaja['ssexxo']."','".$rowFamiliarBaja['fecnac']."','".$rowFamiliarBaja['fecing']."','".$rowFamiliarBaja['tipdoc']."',
 			'".$rowFamiliarBaja['nrodoc']."','".$rowFamiliarBaja['benefi']."','1')";
 		

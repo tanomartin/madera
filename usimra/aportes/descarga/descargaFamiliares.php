@@ -35,7 +35,7 @@ if ($canFamiliar > 0) {
 		$canFamiliaInsert = mysql_num_rows($resFamiliaInsert); 
 		if ($canFamiliaInsert == 0) {
 			$sqlInsertFami = "INSERT INTO familiausimra VALUE(
-			'".$rowFamiliar['id']."','".$rowFamiliar['nrcuit']."','".$rowFamiliar['nrcuil']."','".$rowFamiliar['nombre']."','".$rowFamiliar['apelli']."',
+			'".$rowFamiliar['id']."','".$rowFamiliar['nrcuit']."','".$rowFamiliar['nrcuil']."','".addslashes($rowFamiliar['nombre'])."','".addslashes($rowFamiliar['apelli'])."',
 			'".$rowFamiliar['codpar']."','".$rowFamiliar['ssexxo']."','".$rowFamiliar['fecnac']."','".$rowFamiliar['fecing']."','".$rowFamiliar['tipdoc']."',
 			'".$rowFamiliar['nrodoc']."','".$rowFamiliar['benefi']."','1')";
 			
@@ -57,8 +57,8 @@ if ($canFamiliar > 0) {
 		} else {
 			$listadoFamiliares[$n] = array("estado" => 'M', "cuil" =>  $rowFamiliar['nrcuil'], "cuit" =>  $rowFamiliar['nrcuit'], "parentesco" =>  $rowFamiliar['codpar'], "nombre" => $rowFamiliar['apelli'].", ".$rowFamiliar['nombre']);
 			$sqlUpdateFami = "UPDATE familiausimra SET 
-									nombre = '".$rowFamiliar['nombre']."',
-									apelli = '".$rowFamiliar['apelli']."',
+									nombre = '".addslashes($rowFamiliar['nombre'])."',
+									apelli = '".addslashes($rowFamiliar['apelli'])."',
 									codpar = '".$rowFamiliar['codpar']."',
 									ssexxo = '".$rowFamiliar['ssexxo']."',
 									fecnac = '".$rowFamiliar['fecnac']."',

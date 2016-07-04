@@ -49,9 +49,9 @@ if ($canEmpleadosdebaja > 0) {
 			
 			$sqlInsertTituBaja = "INSERT INTO empleadosdebajausimra VALUE(
 			'".$rowEmpleadodebaja['id']."',
-			'".$rowEmpleadodebaja['nrcuit']."','".$rowEmpleadodebaja['nrcuil']."','".$rowEmpleadodebaja['apelli']."','".$rowEmpleadodebaja['nombre']."',
+			'".$rowEmpleadodebaja['nrcuit']."','".$rowEmpleadodebaja['nrcuil']."','".addslashes($rowEmpleadodebaja['apelli'])."','".addslashes($rowEmpleadodebaja['nombre'])."',
 			'".$rowEmpleadodebaja['fecing']."','".$rowEmpleadodebaja['tipdoc']."','".$rowEmpleadodebaja['nrodoc']."','".$rowEmpleadodebaja['ssexxo']."',
-			'".$rowEmpleadodebaja['fecnac']."','".$rowEmpleadodebaja['estciv']."','".$rowEmpleadodebaja['direcc']."','".$rowEmpleadodebaja['locale']."',
+			'".$rowEmpleadodebaja['fecnac']."','".$rowEmpleadodebaja['estciv']."','".addslashes($rowEmpleadodebaja['direcc'])."','".addslashes($rowEmpleadodebaja['locale'])."',
 			'".$rowEmpleadodebaja['copole']."','".$codProvin."',
 			'".$rowEmpleadodebaja['nacion']."','".$rowEmpleadodebaja['rramaa']."','".$rowEmpleadodebaja['catego']."',
 			'".$rowEmpleadodebaja['activo']."','1')";

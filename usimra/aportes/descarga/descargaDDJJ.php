@@ -73,7 +73,7 @@ try {
 		$canInactivos = mysql_num_rows($resInactivos); 
 		if ($canInactivos > 0) {
 			while($rowInactivos = mysql_fetch_assoc($resInactivos)) {
-				$sqlInsertInactivos = "INSERT INTO ddjjinactivosusimra VALUE(".$rowInactivos['id'].",'".$rowInactivos['nrcuit']."','".$rowInactivos['nrcuil']."','".$rowInactivos['permes']."','".$rowInactivos['perano']."','".$rowInactivos['motivo']."','".$rowInactivos['nrctrl']."','".$idControl."')";
+				$sqlInsertInactivos = "INSERT INTO ddjjinactivosusimra VALUE(".$rowInactivos['id'].",'".$rowInactivos['nrcuit']."','".$rowInactivos['nrcuil']."','".$rowInactivos['permes']."','".$rowInactivos['perano']."','".addslashes($rowInactivos['motivo'])."','".$rowInactivos['nrctrl']."','".$idControl."')";
 				$inactivosAIngresar[$cantInactivos] = $sqlInsertInactivos;
 				$cantInactivos++;
 			}
