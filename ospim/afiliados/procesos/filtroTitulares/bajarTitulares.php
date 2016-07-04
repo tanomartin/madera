@@ -34,11 +34,11 @@ while ( $rowBajar = mysql_fetch_assoc ( $resBajar ) ) {
 	//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 	$sqlBaja = "INSERT INTO titularesdebaja VALUE(
 					'".$rowBajar['nroafiliado']."',
-					'".$rowBajar['apellidoynombre']."',
+					'".addslashes($rowBajar['apellidoynombre'])."',
 					'".$rowBajar['tipodocumento']."',
 					'".$rowBajar['nrodocumento']."',
 					'".$rowBajar['fechanacimiento']."',
-					'".$rowBajar['nacionalidad']."',
+					'".addslashes($rowBajar['nacionalidad'])."',
 					'".$rowBajar['sexo']."',
 					'".$rowBajar['estadocivil']."',
 					'".$rowBajar['codprovin']."',
@@ -46,7 +46,7 @@ while ( $rowBajar = mysql_fetch_assoc ( $resBajar ) ) {
 					'".$rowBajar['numpostal']."',
 					'".$rowBajar['alfapostal']."',
 					'".$rowBajar['codlocali']."',
-					'".$rowBajar['domicilio']."',
+					'".addslashes($rowBajar['domicilio'])."',
 					'".$rowBajar['ddn']."',
 					'".$rowBajar['telefono']."',
 					'".$rowBajar['email']."',

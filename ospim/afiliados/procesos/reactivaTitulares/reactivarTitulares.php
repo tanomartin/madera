@@ -42,11 +42,11 @@ if ($wherein != ')') {
 		//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 		$sqlReactiva = "INSERT INTO titulares VALUE(
 						'".$rowAlta['nroafiliado']."',
-						'".$rowAlta['apellidoynombre']."',
+						'".addslashes($rowAlta['apellidoynombre'])."',
 						'".$rowAlta['tipodocumento']."',
 						'".$rowAlta['nrodocumento']."',
 						'".$rowAlta['fechanacimiento']."',
-						'".$rowAlta['nacionalidad']."',
+						'".addslashes($rowAlta['nacionalidad'])."',
 						'".$rowAlta['sexo']."',
 						'".$rowAlta['estadocivil']."',
 						'".$rowAlta['codprovin']."',
@@ -54,7 +54,7 @@ if ($wherein != ')') {
 						'".$rowAlta['numpostal']."',
 						'".$rowAlta['alfapostal']."',
 						'".$rowAlta['codlocali']."',
-						'".$rowAlta['domicilio']."',
+						'".addslashes($rowAlta['domicilio'])."',
 						'".$rowAlta['ddn']."',
 						'".$rowAlta['telefono']."',
 						'".$rowAlta['email']."',
