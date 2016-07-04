@@ -270,7 +270,8 @@ try {
 		$pdf->Cell(113,6,"Tipo: ".$tiposoli,1,0,'L');
 		$pdf->Cell(70,6,"Documento: ".$docuTyNro,1,1,'L');
 		$pdf->Cell(10);
-		$pdf->Cell(183,6,"Monto Autorizado: ".$montauto,1,1,'L');
+		$pdf->Cell(113,6,"Monto Autorizado: ".$montauto,1,0,'L');
+		$pdf->Cell(70,6,"Delegacion: ".$rowLeeDeleg['nombre'],1,1,'L');
 
 		if($rowLeeSolicitud['pedidomedico']!=NULL) {
 			$docpm=1;
@@ -494,6 +495,7 @@ try {
 //		TODO: Envia mail al prestador para avisarle que hay una prestacion autorizada
 		$mail->ClearAddresses();
 		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Autorizacion de Prestacion Nro: <strong>".$nrosoli."</strong>, <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
+		$bodymail.="<br>Comentarios/Observaciones de la Autorizacion: ".$recauto.".";
 		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M. - Obra Social del Personal de la Industria Maderera<br /></body>";
 		$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
 		$mail->Subject="AVISO: Autorizacion Aprobada";
