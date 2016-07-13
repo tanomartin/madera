@@ -2,8 +2,8 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
-require($libPath."fpdf.php");
-require($libPath."FPDI-1.4.4/fpdi.php"); 
+require_once($libPath."fpdf.php");
+require_once($libPath."FPDI-1.6.1/fpdi.php"); 
 
 //var_dump($_POST);
 
@@ -512,9 +512,35 @@ try {
 	$pagina = "listarSolicitudes.php";
 	Header("Location: $pagina");
 }
-catch (PDOException $e) {
-	echo $e->getMessage();
+catch (Exception $e) {
+	$error = $e->getMessage();
 	$dbl->rollback();
-	$dbr->rollback();
+	$dbr->rollback();	
+	
+	$pos = strpos($error, "FPDI");
+	if ($pos !== false) {
+		$pos = strpos($error, "pedidomedico");
+		if ($pos !== false) {
+			$archivo = 	"Pedido Medico";
+		}
+		$pos = strpos($error, "resumenhc");
+		if ($pos !== false) {
+			$archivo = 	"Resumen Historia Clínia";
+		}
+		$pos = strpos($error, "avalsolicitud");
+		if ($pos !== false) {
+			$archivo = 	"Estudios";
+		}
+		$pos = strpos($error, "presupuesto");
+		if ($pos !== false) {
+			$archivo = 	"Presupuesto Aprobado";
+		}
+		$error = "<b>Descripción:</b> El archivo de ".$archivo. " de la solicitud nº ".$nrosoli." se genero de manera incorrecta.<br><br> 
+				  Si rechaza la solicitud por favor coloque la descripción de este error en el motivo del rechazo.<br><br> 
+				  <b>Información para sistemas:</b> ".$error;
+	}
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	header ($redire);
+	exit(0);
 }
 ?>
