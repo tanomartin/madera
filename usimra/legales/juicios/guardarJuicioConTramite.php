@@ -24,6 +24,7 @@ $juzgado =  $_POST['juzgado'];
 $secretaria = $_POST['secretaria'];
 $expediente = $_POST['nroexpe'];
 $bienes = $_POST['bienes'];
+$observacion = $_POST['observacion'];
 $estado = $_POST['estado'];
 if (!empty($_POST['fechafinal'])) {
 	$fechafin = fechaParaGuardar($_POST['fechafinal']);
@@ -36,7 +37,7 @@ if (!empty($_POST['montocobrado'])) {
 } else {
 	$monto = 0;
 }	
-$sqlTramite = "INSERT INTO trajuiciosusimra VALUE($nroorden,'$fechainicio','$autocaso',$juzgado,$secretaria,'$expediente','$bienes',$estado,'$fechafin',$monto,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlTramite = "INSERT INTO trajuiciosusimra VALUE($nroorden,'$fechainicio','$autocaso',$juzgado,$secretaria,'$expediente','$bienes','$observacion',$estado,'$fechafin',$monto,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];

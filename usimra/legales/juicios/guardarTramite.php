@@ -10,6 +10,7 @@ $juzgado =  $_POST['juzgado'];
 $secretaria = $_POST['secretaria'];
 $expediente = $_POST['nroexpe'];
 $bienes = $_POST['bienes'];
+$observacion = $_POST['observacion'];
 $estado = $_POST['estado'];
 if (!empty($_POST['fechafinal'])) {
 	$fechafin = fechaParaGuardar($_POST['fechafinal']);
@@ -28,7 +29,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlTramite = "INSERT INTO trajuiciosusimra VALUE($nroorden,'$fechainicio','$autocaso',$juzgado,$secretaria,'$expediente','$bienes',$estado,'$fechafin',$monto,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlTramite = "INSERT INTO trajuiciosusimra VALUE($nroorden,'$fechainicio','$autocaso',$juzgado,$secretaria,'$expediente','$bienes','$observacion',$estado,'$fechafin',$monto,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 $updateCabe = "UPDATE cabjuiciosusimra SET tramitejudicial = 1, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE nroorden = $nroorden and cuit = $cuit";
 
 try {

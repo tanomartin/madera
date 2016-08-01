@@ -164,35 +164,42 @@ function validar(formulario) {
 			</td>
 		</tr>
 		<tr>
+		  <?php 
+		  $sqlSecretaria ="select * from secretarias where codigojuzgado = ".$rowTramite['codigojuzgado']." and codigosecretaria = ".$rowTramite['codigosecretaria'];
+		  $resSecretaria = mysql_query($sqlSecretaria,$db);
+		  $canSecretaria = mysql_num_rows($resSecretaria);
+		  ?>	
 		  <td>Secretaria</td>
-		  <td><select name="secretaria" id="secretaria">
-		  <option value='0' selected="selected">Seleccione Secretaría</option>
-		 	 <?php 
-				$sqlSecretaria ="select * from secretarias where codigojuzgado = ".$rowTramite['codigojuzgado']." and codigosecretaria = ".$rowTramite['codigosecretaria'];
-				$resSecretaria = mysql_query($sqlSecretaria,$db);
-				$rowSecretaria = mysql_fetch_assoc($resSecretaria);
-			?>
-            	 <option value="<?php echo $rowSecretaria['codigosecretaria'] ?>" selected="selected"><?php echo $rowSecretaria['denominacion'] ?></option>
-          </select></td>
+		  <td>
+			  <select name="secretaria" id="secretaria">
+				  <option value='0' selected="selected">Seleccione Secretaría</option>
+				 	 <?php 
+						if ($canSecretaria == 1) { 
+							$rowSecretaria = mysql_fetch_assoc($resSecretaria);?>
+		            	 	<option value="<?php echo $rowSecretaria['codigosecretaria'] ?>" selected="selected"><?php echo $rowSecretaria['denominacion'] ?></option>
+		         <?php } ?>
+	          </select>
+          </td>
 	      <td>Nro. Expediente</td>
 	      <td><input id="nroexpe" type="text" name="nroexpe" value="<?php echo $rowTramite['nroexpediente'] ?>"/></td>
 	  </tr>
 		<tr>
 			<td>Estado Procesal</td>
 			<td>
-			<select name="estado" id="estado">
-				<option value='0' selected="selected">Seleccione Estado Procesal</option>
-				<?php 
-					$sqlEstados ="select * from estadosprocesales";
-					$resEstados = mysql_query($sqlEstados,$db);
-					while ($rowEstados = mysql_fetch_assoc($resEstados)) { 
-						$selected = '';
-						if ($rowEstados['codigo'] == $rowTramite['estadoprocesal']) { $selected = 'selected'; }?>
-					  	<option value="<?php echo $rowEstados['codigo'] ?>" <?php echo $selected ?>><?php echo $rowEstados['descripcion'] ?></option>
-			  <?php } ?>
-			</select>			</td>
-			   <td>Bienes Embargados</td>
-			   <td><textarea name="bienes" id="bienes" cols="50" rows="2"><?php echo $rowTramite['bienesembargados'] ?></textarea></td>
+				<select name="estado" id="estado">
+					<option value='0' selected="selected">Seleccione Estado Procesal</option>
+					<?php 
+						$sqlEstados ="select * from estadosprocesales";
+						$resEstados = mysql_query($sqlEstados,$db);
+						while ($rowEstados = mysql_fetch_assoc($resEstados)) { 
+							$selected = '';
+							if ($rowEstados['codigo'] == $rowTramite['estadoprocesal']) { $selected = 'selected'; }?>
+						  	<option value="<?php echo $rowEstados['codigo'] ?>" <?php echo $selected ?>><?php echo $rowEstados['descripcion'] ?></option>
+				  <?php } ?>
+				</select>
+			</td>
+			<td>Bienes Embargados</td>
+			<td><textarea name="bienes" id="bienes" cols="50" rows="2"><?php echo $rowTramite['bienesembargados'] ?></textarea></td>
 	    </tr>
 	    <tr>
 	    	<td>Observación</td>
