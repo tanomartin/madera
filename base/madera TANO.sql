@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2016 a las 18:41:25
+-- Tiempo de generación: 01-08-2016 a las 17:05:15
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -742,7 +742,7 @@ CREATE TABLE IF NOT EXISTS `cabjuiciosospim` (
   `fechamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` char(50) DEFAULT NULL,
   PRIMARY KEY (`nroorden`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Cabecera de Juicios de OSPIM' AUTO_INCREMENT=4335 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Cabecera de Juicios de OSPIM' AUTO_INCREMENT=4336 ;
 
 -- --------------------------------------------------------
 
@@ -770,7 +770,7 @@ CREATE TABLE IF NOT EXISTS `cabjuiciosusimra` (
   `fechamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` char(50) DEFAULT NULL,
   PRIMARY KEY (`nroorden`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Cabecera de Juicios de USIMRA' AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Cabecera de Juicios de USIMRA' AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -2002,7 +2002,7 @@ CREATE TABLE IF NOT EXISTS `estadosprocesales` (
   `codigo` int(2) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Codigo de Estado Procesal',
   `descripcion` char(100) NOT NULL COMMENT 'Descripcion',
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Codificadora de Estados Procesales' AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Codificadora de Estados Procesales' AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -3564,6 +3564,7 @@ CREATE TABLE IF NOT EXISTS `trajuiciosospim` (
   `codigosecretaria` int(3) unsigned NOT NULL COMMENT 'Codigo de Secretaria del Juzgado',
   `nroexpediente` char(30) NOT NULL COMMENT 'Nro. de Expediente Judicial',
   `bienesembargados` text COMMENT 'Bienes Embargados',
+  `observacion` text,
   `estadoprocesal` int(2) unsigned NOT NULL COMMENT 'Estado Procesal del Expediente',
   `fechafinalizacion` date NOT NULL COMMENT 'Fecha de Finalizacion del Juicio',
   `montocobrado` decimal(9,2) unsigned NOT NULL COMMENT 'Monto Cobrado',
@@ -3588,6 +3589,7 @@ CREATE TABLE IF NOT EXISTS `trajuiciosusimra` (
   `codigosecretaria` int(3) unsigned NOT NULL COMMENT 'Codigo de Secretaria del Juzgado',
   `nroexpediente` char(30) NOT NULL COMMENT 'Nro. de Expediente Judicial',
   `bienesembargados` text COMMENT 'Bienes Embargados',
+  `observacion` text,
   `estadoprocesal` int(2) unsigned NOT NULL COMMENT 'Estado Procesal del Expediente',
   `fechafinalizacion` date NOT NULL COMMENT 'Fecha de Finalizacion del Juicio',
   `montocobrado` decimal(9,2) unsigned NOT NULL COMMENT 'Monto Cobrado',
