@@ -72,10 +72,6 @@ function validar(formulario) {
 			alert("Error en el Nro. de Expediente");
 			return false;
 		}
-		if ((formulario.fechafinal.value != "" && formulario.montocobrado.value == 0) || (formulario.fechafinal.value == "" && formulario.montocobrado.value != "")) {
-			alert("Debe completar toda la información del cierre del tramite");
-			return false;
-		}
 	} else {
 		if (formulario.juzgado.value != 0) {
 			alert("El estado extrajudicila no debe contener un juzgado");
@@ -91,20 +87,30 @@ function validar(formulario) {
 		}
 		
 	}
-	if ((formulario.fechafinal.value != "" && formulario.montocobrado.value == 0) || (formulario.fechafinal.value == "" && formulario.montocobrado.value != "")) {
-		alert("Debe completar toda la información del cierre del tramite");
-		return false;
-	}
-	if (formulario.fechafinal.value != "") {
-		if (!esFechaValida(formulario.fechafinal.value)) {
-			alert("Fecha de Finalizacion invalida");
+	
+	if (formulario.estado.value == 10) {
+		if ((formulario.fechafinal.value == "") || (formulario.montocobrado.value != "")) {
+			alert("Debe completar la fecha del cierre del tramite judicial. Sin monto Cobrado");
+			return false;
+		}
+	} else {
+		if ((formulario.fechafinal.value != "" && formulario.montocobrado.value == 0) || (formulario.fechafinal.value == "" && formulario.montocobrado.value != "")) {
+			alert("Debe completar toda la información del cierre del tramite");
+			return false;
+		}
+		
+		if (formulario.fechafinal.value != "") {
+			if (!esFechaValida(formulario.fechafinal.value)) {
+				alert("Fecha de Finalizacion invalida");
+				return false;
+			}
+		}
+		if(!isNumberPositivo(formulario.montocobrado.value)) {
+			alert("El monto cobrado debe ser un número postivo");
 			return false;
 		}
 	}
-	if(!isNumberPositivo(formulario.montocobrado.value)) {
-		alert("El monto cobrado debe ser un número postivo");
-		return false;
-	}
+	
 	formulario.Submit.disabled = true;
 	return true;
 }
