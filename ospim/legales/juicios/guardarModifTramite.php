@@ -9,6 +9,7 @@ $juzgado =  $_POST['juzgado'];
 $secretaria = $_POST['secretaria'];
 $expediente = $_POST['nroexpe'];
 $bienes = $_POST['bienes'];
+$observacion = $_POST['observacion'];
 $estado = $_POST['estado'];
 if (!empty($_POST['fechafinal'])) {
 	$fechafin = fechaParaGuardar($_POST['fechafinal']);
@@ -24,7 +25,7 @@ if (!empty($_POST['montocobrado'])) {
 $fechamodificacion = date("Y-m-d H:m:s");
 $usuariomodificacion =  $_SESSION['usuario'];
 
-$sqlUpdateTramite = "UPDATE trajuiciosospim SET fechainicio = '$fechainicio', autoscaso = '$autocaso', codigojuzgado = $juzgado, codigosecretaria = $secretaria, nroexpediente = '$expediente', bienesembargados = '$bienes', estadoprocesal = $estado, fechafinalizacion = '$fechafin', montocobrado = $monto, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE nroorden = $nroorden";
+$sqlUpdateTramite = "UPDATE trajuiciosospim SET fechainicio = '$fechainicio', autoscaso = '$autocaso', codigojuzgado = $juzgado, codigosecretaria = $secretaria, nroexpediente = '$expediente', bienesembargados = '$bienes', observacion = '$observacion',estadoprocesal = $estado, fechafinalizacion = '$fechafin', montocobrado = $monto, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE nroorden = $nroorden";
 $resUpdateTramite = mysql_query($sqlUpdateTramite,$db); 
 
 try {

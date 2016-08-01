@@ -55,7 +55,7 @@ function validar(formulario) {
 		alert("Debe elegir una Estado Procesal");
 		return false;
 	}
-	if (formulario.estado.value != 3) {
+	if (formulario.estado.value != 3 && formulario.estado.value != 10) {
 		if (formulario.juzgado.value == 0) {
 			alert("Debe elegir un Juzgado");
 			return false;
@@ -70,15 +70,15 @@ function validar(formulario) {
 		}
 	} else {
 		if (formulario.juzgado.value != 0) {
-			alert("El estado extrajudicila no debe contener un juzgado");
+			alert("El estado seleccionado no debe contener un juzgado");
 			return false;
 		}
 		if (formulario.secretaria.value != 0) {
-			alert("El estado extrajudicila no debe contener una secretaria");
+			alert("El estado seleccionado no debe contener una secretaria");
 			return false;
 		}
 		if (formulario.nroexpe.value != "") {
-			alert("El estado extrajudicila no debe contener nro. de expediente");
+			alert("El estado seleccionado no debe contener nro. de expediente");
 			return false;
 		}
 	}
@@ -171,6 +171,10 @@ function validar(formulario) {
 			</select>			</td>
 			   <td>Bienes Embargados</td>
 			   <td><textarea name="bienes" id="bienes" cols="50" rows="2"></textarea></td>
+	    </tr>
+	    <tr>
+	    	<td>Observación</td>
+	    	<td colspan="3"><textarea name="observacion" id="observacion" cols="99" rows="3"></textarea></td>
 	    </tr>
 		<tr>
 		  <td colspan="4"><div align="center"><strong>FINALIZACION DE TRAMITE JUDCIAL</strong></div></td>

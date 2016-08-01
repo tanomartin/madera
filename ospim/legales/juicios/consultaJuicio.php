@@ -155,7 +155,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><b>Bienes Embargados</b></td>
 				<td colspan="3"><?php echo $rowTramite['bienesembargados'] ?></td>
 			  </tr>
-			  
+			  <tr>
+				<td><b>Observacion</b></td>
+				<td colspan="3"><?php echo $rowTramite['observacion'] ?></td>
+			  </tr>
 			  <tr>
 			    <td colspan="4"><div align="center">
 			      <p><strong>Datos Finalización de Trámite</strong></p>
