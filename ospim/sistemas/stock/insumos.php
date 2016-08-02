@@ -86,7 +86,7 @@ include($libPath."controlSessionOspimSistemas.php");
 						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
 							if ($rowInsumoProducto['activo'] == 0) {
-									$color = "#FF0000";
+								$color = "#FF0000";
 							} else {
 								$color = "#000000";
 							}

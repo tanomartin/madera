@@ -94,25 +94,30 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php echo $rowInsumos['id'] ?></td>
 					<td><?php echo $rowInsumos['nombre'] ?></td>
 					<td><?php echo $rowInsumos['descripcion'] ?></td>
-					
+					<td>
 					<?php 
 						$idInsumo = $rowInsumos['id'];
 						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, s.nombre as usuario FROM insumoproducto i, producto p, ubicacionproducto u LEFT OUTER JOIN usuarios s on u.idusuario = s.id, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
-						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
-						$nombre = "";
-						while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
-							if ($rowInsumoProducto['activo'] == 0) {
-								$colorProd = "#FF0000";
-							} else {
-								$colorProd = "#000000";
+						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);		
+						$canInsumoProducto = mysql_num_rows($resInsumoProducto);
+						if ($canInsumoProducto == 0) {
+							$activo = "SI";
+						} else {
+							$activo = "NO";
+							while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
+								$nombre = "";
+								if ($rowInsumoProducto['activo'] == 0) {
+									$colorProd = "#FF0000";
+								} else {
+									$colorProd = "#000000";
+									$activo = "SI";
+								}
+								$nombre .= " * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto']."-".$rowInsumoProducto['usuario'].")"."</br>";
+								print("<font color=".$colorProd.">".$nombre."</font>");	
 							}
-							$nombre .= " * ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto']."-".$rowInsumoProducto['usuario'].")"."</br>";
-							if ($rowInsumoProducto['activo'] == 1) {  $activo = "SI"; } else { $activo = "NO"; }	
-							
 						}
-						
 					?>
-					<td><font color='<?php echo $colorProd ?>'><?php echo $nombre ?></font></td>
+					</td>
 					<td><?php echo $activo ?></td>
 					<td><?php echo $rowInsumos['puntopromedio'] ?></td>
 					<td><?php echo $rowInsumos['puntopedido'] ?></td>
