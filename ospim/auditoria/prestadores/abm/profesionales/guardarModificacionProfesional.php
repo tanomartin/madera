@@ -10,6 +10,9 @@ $domicilio = $_POST['domicilio'];
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];
+if ($codPos == '') {
+	$codPos = 'null';
+}
 $localidad = $_POST['selectLocali'];
 $codProvin = $_POST['codprovin'];
 $ddn1 = $_POST['ddn1'];
@@ -35,7 +38,7 @@ domicilio = '$domicilio',
 codlocali = '$localidad', 
 codprovin = '$codProvin',
 indpostal = '$indpostal', 
-numpostal = '$codPos', 
+numpostal = $codPos, 
 alfapostal = '$alfapostal', 
 telefono1 = '$tel1', 
 ddn1 = '$ddn1', 

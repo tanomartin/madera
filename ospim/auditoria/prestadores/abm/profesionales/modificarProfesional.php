@@ -69,23 +69,23 @@ function validar(formulario) {
 		alert("El campo Nombre es Obligatrio");
 		return false;
 	}
-	if (formulario.domicilio.value == "") {
-		alert("El campo domicilio es obligatrio");
-		return false;
-	}
-	if (formulario.codPos.value == "") {
-		alert("El campo Codigo Postal es obligatrio");
-		return false;
-	} else {
+	
+	if (formulario.codPos.value != "") {
 		if (!esEnteroPositivo(formulario.codPos.value)){
 		 	alert("El campo Codigo Postal tiene que ser numerico");
 			return false;
 		}
+		if (formulario.domicilio.value == "") {
+			alert("El campo domicilio es obligatrio, si se ingresa un codigo postal");
+			return false;
+		}
+		if (formulario.selectLocali.options[formulario.selectLocali.selectedIndex].value == 0) {
+			alert("Debe elegir una Localidad, si se ingresa una direccion");
+			return false;
+		}
+		
 	}
-	if (formulario.selectLocali.options[formulario.selectLocali.selectedIndex].value == 0) {
-		alert("Debe elegir una Localidad");
-		return false;
-	}
+	
 	if (formulario.telefono1.value != "") {
 		if (!esEnteroPositivo(formulario.telefono1.value)) {
 			alert("El telefono 1 debe ser un numero");
@@ -128,9 +128,11 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	if (!verificaCuilCuit(formulario.cuit.value)){
-		alert("C.U.I.T invalido");
-		return false;
+	if (formulario.cuit.value != "") {
+		if (!verificaCuilCuit(formulario.cuit.value)){
+			alert("C.U.I.T invalido");
+			return false;
+		}
 	}
 	var tratamiento = formulario.selectTratamiento.options[formulario.selectTratamiento.selectedIndex].value;
 	if (tratamiento == 0) {
