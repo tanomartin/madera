@@ -45,7 +45,20 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=5"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p>
       </td>
-      <td width="200"><p align="center">Buscador</p>
+       <td width="200"><p align="center">FEMEBA</p>
+        <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=6"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>
+    </tr>
+     <tr>
+   	 <td width="200"><p align="center">S.U.R.</p>
+        <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=7"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p>
+      </td>
+      <td width="200"><p align="center">Favaloro</p>
+        <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=8"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p>
+      </td>
+        <td width="200"><p align="center">Buscador</p>
         <p align="center"><a class="enlace" href="buscador/buscadorPractica.php"><img src="img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
