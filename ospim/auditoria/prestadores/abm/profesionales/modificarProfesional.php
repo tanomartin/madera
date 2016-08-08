@@ -38,7 +38,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "localidadPorCP.php",
+			url: "../lib/localidadPorCP.php",
 			data: {codigo:codigo},
 		}).done(function(respuesta){
 			$("#selectLocali").html(respuesta);
@@ -53,7 +53,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: "json",
-			url: "cambioProvincia.php",
+			url: "../lib/cambioProvincia.php",
 			data: {locali:locali},
 		}).done(function(respuesta){
 			$("#indpostal").val(respuesta.indpostal);
