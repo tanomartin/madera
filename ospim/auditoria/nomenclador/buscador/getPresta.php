@@ -10,7 +10,8 @@ if(isset($_POST['codigopresta'])) {
 		$resPresta = mysql_query($sqlPresta,$db);
 		$canPresta = mysql_num_rows($resPresta);
 		if ($canPresta == 0) {
-			$respuesta = "<font color='red'><b>El prestador no existe o <br> El prestador no tiene asociado el nomenclador</b></font>";
+			//$respuesta = "<font color='red'><b>El prestador no existe o <br> El prestador no tiene asociado el nomenclador</b></font>";
+			$respuesta = 0;
 		} else {
 			$rowPresta = mysql_fetch_assoc($resPresta);
 			$respuesta = "<b>Nombre - <font color='blue'>".$rowPresta['nombre']."</font></b>";

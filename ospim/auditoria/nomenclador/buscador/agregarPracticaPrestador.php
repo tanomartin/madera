@@ -126,7 +126,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 							$("#tipoCarga").prop("disabled",false);
 						}
 					});
-				} 
+				} else {
+					$("#nombrePresta").html("<font color='red'><b>El prestador no existe o <br> El prestador no tiene asociado el nomenclador</b></font>");
+				}
 			});	
 		});	
 	});
