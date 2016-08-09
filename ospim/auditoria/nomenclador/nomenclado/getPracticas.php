@@ -2,6 +2,7 @@
 if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$codigo=$_POST['valor'];
 	$tipo = $_POST['tipo'];
+	$nomenclador = $_POST['nomenclador'];
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
@@ -14,14 +15,14 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 					 <th>Acciones</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
-		$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and p.nomenclador = 1 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
+		$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and p.nomenclador = $nomenclador and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
 	} else {
 		$cantidaPuntos = substr_count($codigo,'.');
 		if ($cantidaPuntos == 0) {
-			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica like '$codigo.%' and p.codigopractica not like '$codigo.%.%' and p.nomenclador = 1 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica like '$codigo.%' and p.codigopractica not like '$codigo.%.%' and p.nomenclador = $nomenclador and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
 		}
 		if ($cantidaPuntos == 1) {
-			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica like '$codigo.%' and p.nomenclador = 1 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica like '$codigo.%' and p.nomenclador = $nomenclador and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
 		}
 	}
 	
@@ -38,7 +39,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 						<td>".$rowPractica['unihonorarioanestesista']."</td>
 						<td>".$rowPractica['unigastos']."</td>
 						<td>".$rowPractica['complejidad']."</td>
-						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?idpractica=$practica&nomenclador=1')\"/></td>
+						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?idpractica=$practica&nomenclador=$nomenclador')\"/></td>
 					</tr>";
 	}
 	$respuesta.="</tbody>";

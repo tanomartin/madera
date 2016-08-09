@@ -90,6 +90,7 @@ jQuery(function($){
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
 		$("#subcapitulo").prop("disabled",true);	
 		$("#practicas").html("");
+		var nomenclador = $("#nomenclador").val();
 		var valor = $(this).val();
 		valor = valor.split('-');
 		tipo = $("#tipo").val();
@@ -107,7 +108,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -119,6 +120,7 @@ jQuery(function($){
 	$("#subcapitulo").change(function(){
 		$("#practicas").html("");
 		tipo = $("#tipo").val();
+		var nomenclador = $("#nomenclador").val();
 		var valor = $(this).val();
 		if (valor == 0) { 
 			valor = $("#capitulo").val();
@@ -127,7 +129,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -139,7 +141,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -160,6 +162,7 @@ jQuery(function($){
   </p>
   <p><span class="Estilo2">Listador Nomenclador <?php echo $nomenclador ?></span>  </p>
   <form id="form1" name="form1" method="post" action="">
+  	<input style="display: none" type="text" id="nomenclador" value="<?php echo $idNomenclador ?>"/>
     <p>
       <select name="tipo" id="tipo">
 	  		  <option value='0'>Seleccione Tipo de Practica</option>
