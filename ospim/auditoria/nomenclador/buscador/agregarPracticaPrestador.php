@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspim.php");
 $idpractica = $_GET['idpractica'];
 
-$sqlNombrePractica = "SELECT codigopractica, descripcion FROM practicas WHERE idpractica = $idpractica";
+$sqlNombrePractica = "SELECT p.codigopractica, p.descripcion, p.nomenclador, n.nombre FROM practicas p, nomencladores n WHERE p.idpractica = $idpractica and p.nomenclador = n.id ";
 $resNombrePractica = mysql_query($sqlNombrePractica,$db);
 $rowNombrePractica = mysql_fetch_array($resNombrePractica);
 ?>
@@ -100,19 +100,20 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 	jQuery(function($){	
 		$("#codigoPresta").change(function(){
-			$("#nombrePresta").val('');
+			$("#nombrePresta").html('');
 			$("#contrato").prop("disabled",true);
 			$("#contrato").html('<select name="contrato" id="contrato" disabled="disabled"><option value="0">Seleccione Contrato</option></select>');
 			$("#tipoCarga").prop("disabled",true);
 			var codigopresta = $(this).val();
+			var codigonomenclador = $("#nomenclador").val();
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
 				url: "getPresta.php",
-				data: {codigopresta:codigopresta},
+				data: {codigopresta:codigopresta, codigonomenclador:codigonomenclador},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
-					$("#nombrePresta").val(respuesta);
+					$("#nombrePresta").html(respuesta);
 					$.ajax({
 						type: "POST",
 						dataType: 'html',
@@ -179,7 +180,8 @@ A:hover {text-decoration: none;color:#00FFFF }
   <div align="center">
 	  	<div class="Estilo1">
 	  		<p>Agregar Practica a Prestador</p>
-	  		<p style="color: blue"><?php echo $rowNombrePractica['codigopractica']." - ".$rowNombrePractica['descripcion'] ?></p>
+	  		<p style="color: blue"><?php echo $rowNombrePractica['codigopractica']." - ".$rowNombrePractica['descripcion']." (".$rowNombrePractica['nombre'].")" ?></p>
+	  		<input style="display: none" type="text" id="nomenclador" name="nomenclador" value="<?php echo $rowNombrePractica['nomenclador'] ?>" />
 	  		<p>Datos de Ingreso</p>
 	  		<p><?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?></p> 
 	  	</div>
@@ -187,7 +189,9 @@ A:hover {text-decoration: none;color:#00FFFF }
   			<tr>
   				<th>Codigo Prestador</th>
   				<td><input type="text" name="codigoPresta" id="codigoPresta" size="10"></input></td>
-  				<td><input type="text" name="nombrePresta" id="nombrePresta" size="50" readonly="readonly" style="background-color: silver;"></input></td>
+  			</tr>
+  			<tr>
+  				<td colspan="2" style="text-align: center"><span id="nombrePresta"></span></td>
   			</tr>
   			<tr>
   				<th>Contrato</th>
