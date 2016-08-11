@@ -30,7 +30,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <p align="center"><a class="enlace" href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
 		<td width="200"><p align="center">Nomencladores</p>
-          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="nomenclador/menuNomenclador"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
@@ -38,7 +38,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="sur/menuSur.php"><img src="img/sur.jpg" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td><p align="center">Programa de Prevenci&oacute;n </p>
-      <p align="center"><a class="enlace" href="nomenclador/menuNomenclador.php"><img src="img/prevencion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/prevencion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
       <td>&nbsp;</td>
     </tr>
