@@ -111,7 +111,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 							<input type="button" value="Modificar Practicas" name="modifpracticas" id="modifpracticas" onclick="location.href='modificarPracticasContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
 							<input type="button" value="Modificar Contrato" name="modifcontrato" id="modifcontrato" onclick="location.href='modificarContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/>
 					<?php } else { ?>
-							<input type="button" value="Ver Practicas" name="verpracticas" id="verpracticas" />
+							<input type="button" value="Ver Practicas" name="verpracticas" id="verpracticas" onclick="location.href = 'consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>' "/>
 					<?php }  ?>
 				</td>
 				</tr>
