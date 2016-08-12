@@ -35,7 +35,7 @@ else {
 			$frendidb=substr($registros[$i], 26, 8);
 			$sucbcrdb=substr($registros[$i], 14, 4);
 			$codmovdb=substr($registros[$i], 34, 2);
-			if(strcmp("50", $codmovdb)==0 || strcmp("52", $codmovdb)==0)
+			if(strcmp("50", $codmovdb)==0 || strcmp("52", $codmovdb)==0 || strcmp("51", $codmovdb)==0)
 				$estmovdb=E;
 			else
 				$estmovdb=substr($registros[$i], 154, 1);
@@ -64,7 +64,7 @@ else {
 			$frendidb=substr($registros[$i], 26, 8);
 			$sucbcrdb=substr($registros[$i], 14, 4);
 			$codmovdb=substr($registros[$i], 34, 2);
-			if(strcmp("50", $codmovdb)==0 || strcmp("52", $codmovdb)==0)
+			if(strcmp("50", $codmovdb)==0 || strcmp("52", $codmovdb)==0 || strcmp("51", $codmovdb)==0)
 				$estmovdb=E;
 			else
 				$estmovdb=substr($registros[$i], 154, 1);
@@ -86,7 +86,7 @@ else {
 		}
 
 		$codmovre=substr($registros[$i], 34, 2);
-		if(strcmp("50", $codmovre)==0 || strcmp("52", $codmovdb)==0)
+		if(strcmp("50", $codmovre)==0 || strcmp("52", $codmovdb)==0 || strcmp("51", $codmovdb)==0)
 			$estmovre=E;
 		else
 			$estmovre=substr($registros[$i], 154, 1);
