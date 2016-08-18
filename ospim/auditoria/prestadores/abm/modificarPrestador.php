@@ -340,37 +340,66 @@ function validar(formulario) {
 					$profesional = "selected"; 
 					$establecimiento = "" ; 
 					$ciculo = "";
+					$entidad = "";
 					$disabled=""; 
 				}
 				if ($rowConsultaPresta['personeria'] == 2) {
 					$profesional = "";
 					$establecimiento = "selected"; 
 					$ciculo = "";
+					$entidad = "";
 					$disabled="disabled"; 
 				}
 				if ($rowConsultaPresta['personeria'] == 3) {
 					$profesional = "";
 					$establecimiento = ""; 
 					$ciculo = "selected";
+					$entidad = "";
 					$disabled="disabled"; 
 				}
-				
-				$sqlNumProfesional = "select codigoprofesional from profesionales where codigoprestador = ".$rowConsultaPresta['codigoprestador']." and activo = 1";
-				$resNumProfesional=mysql_query($sqlNumProfesional,$db);
-				$cantidad = mysql_num_rows($resNumProfesional);
-				if ($cantidad > 0 and $rowConsultaPresta['personeria'] == 3) { 
-					$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
-					$cartel = "Existe prof. activos<br>";
-				} else {
-					$deshabilitado = '';
-					$castel = '';
+				if ($rowConsultaPresta['personeria'] == 4) {
+					$profesional = "";
+					$establecimiento = "";
+					$ciculo = "";
+					$entidad = "selected";
+					$disabled="disabled";
 				}
+				
+				if ($rowConsultaPresta['personeria'] == 3) {
+					$sqlNumProfesional = "select codigoprofesional from profesionales where codigoprestador = ".$rowConsultaPresta['codigoprestador']." and activo = 1";
+					$resNumProfesional=mysql_query($sqlNumProfesional,$db);
+					$cantidad = mysql_num_rows($resNumProfesional);
+					if ($cantidad > 0) { 
+						$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
+						$cartel = "Existe prof. activos<br>";
+					} else {
+						$deshabilitado = '';
+						$castel = '';
+					}
+				}
+				
+				if ($rowConsultaPresta['personeria'] == 4) {
+					$sqlNumEstablecim = "select codigo from establecimientos where codigoprestador = ".$rowConsultaPresta['codigoprestador'];
+					$resNumEstablecim = mysql_query($sqlNumEstablecim,$db);
+					$cantidad = mysql_num_rows($resNumEstablecim);
+					if ($cantidad > 0) {
+						$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
+						$cartel = "Existe Establecimientos<br>";
+					} else {
+						$deshabilitado = '';
+						$castel = '';
+					}
+				}
+				
+				
+				
 				print("<span><font color='#0000CC'>$cartel</font></span>"); ?>
 		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" <?php echo $deshabilitado ?>>
 					<option value="0">Seleccione un valor </option>
 					<option value="1" <?php echo $profesional ?>>Profesional </option>
 					<option value="2" <?php echo $establecimiento ?>>Establecimiento </option>
 					<option value="3" <?php echo $ciculo ?>>Círculo </option>
+					<option value="4" <?php echo $entidad ?>>Entidad Agrupadora </option>
 				  </select>	  
 </div></td>
         <td colspan="4"><div align="left">

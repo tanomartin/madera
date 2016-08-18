@@ -94,6 +94,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
             <?php 	if($rowConsultaPresta['personeria'] == 1) { echo "Profesional"; } 
 					if($rowConsultaPresta['personeria'] == 2) { echo "Establecimiento"; } 
 					if($rowConsultaPresta['personeria'] == 3) { echo "Círculo"; }
+					if($rowConsultaPresta['personeria'] == 4) { echo "Entidad Agrupadora"; }
 			?>
           </div></td>
           <td> <div align="left"><strong>Numero Registro SSS</strong></div></td>
@@ -163,10 +164,11 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         <td width="200"><div align="left">
           <input class="nover" name="modificar" type="button" value="Modificar Prestador" onclick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
         </div></td>
-        
 		<td width="200"><div align="center">
 		<?php if ($rowConsultaPresta['personeria'] == 3) { ?>
             <input class="nover" name="profesionales" type="button" value="Modificar Profesionales"  onclick="location.href = 'profesionales/modificarProfesionales.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
+        <?php if ($rowConsultaPresta['personeria'] == 4) { ?>
+            <input class="nover" name="establecimientos" type="button" value="Modificar Establecimientos"  onclick="location.href = 'establecimientos/modificarEstablecimientos.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
         </div></td> 
         <td width="200"><div align="center">
           <input class="nover" name="modificar2" type="button" value="Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />

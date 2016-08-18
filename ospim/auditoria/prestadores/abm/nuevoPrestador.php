@@ -378,6 +378,7 @@ function validar(formulario) {
 			  <option value="1">Profesional </option>
 			  <option value="2">Establecimiento </option>
 			  <option value="3">Círculo </option>
+			  <option value="4">Entidad Agrupadora </option>
             </select>
         </div></td>
         <td colspan="4">

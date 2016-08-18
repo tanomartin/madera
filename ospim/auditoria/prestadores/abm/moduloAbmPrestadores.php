@@ -160,6 +160,7 @@ function abrirPantalla(dire) {
 				<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> | 
 				<input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratos/consultaContratosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
 				<?php if ($rowPrestador['personeria'] == 3) { ?> |  <input name="profesionales" type="button" value="Ver Profesionales" onclick="abrirPantalla('profesionales/profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
+				<?php if ($rowPrestador['personeria'] == 4) { ?> |  <input name="establecimientos" type="button" value="Ver Establecimientos" onclick="abrirPantalla('establecimientos/establecimientosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
 			</td>
 		</tr>
 	<?php

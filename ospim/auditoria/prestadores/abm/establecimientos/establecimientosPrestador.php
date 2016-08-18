@@ -9,7 +9,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Pofesionales Prestador :.</title>
+<title>.: Establecimientos Prestador :.</title>
 <style type="text/css">
 <!--
 .Estilo1 {
@@ -33,11 +33,10 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <script type="text/javascript">
 
 	$(function() {
-		$("#profesionales")
+		$("#establecimientos")
 		.tablesorter({
 			theme: 'blue', 
 			widthFixed: true, 
-			headers:{2:{sorter:false}},
 			widgets: ["zebra", "filter"], 
 			widgetOptions : { 
 				filter_cssFilter   : '',
@@ -51,17 +50,6 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 		
 		})
 	});
-	
-function activarDesactivar(accion, codigoprof, codigopresta) {
-	if (accion == 0) {
-		$.blockUI({ message: "<h1>Desactivando Profesional.<br> Espere por favor</h1>" });
-	} else {
-		$.blockUI({ message: "<h1>Activando Profesional.<br> Espere por favor</h1>" });
-	}
-	var pagina = "activarDesactivarProfesional.php?accion="+accion+"&codigoprof="+codigoprof+"&codigopresta="+codigopresta;
-	location.href = pagina;
-}
-
 	
 </script>
 
@@ -80,32 +68,25 @@ function activarDesactivar(accion, codigoprof, codigopresta) {
         </tr>
   </table>
   	  <?php 
-  		$sqlProf = "SELECT codigoprofesional, nombre, activo FROM profesionales WHERE codigoprestador = $codigo";
-		$resProf = mysql_query($sqlProf,$db);
-		$numProf  = mysql_num_rows($resProf);
-		if ($numProf > 0) {
+  		$sqlEstable = "SELECT codigo, nombre FROM establecimientos WHERE codigoprestador = $codigo";
+		$resEstable = mysql_query($sqlEstable,$db);
+		$numEstable  = mysql_num_rows($resEstable);
+		if ($numEstable > 0) {
   ?>
-	<table style="text-align:center; width:600px" id="profesionales" class="tablesorter" >
+	<table style="text-align:center; width:600px" id="establecimientos" class="tablesorter" >
 			<thead>
 			  <tr>
 				<th>C&oacute;digo</th>
 				<th>Nombre</th>
-				<th>Accion</th>
 			  </tr>
 			</thead>
 			<tbody>
 			  <?php
-			while($rowProf= mysql_fetch_array($resProf)) {
+			while($rowEstable= mysql_fetch_array($resEstable)) {
 		?>
 			  <tr>
-				<td><?php echo $rowProf['codigoprofesional'];?></td>
-				<td><?php echo $rowProf['nombre'];?></td>
-				<td><?php if ($rowProf['activo'] == 0) { ?> 
-							<input type="button" value="Activar" id="activar" onclick="activarDesactivar('1','<?php echo $rowProf['codigoprofesional']?>','<?php echo $codigo ?>')" />
-					<?php } else { ?>
-							<input type="button" value="Desactiar" id="desactivar" onclick="activarDesactivar('0','<?php echo $rowProf['codigoprofesional']?>','<?php echo $codigo ?>')" />
-					<?php } ?>
-				</td>
+				<td><?php echo $rowEstable['codigo'];?></td>
+				<td><?php echo $rowEstable['nombre'];?></td>
 			  </tr>
 			  <?php
 			}
@@ -115,7 +96,7 @@ function activarDesactivar(accion, codigoprof, codigopresta) {
 	<p>
 		<input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" />
    </p>	  
-	<?php } else { 	print("<p><div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE PROFESIONALES CARGADO </b></div></p>"); } ?>
+	<?php } else { 	print("<p><div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE ESTABLECIMIENTOS CARGADO </b></div></p>"); } ?>
 	    
 	
 </div>

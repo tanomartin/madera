@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-08-2016 a las 17:05:15
+-- Tiempo de generación: 18-08-2016 a las 15:32:58
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -571,7 +571,7 @@ CREATE TABLE IF NOT EXISTS `boletasospim` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=5022 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=5034 ;
 
 -- --------------------------------------------------------
 
@@ -961,7 +961,7 @@ CREATE TABLE IF NOT EXISTS `capitulosdepracticas` (
   `idtipopractica` int(2) NOT NULL,
   `descripcion` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=54 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
 
 -- --------------------------------------------------------
 
@@ -1946,6 +1946,36 @@ CREATE TABLE IF NOT EXISTS `empresasdebaja` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `establecimientos`
+--
+
+CREATE TABLE IF NOT EXISTS `establecimientos` (
+  `codigo` int(4) NOT NULL AUTO_INCREMENT,
+  `codigoprestador` int(4) NOT NULL,
+  `nombre` char(100) NOT NULL,
+  `domicilio` char(50) NOT NULL,
+  `codlocali` int(6) NOT NULL,
+  `codprovin` int(2) NOT NULL,
+  `indpostal` char(1) DEFAULT NULL,
+  `numpostal` int(4) NOT NULL,
+  `alfapostal` char(3) DEFAULT NULL,
+  `telefono1` bigint(10) DEFAULT NULL,
+  `ddn1` char(5) DEFAULT NULL,
+  `telefono2` bigint(10) DEFAULT NULL,
+  `ddn2` char(5) DEFAULT NULL,
+  `telefonofax` bigint(10) DEFAULT NULL,
+  `ddnfax` char(5) DEFAULT NULL,
+  `email` char(60) DEFAULT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fehamodificacion` datetime NOT NULL,
+  `usuariomodificacion` char(50) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=2 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `estadocivil`
 --
 
@@ -2465,7 +2495,7 @@ CREATE TABLE IF NOT EXISTS `nomencladores` (
   `id` int(3) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -2752,7 +2782,7 @@ CREATE TABLE IF NOT EXISTS `practicas` (
   `unihonorarioanestesista` decimal(4,2) DEFAULT NULL,
   `unigastos` decimal(4,2) DEFAULT NULL,
   PRIMARY KEY (`idpractica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2019 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2080 ;
 
 -- --------------------------------------------------------
 
@@ -2835,7 +2865,7 @@ CREATE TABLE IF NOT EXISTS `prestadores` (
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`codigoprestador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
 
 -- --------------------------------------------------------
 
@@ -2907,8 +2937,8 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `domicilio` char(50) NOT NULL,
   `codlocali` int(6) unsigned NOT NULL,
   `codprovin` int(2) unsigned NOT NULL,
-  `indpostal` char(1) NOT NULL,
-  `numpostal` int(4) unsigned NOT NULL,
+  `indpostal` char(1) DEFAULT NULL,
+  `numpostal` int(4) unsigned DEFAULT NULL,
   `alfapostal` char(3) DEFAULT NULL,
   `telefono1` bigint(10) DEFAULT NULL,
   `ddn1` char(5) DEFAULT NULL,
@@ -2928,7 +2958,7 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`codigoprofesional`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 -- --------------------------------------------------------
 
@@ -3282,7 +3312,7 @@ CREATE TABLE IF NOT EXISTS `subcapitulosdepracticas` (
   `idcapitulo` int(3) NOT NULL,
   `descripcion` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=130 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=161 ;
 
 -- --------------------------------------------------------
 
@@ -3373,7 +3403,7 @@ CREATE TABLE IF NOT EXISTS `tipopracticas` (
   `codigonomenclador` int(4) NOT NULL,
   `descripcion` char(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 

@@ -164,7 +164,7 @@ function validar(formulario) {
 </script>
 </head>
 
-<body bgcolor="#CCCCCC" onload="habilitarServicios('<?php echo $rowConsultaPresta['personeria'] ?>')">
+<body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
     <input type="button" name="volver" value="Volver" onclick="location.href = 'profesional.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" />
