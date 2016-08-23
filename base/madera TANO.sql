@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-08-2016 a las 15:32:58
+-- Tiempo de generación: 23-08-2016 a las 17:36:33
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -672,7 +672,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 -- --------------------------------------------------------
 
@@ -1445,6 +1445,7 @@ CREATE TABLE IF NOT EXISTS `detallepadroncapitados` (
 CREATE TABLE IF NOT EXISTS `detcontratoprestador` (
   `idcontrato` int(4) NOT NULL,
   `idpractica` int(8) NOT NULL,
+  `idcategoria` int(3) NOT NULL,
   `moduloconsultorio` decimal(10,2) DEFAULT NULL,
   `modulourgencia` decimal(10,2) DEFAULT NULL,
   `galenohonorario` decimal(6,0) DEFAULT NULL,
@@ -1454,7 +1455,7 @@ CREATE TABLE IF NOT EXISTS `detcontratoprestador` (
   `galenogastos` decimal(6,2) DEFAULT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
-  PRIMARY KEY (`idcontrato`,`idpractica`)
+  PRIMARY KEY (`idcontrato`,`idpractica`,`idcategoria`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -2787,6 +2788,19 @@ CREATE TABLE IF NOT EXISTS `practicas` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `practicascategorias`
+--
+
+CREATE TABLE IF NOT EXISTS `practicascategorias` (
+  `id` int(3) unsigned NOT NULL AUTO_INCREMENT,
+  `tipoprestador` int(3) unsigned NOT NULL,
+  `descripcion` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `prenatal`
 --
 
@@ -3404,6 +3418,18 @@ CREATE TABLE IF NOT EXISTS `tipopracticas` (
   `descripcion` char(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipoprestador`
+--
+
+CREATE TABLE IF NOT EXISTS `tipoprestador` (
+  `id` int(3) NOT NULL,
+  `descripcion` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
