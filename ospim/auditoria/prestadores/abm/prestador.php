@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 $codigo = $_GET['codigo'];
-$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia FROM prestadores p, localidades l, provincia r WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin";
+$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia, t.descripcion FROM prestadores p, localidades l, provincia r, tipoprestador t WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.personeria = t.id";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
@@ -91,11 +91,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         <tr>
           <td><div align="right"><strong>Personer&iacute;a</strong></div></td>
           <td><div align="left">
-            <?php 	if($rowConsultaPresta['personeria'] == 1) { echo "Profesional"; } 
-					if($rowConsultaPresta['personeria'] == 2) { echo "Establecimiento"; } 
-					if($rowConsultaPresta['personeria'] == 3) { echo "Círculo"; }
-					if($rowConsultaPresta['personeria'] == 4) { echo "Entidad Agrupadora"; }
-			?>
+            <?php echo $rowConsultaPresta['descripcion'] ?>
           </div></td>
           <td> <div align="left"><strong>Numero Registro SSS</strong></div></td>
           <td colspan="4"><div align="left">
@@ -171,7 +167,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
             <input class="nover" name="establecimientos" type="button" value="Modificar Establecimientos"  onclick="location.href = 'establecimientos/modificarEstablecimientos.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
         </div></td> 
         <td width="200"><div align="center">
-          <input class="nover" name="modificar2" type="button" value="Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
+          <input class="nover" name="modificar2" type="button" value="Modificar Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
         </div></td>
       </tr>
     </table>

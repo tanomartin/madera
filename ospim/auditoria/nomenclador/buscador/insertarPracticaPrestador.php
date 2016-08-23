@@ -6,6 +6,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $idpractica = $_GET['idpractica'];
 $idPrestador = $_POST['codigoPresta'];
 $idcontrato = $_POST['contrato'];
+$categoria = $_POST['categoria'];
 $selectTipo = $_POST['tipoCarga'];
 
 if ($selectTipo == 1) {
@@ -14,7 +15,7 @@ if ($selectTipo == 1) {
 	$moduloUrgencia = $_POST["moduloUrgencia"];
 	if($moduloUrgencia == '') { $moduloUrgencia = 0; }
 	$sqlInsert = "INSERT INTO detcontratoprestador VALUES
-					($idcontrato,$idpractica,$moduloConsultorio,$moduloUrgencia,'NULL','NULL','NULL','NULL','NULL','$fecharegistro','$usuarioregistro')";
+					($idcontrato,$idpractica,$categoria,$moduloConsultorio,$moduloUrgencia,'NULL','NULL','NULL','NULL','NULL','$fecharegistro','$usuarioregistro')";
 } else {
 	$gHono = $_POST["gHono"];
 	if($gHono == '') { $gHono = 0; }
@@ -27,7 +28,7 @@ if ($selectTipo == 1) {
 	$gGastos = $_POST["gGastos"];
 	if($gGastos == '') { $gGastos = 0; }
 	$sqlInsert = "INSERT INTO detcontratoprestador VALUES
-						($idcontrato,$idpractica,'NULL','NULL',$gHono,$gHonoEspe,$gHonoAyud,$gHonoAnes,$gGastos,'$fecharegistro','$usuarioregistro')";
+						($idcontrato,$idpractica,$categoria,'NULL','NULL',$gHono,$gHonoEspe,$gHonoAyud,$gHonoAnes,$gGastos,'$fecharegistro','$usuarioregistro')";
 }
 
 try {

@@ -104,6 +104,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			$("#contrato").prop("disabled",true);
 			$("#contrato").html('<select name="contrato" id="contrato" disabled="disabled"><option value="0">Seleccione Contrato</option></select>');
 			$("#tipoCarga").prop("disabled",true);
+			$("#categoria").prop("disabled",true);
 			var codigopresta = $(this).val();
 			var codigonomenclador = $("#nomenclador").val();
 			$.ajax({
@@ -123,7 +124,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 						if (respuesta != 0) {
 							$("#contrato").prop("disabled",false);
 							$("#contrato").html(respuesta);
-							$("#tipoCarga").prop("disabled",false);
+							$("#tipoCarga").prop("disabled",false);			
+							$.ajax({
+								type: "POST",
+								dataType: 'html',
+								url: "getCategorias.php",
+								data: {codigopresta:codigopresta},
+							}).done(function(respuesta){
+								$("#categoria").prop("disabled",false);
+								$("#categoria").html(respuesta);
+							});
 						}
 					});
 				} else {
@@ -201,6 +211,12 @@ A:hover {text-decoration: none;color:#00FFFF }
   						<option value='0'>Seleccione Contrato</option>
   					</select>
   				</td>
+  			</tr>
+  			<tr>
+  				<th>Categoria</th>
+  				<td><select id='categoria' name='categoria' disabled='disabled' >
+					</select>
+				</td>
   			</tr>
   			<tr>
   				<th>Tipo Prestacion</th>

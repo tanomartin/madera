@@ -17,6 +17,8 @@ foreach($_POST as $key => $value) {
 		if ($value != 0) {
 			$arrayKey = explode("-",$key);
 			$idpractica = $arrayKey[1];
+			$id = "categoria-".$idpractica;
+			$idCategoria = $_POST[$id];
 			if ($value == 1) {
 				$id = "moduloConultorio-".$idpractica;
 				$moduloConsultorio = $_POST[$id];
@@ -25,7 +27,7 @@ foreach($_POST as $key => $value) {
 				$moduloUrgencia = $_POST[$id];
 				if($moduloUrgencia == '') { $moduloUrgencia = 0; }
 				$arrayInsert[$i] = "INSERT INTO detcontratoprestador VALUES
-									($idcontrato,$idpractica,$moduloConsultorio,$moduloUrgencia,'NULL','NULL','NULL','NULL','NULL','$fecharegistro','$usuarioregistro')";
+									($idcontrato,$idpractica,$idCategoria,$moduloConsultorio,$moduloUrgencia,'NULL','NULL','NULL','NULL','NULL','$fecharegistro','$usuarioregistro')";
 				$i++;
 			} else {
 				$id = "gHono-".$idpractica;
@@ -44,7 +46,7 @@ foreach($_POST as $key => $value) {
 				$gGastos = $_POST[$id];
 				if($gGastos == '') { $gGastos = 0; }
 				$arrayInsert[$i] = "INSERT INTO detcontratoprestador VALUES
-									($idcontrato,$idpractica,'NULL','NULL',$gHono,$gHonoEspe,$gHonoAyud,$gHonoAnes,$gGastos,'$fecharegistro','$usuarioregistro')";
+									($idcontrato,$idpractica,$idCategoria,'NULL','NULL',$gHono,$gHonoEspe,$gHonoAyud,$gHonoAnes,$gGastos,'$fecharegistro','$usuarioregistro')";
 				$i++;	
 			}
 		}

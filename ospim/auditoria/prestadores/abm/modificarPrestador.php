@@ -391,15 +391,16 @@ function validar(formulario) {
 					}
 				}
 				
-				
-				
 				print("<span><font color='#0000CC'>$cartel</font></span>"); ?>
 		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" <?php echo $deshabilitado ?>>
 					<option value="0">Seleccione un valor </option>
-					<option value="1" <?php echo $profesional ?>>Profesional </option>
-					<option value="2" <?php echo $establecimiento ?>>Establecimiento </option>
-					<option value="3" <?php echo $ciculo ?>>Círculo </option>
-					<option value="4" <?php echo $entidad ?>>Entidad Agrupadora </option>
+					<?php 
+		              	$query="select * from tipoprestador";  
+		              	$result=mysql_query($query,$db);
+		              	while ($rowtipos=mysql_fetch_array($result)) { 
+		              		if ($rowtipos['id'] == $rowConsultaPresta['personeria']) {   $selected = "selected"; } else { $selected = ""; } ?>
+							<option value="<?php echo $rowtipos['id']?>" <?php echo $profesional ?> <?php echo $selected ?>><?php echo $rowtipos['descripcion']?> </option>
+				<?php 	} ?>
 				  </select>	  
 </div></td>
         <td colspan="4"><div align="left">

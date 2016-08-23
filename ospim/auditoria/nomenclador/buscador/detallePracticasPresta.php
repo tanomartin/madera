@@ -6,20 +6,22 @@ $sqlNombrePractica = "SELECT codigopractica, descripcion FROM practicas WHERE id
 $resNombrePractica = mysql_query($sqlNombrePractica,$db);
 $rowNombrePractica = mysql_fetch_array($resNombrePractica);
 
-$sqlPracticas = "SELECT pr.*, det.*, presta.codigoprestador, presta.nombre, presta.cuit, nom.nombre as nombrenomenclador
+$sqlPracticas = "SELECT pr.*, det.*, presta.codigoprestador, presta.nombre, presta.cuit, nom.nombre as nombrenomenclador, pc.descripcion
 				 FROM
 					cabcontratoprestador cab,
 					detcontratoprestador det,
 					practicas pr,
 					prestadores presta,
-					nomencladores nom
+					nomencladores nom,
+					practicascategorias pc
 				 WHERE
 					det.idpractica = $idpractica and
 					det.idcontrato = cab.idcontrato and
 					cab.codigoprestador = presta.codigoprestador and
 					pr.nomenclador = nom.id and
 					det.idpractica = pr.idpractica and
-					pr.nomenclador = nom.id";
+					pr.nomenclador = nom.id and
+					det.idcategoria = pc.id";
 $resPracticas = mysql_query($sqlPracticas,$db);
 $catPracticas = mysql_num_rows($resPracticas);
 if ($catPracticas > 0) {
@@ -94,6 +96,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			 <th>Nombre / Razón Social</th>
 			 <th>C.U.I.T.</th>
 			 <th>Nomenclador</th>
+			 <th>Categoria</th>
 			 <th>Modulo Consultorio ($)</th>
 			 <th>Modulo Urgencia ($)</th>
 			 <th>G. Honorarios ($)</th>
@@ -110,6 +113,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				 <td><?php echo $practica['nombre'] ?></td>
 				 <td><?php echo $practica['cuit'] ?></td>
 				 <td><?php echo $practica['nombrenomenclador'] ?></td>
+				 <td><?php echo $practica['descripcion'] ?></td>
 				 <td><?php echo $practica['moduloconsultorio'] ?></td>
 				 <td><?php echo $practica['modulourgencia'] ?></td>
 				 <td><?php echo $practica['galenohonorario'] ?></td>

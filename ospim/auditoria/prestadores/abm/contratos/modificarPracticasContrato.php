@@ -49,15 +49,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 		.tablesorter({
 			theme: 'blue', 
 			widthFixed: true, 
-			headers:{	5:{sorter:false, filter: false},
-				 		7:{sorter:false, filter: false},
-				 		8:{sorter:false, filter: false},
+			headers:{	8:{sorter:false, filter: false},
 				 		9:{sorter:false, filter: false},
 				 		10:{sorter:false, filter: false},
 				 		11:{sorter:false, filter: false},
 				 		12:{sorter:false, filter: false},
 				 		13:{sorter:false, filter: false},
 				 		14:{sorter:false, filter: false},
+				 		15:{sorter:false, filter: false},
 				 	},
 			widgets: ["zebra", "filter"], 
 			widgetOptions : { 
@@ -187,6 +186,7 @@ jQuery(function($){
 		$("#subcapitulo").prop("disabled",true);
 		$("#agregar").prop("disabled",true);
 		$("#practicas").html("");
+		var personeria = $("#personeria").val();
 		var valor = $(this).val();
 		var valores = valor.split("-");
 		var nomenclador = valores[1];
@@ -206,11 +206,13 @@ jQuery(function($){
 						type: "POST",
 						dataType: 'html',
 						url: "getPracticas.php",
-						data: {valor:-1, tipo:tipo, nomenclador:nomenclador},
+						data: {valor:-1, tipo:tipo, nomenclador:nomenclador, personeria:personeria},
 					}).done(function(respuesta){
 						if (respuesta != 0) {	
 							$("#practicas").html(respuesta);
 							$("#agregar").prop("disabled",false);
+						} else {
+							$("#practicas").html("NO EXISTEN PRACTICAS");
 						}
 					});
 				}
@@ -223,6 +225,7 @@ jQuery(function($){
 		$("#subcapitulo").prop("disabled",true);
 		$("#agregar").prop("disabled",true);	
 		$("#practicas").html("");
+		var personeria = $("#personeria").val();
 		var valor = $(this).val();
 		valor = valor.split('-');
 		tipo = $("#tipo").val();
@@ -243,11 +246,13 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, personeria:personeria},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
 					$("#agregar").prop("disabled",false);
+				} else {
+					$("#practicas").html("NO EXISTEN PRACTICAS");
 				}
 			});
 		});
@@ -256,6 +261,8 @@ jQuery(function($){
 	$("#subcapitulo").change(function(){
 		$("#practicas").html("");
 		$("#agregar").prop("disabled",true);
+		$("#practicas").html("");
+		var personeria = $("#personeria").val();
 		tipo = $("#tipo").val();
 		tipos = tipo.split('-');
 		tipo = tipos[0];
@@ -268,11 +275,13 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, personeria:personeria},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
 					$("#agregar").prop("disabled",false);
+				} else {
+					$("#practicas").html("NO EXISTEN PRACTICAS");
 				}
 			});
 		} else {
@@ -281,11 +290,13 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, personeria:personeria},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
 					$("#agregar").prop("disabled",false);
+				} else {
+					$("#practicas").html("NO EXISTEN PRACTICAS");
 				}
 			});
 		}
@@ -311,7 +322,10 @@ jQuery(function($){
     </tr>
     <tr>
       <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
-      <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
+      <td>
+      	<div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
+      	<input type="hidden" id="personeria" value="<?php echo $rowConsultaPresta['personeria']?>" />
+      </td>
     </tr>
   </table>
   
@@ -324,14 +338,16 @@ jQuery(function($){
   								p.*, 
   								t.descripcion as tipo, 
   								tc.descripcion as complejidad, 
-  								n.nombre as nombrenomenclador
+  								n.nombre as nombrenomenclador,
+  								pc.descripcion as categoria
   								FROM 
   									cabcontratoprestador c, 
   									detcontratoprestador p, 
   									practicas pr, 
   									tipopracticas t, 
   									tipocomplejidad tc,
-  									nomencladores n
+  									nomencladores n,
+  									practicascategorias pc
   								WHERE 
   									c.codigoprestador = $codigo and 
   									c.idcontrato = $idcontrato and 
@@ -339,7 +355,8 @@ jQuery(function($){
   									p.idpractica = pr.idpractica and 
   									pr.nomenclador = n.id and
   									pr.tipopractica = t.id and 
-  									pr.codigocomplejidad = tc.codigocomplejidad";
+  									pr.codigocomplejidad = tc.codigocomplejidad and
+  									p.idcategoria = pc.id";
   		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas > 0) {
@@ -348,6 +365,7 @@ jQuery(function($){
           <thead>
             <tr>
               <th>C&oacute;digo</th>
+              <?php if ($rowConsultaPresta['personeria'] == 3 ) { ?><th class="filter-select" data-placeholder="Seleccione Categoria">Categoria</th> <?php } ?>
 			  <th class="filter-select" data-placeholder="Seleccione Nomenclador">Nomenclador</th>
 			  <th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
 			  <th class="filter-select" data-placeholder="Seleccione Capitulo">Capitulo</th>
@@ -370,6 +388,7 @@ jQuery(function($){
 				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
 				<tr>
 				  <td><?php echo $rowPracticas['codigopractica'] ?></td>
+				  <?php if ($rowConsultaPresta['personeria'] == 3 ) { ?><td><?php echo $rowPracticas['categoria'] ?></td><?php } ?>
 				  <td><?php echo $rowPracticas['nombrenomenclador'] ?></td>
 				  <td><?php echo $rowPracticas['tipo'] ?></td>
 				  <td><?php echo $descripPractica['capitulo'] ?></td>
@@ -398,7 +417,7 @@ jQuery(function($){
 	
 	<form name="agregarContrato" id="agregarContrato" onsubmit="return validarAdd(this)" method="post" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
 	  <p><strong>Pr&aacute;cticas para Agregar al contrato </strong></p>
-	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?>
+	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS DE LA MISMA CATEGORIA<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?>
 	  <p>
         <select name="tipo" id="tipo">
           <option value="0">Seleccione Tipo de Practica</option>

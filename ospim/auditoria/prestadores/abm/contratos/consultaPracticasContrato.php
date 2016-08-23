@@ -3,7 +3,7 @@ include($libPath."controlSessionOspim.php");
 include($libPath."funcionespracticas.php");
 $codigo = $_GET['codigo'];
 $idcontrato = $_GET['idcontrato'];
-$sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
+$sqlConsultaPresta = "SELECT codigoprestador, nombre, personeria FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 ?>
@@ -81,14 +81,16 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
   								p.*, 
   								t.descripcion as tipo, 
   								tc.descripcion as complejidad, 
-  								n.nombre as nombrenomenclador
+  								n.nombre as nombrenomenclador,
+  								pc.descripcion as categoria
   								FROM 
   									cabcontratoprestador c, 
   									detcontratoprestador p, 
   									practicas pr, 
   									tipopracticas t, 
   									tipocomplejidad tc,
-  									nomencladores n
+  									nomencladores n,
+  									practicascategorias pc
   								WHERE 
   									c.codigoprestador = $codigo and 
   									c.idcontrato = $idcontrato and 
@@ -96,7 +98,8 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
   									p.idpractica = pr.idpractica and 
   									pr.nomenclador = n.id and
   									pr.tipopractica = t.id and 
-  									pr.codigocomplejidad = tc.codigocomplejidad";
+  									pr.codigocomplejidad = tc.codigocomplejidad and
+  									p.idcategoria = pc.id";
   		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas > 0) {
@@ -105,6 +108,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
           <thead>
             <tr>
               <th>C&oacute;digo</th>
+              <?php if ($rowConsultaPresta['personeria'] == 3) { ?><th class="filter-select" data-placeholder="Seleccione Categoria">Categoria</th> <?php } ?>
 			  <th class="filter-select" data-placeholder="Seleccione Nomenclador">Nomenclador</th>
 			  <th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
 			  <th class="filter-select" data-placeholder="Seleccione Capitulo">Capitulo</th>
@@ -126,6 +130,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
 				<tr>
 				  <td><?php echo $rowPracticas['codigopractica'] ?></td>
+				  <?php if ($rowConsultaPresta['personeria'] == 3) { ?> <td> <?php echo $rowPracticas['categoria'] ?></td> <?php } ?>
 				  <td><?php echo $rowPracticas['nombrenomenclador'] ?></td>
 				  <td><?php echo $rowPracticas['tipo'] ?></td>
 				  <td><?php echo $descripPractica['capitulo'] ?></td>

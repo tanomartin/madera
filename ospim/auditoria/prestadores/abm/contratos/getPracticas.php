@@ -3,20 +3,22 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	$codigo=$_POST['valor'];
 	$tipo = $_POST['tipo'];
 	$nomenclador = $_POST['nomenclador'];
+	$personeria = $_POST['personeria'];
 	$respuesta = "<thead><tr>
-         			 <th>C&oacute;digo</th>
-					 <th>Nomenclador</th>
-					 <th>Descripciones</th>
-					 <th>Complejidad</th>
-					 <th></th>
-					 <th>Modulo Consultorio ($)</th>
-					 <th>Modulo Urgencia ($)</th>
-					 <th>G. Honorarios ($)</th>
-					 <th>G. Honorarios Especialista ($)</th>
-					 <th>G. Honorarios Ayudante ($)</th>
-					 <th>G. Honorarios Anestesista ($)</th>
-					 <th>G. Gastos ($)</th>
-       			</tr></thead><tbody>";
+	         		<th>C&oacute;digo</th>
+					<th>Nomenclador</th>
+					<th>Descripciones</th>
+					<th>Complejidad</th>
+					<th>Categoria</th>
+					<th></th>
+					<th>Modulo Consultorio ($)</th>
+					<th>Modulo Urgencia ($)</th>
+					<th>G. Honorarios ($)</th>
+					<th>G. Honorarios Especialista ($)</th>
+					<th>G. Honorarios Ayudante ($)</th>
+					<th>G. Honorarios Anestesista ($)</th>
+					<th>G. Gastos ($)</th>
+	       		</tr></thead><tbody>";
 				
 	if ($codigo == -1) {
 		$sqlPractica="SELECT p.*, t.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipocomplejidad t, nomencladores n WHERE p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
@@ -44,8 +46,19 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['nombrenomenclador']."</td>
 						<td>".$rowPractica['descripcion']."</td>
-						<td>".$rowPractica['complejidad']."</td>
-						<td><select id='tipoCarga-".$id."' name='tipoCarga-".$id."' onchange=habilitarValores('".$id."',this)>
+						<td>".$rowPractica['complejidad']."</td>";
+		$respuesta.="<td><select id='categoria-".$id."' name='categoria-".$id."'>";
+		if ($personeria == 3) {
+			$sqlCategoria = "select * from practicascategorias";
+			$resCategoria = mysql_query($sqlCategoria,$db);
+			while($rowCategoria = mysql_fetch_assoc($resCategoria)) { 
+				$respuesta.="<option value='".$rowCategoria['id']."'>".$rowCategoria['descripcion']."</option>";
+			}
+		} else {
+			$respuesta.="<option value='0'>Sin Categoria</option>";
+		}
+		$respuesta.="</select></td>";
+		$respuesta.=   "<td><select id='tipoCarga-".$id."' name='tipoCarga-".$id."' onchange=habilitarValores('".$id."',this)>
 								<option value='0'>Tipo Carga</option>
 								<option value='1'>Por Modulo</option>
 								<option value='2'>Por Galeno</option>

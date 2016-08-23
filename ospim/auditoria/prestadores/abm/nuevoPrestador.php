@@ -375,10 +375,12 @@ function validar(formulario) {
         <td><div align="left">
             <select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)">
               <option value="0">Seleccione un valor </option>
-			  <option value="1">Profesional </option>
-			  <option value="2">Establecimiento </option>
-			  <option value="3">Círculo </option>
-			  <option value="4">Entidad Agrupadora </option>
+              <?php 
+              	$query="select * from tipoprestador";  
+              	$result=mysql_query($query,$db);
+              	while ($rowtipos=mysql_fetch_array($result)) { ?>
+					  <option value="<?php echo $rowtipos['id']?>"><?php echo $rowtipos['descripcion']?> </option>
+			<?php } ?>
             </select>
         </div></td>
         <td colspan="4">
