@@ -87,7 +87,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		
 		if ($numCabContrato > 0) {
  		 ?>
-        <table style="text-align:center; width:600px" id="contratos" class="tablesorter" >
+        <table style="text-align:center; width:800px" id="contratos" class="tablesorter" >
           <thead>
             <tr>
              	<th>C&oacute;digo</th>
@@ -109,10 +109,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 						  }?></td>
 				<td><?php if ($rowCabContrato['fechafin'] == "0000-00-00" || $rowCabContrato['fechafin'] > $today ) { ?> 
 							<input type="button" value="Modificar Practicas" name="modifpracticas" id="modifpracticas" onclick="location.href='modificarPracticasContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
-							<input type="button" value="Modificar Contrato" name="modifcontrato" id="modifcontrato" onclick="location.href='modificarContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/>
+							<input type="button" value="Modificar Contrato" name="modifcontrato" id="modifcontrato" onclick="location.href='modificarContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
 					<?php } else { ?>
-							<input type="button" value="Ver Practicas" name="verpracticas" id="verpracticas" onclick="location.href = 'consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>' "/>
+							<input type="button" value="Ver Practicas" name="verpracticas" id="verpracticas" onclick="location.href = 'consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>' "/> -
 					<?php }  ?>
+						<input type="button" value="Duplicar Contrato con Aumento %" name="aumentocontrato" id="modifcontrato" onclick="location.href='aumentoPorcentaje.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/>
 				</td>
 				</tr>
          <?php } ?>
