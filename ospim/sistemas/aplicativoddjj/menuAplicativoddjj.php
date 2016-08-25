@@ -45,7 +45,7 @@ function periodos() {
   <table width="400" border="3">
     <tr>
       <td width="200"><p align="center">Importaci&oacute;n de Empresas, Empleados y Familiares </p>
-          <p align="center"><a href="javascript:importar()"><img src="img/download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a href="javascript:importar()"><img src="img/Download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">ABM de Peridos </p>
           <p align="center"><a href="javascript:periodos()"><img src="img/periodos.png" width="90" height="90" border="0" alt="enviar"/></a></p>

@@ -107,8 +107,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 </script>
 </head>
 
-<body bgcolor="#B2A274">
+<body bgcolor="#CCCCCC">
 <div align="center">
+	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuAplicativoddjj.php'" />
 	<p><span class="Estilo2">Periodos Aplicativo </span></p>
 	<?php if ($canPeriodosApli > 0) { ?>
 	<table class="tablesorter" id="listadoApli" style="width:1100px; font-size:14px">
