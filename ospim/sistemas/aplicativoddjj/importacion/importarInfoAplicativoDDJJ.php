@@ -1,6 +1,10 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."claves.php"); 
+if($_SERVER['SERVER_NAME'] != "poseidon") {
+	header('location: /madera/ospim/moduloNoDisponible.php');
+	exit(0);
+} 
 set_time_limit(0);
 
 $fecharegistro = date("Y-m-d H:i:s");

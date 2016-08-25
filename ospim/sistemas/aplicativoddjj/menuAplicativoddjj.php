@@ -1,9 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
-if($_SERVER['SERVER_NAME'] != "poseidon") {
-	header('location: /madera/ospim/moduloNoDisponible.php');
-	exit(0);
-}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -29,7 +25,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 function importar() {
 	$.blockUI({ message: "<h1>Importando datos Aplicativo DDJJ... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
-	location.href='importarInfoAplicativoDDJJ.php';
+	location.href='importacion/importarInfoAplicativoDDJJ.php';
+}
+
+function periodos() {
+	$.blockUI({ message: "<h1>Consultado Peridos... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	location.href='periodos/periodos.php';
 }
 
 </script>
@@ -41,10 +42,13 @@ function importar() {
     <input type="button" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" />
   </span></p>
   <p><span class="Estilo2">Men&uacute; Aplicativo DDJJ - Sistemas </span></p>
-  <table width="214" border="3">
+  <table width="400" border="3">
     <tr>
       <td width="200"><p align="center">Importaci&oacute;n de Empresas, Empleados y Familiares </p>
-          <p align="center"><a href="javascript:importar()"><img src="img/Download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a href="javascript:importar()"><img src="img/download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>
+      <td width="200"><p align="center">ABM de Peridos </p>
+          <p align="center"><a href="javascript:periodos()"><img src="img/periodos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
