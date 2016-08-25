@@ -2,13 +2,12 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."claves.php"); 
 
+$maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
 	$hostaplicativo = "localhost";
 else
 	$hostaplicativo = $hostUsimra;
 
-$fecharegistro = date("Y-m-d H:i:s");
-$usuarioregistro = $_SESSION['usuario'];
 $usuarioaplicativo = $usuarioUsimra;
 $claveaplicativo = $claveUsimra;
 $dbaplicativo =  mysql_connect($hostaplicativo, $usuarioaplicativo, $claveaplicativo);
@@ -109,7 +108,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuAplicativoddjj.php'" />
+	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = '../menuAplicativoddjj.php'" /></p>
+	<p><input class="nover" type="button" name="nuevo" value="Nuevo Periodo" onclick="location.href = 'nuevoPeriodo.php'" /></p>
 	<p><span class="Estilo2">Periodos Aplicativo </span></p>
 	<?php if ($canPeriodosApli > 0) { ?>
 	<table class="tablesorter" id="listadoApli" style="width:1100px; font-size:14px">
