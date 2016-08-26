@@ -61,7 +61,8 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
 		
 	//DDJJ VALIDAS
-	$sqlDDJJ = "select anoddjj, mesddjj, cuil, sum(remuneraciones) as remuneraciones from detddjjusimra 
+	$sqlDDJJ = "select anoddjj, mesddjj, cuil, sum(remuneraciones) as remuneraciones, count(cuil) as ddjjcant 
+					from detddjjusimra 
 					where cuit = $cuit and cuil != '99999999999' and
 					((anoddjj > $anoinicio and anoddjj < $ultano) or 
 	   				 (anoddjj = $ultano and mesddjj <= $ultmes) or 
@@ -78,11 +79,12 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	}
 	
 	//DDJJ TEMPORALES
-	$sqlDDJJNroControl = "select perano, permes, nrctrl from ddjjusimra 
-					   where nrcuit = $cuit and nrcuil = '99999999999' and
-					   ((perano > $anoinicio and perano < $ultano) or 
-	   				 	(perano = $ultano and permes <= $ultmes) or 
-	  				 	(perano = $anoinicio and permes >= $mesinicio)) order by nrctrl, nrcuil DESC";
+	$sqlDDJJNroControl = "select perano, permes, nrctrl
+							from ddjjusimra 
+					   		where nrcuit = $cuit and nrcuil = '99999999999' and
+					   			((perano > $anoinicio and perano < $ultano) or 
+	   				 			(perano = $ultano and permes <= $ultmes) or 
+	  				 			(perano = $anoinicio and permes >= $mesinicio)) order by nrctrl, nrcuil DESC";
 	$arrayNroControl = array();
 	$resDDJJNroControl = mysql_query($sqlDDJJNroControl,$db);
 	while ($rowDDJJNroControl = mysql_fetch_assoc($resDDJJNroControl)) {
@@ -95,7 +97,8 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	$wherein = substr($wherein, 0, -1);
 	$wherein = "(".$wherein.")";
 	if ($wherein != "()") {
-		$sqlDDJJTemp = "select perano as anoddjj, permes as mesddjj, nrcuil as cuil, remune as remuneraciones from ddjjusimra 
+		$sqlDDJJTemp = "select perano as anoddjj, permes as mesddjj, nrcuil as cuil, remune as remuneraciones,  '1' as ddjjcant 
+							from ddjjusimra 
 							where nrcuit = $cuit and nrcuil != '99999999999' and nrctrl in $wherein";
 		$resDDJJTemp = mysql_query($sqlDDJJTemp,$db);
 		$canDDJJTemp = mysql_num_rows($resDDJJTemp);
@@ -112,7 +115,8 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	}
 	
 	//DDJJ OSPIM			 	
-	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, sum(remundeclarada) as remuneraciones from detddjjospim 
+	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, sum(remundeclarada) as remuneraciones, count(cuil) as ddjjcant
+						from detddjjospim 
 						where cuit = $cuit and cuil != '99999999999' and
 							((anoddjj > $anoinicio and anoddjj < $ultano) or 
 							 (anoddjj = $ultano and mesddjj <= $ultmes) or 
@@ -132,7 +136,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	ksort($arrayDDJJ);
 	
 	//NO REMUNERATIVO
-	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, sum(d.remuneraciones) as remuneraciones
+	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, sum(d.remuneraciones) as remuneraciones, count(d.cuil) as ddjjcant
 						from detddjjusimra d, extraordinariosusimra e
 						where d.cuit = $cuit and d.anoddjj > $anoinicio and 
 							d.anoddjj <= $ultano and 
@@ -193,7 +197,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
 			
 			$indexCuerpo = $ano.$mes.$ddjj['origen'].$c;
-			$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen'];
+			$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen']."|".$ddjj['datos']['ddjjcant'];
 			$c++;
 		}
 	}
