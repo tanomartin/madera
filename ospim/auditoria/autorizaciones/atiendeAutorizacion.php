@@ -406,6 +406,18 @@ if($rowLeeSolicitud['material'] == 1) {
 	$resultLeeMaterial = mysql_query($sqlLeeMaterial,$db); 
 	$rowLeeMaterial = mysql_fetch_array($resultLeeMaterial);
 }
+
+
+//VEO SI ES DISCAPACITADO
+if ($rowLeeSolicitud['codiparentesco']>0) {
+	$sqlDisca = "SELECT f.nroafiliado FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
+} else {
+	$sqlDisca = "SELECT d.nroafiliado FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
+}
+$resDisca = mysql_query($sqlDisca,$db);
+$canDisca = mysql_num_rows($resDisca);
+
+
 ?>
 
 <body>
@@ -449,6 +461,9 @@ if($rowLeeSolicitud['material'] == 1) {
 			}
 		} else {
 			echo "No Empadronado";
+		}
+		if ($canDisca == 1) {
+			echo " - (DISCAPACITADO)";
 		}
 ?>
           <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly" style="visibility:hidden"/>	
