@@ -387,7 +387,7 @@ function validar(formulario) {
 </head>
 
 <?php
-$sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosolicitud";
+$sqlLeeSolicitud="SELECT a.*, d.nombre as delegacion FROM autorizaciones a, delegaciones d where a.nrosolicitud = $nrosolicitud and a.codidelega = d.codidelega";
 $resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
 $rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
 
@@ -397,10 +397,6 @@ if($rowLeeSolicitud['codiparentesco']>0) {
 	$rowLeeParentesco = mysql_fetch_array($resultLeeParentesco);
 }
 
-$sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
-$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
-$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
-
 if($rowLeeSolicitud['material'] == 1) {
 	$sqlLeeMaterial = "SELECT * FROM clasificamaterial where codigo = $rowLeeSolicitud[tipomaterial]";
 	$resultLeeMaterial = mysql_query($sqlLeeMaterial,$db); 
@@ -408,16 +404,27 @@ if($rowLeeSolicitud['material'] == 1) {
 }
 
 
-//VEO SI ES DISCAPACITADO
-if ($rowLeeSolicitud['codiparentesco']>0) {
-	$sqlDisca = "SELECT f.nroafiliado FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
+//VEO SI ES DISCAPACITADO Y SACO EDAD
+if ($rowLeeSolicitud['codiparentesco'] >=0) {
+	if ($rowLeeSolicitud['codiparentesco']>0) {
+		$sqlDisca = "SELECT f.nroafiliado FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
+		$sqlEdad = "SELECT YEAR(CURDATE())-YEAR(fechanacimiento) AS edad, fechanacimiento FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil']. " and nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
+	} else {
+		$sqlDisca = "SELECT d.nroafiliado FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
+		$sqlEdad = "SELECT YEAR(CURDATE())-YEAR(fechanacimiento) AS edad, fechanacimiento FROM titulares WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
+	}
+	$resDisca = mysql_query($sqlDisca,$db);
+	$canDisca = mysql_num_rows($resDisca);
+
+	$resEdad = mysql_query($sqlEdad,$db);
+	$rowEdad = mysql_fetch_assoc($resEdad);
+	$edad = $rowEdad['edad'];
+	$naci = $rowEdad['fechanacimiento'];
 } else {
-	$sqlDisca = "SELECT d.nroafiliado FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
+	$edad = "-";
+	$naci = "-";
+	$canDisca = 0;
 }
-$resDisca = mysql_query($sqlDisca,$db);
-$canDisca = mysql_num_rows($resDisca);
-
-
 ?>
 
 <body>
@@ -436,7 +443,7 @@ $canDisca = mysql_num_rows($resDisca);
         </tr>
         <tr>
           <td width="143" height="25"><div align="center"><strong>Delegaci&oacute;n</strong></div></td>
-          <td width="289"><div align="center"><?php echo "".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];?></div></td>
+          <td width="289"><div align="center"><?php echo "".$rowLeeSolicitud['codidelega']." - ".$rowLeeSolicitud['delegacion'];?></div></td>
         </tr>
       </table>
     </div>
@@ -449,8 +456,9 @@ $canDisca = mysql_num_rows($resDisca);
     <td width="600" height="50"><h3 align="left" class="Estilo4">Resultado de la Verificaci&oacute;n</h3></td>
   </tr>
   <tr>
-    <td valign="top"><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
+    <td valign="top"><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) { echo $rowLeeSolicitud['nroafiliado']; } else { echo "-"; }?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
         <p><strong>Tipo:</strong>
 <?php	if($rowLeeSolicitud['codiparentesco']>=0) {
@@ -462,6 +470,7 @@ $canDisca = mysql_num_rows($resDisca);
 		} else {
 			echo "No Empadronado";
 		}
+		
 		if ($canDisca == 1) {
 			echo " - (DISCAPACITADO)";
 		}
