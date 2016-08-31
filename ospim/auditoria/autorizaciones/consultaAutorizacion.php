@@ -414,6 +414,28 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
 	$resultLeeDocumento = mysql_query($sqlLeeDocumento,$db); 
 	$rowLeeDocumento = mysql_fetch_array($resultLeeDocumento);
 }
+
+//VEO SI ES DISCAPACITADO Y SACO EDAD
+if ($rowLeeSolicitud['codiparentesco'] >=0) {
+	if ($rowLeeSolicitud['codiparentesco']>0) {
+		$sqlDisca = "SELECT f.nroafiliado FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
+		$sqlEdad = "SELECT YEAR(CURDATE())-YEAR(fechanacimiento) AS edad, fechanacimiento FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil']. " and nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
+	} else {
+		$sqlDisca = "SELECT d.nroafiliado FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
+		$sqlEdad = "SELECT YEAR(CURDATE())-YEAR(fechanacimiento) AS edad, fechanacimiento FROM titulares WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
+	}
+	$resDisca = mysql_query($sqlDisca,$db);
+	$canDisca = mysql_num_rows($resDisca);
+
+	$resEdad = mysql_query($sqlEdad,$db);
+	$rowEdad = mysql_fetch_assoc($resEdad);
+	$edad = $rowEdad['edad'];
+	$naci = $rowEdad['fechanacimiento'];
+} else {
+	$edad = "-";
+	$naci = "-";
+	$canDisca = 0;
+}
 ?>
 
 <body>
@@ -446,6 +468,7 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
   <tr>
     <td valign="top"><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
         <p><strong>Tipo:</strong> 
 <?php	if($rowLeeSolicitud['codiparentesco']>=0) {
@@ -456,6 +479,10 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
 			}
 		} else {
 			echo "No Empadronado";
+		}
+		
+		if ($canDisca == 1) {
+			echo " - (DISCAPACITADO)";
 		}
 ?>
 		</p></td>
