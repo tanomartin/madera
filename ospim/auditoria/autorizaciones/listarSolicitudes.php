@@ -5,95 +5,7 @@ include($libPath."fechas.php");
 $sqlLeeAutorizacion = "SELECT a.nrosolicitud,a.fechasolicitud,a.codidelega,d.nombre as delegacion,a.cuil,a.nroafiliado,a.codiparentesco,a.apellidoynombre,a.statusverificacion
 						FROM autorizaciones a, delegaciones d WHERE a.statusautorizacion = 0 and a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
-$totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
-
-print ("<div align=center>");
-print ("<table width=850 border=1>");
-print ("<tr>");
-print ("<td width=850><div align=center><strong>Solicitudes</strong></div></td>");
-print ("</tr>");
-print ("</table>");
-print ("</div>");
-
-if ($totalLeeAutorizacion !=0) {
-	print ("<div align=center>");
-	print ("<table width=850 border=1 align=center>");
-
-	print ("<tr>");
-	print ("<td width=50><div align=center>Nro</div></td>");
-	print ("<td width=70><div align=center>Fecha</div></td>");
-	print ("<td width=160><div align=center>Delegacion</div></td>");
-	print ("<td width=90><div align=center>C.U.I.L.</div></td>");
-	print ("<td width=50><div align=center>Afiliado</div></td>");
-	print ("<td width=65><div align=center>Tipo</div></td>");
-	print ("<td width=180><div align=center>Apellido y Nombre</div></td>");
-	print ("<td width=120><div align=center>Verificacion</div></td>");
-	print ("<td width=65><div align=center>Accion</div></td>");
-	print ("</tr>");
-
-	while($rowLeeAutorizacion = mysql_fetch_array($resultLeeAutorizacion)) {
-
-		$sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeAutorizacion[codidelega]";
-		$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
-		$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
-
-		print ("<tr>");
-		print ("<td width=50><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['nrosolicitud']."</font></div></td>");
-		print ("<td width=70><div align=center><font size=1 face=Verdana>".invertirFecha($rowLeeAutorizacion['fechasolicitud'])."</font></div></td>");
-		print ("<td width=160><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['codidelega']." - ".$rowLeeAutorizacion['delegacion']."</font></div></td>");
-		print ("<td width=90><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['cuil']."</font></div></td>");
-
-		if($rowLeeAutorizacion['nroafiliado']==0)
-			print ("<td width=50><div align=center><font size=1 face=Verdana>-</font></div></td>");
-		else
-			print ("<td width=50><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['nroafiliado']."</font></div></td>");
-
-		if($rowLeeAutorizacion['codiparentesco']<0)
-			print ("<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>");
-		else {
-			if($rowLeeAutorizacion['codiparentesco']==0)
-				print ("<td width=65><div align=center><font size=1 face=Verdana>Titular</font></div></td>");
-			else
-				print ("<td width=65><div align=center><font size=1 face=Verdana>Familiar ".$rowLeeAutorizacion['codiparentesco']."</font></div></td>");			
-		}
-
-		print ("<td width=180><div align=center><font size=1 face=Verdana>".$rowLeeAutorizacion['apellidoynombre']."</font></div></td>");
-
-		if($rowLeeAutorizacion['statusverificacion']==0) {
-			print ("<td width=120><div align=center><font size=1 face=Verdana>No Verificada</font></div></td>");
-			print ("<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>");
-		}
-
-		if($rowLeeAutorizacion['statusverificacion']==1) {
-			print ("<td width=120><div align=center><font size=1 face=Verdana>Aprobada</font></div></td>");
-			print ("<td width=65><div align=center><font size=1 face=Verdana><a href='atiendeAutorizacion.php?nroSolicitud=".$rowLeeAutorizacion['nrosolicitud']."'>".Atender."</a></font></div></td>");
-		}
-
-		if($rowLeeAutorizacion['statusverificacion']==2) {
-			print ("<td width=120><div align=center><font size=1 face=Verdana>Rechazada</font></div></td>");
-			print ("<td width=65><div align=center><font size=1 face=Verdana><a href='consultaVerificacion.php?nroSolicitud=".$rowLeeAutorizacion['nrosolicitud']."'>".Atender."</a></font></div></td>");
-		}
-
-		if($rowLeeAutorizacion['statusverificacion']==3) {
-			print ("<td width=120><div align=center><font size=1 face=Verdana>No Reverificada</font></div></td>");
-			print ("<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>");
-		}
-
-		print ("</tr>");
-	}
-	print ("</table>");
-	print ("</div>");
-}
-else {
-	print ("<div align=center>");
-	print ("<table width=850 border=1 align=center>");
-	print ("<tr>");
-	print ("<td width=850><div align=center>No existen solicitudes que atender.</div></td>");
-	print ("</tr>");
-	print ("</table>");
-	print ("</div>");
-}
-?>
+$totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -106,8 +18,72 @@ A:hover {text-decoration: none;color:#00FFFF }
 <title>.: M&oacute;dulo Autorizaciones :.</title>
 </head>
 <body bgcolor="#CCCCCC">
-<form id="listaSolicitudes" name="listaSolicitudes">
-<div align="center">
+	<div align=center>
+	<table width=850 border=1>
+		<tr>
+			<td width=850><div align=center><strong>Solicitudes</strong></div></td>
+		</tr>
+	</table>
+<?php if ($totalLeeAutorizacion !=0) { ?>
+		<table width=850 border=1 align=center>
+			<tr>
+				<td width=50><div align=center>Nro</div></td>
+				<td width=70><div align=center>Fecha</div></td>
+				<td width=160><div align=center>Delegacion</div></td>
+				<td width=90><div align=center>C.U.I.L.</div></td>
+				<td width=50><div align=center>Afiliado</div></td>
+				<td width=65><div align=center>Tipo</div></td>
+				<td width=180><div align=center>Apellido y Nombre</div></td>
+				<td width=120><div align=center>Verificacion</div></td>
+				<td width=65><div align=center>Accion</div></td>
+			</tr>
+<?php	while($rowLeeAutorizacion = mysql_fetch_array($resultLeeAutorizacion)) {  ?>
+			<tr>
+				<td width=50><div align=center><font size=1 face=Verdana><?php echo $rowLeeAutorizacion['nrosolicitud'] ?></font></div></td>
+				<td width=70><div align=center><font size=1 face=Verdana><?php echo invertirFecha($rowLeeAutorizacion['fechasolicitud']) ?></font></div></td>
+				<td width=160><div align=center><font size=1 face=Verdana><?php echo $rowLeeAutorizacion['codidelega']." - ".$rowLeeAutorizacion['delegacion'] ?></font></div></td>
+				<td width=90><div align=center><font size=1 face=Verdana><?php echo $rowLeeAutorizacion['cuil'] ?></font></div></td>
+<?php		if($rowLeeAutorizacion['nroafiliado']==0) { ?>
+				<td width=50><div align=center><font size=1 face=Verdana>-</font></div></td>
+<?php		} else { ?>
+				<td width=50><div align=center><font size=1 face=Verdana><?php echo  $rowLeeAutorizacion['nroafiliado'] ?></font></div></td>
+<?php		}
+			if ($rowLeeAutorizacion['codiparentesco']<0) { ?>
+				<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>
+<?php		} else { 
+				if($rowLeeAutorizacion['codiparentesco']==0) { ?>
+					<td width=65><div align=center><font size=1 face=Verdana>Titular</font></div></td>
+	<?php		} else { ?>
+					<td width=65><div align=center><font size=1 face=Verdana>Familiar <?php echo $rowLeeAutorizacion['codiparentesco'] ?></font></div></td>			
+	<?php		} 
+			} ?>
+			<td width=180><div align=center><font size=1 face=Verdana><?php echo $rowLeeAutorizacion['apellidoynombre'] ?></font></div></td>
+	<?php	if($rowLeeAutorizacion['statusverificacion']==0) { ?>
+				<td width=120><div align=center><font size=1 face=Verdana>No Verificada</font></div></td>
+				<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>
+	<?php	} 
+			if($rowLeeAutorizacion['statusverificacion']==1) { ?>
+				<td width=120><div align=center><font size=1 face=Verdana>Aprobada</font></div></td>
+				<td width=65><div align=center><font size=1 face=Verdana><a href='atiendeAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']?>'>Atender</a></font></div></td>
+	<?php	} 
+			if($rowLeeAutorizacion['statusverificacion']==2) { ?>
+				<td width=120><div align=center><font size=1 face=Verdana>Rechazada</font></div></td>
+				<td width=65><div align=center><font size=1 face=Verdana><a href='consultaVerificacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']?>'>Atender</a></font></div></td>
+	<?php	} 
+			if($rowLeeAutorizacion['statusverificacion']==3) { ?>
+				<td width=120><div align=center><font size=1 face=Verdana>No Reverificada</font></div></td>
+				<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>
+	<?php	}   ?>
+			</tr>
+<?php	}	?>
+		</table>
+<?php } else { ?>
+	<table width=850 border=1 align=center>
+		<tr>
+			<td width=850><div align=center>No existen solicitudes que atender.</div></td>
+		</tr>
+	</table>
+<?php } ?>
   <table width="800" border="0">
     <tr>
       <td width="400">
@@ -121,6 +97,6 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
   </table>
 </div>
-</form>
+
 </body>
 </html>
