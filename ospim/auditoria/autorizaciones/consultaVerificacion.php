@@ -82,13 +82,35 @@ if($rowLeeSolicitud['material']==1) {
 	$rowLeeMaterial = mysql_fetch_array($resultLeeMaterial);
 }
 
+//VEO SI ES DISCAPACITADO Y SACO EDAD
+if ($rowLeeSolicitud['codiparentesco'] >=0) {
+	if ($rowLeeSolicitud['codiparentesco']>0) {
+		$sqlDisca = "SELECT f.nroafiliado FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
+		$sqlEdad = "SELECT YEAR(CURDATE())-YEAR(fechanacimiento) AS edad, fechanacimiento FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil']. " and nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
+	} else {
+		$sqlDisca = "SELECT d.nroafiliado FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
+		$sqlEdad = "SELECT YEAR(CURDATE())-YEAR(fechanacimiento) AS edad, fechanacimiento FROM titulares WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
+	}
+	$resDisca = mysql_query($sqlDisca,$db);
+	$canDisca = mysql_num_rows($resDisca);
+
+	$resEdad = mysql_query($sqlEdad,$db);
+	$rowEdad = mysql_fetch_assoc($resEdad);
+	$edad = $rowEdad['edad'];
+	$naci = $rowEdad['fechanacimiento'];
+} else {
+	$edad = "-";
+	$naci = "-";
+	$canDisca = 0;
+}
+
 ?>
 
 <body>
 <form id="consultaVerificacion" name="consultaVerificacion" method="post" action="guardaAutorizacionReverifica.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 <table width="1100" border="0">
   <tr>
-    <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.jpg" width="92" height="81" /></span></div></td>
+    <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.JPG" width="92" height="81" /></span></div></td>
     <td colspan="2" scope="row"><div align="left">
       <p class="Estilo3">Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
     </div></td>
@@ -115,6 +137,7 @@ if($rowLeeSolicitud['material']==1) {
   <tr>
     <td valign="top"><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
         <p><strong>Tipo:</strong>
 <?php	if($rowLeeSolicitud['codiparentesco']>=0) {
@@ -125,6 +148,10 @@ if($rowLeeSolicitud['material']==1) {
 			}
 		} else {
 			echo "No Empadronado";
+		}
+		
+		if ($canDisca == 1) {
+			echo " - (DISCAPACITADO)";
 		}
 ?>
           <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/>	
