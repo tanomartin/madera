@@ -441,7 +441,7 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 <body>
 <table width="1100" border="0">
   <tr>
-    <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.JPG" width="92" height="81" /></span></div></td>
+    <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="img/logoSolo.jpg" width="92" height="81" /></span></div></td>
     <td colspan="2" scope="row"><div align="left">
       <p class="Estilo3">Consulta de Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
     </div></td>
