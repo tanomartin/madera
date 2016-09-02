@@ -34,6 +34,15 @@ A:visited {text-decoration: none;color:#0033FF}
 A:hover {text-decoration: none;color:#33CCFF }
 </style>
 
+<script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	$("#FIBoletas").submit(function(){
+		$("#submit").attr('disabled','disabled');
+	});
+});
+</script>
+
 <title>.: Sistema de Acuerdos OSPIM :.</title>
 </head>
 <body bgcolor="#B2A274">
@@ -64,7 +73,7 @@ A:hover {text-decoration: none;color:#33CCFF }
   	$acuerdo = $_GET["acuerdo"];
 		if ($acuerdo != 0) { ?>
   </p>
-<form id="FIBOlettas" name="FIBoletas" method="post" action="acuboletapdf.php?acuerdo=<?php echo $acuerdo?>&cuit=<?php echo $cuit?>">
+<form id="FIBoletas" name="FIBoletas" method="post" action="acuboletapdf.php?acuerdo=<?php echo $acuerdo?>&cuit=<?php echo $cuit?>">
   <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
   <table style="border-color: '#000000'" border="1" width="935" cellpadding="2" cellspacing="0">
 				<tr>
@@ -165,7 +174,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 
   </p>
   <p>
-    <input type="submit" name="enviar" value="Enviar Archivos" />
+    <input type="submit" id="submit" name="enviar" value="Enviar Archivos" />
    <?php
 	} 
 }?>
