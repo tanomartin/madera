@@ -54,7 +54,7 @@
 				$h = '99';
 				$ctrlh = $h.$ctrlh;
 			
-				$arrayBoletas[$nrocuo] = array('importe'=>$importe, 'ctrlh' => $ctrlh, 'nroact'=>$nroact, 'nroacu'=>$nroacu, 'nrocuo'=>$nrocuo, 'tipopago'=>$tipopago, 'ctrl' => $ctrl);
+				$arrayBoletas[$nrocuo] = array('importe'=>$importe, 'ctrlh' => $ctrlh, 'nroact'=>$nroact, 'nroacu'=>$nroacu, 'nrocuo'=>$nrocuo, 'tipopago'=>$tipopago, 'ctrl' => $ctrl, 'fecha' => $rowcuotas['fechacuota']);
 				
 				$sql = "select * from empresas where cuit = $cuit";
 				$result =  mysql_query( $sql,$db); 
@@ -164,7 +164,7 @@
 				$pdf->Cell(40.5,3,'Importe',1,1,'C');
 				$pdf->Cell(18);
 				$pdf->Cell(78.5,3,$datosBoleta['nroact']." - ".$datosBoleta['nroacu']." - ".$datosBoleta['nrocuo'],1,0,'C');
-				$pdf->Cell(41,3,invertirFecha($rowcuotas['fechacuota']),1,0,'C');
+				$pdf->Cell(41,3,invertirFecha($datosBoleta['fecha']),1,0,'C');
 				$pdf->Cell(40.5,3,number_format($datosBoleta['importe'], 2, ",", "."),1,1,'C');
 				$pdf->Cell(18);
 				$pdf->Cell(160,4,'O.S.P.I.M. formula expresa reserva de intereses por pagos fuera de término',0,1,'L');
