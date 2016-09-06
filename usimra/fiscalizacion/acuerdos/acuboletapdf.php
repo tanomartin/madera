@@ -76,6 +76,7 @@
 					$sqlactcuotas = "update cuoacuerdosusimra set boletaimpresa = ($cantbole+2) where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 				}
 				$dbh->exec($sqlactcuotas);
+				sleep(1);
 			}
 			$dbh->commit();
 		} catch (PDOException $e) {
@@ -237,7 +238,6 @@
 				$nombrearchivo = "/home/sistemas/Documentos/Liquidaciones/BoletasUSIMRA/".$datosBoleta['ctrl']."-".$cuit."-".$datosBoleta['nroact']."-".$datosBoleta['nroacu']."-".$datosBoleta['nrocuo'].".pdf";
 						
 			$pdf->Output($nombrearchivo,'F');
-			sleep(1);
 		}
 
 		$pagina = "fiscalizacionImpBoletas.php?acuerdo=$acuerdo&cuit=$cuit";
