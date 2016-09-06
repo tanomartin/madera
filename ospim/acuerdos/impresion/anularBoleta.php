@@ -1,5 +1,5 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
-$fechaAnulacion = date("Y-m-d H:mi:s");
+$fechaAnulacion = date("Y-m-d H:i:s");
 $usuarioAnulacion = $_SESSION['usuario'];
 
 $idBoleta = $_GET['idboleta'];
