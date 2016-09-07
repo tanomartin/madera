@@ -71,11 +71,12 @@ jQuery(function($){
 					$("#capitulo").html(respuesta);
 					$("#capitulo").prop("disabled",false);
 				} else {
+					var nomenclador = $("#nomenclador").val();
 					$.ajax({
 						type: "POST",
 						dataType: 'html',
 						url: "getPracticas.php",
-						data: {valor:-1, tipo:valor},
+						data: {valor:-1, tipo:valor, nomenclador:nomenclador},
 					}).done(function(respuesta){
 						if (respuesta != 0) {	
 							$("#practicas").html(respuesta);
