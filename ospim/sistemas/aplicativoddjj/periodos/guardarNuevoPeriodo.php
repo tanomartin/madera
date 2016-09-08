@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."claves.php"); 
 
-var_dump($_POST);echo "<br>";
+//var_dump($_POST);echo "<br>";
 
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
