@@ -6,7 +6,7 @@ include($libPath."claves.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
-	$hostaplicativo = "localhost";
+	$hostaplicativo = $hostLocal;
 else
 	$hostaplicativo = $hostUsimra;
 
