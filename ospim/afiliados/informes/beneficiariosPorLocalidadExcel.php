@@ -4,10 +4,12 @@ require_once($libPath."phpExcel/Classes/PHPExcel.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 $fechagenera = date("d-m-Y");
-$arrayDelegacion = explode("-",$_POST['delegacion']);
+$arrayLocalidad = explode("-",$_POST['localidad']);
 
-$delegacion = $arrayDelegacion[0];
-$nomdelega = $arrayDelegacion[1];
+$codLocali = $arrayLocalidad[0];
+$nomLocali = $arrayLocalidad[1];
+
+var_dump($arrayLocalidad);echo"<br><br>";
 
 if(strcmp("localhost",$maquina)==0)
 	$archivo_path="informes/";
@@ -28,18 +30,18 @@ try{
 	// Setea propiedades del documento
 	$objPHPExcelTitular->getProperties()->setCreator($_SESSION['usuario'])
 								 ->setLastModifiedBy($_SESSION['usuario'])
-								 ->setTitle("Afiliados por delegación")
+								 ->setTitle("Afiliados por localidad")
 								 ->setSubject("Modulo de Afiliados")
-								 ->setDescription("Informe de Afiliados por delegación.")
+								 ->setDescription("Informe de Afiliados por localidad.")
 								 ->setCategory("Informes del Sistema de Afiliados");
 	// Renombra la hoja
-	$objPHPExcelTitular->getActiveSheet()->setTitle("Titulares $delegacion al $fechagenera");
+	$objPHPExcelTitular->getActiveSheet()->setTitle("Titulares");
 
 	// Setea la hoja como activa, cuando se abra el Excel esta sera la primer hoja
 	$objPHPExcelTitular->setActiveSheetIndex(0);
 
 	// Setea encabezado y pie de pagina
-	$objPHPExcelTitular->getActiveSheet()->getHeaderFooter()->setOddHeader("&L&BO.S.P.I.M.&G&C&H&BTitulares delegacion $nomdelega ($delegacion) al $fechagenera&R&B".$fechagenera);
+	$objPHPExcelTitular->getActiveSheet()->getHeaderFooter()->setOddHeader("&L&BO.S.P.I.M.&G&C&H&BTitulares localidad $nomLocali al $fechagenera&R&B".$fechagenera);
 	$objPHPExcelTitular->getActiveSheet()->getHeaderFooter()->setOddFooter('&L&R&BPagina &P de &N');
 
 	// Setea en configuracion de pagina orientacion y tamaño
@@ -91,6 +93,8 @@ try{
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('K1', 'C.U.I.T. Empresa');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('L')->setWidth(50);
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('L1', 'Nombre Empresa');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('M')->setWidth(50);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('M1', 'Delegacion');
 
 	$fila=1;	
 	$sqlTitulares = "SELECT
@@ -105,19 +109,25 @@ try{
 	l.nomlocali,
 	p.descrip as provincia,
 	t.cuitempresa,
-	e.nombre
+	e.nombre,
+	d.nombre as delegacion
 	FROM
 	titulares t,
 	localidades l,
 	provincia p,
 	empresas e,
-	tipodocumento td
+	tipodocumento td,
+	delegaciones d
 	WHERE
-	t.codidelega = $delegacion and
+	t.codlocali = $codLocali and
+	t.codidelega = d.codidelega and
 	t.codprovin = p.codprovin and
 	t.codlocali = l.codlocali and
 	t.cuitempresa = e.cuit and
 	t.tipodocumento = td.codtipdoc";
+	
+	echo $sqlTitulares."<br><br>";
+	
 	$resultTitulares = $dbh->query($sqlTitulares);
 	if ($resultTitulares){
 		foreach ($resultTitulares as $titulares){
@@ -135,6 +145,7 @@ try{
 			$objPHPExcelTitular->getActiveSheet()->setCellValue('J'.$fila, utf8_encode($titulares['provincia']));
 			$objPHPExcelTitular->getActiveSheet()->setCellValue('K'.$fila, $titulares['cuitempresa']);
 			$objPHPExcelTitular->getActiveSheet()->setCellValue('L'.$fila, utf8_encode($titulares['nombre']));
+			$objPHPExcelTitular->getActiveSheet()->setCellValue('M'.$fila, $titulares['delegacion']);
 		}
 	}
 
@@ -143,14 +154,14 @@ try{
 	$objPHPExcelTitular->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:L1')->getFont()->setBold(true);
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:L1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:L1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:L1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:M1')->getFont()->setBold(true);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:M1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:M1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:M1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelTitular, 'Excel5');
-	$archivo_name = $archivo_path."Titulares $nomdelega ($delegacion) al $fechagenera.xls";
+	$archivo_name = $archivo_path."Titulares $nomLocali al $fechagenera.xls";
 	$objWriter->save($archivo_name);
 	$objPHPExcelTitular->disconnectWorksheets();
 	unset($objWriter, $objPHPExcelTitular);
@@ -162,18 +173,18 @@ try{
 	// Setea propiedades del documento
 	$objPHPExcelFamiliar->getProperties()->setCreator($_SESSION['usuario'])
 								 ->setLastModifiedBy($_SESSION['usuario'])
-								 ->setTitle("Afiliados por delegación")
+								 ->setTitle("Afiliados por localidad")
 								 ->setSubject("Modulo de Afiliados")
-								 ->setDescription("Informe de Afiliados por delegación.")
+								 ->setDescription("Informe de Afiliados por Localidad.")
 								 ->setCategory("Informes del Sistema de Afiliados");
 	// Renombra la hoja
-	$objPHPExcelFamiliar->getActiveSheet()->setTitle("Familiares $delegacion al $fechagenera");
+	$objPHPExcelFamiliar->getActiveSheet()->setTitle("Familiares");
 
 	// Setea la hoja como activa, cuando se abra el Excel esta sera la primer hoja
 	$objPHPExcelFamiliar->setActiveSheetIndex(0);
 
 	// Setea encabezado y pie de pagina
-	$objPHPExcelFamiliar->getActiveSheet()->getHeaderFooter()->setOddHeader("&L&BO.S.P.I.M.&G&C&H&BFamiliares delegacion $nomdelega ($delegacion) al $fechagenera&R&B".$fechagenera);
+	$objPHPExcelFamiliar->getActiveSheet()->getHeaderFooter()->setOddHeader("&L&BO.S.P.I.M.&G&C&H&BFamiliares de la localidad $nomLocali al $fechagenera&R&B".$fechagenera);
 	$objPHPExcelFamiliar->getActiveSheet()->getHeaderFooter()->setOddFooter('&L&R&BPagina &P de &N');
 
 	// Setea en configuracion de pagina orientacion y tamaño
@@ -215,6 +226,8 @@ try{
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('G1', 'Sexo');
 	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('H')->setWidth(15);
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('H1', 'C.U.I.L.');
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I1', 'Delegacion');
 
 	$fila=1;	
 	$sqlFamiliares = "SELECT
@@ -225,17 +238,22 @@ try{
 	f.nrodocumento,
 	f.cuil,
 	date_format(f.fechanacimiento,'%d/%m/%Y') as fechanacimiento,
-	t.sexo
+	t.sexo,
+	d.nombre as delegacion
 	FROM
 	titulares t,
 	familiares f,
 	parentesco p,
-	tipodocumento td
+	tipodocumento td,
+	delegaciones d
 	WHERE
-	t.codidelega = $delegacion and
+	t.codlocali = $codLocali and
+	t.codidelega = d.codidelega and
 	t.nroafiliado = f.nroafiliado and
 	f.tipoparentesco = p.codparent and
 	f.tipodocumento = td.codtipdoc";
+	
+	echo $sqlFamiliares."<br><br>";
 	
 	$resultFamiliares = $dbh->query($sqlFamiliares);
 	if ($resultFamiliares){
@@ -250,6 +268,7 @@ try{
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('F'.$fila, $familiar['fechanacimiento']);
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('G'.$fila, $familiar['sexo']);
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('H'.$fila, $familiar['cuil']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I'.$fila, utf8_encode($familiar['delegacion']));
 		}
 	}
 
@@ -258,22 +277,22 @@ try{
 	$objPHPExcelFamiliar->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:H1')->getFont()->setBold(true);
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:H1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:H1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:H1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:I1')->getFont()->setBold(true);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:I1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:I1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcelFamiliar->getActiveSheet()->getStyle('A1:I1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelFamiliar, 'Excel5');
-	$archivo_name = $archivo_path."Familiares $nomdelega ($delegacion) al $fechagenera.xls";
+	$archivo_name = $archivo_path."Familiares $nomLocali al $fechagenera.xls";
 	$objWriter->save($archivo_name);
 	$objPHPExcelFamiliar->disconnectWorksheets();
 	unset($objWriter, $objPHPExcelFamiliar);
 	//*************************************************************************************************************************** //
 
 	$dbh->commit();
-	$pagina = "beneficiariosPorDelegacion.php?error=0&delega=$nomdelega";
-	Header("Location: $pagina");
+	//$pagina = "beneficiariosPorLocalidad.php?error=0&locali=$nomLocali";
+	//Header("Location: $pagina");
 	
 }
 catch (PDOException $e) {
