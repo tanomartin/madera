@@ -93,7 +93,7 @@ try{
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('K1', 'C.U.I.T. Empresa');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('L')->setWidth(50);
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('L1', 'Nombre Empresa');
-	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('M')->setWidth(50);
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('M')->setWidth(25);
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('M1', 'Delegacion');
 
 	$fila=1;	
@@ -226,7 +226,7 @@ try{
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('G1', 'Sexo');
 	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('H')->setWidth(15);
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('H1', 'C.U.I.L.');
-	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+	$objPHPExcelFamiliar->getActiveSheet()->getColumnDimension('I')->setWidth(25);
 	$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I1', 'Delegacion');
 
 	$fila=1;	
@@ -261,7 +261,7 @@ try{
 			$fila++;
 			// Agrega datos a las celdas de datos
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('A'.$fila, $familiar['nroafiliado']);
-			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('B'.$fila, $familiar['parentesco']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('B'.$fila, utf8_encode($familiar['parentesco']));
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('C'.$fila, utf8_encode($familiar['apellidoynombre']));
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('D'.$fila, $familiar['tipodocumento']);
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('E'.$fila, $familiar['nrodocumento']);
