@@ -4,10 +4,10 @@ require_once($libPath."phpExcel/Classes/PHPExcel.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 $fechagenera = date("d-m-Y");
-$arrayLocalidad = explode("-",$_POST['localidad']);
-
-$codLocali = $arrayLocalidad[0];
-$nomLocali = $arrayLocalidad[1];
+$nomLocali = $_POST['localidad'];
+$arrayProvincia = explode("-",$_POST['provincia']);
+$codProvin = $arrayProvincia[0];
+$nomProvin = $arrayProvincia[0];
 
 //var_dump($arrayLocalidad);echo"<br><br>";
 
@@ -24,6 +24,14 @@ try{
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
+	$sqlLocalidades = "SELECT * FROM localidades WHERE codprovin = $codProvin and nomlocali = '$nomLocali'";
+	$resLocalidades = $dbh->query($sqlLocalidades);
+	foreach ($resLocalidades as $localidades){
+		$codLocalidades .= $localidades['codlocali'].","; 
+	}
+	$codLocalidades = substr($codLocalidades, 0, -1);
+	//echo $sqlLocalidades."<br><br>";
+	
 	// Crea el objeto PHPExcel
 	$objPHPExcelTitular = new PHPExcel();
 
@@ -95,7 +103,7 @@ try{
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('L1', 'Nombre Empresa');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('M')->setWidth(25);
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('M1', 'Delegacion');
-
+	
 	$fila=1;	
 	$sqlTitulares = "SELECT
 	t.nroafiliado,
@@ -119,7 +127,8 @@ try{
 	tipodocumento td,
 	delegaciones d
 	WHERE
-	t.codlocali = $codLocali and
+	t.codprovin = $codProvin and
+	t.codlocali in ($codLocalidades) and
 	t.codidelega = d.codidelega and
 	t.codprovin = p.codprovin and
 	t.codlocali = l.codlocali and
@@ -247,7 +256,8 @@ try{
 	tipodocumento td,
 	delegaciones d
 	WHERE
-	t.codlocali = $codLocali and
+	t.codprovin = $codProvin and
+	t.codlocali in ($codLocalidades) and
 	t.codidelega = d.codidelega and
 	t.nroafiliado = f.nroafiliado and
 	f.tipoparentesco = p.codparent and
