@@ -225,7 +225,7 @@ try{
 	f.nrodocumento,
 	f.cuil,
 	date_format(f.fechanacimiento,'%d/%m/%Y') as fechanacimiento,
-	t.sexo
+	f.sexo
 	FROM
 	titulares t,
 	familiares f,

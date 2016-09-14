@@ -161,7 +161,7 @@ try{
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelTitular, 'Excel5');
-	$archivo_name = $archivo_path."Titulares Localidad $nomLocali al $fechagenera.xls";
+	$archivo_name = $archivo_path."Titulares LOCALIDAD $nomLocali al $fechagenera.xls";
 	$objWriter->save($archivo_name);
 	$objPHPExcelTitular->disconnectWorksheets();
 	unset($objWriter, $objPHPExcelTitular);
@@ -238,7 +238,7 @@ try{
 	f.nrodocumento,
 	f.cuil,
 	date_format(f.fechanacimiento,'%d/%m/%Y') as fechanacimiento,
-	t.sexo,
+	f.sexo,
 	d.nombre as delegacion
 	FROM
 	titulares t,
@@ -284,7 +284,7 @@ try{
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelFamiliar, 'Excel5');
-	$archivo_name = $archivo_path."Familiares Localidad $nomLocali al $fechagenera.xls";
+	$archivo_name = $archivo_path."Familiares LOCALIDAD $nomLocali al $fechagenera.xls";
 	$objWriter->save($archivo_name);
 	$objPHPExcelFamiliar->disconnectWorksheets();
 	unset($objWriter, $objPHPExcelFamiliar);
