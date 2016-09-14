@@ -126,7 +126,7 @@ try{
 	t.cuitempresa = e.cuit and
 	t.tipodocumento = td.codtipdoc";
 	
-	echo $sqlTitulares."<br><br>";
+	//echo $sqlTitulares."<br><br>";
 	
 	$resultTitulares = $dbh->query($sqlTitulares);
 	if ($resultTitulares){
@@ -253,7 +253,7 @@ try{
 	f.tipoparentesco = p.codparent and
 	f.tipodocumento = td.codtipdoc";
 	
-	echo $sqlFamiliares."<br><br>";
+	//echo $sqlFamiliares."<br><br>";
 	
 	$resultFamiliares = $dbh->query($sqlFamiliares);
 	if ($resultFamiliares){
@@ -291,8 +291,8 @@ try{
 	//*************************************************************************************************************************** //
 
 	$dbh->commit();
-	//$pagina = "beneficiariosPorLocalidad.php?error=0&locali=$nomLocali";
-	//Header("Location: $pagina");
+	$pagina = "beneficiariosPorLocalidad.php?error=0&locali=$nomLocali";
+	Header("Location: $pagina");
 	
 }
 catch (PDOException $e) {
