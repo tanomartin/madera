@@ -126,7 +126,7 @@ try{
 	t.cuitempresa = e.cuit and
 	t.tipodocumento = td.codtipdoc";
 	
-	//echo $sqlTitulares."<br><br>";
+	echo $sqlTitulares."<br><br>";
 	
 	$resultTitulares = $dbh->query($sqlTitulares);
 	if ($resultTitulares){
@@ -161,7 +161,7 @@ try{
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelTitular, 'Excel5');
-	$archivo_name = $archivo_path."Titulares $nomLocali al $fechagenera.xls";
+	$archivo_name = $archivo_path."Titulares Localidad $nomLocali al $fechagenera.xls";
 	$objWriter->save($archivo_name);
 	$objPHPExcelTitular->disconnectWorksheets();
 	unset($objWriter, $objPHPExcelTitular);
@@ -253,7 +253,7 @@ try{
 	f.tipoparentesco = p.codparent and
 	f.tipodocumento = td.codtipdoc";
 	
-	//echo $sqlFamiliares."<br><br>";
+	echo $sqlFamiliares."<br><br>";
 	
 	$resultFamiliares = $dbh->query($sqlFamiliares);
 	if ($resultFamiliares){
@@ -284,15 +284,15 @@ try{
 
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelFamiliar, 'Excel5');
-	$archivo_name = $archivo_path."Familiares $nomLocali al $fechagenera.xls";
+	$archivo_name = $archivo_path."Familiares Localidad $nomLocali al $fechagenera.xls";
 	$objWriter->save($archivo_name);
 	$objPHPExcelFamiliar->disconnectWorksheets();
 	unset($objWriter, $objPHPExcelFamiliar);
 	//*************************************************************************************************************************** //
 
 	$dbh->commit();
-	$pagina = "beneficiariosPorLocalidad.php?error=0&locali=$nomLocali";
-	Header("Location: $pagina");
+	//$pagina = "beneficiariosPorLocalidad.php?error=0&locali=$nomLocali";
+	//Header("Location: $pagina");
 	
 }
 catch (PDOException $e) {
