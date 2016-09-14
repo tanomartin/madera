@@ -243,7 +243,7 @@ try{
 			$fila++;
 			// Agrega datos a las celdas de datos
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('A'.$fila, $familiar['nroafiliado']);
-			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('B'.$fila, $familiar['parentesco']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('B'.$fila, utf8_encode($familiar['parentesco']));
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('C'.$fila, utf8_encode($familiar['apellidoynombre']));
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('D'.$fila, $familiar['tipodocumento']);
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('E'.$fila, $familiar['nrodocumento']);
