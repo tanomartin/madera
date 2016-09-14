@@ -4,7 +4,7 @@ if(isset($_POST['valor'])) {
 		$respuesta='<option value="0">Seleccione Localidad</option>';
 	} else {
 		$codprovin=$_POST['valor'];
-		$sqlLocali="SELECT * FROM localidades where codprovin = $codprovin group by nomlocali";
+		$sqlLocali="SELECT * FROM localidades where codprovin = $codprovin group by nomlocali order  by nomlocali";
 		$resLocali=mysql_query($sqlLocali,$db);
 		$canLocali = mysql_num_rows($resLocali);
 		if ($canLocali == 0) {
