@@ -335,7 +335,7 @@ if ($arrayRequerimientos == 0){
 	$arrayRequerimientos = array();
 }
 
-$arrayDdjj = encuentroDdjj($db, $arrayPagos);
+$arrayDdjj = encuentroDdjj($db);
 if ($arrayDdjj == 0){
 	$arrayDdjj = array();
 }
