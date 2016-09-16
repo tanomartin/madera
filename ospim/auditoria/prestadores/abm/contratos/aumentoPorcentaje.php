@@ -102,7 +102,7 @@ function validar(formulario) {
     </p>
     <p><?php 
 		if (isset($_GET['err'])) {
-  			print("<font color='#FF0000'><b>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</b></font>");
+  			print("<font color='#FF0000'><b>Existe mas de un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</b></font>");
 			$fi = $_GET['fi'];
 			$ff = $_GET['ff'];
  		}
