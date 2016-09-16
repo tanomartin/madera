@@ -17,26 +17,32 @@ $sqlCabContratoFin = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigopres
 $resCabContratoFin = mysql_query($sqlCabContratoFin,$db);
 $numCabContratoFin = mysql_num_rows($resCabContratoFin);
 if ($numCabContratoFin > 0) {
-	$pagina = "aumentoPorcentaje.php?idcontrato=$idcontrato&codigo=$codigopresta&err=1&fi=".$_POST['fechaInicio']."&ff=".$_POST['fechaFin'];
-	Header("Location: $pagina");
-	exit(0);
-} else {
-	try {
-		$hostname = $_SESSION['host'];
-		$dbname = $_SESSION['dbname'];
-		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$dbh->beginTransaction();
+	$rowCabContratoFin = mysql_fetch_array($resCabContratoFin);
+	$nuevafechaFin = strtotime ( '-1 day' , strtotime($fechaInicio)) ;
+	$nuevafechaFin = date ( 'Y-m-j' , $nuevafechaFin );
+	$sqlUpdateFechaFin = "UPDATE cabcontratoprestador SET fechafin = '$nuevafechaFin', usuariomodificacion = '$usuariomodificacion', fechamodificacion = '$fechamodificacion'  WHERE idcontrato = ".$rowCabContratoFin['idcontrato'];
+}
+try {
+	$hostname = $_SESSION['host'];
+	$dbname = $_SESSION['dbname'];
+	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbh->beginTransaction();
+	
+	if ($numCabContratoFin > 0) {
+		//echo $sqlUpdateFechaFin."<br><br>";
+		$dbh->exec($sqlUpdateFechaFin);
+	}
+	
+	$sqlInsertCabecera = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio','$fechaFin','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+	//echo $sqlInsertCabecera."<br><br>";
+	$dbh->exec($sqlInsertCabecera);
+	$idNuevoContrato = $dbh->lastInsertId();
 		
-		$sqlInsertCabecera = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio','$fechaFin','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
-		//echo $sqlInsertCabecera."<br>";
-		$dbh->exec($sqlInsertCabecera);
-		$idNuevoContrato = $dbh->lastInsertId();
-		
-		$sqlContrato = "SELECT * FROM detcontratoprestador WHERE idcontrato = $idcontrato";
-		$resContrato = mysql_query($sqlContrato,$db);	
-		while($rowContrato = mysql_fetch_array($resContrato)) { 
-			$sqlInsertDetalle = "INSERT INTO detcontratoprestador VALUES($idNuevoContrato,
+	$sqlContrato = "SELECT * FROM detcontratoprestador WHERE idcontrato = $idcontrato";
+	$resContrato = mysql_query($sqlContrato,$db);	
+	while($rowContrato = mysql_fetch_array($resContrato)) { 
+		$sqlInsertDetalle = "INSERT INTO detcontratoprestador VALUES($idNuevoContrato,
 									".$rowContrato['idpractica'].",
 									".$rowContrato['idcategoria'].",
 									ROUND (".$rowContrato['moduloconsultorio']." * $porcentaje , 2),
@@ -48,17 +54,17 @@ if ($numCabContratoFin > 0) {
 									ROUND (".$rowContrato['galenogastos']." * $porcentaje , 2),
 									'$fecharegistro',
 									'$usuariomodificacion')";
-			//echo $sqlInsertDetalle."<br>";
-			$dbh->exec($sqlInsertDetalle);
-		}
-		
-		$dbh->commit();
-		$pagina = "contratosPrestador.php?codigo=$codigopresta";
-		Header("Location: $pagina");
-	} catch (PDOException $e) {
-		echo $e->getMessage();
-		$dbh->rollback();
+		//echo $sqlInsertDetalle."<br><br>";
+		$dbh->exec($sqlInsertDetalle);
 	}
+		
+	$dbh->commit();
+	$pagina = "contratosPrestador.php?codigo=$codigopresta";
+	Header("Location: $pagina");
+} catch (PDOException $e) {
+	echo $e->getMessage();
+	$dbh->rollback();
 }
+
 
 ?>
