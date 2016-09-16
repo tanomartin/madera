@@ -13,10 +13,10 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlCabContratoFin = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigopresta and c.fechafin >= '$fechaInicio'";
+$sqlCabContratoFin = "SELECT * FROM cabcontratoprestador  WHERE codigoprestador = $codigopresta and fechafin >= '$fechaInicio' and idcontrato != $idcontrato";
 $resCabContratoFin = mysql_query($sqlCabContratoFin,$db);
 $numCabContratoFin = mysql_num_rows($resCabContratoFin);
-if ($numCabContratoFin > 1) {
+if ($numCabContratoFin > 0) {
 	$pagina = "aumentoPorcentaje.php?idcontrato=$idcontrato&codigo=$codigopresta&err=1&fi=".$_POST['fechaInicio']."&ff=".$_POST['fechaFin'];
 	Header("Location: $pagina");
 	exit(0);
@@ -28,11 +28,14 @@ if ($numCabContratoFin > 1) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 		
+		$sqlCabContratoFin = "SELECT * FROM cabcontratoprestador  WHERE codigoprestador = $codigopresta and fechafin >= '$fechaInicio' and idcontrato = $idcontrato";
+		$resCabContratoFin = mysql_query($sqlCabContratoFin,$db);
+		$numCabContratoFin = mysql_num_rows($resCabContratoFin);
 		if ($numCabContratoFin == 1) {
 			$rowCabContratoFin = mysql_fetch_array($resCabContratoFin);
 			$nuevafechaFin = strtotime ( '-1 day' , strtotime($fechaInicio)) ;
 			$nuevafechaFin = date ( 'Y-m-j' , $nuevafechaFin );
-			$sqlUpdateFechaFin = "UPDATE cabcontratoprestador SET fechafin = '$nuevafechaFin', usuariomodificacion = '$usuariomodificacion', fechamodificacion = '$fechamodificacion'  WHERE idcontrato = ".$rowCabContratoFin['idcontrato'];
+			$sqlUpdateFechaFin = "UPDATE cabcontratoprestador SET fechafin = '$nuevafechaFin', usuariomodificacion = '$usuariomodificacion', fechamodificacion = '$fechamodificacion'  WHERE idcontrato = $idcontrato";
 			//echo $sqlUpdateFechaFin."<br><br>";
 			$dbh->exec($sqlUpdateFechaFin);
 		}
