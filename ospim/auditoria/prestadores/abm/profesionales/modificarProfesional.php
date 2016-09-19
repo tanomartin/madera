@@ -139,18 +139,6 @@ function validar(formulario) {
 		alert("Debe elegir una Tramtamiento para Persona Física");
 		return false;
 	}
-	if (formulario.matriculaNac.value != "") {
-		if (!esEntero(formulario.matriculaNac.value)) {
-			alert("El Nro. de Matricula Nacional debe ser un numero");
-			return false;
-		}
-	}
-	if (formulario.matriculaPro.value != "") {
-		if (!esEntero(formulario.matriculaPro.value)) {
-			alert("El Nro. de Matricula Provincial debe ser un numero");
-			return false;
-		}
-	}
 	if (formulario.nroRegistro.value != "") {
 		if (!esEntero(formulario.nroRegistro.value)) {
 			alert("El Nro. de Registro en la SSS debe ser un numero");
@@ -247,15 +235,15 @@ function validar(formulario) {
           </select>
         </div></td>
         <td><div align="left"><strong>Matr&iacute;cula Nacional </strong>
-          <input name="matriculaNac" type="text" id="matriculaNac" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaProf['matriculanacional']?>"/>
+          <input name="matriculaNac" type="text" id="matriculaNac" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaProf['matriculanacional']?>" maxlength="20"/>
         </div></td>
         <td colspan="3"><div align="left"><strong>Matr&iacute;culo Provincial </strong><strong>
-          <input name="matriculaPro" type="text" id="matriculaPro" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaProf['matriculaprovincial'] ?>"/>
+          <input name="matriculaPro" type="text" id="matriculaPro" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaProf['matriculaprovincial'] ?>" maxlength="20"/>
         </strong></div></td>
       </tr>
       <tr>
         <td><div align="left"><strong>Numero Registro SSS</strong></div></td>
-        <td><div align="left"><input name="nroRegistro" type="text" id="nroRegistro" size="10" value="<?php echo $rowConsultaProf['numeroregistrosss']?>"/></div></td>
+        <td><div align="left"><input name="nroRegistro" type="text" id="nroRegistro" size="10" value="<?php echo $rowConsultaProf['numeroregistrosss']?>" maxlength="20"/></div></td>
       	<td colspan="4"><strong>Activo</strong> 
 			<?php if ($rowConsultaProf['activo'] == 0) { $selectedNo = "selected"; $selectedSi = ""; } else { $selectedNo = ""; $selectedSi = "selected"; } ?>
 			 <select name="activo" id="activo">

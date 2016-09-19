@@ -135,18 +135,6 @@ function validar(formulario) {
 		alert("Debe elegir una Tramtamiento para Persona Física");
 		return false;
 	}
-	if (formulario.matriculaNac.value != "") {
-		if (!esEntero(formulario.matriculaNac.value)) {
-			alert("El Nro. de Matricula Nacional debe ser un numero");
-			return false;
-		}
-	}
-	if (formulario.matriculaPro.value != "") {
-		if (!esEntero(formulario.matriculaPro.value)) {
-			alert("El Nro. de Matricula Provincial debe ser un numero");
-			return false;
-		}
-	}
 	if (formulario.nroRegistro.value != "") {
 		if (!esEntero(formulario.nroRegistro.value)) {
 			alert("El Nro. de Registro en la SSS debe ser un numero");
@@ -229,12 +217,12 @@ function validar(formulario) {
             <?php } ?>
           </select>
 	    </div></td>
-        <td><div align="left"><strong>Matr&iacute;cula Nacional </strong><input name="matriculaNac" type="text" id="matriculaNac" size="10"/></div></td>
-        <td colspan="3"><div align="left"><strong>Matr&iacute;culo Provincial </strong><input name="matriculaPro" type="text" id="matriculaPro" size="10"/></div></td>
+        <td><div align="left"><strong>Matr&iacute;cula Nacional </strong><input name="matriculaNac" type="text" id="matriculaNac" size="10" maxlength="20"/></div></td>
+        <td colspan="3"><div align="left"><strong>Matr&iacute;culo Provincial </strong><input name="matriculaPro" type="text" id="matriculaPro" size="10" maxlength="20"/></div></td>
       </tr>
 	  <tr>
 	    <td><div align="right"><strong>Numero Reg. SSS</strong></div></td>
-	    <td colspan="5"><div align="left"><input name="nroRegistro" type="text" id="nroRegistro" size="10" /></div></td>
+	    <td colspan="5"><div align="left"><input name="nroRegistro" type="text" id="nroRegistro" size="10" maxlength="20"/></div></td>
       </tr>
     </table>
     <p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
