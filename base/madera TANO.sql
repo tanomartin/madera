@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-08-2016 a las 17:36:33
+-- Tiempo de generación: 19-09-2016 a las 15:42:18
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -359,7 +359,7 @@ CREATE TABLE IF NOT EXISTS `autorizaciones` (
   `fechasolicitud` date NOT NULL DEFAULT '0000-00-00',
   `cuil` varchar(11) NOT NULL DEFAULT '',
   `nroafiliado` int(7) unsigned DEFAULT NULL,
-  `codiparentesco` int(2) unsigned DEFAULT NULL,
+  `codiparentesco` int(2) DEFAULT NULL,
   `apellidoynombre` varchar(60) NOT NULL DEFAULT '',
   `practica` int(1) unsigned DEFAULT NULL,
   `material` int(1) unsigned DEFAULT NULL,
@@ -571,7 +571,7 @@ CREATE TABLE IF NOT EXISTS `boletasospim` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=5034 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=5038 ;
 
 -- --------------------------------------------------------
 
@@ -588,7 +588,7 @@ CREATE TABLE IF NOT EXISTS `boletasusimra` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=31860 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=31865 ;
 
 -- --------------------------------------------------------
 
@@ -672,7 +672,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
 
 -- --------------------------------------------------------
 
@@ -1753,7 +1753,7 @@ CREATE TABLE IF NOT EXISTS `discapacitadoexpendiente` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idexpediente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=533 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=535 ;
 
 -- --------------------------------------------------------
 
@@ -2963,16 +2963,16 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `email` char(60) DEFAULT NULL,
   `cuit` char(11) NOT NULL,
   `tratamiento` int(2) unsigned NOT NULL COMMENT 'Como se llamara al profesional para la cartas o ordenes de pago',
-  `matriculanacional` char(10) NOT NULL COMMENT 'Matricula Nacional',
-  `matriculaprovincial` char(10) NOT NULL COMMENT 'Matricula Provincial',
-  `numeroregistrosss` int(10) DEFAULT NULL COMMENT 'Numero de registro en la Superintendencia de Servicio de Salud',
+  `matriculanacional` char(20) NOT NULL COMMENT 'Matricula Nacional',
+  `matriculaprovincial` char(20) NOT NULL COMMENT 'Matricula Provincial',
+  `numeroregistrosss` int(20) DEFAULT NULL COMMENT 'Numero de registro en la Superintendencia de Servicio de Salud',
   `activo` int(1) NOT NULL DEFAULT '1',
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`codigoprofesional`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
 
 -- --------------------------------------------------------
 
@@ -3546,7 +3546,7 @@ CREATE TABLE IF NOT EXISTS `titulares` (
   `usuariomodificacion` char(50) DEFAULT NULL,
   `mirroring` char(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`nroafiliado`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Titulares' AUTO_INCREMENT=10001 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Titulares' AUTO_INCREMENT=9925 ;
 
 -- --------------------------------------------------------
 
