@@ -133,7 +133,7 @@ if($archivoOk==0) {
 		$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
 		$mail->Port=25;								// set the SMTP port for the GMAIL server
 		$mail->Username="verificaciones@ospim.com.ar";	// SMTP account username
-		$mail->Password="yebu8691";					// SMTP account password
+		$mail->Password="wopu2794";					// SMTP account password
 		$mail->SetFrom('verificaciones@ospim.com.ar', 'Verificaciones OSPIM');
 		$mail->AddReplyTo("verificaciones@ospim.com.ar","Verificaciones OSPIM");
 		$mail->Subject="Aviso de Verificacion de Solicitud de Autorizacion";

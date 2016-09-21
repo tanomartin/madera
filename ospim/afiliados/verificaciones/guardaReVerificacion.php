@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."claves.php");
 include($libPath."fechas.php");
 require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
 $datos = array_values($_POST);
@@ -77,7 +78,7 @@ try {
 	$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
 	$mail->Port=25;								// set the SMTP port for the GMAIL server
 	$mail->Username="verificaciones@ospim.com.ar";	// SMTP account username
-	$mail->Password="yebu8691";					// SMTP account password
+	$mail->Password="wopu2794";					// SMTP account password
 	$mail->SetFrom('verificaciones@ospim.com.ar', 'Verificaciones OSPIM');
 	$mail->AddReplyTo("verificaciones@ospim.com.ar","Verificaciones OSPIM");
 	$mail->Subject="Aviso de Reverificacion de Solicitud de Autorizacion";
