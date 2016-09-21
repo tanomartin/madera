@@ -31,22 +31,24 @@ $sqlLeeDeleg = "SELECT nombre FROM delegaciones where codidelega = $rowLeeSolici
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
-//conexion y creacion de transaccion.
+//Conexion local y Remota y creacion de transaccion.
+$maquina = $_SERVER['SERVER_NAME'];
+if(strcmp("localhost",$maquina)==0)
+	$hostremoto = "localhost";
+else
+	$hostremoto = $hostOspim;
+	
+$dbremota = $baseOspimIntranet;
+$hostlocal = $_SESSION['host'];
+$dblocal = $_SESSION['dbname'];
+
 try {
-	$hostlocal = $_SESSION['host'];
-	$dblocal = $_SESSION['dbname'];
-	//echo "$hostlocal"; echo "<br>";
-	//echo "$dblocal"; echo "<br>";
 	$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
 	//echo 'Connected to database local<br/>';
 	$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbl->beginTransaction();
-		
-	$hostremoto = "ospim.com.ar";
-	$dbremota = "sistem22_intranet";
-	//echo "$hostremoto"; echo "<br>";
-	//echo "$dbremota"; echo "<br>";
-	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","sistem22_charly","bsdf5762");
+
+	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota",$usuarioOspim,$claveOspim);
 	//echo 'Connected to database remota<br/>';
     $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbr->beginTransaction();
@@ -84,10 +86,12 @@ try {
 	$address = "autorizaciones@ospim.com.ar";
 //	$mail->AddAddress($address, "Autorizaciones OSPIM");
 	$mail->AddAddress($address, "");
-	$mail->Send();
+	if($mail->Send()) {
+		$pagina = "listarSolicitudes.php";
+		Header("Location: $pagina");		
+	} else {
 
-	$pagina = "listarSolicitudes.php";
-	Header("Location: $pagina");
+	}
 }
 catch (PDOException $e) {
 	echo $e->getMessage();

@@ -1,137 +1,155 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."claves.php");
 include($libPath."fechas.php");
 require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
 require_once($libPath."fpdf.php");
 require_once($libPath."FPDI-1.6.1/fpdi.php"); 
 
-//var_dump($_POST);
+var_dump($_POST);
 
-$datos = array_values($_POST);
+//$datos = array_values($_POST);
 
-$nrosoli = $datos[0];
-if($datos[1]=="on")
-{
-//	echo "SI Viene presupuesto"; echo "<br>";
-	$presupue = $datos[2]; 
-	$staauto = $datos[3];
+$nrosoli = $_POST['solicitud'];
+$presupue = 0;
+
+if(isset($_POST['elige1'])) {
+	if(strcmp($_POST['elige1'],"on")==0) {
+		if(isset($_POST['elegido1'])) {
+			$presupue = $_POST['elegido1'];
+		}
+	}
 }
-else
-{
-//	echo "NO viene presupuesto"; echo "<br>";
-	$presupue = 0;
-	$staauto = $datos[1];
+
+if(isset($_POST['elige2'])) {
+	if(strcmp($_POST['elige2'],"on")==0) {
+		if(isset($_POST['elegido2'])) {
+			$presupue = $_POST['elegido2'];
+		}
+	}
+}
+
+if(isset($_POST['elige3'])) {
+	if(strcmp($_POST['elige3'],"on")==0) {
+		if(isset($_POST['elegido3'])) {
+			$presupue = $_POST['elegido3'];
+		}
+	}
+}
+
+if(isset($_POST['elige4'])) {
+	if(strcmp($_POST['elige4'],"on")==0) {
+		if(isset($_POST['elegido4'])) {
+			$presupue = $_POST['elegido4'];
+		}
+	}
+}
+
+if(isset($_POST['elige5'])) {
+	if(strcmp($_POST['elige5'],"on")==0) {
+		if(isset($_POST['elegido5'])) {
+			$presupue = $_POST['elegido5'];
+		}
+	}
+}
+
+if(isset($_POST['autori'])) {
+	$staauto = $_POST['autori'];
 }
 
 $fecauto = date("Y-m-d H:i:s");
 $usuauto = $_SESSION['usuario'];
 
-if($staauto==2)
-{
+if($staauto==2) {
 	$presupue = 0;
 	$estauto = "Rechazada";
-	$recauto = $datos[2];
+	$recauto = $_POST['motivoRechazo'];
 	$apeauto = "";
 	$apefech = "";
 	$presauto = "";
 	$presmail = "";
-	$presfech = "";	
+	$presfech = "";
+	$patoauto = "";
 	$montauto = "0.00";
 }
-else
-{
+else {
 	$estauto = "Aprobada";
-	//$recauto = "";
+	$recauto = $_POST['motivoRechazo'];
 
-	if($datos[1]=="on")
-		$recauto = $datos[4];
-	else
-		$recauto = $datos[2];
-
-	if($datos[1]=="on")
-		$apeauto = $datos[5];
-	else
-		$apeauto = $datos[3];
-
-	if($apeauto==1)
-		$apefech = date("Y-m-d H:i:s");
-	else
-		$apefech = "";
-
-	if($datos[1]=="on")
-		$presauto = $datos[6];
-	else
-		$presauto = $datos[4];
-
-	if($presauto==1)
-	{
-		if($datos[1]=="on")
-		{
-			$presmail = $datos[7];
-			$presfech =  date("Y-m-d H:i:s");
-			$montauto = $datos[8];
-		}
-		else
-		{
-			$presmail = $datos[5];
-			$presfech =  date("Y-m-d H:i:s");
-			$montauto = $datos[6];
-		}
+	if(isset($_POST['ape'])) {
+		$apeauto = $_POST['ape'];
 	}
-	else
-	{
-		$presmail = "";
-		$presfech = "";	
-		if($datos[1]=="on")
-			$montauto = $datos[7];
-		else
-			$montauto = $datos[5];
+
+	$apefech = "";
+
+	if($apeauto==1) {
+		$apefech = date("Y-m-d H:i:s");
+	}
+
+	if(isset($_POST['presta'])) {
+		$presauto = $_POST['presta'];
+	}
+
+	$presmail = "";
+	$presfech = "";	
+
+	if($presauto==1) {
+		$presmail = $_POST['emailPresta'];
+		$presfech =  date("Y-m-d H:i:s");
+	}
+
+	if(isset($_POST['selectPatologia'])) {
+		$patoauto = $_POST['selectPatologia'];
+	}
+
+	if(isset($_POST['montoAutoriza'])) {
+		$montauto = $_POST['montoAutoriza'];
 	}
 }
 
 switch ($presupue) {
-    case 0:
+	case 0:
 		$presapr1 = 0;
 		$presapr2 = 0;
 		$presapr3 = 0;
 		$presapr4 = 0;
 		$presapr5 = 0;
-        break;
-    case 1:
+		break;
+	case 1:
 		$presapr1 = 1;
 		$presapr2 = 0;
 		$presapr3 = 0;
 		$presapr4 = 0;
 		$presapr5 = 0;
-        break;
-    case 2:
+		break;
+	case 2:
 		$presapr1 = 0;
 		$presapr2 = 1;
 		$presapr3 = 0;
 		$presapr4 = 0;
 		$presapr5 = 0;
-        break;
-    case 3:
+		break;
+	case 3:
 		$presapr1 = 0;
 		$presapr2 = 0;
 		$presapr3 = 1;
 		$presapr4 = 0;
 		$presapr5 = 0;
-        break;
-    case 4:
+		break;
+	case 4:
 		$presapr1 = 0;
 		$presapr2 = 0;
 		$presapr3 = 0;
 		$presapr4 = 1;
 		$presapr5 = 0;
-        break;
-    case 5:
+		break;
+	case 5:
 		$presapr1 = 0;
 		$presapr2 = 0;
 		$presapr3 = 0;
 		$presapr4 = 0;
 		$presapr5 = 1;
-        break;
+		break;
 }
 
 //echo "Nro Solicitud: "; echo $nrosoli; echo "<br>";
@@ -144,6 +162,7 @@ switch ($presupue) {
 //echo "Prestador: "; echo $presauto; echo "<br>";
 //echo "Mail Prestador: "; echo $presmail; echo "<br>";
 //echo "Fecha Mail Prestador: "; echo $presfech; echo "<br>";
+//echo "Patologia: "; echo $patoauto; echo "<br>";
 //echo "Monto Autorizado: "; echo $montauto; echo "<br>";
 //echo "Aprobado 1: "; echo $presapr1; echo "<br>";
 //echo "Aprobado 2: "; echo $presapr2; echo "<br>";
@@ -210,22 +229,25 @@ $docrh=0;
 $docas=0;
 $docpa=0;
 
-//conexion y creacion de transaccion.
+//Conexion local y remota.
+$maquina = $_SERVER['SERVER_NAME'];
+if(strcmp("localhost",$maquina)==0)
+	$hostremoto = "localhost";
+else
+	$hostremoto = $hostOspim;
+	
+$dbremota = $baseOspimIntranet;
+$hostlocal = $_SESSION['host'];
+$dblocal = $_SESSION['dbname'];
+
+//Creacion de transaccion.
 try {
-	$hostlocal = $_SESSION['host'];
-	$dblocal = $_SESSION['dbname'];
-	//echo "$hostlocal"; echo "<br>";
-	//echo "$dblocal"; echo "<br>";
 	$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
 	//echo 'Connected to database local<br/>';
 	$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbl->beginTransaction();
 
-	$hostremoto = "ospim.com.ar";
-	$dbremota = "sistem22_intranet";
-	//echo "$hostremoto"; echo "<br>";
-	//echo "$dbremota"; echo "<br>";
-	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","sistem22_charly","bsdf5762");
+	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota",$usuarioOspim,$claveOspim);
 	//echo 'Connected to database remota<br/>';
 	$dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbr->beginTransaction();
@@ -430,10 +452,10 @@ try {
 //		echo $contenidodoc;
 	}
 	
-	$sqlActualizaAuto="UPDATE autorizaciones SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
+	$sqlActualizaAuto="UPDATE autorizaciones SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, patologia = :patologia, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
 	//echo $sqlActualizaAuto; echo "<br>";
 	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
+	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':patologia' => $patoauto, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
 	{	
 		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion, fechaemail = :fechaemail WHERE nrosolicitud = :nrosolicitud";
 		//echo $sqlActualizaProcesadas; echo "<br>";

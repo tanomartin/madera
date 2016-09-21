@@ -46,6 +46,7 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.prestaSi.disabled=false;
 		document.forms.atiendeAutorizacion.prestaNo.disabled=false;
 		document.forms.atiendeAutorizacion.emailPresta.disabled=false;
+		document.forms.atiendeAutorizacion.selectPatologia.disabled=false;
 		document.forms.atiendeAutorizacion.montoAutoriza.disabled=false;
 		document.forms.atiendeAutorizacion.elige1.disabled=false;
 		document.forms.atiendeAutorizacion.elige2.disabled=false;
@@ -64,6 +65,8 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.prestaNo.disabled=true;
 		document.forms.atiendeAutorizacion.emailPresta.value="";
 		document.forms.atiendeAutorizacion.emailPresta.disabled=true;
+		document.forms.atiendeAutorizacion.selectPatologia.selectedIndex = -1;
+		document.forms.atiendeAutorizacion.selectPatologia.disabled=true;
 		document.forms.atiendeAutorizacion.montoAutoriza.value="";
 		document.forms.atiendeAutorizacion.montoAutoriza.disabled=true;
 		document.forms.atiendeAutorizacion.elige1.checked=false;
@@ -311,6 +314,12 @@ function validar(formulario) {
 			}
 		}
 
+		if(formulario.selectPatologia.options[formulario.selectPatologia.selectedIndex].value == "") {
+			alert("Debe seleccionar una patologia");
+			document.getElementById("selectPatologia").focus();
+			return false;
+		}
+
 		if(document.getElementById("montoAutoriza").value == "") {
 			alert("Debe ingresar el monto autorizado");
 			document.getElementById("montoAutoriza").focus();
@@ -475,8 +484,11 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 			echo " - (DISCAPACITADO)";
 		}
 ?>
-          <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly" style="visibility:hidden"/>	
-      </p></td>
+		</p>
+        <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> <strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
+        <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>		
+      	<input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly" style="visibility:hidden"/>	
+      </td>
     <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" /><?php }?></p>
 		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada"; else echo "Rechazada";?></p>
    	  <p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p></td>
@@ -511,6 +523,17 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 - Email             
 <input name="emailPresta" type="text" id="emailPresta" size="50" maxlength="50" disabled="disabled"/>
       </p>
+      <p>Clasificacion Patologia: <label>
+	  	<select name="selectPatologia" id="selectPatologia">
+        	<option title="Seleccione un valor" value="">Seleccione un valor</option>
+			<?php 
+				$sqlPatologia="SELECT * FROM patologiasautorizaciones";
+				$resPatologia=mysql_query($sqlPatologia,$db);
+				while($rowPatologia=mysql_fetch_array($resPatologia)) {
+					echo "<option title ='$rowPatologia[descripcion]' value='$rowPatologia[codigo]'>".$rowPatologia['descripcion']."</option>";
+				}
+        	?>
+        </select></label></p>
       <p>Monto Autorizado: <label><input name="montoAutoriza" type="text" id="montoAutoriza" size="10" maxlength="10" /></label></p>
 	</td>
   </tr>

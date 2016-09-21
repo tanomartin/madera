@@ -10,80 +10,123 @@ $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
+<title>.: M&oacute;dulo Autorizaciones :.</title>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
+<script type="text/javascript" src="/madera/lib/jquery.js"></script>
+<script type="text/javascript" src="/madera/lib/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script type="text/javascript" src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
+<script type="text/javascript">
+$(function() {
+	$("#listadorSolicitudes")
+	.tablesorter({
+		theme: 'blue', 
+		widthFixed: true, 
+		widgets: ["zebra", "filter"], 
+		headers:{8:{sorter:false, filter: false}},
+		widgetOptions : { 
+			filter_cssFilter   : '',
+			filter_childRows   : false,
+			filter_hideFilters : false,
+			filter_ignoreCase  : true,
+			filter_searchDelay : 300,
+			filter_startsWith  : false,
+			filter_hideFilters : false,
+		}
+	})
+	.tablesorterPager({container: $("#paginador")}); 
+});
+</script>
 <style>
 A:link {text-decoration: none;color:#0033FF}
 A:visited {text-decoration: none}
 A:hover {text-decoration: none;color:#00FFFF }
 </style>
-<title>.: M&oacute;dulo Autorizaciones :.</title>
 </head>
 <body bgcolor="#CCCCCC">
-	<div align=center>
-	<table width=850 border=1>
-		<tr>
-			<td width=850><div align=center><strong>Solicitudes</strong></div></td>
-		</tr>
-	</table>
+	<div style="text-align:center"><h1>Solicitudes</h1></div>
 <?php if ($totalLeeAutorizacion !=0) { ?>
-		<table width=850 border=1 align=center>
-			<tr>
-				<td width=50><div align=center>Nro</div></td>
-				<td width=70><div align=center>Fecha</div></td>
-				<td width=160><div align=center>Delegacion</div></td>
-				<td width=90><div align=center>C.U.I.L.</div></td>
-				<td width=50><div align=center>Afiliado</div></td>
-				<td width=65><div align=center>Tipo</div></td>
-				<td width=180><div align=center>Apellido y Nombre</div></td>
-				<td width=120><div align=center>Verificacion</div></td>
-				<td width=65><div align=center>Accion</div></td>
-			</tr>
+	<div align=center>
+		<table id="listadorSolicitudes" class="tablesorter" style="width:900px; font-size:14px; text-align: center;">
+			<thead>
+				<tr>
+					<th>Nro</th>
+					<th>Fecha</th>
+					<th class="filter-select" data-placeholder="Seleccione Delegación">Delegacion</th>
+					<th>C.U.I.L.</th>
+					<th>Afiliado</th>
+					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
+					<th>Apellido y Nombre</th>
+					<th class="filter-select" data-placeholder="Seleccione Estado">Verificacion</th>
+					<th>Accion</th>
+				</tr>
+			</thead>
+			<tbody>
 <?php	while($rowLeeAutorizacion = mysql_fetch_array($resultLeeAutorizacion)) {  ?>
-			<tr>
-				<td width=50><div align=center><font size=1 face=Verdana><?php echo $rowLeeAutorizacion['nrosolicitud'] ?></font></div></td>
-				<td width=70><div align=center><font size=1 face=Verdana><?php echo invertirFecha($rowLeeAutorizacion['fechasolicitud']) ?></font></div></td>
-				<td width=160><div align=center><font size=1 face=Verdana><?php echo $rowLeeAutorizacion['codidelega']." - ".$rowLeeAutorizacion['delegacion'] ?></font></div></td>
-				<td width=90><div align=center><font size=1 face=Verdana><?php echo $rowLeeAutorizacion['cuil'] ?></font></div></td>
+				<tr>
+					<td><?php echo $rowLeeAutorizacion['nrosolicitud'];?></td>
+					<td><?php echo invertirFecha($rowLeeAutorizacion['fechasolicitud']);?></td>
+					<td><?php echo $rowLeeAutorizacion['codidelega'];?></td>
+					<td><?php echo $rowLeeAutorizacion['cuil'];?></td>
 <?php		if($rowLeeAutorizacion['nroafiliado']==0) { ?>
-				<td width=50><div align=center><font size=1 face=Verdana>-</font></div></td>
+					<td>-</td>
 <?php		} else { ?>
-				<td width=50><div align=center><font size=1 face=Verdana><?php echo  $rowLeeAutorizacion['nroafiliado'] ?></font></div></td>
+					<td><?php echo $rowLeeAutorizacion['nroafiliado'];?></td>
 <?php		}
 			if ($rowLeeAutorizacion['codiparentesco']<0) { ?>
-				<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>
+					<td>-</td>
 <?php		} else { 
 				if($rowLeeAutorizacion['codiparentesco']==0) { ?>
-					<td width=65><div align=center><font size=1 face=Verdana>Titular</font></div></td>
+					<td>Titular</td>
 	<?php		} else { ?>
-					<td width=65><div align=center><font size=1 face=Verdana>Familiar <?php echo $rowLeeAutorizacion['codiparentesco'] ?></font></div></td>			
+					<td><?php echo 'Familiar '.$rowLeeAutorizacion['codiparentesco']?></td>			
 	<?php		} 
 			} ?>
-			<td width=180><div align=center><font size=1 face=Verdana><?php echo $rowLeeAutorizacion['apellidoynombre'] ?></font></div></td>
+					<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
 	<?php	if($rowLeeAutorizacion['statusverificacion']==0) { ?>
-				<td width=120><div align=center><font size=1 face=Verdana>No Verificada</font></div></td>
-				<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>
+					<td>No Verificada</td>
+					<td>-</td>
 	<?php	} 
 			if($rowLeeAutorizacion['statusverificacion']==1) { ?>
-				<td width=120><div align=center><font size=1 face=Verdana>Aprobada</font></div></td>
-				<td width=65><div align=center><font size=1 face=Verdana><a href='atiendeAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']?>'>Atender</a></font></div></td>
+					<td>Aprobada</td>
+					<td><input type="button" value="Atender" onClick="window.location.href='atiendeAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud'];?>'"/></td>
 	<?php	} 
 			if($rowLeeAutorizacion['statusverificacion']==2) { ?>
-				<td width=120><div align=center><font size=1 face=Verdana>Rechazada</font></div></td>
-				<td width=65><div align=center><font size=1 face=Verdana><a href='consultaVerificacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']?>'>Atender</a></font></div></td>
+					<td>Rechazada</td>
+					<td><input type="button" value="Consultar" onClick="window.location.href='consultaVerificacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud'];?>'"/></td>
 	<?php	} 
 			if($rowLeeAutorizacion['statusverificacion']==3) { ?>
-				<td width=120><div align=center><font size=1 face=Verdana>No Reverificada</font></div></td>
-				<td width=65><div align=center><font size=1 face=Verdana>-</font></div></td>
+					<td>No Reverificada</td>
+					<td>-</td>
 	<?php	}   ?>
-			</tr>
+				</tr>
 <?php	}	?>
+			</tbody>
 		</table>
+	</div>
+	<div id="paginador" class="pager">
+		<form>
+			<p align="center">
+				<img src="../img/first.png" width="16" height="16" class="first"/>
+				<img src="../img/prev.png" width="16" height="16" class="prev"/>
+				<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
+			    <img src="../img/next.png" width="16" height="16" class="next"/>
+				<img src="../img/last.png" width="16" height="16" class="last"/>
+			    <select name="select" class="pagesize">
+			    	<option selected="selected" value="10">10 por pagina</option>
+			    	<option value="20">20 por pagina</option>
+			    	<option value="30">30 por pagina</option>
+					<option value="50">50 por pagina</option>
+			    	<option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
+			    </select>
+			</p>
+		</form>	
+	</div>
 <?php } else { ?>
-	<table width=850 border=1 align=center>
-		<tr>
-			<td width=850><div align=center>No existen solicitudes que atender.</div></td>
-		</tr>
-	</table>
+	<div style="text-align:center"><h3>No existen solicitudes que atender.</h3></div>
 <?php } ?>
+<div align="center">
   <table width="800" border="0">
     <tr>
       <td width="400">
@@ -97,6 +140,5 @@ A:hover {text-decoration: none;color:#00FFFF }
     </tr>
   </table>
 </div>
-
 </body>
 </html>

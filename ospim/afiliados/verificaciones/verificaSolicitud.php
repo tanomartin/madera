@@ -2,6 +2,20 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 $nrosolicitud=$_GET['nroSolicitud'];
+
+$sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosolicitud";
+$resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
+$rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
+
+if($rowLeeSolicitud['codiparentesco']>0) {
+  $sqlLeeParentesco = "SELECT * FROM parentesco where codparent = $rowLeeSolicitud[codiparentesco]";
+  $resultLeeParentesco = mysql_query($sqlLeeParentesco,$db); 
+  $rowLeeParentesco = mysql_fetch_array($resultLeeParentesco);
+}
+
+$sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
+$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
+$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -29,7 +43,6 @@ body {
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-
 function mostrarMotivo(muestra) {
 	if (muestra != 1) {
 		document.forms.verificaSolicitud.motivoRechazo.value="";
@@ -50,25 +63,8 @@ function validar(formulario) {
 	$.blockUI({ message: "<h1>Guardando Verificacion. Aguarde por favor...</h1>" });
 	return true;
 }
-
-
 </script>
 </head>
-<?php
-$sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosolicitud";
-$resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
-$rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
-
-if($rowLeeSolicitud['codiparentesco']>0) {
-	$sqlLeeParentesco = "SELECT * FROM parentesco where codparent = $rowLeeSolicitud[codiparentesco]";
-	$resultLeeParentesco = mysql_query($sqlLeeParentesco,$db); 
-	$rowLeeParentesco = mysql_fetch_array($resultLeeParentesco);
-}
-
-$sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
-$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
-$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
-?>
 <body>
 <form id="verificaSolicitud" name="verificaSolicitud" method="post" action="guardaVerificacion.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 <table width="1100" border="0">
@@ -112,7 +108,10 @@ $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 			echo "No Empadronado";
 		}
 ?>
-		</p><input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/>
+		</p>
+        <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> <strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
+        <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
+		<input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/>
 	</td>
     <td><p><strong>Consulta SSS:</strong> 
         <input name="consultaSSS" type="file" id="consultaSSS" size="65" /> </p>

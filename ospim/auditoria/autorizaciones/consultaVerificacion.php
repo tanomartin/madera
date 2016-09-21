@@ -154,8 +154,11 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 			echo " - (DISCAPACITADO)";
 		}
 ?>
-          <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/>	
-      </p></td>
+       	</p>
+        <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> <strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
+        <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
+        <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/>	
+      </td>
     <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" /><?php }?></p>
 		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada"; else echo "Rechazada";?></p>
    	  <p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p></td>

@@ -112,7 +112,7 @@ try{
 		envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
 	}
 
-	$pagina = "menuafip.php";
+	$pagina = "menuAfip.php";
 	Header("Location: $pagina");
 
 }

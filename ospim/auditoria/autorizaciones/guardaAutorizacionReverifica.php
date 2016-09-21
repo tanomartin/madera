@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."claves.php");
 include($libPath."fechas.php");
 require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
 $datos = array_values($_POST);
@@ -20,6 +21,7 @@ if($staauto==2)
 	$presauto = "";
 	$presmail = "";
 	$presfech = "";	
+	$patoauto = "";
 	$montauto = "0.00";
 }
 //echo "DATOS 2: "; echo $datos[2]; echo "<br>";
@@ -43,13 +45,22 @@ $sqlLeeDeleg = "SELECT nombre FROM delegaciones where codidelega = $rowLeeSolici
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
+
+//Conexion local y remota.
+$maquina = $_SERVER['SERVER_NAME'];
+if(strcmp("localhost",$maquina)==0)
+	$hostremoto = "localhost";
+else
+	$hostremoto = $hostOspim;
+
+$dbremota = $baseOspimIntranet;
+$hostlocal = $_SESSION['host'];
+$dblocal = $_SESSION['dbname'];
+
+
 if($staauto == 3)
 {
 	try {
-		$hostlocal = $_SESSION['host'];
-		$dblocal = $_SESSION['dbname'];
-		//echo "$hostlocal"; echo "<br>";
-		//echo "$dblocal"; echo "<br>";
 		$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
 		//echo 'Connected to database local<br/>';
 		$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -94,28 +105,20 @@ if($staauto == 3)
 if($staauto == 2)
 {
 	try {
-		$hostlocal = $_SESSION['host'];
-		$dblocal = $_SESSION['dbname'];
-		//echo "$hostlocal"; echo "<br>";
-		//echo "$dblocal"; echo "<br>";
 		$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
 		//echo 'Connected to database local<br/>';
 		$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbl->beginTransaction();
 
-		$hostremoto = "ospim.com.ar";
-		$dbremota = "sistem22_intranet";
-		//echo "$hostremoto"; echo "<br>";
-		//echo "$dbremota"; echo "<br>";
 		$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota","sistem22_charly","bsdf5762");
 		//echo 'Connected to database remota<br/>';
 	    $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbr->beginTransaction();
 		
-		$sqlActualizaAuto="UPDATE autorizaciones SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
+		$sqlActualizaAuto="UPDATE autorizaciones SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, patologia = :patologia, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
 		//echo $sqlActualizaAuto; echo "<br>";
 		$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-		if($resultActualizaAuto->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
+		if($resultActualizaAuto->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':patologia' => $patoauto, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
 		{
 			$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion WHERE nrosolicitud = :nrosolicitud";
 			//echo $sqlActualizaProcesadas; echo "<br>";

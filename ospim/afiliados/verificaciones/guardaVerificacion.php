@@ -65,6 +65,17 @@ if ($nombre_archivo_sss!="") {
 //echo($tipo_archivo_sss); echo "<br>";
 //echo($tamano_archivo_sss); echo "<br>";
 //echo ($archivo_sss); echo "<br>";
+
+//Conexion local y remota.
+$maquina = $_SERVER['SERVER_NAME'];
+if(strcmp("localhost",$maquina)==0)
+	$hostremoto = "localhost";
+else
+	$hostremoto = $hostOspim;
+	
+$dbremota = $baseOspimIntranet;
+$hostlocal = $_SESSION['host'];
+$dblocal = $_SESSION['dbname'];
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -86,22 +97,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <?php
 if($archivoOk==0) {
-//conexion y creacion de transaccion.
+	//Creacion de transaccion.
 	try {
-		$hostlocal = $_SESSION['host'];
-		$dblocal = $_SESSION['dbname'];
-		//echo "$hostlocal"; echo "<br>";
-		//echo "$dblocal"; echo "<br>";
 		$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
 		//echo 'Connected to database local<br/>';
 		$dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbl->beginTransaction();
-		
-		$hostremoto = $hostOspim;
-		//$hostremoto = "localhost";
-		$dbremota = $baseOspimIntranet;
-		//echo "$hostremoto"; echo "<br>";
-		//echo "$dbremota"; echo "<br>";
+
 		$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremota",$usuarioOspim,$claveOspim);
 		//echo 'Connected to database remota<br/>';
 	    $dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

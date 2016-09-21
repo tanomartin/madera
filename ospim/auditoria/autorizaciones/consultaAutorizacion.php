@@ -403,6 +403,10 @@ $sqlLeeDeleg = "SELECT * FROM delegaciones WHERE codidelega = $rowLeeSolicitud[c
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
+$sqlLeePatologia="SELECT * FROM patologiasautorizaciones WHERE codigo = $rowLeeSolicitud[patologia]";
+$resLeePatologia=mysql_query($sqlLeePatologia,$db);
+$rowLeePatologia=mysql_fetch_array($resLeePatologia);
+
 if($rowLeeSolicitud['material'] == 1) {
 	$sqlLeeMaterial = "SELECT * FROM clasificamaterial WHERE codigo = $rowLeeSolicitud[tipomaterial]";
 	$resultLeeMaterial = mysql_query($sqlLeeMaterial,$db); 
@@ -485,7 +489,10 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 			echo " - (DISCAPACITADO)";
 		}
 ?>
-		</p></td>
+		</p>
+        <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> <strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
+        <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
+	</td>
     <td valign="top"><p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)"/><?php }?></p>
 		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']); else echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']);?></p>
    	  <p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p></td>
@@ -527,6 +534,7 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
              <label><input name="presta" id="prestaNo" type="radio" value="0" checked="checked" disabled="disabled"/>No</label>
 	<?php }?>
 - Email: <?php echo $rowLeeSolicitud['emailprestador'];?></p>
+      <p><strong>Clasificacion Patologia:</strong> <?php echo $rowLeePatologia['descripcion'];?></p>
       <p><strong>Monto Autorizado:</strong> <?php echo $rowLeeSolicitud['montoautorizacion'];?></p>
       <p><strong>Documento Autorizacion:</strong> <?php if($rowLeeDocumento['documentofinal']!=NULL) {?><input type="button" name="docuauto" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,10)" /><?php }?></p></td>
   </tr>

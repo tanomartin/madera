@@ -89,19 +89,24 @@ A:hover {text-decoration: none;color:#00FFFF }
 </table>
 </div>
 <div id="paginador" class="pager">
-<form>
-	<p>&nbsp;</p>
-	<img src="../img/first.png" width="16" height="16" class="first"/>
-      <img src="../img/prev.png" width="16" height="16" class="prev"/>
-      <input type="text" class="pagedisplay" size="8" readonly="readonly" style="background:#CCCCCC; text-align:center"/>
-      <img src="../img/next.png" width="16" height="16" class="next"/>
-      <img src="../img/last.png" width="16" height="16" class="last"/>
-	    <select class="pagesize">
-	      <option selected value="10">10 por pagina</option>
-	      <option value="20">20 por pagina</option>
-	      <option value="30">30 por pagina</option>
-	      <option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
-		</select>
+	<form>
+		<p align="center">
+			<img src="../img/first.png" width="16" height="16" class="first"/>
+			<img src="../img/prev.png" width="16" height="16" class="prev"/>
+			<input type="text" class="pagedisplay" size="8" readonly="readonly" style="background:#CCCCCC; text-align:center"/>
+			<img src="../img/next.png" width="16" height="16" class="next"/>
+			<img src="../img/last.png" width="16" height="16" class="last"/>
+			<select class="pagesize">
+				<option selected value="10">10 por pagina</option>
+				<option value="20">20 por pagina</option>
+				<option value="30">30 por pagina</option>
+				<option value="50">50 por pagina</option>
+				<option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
+			</select>
+		</p>
+	</form>
+</div>
+<div align="center">
   <table style="width: 1229; border: 0">
     <tr>
       <td width="599">
@@ -114,7 +119,6 @@ A:hover {text-decoration: none;color:#00FFFF }
         </div>
     </tr>
   </table>
-</form>
 </div>
 </body>
 </html>

@@ -110,7 +110,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<div id="paginador" class="pager">
 	<form>
 		<p>&nbsp;</p>
-		<img src="img/first.png" width="16" height="16" class="first"/>
+		<p  align="center"><img src="img/first.png" width="16" height="16" class="first"/>
 		  <img src="img/prev.png" width="16" height="16" class="prev"/>
 		  <input type="text" class="pagedisplay" size="8" readonly="readonly" style="background:#CCCCCC; text-align:center"/>
 		  <img src="img/next.png" width="16" height="16" class="next"/>
@@ -120,7 +120,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			  <option value="20">20 por pagina</option>
 			  <option value="30">30 por pagina</option>
 			  <option value="<?php echo $total_emails;?>">Todos</option>
-			</select>
+			</select></p>
 	  <table width="1229" border="0">
 		<tr>
 		  <td width="599">

@@ -74,7 +74,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue', 
 			widthFixed: true, 
 			widgets: ["zebra", "filter"], 
-			headers:{6:{sorter:false, filter:false}},
+			headers:{9:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -135,9 +135,9 @@ function validar(formulario) {
 </head>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorAutorizacion.php">
+<form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="buscadorAutorizacion.php">
   <div align="center" >
-  <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloAutorizaciones.php'"/>
+  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'"/>
   <p align="center" class="Estilo1">M&oacute;dulo Buscador de Autorizaciones</p>
    <?php 
 		if ($noExiste == 1) {
@@ -179,7 +179,7 @@ function validar(formulario) {
   <div align="center">
    <?php if ($noExiste == 0 and isset($dato)) { ?>
    <p><?php echo $cartel ?></p>
-  <table id="listaResultado" class="tablesorter">
+  <table id="listaResultado" class="tablesorter" style="text-align: center;">
 	<thead>
 		<tr>
 			<th>Nro</th>
@@ -206,9 +206,18 @@ function validar(formulario) {
 			<td><?php if($rowLeeAutorizacion['nroafiliado']==0) echo "-"; else echo $rowLeeAutorizacion['nroafiliado'];?></td>
 			<td><?php if($rowLeeAutorizacion['codiparentesco']<0) echo "-"; else { if($rowLeeAutorizacion['codiparentesco']==0) echo "Titular"; else echo "Familiar ".$rowLeeAutorizacion['codiparentesco'];};?></td>
 			<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
-			<td><?php if($rowLeeAutorizacion['statusverificacion']==1) echo "Aprobada - ".$rowLeeAutorizacion['usuarioverificacion']; if($rowLeeAutorizacion['statusverificacion']==2) echo "Rechazada - ".$rowLeeAutorizacion['usuarioverificacion']; if($rowLeeAutorizacion['statusverificacion']==3) echo "No Reverificada";?></td>
-			<td><?php if($rowLeeAutorizacion['statusautorizacion']==1) echo "Aprobada - ".$rowLeeAutorizacion['usuarioautorizacion']; if($rowLeeAutorizacion['statusautorizacion']==2) echo "Rechazada - ".$rowLeeAutorizacion['usuarioautorizacion'];?></td>
-			<td><a href="consultaAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']; ?>" target="popup" onclick="window.open(this.href, this.target, 'width=1100,height=800,scrollbars=yes'); return false;">Consultar</a></td>
+			<td><?php	if($rowLeeAutorizacion['statusverificacion']==0) echo "No Verificada";
+						if($rowLeeAutorizacion['statusverificacion']==1) echo "Aprobada - ".$rowLeeAutorizacion['usuarioverificacion'];
+						if($rowLeeAutorizacion['statusverificacion']==2) echo "Rechazada - ".$rowLeeAutorizacion['usuarioverificacion'];
+						if($rowLeeAutorizacion['statusverificacion']==3) echo "No Reverificada"; ?>
+			</td>
+			<td><?php	if($rowLeeAutorizacion['statusautorizacion']==0) echo "No Atendida";
+						if($rowLeeAutorizacion['statusautorizacion']==1) echo "Aprobada - ".$rowLeeAutorizacion['usuarioautorizacion'];
+						if($rowLeeAutorizacion['statusautorizacion']==2) echo "Rechazada - ".$rowLeeAutorizacion['usuarioautorizacion'];?>
+			</td>
+			<td><?php if($rowLeeAutorizacion['statusverificacion'] != 0 && $rowLeeAutorizacion['statusautorizacion'] != 0) {?>
+				<a href="consultaAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']; ?>" target="popup" onClick="window.open(this.href, this.target, 'width=1100,height=800,scrollbars=yes'); return false;">Consultar Autorizacion</a><?php }?>
+			</td>
 		</tr>
 <?php
 		}
