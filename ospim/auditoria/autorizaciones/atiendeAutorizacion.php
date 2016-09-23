@@ -527,7 +527,7 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 	  	<select name="selectPatologia" id="selectPatologia">
         	<option title="Seleccione un valor" value="">Seleccione un valor</option>
 			<?php 
-				$sqlPatologia="SELECT * FROM patologiasautorizaciones";
+				$sqlPatologia="SELECT * FROM patologiasautorizaciones order by descripcion";
 				$resPatologia=mysql_query($sqlPatologia,$db);
 				while($rowPatologia=mysql_fetch_array($resPatologia)) {
 					echo "<option title ='$rowPatologia[descripcion]' value='$rowPatologia[codigo]'>".$rowPatologia['descripcion']."</option>";
