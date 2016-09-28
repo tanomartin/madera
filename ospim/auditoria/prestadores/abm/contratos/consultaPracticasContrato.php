@@ -149,7 +149,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
           </tbody>
         </table>
         <p> 
-        	<?php } else { 	print("<div style='color:#000099'><b> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </b></div>"); } ?>
+        	<?php } else { 	print("<div style='color:#000099'><b> ESTE CONTRATO NO TIENE PRACTICAS CARGADAS </b></div>"); } ?>
 		</p>
 </div>
 </body>
