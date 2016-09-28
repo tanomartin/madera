@@ -3,6 +3,9 @@ $codigopresta = $_GET['codigopresta'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigopresta";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
+
+$sqlCategoria = "select * from practicascategorias";
+$resCategoria = mysql_query($sqlCategoria,$db);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -172,6 +175,17 @@ function validar(formulario) {
         <td colspan="5"><div align="left"><input name="nombre" type="text" id="nombre" size="120" /></div></td>
       </tr>
       <tr>
+        <td><div align="right"><strong>C.U.I.T.</strong></div></td>
+        <td><div align="left"><input name="cuit" type="text" id="cuit" size="13" /></div></td>
+        <td><strong>Categoria</strong>
+        	<select name="idcategoria" id="idcategoria">
+      			<?php while($rowCategoria = mysql_fetch_assoc($resCategoria)) { ?>
+      					<option value='<?php echo $rowCategoria['id'] ?>'><?php echo $rowCategoria['descripcion'] ?></option>
+      			<?php } ?>
+      		</select>
+        </td>
+      </tr>
+      <tr>
         <td><div align="right"><strong>Domicilio</strong></div></td>
         <td colspan="5"><div align="left"><input name="domicilio" type="text" id="domicilio" size="120" /></div></td>
       </tr>
@@ -199,10 +213,6 @@ function validar(formulario) {
         <td><div align="right"><strong>Telefono FAX </strong></div></td>
         <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="5"/>)-<input name="telefonofax" type="text" id="telefonofax" size="20" /></div></td>
         <td colspan="4"><div align="left"><strong>Email</strong><input name="email" type="text" id="email" size="40" /></div></td>
-      </tr>
-	  <tr>
-        <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td colspan="5"><div align="left"><input name="cuit" type="text" id="cuit" size="13" /></div></td>
       </tr>
 	  <tr>
 	    <td><div align="right"><strong>Tratamiento</strong></div></td>

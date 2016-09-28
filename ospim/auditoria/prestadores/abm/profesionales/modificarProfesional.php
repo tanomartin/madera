@@ -10,6 +10,8 @@ $sqlConsultaProf = "SELECT p.*, pr.nombre as prestador, l.nomlocali as localidad
 $resConsultaProf = mysql_query($sqlConsultaProf,$db);
 $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 
+$sqlCategoria = "select * from practicascategorias";
+$resCategoria = mysql_query($sqlCategoria,$db);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -155,10 +157,10 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'profesional.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" />
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigopresta ?>'" />
   </span>  
   </p>
-   <p class="Estilo1">Modificar Prestador</p>
+   <p class="Estilo1">Modificar Profesional</p>
    <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -180,6 +182,18 @@ function validar(formulario) {
       <tr>
         <td><div align="right"><strong>Nombre</strong></div></td>
         <td colspan="5"><div align="left"><input name="nombre" type="text" id="nombre" size="120" value="<?php echo $rowConsultaProf['nombre'] ?>"/></div></td>
+      </tr>
+      <tr>
+        <td><div align="right"><strong>C.U.I.T.</strong></div></td>
+        <td><div align="left"><input name="cuit" type="text" id="cuit" size="13" value="<?php echo $rowConsultaProf['cuit'] ?>"/></div></td>
+      	<td><strong>Categoria</strong>
+        	<select name="idcategoria" id="idcategoria">
+      			<?php while($rowCategoria = mysql_fetch_assoc($resCategoria)) { 
+      					if ($rowCategoria['id'] == $rowConsultaProf['idcategoria']) { $selected = "selected"; } else { $selected = ""; }?> 
+      					<option value="<?php echo $rowCategoria['id'] ?>" <?php echo $selected ?>><?php echo $rowCategoria['descripcion'] ?></option>
+      			<?php } ?>
+      		</select>
+        </td>
       </tr>
       <tr>
         <td><div align="right"><strong>Domicilio</strong></div></td>
@@ -215,10 +229,6 @@ function validar(formulario) {
         <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="3" value="<?php echo $rowConsultaProf['ddnfax'] ?>"/>)-<input name="telefonofax" type="text" id="telefonofax" size="15" value="<?php echo $rowConsultaProf['telefonofax'] ?>"/>
 </div></td>
         <td colspan="4"><div align="left"><strong>Email</strong> <input name="email" type="text" id="email" size="30" value="<?php echo $rowConsultaProf['email'] ?>"/></div></td>
-      </tr>
-	  <tr>
-        <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td colspan="5"><div align="left"><input name="cuit" type="text" id="cuit" size="13" value="<?php echo $rowConsultaProf['cuit'] ?>"/></div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Tratamiento</strong></div></td>

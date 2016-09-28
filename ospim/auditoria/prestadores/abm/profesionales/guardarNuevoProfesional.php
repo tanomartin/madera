@@ -4,6 +4,7 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 $codigopresta = $_GET['codigopresta'];
 
 $nombre = $_POST['nombre'];
+$idcategoria = $_POST['idcategoria'];
 $domicilio = $_POST['domicilio'];
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
@@ -30,7 +31,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertProf = "INSERT INTO profesionales VALUES(DEFAULT,'$codigopresta','$nombre','$domicilio','$localidad','$codProvin','$indpostal',$codPos,'$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email','$cuit','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistro',DEFAULT,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertProf = "INSERT INTO profesionales VALUES(DEFAULT,'$codigopresta','$nombre',$idcategoria,'$domicilio','$localidad','$codProvin','$indpostal',$codPos,'$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email','$cuit','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistro',DEFAULT,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];

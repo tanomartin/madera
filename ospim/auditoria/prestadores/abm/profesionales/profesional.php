@@ -6,7 +6,8 @@ $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
 $codigoprof = $_GET['codigoprof'];
-$sqlConsultaProf = "SELECT p.*, pr.nombre as prestador, l.nomlocali as localidad, r.descrip as provincia FROM profesionales p, prestadores pr, localidades l, provincia r WHERE p.codigoprofesional = $codigoprof and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.codigoprestador = pr.codigoprestador";
+$sqlConsultaProf = "SELECT p.*, pr.nombre as prestador, l.nomlocali as localidad, r.descrip as provincia, pc.descripcion as categoria FROM profesionales p, prestadores pr, localidades l, provincia r,  practicascategorias pc
+						WHERE p.codigoprofesional = $codigoprof and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.codigoprestador = pr.codigoprestador and p.idcategoria = pc.id";
 $resConsultaProf = mysql_query($sqlConsultaProf,$db);
 $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 
@@ -60,7 +61,9 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
         </tr>
         <tr>
           <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-          <td colspan="6"><div align="left"><?php echo $rowConsultaProf['cuit'] ?></div></td>
+          <td><div align="left"><?php echo $rowConsultaProf['cuit'] ?></div></td>
+          <td><strong>Categoria</strong></td>
+          <td colspan="3"><div align="left"><?php echo $rowConsultaProf['categoria'] ?></div></td>
         </tr>
         <tr>
           <td><div align="right"><strong>Codigo Postal</strong></div></td>
@@ -109,7 +112,6 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 		  <td colspan="3"><?php if ($rowConsultaProf['activo'] == 0 ) { echo "NO"; } else { echo "SI"; } ?></td>
 		</tr>
   </table>
-<p><input class="nover" name="modificar" type="button" value="Modificar Profesional" onclick="location.href='modificarProfesional.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" /></p>
 <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>

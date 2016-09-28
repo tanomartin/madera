@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-09-2016 a las 15:42:18
+-- Tiempo de generación: 28-09-2016 a las 16:41:16
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -672,7 +672,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
 
 -- --------------------------------------------------------
 
@@ -1448,7 +1448,7 @@ CREATE TABLE IF NOT EXISTS `detcontratoprestador` (
   `idcategoria` int(3) NOT NULL,
   `moduloconsultorio` decimal(10,2) DEFAULT NULL,
   `modulourgencia` decimal(10,2) DEFAULT NULL,
-  `galenohonorario` decimal(6,0) DEFAULT NULL,
+  `galenohonorario` decimal(6,2) DEFAULT NULL,
   `galenohonorarioespecialista` decimal(6,2) DEFAULT NULL,
   `galenohonorarioayudante` decimal(6,2) DEFAULT NULL,
   `galenohonorarioanestesista` decimal(6,2) DEFAULT NULL,
@@ -2738,6 +2738,18 @@ CREATE TABLE IF NOT EXISTS `parentesco` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `patologiasautorizaciones`
+--
+
+CREATE TABLE IF NOT EXISTS `patologiasautorizaciones` (
+  `codigo` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Codigo de Patologia',
+  `descripcion` char(150) NOT NULL COMMENT 'Descripcion de la Patologia',
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Clasificacion de Patologias para el modulo de Autorizaciones' AUTO_INCREMENT=60 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `periodosanterioresusimra`
 --
 
@@ -2948,6 +2960,7 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `codigoprofesional` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Código identificador del profesional',
   `codigoprestador` int(4) unsigned NOT NULL COMMENT 'Codigo de prestador que corresponde el profesional',
   `nombre` char(100) NOT NULL COMMENT 'Nombre o Razón Social del Profesional',
+  `idcategoria` int(3) NOT NULL,
   `domicilio` char(50) NOT NULL,
   `codlocali` int(6) unsigned NOT NULL,
   `codprovin` int(2) unsigned NOT NULL,
@@ -2972,7 +2985,7 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`codigoprofesional`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=30 ;
 
 -- --------------------------------------------------------
 

@@ -6,6 +6,7 @@ $codigopresta = $_GET['codigopresta'];
 
 $codigoprof = $_POST['codigo'];
 $nombre = $_POST['nombre'];
+$idcategoria = $_POST['idcategoria'];
 $domicilio = $_POST['domicilio'];
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
@@ -34,6 +35,7 @@ $usuariomodificacion = $_SESSION['usuario'];
 $sqlUpdateProf = "UPDATE profesionales 
 SET 
 nombre = '$nombre', 
+idcategoria = $idcategoria,
 domicilio = '$domicilio',
 codlocali = '$localidad', 
 codprovin = '$codProvin',

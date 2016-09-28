@@ -63,7 +63,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p><span style="text-align:center">
    <input type="button" name="volver" value="Volver" onclick="location.href = '../prestador.php?codigo=<?php echo $codigo ?>'" />
   </span></p>
-  <p class="Estilo2">Modificaci&oacute;n de Pofesionales </p>
+  <p class="Estilo2">Modificaci&oacute;n de Profesionales </p>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -96,7 +96,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 			  <tr>
 				<td><?php echo $rowProf['codigoprofesional'];?></td>
 				<td><?php echo $rowProf['nombre'];?></td>
-				<td> <input class="nover" name="ficha" type="button" value="Ver Ficha"  onclick="location.href = 'profesional.php?codigoprof=<?php echo $rowProf['codigoprofesional']?>&codigopresta=<?php echo $codigo ?>'" /> </td>
+				<td> 
+					<input class="nover" name="ficha" type="button" value="Ver Ficha"  onclick="location.href = 'profesional.php?codigoprof=<?php echo $rowProf['codigoprofesional']?>&codigopresta=<?php echo $codigo ?>'" /> 
+					<input class="nover" name="modificar" type="button" value="Modificar Profesional" onclick="location.href='modificarProfesional.php?codigoprof=<?php echo $rowProf['codigoprofesional']?>&codigopresta=<?php echo $codigo ?>'" />
+				</td>
 			  </tr>
 			  <?php
 			}
