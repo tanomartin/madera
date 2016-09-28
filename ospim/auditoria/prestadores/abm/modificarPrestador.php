@@ -371,7 +371,7 @@ function validar(formulario) {
 					$cantidad = mysql_num_rows($resNumProfesional);
 					if ($cantidad > 0) { 
 						$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
-						$cartel = "Existe prof. activos<br>";
+						$cartel = "Existe prof. activos.<br>";
 					} else {
 						$deshabilitado = '';
 						$castel = '';
@@ -449,12 +449,12 @@ function validar(formulario) {
 		          $sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin = '0000-00-00' or c.fechafin > '$today')";
 		          $resContratoActivo = mysql_query($sqlContratoActivo,$db);
 		          $canContratoActivo = mysql_num_rows($resContratoActivo);
+		          $tieneContrato = false;
+		          $cartel = '';
 		          if ($canContratoActivo > 0) {
+		          	$tieneContrato = true;
 		            $onclick = 'return false';
-		            $cartel = "Existe contratos abiertos<br>";
-		          } else {
-		            $onclick = '';
-		            $cartel = '';
+		            $cartel = "Existe contratos abiertos. No se pueden quitar Nomencladores.";
 		          }
 
             	  $query="select * from nomencladores"; 
@@ -468,16 +468,20 @@ function validar(formulario) {
 					$numExiste = mysql_num_rows($resExiste);
 					if ($numExiste == 1) {
 						$checked = "checked";
+						if ($tieneContrato) {
+							$onclick = 'return false';
+						}
 					} else {
 						$checked = "";
+						$onclick = '';
 					} ?>
 					<input name="<?php echo "nomenclador".$i ?>" id="nomenclador" type="checkbox" <?php echo $checked ?> onclick="<?php echo $onclick ?>" value="<?php echo $rownom['id'] ?>" /><?php echo $rownom['nombre']." | "; ?>
 				  	<?php $i++;
 				  } 
-				  print("<span><font color='#0000CC'>$cartel</font></span>");
 				?>
         </div></td>
-      </tr>	 
+      </tr>
+       <tr><td colspan="5" style="text-align: center"><font color='#0000CC'><?php echo $cartel ?></font></span></td></tr> 
     </table>
     <table width="884" border="0">
       <tr>
