@@ -481,7 +481,7 @@ function validar(formulario) {
 				?>
         </div></td>
       </tr>
-       <tr><td colspan="5" style="text-align: center"><font color='#0000CC'><?php echo $cartel ?></font></span></td></tr> 
+       <tr><td colspan="5" style="text-align: center"><font color='#0000CC'><?php echo $cartel ?></font></td></tr> 
     </table>
     <table width="884" border="0">
       <tr>
