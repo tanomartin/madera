@@ -103,7 +103,7 @@ function activarDesactivar(accion, codigoprof, codigopresta) {
 				<td><?php if ($rowProf['activo'] == 0) { ?> 
 							<input type="button" value="Activar" id="activar" onclick="activarDesactivar('1','<?php echo $rowProf['codigoprofesional']?>','<?php echo $codigo ?>')" />
 					<?php } else { ?>
-							<input type="button" value="Desactiar" id="desactivar" onclick="activarDesactivar('0','<?php echo $rowProf['codigoprofesional']?>','<?php echo $codigo ?>')" />
+							<input type="button" value="Desactivar" id="desactivar" onclick="activarDesactivar('0','<?php echo $rowProf['codigoprofesional']?>','<?php echo $codigo ?>')" />
 					<?php } ?>
 				</td>
 			  </tr>
