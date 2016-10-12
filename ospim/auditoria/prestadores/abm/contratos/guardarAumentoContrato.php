@@ -2,7 +2,11 @@
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php");
 
-$porcentaje = ($_POST['porcentaje'] / 100) + 1;
+if ($_POST['porcentaje'] == "00.00") {
+	$porcentaje = 1;
+} else {
+	$porcentaje = ($_POST['porcentaje'] / 100) + 1;
+}
 $codigopresta = $_GET['codigo'];
 $idcontrato = $_GET['idcontrato'];
 

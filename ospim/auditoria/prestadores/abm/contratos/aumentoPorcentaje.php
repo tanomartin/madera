@@ -67,7 +67,7 @@ function validar(formulario) {
 		}
 	}
 	if (porcentaje == "") {
-		alert("Debe ingresar el porcentaje de aumento para el contrato. Valores entre 00.01 - 99.99");
+		alert("Debe ingresar el porcentaje de aumento para el contrato. Valores entre 00.00 - 99.99");
 		return(false);
 	}
 	formulario.Submit.disabled = true;
