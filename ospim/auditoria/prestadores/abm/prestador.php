@@ -38,68 +38,72 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><strong>Ficha Prestador</strong></p>
-	  <table border="1">
+	  <div class="grilla">
+	  <table>
         <tr>
-          <td><div align="right"><strong>C&oacute;digo</strong></div></td>
-          <td colspan="6"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
+          <td><div align="right" class="title"><strong>C&oacute;digo</strong></div></td>
+          <td colspan="5"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
-          <td colspan="6"><div align="left">
-              <div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
-          </div></td>
+          <td><div align="right" class="title"><strong>Raz&oacute;n Social</strong></div></td>
+          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Domicilio</strong></div></td>
-          <td colspan="6"><div align="left"><?php echo $rowConsultaPresta['domicilio'] ?></div></td>
+          <td><div align="right" class="title"><strong>Domicilio</strong></div></td>
+          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['domicilio'] ?></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-          <td colspan="6"><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
+          <td><div align="right" class="title"><strong>C.U.I.T.</strong></div></td>
+          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Codigo Postal</strong></div></td>
-          <td width="183"><div align="left"><?php echo $rowConsultaPresta['indpostal']." ".$rowConsultaPresta['numpostal']." ".$rowConsultaPresta['alfapostal'] ?></div>
-              <div align="right"></div></td>
-          <td><div align="left"><strong>Localidad</strong></div></td>
-          <td width="140"><div align="left"><?php echo $rowConsultaPresta['localidad'] ?></div></td>
-          <td><div align="left"><strong>Provincia </strong></div>
-              <div align="left"></div></td>
-          <td width="124"><div align="left"><?php echo $rowConsultaPresta['provincia'] ?></div></td>
+          <td><div align="right" class="title"><strong>Codigo Postal</strong></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['indpostal']." ".$rowConsultaPresta['numpostal']." ".$rowConsultaPresta['alfapostal'] ?></div></td>
+          <td><div align="left" class="title"><strong>Localidad</strong></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['localidad'] ?></div></td>
+          <td><div align="left" class="title"><strong>Provincia </strong></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['provincia'] ?></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Telefono 1 </strong></div></td>
-          <td><div align="left">
-            <?php if ($rowConsultaPresta['telefono1'] != 0) echo "(".$rowConsultaPresta['ddn1'].")-".$rowConsultaPresta['telefono1']; ?>
-          </div></td>
-          <td><div align="left"><strong>Telefono 2 </strong></div></td>
-          <td colspan="4"><div align="left">
-            <?php if ($rowConsultaPresta['telefono2'] != 0) echo "(".$rowConsultaPresta['ddn2'].")-".$rowConsultaPresta['telefono2']; ?>
-          </div></td>
-        </tr>
-        <tr>
+          <td><div align="right" class="title"><strong>Telefono 1 </strong></div></td>
           <td>
-              <div align="right"><strong>Telefono FAX </strong></div>
+          	<div align="left">
+            	<?php if ($rowConsultaPresta['telefono1'] != 0) echo "(".$rowConsultaPresta['ddn1'].")-".$rowConsultaPresta['telefono1']; ?>
+          	</div>
           </td>
-          <td><div align="left">
-            <?php if ($rowConsultaPresta['telefonofax'] != 0) echo "(".$rowConsultaPresta['ddnfax'].")-".$rowConsultaPresta['telefonofax']; ?>
-          </div></td>
-          <td><div align="left"><strong>Email</strong></div>
-              <div align="left"></div></td>
-          <td colspan="4"><div align="left"><?php echo $rowConsultaPresta['email'] ?></div></td>
+          <td><div align="left" class="title"><strong>Telefono 2 </strong></div></td>
+          <td>
+          	<div align="left">
+            	<?php if ($rowConsultaPresta['telefono2'] != 0) echo "(".$rowConsultaPresta['ddn2'].")-".$rowConsultaPresta['telefono2']; ?>
+          	</div>
+          </td>
+          <td><div align="left" class="title"><strong>Telefono FAX </strong></div></td>
+          <td>
+          	<div align="left">
+            	<?php if ($rowConsultaPresta['telefonofax'] != 0) echo "(".$rowConsultaPresta['ddnfax'].")-".$rowConsultaPresta['telefonofax']; ?>
+          	</div>
+          </td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Personer&iacute;a</strong></div></td>
-          <td><div align="left">
-            <?php echo $rowConsultaPresta['descripcion'] ?>
-          </div></td>
-          <td> <div align="left"><strong>Numero Registro SSS</strong></div></td>
-          <td colspan="4"><div align="left">
-            <?php if ($rowConsultaPresta['numeroregistrosss'] != 0) { echo $rowConsultaPresta['numeroregistrosss']; } ?>
-          </div></td>
+          <td><div align="right" class="title"><strong>Email Primario</strong></div></td>
+          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['email1'] ?></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Tratamiento</strong></div></td>
+          <td><div align="right" class="title"><strong>Email Secundario</strong></div></td>
+          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['email2'] ?></div></td>
+        </tr>
+        <tr>
+          <td><div align="right" class="title"><strong>Personer&iacute;a</strong></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['descripcion'] ?></div></td>
+          <td><div align="left" class="title"><strong>Numero Registro SSS</strong></div></td>
+          <td colspan="4">
+          	<div align="left">
+            	<?php if ($rowConsultaPresta['numeroregistrosss'] != 0) { echo $rowConsultaPresta['numeroregistrosss']; } ?>
+          	</div>
+          </td>
+        </tr>
+        <tr>
+          <td><div align="right" class="title"><strong>Tratamiento</strong></div></td>
           <td><div align="left">
             <?php 
 		if($rowConsultaPresta['tratamiento'] != 0) {
@@ -113,18 +117,19 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 		}
 		?>
           </div></td>
-          <td><div align="left"><strong>Matr&iacute;cula Nacional </strong></div></td>
+          <td><div align="left" class="title"><strong>Matr&iacute;cula Nacional </strong></div></td>
           <td><div align="left"><?php echo $rowConsultaPresta['matriculanacional'] ?></div></td>
-          <td><div align="left"><strong>Matr&iacute;culo Provincial </strong></div></td>
+          <td><div align="left" class="title"><strong>Matr&iacute;culo Provincial </strong></div></td>
           <td colspan="2"><div align="left"><?php echo $rowConsultaPresta['matriculaprovincial'] ?></div>          </td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Capitado</strong></div></td>
+          <td><div align="right" class="title"><strong>Capitado</strong></div></td>
           <td colspan="6"><div align="left">
             <?php if ($rowConsultaPresta['capitado'] == 1) { echo "SI"; } else { echo "NO"; } ?>
           </div></td>
         </tr>
-  	</table>
+  	  </table>
+  	  </div>
 	  <div class="grilla" style="margin-top: 20px;margin-bottom: 20px">
 	  <table width="700" border="1">
         <thead>

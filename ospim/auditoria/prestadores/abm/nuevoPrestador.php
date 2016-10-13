@@ -216,9 +216,15 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	if (formulario.email.value != "") {
-		if (!esCorreoValido(formulario.email.value)){
-			alert("Email invalido");
+	if (formulario.email1.value != "") {
+		if (!esCorreoValido(formulario.email1.value)){
+			alert("Email Primario invalido");
+			return false;
+		}
+	}
+	if (formulario.email2.value != "") {
+		if (!esCorreoValido(formulario.email2.value)){
+			alert("Email Secundario invalido");
 			return false;
 		}
 	}
@@ -244,12 +250,6 @@ function validar(formulario) {
 				alert("El Nro. de Matricula Provincial debe ser un numero");
 				return false;
 			}
-		}
-	}
-	if (formulario.nroRegistro.value != "") {
-		if (!esEntero(formulario.nroRegistro.value)) {
-			alert("El Nro. de Registro en la SSS debe ser un numero");
-			return false;
 		}
 	}
 
@@ -309,19 +309,15 @@ function validar(formulario) {
     <table border="0">
       <tr>
         <td width="129"><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
-        <td colspan="5"><div align="left">
-          <input name="nombre" type="text" id="nombre" size="120" />
-        </div></td>
+        <td colspan="3"><div align="left"><input name="nombre" type="text" id="nombre" size="120" /></div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>Domicilio</strong></div></td>
-        <td colspan="5"><div align="left">
-          <input name="domicilio" type="text" id="domicilio" size="120" />
-        </div></td>
+        <td colspan="3"><div align="left"><input name="domicilio" type="text" id="domicilio" size="120" /></div></td>
       </tr>
       <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td colspan="5">
+        <td colspan="3">
 			<div align="left">
 				<input name="cuit" type="text" id="cuit" size="10" />
 				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
@@ -330,45 +326,54 @@ function validar(formulario) {
       </tr>
       <tr>
         <td><div align="right"><strong>Codigo Postal</strong></div></td>
-        <td width="244"><div align="left">
-          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1"/>
-          -<input name="codPos" type="text" id="codPos" size="7" />-<input name="alfapostal"  id="alfapostal" type="text" size="3"/>
-        </div><div align="right"></div></td>
-        <td width="365"><div align="left"><strong>Localidad</strong>
-          <select name="selectLocali" id="selectLocali">
-            <option value="0">Seleccione un valor </option>
-          </select>
-        </div></td>
-        <td><div align="left"><strong>Provincia
-          <input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" />
-            <input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
-        </strong></div>          <div align="left"></div></td>
+        <td>
+        	<div align="left">
+	          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1"/>
+	          -<input name="codPos" type="text" id="codPos" size="7" />-<input name="alfapostal"  id="alfapostal" type="text" size="3"/>
+	        </div>
+	    </td>
+        <td>
+        	<div align="left"><strong>Localidad</strong>
+	          	<select name="selectLocali" id="selectLocali">
+	            	<option value="0">Seleccione un valor </option>
+	          	</select>
+        	</div>
+        </td>
+        <td>
+        	<div align="left"><strong>Provincia</strong>
+          		<input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" />
+            	<input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
+        	</div> 
+        </td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Telefono 1 </strong></div></td>
-        <td><div align="left">(
-            <input name="ddn1" type="text" id="ddn1" size="3" />
-            )-
-            <input name="telefono1" type="text" id="telefono1" size="15" />
-</div></td>
-        <td colspan="4"><div align="left"><strong>Telefono 2 </strong>(
-            <input name="ddn2" type="text" id="ddn2" size="3"/>
-)-
-<input name="telefono2" type="text" id="telefono2" size="15"/>
-</div></td>
+        <td><div align="right"><strong>Telefono 1</strong></div></td>
+        <td>
+        	<div align="left">
+        		(<input name="ddn1" type="text" id="ddn1" size="3" />)-
+            	<input name="telefono1" type="text" id="telefono1" size="15" />
+			</div>
+		</td>
+        <td>
+        	<div align="left"><strong>Telefono 2 </strong>
+        		(<input name="ddn2" type="text" id="ddn2" size="3"/>)-
+				<input name="telefono2" type="text" id="telefono2" size="15"/>
+			</div>
+		</td>
+		<td>
+			<div align="left"><strong>Telefono FAX </strong>
+        		(<input name="ddnfax" type="text" id="ddnfax" size="3"/>)-
+				<input name="telefonofax" type="text" id="telefonofax" size="15" />
+			</div>
+		</td>
       </tr>
 	  <tr>
-        <td><div align="right">
-          <div align="right"><strong>Telefono FAX </strong></div>
-        </div></td>
-        <td><div align="left">(
-          <input name="ddnfax" type="text" id="ddnfax" size="3"/>
-          )-
-  <input name="telefonofax" type="text" id="telefonofax" size="15" />
-        </div></td>
-        <td colspan="4"><div align="left"><strong>Email</strong>
-          <input name="email" type="text" id="email" size="40" />
-        </div>          <div align="left"></div></td>
+        <td><div align="right"><strong>Email Primario</strong></div></td>
+        <td colspan="3"><div align="left"><input name="email1" type="text" id="email1" size="60" /></div></td>
+      </tr>
+      <tr>
+        <td><div align="right"><strong>Email Secundario</strong></div></td>
+        <td colspan="3"><div align="left"><input name="email2" type="text" id="email2" size="60" /></div></td>
       </tr>
 	  <tr>
         <td><div align="right"><strong>Personería</strong></div></td>
@@ -383,49 +388,57 @@ function validar(formulario) {
 			<?php } ?>
             </select>
         </div></td>
-        <td colspan="4">
-		<div id="errorSSS" style="color:#FF0000"></div>
-		<div align="left">
-          <div align="left"><strong>Numero Registro SSS
-            <input name="nroRegistro" type="text" id="nroRegistro" size="10" />
-          </strong></div>
-        </div>          
-        <div align="left"></div></td>
+        <td colspan="2">
+			<div id="errorSSS" style="color:#FF0000"></div>
+			<div align="left">
+          		<strong>Numero Registro SSS</strong>
+            	<input name="nroRegistro" type="text" id="nroRegistro" size="10" />
+          	</div>         
+        </td>
       </tr>
 	  <tr>
 	    <td><div align="right"><strong>Tratamiento</strong></div></td>
-	    <td><div align="left">
-	      <select name="selectTratamiento" size="1" id="selectTratamiento" disabled="disabled">
-            <option value="0" selected="selected">Seleccione un valor </option>
-            <?php 
-					$query="select * from tipotratamiento";
-					$result=mysql_query($query,$db);
-					while ($rowtipos=mysql_fetch_array($result)) { ?>
-            <option value="<?php echo $rowtipos['codigotratamiento'] ?>"><?php echo $rowtipos['descripcion']  ?></option>
-            <?php } ?>
-          </select>
-	    </div></td>
+	    <td>
+			<div align="left">
+		      <select name="selectTratamiento" size="1" id="selectTratamiento" disabled="disabled">
+	            <option value="0" selected="selected">Seleccione un valor </option>
+	            <?php 
+						$query="select * from tipotratamiento";
+						$result=mysql_query($query,$db);
+						while ($rowtipos=mysql_fetch_array($result)) { ?>
+	            <option value="<?php echo $rowtipos['codigotratamiento'] ?>"><?php echo $rowtipos['descripcion']  ?></option>
+	            <?php } ?>
+	          </select>
+	    	</div>
+	    </td>
         <td>
-		   <div id="errorMatNac" style="color:#FF0000"></div>
-		   <div align="left"><strong>Matr&iacute;cula Nacional </strong>
-          <input name="matriculaNac" type="text" id="matriculaNac" size="10" disabled="disabled"/>
-        </div></td>
-        <td colspan="3">
-		<div id="errorMatPro" style="color:#FF0000"></div>
-		<div align="left"><strong>Matr&iacute;culo Provincial </strong>
-            <input name="matriculaPro" type="text" id="matriculaPro" size="10" disabled="disabled"/>
-        </div></td>
+		   	<div id="errorMatNac" style="color:#FF0000"></div>
+		   	<div align="left">
+		   		<strong>Matr&iacute;cula Nacional </strong>
+          		<input name="matriculaNac" type="text" id="matriculaNac" size="10" disabled="disabled"/>
+        	</div>
+        </td>
+        <td>
+			<div id="errorMatPro" style="color:#FF0000"></div>
+			<div align="left">
+				<strong>Matr&iacute;culo Provincial </strong>
+            	<input name="matriculaPro" type="text" id="matriculaPro" size="10" disabled="disabled"/>
+        	</div>
+        </td>
       </tr>
 	  <tr>
 	    <td><div align="right"><strong>Capitado</strong></div></td>
-	    <td colspan="5"><div align="left">
-          <input name="capitado" type="radio" value="0" checked="checked"/> NO
-  		  <input name="capitado" type="radio" value="1" />SI
-		  </div></td>
+	    <td colspan="3">
+	    	<div align="left">
+          		<input name="capitado" type="radio" value="0" checked="checked"/> NO
+  		  		<input name="capitado" type="radio" value="1" />SI
+		  	</div>
+		</td>
       </tr>
 	  <tr>
 	    <td><div align="right"><strong>Nomenclador </strong></div></td>
-	    <td colspan="5"><div align="left">
+	    <td colspan="3">
+	    	<div align="left">
             	<?php 	$query="select * from nomencladores"; 
 	    	  			$result=mysql_query($query,$db);  
 	    	  			$i = 0;
@@ -433,7 +446,8 @@ function validar(formulario) {
 						  	<input value="<?php echo $rownom['id']?>" name="<?php echo "nomenclador".$i ?>" id="nomenclador" type="checkbox"/><?php echo $rownom['nombre']." | "; ?>
 				  <?php 	$i++;
 						} ?>
-        </div></td>
+        	</div>
+        </td>
       </tr>
     </table>
     <table width="884" border="0">
