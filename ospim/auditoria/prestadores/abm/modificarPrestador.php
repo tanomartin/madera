@@ -458,7 +458,7 @@ function validar(formulario) {
 	        	<strong>Barrio</strong>
 	        	<select name="selectBarrio" id="selectBarrio" <?php echo $disabled?>>
 	        		<?php if ($disabled == "") {
-		        			$sqlBarrios="SELECT * FROM barrios WHERE id != 0";
+		        			$sqlBarrios="SELECT * FROM barrios";
 		        			$resBarrios=mysql_query($sqlBarrios,$db);
 		        			while($rowBarrios=mysql_fetch_array($resBarrios)) { 
 		        				$selected = "";
