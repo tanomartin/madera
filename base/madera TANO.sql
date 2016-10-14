@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 28-09-2016 a las 16:41:16
+-- Tiempo de generación: 14-10-2016 a las 20:20:29
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -530,6 +530,18 @@ CREATE TABLE IF NOT EXISTS `banextraordinariausimra` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `barrios`
+--
+
+CREATE TABLE IF NOT EXISTS `barrios` (
+  `id` int(3) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `bkuptransferencias`
 --
 
@@ -672,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -961,7 +973,7 @@ CREATE TABLE IF NOT EXISTS `capitulosdepracticas` (
   `idtipopractica` int(2) NOT NULL,
   `descripcion` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=56 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=58 ;
 
 -- --------------------------------------------------------
 
@@ -2795,7 +2807,7 @@ CREATE TABLE IF NOT EXISTS `practicas` (
   `unihonorarioanestesista` decimal(4,2) DEFAULT NULL,
   `unigastos` decimal(4,2) DEFAULT NULL,
   PRIMARY KEY (`idpractica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2080 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2399 ;
 
 -- --------------------------------------------------------
 
@@ -2868,6 +2880,7 @@ CREATE TABLE IF NOT EXISTS `prestadores` (
   `nombre` char(100) NOT NULL COMMENT 'Nombre o Razón Social del Prestador',
   `domicilio` char(50) NOT NULL,
   `codlocali` int(6) unsigned NOT NULL,
+  `idBarrio` int(3) NOT NULL,
   `codprovin` int(2) unsigned NOT NULL,
   `indpostal` char(1) NOT NULL,
   `numpostal` int(4) unsigned NOT NULL,
@@ -2878,20 +2891,24 @@ CREATE TABLE IF NOT EXISTS `prestadores` (
   `ddn2` char(5) DEFAULT NULL,
   `telefonofax` bigint(10) DEFAULT NULL,
   `ddnfax` char(5) DEFAULT NULL,
-  `email` char(60) DEFAULT NULL,
+  `email1` char(60) DEFAULT NULL,
+  `email2` char(60) DEFAULT NULL,
   `cuit` char(11) NOT NULL,
   `personeria` int(1) unsigned DEFAULT NULL COMMENT '1: Fisico - 2: Juridico',
   `tratamiento` int(2) unsigned DEFAULT NULL COMMENT 'Como se llamara al profesional para la cartas o ordenes de pago',
   `matriculanacional` char(10) DEFAULT NULL COMMENT 'Matricula Nacional',
   `matriculaprovincial` char(10) DEFAULT NULL COMMENT 'Matricula Provincial',
-  `numeroregistrosss` int(10) DEFAULT NULL COMMENT 'Numero de registro en la Superintendencia de Servicio de Salud',
+  `numeroregistrosss` varchar(10) DEFAULT NULL COMMENT 'Numero de registro en la Superintendencia de Servicio de Salud',
+  `vtoregistrosss` date DEFAULT NULL,
+  `numeroregistrosnr` varchar(10) DEFAULT NULL,
+  `vtoregistrosnr` date DEFAULT NULL,
   `capitado` int(1) unsigned NOT NULL COMMENT '1: es capitado - 0: no es capitado',
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`codigoprestador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=42 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46 ;
 
 -- --------------------------------------------------------
 
@@ -3339,7 +3356,7 @@ CREATE TABLE IF NOT EXISTS `subcapitulosdepracticas` (
   `idcapitulo` int(3) NOT NULL,
   `descripcion` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=161 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=187 ;
 
 -- --------------------------------------------------------
 
@@ -3430,7 +3447,7 @@ CREATE TABLE IF NOT EXISTS `tipopracticas` (
   `codigonomenclador` int(4) NOT NULL,
   `descripcion` char(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
