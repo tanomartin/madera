@@ -103,7 +103,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td><div align="left" class="title"><strong>Vto. Registro SSS</strong></div></td>
           <td colspan="3">
           	<div align="left">
-            	<?php if ($rowConsultaPresta['vtoregistrosss'] != NULL) { echo invertirFecha($rowConsultaPresta['vtoregistrosss']); } ?>
+            	<?php if ($rowConsultaPresta['vtoregistrosss'] != NULL && $rowConsultaPresta['vtoregistrosss'] != "0000-00-00") { echo invertirFecha($rowConsultaPresta['vtoregistrosss']); } ?>
           	</div>
           </td>
         </tr>
@@ -114,12 +114,12 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 	           <?php if ($rowConsultaPresta['numeroregistrosnr'] != 0) { echo $rowConsultaPresta['numeroregistrosnr']; } ?>
 	          </div>
 	       </td>
-	        <td><div align="left" class="title"><strong>Vto. Registro SNR</strong></div></td>
-	        <td colspan="3">
-	          	<div align="left">
-	            	<?php if ($rowConsultaPresta['vtoregistrosnr'] != NULL) { echo invertirFecha($rowConsultaPresta['vtoregistrosnr']); } ?>
-	          	</div>
-	        </td>
+	       <td><div align="left" class="title"><strong>Vto. Registro SNR</strong></div></td>
+	       <td colspan="3">
+	          <div align="left">
+	            <?php if ($rowConsultaPresta['vtoregistrosnr'] != NULL && $rowConsultaPresta['vtoregistrosnr'] != "0000-00-00") { echo invertirFecha($rowConsultaPresta['vtoregistrosnr']); } ?>
+	          </div>
+	       </td>
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Personer&iacute;a</strong></div></td>

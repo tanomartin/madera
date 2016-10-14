@@ -65,6 +65,8 @@ fehamodificacion = '$fechamodificacion',
 usuariomodificacion = '$usuariomodificacion'
 WHERE codigoprestador = $codigo";
 
+echo $sqlUpdatePresta."<br>";
+
 $sqlDeleteNomenclador = "DELETE FROM prestadornomenclador WHERE codigoprestador = $codigo";
 $sqlDeleteJurisdiccion = "DELETE FROM prestadorjurisdiccion WHERE codigoprestador = $codigo";
 $sqlDeleteServicio = "DELETE FROM prestadorservicio WHERE codigoprestador = $codigo";

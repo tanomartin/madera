@@ -274,6 +274,16 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	if (formulario.nroSSS.value != "") {
+		if (!esFechaValida(formulario.vtoSSS.value)){
+			return false;
+		}
+	}
+	if (formulario.nroSNR.value != "") {
+		if (!esFechaValida(formulario.vtoSNR.value)){
+			return false;
+		}
+	}
 	if (!verificaCuilCuit(formulario.cuit.value)){
 		alert("C.U.I.T invalido");
 		return false;
