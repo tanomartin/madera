@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 $codigo = $_GET['codigo'];
-$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia, t.descripcion FROM prestadores p, localidades l, provincia r, tipoprestador t WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.personeria = t.id";
+$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia, t.descripcion, b.descripcion as barrio FROM prestadores p, localidades l, provincia r, tipoprestador t, barrios b WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.personeria = t.id and p.idBarrio = b.id";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
@@ -13,8 +13,6 @@ $resConsultaServcio = mysql_query($sqlConsultaServcio,$db);
 
 $sqlConsultaJuris = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $codigo and p.codidelega = d.codidelega";
 $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
-
-
 
 ?>
 
@@ -46,24 +44,26 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td colspan="5"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
         </tr>
         <tr>
+          <td><div align="right" class="title"><strong>C.U.I.T.</strong></div></td>
+          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
+        </tr>
+        <tr>
           <td><div align="right" class="title"><strong>Raz&oacute;n Social</strong></div></td>
           <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Domicilio</strong></div></td>
-          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['domicilio'] ?></div></td>
-        </tr>
-        <tr>
-          <td><div align="right" class="title"><strong>C.U.I.T.</strong></div></td>
-          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
+          <td colspan="3"><div align="left"><?php echo $rowConsultaPresta['domicilio'] ?></div></td>
+          <td><div align="left" class="title"><strong>Provincia</strong></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['provincia'] ?></div></td>       
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Codigo Postal</strong></div></td>
           <td><div align="left"><?php echo $rowConsultaPresta['indpostal']." ".$rowConsultaPresta['numpostal']." ".$rowConsultaPresta['alfapostal'] ?></div></td>
           <td><div align="left" class="title"><strong>Localidad</strong></div></td>
           <td><div align="left"><?php echo $rowConsultaPresta['localidad'] ?></div></td>
-          <td><div align="left" class="title"><strong>Provincia </strong></div></td>
-          <td><div align="left"><?php echo $rowConsultaPresta['provincia'] ?></div></td>
+          <td><div align="left" class="title"><strong>Barrio </strong></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['barrio'] ?></div></td>
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Telefono 1 </strong></div></td>

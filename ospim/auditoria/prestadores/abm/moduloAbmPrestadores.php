@@ -142,7 +142,7 @@ function abrirPantalla(dire) {
 			<th>Nombre o Razón Social</th>
 			<th>C.U.I.T.</th>
 			<th>Telefono</th>
-			<th>E-mail</th>
+			<th>E-mail Primario</th>
 			<th>Acci&oacute;n</th>
 		</tr>
 	</thead>
@@ -155,7 +155,7 @@ function abrirPantalla(dire) {
 			<td><?php echo $rowPrestador['nombre'];?></td>
 			<td><?php echo $rowPrestador['cuit'];?></td>
 			<td><?php echo $rowPrestador['telefono1'];?></td>
-			<td><?php echo $rowPrestador['email'];?></td>
+			<td><?php echo $rowPrestador['email1'];?></td>
 			<td>
 				<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> | 
 				<input name="contrato" type="button" value="Ver Contrato" onclick="abrirPantalla('contratos/consultaContratosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>

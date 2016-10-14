@@ -10,6 +10,7 @@ $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];
 $localidad = $_POST['selectLocali'];
+$idBarrio = $_POST['selectBarrio'];
 $codProvin = $_POST['codprovin'];
 $ddn1 = $_POST['ddn1'];
 $tel1 = $_POST['telefono1'];
@@ -38,7 +39,8 @@ $sqlUpdatePresta = "UPDATE prestadores
 SET 
 nombre = '$nombre', 
 domicilio = '$domicilio',
-codlocali = '$localidad', 
+codlocali = '$localidad',
+idBarrio = '$idBarrio',
 codprovin = '$codProvin',
 indpostal = '$indpostal', 
 numpostal = '$codPos', 

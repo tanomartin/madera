@@ -8,6 +8,7 @@ $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];
 $localidad = $_POST['selectLocali'];
 $codProvin = $_POST['codprovin'];
+$idBarrio = $_POST['selectBarrio'];
 $ddn1 = $_POST['ddn1'];
 $tel1 = $_POST['telefono1'];
 $ddn2 = $_POST['ddn2'];
@@ -33,7 +34,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistroSSS','$vtoRegistroSSS','$nroRegistroSNR','$vtoRegistroSNR','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistroSSS','$vtoRegistroSSS','$nroRegistroSNR','$vtoRegistroSNR','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];

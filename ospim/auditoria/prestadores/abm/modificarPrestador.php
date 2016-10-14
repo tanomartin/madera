@@ -186,6 +186,27 @@ jQuery(function($){
 			}
 		});
 	});
+
+	$("#selectLocali").change(function() {
+		var localidad = $("#selectLocali option:selected").html();
+		if (localidad == "CAPITAL FEDERAL") {
+			$("#selectBarrio").prop("disabled", false );
+			$.ajax({
+				type: "POST",
+				dataType: "html",
+				url: "lib/getBarrios.php"
+			}).done(function(respuesta){
+				if (respuesta != 0) {
+					$("#selectBarrio").html(respuesta);
+				} else {
+					$("#selectBarrio").html("");
+				}
+			});
+		} else {
+			$("#selectBarrio").prop("disabled", true );
+			$("#selectBarrio").html("<option title ='Seleccione un valor' value=''>Seleccione un barrio</option>");
+		}
+	});
 	
 });
 
@@ -386,15 +407,7 @@ function validar(formulario) {
         	</div>
         </td>
       </tr>
-      <tr>
-        <td><div align="right"><strong>Domicilio</strong></div></td>
-        <td colspan="3">
-        	<div align="left">
-          		<input name="domicilio" type="text" id="domicilio" size="120" value="<?php echo $rowConsultaPresta['domicilio'] ?>" />
-        	</div>
-        </td>
-      </tr>
-      <tr>
+       <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
         <td colspan="3">
         	<div align="left">
@@ -402,6 +415,21 @@ function validar(formulario) {
  				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
+      </tr>
+      <tr>
+        <td><div align="right"><strong>Domicilio</strong></div></td>
+        <td colspan="2">
+        	<div align="left">
+          		<input name="domicilio" type="text" id="domicilio" size="70" value="<?php echo $rowConsultaPresta['domicilio'] ?>" />
+        	</div>
+        </td>
+        <td>
+        	<div align="left">
+        		<strong>Provincia</strong>
+          		<input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $rowConsultaPresta['provincia'] ?>"/>
+          		<input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2" value="<?php echo $rowConsultaPresta['codprovin'] ?>"/>
+        	</div>
+      	</td>
       </tr>
       <tr>
         <td><div align="right"><strong>Codigo Postal</strong></div></td>
@@ -421,13 +449,28 @@ function validar(formulario) {
 		        </select>
         	</div>
         </td>
+        <?php
+        	$disabled = "disabled='disabled'";
+        	if ($rowConsultaPresta['localidad'] == "CAPITAL FEDERAL") { $disabled = ""; }
+        ?>
         <td>
         	<div align="left">
-        		<strong>Provincia</strong>
-          		<input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $rowConsultaPresta['provincia'] ?>"/>
-          		<input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2" value="<?php echo $rowConsultaPresta['codprovin'] ?>"/>
+	        	<strong>Barrio</strong>
+	        	<select name="selectBarrio" id="selectBarrio" <?php echo $disabled?>>
+	        		<?php if ($disabled == "") {
+		        			$sqlBarrios="SELECT * FROM barrios WHERE id != 0";
+		        			$resBarrios=mysql_query($sqlBarrios,$db);
+		        			while($rowBarrios=mysql_fetch_array($resBarrios)) { 
+		        				$selected = "";
+		        				if ($rowBarrios['id'] == $rowConsultaPresta['idBarrio'] ) { $selected = "selected"; } ?>
+		        				<option title ='<?php echo $rowBarrios[descripcion]?>' value='<?php echo $rowBarrios[id] ?>' <?php echo $selected?>><?php echo utf8_encode($rowBarrios[descripcion]) ?></option>
+		        	  <?php } ?>	
+	        		<?php } else { ?>
+	        				<option title ="Seleccione un valor" value="">Seleccione un barrio</option>
+	        		<?php } ?>
+	        	</select>
         	</div>
-      	</td>
+        </td>
       </tr>
       <tr>
         <td><div align="right"><strong>Telefono 1 </strong></div></td>
