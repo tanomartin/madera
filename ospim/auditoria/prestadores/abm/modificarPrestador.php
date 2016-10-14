@@ -1,4 +1,5 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia FROM prestadores p, localidades l, provincia r WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin";
@@ -37,6 +38,8 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 
 jQuery(function($){
 	$("#cuit").mask("99999999999");
+	$("#vtoSSS").mask("99-99-9999");
+	$("#vtoSNR").mask("99-99-9999");
 	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
@@ -53,6 +56,107 @@ jQuery(function($){
 		});
 	});
 
+	$("#cuit").change(function(){
+		var cuit = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "lib/existePrestaCuit.php",
+			data: {cuit:cuit},
+		}).done(function(respuesta){
+			if (respuesta != 0) {
+				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' existe en el prestador con codigo '"+ respuesta +"'");
+				$("#cuit").val("");
+			} else {
+				$("#errorCuit").html("");
+			} 
+		});
+	});
+
+	$("#nroSSS").change(function(){
+		var nroreg = $(this).val();
+		$("#vtoSSS").val("");
+		if (nroreg == 0) {
+			$("#vtoSSS").prop("disabled", true);
+		} else {
+			var codigo = $("#codigo").val();
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: "lib/existePrestaNroSSS.php",
+				data: {nroreg:nroreg, codigo:codigo},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
+					$("#errorSSS").html("<br>El Nro de Registro de la SSS '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+					$("#vtoSSS").prop("disabled", true );
+					$("#nroSSS").val("");
+				} else {
+					$("#errorSSS").html("");
+					$("#vtoSSS").prop("disabled", false );
+				}
+			});
+		}
+	});
+
+	$("#nroSNR").change(function(){
+		var nroreg = $(this).val();
+		$("#vtoSNR").val("");
+		if (nroreg == 0) {
+			$("#vtoSNR").prop("disabled", true );
+		} else {
+			var codigo = $("#codigo").val();
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: "lib/existePrestaNroSNR.php",
+				data: {nroreg:nroreg, codigo:codigo},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
+					$("#errorSNR").html("<br>El Nro de Registro de la SNR '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+					$("#vtoSNR").prop("disabled", true );
+					$("#nroSNR").val("");
+				} else {
+					$("#errorSNR").html("");
+					$("#vtoSNR").prop("disabled", false );
+				} 
+			});
+		}
+	});
+
+	$("#matriculaNac").change(function(){
+		var matricula = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "lib/existeMatriculaNac.php",
+			data: {matricula:matricula},
+		}).done(function(respuesta){
+			if (respuesta != 0) {
+				$("#errorMatNac").html("<br>La Matricula Nac. Nro. '" + matricula + "' <br>ya existe en el prestador con codigo '"+ respuesta +"'");
+				$("#matriculaNac").val("");
+			} else {
+				$("#errorMatNac").html("");
+			} 
+		});
+	});
+
+	$("#matriculaPro").change(function(){
+		var matricula = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "lib/existeMatriculaPro.php",
+			data: {matricula:matricula},
+		}).done(function(respuesta){
+			if (respuesta != 0) {
+				$("#errorMatPro").html("<br>La Matricula Prov. Nro. '" + matricula + "' <br>ya existe en el prestador con codigo '"+ respuesta +"'");
+				$("#matriculaPro").val("");
+			} else {
+				$("#errorMatPro").html("");
+			} 
+		});
+	});
+	
 	$("#selectLocali").change(function(){
 		var locali = $(this).val();
 		$.ajax({
@@ -260,7 +364,7 @@ function validar(formulario) {
         <td><div align="right"><strong>C&oacute;digo</strong></div></td>
         <td colspan="3">
         	<div align="left">
-          		<input name="codigo" readonly="readonly" style="background:#CCCCCC" type="text" id="codigo2" size="4" value="<?php echo $rowConsultaPresta['codigoprestador'] ?>"/>
+          		<input name="codigo" readonly="readonly" style="background:#CCCCCC" type="text" id="codigo" size="4" value="<?php echo $rowConsultaPresta['codigoprestador'] ?>"/>
         	</div>
         </td>
       </tr>
@@ -285,6 +389,7 @@ function validar(formulario) {
         <td colspan="3">
         	<div align="left">
           		<input name="cuit" type="text" id="cuit" size="13" value="<?php echo $rowConsultaPresta['cuit'] ?>"/>
+ 				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
       </tr>
@@ -344,8 +449,37 @@ function validar(formulario) {
         <td colspan="3"><input name="email2" type="text" id="email2" size="60" value="<?php echo $rowConsultaPresta['email2'] ?>"/></td>
       </tr>
       <tr>
+      	<td><div align="right"><strong>Registro SSS ||</strong></div></td>
+      	<td colspan="3">
+			<div align="left">	
+            	<b>Numero </b><input name="nroSSS" type="text" id="nroSSS" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosss']?>" /> 
+            	<?php 
+            		$disabled = 'disabled=disabled';
+            		$vtosss = '';
+            		if ($rowConsultaPresta['numeroregistrosss'] != NULL && $rowConsultaPresta['numeroregistrosss'] != '') {
+            			$disabled = '';
+            			$vtosss = invertirFecha($rowConsultaPresta['vtoregistrosss'] );
+	            	}?>
+              - <b>Vencimiento </b><input type="text" id="vtoSSS" name="vtoSSS" size="8" <?php echo $disabled?> value="<?php echo $vtosss?>"/>         	
+            	<strong>| Registro SNR ||</strong>
+            	<b>Numero </b><input name="nroSNR" type="text" id="nroSNR" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosnr']?>"/> 
+            	<?php 
+            		$disabled = 'disabled=disabled';
+            		$vtosnr = '';
+            		if ($rowConsultaPresta['numeroregistrosnr'] != NULL && $rowConsultaPresta['numeroregistrosnr'] != '') {
+            			$disabled = '';
+            			$vtosnr = invertirFecha($rowConsultaPresta['vtoregistrosnr'] );
+	            	}?>
+            	
+              - <b>Vencimiento </b><input type="text" id="vtoSNR" name="vtoSNR" size="8" <?php echo $disabled?> value="<?php echo $vtosnr?>"/> |      	
+            	<span id="errorSSS" style="color:#FF0000;font-weight: bold;"></span>
+            	<span id="errorSNR" style="color:#FF0000;font-weight: bold;"></span> 
+          	</div>         
+        </td>
+      </tr>
+      <tr>
         <td><div align="right"><strong>Personer&iacute;a</strong></div></td>
-        <td>
+        <td colspan="3">
         	<div align="left">
           	<?php 
 				if ($rowConsultaPresta['personeria'] == 1) { 
@@ -416,12 +550,6 @@ function validar(formulario) {
 				  </select>	  
 			</div>
 		</td>
-        <td colspan="2">
-            <div align="left">
-            	<strong>Numero Registro SSS</strong>
-              	<input name="nroRegistro" type="text" id="nroRegistro" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosss']?>"/>
-       	 	</div>
-        </td>
       </tr>
       <tr>
         <td><div align="right"><strong>Tratamiento</strong></div></td>
@@ -442,12 +570,14 @@ function validar(formulario) {
         	<div align="left">
         		<strong>Matr&iacute;cula Nacional </strong>
           		<input name="matriculaNac" type="text" id="matriculaNac" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaPresta['matriculanacional']?>"/>
+        		<span id="errorMatNac" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
         <td>
         	<div align="left">
-        		<strong>Matr&iacute;culo Provincial </strong>
+        		<strong>Matr&iacute;cula Provincial </strong>
           		<input name="matriculaPro" type="text" id="matriculaPro" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaPresta['matriculaprovincial'] ?>"/>
+        		<span id="errorMatPro" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
       </tr>

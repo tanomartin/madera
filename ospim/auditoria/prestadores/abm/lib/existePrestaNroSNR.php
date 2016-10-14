@@ -4,9 +4,9 @@ if(isset($_POST['nroreg'])) {
 	$nroreg = $_POST['nroreg'];
 	if (isset($_POST['codigo'])) {
 		$codigo = $_POST['codigo'];
-		$sqlPresta = "SELECT codigoprestador FROM prestadores WHERE numeroregistrosss = '$nroreg' and codigoprestador != '$codigo'";
+		$sqlPresta = "SELECT codigoprestador FROM prestadores WHERE numeroregistrosnr = '$nroreg' and codigoprestador != '$codigo'";
 	} else {
-		$sqlPresta = "SELECT codigoprestador FROM prestadores WHERE numeroregistrosss = '$nroreg'";
+		$sqlPresta = "SELECT codigoprestador FROM prestadores WHERE numeroregistrosnr = '$nroreg'";
 	}
 	$resPresta = mysql_query($sqlPresta,$db);
 	$canPresta = mysql_num_rows($resPresta);

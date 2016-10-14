@@ -21,6 +21,8 @@
 
 jQuery(function($){
 	$("#cuit").mask("99999999999");
+	$("#vtoSSS").mask("99-99-9999");
+	$("#vtoSNR").mask("99-99-9999");
 	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
@@ -59,8 +61,8 @@ jQuery(function($){
 			url: "lib/existePrestaCuit.php",
 			data: {cuit:cuit},
 		}).done(function(respuesta){
-			if (respuesta == 1) {
-				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' existe en otro prestador");
+			if (respuesta != 0) {
+				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' ya existe en el prestador con codigo '"+ respuesta +"'");
 				$("#cuit").val("");
 			} else {
 				$("#errorCuit").html("");
@@ -68,21 +70,52 @@ jQuery(function($){
 		});
 	});
 	
-	$("#nroRegistro").change(function(){
+	$("#nroSSS").change(function(){
 		var nroreg = $(this).val();
-		$.ajax({
-			type: "POST",
-			dataType: "json",
-			url: "lib/existePrestaNroSSS.php",
-			data: {nroreg:nroreg},
-		}).done(function(respuesta){
-			if (respuesta == 1) {
-				$("#errorSSS").html("El Nro de Registro de la SSS '" + nroreg + "' existe en otro prestador");
-				$("#nroRegistro").val("");
-			} else {
-				$("#errorSSS").html("");
-			} 
-		});
+		$("#vtoSSS").val("");
+		if (nroreg == 0) {
+			$("#vtoSSS").prop("disabled", true );
+		} else {
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: "lib/existePrestaNroSSS.php",
+				data: {nroreg:nroreg},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
+					$("#errorSSS").html("<br>El Nro de Registro de la SSS '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+					$("#vtoSSS").prop("disabled", true );
+					$("#nroSSS").val("");
+				} else {
+					$("#errorSSS").html("");
+					$("#vtoSSS").prop("disabled", false );
+				} 
+			});
+		}
+	});
+
+	$("#nroSNR").change(function(){
+		var nroreg = $(this).val();
+		$("#vtoSNR").val("");
+		if (nroreg == 0) {
+			$("#vtoSNR").prop("disabled", true );
+		} else {
+			$.ajax({
+				type: "POST",
+				dataType: "json",
+				url: "lib/existePrestaNroSNR.php",
+				data: {nroreg:nroreg},
+			}).done(function(respuesta){
+				if (respuesta != 0) {
+					$("#errorSNR").html("<br>El Nro de Registro de la SNR '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+					$("#vtoSNR").prop("disabled", true );
+					$("#nroSNR").val("");
+				} else {
+					$("#errorSNR").html("");
+					$("#vtoSNR").prop("disabled", false );
+				} 
+			});
+		}
 	});
 	
 	$("#matriculaNac").change(function(){
@@ -93,8 +126,8 @@ jQuery(function($){
 			url: "lib/existeMatriculaNac.php",
 			data: {matricula:matricula},
 		}).done(function(respuesta){
-			if (respuesta == 1) {
-				$("#errorMatNac").html("La Matricula Nac. Nro. '" + matricula + "' existe en otro prestador");
+			if (respuesta != 0) {
+				$("#errorMatNac").html("<br>La Matricula Nac. Nro. '" + matricula + "' <br>ya existe en el prestador con codigo '"+ respuesta +"'");
 				$("#matriculaNac").val("");
 			} else {
 				$("#errorMatNac").html("");
@@ -110,8 +143,8 @@ jQuery(function($){
 			url: "lib/existeMatriculaPro.php",
 			data: {matricula:matricula},
 		}).done(function(respuesta){
-			if (respuesta == 1) {
-				$("#errorMatPro").html("La Matricula Prov. Nro. '" + matricula + "' existe en otro prestador");
+			if (respuesta != 0) {
+				$("#errorMatPro").html("<br>La Matricula Prov. Nro. '" + matricula + "' <br>ya existe en el prestador con codigo '"+ respuesta +"'");
 				$("#matriculaPro").val("");
 			} else {
 				$("#errorMatPro").html("");
@@ -228,6 +261,16 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	if (formulario.nroSSS.value != "") {
+		if (!esFechaValida(formulario.vtoSSS.value)){
+			return false;
+		}
+	}
+	if (formulario.nroSNR.value != "") {
+		if (!esFechaValida(formulario.vtoSNR.value)){
+			return false;
+		}
+	}
 	var personeria = formulario.selectPersoneria.options[formulario.selectPersoneria.selectedIndex].value;
 	if (personeria == 0) {
 		alert("Debe elegir una Personería");
@@ -296,7 +339,7 @@ function validar(formulario) {
 	}
 	
 	formulario.Submit.disabled = true;
-	return true;
+	return false;
 }
 
 </script>
@@ -375,9 +418,21 @@ function validar(formulario) {
         <td><div align="right"><strong>Email Secundario</strong></div></td>
         <td colspan="3"><div align="left"><input name="email2" type="text" id="email2" size="60" /></div></td>
       </tr>
+      <tr>
+      	<td><div align="right"><strong>Registro SSS ||</strong></div></td>
+      	<td colspan="3">
+			<div align="left">	
+            	<b>Numero </b><input name="nroSSS" type="text" id="nroSSS" size="10" /> - <b>Vencimiento </b><input type="text" id="vtoSSS" name="vtoSSS" size="8" disabled="disabled"/>         	
+            	<strong>| Registro SNR ||</strong>
+            	<b>Numero </b><input name="nroSNR" type="text" id="nroSNR" size="10" /> - <b>Vencimiento </b><input type="text" id="vtoSNR" name="vtoSNR" size="8" disabled="disabled"/> |      	
+            	<span id="errorSSS" style="color:#FF0000;font-weight: bold;"></span>
+            	<span id="errorSNR" style="color:#FF0000;font-weight: bold;"></span> 
+          	</div>         
+        </td>
+      </tr>
 	  <tr>
         <td><div align="right"><strong>Personería</strong></div></td>
-        <td><div align="left">
+        <td colspan="3"><div align="left">
             <select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)">
               <option value="0">Seleccione un valor </option>
               <?php 
@@ -388,13 +443,7 @@ function validar(formulario) {
 			<?php } ?>
             </select>
         </div></td>
-        <td colspan="2">
-			<div id="errorSSS" style="color:#FF0000"></div>
-			<div align="left">
-          		<strong>Numero Registro SSS</strong>
-            	<input name="nroRegistro" type="text" id="nroRegistro" size="10" />
-          	</div>         
-        </td>
+        
       </tr>
 	  <tr>
 	    <td><div align="right"><strong>Tratamiento</strong></div></td>
@@ -412,17 +461,17 @@ function validar(formulario) {
 	    	</div>
 	    </td>
         <td>
-		   	<div id="errorMatNac" style="color:#FF0000"></div>
 		   	<div align="left">
 		   		<strong>Matr&iacute;cula Nacional </strong>
           		<input name="matriculaNac" type="text" id="matriculaNac" size="10" disabled="disabled"/>
+          		<span id="errorMatNac" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
         <td>
-			<div id="errorMatPro" style="color:#FF0000"></div>
 			<div align="left">
-				<strong>Matr&iacute;culo Provincial </strong>
+				<strong>Matr&iacute;cula Provincial </strong>
             	<input name="matriculaPro" type="text" id="matriculaPro" size="10" disabled="disabled"/>
+            	<span id="errorMatPro" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
       </tr>

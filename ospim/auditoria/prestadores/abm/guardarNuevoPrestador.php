@@ -21,14 +21,19 @@ $personeria = $_POST['selectPersoneria'];
 $tratamiento = $_POST['selectTratamiento'];
 $matriculaNac = $_POST['matriculaNac'];
 $matriculaPro = $_POST['matriculaPro'];
-$nroRegistro = $_POST['nroRegistro'];
+$nroRegistroSSS = $_POST['nroSSS'];
+$vtoRegistroSSS = fechaParaGuardar($_POST['vtoSSS']);
+if ($vtoRegistroSSS == "0000-00-00") { $vtoRegistroSSS = "NULL"; }
+$nroRegistroSNR = $_POST['nroSNR'];
+$vtoRegistroSNR = fechaParaGuardar($_POST['vtoSNR']);
+if ($vtoRegistroSNR == "0000-00-00") { $vtoRegistroSNR = "NULL"; }
 $capitado = $_POST['capitado'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistro','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistroSSS','$vtoRegistroSSS','$nroRegistroSNR','$vtoRegistroSNR','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];

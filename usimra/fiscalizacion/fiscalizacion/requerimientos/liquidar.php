@@ -197,8 +197,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
 			
 			$indexCuerpo = $ano.$mes.$ddjj['origen'].$c;
-			//$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen']."|".$ddjj['datos']['ddjjcant'];
-			$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen'];
+			$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen']."|".$ddjj['datos']['ddjjcant'];
 			$c++;
 		}
 	}

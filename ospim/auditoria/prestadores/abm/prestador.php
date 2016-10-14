@@ -1,4 +1,5 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia, t.descripcion FROM prestadores p, localidades l, provincia r, tipoprestador t WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.personeria = t.id";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
@@ -93,34 +94,57 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['email2'] ?></div></td>
         </tr>
         <tr>
-          <td><div align="right" class="title"><strong>Personer&iacute;a</strong></div></td>
-          <td><div align="left"><?php echo $rowConsultaPresta['descripcion'] ?></div></td>
-          <td><div align="left" class="title"><strong>Numero Registro SSS</strong></div></td>
-          <td colspan="4">
+       	  <td><div align="right" class="title"><strong>Numero Registro SSS</strong></div></td>
+          <td>
           	<div align="left">
             	<?php if ($rowConsultaPresta['numeroregistrosss'] != 0) { echo $rowConsultaPresta['numeroregistrosss']; } ?>
           	</div>
           </td>
+          <td><div align="left" class="title"><strong>Vto. Registro SSS</strong></div></td>
+          <td colspan="3">
+          	<div align="left">
+            	<?php if ($rowConsultaPresta['vtoregistrosss'] != NULL) { echo invertirFecha($rowConsultaPresta['vtoregistrosss']); } ?>
+          	</div>
+          </td>
+        </tr>
+        <tr>
+	       <td><div align="left" class="title"><strong>Numero Registro SNR</strong></div></td>
+	       <td>
+	         <div align="left">
+	           <?php if ($rowConsultaPresta['numeroregistrosnr'] != 0) { echo $rowConsultaPresta['numeroregistrosnr']; } ?>
+	          </div>
+	       </td>
+	        <td><div align="left" class="title"><strong>Vto. Registro SNR</strong></div></td>
+	        <td colspan="3">
+	          	<div align="left">
+	            	<?php if ($rowConsultaPresta['vtoregistrosnr'] != NULL) { echo invertirFecha($rowConsultaPresta['vtoregistrosnr']); } ?>
+	          	</div>
+	        </td>
+        </tr>
+        <tr>
+          <td><div align="right" class="title"><strong>Personer&iacute;a</strong></div></td>
+          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['descripcion'] ?></div></td>
+         
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Tratamiento</strong></div></td>
           <td><div align="left">
             <?php 
-		if($rowConsultaPresta['tratamiento'] != 0) {
-			$codigoTrat = $rowConsultaPresta['tratamiento'];
-			$sqlConsultaTrata = "SELECT descripcion FROM tipotratamiento WHERE codigotratamiento = $codigoTrat";
-			$resConsultaTrata = mysql_query($sqlConsultaTrata,$db);
-			$rowConsultaTrata = mysql_fetch_assoc($resConsultaTrata);
-			echo $rowConsultaTrata['descripcion'];
-		} else {
-			echo "-";
-		}
-		?>
+			if($rowConsultaPresta['tratamiento'] != 0) {
+				$codigoTrat = $rowConsultaPresta['tratamiento'];
+				$sqlConsultaTrata = "SELECT descripcion FROM tipotratamiento WHERE codigotratamiento = $codigoTrat";
+				$resConsultaTrata = mysql_query($sqlConsultaTrata,$db);
+				$rowConsultaTrata = mysql_fetch_assoc($resConsultaTrata);
+				echo $rowConsultaTrata['descripcion'];
+			} else {
+				echo "-";
+			}
+			?>
           </div></td>
           <td><div align="left" class="title"><strong>Matr&iacute;cula Nacional </strong></div></td>
           <td><div align="left"><?php echo $rowConsultaPresta['matriculanacional'] ?></div></td>
-          <td><div align="left" class="title"><strong>Matr&iacute;culo Provincial </strong></div></td>
-          <td colspan="2"><div align="left"><?php echo $rowConsultaPresta['matriculaprovincial'] ?></div>          </td>
+          <td><div align="left" class="title"><strong>Matr&iacute;cula Provincial </strong></div></td>
+          <td colspan="2"><div align="left"><?php echo $rowConsultaPresta['matriculaprovincial'] ?></div></td>
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Capitado</strong></div></td>
