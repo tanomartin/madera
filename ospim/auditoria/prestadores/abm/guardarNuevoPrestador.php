@@ -23,10 +23,10 @@ $matriculaNac = $_POST['matriculaNac'];
 $matriculaPro = $_POST['matriculaPro'];
 $nroRegistroSSS = $_POST['nroSSS'];
 $vtoRegistroSSS = fechaParaGuardar($_POST['vtoSSS']);
-if ($vtoRegistroSSS == "0000-00-00") { $vtoRegistroSSS = "NULL"; }
+if ($vtoRegistroSSS == "0000-00-00") { $vtoRegistroSSS = NULL; }
 $nroRegistroSNR = $_POST['nroSNR'];
 $vtoRegistroSNR = fechaParaGuardar($_POST['vtoSNR']);
-if ($vtoRegistroSNR == "0000-00-00") { $vtoRegistroSNR = "NULL"; }
+if ($vtoRegistroSNR == "0000-00-00") { $vtoRegistroSNR = NULL; }
 $capitado = $_POST['capitado'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
