@@ -72,8 +72,8 @@ if ($canEmpresas > 0) {
 				}
 				$copole = intval(preg_replace('/[^0-9]+/', '', $rowEmpresas['copole']), 10); 
 				$descrip = "Alta por proceso actualizador de aplicativo DDJJ (id: $idControl)";
-				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".addslashes($rowEmpresas['nombre'])."',".$rowEmpresas['provin'].",'$indPostal',".$copole.",'','$locali','".addslashes($rowEmpresas['domile'])."','','".addslashes($rowEmpresas['telfon'])."','','','','',0,3,'".$rowEmpresas['activi']."','','$descrip','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
-				$sqlInsertJuris = "INSERT INTO jurisdiccion VALUE('".$rowEmpresas['nrcuit']."','3200',".$rowEmpresas['provin'].",'$indPostal',".$copole.",'',$locali,'".addslashes($rowEmpresas['domile'])."','','".$rowEmpresas['telfon']."','','".$rowEmpresas['emails']."',100)";
+				$sqlInsertCabe = "INSERT INTO empresas VALUE('".$rowEmpresas['nrcuit']."','".addslashes($rowEmpresas['nombre'])."',".$codProvin.",'$indPostal',".$copole.",'','$locali','".addslashes($rowEmpresas['domile'])."','','".addslashes($rowEmpresas['telfon'])."','','','','',0,3,'".$rowEmpresas['activi']."','','$descrip','','".$rowEmpresas['fecini']."','".$rowEmpresas['emails']."','','$fecharegistro','$usuarioregistro','','',DEFAULT)";
+				$sqlInsertJuris = "INSERT INTO jurisdiccion VALUE('".$rowEmpresas['nrcuit']."','3200',".$codProvin.",'$indPostal',".$copole.",'',$locali,'".addslashes($rowEmpresas['domile'])."','','".$rowEmpresas['telfon']."','','".$rowEmpresas['emails']."',100)";
 	
 				$sqlInsertEmpresas[$n] = array("empresa" => $sqlInsertCabe, "jurisdiccion" => $sqlInsertJuris);
 				$listadoEmpresas[$n] = array('estado'=> 'I', 'cuit' => $cuitInsert, 'nombre' => $nombre);

@@ -40,19 +40,21 @@ if ($canEmpleadosdebaja > 0) {
 			$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
 			$resprovin = mysql_query($sqlprovin,$db); 
 			$canprovin = mysql_num_rows($resprovin); 
-			if ($codProvin == 1) {
+			if ($canprovin == 1) {
 				$rowprovin = mysql_fetch_assoc($resprovin);
 				$codProvin = $rowprovin['codprovin'];
 			} else {
 				$codProvin = 0;
 			}
 			
+			$copole = intval(preg_replace('/[^0-9]+/', '', $rowEmpleadodebaja['copole']), 10);
+			
 			$sqlInsertTituBaja = "INSERT INTO empleadosdebajausimra VALUE(
 			'".$rowEmpleadodebaja['id']."',
 			'".$rowEmpleadodebaja['nrcuit']."','".$rowEmpleadodebaja['nrcuil']."','".addslashes($rowEmpleadodebaja['apelli'])."','".addslashes($rowEmpleadodebaja['nombre'])."',
 			'".$rowEmpleadodebaja['fecing']."','".$rowEmpleadodebaja['tipdoc']."','".$rowEmpleadodebaja['nrodoc']."','".$rowEmpleadodebaja['ssexxo']."',
 			'".$rowEmpleadodebaja['fecnac']."','".$rowEmpleadodebaja['estciv']."','".addslashes($rowEmpleadodebaja['direcc'])."','".addslashes($rowEmpleadodebaja['locale'])."',
-			'".$rowEmpleadodebaja['copole']."','".$codProvin."',
+			'".$copole."','".$codProvin."',
 			'".$rowEmpleadodebaja['nacion']."','".$rowEmpleadodebaja['rramaa']."','".$rowEmpleadodebaja['catego']."',
 			'".$rowEmpleadodebaja['activo']."','1')";
 			

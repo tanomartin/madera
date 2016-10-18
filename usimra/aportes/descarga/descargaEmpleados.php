@@ -89,7 +89,7 @@ if ($canEmpleados > 0) {
 										rramaa = '".$rowEmpleados['rramaa']."',
 										catego = '".$rowEmpleados['catego']."',
 										activo = '".$rowEmpleados['activo']."'
-								WHERE nrcuil = $cuilInsert and nrcuil = $cuitInsert";
+								WHERE nrcuit = $cuitInsert and nrcuil = $cuilInsert";
 			$sqlEjecuciones[$n] = $sqlUpdateTitu;
 		}
 		$sqlUpdateBajadaEmpleados[$u] = "UPDATE empleados SET bajada = 1 WHERE nrcuil = $cuilInsert and nrcuit = $cuitInsert";
