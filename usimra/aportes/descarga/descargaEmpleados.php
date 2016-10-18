@@ -35,8 +35,9 @@ if ($canEmpleados > 0) {
 		//print($sqlEmpleadoInsert);
 		$resEmpleadoInsert = mysql_query($sqlEmpleadoInsert,$db); 
 		$canEmpleadoInsert = mysql_num_rows($resEmpleadoInsert); 
+		$copole = intval(preg_replace('/[^0-9]+/', '', $rowEmpleados['copole']), 10);	
+		
 		if ($canEmpleadoInsert == 0) {
-
 			$codProvinApli = $rowEmpleados['provin'];
 			$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
 			$resprovin = mysql_query($sqlprovin,$db); 
@@ -46,12 +47,11 @@ if ($canEmpleados > 0) {
 				$codProvin = $rowprovin['codprovin'];
 			} else {
 				$codProvin = 0;
-			}
-			
+			}	
 			$sqlInsertTitu = "INSERT INTO empleadosusimra VALUE(
 			'".$rowEmpleados['nrcuit']."','".$rowEmpleados['nrcuil']."','".addslashes($rowEmpleados['apelli'])."','".addslashes($rowEmpleados['nombre'])."','".$rowEmpleados['fecing']."',
 			'".$rowEmpleados['tipdoc']."','".$rowEmpleados['nrodoc']."','".$rowEmpleados['ssexxo']."','".$rowEmpleados['fecnac']."','".$rowEmpleados['estciv']."',
-			'".addslashes($rowEmpleados['direcc'])."','".addslashes($rowEmpleados['locale'])."','".$rowEmpleados['copole']."','".$codProvin."','".addslashes($rowEmpleados['nacion'])."',
+			'".addslashes($rowEmpleados['direcc'])."','".addslashes($rowEmpleados['locale'])."','".$copole."','".$codProvin."','".addslashes($rowEmpleados['nacion'])."',
 			'".$rowEmpleados['rramaa']."','".$rowEmpleados['catego']."','".$rowEmpleados['activo']."','1')";
 			
 			$sqlEmpleadoInsert = "select nrcuil, nrcuit from empleadosdebajausimra where nrcuil = $cuilInsert and nrcuit = $cuitInsert";
@@ -92,7 +92,7 @@ if ($canEmpleados > 0) {
 										estciv = '".$rowEmpleados['estciv']."',
 										direcc = '".addslashes($rowEmpleados['direcc'])."',
 										locale = '".addslashes($rowEmpleados['locale'])."',
-										copole = '".$rowEmpleados['copole']."',
+										copole = '".$copole."',
 										provin = '".$codProvin."',
 										nacion = '".addslashes($rowEmpleados['nacion'])."',
 										rramaa = '".$rowEmpleados['rramaa']."',
