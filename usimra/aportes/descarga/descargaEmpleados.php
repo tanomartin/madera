@@ -35,19 +35,21 @@ if ($canEmpleados > 0) {
 		//print($sqlEmpleadoInsert);
 		$resEmpleadoInsert = mysql_query($sqlEmpleadoInsert,$db); 
 		$canEmpleadoInsert = mysql_num_rows($resEmpleadoInsert); 
+		
 		$copole = intval(preg_replace('/[^0-9]+/', '', $rowEmpleados['copole']), 10);	
 		
+		$codProvinApli = $rowEmpleados['provin'];
+		$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
+		$resprovin = mysql_query($sqlprovin,$db);
+		$canprovin = mysql_num_rows($resprovin);
+		if ($canprovin == 1) {
+			$rowprovin = mysql_fetch_assoc($resprovin);
+			$codProvin = $rowprovin['codprovin'];
+		} else {
+			$codProvin = 0;
+		}
+		
 		if ($canEmpleadoInsert == 0) {
-			$codProvinApli = $rowEmpleados['provin'];
-			$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
-			$resprovin = mysql_query($sqlprovin,$db); 
-			$canprovin = mysql_num_rows($resprovin); 
-			if ($codProvin == 1) {
-				$rowprovin = mysql_fetch_assoc($resprovin);
-				$codProvin = $rowprovin['codprovin'];
-			} else {
-				$codProvin = 0;
-			}	
 			$sqlInsertTitu = "INSERT INTO empleadosusimra VALUE(
 			'".$rowEmpleados['nrcuit']."','".$rowEmpleados['nrcuil']."','".addslashes($rowEmpleados['apelli'])."','".addslashes($rowEmpleados['nombre'])."','".$rowEmpleados['fecing']."',
 			'".$rowEmpleados['tipdoc']."','".$rowEmpleados['nrodoc']."','".$rowEmpleados['ssexxo']."','".$rowEmpleados['fecnac']."','".$rowEmpleados['estciv']."',
@@ -70,17 +72,6 @@ if ($canEmpleados > 0) {
 				$empleadosInsert++;
 			}
 		} else {
-			$listadoEmpleados[$n] = array("estado" => 'M', "cuil" =>  $rowEmpleados['nrcuil'], "cuit" => $rowEmpleados['nrcuit'], "nombre" => $rowEmpleados['apelli'].", ".$rowEmpleados['nombre']);
-			$codProvinApli = $rowEmpleados['provin'];
-			$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
-			$resprovin = mysql_query($sqlprovin,$db); 
-			$canprovin = mysql_num_rows($resprovin); 
-			if ($codProvin == 1) {
-				$rowprovin = mysql_fetch_assoc($resprovin);
-				$codProvin = $rowprovin['codprovin'];
-			} else {
-				$codProvin = 0;
-			}
 			$sqlUpdateTitu = "UPDATE empleadosusimra SET 
 										apelli = '".addslashes($rowEmpleados['apelli'])."',
 										nombre = '".addslashes($rowEmpleados['nombre'])."',
