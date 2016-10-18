@@ -43,7 +43,7 @@ if ($canEmpresas > 0) {
 				$sqlprovin = "select codprovin from provincia where codzeus = $codProvinApli";
 				$resprovin = mysql_query($sqlprovin,$db); 
 				$canprovin = mysql_num_rows($resprovin); 
-				if ($codProvin == 1) {
+				if ($canprovin == 1) {
 					$rowprovin = mysql_fetch_assoc($resprovin);
 					$codProvin = $rowprovin['codprovin'];
 				} else {
