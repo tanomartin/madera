@@ -5,7 +5,8 @@ set_time_limit(0);
 print("<br>");
 
 $idControl = $_POST['idControl'];
-
+$fecharegistro = date("Y-m-d H:i:s");
+$usuarioregistro = $_SESSION['usuario'];
 $hostaplicativo = $hostUsimra;
 //$hostaplicativo = "localhost";
 $usuarioaplicativo = $usuarioUsimra;
