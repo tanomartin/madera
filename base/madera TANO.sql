@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 14-10-2016 a las 20:20:29
+-- Tiempo de generación: 21-10-2016 a las 15:45:58
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS `aporcontroldescarga` (
   `cantidadtitularesbaja` int(4) unsigned DEFAULT NULL,
   `cantidadfamiliaresbaja` int(4) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=114 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=123 ;
 
 -- --------------------------------------------------------
 
@@ -2807,7 +2807,7 @@ CREATE TABLE IF NOT EXISTS `practicas` (
   `unihonorarioanestesista` decimal(4,2) DEFAULT NULL,
   `unigastos` decimal(4,2) DEFAULT NULL,
   PRIMARY KEY (`idpractica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2399 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2422 ;
 
 -- --------------------------------------------------------
 
@@ -2961,11 +2961,15 @@ CREATE TABLE IF NOT EXISTS `producto` (
   `numeropoliza` char(50) DEFAULT NULL,
   `activo` int(1) unsigned NOT NULL,
   `descripcion` text,
+  `sistemaoperativo` varchar(150) DEFAULT NULL,
+  `idso` varchar(150) DEFAULT NULL,
+  `office` varchar(150) DEFAULT NULL,
+  `idoffice` varchar(150) DEFAULT NULL,
   `fechainicio` date DEFAULT NULL,
   `fechabaja` date DEFAULT NULL,
   `fechamodificacion` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=97 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=107 ;
 
 -- --------------------------------------------------------
 
