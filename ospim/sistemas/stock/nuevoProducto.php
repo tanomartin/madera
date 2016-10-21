@@ -25,6 +25,26 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 jQuery(function($){
 	$("#fecIni").mask("99-99-9999");
+
+	$("#sisop").change(function(){
+		var sisop = $(this).val();
+		$("#idsisop").val("");
+		if (sisop == '') {
+			$("#idsisop").prop("disabled", true );
+		} else {
+			$("#idsisop").prop("disabled", false );
+		}
+	});
+
+	$("#office").change(function(){
+		var sisop = $(this).val();
+		$("#idoffice").val("");
+		if (sisop == '') {
+			$("#idoffice").prop("disabled", true );
+		} else {
+			$("#idoffice").prop("disabled", false );
+		}
+	});
 });
 
 function cargoSector(ubicacion) {
@@ -78,6 +98,18 @@ function validar(formulario) {
 	if (formulario.valor.value == "" || !isNumberPositivo(formulario.valor.value)) {
 		alert("Error en valor original");
 		return(false);
+	}
+	if (formulario.sisop.value != "") {
+		if (formulario.idsisop.value == "") {
+			alert("Debe cargar el id del Sistema Operativo");
+			return(false);
+		}
+	}
+	if (formulario.office.value != "") {
+		if (formulario.idoffice.value == "") {
+			alert("Debe cargar el id del Office");
+			return(false);
+		}
 	}
 	if (formulario.fecIni.value != "") {
 		if (!esFechaValida(formulario.fecIni.value)) {
@@ -136,6 +168,18 @@ function validar(formulario) {
                         <option value="O">OSPIM</option>
                       </select>
                     </label></td>				
+                  </tr>
+                  <tr>
+                  	<td>Sistema Operativo</td>
+                  	<td><input id="sisop" name="sisop" size="50" /></td>
+                  	<td>ID Sis-Op</td>
+                  	<td><input id="idsisop" name="idsisop" size="50" disabled="disabled"/></td>
+                  </tr>
+                  <tr>
+                  	<td>Version Office</td>
+                  	<td><input id="office" name="office" size="50" /></td>
+                  	<td>ID Office</td>
+                  	<td><input id="idoffice" name="idoffice" size="50" disabled="disabled"/></td>
                   </tr>
                   <tr>
                     <td>Sector</td>

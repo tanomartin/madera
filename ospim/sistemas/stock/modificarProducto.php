@@ -33,6 +33,26 @@ A:hover {text-decoration: none;color:#00FFFF }
 jQuery(function($){
 	$("#fecIni").mask("99-99-9999");
 	$("#fecBaja").mask("99-99-9999");
+
+	$("#sisop").change(function(){
+		var sisop = $(this).val();
+		$("#idsisop").val("");
+		if (sisop == '') {
+			$("#idsisop").prop("disabled", true );
+		} else {
+			$("#idsisop").prop("disabled", false );
+		}
+	});
+
+	$("#office").change(function(){
+		var sisop = $(this).val();
+		$("#idoffice").val("");
+		if (sisop == '') {
+			$("#idoffice").prop("disabled", true );
+		} else {
+			$("#idoffice").prop("disabled", false );
+		}
+	});
 });
 
 function cargoSector(ubicacion) {
@@ -96,6 +116,18 @@ function validar(formulario) {
 		alert("Error en valor original");
 		return(false);
 	}
+	if (formulario.sisop.value != "") {
+		if (formulario.idsisop.value == "") {
+			alert("Debe cargar el id del Sistema Operativo");
+			return(false);
+		}
+	}
+	if (formulario.office.value != "") {
+		if (formulario.idoffice.value == "") {
+			alert("Debe cargar el id del Office");
+			return(false);
+		}
+	}
 	if (formulario.fecIni.value != "") {
 		if (!esFechaValida(formulario.fecIni.value)) {
 			alert("Fecha de Inicio invalida");
@@ -154,7 +186,20 @@ function validar(formulario) {
                     <td>Valor Original </td>
                     <td><input name="valor" type="text" id="valor" size="14" maxlength="14" value="<?php echo $rowProd['valororiginal'] ?>"/></td>
                   </tr>
-
+				  <tr>
+                  	<td>Sistema Operativo</td>
+                  	<td><input id="sisop" name="sisop" size="50" value="<?php echo $rowProd['sistemaoperativo'] ?>"/></td>
+                  	<td>ID Sis-Op</td>
+                  	<?php if ($rowProd['sistemaoperativo'] == '') { $disabled = 'disabled'; } else { $disabled = ''; } ?>
+                  	<td><input id="idsisop" name="idsisop" size="50" value="<?php echo $rowProd['idso'] ?>" <?php echo $disabled?>/></td>
+                  </tr>
+                  <tr>
+                  	<td>Version Office</td>
+                  	<td><input id="office" name="office" size="50" value="<?php echo $rowProd['office'] ?>"/></td>
+                  	<td>ID Office</td>
+                  	<?php if ($rowProd['office'] == '') { $disabled = 'disabled'; } else { $disabled = ''; } ?>
+                  	<td><input id="idoffice" name="idoffice" size="50" value="<?php echo $rowProd['idoffice'] ?>" <?php echo $disabled?>/></td>
+                  </tr>
                   <tr>
                     <td>Fecha Inicio </td>
                     <td><input name="fecIni" type="text" id="fecIni" size="12" maxlength="12" value="<?php echo invertirFecha($rowProd['fechainicio']) ?>"/></td>

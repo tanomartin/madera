@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 
-//var_dump($_POST);
+var_dump($_POST);
 
 $arrayProducto = $_POST['producto'];
 $nombre = $_POST['nombre'];
@@ -10,14 +10,17 @@ $nroserie = $_POST['nroserie'];
 $descrip = $_POST['descrip'];
 $valor = number_format($_POST['valor'],2,'.','');
 $fecIni = fechaParaGuardar($_POST['fecIni']);
+$sisop = $_POST['sisop'];
+$idsisop = $_POST['idsisop'];
+$office = $_POST['office'];
+$idoffice = $_POST['idoffice'];
 $ubicacion = $_POST['ubicacion'];
 $sector = $_POST['sector'];
 $usuario = $_POST['usuario'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 
-$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip','$fecIni',DEFAULT,DEFAULT)";
-
+$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip','$sisop','$idsisop','$office','$idoffice','$fecIni',DEFAULT,DEFAULT)";
 
 $datos = array_values($_POST);
 //var_dump($datos);
@@ -36,7 +39,7 @@ try {
 	//print($sqlInsertUbicacion."<br>");
 	$dbh->exec($sqlInsertUbicacion);
 	
-	for ($i = 8; $i < sizeof($datos); $i++) {
+	for ($i = 11; $i < sizeof($datos); $i++) {
 		$idInsumo = $datos[$i];
 		$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$idProd)";
 		//print($sqlInsuProd."<br>");
