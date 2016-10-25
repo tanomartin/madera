@@ -365,7 +365,7 @@ jQuery(function($){
           <thead>
             <tr>
               <th>C&oacute;digo</th>
-              <?php if ($rowConsultaPresta['personeria'] == 3 ) { ?><th class="filter-select" data-placeholder="Seleccione Categoria">Categoria</th> <?php } ?>
+              <?php if ($rowConsultaPresta['personeria'] == 3 || $rowConsultaPresta['personeria'] == 2) { ?><th class="filter-select" data-placeholder="Seleccione Categoria">Categoria</th> <?php } ?>
 			  <th class="filter-select" data-placeholder="Seleccione Nomenclador">Nomenclador</th>
 			  <th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
 			  <th class="filter-select" data-placeholder="Seleccione Capitulo">Capitulo</th>
@@ -388,7 +388,7 @@ jQuery(function($){
 				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
 				<tr>
 				  <td><?php echo $rowPracticas['codigopractica'] ?></td>
-				  <?php if ($rowConsultaPresta['personeria'] == 3 ) { ?><td><?php echo $rowPracticas['categoria'] ?></td><?php } ?>
+				  <?php if ($rowConsultaPresta['personeria'] == 3 || $rowConsultaPresta['personeria'] == 2) { ?><td><?php echo $rowPracticas['categoria'] ?></td><?php } ?>
 				  <td><?php echo $rowPracticas['nombrenomenclador'] ?></td>
 				  <td><?php echo $rowPracticas['tipo'] ?></td>
 				  <td><?php echo $descripPractica['capitulo'] ?></td>
