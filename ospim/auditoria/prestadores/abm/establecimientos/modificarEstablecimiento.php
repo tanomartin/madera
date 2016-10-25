@@ -138,7 +138,7 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'establecimiento.php?codigoprof=<?php echo $codigoprof ?>&codigopresta=<?php echo $codigopresta ?>'" />
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'establecimiento.php?codigoprof=<?php echo $codigo ?>&codigopresta=<?php echo $codigopresta ?>'" />
   </span>  
   </p>
    <p class="Estilo1">Modificar Establecimiento</p>
