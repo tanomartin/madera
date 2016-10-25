@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-10-2016 a las 15:45:58
+-- Tiempo de generación: 25-10-2016 a las 15:37:02
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -1965,26 +1965,26 @@ CREATE TABLE IF NOT EXISTS `empresasdebaja` (
 CREATE TABLE IF NOT EXISTS `establecimientos` (
   `codigo` int(4) NOT NULL AUTO_INCREMENT,
   `codigoprestador` int(4) NOT NULL,
-  `nombre` char(100) NOT NULL,
-  `domicilio` char(50) NOT NULL,
+  `nombre` char(100) CHARACTER SET latin1 NOT NULL,
+  `domicilio` char(50) CHARACTER SET latin1 NOT NULL,
   `codlocali` int(6) NOT NULL,
   `codprovin` int(2) NOT NULL,
-  `indpostal` char(1) DEFAULT NULL,
+  `indpostal` char(1) CHARACTER SET latin1 DEFAULT NULL,
   `numpostal` int(4) NOT NULL,
-  `alfapostal` char(3) DEFAULT NULL,
+  `alfapostal` char(3) CHARACTER SET latin1 DEFAULT NULL,
   `telefono1` bigint(10) DEFAULT NULL,
-  `ddn1` char(5) DEFAULT NULL,
+  `ddn1` char(5) CHARACTER SET latin1 DEFAULT NULL,
   `telefono2` bigint(10) DEFAULT NULL,
-  `ddn2` char(5) DEFAULT NULL,
+  `ddn2` char(5) CHARACTER SET latin1 DEFAULT NULL,
   `telefonofax` bigint(10) DEFAULT NULL,
-  `ddnfax` char(5) DEFAULT NULL,
-  `email` char(60) DEFAULT NULL,
+  `ddnfax` char(5) CHARACTER SET latin1 DEFAULT NULL,
+  `email` char(60) CHARACTER SET latin1 DEFAULT NULL,
   `fecharegistro` datetime NOT NULL,
-  `usuarioregistro` char(50) NOT NULL,
+  `usuarioregistro` char(50) CHARACTER SET latin1 NOT NULL,
   `fehamodificacion` datetime NOT NULL,
-  `usuariomodificacion` char(50) NOT NULL,
+  `usuariomodificacion` char(50) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 

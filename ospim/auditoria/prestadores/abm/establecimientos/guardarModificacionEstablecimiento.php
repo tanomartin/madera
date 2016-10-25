@@ -2,7 +2,7 @@
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 $codigopresta = $_GET['codigopresta'];
-var_dump($_POST);echo "<br>";
+//var_dump($_POST);echo "<br>";
 
 $codigo = $_POST['codigo'];
 $nombre = $_POST['nombre'];

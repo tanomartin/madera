@@ -34,7 +34,7 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	print($sqlInsertProf."<br>");
+	//print($sqlInsertProf."<br>");
 	$dbh->exec($sqlInsertProf);
 	$codigoNextPresta = $dbh->lastInsertId();
 	
