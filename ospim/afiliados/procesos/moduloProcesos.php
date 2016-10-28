@@ -36,7 +36,7 @@ A:hover {text-decoration: none;color:#00FFFF }
           <p align="center"><a class="enlace" href="reactivaTitulares/reactivaTitulares.php"><img src="../img/reactivacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
        <td width="200"><p align="center">Comparación Padron SSS</p>
-          <p align="center"><a class="enlace" href="../../moduloNoDisponible.php"><img src="../img/mirroring.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="cruceSSS/menuCruceSSS.php"><img src="../img/mirroring.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
     </tr>
   </table>
