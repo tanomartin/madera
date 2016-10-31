@@ -137,15 +137,7 @@ if(isset($_POST) && !empty($_POST)) {
 		$tipoinformesss = "A";
 		$fechainformesss = "";
 		$usuarioinformesss = "";
-		$foto = "";
-		$archivo = '../img/Familiar sin Foto.jpg';
-		if ($archivo != "") {
-			$fp = fopen($archivo, 'r');
-			if ($fp){
-				$foto = fread($fp, filesize($archivo));
-				fclose($fp);
-			}
-		}
+		$foto = NULL;
 		$fecharegistro = date("Y-m-d H:m:s");
 		$usuarioregistro = $_SESSION['usuario'];
 		$fechamodificacion = "";
