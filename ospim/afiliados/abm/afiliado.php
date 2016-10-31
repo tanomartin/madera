@@ -541,7 +541,13 @@ function validar(formulario) {
 </div>
 <table width="100%" height="100" border="0">
   <tr>
-	<td width="165" align="left" valign="middle"><?php echo "<img src='mostrarFoto.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."' alt='Foto' width='115' height='115'>" ?></td>
+	<td width="165" align="left" valign="middle">
+		<?php if ($rowTitular['foto'] != NULL) { 
+				echo "<img src='mostrarFoto.php?nroAfi=".$nroafiliado."&estAfi=".$estafiliado."' alt='Foto' width='115' height='115'>"; 
+			  } else {
+			  	echo "<img src='../img/Titular sin Foto.jpg' alt='Foto' width='115' height='115'>";
+			  }?>
+	</td>
     <td align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span><strong>  
     <input name="nroafiliado" type="text" id="nroafiliado" value="<?php echo $rowTitular['nroafiliado'] ?>" size="9" readonly="readonly" style="background-color:#CCCCCC" /></strong></div></td>
   </tr>
