@@ -9,17 +9,16 @@ while ($rowFamiSSS = mysql_fetch_assoc ($resFamiSSS)) {
 	$arrayFamiSSS[$rowFamiSSS['cuilfamiliar']] = array('cuiltitular'=> $rowFamiSSS['cuiltitular'], 'nrodoc' => $rowFamiSSS['nrodocumento'], 'cuit' => $rowFamiSSS['cuit'], 'nombre' => $rowFamiSSS['apellidoynombre'], 'tipotitular' => $rowFamiSSS['tipotitular'], 'osopcion' => $rowFamiSSS['osopcion']);
 }
 
-$sqlFami = "SELECT DISTINCT cuil, nrodocumento, nroafiliado  FROM familiares t";
+$sqlFami = "SELECT DISTINCT cuil, nrodocumento, nroafiliado FROM familiares t";
 $resFami = mysql_query ( $sqlFami, $db );
 $arrayFami = array();
 while ($rowFami = mysql_fetch_assoc ($resFami)) {
-	$rowFami[$rowFami['cuil']] = $rowFami['nrodocumento'];
+	$arrayFami[$rowFami['cuil']] = $rowFami['nrodocumento'];
 }
 
 $sqlFamiBaja = "SELECT DISTINCT cuil, nrodocumento, nroafiliado  FROM familiaresdebaja t";
 $resFamiBaja = mysql_query ( $sqlFamiBaja, $db );
 $arrayFamiBaja = array();
-$arrayFamiNroAfil = array();
 while ($rowFamiBaja = mysql_fetch_assoc ($resFamiBaja)) {
 	$arrayFamiBaja[$rowFamiBaja['cuil']] = $rowFamiBaja['nrodocumento'];
 	$arrayFamiNroAfil[$rowFamiBaja['cuil']] = $rowFamiBaja['nroafiliado'];
@@ -87,7 +86,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{3:{filter:false, sorter:false}},
+		headers:{4:{filter:false, sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -104,7 +103,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{4:{filter:false, sorter:false}},
+		headers:{5:{filter:false, sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -222,6 +221,7 @@ function validar(formulario) {
 					<tr>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
+						<th>C.U.I.L. Titular</th>
 						<th>C.U.I.T.</th>
 						<th><input type="checkbox" name="selecAllAlta" id="selecAllAlta" onchange="checkall(this, this.form, 'alta')" /></th>
 					</tr>
@@ -231,6 +231,7 @@ function validar(formulario) {
 						<tr>	
 							<td><?php echo $cuil ?></td>
 							<td><?php echo $fami['nombre']?></td>
+							<td><?php echo $fami['cuiltitular']?></td>
 							<td><?php echo $fami['cuit']?></td>
 							<td><input type="checkbox" name="<?php echo "A".$cuil ?>" id="alta" value="<?php echo $fami['cuit']."-".$fami['osopcion'] ?>" /></td>
 						</tr>
@@ -248,6 +249,7 @@ function validar(formulario) {
 						<th>Nro. Afiliado</th>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
+						<th>C.U.I.L. Titular</th>
 						<th>C.U.I.T.</th>
 						<th><input type="checkbox" name="selecAllReactiva" id="selecAllReactiva" onchange="checkall(this, this.form,'activar')" /></th>
 					</tr>
@@ -258,6 +260,7 @@ function validar(formulario) {
 							<td><?php echo $fami['nroafil'] ?></td>
 							<td><?php echo $cuil ?></td>
 							<td><?php echo $fami['nombre']?></td>
+							<td><?php echo $fami['cuiltitular']?></td>
 							<td><?php echo $fami['cuit']?></td>
 							<td><input type="checkbox" name="<?php echo "R".$cuil ?>" id="activar" value="<?php echo $fami['cuit']."-".$fami['osopcion']."-".$fami['nroafil'] ?>" /></td>
 						</tr>
@@ -276,6 +279,7 @@ function validar(formulario) {
 					<tr>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
+						<th>C.U.I.L. Titular</th>
 						<th>C.U.I.T.</th>
 						<th>Nro. Documento</th>
 					</tr>
@@ -285,6 +289,7 @@ function validar(formulario) {
 						<tr>	
 							<td><?php echo $cuil ?></td>
 							<td><?php echo $fami['nombre']?></td>
+							<td><?php echo $fami['cuiltitular']?></td>
 							<td><?php echo $fami['cuit']?></td>
 							<td><?php echo $fami['nrodoc']?></td>
 						</tr>
