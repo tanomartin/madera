@@ -8,18 +8,19 @@ while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
 	$arrayTituSSS[$rowTituSSS['cuiltitular']] = array('nrodoc' => $rowTituSSS['nrodocumento'], 'cuit' => $rowTituSSS['cuit'], 'nombre' => $rowTituSSS['apellidoynombre'], 'tipotitular' => $rowTituSSS['tipotitular'], 'osopcion' => $rowTituSSS['osopcion']);
 }
 
-$sqlTitu = "SELECT DISTINCT cuil, nrodocumento  FROM titulares t";
+$sqlTitu = "SELECT DISTINCT cuil, nrodocumento, nroafiliado  FROM titulares t";
 $resTitu = mysql_query ( $sqlTitu, $db );
 $arrayTitu = array();
 while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
 	$arrayTitu[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
 }
 
-$sqlTitu = "SELECT DISTINCT cuil, nrodocumento  FROM titularesdebaja t";
+$sqlTitu = "SELECT DISTINCT cuil, nrodocumento, nroafiliado  FROM titularesdebaja t";
 $resTitu = mysql_query ( $sqlTitu, $db );
 $arrayTituBaja = array();
 while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
 	$arrayTituBaja[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
+	$arrayTituNroAfil[$rowTitu['cuil']] = $rowTitu['nroafiliado'];
 }
 
 $arrayActivar = array();
@@ -33,9 +34,13 @@ foreach ($arrayTituSSS as $cuil => $titu) {
 	if (!array_key_exists ($cuil , $arrayTitu)) {
 		if (!array_key_exists ($cuil , $arrayTituBaja)) {
 			if(!in_array($titu['nrodoc'], $arrayTitu)) {
-				$cantAlta++;
-				if (sizeof($arrayAlta) < $limiteArray) {
-					$arrayAlta[$cuil] = $titu;
+				if(!in_array($titu['nrodoc'], $arrayTituBaja)) {
+					$cantAlta++;
+					if (sizeof($arrayAlta) < $limiteArray) {
+						$arrayAlta[$cuil] = $titu;
+					}
+				} else {
+					$arrayInforme[$cuil] = $titu;
 				}
 			} else {
 				$arrayInforme[$cuil] = $titu;
@@ -44,6 +49,7 @@ foreach ($arrayTituSSS as $cuil => $titu) {
 			$cantReac++;
 			if (sizeof($arrayActivar) < $limiteArray) {
 				$arrayActivar[$cuil] = $titu;
+				$arrayActivar[$cuil] += array("nroafil" => $arrayTituNroAfil[$cuil]); 
 			}
 		}
 	} 
@@ -96,7 +102,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{3:{filter:false, sorter:false}},
+		headers:{4:{filter:false, sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -231,6 +237,7 @@ function validar(formulario) {
 			<table style="text-align: center; width: 900px" id="tablaReactiva" class="tablesorter">	
 				<thead>
 					<tr>
+						<th>Nro. Afiliado</th>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
 						<th>C.U.I.T.</th>
@@ -240,10 +247,11 @@ function validar(formulario) {
 				<tbody>
 				<?php foreach ($arrayActivar as $cuil => $titu) { ?>
 						<tr>	
+							<td><?php echo $titu['nroafil'] ?></td>
 							<td><?php echo $cuil ?></td>
 							<td><?php echo $titu['nombre']?></td>
 							<td><?php echo $titu['cuit']?></td>
-							<td><input type="checkbox" name="<?php echo "R".$cuil ?>" id="activar" value="<?php echo $titu['cuit'].'-'.$titu['tipotitular']."-".$titu['osopcion'] ?>" /></td>
+							<td><input type="checkbox" name="<?php echo "R".$cuil ?>" id="activar" value="<?php echo $titu['cuit'].'-'.$titu['tipotitular']."-".$titu['osopcion']."-".$titu['nroafil'] ?>" /></td>
 						</tr>
 				<?php } ?>
 				</tbody>
