@@ -38,7 +38,7 @@ function mostrar(dire) {
         <p align="center"><a class="enlace" href="javascript:mostrar('titulares/buscaTitularesSSS.php')"><img src="img/descargaTitulares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
       <td width="200"><p align="center">Descarga Familiares SSS</p>
-          <p align="center"><a class="enlace" href="#"><img src="img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="javascript:mostrar('familiares/buscaFamiliaresSSS.php')"><img src="img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
     </tr>
     <tr>
