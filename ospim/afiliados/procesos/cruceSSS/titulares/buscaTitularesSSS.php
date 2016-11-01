@@ -202,6 +202,7 @@ function validar(formulario) {
 	formulario.selecAllAlta.disabled = "true";
 	formulario.selecAllReactiva.disabled = "true";
 	formulario.submit.disabled = "true";
+	$.blockUI({ message: "<h1>Realizando Proceso Pedido... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	return true;
 }
 
