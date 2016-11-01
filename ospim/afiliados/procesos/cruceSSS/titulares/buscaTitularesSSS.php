@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 include ($libPath . "controlSessionOspim.php");
+set_time_limit(0);
 
 $sqlTituSSS = "SELECT DISTINCT cuiltitular, nrodocumento, cuit, apellidoynombre, tipotitular, osopcion FROM padronsss p where parentesco = 0";
 $resTituSSS = mysql_query ( $sqlTituSSS, $db );
