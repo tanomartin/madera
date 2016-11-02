@@ -46,10 +46,17 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p></td>
     </tr>
     <tr>
-    	<td colspan="3">
+    	<td>
     		<p align="center">Busqueda </p>
-        <p align="center"><a class="enlace" href="buscadorAfiliado.php"><img src="../img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p>
+        	<p align="center"><a class="enlace" href="buscadorAfiliado.php"><img src="../img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        	<p align="center">&nbsp;</p>
+    	</td>
+    	<td>
+    		<p align="center">Busqueda en Padron SSS</p>
+        	<p align="center"><a class="enlace" href="buscadorAfiliadoSSS.php"><img src="../img/buscarsss.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        	<p align="center">&nbsp;</p>
+    	</td>
+    	<td>
     	</td>
     </tr>
   </table>
