@@ -53,7 +53,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     	</td>
     	<td>
     		<p align="center">Busqueda en Padron SSS</p>
-        	<p align="center"><a class="enlace" href="buscadorAfiliadoSSS.php"><img src="../img/buscarsss.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        	<p align="center"><a class="enlace" href="../../moduloNoDisponible.php"><img src="../img/buscarsss.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         	<p align="center">&nbsp;</p>
     	</td>
     	<td>
