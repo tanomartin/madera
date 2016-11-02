@@ -146,7 +146,7 @@ function checkall(seleccion, formulario) {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../moduloProcesos.php'" /></p>
-		<p align="center" class="Estilo1">Familiares Filtro de Baja</p>
+		<p align="center" class="Estilo1">Familiares Filtro de Baja (<?php echo $canFamiFiltro ?>)</p>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="bajarFamiliares.php">
 			<table class="tablesorter" id="tabla" style="width: 900px; font-size: 14px">
 				<thead>
