@@ -6,7 +6,10 @@ $sqlFamiSSS = "SELECT DISTINCT cuilfamiliar, cuiltitular, nrodocumento, cuit, ap
 $resFamiSSS = mysql_query ( $sqlFamiSSS, $db );
 $arrayFamiSSS = array();
 while ($rowFamiSSS = mysql_fetch_assoc ($resFamiSSS)) {
-	$arrayFamiSSS[$rowFamiSSS['cuilfamiliar']] = array('cuiltitular'=> $rowFamiSSS['cuiltitular'], 'nrodoc' => $rowFamiSSS['nrodocumento'], 'cuit' => $rowFamiSSS['cuit'], 'nombre' => $rowFamiSSS['apellidoynombre'], 'tipotitular' => $rowFamiSSS['tipotitular'], 'osopcion' => $rowFamiSSS['osopcion']);
+	$cuilfamiliar = preg_replace('/[^0-9]+/', '', $rowFamiSSS['cuilfamiliar']);
+	if (strlen($cuilfamiliar) == 11) {
+		$arrayFamiSSS[$cuilfamiliar] = array('cuiltitular'=> $rowFamiSSS['cuiltitular'], 'nrodoc' => $rowFamiSSS['nrodocumento'], 'cuit' => $rowFamiSSS['cuit'], 'nombre' => $rowFamiSSS['apellidoynombre'], 'tipotitular' => $rowFamiSSS['tipotitular'], 'osopcion' => $rowFamiSSS['osopcion']);
+	}
 }
 
 $sqlFami = "SELECT DISTINCT cuil, nrodocumento, nroafiliado FROM familiares t";
