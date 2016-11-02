@@ -20,6 +20,7 @@ while ($rowCuilTitularBaja = mysql_fetch_assoc ($resCuilTitularBaja)) {
 
 $arrayProcFami = array();
 $arrayInfo = array();
+$arrayOrden = array();
 
 foreach ($_POST as $tipocuil => $datos) {
 	$tipo = substr($tipocuil, 0, 1);
@@ -54,19 +55,33 @@ foreach ($_POST as $tipocuil => $datos) {
 
 
 $whereIn = "(";
+$whereInAfil = "(";
 foreach ($arrayProcFami as $cuil => $fami) {
 	$whereIn .= "'".$cuil."',";
+	$whereInAfil .= $fami['nroafil'].",";
 	var_dump($fami);echo"<br><br>";
 }
 $whereIn = substr($whereIn, 0, -1);
 $whereIn .= ")";
+$whereInAfil = substr($whereInAfil, 0, -1);
+$whereInAfil .= ")";
 
-if ($whereIn != ")") {
-	$sqlPadron = "SELECT * FROM padronsss where cuilfamiliar in $whereIn";
+if ($whereIn != ")") {	
+	$sqlFamiliarOrden = "SELECT orden, cuil FROM familiares WHERE nroafiliado in $whereInAfil order by cuil, orden ASC";
+	echo $sqlFamiliarOrden."<br><br>";
+	$resFamiliarOrden = mysql_query ($sqlFamiliarOrden, $db);
+	$canFamiliarOrden = mysql_nums_rows ($resFamiliarOrden);
+	if ($canFamiliarOrden !=0 ) {
+		while ($rowFamiliarOrden = mysql_fetch_assoc ($resFamiliarOrden)) {
+			$arrayOrden[$rowFamiliarOrden['cuil']] = $rowFamiliarOrden['orden'];
+		}
+	}
+	
+	$sqlPadron = "SELECT * FROM padronsss WHERE cuilfamiliar in $whereIn";
 	$resPadron = mysql_query ( $sqlPadron, $db );
 	while ($rowPadron = mysql_fetch_assoc ($resPadron)) {
 		$cuilfamiliar = $rowPadron['cuilfamiliar'];
-			
+		
 		$sqlProvin = "SELECT indpostal FROM provincia WHERE codprovin = ".$rowPadron['codprovin'];
 		$resProvin = mysql_query ( $sqlProvin, $db );
 		$canProvin = mysql_num_rows($resProvin);
@@ -109,7 +124,7 @@ if ($whereIn != ")") {
 		$index = $cuilfamiliar.'F';
 		$arrayProcFami[$cuilfamiliar] += array("nombre" => $rowPadron['apellidoynombre']);
 		$sqlAEjecutar[$index] = "INSERT INTO familiares VALUES("
-								.$arrayProcFami[$cuilfamiliar]['nroafil'].",#ord,".$rowPadron['parentesco'].",'".$rowPadron['apellidoynombre']."','"
+								.$arrayProcFami[$cuilfamiliar]['nroafil'].",".$orden.",".$rowPadron['parentesco'].",'".$rowPadron['apellidoynombre']."','"
 								.$rowPadron['tipodocumento']."',".$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',"
 								.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
 								.$rowPadron['incapacidad'].",NULL,".$estudia.",NULL,NULL,NULL,'".$rowPadron['cuilfamiliar']
@@ -119,7 +134,6 @@ if ($whereIn != ")") {
 			$index = $cuilfamiliar.'D';
 			$sqlAEjecutar[$index] = "DELETE FROM familiaresdebaja WHERE cuil = '".$cuilfamiliar."' and nroafiliado = ".$arrayProcFami[$cuilfamiliar]['nroafil'];
 		}
-		$orden++;
 	}
 } 
 
