@@ -67,14 +67,18 @@ $whereInAfil = substr($whereInAfil, 0, -1);
 $whereInAfil .= ")";
 
 if ($whereIn != ")") {	
-	$sqlFamiliarOrden = "SELECT orden, cuil FROM familiares WHERE nroafiliado in $whereInAfil order by cuil, orden ASC";
+	$sqlFamiliarOrden = "SELECT nroafiliado, nroorden FROM familiares WHERE nroafiliado in $whereInAfil order by nroafiliado, nroorden ASC";
 	echo $sqlFamiliarOrden."<br><br>";
 	$resFamiliarOrden = mysql_query ($sqlFamiliarOrden, $db);
 	$canFamiliarOrden = mysql_nums_rows ($resFamiliarOrden);
 	if ($canFamiliarOrden !=0 ) {
 		while ($rowFamiliarOrden = mysql_fetch_assoc ($resFamiliarOrden)) {
-			$arrayOrden[$rowFamiliarOrden['cuil']] = $rowFamiliarOrden['orden'];
+			$arrayOrden[$rowFamiliarOrden['nroafiliado']] = $rowFamiliarOrden['nroorden'];
 		}
+	}
+	
+	foreach ($arrayOrden as $nroafliado => $orden) {
+		echo $nroafliado."->".$orden;
 	}
 	
 	$sqlPadron = "SELECT * FROM padronsss WHERE cuilfamiliar in $whereIn";
