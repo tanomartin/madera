@@ -43,10 +43,10 @@ function mostrar(dire) {
     </tr>
     <tr>
        <td width="200"><p align="center">Subida de Titulares a SSS</p>
-        <p align="center"><a class="enlace" href="#"><img src="img/compara.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="#"><img src="img/subida.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
       <td width="200"><p align="center">Subida de Famliares a SSS</p>
-          <p align="center"><a class="enlace" href="#"><img src="img/compara.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="#"><img src="img/subida.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
     </tr>
   </table>

@@ -301,7 +301,7 @@ $(function() {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuCruceSSS.php'" />
-		<h2>Informe de Proceso de Titulares en SSS</h2>
+		<h2>Informe de Proceso de descarga Titulares en SSS</h2>
 		<h3>Titulares sin procesar</h3>
 		<?php if (sizeof($arrayInfo) > 0) { ?>
 		<table style="text-align: center; width: 900px" id="tablaInforme" class="tablesorter">

@@ -236,7 +236,7 @@ function validar(formulario) {
 							<td><?php echo $fami['nombre']?></td>
 							<td><?php echo $fami['cuiltitular']?></td>
 							<td><?php echo $fami['cuit']?></td>
-							<td><input type="checkbox" name="<?php echo "A".$cuil ?>" id="alta" value="<?php echo $fami['cuit']."-".$fami['osopcion'] ?>" /></td>
+							<td><input type="checkbox" name="<?php echo "A".$cuil ?>" id="alta" value="<?php echo $fami['cuiltitular']."-".$fami['osopcion'] ?>" /></td>
 						</tr>
 				<?php } ?>
 				</tbody>
@@ -265,7 +265,7 @@ function validar(formulario) {
 							<td><?php echo $fami['nombre']?></td>
 							<td><?php echo $fami['cuiltitular']?></td>
 							<td><?php echo $fami['cuit']?></td>
-							<td><input type="checkbox" name="<?php echo "R".$cuil ?>" id="activar" value="<?php echo $fami['cuit']."-".$fami['osopcion']."-".$fami['nroafil'] ?>" /></td>
+							<td><input type="checkbox" name="<?php echo "R".$cuil ?>" id="activar" value="<?php echo $fami['cuiltitular']."-".$fami['osopcion']."-".$fami['nroafil'] ?>" /></td>
 						</tr>
 				<?php } ?>
 				</tbody>
