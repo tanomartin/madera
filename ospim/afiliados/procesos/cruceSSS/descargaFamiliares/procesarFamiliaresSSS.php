@@ -59,7 +59,6 @@ $whereInAfil = "(";
 foreach ($arrayProcFami as $cuil => $fami) {
 	$whereIn .= "'".$cuil."',";
 	$whereInAfil .= $fami['nroafil'].",";
-	var_dump($fami);echo"<br><br>";
 }
 $whereIn = substr($whereIn, 0, -1);
 $whereIn .= ")";
@@ -68,23 +67,20 @@ $whereInAfil .= ")";
 
 if ($whereIn != ")") {	
 	$sqlFamiliarOrden = "SELECT nroafiliado, nroorden FROM familiares WHERE nroafiliado in $whereInAfil order by nroafiliado, nroorden ASC";
-	echo $sqlFamiliarOrden."<br><br>";
 	$resFamiliarOrden = mysql_query ($sqlFamiliarOrden, $db);
-	$canFamiliarOrden = mysql_nums_rows ($resFamiliarOrden);
-	if ($canFamiliarOrden !=0 ) {
+	$canFamiliarOrden = mysql_num_rows($resFamiliarOrden);
+	if ($canFamiliarOrden != 0) {
 		while ($rowFamiliarOrden = mysql_fetch_assoc ($resFamiliarOrden)) {
 			$arrayOrden[$rowFamiliarOrden['nroafiliado']] = $rowFamiliarOrden['nroorden'];
 		}
-	}
-	
-	foreach ($arrayOrden as $nroafliado => $orden) {
-		echo $nroafliado."->".$orden;
 	}
 	
 	$sqlPadron = "SELECT * FROM padronsss WHERE cuilfamiliar in $whereIn";
 	$resPadron = mysql_query ( $sqlPadron, $db );
 	while ($rowPadron = mysql_fetch_assoc ($resPadron)) {
 		$cuilfamiliar = $rowPadron['cuilfamiliar'];
+		
+		$arrayOrden[$arrayProcFami[$cuilfamiliar]['nroafil']] += 1;
 		
 		$sqlProvin = "SELECT indpostal FROM provincia WHERE codprovin = ".$rowPadron['codprovin'];
 		$resProvin = mysql_query ( $sqlProvin, $db );
@@ -124,11 +120,18 @@ if ($whereIn != ")") {
 		} else {
 			$telefono = $rowPadron['telefono'];
 		}
+		
+		if ($rowPadron['parentesco'] == 4 || $rowPadron['parentesco'] == 6) {
+			$estudia = 1;
+		} else {
+			$estudia = 0;
+		}
 			
 		$index = $cuilfamiliar.'F';
 		$arrayProcFami[$cuilfamiliar] += array("nombre" => $rowPadron['apellidoynombre']);
 		$sqlAEjecutar[$index] = "INSERT INTO familiares VALUES("
-								.$arrayProcFami[$cuilfamiliar]['nroafil'].",".$orden.",".$rowPadron['parentesco'].",'".$rowPadron['apellidoynombre']."','"
+								.$arrayProcFami[$cuilfamiliar]['nroafil'].",".$arrayOrden[$arrayProcFami[$cuilfamiliar]['nroafil']].","
+								.$rowPadron['parentesco'].",'".$rowPadron['apellidoynombre']."','"
 								.$rowPadron['tipodocumento']."',".$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',"
 								.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
 								.$rowPadron['incapacidad'].",NULL,".$estudia.",NULL,NULL,NULL,'".$rowPadron['cuilfamiliar']
@@ -149,10 +152,9 @@ if (sizeof($sqlAEjecutar) > 0) {
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
-		
 		foreach($sqlAEjecutar as $key=>$sql) {
-			print($sql."<br>");
-			//$dbh->exec($sql);
+			//print($sql."<br><br>");
+			$dbh->exec($sql);
 		}
 		$dbh->commit();
 	} catch(PDOException $e) {

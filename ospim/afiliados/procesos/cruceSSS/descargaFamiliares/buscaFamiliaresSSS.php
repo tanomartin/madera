@@ -215,7 +215,7 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuCruceSSS.php'" />
-		<h2>Descarga Titulares S.S.S.</h2>
+		<h2>Descarga Familiares S.S.S.</h2>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarFamiliaresSSS.php">
 			<h3>Alta de Familiares (<?php echo sizeof($arrayAlta) ?> de <?php echo $cantAlta ?>)</h3>
 			<?php if (sizeof($arrayAlta) > 0) { ?>
