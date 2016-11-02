@@ -29,23 +29,23 @@ function mostrar(dire) {
 	<input type="button" name="volver" value="Volver" onclick="location.href = '../moduloProcesos.php'" /> 
 </div>
 <div align="center">
-	<h2>Men&uacute; Comparación Padrón S.S.S.</h2>
+	<h2>Men&uacute; Comparación Padrón de O.S.P.I.M. contra S.S.S.</h2>
 </div>
 <div align="center">
   <table width="400" border="3">
     <tr>
-       <td width="200"><p align="center">Descarga Titulares SSS</p>
-        <p align="center"><a class="enlace" href="javascript:mostrar('titulares/buscaTitularesSSS.php')"><img src="img/descargaTitulares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+       <td width="200"><p align="center">Descarga Titulares de SSS</p>
+        <p align="center"><a class="enlace" href="javascript:mostrar('descargaTitulares/buscaTitularesSSS.php')"><img src="img/descargaTitulares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
-      <td width="200"><p align="center">Descarga Familiares SSS</p>
-          <p align="center"><a class="enlace" href="javascript:mostrar('familiares/buscaFamiliaresSSS.php')"><img src="img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td width="200"><p align="center">Descarga Familiares de SSS</p>
+          <p align="center"><a class="enlace" href="javascript:mostrar('descargaFamiliares/buscaFamiliaresSSS.php')"><img src="img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
     </tr>
     <tr>
-       <td width="200"><p align="center">Titulares vs SSS</p>
+       <td width="200"><p align="center">Subida de Titulares a SSS</p>
         <p align="center"><a class="enlace" href="#"><img src="img/compara.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
-      <td width="200"><p align="center">Famliares vs SSS</p>
+      <td width="200"><p align="center">Subida de Famliares a SSS</p>
           <p align="center"><a class="enlace" href="#"><img src="img/compara.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
     </tr>

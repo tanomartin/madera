@@ -503,7 +503,7 @@ function validar(formulario) {
 				<?php 	if ($rowFamilia['foto'] != NULL) {
 							echo "<img src='mostrarFotoFamiliar.php?nroAfi=".$nroafiliado."&estFam=".$estfamilia."&nroOrd=".$ordafiliado."' alt='Foto' width='115' height='115'>";
 						} else {
-							echo "<img src='../img/Titular sin Foto.jpg' alt='Foto' width='115' height='115'>";
+							echo "<img src='../img/sinFoto.jpg' alt='Foto' width='115' height='115'>";
 						}?>
 			</td>
 			<td align="left" valign="middle"><div align="left"><span class="Estilo4"><strong>Numero Afiliado</strong></span>
