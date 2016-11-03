@@ -2,25 +2,40 @@
 include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
-$sqlTitu = "SELECT DISTINCT cuil, nrodocumento, apellidoynombre, nroafiliado FROM titulares p where informesss = 0";
-$resTitu = mysql_query ( $sqlTitu, $db );
-$arrayTitu = array();
-while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
-	$arrayTitu[$rowTitu['cuil']] = array('nrodoc' => $rowTitu['nrodocumento'], 'cuit' => $rowTitu['cuit'], 'nombre' => $rowTitu['apellidoynombre'], 'nroafil' => $rowTitu['nroafiliado']);
+$sqlFami = "SELECT DISTINCT f.cuil, f.nroorden, f.nrodocumento, f.apellidoynombre, f.nroafiliado, t.cuil as cuiltitular FROM familiares f, titulares t where f.informesss = 0 and f.nroafiliado = t.nroafiliado;";
+$resFami = mysql_query ( $sqlFami, $db );
+$arrayFami = array();
+while ($rowFami = mysql_fetch_assoc ($resFami)) {
+	$arrayFami[$rowFami['cuil']] = array('nrodoc' => $rowFami['nrodocumento'], 'cuiltitular' => $rowFami['cuiltitular'], 'nombre' => $rowFami['apellidoynombre'], 'nroafil' => $rowFami['nroafiliado'], 'nroord' => $rowFami['nroorden']);
+}
+
+$sqlFamiSSS = "SELECT DISTINCT cuilfamiliar FROM padronsss p where parentesco != 0";
+$resFamiSSS = mysql_query ( $sqlFamiSSS, $db );
+$arrayFamiSSS = array();
+while ($rowFamiSSS = mysql_fetch_assoc ($resFamiSSS)) {
+	$arrayFamiSSS[$rowFamiSSS['cuilfamiliar']] = $rowFamiSSS['cuilfamiliar'];
 }
 
 
+$arrayTitu = array();
 $sqlTituSSS = "SELECT DISTINCT cuiltitular FROM padronsss p where parentesco = 0";
 $resTituSSS = mysql_query ( $sqlTituSSS, $db );
-$arrayTituSSS = array();
 while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
-	$arrayTituSSS[$rowTituSSS['cuiltitular']] = $rowTituSSS['cuiltitular'];
+	$arrayTitu[$rowTituSSS['cuiltitular']] = $rowTituSSS['cuiltitular'];
+}
+$sqlTitu = "SELECT DISTINCT cuil FROM titulares where informesss = 1";
+$resTitu = mysql_query ( $sqlTitu, $db );
+while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
+	$arrayTitu[$rowTitu['cuil']] = $rowTitu['cuil'];
 }
 
 $arrayInformar = array();
-foreach ($arrayTitu as $cuil => $titu) {
-	if (!array_key_exists ($cuil , $arrayTituSSS)){
-		$arrayInformar[$cuil] = $titu;
+foreach ($arrayFami as $cuil => $fami) {
+	if (!array_key_exists ($cuil , $arrayFamiSSS)){
+		$cuiltitular = $fami['cuiltitular'];
+		if (array_key_exists ($cuiltitular , $arrayTitu)) {
+			$arrayInformar[$cuil] = $fami;
+		}
 	}
 }
 
@@ -32,7 +47,7 @@ $count = 0;
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Busqueda de Titulares en OSPIM para Informar :.</title>
+<title>.: Busqueda de Familiares en OSPIM para Informar :.</title>
 
 <style type="text/css" media="print">
 .nover {
@@ -95,7 +110,7 @@ function validar(formulario) {
 	var grupo1 = formulario.informar;
 	var total1 = grupo1.length;
 
-	var mensaje = "Debe seleccionar algun titular para Informar a la SSS";
+	var mensaje = "Debe seleccionar algun familiar para Informar a la SSS";
 	var checkeados = 0; 
 	
 	if (total1 == null) {
@@ -128,29 +143,29 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuCruceSSS.php'" />
-		<h2>Informa de Titulares de OSPIM a S.S.S.</h2>
-		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarTitulares.php">
-			<h3>Informe de Titulares (<?php echo $limit ?> de <?php echo sizeof($arrayInformar) ?>)</h3>
+		<h2>Informe de Familiares de OSPIM a S.S.S.</h2>
+		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarFamiliares.php">
+			<h3>Informe de Familiares (<?php echo $limit ?> de <?php echo sizeof($arrayInformar) ?>)</h3>
 			<?php if (sizeof($arrayInformar) > 0) { ?>
 			<table style="text-align: center; width: 900px" id="tablaInforme" class="tablesorter">	
 				<thead>
 					<tr>
-						<th>Nro. Afiliado</th>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
 						<th>Nro. Documento</th>
+						<th>C.U.I.L. Titular</th>
 						<th><input type="checkbox" name="selecAllInformar" id="selecAllInformar" onchange="checkall(this, this.form)" /></th>
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach ($arrayInformar as $cuil => $titu) {
+				<?php foreach ($arrayInformar as $cuil => $fami) {
 						$count++;?>
 						<tr>	
-							<td><?php echo $titu['nroafil'] ?></td>
 							<td><?php echo $cuil ?></td>
-							<td><?php echo $titu['nombre']?></td>
-							<td><?php echo $titu['nrodoc']?></td>
-							<td><input type="checkbox" name="<?php echo $cuil ?>" id="informar" value="<?php echo $titu['nroafil']."-".$titu['nombre'] ?>" /></td>
+							<td><?php echo $fami['nombre']?></td>
+							<td><?php echo $fami['nrodoc']?></td>
+							<td><?php echo $fami['cuiltitular']?></td>
+							<td><input type="checkbox" name="<?php echo $cuil ?>" id="informar" value="<?php echo $fami['nroafil']."-".$fami['nombre']."-".$fami['nroord']."-".$fami['cuiltitular'] ?>" /></td>
 						</tr>
 				<?php if ($count > $limit) {
 						break;
@@ -165,7 +180,7 @@ function validar(formulario) {
 				</tr>
 			</table>
 			<?php } else { ?>
-				<h4>No hay Titulares para informar</h4>
+				<h4>No hay Familiares para informar</h4>
 			<?php }?>
 		</form>
 	</div>
