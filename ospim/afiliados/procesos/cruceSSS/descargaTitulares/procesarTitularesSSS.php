@@ -69,7 +69,7 @@ foreach ($arrayProcTitu as $cuil => $titu) {
 		$resDesempleo = mysql_query($sqlDesempleo, $db);
 		$canDesempleo = mysql_num_rows($resDesempleo);
 		if ($canDesempleo != 0) {
-			$rowDesempleo = mysql_query($resDesempleo);
+			$rowDesempleo = mysql_fetch_assoc($resDesempleo);
 			$fechaempresa[$cuil] = $rowDesempleo['anodesempleo']."-".$rowDesempleo['mesdesempleo']."-01";
 		}
 	} else {
@@ -77,7 +77,7 @@ foreach ($arrayProcTitu as $cuil => $titu) {
 		$resPrimeraDDJJ = mysql_query($sqlPrimeraDDJJ, $db);
 		$canPrimeraDDJJ = mysql_num_rows($resPrimeraDDJJ);
 		if ($canPrimeraDDJJ != 0) {
-			$rowPrimeraDDJJ = mysql_query($resPrimeraDDJJ);
+			$rowPrimeraDDJJ = mysql_fetch_assoc($resPrimeraDDJJ);
 			$fechaempresa[$cuil] = $rowPrimeraDDJJ['anoddjj']."-".$rowPrimeraDDJJ['mesddjj']."-01";
 		}
 	}
