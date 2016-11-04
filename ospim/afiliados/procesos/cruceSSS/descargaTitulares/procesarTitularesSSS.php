@@ -201,7 +201,7 @@ if (sizeof($sqlAEjecutar) > 0) {
 			$posT = strpos($key, 'T');
 			if ($posT !== false) {
 				$orden = 0;
-				print($sql."<br>");
+				//print($sql."<br>");
 				$dbh->exec($sql);
 				$nroAfiliado = $dbh->lastInsertId();
 				$arrayProcTitu[$cuiltitular] +=  array("nroafil" => $nroAfiliado);
@@ -211,10 +211,10 @@ if (sizeof($sqlAEjecutar) > 0) {
 				if ($posF !== false) {
 					$sql = str_replace('#afi', $nroAfiliado, $sql);
 					$sql = str_replace('#ord', $orden, $sql);
-					print($sql."<br>");
+					//print($sql."<br>");
 					$dbh->exec($sql);
 				} else {
-					print($sql."<br>");
+					//print($sql."<br>");
 					$dbh->exec($sql);
 				}
 			}
