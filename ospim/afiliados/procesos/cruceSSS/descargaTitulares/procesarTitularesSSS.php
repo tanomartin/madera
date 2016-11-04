@@ -220,7 +220,7 @@ if (sizeof($sqlAEjecutar) > 0) {
 			}
 		}
 		$dbh->commit();
-	} catch(Exception $e) {
+	} catch(PDOException $e) {
 		$error =  $e->getMessage();
 		$dbh->rollback();
 		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
