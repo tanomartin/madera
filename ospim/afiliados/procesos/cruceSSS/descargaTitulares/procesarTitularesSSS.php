@@ -68,22 +68,22 @@ foreach ($arrayProcTitu as $cuil => $titu) {
 		$sqlDesempleo = "SELECT anodesempleo, mesdesempleo FROM desempleoSSS WHERE cuilbeneficiario = '".$cuil."' order by anodesempleo ASC, mesdesempleo ASC LIMIT 1;";
 		$resDesempleo = mysql_query($sqlDesempleo, $db);
 		$canDesempleo = mysql_num_rows($resDesempleo);
-	} else {
-		$sqlPrimeraDDJJ = "SELECT anoddjj, mesddjj FROM detddjjospim WHERE cuit = '".$titu['cuit']."' and cuil = '".$cuil."' order by anoddjj ASC, mesddjj ASC LIMIT 1";
-		$resPrimeraDDJJ = mysql_query($sqlPrimeraDDJJ, $db);
-		$canPrimeraDDJJ = mysql_num_rows($resPrimeraDDJJ);
-	}
-	
-	if ($canPrimeraDDJJ != 0 || $canDesempleo != 0) {
-		$whereIn .= "'".$cuil."',";
-		if ($canPrimeraDDJJ != 0) {
-			$rowPrimeraDDJJ = mysql_query($resPrimeraDDJJ);
-			$fechaempresa[$cuil] = $rowPrimeraDDJJ['anoddjj']."-".$rowPrimeraDDJJ['mesddjj']."-01";
-		}
 		if ($canDesempleo != 0) {
 			$rowDesempleo = mysql_query($resDesempleo);
 			$fechaempresa[$cuil] = $rowDesempleo['anodesempleo']."-".$rowDesempleo['mesdesempleo']."-01";
 		}
+	} else {
+		$sqlPrimeraDDJJ = "SELECT anoddjj, mesddjj FROM detddjjospim WHERE cuit = '".$titu['cuit']."' and cuil = '".$cuil."' order by anoddjj ASC, mesddjj ASC LIMIT 1";
+		$resPrimeraDDJJ = mysql_query($sqlPrimeraDDJJ, $db);
+		$canPrimeraDDJJ = mysql_num_rows($resPrimeraDDJJ);
+		if ($canPrimeraDDJJ != 0) {
+			$rowPrimeraDDJJ = mysql_query($resPrimeraDDJJ);
+			$fechaempresa[$cuil] = $rowPrimeraDDJJ['anoddjj']."-".$rowPrimeraDDJJ['mesddjj']."-01";
+		}
+	}
+	
+	if ($canPrimeraDDJJ != 0 || $canDesempleo != 0) {
+		$whereIn .= "'".$cuil."',";
 	} else {
 		unset($arrayProcTitu[$cuil]);
 		if ($titu['tipotitular'] == 2 || $titu['tipotitular'] == 8) {
