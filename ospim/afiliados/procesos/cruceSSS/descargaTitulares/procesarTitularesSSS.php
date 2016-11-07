@@ -21,7 +21,8 @@ while ($rowEmpresasCuit = mysql_fetch_assoc ($resEmpresasCuit)) {
 $arrayProcTitu = array();
 $arrayProcFami = array();
 $arrayInfo = array();
-$fechaempresa = array();
+$arrayTipoTitu = array();
+$arrayFechaEmpresa = array();
 $arrayTiposAceptados = array(0,2,4,5,8);
 
 foreach ($_POST as $tipocuil => $datos) {
@@ -35,27 +36,29 @@ foreach ($_POST as $tipocuil => $datos) {
 		$nroafil = $datos[3];
 	}
 	
+	$sqlTipoTitu = "SELECT descrip FROM tipotitular where codtiptit = $tipoTitu";
+	$resTipoTitu = mysql_query ( $sqlTipoTitu, $db );
+	$rowTipoTitu = mysql_fetch_assoc($resTipoTitu);
+	$arrayTipoTitu[$cuil] = array("tipo" => $tipoTitu, "descrip" => $rowTipoTitu['descrip']);
+	
 	if ($opcion != 0) {
-		$arrayInfo[$cuil] = array("detalle" => "Opción", "cuit" => $cuit, "proceso" => $tipo);
+		$arrayInfo[$cuil] = array("detalle" => "Opción", "cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
 	} else {
-		if (!in_array($tipoTitu,$arrayTiposAceptados)) {
-			$sqlTipoTitu = "SELECT descrip FROM tipotitular where codtiptit = $tipoTitu";
-			$resTipoTitu = mysql_query ( $sqlTipoTitu, $db );
-			$rowTipoTitu = mysql_fetch_assoc($resTipoTitu);
-			$arrayInfo[$cuil] = array("detalle" => "No es un tipo de titular manejado (".$tipoTitu." - ".$rowTipoTitu['descrip'].")", "cuit" => $cuit, "proceso" => $tipo);
+		if (!in_array($tipoTitu,$arrayTiposAceptados)) {		
+			$arrayInfo[$cuil] = array("detalle" => "No es un tipo de titular manejado", "cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
 		} else {
 			if (!array_key_exists ($cuit , $arrayCuit)) {
 				if (!array_key_exists ($cuit , $arrayCuitBaja)) {
-					$arrayInfo[$cuil] = array("detalle" => "La empresa no existe", "cuit" => $cuit, "proceso" => $tipo);
+					$arrayInfo[$cuil] = array("detalle" => "La empresa no existe", "cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
 				} else {
-					$arrayInfo[$cuil] = array("detalle" => "La empresa esta de baja", "cuit" => $cuit, "proceso" => $tipo);
+					$arrayInfo[$cuil] = array("detalle" => "La empresa esta de baja", "cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
 				} 
 			} else {
 				if ($tipo == 'A') {
-					$arrayProcTitu[$cuil] = array("cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $tipoTitu);	
+					$arrayProcTitu[$cuil] = array("cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $tipoTitu, "tipodescrip" => $arrayTipoTitu[$cuil]['descrip']);	
 				}
 				if ($tipo == 'R') {
-					$arrayProcTitu[$cuil] = array("cuit" => $cuit, "proceso" => $tipo, "nroafil" => $nroafil, "tipotitular" => $tipoTitu);
+					$arrayProcTitu[$cuil] = array("cuit" => $cuit, "proceso" => $tipo, "nroafil" => $nroafil, "tipotitular" => $tipoTitu,  "tipodescrip" => $arrayTipoTitu[$cuil]['descrip']);
 				}
 			}
 		}
@@ -70,26 +73,40 @@ foreach ($arrayProcTitu as $cuil => $titu) {
 		$canDesempleo = mysql_num_rows($resDesempleo);
 		if ($canDesempleo != 0) {
 			$rowDesempleo = mysql_fetch_assoc($resDesempleo);
-			$fechaempresa[$cuil] = $rowDesempleo['anodesempleo']."-".$rowDesempleo['mesdesempleo']."-01";
+			$arrayFechaEmpresa[$cuil] = $rowDesempleo['anodesempleo']."-".$rowDesempleo['mesdesempleo']."-01";
 		}
 	} else {
-		$sqlPrimeraDDJJ = "SELECT anoddjj, mesddjj FROM detddjjospim WHERE cuit = '".$titu['cuit']."' and cuil = '".$cuil."' order by anoddjj ASC, mesddjj ASC LIMIT 1";
-		$resPrimeraDDJJ = mysql_query($sqlPrimeraDDJJ, $db);
-		$canPrimeraDDJJ = mysql_num_rows($resPrimeraDDJJ);
-		if ($canPrimeraDDJJ != 0) {
-			$rowPrimeraDDJJ = mysql_fetch_assoc($resPrimeraDDJJ);
-			$fechaempresa[$cuil] = $rowPrimeraDDJJ['anoddjj']."-".$rowPrimeraDDJJ['mesddjj']."-01";
+		if ($titu['tipotitular'] == 4) {
+			$sqlPrimerAporte = "SELECT anopago, mespago FROM afiptransferencias WHERE cuil = '".$cuil."' order by anopago ASC, mespago ASC LIMIT 1;";
+			$resPrimerAporte = mysql_query($sqlPrimerAporte, $db);
+			$canPrimerAporte = mysql_num_rows($resPrimerAporte);
+			if ($canPrimerAporte != 0) {
+				$rowPrimerAporte = mysql_fetch_assoc($resPrimerAporte);
+				$arrayFechaEmpresa[$cuil] = $rowPrimerAporte['anopago']."-".$rowPrimerAporte['mespago']."-01";
+			}
+		} else {
+			$sqlPrimeraDDJJ = "SELECT anoddjj, mesddjj FROM detddjjospim WHERE cuit = '".$titu['cuit']."' and cuil = '".$cuil."' order by anoddjj ASC, mesddjj ASC LIMIT 1";
+			$resPrimeraDDJJ = mysql_query($sqlPrimeraDDJJ, $db);
+			$canPrimeraDDJJ = mysql_num_rows($resPrimeraDDJJ);
+			if ($canPrimeraDDJJ != 0) {
+				$rowPrimeraDDJJ = mysql_fetch_assoc($resPrimeraDDJJ);
+				$arrayFechaEmpresa[$cuil] = $rowPrimeraDDJJ['anoddjj']."-".$rowPrimeraDDJJ['mesddjj']."-01";
+			}
 		}
 	}
 	
-	if ($canPrimeraDDJJ != 0 || $canDesempleo != 0) {
+	if ($canPrimeraDDJJ != 0 || $canDesempleo != 0 || $canPrimerAporte != 0) {
 		$whereIn .= "'".$cuil."',";
 	} else {
 		unset($arrayProcTitu[$cuil]);
 		if ($titu['tipotitular'] == 2 || $titu['tipotitular'] == 8) {
-			$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar DESEMPLEO para el CUIL a procesar", "cuit" => $titu['cuit'], "proceso" => $titu['proceso']);
+			$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar DESEMPLEO para el CUIL a procesar", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
 		} else {
-			$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar DDJJ de la empresa declarada", "cuit" => $titu['cuit'], "proceso" => $titu['proceso']);
+			if ($titu['tipotitular'] == 4) {
+				$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar Aportes de la empresa declarada", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
+			} else {
+				$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar DDJJ de la empresa declarada", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
+			}
 		}
 	}
 }
@@ -151,7 +168,7 @@ if ($whereIn != ")") {
 												",'".$rowPadron['sexo']."',".$rowPadron['estadocivil'].",".$rowPadron['codprovin'].",'".$indpostal.
 												"',".$codpostal.",'',".$codlocali.",'".$domicilio."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',
 												'R',NULL,".$rowPadron['tipotitular'].",".$rowPadron['incapacidad'].",NULL,'".$cuiltitular."',
-												'".$rowPadron['cuit']."','".$fechaempresa[$cuiltitular]."',".$codidelega.",NULL,0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,
+												'".$rowPadron['cuit']."','".$arrayFechaEmpresa[$cuiltitular]."',".$codidelega.",NULL,0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,
 												'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
 			} else {
 				if ($rowPadron['parentesco'] == 4 || $rowPadron['parentesco'] == 6) {
@@ -177,7 +194,7 @@ if ($whereIn != ")") {
 												",'".$rowPadron['sexo']."',".$rowPadron['estadocivil'].",".$rowPadron['codprovin'].",'".$indpostal.
 												"',".$codpostal.",'',".$codlocali.",'".$domicilio."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',
 												'R',NULL,".$rowPadron['tipotitular'].",".$rowPadron['incapacidad'].",NULL,'".$cuiltitular."',
-												'".$rowPadron['cuit']."','".$fechaempresa[$cuiltitular]."',".$codidelega.",NULL,0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,
+												'".$rowPadron['cuit']."','".$arrayFechaEmpresa[$cuiltitular]."',".$codidelega.",NULL,0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,
 												'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
 			$orden++;
 			$index = $cuiltitular.'D'.$orden;
@@ -260,7 +277,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{3:{filter:false, sorter:false}},
+		headers:{4:{filter:false, sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -317,6 +334,7 @@ $(function() {
 			<thead>
 				<tr>
 					<th>C.U.I.L.</th>
+					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo Titular </th>
 					<th>C.U.I.T.</th>
 					<th class="filter-select" data-placeholder="Seleccione Proceso">Proceso</th>
 					<th>Detalle</th>
@@ -326,6 +344,7 @@ $(function() {
 			<?php foreach ($arrayInfo as $cuil => $datos) { ?>
 				<tr>	
 					<td><?php echo $cuil ?></td>
+					<td><?php echo $datos['tipotitular'] ?></td>
 					<td><?php echo $datos['cuit'] ?></td>
 					<td><?php if ($datos['proceso'] == 'A') { echo 'ALTA'; } if ($datos['proceso'] == 'R') { echo 'REACTIVACION'; }  ?></td>
 					<td><?php echo $datos['detalle'] ?></td>
@@ -344,6 +363,7 @@ $(function() {
 				<tr>
 					<th>Nro Afiliado</th>
 					<th>C.U.I.L.</th>
+					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo Titular </th>
 					<th>Nombre y Apellido</th>
 					<th>C.U.I.T.</th>
 					<th class="filter-select" data-placeholder="Seleccione Proceso">Proceso</th>
@@ -354,6 +374,7 @@ $(function() {
 				<tr>	
 					<td><?php echo $datos['nroafil'] ?></td>
 					<td><?php echo $cuil ?></td>
+					<td><?php echo $datos['tipodescrip'] ?></td>
 					<td><?php echo $datos['nombre'] ?></td>
 					<td><?php echo $datos['cuit'] ?></td>
 					<td><?php if ($datos['proceso'] == 'A') { echo 'ALTA'; } if ($datos['proceso'] == 'R') { echo 'REACTIVACION'; }  ?></td>
