@@ -8,7 +8,7 @@ nroorden,
 tipoparentesco,
 p.descrip,
 DATE_FORMAT(fechanacimiento,'%d/%m/%Y') as fechanacimiento,
-YEAR(CURDATE())-YEAR(fechanacimiento) as edad,
+DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0   as edad,
 estudia,
 certificadoestudio,
 DATE_FORMAT(vencimientocertificadoestudio,'%d/%m/%Y') as vencimientocertificadoestudioInforme,
@@ -17,7 +17,7 @@ FROM familiares f, parentesco p
 where
 f.tipoparentesco in (03,04,05,06,07) and
 f.tipoparentesco = p.codparent and
-YEAR(CURDATE())-YEAR(fechanacimiento) > 20";
+DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0  > 20";
 
 $resFamiFiltro = mysql_query ( $sqlFamiFiltro, $db );
 $canFamiFiltro = mysql_num_rows ( $resFamiFiltro );
