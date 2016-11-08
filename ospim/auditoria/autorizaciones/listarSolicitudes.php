@@ -35,7 +35,6 @@ $(function() {
 			filter_hideFilters : false,
 		}
 	})
-	.tablesorterPager({container: $("#paginador")}); 
 });
 </script>
 <style>
@@ -105,7 +104,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			</tbody>
 		</table>
 	</div>
-	<div id="paginador" class="pager">
+<!-- <div id="paginador" class="pager">
 		<form>
 			<p align="center">
 				<img src="../img/first.png" width="16" height="16" class="first"/>
@@ -122,7 +121,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			    </select>
 			</p>
 		</form>	
-	</div>
+	</div> -->	
 <?php } else { ?>
 	<div style="text-align:center"><h3>No existen solicitudes que atender.</h3></div>
 <?php } ?>
