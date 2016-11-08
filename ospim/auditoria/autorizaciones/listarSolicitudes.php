@@ -114,11 +114,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 			    <img src="../img/next.png" width="16" height="16" class="next"/>
 				<img src="../img/last.png" width="16" height="16" class="last"/>
 			    <select name="select" class="pagesize">
-			    	<option selected="selected" value="10">10 por pagina</option>
+			    	<option value="10">10 por pagina</option>
 			    	<option value="20">20 por pagina</option>
 			    	<option value="30">30 por pagina</option>
 					<option value="50">50 por pagina</option>
-			    	<option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
+			    	<option selected="selected"  value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
 			    </select>
 			</p>
 		</form>	
