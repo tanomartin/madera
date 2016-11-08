@@ -117,7 +117,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			    	<option value="20">20 por pagina</option>
 			    	<option value="30">30 por pagina</option>
 					<option value="50">50 por pagina</option>
-			    	<option selected="selected"  value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
+			    	<option selected="selected"  value="<?php // echo $totalLeeAutorizacion;?>">Todos</option>
 			    </select>
 			</p>
 		</form>	
