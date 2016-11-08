@@ -404,7 +404,6 @@ $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db);
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
 $sqlLeePatologia="SELECT * FROM patologiasautorizaciones WHERE codigo = $rowLeeSolicitud[patologia]";
-echo $sqlLeePatologia;
 $resLeePatologia=mysql_query($sqlLeePatologia,$db);
 $rowLeePatologia=mysql_fetch_array($resLeePatologia);
 
