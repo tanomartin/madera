@@ -116,6 +116,7 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	formulario.selecAll.disabled = "true";
 	formulario.submit.disabled = "true";
 	return true;
 }

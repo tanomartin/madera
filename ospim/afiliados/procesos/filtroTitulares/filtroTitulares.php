@@ -244,6 +244,7 @@ A:hover {
 				return false;
 			}
 		}
+		formulario.selecAll.disabled = "true";
 		formulario.submit.disabled = "true";
 		return true;
 	}
