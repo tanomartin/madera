@@ -10,26 +10,23 @@ function cuitMayorFecha($fechaDDJJ, $fechaPago) {
 	}
 }
 
-$fecha = date ( 'Y-m-j' );
+$fecha = date ( 'Y-m-01' );
 $fechaInicio = strtotime ( '-4 month', strtotime ( $fecha ) );
-$fechaInicio = date ( 'Y-m-j', $fechaInicio );
+$fechaInicio = date ( 'Y-m-d', $fechaInicio );
+//echo $fecha . "<br>";
 //echo $fechaInicio . "<br>";
-
-$fechaDesempleo = strtotime ( '-1 month', strtotime ( $fecha ) );
-$fechaDesempleo = date ( 'Y-m-j', $fechaDesempleo );
-//echo $fechaDesempleo . "<br>";
 
 $sqlTitulares = "SELECT DISTINCT cuil FROM titularesdebaja t where tipoafiliado != 'U' and codidelega not in (1000,1001)";
 //echo $sqlTitulares . "<br>";
 
-$sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where (anoddjj = " . date ( "Y", strtotime ( $fechaInicio ) ) . " and mesddjj > " . date ( "n", strtotime ( $fechaInicio ) ) . ") or (anoddjj = " . date ( "Y", strtotime ( $fecha ) ) . " and mesddjj < " . date ( "n", strtotime ( $fecha ) ) . ") or (anoddjj > ".date ( "Y", strtotime ( $fechaInicio ) ). " and anoddjj < ".date ( "Y", strtotime ( $fecha ) ).")";
+$sqlDDJJ = "SELECT DISTINCT mesddjj, cuil, anoddjj FROM detddjjospim d where STR_TO_DATE(CONCAT('01/', mesddjj, '/', anoddjj ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlDDJJ . "<br>";
 
-$sqlPagos = "SELECT DISTINCT cuil FROM afiptransferencias d where (anopago = " . date ( "Y", strtotime ( $fechaInicio ) ) . " and mespago > " . date ( "n", strtotime ( $fechaInicio ) ) . ") or (anopago = " . date ( "Y", strtotime ( $fecha ) ) . " and mespago < " . date ( "n", strtotime ( $fecha ) ) . ") or (anopago > ".date ( "Y", strtotime ( $fechaInicio ) ). " and anopago < ".date ( "Y", strtotime ( $fecha ) ).")";
+$sqlPagos = "SELECT DISTINCT mespago ,cuil, anopago FROM afiptransferencias d where STR_TO_DATE(CONCAT('01/', mespago, '/', anopago ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlPagos . "<br>";
 
 //$sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where anodesempleo = " . date ( "Y", strtotime ( $fechaDesempleo ) ) . " and mesdesempleo = " . date ( "n", strtotime ( $fechaDesempleo ) ) . " and parentesco = 0";
-$sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where (anodesempleo = ".date("Y", strtotime($fechaInicio))." and mesdesempleo > ".date("n", strtotime($fechaInicio)).") or (anodesempleo = ".date("Y", strtotime($fecha))." and mesdesempleo < ".date("n", strtotime($fecha)).") or (anodesempleo > ".date ( "Y", strtotime ( $fechaInicio ) ). " and anodesempleo < ".date ( "Y", strtotime ( $fecha ) ).")";
+$sqlDesempleo = "SELECT DISTINCT mesdesempleo, cuilbeneficiario, anodesempleo FROM desempleosss d where STR_TO_DATE(CONCAT('01/', mesdesempleo, '/', anodesempleo ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlDesempleo . "<br><br>";
 
 $resTitulares = mysql_query ( $sqlTitulares, $db );
@@ -42,30 +39,47 @@ while ( $rowTitulares = mysql_fetch_assoc ( $resTitulares ) ) {
 $arrayDDJJ = array ();
 $resDDJJ = mysql_query ( $sqlDDJJ, $db );
 while ( $rowDDJJ = mysql_fetch_assoc ( $resDDJJ ) ) {
-	array_push ( $arrayDDJJ, $rowDDJJ ['cuil'] );
+	$arrayDDJJ[$rowDDJJ['cuil']] += 1;
 }
 //echo "DDJJ: " . count ( $arrayDDJJ ) . "<br>";
-$resPagos = mysql_query ( $sqlPagos, $db );
+//var_dump($arrayDDJJ); echo "<br>";
+
 $arrayPagos = array ();
+$resPagos = mysql_query ( $sqlPagos, $db );
 while ( $rowPagos = mysql_fetch_assoc ( $resPagos ) ) {
-	array_push ( $arrayPagos, $rowPagos ['cuil'] );
+	$arrayPagos[$rowPagos['cuil']] += 1;
 }
 //echo "Pagos: " . count ( $arrayPagos ) . "<br>";
+//var_dump($arrayPagos); echo "<br>";
 
-$resDesempleo = mysql_query ( $sqlDesempleo, $db );
 $arrayDesempleo = array ();
+$resDesempleo = mysql_query ( $sqlDesempleo, $db );
 while ( $rowDesempleo = mysql_fetch_assoc ( $resDesempleo ) ) {
-	array_push ( $arrayDesempleo, $rowDesempleo ['cuilbeneficiario'] );
+	$arrayDesempleo[$rowDesempleo ['cuilbeneficiario']] += 1;
 }
-//echo "Desempelo: " . count ( $arrayDesempleo ) . "<br>";
+//echo "Desempelo: " . count ( $arrayDesempleo ) . "<br><br>";
+//var_dump($arrayDesempleo); echo "<br>";
 
-$arraySuma = array_merge ( $arrayDDJJ, $arrayPagos, $arrayDesempleo );
+$arrayFinal = array();
+foreach ($arrayDDJJ as $key=>$ddjj) {
+	if ($ddjj >= 3) {
+		$arrayFinal[$key] = $key;
+	}
+}
+foreach ($arrayPagos as $key=>$pagos) {
+	if ($pagos >= 3) {
+		$arrayFinal[$key] = $key;
+	}
+}
+foreach ($arrayPagos as $key=>$desempleo) {
+	if ($desempleo >= 3) {
+		$arrayFinal[$key] = $key;
+	}
+}
+
 unset ( $arrayDDJJ );
 unset ( $arrayPagos );
 unset ( $arrayDesempleo );
-//echo "Suma: " . count ( $arraySuma ) . "<br>";
-
-$arrayFinal = array_unique ( $arraySuma );
 //echo "Final: " . count ( $arrayFinal ) . "<br>";
 
 $tituParaSubir = array_intersect ( $arrayTitulares, $arrayFinal );
@@ -86,7 +100,7 @@ if (sizeof($tituParaSubir) != 0) {
 	
 	// $sqlTituParaBajar = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,DATE_FORMAT(fechacarnet,'%d/%m/%Y') as fechacarnet,codidelega FROM titulares WHERE cuil IN ".$wherein;
 	$sqlTituParaSubir = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,fechabaja,motivobaja,codidelega FROM titularesdebaja  WHERE cuil IN " . $wherein ." and codidelega not in (1000,1001) LIMIT 1000";
-	//print($sqlTituParaSubir);
+	//echo ($sqlTituParaSubir);echo"<br>";
 	$resTituParaSubir = mysql_query ( $sqlTituParaSubir, $db );
 	$canTituParaSubir = mysql_num_rows ( $resTituParaSubir );
 	//echo $canTituParaSubir . "<br>";
@@ -242,7 +256,7 @@ A:hover {
 	<div align="center">
 		<p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../moduloProcesos.php'" /></p>
 		<p><span class="Estilo2">Titulares para Reactivar</span></p>
-		<p><span class="Estilo2"><?php echo $canTituParaSubir ?> Titulares de <?php echo count ( $tituParaSubir )?> a Reactivar </span></p>
+		<p><span class="Estilo2"><?php echo $canTituParaSubir ?> Titulares a Reactivar </span></p>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="reactivarTitulares.php">
 			<table style="text-align: center; width: 900px" id="tabla"
 				class="tablesorter">
