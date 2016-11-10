@@ -59,11 +59,7 @@ while ( $rowFamiFiltro = mysql_fetch_assoc ( $resFamiFiltro ) ) {
 						$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
 					}
 				} else {
-					if ($rowFamiFiltro['certificadoestudio'] == 1) {
-						$arrayInfo[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
-					} else {
-						$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
-					}
+					$arrayInfo[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
 				}
 			}
 		}
@@ -232,7 +228,7 @@ function checkall(seleccion, formulario) {
 							<td><?php if ($famibaja['estudia'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
 							<td><?php if ($famibaja['certificadoestudio'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
 							<td><?php if ($famibaja['certificadoestudio'] == 1) { echo $famibaja['vencimientocertificadoestudioInforme']; } ?></td>
-							<td><input type="checkbox" name="<?php echo $famibaja['nroafiliado']."-". $famibaja['nroorden'] ?>" id="baja" value="<?php echo $famibaja['nroafiliado']."-". $famibaja['nroorden'] ?>" /></td>
+							<td><input type="checkbox" name="<?php echo $famibaja['nroafiliado']."-".$famibaja['nroorden'] ?>" id="baja" value="<?php echo $famibaja['nroafiliado']."-".$famibaja['nroorden'] ?>" /></td>
 						</tr>
 				<?php 	} ?>
 				<tbody>
