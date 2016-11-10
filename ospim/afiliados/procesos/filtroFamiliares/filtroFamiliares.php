@@ -5,7 +5,9 @@ set_time_limit(0);
 $sqlFamiFiltro = "SELECT
 nroafiliado,
 nroorden,
+cuil,
 tipoparentesco,
+discapacidad,
 p.descrip,
 DATE_FORMAT(fechanacimiento,'%d/%m/%Y') as fechanacimiento,
 DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0   as edad,
@@ -25,6 +27,36 @@ $hoy = date("Y-m-d");
 
 $ahora = date("Y-n-j H:i:s");
 $_SESSION["ultimoAcceso"] = $ahora;
+
+$arrayBaja = array();
+$arrayInfo = array();
+while ( $rowFamiFiltro = mysql_fetch_assoc ( $resFamiFiltro ) ) {
+	if ($rowFamiFiltro['tipoparentesco'] == 3 || $rowFamiFiltro['tipoparentesco'] == 5 || $rowFamiFiltro['tipoparentesco'] == 7) {
+		if ($rowFamiFiltro['discapacidad'] == 1) {
+			$arrayInfo[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+		} else {
+			$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+		}
+	} else {
+		if ($rowFamiFiltro['edad'] > 25) {
+			if ($rowFamiFiltro['discapacidad'] == 1) {
+				$arrayInfo[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+			} else {
+				$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+			}
+		} else {
+			if ($rowFamiFiltro['discapacidad'] == 0) {
+				if ($rowFamiFiltro['certificadoestudio'] == 1) {
+					if ($rowFamiFiltro['vencimientocertificadoestudio'] < $hoy) {
+						$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+					}
+				} else {
+					$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+				}
+			}
+		}
+	}
+}
 
 ?>
 
@@ -82,7 +114,23 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{6:{sorter:false, filter:false}},
+		headers:{7:{sorter:false, filter:false}},
+		widgetOptions : { 
+			filter_cssFilter   : '',
+			filter_childRows   : false,
+			filter_hideFilters : false,
+			filter_ignoreCase  : true,
+			filter_searchDelay : 300,
+			filter_startsWith  : false,
+			filter_hideFilters : false,
+		}
+	});
+	
+	$("#tablaInfo")
+	.tablesorter({
+		theme: 'blue', 
+		widthFixed: true, 
+		widgets: ["zebra", "filter"], 
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -147,7 +195,7 @@ function checkall(seleccion, formulario) {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../moduloProcesos.php'" /></p>
-		<p align="center" class="Estilo1">Familiares Filtro de Baja (<?php echo $canFamiFiltro ?>)</p>
+		<p align="center" class="Estilo1">Familiares Filtro de Baja (<?php echo sizeof($arrayBaja) ?>)</p>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="bajarFamiliares.php">
 			<table class="tablesorter" id="tabla" style="width: 900px; font-size: 14px">
 				<thead>
@@ -155,6 +203,7 @@ function checkall(seleccion, formulario) {
 						<th>Nro. Afiliado</th>
 						<th class="filter-select" data-placeholder="Seleccion">Codigo - Parentesco</th>
 						<th>(Edad) - Fec. Nac.</th>
+						<th class="filter-select" data-placeholder="Seleccion">Discapacitado</th>
 						<th class="filter-select" data-placeholder="Seleccion">Estudia</th>
 						<th class="filter-select" data-placeholder="Seleccion">Certificado</th>
 						<th>Vto. Cert.</th>
@@ -162,25 +211,18 @@ function checkall(seleccion, formulario) {
 					</tr>
 				</thead>
 				<tbody>
-				<?php while ( $rowFamiFiltro = mysql_fetch_assoc ( $resFamiFiltro ) ) { 
-							$vto = 1;
-							if ($rowFamiFiltro['tipoparentesco'] == 4 && $rowFamiFiltro['certificadoestudio'] == 1) {
-								if ($rowFamiFiltro['vencimientocertificadoestudio'] >= $hoy) {
-									$vto = 0;
-								} 
-							} 
-							if ($vto == 1) {?>
-		 						<tr>
-									<td><?php echo $rowFamiFiltro['nroafiliado'] ?></td>
-									<td><?php echo $rowFamiFiltro['tipoparentesco']." - ".$rowFamiFiltro['descrip'] ?></td>
-									<td><?php echo "(".$rowFamiFiltro['edad'].") - ".$rowFamiFiltro['fechanacimiento'] ?></td>
-									<td><?php if ($rowFamiFiltro['estudia'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
-									<td><?php if ($rowFamiFiltro['certificadoestudio'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
-									<td><?php if ($rowFamiFiltro['certificadoestudio'] == 1) { echo $rowFamiFiltro['vencimientocertificadoestudioInforme']; } ?></td>
-									<td><input type="checkbox" name="<?php echo $rowFamiFiltro['nroafiliado']."-". $rowFamiFiltro['nroorden'] ?>" id="baja" value="<?php echo $rowFamiFiltro['nroafiliado']."-". $rowFamiFiltro['nroorden'] ?>" /></td>
-								</tr>
-					<?php 	}
-						} ?>
+				<?php foreach($arrayBaja as $famibaja) {?>
+		 				<tr>
+							<td><?php echo $famibaja['nroafiliado'] ?></td>
+							<td><?php echo $famibaja['tipoparentesco']." - ".$famibaja['descrip'] ?></td>
+							<td><?php echo "(".$famibaja['edad'].") - ".$famibaja['fechanacimiento'] ?></td>
+							<td><?php if ($famibaja['discapacidad'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
+							<td><?php if ($famibaja['estudia'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
+							<td><?php if ($famibaja['certificadoestudio'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
+							<td><?php if ($famibaja['certificadoestudio'] == 1) { echo $famibaja['vencimientocertificadoestudioInforme']; } ?></td>
+							<td><input type="checkbox" name="<?php echo $famibaja['nroafiliado']."-". $famibaja['nroorden'] ?>" id="baja" value="<?php echo $famibaja['nroafiliado']."-". $famibaja['nroorden'] ?>" /></td>
+						</tr>
+				<?php 	} ?>
 				<tbody>
 				</tbody>
 			</table>
@@ -191,5 +233,36 @@ function checkall(seleccion, formulario) {
 				</tr>
 			</table>
 		</form>
+		
+		<p align="center" class="Estilo1">Familiares con Inconsistencias (<?php echo sizeof($arrayInfo) ?>)</p>
+		
+		<table class="tablesorter" id="tablaInfo" style="width: 900px; font-size: 14px">
+				<thead>
+					<tr>
+						<th>Nro. Afiliado</th>
+						<th class="filter-select" data-placeholder="Seleccion">Codigo - Parentesco</th>
+						<th>(Edad) - Fec. Nac.</th>
+						<th class="filter-select" data-placeholder="Seleccion">Discapacitado</th>
+						<th class="filter-select" data-placeholder="Seleccion">Estudia</th>
+						<th class="filter-select" data-placeholder="Seleccion">Certificado</th>
+						<th>Vto. Cert.</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach($arrayInfo as $faminfo) {?>
+		 				<tr>
+							<td><?php echo $faminfo['nroafiliado'] ?></td>
+							<td><?php echo $faminfo['tipoparentesco']." - ".$faminfo['descrip'] ?></td>
+							<td><?php echo "(".$faminfo['edad'].") - ".$faminfo['fechanacimiento'] ?></td>
+							<td><?php if ($faminfo['discapacidad'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
+							<td><?php if ($faminfo['estudia'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
+							<td><?php if ($faminfo['certificadoestudio'] == 1) { echo "SI"; } else { echo "NO";} ?></td>
+							<td><?php if ($faminfo['certificadoestudio'] == 1) { echo $faminfo['vencimientocertificadoestudioInforme']; } ?></td>
+						</tr>
+				<?php 	} ?>
+				<tbody>
+				</tbody>
+			</table>
+		
 	</div>
 </body>
