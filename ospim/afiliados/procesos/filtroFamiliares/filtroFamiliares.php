@@ -226,12 +226,9 @@ function checkall(seleccion, formulario) {
 				<tbody>
 				</tbody>
 			</table>
-			<table style="width: 800px">
-				<tr>
-					<td align="left"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></td>
-					<td align="right"><input class="nover" type="submit" name="submit" value="Bajar" /></td>
-				</tr>
-			</table>
+			<div style="width: 900px; text-align: right;">
+				<input class="nover" type="submit" name="submit" value="Dar de Baja" />
+			</div>
 		</form>
 		
 		<p align="center" class="Estilo1">Familiares con Inconsistencias (<?php echo sizeof($arrayInfo) ?>)</p>
@@ -263,6 +260,6 @@ function checkall(seleccion, formulario) {
 				<tbody>
 				</tbody>
 			</table>
-		
+		<input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" />		
 	</div>
 </body>
