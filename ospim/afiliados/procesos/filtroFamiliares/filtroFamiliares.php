@@ -35,7 +35,11 @@ while ( $rowFamiFiltro = mysql_fetch_assoc ( $resFamiFiltro ) ) {
 		if ($rowFamiFiltro['discapacidad'] == 1) {
 			$arrayInfo[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
 		} else {
-			$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+			if ($rowFamiFiltro['estudia'] == 1) {
+				$arrayInfo[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+			} else {
+				$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+			}
 		}
 	} else {
 		if ($rowFamiFiltro['edad'] > 25) {
