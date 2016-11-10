@@ -2,10 +2,9 @@
 include ($libPath . "controlSessionOspim.php");
 include ($libPath . "fechas.php");
 set_time_limit(0);
+$hoy = date("Y-m-d");
 
 //var_dump($_POST);echo "<br>";
-
-$fechaBaja = date ( "Y-m-d" );
 $motivoBaja = "Depuración de Padrón - Proceso automatico de Baja de Familiares";
 $fechaefectivizacion = date ( "Y-m-d H:i:s" );
 $usuarioefectivizacion = $_SESSION ['usuario'];
@@ -25,6 +24,17 @@ foreach ( $_POST as $value ) {
     $resBajarFami = mysql_query ( $sqlBajarFami, $db );
     $rowBajarFami = mysql_fetch_assoc ( $resBajarFami );
     
+    if ($rowBajarFami['tipoparentesco'] == 3 || $rowBajarFami['tipoparentesco'] == 5 || $rowBajarFami['tipoparentesco'] == 7) {
+    	$fechaBaja = date("Y-m-d", strtotime ('+21 year',strtotime($rowBajarFami['fechanacimiento'])));
+    } else {
+    	$fechaBaja = date("Y-m-d", strtotime ('+25 year',strtotime($rowBajarFami['fechanacimiento'])));
+    	if ($rowBajarFami['certificadoestudio'] == 1) {
+    		if ($rowFamiFiltro['vencimientocertificadoestudio'] < $hoy) {
+    			$fechaBaja = $rowBajarFami['vencimientocertificadoestudio'];
+    		}
+    	}
+    }
+     
 	//'".$rowBajarFami['foto']."', -> ¿¿¿¿FOTO????
 	$sqlBajaFamilia = "INSERT INTO familiaresdebaja VALUE(
 						'".$rowBajarFami['nroafiliado']."',
