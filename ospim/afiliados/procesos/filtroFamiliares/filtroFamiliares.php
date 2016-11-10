@@ -50,12 +50,20 @@ while ( $rowFamiFiltro = mysql_fetch_assoc ( $resFamiFiltro ) ) {
 			}
 		} else {
 			if ($rowFamiFiltro['discapacidad'] == 0) {
-				if ($rowFamiFiltro['certificadoestudio'] == 1) {
-					if ($rowFamiFiltro['vencimientocertificadoestudio'] < $hoy) {
+				if ($rowFamiFiltro['estudia'] == 1) {
+					if ($rowFamiFiltro['certificadoestudio'] == 1) {
+						if ($rowFamiFiltro['vencimientocertificadoestudio'] < $hoy) {
+							$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+						}
+					} else {
 						$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
 					}
 				} else {
-					$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+					if ($rowFamiFiltro['certificadoestudio'] == 1) {
+						$arrayInfo[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+					} else {
+						$arrayBaja[$rowFamiFiltro['cuil']] = $rowFamiFiltro;
+					}
 				}
 			}
 		}
