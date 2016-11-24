@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-10-2016 a las 15:37:02
+-- Tiempo de generación: 24-11-2016 a las 15:36:07
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -684,7 +684,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -1757,6 +1757,9 @@ CREATE TABLE IF NOT EXISTS `discapacitadoexpendiente` (
   `dependencia` int(1) NOT NULL,
   `recibosueldo` int(1) NOT NULL,
   `segurodesempleo` int(1) NOT NULL,
+  `evolutivoprimer` int(1) NOT NULL,
+  `evolutivosegundo` int(1) NOT NULL,
+  `admision` int(1) NOT NULL,
   `observaciones` text,
   `completo` int(1) NOT NULL,
   `fechacierre` datetime DEFAULT NULL,
@@ -1765,7 +1768,7 @@ CREATE TABLE IF NOT EXISTS `discapacitadoexpendiente` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idexpediente`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=535 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=536 ;
 
 -- --------------------------------------------------------
 
@@ -1970,7 +1973,7 @@ CREATE TABLE IF NOT EXISTS `establecimientos` (
   `codlocali` int(6) NOT NULL,
   `codprovin` int(2) NOT NULL,
   `indpostal` char(1) CHARACTER SET latin1 DEFAULT NULL,
-  `numpostal` int(4) NOT NULL,
+  `numpostal` int(4) DEFAULT NULL,
   `alfapostal` char(3) CHARACTER SET latin1 DEFAULT NULL,
   `telefono1` bigint(10) DEFAULT NULL,
   `ddn1` char(5) CHARACTER SET latin1 DEFAULT NULL,
@@ -2660,51 +2663,39 @@ CREATE TABLE IF NOT EXISTS `padronesddjj` (
 CREATE TABLE IF NOT EXISTS `padronsss` (
   `codigornos` int(6) unsigned NOT NULL COMMENT 'Codigo de Obra Social segun R.N.O.S.',
   `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. del Empleador',
-  `cuiltitul` char(11) NOT NULL COMMENT 'C.U.I.L. del Beneficiario Titular',
-  `codparent` int(2) unsigned NOT NULL COMMENT 'Codigo de Parentesco segun SSS',
-  `cuilfami` char(11) NOT NULL COMMENT 'C.U.I.L. del Beneficiario Familiar',
-  `codtipdoc` char(2) NOT NULL COMMENT 'Codigo de Tipo de Documento segun SSS',
-  `nrodocum` int(8) unsigned NOT NULL COMMENT 'Numero de Documento del Beneficiario',
-  `apeynom` char(30) NOT NULL COMMENT 'Apellido y Nombre del Beneficiario',
+  `cuiltitular` char(11) NOT NULL COMMENT 'C.U.I.L. del Beneficiario Titular',
+  `parentesco` int(2) unsigned NOT NULL COMMENT 'Codigo de Parentesco segun SSS',
+  `cuilfamiliar` char(11) NOT NULL COMMENT 'C.U.I.L. del Beneficiario Familiar',
+  `tipodocumento` char(2) NOT NULL COMMENT 'Codigo de Tipo de Documento segun SSS',
+  `nrodocumento` int(8) unsigned NOT NULL COMMENT 'Numero de Documento del Beneficiario',
+  `apellidoynombre` char(30) NOT NULL COMMENT 'Apellido y Nombre del Beneficiario',
   `sexo` char(1) NOT NULL COMMENT 'Sexo del Beneficiario',
-  `codestciv` int(2) unsigned NOT NULL COMMENT 'Codigo de Estado Civil segun SSS',
-  `fechanaci` date NOT NULL COMMENT 'Fecha de Nacimiento en Formato DDMMAAAA',
-  `codnacion` int(3) unsigned NOT NULL COMMENT 'Codigo de Nacionalidad segun SSS',
-  `calledomi` char(20) NOT NULL COMMENT 'Calle del Domicilio del Beneficiario',
-  `puertadomi` char(5) NOT NULL COMMENT 'Nro. de Puerta del Domicilio del Beneficiario',
-  `pisodomi` char(4) NOT NULL COMMENT 'Piso del Domicilio del Beneficiario',
-  `deptodomi` char(4) NOT NULL COMMENT 'Depto. del Domicilio del Beneficiario',
+  `estadocivil` int(2) unsigned NOT NULL COMMENT 'Codigo de Estado Civil segun SSS',
+  `fechanacimiento` date NOT NULL COMMENT 'Fecha de Nacimiento en Formato DDMMAAAA',
+  `nacionalidad` int(3) unsigned NOT NULL COMMENT 'Codigo de Nacionalidad segun SSS',
+  `calledomicilio` char(20) NOT NULL COMMENT 'Calle del Domicilio del Beneficiario',
+  `puertadomicilio` char(5) NOT NULL COMMENT 'Nro. de Puerta del Domicilio del Beneficiario',
+  `pisodomicilio` char(4) NOT NULL COMMENT 'Piso del Domicilio del Beneficiario',
+  `deptodomicilio` char(4) NOT NULL COMMENT 'Depto. del Domicilio del Beneficiario',
   `localidad` char(20) NOT NULL COMMENT 'Localidad en la que vive el Beneficiario',
-  `codpostal` char(8) NOT NULL COMMENT 'Codigo Postal que corresponde al Beneficiario',
+  `codigopostal` char(8) NOT NULL COMMENT 'Codigo Postal que corresponde al Beneficiario',
   `codprovin` int(2) unsigned NOT NULL COMMENT 'Codigo de Provincia en la que vive el Beneficiario',
-  `tipodomici` int(2) unsigned DEFAULT NULL COMMENT 'Codigo de Tipo de Domicilio segun SSS',
+  `tipodomicilio` int(2) unsigned DEFAULT NULL COMMENT 'Codigo de Tipo de Domicilio segun SSS',
   `telefono` char(20) DEFAULT NULL COMMENT 'Telefono del Beneficiario',
-  `codsitrev` int(2) unsigned NOT NULL COMMENT 'Codigo de Situacion de Revista segun SSS',
-  `codincapa` int(2) unsigned NOT NULL COMMENT 'Codigo de Incapacidad segun SSS',
-  `codtiptit` int(1) unsigned NOT NULL COMMENT 'Codigo de Tipo de Beneficiario Titular segun SSS',
-  `fecaltaos` date NOT NULL COMMENT 'Fecha Alta en la O.S. con formato DDMMAAAA',
-  `fecciepres` date NOT NULL COMMENT 'Fecha de Presentacion del registro en la SSS por la O.S. con formato DDMMAAAA',
-  `verificuil` int(3) unsigned zerofill NOT NULL COMMENT 'Resultado de la verificacion de la SSS del cuil del beneficiario. Rango de Error: 200 a 400',
-  `cuilinfos` char(11) DEFAULT NULL COMMENT 'C.U.I.L. informado por la O.S. para el caso en que la SSS lo modifico',
-  `tiptitsijp` char(2) DEFAULT NULL COMMENT 'Tipo de Beneficiario segun SIJP que difiere del de la O.S.',
+  `situacionrevista` int(2) unsigned NOT NULL COMMENT 'Codigo de Situacion de Revista segun SSS',
+  `incapacidad` int(2) unsigned NOT NULL COMMENT 'Codigo de Incapacidad segun SSS',
+  `tipotitular` int(1) unsigned NOT NULL COMMENT 'Codigo de Tipo de Beneficiario Titular segun SSS',
+  `fechaaltaos` date NOT NULL COMMENT 'Fecha Alta en la O.S. con formato DDMMAAAA',
+  `fechapresentacion` date NOT NULL COMMENT 'Fecha de Presentacion del registro en la SSS por la O.S. con formato DDMMAAAA',
+  `verificacioncuil` int(3) unsigned zerofill NOT NULL COMMENT 'Resultado de la verificacion de la SSS del cuil del beneficiario. Rango de Error: 200 a 400',
+  `cuilinformadoos` char(11) DEFAULT NULL COMMENT 'C.U.I.L. informado por la O.S. para el caso en que la SSS lo modifico',
+  `tipotitularsijp` char(2) DEFAULT NULL COMMENT 'Tipo de Beneficiario segun SIJP que difiere del de la O.S.',
   `cuitsijp` char(11) DEFAULT NULL COMMENT 'C.U.I.T. del empleador que declara al beneficiario',
   `ossijp` int(6) unsigned DEFAULT NULL COMMENT 'O.S. declarada en el SIJP',
-  `perisijp` char(6) DEFAULT NULL COMMENT 'Ultima declaracion jurada en SIJP con formato AAAAMM',
+  `periodosijp` char(6) DEFAULT NULL COMMENT 'Ultima declaracion jurada en SIJP con formato AAAAMM',
   `osopcion` int(6) unsigned DEFAULT NULL COMMENT 'La SSS informa el RNOS de la O.S. en caso de opcion vigente',
-  `periopcion` char(6) DEFAULT NULL COMMENT 'Fecha desde la cual esta vigente la opcion con formato AAAAMM',
-  `anopadron` int(4) unsigned NOT NULL COMMENT 'Año del Periodo al que corresponde el padron',
-  `mespadron` int(2) unsigned NOT NULL COMMENT 'Mes del Periodo al que corresponde el padron',
-  PRIMARY KEY (`cuit`,`cuiltitul`,`codparent`,`cuilfami`,`anopadron`,`mespadron`) USING BTREE,
-  KEY `FK_PADRONSSS_TIPODOCU` (`codtipdoc`),
-  KEY `FK_PADRONSSS_ESTADOCIVIL` (`codestciv`),
-  KEY `FK_PADRONSSS_NACIONALIDAD` (`codnacion`),
-  KEY `FK_PADRONSSS_PROVINCIA` (`codprovin`),
-  KEY `FK_PADRONSSS_TIPOTITULAR` (`codtiptit`),
-  KEY `FK_PADRONSSS_SITREVISTA` (`codsitrev`),
-  KEY `FK_PADRONSSS_PARENTESCO` (`codparent`),
-  KEY `FK_PADRONSSS_DOMICILIO` (`tipodomici`),
-  KEY `FK_PADRONSSS_INCAPACIDAD` (`codincapa`),
-  KEY `FK_PADRONSSS_VERIFICUIL` (`verificuil`)
+  `periodoopcion` char(6) DEFAULT NULL COMMENT 'Fecha desde la cual esta vigente la opcion con formato AAAAMM',
+  PRIMARY KEY (`cuit`,`cuiltitular`,`parentesco`,`cuilfamiliar`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Padron Consolidado de OSPIM segun la SSS';
 
 -- --------------------------------------------------------
@@ -2757,7 +2748,7 @@ CREATE TABLE IF NOT EXISTS `patologiasautorizaciones` (
   `codigo` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Codigo de Patologia',
   `descripcion` char(150) NOT NULL COMMENT 'Descripcion de la Patologia',
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Clasificacion de Patologias para el modulo de Autorizaciones' AUTO_INCREMENT=60 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Clasificacion de Patologias para el modulo de Autorizaciones' AUTO_INCREMENT=91 ;
 
 -- --------------------------------------------------------
 
@@ -2820,7 +2811,7 @@ CREATE TABLE IF NOT EXISTS `practicascategorias` (
   `tipoprestador` int(3) unsigned NOT NULL,
   `descripcion` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
@@ -3580,7 +3571,7 @@ CREATE TABLE IF NOT EXISTS `titulares` (
   `usuariomodificacion` char(50) DEFAULT NULL,
   `mirroring` char(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`nroafiliado`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Titulares' AUTO_INCREMENT=9925 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Titulares' AUTO_INCREMENT=161063 ;
 
 -- --------------------------------------------------------
 
@@ -3937,21 +3928,6 @@ ALTER TABLE `novedadessss`
   ADD CONSTRAINT `FK_NOVEDADESSSS_SITREVISTA` FOREIGN KEY (`codsitrev`) REFERENCES `situacionrevista` (`codsitrev`),
   ADD CONSTRAINT `FK_NOVEDADESSSS_TIPODOCU` FOREIGN KEY (`codtipdoc`) REFERENCES `tipodocumento` (`codtipdoc`),
   ADD CONSTRAINT `FK_NOVEDADESSSS_TIPOTITULAR` FOREIGN KEY (`codtiptit`) REFERENCES `tipotitular` (`codtiptit`);
-
---
--- Filtros para la tabla `padronsss`
---
-ALTER TABLE `padronsss`
-  ADD CONSTRAINT `FK_PADRONSSS_DOMICILIO` FOREIGN KEY (`tipodomici`) REFERENCES `tipodomicilio` (`codtipdom`),
-  ADD CONSTRAINT `FK_PADRONSSS_ESTADOCIVIL` FOREIGN KEY (`codestciv`) REFERENCES `estadocivil` (`codestciv`),
-  ADD CONSTRAINT `FK_PADRONSSS_INCAPACIDAD` FOREIGN KEY (`codincapa`) REFERENCES `incapacidad` (`codincapa`),
-  ADD CONSTRAINT `FK_PADRONSSS_NACIONALIDAD` FOREIGN KEY (`codnacion`) REFERENCES `nacionalidad` (`codnacion`),
-  ADD CONSTRAINT `FK_PADRONSSS_PARENTESCO` FOREIGN KEY (`codparent`) REFERENCES `parentesco` (`codparent`),
-  ADD CONSTRAINT `FK_PADRONSSS_PROVINCIA` FOREIGN KEY (`codprovin`) REFERENCES `provincia` (`codprovin`),
-  ADD CONSTRAINT `FK_PADRONSSS_SITREVISTA` FOREIGN KEY (`codsitrev`) REFERENCES `situacionrevista` (`codsitrev`),
-  ADD CONSTRAINT `FK_PADRONSSS_TIPODOCU` FOREIGN KEY (`codtipdoc`) REFERENCES `tipodocumento` (`codtipdoc`),
-  ADD CONSTRAINT `FK_PADRONSSS_TIPOTITULAR` FOREIGN KEY (`codtiptit`) REFERENCES `tipotitular` (`codtiptit`),
-  ADD CONSTRAINT `FK_PADRONSSS_VERIFICUIL` FOREIGN KEY (`verificuil`) REFERENCES `vericuiles` (`verificuil`);
 
 --
 -- Filtros para la tabla `prestadorjurisdiccion`
