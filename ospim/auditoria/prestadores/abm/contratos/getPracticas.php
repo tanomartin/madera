@@ -11,7 +11,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 					<th>Complejidad</th>
 					<th>Categoria</th>
 					<th></th>
-					<th>Modulo Consultorio ($)</th>
+					<th>Modulo Consultorio / Valor General ($)</th>
 					<th>Modulo Urgencia ($)</th>
 					<th>G. Honorarios ($)</th>
 					<th>G. Honorarios Especialista ($)</th>

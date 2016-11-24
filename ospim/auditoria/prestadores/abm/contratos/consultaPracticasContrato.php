@@ -115,7 +115,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 			  <th class="filter-select" data-placeholder="Seleccione Subcapitulo">Subcapitulo</th>
               <th>Descripciones</th>
 			  <th class="filter-select" data-placeholder="Seleccione Complejidad">Complejidad</th>
-			  <th>Modulo Consultorio ($)</th>
+			  <th>Modulo Consultorio / Valor General ($)</th>
 			  <th>Modulo Urgencia ($)</th>
 			  <th>G. Honorarios ($)</th>
 			  <th>G. Honorarios Especialista ($)</th>
