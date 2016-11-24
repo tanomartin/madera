@@ -369,6 +369,31 @@ function verCertificado(dire){
             <option value="2" <?php echo $seletedNR ?>>No Requerido</option>
         </select></td>
       </tr>
+      
+       <tr>
+        <td><div align="right">Informe Evolutivo 1er Semestre</div></td>
+        <td>
+		<?php if ($rowExpediente['evolutivoprimer'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; } else { $seletedNO = ''; $seletedSI = 'selected'; } ?>
+		<select name="evolutivoprimer" id="evolutivoprimer">
+            <option value="0" <?php echo $seletedNO ?>>NO</option>
+            <option value="1" <?php echo $seletedSI ?>>SI</option>
+        </select></td>
+        <td><div align="right">Informe Evolutivo 2do Semestre</div></td>
+        <td>
+		<?php if ($rowExpediente['evolutivosegundo'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; } else { $seletedNO = ''; $seletedSI = 'selected'; } ?>
+		<select name="evolutivosegundo" id="evolutivosegundo">
+            <option value="0" <?php echo $seletedNO ?>>NO</option>
+            <option value="1" <?php echo $seletedSI ?>>SI</option>
+        </select></td>
+        <td><div align="right">Entrevista Admisión</div></td>
+        <td>
+		<?php if ($rowExpediente['admision'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; } else { $seletedNO = ''; $seletedSI = 'selected'; } ?>
+		<select name="admision" id="admision">
+            <option value="0" <?php echo $seletedNO ?>>NO</option>
+            <option value="1" <?php echo $seletedSI ?>>SI</option>
+        </select></td>
+      </tr>
+      
       <tr>
         <td><div align="right">Dependencia</div></td>
         <td><label>

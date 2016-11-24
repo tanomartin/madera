@@ -168,6 +168,14 @@ function verCertificado(dire){
       <td><b><?php if ($rowExpediente['segurodesempleo'] == 0) { echo "NO"; } if ($rowExpediente['segurodesempleo'] == 1) { echo "SI"; }  if ($rowExpediente['segurodesempleo'] == 2) { echo "No Requerido"; }?></b></td>
     </tr>
     <tr>
+      <td><div align="right">Informe Evolutivo 1er Semestre: </div></td>
+      <td><b><?php if ($rowExpediente['evolutivoprimer'] == 0) { echo "NO"; } else { echo "SI"; }?></b></td>
+      <td><div align="right">Informe Evolutivo 2do Semestre: </div></td>
+      <td><b><?php if ($rowExpediente['evolutivosegundo'] == 0) { echo "NO"; } else { echo "SI"; } ?></b></td>
+      <td><div align="right">Entrevista Admisión: </div></td>
+      <td><b><?php if ($rowExpediente['admision'] == 0) { echo "NO"; } else { echo "SI"; } ?></b></td>
+    </tr>
+    <tr>
       <td><div align="right">Dependencia:</div></td>
       <td><b><?php if ($rowExpediente['dependencia'] == 0) { echo "NO"; } if ($rowExpediente['dependencia'] == 1) { echo "SI"; }  if ($rowExpediente['dependencia'] == 2) { echo "No Requerido"; }?>
       </b></td>

@@ -264,7 +264,27 @@ function validar(formulario) {
 		   <option value="2">No Requerido</option>
         </select></td>
       </tr>
-	   <tr>
+      
+      <tr>
+		<td><div align="right">Informe Evolutivo 1er Semestre</div></td>
+        <td><select name="evolutivoprimer" id="evolutivoprimer">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+        <td><div align="right">Informe Evolutivo 2do Semestre</div></td>
+        <td><select name="evolutivosegundo" id="evolutivosegundo">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+        <td><div align="right">Entrevista Admisión</div></td>
+        <td><select name="admision" id="admision">
+          <option value="0">NO</option>
+          <option value="1">SI</option>
+        </select></td>
+      </tr>
+	  
+	  
+	  <tr>
 	     <td><div align="right">Dependencia</div></td>
 	     <td><label>
 	       <select name="dependencia" id="dependencia">

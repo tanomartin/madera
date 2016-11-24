@@ -47,7 +47,7 @@ foreach($_POST as $dato) {
 	}
 }
 
-$sqlInsertExpediente = "INSERT INTO discapacitadoexpendiente VALUE(:idexpediente,:nroafiliado,:nroorden,:pedidomedico,:presupuesto,:presupuestotransporte,:registrosss,:resolucionsnr,:titulo,:plantratamiento,:informe,:historia,:planillafim,:consentimientotratamiento,:consentimientotransporte,:constancia,:adaptaciones,:acta,:certificadodisca,:dependencia,:recibo,:seguro,:observacion,:completo,:fechacierre,:fecharegistro,:usuarioregistro,:fechamodif,:usuariomodif)";
+$sqlInsertExpediente = "INSERT INTO discapacitadoexpendiente VALUE(:idexpediente,:nroafiliado,:nroorden,:pedidomedico,:presupuesto,:presupuestotransporte,:registrosss,:resolucionsnr,:titulo,:plantratamiento,:informe,:historia,:planillafim,:consentimientotratamiento,:consentimientotransporte,:constancia,:adaptaciones,:acta,:certificadodisca,:dependencia,:recibo,:seguro,:evolutivoprimer,:evolutivosegundo,:admision,:observacion,:completo,:fechacierre,:fecharegistro,:usuarioregistro,:fechamodif,:usuariomodif)";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -74,7 +74,21 @@ try {
 	}
 
 	$resInsertExpediente = $dbh->prepare($sqlInsertExpediente);
-	$resInsertExpediente->execute(array(':idexpediente' => 'DEFAULT',':nroafiliado'=> $nroafiliado,':nroorden'=>$nroorden,':pedidomedico' => $_POST['pedidomedico'],':presupuesto' => $_POST['presupuesto'],':presupuestotransporte' => $_POST['presupuestotrasnporte'],':registrosss' => $_POST['registrosss'],':resolucionsnr' => $_POST['resolucionsnr'],':titulo' => $_POST['titulo'],':plantratamiento' => $_POST['plantratamiento'],':informe' => $_POST['informe'],':historia' => $_POST['historia'],':planillafim' => $_POST['planillafim'],':consentimientotratamiento' => $_POST['consentimientotratamiento'],':consentimientotransporte' => $_POST['consentimientotransporte'],':constancia' => $_POST['constancia'],':adaptaciones' => $_POST['adaptaciones'],':acta' => $_POST['acta'],':certificadodisca' => $_POST['certificadodisca'],':dependencia' => $_POST['dependencia'],':recibo' => $_POST['recibo'],':seguro' => $_POST['seguro'],':observacion' => $_POST['observacion'],':completo'=>$completo,':fechacierre' => $fechacierre,':fecharegistro' => $fecharegistro, ':usuarioregistro' => $usuarioregistro, ':fechamodif' => $fechamodificacion,':usuariomodif'=>$usuariomodificacion));
+	$resInsertExpediente->execute(array(':idexpediente' => 'DEFAULT',':nroafiliado'=> $nroafiliado,':nroorden'=>$nroorden,
+										':pedidomedico' => $_POST['pedidomedico'],':presupuesto' => $_POST['presupuesto'],
+										':presupuestotransporte' => $_POST['presupuestotrasnporte'],':registrosss' => $_POST['registrosss'],
+										':resolucionsnr' => $_POST['resolucionsnr'],':titulo' => $_POST['titulo'],
+										':plantratamiento' => $_POST['plantratamiento'],':informe' => $_POST['informe'],
+										':historia' => $_POST['historia'],':planillafim' => $_POST['planillafim'],
+										':consentimientotratamiento' => $_POST['consentimientotratamiento'],
+										':consentimientotransporte' => $_POST['consentimientotransporte'],':constancia' => $_POST['constancia'],
+										':adaptaciones' => $_POST['adaptaciones'],':acta' => $_POST['acta'],
+										':certificadodisca' => $_POST['certificadodisca'],':dependencia' => $_POST['dependencia'],
+										':recibo' => $_POST['recibo'],':seguro' => $_POST['seguro'],
+										':evolutivoprimer' => $_POST['evolutivoprimer'],':evolutivosegundo' => $_POST['evolutivosegundo'],':admision' => $_POST['admision'],
+										':observacion' => $_POST['observacion'],
+										':completo'=>$completo,':fechacierre' => $fechacierre,':fecharegistro' => $fecharegistro, 
+										':usuarioregistro' => $usuarioregistro, ':fechamodif' => $fechamodificacion,':usuariomodif'=>$usuariomodificacion));
 	//echo($sqlInsertExpediente."<br>");
 	
 	$dbh->commit();
