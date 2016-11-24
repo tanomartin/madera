@@ -13,7 +13,7 @@ $resultados = array();
 
 //print("<br>Verifico si ya existen archivos<br>");
 $pathArchivo = "archivos/".$delegacion."/";
-$arrayNombreArchivo = array("empresa.txt","titular.txt","familia.txt","bajatit.txt","bajafam.txt","cabjur.txt","cuij$delegacion.txt","pagos.txt","apoi$delegacion.txt", "cabacuer.txt","detacuer.txt","cuoacuer.txt","juicios.txt",);
+$arrayNombreArchivo = array("empresa.txt","titular.txt","familia.txt","bajatit.txt","bajafam.txt","cabjur.txt","cuij$delegacion.txt","pagos.txt","apoi$delegacion.txt", "cabacuer.txt","detacuer.txt","cuoacuer.txt","juicios.txt","discapacitados.txt");
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
 	//print($archivo."<br>");
@@ -79,6 +79,14 @@ if ($errorArchivos == 0) {
 			if(stripos($tabla,"juicios") !== FALSE) {
 				$sqlLeeTablas="SELECT c.cuit AS cui, d.anojuicio AS ano, d.mesjuicio AS mes FROM jurisdiccion j, cabjuiciosospim c, detjuiciosospim d WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.nroorden = d.nroorden AND d.anojuicio > 2003";
 			}
+			if(stripos($tabla,"discapacitados") !== FALSE) {
+				$sqlLeeTablas="SELECT d.nroafiliado as naf, d.nroorden as nrd, t.codidelega as delalta, b.codidelega as delbaja
+     								FROM discapacitados d
+									LEFT JOIN titulares t ON d.nroafiliado =  t.nroafiliado
+									LEFT JOIN titularesdebaja b ON d.nroafiliado =  b.nroafiliado
+									WHERE t.codidelega = $delegacion or b.codidelega = $delegacion";
+			}
+
 			//print($sqlLeeTablas."<br>");
 			$resLeeTablas = $dbl->query($sqlLeeTablas);
 			if(!$resLeeTablas){
@@ -387,6 +395,35 @@ if ($errorArchivos == 0) {
 							$finRegistro = '),';						
 						}
 						$registroTabla = '("'.$contenidoTabla[cui].'",'.$contenidoTabla[ano].','.$contenidoTabla[mes].$finRegistro;
+						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
+							$errorEscritura = 1;
+							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
+						} else {
+							$totalLineas++;
+						}
+					}
+					if($errorEscritura == 0) {
+						$resultados[$i+1] = array("etapa" => "Escritura de Datos Tablas", "estado" => "OK", "descripcion" => "Datos para Tabla: ".$tabla." - Total Registros: ".($totalLineas-1)."<br>");
+					} else {
+						$resultados[$i+1] = array("etapa" => "Escritura de Datos Tablas", "estado" => "Error", "descripcion" => $msgErrorEscritura);
+					}
+				}
+				if(stripos($tabla,"discapacitados") !== FALSE) {
+					$totalRegistros = $resLeeTablas->rowCount();
+					//print($totalRegistros." Juicios<br>");
+					$totalLineas = 1;
+					foreach($resLeeTablas as $contenidoTabla){
+						if($totalLineas == $totalRegistros) {
+							$finRegistro = ');';
+						} else {
+							$finRegistro = '),';
+						}
+						if ($contenidoTabla[delalta] == null) {
+							$delega = $contenidoTabla[delbaja];
+						} else {
+							$delega = $contenidoTabla[delalta];
+						}
+						$registroTabla = '("'.$contenidoTabla[naf].'",'.$contenidoTabla[nrd].','.$delega.$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
