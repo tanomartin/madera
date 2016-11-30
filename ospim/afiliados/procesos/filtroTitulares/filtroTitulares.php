@@ -28,13 +28,12 @@ $fechaDesempleo = date ( 'Y-m-j', $fechaDesempleo );
 $sqlTitulares = "SELECT DISTINCT cuil FROM titulares t where fechacarnet <= '" . $fechaInicio . "' and tipoafiliado != 'U' and codidelega not in (1000,1001)";
 //echo $sqlTitulares . "<br>";
 
-$sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where where STR_TO_DATE(CONCAT('01/', mesddjj, '/', anoddjj ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
+$sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where STR_TO_DATE(CONCAT('01/', mesddjj, '/', anoddjj ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlDDJJ . "<br>";
 
 $sqlPagos = "SELECT DISTINCT cuil FROM afiptransferencias d where STR_TO_DATE(CONCAT('01/', mespago, '/', anopago ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlPagos . "<br>";
 
-//$sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where anodesempleo = " . date ( "Y", strtotime ( $fechaDesempleo ) ) . " and mesdesempleo = " . date ( "n", strtotime ( $fechaDesempleo ) ) . " and parentesco = 0";
 $sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where STR_TO_DATE(CONCAT('01/', mesdesempleo, '/', anodesempleo ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlDesempleo . "<br><br>";
 
