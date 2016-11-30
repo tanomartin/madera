@@ -17,10 +17,12 @@ function mayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
 }
 
 $fecha = date ( 'Y-m-j' );
-$fechaInicio = strtotime ( '-4 month', strtotime ( $fecha ) );
+$fechaInicio = date('Y')."-".date('m')."-01";
+$fechaInicio = strtotime ( '-4 month', strtotime ( $fechaInicio ) );
 $fechaInicio = date ( 'Y-m-j', $fechaInicio );
 //echo $fechaInicio . "<br>";
 
+$fechaDesempleo = date('Y')."-".date('m')."-01";
 $fechaDesempleo = strtotime ( '-1 month', strtotime ( $fecha ) );
 $fechaDesempleo = date ( 'Y-m-j', $fechaDesempleo );
 //echo $fechaDesempleo . "<br>";
