@@ -195,11 +195,14 @@ function validar(formulario) {
           <option value="0">NO</option>
           <option value="1">SI</option>
         </select></td>
-        <td><div align="right">Informe Evolutivo</div></td>
-        <td><select name="informe" id="informe">
-          <option value="0">NO</option>
-          <option value="1">SI</option>
-        </select></td>
+        <td><div align="right">Dependencia</div></td>
+	     <td>
+	       <select name="dependencia" id="dependencia">
+             <option value="0">NO</option>
+             <option value="1">SI</option>
+			 <option value="2">No Requerido</option>
+           </select>
+	     </td>
         <td><div align="right">Historia Clinica</div></td>
         <td><select name="historia" id="historia">
           <option value="0">NO</option>
@@ -282,22 +285,7 @@ function validar(formulario) {
           <option value="1">SI</option>
         </select></td>
       </tr>
-	  
-	  
-	  <tr>
-	     <td><div align="right">Dependencia</div></td>
-	     <td><label>
-	       <select name="dependencia" id="dependencia">
-             <option value="0">NO</option>
-             <option value="1">SI</option>
-			 <option value="2">No Requerido</option>
-           </select>
-	     </label></td>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-         <td>&nbsp;</td>
-      </tr>
+      
 	   <tr>
 	     <td><div align="right">Observaciones</div></td>
 	     <td colspan="5"><label>

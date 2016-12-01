@@ -250,13 +250,19 @@ function verCertificado(dire){
             <option value="0" <?php echo $seletedNO ?>>NO</option>
             <option value="1" <?php echo $seletedSI ?>>SI</option>
         </select></td>
-        <td><div align="right">Informe Evolutivo</div></td>
+        <td><div align="right">Dependencia</div></td>
         <td>
-		<?php if ($rowExpediente['informeevolutivo'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; } else { $seletedNO = ''; $seletedSI = 'selected'; } ?>
-		<select name="informe" id="informe">
+          <?php 
+			 if ($rowExpediente['dependencia'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; $seletedNR = ''; } 
+			 if ($rowExpediente['dependencia'] == 1) { $seletedNO = ''; $seletedSI = 'selected'; $seletedNR = ''; } 
+			 if ($rowExpediente['dependencia'] == 2) { $seletedNO = ''; $seletedSI = ''; $seletedNR = 'selected'; }  
+		  ?>
+          <select name="dependencia" id="dependencia">
             <option value="0" <?php echo $seletedNO ?>>NO</option>
             <option value="1" <?php echo $seletedSI ?>>SI</option>
-        </select></td>
+			<option value="2" <?php echo $seletedNR ?>>No Requerido</option>
+          </select>
+        </td>
         <td><div align="right">Historia Clinica</div></td>
         <td>
 		<?php if ($rowExpediente['resumenhistoria'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; } else { $seletedNO = ''; $seletedSI = 'selected'; } ?>
@@ -393,26 +399,7 @@ function verCertificado(dire){
             <option value="1" <?php echo $seletedSI ?>>SI</option>
         </select></td>
       </tr>
-      
-      <tr>
-        <td><div align="right">Dependencia</div></td>
-        <td><label>
-          <?php 
-			 if ($rowExpediente['dependencia'] == 0) { $seletedNO = 'selected'; $seletedSI = ''; $seletedNR = ''; } 
-			 if ($rowExpediente['dependencia'] == 1) { $seletedNO = ''; $seletedSI = 'selected'; $seletedNR = ''; } 
-			 if ($rowExpediente['dependencia'] == 2) { $seletedNO = ''; $seletedSI = ''; $seletedNR = 'selected'; }  
-		  ?>
-          <select name="dependencia" id="dependencia">
-            <option value="0" <?php echo $seletedNO ?>>NO</option>
-            <option value="1" <?php echo $seletedSI ?>>SI</option>
-			<option value="2" <?php echo $seletedNR ?>>No Requerido</option>
-          </select>
-        </label></td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-        <td>&nbsp;</td>
-      </tr>
+
       <tr>
         <td><div align="right">Observaciones</div></td>
         <td colspan="5"><label>

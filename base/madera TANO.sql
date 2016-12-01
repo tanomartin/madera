@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-11-2016 a las 15:36:07
+-- Tiempo de generación: 01-12-2016 a las 19:14:34
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -1745,7 +1745,6 @@ CREATE TABLE IF NOT EXISTS `discapacitadoexpendiente` (
   `resolucionsnr` int(1) NOT NULL,
   `titulo` int(1) NOT NULL,
   `plantratamiento` int(1) NOT NULL,
-  `informeevolutivo` int(1) NOT NULL,
   `resumenhistoria` int(1) NOT NULL,
   `planillafim` int(1) NOT NULL,
   `consentimientotratamiento` int(1) NOT NULL,
@@ -3200,7 +3199,7 @@ CREATE TABLE IF NOT EXISTS `reqfiscalizusimra` (
   `fechaanulacion` datetime DEFAULT NULL COMMENT 'Fecha de Anulacion del Requerimiento',
   `usuarioanulacion` char(50) DEFAULT NULL COMMENT 'Usuario que Anula el Requerimiento',
   PRIMARY KEY (`nrorequerimiento`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de USIMRA' AUTO_INCREMENT=29663 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de USIMRA' AUTO_INCREMENT=31237 ;
 
 -- --------------------------------------------------------
 

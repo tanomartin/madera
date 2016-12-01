@@ -138,8 +138,8 @@ function verCertificado(dire){
     <tr>
       <td><div align="right">Plan Tratamiento:</div></td>
       <td><b><?php if ($rowExpediente['plantratamiento'] == 0) { echo "NO"; } else { echo "SI"; }?></b></td>
-      <td><div align="right">Informe Evolutivo:</div></td>
-      <td><b><?php if ($rowExpediente['informeevolutivo'] == 0) { echo "NO"; } else { echo "SI"; }?></b></td>
+      <td><div align="right">Dependencia:</div></td>
+      <td><b><?php if ($rowExpediente['dependencia'] == 0) { echo "NO"; } if ($rowExpediente['dependencia'] == 1) { echo "SI"; }  if ($rowExpediente['dependencia'] == 2) { echo "No Requerido"; }?></b></td>
       <td><div align="right">Historia Clinica:</div></td>
       <td><b><?php if ($rowExpediente['resumenhistoria'] == 0) { echo "NO"; } else { echo "SI"; }?></b></td>
     </tr>
@@ -174,15 +174,6 @@ function verCertificado(dire){
       <td><b><?php if ($rowExpediente['evolutivosegundo'] == 0) { echo "NO"; } else { echo "SI"; } ?></b></td>
       <td><div align="right">Entrevista Admisión: </div></td>
       <td><b><?php if ($rowExpediente['admision'] == 0) { echo "NO"; } else { echo "SI"; } ?></b></td>
-    </tr>
-    <tr>
-      <td><div align="right">Dependencia:</div></td>
-      <td><b><?php if ($rowExpediente['dependencia'] == 0) { echo "NO"; } if ($rowExpediente['dependencia'] == 1) { echo "SI"; }  if ($rowExpediente['dependencia'] == 2) { echo "No Requerido"; }?>
-      </b></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
     </tr>
     <tr>
       <td><div align="right">Observaciones:</div></td>

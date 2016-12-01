@@ -47,7 +47,7 @@ foreach($_POST as $dato) {
 	}
 }
 
-$sqlInsertExpediente = "INSERT INTO discapacitadoexpendiente VALUE(:idexpediente,:nroafiliado,:nroorden,:pedidomedico,:presupuesto,:presupuestotransporte,:registrosss,:resolucionsnr,:titulo,:plantratamiento,:informe,:historia,:planillafim,:consentimientotratamiento,:consentimientotransporte,:constancia,:adaptaciones,:acta,:certificadodisca,:dependencia,:recibo,:seguro,:evolutivoprimer,:evolutivosegundo,:admision,:observacion,:completo,:fechacierre,:fecharegistro,:usuarioregistro,:fechamodif,:usuariomodif)";
+$sqlInsertExpediente = "INSERT INTO discapacitadoexpendiente VALUE(:idexpediente,:nroafiliado,:nroorden,:pedidomedico,:presupuesto,:presupuestotransporte,:registrosss,:resolucionsnr,:titulo,:plantratamiento,:historia,:planillafim,:consentimientotratamiento,:consentimientotransporte,:constancia,:adaptaciones,:acta,:certificadodisca,:dependencia,:recibo,:seguro,:evolutivoprimer,:evolutivosegundo,:admision,:observacion,:completo,:fechacierre,:fecharegistro,:usuarioregistro,:fechamodif,:usuariomodif)";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -78,7 +78,7 @@ try {
 										':pedidomedico' => $_POST['pedidomedico'],':presupuesto' => $_POST['presupuesto'],
 										':presupuestotransporte' => $_POST['presupuestotrasnporte'],':registrosss' => $_POST['registrosss'],
 										':resolucionsnr' => $_POST['resolucionsnr'],':titulo' => $_POST['titulo'],
-										':plantratamiento' => $_POST['plantratamiento'],':informe' => $_POST['informe'],
+										':plantratamiento' => $_POST['plantratamiento'],
 										':historia' => $_POST['historia'],':planillafim' => $_POST['planillafim'],
 										':consentimientotratamiento' => $_POST['consentimientotratamiento'],
 										':consentimientotransporte' => $_POST['consentimientotransporte'],':constancia' => $_POST['constancia'],
