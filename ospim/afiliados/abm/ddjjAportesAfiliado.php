@@ -145,51 +145,46 @@ while($ano>=$anoini) {
 	while($mes>=1) {
 		$lcuiddjj = '';
 		$lremddjj = '';
-		$existe = 0; 
 		
 		$indice = $ano.$mes;
-		
-		foreach($ddjj[$indice] as $dj) {
-			if($dj['ano'] == $ano && $dj['mes'] == $mes) {
-				$lcuiddjj .= (string)$dj['cuit']."<br>";
-				$lremddjj .= (string)$dj['remu']."<br>";
-				$existe = 1; 
-			}
-		} 
-		
-		if ($existe == 0) {
+		if (isset($ddjj[$indice])) {
+			foreach($ddjj[$indice] as $dj) {
+				if($dj['ano'] == $ano && $dj['mes'] == $mes) {
+					$lcuiddjj .= (string)$dj['cuit']."<br>";
+					$lremddjj .= (string)$dj['remu']."<br>";
+				}
+			} 
+		} else {
 			$lcuiddjj = '-';
 			$lremddjj = '-';
 		}
 		
 		$lcuiapor = '';
 		$limpapor = '';
-		$existe = 0; 
-
-		foreach($apor[$indice] as $ap) {
-			if($ap['ano'] == $ano && $ap['mes'] == $mes) {
-				$lcuiapor .= (string)$ap['cuit']."<br>";
-				$limpapor .= (string)$ap['impo']."<br>";
-				$existe = 1; 
+	
+		if (isset($apor[$indice])) {
+			foreach($apor[$indice] as $ap) {
+				if($ap['ano'] == $ano && $ap['mes'] == $mes) {
+					$lcuiapor .= (string)$ap['cuit']."<br>";
+					$limpapor .= (string)$ap['impo']."<br>";
+				}
 			}
-		}
-		if ($existe == 0) {
+		} else {
 			$lcuiapor = '-';
 			$limpapor = '-';
 		}
 		
 		$lfecdese = '';
 		$lcladese = '';
-		$existe = 0; 
 		
-		foreach($dese[$indice] as $de) {
-			if($de['ano'] == $ano && $de['mes'] == $mes) {
-				$lfecdese .= (string)invertirFecha($de['fech'])."<br>";
-				$lcladese .= (string)$de['clav']."<br>";
-				$existe = 1; 
+		if (isset($dese[$indice])) {
+			foreach($dese[$indice] as $de) {
+				if($de['ano'] == $ano && $de['mes'] == $mes) {
+					$lfecdese .= (string)invertirFecha($de['fech'])."<br>";
+					$lcladese .= (string)$de['clav']."<br>";
+				}
 			}
-		}
-		if ($existe == 0) {
+		} else {
 			$lfecdese = '-';
 			$lcladese = '-';
 		}
