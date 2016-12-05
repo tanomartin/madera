@@ -16,27 +16,27 @@ function mayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
 	}
 }
 
-$fecha = date ( 'Y-m-j' );
+$fecha = date ( 'Y-m-d' );
 $fechaInicio = date('Y')."-".date('m')."-01";
 $fechaInicio = strtotime ( '-4 month', strtotime ( $fechaInicio ) );
-$fechaInicio = date ( 'Y-m-j', $fechaInicio );
+$fechaInicio = date ( 'Y-m-d', $fechaInicio );
 //echo $fechaInicio . "<br>";
 
 $fechaDesempleo = date('Y')."-".date('m')."-01";
 $fechaDesempleo = strtotime ( '-1 month', strtotime ( $fecha ) );
-$fechaDesempleo = date ( 'Y-m-j', $fechaDesempleo );
+$fechaDesempleo = date ( 'Y-m-d', $fechaDesempleo );
 //echo $fechaDesempleo . "<br>";
 
 $sqlTitulares = "SELECT DISTINCT cuil FROM titulares t where fechacarnet <= '" . $fechaInicio . "' and tipoafiliado != 'U' and codidelega not in (1000,1001)";
 //echo $sqlTitulares . "<br>";
 
-$sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where STR_TO_DATE(CONCAT('01/', mesddjj, '/', anoddjj ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
+$sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where STR_TO_DATE(CONCAT(anoddjj,'/', mesddjj, '/01'),'%Y/%m/%d') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlDDJJ . "<br>";
 
-$sqlPagos = "SELECT DISTINCT cuil FROM afiptransferencias d where STR_TO_DATE(CONCAT('01/', mespago, '/', anopago ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
+$sqlPagos = "SELECT DISTINCT cuil FROM afiptransferencias d where STR_TO_DATE(CONCAT(anopago,'/', mespago, '/01'),'%Y/%m/%d') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlPagos . "<br>";
 
-$sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where STR_TO_DATE(CONCAT('01/', mesdesempleo, '/', anodesempleo ),'%d/%m/%Y') BETWEEN '$fechaInicio' and '$fecha'";
+$sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where STR_TO_DATE(CONCAT(anodesempleo,'/', mesdesempleo, '/01'),'%Y/%m/%d') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlDesempleo . "<br><br>";
 
 $resTitulares = mysql_query ( $sqlTitulares, $db );
