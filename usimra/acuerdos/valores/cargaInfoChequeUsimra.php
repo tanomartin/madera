@@ -44,14 +44,24 @@ $cantidad = sizeof($datos);
 
 jQuery(function($){
 	$("#fechaCheque").mask("99-99-9999");
-	for (i=0; i<=<?php echo $cantidad ?>; i++) {
+	for (var i=0; i<=<?php echo $cantidad ?>; i++) {
 		$("#fechaResumen"+i).mask("99-99-9999");
 	}
 });
 
 function validar(formulario) {
-	finfor = <?php echo $cantidad ?>;
-	for (i=0; i<finfor; i++) {
+	if (!esEnteroPositivo(formulario.nroCheque.value) || formulario.nroCheque.value == "") {
+		alert("Error número de Cheque");
+		formulario.nroCheque.focus();
+		return false;
+	}
+	if (!esFechaValida(formulario.fechaCheque.value)){
+		alert("La fecha no es valida");
+		formulario.fechaCheque.focus();
+		return false;
+	}
+	var finfor = <?php echo $cantidad ?>;
+	for (var i=0; i<finfor; i++) {
 		idRes = "idResumen" + i;
 		idFec = "fechaResumen" + i;
 		resumen = document.getElementById(idRes).value;
@@ -67,16 +77,7 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	if (!esEnteroPositivo(formulario.nroCheque.value) || formulario.nroCheque.value == "") {
-		alert("Error número de Cheque");
-		formulario.nroCheque.focus();
-		return false;
-	}
-	if (!esFechaValida(formulario.fechaCheque.value)){
-		alert("La fecha no es valida");
-		formulario.fechaCheque.focus();
-		return false;
-	}
+	formulario.Submit.disabled = true;
 	return true;
 }
 
@@ -95,6 +96,7 @@ function validar(formulario) {
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
+<link rel="stylesheet" href="/madera/lib/tablas.css"/>
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
@@ -116,22 +118,20 @@ function validar(formulario) {
         </label></td>
       </tr>
     </table>
-  	<p>
-  	  <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>
-  	</p>
   	<p><strong>Informaci&oacute;n Valores al Cobro </strong></p>
-  	<table border="1" width="1000" cellpadding="2" cellspacing="0">
+  	<div class="grilla">
+  	<table>
       <tr>
-        <td width="150"><div align="center"><strong><font size="1" face="Verdana">CUIT</font></strong></div></td>
-        <td width="400"><div align="center"><strong><font size="1" face="Verdana">Raz&oacute;n Social </font></strong></div></td>
-        <td width="50"><div align="center"><strong><font size="1" face="Verdana">Acuerdo</font></strong></div></td>
-        <td width="50"><div align="center"><strong><font size="1" face="Verdana">Cuota</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cheque</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Banco</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Cheque</font></strong></div></td>
-        <td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
-		<td width="168"><div align="center"><strong><font size="1" face="Verdana">Id. Resumen</font></strong></div></td>
-		<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Resumen</font></strong></div></td>
+        <td><div class="title">CUIT</div></td>
+        <td><div class="title">Raz&oacute;n Social </div></td>
+        <td><div class="title">Acuerdo</div></td>
+        <td><div class="title">Cuota</div></td>
+        <td><div class="title">Nro Cheque</div></td>
+        <td><div class="title">Banco</div></td>
+        <td><div class="title">Fecha Cheque</div></td>
+        <td><div class="title">Monto</div></td>
+		<td><div class="title">Id. Resumen</div></td>
+		<td><div class="title">Fecha Resumen</div></td>
       </tr>
       <?php	
   	$suma = 0;	
@@ -149,43 +149,34 @@ function validar(formulario) {
 		$resValor = mysql_query( $sqlValor,$db); 
 		$rowValor = mysql_fetch_array($resValor); 
 
-		print ("<td width=150><div align=center><font face=Verdana size=1>".$cuit."</font></div></td>");
 		$sqlRazon = "select * from empresas where cuit = $cuit";
 		$resRazon = mysql_query( $sqlRazon,$db); 
-		$rowRazon = mysql_fetch_array($resRazon); 
-				
-		print ("<td width=400><div align=center><font face=Verdana size=1>".$rowRazon['nombre']."</font></div></td>");
-		print ("<td width=50><div align=center><font face=Verdana size=1>".$nroacu."</font></div></td>");
-		print ("<td width=50><div align=center><font face=Verdana size=1>".$nrocuo."</font></div></td>");
-		print ("<td width=168><div align=center><font face=Verdana size=1>".$rowValor['chequenro']."</font></div></td>");
-		print ("<td width=168><div align=center><font face=Verdana size=1>".$rowValor['chequebanco']."</font></div></td>");
-		print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowValor['chequefecha'])."</font></div></td>");
-		print ("<td width=168><div align=center><font face=Verdana size=1>".number_format($rowCuota['montocuota'],2,',','.')."</font></div></td>");
-		print ("<td width=168><div align=center><input name='idResumen".$i."' type='text' id='idResumen".$i."'/></td></div></td>");
-		print ("<td width=168><div align=center><input name='fechaResumen".$i."' type='text' id='fechaResumen".$i."' size='8'/></td></div></td>");
-		print ("</tr>"); 	
-		$suma = $suma + $rowCuota['montocuota'];
-		$i = $i + 1;
-	}
-	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1><b>TOTAL</b></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1><b>".number_format($suma,2,',','.')."</b></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
-	print ("<td width=168><div align=center><font face=Verdana size=1></font></div></td>");
-	print ("</tr>"); 
-	
-	?>
+		$rowRazon = mysql_fetch_array($resRazon);  ?>
+		<tr>
+			<td><?php echo $cuit ?></td>
+			<td><?php echo $rowRazon['nombre'] ?></td>
+			<td><?php echo $nroacu ?></td>
+			<td><?php echo $nrocuo ?></td>
+			<td><?php echo $rowValor['chequenro'] ?></td>
+			<td><?php echo $rowValor['chequebanco'] ?></td>
+			<td><?php echo invertirFecha($rowValor['chequefecha']) ?></td>
+			<td><?php echo number_format($rowCuota['montocuota'],2,',','.') ?></td>
+			<td><input name='idResumen<?php echo $i ?>' type='text' id='idResumen<?php echo $i ?>'/></td>
+			<td><input name='fechaResumen<?php echo $i ?>' type='text' id='fechaResumen<?php echo $i ?>' size='8'/></td>
+		</tr> 			
+		<?php
+			$suma = $suma + $rowCuota['montocuota'];
+			$i = $i + 1;
+		} ?>
+		<tr>
+			<td colspan="6"></td>
+			<td><b>TOTAL</b></td>
+			<td><b><?php echo number_format($suma,2,',','.') ?></b></td>
+			<td colspan="2"></td>
+		</tr>
     </table>
-    <p>
-      <label>
-      <input class="nover" type="submit" name="Submit" value="Guardar" />
-      </label>
-    </p>
+    </div>
+    <p><input class="nover" type="submit" name="Submit" id="Submit" value="Guardar" /></p>
   </form>
 </div>
 </body>

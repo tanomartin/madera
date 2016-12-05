@@ -1,7 +1,10 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); 
 include($libPath."fechas.php");  
+
 $nrocheque = $_GET['nrocheque'];
+$fecdep = $_GET['fecdep'];
+$feccheque =  $_GET['feccheque'];
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -49,8 +52,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><span class="Estilo2">Valor al Cobro Cheque Nro. '<?php echo $nrocheque ?>' </span></p>
-  <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'valoresRealizados.php'"/></p>
+  <p><span class="Estilo2">Valor al Cobro Cheque Nro. '<?php echo $nrocheque ?>' con fecha '<?php echo $feccheque ?>' generado el '<?php echo $fecdep ?>'  </span></p>
+  <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 	  <thead>
 		<tr>
 		  <th>C.U.I.T.</th>
@@ -59,12 +63,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <th>Nro. Cheque</th>
 		  <th>Fecha Cheque</th>
 		  <th>Banco</th>
+		  <th>Id. Resumen</th>
+		  <th>Fecha Resumen</th>
 		  <th>Importe</th>
 		</tr>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlValores = "SELECT v.cuit, v.nroacuerdo, v.nrocuota, v.chequenro, v.chequefecha, v.chequebanco, c.montocuota
+			$sqlValores = "SELECT v.cuit, v.nroacuerdo, v.nrocuota, v.chequenro, DATE_FORMAT(v.chequefecha,'%d/%m/%Y') as chequefecha, v.chequebanco, c.montocuota,  v.idresumenbancario, DATE_FORMAT(v.fecharesumenbancario,'%d/%m/%Y') as fecharesumenbancario
 							FROM valoresalcobrousimra v, cuoacuerdosusimra c Where
 							v.chequenrousimra = '$nrocheque' and
 							v.chequenro = c.chequenro and
@@ -83,11 +89,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<td><?php echo $rowValores['chequenro'] ?></td>
 					<td><?php echo $rowValores['chequefecha'] ?></td>
 					<td><?php echo $rowValores['chequebanco']?></td>
+					<td><?php echo $rowValores['idresumenbancario']?></td>
+					<td><?php echo $rowValores['fecharesumenbancario']?></td>
 					<td align="right"><?php echo number_format($rowValores['montocuota'],2,',','.')?></td>
 			</tr>
 	 <?php } ?>
 	 		<tr>
-				<td colspan="6" align="right">TOTAL</td>
+				<td colspan="8" align="right"><b>TOTAL</b></td>
 				<td align="right"><b><?php echo number_format($total,2,',','.') ?></b></td>
 			</tr>
 			

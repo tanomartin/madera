@@ -66,7 +66,7 @@ function validar(formulario) {
 		}
 	}
 	var checkeados = 0; 
-	for (i = 0; i < total; i++) {
+	for (var i = 0; i < total; i++) {
 		if (grupo[i].checked) {
 			checkeados++;
 		}
@@ -75,6 +75,7 @@ function validar(formulario) {
 		alert("Debe seleccionar algún valor al cobro");
 		return false;
 	}
+	formulario.Submit.disabled = true;
 	return true;
 }
 </script>

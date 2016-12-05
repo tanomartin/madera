@@ -31,7 +31,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue', 
 			widthFixed: true, 
 			widgets: ["zebra", "filter"], 
-			headers:{2:{sorter:false, filter:false}, 3:{sorter:false, filter:false}},
+			headers:{3:{sorter:false, filter:false}, 4:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -63,6 +63,7 @@ function abrirDetalle(dire) {
   <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
 	  <thead>
 		<tr>
+		  <th>Fecha Desposito / Generacion</th>
 		  <th>Nro. Cheque</th>
 		  <th>Fecha Cheque</th>
 		  <th>Banco</th>
@@ -71,15 +72,16 @@ function abrirDetalle(dire) {
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlValores = "SELECT chequenrousimra, chequefechausimra, chequebancousimra FROM valoresalcobrousimra WHERE chequenrousimra != '' GROUP BY chequenrousimra, chequefechausimra, chequebancousimra ORDER BY chequefechausimra DESC";
+			$sqlValores = "SELECT fechadepositousimra, DATE_FORMAT(fechadepositousimra,'%d/%m/%Y') as fechadepositousimraver, chequenrousimra, DATE_FORMAT(chequefechausimra,'%d/%m/%Y') as chequefechausimra, chequebancousimra FROM valoresalcobrousimra WHERE chequenrousimra != '' GROUP BY chequenrousimra, chequefechausimra, chequebancousimra ORDER BY fechadepositousimra DESC";
 			$resValores = mysql_query($sqlValores,$db); 
 			$canValores = mysql_num_rows($resValores);
 			while ($rowValores = mysql_fetch_array($resValores)) { ?>
 			<tr align="center">
+					<td><?php echo $rowValores['fechadepositousimraver'] ?></td>
 					<td><?php echo $rowValores['chequenrousimra'] ?></td>
 					<td><?php echo $rowValores['chequefechausimra'] ?></td>
 					<td><?php echo $rowValores['chequebancousimra']?></td>
-					<td><input type="button" onclick="javascript:abrirDetalle('detalleValorAlCobro.php?nrocheque=<?php echo $rowValores['chequenrousimra'] ?>')" value="Detalle" /></td>
+					<td><input type="button" onclick="javascript:location.href='detalleValorAlCobro.php?nrocheque=<?php echo $rowValores['chequenrousimra'] ?>&feccheque=<?php echo $rowValores['chequefechausimra'] ?>&fecdep=<?php echo $rowValores['fechadepositousimraver'] ?>'" value="Detalle" /></td>
 			</tr>
 	 <?php } ?>
     </tbody>
