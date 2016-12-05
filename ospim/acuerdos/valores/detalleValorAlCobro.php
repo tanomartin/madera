@@ -2,6 +2,8 @@
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
  
 $nrocheque = $_GET['nrocheque'];
+$fecdep = $_GET['fecdep'];
+$feccheque =  $_GET['feccheque'];
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -50,7 +52,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onclick="location.href = 'valoresRealizados.php'"/></p>
-  <p><span class="Estilo2">Valor al Cobro Cheque Nro. '<?php echo $nrocheque ?>' </span></p>
+  <p><span class="Estilo2">Valor al Cobro Cheque Nro. '<?php echo $nrocheque ?>' con fecha '<?php echo $feccheque ?>' generado el '<?php echo $fecdep ?>'  </span></p>
   <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 	  <thead>
 		<tr>

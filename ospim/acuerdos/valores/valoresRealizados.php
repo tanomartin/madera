@@ -54,23 +54,25 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
 	  <thead>
 		<tr>
-		  <th>Nro. Cheque</th>
-		  <th>Fecha Cheque</th>
-		  <th>Banco</th>
-		  <th>Acciones</th>
+			<th>Fecha Depostio / Generacion</th>	
+		  	<th>Nro. Cheque</th>
+		  	<th>Fecha Cheque</th>
+		  	<th>Banco</th>
+		  	<th>Acciones</th>
 		</tr>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlValores = "SELECT chequenroospim, chequefechaospim, chequebancoospim FROM valoresalcobro WHERE chequenroospim != '' GROUP BY chequenroospim, chequefechaospim, chequebancoospim ORDER BY chequefechaospim DESC";
+			$sqlValores = "SELECT fechadepositoospim, DATE_FORMAT(fechadepositoospim,'%d/%m/%Y') as fechadepositoospimver, chequenroospim, DATE_FORMAT(chequefechaospim,'%d/%m/%Y') as chequefechaospim, chequebancoospim FROM valoresalcobro WHERE chequenroospim != '' GROUP BY chequenroospim, chequefechaospim, chequebancoospim ORDER BY fechadepositoospim DESC";
 			$resValores = mysql_query($sqlValores,$db); 
 			$canValores = mysql_num_rows($resValores);
 			while ($rowValores = mysql_fetch_array($resValores)) { ?>
 			<tr align="center">
+					<td><?php echo $rowValores['fechadepositoospimver'] ?></td>
 					<td><?php echo $rowValores['chequenroospim'] ?></td>
 					<td><?php echo $rowValores['chequefechaospim'] ?></td>
 					<td><?php echo $rowValores['chequebancoospim']?></td>
-					<td><input type="button" onclick="javascript:location.href='detalleValorAlCobro.php?nrocheque=<?php echo $rowValores['chequenroospim'] ?>'" value="Detalle" /></td>
+					<td><input type="button" onclick="javascript:location.href='detalleValorAlCobro.php?nrocheque=<?php echo $rowValores['chequenroospim'] ?>&feccheque=<?php echo $rowValores['chequefechaospim'] ?>&fecdep=<?php echo $rowValores['fechadepositoospimver'] ?>'" value="Detalle" /></td>
 			</tr>
 	 <?php } ?>
     </tbody>
