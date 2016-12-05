@@ -44,19 +44,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 		})
 		.tablesorterPager({container: $("#paginador")}); 
 	});
-	
-function abrirDetalle(dire) {
-	a= window.open(dire,"DetalleValor",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
-}
 </script>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuValores.php'"/>
-</p>
+  <p><input type="reset" name="volver" value="Volver" onclick="location.href = 'menuValores.php'"/></p>
   <p><span class="Estilo2">Valores al Cobro Realizados </span></p>
   <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
 	  <thead>
@@ -77,7 +70,7 @@ function abrirDetalle(dire) {
 					<td><?php echo $rowValores['chequenroospim'] ?></td>
 					<td><?php echo $rowValores['chequefechaospim'] ?></td>
 					<td><?php echo $rowValores['chequebancoospim']?></td>
-					<td><input type="button" onclick="javascript:abrirDetalle('detalleValorAlCobro.php?nrocheque=<?php echo $rowValores['chequenroospim'] ?>')" value="Detalle" /></td>
+					<td><input type="button" onclick="javascript:location.href='detalleValorAlCobro.php?nrocheque=<?php echo $rowValores['chequenroospim'] ?>'" value="Detalle" /></td>
 			</tr>
 	 <?php } ?>
     </tbody>

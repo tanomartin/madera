@@ -70,6 +70,7 @@ function validar(formulario) {
 		alert("Debe seleccionar algún valor al cobro");
 		return false;
 	}
+	formulario.Submit.disabled = true;
 	return true;
 }
 </script>
@@ -84,7 +85,7 @@ function validar(formulario) {
   <form id="formNuevoValor" name="formNuevoValor" onsubmit="return validar(this)" method="post" action="cargaInfoChequeOspim.php">
     <table width="935" border="0">
       <tr>
-        <td><div align="left"><input type="submit" name="Submit" value="Valor de Depósito" /></div></td>
+        <td><div align="left"><input type="submit" name="Submit" id="Submit" value="Valor de Depósito" /></div></td>
         <td><div align="right"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" /></div></td></tr>
     </table>
    

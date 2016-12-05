@@ -61,7 +61,7 @@ try {
 		$dbh->exec($sqlUpdateValores);
 	}
 	$dbh->commit();
-	$pagina = "listadoValores.php";
+	$pagina = "detalleValorAlCobro.php?nrocheque=$nroChequeOspim";
 	Header("Location: $pagina"); 
 } catch (PDOException $e) {
 	echo $e->getMessage();

@@ -49,8 +49,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'valoresRealizados.php'"/></p>
   <p><span class="Estilo2">Valor al Cobro Cheque Nro. '<?php echo $nrocheque ?>' </span></p>
-  <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
+  <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 	  <thead>
 		<tr>
 		  <th>C.U.I.T.</th>
@@ -59,12 +60,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  <th>Nro. Cheque</th>
 		  <th>Fecha Cheque</th>
 		  <th>Banco</th>
+		  <th>Id. Resumen</th>
+		  <th>Fecha Resumen</th>
 		  <th>Importe</th>
 		</tr>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlValores = "SELECT v.cuit, v.nroacuerdo, v.nrocuota, v.chequenro, v.chequefecha, v.chequebanco, c.montocuota
+			$sqlValores = "SELECT v.cuit, v.nroacuerdo, v.nrocuota, v.chequenro, DATE_FORMAT(v.chequefecha,'%d/%m/%Y') as chequefecha, v.chequebanco, 
+								  v.idresumenbancario, DATE_FORMAT(v.fecharesumenbancario,'%d/%m/%Y') as fecharesumenbancario, c.montocuota
 							FROM valoresalcobro v, cuoacuerdosospim c Where
 							v.chequenroospim = '$nrocheque' and
 							v.chequenro = c.chequenro and
@@ -76,18 +80,20 @@ A:hover {text-decoration: none;color:#00FFFF }
 			$canValores = mysql_num_rows($resValores);
 			while ($rowValores = mysql_fetch_array($resValores)) { 
 				$total = (float) ($total +  $rowValores['montocuota']); ?>
-			<tr align="center">
+				<tr align="center">
 					<td><?php echo $rowValores['cuit'] ?></td>
 					<td><?php echo $rowValores['nroacuerdo'] ?></td>
 					<td><?php echo $rowValores['nrocuota'] ?></td>
 					<td><?php echo $rowValores['chequenro'] ?></td>
 					<td><?php echo $rowValores['chequefecha'] ?></td>
 					<td><?php echo $rowValores['chequebanco']?></td>
+					<td><?php echo $rowValores['idresumenbancario']?></td>
+					<td><?php echo $rowValores['fecharesumenbancario']?></td>
 					<td align="right"><?php echo number_format($rowValores['montocuota'],2,',','.')?></td>
-			</tr>
+				</tr>
 	 <?php } ?>
 	 		<tr>
-				<td colspan="6" align="right">TOTAL</td>
+				<td colspan="8" align="right">TOTAL</td>
 				<td align="right"><b><?php echo number_format($total,2,',','.') ?></b></td>
 			</tr>
 			
