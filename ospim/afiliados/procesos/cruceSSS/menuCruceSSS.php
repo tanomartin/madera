@@ -1,9 +1,14 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 
-$sqlMesPadron = "SELECT * FROM padronssscabecera c ORDER BY c.id DESC LIMIT 1"; 
+$sqlMesPadron = "SELECT * FROM padronssscabecera c WHERE fechacierre is null ORDER BY c.id DESC LIMIT 1"; 
 $resMesPadron = mysql_query ( $sqlMesPadron, $db );
-$rowMesPadron = mysql_fetch_assoc ($resMesPadron);
+$canMesPadron = mysql_num_rows($resMesPadron);
+if ($canMesPadron == 0) {
+	header ("Location: sinPadronSSS.php");
+} else {
+	$rowMesPadron = mysql_fetch_assoc ($resMesPadron);
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
