@@ -123,10 +123,10 @@ try {
 					$codbarrabanco = $imputar[codigobarra];
 					$validadabanco = $imputar[fechavalidacion];
 					
-					$sqlBuscaValida="SELECT * FROM validasusimra WHERE nrocontrol = :nrocontrol";
+					$sqlBuscaValida="SELECT * FROM validasusimra WHERE nrocontrol = :nrocontrol AND cuit = :cuit";
 					//echo $sqlBuscaValida; echo "<br>";
 					$resultBuscaValida = $dbh->prepare($sqlBuscaValida);
-					$resultBuscaValida->execute(array(':nrocontrol' => $controlbanco));
+					$resultBuscaValida->execute(array(':nrocontrol' => $controlbanco, ':cuit' => $cuitbanco));
 					if($resultBuscaValida) {
 		        		foreach($resultBuscaValida as $validas) {
 							$cuitboleta = $validas[cuit];

@@ -106,9 +106,9 @@ try {
 					$cuitbanco = $validar[cuit];
 					$fechabanco = $validar[fechaacreditacion];
 
-					$sqlControlaBoleta="SELECT * FROM anuladasusimra WHERE nrocontrol = :nrocontrol";
+					$sqlControlaBoleta="SELECT * FROM anuladasusimra WHERE nrocontrol = :nrocontrol AND cuit = :cuit";
 					$resultControlaBoleta = $dbh->prepare($sqlControlaBoleta);
-					$resultControlaBoleta->execute(array(':nrocontrol' => $control));
+					$resultControlaBoleta->execute(array(':nrocontrol' => $control, ':cuit' => $cuitbanco));
 					if($resultControlaBoleta) {
 						foreach($resultControlaBoleta as $anuladas) {
 							$controlanulada = $anuladas[nrocontrol];
@@ -126,10 +126,10 @@ try {
 						}
 					}
 
-					$sqlBuscaBoleta="SELECT * FROM boletasusimra WHERE nrocontrol = :nrocontrol";
+					$sqlBuscaBoleta="SELECT * FROM boletasusimra WHERE nrocontrol = :nrocontrol AND cuit = :cuit";
 					//echo $sqlBuscaBoleta; echo "<br>";
 					$resultBuscaBoleta = $dbh->prepare($sqlBuscaBoleta);
-					$resultBuscaBoleta->execute(array(':nrocontrol' => $control));
+					$resultBuscaBoleta->execute(array(':nrocontrol' => $control, ':cuit' => $cuitbanco));
 					if($resultBuscaBoleta) {
 		        		foreach($resultBuscaBoleta as $boletas) {
 							$id = $boletas[idboleta];
@@ -161,20 +161,20 @@ try {
 										$listamensaje="COMUNIQUESE CON EL DEPTO. DE SISTEMAS.";
 									}
 
-									$sqlBorraBoleta="DELETE FROM boletasusimra WHERE nrocontrol = :nrocontrol";
+									$sqlBorraBoleta="DELETE FROM boletasusimra WHERE nrocontrol = :nrocontrol AND cuit = :cuit";
 									$resultBorraBoleta = $dbh->prepare($sqlBorraBoleta);
 									//echo $sqlBorraBoleta; echo "<br>";
-									if($resultBorraBoleta->execute(array(':nrocontrol' => $control))) {
+									if($resultBorraBoleta->execute(array(':nrocontrol' => $control, ':cuit' => $cuitbanco))) {
 									    //print "<p>Registro Boleta borrado correctamente.</p>\n";
 									}
 									else {
 									    //print "<p>Error al borrar el registro Boleta.</p>\n";
 									}
 
-									$sqlActualizaBanco="UPDATE banacuerdosusimra SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE nrocontrol = :nrocontrol and estadomovimiento = :estadomovimiento";
+									$sqlActualizaBanco="UPDATE banacuerdosusimra SET fechavalidacion = :fechavalidacion, usuariovalidacion = :usuariovalidacion WHERE nrocontrol = :nrocontrol AND cuit = :cuit AND estadomovimiento = :estadomovimiento";
 									$resultActualizaBanco = $dbh->prepare($sqlActualizaBanco);
 									//echo $sqlActualizaBanco; echo "<br>";
-									if($resultActualizaBanco->execute(array(':fechavalidacion' => $fechavalidacion, ':usuariovalidacion' => $usuariovalidacion, ':nrocontrol' => $control, ':estadomovimiento' => $estado))) {
+									if($resultActualizaBanco->execute(array(':fechavalidacion' => $fechavalidacion, ':usuariovalidacion' => $usuariovalidacion, ':nrocontrol' => $control, ':cuit' => $cuitbanco, ':estadomovimiento' => $estado))) {
 									    //print "<p>Registro Banco actualizado correctamente.</p>\n";
 									}
 									else {
