@@ -1,5 +1,10 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspim.php"); ?>
+include($libPath."controlSessionOspim.php"); 
+
+$sqlMesPadron = "SELECT * FROM padronssscabecera c ORDER BY c.id DESC LIMIT 1"; 
+$resMesPadron = mysql_query ( $sqlMesPadron, $db );
+$rowMesPadron = mysql_fetch_assoc ($resMesPadron);
+?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,6 +35,7 @@ function mostrar(dire) {
 </div>
 <div align="center">
 	<h2>Men&uacute; Comparación Padrón de O.S.P.I.M. contra S.S.S.</h2>
+	<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
 </div>
 <div align="center">
   <table width="400" border="3">
