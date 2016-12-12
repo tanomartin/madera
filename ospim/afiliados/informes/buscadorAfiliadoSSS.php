@@ -4,6 +4,7 @@ include($libPath."fechas.php");
 
 $dato = $_POST['dato'];
 $filtro = $_POST['filtro'];
+$cabecera = $_POST['padron'];
 
 if ($filtro == 0) {
 	$cartel = "Resultados de Busqueda por C.U.I.L. <b>'".$dato."'</b>";
@@ -19,19 +20,25 @@ $resultado = array();
 if (isset($dato)) {
 	$sqlSele = "select cuilfamiliar,apellidoynombre,tipodocumento,nrodocumento,sexo, parentesco from ";
 	if ($filtro == 0) { 
-		$where = "where cuilfamiliar = $dato"; 
+		$where = "where cuilfamiliar = $dato and idcabecera = $cabecera"; 
 	}
 	if ($filtro == 1) { 
-		$where = "where nrodocumento = $dato"; 
+		$where = "where nrodocumento = $dato and idcabecera = $cabecera"; 
 	}
 	if ($filtro == 2) { 
-		$where = "where apellidoynombre like '%$dato%'"; 	
+		$where = "where apellidoynombre like '%$dato%' and idcabecera = $cabecera"; 	
 	}
 	
-	$tabla = "padronsss ";
+	$tabla = "padronssshistorico ";
 	$sqlEmpleados = $sqlSele.$tabla.$where;
 	$resEmpleados = mysql_query($sqlEmpleados,$db); 
 	$canEmpleados = mysql_num_rows($resEmpleados); 
+}
+
+if (isset($cabecera)) {
+	$sqlPadronBusqueda = "SELECT * FROM padronssscabecera WHERE id = $cabecera";
+	$resPadronBusqueda = mysql_query($sqlPadronBusqueda,$db);
+	$rowPadronBusqueda = mysql_fetch_assoc($resPadronBusqueda);
 }
 ?>
 <!DOCTYPE html>
@@ -78,6 +85,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 	});
 
 function validar(formulario) {
+	if(formulario.padron.value == 0) {
+		alert("Debe seleccionar un padron de busqueda");
+		return false;
+	}
 	if(formulario.dato.value == "") {
 		alert("Debe colocar un dato de busqueda");
 		return false;
@@ -115,7 +126,22 @@ function validar(formulario) {
     <p><input type="button" class="nover" name="volver" value="Volver" onclick="location.href = 'menuSSS.php'" /></p>
     <h3>Buscador de Afiliado en la S.S.S.</h3>
     <div align="center" class="nover"> 
+    	<?php 
+    		$sqlHistorico = "SELECT * FROM padronssscabecera ORDER BY id DESC";
+    		$resHistorico = mysql_query ( $sqlHistorico, $db );
+    	?>
+		<p>
+		  	<b>Padrón</b>	
+		    <select id="padron" name="padron">
+		    	<option value="0">Seleccione Padrón</option>
+		    	<?php while ($rowHistorico = mysql_fetch_assoc($resHistorico)) { ?>
+		    		<option value="<?php echo $rowHistorico['id']?>"><?php echo $rowHistorico['mes']."-".$rowHistorico['anio']?></option>	
+		    	<?php } ?>
+		    </select>
+		</p>
+		
 		<table style="width: 400; border: 0">
+		  
 		  <tr>
 		  <td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
 		  </tr>
@@ -129,7 +155,8 @@ function validar(formulario) {
 			<td><div align="left"><input type="radio" name="filtro" value="2" /> Apellido y/o Nombre Afiliado</div></td>
 		  </tr>  
 		</table>
-		<p><strong>Dato</strong> 
+		<p>
+		  <strong>Dato</strong> 
 		  <input name="dato" type="text" id="dato" size="30" />
 		</p>
     </div>
@@ -140,7 +167,8 @@ function validar(formulario) {
 	  </p>
 	<?php 
 	if (isset($dato)) {
-		print("<p> $cartel </p>");
+		echo("<p> $cartel </p>");
+		echo "Padrón de Busqueda <b>".$rowPadronBusqueda['mes']."-".$rowPadronBusqueda['anio']."</b>";
 		if ($canEmpleados == 0) {
 			print("<div style='color:#FF0000'><b> NO EXISTE AFILIADO CON ESTE FILTRO DE BUSQUEDA EN LA S.S.S. </b></div><br>");
 		} else { ?>
