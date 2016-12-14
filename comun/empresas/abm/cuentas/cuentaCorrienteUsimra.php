@@ -543,7 +543,7 @@ $ano ++;
 				<th>Total</th>
 				<th>+Info</th>
 			</tr>
-	<?php   $sqlCuotasExcpecional = "SELECT e.relacionmes, e.anio, e.mensaje, c.fechapago, c.cantidadaportantes, c.totalaporte, c.montorecargo, c.montopagado, p.descripcion
+	<?php   $sqlCuotasExcpecional = "SELECT e.mes, e.relacionmes, e.anio, e.mensaje, c.fechapago, c.cantidadaportantes, c.totalaporte, c.montorecargo, c.montopagado, p.descripcion
 										FROM  cuotaextraordinariausimra c, extraordinariosusimra e, periodosusimra p 
 										WHERE c.cuit = $cuit and e.anio = c.anopago and e.mes = c.mespago and e.anio = p.anio and e.mes = p.mes";
 			$resCuotasExcpecional = mysql_query ( $sqlCuotasExcpecional, $db );
@@ -557,7 +557,7 @@ $ano ++;
 						<td><?php echo $rowCuotasExcpecional['totalaporte'] ?></td>
 						<td><?php echo $rowCuotasExcpecional['montorecargo'] ?></td>
 						<td><?php echo $rowCuotasExcpecional['montopagado'] ?></td>
-						<td><input type="button" value="DDJJ" onclick='javascript:abrirInfoCuotas("detalleCuotaUsimra.php?cuit=<?php echo $cuit?>&anio=<?php echo $rowCuotasExcpecional['mes'] ?>&mes=<?php echo $rowCuotasExcpecional['anio'] ?>")' /></td>
+						<td><input type="button" value="DDJJ" onclick='javascript:abrirInfoCuotas("detalleCuotaUsimra.php?cuit=<?php echo $cuit?>&anio=<?php echo $rowCuotasExcpecional['anio'] ?>&mes=<?php echo $rowCuotasExcpecional['mes'] ?>")' /></td>
 					</tr>
 			<?php }
 			} else { ?>
