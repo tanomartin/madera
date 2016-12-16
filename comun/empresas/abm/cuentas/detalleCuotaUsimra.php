@@ -82,9 +82,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		</tr>
 <?php }?>
 	<tr>
-      <td colspan="7"><div align="right"><strong>TOTAL</strong></div></td>
+      <td colspan="6"><div align="right"><strong>TOTAL</strong></div></td>
 	  <td><div align='right'><b><?php echo number_format($totalPagado,2,',','.') ?></b></div></td>
-	<td colspan="2"></td>
+	<td colspan="3"></td>
     </tr>
   </table>
   
