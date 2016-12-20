@@ -142,10 +142,10 @@ print("CONTROL: ".$idControl."<br>");*/
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-	//$.blockUI({ message: "<h1>Descargando Nuevas Empresas... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
-	//function formSubmit() {
-	//	document.getElementById("descargaEmpresa").submit();
-	//}
+	$.blockUI({ message: "<h1>Descargando Nuevas Empresas... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	function formSubmit() {
+		document.getElementById("descargaEmpresa").submit();
+	}
 </script>
 </head>
 <body bgcolor="#B2A274" onload="formSubmit();">
