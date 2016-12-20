@@ -4,8 +4,8 @@ include($libPath."claves.php");
 set_time_limit(0);
 print("<br>");
 
-$hostaplicativo = $hostUsimra;
-//$hostaplicativo = "localhost";
+//$hostaplicativo = $hostUsimra;
+$hostaplicativo = "localhost";
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $usuarioaplicativo = $usuarioUsimra;
@@ -35,6 +35,7 @@ $totalDdjj = 0;
 $cantDdjj = 0;
 $cantInactivos = 0;
 $ddjjAIngresar = array();
+$vinculaAIngresar = array();
 $inactivosAIngresar = array();
 try { 
 	$hostname = $_SESSION['host'];
@@ -68,14 +69,32 @@ try {
 			//print($ddjjInsert."<br>");
 			$dbh->exec($ddjjInsert);
 		}
+			
+		$sqlVincula = "SELECT * FROM vinculadocu WHERE nrctrl in ($wherein)";
+		$resVincula = mysql_query($sqlVincula,$dbaplicativo);
+		$canVincula = mysql_num_rows($resVincula); 	
+		if ($canVincula > 0) {
+			$cantVin = 0;
+			while($rowVincula = mysql_fetch_assoc($resVincula)) {
+				$sqlInsertVincula = "INSERT IGNORE INTO vinculadocuusimra VALUE('".$rowVincula['nrcuit']."','".$rowVincula['referencia']."','".$rowVincula['nrctrl']."')";
+				$vinculaAIngresar[$cantVin] = $sqlInsertVincula;
+				$cantVin++;
+			}
+			foreach($vinculaAIngresar as $vincula) {
+				//print($vincula."<br>");
+				$dbh->exec($vincula);
+			}
+		}
+		
 		$sqlInactivos = "SELECT * FROM inactivos WHERE nrctrl in ($wherein)";
 		$resInactivos = mysql_query($sqlInactivos,$dbaplicativo); 
 		$canInactivos = mysql_num_rows($resInactivos); 
 		if ($canInactivos > 0) {
+			$cantInac = 0;
 			while($rowInactivos = mysql_fetch_assoc($resInactivos)) {
 				$sqlInsertInactivos = "INSERT IGNORE INTO ddjjinactivosusimra VALUE(".$rowInactivos['id'].",'".$rowInactivos['nrcuit']."','".$rowInactivos['nrcuil']."','".$rowInactivos['permes']."','".$rowInactivos['perano']."','".addslashes($rowInactivos['motivo'])."','".$rowInactivos['nrctrl']."','".$idControl."')";
-				$inactivosAIngresar[$cantInactivos] = $sqlInsertInactivos;
-				$cantInactivos++;
+				$inactivosAIngresar[$cantInac] = $sqlInsertInactivos;
+				$cantInac++;
 			}
 			foreach($inactivosAIngresar as $inactivos) {
 				//print($inactivos."<br>");
@@ -123,10 +142,10 @@ print("CONTROL: ".$idControl."<br>");*/
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-	$.blockUI({ message: "<h1>Descargando Nuevas Empresas... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
-	function formSubmit() {
-		document.getElementById("descargaEmpresa").submit();
-	}
+	//$.blockUI({ message: "<h1>Descargando Nuevas Empresas... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	//function formSubmit() {
+	//	document.getElementById("descargaEmpresa").submit();
+	//}
 </script>
 </head>
 <body bgcolor="#B2A274" onload="formSubmit();">
