@@ -18,7 +18,7 @@ if ($filtro == 2) {
 
 $resultado = array();
 if (isset($dato)) {
-	$sqlSele = "select cuilfamiliar,apellidoynombre,tipodocumento,nrodocumento,sexo, parentesco from ";
+	$sqlSele = "select cuit,cuilfamiliar,apellidoynombre,tipodocumento,nrodocumento,sexo, parentesco from ";
 	if ($filtro == 0) { 
 		$where = "where cuilfamiliar = $dato and idcabecera = $cabecera"; 
 	}
@@ -178,6 +178,7 @@ function validar(formulario) {
 				<tr>
 				  <th>C.U.I.L.</th>
 				  <th>Apellido y Nombre</th>
+				  <th>C.U.I.T.</th>
 				  <th>Tipo y Nro Doc</th>
 				  <th class="filter-select" data-placeholder="Seleccion Tipo">Tipo Afiliado</th>
 				  <th class="filter-select" data-placeholder="Seleccion Sexo">Sexo</th>
@@ -185,9 +186,10 @@ function validar(formulario) {
 			  </thead>
 			  <tbody>
 			<?php while($rowEmpleados = mysql_fetch_assoc($resEmpleados)) { ?>
-				<tr align="center">
+				<tr align="center"> 
 				  <td><?php echo $rowEmpleados['cuilfamiliar'];?></td>
 				  <td><?php echo $rowEmpleados['apellidoynombre']; ?></td>
+				  <td><?php echo $rowEmpleados['cuit'];?></td>	
 				  <td><?php echo $rowEmpleados['tipodocumento'].": ".$rowEmpleados['nrodocumento'];?></td>
 				  <td><?php if ($rowEmpleados['parentesco'] == 0) { echo 'TITULAR'; }  else { echo "FAMILIAR"; }?></td>
 				  <td><?php echo $rowEmpleados['sexo']; ?></td>

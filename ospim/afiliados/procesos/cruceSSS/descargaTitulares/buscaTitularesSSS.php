@@ -9,11 +9,13 @@ while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
 	$arrayTituSSS[$rowTituSSS['cuiltitular']] = array('nrodoc' => $rowTituSSS['nrodocumento'], 'cuit' => $rowTituSSS['cuit'], 'nombre' => $rowTituSSS['apellidoynombre'], 'tipotitular' => $rowTituSSS['tipotitular'], 'osopcion' => $rowTituSSS['osopcion']);
 }
 
-$sqlTitu = "SELECT DISTINCT cuil, nrodocumento, nroafiliado  FROM titulares t";
+$sqlTitu = "SELECT DISTINCT cuil, cuitempresa, nrodocumento, nroafiliado  FROM titulares t";
 $resTitu = mysql_query ( $sqlTitu, $db );
 $arrayTitu = array();
+$arrayCuit = array();
 while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
 	$arrayTitu[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
+	$arrayCuit[$rowTitu['cuil']] = $rowTitu['cuitempresa'];
 }
 
 $sqlTitu = "SELECT DISTINCT cuil, nrodocumento, nroafiliado  FROM titularesdebaja t";
@@ -41,10 +43,10 @@ foreach ($arrayTituSSS as $cuil => $titu) {
 						$arrayAlta[$cuil] = $titu;
 					}
 				} else {
-					$arrayInforme[$cuil] = $titu;
+					$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. con diferente C.U.I.L.");
 				}
 			} else {
-				$arrayInforme[$cuil] = $titu;
+				$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. con diferente C.U.I.L.");
 			}
 		} else {
 			$cantReac++;
@@ -53,12 +55,16 @@ foreach ($arrayTituSSS as $cuil => $titu) {
 				$arrayActivar[$cuil] += array("nroafil" => $arrayTituNroAfil[$cuil]); 
 			}
 		}
-	} 
+	} else {
+		if ($arrayCuit[$cuil] != $arrayTituSSS[$cuil]['cuit']) {
+			$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Diferente C.U.I.T. informado desde la S.S.S.");
+		}
+	}
 }
 
 ?>
 
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -130,6 +136,7 @@ $(function() {
 			filter_hideFilters : false,
 		}
 	})
+	.tablesorterPager({container: $("#paginador")}); 
 });
 
 function checkall(seleccion, formulario, nombre) {
@@ -261,28 +268,51 @@ function validar(formulario) {
 			
 			<input class="nover" type="submit" name="submit" value="Procesar" />
 			
-			<h3>Informe de Titulares encontrados por D.N.I.</h3>
-			<table style="text-align: center; width: 900px" id="tablaInforme" class="tablesorter">	
+			<h3>Informe de Inconsistencias de Titulares</h3>
+			<table style="text-align: center; width: 1000px" id="tablaInforme" class="tablesorter">	
 				<thead>
 					<tr>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
 						<th>C.U.I.T.</th>
 						<th>Nro. Documento</th>
+						<th>Motivo</th>
 					</tr>
 				</thead>
 				<tbody>
 				<?php foreach ($arrayInforme as $cuil => $titu) { ?>
 						<tr>	
 							<td><?php echo $cuil ?></td>
-							<td><?php echo $titu['nombre']?></td>
-							<td><?php echo $titu['cuit']?></td>
-							<td><?php echo $titu['nrodoc']?></td>
+							<td><?php echo $titu['titu']['nombre']?></td>
+							<td><?php echo $titu['titu']['cuit']?></td>
+							<td><?php echo $titu['titu']['nrodoc']?></td>
+							<td><?php echo $titu['motivo']?></td>
 						</tr>
 				<?php } ?>
 				</tbody>
 			</table>
 			
+			<table class="nover">
+				<tr>
+					<td width="239">
+						<div id="paginador" class="pager">
+							<form>
+								<p align="center">
+									<img src="../img/first.png" width="16" height="16" class="first"/> <img src="../img/prev.png" width="16" height="16" class="prev"/>
+									<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
+									<img src="../img/next.png" width="16" height="16" class="next"/> <img src="../img/last.png" width="16" height="16" class="last"/>
+									<select name="select" class="pagesize">
+										<option selected="selected" value="50">50 por pagina</option>
+										<option value="100">100 por pagina</option>
+										<option value="200">200 por pagina</option>
+										<option value="<?php echo sizeof($arrayInforme) ?>">Todos</option>
+									</select>
+								</p>
+							</form>	
+						</div>
+					</td>
+				</tr>
+			</table>
 			<input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
 		</form>
 	</div>
