@@ -5,6 +5,7 @@ set_time_limit(0);
 $sqlTituSSS = "SELECT DISTINCT cuiltitular, nrodocumento, cuit, apellidoynombre, tipotitular, osopcion FROM padronsss p where parentesco = 0";
 $resTituSSS = mysql_query ( $sqlTituSSS, $db );
 $arrayTituSSS = array();
+$arrayDNISSS = array();
 while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
 	$arrayTituSSS[$rowTituSSS['cuiltitular']] = array('nrodoc' => $rowTituSSS['nrodocumento'], 'cuit' => $rowTituSSS['cuit'], 'nombre' => $rowTituSSS['apellidoynombre'], 'tipotitular' => $rowTituSSS['tipotitular'], 'osopcion' => $rowTituSSS['osopcion']);
 }
@@ -43,10 +44,10 @@ foreach ($arrayTituSSS as $cuil => $titu) {
 						$arrayAlta[$cuil] = $titu;
 					}
 				} else {
-					$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. con diferente C.U.I.L.");
+					$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. con diferente C.U.I.L. informado desde la S.S.S");
 				}
 			} else {
-				$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. con diferente C.U.I.L.");
+				$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. con diferente C.U.I.L. informado desde la S.S.S");
 			}
 		} else {
 			$cantReac++;
@@ -58,6 +59,10 @@ foreach ($arrayTituSSS as $cuil => $titu) {
 	} else {
 		if ($arrayCuit[$cuil] != $arrayTituSSS[$cuil]['cuit']) {
 			$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Diferente C.U.I.T. informado desde la S.S.S.");
+		} else {
+			if ($arrayTitu[$cuil] != $arrayTituSSS[$cuil]['nrodoc']) {
+				$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Diferente D.N.I. informado desde la S.S.S.");
+			}
 		}
 	}
 }
