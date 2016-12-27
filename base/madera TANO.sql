@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-12-2016 a las 16:07:04
+-- Tiempo de generación: 27-12-2016 a las 16:17:06
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -546,6 +546,23 @@ CREATE TABLE IF NOT EXISTS `barrios` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `beneficiarioscapitados`
+--
+
+CREATE TABLE IF NOT EXISTS `beneficiarioscapitados` (
+  `codigocapitado` int(3) NOT NULL,
+  `nroafiliado` int(9) NOT NULL,
+  `nroorden` int(3) NOT NULL,
+  `tipoparentesco` int(2) NOT NULL,
+  `mespadron` int(2) NOT NULL,
+  `anopadron` int(4) NOT NULL,
+  `fechainforme` date NOT NULL,
+  PRIMARY KEY (`codigocapitado`,`nroafiliado`,`nroorden`,`tipoparentesco`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `bkuptransferencias`
 --
 
@@ -963,23 +980,6 @@ CREATE TABLE IF NOT EXISTS `capitadosformatopadron` (
   `tipopadron` varchar(1) NOT NULL,
   `consulta` text NOT NULL,
   PRIMARY KEY (`codigopresta`,`tipopadron`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `capitadosinforme`
---
-
-CREATE TABLE IF NOT EXISTS `capitadosinforme` (
-  `codigocapitado` int(3) NOT NULL,
-  `nroafiliado` int(9) NOT NULL,
-  `nroorden` int(3) NOT NULL,
-  `tipoparentesco` int(2) NOT NULL,
-  `mespadron` int(2) NOT NULL,
-  `anopadron` int(4) NOT NULL,
-  `fechainforme` date NOT NULL,
-  PRIMARY KEY (`codigocapitado`,`nroafiliado`,`nroorden`,`tipoparentesco`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
