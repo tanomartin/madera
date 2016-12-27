@@ -63,6 +63,9 @@
 		//print($sqlDelega."<br><br>");
 		$resPresta = mysql_query($sqlDelega,$db);
 		$totalizador = array();
+		$insertInforme = array();
+		$indexInforme = 0;
+		
 		while($rowPresta = mysql_fetch_array($resPresta)) { 
 			$totalTituXDelega = 0;
 			$totalFamiXDelega = 0;
@@ -106,6 +109,10 @@
 				$totalTituXDelega++;
 			
 				$nroafil = $rowTitulares['nroafiliado'];
+				
+				$insertInforme[$indexInforme] = array('nroafiliado' => $nroafil, 'nroorden' => 0, 'tipoparentesco' => 0);
+				$indexInforme++;
+				
 				$sqlFamiliares = "SELECT 
 									f.nroafiliado, 
 									f.nroorden,
@@ -139,6 +146,10 @@
 														 'localidad' => utf8_encode($rowTitulares['nomlocali']), 
 														 'domicilio' => utf8_encode($rowTitulares['domicilio']));
 					$filaFamilia++;
+					
+					$insertInforme[$indexInforme] = array('nroafiliado' => $rowFamiliares['nroafiliado'], 'nroorden' => $rowFamiliares['nroorden'], 'tipoparentesco' => $rowFamiliares['tipoparentesco']);
+					$indexInforme++;
+					
 					$totalFamiXDelega++;
 				}
 			}

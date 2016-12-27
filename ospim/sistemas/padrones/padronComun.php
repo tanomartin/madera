@@ -21,6 +21,9 @@
 		$sqlDelega = "SELECT * FROM capitadosdelega where codigopresta = $presta";
 		$resPresta = mysql_query($sqlDelega,$db);
 		$totalizador = array();
+		$insertInforme = array();
+		$indexInforme = 0;
+		
 		while($rowPresta = mysql_fetch_array($resPresta)) { 
 			$totalTituXDelega = 0;
 			$totalFamiXDelega = 0;
@@ -60,10 +63,16 @@
 				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['codidelega']);	
 				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, utf8_encode($rowTitulares['nomempresa']));
 				$totalTituXDelega++;
-			
+				
 				$nroafil = $rowTitulares['nroafiliado'];
+				
+				$insertInforme[$indexInforme] = array('nroafiliado' => $nroafil, 'nroorden' => 0, 'tipoparentesco' => 0);
+				$indexInforme++;
+				
+				
 				$sqlFamiliares = "SELECT 
-									f.nroafiliado, 
+									f.nroafiliado,
+									f.nroorden,
 									f.tipoparentesco, 
 									f.apellidoynombre, 
 									f.tipodocumento, 
@@ -72,11 +81,15 @@
 									f.sexo 
 								FROM familiares f
 								WHERE f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite'";
-				//print($sqlFamiliares."<br>");
+				//print($sqlFamiliares."<br>");				
 				$resFamiliares = mysql_query($sqlFamiliares, $db);
 				while($rowFamiliares = mysql_fetch_array($resFamiliares)) {
 					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'tipoparentesco' => $rowFamiliares['tipoparentesco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo']);
 					$filaFamilia++;
+					
+					$insertInforme[$indexInforme] = array('nroafiliado' => $rowFamiliares['nroafiliado'], 'nroorden' => $rowFamiliares['nroorden'], 'tipoparentesco' => $rowFamiliares['tipoparentesco']);
+					$indexInforme++;
+					
 					$totalFamiXDelega++;
 				}
 			}

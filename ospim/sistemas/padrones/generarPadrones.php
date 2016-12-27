@@ -114,10 +114,24 @@ for($f = 0; $f < $finalFor; $f ++) {
 					// print($sqlEliminaDetalleMadera."<br>");
 					$dbh->exec ( $sqlEliminaDetalleMadera );
 					
+					$sqlEliminaInformeGlobalMadera = "DELETE FROM capitadosinforme WHERE codigocapitado = '$presta' and anopadron = $anio and mespadron = $mes";
+					// print($sqlEliminaDetalleMadera."<br>");
+					$dbh->exec ( $sqlEliminaInformeGlobalMadera );
+					
 					foreach ( $totalizador as $totalDele ) {
 						$sqlInsertDetalle = "INSERT INTO detallepadroncapitados VALUE('$presta',$mes,$anio," . $totalDele ['delega'] . "," . $totalDele ['tottit'] . "," . $totalDele ['totfam'] . "," . $totalDele ['total'] . ")";
 						// print($sqlInsertDetalle."<br>");
 						$dbh->exec ( $sqlInsertDetalle );
+					}
+					
+					foreach ( $insertInforme as $informe ) {
+						$sqlEliminaInformePorAfiliado = "DELETE FROM capitadosinforme WHERE codigocapitado = '$presta' and nroafiliado = ".$informe['nroafiliado']." and nroorden = ".$informe['nroorden']." and tipoparentesco =".$informe['tipoparentesco'];
+						// print($sqlEliminaInformePorAfiliado."<br>");
+						$dbh->exec ( $sqlEliminaInformePorAfiliado );
+						
+						$sqlInforme = "INSERT INTO capitadosinforme VALUE('$presta',".$informe['nroafiliado'].",".$informe['nroorden'].",".$informe['tipoparentesco'].",".$mes.",".$anio.",'".$fecsub."')";
+						// print($sqlInforme."<br>");
+						$dbh->exec ( $sqlInforme );
 					}
 					
 					$sqlInsertInternet = "INSERT INTO subida VALUE('$presta', $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
