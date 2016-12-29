@@ -10,6 +10,7 @@ $nrosoli = $datos[0];
 $staauto = $datos[1];
 $recauto = $datos[2];
 
+
 if($staauto==1)
 	$staauto = 3;
 
