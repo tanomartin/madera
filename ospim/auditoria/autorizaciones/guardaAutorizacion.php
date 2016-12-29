@@ -6,7 +6,7 @@ require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
 require_once($libPath."fpdf.php");
 require_once($libPath."FPDI-1.6.1/fpdi.php"); 
 
-var_dump($_POST);
+//var_dump($_POST);
 
 //$datos = array_values($_POST);
 
@@ -481,7 +481,7 @@ try {
 	$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
 	$mail->Port=25;								// set the SMTP port for the GMAIL server
 	$mail->Username="autorizaciones@ospim.com.ar";	// SMTP account username
-	$mail->Password="curt5716";					// SMTP account password
+	$mail->Password="frin8134";					// SMTP account password
 	$mail->SetFrom("autorizaciones@ospim.com.ar", "Autorizaciones OSPIM");
 	$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
 	$mail->Subject="AVISO!!! Solicitud de Autorizacion Atendida";
