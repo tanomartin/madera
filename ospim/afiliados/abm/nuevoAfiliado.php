@@ -444,7 +444,7 @@ function validar(formulario) {
 <div align="center" class="Estilo4">Nuevo Afiliado</div>
 <table width="1205" height="100" border="0">
   <tr>
-	<td width="212" align="left" valign="middle"><img src="../img/Familiar sin Foto.jpg" alt="Foto" width="115" height="115"></td>
+	<td width="212" align="left" valign="middle"><img src="../img/sinFoto.jpg" alt="Foto" width="115" height="115"></td>
     <td width="983" align="left" valign="middle"></td>
   </tr>
 </table>

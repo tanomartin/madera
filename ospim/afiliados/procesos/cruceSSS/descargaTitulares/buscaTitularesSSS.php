@@ -2,29 +2,34 @@
 include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
-$sqlTituSSS = "SELECT DISTINCT cuiltitular, nrodocumento, cuit, apellidoynombre, tipotitular, osopcion FROM padronsss p where parentesco = 0";
+$arrayTipo = array();
+
+$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip FROM padronsss p, tipotitular t where p.parentesco = 0 and p.tipotitular = t.codtiptit";
 $resTituSSS = mysql_query ( $sqlTituSSS, $db );
 $arrayTituSSS = array();
 $arrayDNISSS = array();
 while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
 	$arrayTituSSS[$rowTituSSS['cuiltitular']] = array('nrodoc' => $rowTituSSS['nrodocumento'], 'cuit' => $rowTituSSS['cuit'], 'nombre' => $rowTituSSS['apellidoynombre'], 'tipotitular' => $rowTituSSS['tipotitular'], 'osopcion' => $rowTituSSS['osopcion']);
+	$arrayTipo[$rowTituSSS['cuiltitular']] = $rowTituSSS['descrip'];
 }
 
-$sqlTitu = "SELECT DISTINCT cuil, cuitempresa, nrodocumento, nroafiliado  FROM titulares t";
+$sqlTitu = "SELECT DISTINCT t.cuil, t.cuitempresa, t.nrodocumento, t.nroafiliado, p.descrip  FROM titulares t, tipotitular p WHERE t.situaciontitularidad = p.codtiptit";
 $resTitu = mysql_query ( $sqlTitu, $db );
 $arrayTitu = array();
 $arrayCuit = array();
 while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
 	$arrayTitu[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
 	$arrayCuit[$rowTitu['cuil']] = $rowTitu['cuitempresa'];
+	$arrayTipo[$rowTitu['cuil']] = $rowTitu['descrip'];
 }
 
-$sqlTitu = "SELECT DISTINCT cuil, nrodocumento, nroafiliado  FROM titularesdebaja t";
+$sqlTitu = "SELECT DISTINCT t.cuil, t.nrodocumento, t.nroafiliado, p.descrip FROM titularesdebaja t, tipotitular p WHERE t.situaciontitularidad = p.codtiptit";
 $resTitu = mysql_query ( $sqlTitu, $db );
 $arrayTituBaja = array();
 while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
 	$arrayTituBaja[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
 	$arrayTituNroAfil[$rowTitu['cuil']] = $rowTitu['nroafiliado'];
+	$arrayTipo[$rowTitu['cuil']] = $rowTitu['descrip'];
 }
 
 $arrayActivar = array();
@@ -97,7 +102,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{3:{filter:false, sorter:false}},
+		headers:{4:{filter:false, sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -114,7 +119,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{4:{filter:false, sorter:false}},
+		headers:{5:{filter:false, sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -227,12 +232,13 @@ function validar(formulario) {
 		<h2>Descarga Titulares S.S.S.</h2>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarTitularesSSS.php">
 			<h3>Alta de Titulares (<?php echo sizeof($arrayAlta) ?> de <?php echo $cantAlta ?>)</h3>
-			<table style="text-align: center; width: 900px" id="tablaAlta" class="tablesorter">	
+			<table style="text-align: center; width: 1000px" id="tablaAlta" class="tablesorter">	
 				<thead>
 					<tr>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
 						<th>C.U.I.T.</th>
+						<th class="filter-select" data-placeholder="Seleccion">Tipo Titularidad</th>
 						<th><input type="checkbox" name="selecAllAlta" id="selecAllAlta" onchange="checkall(this, this.form, 'alta')" /></th>
 					</tr>
 				</thead>
@@ -242,19 +248,21 @@ function validar(formulario) {
 							<td><?php echo $cuil ?></td>
 							<td><?php echo $titu['nombre']?></td>
 							<td><?php echo $titu['cuit']?></td>
+							<td><?php echo $arrayTipo[$cuil]?></td>
 							<td><input type="checkbox" name="<?php echo "A".$cuil ?>" id="alta" value="<?php echo $titu['cuit'].'-'.$titu['tipotitular']."-".$titu['osopcion'] ?>" /></td>
 						</tr>
 				<?php } ?>
 				</tbody>
 			</table>
 			<h3>Reactivacion de Titulares (<?php echo sizeof($arrayActivar) ?> de <?php echo $cantReac ?>)</h3>
-			<table style="text-align: center; width: 900px" id="tablaReactiva" class="tablesorter">	
+			<table style="text-align: center; width: 1000px" id="tablaReactiva" class="tablesorter">	
 				<thead>
 					<tr>
 						<th>Nro. Afiliado</th>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
 						<th>C.U.I.T.</th>
+						<th class="filter-select" data-placeholder="Seleccion">Tipo Titularidad</th>
 						<th><input type="checkbox" name="selecAllReactiva" id="selecAllReactiva" onchange="checkall(this, this.form,'activar')" /></th>
 					</tr>
 				</thead>
@@ -265,6 +273,7 @@ function validar(formulario) {
 							<td><?php echo $cuil ?></td>
 							<td><?php echo $titu['nombre']?></td>
 							<td><?php echo $titu['cuit']?></td>
+							<td><?php echo $arrayTipo[$cuil]?></td>
 							<td><input type="checkbox" name="<?php echo "R".$cuil ?>" id="activar" value="<?php echo $titu['cuit'].'-'.$titu['tipotitular']."-".$titu['osopcion']."-".$titu['nroafil'] ?>" /></td>
 						</tr>
 				<?php } ?>
@@ -281,7 +290,7 @@ function validar(formulario) {
 						<th>Apellido y Nombre</th>
 						<th>C.U.I.T.</th>
 						<th>Nro. Documento</th>
-						<th>Motivo</th>
+						<th class="filter-select" data-placeholder="Seleccion">Motivo</th>
 					</tr>
 				</thead>
 				<tbody>
