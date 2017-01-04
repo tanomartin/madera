@@ -403,9 +403,13 @@ $sqlLeeDeleg = "SELECT * FROM delegaciones WHERE codidelega = $rowLeeSolicitud[c
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
 $rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
 
-$sqlLeePatologia="SELECT * FROM patologiasautorizaciones WHERE codigo = $rowLeeSolicitud[patologia]";
-$resLeePatologia=mysql_query($sqlLeePatologia,$db);
-$rowLeePatologia=mysql_fetch_array($resLeePatologia);
+$patologia = "Sin Clasificar";
+if ($rowLeeSolicitud['patologia'] != null) {
+	$sqlLeePatologia="SELECT * FROM patologiasautorizaciones WHERE codigo = $rowLeeSolicitud[patologia]";
+	$resLeePatologia=mysql_query($sqlLeePatologia,$db);
+	$rowLeePatologia=mysql_fetch_array($resLeePatologia);
+	$patologia = $rowLeePatologia['descripcion'];
+}
 
 if($rowLeeSolicitud['material'] == 1) {
 	$sqlLeeMaterial = "SELECT * FROM clasificamaterial WHERE codigo = $rowLeeSolicitud[tipomaterial]";
@@ -417,6 +421,17 @@ if($rowLeeSolicitud['statusautorizacion'] == 1) {
 	$sqlLeeDocumento = "SELECT * FROM autorizaciondocumento WHERE nrosolicitud = $nrosolicitud";
 	$resultLeeDocumento = mysql_query($sqlLeeDocumento,$db); 
 	$rowLeeDocumento = mysql_fetch_array($resultLeeDocumento);
+}
+
+$tipoTitular = "-";
+if($rowLeeSolicitud['nroafiliado']!=0) {
+	$sqlTipoTitular = "SELECT descrip FROM titulares t, tipotitular p WHERE t.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and t.situaciontitularidad = p.codtiptit";
+	$resTipoTitular = mysql_query($sqlTipoTitular,$db);
+	$canTipoTitular = mysql_num_rows($resTipoTitular);
+	if ($canTipoTitular > 0) {
+		$rowTipoTitular = mysql_fetch_assoc($resTipoTitular);
+		$tipoTitular = $rowTipoTitular['descrip'];
+	}
 }
 
 //VEO SI ES DISCAPACITADO Y SACO EDAD
@@ -470,11 +485,11 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
     <td width="600" height="50"><h3 align="left" class="Estilo4">Resultado de la Verificaci&oacute;n</h3></td>
   </tr>
   <tr>
-    <td valign="top"><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
+    <td valign="top">
+    	<p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
+        <p><strong>Clasificacion del Titular: </strong> <?php echo $tipoTitular ?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
-        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
-        <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
-        <p><strong>Tipo:</strong> 
+        <p><strong>Tipo Afiliado:</strong> 
 <?php	if($rowLeeSolicitud['codiparentesco']>=0) {
 			if($rowLeeSolicitud['codiparentesco']==0) {
 				echo "Titular";
@@ -490,6 +505,8 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 		}
 ?>
 		</p>
+        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
+        <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
         <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> <strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
         <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
 	</td>
@@ -534,7 +551,7 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
              <label><input name="presta" id="prestaNo" type="radio" value="0" checked="checked" disabled="disabled"/>No</label>
 	<?php }?>
 - Email: <?php echo $rowLeeSolicitud['emailprestador'];?></p>
-      <p><strong>Clasificacion Patologia:</strong> <?php echo $rowLeePatologia['descripcion'];?></p>
+      <p><strong>Clasificacion Patologia:</strong> <?php echo $patologia;?></p>
       <p><strong>Monto Autorizado:</strong> <?php echo $rowLeeSolicitud['montoautorizacion'];?></p>
       <p><strong>Documento Autorizacion:</strong> <?php if($rowLeeDocumento['documentofinal']!=NULL) {?><input type="button" name="docuauto" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,10)" /><?php }?></p></td>
   </tr>

@@ -412,6 +412,16 @@ if($rowLeeSolicitud['material'] == 1) {
 	$rowLeeMaterial = mysql_fetch_array($resultLeeMaterial);
 }
 
+$tipoTitular = "-";
+if($rowLeeSolicitud['nroafiliado']!=0) {
+	$sqlTipoTitular = "SELECT descrip FROM titulares t, tipotitular p WHERE t.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and t.situaciontitularidad = p.codtiptit";
+	$resTipoTitular = mysql_query($sqlTipoTitular,$db);
+	$canTipoTitular = mysql_num_rows($resTipoTitular);
+	if ($canTipoTitular > 0) {
+		$rowTipoTitular = mysql_fetch_assoc($resTipoTitular);
+		$tipoTitular = $rowTipoTitular['descrip'];
+	}
+}
 
 //VEO SI ES DISCAPACITADO Y SACO EDAD
 if ($rowLeeSolicitud['codiparentesco'] >=0) {
@@ -465,10 +475,10 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
     <td width="600" height="50"><h3 align="left" class="Estilo4">Resultado de la Verificaci&oacute;n</h3></td>
   </tr>
   <tr>
-    <td valign="top"><p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) { echo $rowLeeSolicitud['nroafiliado']; } else { echo "-"; }?></p>
+    <td valign="top">
+    	<p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) { echo $rowLeeSolicitud['nroafiliado']; } else { echo "-"; }?></p>
+        <p><strong>Clasificacion del Titular: </strong> <?php echo $tipoTitular;?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
-        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
-        <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
         <p><strong>Tipo:</strong>
 <?php	if($rowLeeSolicitud['codiparentesco']>=0) {
 			if($rowLeeSolicitud['codiparentesco']==0) {
@@ -485,6 +495,9 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 		}
 ?>
 		</p>
+        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
+        <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
+        
         <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> <strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
         <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>		
       	<input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly" style="visibility:hidden"/>	
