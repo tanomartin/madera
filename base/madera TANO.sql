@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-12-2016 a las 16:17:06
+-- Tiempo de generación: 11-01-2017 a las 19:13:28
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -499,6 +499,39 @@ CREATE TABLE IF NOT EXISTS `banaportesusimra` (
   `usuarioimputacion` char(50) DEFAULT NULL COMMENT 'Usuario que Genera el Proceso de Imputacion del Pago en la Tabla seguvidausimra',
   PRIMARY KEY (`nromovimiento`,`sucursalorigen`,`fecharecaudacion`,`fechaacreditacion`,`estadomovimiento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `bandejasalida`
+--
+
+CREATE TABLE IF NOT EXISTS `bandejasalida` (
+  `id` int(6) NOT NULL AUTO_INCREMENT,
+  `from` varchar(50) NOT NULL,
+  `subject` varchar(200) NOT NULL,
+  `body` text NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `modulocreador` varchar(50) NOT NULL,
+  `enviado` int(1) NOT NULL DEFAULT '0',
+  `fechaenvio` datetime DEFAULT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `bandejasalidaadjuntos`
+--
+
+CREATE TABLE IF NOT EXISTS `bandejasalidaadjuntos` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `idemail` int(5) NOT NULL,
+  `adjunto` varchar(200) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
