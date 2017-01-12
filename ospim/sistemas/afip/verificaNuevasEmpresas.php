@@ -1,7 +1,8 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php");
-include($_SERVER['DOCUMENT_ROOT']."/madera/lib/envioMailGeneral.php"); 
+include($libPath."bandejaSalida.php"); 
+
 $nrodisco=$_GET['nroDis'];
 $codigotipo = 0;
 $codpertene = 3;
@@ -91,25 +92,23 @@ try{
 	if($nuevasempresas>0) {
 		//echo("Envia Email"); echo "<br>";
 		$username = "sistemas@ospim.com.ar";
-		$passw = "pepepascual";
-		$fromRepli = "Sistemas O.S.P.I.M.";
 		$subject = "Se han generado ALTAS automaticas de empresas en el sistema.";
 		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>El procesamiento de archivos de AFIP ha generado el ALTA de <strong>".$nuevasempresas."</strong> nuevas empresas en el sistema segun el siguiente detalle:<br><br>";
-		
 		foreach($empresasAltas as $altas) {
 			$bodymail.="CUIT: ".$altas[cuit]." - Razon Social: ".$altas[nombre]."<br>";
 		}
 
 		$bodymail.="<br><br>Las mismas han sido incorporadas en el ambito jurisdiccional de la Delegacion Auxiliar (3200), por favor verifique esta informacion para establecer el verdadero ambito jurisdiccional de las mismas.<br><br><br><br>Depto. de Sistemas<br>O.S.P.I.M.<br>";	
-
+		$modulo = "AFIP Padrones";
+		
 		$address = "jlgomez@usimra.com.ar";
-		envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
+		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
 
 		$address = "balbonetti@ospim.com.ar";
-		envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
+		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
 
 		$address = "jcbolognese@ospim.com.ar";
-		envioMail($username, $passw, $fromRepli, $subject, $bodymail, $address);
+		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
 	}
 
 	$pagina = "menuAfip.php";
