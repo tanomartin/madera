@@ -2,7 +2,8 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."claves.php");
 include($libPath."fechas.php");
-require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
+include($libPath."bandejaSalida.php");
+
 $datos = array_values($_POST);
 //echo "DATOS 0: "; echo $datos[0]; echo "<br>";
 $nrosoli = $datos[0];
@@ -125,24 +126,12 @@ if($archivoOk==0) {
 		$dbl->commit();
 		$dbr->commit();
 
-		$mail=new PHPMailer();
-		$body="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong> <br>ha sido verificada el dia ".$fechamail." a las ".$horamail.".<br><br><br><br />Verificaciones<br />Depto. de Afiliaciones<br />O.S.P.I.M.<br /></body>";
-		$mail->IsSMTP();							// telling the class to use SMTP
-		$mail->Host="smtp.ospim.com.ar"; 			// SMTP server
-		$mail->SMTPAuth=true;						// enable SMTP authentication
-		$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
-		$mail->Port=25;								// set the SMTP port for the GMAIL server
-		$mail->Username="verificaciones@ospim.com.ar";	// SMTP account username
-		$mail->Password="wopu2794";					// SMTP account password
-		$mail->SetFrom('verificaciones@ospim.com.ar', 'Verificaciones OSPIM');
-		$mail->AddReplyTo("verificaciones@ospim.com.ar","Verificaciones OSPIM");
-		$mail->Subject="Aviso de Verificacion de Solicitud de Autorizacion";
-		$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
-		$mail->MsgHTML($body);
+		$username ="verificaciones@ospim.com.ar";
+		$subject = "Aviso de Verificacion de Solicitud de Autorizacion";
+		$bodymail ="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong> <br>ha sido verificada el dia ".$fechamail." a las ".$horamail.".<br><br><br><br />Verificaciones<br />Depto. de Afiliaciones<br />O.S.P.I.M.<br /></body>";
 		$address = "autorizaciones@ospim.com.ar";
-//		$mail->AddAddress($address, "Autorizaciones OSPIM");
-		$mail->AddAddress($address, "");
-		$mail->Send();
+		$modulo = "Verificaciones";
+		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
 
 		$pagina = "listarSolicitudes.php";
 		Header("Location: $pagina");
