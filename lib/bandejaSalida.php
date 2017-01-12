@@ -8,28 +8,28 @@ function guardarEmail($username, $subject, $bodymail, $address, $modulo, $attach
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
-		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$dbh->beginTransaction();
+		$dbhEmail = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+		$dbhEmail->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbhEmail->beginTransaction();
 		
 		//echo ($sqlEmailCabecera."<br>");
-		$dbh->exec($sqlEmailCabecera);
+		$dbhEmail->exec($sqlEmailCabecera);
 		$lastId = $dbh->lastInsertId();
 		
 		if ($attachment != null) {
 			foreach ($attachment as $file) {
 				$sqlEmailAdjunto = "INSERT INTO bandejasalidaadjuntos VALUES(DEFAULT, $lastId, '$file')";
 				//echo ($sqlEmailAdjunto."<br>");
-				$dbh->exec($sqlEmailAdjunto);
+				$dbhEmail->exec($sqlEmailAdjunto);
 			}
 		}
 			
-		$dbh->commit();
+		$dbhEmail->commit();
 		return $lastId;
 		
 	} catch (PDOException $e) {
 		echo $e->getMessage();
-		$dbh->rollback();
+		$dbhEmail->rollback();
 		return -1;
 	}
 	

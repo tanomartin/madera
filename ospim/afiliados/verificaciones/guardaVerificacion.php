@@ -122,16 +122,16 @@ if($archivoOk==0) {
 			{
 			}
 		}
-	
-		$dbl->commit();
-		$dbr->commit();
-
+		
 		$username ="verificaciones@ospim.com.ar";
 		$subject = "Aviso de Verificacion de Solicitud de Autorizacion";
 		$bodymail ="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong> <br>ha sido verificada el dia ".$fechamail." a las ".$horamail.".<br><br><br><br />Verificaciones<br />Depto. de Afiliaciones<br />O.S.P.I.M.<br /></body>";
 		$address = "autorizaciones@ospim.com.ar";
 		$modulo = "Verificaciones";
 		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
+	
+		$dbl->commit();
+		$dbr->commit();
 
 		$pagina = "listarSolicitudes.php";
 		Header("Location: $pagina");
