@@ -14,7 +14,7 @@ function guardarEmail($username, $subject, $bodymail, $address, $modulo, $attach
 		
 		//echo ($sqlEmailCabecera."<br>");
 		$dbhEmail->exec($sqlEmailCabecera);
-		$lastId = $dbh->lastInsertId();
+		$lastId = $dbhEmail->lastInsertId();
 		
 		if ($attachment != null) {
 			foreach ($attachment as $file) {
