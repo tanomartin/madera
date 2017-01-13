@@ -254,7 +254,8 @@ try {
 
 	set_time_limit(0);
 	
-	if(!$staauto==2) {	
+	
+	if($staauto!=2) {	
 		$pdf = new FPDI();
 		$pdf->AddPage('P','Letter');
 		$pdf->Image('../img/Logo Membrete OSPIM.jpg',21,13,28,22);
@@ -430,7 +431,13 @@ try {
 				}
 			}
 		}
-		$nombrearchivo = $_SERVER['SERVER_NAME']."/madera/ospim/auditoria/tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf"; 
+		
+		$maquina = $_SERVER['SERVER_NAME'];
+		if(strcmp("localhost",$maquina)==0)
+			$nombrearchivo = "../tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf"; 
+		else
+			$hostremoto = $_SERVER['SERVER_NAME']."/madera/ospim/auditoria/tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
+
 		$pdf->Output($nombrearchivo,'F');
 
 		$fph = fopen($nombrearchivo,"r");
@@ -518,7 +525,6 @@ try {
 }
 catch (Exception $e) {
 	$error = $e->getMessage();
-	$error .= " -- ".$nombrearchivo;
 	$dbl->rollback();
 	$dbr->rollback();	
 	
