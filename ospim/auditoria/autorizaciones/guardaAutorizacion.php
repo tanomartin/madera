@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."claves.php");
 include($libPath."fechas.php");
-require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
+include($libPath."bandejaSalida.php");
 require_once($libPath."fpdf.php");
 require_once($libPath."FPDI-1.6.1/fpdi.php"); 
 
@@ -253,12 +253,8 @@ try {
 	$dbr->beginTransaction();
 
 	set_time_limit(0);
-
-	$mail=new PHPMailer();
-	$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Su Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
-	if($staauto==2) {	
-		$bodymail.="<br>Verifique la situacion de la solicitud a traves del modulo INTRANET DELEGACIONES.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-	} else {
+	
+	if(!$staauto==2) {	
 		$pdf = new FPDI();
 		$pdf->AddPage('P','Letter');
 		$pdf->Image('../img/Logo Membrete OSPIM.jpg',21,13,28,22);
@@ -434,17 +430,8 @@ try {
 				}
 			}
 		}
-		$nombrearchivo = "../tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
+		$nombrearchivo = $_SERVER['SERVER_NAME']."/madera/ospim/auditoria/tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
 		$pdf->Output($nombrearchivo,'F');
-
-		if(!empty($recauto)) {
-			$bodymail.="<br>La aprobacion incluye una comunicacion de la que podra tomar conocimiento a traves del modulo INTRANET DELEGACIONES.";
-		}
-
-		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-
-		$mail->Timeout=120;
-		$mail->AddAttachment($nombrearchivo);  
 
 		$fph = fopen($nombrearchivo,"r");
 		$contenidodoc = fread($fph, filesize($nombrearchivo));
@@ -472,65 +459,59 @@ try {
 			}
 		}
 	}
+	
+	
+	
+	$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Su Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
+	$username ="autorizaciones@ospim.com.ar";
+	$addressDelega = "autorizaciones".$rowLeeSolicitud['codidelega']."@ospim.com.ar";
+	$subjectDelega = "AVISO!!! Solicitud de Autorizacion Atendida";
+	$modulo = "Autorizaciones";
+	//EMAIL RECHAZO
+	if ($staauto==2) {
+		$bodymail.="<br>Verifique la situacion de la solicitud a traves del modulo INTRANET DELEGACIONES.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
+		if (guardarEmail($username, $subjectDelega, $bodymail, $addressDelega, $modulo, null) == -1) {
+			throw new PDOException('Error al intentar guardar el correo electronico');
+		}
+	} 
+	
+	//EMAIL AUTORIZADO
+	if ($staauto==1) {
+		$arrayAttachment[] = $nombrearchivo;
+		if(!empty($recauto)) {
+			$bodymail.="<br>La aprobacion incluye una comunicacion de la que podra tomar conocimiento a traves del modulo INTRANET DELEGACIONES.";
+		}
+		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
+		if (guardarEmail($username, $subjectDelega, $bodymail, $addressDelega, $modulo, $arrayAttachment) == -1) {
+			throw new PDOException('Error al intentar guardar el correo electronico');
+		}
+		
+		if($apeauto==1) {
+			$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
+			$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
+			$subject = "AVISO: Autorizacion Aprobada incluye prestaciones SUR";
+			$address = "expedientessur@ospim.com.ar";
+			if (guardarEmail($username, $subject, $bodymail, $address, $modulo, $arrayAttachment) == -1) {
+				throw new PDOException('Error al intentar guardar el correo electronico');
+			}
+		}
+		
+		if($presauto==1) {
+			$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Autorizacion de Prestacion Nro: <strong>".$nrosoli."</strong>, <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
+			if(!empty($recauto)) {
+				$bodymail.="<br>Comentarios/Observaciones de la Autorizacion: ".$recauto.".";
+			}
+			$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M. - Obra Social del Personal de la Industria Maderera<br /></body>";
+			$subject = "AVISO: Autorizacion Aprobada";
+			$address = $presmail;
+			if (guardarEmail($username, $subject, $bodymail, $address, $modulo, $arrayAttachment) == -1) {
+				throw new PDOException('Error al intentar guardar el correo electronico');
+			}
+		}
+	}
 
 	$dbl->commit();
 	$dbr->commit();
-
-	$mail->IsSMTP();							// telling the class to use SMTP
-	$mail->Host="smtp.ospim.com.ar"; 			// SMTP server
-	$mail->SMTPAuth=true;						// enable SMTP authentication
-	$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
-	$mail->Port=25;								// set the SMTP port for the GMAIL server
-	$mail->Username="autorizaciones@ospim.com.ar";	// SMTP account username
-	$mail->Password="frin8134";					// SMTP account password
-	$mail->SetFrom("autorizaciones@ospim.com.ar", "Autorizaciones OSPIM");
-	$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
-	$mail->Subject="AVISO!!! Solicitud de Autorizacion Atendida";
-	$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
-	$mail->MsgHTML($bodymail);
-	$address = "autorizaciones".$rowLeeSolicitud['codidelega']."@ospim.com.ar";
-//	$nameto = "Autorizaciones ".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];
-	$nameto = "";
-	$mail->AddAddress($address, $nameto);
-//	$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
-	$mail->Send();
-
-	if($apeauto==1)
-	{
-//		TODO: Envia mail al departamento APE para comunicar que se trata de una autorizacion que incluye prestaciones APE
-		$mail->ClearAddresses();
-		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
-		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-//		$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
-		$mail->Subject="AVISO: Autorizacion Aprobada incluye prestaciones SUR";
-		$mail->MsgHTML($bodymail);
-		$address = "expedientessur@ospim.com.ar";
-//		$nameto = "APE OSPIM";
-		$nameto = "";
-		$mail->AddAddress($address, $nameto);
-		$mail->Timeout=120;
-		$mail->AddAttachment($nombrearchivo);
-		$mail->Send();
-	}
-
-	if($presauto==1)
-	{
-//		TODO: Envia mail al prestador para avisarle que hay una prestacion autorizada
-		$mail->ClearAddresses();
-		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Autorizacion de Prestacion Nro: <strong>".$nrosoli."</strong>, <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
-		$bodymail.="<br>Comentarios/Observaciones de la Autorizacion: ".$recauto.".";
-		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M. - Obra Social del Personal de la Industria Maderera<br /></body>";
-		$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
-		$mail->Subject="AVISO: Autorizacion Aprobada";
-		$mail->MsgHTML($bodymail);
-		$address = $presmail;
-//		$nameto = "Prestador OSPIM";
-		$nameto = "";
-		$mail->AddAddress($address, $nameto);
-		$mail->Timeout=120;
-		$mail->AddAttachment($nombrearchivo);
-		$mail->Send();
-	}
 
 	$pagina = "listarSolicitudes.php";
 	Header("Location: $pagina");
