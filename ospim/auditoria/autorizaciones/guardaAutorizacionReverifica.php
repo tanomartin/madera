@@ -2,7 +2,8 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."claves.php");
 include($libPath."fechas.php");
-require_once($libPath."PHPMailer_5.2.2/class.phpmailer.php");
+include($libPath."bandejaSalida.php");
+
 $datos = array_values($_POST);
 //echo "DATOS 0: "; echo $datos[0]; echo "<br>";
 $nrosoli = $datos[0];
@@ -74,32 +75,26 @@ if($staauto == 3)
 		{
 		}
 
-		$dbl->commit();
-
-		$mail=new PHPMailer();
-		$body="<body><br><br>Este es un mensaje de Aviso.<br><br>Comunicamos por este medio el pedido de Reverificacion para la Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>,<br>correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong>.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-		$mail->IsSMTP();							// telling the class to use SMTP
-		$mail->Host="smtp.ospim.com.ar"; 			// SMTP server
-		$mail->SMTPAuth=true;						// enable SMTP authentication
-		$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
-		$mail->Port=25;								// set the SMTP port for the GMAIL server
-		$mail->Username="autorizaciones@ospim.com.ar";	// SMTP account username
-		$mail->Password="frin8134";					// SMTP account password
-		$mail->SetFrom('autorizaciones@ospim.com.ar', 'Autorizaciones OSPIM');
-		$mail->AddReplyTo("autorizaciones@ospim.com.ar", "Autorizaciones OSPIM");
-		$mail->Subject="AVISO: Pedido de Reverificacion de Solicitud de Autorizacion";
-		$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
-		$mail->MsgHTML($body);
+		$bodymail = "<body><br><br>Este es un mensaje de Aviso.<br><br>Comunicamos por este medio el pedido de Reverificacion para la Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>,<br>correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong>.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
+		$username = "autorizaciones@ospim.com.ar";	
+		$subject = "AVISO: Pedido de Reverificacion de Solicitud de Autorizacion";
 		$address = "verificaciones@ospim.com.ar";
-		$mail->AddAddress($address, "");
-		$mail->Send();
+		$modulo = "Autorizaciones";
+		if (guardarEmail($username, $subject, $bodymail, $address, $modulo, null) == -1) {
+			throw new PDOException('Error al intentar guardar el correo electronico');
+		}
+		
+		$dbl->commit();
 
 		$pagina = "listarSolicitudes.php";
 		Header("Location: $pagina");
 	}
 	catch (PDOException $e) {
-		echo $e->getMessage();
+		$error = $e->getMessage();
 		$dbl->rollback();
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 }
 
@@ -129,39 +124,29 @@ if($staauto == 2)
 			}
 		}
 	
-		$dbl->commit();
-		$dbr->commit();
-
-		$mail=new PHPMailer();
 		$bodymail="<body><br><br>Este es un mensaje de Aviso.<br><br>Su Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, ha sido <strong>".$estauto."</strong> por el Depto. de Autorizaciones de OSPIM el dia ".$fechamail." a las ".$horamail.".";
 		$bodymail.="<br>Verifique la situacion de la solicitud a traves del modulo INTRANET DELEGACIONES.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-		$mail->IsSMTP();							// telling the class to use SMTP
-		$mail->Host="smtp.ospim.com.ar"; 			// SMTP server
-		$mail->SMTPAuth=true;						// enable SMTP authentication
-		$mail->Host="smtp.ospim.com.ar";			// sets the SMTP server
-		$mail->Port=25;								// set the SMTP port for the GMAIL server
-		$mail->Username="autorizaciones@ospim.com.ar";	// SMTP account username
-		$mail->Password="frin8134";					// SMTP account password
-		$mail->SetFrom("autorizaciones@ospim.com.ar", "Autorizaciones OSPIM");
-		$mail->AddReplyTo("autorizaciones@ospim.com.ar","Autorizaciones OSPIM");
-		$mail->Subject="AVISO: Solicitud de Autorizacion Atendida";
-		$mail->AltBody="Para ver este mensaje, por favor use un lector de correo compatible con HTML!"; // optional, comment out and test
-		$mail->MsgHTML($bodymail);
-//		$address = "jcbolognese@ospim.com.ar";
+		$username="autorizaciones@ospim.com.ar";
+		$subject="AVISO: Solicitud de Autorizacion Atendida";
 		$address = "autorizaciones".$rowLeeSolicitud['codidelega']."@ospim.com.ar";
-//		$nameto = "Autorizaciones ".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];
-		$nameto = "";
-		$mail->AddAddress($address, $nameto);
-//		$mail->AddBCC("jcbolognese@usimra.com.ar", "Autorizaciones OSPIM");
-		$mail->Send();
-
+		$modulo = "Autorizaciones";
+		if (guardarEmail($username, $subject, $bodymail, $address, $modulo, null) == -1) {
+			throw new PDOException('Error al intentar guardar el correo electronico');
+		}
+		
+		$dbl->commit();
+		$dbr->commit();
+		
 		$pagina = "listarSolicitudes.php";
 		Header("Location: $pagina");
 	}
 	catch (PDOException $e) {
-		echo $e->getMessage();
+		$error = $e->getMessage();
 		$dbl->rollback();
-		$dbr->rollback();
+		$dbr->rollback();		
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 }
 ?>

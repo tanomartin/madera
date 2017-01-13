@@ -432,12 +432,8 @@ try {
 			}
 		}
 		
-		$maquina = $_SERVER['SERVER_NAME'];
-		if(strcmp("localhost",$maquina)==0)
-			$nombrearchivo = "../tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf"; 
-		else
-			$hostremoto = $_SERVER['SERVER_NAME']."/madera/ospim/auditoria/tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
 
+		$nombrearchivo = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/auditoria/tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
 		$pdf->Output($nombrearchivo,'F');
 
 		$fph = fopen($nombrearchivo,"r");
