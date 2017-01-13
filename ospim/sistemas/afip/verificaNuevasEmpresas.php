@@ -86,8 +86,6 @@ try{
 	{
 	}
 
-	$dbh->commit();
-
 	//ENVIO DE MAIL AVISO A GOMEZ
 	if($nuevasempresas>0) {
 		//echo("Envia Email"); echo "<br>";
@@ -97,26 +95,32 @@ try{
 		foreach($empresasAltas as $altas) {
 			$bodymail.="CUIT: ".$altas[cuit]." - Razon Social: ".$altas[nombre]."<br>";
 		}
-
 		$bodymail.="<br><br>Las mismas han sido incorporadas en el ambito jurisdiccional de la Delegacion Auxiliar (3200), por favor verifique esta informacion para establecer el verdadero ambito jurisdiccional de las mismas.<br><br><br><br>Depto. de Sistemas<br>O.S.P.I.M.<br>";	
 		$modulo = "AFIP Padrones";
-		
 		$address = "jlgomez@usimra.com.ar";
-		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
-
+		if (guardarEmail($username, $subject, $bodymail, $address, $modulo, null) == -1) {
+			throw new PDOException('Error al intentar guardar el correo electronico');
+		}
 		$address = "balbonetti@ospim.com.ar";
-		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
-
+		if (guardarEmail($username, $subject, $bodymail, $address, $modulo, null) == -1) {
+			throw new PDOException('Error al intentar guardar el correo electronico');
+		}
 		$address = "jcbolognese@ospim.com.ar";
-		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
+		if (guardarEmail($username, $subject, $bodymail, $address, $modulo, null) == -1) {
+			throw new PDOException('Error al intentar guardar el correo electronico');
+		}
 	}
 
+	$dbh->commit();
 	$pagina = "menuAfip.php";
 	Header("Location: $pagina");
 
 }
 catch (PDOException $e) {
-	echo $e->getMessage();
+	$error = $e->getMessage();
 	$dbh->rollback();
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?&error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	header ($redire);
+	exit(0);
 }
 ?>

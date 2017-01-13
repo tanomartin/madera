@@ -23,13 +23,15 @@ A:hover {text-decoration:underline; color:FCF63C}
     <p class="Estilo1">Ingreso Sistema O.S.P.I.M.</p>
     <p><img src="img/logo.png" width="407" height="350" /> </p>
     <p><?php  
-		$error = $_GET['error'];
-		if ($error == 1) {
-			print("<div align='center' style='color:#FF0000'><b> USUARIO Y/O CONTRASEÑA INCORRECTOS </b></div>");
-		}
-		if ($error == 2) {
-			print("<div align='center' style='color:#FF0000'><b> YA TIENE UNA SESION INICIADO CON ESTE USUARIO </b></div>");
-		}
+    	if (isset($_GET['error'])) {
+			$error = $_GET['error'];
+			if ($error == 1) {
+				print("<div align='center' style='color:#FF0000'><b> USUARIO Y/O CONTRASEÑA INCORRECTOS </b></div>");
+			}
+			if ($error == 2) {
+				print("<div align='center' style='color:#FF0000'><b> YA TIENE UNA SESION INICIADO CON ESTE USUARIO </b></div>");
+			}
+    	}
 	?></p>
     <table border="0" width="26%">
       <tr>

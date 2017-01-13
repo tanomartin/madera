@@ -128,7 +128,9 @@ if($archivoOk==0) {
 		$bodymail ="<body><br><br>Este es un mensaje de Aviso.<br><br>La Solicitud de Autorizacion Nro: <strong>".$nrosoli."</strong>, correspondiente a la delegacion <strong>".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre']."</strong> <br>ha sido verificada el dia ".$fechamail." a las ".$horamail.".<br><br><br><br />Verificaciones<br />Depto. de Afiliaciones<br />O.S.P.I.M.<br /></body>";
 		$address = "autorizaciones@ospim.com.ar";
 		$modulo = "Verificaciones";
-		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
+		if (guardarEmail($username, $subject, $bodymail, $address, $modulo, null) == -1) {
+			throw new PDOException('Error al intentar guardar el correo electronico');
+		}
 	
 		$dbl->commit();
 		$dbr->commit();
@@ -137,9 +139,12 @@ if($archivoOk==0) {
 		Header("Location: $pagina");
 	}
 	catch (PDOException $e) {
-		echo $e->getMessage();
+		$error = $e->getMessage();
 		$dbl->rollback();
 		$dbr->rollback();
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?&error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 }
 else { ?>

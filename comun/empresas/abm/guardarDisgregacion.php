@@ -21,19 +21,25 @@ try {
 		//print($sqlUpdateDisgregacion);print("<br>");
 		$dbh->exec($sqlUpdateDisgregacion);	
 	}
-	$dbh->commit();	
-	
+		
 	$username = "sistemas@ospim.com.ar";
 	$subject = "Se ha efectuado una disgregación dineraria";
 	$bodymail = "<body><br><br>Este es un mensaje de Aviso.<br><br>En el CUIT: <strong>".$cuit."</strong>, se ha efectuado un cambio en la disgregación dineraria.";
 	$address = "jlgomez@usimra.com.ar";
 	$modulo = 'Empresa';
-	guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
+	if (guardarEmail($username, $subject, $bodymail, $address, $modulo, null) == -1) {
+		throw new PDOException('Error al intentar guardar el correo electronico' );
+	}
 	
+	$dbh->commit();
 	$pagina = "empresa.php?cuit=$cuit&origen=$origen";
 	Header("Location: $pagina"); 
-}catch (PDOException $e) {
-	echo $e->getMessage();
+	
+} catch (PDOException $e) {
+	$error = $e->getMessage();
 	$dbh->rollback();
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/".$origen."/errorSistemas.php?&error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	header ($redire);
+	exit(0);
 }
 ?>
