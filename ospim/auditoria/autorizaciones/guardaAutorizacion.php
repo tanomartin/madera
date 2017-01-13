@@ -430,7 +430,7 @@ try {
 				}
 			}
 		}
-		$nombrearchivo = $_SERVER['SERVER_NAME']."/madera/ospim/auditoria/tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf";
+		$nombrearchivo = $_SERVER['SERVER_NAME']."/madera/ospim/auditoria/tempautorizaciones/Autorizacion Nro ".$nrosoli.".pdf"; 
 		$pdf->Output($nombrearchivo,'F');
 
 		$fph = fopen($nombrearchivo,"r");
@@ -518,6 +518,7 @@ try {
 }
 catch (Exception $e) {
 	$error = $e->getMessage();
+	$error .= " -- ".$nombrearchivo;
 	$dbl->rollback();
 	$dbr->rollback();	
 	
