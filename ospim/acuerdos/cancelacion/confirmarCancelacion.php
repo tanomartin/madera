@@ -51,7 +51,7 @@ function validar(formulario) {
 	?>
 	<form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="cancelarCuota.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
       <p><strong>Acuerdo N&uacute;mero </strong> <?php echo $acuerdo ?> <strong>Cuota</strong> <?php echo $cuota ?> </p>
-	  	<table border="1" width="935" style="text-align: center"">
+	  	<table border="1" width="935" style="text-align: center">
 			<tr>
    				<th>Monto</th>
     			<th>Fecha Vto.</th>
