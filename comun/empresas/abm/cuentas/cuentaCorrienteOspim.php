@@ -65,7 +65,7 @@ function reverificaPeriodo($estado, $ano, $me, $db) {
 	$idArray = $ano.$me;
 	if(array_key_exists($idArray, $arrayAcuerdos)) {
 		$nroacuerdo = $arrayAcuerdos[$idArray]['nroacuerdo'];
-		if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
+		if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 0 ) {
 			$des = "P. ACUER.-".$nroacuerdo;
 		} else {
 			$des = "ACUER.-".$nroacuerdo;
@@ -127,13 +127,13 @@ function encuentroPagos($db) {
 
 function encuentroAcuerdos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
-	$sqlAcuerdos = "select anoacuerdo, mesacuerdo, nroacuerdo from detacuerdosospim where cuit = $cuit and ((anoacuerdo > $anoinicio and anoacuerdo <= $anofin) or (anoacuerdo = $anoinicio and mesacuerdo >= $mesinicio)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
+	$sqlAcuerdos = "select d.anoacuerdo, d.mesacuerdo, d.nroacuerdo, c.estadoacuerdo from detacuerdosospim d, cabacuerdosospim c where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and ((d.anoacuerdo > $anoinicio and d.anoacuerdo <= $anofin) or (d.anoacuerdo = $anoinicio and d.mesacuerdo >= $mesinicio)) group by d.anoacuerdo, d.mesacuerdo order by d.anoacuerdo, d.mesacuerdo";
 	$resAcuerdos = mysql_query($sqlAcuerdos,$db);
 	$canAcuerdos = mysql_num_rows($resAcuerdos);
 	if($canAcuerdos > 0) {
 		while ($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) {
 			$id=$rowAcuerdos['anoacuerdo'].$rowAcuerdos['mesacuerdo'];
-			$arrayAcuerdos[$id] = array('anio' => (int)$rowAcuerdos['anoacuerdo'], 'mes' => (int)$rowAcuerdos['mesacuerdo'], 'nroacuerdo' => (int)$rowAcuerdos['nroacuerdo']);
+			$arrayAcuerdos[$id] = array('anio' => (int)$rowAcuerdos['anoacuerdo'], 'mes' => (int)$rowAcuerdos['mesacuerdo'], 'nroacuerdo' => (int)$rowAcuerdos['nroacuerdo'], 'estadoacuerdo' => (int)$rowAcuerdos['estadoacuerdo']);
 		}
 	} else {
 		return 0;
@@ -209,8 +209,8 @@ function estado($ano, $me, $db) {
 		$idArray = $ano.$me;
 		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
 		if(array_key_exists($idArray, $arrayAcuerdos)) {
-			$nroacuerdo = $rowAcuerdos[$idArray]['nroacuerdo'];
-			if ($rowAcuerdos['estadoacuerdo'] == 0 ) {
+			$nroacuerdo = $arrayAcuerdos[$idArray]['nroacuerdo'];
+			if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 0 ) {
 				$des = "P. ACUER.-".$nroacuerdo;
 			} else {
 				$des = "ACUER.-".$nroacuerdo;
@@ -251,10 +251,10 @@ function imprimeTabla($periodo) {
 	$me = $periodo['mes'];
 	print("<td>");
 	if ($estado == 'NO PAGO') {
-		print ("<a href=javascript:abrirInfo('detalleDDJJ.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
+		print ("<a href=javascript:abrirInfo('detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
 	} else {
 		if (strpos($estado, 'P.F.T.') !== false or strpos($estado, 'PAGO') !== false) {
-			print ("<a href=javascript:abrirInfo('detallePagos.php?origen=".$_GET['origen']."&cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
+			print ("<a href=javascript:abrirInfo('detallePagos.php?cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
 		} else {
 			$pacuerdo = explode('-',$estado);
 			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {

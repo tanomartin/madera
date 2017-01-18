@@ -215,7 +215,7 @@ function encuentroPagosAnteriores($db) {
 
 function encuentroAcuerdos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
-	$sqlAcuerdos = "select anoacuerdo, mesacuerdo, nroacuerdo from detacuerdosusimra where cuit = $cuit and ((anoacuerdo > $anoinicio and anoacuerdo <= $anofin) or (anoacuerdo = $anoinicio and mesacuerdo >= $mesinicio)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
+	$sqlAcuerdos = "select d.anoacuerdo, d.mesacuerdo, d.nroacuerdo, c.estadoacuerdo from detacuerdosusimra d, cabacuerdosusimra c where c.cuit = $cuit and c.cuit = d.cuit and c.nroacuerdo = d.nroacuerdo and ((d.anoacuerdo > $anoinicio and d.anoacuerdo <= $anofin) or (d.anoacuerdo = $anoinicio and d.mesacuerdo >= $mesinicio)) group by d.anoacuerdo, d.mesacuerdo order by d.anoacuerdo, d.mesacuerdo";
 	// print($sqlAcuerdos);
 	$resAcuerdos = mysql_query ( $sqlAcuerdos, $db );
 	$canAcuerdos = mysql_num_rows ( $resAcuerdos );
@@ -225,7 +225,8 @@ function encuentroAcuerdos($db) {
 			$arrayAcuerdos [$id] = array (
 					'anio' => ( int ) $rowAcuerdos ['anoacuerdo'],
 					'mes' => ( int ) $rowAcuerdos ['mesacuerdo'],
-					'nroacuerdo' => $rowAcuerdos ['nroacuerdo'] 
+					'nroacuerdo' => $rowAcuerdos ['nroacuerdo'],
+					'estadoacuerdo' => (int)$rowAcuerdos['estadoacuerdo']
 			);
 		}
 	} else {
@@ -280,13 +281,12 @@ function encuentroRequerimientos($db) {
 
 function encuentroDdjj($db) {
 	global $cuit, $anoinicio, $anofin;
-	$sqlDdjj = "select perano, permes from ddjjusimra where nrcuit = $cuit and nrcuil = 99999999999 and perano >= $anoinicio and perano <= $anofin order by perano, permes, id ASC";
+	$sqlDdjj = "select perano, permes from ddjjusimra where nrcuit = $cuit and nrcuil = '99999999999' and perano >= $anoinicio and perano <= $anofin order by perano, permes, id ASC";
 	$resDdjj = mysql_query ( $sqlDdjj, $db );
 	$canDdjj = mysql_num_rows ( $resDdjj );
 	if ($canDdjj > 0) {
 		while ( $rowDdjj = mysql_fetch_assoc ( $resDdjj ) ) {
 			$id = $rowDdjj ['perano'] . $rowDdjj ['permes'];
-			$montopagar = $rowDdjj ['totapo'] + $rowDdjj ['recarg'];
 			$arrayDdjj [$id] = array (
 					'anio' => ( int ) $rowDdjj ['perano'],
 					'mes' => ( int ) $rowDdjj ['permes'] 
@@ -300,15 +300,12 @@ function encuentroDdjj($db) {
 	if ($canDdjjValidas > 0) {
 		while ( $rowDdjjValidas = mysql_fetch_assoc ( $resDdjjValidas ) ) {
 			$id = $rowDdjjValidas ['anoddjj'] . $rowDdjjValidas ['mesddjj'];
-			$montopagar = $rowDdjjValidas ['totalaporte'] + $rowDdjjValidas ['recargo'];
 			$arrayDdjj [$id] = array (
 					'anio' => ( int ) $rowDdjjValidas ['anoddjj'],
 					'mes' => ( int ) $rowDdjjValidas ['mesddjj'] 
 			);
 		}
-	}
-	
-	if (sizeof ( $arrayDdjj ) == 0) {
+	} else {
 		return 0;
 	}
 	return ($arrayDdjj);
@@ -382,10 +379,10 @@ function imprimeTabla($periodo) {
 	$me = $periodo ['mes'];
 	print ("<td>") ;
 	if ($estado == 'NO PAGO') {
-		print ("<a href=javascript:abrirInfo('detalleDDJJUsimra.php?origen=" . $_GET ['origen'] . "&cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
+		print ("<a href=javascript:abrirInfo('detalleDDJJUsimra.php?cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
 	} else {
 		if (strpos ( $estado, 'P.F.T.' ) !== false or strpos ( $estado, 'PAGO' ) !== false or strpos ( $estado, 'P.M.' ) !== false) {
-			print ("<a href=javascript:abrirInfo('detallePagosUsimra.php?origen=" . $_GET ['origen'] . "&cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
+			print ("<a href=javascript:abrirInfo('detallePagosUsimra.php?cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
 		} else {
 			$pacuerdo = explode ( '-', $estado );
 			if ($pacuerdo [0] == 'P. ACUER.' or $pacuerdo [0] == 'ACUER.') {
