@@ -22,6 +22,7 @@ $nroNuevaCuota = $rowUltima['nrocuota'] + 1;
 
 $sqlMontoImpresas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa != 0";
 $resMontoImpresas = mysql_query($sqlMontoImpresas,$db);
+$montoBoletasImpresas = 0;
 while ($rowMontoImpresas=mysql_fetch_array($resMontoImpresas)) {
 	$montoBoletasImpresas = $montoBoletasImpresas + $rowMontoImpresas['montocuota'];
 }

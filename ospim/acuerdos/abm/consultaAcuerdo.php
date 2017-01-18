@@ -1,5 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php");
-include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
+<?php $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
+include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php"); 
 $cuit = $_GET['cuit'];
 $nroacu = $_GET['nroacu'];
 ?>
@@ -18,15 +19,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 <form name="verificador">
   <div align="center">
   	<?php 
-		$origen = $_GET['origen'];
-		if (is_null($origen)) { ?>
+  		if (!isset($_GET['origen'])) { ?>
 			<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" />
 	<?php } ?>
   </div>
   <div align="center">
     <?php 
-	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresaConsulta.php"); 
-	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
+	include($libPath."cabeceraEmpresaConsulta.php"); 
+	include($libPath."cabeceraEmpresa.php"); 
 	
 	$sqlCabecera = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
 	$resCabecera = mysql_query($sqlCabecera,$db); 
@@ -222,8 +222,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   </div>
   <div align="center">
         <p>
-       	<?php 
-		if (is_null($origen)) { ?>
+       	<?php if (!isset($_GET['origen'])) { ?>
 			 <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" /> 
 	<?php } ?>
         </p>

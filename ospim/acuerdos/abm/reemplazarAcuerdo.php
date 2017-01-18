@@ -9,10 +9,6 @@ $resCabeViejo =  mysql_query($sqlCabeViejo,$db);
 $rowCabeViejo = mysql_fetch_array($resCabeViejo);
 $actaVieja = $rowCabeViejo['nroacta'];
 
-$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
-$result =  mysql_query( $sql,$db); 
-$row = mysql_fetch_array($result); 
-
 $sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu order by fechacuota ASC";
 $resCuotas = mysql_query($sqlCuotas,$db);
 $canCuotas = mysql_num_rows($resCuotas);
@@ -107,7 +103,8 @@ function validar(formulario) {
   <input type="reset" name="volver" value="Volver" onclick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" />
   </p>
   <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresaConsulta.php"); 
+		include($libPath."cabeceraEmpresa.php");
   ?>
   <p align="center"><strong>M&oacute;dulo de Reemplazo de Acuerdo </strong></p>
   <p align="center"><strong>ACUERDO NUMERO</strong>

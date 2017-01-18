@@ -1,22 +1,20 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
-$cuit=$_GET['cuit'];
-if ($cuit=="") {
+if (isset($_GET['cuit'])) {
+	$cuit=$_GET['cuit'];
+} else {
 	$cuit=$_POST['cuit'];
 }
 
-$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
-$result = mysql_query($sql,$db); 
-$cant = mysql_num_rows($result); 
-if ($cant != 1) {
+include($libPath."cabeceraEmpresaConsulta.php");
+if ($tipo == "noexiste") {
 	header ("Location: moduloABM.php?err=1");
 }
-$row = mysql_fetch_array($result); 
 
 $sqlacuerdos =  "select * from cabacuerdosospim c, estadosdeacuerdos e where c.cuit = $cuit and c.estadoacuerdo = e.codigo order by nroacuerdo";
-$resulacuerdos= mysql_query($sqlacuerdos); 
-
+$resulacuerdos = mysql_query($sqlacuerdos); 
+$cantacuerdos = mysql_num_rows($resulacuerdos);
 ?>
 
 
@@ -35,10 +33,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" /></p>
   <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
-	?>
-  <p><strong>Acuerdos Existentes </strong></p>
-  <table width="600" border="1" style="text-align: center;">
+  		include($libPath."cabeceraEmpresa.php"); 
+		if ($cantacuerdos != 0) { ?>
+  	 <p><b>Acuerdos Existentes </b></p>
+ 	 <table width="700" border="1" style="text-align: center;">
      <?php 
 		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) { ?>
 			<tr>
@@ -82,8 +80,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 			</tr>
 <?php	} ?>	
   </table>
+  <?php } else { ?>
+  		<p><b>No existe acuerdos para esta empresa</b></p>
+  <?php }?>
   <p>
+  <?php   if ($tipo == "activa") { ?>
     <input type="submit" name="nuevoAcuerdo" value="Nuevo Acuerdo" onclick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?> '" />
+  <?php }?>
   </p>
 </div>
 </body>
