@@ -3,7 +3,7 @@
 function guardarEmail($username, $subject, $bodymail, $address, $modulo, $attachment) {
 	$fecharegistro = date("Y-m-d H:i:s");
 	$usuarioregistro = $_SESSION['usuario'];
-	$sqlEmailCabecera = "INSERT INTO bandejasalida VALUES(DEFAULT, '$username', '$subject', '$bodymail', '$address', '$modulo', 0, null, '$fecharegistro', '$usuarioregistro')";
+	$sqlEmailCabecera = "INSERT INTO bandejasalida VALUES(DEFAULT, '$username', '$subject', '$bodymail', '$address', '$modulo', '$fecharegistro', '$usuarioregistro')";
 	
 	try {
 		$hostname = $_SESSION['host'];
