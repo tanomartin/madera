@@ -12,14 +12,12 @@ function guardarEmail($username, $subject, $bodymail, $address, $modulo, $attach
 		$dbhEmail->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbhEmail->beginTransaction();
 		
-		//echo ($sqlEmailCabecera."<br>");
 		$dbhEmail->exec($sqlEmailCabecera);
 		$lastId = $dbhEmail->lastInsertId();
 		
 		if ($attachment != null) {
 			foreach ($attachment as $file) {
 				$sqlEmailAdjunto = "INSERT INTO bandejasalidaadjuntos VALUES(DEFAULT, $lastId, '$file')";
-				//echo ($sqlEmailAdjunto."<br>");
 				$dbhEmail->exec($sqlEmailAdjunto);
 			}
 		}
@@ -33,6 +31,34 @@ function guardarEmail($username, $subject, $bodymail, $address, $modulo, $attach
 		return -1;
 	}
 	
+}
+
+function reenviarEmail($idEmail) {
+	try {
+		$hostname = $_SESSION['host'];
+		$dbname = $_SESSION['dbname'];
+		$dbhEmail = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+		$dbhEmail->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbhEmail->beginTransaction();
+		
+		$sqlGetEnviado = "SELECT * FROM bandejaenviados WHERE id = $idEmail";
+		$rowGetEnviado = $dbhEmail->query($sqlGetEnviado)->fetch();
+		
+		$moduloReenvio = "Reenvio - ".$rowGetEnviado['modulocreador'];
+		$sqlEmailCabecera = "INSERT INTO bandejasalida VALUES(".$rowGetEnviado['id'].", '".$rowGetEnviado['from']."', '".$rowGetEnviado['subject']."', '".$rowGetEnviado['body']."', '".$rowGetEnviado['address']."', '$moduloReenvio', '".$rowGetEnviado['fecharegistro']."', '".$rowGetEnviado['usuarioregistro']."')";
+		$dbhEmail->exec($sqlEmailCabecera);
+
+		$sqlDeleteEnviados = "DELETE FROM bandejaenviados WHERE id = $idEmail";
+		$dbhEmail->exec($sqlDeleteEnviados);
+		
+		$dbhEmail->commit();
+		return $rowGetEnviado['id'];
+		
+	} catch (PDOException $e) {
+		echo $e->getMessage();
+		$dbhEmail->rollback();
+		return -1;
+	}
 }
 
 ?>
