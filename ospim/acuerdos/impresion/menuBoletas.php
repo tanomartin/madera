@@ -19,9 +19,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-   <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /> 
-  </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /></p>
   <p><span class="Estilo2">Men&uacute; Boletas </span></p>
   <table width="614" border="3">
     <tr>

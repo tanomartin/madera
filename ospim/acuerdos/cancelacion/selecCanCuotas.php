@@ -1,29 +1,18 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
-$cuit= $_POST['cuit'];
-if ($cuit == NULL) {
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspim.php"); 
+include($libPath."fechas.php"); 
+if (isset($_POST['cuit'])) {
+	$cuit= $_POST['cuit'];
+} else {
 	$cuit = $_GET['cuit'];
 }
 
-$sql = "select * from empresas where cuit = $cuit";
-$result = mysql_query( $sql,$db); 
-$cantEmp = mysql_num_rows($result); 
-if ($cantEmp == 0) {
+include($libPath."cabeceraEmpresaConsulta.php");
+if ($tipo == "noexiste") {
 	header('Location: moduloCancelacion.php?err=2');
-} else {
-	$row=mysql_fetch_array($result); 
-	
-	$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-	$resultlocalidad = mysql_query( $sqllocalidad,$db); 
-	$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-	
-	$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-	$resultprovi = mysql_query( $sqlprovi,$db); 
-	$rowprovi = mysql_fetch_array($resultprovi);
-	
-	$sqlacuerdos =  "select * from cabacuerdosospim where cuit = $cuit";
+} else {	
+	$sqlacuerdos =  "select c.*, e.*, t.descripcion as tipo from cabacuerdosospim c, estadosdeacuerdos e, tiposdeacuerdos t where c.cuit = $cuit and c.estadoacuerdo = e.codigo and c.tipoacuerdo = t.codigo order by nroacuerdo";
 	$resulacuerdos= mysql_query( $sqlacuerdos,$db); 
-	
 	$cant = mysql_num_rows($resulacuerdos); 
 	if ($cant == 0) {
 		header('Location: moduloCancelacion.php?err=1');
@@ -46,84 +35,67 @@ A:hover {text-decoration: none;color:#33CCFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-  <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloCancelacion.php'" />
+  <input type="button" name="volver" value="Volver" onclick="location.href = 'moduloCancelacion.php'" />
   </p>
-	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
-	?>
+	 <?php include($libPath."cabeceraEmpresa.php"); ?>
   <p><strong>Acuerdos Existentes </strong></p>
-  <table width="340" border="1">
+  <table width="550" border="1" style="text-align: center">
      <?php 
-		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
-			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
-			$result=mysql_query( $query,$db);
-			$rowtipos=mysql_fetch_array($result);
-			echo ('<td width=340  align="center"><font face=Verdana size=3><a href="selecCanCuotas.php?acuerdo='.$rowacuerdos['nroacuerdo'].'&cuit='.$cuit.'"> Acuerdo '.$rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']."</a></font></td>");
-			print ("</tr>");
-		}
-		
-	?>	
+		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) { ?>
+			<tr>
+				<td><a href="selecCanCuotas.php?acuerdo=<?php echo $rowacuerdos['nroacuerdo']?>&cuit=<?php echo $cuit?>"> Acuerdo <?php echo $rowacuerdos['nroacuerdo']?> - <?php echo $rowacuerdos['tipo'] ?> - Acta: <?php echo $rowacuerdos['nroacta'] ?> - <?php echo $rowacuerdos['descripcion'] ?></a></td>
+			</tr>
+ <?php 	} ?>
   </table>
-  <p>
-    <?php
-  	$acuerdo = $_GET["acuerdo"];
-		if ($acuerdo != 0) { ?>
-  </p>
-  <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
-  <table border="1" width="935" cellpadding="2" cellspacing="0">
+<?php  if (isset($_GET["acuerdo"])) {
+  		$acuerdo = $_GET["acuerdo"]; ?>
+		  <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
+		  <table border="1" width="935" style="text-align: center">
 				<tr>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cuota</font></strong></div></td>
-   					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Vto.</font></strong></div></td>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Tipo Cancelacion</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cheque</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Banco</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Cheque</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Estado</font></strong></div></td>
+    				<th>Nro Cuota</th>
+   					<th>Monto</th>
+    				<th>Fecha Vto.</th>
+    				<th>Tipo Cancelacion</th>
+					<th>Nro Cheque</th>
+					<th>Banco</th>
+					<th>Fecha Cheque</th>
+					<th>Estado</th>
 				</tr>
 			
 			<?php	
-			$sqllistado = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
+			$sqllistado = "select c.*, t.descripcion, t.imprimible from cuoacuerdosospim c, tiposcancelaciones t where c.cuit = $cuit and c.nroacuerdo = $acuerdo and c.tipocancelacion = t.codigo";
 			$reslistado = mysql_query( $sqllistado,$db); 
-			while ($rowListado = mysql_fetch_array($reslistado)) {
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['nrocuota']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['montocuota']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowListado['fechacuota'])."</font></div></td>");
-				
-				$sqltipocan = "select * from tiposcancelaciones where codigo = $rowListado[tipocancelacion]";
-				$restipocan =  mysql_query( $sqltipocan,$db);
-				$rowtipocan = mysql_fetch_array($restipocan);
-				
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowtipocan['descripcion']."</font></div></td>");
-				
-				if ($rowListado['chequenro'] == 0) {
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-				} else {
-					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['chequenro']."</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowListado['chequebanco']."</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowListado['chequefecha'])."</font></div></td>");
-				}
+			while ($rowListado = mysql_fetch_array($reslistado)) { ?>
+				<tr>
+					<td><?php echo $rowListado['nrocuota']?></td>
+					<td><?php echo $rowListado['montocuota']?></td>
+					<td><?php echo invertirFecha($rowListado['fechacuota'])?></td>
+					<td><?php echo $rowListado['descripcion']?></td>		
+		<?php	if ($rowListado['chequenro'] == 0) { ?>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+		<?php	} else {  ?>
+					<td><?php echo $rowListado['chequenro']?></td>
+					<td><?php echo $rowListado['chequebanco']?></td>
+					<td><?php echo invertirFecha($rowListado['chequefecha'])?></td>
+		<?php	}
 				if ($rowListado['tipocancelacion']!=8 && $rowListado['montopagada']==0 && $rowListado['fechapagada']=='0000-00-00') {
-					if ($rowListado['boletaimpresa'] == 0) {
-						print ("<td width=168><div align=center><font face=Verdana size=1><a href='confirmarCancelacion.php?cuota=".$rowListado['nrocuota']."&acuerdo=".$acuerdo."&cuit=".$cuit."'>Cancelar</a></font></div></td>");
-						// else de si la boleta ya esta inmpresa
-					} else {
-						print ("<td width=168><div align=center><font face=Verdana size=1>Boleta Impresa</font></div></td>");
-					}					
+					if ($rowListado['boletaimpresa'] == 0) { ?>
+						<td><input type="button" value="Cancelar Cuota" onclick="location.href = 'confirmarCancelacion.php?cuota=<?php echo $rowListado['nrocuota']?>&acuerdo=<?php echo $acuerdo?>&cuit=<?php echo $cuit?>'"/></td>
+		<?php		} else { ?>
+						<td>Boleta Impresa</td>
+		<?php		}					
 				// else de si el monto == 0	
 				} else {
-					if ($rowListado['tipocancelacion'] == 8) {
-						print ("<td width=168><div align=center><font face=Verdana size=1>No Cancelable</font></div></td>");
-					} else {
-						print ("<td width=168><div align=center><font face=Verdana size=1>Cancelada</font></div></td>");
-					}
-				}
-				
-				print ("</tr>"); 
-			}
-			?>
+					if ($rowListado['tipocancelacion'] == 8) {  ?>
+						<td>No Cancelable</td>
+		<?php		} else {  ?>
+						<td>Cancelada</td>
+		<?php		}
+				} ?>
+				</tr> 
+	<?php	} ?>
   </table>
 <?php	}?>
 

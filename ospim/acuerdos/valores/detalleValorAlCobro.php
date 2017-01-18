@@ -80,8 +80,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 							c.tipocancelacion = 3";
 			$resValores = mysql_query($sqlValores,$db); 
 			$canValores = mysql_num_rows($resValores);
+			$total = 0;
 			while ($rowValores = mysql_fetch_array($resValores)) { 
-				$total = (float) ($total +  $rowValores['montocuota']); ?>
+				$total += (float) $rowValores['montocuota'] ?>
 				<tr align="center">
 					<td><?php echo $rowValores['cuit'] ?></td>
 					<td><?php echo $rowValores['nroacuerdo'] ?></td>
@@ -95,7 +96,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				</tr>
 	 <?php } ?>
 	 		<tr>
-				<td colspan="8" align="right">TOTAL</td>
+				<td colspan="8" align="right"><b>TOTAL</b></td>
 				<td align="right"><b><?php echo number_format($total,2,',','.') ?></b></td>
 			</tr>
 			

@@ -96,7 +96,7 @@ function validar(formulario) {
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" /></p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" /></p>
   <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardoValorAlCobro.php">
   	<p><input type="hidden" value="<?php echo $datosArrayEnvia  ?>" name="datos" /></p>
   	<p><b>Informaci&oacute;n Cheque OSPIM</b></p>

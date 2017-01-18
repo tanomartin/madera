@@ -67,18 +67,20 @@ A:hover {text-decoration: none;color:#33CCFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" />
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" /></p>
   <p><span class="Estilo1">M&oacute;dulo Anulacion de Bolestas Impresas</span> </p>
   <p>
   <?php 
-  		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> BOLETA NO ENCONTRADA </b></div>");
-		}
-		if ($err == 2) {
-			$control = $_GET['control'];
-			print("<div align='center' style='color:#0000000'><b> SE ANULO LA BOLETA CON CODIGO DE IDENTIFICACION ".$control."</b></div>");
-		}
+  		if (isset($_GET['err'])) {
+	  		$err = $_GET['err'];
+			if ($err == 1) {
+				print("<div align='center' style='color:#FF0000'><b> BOLETA NO ENCONTRADA </b></div>");
+			}
+			if ($err == 2) {
+				$control = $_GET['control'];
+				print("<div align='center' style='color:#0000000'><b> SE ANULO LA BOLETA CON CODIGO DE IDENTIFICACION ".$control."</b></div>");
+			}
+  		}
 		
   ?>
   </p>

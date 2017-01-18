@@ -61,7 +61,7 @@ function validar(formulario) {
 		if(isset($_POST['nroControl'])) { 
 			$nroControl = $_POST['nroControl'];?>
 			<p><span class="Estilo1"><strong>Resultado Codigo de identificacion de boleta "<?php echo $nroControl ?>" </strong></span> </p>
-			<table border="1" width="1000">
+			<table border="1" width="1000" style="text-align: center">
 				<tr>
 					<th>Fecha Recepción </th>
 					<th>Fecha Acreditacion </th>

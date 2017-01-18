@@ -1,69 +1,70 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
-$dato = $_POST['dato'];
-$filtro = $_POST['filtro'];
-
-if ($filtro == 0) {
-	$cartel = "Resultados de Busqueda por Nro. Control <b>".$dato."</b>";
-}
-if ($filtro == 1) {
-	$cartel = "Resultados de Busqueda por Nro. Cheque <b>".$dato."</b>";
-}
-if ($filtro == 2) {
-	$cartel = "Resultados de Busqueda por C.U.I.T. <b>".$dato."</b>";
-}
-
-$tipoBoletas = "";
 $noExiste = 0;
-$resultado = array();
-if (isset($dato)) {
-	if ($filtro == 0) { $sqlBoletas = "SELECT * from boletasospim where nrocontrol = $dato"; }
-	if ($filtro == 1) { $sqlBoletas = "SELECT * from boletasospim b, cuoacuerdosospim c where c.chequenro = '$dato' and c.cuit = b.cuit and c.nroacuerdo = b.nroacuerdo and c.nrocuota = b.nrocuota"; }
-	if ($filtro == 2) { $sqlBoletas = "SELECT * from boletasospim where cuit = $dato"; }
-	$resBoletas = mysql_query($sqlBoletas,$db); 
-	$canBoletas = mysql_num_rows($resBoletas); 
-	if ($canBoletas != 0) {
-		$tipoBoletas = "Generada";
-		while($rowBoletas = mysql_fetch_array($resBoletas)) {
-			$id = $rowBoletas['idboleta'];
-			$resultado[$id] = array('nrocontrol' => $rowBoletas['nrocontrol'], 'cuit' => $rowBoletas['cuit'], 'acuerdo' =>  $rowBoletas['nroacuerdo'], 'cuota' =>  $rowBoletas['nrocuota'], 'importe' => $rowBoletas['importe'], 'estado' => $tipoBoletas);
-		}
+if (isset($_POST['dato']) && isset($_POST['filtro'])) {
+	$dato = $_POST['dato'];
+	$filtro = $_POST['filtro'];
+	
+	if ($filtro == 0) {
+		$cartel = "Resultados de Busqueda por Nro. Control <b>".$dato."</b>";
+	}
+	if ($filtro == 1) {
+		$cartel = "Resultados de Busqueda por Nro. Cheque <b>".$dato."</b>";
+	}
+	if ($filtro == 2) {
+		$cartel = "Resultados de Busqueda por C.U.I.T. <b>".$dato."</b>";
 	}
 	
-	if ($filtro == 0) { $sqlBoletasValidas = "SELECT * from validasospim where nrocontrol = $dato"; }
-	if ($filtro == 1) { $sqlBoletasValidas = "SELECT * from validasospim b, cuoacuerdosospim c where c.chequenro = '$dato' and c.cuit = b.cuit and c.nroacuerdo = b.nroacuerdo and c.nrocuota = b.nrocuota"; }
-	if ($filtro == 2) { $sqlBoletasValidas = "SELECT * from validasospim where cuit = $dato"; }
-	$resBoletasValidas = mysql_query($sqlBoletasValidas,$db); 
-	$canBoletasValidas = mysql_num_rows($resBoletasValidas); 
-	if ($canBoletasValidas != 0) {
-		$tipoBoletas = "Validada";
-		while($rowBoletasValidas = mysql_fetch_array($resBoletasValidas)) {
-			$id = $rowBoletasValidas['idboleta'];
-			$resultado[$id] = array('nrocontrol' => $rowBoletasValidas['nrocontrol'], 'cuit' => $rowBoletasValidas['cuit'], 'acuerdo' =>  $rowBoletasValidas['nroacuerdo'], 'cuota' =>  $rowBoletasValidas['nrocuota'], 'importe' => $rowBoletasValidas['importe'], 'estado' => $tipoBoletas);
+	$tipoBoletas = "";
+	$resultado = array();
+	if (isset($dato)) {
+		if ($filtro == 0) { $sqlBoletas = "SELECT * from boletasospim where nrocontrol = $dato"; }
+		if ($filtro == 1) { $sqlBoletas = "SELECT * from boletasospim b, cuoacuerdosospim c where c.chequenro = '$dato' and c.cuit = b.cuit and c.nroacuerdo = b.nroacuerdo and c.nrocuota = b.nrocuota"; }
+		if ($filtro == 2) { $sqlBoletas = "SELECT * from boletasospim where cuit = $dato"; }
+		$resBoletas = mysql_query($sqlBoletas,$db); 
+		$canBoletas = mysql_num_rows($resBoletas); 
+		if ($canBoletas != 0) {
+			$tipoBoletas = "Generada";
+			while($rowBoletas = mysql_fetch_array($resBoletas)) {
+				$id = $rowBoletas['idboleta'];
+				$resultado[$id] = array('nrocontrol' => $rowBoletas['nrocontrol'], 'cuit' => $rowBoletas['cuit'], 'acuerdo' =>  $rowBoletas['nroacuerdo'], 'cuota' =>  $rowBoletas['nrocuota'], 'importe' => $rowBoletas['importe'], 'estado' => $tipoBoletas);
+			}
 		}
-	}
-	
-	
-	if ($filtro == 0) { $sqlBoletasAnuladas = "SELECT * from anuladasospim where nrocontrol = $dato"; }
-	if ($filtro == 1) { $sqlBoletasAnuladas = "SELECT * from anuladasospim b, cuoacuerdosospim c where c.chequenro = '$dato' and c.cuit = b.cuit and c.nroacuerdo = b.nroacuerdo and c.nrocuota = b.nrocuota"; }
-	if ($filtro == 2) { $sqlBoletasAnuladas = "SELECT * from anuladasospim where cuit = $dato"; }
-	$resBoletasAnuladas = mysql_query($sqlBoletasAnuladas,$db); 
-	$canBoletasAnuladas = mysql_num_rows($resBoletasAnuladas); 
-	if ($canBoletasAnuladas != 0) {
-		$tipoBoletas = "Anulada";
-		while($rowBoletasAnuladas = mysql_fetch_array($resBoletasAnuladas)) {
-			$id = $rowBoletasAnuladas['idboleta'];
-			$resultado[$id] = array('nrocontrol' => $rowBoletasAnuladas['nrocontrol'], 'cuit' => $rowBoletasAnuladas['cuit'], 'acuerdo' =>  $rowBoletasAnuladas['nroacuerdo'], 'cuota' =>  $rowBoletasAnuladas['nrocuota'], 'importe' => $rowBoletasAnuladas['importe'], 'estado' => $tipoBoletas);
+		
+		if ($filtro == 0) { $sqlBoletasValidas = "SELECT * from validasospim where nrocontrol = $dato"; }
+		if ($filtro == 1) { $sqlBoletasValidas = "SELECT * from validasospim b, cuoacuerdosospim c where c.chequenro = '$dato' and c.cuit = b.cuit and c.nroacuerdo = b.nroacuerdo and c.nrocuota = b.nrocuota"; }
+		if ($filtro == 2) { $sqlBoletasValidas = "SELECT * from validasospim where cuit = $dato"; }
+		$resBoletasValidas = mysql_query($sqlBoletasValidas,$db); 
+		$canBoletasValidas = mysql_num_rows($resBoletasValidas); 
+		if ($canBoletasValidas != 0) {
+			$tipoBoletas = "Validada";
+			while($rowBoletasValidas = mysql_fetch_array($resBoletasValidas)) {
+				$id = $rowBoletasValidas['idboleta'];
+				$resultado[$id] = array('nrocontrol' => $rowBoletasValidas['nrocontrol'], 'cuit' => $rowBoletasValidas['cuit'], 'acuerdo' =>  $rowBoletasValidas['nroacuerdo'], 'cuota' =>  $rowBoletasValidas['nrocuota'], 'importe' => $rowBoletasValidas['importe'], 'estado' => $tipoBoletas);
+			}
 		}
-	} 
-	
-	$controlCantidad = (int)($canBoletas + $canBoletasValidas + $canBoletasAnuladas);
-	if ($controlCantidad == 0) {
-		$noExiste = 1;
+		
+		
+		if ($filtro == 0) { $sqlBoletasAnuladas = "SELECT * from anuladasospim where nrocontrol = $dato"; }
+		if ($filtro == 1) { $sqlBoletasAnuladas = "SELECT * from anuladasospim b, cuoacuerdosospim c where c.chequenro = '$dato' and c.cuit = b.cuit and c.nroacuerdo = b.nroacuerdo and c.nrocuota = b.nrocuota"; }
+		if ($filtro == 2) { $sqlBoletasAnuladas = "SELECT * from anuladasospim where cuit = $dato"; }
+		$resBoletasAnuladas = mysql_query($sqlBoletasAnuladas,$db); 
+		$canBoletasAnuladas = mysql_num_rows($resBoletasAnuladas); 
+		if ($canBoletasAnuladas != 0) {
+			$tipoBoletas = "Anulada";
+			while($rowBoletasAnuladas = mysql_fetch_array($resBoletasAnuladas)) {
+				$id = $rowBoletasAnuladas['idboleta'];
+				$resultado[$id] = array('nrocontrol' => $rowBoletasAnuladas['nrocontrol'], 'cuit' => $rowBoletasAnuladas['cuit'], 'acuerdo' =>  $rowBoletasAnuladas['nroacuerdo'], 'cuota' =>  $rowBoletasAnuladas['nrocuota'], 'importe' => $rowBoletasAnuladas['importe'], 'estado' => $tipoBoletas);
+			}
+		} 
+		
+		$controlCantidad = (int)($canBoletas + $canBoletasValidas + $canBoletasAnuladas);
+		if ($controlCantidad == 0) {
+			$noExiste = 1;
+		}
 	}
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -132,7 +133,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorBoleta.php">
   <div align="center" >
-  <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" />
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" /></p>
   <p align="center" class="Estilo1">M&oacute;dulo Buscador de Bolestas</p>
    <?php 
 		if ($noExiste == 1) {

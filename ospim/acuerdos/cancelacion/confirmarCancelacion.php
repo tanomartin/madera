@@ -1,26 +1,11 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspim.php"); 
+include($libPath."fechas.php"); 
 $cuit = $_GET["cuit"];
 $acuerdo = $_GET["acuerdo"];
 $cuota = $_GET["cuota"];	
 
-$sql = "select * from empresas where cuit = $cuit";
-$result = mysql_query( $sql,$db); 
-$row=mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query( $sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query( $sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
-
-$sqlCab = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo";
-$resCab = mysql_query($sqlCab,$db); 
-$rowCab = mysql_fetch_array($resCab);
-
-$sqlCuo = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
+$sqlCuo = "select c.*, t.descripcion from cuoacuerdosospim c, tiposcancelaciones t where c.cuit = $cuit and c.nroacuerdo = $acuerdo and c.nrocuota = $cuota and c.tipocancelacion = t.codigo";
 $resCuo = mysql_query($sqlCuo,$db); 
 $rowCuo = mysql_fetch_array($resCuo);
 
@@ -59,64 +44,41 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" />
- </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" /></p>
 	 <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
+		include($libPath."cabeceraEmpresaConsulta.php");
+		include($libPath."cabeceraEmpresa.php"); 
 	?>
-<form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="cancelarCuota.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
-  <div align="center">
-    <p><strong>Acuerdo N&uacute;mero </strong> <?php echo $acuerdo ?> <strong>Cuota</strong> <?php echo $cuota ?> </p>
-	 <table border="1" width="935" cellpadding="2" cellspacing="0">
-				<tr>
-   					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Vto.</font></strong></div></td>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Tipo Cancelacion</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cheque</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Banco</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Cheque</font></strong></div></td>
-				</tr>
-				<?php
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['montocuota']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowCuo['fechacuota'])."</font></div></td>");
-				
-				$sqltipocan = "select * from tiposcancelaciones where codigo = $rowCuo[tipocancelacion]";
-				$restipocan =  mysql_query( $sqltipocan,$db);
-				$rowtipocan = mysql_fetch_array($restipocan);
-				
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowtipocan['descripcion']."</font></div></td>");
-				
-				if ($rowCuo['chequenro'] == 0) {
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-				} else {
-					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['chequenro']."</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['chequebanco']."</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowCuo['chequefecha'])."</font></div></td>");
-				}
-				print ("</tr>"); 
-				?>
-	</table>
-	
-     <p>
-       <label>Fecha de Pago
-       		<input name="fechapagada" type="text" id="fechapagada" size="8">
-       </label>
-    </p>
-     <p>
-       <label>Observacion
-	   <textarea name="textarea" cols="50" rows="4"></textarea>
-       </label>
-     </p>
-     <p>
-       <label>
-       <input type="submit" name="Submit" value="Cancelar Cuota">
-       </label>
-     </p>
-  </div>
-</form>
+	<form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="cancelarCuota.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
+      <p><strong>Acuerdo N&uacute;mero </strong> <?php echo $acuerdo ?> <strong>Cuota</strong> <?php echo $cuota ?> </p>
+	  	<table border="1" width="935" style="text-align: center"">
+			<tr>
+   				<th>Monto</th>
+    			<th>Fecha Vto.</th>
+    			<th>Tipo Cancelacion</th>
+				<th>Nro Cheque</th>
+				<th>Banco</th>
+				<th>Fecha Cheque</th>
+			</tr>
+			<tr>
+				<td><?php echo $rowCuo['montocuota']?></td>
+				<td><?php echo invertirFecha($rowCuo['fechacuota'])?></td>
+				<td><?php echo $rowCuo['descripcion']?></td>
+		<?php 	if ($rowCuo['chequenro'] == 0) { ?>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+	<?php		} else { ?>
+					<td><?php echo $rowCuo['chequenro']?></td>
+					<td><?php echo $rowCuo['chequebanco']?></td>
+					<td><?php echo invertirFecha($rowCuo['chequefecha'])?></td>
+	<?php		} ?>
+			</tr> 
+		</table>
+	    <p><b>Fecha de Pago</b> <input name="fechapagada" type="text" id="fechapagada" size="8"></p>
+	    <p><b>Observacion</b> <textarea name="textarea" cols="50" rows="4"></textarea></p>
+	    <p><input type="submit" name="Submit" value="Cancelar Cuota"></p>
+	</form>
 </div>
 </body>
 </html>

@@ -34,18 +34,19 @@ jQuery(function($){
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="impBoletas.php">
   <p align="center">
-  <input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" />
+  	<input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" />
   </p>
   <p align="center" class="Estilo1">M&oacute;dulo Impresi&oacute;n de Bolestas</p>
    <?php 
-  		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> CUIT SIN ACUERDOS CARGADOS </b></div>");
-		}
-		if ($err == 2) {
-			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
-		}
-
+   		if (isset($_GET['err'])) { 
+	  		$err = $_GET['err'];
+			if ($err == 1) {
+				print("<p><div align='center' style='color:#FF0000'><b> CUIT SIN ACUERDOS CARGADOS </b></div></p>");
+			}
+			if ($err == 2) {
+				print("<p><div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div></p>");
+			}
+   		}
   ?>
    
   <div align="center"><label>CUIT <input name="cuit" type="text" id="cuit" size="10" /></label></div>
