@@ -60,7 +60,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
-	for (i=1; i<=<?php echo $canjuris + 1 ?>; i++) {
+	for (var i=1; i<=<?php echo $canjuris + 1 ?>; i++) {
 		$("#disgdinero"+i).mask("99.99");
 	}
 });
@@ -68,7 +68,7 @@ jQuery(function($){
 function validar(formulario) {
 	formulario.Submit.disabled = true;
 	total = 0;
-	for (i=1; i<=<?php echo $canjuris + 1 ?>; i++) {
+	for (var i=1; i<=<?php echo $canjuris + 1 ?>; i++) {
 		nombre = "disgdinero"+i;
 		if (parseFloat(document.getElementById(nombre).value) == 0) {
 			alert("El porcentaje no puede ser 0 %");
@@ -109,8 +109,10 @@ function validar(formulario) {
         <td width="20%"><div align="center"><strong>Disgregacion</strong></div></td>
   	 </tr> 			
 	 
-	 <?php while ($rowjuris = mysql_fetch_array($resjuris)) { 
-				$contador = $contador + 1;
+	 <?php
+	 	$contador = 0;
+	 	while ($rowjuris = mysql_fetch_array($resjuris)) { 
+				$contador += 1;
 	 			$delega = $rowjuris['codidelega'];
 				$sqldelegacion = "select * from delegaciones where codidelega = $delega";
 				$resultdelegacion = mysql_query($sqldelegacion,$db); 

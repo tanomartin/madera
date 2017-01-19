@@ -11,11 +11,6 @@ if ($canEmpresaExiste > 0) {
 	header ("Location: moduloABM.php?origen=$origen&err=2");
 	exit(0);
 }
-
-$numpostal=$_GET['numpostal'];
-$nombre=$_GET['nombre'];
-$domicilio=$_GET['domicilio'];
-$alfapostal=$_GET['alfapostal'];
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

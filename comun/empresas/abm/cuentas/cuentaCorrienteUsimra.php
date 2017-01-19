@@ -99,7 +99,7 @@ function reverificaPeriodo($estado, $ano, $me, $db) {
 		if (array_key_exists ( $idArray, $arrayJuicios )) {
 			$statusDeuda = $arrayJuicios[$idArray]['statusdeuda'];
 			$nrocertificado = $arrayJuicios[$idArray]['nrocertificado'];
-			$nroorden = $rowJuicio ['nroorden'];
+			$nroorden = $arrayJuicios[$idArray] ['nroorden'];
 			if ($statusDeuda == 1) {
 				$des = "J.EJEC";
 			}

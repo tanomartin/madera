@@ -71,9 +71,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		$nroPago = $n+1; ?>
 		<tr align='center'>
 		<td><?php echo $nroPago ?></td>
-		<td><?php echo $pagos[$n]['mespago']."-".$pagos[$n]['anopago']." | ".$pagos['mensaje'] ?></td>
+		<td><?php echo $pagos[$n]['mespago']."-".$pagos[$n]['anopago']." | ".$pagos[$n]['mensaje'] ?></td>
 		<td><?php echo invertirFecha($pagos[$n]['fechapago']) ?></td>
-		<td><?php echo $pagos[$n]['cantidadpersonal'] ?></td>
+		<td><?php echo $pagos[$n]['cantidadaportantes'] ?></td>
 		<td align='right'><?php echo number_format($pagos[$n]['totalaporte'],2,',','.') ?></td>
 		<td align='right'><?php echo number_format($pagos[$n]['montorecargo'],2,',','.') ?></td>
 		<td align='right'><?php echo number_format($pagos[$n]['montopagado'],2,',','.') ?></td>

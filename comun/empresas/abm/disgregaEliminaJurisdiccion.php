@@ -4,10 +4,6 @@ include($libPath."controlSession.php");
 $cuit=$_GET['cuit'];
 $codidelega=$_GET['coddel'];
 
-$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
-$result = mysql_query($sql,$db); 
-$row = mysql_fetch_array($result); 
-
 $sqljuris = "select * from jurisdiccion where cuit = $cuit";
 $resjuris = mysql_query($sqljuris,$db); 
 $canjuris = mysql_num_rows($resjuris); 
@@ -33,7 +29,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
-	for (i=1; i<=<?php echo $canjuris + 1 ?>; i++) {
+	for (var i=1; i<=<?php echo $canjuris + 1 ?>; i++) {
 		if (<?php echo $canjuris ?> == 2) {
 			$("#disgdinero"+i).mask("999.99");
 		} else {
@@ -45,7 +41,7 @@ jQuery(function($){
 function validar(formulario) {
 	formulario.Submit.disabled = true;
 	total = 0;
-	for (i=1; i<=<?php echo $canjuris ?>; i++) {
+	for (var i=1; i<=<?php echo $canjuris ?>; i++) {
 		nombre = "disgdinero"+i;
 		disgre = document.getElementById(nombre).value;
 		delega = "delega"+i;
@@ -81,6 +77,7 @@ function validar(formulario) {
   </p>
   	<p>
   	  <?php 	
+  	  	include($libPath."cabeceraEmpresaConsulta.php");
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
 </p>
@@ -93,8 +90,10 @@ function validar(formulario) {
         <td width="20%"><div align="center"><strong>Disgregacion</strong></div></td>
   	 </tr> 			
 	 
-	 <?php while ($rowjuris = mysql_fetch_array($resjuris)) { 
-				$contador = $contador + 1;
+	 <?php 
+	 		$contador = 0;
+	 		while ($rowjuris = mysql_fetch_array($resjuris)) { 
+				$contador += 1;
 	 			$delega = $rowjuris['codidelega'];
 				$sqldelegacion = "select * from delegaciones where codidelega = $delega";
 				$resultdelegacion = mysql_query($sqldelegacion,$db); 

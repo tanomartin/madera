@@ -1,8 +1,9 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSession.php");
 
-$cuit=$_GET['cuit'];
-if ($cuit=="") {
+if (isset($_GET['cuit'])) {
+	$cuit=$_GET['cuit'];
+} else {
 	$cuit=$_POST['cuit'];
 }
 
@@ -39,13 +40,14 @@ function validarBaja() {
 			if (confirm('Hay titulares activos para esta empresa.\nQuiere confirmar la baja')) {
 				alert('Se dará de baja la empresa con sus titulares y sus respectivos familiares');
 				location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
+				document.getElementById('bajaEmpresa').disabled = true;
 			} else {
 				alert('No se dará de baja la empresa ni sus titulares asociados');
 			}
  <?php } else { ?>
  	   		location.href="confirmaBajaEmpresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>";
+ 	   		document.getElementById('bajaEmpresa').disabled = true;
  <?php }   ?>
-	document.getElementById('bajaEmpresa').disabled = true;
 }
 
 function rediSabanaCtaCte(origen, cuit) {
@@ -79,19 +81,23 @@ function rediBeneficiarios(origen, cuit) {
   <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'"/>
   <p>
     <?php 
-		$err = $_GET['err'];
-		$reactiva = $_GET['reactiva'];
-		if ($err > 0) {
-			$sqldelegacion = "select * from delegaciones where codidelega = $err";
-			$resultdelegacion = mysql_query($sqldelegacion,$db); 
-			$rowdelegacion = mysql_fetch_array($resultdelegacion); 
-			print("<div align='center' style='color:#FF0000'><b> ERROR JURISDICCION EXISTENTE </b></div>");
-			print("<div align='center' style='color:#FF0000'><b> NO SE PUEDE CARGAR LA JURISDICCION </b></div>");
-			print("<div align='center' style='color:#FF0000'><b>".$rowdelegacion['nombre']." </b></div>");
-		}
-		if ($reactiva == 1) {
-			print("<h2 class='Estilo1'><div align='center' style='color:#006666'><b> EMPRESA REACTIVADA </b></div> </h2>");
-		}
+    	if (isset($_GET['err'])) {
+			$err = $_GET['err'];
+			if ($err > 0) {
+				$sqldelegacion = "select * from delegaciones where codidelega = $err";
+				$resultdelegacion = mysql_query($sqldelegacion,$db);
+				$rowdelegacion = mysql_fetch_array($resultdelegacion);
+				echo("<div align='center' style='color:#FF0000'><b> ERROR JURISDICCION EXISTENTE </b></div>");
+				echo("<div align='center' style='color:#FF0000'><b> NO SE PUEDE CARGAR LA JURISDICCION </b></div>");
+				echo("<div align='center' style='color:#FF0000'><b>".$rowdelegacion['nombre']." </b></div>");
+			}
+    	}
+    	if (isset($_GET['reactiva'])) {
+			$reactiva = $_GET['reactiva'];
+			if ($reactiva == 1) {
+				echo("<h2 class='Estilo1'><div align='center' style='color:#006666'><b> EMPRESA REACTIVADA </b></div> </h2>");
+			}
+    	}
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
   </p>

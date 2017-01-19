@@ -8,8 +8,9 @@ $result = mysql_query($sql,$db);
 $cant = mysql_num_rows($result);
 $row = mysql_fetch_array($result); 
 
-$numpostal=$_GET['numpostal'];
-if ($numpostal == "") {
+if (isset($_GET['numpostal'])) {
+	$numpostal=$_GET['numpostal'];
+} else {
 	$numpostal = $row['numpostal'];
 }
 

@@ -3,12 +3,6 @@ include($libPath."controlSession.php");
 	
 	$cuit=$_GET['cuit'];
 	$codidelega=$_GET['coddel'];
-	
-	//TODO: ANTES DE ESTO TENGO QUE VER SI TIENE BENEFICIARIOS, SI LO TIENE NO LOS DEJO ELIMINAR
-
-	$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
-	$result = mysql_query($sql,$db); 
-	$row = mysql_fetch_array($result); 
 
 	$sqljuris = "select * from jurisdiccion where cuit = $cuit and codidelega = $codidelega";
 	$resjuris = mysql_query($sqljuris,$db); 
@@ -30,7 +24,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
   <input type="reset" name="volver" value="Volver" onClick="location.href = 'empresa.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>'"/>
   <p>
-    <?php include($libPath."cabeceraEmpresa.php"); ?>
+    <?php 
+    	include($libPath."cabeceraEmpresaConsulta.php");
+    	include($libPath."cabeceraEmpresa.php"); 
+    ?>
   </p>
   <p><strong>Datos de la Jurisdicci&oacute;n a eliminar </strong></p>
   <table width="700" border="2" style="font-family:Verdana, Arial, Helvetica, sans-serif; font-size:13px">

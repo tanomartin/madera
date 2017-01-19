@@ -110,7 +110,7 @@ function validar(formulario) {
 				$codidelega = $_POST['delegacion'];
 				$sqlDele="select nombre from delegaciones where codidelega = $codidelega";
 				$resDele= mysql_query($sqlDele,$db);
-		$rowDele=mysql_fetch_array($resDele); ?>
+				$rowDele=mysql_fetch_array($resDele); ?>
 
 			<p>
 				<span class="Estilo2"><?php echo $rowDele['nombre'] ?> </span>
@@ -134,32 +134,55 @@ function validar(formulario) {
 					</tr>
 				</thead>
 				<tbody>
-					<?php $sqlEmpre = "select e.cuit, e.nombre, e.domilegal, e.numpostal as numlegal, e.fecharegistro as creacion, l.nomlocali as localidad, j.domireal, j.numpostal as numreal, lreal.nomlocali as localidadReal, j.disgdinero from empresas e, jurisdiccion j, localidades l, localidades lreal where j.codidelega = $codidelega and j.cuit = e.cuit and e.codlocali = l.codlocali and j.codlocali = lreal.codlocali";
+					<?php $sqlEmpre = "SELECT e.cuit, e.nombre, e.domilegal, e.numpostal as numlegal, e.fecharegistro as creacion, l.nomlocali as localidad, j.domireal, j.numpostal as numreal, lreal.nomlocali as localidadReal, j.disgdinero 
+											FROM empresas e, jurisdiccion j, localidades l, localidades lreal 
+											WHERE j.codidelega = $codidelega and j.cuit = e.cuit and e.codlocali = l.codlocali and j.codlocali = lreal.codlocali";
 					$resEmpre = mysql_query($sqlEmpre,$db);
-			while ($rowEmpre = mysql_fetch_assoc($resEmpre)) { ?>
-					<tr align="center">
-						<td><?php echo $rowEmpre['cuit'] ?></td>
-						<td><?php echo $rowEmpre['nombre'] ?></td>
-						<td><?php echo $rowEmpre['domilegal']." [".$rowEmpre['numlegal']."]" ?>
-						</td>
-						<td><?php echo $rowEmpre['localidad'] ?></td>
-						<td><?php echo $rowEmpre['domireal']." [".$rowEmpre['numreal']."]" ?>
-						</td>
-						<td><?php echo $rowEmpre['localidadReal'] ?></td>
-						<td><?php echo substr($rowEmpre['creacion'],0,10) ?></td>
-						<td><?php echo $rowEmpre['disgdinero']."%" ?></td>
-						<td><?php 
+					$whereIn = "(";
+					while ($rowEmpre = mysql_fetch_assoc($resEmpre)) { 
 						$cuit =  $rowEmpre['cuit'];
-						$sqlOtraJuris = "select d.nombre, j.disgdinero from jurisdiccion j, delegaciones d where cuit = $cuit and j.codidelega != $codidelega and j.codidelega not in (1000,1001,3500) and j.codidelega = d.codidelega";
-						$resOtraJuris = mysql_query($sqlOtraJuris,$db);
-						$canOtraJuris = mysql_num_rows($resOtraJuris);
-						if ($canOtraJuris > 0) {
-							while ($rowOtraJuris = mysql_fetch_assoc($resOtraJuris)) {
-echo $rowOtraJuris['nombre']." (".$rowOtraJuris['disgdinero']."%)"."<br>";
-}
-						} else {
-							echo "-";
-						} ?>
+						$arrayEmpresa[$cuit] = array('nombre'=>$rowEmpre['nombre'], 
+													 'domilegal'=> $rowEmpre['domilegal']." [".$rowEmpre['numlegal']."]", 
+													 'localidadlegal' => $rowEmpre['localidad'], 
+													 'domireal' => $rowEmpre['domireal']." [".$rowEmpre['numreal']."]", 
+													 'localidadreal'=>$rowEmpre['localidadReal'], 
+													 'fechacreacion' => substr($rowEmpre['creacion'],0,10),
+													 'disgdinero' => $rowEmpre['disgdinero']."%");
+						$whereIn .= "'".$cuit."',";
+					}		
+					$whereIn = substr($whereIn, 0, -1);
+					$whereIn .= ")";
+					
+					$sqlOtraJuris = "select d.nombre, j.disgdinero, j.codidelega, j.cuit from jurisdiccion j, delegaciones d where cuit in $whereIn and j.codidelega != $codidelega and j.codidelega not in (1000,1001,3500) and j.codidelega = d.codidelega";
+					$resOtraJuris = mysql_query($sqlOtraJuris,$db);
+					$canOtraJuris = mysql_num_rows($resOtraJuris);
+					if ($canOtraJuris > 0) {
+						while ($rowOtraJuris = mysql_fetch_assoc($resOtraJuris)) {
+							$arrayJuris[$rowOtraJuris['cuit']][$rowOtraJuris['codidelega']] = array('nombre'=>$rowOtraJuris['nombre'], 'disgdinero'=>$rowOtraJuris['disgdinero']);
+						}
+					}
+					
+					foreach($arrayEmpresa as $cuit=>$empresa) {
+					?>
+					
+					<tr align="center">
+						<td><?php echo $cuit ?></td>
+						<td><?php echo $empresa['nombre'] ?></td>
+						<td><?php echo $empresa['domilegal'] ?></td>
+						<td><?php echo $empresa['localidadlegal'] ?></td>
+						<td><?php echo $empresa['domireal'] ?></td>
+						<td><?php echo $empresa['localidadreal'] ?></td>
+						<td><?php echo $empresa['fechacreacion'] ?></td>
+						<td><?php echo $empresa['disgdinero'] ?></td>
+						<td><?php
+								if (array_key_exists($cuit, $arrayJuris)) {
+									foreach($arrayJuris[$cuit] as $jurisdiccion) {
+										echo $jurisdiccion['nombre']. " (".$jurisdiccion['disgdinero']."%)<br>";
+									}
+								} else {
+									echo "-";	
+								}
+							?>
 						</td>
 					</tr>
 					<?php } ?>

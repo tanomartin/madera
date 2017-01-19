@@ -33,13 +33,6 @@ function validar(formulario) {
 <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuEmpresa.php?origen=<?php echo $origen ?>'" /> 
 </p>
 <p align="center" class="Estilo2">Buscador de Empresas </p>
- <?php 
-		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> EMPRESA NO ENCONTRADA </b></div>");
-		}
-
-  ?>
 <form id="ordena" name="ordena" method="post" onsubmit="return validar(this)" action="resultadoEmpresas.php?origen=<?php echo $origen ?>">
   <div align="center">
     <table width="336" border="0">

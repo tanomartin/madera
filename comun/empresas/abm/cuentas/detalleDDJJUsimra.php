@@ -65,7 +65,7 @@ function abrirInfo(dire) {
 	  <th>Acciones</th>
     </tr>
 
-<?php while ($rowDdjj = mysql_fetch_assoc($resDdjj)) {	 ?>	
+<?php while ($rowDdjj = mysql_fetch_assoc($resDdjj)) {	?>	
 	 <tr>
 	    <td><?php print(substr($rowDdjj['nrctrl'],6,2)."-".substr($rowDdjj['nrctrl'],4,2)."-".substr($rowDdjj['nrctrl'],0,4)." ".substr($rowDdjj['nrctrl'],8,2).":".substr($rowDdjj['nrctrl'],10,2).":".substr($rowDdjj['nrctrl'],12,2))?></td>
 	  	<td align="center"><?php print($rowDdjj['nfilas']) ?></td>
@@ -75,7 +75,7 @@ function abrirInfo(dire) {
 		<td align="right"><?php print(number_format($rowDdjj['apo150'],2,',','.')) ?></td>
 		<td align="right"><?php print(number_format($rowDdjj['recarg'],2,',','.')) ?></td>
 		<td align="right"><?php print(number_format($rowDdjj['totapo'],2,',','.')) ?></td>
-		<td align="center"><?php print($rowDdjj['observacion']) ?></td>
+		<td align="center"><?php print($rowDdjj['observ']) ?></td>
 		<td align="center"><input type="button" onclick="javascript:abrirInfo('verDetalleDDJJUsimra.php?nrocontrol=<?php echo $rowDdjj['nrctrl'] ?>&cuit=<?php echo $rowDdjj['nrcuit'] ?>&mes=<?php echo $rowDdjj['permes'] ?>&anio=<?php echo $rowDdjj['perano'] ?>')" value="Detalle" />
 	 </tr>
 <?php } ?>

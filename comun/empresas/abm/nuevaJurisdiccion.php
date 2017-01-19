@@ -2,9 +2,6 @@
 include($libPath."controlSession.php"); 
 include($libPath."fechas.php");
 $cuit=$_GET['cuit'];
-$numpostal=$_GET['numpostal'];
-$alfapostal=$_GET['alfapostal'];
-$domicilio=$_GET['domicilio'];
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
