@@ -17,6 +17,7 @@ $fechaVto = date ( 'Y-m-j', $fechaVto );
 $sqlAcuerdos = "select c.nroacuerdo, t.descripcion, c.nroacta ,o.fechacuota from cabacuerdosospim c, cuoacuerdosospim o, tiposdeacuerdos t where c.cuit = $cuit and c.estadoacuerdo = 1 and c.cuit = o.cuit and c.nroacuerdo = o.nroacuerdo and o.montopagada = 0 and c.tipoacuerdo = t.codigo group by c.nroacuerdo order by c.nroacuerdo ASC, o.fechacuota DESC";
 $resAcuerdos = mysql_query ( $sqlAcuerdos, $db );
 $i = 0;
+$acuAbs = array();
 while ( $rowAcuerdos = mysql_fetch_assoc ( $resAcuerdos ) ) {
 	$fechacuota = $rowAcuerdos ['fechacuota'];
 	if ($fechacuota < $fechaVto) {
@@ -93,12 +94,10 @@ function checkQuitar() {
 function cargarPeriodosAbsorvidos(acuerdo) {
 		formatoPeriodoInicio();
 		var n = 0;
-<?php
-
-$sqlPeriodos = "select * from detacuerdosospim where cuit = $cuit";
-$resPeriodos = mysql_query ( $sqlPeriodos, $db );
-while ( $rowPeriodos = mysql_fetch_array ( $resPeriodos ) ) {
-	?> 
+		<?php
+		$sqlPeriodos = "select * from detacuerdosospim where cuit = $cuit";
+		$resPeriodos = mysql_query ( $sqlPeriodos, $db );
+		while ( $rowPeriodos = mysql_fetch_array ( $resPeriodos ) ) { ?> 
 			if(acuerdo == <?php echo $rowPeriodos['nroacuerdo'] ?>) {
 				i = "id" + n;
 				m = "mes" + n;
@@ -168,9 +167,6 @@ function formatoPeriodoInicio() {
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
 		document.getElementById(con).value="";
-		document.getElementById(m).style.visibility="hidden";
-		document.getElementById(a).style.visibility="hidden";
-		document.getElementById(men).style.visibility="hidden";
 	}
 	document.forms.nuevoJuicio.mostrar.value = 12;
 }
@@ -186,24 +182,13 @@ function mostrarBotones() {
 }
 
 function validoMes(id) {
-	var errorMes = "Error en la carga del mes";
 	nombreMes = "mes" + id;
 	valorMes = document.getElementById(nombreMes).value;
+	var errorMes = "Error en la carga del mes. Mes " + valorMes + " no es posible";
 	if (valorMes < 0 || valorMes > 12) {
 		alert(errorMes);
+		document.getElementById(nombreMes).value = "";
 		document.getElementById(nombreMes).focus();
-		return false;
-	}
-	return true;
-}
-
-function validoAnio(id){
-	var errorAnio = "Error en la carga del año";
-	nombreAnio = "anio" + id;
-	valorAnio = document.getElementById(nombreAnio).value;
-	if (valorAnio < 0) {
-		alert(errorAnio);
-		document.getElementById(nombreAnio).focus();
 		return false;
 	}
 	return true;
@@ -244,14 +229,11 @@ function mostrarPeriodos() {
 	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
 	if (n < 120) {
 		var o = 0;
-		var m = 0;
-		var a = 0;
+		var f = 0;
 		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
-			m = "mes" + o;
-			a = "anio" + o;
-			document.getElementById(m).style.visibility="visible";
-			document.getElementById(a).style.visibility="visible";
+			f = "fila" + o;
+			document.getElementById(f).style.display="table-row";
 		}
 		document.forms.nuevoJuicio.mostrar.value = n + 12;
 	} else { 
@@ -336,8 +318,7 @@ function validar(formulario) {
 <title>.: Nuevo Juicio :.</title>
 </head>
 <body bgcolor="#CCCCCC">
-	<form id="nuevoJuicio" name="nuevoJuicio" method="post"
-		action="preparoDatosJuicioModif.php">
+	<form id="nuevoJuicio" name="nuevoJuicio" method="post" action="preparoDatosJuicioModif.php">
 		<div align="center">
 			<input name="nrcuit" type="text" id="nrcuit" readonly="readonly"
 				size="4" style="visibility: hidden; position: absolute; z-index: 1"
@@ -367,13 +348,15 @@ function validar(formulario) {
 					<td width="70">Status Deuda</td>
 					<td width="156"><label>
 		<?php
-		
-if ($rowJuicio ['statusdeuda'] == 1) {
+		$selecEje = "";
+		if ($rowJuicio ['statusdeuda'] == 1) {
 			$selecEje = 'selected';
 		}
+		$selecCon = "";
 		if ($rowJuicio ['statusdeuda'] == 2) {
 			$selecCon = 'selected';
 		}
+		$selecQui = "";
 		if ($rowJuicio ['statusdeuda'] == 3) {
 			$selecQui = 'selected';
 		}
@@ -416,7 +399,7 @@ if ($rowJuicio ['statusdeuda'] == 1) {
             		<option value="<?php echo $rowAsesor['codigo']?>"
 								<?php echo $selected ?>><?php echo $rowAsesor['apeynombre'] ?></option>
           <?php } ?>
-          </select></td>
+         			 </select></td>
 					<td>Inspector</td>
 					<td><select name="inspector" id="inspector">
 							<option value='0'>Seleccione Inspector</option>
@@ -432,7 +415,7 @@ if ($rowJuicio ['statusdeuda'] == 1) {
 								<?php echo $selected ?>><?php echo $rowInspe['apeynombre'] ?></option>
 			
             <?php }?>
-          </select></td>
+          				</select></td>
 					<td>Acuerdo Abs.</td>
 					<td>
 		  	 	<?php
@@ -455,7 +438,7 @@ if ($rowJuicio ['statusdeuda'] == 1) {
      <?php
 					if (sizeof ( $acuAbs ) > 0) {
 						?>
-        <td colspan="6"><div align="center">
+        			<td colspan="6"><div align="center">
 							<strong>Acuerdos a Absorver </strong>[ <label> <input
 								name="acuabs" type="radio" value="0" checked="checked"
 								onchange="mostrarAcuerdos()" /> NO -
@@ -497,10 +480,12 @@ if ($rowJuicio ['statusdeuda'] == 1) {
         <?php } ?>
       </tr>
 			</table>
-
-
-
-
+			<?php
+			$sqlPeriodos = "SELECT * FROM detjuiciosospim WHERE nroorden = $nroorden";
+			$resPeriodos = mysql_query ( $sqlPeriodos, $db );
+			$canPeriodos = mysql_num_rows ( $resPeriodos );
+			?>
+			<input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="visibility: hidden" /> 
 			<table width="1001" border="0">
 				<tr>
 					<td height="43" colspan="5"><div align="center">
@@ -509,16 +494,7 @@ if ($rowJuicio ['statusdeuda'] == 1) {
 									<strong>PER&Iacute;ODOS DEL JUICIO</strong>
 								</p>
 							</div>
-			<?php
-			$sqlPeriodos = "SELECT * FROM detjuiciosospim WHERE nroorden = $nroorden";
-			$resPeriodos = mysql_query ( $sqlPeriodos, $db );
-			$canPeriodos = mysql_num_rows ( $resPeriodos );
-			?>
-            <input name="mostrar" type="text" id="mostrar" size="1"
-								value="<?php echo $canPeriodos ?>" readonly="readonly"
-								style="visibility: hidden" /> <input name="masPeridos"
-								type="button" id="masPeridos" value="Mas Periodos"
-								onclick="mostrarPeriodos()" />
+           				<input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos" onclick="mostrarPeriodos()" />
 						</div></td>
 					<td width="557" colspan="5">
 						<div align="center">
@@ -548,49 +524,42 @@ if ($rowJuicio ['statusdeuda'] == 1) {
 					<td width="1"></td>
 					<td colspan="5">
 						<div align="center">
-							<p>
-								<input name="bguardar" type="button" id="bguardar"
-									value="Guardar Modificación Juicio"
-									onclick="validar(document.forms.nuevoJuicio)" />
-							</p>
+							<p><input name="bguardar" type="button" id="bguardar" value="Guardar Modificación Juicio" onclick="validar(document.forms.nuevoJuicio)" /></p>
 						</div>
 					</td>
 				</tr>
-        <?php
-								$i = 0;
-								while ( $rowPeriodos = mysql_fetch_assoc ( $resPeriodos ) ) {
-									print ("<tr>") ;
-									print ("<td><div align='center'><input name='id" . $i . "' type='text' id='id" . $i . "' size='2' value='" . $rowPeriodos ['idperiodo'] . "' style='visibility:hidden'/></td>") ;
-									if ($rowPeriodos ['mesjuicio'] < 10) {
-										$mes = "0" . $rowPeriodos ['mesjuicio'];
-									} else {
-										$mes = $rowPeriodos ['mesjuicio'];
-									}
-									print ("<td><div align='center'><input name='mes" . $i . "' type='text' id='mes" . $i . "' size='2' value='" . $mes . "' onfocusout='validoMes(" . $i . ")' onchange='limpioid(" . $i . ")'/></div></td>") ;
-									print ("<td><div align='center'><input name='anio" . $i . "' type='text' id='anio" . $i . "' size='4' value='" . $rowPeriodos ['anojuicio'] . "' onfocusout='validoAnio(" . $i . ")' onchange='limpioid(" . $i . ")'/></div></td>") ;
-									if ($rowPeriodos ['nroacuerdo'] != 0) {
-										$mensaje = "Abs A. Nro: " . $rowPeriodos ['nroacuerdo'];
-									} else {
-										$mensaje = '';
-									}
-									print ("<td id='mensaje" . $i . "'>$mensaje</td>") ;
-									print ("<td><div align='center'><input name='concepto" . $i . "' type='text' id='concepto" . $i . "' size='2' value='" . $rowPeriodos ['conceptodeuda'] . "' style='visibility:hidden'/></td>") ;
-									print ("</tr>") ;
-									$i ++;
-								}
-								for($n = $i; $n < 120; $n ++) {
-									print ("<tr>") ;
-									print ("<td><div align='center'><input name='id" . $n . "' type='text' id='id" . $n . "' size='2' style='visibility:hidden' /></td>") ;
-									print ("<td><div align='center'><input name='mes" . $n . "' id='mes" . $n . "' type='text' size='2' style='visibility:hidden' onfocusout='validoMes(" . $n . ")' onchange='limpioid(" . $n . ")'/></div></td>") ;
-									print ("<td><div align='center'><input name='anio" . $n . "' id='anio" . $n . "' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(" . $n . ")' onchange='limpioid(" . $n . ")'/></div></td>") ;
-									print ("<td id='mensaje" . $n . "'></td>") ;
-									print ("<td><div align='center'><input name='concepto" . $n . "' type='text' id='concepto" . $n . "' size='2' style='visibility:hidden' /></td>") ;
-									print ("</tr>");
-				}
-				
-				?>
+        <?php  $i = 0;
+				while ( $rowPeriodos = mysql_fetch_assoc ( $resPeriodos ) ) { 
+					if ($rowPeriodos ['mesjuicio'] < 10) {
+						$mes = "0" . $rowPeriodos ['mesjuicio'];
+					} else {
+						$mes = $rowPeriodos ['mesjuicio'];
+					}
+					if ($rowPeriodos ['nroacuerdo'] != 0) {
+						$mensaje = "Abs A. Nro: " . $rowPeriodos ['nroacuerdo'];
+					} else {
+						$mensaje = '';
+					} ?>
+					<tr id="fila<?php echo $i?>">
+						<td><input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' value='<?php echo $rowPeriodos ['idperiodo']?>' style='visibility:hidden'/></td>
+						<td><input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' value='<?php echo $mes ?>' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/></td>
+						<td><input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' size='4' value='<?php echo $rowPeriodos ['anojuicio'] ?>' onchange='limpioid(<?php echo $i ?>)'/></td>
+						<td id='mensaje<?php echo $i ?>'><?php echo $mensaje?></td>
+						<td><input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' value='<?php echo $rowPeriodos ['conceptodeuda']?>' style='visibility:hidden'/></td>
+					</tr>
+		<?php		$i ++;
+				} 
+				for($n = $i; $n < 120; $n ++) { ?>
+					<tr id="fila<?php echo $n?>" style="display: none">
+						<td><input name='id<?php echo $n?>' type='text' id='id<?php echo $n?>' size='2' style='visibility:hidden' /></td>
+						<td><input name='mes<?php echo $n?>' id='mes<?php echo $n?>' type='text' size='2' onfocusout='validoMes(<?php echo $n?>)' onchange='limpioid(<?php echo $n?>)'/></td>
+						<td><input name='anio<?php echo $n?>' id='anio<?php echo $n?>' type='text'  size='4'  onchange='limpioid(<?php echo $n?>)'/></td>
+						<td id='mensaje<?php echo $n?>'></td>
+						<td><input name='concepto<?php echo $n?>' type='text' id='concepto<?php echo $n?>' size='2' style='visibility:hidden' /></td>
+					</tr>
+		<?php	} ?>
       </table>
-		</div>
-	</form>
+	</div>
+</form>
 </body>
 </html>

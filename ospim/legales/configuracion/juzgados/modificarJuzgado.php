@@ -51,7 +51,7 @@ function validar(formulario) {
   <form id="modifGestor" name="modifGestor" method="post" action="guardarModifJuzgado.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">
 				
 				<p>
-				  <label>Codigo: <b> <?php echo $rowJuzgado['codigo']; ?> </b></label>
+				  <label>Codigo: <b> <?php echo $codigo; ?> </b></label>
 				</p>
 				<p>
 				  <label>Denominación

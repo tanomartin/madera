@@ -20,7 +20,7 @@ $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
-
+$sqlUpdateAcu = "";
 if ($acuAbs == 1) {
 	$nroacuerdo = $_POST['nroacu'];
 	$sqlCabObser = "SELECT observaciones FROM cabacuerdosospim WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
@@ -36,6 +36,8 @@ $sqlCabecera = "INSERT INTO cabjuiciosospim VALUE($nroorden,'$cuit',$nrocerti,$s
 $peridosHabili = $_POST['mostrar'];
 $m = 0;
 $n = 0;
+$sqlPeriodos = array();
+$sqlDelPer = array();
 for ($i = 0; $i <= $peridosHabili; $i++) {
 	$idnombre = "id".$i;
 	$mesnombre = "mes".$i;

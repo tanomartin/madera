@@ -2,12 +2,6 @@
 
 $codigo = $_GET['codigo'];
 $datos = array_values($_POST);
-
-if (sizeof($datos) == 2) {
-	$pagina = "modificarAsesor.php?error=1&codigo=$codigo";
-	Header("Location: $pagina"); 
-}
-
 $apeynombre = $datos[0];
 $sqlDeleteAsesor = "DELETE FROM asesoreslegales where codigo = $codigo";
 

@@ -1,8 +1,9 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
-$cuit=$_GET['cuit'];
-if ($cuit=="") {
+if (isset($_GET['cuit'])) {
+	$cuit=$_GET['cuit'];
+} else {
 	$cuit=$_POST['cuit'];
 }
 
@@ -21,6 +22,7 @@ $fechaVto = date( 'Y-m-j' , $fechaVto );
 $sqlAcuerdos = "select c.nroacuerdo, t.descripcion, c.nroacta ,o.fechacuota from cabacuerdosospim c, cuoacuerdosospim o, tiposdeacuerdos t where c.cuit = $cuit and c.estadoacuerdo = 1 and c.cuit = o.cuit and c.nroacuerdo = o.nroacuerdo and o.montopagada = 0 and c.tipoacuerdo = t.codigo group by c.nroacuerdo order by c.nroacuerdo ASC, o.fechacuota DESC";
 $resAcuerdos = mysql_query($sqlAcuerdos,$db); 
 $i=0;
+$acuAbs = array();
 while($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) {
 	$fechacuota = $rowAcuerdos['fechacuota'];
 	if ($fechacuota < $fechaVto) { 
@@ -139,8 +141,6 @@ function formatoPeriodoInicio() {
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
 		document.getElementById(con).value="";
-		document.getElementById(m).style.visibility="hidden";
-		document.getElementById(a).style.visibility="hidden";
 	}
 	document.forms.nuevoJuicio.mostrar.value = 12;
 }
@@ -156,26 +156,15 @@ function mostrarBotones() {
 }
 
 function validoMes(id) {
-	var errorMes = "Error en la carga del mes";
 	nombreMes = "mes" + id;
 	valorMes = document.getElementById(nombreMes).value;
+	var errorMes = "Error en la carga del mes. Mes " + valorMes + " no es posible";
 	if (valorMes < 0 || valorMes > 12) {
 		alert(errorMes);
+		document.getElementById(nombreMes).value = "";
 		document.getElementById(nombreMes).focus();
 		return false;
 	} 
-	return true;
-}
-
-function validoAnio(id){
-	var errorAnio = "Error en la carga del año";
-	nombreAnio = "anio" + id;
-	valorAnio = document.getElementById(nombreAnio).value;
-	if (valorAnio < 0) {
-		alert(errorAnio);
-		document.getElementById(nombreAnio).focus();
-		return false;
-	}
 	return true;
 }
 
@@ -212,14 +201,11 @@ function mostrarPeriodos() {
 	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
 	if (n < 120) {
 		var o = 0;
-		var m = 0;
-		var a = 0;
+		var f = 0;
 		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
-			m = "mes" + o;
-			a = "anio" + o;
-			document.getElementById(m).style.visibility="visible";
-			document.getElementById(a).style.visibility="visible";
+			f = "fila" + o;
+			document.getElementById(f).style.display="table-row";
 		}
 		document.forms.nuevoJuicio.mostrar.value = n + 12;
 	} else { 
@@ -398,15 +384,13 @@ function validar(formulario) {
         <?php } ?>
       </tr>
     </table>
-   	<table width="1001" border="0">
+    <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="visibility:hidden"/>
+   	<table width="1001" border="0" style="text-align: center">
         <tr>
-          <td height="43" colspan="4"><div align="center">
-            <div align="center">
+          <td height="43" colspan="4">
               <p><strong>PER&Iacute;ODOS DEL JUICIO</strong></p>
-            </div>
-            <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="visibility:hidden"/>
-            <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
-          </div></td>
+              <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
+          </td>
 		  <td width="551" colspan="4"><div align="center">
 		    <p><strong>TRAMITE JUDICIAL</strong> [
 		        <input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/>
@@ -427,23 +411,23 @@ function validar(formulario) {
             <input name="bguardar" type="button" id="bguardar" value="Guardar Juicio" onclick="validar(document.forms.nuevoJuicio)"/>
 		  </div></td>
         </tr>
-        <?php
-				for ($i = 0 ; $i < 120; $i ++) {
-					if ($i < 12) {
-					print("<tr>");
-					print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden'/></td>");
-					print("<td><div align='center'><input name='mes".$i."' type='text' id='mes".$i."' size='2' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-					print("<td><div align='center'><input name='anio".$i."' type='text' id='anio".$i."' size='4' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-					 print("<td><div align='center'><input name='concepto".$i."' type='text' id='concepto".$i."' size='2' style='visibility:hidden'/></td>");
-					 } else {
-						print("<td><div align='center'><input name='id".$i."' type='text' id='id".$i."' size='2' style='visibility:hidden' /></td>");			 
-						print("<td><div align='center'><input name='mes".$i."' id='mes".$i."' type='text' size='2' style='visibility:hidden' onfocusout='validoMes(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-						print("<td><div align='center'><input name='anio".$i."' id='anio".$i."' type='text'  size='4' style='visibility:hidden' onfocusout='validoAnio(".$i.")' onchange='limpioid(".$i.")'/></div></td>");
-						print("<td><div align='center'><input name='concepto".$i."' type='text' id='concepto".$i."' size='2' style='visibility:hidden'/></td>");		 
-					 }			
-					 print("</tr>");
-				}
-				?>
+        <?php 	for ($i = 0 ; $i < 120; $i ++) {
+					if ($i < 12) { ?>
+						<tr id="fila<?php echo $i?>">
+							<td><input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' style='visibility:hidden'/></td>
+							<td><input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/></td>
+							<td><input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' size='4' onchange='limpioid(<?php echo $i ?>)'/></td>
+							<td><input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' style='visibility:hidden'/></td>
+						</tr>
+		<?php		} else { ?>
+						<tr id="fila<?php echo $i?>" style="display: none">
+							<td><input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' style='visibility:hidden' /></td>			 
+							<td><input name='mes<?php echo $i ?>' id='mes<?php echo $i ?>' type='text' size='2' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/></td>
+							<td><input name='anio<?php echo $i ?>' id='anio<?php echo $i ?>' type='text'  size='4' onchange='limpioid(<?php echo $i ?>)'/></td>
+							<td><input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' style='visibility:hidden'/></td>		 
+						</tr>
+		<?php		}	
+        		} ?>
       </table>
   </div>
 </form>

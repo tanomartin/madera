@@ -68,9 +68,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 			$canEstados = mysql_num_rows($resEstados);
 			while ($rowEstado= mysql_fetch_assoc($resEstados)) { ?>
 			<tr align="center">
-					<td><?php echo $rowEstado['codigo'] ?> </td>
-					<td><?php echo $rowEstado['descripcion']?></td>
-					<td><a href='modificarEstado.php?codigo=<?php echo $rowEstado['codigo'] ?>'>Modificar</a></td>
+				<td><?php echo $rowEstado['codigo'] ?> </td>
+				<td><?php echo $rowEstado['descripcion']?></td>
+				<td><input type="button" value="Modificar" onclick="location.href = 'modificarEstado.php?codigo=<?php echo $rowEstado['codigo'] ?>'"/></td>
 			</tr>
 	 <?php } ?>
     </tbody>

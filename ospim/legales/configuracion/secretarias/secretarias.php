@@ -74,7 +74,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<td><?php echo $rowSecretaria['njuzgado']?></td>
 					<td><?php echo $rowSecretaria['codigosecretaria'] ?></td>
 					<td><?php echo $rowSecretaria['nsecretaria']?></td>
-					<td><a href='modificarSecretaria.php?secre=<?php echo $rowSecretaria['codigosecretaria'] ?>&juz=<?php echo $rowSecretaria['codigojuzgado'] ?>'>Modificar</a></td>
+					<td><input type="button" value="Modificar" onclick="location.href = 'modificarSecretaria.php?secre=<?php echo $rowSecretaria['codigosecretaria'] ?>&juz=<?php echo $rowSecretaria['codigojuzgado'] ?>'"/></td>
 			</tr>
 	 <?php } ?>
     </tbody>

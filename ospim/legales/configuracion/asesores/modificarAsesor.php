@@ -30,6 +30,19 @@ function validar(formulario) {
 		alert("Debe completar en Nombre y el Apellido");
 		return(false);
 	}
+
+	var grupo = formulario.delega;
+	var total = grupo.length;
+	var checkeados = 0; 
+	for (var i = 0; i < total; i++) {
+		if (grupo[i].checked) {
+			checkeados++;
+		}
+	}
+	if (checkeados == 0) {
+		alert("Debe seleccionar por lo menos una delegacion");
+		return false;
+	}
 	formulario.guardar.disabled = true;
 	formulario.eliminar.disabled = true;
 	return true;
@@ -54,17 +67,6 @@ function validar(formulario) {
 				  <input name="apeynombre" type="text" id="apeynombre" value="<?php echo $rowAsesor['apeynombre'];?>" size="100" maxlength="100"/>
 				  </label>
 				</p>
-				<p>
-				<label>
-                  <?php 
-						$error = $_GET['error'];
-						if ($error == 1) {
-							print("<div align='center' style='color:#FF0000'><b> Debe elegir una o varias delegaciones </b></div>");
-						}
-					?>
-                  <br/>
-                  </label>
-</p>
 				<table width="300" border="1">
                   <tr>
                     <td>&nbsp;</td>
@@ -74,40 +76,32 @@ function validar(formulario) {
 					$i = 0;
 					$resDelega= mysql_query("SELECT * FROM delegaciones where codidelega > 1001 and codidelega < 3500", $db);
 					while($rowDelega= mysql_fetch_array($resDelega)) { 
-						echo '<tr>';
 						$codigoDelega = $rowDelega['codidelega'];
 						$sqlExiste = "select * from asesoreslegales where codigo = $codigo and codidelega = $codigoDelega";
 						$resExiste = mysql_query($sqlExiste,$db); 
-						$numExiste = mysql_num_rows($resExiste);
-						if ($numExiste == 1) {
-							echo '<td><input type="checkbox" id="delega'.$i.'" name="delega'.$i.'" value='.$codigoDelega.' checked></td>';
-						} else {
-							echo '<td><input type="checkbox" id="delega'.$i.'" name="delega'.$i.'" value='.$codigoDelega.'></td>';
-						}
-						echo '<td><span class="Estilo1">'.$rowDelega["nombre"].'</span><br></td>'; 
-						$i = $i + 1;
-						echo '</tr>';
-					} 
-					?>
+						$numExiste = mysql_num_rows($resExiste); ?>
+						<tr>
+			 <?php		if ($numExiste == 1) { ?>
+							<td><input type="checkbox" id="delega" name="delega<?php echo $i ?>" value="<?php echo $codigoDelega ?>" checked="checked" /></td>
+			<?php		} else { ?>
+							<td><input type="checkbox" id="delega" name="delega<?php echo $i ?>" value="<?php echo $codigoDelega ?>" /></td>
+			<?php		}
+						$i = $i + 1; ?>
+							<td><span class="Estilo1"><?php echo $rowDelega["nombre"] ?></span></td>
+						</tr>
+			<?php	} ?>
                 </table>
-				<p>&nbsp;</p>
 				<table border="0">
                   <tr>
-                    
                       <?php
 					  $sqlCabJuicios = "select * from cabjuiciosospim where codasesorlegal = $codigo";
 					  $resCabJuicios = mysql_query($sqlCabJuicios,$db); 
-					  $canCabJuicios = mysql_num_rows($resCabJuicios); 
-					 			  
+					  $canCabJuicios = mysql_num_rows($resCabJuicios); 		  
 					  if ($canCabJuicios == 0) { ?>
-					  <td><div align="center">
-					  		<input type="button" name="eliminar" onclick="location.href = 'eliminarAsesor.php?codigo=<?php echo $codigo ?>'" value="Eliminar" />
-						</div></td>
+					  <td><input type="button" name="eliminar" onclick="location.href = 'eliminarAsesor.php?codigo=<?php echo $codigo ?>'" value="Eliminar" /></td>
 			   <?php } ?>
                     
-                    <td><div align="center">
-                      <input type="submit" name="guardar" value="Guardar Cambios" />
-                    </div></td>
+                    <td><input type="submit" name="guardar" value="Guardar Cambios" /></td>
                   </tr>
                 </table>
   </form>

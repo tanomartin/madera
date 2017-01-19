@@ -72,7 +72,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<td><?php echo $rowJuzgados['codigojuzgado'] ?></td>
 					<td><?php echo $rowJuzgados['denominacion']?></td>
 					<td><?php echo $rowJuzgados['fueros']?></td>
-					<td><a href='modificarJuzgado.php?codigo=<?php echo $rowJuzgados['codigojuzgado'] ?>'>Modificar</a></td>
+					<td><input type="button" value="Modificar" onclick="location.href = 'modificarJuzgado.php?codigo=<?php echo $rowJuzgados['codigojuzgado'] ?>'"/></td>
 			</tr>
 	 <?php } ?>
     </tbody>

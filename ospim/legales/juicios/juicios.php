@@ -1,8 +1,9 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
-$cuit=$_GET['cuit'];
-if ($cuit=="") {
+if (isset($_GET['cuit'])) {
+	$cuit=$_GET['cuit'];
+} else {
 	$cuit=$_POST['cuit'];
 }
 
@@ -38,37 +39,31 @@ A:hover {text-decoration: none;color:#00FFFF }
   <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); ?>
   <p><strong>Juicios Existentes </strong></p>
   <?php if($cantJuicios > 0) { ?>
-  <table width="600" border="1">
+  <table width="600" border="1" style="text-align: center">
      <?php 
 		while ($rowJuicios = mysql_fetch_array($resJuicios)) {
 			$nroorden = $rowJuicios['nroorden'];
-			echo ("<td width=300  align='center'><font face=Verdana size=2>Orden: <b>".$nroorden."</b> - Certificado: <b>".$rowJuicios['nrocertificado']."</b></a></font></td>");
-			
-			
 			$sqlTramite = "SELECT fechafinalizacion from trajuiciosospim WHERE nroorden = $nroorden";
-			$resTramite  = mysql_query($sqlTramite); 
-			$canTramite = mysql_num_rows($resTramite);
-			if ($canTramite > 0) {
-				$rowTramite = mysql_fetch_array($resTramite);
-				if ($rowTramite['fechafinalizacion'] == "0000-00-00") {
-					echo ("<td width=100  align='center'><font face=Verdana size=2><a href='modificarJuicio.php?nroorden=".$nroorden."'>MODIFICAR</a></font></td>");
-				} else {
-					echo ("<td width=100  align='center'><font face=Verdana size=2>-</font></td>");
-				}
-			} else {
-				echo ("<td width=100  align='center'><font face=Verdana size=2><a href='modificarJuicio.php?nroorden=".$nroorden."'>MODIFICAR</a></font></td>");
-			}
-			
-			echo ("<td width=100  align='center'><font face=Verdana size=2><a href='consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."'>CONSULTAR</a></font></td>");
-			print ("</tr>");
-		}
-		
-	?>	
+			$resTramite  = mysql_query($sqlTramite);
+			$canTramite = mysql_num_rows($resTramite); ?>
+			<tr>
+				<td>Orden: <b><?php echo $nroorden?></b> - Certificado: <b><?php echo $rowJuicios['nrocertificado'] ?></b></td>
+		<?php 	if ($canTramite > 0) {  
+					$rowTramite = mysql_fetch_array($resTramite);
+	 				if ($rowTramite['fechafinalizacion'] == "0000-00-00") { ?>
+						<td><input type="button" value="MODIFICAR" onclick="location.href ='modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/></td>
+		<?php		} else {  ?>
+						<td>-</td>
+		<?php		}
+				} else { ?>
+					<td><input type="button" value="MODIFICAR" onclick="location.href ='modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/></td>
+		<?php	} ?>
+				<td><input type="button" value="CONSULTAR" onclick="location.href ='consultaJuicio.php?cuit=<?php echo $cuit?>&nroorden=<?php echo $nroorden?>'"/></td>
+			</tr>
+<?php } ?>	
   </table>
-   <?php } ?>
-  <p>
-    <input type="submit" name="nuevoJuicio" value="Nuevo Juicio" onClick="location.href = 'nuevoJuicio.php?cuit=<?php echo $cuit ?> '" >
-  </p>
+  <?php } ?>
+  <p><input type="submit" name="nuevoJuicio" value="Nuevo Juicio" onClick="location.href = 'nuevoJuicio.php?cuit=<?php echo $cuit ?> '" ></p>
 </div>
 </body>
 </html>

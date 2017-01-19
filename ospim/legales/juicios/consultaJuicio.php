@@ -18,8 +18,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <form name="verificador">
   <div align="center">
    <?php 
-		$origen = $_GET['origen'];
-		if (is_null($origen)) { ?>
+   		if (!isset($_GET['origen']))  { ?>
 			 <input type="reset" name="volver" value="Volver" onClick="location.href = 'juicios.php?cuit=<?php echo $cuit ?>'" /> 
 	<?php } ?>  
   </div>
