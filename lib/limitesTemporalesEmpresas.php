@@ -44,17 +44,19 @@ if ($fechaInicio != "0000-00-00") {
 	}
 }
 
-if ($tipo == "baja") {
-	if ($fechaBaja != "0000-00-00") {
-		$anioBajaActi = substr($fechaBaja,0,4);
-		$mesBajaActi = substr($fechaBaja,5,2);
-		//print("ANIO FIN ACTIVIDAD: ".$anioBajaActi."<br>");
-		//print("MES FIN ACTIVIDAD: ".$mesBajaActi."<br>");
-		if ($anioBajaActi <= $anofin) {
-			$anofin = $anioBajaActi;
-			if ($mesBajaActi < $mesfin) {
-				$mesfin = (int)$mesBajaActi;
-			} 
+if (isset($tipo)) {
+	if ($tipo == "baja") {
+		if ($fechaBaja != "0000-00-00") {
+			$anioBajaActi = substr($fechaBaja,0,4);
+			$mesBajaActi = substr($fechaBaja,5,2);
+			//print("ANIO FIN ACTIVIDAD: ".$anioBajaActi."<br>");
+			//print("MES FIN ACTIVIDAD: ".$mesBajaActi."<br>");
+			if ($anioBajaActi <= $anofin) {
+				$anofin = $anioBajaActi;
+				if ($mesBajaActi < $mesfin) {
+					$mesfin = (int)$mesBajaActi;
+				} 
+			}
 		}
 	}
 }
