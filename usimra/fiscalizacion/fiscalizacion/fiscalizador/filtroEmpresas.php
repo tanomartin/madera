@@ -9,9 +9,9 @@ if ($tipo == "delega") {
  	$delega = $_POST['selectDelegacion'];
 	$codpos = $_POST['codpos'];
 	if ($codpos != "") {
-		$sqlEmpresasJuris = "select e.cuit, e.iniobliosp, e.nombre, j.codidelega from jurisdiccion j, empresas e where j.codidelega = $delega and j.numpostal = $codpos and j.cuit = e.cuit ";
+		$sqlEmpresasJuris = "select e.cuit, e.iniobliusi, e.nombre, j.codidelega from jurisdiccion j, empresas e where j.codidelega = $delega and j.numpostal = $codpos and j.cuit = e.cuit ";
 	} else {
-		$sqlEmpresasJuris = "select e.cuit, e.iniobliosp, e.nombre, j.codidelega from jurisdiccion j, empresas e where j.codidelega = $delega and j.cuit = e.cuit ";
+		$sqlEmpresasJuris = "select e.cuit, e.iniobliusi, e.nombre, j.codidelega from jurisdiccion j, empresas e where j.codidelega = $delega and j.cuit = e.cuit ";
 	}
 	$resEmpresasJuris = mysql_query($sqlEmpresasJuris,$db);
 	$i = 0;
@@ -32,13 +32,15 @@ if ($tipo == "delega") {
 	
 } else {
 	$cuit = $_POST['cuit'];
-	$sqlEmpresas = "select cuit from empresas where cuit = $cuit ";
+	$sqlEmpresas = "select cuit, iniobliusi from empresas where cuit = $cuit ";
 	$resEmpresas = mysql_query($sqlEmpresas,$db);
 	$cant = mysql_num_rows($resEmpresas);
 	if ($cant != 0) {
-		$listadoEmpresas[0]['cuit'] = $cuit;
+		$row = mysql_fetch_assoc($resEmpresas);
+		$listadoEmpresas[0]['cuit'] = $row['cuit'];
+		$listadoEmpresas[0]['iniobliusi'] =  $row['iniobliusi'];
 	} else {
-		$sqlEmpresas = "select cuit from empresasdebaja where cuit = $cuit ";
+		$sqlEmpresas = "select cuit, iniobliusi from empresasdebaja where cuit = $cuit ";
 		$resEmpresas = mysql_query($sqlEmpresas,$db);
 		$cant = mysql_num_rows($resEmpresas);
 		if ($cant != 0) {
