@@ -247,7 +247,7 @@ function validar(formulario) {
 							<div align="left">
 								<select name="gestor" id="gestor">
 									<?php 
-									$sqlGestor="select * from gestoresdeacuerdos";
+									$sqlGestor="select * from gestoresdeacuerdos order by apeynombre";
 									$resGestor=mysql_query($sqlGestor,$db);
 									while ($rowGestor=mysql_fetch_array($resGestor)) { ?>
 										<option value="<?php echo $rowGestor['codigo'] ?>"><?php echo $rowGestor['apeynombre'] ?></option>
@@ -262,7 +262,7 @@ function validar(formulario) {
 								<select name="inpector" id="inspector">
 									<option value='0'>No Especificado</option>
 									<?php 
-									$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
+									$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega order by apeynombre";
 									$resInspec=mysql_query($sqlInspec,$db);
 									while ($rowInspec=mysql_fetch_array($resInspec)) {
 										if ($rowInspec['codigo'] == "35") {?>

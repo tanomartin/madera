@@ -186,7 +186,7 @@ function mostrarPeriodos() {
           <td valign="bottom"><div align="left">
            <select name="gestor" id="gestor" >
                 <?php 
-					$sqlGestor="select * from gestoresdeacuerdos";
+					$sqlGestor="select * from gestoresdeacuerdos order by apeynombre";
 					$resGestor= mysql_query( $sqlGestor,$db);
 					while ($rowGestor=mysql_fetch_array($resGestor)) { 
 						if ($rowGestor['codigo'] == $rowacu['gestoracuerdo'])  { ?>					
@@ -205,7 +205,7 @@ function mostrarPeriodos() {
 					<?php } else { ?>
 						  <option value="0">No Especificado </option>
 					<?php } 
-					$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega";
+					$sqlInspec="select codigo, apeynombre from inspectores i, jurisdiccion j where j.cuit = $cuit and j.codidelega = i.codidelega order by apeynombre";
 					$resInspec= mysql_query( $sqlInspec,$db);
 					while ($rowInspec=mysql_fetch_array($resInspec)) { 
 						if ($rowacu['inspectorinterviene'] == $rowInspec['codigo']) { ?>
