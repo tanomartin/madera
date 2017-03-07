@@ -75,16 +75,18 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<p align="center" class="Estilo1">Afiliados</p>
 	<p>
     <?php 
-		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR NRO DE AFILIADO NO GENERO RESULTADOS </b></div>");
-		}
-		if ($err == 2) {
-			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR NRO DE DOCUMENTO NO GENERO RESULTADOS </b></div>");
-		}
-		if ($err == 3) {
-			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR CUIL NO GENERO RESULTADOS </b></div>");
-		}
+    	if (isset($_GET['err'])) {
+			$err = $_GET['err'];
+			if ($err == 1) {
+				print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR NRO DE AFILIADO NO GENERO RESULTADOS </b></div>");
+			}
+			if ($err == 2) {
+				print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR NRO DE DOCUMENTO NO GENERO RESULTADOS </b></div>");
+			}
+			if ($err == 3) {
+				print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIO POR CUIL NO GENERO RESULTADOS </b></div>");
+			}
+    	}
 	?>
 	</p>
 	<div align="center">

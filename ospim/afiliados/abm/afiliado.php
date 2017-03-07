@@ -276,7 +276,7 @@ $(document).ready(function(){
 function consultaDdjjAportes(cuilafi) {
 	param = "cuiAfi=" + cuilafi;
 	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no";
-	window.open("ddjjAportesAfiliado.php?" + param, "", opciones);
+	window.open("ddjjAportesAfiliadoLess.php?" + param, "", opciones);
 };
 
 function validar(formulario) {
