@@ -37,6 +37,7 @@ if (mysql_num_rows($resTituActi)==0) {
 $sqlTituDDJJ = "SELECT anoddjj, mesddjj, cuit, remundeclarada FROM detddjjospim WHERE cuil = '$cuilafiliado' AND anoddjj >= '$anoini'";
 $resTituDDJJ = mysql_query($sqlTituDDJJ,$db);
 $i=0;
+$ddjj = array();
 while($rowTituDDJJ = mysql_fetch_array($resTituDDJJ)) {
 	$indTituDDJJ = $rowTituDDJJ['anoddjj'].$rowTituDDJJ['mesddjj'];
 	$ddjj[$indTituDDJJ][$i] = array('cuit' => $rowTituDDJJ['cuit'], 'remu' => $rowTituDDJJ['remundeclarada'],'ano' => $rowTituDDJJ['anoddjj'], 'mes' => $rowTituDDJJ['mesddjj']);
@@ -49,6 +50,7 @@ while($rowTituDDJJ = mysql_fetch_array($resTituDDJJ)) {
 $i=0;
 $sqlTituApor = "SELECT anopago, mespago, cuit, importe FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND anopago >= '$anoini' AND (concepto = '381' OR concepto = 'C14' OR concepto = 'O02' OR concepto = 'T14' OR concepto = 'T55') ORDER BY anopago DESC, mespago DESC, cuit ASC";
 $resTituApor = mysql_query($sqlTituApor,$db);
+$apor = array();
 while($rowTituApor = mysql_fetch_array($resTituApor)) {
 	$indTituApor = $rowTituApor['anopago'].$rowTituApor['mespago'];
 	$apor[$indTituApor][$i] = array('cuit' => $rowTituApor['cuit'], 'impo' => $rowTituApor['importe'],'ano' => $rowTituApor['anopago'], 'mes' => $rowTituApor['mespago']);
@@ -61,6 +63,7 @@ while($rowTituApor = mysql_fetch_array($resTituApor)) {
 $i=0;
 $sqlTituDese = "SELECT anodesempleo, mesdesempleo, fechainformesss, clave FROM desempleosss WHERE cuiltitular = '$cuilafiliado' AND parentesco = 0 AND anodesempleo >= '$anoini' ORDER BY anodesempleo DESC, mesdesempleo DESC";
 $resTituDese = mysql_query($sqlTituDese,$db);
+$dese = array();
 while($rowTituDese = mysql_fetch_array($resTituDese)) {
 	$indTituDese = $rowTituDese['anodesempleo'].$rowTituDese['mesdesempleo'];
 	$dese[$indTituDese][$i] = array('fech' => $rowTituDese['fechainformesss'], 'clav' => $rowTituDese['clave'],'ano' => $rowTituDese['anodesempleo'], 'mes' => $rowTituDese['mesdesempleo']);

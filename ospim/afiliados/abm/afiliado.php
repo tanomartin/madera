@@ -276,6 +276,12 @@ $(document).ready(function(){
 function consultaDdjjAportes(cuilafi) {
 	param = "cuiAfi=" + cuilafi;
 	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no";
+	window.open("ddjjAportesAfiliado.php?" + param, "", opciones);
+};
+
+function consultaDdjjAportesLess(cuilafi) {
+	param = "cuiAfi=" + cuilafi;
+	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no";
 	window.open("ddjjAportesAfiliadoLess.php?" + param, "", opciones);
 };
 
@@ -890,19 +896,22 @@ if($estafiliado == 1) {
 ?>
 <table width="100%" border="0">
   <tr>
-    <td width="241" valign="middle"><div align="center">
+    <td valign="middle"><div align="center">
         <input class="nover" type="submit" name="guardar" value="Guardar Cambios" /> 
         </div></td>
-    <td width="241" valign="middle"><div align="center">
+    <td valign="middle"><div align="center">
         <input class="nover" type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&nueOrd=<?php echo $canfamilia?>'" /> 
         </div></td>
-    <td width="241" valign="middle"><div align="center">
+    <td valign="middle"><div align="center">
         <input class="nover" type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1&fotAfi=0'" /> 
         </div></td>
-    <td width="241" valign="middle"><div align="center">
-        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
+     <td valign="middle"><div align="center">
+        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (12 meses)" onClick="javascript:consultaDdjjAportesLess(<?php echo $cuil ?>)" />
         </div></td>
-    <td width="241" valign="middle"><div align="center">
+    <td valign="middle"><div align="center">
+        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (10 años)" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
+        </div></td>
+    <td valign="middle"><div align="center">
         <input class="nover" type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" /> 
         </div></td>
   </tr>
@@ -914,11 +923,14 @@ if($estafiliado == 0) {
 ?>
 <table width="100%" border="0">
   <tr>
-    <td width="603" valign="middle"><div align="center">
-        <input class="nover" type="button" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" /> 
+    <td width="33%" valign="middle"><div align="center">
+        <input  class="nover" type="button" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" /> 
       </div></td>
-    <td width="602" valign="middle"><div align="center">
-        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
+    <td width="33%" valign="middle"><div align="center">
+        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (12 meses)" onClick="javascript:consultaDdjjAportesLess(<?php echo $cuil ?>)" />
+      </div></td>
+    <td width="33%" valign="middle"><div align="center">
+        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (10 años)" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
       </div></td>
   </tr>
 </table>
