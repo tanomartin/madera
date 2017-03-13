@@ -218,6 +218,7 @@ while($ano>=$anoini) {
 ?>
 	</tbody>
 </table>
+<p><input class="nover" type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/></p>
 </div>
 <?php
 }
