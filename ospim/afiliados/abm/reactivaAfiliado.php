@@ -74,15 +74,19 @@ if($tipafiliado == 1) {
 		$cuit = $rowLeeDDJJ['cuit'];
 	}
 	
-	$sqlJurisEmpresa = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuit' order by disgdinero DESC LIMIT 1";
-	$resJurisEmpresa  = mysql_query($sqlJurisEmpresa,$db);
-	$canJurisEmpresa = mysql_num_rows($resJurisEmpresa);
-	if($canJurisEmpresa < 1) {
-		if(strcmp($tipotitular,"U")!=0) {
-			if($situtitular != 4) {
-				$reactivaEmpresa = 0;
+	if (isset($cuit)) {
+		$sqlJurisEmpresa = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuit' order by disgdinero DESC LIMIT 1";
+		$resJurisEmpresa  = mysql_query($sqlJurisEmpresa,$db);
+		$canJurisEmpresa = mysql_num_rows($resJurisEmpresa);
+		if($canJurisEmpresa < 1) {
+			if(strcmp($tipotitular,"U")!=0) {
+				if($situtitular != 4) {
+					$reactivaEmpresa = 0;
+				}
 			}
 		}
+	} else {
+		$reactivaEmpresa = 0;
 	}
 	
 }
