@@ -6,6 +6,7 @@ b.mespadron, b.anopadron, DATE_FORMAT(b.fechainforme,'%d-%m-%Y') as fechainforme
 c.nombre as nombreCapitado,
 p.descrip as parentesco,
 CASE WHEN b.nroorden = 0 THEN t.apellidoynombre ELSE f.apellidoynombre END AS nombreAFiliado
+CASE WHEN b.nroorden = 0 THEN tb.apellidoynombre ELSE fb.apellidoynombre END AS nombreAFiliado
 FROM beneficiarioscapitados b
 LEFT JOIN titulares AS t ON (b.nroorden = 0 AND b.nroafiliado = t.nroafiliado)
 LEFT JOIN titularesdebaja AS tb ON (b.nroorden = 0 AND b.nroafiliado = tb.nroafiliado)
