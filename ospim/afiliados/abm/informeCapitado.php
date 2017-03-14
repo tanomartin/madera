@@ -5,8 +5,8 @@ $sqlCapitados = "SELECT
 b.mespadron, b.anopadron, DATE_FORMAT(b.fechainforme,'%d-%m-%Y') as fechainforme,
 c.nombre as nombreCapitado,
 p.descrip as parentesco,
-CASE WHEN b.nroorden = 0 THEN t.apellidoynombre ELSE f.apellidoynombre END AS nombreAFiliado,
-CASE WHEN b.nroorden = 0 THEN tb.apellidoynombre ELSE fb.apellidoynombre END AS nombreAFiliado
+CASE WHEN b.nroorden = 0 THEN t.apellidoynombre ELSE f.apellidoynombre END AS nombreActivo,
+CASE WHEN b.nroorden = 0 THEN tb.apellidoynombre ELSE fb.apellidoynombre END AS nombreBaja
 FROM beneficiarioscapitados b
 LEFT JOIN titulares AS t ON (b.nroorden = 0 AND b.nroafiliado = t.nroafiliado)
 LEFT JOIN titularesdebaja AS tb ON (b.nroorden = 0 AND b.nroafiliado = tb.nroafiliado)
@@ -70,7 +70,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php while ($rowCapitados = mysql_fetch_array($resCapitados)) { ?>
 			<tr>
 				<td><?php echo $rowCapitados['parentesco']?></td>
-				<td><?php echo $rowCapitados['nombreAFiliado']?></td>
+				<td><?php if ($rowCapitados['nombreActivo'] != 'NULL') { echo $rowCapitados['nombreActivo']; } else { $rowCapitados['nombreBaja'];  }  ?></td>
 				<td><?php echo $rowCapitados['nombreCapitado']?></td>
 				<td><?php echo $rowCapitados['mespadron']."-".$rowCapitados['anopadron']?></td>
 				<td><?php echo $rowCapitados['fechainforme']?></td>
