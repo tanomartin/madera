@@ -5,38 +5,27 @@ $nroafiliado=$_GET['nroAfi'];
 $estafiliado=$_GET['estAfi'];
 
 if($estafiliado == 1) {
-	$sqlTitular = "SELECT * FROM titulares WHERE nroafiliado = '$nroafiliado'";
+	$sqlTitular = "SELECT t.*, p.descrip as descripProvin, l.nomlocali  FROM titulares t, provincia p, localidades l WHERE t.nroafiliado = '$nroafiliado' and t.codprovin = p.codprovin and t.codlocali = l.codlocali";
 }
 
 if($estafiliado == 0) {
-	$sqlTitular = "SELECT * FROM titularesdebaja WHERE nroafiliado = '$nroafiliado'";
+	$sqlTitular = "SELECT t.*, p.descrip as descripProvin, l.nomlocali FROM titularesdebaja t, provincia p, localidades l WHERE nroafiliado = '$nroafiliado' and t.codprovin = p.codprovin and t.codlocali = l.codlocali";
 }
-
 $resTitular = mysql_query($sqlTitular,$db);
 $rowTitular = mysql_fetch_array($resTitular);
 
 $cuil = $rowTitular['cuil'];
 $cuitempresa = $rowTitular['cuitempresa'];
-$delegacion = $rowTitular['codidelega'];
-$provincia = $rowTitular['codprovin'];
 
-$sqlEmpresa = "SELECT * FROM empresas WHERE cuit = '$cuitempresa'";
+$sqlEmpresa = "SELECT * FROM empresas e, jurisdiccion j, delegaciones d WHERE e.cuit = '$cuitempresa' and e.cuit = j.cuit and j.codidelega = d.codidelega";
 $resEmpresa = mysql_query($sqlEmpresa,$db);
 if (mysql_num_rows($resEmpresa)== 0) {
-	$sqlEmpresa = "SELECT * FROM empresasdebaja WHERE cuit = '$cuitempresa'";
+	$sqlEmpresa = "SELECT * FROM empresasdebaja e, jurisdiccion j. delegaciones d WHERE e.cuit = '$cuitempresa' and e.cuit = j.cuit and j.codidelega = d.codidelega";
 	$resEmpresa = mysql_query($sqlEmpresa,$db);
 	$rowEmpresa = mysql_fetch_array($resEmpresa);
-}
-else
+} else {
 	$rowEmpresa = mysql_fetch_array($resEmpresa);
-
-$sqlDelegacion = "SELECT * FROM delegaciones WHERE codidelega = '$delegacion'";
-$resDelegacion = mysql_query($sqlDelegacion,$db);
-$rowDelegacion = mysql_fetch_array($resDelegacion);
-
-$sqlProvi = "SELECT codprovin, descrip FROM provincia WHERE codprovin = '$provincia'";
-$resProvi = mysql_query($sqlProvi,$db);
-$rowProvi = mysql_fetch_array($resProvi);
+}
 
 if($rowTitular['discapacidad'] == 1) {
 	$sqlLeeDiscapacidad = "SELECT emisioncertificado, vencimientocertificado FROM discapacitados WHERE nroafiliado = '$nroafiliado' and nroorden = 0";
@@ -283,6 +272,12 @@ function consultaDdjjAportesLess(cuilafi) {
 	param = "cuiAfi=" + cuilafi;
 	opciones = "top=50,left=50,width=900,height=680,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no";
 	window.open("ddjjAportesAfiliadoLess.php?" + param, "", opciones);
+};
+
+function consultaInformeCapitado(nroafiliado) {
+	param = "nroafil=" + nroafiliado;
+	opciones = "top=50,left=50,width=900,height=350,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=yes,resizable=no";
+	window.open("informeCapitado.php?" + param, "", opciones);
 };
 
 function validar(formulario) {
@@ -654,17 +649,11 @@ function validar(formulario) {
     <td>Localidad:</td>
     <td><select name="selectLocalidad" id="selectLocalidad">
         <option title="Seleccione un valor" value="">Seleccione un valor</option>
-		<?php 
-			$titLoca=$rowTitular['codlocali'];
-			$sqlLoca="SELECT * FROM localidades WHERE codlocali = '$titLoca'";
-			$resLoca=mysql_query($sqlLoca,$db);
-			$rowLoca=mysql_fetch_array($resLoca);
-			echo "<option title ='$rowLoca[nomlocali]' value='$rowLoca[codlocali]' selected='selected'>".$rowLoca['nomlocali']."</option>";
-        ?>
+		<option title ="<?php echo $rowTitular['nomlocali']?>" value="<?php echo $rowTitular['codlocali'] ?>" selected="selected"><?php echo $rowTitular['nomlocali'] ?></option>
         </select>
 	</td>
     <td>Provincia:</td>
-    <td><input name="nomprovin" type="text" id="nomprovin" value="<?php echo $rowProvi['descrip'] ?>" size="50" readonly="readonly" style="background-color:#CCCCCC" />
+    <td><input name="nomprovin" type="text" id="nomprovin" value="<?php echo $rowTitular['descripProvin'] ?>" size="50" readonly="readonly" style="background-color:#CCCCCC" />
 		<input name="codprovin" type="text" id="codprovin" value="<?php echo $rowTitular['codprovin'] ?>" size="2" readonly="readonly" style="visibility:hidden" />
 	</td>
   </tr>
@@ -822,6 +811,21 @@ function validar(formulario) {
 		  	  }?> </td>
   </tr>
 </table> 
+
+<table width="100%" border="0">
+	<tr>
+		<td width="33%" valign="middle"><div align="center">
+		    <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (12 meses)" onClick="javascript:consultaDdjjAportesLess(<?php echo $cuil ?>)" />
+		</div></td>
+	<td width="33%" valign="middle"><div align="center">
+		<input class="nover" type="button" name="aportes" value="DDJJ / Aportes (10 años)" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
+		</div></td>
+	<td width="33%" valign="middle"><div align="center">
+		<input class="nover" type="button" name="aportes" value="Informe Capitado" onClick="javascript:consultaInformeCapitado(<?php echo $nroafiliado ?>)" />
+		</div></td>
+	</tr>
+</table>
+
 <table id="familiares" class="tablesorter" style="font-size:14px; text-align:center">
 	<thead>
 		<tr>
@@ -840,19 +844,12 @@ function validar(formulario) {
 	<tbody>
 <?php
 $canfamilia = 0;
-$sqlFamilia = "SELECT nroorden, tipoparentesco, apellidoynombre, fechanacimiento, nrodocumento, cuil FROM familiares WHERE nroafiliado = '$nroafiliado' ORDER BY nroafiliado, tipoparentesco, fechanacimiento";
+$sqlFamilia = "SELECT f.nroorden, f.apellidoynombre, f.fechanacimiento, f.nrodocumento, f.cuil, p.descrip FROM familiares f, parentesco p WHERE f.nroafiliado = '$nroafiliado' and f.tipoparentesco = p.codparent ORDER BY nroafiliado, tipoparentesco, fechanacimiento";
 $resFamilia = mysql_query($sqlFamilia,$db);
 if(mysql_num_rows($resFamilia)!=0) {
-	while($rowFamilia = mysql_fetch_array($resFamilia)) {
-?>
+	while($rowFamilia = mysql_fetch_array($resFamilia)) { ?>
 		<tr>
-<?php
-		$parentesco = $rowFamilia['tipoparentesco'];
-		$sqlParentesco = "SELECT * FROM parentesco WHERE codparent = '$parentesco'";
-		$resParentesco = mysql_query($sqlParentesco,$db);
-		$rowParentesco = mysql_fetch_array($resParentesco);
-?>
-			<td><?php echo $rowParentesco['descrip'] ?></td>
+			<td><?php echo $rowFamilia['descrip'] ?></td>
 			<td><?php echo $rowFamilia['apellidoynombre'] ?></td>
 			<td><?php echo invertirFecha($rowFamilia['fechanacimiento']) ?></td>
 			<td><?php echo $rowFamilia['nrodocumento'] ?></td>
@@ -860,23 +857,15 @@ if(mysql_num_rows($resFamilia)!=0) {
 			<td>ACTIVO</td>
 			<td><input class="nover" type="button" name="fichafamactivo" value="Ficha" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=1&nroOrd=<?php echo $rowFamilia['nroorden']?>'"/></td>
 		</tr>
-<?php
-		$canfamilia++;
+<?php $canfamilia++;
 	}
-}
-$sqlFamBaja = "SELECT nroorden, tipoparentesco, apellidoynombre, fechanacimiento, nrodocumento, cuil FROM familiaresdebaja WHERE nroafiliado = '$nroafiliado' ORDER BY nroafiliado, tipoparentesco, fechanacimiento";
+}	
+$sqlFamBaja = "SELECT f.nroorden, f.tipoparentesco, f.apellidoynombre, f.fechanacimiento, f.nrodocumento, f.cuil, p.descrip FROM familiaresdebaja f,parentesco p WHERE f.nroafiliado = '$nroafiliado' and f.tipoparentesco = p.codparent ORDER BY nroafiliado, tipoparentesco, fechanacimiento";
 $resFamBaja = mysql_query($sqlFamBaja,$db);
 if(mysql_num_rows($resFamBaja)!=0) {
-	while($rowFamBaja = mysql_fetch_array($resFamBaja)) {
-?>
+	while($rowFamBaja = mysql_fetch_array($resFamBaja)) { ?>
 		<tr>
-<?php
-		$parentesco = $rowFamBaja['tipoparentesco'];
-		$sqlParentesco = "SELECT * FROM parentesco WHERE codparent = '$parentesco'";
-		$resParentesco = mysql_query($sqlParentesco,$db);
-		$rowParentesco = mysql_fetch_array($resParentesco);
-?>
-			<td><?php echo $rowParentesco['descrip'] ?></td>
+			<td><?php echo $rowFamBaja['descrip'] ?></td>
 			<td><?php echo $rowFamBaja['apellidoynombre'] ?></td>
 			<td><?php echo invertirFecha($rowFamBaja['fechanacimiento']) ?></td>
 			<td><?php echo $rowFamBaja['nrodocumento'] ?></td>
@@ -884,60 +873,43 @@ if(mysql_num_rows($resFamBaja)!=0) {
 			<td>INACTIVO</td>
 			<td><input class="nover" type="button" name="fichafamdebaja" value="Ficha" onClick="location.href = 'fichaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&estFam=0&nroOrd=<?php echo $rowFamBaja['nroorden']?>'"/></td>
 		</tr>
-<?php
-		$canfamilia++;
+<?php $canfamilia++;
 	}
 }
 ?>
 	</tbody>
 </table>
-<?php
-if($estafiliado == 1) { 
-?>
+<?php if($estafiliado == 1) {  ?>
 <table width="100%" border="0">
   <tr>
-    <td valign="middle"><div align="center">
+    <td width="25%" valign="middle"><div align="center">
         <input class="nover" type="submit" name="guardar" value="Guardar Cambios" /> 
         </div></td>
-    <td valign="middle"><div align="center">
+    <td width="25%" valign="middle"><div align="center">
         <input class="nover" type="button" name="familia" value="Agregar Familiar" onClick="location.href = 'agregaFamiliar.php?nroAfi=<?php echo $nroafiliado?>&nueOrd=<?php echo $canfamilia?>'" /> 
         </div></td>
-    <td valign="middle"><div align="center">
+    <td width="25%" valign="middle"><div align="center">
         <input class="nover" type="button" name="foto" value="Cargar Foto" onClick="location.href = 'agregaFoto.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1&fotAfi=0'" /> 
         </div></td>
-     <td valign="middle"><div align="center">
-        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (12 meses)" onClick="javascript:consultaDdjjAportesLess(<?php echo $cuil ?>)" />
-        </div></td>
-    <td valign="middle"><div align="center">
-        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (10 años)" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
-        </div></td>
-    <td valign="middle"><div align="center">
+    <td width="25%" valign="middle"><div align="center">
         <input class="nover" type="button" name="bajar" value="Dar de Baja" onClick="location.href = 'bajaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" /> 
         </div></td>
   </tr>
 </table>
-<?php
-}
-
+<?php }
 if($estafiliado == 0) { 
 ?>
 <table width="100%" border="0">
   <tr>
-    <td width="33%" valign="middle"><div align="center">
-        <input  class="nover" type="button" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" /> 
-      </div></td>
-    <td width="33%" valign="middle"><div align="center">
-        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (12 meses)" onClick="javascript:consultaDdjjAportesLess(<?php echo $cuil ?>)" />
-      </div></td>
-    <td width="33%" valign="middle"><div align="center">
-        <input class="nover" type="button" name="aportes" value="DDJJ / Aportes (10 años)" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
-      </div></td>
+    <td valign="middle">
+    	<div align="center">
+       	<input class="nover" type="button" name="reactiva" value="Reactivar" onClick="location.href = 'reactivaAfiliado.php?nroAfi=<?php echo $nroafiliado?>&estAfi=<?php echo $estafiliado?>&tipAfi=1'" /> 
+    	</div>
+    </td>
   </tr>
 </table>
-<?php
-}
-?>
-<div align="center">
+<?php } ?>
+<div align="center" style="margin-top: 15px">
 	<input class="nover" type="button" name="imprimir" value="Imprimir" onClick="window.print();" /> 
 </div>
 </form>
