@@ -8,13 +8,14 @@ p.descrip as parentesco,
 CASE WHEN b.nroorden = 0 THEN t.apellidoynombre ELSE f.apellidoynombre END AS nombreAFiliado
 FROM beneficiarioscapitados b
 LEFT JOIN titulares AS t ON (b.nroorden = 0 AND b.nroafiliado = t.nroafiliado)
+LEFT JOIN titularesdebaja AS tb ON (b.nroorden = 0 AND b.nroafiliado = tb.nroafiliado)
 LEFT JOIN familiares AS f ON (b.nroorden != 0 AND b.nroafiliado = f.nroafiliado and b.nroorden = f.nroorden)
+LEFT JOIN familiaresdebaja AS fb ON (b.nroorden != 0 AND b.nroafiliado = fb.nroafiliado and b.nroorden = fb.nroorden)
 LEFT JOIN parentesco AS p ON (b.tipoparentesco = p.codparent)
 INNER JOIN capitados AS c ON (b.codigocapitado = c.codigo)
 WHERE b.nroafiliado = $nroafiliado";
-
 $resCapitados = mysql_query($sqlCapitados,$db);
-$canCapitados = mysql_num_rows($resCapitados);
+
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -44,8 +45,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		.tablesorter({
 			theme: 'blue',
 			widthFixed: true, 
-			widgets: ["zebra"],
-			headers:{0:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}, 7:{sorter:false}, 8:{sorter:false}, 9:{sorter:false}, 10:{sorter:false}}
+			widgets: ["zebra"]
 		})
 	});
 </script>
@@ -55,7 +55,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
 	<h2>Última inclusión en padron de capitados</h2>
 	<h2>Afiliado Nro. '<?php echo $nroafiliado?>' y su grupo familiar</h2>
-	<?php if ($canCapitados!=0) { ?>
 	<table id="listado" class="tablesorter" style="width:800px; font-size:14px; text-align:center">
 		<thead>
 			<tr>
@@ -78,9 +77,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php } ?>
 		</tbody>
 	</table>
-	<?php } else { ?>
-		<h3 style="color: blue">Hasta la fecha núnca fue incluido el titular ni su grupo familiar a ningún prestador capitado</h3>
-	<?php } ?>
 </div>
 </body>
 </body>

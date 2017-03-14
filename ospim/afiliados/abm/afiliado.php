@@ -820,10 +820,16 @@ function validar(formulario) {
 	<td width="33%" valign="middle"><div align="center">
 		<input class="nover" type="button" name="aportes" value="DDJJ / Aportes (10 años)" onClick="javascript:consultaDdjjAportes(<?php echo $cuil ?>)" />
 		</div></td>
-	<td width="33%" valign="middle"><div align="center">
-		<input class="nover" type="button" name="aportes" value="Informe Capitado" onClick="javascript:consultaInformeCapitado(<?php echo $nroafiliado ?>)" />
-		</div></td>
-	</tr>
+	<?php 
+	$sqlCapitados = "SELECT * FROM beneficiarioscapitados WHERE nroafiliado = $nroafiliado";
+	$resCapitados = mysql_query($sqlCapitados,$db);
+	$canCapitados = mysql_num_rows($resCapitados);
+	if ($canCapitados != 0) {?>
+		<td width="33%" valign="middle"><div align="center">
+			<input class="nover" type="button" name="aportes" value="Informe Capitado" onClick="javascript:consultaInformeCapitado(<?php echo $nroafiliado ?>)" />
+			</div></td>
+		</tr>
+	<?php } ?>
 </table>
 
 <table id="familiares" class="tablesorter" style="font-size:14px; text-align:center">
