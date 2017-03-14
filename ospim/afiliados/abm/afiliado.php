@@ -739,18 +739,14 @@ function validar(formulario) {
         <option title="Seleccione un valor" value="">Seleccione un valor</option>
 		<?php 
 		$cuiJurisdi=$rowEmpresa['cuit'];
-		$sqlJurisdi="SELECT cuit, codidelega FROM jurisdiccion WHERE cuit = '$cuiJurisdi'";
+		$sqlJurisdi="SELECT j.cuit, j.codidelega, d.nombre FROM jurisdiccion j, delegaciones d WHERE j.cuit = '$cuiJurisdi' and j.codidelega = d.codidelega";
 		$resJurisdi=mysql_query($sqlJurisdi,$db);
 		while($rowJurisdi=mysql_fetch_array($resJurisdi)) {
-			$coddelega = $rowJurisdi['codidelega'];
-			$sqlLeeDelega = "SELECT codidelega, nombre FROM delegaciones WHERE codidelega = '$coddelega'";
-			$resLeeDelega = mysql_query($sqlLeeDelega,$db);
-			$rowLeeDelega = mysql_fetch_array($resLeeDelega);
 			if($rowTitular['codidelega'] == $rowJurisdi['codidelega']) {
-				echo "<option title ='$rowLeeDelega[nombre]' value='$rowJurisdi[codidelega]' selected='selected'>".$rowLeeDelega['nombre']."</option>";
+				echo "<option title ='$rowJurisdi[nombre]' value='$rowJurisdi[codidelega]' selected='selected'>".$rowJurisdi['nombre']."</option>";
 			}
 			else {
-				echo "<option title ='$rowLeeDelega[nombre]' value='$rowJurisdi[codidelega]'>".$rowLeeDelega['nombre']."</option>";
+				echo "<option title ='$rowJurisdi[nombre]' value='$rowJurisdi[codidelega]'>".$rowJurisdi['nombre']."</option>";
 			}
 		}
 		?>
