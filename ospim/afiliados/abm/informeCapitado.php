@@ -70,7 +70,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php while ($rowCapitados = mysql_fetch_array($resCapitados)) { ?>
 			<tr>
 				<td><?php echo $rowCapitados['parentesco']?></td>
-				<td><?php if ($rowCapitados['nombreActivo'] != 'NULL') { echo $rowCapitados['nombreActivo']; } else { $rowCapitados['nombreBaja'];  }  ?></td>
+				<td><?php if ($rowCapitados['nombreActivo'] != NULL) { echo $rowCapitados['nombreActivo']; } else { $rowCapitados['nombreBaja'];  }  ?></td>
 				<td><?php echo $rowCapitados['nombreCapitado']?></td>
 				<td><?php echo $rowCapitados['mespadron']."-".$rowCapitados['anopadron']?></td>
 				<td><?php echo $rowCapitados['fechainforme']?></td>
