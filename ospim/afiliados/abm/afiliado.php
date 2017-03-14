@@ -17,10 +17,10 @@ $rowTitular = mysql_fetch_array($resTitular);
 $cuil = $rowTitular['cuil'];
 $cuitempresa = $rowTitular['cuitempresa'];
 
-$sqlEmpresa = "SELECT * FROM empresas e, jurisdiccion j, delegaciones d WHERE e.cuit = '$cuitempresa' and e.cuit = j.cuit and j.codidelega = d.codidelega";
+$sqlEmpresa = "SELECT * FROM empresas e WHERE e.cuit = '$cuitempresa'";
 $resEmpresa = mysql_query($sqlEmpresa,$db);
 if (mysql_num_rows($resEmpresa)== 0) {
-	$sqlEmpresa = "SELECT * FROM empresasdebaja e, jurisdiccion j. delegaciones d WHERE e.cuit = '$cuitempresa' and e.cuit = j.cuit and j.codidelega = d.codidelega";
+	$sqlEmpresa = "SELECT * FROM empresasdebaja e WHERE e.cuit = '$cuitempresa'";
 	$resEmpresa = mysql_query($sqlEmpresa,$db);
 	$rowEmpresa = mysql_fetch_array($resEmpresa);
 } else {
