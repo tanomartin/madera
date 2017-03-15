@@ -34,7 +34,7 @@ if (mysql_num_rows($resTituActi)==0) {
 	$nomafiliado = $rowTituActi['apellidoynombre'];
 }
 
-$sqlTituDDJJ = "SELECT HIGH_PRIORITY anoddjj, mesddjj, cuit, remundeclarada FROM detddjjospim WHERE cuil = '$cuilafiliado' AND anoddjj >= '$anoini'";
+$sqlTituDDJJ = "SELECT anoddjj, mesddjj, cuit, remundeclarada FROM detddjjospim WHERE cuil = '$cuilafiliado' AND anoddjj >= '$anoini'";
 $resTituDDJJ = mysql_query($sqlTituDDJJ,$db);
 $i=0;
 $ddjj = array();
@@ -48,7 +48,7 @@ while($rowTituDDJJ = mysql_fetch_array($resTituDDJJ)) {
 //echo("<br><br>");
 
 $i=0;
-$sqlTituApor = "SELECT HIGH_PRIORITY anopago, mespago, cuit, importe FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND anopago >= '$anoini' AND (concepto = '381' OR concepto = 'C14' OR concepto = 'O02' OR concepto = 'T14' OR concepto = 'T55') ORDER BY anopago DESC, mespago DESC, cuit ASC";
+$sqlTituApor = "SELECT anopago, mespago, cuit, importe FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND anopago >= '$anoini' AND (concepto = '381' OR concepto = 'C14' OR concepto = 'O02' OR concepto = 'T14' OR concepto = 'T55') ORDER BY anopago DESC, mespago DESC, cuit ASC";
 $resTituApor = mysql_query($sqlTituApor,$db);
 $apor = array();
 while($rowTituApor = mysql_fetch_array($resTituApor)) {
@@ -61,7 +61,7 @@ while($rowTituApor = mysql_fetch_array($resTituApor)) {
 //echo("<br><br>");
 
 $i=0;
-$sqlTituDese = "SELECT HIGH_PRIORITY anodesempleo, mesdesempleo, fechainformesss, clave FROM desempleosss WHERE cuiltitular = '$cuilafiliado' AND parentesco = 0 AND anodesempleo >= '$anoini' ORDER BY anodesempleo DESC, mesdesempleo DESC";
+$sqlTituDese = "SELECT anodesempleo, mesdesempleo, fechainformesss, clave FROM desempleosss WHERE cuiltitular = '$cuilafiliado' AND parentesco = 0 AND anodesempleo >= '$anoini' ORDER BY anodesempleo DESC, mesdesempleo DESC";
 $resTituDese = mysql_query($sqlTituDese,$db);
 $dese = array();
 while($rowTituDese = mysql_fetch_array($resTituDese)) {
