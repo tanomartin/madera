@@ -78,6 +78,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php } ?>
 		</tbody>
 	</table>
+	<input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /> 
 </div>
 </body>
 </body>
