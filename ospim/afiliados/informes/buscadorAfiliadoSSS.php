@@ -127,7 +127,7 @@ function validar(formulario) {
     <h3>Buscador de Afiliado en la S.S.S.</h3>
     <div align="center" class="nover"> 
     	<?php 
-    		$sqlHistorico = "SELECT * FROM padronssscabecera ORDER BY id DESC";
+    		$sqlHistorico = "SELECT * FROM padronssscabecera WHERE fechadelete is null ORDER BY id DESC";
     		$resHistorico = mysql_query ( $sqlHistorico, $db );
     	?>
 		<p>
