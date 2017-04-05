@@ -6,7 +6,7 @@ $estafiliado=$_GET['estAfi'];
 $tipafiliado=$_GET['tipAfi'];
 
 if($tipafiliado == 1) {
-	$sqlLeeAfiliado = "SELECT apellidoynombre, cuil, tipoafiliado, situaciontitularidad FROM titularesdebaja WHERE nroafiliado = $nroafiliado";
+	$sqlLeeAfiliado = "SELECT apellidoynombre, cuil, tipoafiliado, situaciontitularidad, cuitempresa FROM titularesdebaja WHERE nroafiliado = $nroafiliado";
 }
 else {
 	$ordafiliado=$_GET['nroOrd'];
@@ -31,6 +31,7 @@ if($tipafiliado == 1) {
 	//echo $tipotitular; echo "<br>";
 	$situtitular = $rowLeeAfiliado['situaciontitularidad'];
 	//echo $situtitular; echo "<br>";
+	$cuit = $rowLeeAfiliado['cuitempresa'];
 
 	$mesfin = (int)date("m");
 	$anofin = date("Y");
