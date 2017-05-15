@@ -11,9 +11,9 @@ $fechaModif = date("Y-m-d H:i:s");
 $usuarioModif = $_SESSION['usuario'];
 
 if(strcmp("0000", $convenio)==0) {
-	$sqlUpdateDia = "UPDATE diasbancousimra SET exceptuado = 1, observacion = '$motivo', fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarioModif' WHERE nroconvenio IN(3617,5866) AND ano = $ano AND mes = $mes AND dia = $dia AND procesado = 0";
+	$sqlUpdateDia = "UPDATE diasbancousimra SET exceptuado = 1, observacion = '$motivo', fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarioModif' WHERE nroconvenio IN('3617','5866','0XO0') AND ano = $ano AND mes = $mes AND dia = $dia AND procesado = 0";
 } else {
-	$sqlUpdateDia = "UPDATE diasbancousimra SET exceptuado = 1, observacion = '$motivo', fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarioModif' WHERE nroconvenio = $convenio AND ano = $ano AND mes = $mes AND dia = $dia AND procesado = 0";
+	$sqlUpdateDia = "UPDATE diasbancousimra SET exceptuado = 1, observacion = '$motivo', fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarioModif' WHERE nroconvenio = '$convenio' AND ano = $ano AND mes = $mes AND dia = $dia AND procesado = 0";
 }
 
 try {
@@ -30,6 +30,9 @@ try {
 	}
 	if(strcmp("E", $origenExceptuar)==0) {
 		$pagina = "../cuotaextraordinaria/archivos/procesamientoArchivosExtraordinarias.php";
+	}
+	if(strcmp("L", $origenExceptuar)==0) {
+		$pagina = "../linkpagos/archivos/procesamientoArchivosLinkpagos.php";
 	}
 	Header("Location: $pagina"); 
 } catch (PDOException $e) {

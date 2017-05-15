@@ -30,7 +30,10 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center">&nbsp;</p></td>
     </tr>
 	 <tr>
-	  <td colspan="2"><p align="center">Consultas</p>
+      <td width="300"><p align="center">Convenio 0XO0 / Link Pagos</p>
+        <p align="center"><a class="enlace" href="linkpagos/moduloAportes.php"><img src="img/linkpagos.png" width="105" height="105" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
+	  <td width="300"><p align="center">Consultas</p>
           <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
      </tr>

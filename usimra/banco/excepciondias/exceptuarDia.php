@@ -46,9 +46,14 @@ if(strcmp("A", $origenExceptuar)==0) {
 	<input type="reset" name="volver" value="Volver" onclick="location.href = '../aportesacuerdos/archivos/procesamientoArchivosAportes.php'"/>
 <?php
 }
-if(strcmp("A", $origenExceptuar)==0) {
+if(strcmp("E", $origenExceptuar)==0) {
 ?>
 	<input type="reset" name="volver" value="Volver" onclick="location.href = '../cuotaextraordinaria/archivos/procesamientoArchivosExtraordinarias.php'"/>
+<?php
+}
+if(strcmp("L", $origenExceptuar)==0) {
+?>
+	<input type="reset" name="volver" value="Volver" onclick="location.href = '../linkpagos/archivos/procesamientoArchivosLinkpagos.php'"/>
 <?php
 }
 ?>
@@ -62,7 +67,8 @@ if(strcmp("A", $origenExceptuar)==0) {
 			<option title="Seleccione un valor" value="">Seleccione un valor</option>
 			<option title="3617 - Aportes / Acuerdos" value="3617">3617 - Aportes / Acuerdos</option>
 			<option title="5866 - Cuota Excepcional" value="5866">5866 - Cuota Excepcional</option>
-			<option title="Ambos Convenios" value="0000">Ambos Convenios</option>
+			<option title="0XO0 - Link Pagos" value="0XO0">0XO0 - Link Pagos</option>
+			<option title="Todos Convenios" value="0000">Todos Convenios</option>
    		</select>
 	</p>
 	<p>Motivo de Excepción</p>

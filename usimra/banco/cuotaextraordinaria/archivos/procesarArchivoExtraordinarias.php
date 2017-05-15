@@ -51,13 +51,13 @@ else{
 		//$destino=$_SERVER['DOCUMENT_ROOT']."/ospim/acuerdos/Banco/ProcesadosBanco/".substr($archivo_name,52,20);
 	rename($origen,$destino);
 	
-	$nroConvenio = 5866;	
+	$nroConvenio = "5866";	
 	$fechaModif = date("Y-m-d H:i:s");
 	$usuarModif = $_SESSION['usuario'];
 	$dia = substr($archivo_name,-12,2);
 	$mes = substr($archivo_name,-10,2);
 	$ano = substr($archivo_name,-8,4);
-	$sqlUpdateDia = "UPDATE diasbancousimra SET procesado = 1, fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarModif' WHERE ano = $ano and mes = $mes and dia = $dia and nroconvenio = $nroConvenio";
+	$sqlUpdateDia = "UPDATE diasbancousimra SET procesado = 1, fechamodificacion = '$fechaModif', usuariomodificacion = '$usuarModif' WHERE ano = $ano and mes = $mes and dia = $dia and nroconvenio = '$nroConvenio'";
 	//print($sqlUpdateDia);
 	$resUpdateDia = mysql_query($sqlUpdateDia,$db);
 }

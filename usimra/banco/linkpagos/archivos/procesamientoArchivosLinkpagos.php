@@ -2,7 +2,7 @@
 include($libPath."controlSessionUsimra.php");
 
 function UltimoDia($anho,$mes){ 
-    print($anho."".$mes);
+   //print($anho."".$mes);
    if (((fmod($anho,4)==0) and (fmod($anho,100)!=0)) or (fmod($anho,400)==0)) { 
        $dias_febrero = 29; 
    } else { 
@@ -23,16 +23,16 @@ function UltimoDia($anho,$mes){
        case 12: return 31; break; 
    } 
 }
-$nroConvenio = "5866";
+$nroConvenio = '0XO0';
 $fechaRegistro = date("Y-m-d H:i:s");
 $usuarioRegistro = $_SESSION['usuario'];
 $sqlInsertDia = array();
-$sqlDias = "SELECT ano,mes,dia FROM diasbancousimra WHERE nroconvenio = '$nroConvenio' and procesado = 0 and exceptuado = 0 ORDER BY ano, mes, dia LIMIT 1";
+$sqlDias = "SELECT ano,mes,dia FROM diasbancousimra WHERE nroconvenio = '$nroConvenio' and procesado = 0 and exceptuado = 0 ORDER BY ano, mes, dia limit 1";
 $resDias = mysql_query($sqlDias,$db); 
 $canDias = mysql_num_rows($resDias);
 //print("Cantida dias: ".$canDias."<br>");
 if ($canDias == 0) {
-	$sqlPeriodos = "SELECT mes, ano from diasbancousimra WHERE nroconvenio = '$nroConvenio' GROUP BY ano, mes ORDER BY ano DESC, mes DESC LIMIT 1";
+	$sqlPeriodos = "SELECT mes, ano from diasbancousimra WHERE nroconvenio = $nroConvenio GROUP BY ano, mes ORDER BY ano DESC, mes DESC limit 1";
 	$resPeriodos = mysql_query($sqlPeriodos,$db); 
 	$rowPeriodos = mysql_fetch_assoc($resPeriodos);
 	if ($rowPeriodos['mes'] == 12) {
@@ -57,7 +57,7 @@ if ($canDias == 0) {
 		$fechaAInsertar = strtotime($fechaAInsertar);
 		$diaSemana = date ('N',$fechaAInsertar);
 		if ($diaSemana < 6) {
-			$sqlInsertDia[$c] = "INSERT INTO diasbancousimra VALUE($proxAno,$proxMes,$i,'$nroConvenio',DEFAULT,DEFAULT,DEFAULT,'$fechaRegistro','$usuarioRegistro',DEFAULT,DEFAULT)";
+			$sqlInsertDia[$c] = "INSERT INTO diasbancousimra VALUE($proxAno,$proxMes,$i,$nroConvenio,DEFAULT,DEFAULT,DEFAULT,'$fechaRegistro','$usuarioRegistro',DEFAULT,DEFAULT)";
 			$c++;
 		}
 	}
@@ -73,7 +73,7 @@ if ($canDias == 0) {
 			$dbh->exec($sqlInsertDia[$f]);
 		}
 		$dbh->commit();
-		$pagina = "procesamientoArchivosExtraordinarias.php";
+		$pagina = "procesamientoArchivosLinkpagos.php";
 		Header("Location: $pagina"); 
 	} catch (PDOException $e) {
 		echo $e->getMessage();
@@ -106,21 +106,21 @@ A:hover {text-decoration: none;color:#00FFFF }
 </style>
 </head>
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" method="post" action="verificacionArchivoExtraordinarias.php">
+<form id="form1" name="form1" method="post" action="verificacionArchivoLinkpagos.php">
   <div align="center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../moduloExtraordinaria.php'"/>
+    <input type="reset" name="volver" value="Volver" onclick="location.href = '../moduloAportes.php'"/>
   </div>
   <p align="center" class="Estilo1">Procesamiento de Archivos Transferidos</p>
   <p align="center">
-    <label>Fecha del Archivo del Banco:
+    <label>Fecha del Archivo de Link Pagos:
     <input readonly="readonly" style="background-color:#CCCCCC" id="fechaarchivo" name="fechaarchivo" type="text" value="<?php echo $diaProcesar ?>" size="10" />
     </label>
   </p>
 <?php
 if(isset($_GET['err'])) {?>
 	<div align='center' style='color:#CC3333'><b>Error en Archivo - El Archivo solicitado no existe.</b></div>
-	<div align='center'><b>Verifique si el banco no envió el archivo o el día debe ser exceptuado de procesamiento</b></div>
-    <div align='center'><input type="button" name="exceptuar" value="Exceptuar" onclick="location.href = '../../excepciondias/exceptuarDia.php?origen=E&dia=<?php echo $diaProcesar?>'"/></div>
+	<div align='center'><b>Verifique si Link Pagos no envió el archivo o el día debe ser exceptuado de procesamiento</b></div>
+    <div align='center'><input type="button" name="exceptuar" value="Exceptuar" onclick="location.href = '../../excepciondias/exceptuarDia.php?origen=L&dia=<?php echo $diaProcesar?>'"/></div>
 <?php
 }
 else {?>

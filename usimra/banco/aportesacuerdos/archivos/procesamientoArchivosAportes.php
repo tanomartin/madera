@@ -23,16 +23,16 @@ function UltimoDia($anho,$mes){
        case 12: return 31; break; 
    } 
 }
-$nroConvenio = 3617;
+$nroConvenio = "3617";
 $fechaRegistro = date("Y-m-d H:i:s");
 $usuarioRegistro = $_SESSION['usuario'];
 $sqlInsertDia = array();
-$sqlDias = "SELECT ano,mes,dia FROM diasbancousimra WHERE nroconvenio = $nroConvenio and procesado = 0 and exceptuado = 0 ORDER BY ano, mes, dia limit 1";
+$sqlDias = "SELECT ano,mes,dia FROM diasbancousimra WHERE nroconvenio = '$nroConvenio' and procesado = 0 and exceptuado = 0 ORDER BY ano, mes, dia limit 1";
 $resDias = mysql_query($sqlDias,$db); 
 $canDias = mysql_num_rows($resDias);
 //print("Cantida dias: ".$canDias."<br>");
 if ($canDias == 0) {
-	$sqlPeriodos = "SELECT mes, ano from diasbancousimra WHERE nroconvenio = $nroConvenio GROUP BY ano, mes ORDER BY ano DESC, mes DESC limit 1";
+	$sqlPeriodos = "SELECT mes, ano from diasbancousimra WHERE nroconvenio = '$nroConvenio' GROUP BY ano, mes ORDER BY ano DESC, mes DESC limit 1";
 	$resPeriodos = mysql_query($sqlPeriodos,$db); 
 	$rowPeriodos = mysql_fetch_assoc($resPeriodos);
 	if ($rowPeriodos['mes'] == 12) {
@@ -57,7 +57,7 @@ if ($canDias == 0) {
 		$fechaAInsertar = strtotime($fechaAInsertar);
 		$diaSemana = date ('N',$fechaAInsertar);
 		if ($diaSemana < 6) {
-			$sqlInsertDia[$c] = "INSERT INTO diasbancousimra VALUE($proxAno,$proxMes,$i,$nroConvenio,DEFAULT,DEFAULT,DEFAULT,'$fechaRegistro','$usuarioRegistro',DEFAULT,DEFAULT)";
+			$sqlInsertDia[$c] = "INSERT INTO diasbancousimra VALUE($proxAno,$proxMes,$i,'$nroConvenio',DEFAULT,DEFAULT,DEFAULT,'$fechaRegistro','$usuarioRegistro',DEFAULT,DEFAULT)";
 			$c++;
 		}
 	}
