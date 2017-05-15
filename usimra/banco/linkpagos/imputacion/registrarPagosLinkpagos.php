@@ -119,9 +119,11 @@ try {
 					$sqlControlBuscaEmpresa="SELECT COUNT(*) FROM empresas WHERE cuit = '$cuitbanco'";
 					$resultControlBuscaEmpresa=$dbh->query($sqlControlBuscaEmpresa);
 					if($resultControlBuscaEmpresa->fetchColumn()!=0) {
+						$periodo='';
 						$sqlBuscaCabDDJJ="SELECT d.* FROM ddjjusimra d, vinculadocuusimra v WHERE d.nrcuil = '$cuil' AND d.nrcuit = '$cuitbanco' AND d.nrcuit = v.nrcuit AND d.nrctrl = v.nrctrl AND v.referencia = '$referenciabanco'";
 						if($resultBuscaCabDDJJ=$dbh->query($sqlBuscaCabDDJJ)) {
 							foreach($resultBuscaCabDDJJ as $cabddjj) {
+								$periodo.=$cabddjj[permes]."-".$cabddjj[perano]." ";
 								$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra VALUES ('$cabddjj[id]','$cabddjj[nrcuit]','$cabddjj[nrcuil]','$cabddjj[permes]','$cabddjj[perano]','$cabddjj[remune]','$cabddjj[apo060]','$cabddjj[apo100]','$cabddjj[apo150]','$cabddjj[totapo]','$cabddjj[recarg]','$cabddjj[nfilas]','$cabddjj[instrumento]','$cabddjj[nrctrl]','$cabddjj[observ]','$fechasubida')";
 								if($resultAgregaCabDDJJ = $dbh->query($sqlAgregaCabDDJJ)) {
 									$sqlBuscaDetDDJJ="SELECT * FROM ddjjusimra WHERE nrcuil != '$cuil' AND nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
@@ -160,11 +162,10 @@ try {
 
 								$sqlBorraDDJJ="DELETE FROM ddjjusimra WHERE nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
 								if($resultBorraDDJJ = $dbh->query($sqlBorraDDJJ)) {
-									$periodo=$cabddjj[permes]."-".$cabddjj[perano];
 									$totacanc=$totacanc+$montopagado;
 									$cantcanc++;
 									$actualizabanco=1;
-									$listaperi.=$periodo;
+									$listaperi=$periodo;
 									$listaimporte=$importebanco;
 									$listastatus="Pago Imputado";
 									$listamensaje="IMPUTACION CORRECTA DEL PAGO.";
