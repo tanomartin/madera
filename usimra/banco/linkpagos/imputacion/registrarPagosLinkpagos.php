@@ -163,7 +163,6 @@ try {
 								$sqlBorraDDJJ="DELETE FROM ddjjusimra WHERE nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
 								if($resultBorraDDJJ = $dbh->query($sqlBorraDDJJ)) {
 									$totacanc=$totacanc+$montopagado;
-									$cantcanc++;
 									$actualizabanco=1;
 									$listaperi=$periodo;
 									$listaimporte=$importebanco;
@@ -174,6 +173,7 @@ try {
 						}
 
 						if($actualizabanco) {
+							$cantcanc++;
 							$sqlActualizaLink="UPDATE linkaportesusimra SET fechaimputacion = '$fechacancelacion', usuarioimputacion = '$usuariocancelacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
 							if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
 							}
