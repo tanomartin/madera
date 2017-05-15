@@ -123,13 +123,11 @@ try {
 						if($resultBuscaCabDDJJ=$dbh->query($sqlBuscaCabDDJJ)) {
 							foreach($resultBuscaCabDDJJ as $cabddjj) {
 								$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra VALUES ('$cabddjj[id]','$cabddjj[nrcuit]','$cabddjj[nrcuil]','$cabddjj[permes]','$cabddjj[perano]','$cabddjj[remune]','$cabddjj[apo060]','$cabddjj[apo100]','$cabddjj[apo150]','$cabddjj[totapo]','$cabddjj[recarg]','$cabddjj[nfilas]','$cabddjj[instrumento]','$cabddjj[nrctrl]','$cabddjj[observ]','$fechasubida')";
-								echo $sqlAgregaCabDDJJ; echo "<br>";
 								if($resultAgregaCabDDJJ = $dbh->query($sqlAgregaCabDDJJ)) {
 									$sqlBuscaDetDDJJ="SELECT * FROM ddjjusimra WHERE nrcuil != '$cuil' AND nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
 									if($resultBuscaDetDDJJ = $dbh->query($sqlBuscaDetDDJJ)) {
 										foreach($resultBuscaDetDDJJ as $detddjj) {
 											$sqlAgregaDetDDJJ="INSERT INTO detddjjusimra VALUES ('$detddjj[id]','$detddjj[nrcuit]','$detddjj[nrcuil]','$detddjj[permes]','$detddjj[perano]','$detddjj[remune]','$detddjj[apo060]','$detddjj[apo100]','$detddjj[apo150]', '$detddjj[nrctrl]','$fechasubida')";
-											echo $sqlAgregaDetDDJJ; echo "<br>";
 											if($resultAgregaDetDDJJ = $dbh->query($sqlAgregaDetDDJJ)) {
 											}
 										}
@@ -147,25 +145,20 @@ try {
 									$montopagado=$cabddjj[totapo]+$cabddjj[recarg];
 
 									$sqlAgregaPago="INSERT INTO seguvidausimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$anterior','$depositobanco','$cabddjj[nfilas]','$cabddjj[remune]','$cabddjj[recarg]','$montopagado','$cabddjj[observ]','$sistemacancelacion','$referenciabanco','$fechabanco','$fechacancelacion','$usuariocancelacion','$fechamodificacion','$usuariomodificacion')";
-									echo $sqlAgregaPago; echo "<br>";
 									if($resultAgregaPago = $dbh->query($sqlAgregaPago)) {
 										$sqlAgregaApo060="INSERT INTO apor060usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo060]')";
-										echo $sqlAgregaApo060; echo "<br>";
 										if($resultAgregaApo060 = $dbh->query($sqlAgregaApo060)) {
 										}
 										$sqlAgregaApo100="INSERT INTO apor100usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo100]')";
-										echo $sqlAgregaApo100; echo "<br>";
 										if($resultAgregaApo100 = $dbh->query($sqlAgregaApo100)) {
 										}
 										$sqlAgregaApo150="INSERT INTO apor150usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo150]')";
-										echo $sqlAgregaApo150; echo "<br>";
 										if($resultAgregaApo150 = $dbh->query($sqlAgregaApo150)) {
 										}
 									}
 								}
 
 								$sqlBorraDDJJ="DELETE FROM ddjjusimra WHERE nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
-								echo $sqlBorraDDJJ; echo "<br>";
 								if($resultBorraDDJJ = $dbh->query($sqlBorraDDJJ)) {
 									$periodo=$cabddjj[permes]."-".$cabddjj[perano];
 									$totacanc=$totacanc+$montopagado;
@@ -181,7 +174,6 @@ try {
 
 						if($actualizabanco) {
 							$sqlActualizaLink="UPDATE linkaportesusimra SET fechaimputacion = '$fechacancelacion', usuarioimputacion = '$usuariocancelacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
-							echo $sqlActualizaLink; echo "<br>";
 							if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
 							}
 						}
@@ -243,12 +235,11 @@ try {
 <?php
 	}
 }catch (PDOException $e) {
-	echo $e->getMessage();
-	//$error =  $e->getMessage();
+	$error =  $e->getMessage();
 	$dbh->rollback();
-	//$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
-	//header ($redire);
-	//exit(0);
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	header ($redire);
+	exit(0);
 }
 ?>
 </body>
