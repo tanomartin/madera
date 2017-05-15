@@ -119,17 +119,20 @@ try {
 						$sqlBuscaDDJJ="SELECT COUNT(d.nrctrl) AS cantdj, SUM((d.totapo+d.recarg)) AS totdep FROM ddjjusimra d, vinculadocuusimra v WHERE d.nrcuil = '$cuil' AND d.nrcuit = '$cuitbanco' AND d.nrcuit = v.nrcuit AND d.nrctrl = v.nrctrl AND v.referencia = '$referenciabanco' GROUP BY v.nrcuit, v.referencia";
 						$resultBuscaDDJJ=$dbh->query($sqlBuscaDDJJ);
 						if($resultBuscaDDJJ->fetchColumn(0)>0) {
-							if($resultBuscaDDJJ->fetchColumn(1)==$importebanco) {
-								$sqlActualizaLink="UPDATE linkaportesusimra SET fechavalidacion = '$fechavalidacion', usuariovalidacion = '$usuariovalidacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
-								if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
-									$cantvali++;
-									$listastatus="Ticket Validado";
-									$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DE LINK PAGOS SON CORRECTOS.";
+							foreach($resultBuscaDDJJ as $totaddjj) {
+								$impoddjj = $totaddjj[totdep];
+								if($impoddjj)==$importebanco) {
+									$sqlActualizaLink="UPDATE linkaportesusimra SET fechavalidacion = '$fechavalidacion', usuariovalidacion = '$usuariovalidacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
+									if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
+										$cantvali++;
+										$listastatus="Ticket Validado";
+										$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DE LINK PAGOS SON CORRECTOS.";
+									}
+								} else {
+									$cantnova++;
+									$listastatus="Ticket No Validado";
+									$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR LINK PAGOS ES DISTINTO AL DEL TICKET GENERADO (".$impoddjj.").";
 								}
-							} else {
-								$cantnova++;
-								$listastatus="Ticket No Validado";
-								$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR LINK PAGOS ES DISTINTO AL DEL TICKET GENERADO.";
 							}
 						} else {
 							$sqlBuscaValidada="SELECT COUNT(d.nrocontrol) AS cantdj, SUM((d.totalaporte+d.recargo)) AS totdep FROM cabddjjusimra d, vinculadocuusimra v WHERE d.cuil = '$cuil' AND d.cuit = '$cuitbanco' AND d.cuit = v.nrcuit AND d.nrocontrol = v.nrctrl AND v.referencia = '$referenciabanco' GROUP BY v.nrcuit, v.referencia";
