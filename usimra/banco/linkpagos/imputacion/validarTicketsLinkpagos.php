@@ -121,7 +121,7 @@ try {
 						if($resultBuscaDDJJ->fetchColumn(0)>0) {
 							foreach($resultBuscaDDJJ as $totaddjj) {
 								$impoddjj = $totaddjj[totdep];
-								if($impoddjj)==$importebanco) {
+								if($impoddjj==$importebanco) {
 									$sqlActualizaLink="UPDATE linkaportesusimra SET fechavalidacion = '$fechavalidacion', usuariovalidacion = '$usuariovalidacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
 									if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
 										$cantvali++;
