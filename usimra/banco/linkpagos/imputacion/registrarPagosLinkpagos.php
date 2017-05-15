@@ -127,7 +127,7 @@ try {
 									$sqlBuscaDetDDJJ="SELECT * FROM ddjjusimra WHERE nrcuil != '$cuil' AND nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
 									if($resultBuscaDetDDJJ = $dbh->query($sqlBuscaDetDDJJ)) {
 										foreach($resultBuscaDetDDJJ as $detddjj) {
-											$sqlAgregaDetDDJJ="INSERT INTO detddjjusimra VALUES ($detddjj[id],$detddjj[nrcuit],$detddjj[nrcuil],$detddjj[permes],$detddjj[perano],$detddjj[remune],$detddjj[apo060],$detddjj[apo100],$detddjj[apo150] $detddjj[nrctrl],$fechasubida,)";
+											$sqlAgregaDetDDJJ="INSERT INTO detddjjusimra VALUES ('$detddjj[id]','$detddjj[nrcuit]','$detddjj[nrcuil]','$detddjj[permes]','$detddjj[perano]','$detddjj[remune]','$detddjj[apo060]','$detddjj[apo100]','$detddjj[apo150]', '$detddjj[nrctrl]','$fechasubida')";
 											if($resultAgregaDetDDJJ = $dbh->query($sqlAgregaDetDDJJ)) {
 											}
 										}
