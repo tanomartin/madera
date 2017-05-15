@@ -123,11 +123,13 @@ try {
 						if($resultBuscaCabDDJJ=$dbh->query($sqlBuscaCabDDJJ)) {
 							foreach($resultBuscaCabDDJJ as $cabddjj) {
 								$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra VALUES ('$cabddjj[id]','$cabddjj[nrcuit]','$cabddjj[nrcuil]','$cabddjj[permes]','$cabddjj[perano]','$cabddjj[remune]','$cabddjj[apo060]','$cabddjj[apo100]','$cabddjj[apo150]','$cabddjj[totapo]','$cabddjj[recarg]','$cabddjj[nfilas]','$cabddjj[instrumento]','$cabddjj[nrctrl]','$cabddjj[observ]','$fechasubida')";
+								echo $sqlAgregaCabDDJJ; echo "<br>";
 								if($resultAgregaCabDDJJ = $dbh->query($sqlAgregaCabDDJJ)) {
 									$sqlBuscaDetDDJJ="SELECT * FROM ddjjusimra WHERE nrcuil != '$cuil' AND nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
 									if($resultBuscaDetDDJJ = $dbh->query($sqlBuscaDetDDJJ)) {
 										foreach($resultBuscaDetDDJJ as $detddjj) {
 											$sqlAgregaDetDDJJ="INSERT INTO detddjjusimra VALUES ('$detddjj[id]','$detddjj[nrcuit]','$detddjj[nrcuil]','$detddjj[permes]','$detddjj[perano]','$detddjj[remune]','$detddjj[apo060]','$detddjj[apo100]','$detddjj[apo150]', '$detddjj[nrctrl]','$fechasubida')";
+											echo $sqlAgregaDetDDJJ; echo "<br>";
 											if($resultAgregaDetDDJJ = $dbh->query($sqlAgregaDetDDJJ)) {
 											}
 										}
@@ -145,6 +147,7 @@ try {
 									$montopagado=$cabddjj[totapo]+$cabddjj[recarg];
 
 									$sqlAgregaPago="INSERT INTO seguvidausimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$anterior','$depositobanco','$cabddjj[nfilas]','$cabddjj[remune]','$cabddjj[recarg]','$montopagado','$cabddjj[observ]','$sistemacancelacion','$referenciabanco','$fechabanco','$fechacancelacion','$usuariocancelacion','$fechamodificacion','$usuariomodificacion')";
+									echo $sqlAgregaPago; echo "<br>";
 									if($resultAgregaPago = $dbh->query($sqlAgregaPago)) {
 										$sqlAgregaApo060="INSERT INTO apor060usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo060]')";
 										if($resultAgregaApo060 = $dbh->query($sqlAgregaApo060)) {
