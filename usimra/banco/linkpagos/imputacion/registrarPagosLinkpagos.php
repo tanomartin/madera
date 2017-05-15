@@ -182,7 +182,7 @@ try {
 						if($actualizabanco) {
 							$sqlActualizaLink="UPDATE linkaportesusimra SET fechaimputacion = '$fechacancelacion', usuarioimputacion = '$usuariocancelacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
 							echo $sqlActualizaLink; echo "<br>";
-							if($resultActualizaBanco = $dbh->query($sqlActualizaBanco)) {
+							if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
 							}
 						}
 					} else {
