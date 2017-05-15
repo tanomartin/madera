@@ -124,7 +124,7 @@ try {
 							foreach($resultBuscaCabDDJJ as $cabddjj) {
 								$sqlAgregaCabDDJJ="INSERT INTO cabddjjusimra VALUES ('$cabddjj[id]','$cabddjj[nrcuit]','$cabddjj[nrcuil]','$cabddjj[permes]','$cabddjj[perano]','$cabddjj[remune]','$cabddjj[apo060]','$cabddjj[apo100]','$cabddjj[apo150]','$cabddjj[totapo]','$cabddjj[recarg]','$cabddjj[nfilas]','$cabddjj[instrumento]','$cabddjj[nrctrl]','$cabddjj[observ]','$fechasubida')";
 								if($resultAgregaCabDDJJ = $dbh->query($sqlAgregaCabDDJJ)) {
-									$sqlBuscaDetDDJJ="SELECT FROM ddjjusimra WHERE nrcuil != '$cuil' AND nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
+									$sqlBuscaDetDDJJ="SELECT FROM ddjjusimra WHERE nrcuil != '$cuil' AND nrcuit = '$cuitbanco' AND nrctrl = $cabddjj[nrctrl]";
 									if($resultBuscaDetDDJJ = $dbh->query($sqlBuscaDetDDJJ)) {
 										foreach($resultBuscaDetDDJJ as $detddjj) {
 											$sqlAgregaDetDDJJ="INSERT INTO detddjjusimra VALUES ($detddjj[id],$detddjj[nrcuit],$detddjj[nrcuil],$detddjj[permes],$detddjj[perano],$detddjj[remune],$detddjj[apo060],$detddjj[apo100],$detddjj[apo150] $detddjj[nrctrl],$fechasubida,)";
@@ -238,8 +238,11 @@ try {
 <?php
 	}
 }catch (PDOException $e) {
-	echo $e->getMessage();
+	$error =  $e->getMessage();
 	$dbh->rollback();
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	header ($redire);
+	exit(0);
 }
 ?>
 </body>
