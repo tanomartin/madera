@@ -150,46 +150,48 @@ try {
 									echo $sqlAgregaPago; echo "<br>";
 									if($resultAgregaPago = $dbh->query($sqlAgregaPago)) {
 										$sqlAgregaApo060="INSERT INTO apor060usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo060]')";
+										echo $sqlAgregaApo060; echo "<br>";
 										if($resultAgregaApo060 = $dbh->query($sqlAgregaApo060)) {
 										}
 										$sqlAgregaApo100="INSERT INTO apor100usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo100]')";
+										echo $sqlAgregaApo100; echo "<br>";
 										if($resultAgregaApo100 = $dbh->query($sqlAgregaApo100)) {
 										}
 										$sqlAgregaApo150="INSERT INTO apor150usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo150]')";
+										echo $sqlAgregaApo150; echo "<br>";
 										if($resultAgregaApo150 = $dbh->query($sqlAgregaApo150)) {
 										}
 									}
 								}
 
 								$sqlBorraDDJJ="DELETE FROM ddjjusimra WHERE nrcuit = '$cuitbanco' AND nrctrl = '$cabddjj[nrctrl]'";
+								echo $sqlBorraDDJJ; echo "<br>";
 								if($resultBorraDDJJ = $dbh->query($sqlBorraDDJJ)) {
-
-								$periodo=$cabddjj[permes]."-".$cabddjj[perano];
-								$totacanc=$totacanc+$montopagado;
-								$cantcanc++;
-								$actualizabanco=1;
-								$listaperi.=$periodo;
-								$listaimporte=$importebanco;
-								$listastatus="Pago Imputado";
-								$listamensaje="IMPUTACION CORRECTA DEL PAGO.";
+									$periodo=$cabddjj[permes]."-".$cabddjj[perano];
+									$totacanc=$totacanc+$montopagado;
+									$cantcanc++;
+									$actualizabanco=1;
+									$listaperi.=$periodo;
+									$listaimporte=$importebanco;
+									$listastatus="Pago Imputado";
+									$listamensaje="IMPUTACION CORRECTA DEL PAGO.";
 								}
 							}
 						}
 
 						if($actualizabanco) {
 							$sqlActualizaLink="UPDATE linkaportesusimra SET fechaimputacion = '$fechacancelacion', usuarioimputacion = '$usuariocancelacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
+							echo $sqlActualizaLink; echo "<br>";
 							if($resultActualizaBanco = $dbh->query($sqlActualizaBanco)) {
 							}
 						}
 					} else {
-						$listacuota="-";
-						$listaanio="-";
+						$listaperi="-";
 						$listaimporte=$importebanco;
 						$listastatus="Pago No Imputado";
 						$listamensaje="EMPRESA INEXISTENTE EN LA BASE DE DATOS DE USIMRA.";
 					} ?>
-							<td><?php echo $listacuota; ?></td>
-							<td><?php echo $listaanio; ?></td>
+							<td><?php echo $listaperi; ?></td>
 							<td><?php echo $listaimporte; ?></td>
 							<td><?php echo $listastatus; ?></td>
 							<td><?php echo $listamensaje; ?></td>
