@@ -32,7 +32,7 @@ $resDias = mysql_query($sqlDias,$db);
 $canDias = mysql_num_rows($resDias);
 //print("Cantida dias: ".$canDias."<br>");
 if ($canDias == 0) {
-	$sqlPeriodos = "SELECT mes, ano from diasbancousimra WHERE nroconvenio = $nroConvenio GROUP BY ano, mes ORDER BY ano DESC, mes DESC limit 1";
+	$sqlPeriodos = "SELECT mes, ano from diasbancousimra WHERE nroconvenio = '$nroConvenio' GROUP BY ano, mes ORDER BY ano DESC, mes DESC limit 1";
 	$resPeriodos = mysql_query($sqlPeriodos,$db); 
 	$rowPeriodos = mysql_fetch_assoc($resPeriodos);
 	if ($rowPeriodos['mes'] == 12) {
@@ -57,7 +57,7 @@ if ($canDias == 0) {
 		$fechaAInsertar = strtotime($fechaAInsertar);
 		$diaSemana = date ('N',$fechaAInsertar);
 		if ($diaSemana < 6) {
-			$sqlInsertDia[$c] = "INSERT INTO diasbancousimra VALUE($proxAno,$proxMes,$i,$nroConvenio,DEFAULT,DEFAULT,DEFAULT,'$fechaRegistro','$usuarioRegistro',DEFAULT,DEFAULT)";
+			$sqlInsertDia[$c] = "INSERT INTO diasbancousimra VALUE($proxAno,$proxMes,$i,'$nroConvenio',DEFAULT,DEFAULT,DEFAULT,'$fechaRegistro','$usuarioRegistro',DEFAULT,DEFAULT)";
 			$c++;
 		}
 	}
@@ -76,10 +76,12 @@ if ($canDias == 0) {
 		$pagina = "procesamientoArchivosLinkpagos.php";
 		Header("Location: $pagina"); 
 	} catch (PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbh->rollback();
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
-	
 } else {
 	while($rowDias = mysql_fetch_assoc($resDias)) {
 		$dia = str_pad( $rowDias['dia'],2,'0',STR_PAD_LEFT);
