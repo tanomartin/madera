@@ -66,7 +66,7 @@ include($libPath."cabeceraEmpresa.php");
 			</thead>
 			<tbody>
 <?php
-$sqlListaPagos="SELECT s.mespago, p.descripcion AS mesnombre, s.anopago, s.nropago, s.fechapago, s.montopagado, s.sistemacancelacion FROM seguvidausimra s, periodosusimra p WHERE s.cuit = '$cuit' AND ((s.anopago > $anoinicio and s.anopago <= $anofin) or (s.anopago = $anoinicio and s.mespago >= $mesinicio)) AND s.anopago = p.anio AND s.mespago = p.mes ORDER BY s.anopago DESC, s.mespago ASC, s.nropago DESC";
+$sqlListaPagos="SELECT s.mespago, p.descripcion AS mesnombre, s.anopago, s.nropago, s.fechapago, s.montopagado, s.sistemacancelacion, s.codigobarra FROM seguvidausimra s, periodosusimra p WHERE s.cuit = '$cuit' AND ((s.anopago > $anoinicio and s.anopago <= $anofin) or (s.anopago = $anoinicio and s.mespago >= $mesinicio)) AND s.anopago = p.anio AND s.mespago = p.mes ORDER BY s.anopago DESC, s.mespago ASC, s.nropago DESC";
 $resListaPagos=mysql_query($sqlListaPagos,$db);
 $totalpagos=mysql_num_rows($resListaPagos);
 while($rowListaPagos=mysql_fetch_array($resListaPagos)) {
@@ -79,14 +79,19 @@ while($rowListaPagos=mysql_fetch_array($resListaPagos)) {
 					
 <?php
 	if($rowListaPagos['sistemacancelacion']=='E') { ?>
-					<td><?php echo "Electronico"; ?></td>
+					<td><?php echo "Electronico ".$rowListaPagos['codigobarra']; ?></td>
 					<td><?php echo "-"; ?></td>
-
 <?php
-	} else { ?>
+	} else {
+		if($rowListaPagos['sistemacancelacion']=='L') { ?>
+					<td><?php echo "Link Pagos ".$rowListaPagos['codigobarra']; ?></td>
+					<td><?php echo "-"; ?></td>
+<?php
+		} else { ?>
 					<td><?php echo "Manual"; ?></td>
 					<td class="nover"><input class="nover" type="button" id="modificapago" name="modificapago" value="Modificar" onClick="location.href = 'modificaPago.php?cuit=<?php echo $cuit?>&mespago=<?php echo $rowListaPagos['mespago']?>&anopago=<?php echo $rowListaPagos['anopago']?>&nropago=<?php echo $rowListaPagos['nropago']?>'"/></td>
-<?php	
+<?php
+		}
 	}
 ?>
 				</tr>
