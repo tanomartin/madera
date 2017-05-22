@@ -126,6 +126,11 @@ try {
 								foreach($resultBuscaDDJJ as $totaddjj) {
 									$cantddjj = $totaddjj[cantdj];
 									$impoddjj = $totaddjj[totdep];
+									if($cantddjj===NULL) {
+										$cantnova++;
+										$listastatus="Ticket No Validado";
+										$listamensaje="ME ESTA DANDO CANTDDJJJ MENOR IGUAL QUE CERO.";
+									}
 									if($cantddjj>0) {
 										if($impoddjj==$importebanco) {
 											$sqlActualizaLink="UPDATE linkaportesusimra SET fechavalidacion = '$fechavalidacion', usuariovalidacion = '$usuariovalidacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
@@ -142,9 +147,6 @@ try {
 									}
 								}
 							} else {
-								$cantnova++;
-								$listastatus="Ticket No Validado";
-								$listamensaje="ME ESTA DANDO CANTDDJJJ MENOR IGUAL QUE CERO.";
 								$sqlBuscaValidada="SELECT COUNT(d.nrocontrol) AS cantdj, SUM((d.totalaporte+d.recargo)) AS totdep FROM cabddjjusimra d, vinculadocuusimra v WHERE d.cuil = '$cuil' AND d.cuit = '$cuitbanco' AND d.cuit = v.nrcuit AND d.nrocontrol = v.nrctrl AND v.referencia = '$referenciabanco' GROUP BY v.nrcuit, v.referencia";
 								if($resultBuscaValidada=$dbh->query($sqlBuscaValidada)) {
 									foreach($resultBuscaValidada as $totavali) {
