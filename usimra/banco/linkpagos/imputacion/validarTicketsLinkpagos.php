@@ -139,14 +139,12 @@ try {
 											$listastatus="Ticket No Validado";
 											$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR LINK PAGOS ES DISTINTO AL DEL TICKET GENERADO (".$impoddjj.").";
 										}
-									} else {
-										$cantnova++;
-										$listastatus="Ticket No Validado";
-										$listamensaje="ME ESTA DANDO CANTDDJJJ MENOR IGUAL QUE CERO.";
-
 									}
 								}
 							} else {
+								$cantnova++;
+								$listastatus="Ticket No Validado";
+								$listamensaje="ME ESTA DANDO CANTDDJJJ MENOR IGUAL QUE CERO.";
 								$sqlBuscaValidada="SELECT COUNT(d.nrocontrol) AS cantdj, SUM((d.totalaporte+d.recargo)) AS totdep FROM cabddjjusimra d, vinculadocuusimra v WHERE d.cuil = '$cuil' AND d.cuit = '$cuitbanco' AND d.cuit = v.nrcuit AND d.nrocontrol = v.nrctrl AND v.referencia = '$referenciabanco' GROUP BY v.nrcuit, v.referencia";
 								if($resultBuscaValidada=$dbh->query($sqlBuscaValidada)) {
 									foreach($resultBuscaValidada as $totavali) {
