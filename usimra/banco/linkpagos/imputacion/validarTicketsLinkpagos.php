@@ -121,32 +121,31 @@ try {
 						$sqlControlTicket="SELECT COUNT(*) FROM vinculadocuusimra WHERE nrcuit = '$cuitbanco' AND referencia = '$referenciabanco'";
 						$resultControlTicket=$dbh->query($sqlControlTicket);
 						if($resultControlTicket->fetchColumn()!=0) {
+							$noddjj=1;
 							$sqlBuscaDDJJ="SELECT COUNT(d.nrctrl) AS cantdj, SUM((d.totapo+d.recarg)) AS totdep FROM ddjjusimra d, vinculadocuusimra v WHERE d.nrcuil = '$cuil' AND d.nrcuit = '$cuitbanco' AND d.nrcuit = v.nrcuit AND d.nrctrl = v.nrctrl AND v.referencia = '$referenciabanco' GROUP BY v.nrcuit, v.referencia";
 							if($resultBuscaDDJJ=$dbh->query($sqlBuscaDDJJ)) {
 								foreach($resultBuscaDDJJ as $totaddjj) {
 									$cantddjj = $totaddjj[cantdj];
 									$impoddjj = $totaddjj[totdep];
-									if($cantddjj===NULL) {
-										$cantnova++;
-										$listastatus="Ticket No Validado";
-										$listamensaje="ME ESTA DANDO CANTDDJJJ MENOR IGUAL QUE CERO.";
-									}
 									if($cantddjj>0) {
 										if($impoddjj==$importebanco) {
 											$sqlActualizaLink="UPDATE linkaportesusimra SET fechavalidacion = '$fechavalidacion', usuariovalidacion = '$usuariovalidacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
 											if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
+												$noddjj=0;
 												$cantvali++;
 												$listastatus="Ticket Validado";
 												$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DE LINK PAGOS SON CORRECTOS.";
 											}
 										} else {
+											$noddjj=0;
 											$cantnova++;
 											$listastatus="Ticket No Validado";
 											$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR LINK PAGOS ES DISTINTO AL DEL TICKET GENERADO (".$impoddjj.").";
 										}
 									}
 								}
-							} else {
+							} 
+							if($noddjj==1){
 								$sqlBuscaValidada="SELECT COUNT(d.nrocontrol) AS cantdj, SUM((d.totalaporte+d.recargo)) AS totdep FROM cabddjjusimra d, vinculadocuusimra v WHERE d.cuil = '$cuil' AND d.cuit = '$cuitbanco' AND d.cuit = v.nrcuit AND d.nrocontrol = v.nrctrl AND v.referencia = '$referenciabanco' GROUP BY v.nrcuit, v.referencia";
 								if($resultBuscaValidada=$dbh->query($sqlBuscaValidada)) {
 									foreach($resultBuscaValidada as $totavali) {
