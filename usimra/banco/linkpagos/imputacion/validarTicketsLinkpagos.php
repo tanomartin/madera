@@ -143,10 +143,10 @@ try {
 								$sqlBuscaValidada="SELECT COUNT(d.nrocontrol) AS cantdj, SUM((d.totalaporte+d.recargo)) AS totdep FROM cabddjjusimra d, vinculadocuusimra v WHERE d.cuil = '$cuil' AND d.cuit = '$cuitbanco' AND d.cuit = v.nrcuit AND d.nrocontrol = v.nrctrl AND v.referencia = '$referenciabanco' GROUP BY v.nrcuit, v.referencia";
 								if($resultBuscaValidada=$dbh->query($sqlBuscaValidada)) {
 									foreach($resultBuscaValidada as $totavali) {
-										$cantvali = $totavali[cantdj];
-										$impovali = $totavali[totdep];
-										if($cantvali>0) {
-											if($impovali==$importebanco) {
+										$valicant = $totavali[cantdj];
+										$valiimpo = $totavali[totdep];
+										if($valicant>0) {
+											if($valiimpo==$importebanco) {
 												$sqlBancoValidada="SELECT * FROM linkaportesusimra WHERE cuit = '$cuitbanco' AND referencia = '$referenciabanco' AND importe = $importebanco AND fechavalidacion != '0000-00-00 00:00:00' ORDER BY fechaarchivo DESC, fechadeposito DESC, idmovimiento DESC LIMIT 1";
 												$resultBancoValidada=$dbh->query($sqlBancoValidada);
 												foreach($resultBancoValidada as $bancovalidada) {
@@ -165,6 +165,7 @@ try {
 							$listamensaje="TICKET RELACIONADO AL PAGO INEXISTENTE.";
 						}
 					} else {
+						$cantnova++;
 						$listastatus="Pago No Imputado";
 						$listamensaje="EMPRESA INEXISTENTE EN LA BASE DE DATOS DE USIMRA.";
 					}
