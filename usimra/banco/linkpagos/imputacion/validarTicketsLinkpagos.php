@@ -113,6 +113,8 @@ try {
 							<td><?php echo $cuitbanco; ?></td>
 							<td><?php echo $importebanco; ?></td>
 <?php
+					$listastatus="";
+					$listamensaje="";
 					$sqlControlBuscaEmpresa="SELECT COUNT(*) FROM empresas WHERE cuit = '$cuitbanco'";
 					$resultControlBuscaEmpresa=$dbh->query($sqlControlBuscaEmpresa);
 					if($resultControlBuscaEmpresa->fetchColumn()!=0) {
