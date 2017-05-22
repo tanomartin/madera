@@ -139,6 +139,11 @@ try {
 											$listastatus="Ticket No Validado";
 											$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR LINK PAGOS ES DISTINTO AL DEL TICKET GENERADO (".$impoddjj.").";
 										}
+									} else {
+										$cantnova++;
+										$listastatus="Ticket No Validado";
+										$listamensaje="ME ESTA DANDO CANTDDJJJ MENOR IGUAL QUE CERO.";
+
 									}
 								}
 							} else {
