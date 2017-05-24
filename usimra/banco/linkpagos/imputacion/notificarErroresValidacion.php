@@ -42,7 +42,7 @@ try {
 		$sqlAddNotificacionRemota="INSERT INTO notificaciones VALUES ('$notificar[cuit]',$notificar[tiponotificacion],'$fechanotificacion','$asuntonotificacion','$mensajenotificacion',DEFAULT,DEFAULT,DEFAULT)";
 		$resultAddNotificacionRemota=$dbr->query($sqlAddNotificacionRemota);
 		
-		$sqlUpdNotificacionLocal="UPDATE linkaportesusimra SET fechanotificacion = '$fechanotificacion', usuarionotificacion = '$usuarionotificacion' WHERE fechaarchivo = '$notificar[fechaarchivo]' AND idmovimiento = $notificar[idmovimiento]"
+		$sqlUpdNotificacionLocal="UPDATE linkaportesusimra SET notificacion = 0, fechanotificacion = '$fechanotificacion', usuarionotificacion = '$usuarionotificacion' WHERE fechaarchivo = '$notificar[fechaarchivo]' AND idmovimiento = $notificar[idmovimiento]"
 		$resultUpdNotificacionLocal=$dbl->query($sqlUpdNotificacionLocal);
 
 	}
@@ -50,8 +50,8 @@ try {
 	$dbr->commit();
 	$dbl->commit();
 
-	//$pagina = "validarTicketsLinkpagos.php";
-	//Header("Location: $pagina");
+	$pagina = "validarTicketsLinkpagos.php";
+	Header("Location: $pagina");
 
 } catch (PDOException $e) {
 	$error =  $e->getMessage();
