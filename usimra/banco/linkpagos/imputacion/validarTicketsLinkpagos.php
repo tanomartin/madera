@@ -40,7 +40,11 @@ $(document).ready(function(){
 function irARegistrar() {
 	$.blockUI({ message: "<h1>Procesando el Registro de Pagos.<br>Aguarde por favor...</h1>" });
 	document.location.href = "registrarPagosLinkpagos.php";
-}
+};
+function irANotificar() {
+	$.blockUI({ message: "<h1>Procesando las Notificaciones.<br>Aguarde por favor...</h1>" });
+	document.location.href = "notificarErroresValidacion.php";
+};
 </script>
 </head>
 <body bgcolor="#B2A274">
@@ -95,8 +99,10 @@ try {
 							<th>Id. Ticket</th>
 							<th>C.U.I.T.</th>
 							<th>Importe</th>
+							<th>Deposito</th>
 							<th>Status</th>
 							<th>Mensaje</th>
+							<th>Notificacion</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -107,14 +113,19 @@ try {
 					$cuitbanco = $validar[cuit];
 					$referenciabanco = $validar[referencia];
 					$importebanco = $validar[importe];
+					$depositobanco = $validar[fechadeposito];
+					$notificabanco = $validar[notificacion];
 ?>
 						<tr>
 							<td><?php echo $referenciabanco; ?></td>
 							<td><?php echo $cuitbanco; ?></td>
 							<td><?php echo $importebanco; ?></td>
+							<td><?php echo $depositobanco; ?></td>
 <?php
 					$listastatus="";
 					$listamensaje="";
+					$listanotificacion="";
+					$senotifica=0;
 					$sqlControlBuscaEmpresa="SELECT COUNT(*) FROM empresas WHERE cuit = '$cuitbanco'";
 					$resultControlBuscaEmpresa=$dbh->query($sqlControlBuscaEmpresa);
 					if($resultControlBuscaEmpresa->fetchColumn()!=0) {
@@ -129,18 +140,28 @@ try {
 									$impoddjj = $totaddjj[totdep];
 									if($cantddjj>0) {
 										if($impoddjj==$importebanco) {
-											$sqlActualizaLink="UPDATE linkaportesusimra SET fechavalidacion = '$fechavalidacion', usuariovalidacion = '$usuariovalidacion' WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
+											$sqlActualizaLink="UPDATE linkaportesusimra SET fechavalidacion = '$fechavalidacion', usuariovalidacion = '$usuariovalidacion', notificacion = 0 WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
 											if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
 												$noddjj=0;
 												$cantvali++;
 												$listastatus="Ticket Validado";
 												$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DE LINK PAGOS SON CORRECTOS.";
+												$listanotificacion="No Notificable";
 											}
 										} else {
 											$noddjj=0;
 											$cantnova++;
 											$listastatus="Ticket No Validado";
 											$listamensaje="EL IMPORTE (".$importebanco.") ACREDITADO POR LINK PAGOS ES DISTINTO AL DEL TICKET GENERADO (".$impoddjj.").";
+											if($notificabanco==1) {
+												$sqlActualizaLink="UPDATE linkaportesusimra SET tiponotificacion = 1 WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
+												if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
+													$listanotificacion="Notificable";
+													$senotifica++;
+												}
+											} else {
+												$listanotificacion="Notificacion Efectuada";
+											}
 										}
 									}
 								}
@@ -159,6 +180,15 @@ try {
 													$cantnova++;
 													$listastatus="Ticket No Validado";
 													$listamensaje="VALIDACION ANTERIOR PARA TICKET PRESENTADO EL ".invertirFecha($bancovalidada[fechaarchivo])." DEPOSITADO EL ".invertirFecha($bancovalidada[fechadeposito]).".";
+													if($notificabanco==1) {
+														$sqlActualizaLink="UPDATE linkaportesusimra SET tiponotificacion = 2 WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
+														if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
+															$listanotificacion="Notificable";
+															$senotifica++;
+														}
+													} else {
+															$listanotificacion="Notificacion Efectuada";
+													}
 												}
 											}
 										}
@@ -169,15 +199,26 @@ try {
 							$cantnova++;
 							$listastatus="Ticket No Validado";
 							$listamensaje="TICKET RELACIONADO AL PAGO INEXISTENTE.";
+							if($notificabanco==1) {
+								$sqlActualizaLink="UPDATE linkaportesusimra SET tiponotificacion = 3 WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
+								if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
+									$listanotificacion="Notificable";
+									$senotifica++;
+								}
+							} else {
+								$listanotificacion="Notificacion Efectuada";
+							}
 						}
 					} else {
 						$cantnova++;
 						$listastatus="Pago No Imputado";
 						$listamensaje="EMPRESA INEXISTENTE EN LA BASE DE DATOS DE USIMRA.";
+						$listanotificacion="No Notificable";
 					}
 ?>
 							<td><?php echo $listastatus; ?></td>
 							<td><?php echo $listamensaje; ?></td>
+							<td><?php echo $listanotificacion; ?></td>
 						</tr>
 <?php
 				}
@@ -216,15 +257,21 @@ try {
 		</tr>
 		</table>
 <?php
-		if($cantvali!=0) { ?>
+		if($senotifica!=0) { ?>
 			<p>&nbsp;</p>
 			<div align="center">
-				<h2>No OLVIDE <input type="submit" name="registrar" value="Registrar Pagos" onclick="javascript:irARegistrar()" align="left" /> de los tickets que acaban de ser validados.</h2>
+				<h2>Procesar <input style="font-size: 16px; font-weight: bold; color:#FF0000" type="submit" name="notificacion" value="Notificacion" onclick="javascript:irANotificar()" align="left" /> de Errores de Validacion a las Empresas.</h2>
 			</div>
 <?php
 		}
-	}
-	else { ?>
+		if($cantvali!=0) { ?>
+			<p>&nbsp;</p>
+			<div align="center">
+				<h2>No OLVIDE <input style="font-size: 16px; font-weight: bold; color:#000099" type="submit" name="registrar" value="Registrar Pagos" onclick="javascript:irARegistrar()" align="left" /> de los Tickets que acaban de ser validados.</h2>
+			</div>
+<?php
+		}
+	} else { ?>
 		<p>&nbsp;</p>
 		<table width="769" border="1" align="center">
 		<tr align="center" valign="top">
