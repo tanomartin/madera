@@ -91,7 +91,8 @@ try {
 				set_time_limit(0);
 				$cuil="99999999999";
 				$cantvali=0;
-				$cantnova=0; ?>
+				$cantnova=0;
+				$senotifica=0; ?>
 
 				<table id="resultados" class="tablesorter" style="font-size:14px; text-align:center">
 					<thead>
@@ -125,7 +126,6 @@ try {
 					$listastatus="";
 					$listamensaje="";
 					$listanotificacion="";
-					$senotifica=0;
 					$sqlControlBuscaEmpresa="SELECT COUNT(*) FROM empresas WHERE cuit = '$cuitbanco'";
 					$resultControlBuscaEmpresa=$dbh->query($sqlControlBuscaEmpresa);
 					if($resultControlBuscaEmpresa->fetchColumn()!=0) {
