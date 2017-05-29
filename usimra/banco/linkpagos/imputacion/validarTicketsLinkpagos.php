@@ -211,7 +211,7 @@ try {
 						}
 					} else {
 						$cantnova++;
-						$listastatus="Pago No Imputado";
+						$listastatus="Ticket No Validado";
 						$listamensaje="EMPRESA INEXISTENTE EN LA BASE DE DATOS DE USIMRA.";
 						$listanotificacion="No Notificable";
 					}
