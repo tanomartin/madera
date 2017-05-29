@@ -69,7 +69,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<option title="Seleccione un valor" value="">Seleccione un valor</option>
 			<option title="Electronicos" value="E">Electronicos</option>
 			<option title="Manuales" value="M">Manuales</option>
-			<option title="Ambos" value="A">Ambos</option>
+			<option title="LinkPagos" value="L">LinkPagos</option>
+			<option title="Todos" value="A">Todos</option>
    		</select>
 	</p>
 <p align="center"><input type="submit" name="Submit" value="Generar Informe"/></p>

@@ -14,8 +14,8 @@ $fechagenera=date("d/m/Y");
 set_time_limit(0);
 
 if(strcmp("A",$tipoingreso)==0) {
-	$tipoinforme="Electronicos y Manuales";
-	$cancelacion="'E','M'";
+	$tipoinforme="Electronicos (Boletas y Link Pagos) y Manuales";
+	$cancelacion="'E','M','L'";
 }
 if(strcmp("E",$tipoingreso)==0) {
 	$tipoinforme="Electronicos";
@@ -24,6 +24,10 @@ if(strcmp("E",$tipoingreso)==0) {
 if(strcmp("M",$tipoingreso)==0) {
 	$tipoinforme="Manuales";
 	$cancelacion="'M'";
+}
+if(strcmp("L",$tipoingreso)==0) {
+	$tipoinforme="Link Pagos";
+	$cancelacion="'L'";
 }
 
 if(strcmp("localhost",$maquina)==0)
@@ -112,7 +116,7 @@ try{
 	$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
 	$objPHPExcel->getActiveSheet()->setCellValue('N1', 'Sistema Cancelacion');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(33);
-	$objPHPExcel->getActiveSheet()->setCellValue('O1', 'Codigo de Barra');
+	$objPHPExcel->getActiveSheet()->setCellValue('O1', 'Codigo de Barra/Ticket Link Pagos');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(18);
 	$objPHPExcel->getActiveSheet()->setCellValue('P1', 'Fecha Acreditacion');
 
