@@ -44,7 +44,7 @@ else{
 			//print("referencia: ".$referencia."<br>");
 			//print("fecregdb: ".$fecregdb."<br>");
 			//print("usuregdb: ".$usuregdb."<br>");
-			$sqlInsertLink="INSERT INTO linkaportesusimra VALUES('$archivoFecha','$idMovimiento','$concepto','$cuit','$deposito','$fechadeposito',	'$referencia','$fecregdb','$usuregdb',DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT)";
+			$sqlInsertLink="INSERT INTO linkaportesusimra VALUES('$archivoFecha','$idMovimiento','$concepto','$cuit','$deposito','$fechadeposito',	'$referencia','$fecregdb','$usuregdb','0000-00-00 00:00:00','','0000-00-00 00:00:00','',DEFAULT,DEFAULT,DEFAULT,DEFAULT)";
 			//print($sqlInsertLink);
 			$resultInsertLink= mysql_query($sqlInsertLink,$db); 
 		}
