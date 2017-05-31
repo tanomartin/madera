@@ -40,11 +40,11 @@ $(document).ready(function(){
 function irARegistrar() {
 	$.blockUI({ message: "<h1>Procesando el Registro de Pagos.<br>Aguarde por favor...</h1>" });
 	document.location.href = "registrarPagosLinkpagos.php";
-}
+};
 function irANotificar() {
 	$.blockUI({ message: "<h1>Procesando las Notificaciones.<br>Aguarde por favor...</h1>" });
 	document.location.href = "notificarErroresValidacion.php";
-}
+};
 </script>
 </head>
 <body bgcolor="#B2A274">
