@@ -11,9 +11,9 @@ try {
     $dbl->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbl->beginTransaction();
 
-	$hostremoto = $hostaplicativo;
+	$hostremoto = $hostUsimra;
 	$dbremoto = $baseUsimraNewAplicativo;
-	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremoto",$usuarioaplicativo,$claveaplicativo);
+	$dbr = new PDO("mysql:host=$hostremoto;dbname=$dbremoto",$usuarioUsimra,$claveUsimra);
 	$dbr->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbr->beginTransaction();
 
