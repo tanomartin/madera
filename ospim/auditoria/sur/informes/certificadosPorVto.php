@@ -98,12 +98,13 @@ function validar(formulario) {
 	</form>
 <?php if (isset($_POST['fechavto'])) { ?>
 	<p><span class="Estilo2">Resultado Certificados vencidos al <?php echo $_POST['fechavto'] ?> </span></p>
-	<table style="text-align:center; width:800px" id="tabla" class="tablesorter" >
+	<table style="text-align:center; width:900px" id="tabla" class="tablesorter" >
 		<thead>
 			<tr>
 				<td>Nro. Afiliado</td>
 				<td>Nombre y Apellido</td>
 				<td class="filter-select" data-placeholder="Seleccione Tipo">Tipo Beneficiario</td>
+				<td class="filter-select" data-placeholder="Seleccione Dele">Delegacion</td>
 				<td>Fecha Emisión</td>
 				<td>Fecha Vto.</td>
 			</tr>
@@ -113,6 +114,24 @@ function validar(formulario) {
 				<td><?php echo $rowDiscapcitado['nroafiliado'] ?></td>	
 				<td>
 				<?php 
+						
+						$delegacion = "";
+						$sqlDelega = "SELECT d.codidelega, d.nombre FROM titulares t, delegaciones d where t.nroafiliado = ".$rowDiscapcitado['nroafiliado']." and t.codidelega = d.codidelega";
+						$resDelega = mysql_query($sqlDelega,$db);
+						$canDelega = mysql_num_rows($resDelega);
+						if ($canDelega != 0) {
+							$rowDelega = mysql_fetch_assoc($resDelega);
+							$delegacion = $rowDelega['codidelega']." - ".$rowDelega['nombre'];
+						} else {
+							$sqlDelega = "SELECT d.codidelega, d.nombre FROM titularesdebaja t, delegaciones d where t.nroafiliado = ".$rowDiscapcitado['nroafiliado']." and t.codidelega = d.codidelega";
+							$resDelega = mysql_query($sqlDelega,$db);
+							$canDelega = mysql_num_rows($resDelega);
+							if ($canDelega != 0) {
+								$rowDelega = mysql_fetch_assoc($resDelega);
+								$delegacion = $rowDelega['codidelega']." - ".$rowDelega['nombre'];
+							}
+						}
+						
 						$tipoBeneficiario = "";
 						if ($rowDiscapcitado['nroorden'] == 0) { 
 							$sqlBeneficiario = "SELECT apellidoynombre FROM titulares WHERE nroafiliado = ".$rowDiscapcitado['nroafiliado'];
@@ -158,7 +177,8 @@ function validar(formulario) {
 							}	
 					  	 } ?>
 				</td>
-				<td><?php echo $tipoBeneficiario ?></td>		
+				<td><?php echo $tipoBeneficiario ?></td>	
+				<td><?php echo $delegacion ?></td>	
 				<td><?php echo invertirfecha($rowDiscapcitado['emisioncertificado']) ?></td>	
 				<td><?php echo invertirfecha($rowDiscapcitado['vencimientocertificado']) ?></td>		
 					
