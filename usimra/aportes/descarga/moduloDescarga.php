@@ -1,6 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); 
-if($_SERVER['SERVER_NAME'] != "localhost") {
+if($_SERVER['SERVER_NAME'] != "poseidon") {
 	header('location: /madera/usimra/moduloNoDisponible.php');
 	exit(0);
 }
