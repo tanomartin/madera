@@ -105,6 +105,7 @@ function validar(formulario) {
 				<td>Nombre y Apellido</td>
 				<td class="filter-select" data-placeholder="Seleccione Tipo">Tipo Beneficiario</td>
 				<td class="filter-select" data-placeholder="Seleccione Dele">Delegacion</td>
+				<td>Fecha Alta</td>
 				<td>Fecha Emisión</td>
 				<td>Fecha Vto.</td>
 			</tr>
@@ -179,6 +180,7 @@ function validar(formulario) {
 				</td>
 				<td><?php echo $tipoBeneficiario ?></td>	
 				<td><?php echo $delegacion ?></td>	
+				<td><?php echo invertirfecha($rowDiscapcitado['fechaalta']) ?></td>	
 				<td><?php echo invertirfecha($rowDiscapcitado['emisioncertificado']) ?></td>	
 				<td><?php echo invertirfecha($rowDiscapcitado['vencimientocertificado']) ?></td>		
 					

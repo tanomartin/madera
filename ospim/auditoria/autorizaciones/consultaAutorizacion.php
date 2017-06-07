@@ -437,10 +437,12 @@ if($rowLeeSolicitud['nroafiliado']!=0) {
 //VEO SI ES DISCAPACITADO Y SACO EDAD
 if ($rowLeeSolicitud['codiparentesco'] >=0) {
 	if ($rowLeeSolicitud['codiparentesco']>0) {
-		$sqlDisca = "SELECT f.nroafiliado FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
+		$sqlDisca = "SELECT f.nroafiliado, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
+						FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
 		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil']. " and nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
 	} else {
-		$sqlDisca = "SELECT d.nroafiliado FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
+		$sqlDisca = "SELECT d.*,DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado 
+						FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
 		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM titulares WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
 	}
 	$resDisca = mysql_query($sqlDisca,$db);
@@ -501,7 +503,8 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 		}
 		
 		if ($canDisca == 1) {
-			echo " - (DISCAPACITADO)";
+			$rowDisca = mysql_fetch_assoc($resDisca);
+			echo "<br>DISCAPACITADO (FA: ".$rowDisca['fechaalta']." - FE: ".$rowDisca['emisioncertificado']." - FV: ".$rowDisca['vencimientocertificado'].")";
 		}
 ?>
 		</p>

@@ -7,7 +7,7 @@ $nroafiliado = $_GET['nroafiliado'];
 $nroorden = $_GET['nroorden'];
 
 if ($nroorden == 0) {
-	$sqlBeneficiario = "SELECT apellidoynombre FROM titulares WHERE nroafiliado = $nroafiliado";
+	$sqlBeneficiario = "SELECT apellidoynombre, '' as parentesco FROM titulares WHERE nroafiliado = $nroafiliado";
 	$tipoBeneficiario = "TITULAR";
 } else {
 	$sqlBeneficiario = "SELECT f.apellidoynombre, p.descrip as parentesco FROM familiares f, parentesco p WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent";
@@ -38,6 +38,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
+	$("#fechaAlta").mask("99-99-9999");
 	$("#fechaInicio").mask("99-99-9999");
 	$("#fechaFin").mask("99-99-9999");
 });
@@ -58,6 +59,18 @@ function validar(formulario) {
 	
 	var fechaInicio = formulario.fechaInicio.value;
 	var fechaFin = formulario.fechaFin.value;
+	var fechaAlta = formulario.fechaAlta.value;
+
+	if (fechaAlta == "") {
+		alert("Debe ingresar un fecha de alta del certificado");
+		return(false);
+	} else {
+		if (!esFechaValida(fechaAlta)) {
+			alert("La fecha de alta de certificado no es valida");
+			return(false);
+		} 
+	}
+	
 	if (fechaInicio == "") {
 		alert("Debe ingresar un fecha de emisión del certificado");
 		return(false);
@@ -133,6 +146,10 @@ function validar(formulario) {
         <td height="47" colspan="6"><div align="center"><span class="Estilo2">Datos Certificado </span></div></td>
       </tr>
       <tr>
+      	<td><div align="right">Fecha De Alta</div></td>
+        <td><div align="left">
+          <input type="text" name="fechaAlta" id="fechaAlta" size="8"/>
+        </div></td>
         <td><div align="right">Fecha De Emision</div></td>
         <td><div align="left">
           <input type="text" name="fechaInicio" id="fechaInicio" size="8"/>
@@ -141,8 +158,9 @@ function validar(formulario) {
         <td><div align="left">
           <input type="text" name="fechaFin" id="fechaFin" size="8" />
         </div></td>
-        <td><div align="right">Certificado</div></td>
-        <td><div align="left">
+       </tr>
+       <tr>
+        <td colspan="6"><div align="center">Certificado
           <input name="certificado" type="file" id="certificado" />
         </div></td>
       </tr>

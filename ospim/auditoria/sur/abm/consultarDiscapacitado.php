@@ -9,10 +9,10 @@ $activo = $_GET['activo'];
 
 if ($nroorden == 0) {
 	if ($activo == 1) {
-		$sqlBeneficiario = "SELECT t.apellidoynombre, d.* FROM titulares t, discapacitados d WHERE t.nroafiliado = $nroafiliado and t.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
+		$sqlBeneficiario = "SELECT t.apellidoynombre, d.*, '' as parentesco FROM titulares t, discapacitados d WHERE t.nroafiliado = $nroafiliado and t.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
 		$tipoBeneficiario = "TITULAR";
 	} else {
-		$sqlBeneficiario = "SELECT t.apellidoynombre, d.* FROM titularesdebaja t, discapacitados d WHERE t.nroafiliado = $nroafiliado and t.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
+		$sqlBeneficiario = "SELECT t.apellidoynombre, d.*, '' as parentesco FROM titularesdebaja t, discapacitados d WHERE t.nroafiliado = $nroafiliado and t.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
 		$tipoBeneficiario = "TITULAR INACTIVO";
 	}
 	
@@ -100,9 +100,11 @@ function verCertificado(dire){
   </table>
   <table width="900" border="0">
     <tr>
-      <td height="47" colspan="6"><div align="center"><span class="Estilo2">Datos Certificado </span></div></td>
+      <td height="47" colspan="8"><div align="center"><span class="Estilo2">Datos Certificado </span></div></td>
     </tr>
     <tr>
+      <td><div align="right">Fecha De Alta: </div></td>
+      <td><div align="left"><b><?php echo invertirFecha($rowBeneficiario['fechaalta']) ?></b></div></td>
       <td><div align="right">Fecha De Emision: </div></td>
       <td><div align="left"><b><?php echo invertirFecha($rowBeneficiario['emisioncertificado']) ?></b></div></td>
       <td><div align="right">Fecha de Vencimiento: </div></td>

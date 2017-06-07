@@ -5,6 +5,7 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 //var_dump($_POST);
 $nroafiliado = $_GET['nroafiliado'];
 $nroorden = $_GET['nroorden'];
+$fechaAlta = fechaParaGuardar($_POST['fechaAlta']);
 $fechaEmision = fechaParaGuardar($_POST['fechaInicio']);
 $fechaVto = fechaParaGuardar($_POST['fechaFin']);
 $fecharegistro = date("Y-m-d H:i:s");
@@ -21,7 +22,7 @@ if ($fp){
 	$certificado = fread ($fp, $tamarchivo);
 }
 fclose($fp);
-$sqlInsertDisca = "INSERT INTO discapacitados VALUE(:nroafiliado,:nroorden,1,:fechaemision,:fechavto,:certificado)";
+$sqlInsertDisca = "INSERT INTO discapacitados VALUE(:nroafiliado,:nroorden,1,:fechaalta,:fechaemision,:fechavto,:certificado)";
 if ($nroorden == 0) { 
 	$sqlUpdateBene = "UPDATE titulares SET discapacidad = 1, certificadodiscapacidad = 1 WHERE nroafiliado = :nroafiliado";
 } else {
@@ -57,7 +58,7 @@ try {
 	$dbh->beginTransaction();
 
 	$resInsertDisca = $dbh->prepare($sqlInsertDisca);
-	$resInsertDisca->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden, ':fechaemision' => $fechaEmision, ':fechavto' => $fechaVto, ':certificado' => $certificado));
+	$resInsertDisca->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden, ':fechaalta' => $fechaAlta, ':fechaemision' => $fechaEmision, ':fechavto' => $fechaVto, ':certificado' => $certificado));
 	//echo($sqlInsertDisca."<br>");
 	
 	$resUpdateBene = $dbh->prepare($sqlUpdateBene);
