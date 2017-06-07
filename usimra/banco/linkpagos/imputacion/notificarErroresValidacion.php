@@ -39,7 +39,7 @@ try {
 
 		$mensajenotificacion="Hemos recibido a traves del sistema Link Pagos un pago con fecha ".invertirFecha($notificar[fechadeposito])." de $ ".$notificar[importe]." cuyo Nro. de Liquidacion informado es ".$notificar[referencia].". Nuestros registros indican ".$tipoerror.", lo que nos imposibilita imputar correctamente en forma automatica en vuestra cuenta corriente el pago efectuado. Por esto, le solicitamos tenga la amabilidad de remitir por correo electronico al email ddjjpagos@usimra.com.ar, copia/s de la/s DDJJ/s objeto/s del pago y copia del Ticket emitido por el Aplicativo DDJJ Online correspondiente".$tiposolicitud.". La documentacion solicitada debera ser adjunta en formato PDF, consignando como Asunto, exactamente el mismo de esta notificacion. Gracias por su atencion.";
 
-		$sqlAddNotificacionRemota="INSERT INTO notificaciones VALUES ('$notificar[cuit]',$notificar[tiponotificacion],'$fechanotificacion','$asuntonotificacion','$mensajenotificacion',DEFAULT,DEFAULT,DEFAULT)";
+		$sqlAddNotificacionRemota="INSERT INTO notificaciones VALUES (DEFAULT,'$notificar[cuit]',$notificar[tiponotificacion],'$fechanotificacion','$asuntonotificacion','$mensajenotificacion',DEFAULT,DEFAULT,DEFAULT)";
 		$resultAddNotificacionRemota=$dbr->query($sqlAddNotificacionRemota);
 		//echo $sqlAddNotificacionRemota; echo "<br>";
 		
