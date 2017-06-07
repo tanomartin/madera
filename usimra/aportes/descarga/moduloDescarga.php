@@ -1,6 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); 
-if($_SERVER['SERVER_NAME'] != "poseidon") {
+if($_SERVER['SERVER_NAME'] != "localhost") {
 	header('location: /madera/usimra/moduloNoDisponible.php');
 	exit(0);
 }
@@ -26,12 +26,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
-
 function importar() {
 	$.blockUI({ message: "<h1>Descargando DDJJ... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 	location.href='descargaDDJJ.php';
 }
-
+function notificaciones() {
+	$.blockUI({ message: "<h1>Buscando Notificaciones... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	location.href='listaNotificaciones.php';
+}
 </script>
 </head>
 
@@ -41,10 +43,13 @@ function importar() {
     <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAportes.php'" />
   </span></p>
   <p><span class="Estilo2">M&oacute;dulo Descarga Aplicativo </span></p>
-  <table width="214" border="3">
+  <table width="414" border="3">
     <tr>
       <td width="200"><p align="center">Importaci&oacute;n de DDJJ, Empresas, Empleados y Familiares </p>
           <p align="center"><a href="javascript:importar()"><img src="img/Download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center">&nbsp;</p></td>
+      <td width="200"><p align="center">Notificaciones a Empresas </p>
+          <p align="center"><a href="javascript:notificaciones()"><img src="img/Envelope.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
   </table>
