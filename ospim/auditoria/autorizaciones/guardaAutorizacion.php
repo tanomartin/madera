@@ -105,6 +105,22 @@ else {
 	if(isset($_POST['montoAutoriza'])) {
 		$montauto = $_POST['montoAutoriza'];
 	}
+
+	if($presupue != 0) {
+		if($montauto > 0.00) {
+			// Crear una imagen fondo blanco transparente y añadir texto negro
+			$imagenmonto="../tempautorizaciones/monto".$nrosoli.".png"; 
+			$im = imagecreate(560, 130);
+			$fondo = imagecolorallocatealpha($im, 255, 255, 255, 127);
+			$color_texto = imagecolorallocate($im, 0, 0, 0);
+			$fuente = 'arialbd.ttf';
+			imagettftext($im, 20, 0, 50, 60, $color_texto, $fuente, 'Monto Autorizado: '.$montauto);
+			// Guardar la imagen como archivo .png
+			imagepng($im, $imagenmonto);
+			// Liberar memoria
+			imagedestroy($im);
+		}
+	}
 }
 
 switch ($presupue) {
@@ -420,7 +436,10 @@ try {
 				$pdf->Cell(183,8,"Presupuesto Aprobado - Hoja ".$nropagina,1,1,'C');
 				$tplIdx = $pdf->importPage($nropagina);
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
-				$pdf->Image('../img/Sello Presupuesto.png',87,130,50,30);
+				$pdf->Image('../img/Sello Presupuesto.png',87,130,60,40);
+				if($montauto > 0.00) {
+					$pdf->Image($imagenmonto,89,140,60,40);
+				}
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
 				if(strcmp($usuauto,"mlberges")==0) {
 					$pdf->Image('../img/Firma Berges.png',160,190,18,50);
