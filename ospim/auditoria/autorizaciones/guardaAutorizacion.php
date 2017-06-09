@@ -108,12 +108,13 @@ else {
 
 	if($presupue != 0) {
 		if($montauto > 0.00) {
+			$fuentePath = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/auditoria/autorizaciones/";
 			// Crear una imagen fondo blanco transparente y añadir texto negro
 			$imagenmonto="../tempautorizaciones/monto".$nrosoli.".png"; 
 			$im = imagecreate(560, 130);
 			$fondo = imagecolorallocatealpha($im, 255, 255, 255, 127);
 			$color_texto = imagecolorallocate($im, 0, 0, 0);
-			$fuente = 'arialbd.ttf';
+			$fuente = $fuentePath.'arialbd.ttf';
 			imagettftext($im, 20, 0, 50, 60, $color_texto, $fuente, 'Monto Autorizado: '.$montauto);
 			// Guardar la imagen como archivo .png
 			imagepng($im, $imagenmonto);
