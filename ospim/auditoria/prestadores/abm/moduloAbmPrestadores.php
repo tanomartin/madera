@@ -1,29 +1,29 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
-$dato = $_POST['dato'];
-$filtro = $_POST['filtro'];
-
-if ($filtro == 0) {
-	$cartel = "Resultados de Busqueda por Código de Prestador <b>'".$dato."'</b>";
-}
-if ($filtro == 1) {
-	$cartel = "Resultados de Busqueda por Nombre o Razón Social <b>'".$dato."'</b>";
-}
-if ($filtro == 2) {
-	$cartel = "Resultados de Busqueda por C.U.I.T. <b>'".$dato."'</b>";
-}
-
 $noExiste = 0;
-$resultado = array();
-if (isset($dato)) {
-	if ($filtro == 0) { $sqlPrestador = "SELECT * from prestadores where codigoprestador = $dato order by codigoprestador DESC"; }
-	if ($filtro == 1) { $sqlPrestador = "SELECT * from prestadores where nombre like '%$dato%' order by codigoprestador DESC"; }
-	if ($filtro == 2) { $sqlPrestador = "SELECT * from prestadores where cuit = $dato order by codigoprestador DESC"; }
-	$resPrestador = mysql_query($sqlPrestador,$db); 
-	$canPrestador = mysql_num_rows($resPrestador); 
-	if ($canPrestador == 0) {
-		$noExiste = 1;
+if (isset($_POST['dato']) && isset($_POST['filtro'])) {
+	$dato = $_POST['dato'];
+	$filtro = $_POST['filtro'];
+	if ($filtro == 0) {
+		$cartel = "Resultados de Busqueda por Código de Prestador <b>'".$dato."'</b>";
+	}
+	if ($filtro == 1) {
+		$cartel = "Resultados de Busqueda por Nombre o Razón Social <b>'".$dato."'</b>";
+	}
+	if ($filtro == 2) {
+		$cartel = "Resultados de Busqueda por C.U.I.T. <b>'".$dato."'</b>";
+	}
+	$resultado = array();
+	if (isset($dato)) {
+		if ($filtro == 0) { $sqlPrestador = "SELECT * from prestadores where codigoprestador = $dato order by codigoprestador DESC"; }
+		if ($filtro == 1) { $sqlPrestador = "SELECT * from prestadores where nombre like '%$dato%' order by codigoprestador DESC"; }
+		if ($filtro == 2) { $sqlPrestador = "SELECT * from prestadores where cuit = $dato order by codigoprestador DESC"; }
+		$resPrestador = mysql_query($sqlPrestador,$db); 
+		$canPrestador = mysql_num_rows($resPrestador); 
+		if ($canPrestador == 0) {
+			$noExiste = 1;
+		}
 	}
 }
 ?>

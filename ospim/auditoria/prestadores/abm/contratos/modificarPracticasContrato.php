@@ -11,6 +11,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
 $sqlConsuNomenclador = "SELECT * FROM prestadornomenclador WHERE codigoprestador = $codigo";
 $resConsuNomenclador = mysql_query($sqlConsuNomenclador,$db);
+$whereNom = "";
 while ($rowConsuNomenclador = mysql_fetch_assoc($resConsuNomenclador)) {
 	$whereNom .= $rowConsuNomenclador['codigonomenclador'].",";
 }
@@ -359,8 +360,7 @@ jQuery(function($){
   									p.idcategoria = pc.id";
   		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
-		if ($numPracticas > 0) {
- 		 ?>
+		if ($numPracticas > 0) { ?>
         <table style="text-align:center; width:1000px; font-size: 13px" id="practicaencontrato" class="tablesorter" >
           <thead>
             <tr>
@@ -419,11 +419,11 @@ jQuery(function($){
 	  <p><strong>Pr&aacute;cticas para Agregar al contrato </strong></p>
 	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS DE LA MISMA CATEGORIA<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?>
 	  <p>
+	  <?php $sqlTipos = "SELECT t.*, n.nombre FROM tipopracticas t, nomencladores n WHERE t.codigonomenclador in ($whereNom) and t.codigonomenclador = n.id"; 
+			$resTipos = mysql_query($sqlTipos,$db);?>
         <select name="tipo" id="tipo">
-          <option value="0">Seleccione Tipo de Practica</option>
-          <?php $sqlTipos = "SELECT t.*, n.nombre FROM tipopracticas t, nomencladores n WHERE t.codigonomenclador in ($whereNom) and t.codigonomenclador = n.id";
-			  $resTipos = mysql_query($sqlTipos,$db);
-			  while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
+          <option value="0">Seleccione Tipo de Practica</option>  
+          <?php while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
           <option value="<?php echo $rowTipos['id']."-".$rowTipos['codigonomenclador'] ?>"><?php echo $rowTipos['nombre']." - ".$rowTipos['descripcion'] ?></option>
           <?php } ?>
         </select>

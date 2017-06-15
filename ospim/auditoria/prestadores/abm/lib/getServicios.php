@@ -1,5 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['personeria'])) {
+	$respuesta = "";
 	$personeria=$_POST['personeria'];
 	if ($personeria == 0) {
 		$respuesta = 0;

@@ -22,8 +22,10 @@ $sqlPracticas = "SELECT pr.*, det.*, presta.codigoprestador, presta.nombre, pres
 					det.idpractica = pr.idpractica and
 					pr.nomenclador = nom.id and
 					det.idcategoria = pc.id";
+echo $sqlPracticas."<br>";
 $resPracticas = mysql_query($sqlPracticas,$db);
 $catPracticas = mysql_num_rows($resPracticas);
+$resultado = array();
 if ($catPracticas > 0) {
 	$i = 0;
 	while($rowPracticas = mysql_fetch_array($resPracticas)) {

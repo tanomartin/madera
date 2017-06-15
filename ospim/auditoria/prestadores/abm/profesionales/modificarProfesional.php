@@ -245,10 +245,10 @@ function validar(formulario) {
           </select>
         </div></td>
         <td><div align="left"><strong>Matr&iacute;cula Nacional </strong>
-          <input name="matriculaNac" type="text" id="matriculaNac" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaProf['matriculanacional']?>" maxlength="20"/>
+          <input name="matriculaNac" type="text" id="matriculaNac" size="10" value="<?php echo $rowConsultaProf['matriculanacional']?>" maxlength="20"/>
         </div></td>
         <td colspan="3"><div align="left"><strong>Matr&iacute;culo Provincial </strong><strong>
-          <input name="matriculaPro" type="text" id="matriculaPro" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaProf['matriculaprovincial'] ?>" maxlength="20"/>
+          <input name="matriculaPro" type="text" id="matriculaPro" size="10" value="<?php echo $rowConsultaProf['matriculaprovincial'] ?>" maxlength="20"/>
         </strong></div></td>
       </tr>
       <tr>

@@ -7,7 +7,6 @@ function descripcionPractica($codigoPractica, $tipoPractica, $db) {
 		$sqlTipoPractica = "SELECT c.descripcion as cap FROM capitulosdepracticas c WHERE c.codigo = '$codCapitulo' and c.idtipopractica = $tipoPractica";
 		$resTipoPractica = mysql_query($sqlTipoPractica,$db);
 		$rowTipoPractica = mysql_fetch_array($resTipoPractica);
-		$resultado['tipo'] = $rowTipoPractica['tipoprac'];
 		$resultado['codigosubcapitulo'] = "";
 		$resultado['subcapitulo'] = "";
 		$resultado['codigocapitulo'] = $codCapitulo;
@@ -19,7 +18,6 @@ function descripcionPractica($codigoPractica, $tipoPractica, $db) {
 		$sqlTipoPractica = "SELECT c.descripcion as cap, s.descripcion as subcap FROM capitulosdepracticas c, subcapitulosdepracticas s WHERE s.codigo = '$codCapitulo.$codSubCapitulo' and s.idcapitulo = c.id and c.idtipopractica = $tipoPractica";
 		$resTipoPractica = mysql_query($sqlTipoPractica,$db);
 		$rowTipoPractica = mysql_fetch_array($resTipoPractica);
-		$resultado['tipo'] = $rowTipoPractica['tipoprac'];
 		$resultado['codigosubcapitulo'] = $codSubCapitulo;
 		$resultado['subcapitulo'] = $rowTipoPractica['subcap'];
 		$resultado['codigocapitulo'] = $codCapitulo;

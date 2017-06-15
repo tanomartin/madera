@@ -225,13 +225,17 @@ function habilitaCamposProfesional(valor) {
 	}	
 }
 
-function validar(formulario) {
+function validar(formulario) {	
 	if (formulario.nombre.value == "") {
 		alert("El campo Nombre o Razon social es Obligatrio");
 		return false;
 	}
 	if (formulario.domicilio.value == "") {
 		alert("El campo domicilio es obligatrio");
+		return false;
+	}
+	if (!verificaCuilCuit(formulario.cuit.value)){
+		alert("C.U.I.T invalido");
 		return false;
 	}
 	if (formulario.codPos.value == "") {
@@ -295,25 +299,25 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	if (formulario.nroSSS.value != "") {
+	
+	if (formulario.nroSSS.value != "" && formulario.nroSSS.value != 0) {
 		if (!esFechaValida(formulario.vtoSSS.value)){
+			alert("Fecha de vto de registro SSS invalida");
 			return false;
 		}
 	}
-	if (formulario.nroSNR.value != "") {
+	if (formulario.nroSNR.value != "" && formulario.nroSNR.value != 0) {
 		if (!esFechaValida(formulario.vtoSNR.value)){
+			alert("Fecha de vto de registro SNR invalida");
 			return false;
 		}
-	}
-	if (!verificaCuilCuit(formulario.cuit.value)){
-		alert("C.U.I.T invalido");
-		return false;
 	}
 	var personeria = formulario.selectPersoneria.options[formulario.selectPersoneria.selectedIndex].value;
 	if (personeria == 0) {
 		alert("Debe elegir una Personería");
 		return false;
 	}
+	
 	if (personeria == 1) {
 		var tratamiento = formulario.selectTratamiento.options[formulario.selectTratamiento.selectedIndex].value;
 		if (tratamiento == 0) {
@@ -333,7 +337,7 @@ function validar(formulario) {
 			}
 		}
 	}
-	
+
 	var nomencladorCheck = 0;
 	var nomenclador = formulario.nomenclador;
 	if (nomenclador != null) {
@@ -347,9 +351,9 @@ function validar(formulario) {
 		alert("Debe elegir como mínimo un nomenclador para el prestador");
 		return false;
 	}
-	
+
 	var servicioCheck = 0;
-	servicios = formulario.servicios;
+	var servicios = formulario.servicios;
 	if (servicios != null) {
 		for (var x=0;x<servicios.length;x++) {
 			if(servicios[x].checked) {
@@ -463,7 +467,7 @@ function validar(formulario) {
 		        			while($rowBarrios=mysql_fetch_array($resBarrios)) { 
 		        				$selected = "";
 		        				if ($rowBarrios['id'] == $rowConsultaPresta['idBarrio'] ) { $selected = "selected"; } ?>
-		        				<option title ='<?php echo $rowBarrios[descripcion]?>' value='<?php echo $rowBarrios[id] ?>' <?php echo $selected?>><?php echo utf8_encode($rowBarrios[descripcion]) ?></option>
+		        				<option title ='<?php echo $rowBarrios['descripcion']?>' value='<?php echo $rowBarrios['id'] ?>' <?php echo $selected?>><?php echo utf8_encode($rowBarrios['descripcion']) ?></option>
 		        	  <?php } ?>	
 	        		<?php } else { ?>
 	        				<option title ="Seleccione un valor" value="">Seleccione un barrio</option>
@@ -541,6 +545,8 @@ function validar(formulario) {
 					$ciculo = "";
 					$entidad = "";
 					$disabled=""; 
+					$deshabilitado = '';
+					$cartel = '';
 				}
 				if ($rowConsultaPresta['personeria'] == 2) {
 					$profesional = "";
@@ -548,6 +554,8 @@ function validar(formulario) {
 					$ciculo = "";
 					$entidad = "";
 					$disabled="disabled"; 
+					$deshabilitado = '';
+					$cartel = '';
 				}
 				if ($rowConsultaPresta['personeria'] == 3) {
 					$profesional = "";
@@ -555,6 +563,17 @@ function validar(formulario) {
 					$ciculo = "selected";
 					$entidad = "";
 					$disabled="disabled"; 
+					
+					$sqlNumProfesional = "select codigoprofesional from profesionales where codigoprestador = ".$rowConsultaPresta['codigoprestador']." and activo = 1";
+					$resNumProfesional=mysql_query($sqlNumProfesional,$db);
+					$cantidad = mysql_num_rows($resNumProfesional);
+					if ($cantidad > 0) {
+						$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
+						$cartel = "Existe prof. activos.<br>";
+					} else {
+						$deshabilitado = '';
+						$cartel = '';
+					}
 				}
 				if ($rowConsultaPresta['personeria'] == 4) {
 					$profesional = "";
@@ -562,22 +581,7 @@ function validar(formulario) {
 					$ciculo = "";
 					$entidad = "selected";
 					$disabled="disabled";
-				}
-				
-				if ($rowConsultaPresta['personeria'] == 3) {
-					$sqlNumProfesional = "select codigoprofesional from profesionales where codigoprestador = ".$rowConsultaPresta['codigoprestador']." and activo = 1";
-					$resNumProfesional=mysql_query($sqlNumProfesional,$db);
-					$cantidad = mysql_num_rows($resNumProfesional);
-					if ($cantidad > 0) { 
-						$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
-						$cartel = "Existe prof. activos.<br>";
-					} else {
-						$deshabilitado = '';
-						$castel = '';
-					}
-				}
-				
-				if ($rowConsultaPresta['personeria'] == 4) {
+					
 					$sqlNumEstablecim = "select codigo from establecimientos where codigoprestador = ".$rowConsultaPresta['codigoprestador'];
 					$resNumEstablecim = mysql_query($sqlNumEstablecim,$db);
 					$cantidad = mysql_num_rows($resNumEstablecim);
@@ -586,7 +590,7 @@ function validar(formulario) {
 						$cartel = "Existe Establecimientos<br>";
 					} else {
 						$deshabilitado = '';
-						$castel = '';
+						$cartel = '';
 					}
 				}
 				
@@ -638,7 +642,7 @@ function validar(formulario) {
         <td><div align="right"><strong>Capitado</strong></div></td>
         <td colspan="3">
         	<div align="left">
-	          	<?php if ($rowConsultaPresta['capitado'] == 0) { $nocapitado = "checked"; } else { $capitado = "checked"; } ?>
+	          	<?php if ($rowConsultaPresta['capitado'] == 0) { $nocapitado = "checked"; $capitado = ""; } else { $nocapitado = ""; $capitado = "checked"; } ?>
 	          	<input name="capitado" type="radio" value="0" <?php echo $nocapitado ?> /> NO
 				<input name="capitado" type="radio" value="1" <?php echo $capitado ?> /> SI 
 			</div>
@@ -760,7 +764,7 @@ function validar(formulario) {
         </div></td>
       </tr>
     </table>
-    <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n"/></p>
+    <p><input type="submit" name="Submit" id="Submit" value="Guardar"/></p>
   </form>
 </div>
 </body>
