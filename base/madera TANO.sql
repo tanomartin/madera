@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-06-2017 a las 20:27:13
+-- Tiempo de generación: 19-06-2017 a las 16:23:14
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -755,7 +755,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -2505,6 +2505,33 @@ CREATE TABLE IF NOT EXISTS `juzgados` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `linkaportesusimra`
+--
+
+CREATE TABLE IF NOT EXISTS `linkaportesusimra` (
+  `fechaarchivo` date NOT NULL COMMENT 'Fecha del Archivo de Link Pagos',
+  `idmovimiento` int(6) unsigned NOT NULL COMMENT 'Id Propio para Identificar el Movimiento de Link Pagos',
+  `concepto` char(3) NOT NULL COMMENT 'Concepto Link Pagos que da Origen al Pago',
+  `cuit` char(11) NOT NULL COMMENT 'CUIT Emisor del Pago - Codigo Link Pagos',
+  `importe` decimal(15,2) NOT NULL COMMENT 'Importe Depositado Por el Emisor del Pago',
+  `fechadeposito` date NOT NULL COMMENT 'Fecha en que Deposita el Emisor del Pago',
+  `referencia` char(30) NOT NULL COMMENT 'Referencia para Identificar DDJJ - Nro Liquidacion Link Pagos',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha en que se carga el Registro en la Tabla',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que carga el Registro en la Tabla',
+  `fechavalidacion` datetime DEFAULT NULL COMMENT 'Fecha del Proceso de Validacion del Ticket',
+  `usuariovalidacion` char(50) DEFAULT NULL COMMENT 'Usuario que Genera el Proceso de Validacion del Ticket',
+  `fechaimputacion` datetime DEFAULT NULL COMMENT 'Fecha del Proceso de Imputacion del Pago en la Tabla seguvidausimra',
+  `usuarioimputacion` char(50) DEFAULT NULL COMMENT 'Usuario que Genera el Proceso de Imputacion del Pago en la Tabla seguvidausimra',
+  `notificacion` int(1) unsigned NOT NULL DEFAULT '1' COMMENT 'Marca de Notificacion a la Empresa por Error de Validacion',
+  `tiponotificacion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Tipificacion de la Notificacion = 0 No, 1 Monto, 2 Validada, 3 Sin Ticket',
+  `fechanotificacion` datetime DEFAULT NULL COMMENT 'Fecha de Notificacion a la Empresa',
+  `usuarionotificacion` char(50) DEFAULT NULL COMMENT 'Usuario que Notifica a la Empresa',
+  PRIMARY KEY (`fechaarchivo`,`idmovimiento`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `localidades`
 --
 
@@ -2935,7 +2962,7 @@ CREATE TABLE IF NOT EXISTS `practicas` (
   `unihonorarioanestesista` decimal(4,2) DEFAULT NULL,
   `unigastos` decimal(4,2) DEFAULT NULL,
   PRIMARY KEY (`idpractica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2422 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2475 ;
 
 -- --------------------------------------------------------
 
@@ -3059,7 +3086,9 @@ CREATE TABLE IF NOT EXISTS `prestadorjurisdiccion` (
 
 CREATE TABLE IF NOT EXISTS `prestadornomenclador` (
   `codigoprestador` int(4) NOT NULL,
-  `codigonomenclador` int(4) NOT NULL
+  `codigonomenclador` int(4) NOT NULL,
+  PRIMARY KEY (`codigoprestador`,`codigonomenclador`),
+  KEY `codigoprestador` (`codigoprestador`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
