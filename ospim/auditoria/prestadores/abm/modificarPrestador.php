@@ -539,6 +539,8 @@ function validar(formulario) {
         <td colspan="3">
         	<div align="left">
           	<?php 
+          		$cartel = '';
+          		$profesional = "";
 				if ($rowConsultaPresta['personeria'] == 1) { 
 					$profesional = "selected"; 
 					$establecimiento = "" ; 
@@ -546,19 +548,15 @@ function validar(formulario) {
 					$entidad = "";
 					$disabled=""; 
 					$deshabilitado = '';
-					$cartel = '';
 				}
 				if ($rowConsultaPresta['personeria'] == 2) {
-					$profesional = "";
 					$establecimiento = "selected"; 
 					$ciculo = "";
 					$entidad = "";
 					$disabled="disabled"; 
 					$deshabilitado = '';
-					$cartel = '';
 				}
 				if ($rowConsultaPresta['personeria'] == 3) {
-					$profesional = "";
 					$establecimiento = ""; 
 					$ciculo = "selected";
 					$entidad = "";
@@ -572,11 +570,9 @@ function validar(formulario) {
 						$cartel = "Existe prof. activos.<br>";
 					} else {
 						$deshabilitado = '';
-						$cartel = '';
 					}
 				}
 				if ($rowConsultaPresta['personeria'] == 4) {
-					$profesional = "";
 					$establecimiento = "";
 					$ciculo = "";
 					$entidad = "selected";
@@ -590,7 +586,6 @@ function validar(formulario) {
 						$cartel = "Existe Establecimientos<br>";
 					} else {
 						$deshabilitado = '';
-						$cartel = '';
 					}
 				}
 				
