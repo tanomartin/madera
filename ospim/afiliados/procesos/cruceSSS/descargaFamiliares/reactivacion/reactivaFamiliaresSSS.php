@@ -131,7 +131,7 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 	<div align="center">
-		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuCruceSSS.php'" />
+		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoFamiSSS.php'" />
 		<h2>Reactivacion de Familiares desde S.S.S.</h2>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarReactivaFamiliaresSSS.php">
 			<h3>Reactivacion de Familiares</h3>
