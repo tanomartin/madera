@@ -36,28 +36,23 @@ function mostrar(dire) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<input type="button" name="volver" value="Volver" onclick="location.href = '../moduloProcesos.php'" /> 
+	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuCruceSSS.php'" /> 
 </div>
 <div align="center">
-	<h2>Men&uacute; Comparación Padrón de O.S.P.I.M. contra S.S.S.</h2>
+	<h2>Men&uacute; Descarga Informacion de Familiares desde la S.S.S.</h2>
 	<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
 </div>
 <div align="center">
-  <table width="400" border="3">
+  <table width="600" border="3">
     <tr>
-       <td width="200"><p align="center">Descarga INFO</br> Titulares de SSS</p>
-        <p align="center"><a class="enlace" href="descargaTitulares/menuDescInfoTituSSS.php"><img src="img/descargaTitulares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+       <td width="200"><p align="center">Descarga Familiares</p>
+        <p align="center"><a class="enlace" href="javascript:mostrar('alta/altaFamiliaresSSS.php')"><img src="../img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
-      <td width="200"><p align="center">Descarga INFO</br> Familiares de SSS</p>
-          <p align="center"><a class="enlace" href="descargaFamiliares/menuDescInfoFamiSSS.php"><img src="img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <td width="200"><p align="center">Reactivacion Familiares</p>
+          <p align="center"><a class="enlace" href="javascript:mostrar('reactivacion/reactivaFamiliaresSSS.php')"><img src="../img/reactivacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
-    </tr>
-    <tr>
-       <td width="200"><p align="center">Subida de</br> Titulares a SSS</p>
-        <p align="center"><a class="enlace" href="javascript:mostrar('subidaTitulares/buscaTitulares.php')"><img src="img/subida.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p>&nbsp;</p></td>
-      <td width="200"><p align="center">Subida de</br> Famliares a SSS</p>
-          <p align="center"><a class="enlace" href="javascript:mostrar('subidaFamiliares/buscaFamiliares.php')"><img src="img/subida.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+         <td width="200"><p align="center">Inconsistencias Familiares</p>
+        <p align="center"><a class="enlace" href="javascript:mostrar('inconsistencia/incoFamiliaresSSS.php')"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
     </tr>
   </table>

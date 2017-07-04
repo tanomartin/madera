@@ -22,31 +22,23 @@ $arrayProcFami = array();
 $arrayInfo = array();
 $arrayOrden = array();
 
-foreach ($_POST as $tipocuil => $datos) {
-	$tipo = substr($tipocuil, 0, 1);
-	$cuil = substr($tipocuil, 1, strlen($tipocuil));
-	$datos = explode('-',$datos);
-	$cuiltitular = $datos[0];
-	$opcion = $datos[1];
-	if ($tipo == 'R') {
-		$nroafil = $datos[2];
-	}
-	
-	if ($opcion != 0) {
-		$arrayInfo[$cuil] = array("detalle" => "Opción", "cuiltitular" => $cuiltitular, "proceso" => $tipo);
-	} else {
-		if (!array_key_exists ($cuiltitular , $arrayCuilTitular)) {
-			if (!array_key_exists ($cuiltitular , $arrayCuilTitularBaja)) {
-				$arrayInfo[$cuil] = array("detalle" => "No existe el titular", "cuiltitular" => $cuiltitular, "proceso" => $tipo);
-			} else {
-				$arrayInfo[$cuil] = array("detalle" => "El titular esta de Baja", "cuiltitular" => $cuiltitular, "proceso" => $tipo);
-			} 
+foreach ($_POST as $cuil => $datos) {
+	if ($cuil != 'text' && $cuil != 'select') {
+		$datos = explode('-',$datos);
+		$cuiltitular = $datos[0];
+		$opcion = $datos[1];
+		
+		if ($opcion != 0) {
+			$arrayInfo[$cuil] = array("detalle" => "Opción", "cuiltitular" => $cuiltitular);
 		} else {
-			if ($tipo == 'A') {
-				$arrayProcFami[$cuil] = array("cuiltitular" => $cuiltitular, "proceso" => $tipo, "nroafil" => $arrayCuilTitular[$cuiltitular]['nroafiliado'], "codidelega" => $arrayCuilTitular[$cuiltitular]['codidelega']);
-			}
-			if ($tipo == 'R') {
-				$arrayProcFami[$cuil] = array("cuiltitular" => $cuiltitular, "proceso" => $tipo, "nroafil" => $arrayCuilTitular[$cuiltitular]['nroafiliado'], "codidelega" => $arrayCuilTitular[$cuiltitular]['codidelega']);
+			if (!array_key_exists ($cuiltitular , $arrayCuilTitular)) {
+				if (!array_key_exists ($cuiltitular , $arrayCuilTitularBaja)) {
+					$arrayInfo[$cuil] = array("detalle" => "No existe el titular", "cuiltitular" => $cuiltitular);
+				} else {
+					$arrayInfo[$cuil] = array("detalle" => "El titular esta de Baja", "cuiltitular" => $cuiltitular);
+				} 
+			} else {
+				$arrayProcFami[$cuil] = array("cuiltitular" => $cuiltitular, "nroafil" => $arrayCuilTitular[$cuiltitular]['nroafiliado'], "codidelega" => $arrayCuilTitular[$cuiltitular]['codidelega']);
 			}
 		}
 	}
@@ -65,6 +57,7 @@ $whereIn .= ")";
 $whereInAfil = substr($whereInAfil, 0, -1);
 $whereInAfil .= ")";
 
+$sqlAEjecutar = array();
 if ($whereIn != ")") {	
 	$sqlFamiliarOrden = "SELECT nroafiliado, nroorden FROM familiares WHERE nroafiliado in $whereInAfil order by nroafiliado, nroorden ASC";
 	$resFamiliarOrden = mysql_query ($sqlFamiliarOrden, $db);
@@ -136,11 +129,6 @@ if ($whereIn != ")") {
 								.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
 								.$rowPadron['incapacidad'].",NULL,".$estudia.",NULL,NULL,NULL,'".$rowPadron['cuilfamiliar']
 								."',0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
-		
-		if ($arrayProcFami[$cuilfamiliar]['proceso'] == 'R') {
-			$index = $cuilfamiliar.'D';
-			$sqlAEjecutar[$index] = "DELETE FROM familiaresdebaja WHERE cuil = '".$cuilfamiliar."' and nroafiliado = ".$arrayProcFami[$cuilfamiliar]['nroafil'];
-		}
 	}
 } 
 
@@ -230,8 +218,8 @@ $(function() {
 
 <body bgcolor="#CCCCCC">
 	<div align="center">
-		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuCruceSSS.php'" />
-		<h2>Informe de Proceso de subida de Familiares en SSS</h2>
+		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoFamiSSS.php'" />
+		<h2>Informe de Proceso de Alta de Familiares en SSS</h2>
 		<h3>Familiares sin procesar</h3>
 		<?php if (sizeof($arrayInfo) > 0) { ?>
 		<table style="text-align: center; width: 900px" id="tablaInforme" class="tablesorter">
@@ -239,7 +227,6 @@ $(function() {
 				<tr>
 					<th>C.U.I.L.</th>
 					<th>C.U.I.L. Titular</th>
-					<th class="filter-select" data-placeholder="Seleccione Proceso">Proceso</th>
 					<th>Detalle</th>
 				</tr>
 			</thead>
@@ -248,7 +235,6 @@ $(function() {
 				<tr>	
 					<td><?php echo $cuil ?></td>
 					<td><?php echo $datos['cuiltitular'] ?></td>
-					<td><?php if ($datos['proceso'] == 'A') { echo 'ALTA'; } if ($datos['proceso'] == 'R') { echo 'REACTIVACION'; }  ?></td>
 					<td><?php echo $datos['detalle'] ?></td>
 				</tr>
 			<?php } ?>
@@ -266,7 +252,6 @@ $(function() {
 						<th>C.U.I.L.</th>
 						<th>Nombre</th>
 						<th>C.U.I.L. Titular</th>
-						<th class="filter-select" data-placeholder="Seleccione Proceso">Proceso</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -275,7 +260,6 @@ $(function() {
 					<td><?php echo $cuil ?></td>
 					<td><?php echo $datos['nombre'] ?></td>
 					<td><?php echo $datos['cuiltitular'] ?></td>
-					<td><?php if ($datos['proceso'] == 'A') { echo 'ALTA'; } if ($datos['proceso'] == 'R') { echo 'REACTIVACION'; }  ?></td>
 				</tr>
 			<?php } ?>
 			</tbody>

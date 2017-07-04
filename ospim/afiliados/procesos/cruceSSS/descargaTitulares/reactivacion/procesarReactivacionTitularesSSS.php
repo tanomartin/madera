@@ -19,46 +19,38 @@ while ($rowEmpresasCuit = mysql_fetch_assoc ($resEmpresasCuit)) {
 }
 
 $arrayProcTitu = array();
-$arrayProcFami = array();
 $arrayInfo = array();
 $arrayTipoTitu = array();
 $arrayFechaEmpresa = array();
 $arrayTiposAceptados = array(0,2,4,5,8);
 
-foreach ($_POST as $tipocuil => $datos) {
-	$tipo = substr($tipocuil, 0, 1);
-	$cuil = substr($tipocuil, 1, strlen($tipocuil));
-	$datos = explode('-',$datos);
-	$cuit = $datos[0];
-	$tipoTitu = $datos[1];
-	$opcion = $datos[2];
-	if ($tipo == 'R') {
+foreach ($_POST as $cuil => $datos) {
+	if ($cuil != 'text' && $cuil != 'select') {
+		$datos = explode('-',$datos);
+		$cuit = $datos[0];
+		$tipoTitu = $datos[1];
+		$opcion = $datos[2];
 		$nroafil = $datos[3];
-	}
-	
-	$sqlTipoTitu = "SELECT descrip FROM tipotitular where codtiptit = $tipoTitu";
-	$resTipoTitu = mysql_query ( $sqlTipoTitu, $db );
-	$rowTipoTitu = mysql_fetch_assoc($resTipoTitu);
-	$arrayTipoTitu[$cuil] = array("tipo" => $tipoTitu, "descrip" => $rowTipoTitu['descrip']);
-	
-	if ($opcion != 0) {
-		$arrayInfo[$cuil] = array("detalle" => "Opción", "cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
-	} else {
-		if (!in_array($tipoTitu,$arrayTiposAceptados)) {		
-			$arrayInfo[$cuil] = array("detalle" => "No es un tipo de titular manejado", "cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
+		
+		$sqlTipoTitu = "SELECT descrip FROM tipotitular where codtiptit = $tipoTitu";
+		$resTipoTitu = mysql_query ( $sqlTipoTitu, $db );
+		$rowTipoTitu = mysql_fetch_assoc($resTipoTitu);
+		$arrayTipoTitu[$cuil] = array("tipo" => $tipoTitu, "descrip" => $rowTipoTitu['descrip']);
+		
+		if ($opcion != 0) {
+			$arrayInfo[$cuil] = array("detalle" => "Opción", "cuit" => $cuit, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
 		} else {
-			if (!array_key_exists ($cuit , $arrayCuit)) {
-				if (!array_key_exists ($cuit , $arrayCuitBaja)) {
-					$arrayInfo[$cuil] = array("detalle" => "La empresa no existe", "cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
-				} else {
-					$arrayInfo[$cuil] = array("detalle" => "La empresa esta de baja", "cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
-				} 
+			if (!in_array($tipoTitu,$arrayTiposAceptados)) {		
+				$arrayInfo[$cuil] = array("detalle" => "No es un tipo de titular manejado", "cuit" => $cuit, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
 			} else {
-				if ($tipo == 'A') {
-					$arrayProcTitu[$cuil] = array("cuit" => $cuit, "proceso" => $tipo, "tipotitular" => $tipoTitu, "tipodescrip" => $arrayTipoTitu[$cuil]['descrip']);	
-				}
-				if ($tipo == 'R') {
-					$arrayProcTitu[$cuil] = array("cuit" => $cuit, "proceso" => $tipo, "nroafil" => $nroafil, "tipotitular" => $tipoTitu,  "tipodescrip" => $arrayTipoTitu[$cuil]['descrip']);
+				if (!array_key_exists ($cuit , $arrayCuit)) {
+					if (!array_key_exists ($cuit , $arrayCuitBaja)) {
+						$arrayInfo[$cuil] = array("detalle" => "La empresa no existe", "cuit" => $cuit, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
+					} else {
+						$arrayInfo[$cuil] = array("detalle" => "La empresa esta de baja", "cuit" => $cuit, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
+					} 
+				} else {
+					$arrayProcTitu[$cuil] = array("cuit" => $cuit, "nroafil" => $nroafil, "tipotitular" => $tipoTitu,  "tipodescrip" => $arrayTipoTitu[$cuil]['descrip']);
 				}
 			}
 		}
@@ -159,34 +151,7 @@ if ($whereIn != ")") {
 			$telefono =  intval(preg_replace('/[^0-9]+/', '', $rowPadron['telefono']), 10);;
 		}
 			
-		if ($arrayProcTitu[$cuiltitular]['proceso'] == 'A') {
-			if ($rowPadron['parentesco'] == 0) {
-				$arrayProcTitu[$cuiltitular] += array("nombre" => $rowPadron['apellidoynombre']);
-				$index = $cuiltitular.'T'.$orden;		
-				$sqlAEjecutar[$index] = "INSERT INTO titulares VALUES(DEFAULT,'".$rowPadron['apellidoynombre']."','".$rowPadron['tipodocumento']."',"
-												.$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',".$rowPadron['nacionalidad'].
-												",'".$rowPadron['sexo']."',".$rowPadron['estadocivil'].",".$rowPadron['codprovin'].",'".$indpostal.
-												"',".$codpostal.",'',".$codlocali.",'".$domicilio."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',
-												'R',NULL,".$rowPadron['tipotitular'].",".$rowPadron['incapacidad'].",NULL,'".$cuiltitular."',
-												'".$rowPadron['cuit']."','".$arrayFechaEmpresa[$cuiltitular]."',".$codidelega.",NULL,0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,
-												'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
-			} else {
-				if ($rowPadron['parentesco'] == 4 || $rowPadron['parentesco'] == 6) {
-					$estudia = 1;
-				} else {
-					$estudia = 0;
-				}
-				
-				$index = $cuiltitular.'F'.$orden;
-				$arrayProcFami[$rowPadron['cuilfamiliar']] = array("cuiltitular" => $cuiltitular, "nombre" => $rowPadron['apellidoynombre']);
-				$sqlAEjecutar[$index] = "INSERT INTO familiares VALUES(#afi,#ord,".$rowPadron['parentesco'].",'".$rowPadron['apellidoynombre']."','"
-												.$rowPadron['tipodocumento']."',".$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',"
-												.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
-												.$rowPadron['incapacidad'].",NULL,".$estudia.",NULL,NULL,NULL,'".$rowPadron['cuilfamiliar']
-												."',0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
-			}
-		}
-		if ($arrayProcTitu[$cuiltitular]['proceso'] == 'R' && $rowPadron['parentesco'] == 0) {
+		if ($rowPadron['parentesco'] == 0) {
 			$arrayProcTitu[$cuiltitular] += array("nombre" =>$rowPadron['apellidoynombre'], "nroafil" => $arrayProcTitu[$cuiltitular]['nroafil']);
 			$index = $cuiltitular.'T'.$orden;
 			$sqlAEjecutar[$index] = "INSERT INTO titulares VALUES(".$arrayProcTitu[$cuiltitular]['nroafil'].",'".$rowPadron['apellidoynombre']."','".$rowPadron['tipodocumento']."',"
@@ -222,18 +187,6 @@ if (sizeof($sqlAEjecutar) > 0) {
 				$dbh->exec($sql);
 				$nroAfiliado = $dbh->lastInsertId();
 				$arrayProcTitu[$cuiltitular] +=  array("nroafil" => $nroAfiliado);
-			} else {
-				$orden++;
-				$posF = strpos($key, 'F');
-				if ($posF !== false) {
-					$sql = str_replace('#afi', $nroAfiliado, $sql);
-					$sql = str_replace('#ord', $orden, $sql);
-					//print($sql."<br>");
-					$dbh->exec($sql);
-				} else {
-					//print($sql."<br>");
-					$dbh->exec($sql);
-				}
 			}
 		}
 		$dbh->commit();
@@ -253,7 +206,7 @@ if (sizeof($sqlAEjecutar) > 0) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Informe de Proceso de Titulares en SSS :.</title>
+<title>.: Informe de Proceso de Reactivacion Titulares en SSS :.</title>
 
 <style type="text/css" media="print">
 .nover {
@@ -304,30 +257,14 @@ $(function() {
 			filter_hideFilters : false,
 		}
 	});
-
-	$("#tablaProcesoFami")
-	.tablesorter({
-		theme: 'blue', 
-		widthFixed: true, 
-		widgets: ["zebra", "filter"], 
-		widgetOptions : { 
-			filter_cssFilter   : '',
-			filter_childRows   : false,
-			filter_hideFilters : false,
-			filter_ignoreCase  : true,
-			filter_searchDelay : 300,
-			filter_startsWith  : false,
-			filter_hideFilters : false,
-		}
-	});
 });
 </script>
 </head>
 
 <body bgcolor="#CCCCCC">
 	<div align="center">
-		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuCruceSSS.php'" />
-		<h2>Informe de Proceso de descarga Titulares en SSS</h2>
+		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoTituSSS.php'" />
+		<h2>Informe de Proceso de Reactivacion Titulares en SSS</h2>
 		<h3>Titulares sin procesar</h3>
 		<?php if (sizeof($arrayInfo) > 0) { ?>
 		<table style="text-align: center; width: 900px" id="tablaInforme" class="tablesorter">
@@ -336,7 +273,6 @@ $(function() {
 					<th>C.U.I.L.</th>
 					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo Titular </th>
 					<th>C.U.I.T.</th>
-					<th class="filter-select" data-placeholder="Seleccione Proceso">Proceso</th>
 					<th>Detalle</th>
 				</tr>
 			</thead>
@@ -346,7 +282,6 @@ $(function() {
 					<td><?php echo $cuil ?></td>
 					<td><?php echo $datos['tipotitular'] ?></td>
 					<td><?php echo $datos['cuit'] ?></td>
-					<td><?php if ($datos['proceso'] == 'A') { echo 'ALTA'; } if ($datos['proceso'] == 'R') { echo 'REACTIVACION'; }  ?></td>
 					<td><?php echo $datos['detalle'] ?></td>
 				</tr>
 			<?php } ?>
@@ -366,7 +301,6 @@ $(function() {
 					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo Titular </th>
 					<th>Nombre y Apellido</th>
 					<th>C.U.I.T.</th>
-					<th class="filter-select" data-placeholder="Seleccione Proceso">Proceso</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -377,39 +311,12 @@ $(function() {
 					<td><?php echo $datos['tipodescrip'] ?></td>
 					<td><?php echo $datos['nombre'] ?></td>
 					<td><?php echo $datos['cuit'] ?></td>
-					<td><?php if ($datos['proceso'] == 'A') { echo 'ALTA'; } if ($datos['proceso'] == 'R') { echo 'REACTIVACION'; }  ?></td>
 				</tr>
 			<?php } ?>
 			</tbody>
 		</table>
 		<?php } else { ?>
 			<h4>No hay Titulares para informar</h4>
-		<?php } ?>
-		
-		<h3>Familiares Procesados</h3>
-		<?php if (sizeof($arrayProcFami) > 0) { ?>
-			<table style="text-align: center; width: 900px" id="tablaProcesoFami" class="tablesorter">
-				<thead>
-					<tr>
-						<th>C.U.I.L.</th>
-						<th>Nombre</th>
-						<th>C.U.I.L. Titular</th>
-						<th class="filter-select" data-placeholder="Seleccione Proceso">Proceso</th>
-					</tr>
-				</thead>
-				<tbody>
-			<?php foreach ($arrayProcFami as $cuil => $datos) { ?>
-				<tr>	
-					<td><?php echo $cuil ?></td>
-					<td><?php echo $datos['nombre'] ?></td>
-					<td><?php echo $datos['cuiltitular'] ?></td>
-					<td><?php echo 'ALTA';  ?></td>
-				</tr>
-			<?php } ?>
-			</tbody>
-			</table>
-		<?php } else { ?>
-			<h4>No hay Familiares para informar</h4>
 		<?php } ?>
 		<input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
 	</div>
