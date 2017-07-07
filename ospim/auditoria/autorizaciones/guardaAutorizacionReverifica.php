@@ -60,8 +60,7 @@ $hostlocal = $_SESSION['host'];
 $dblocal = $_SESSION['dbname'];
 
 
-if($staauto == 3)
-{
+if($staauto == 3) {
 	try {
 		$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
 		//echo 'Connected to database local<br/>';
@@ -98,8 +97,7 @@ if($staauto == 3)
 	}
 }
 
-if($staauto == 2)
-{
+if($staauto == 2) {
 	try {
 		$dbl = new PDO("mysql:host=$hostlocal;dbname=$dblocal",$_SESSION['usuario'],$_SESSION['clave']);
 		//echo 'Connected to database local<br/>';
@@ -130,8 +128,13 @@ if($staauto == 2)
 		$subject="AVISO: Solicitud de Autorizacion Atendida";
 		$address = "autorizaciones".$rowLeeSolicitud['codidelega']."@ospim.com.ar";
 		$modulo = "Autorizaciones";
-		if (guardarEmail($username, $subject, $bodymail, $address, $modulo, null) == -1) {
+		$idMailDelgaRechazo = guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
+		if ($idMailDelgaRechazo == -1) {
 			throw new PDOException('Error al intentar guardar el correo electronico');
+		} else {
+			$sqlInsertAutoMail = "INSERT INTO autorizacionesemail VALUES(:nrosolicitud,:idmail)";
+			$resInsertAutoMail = $dbl->prepare($sqlInsertAutoMail);
+			$resInsertAutoMail->execute(array(':nrosolicitud' => $nrosoli, ':idmail' => $idMailDelgaRechazo));
 		}
 		
 		$dbl->commit();

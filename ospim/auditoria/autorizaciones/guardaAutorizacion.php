@@ -493,8 +493,13 @@ try {
 	//EMAIL RECHAZO
 	if ($staauto==2) {
 		$bodymail.="<br>Verifique la situacion de la solicitud a traves del modulo INTRANET DELEGACIONES.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-		if (guardarEmail($username, $subjectDelega, $bodymail, $addressDelega, $modulo, null) == -1) {
+		$idMailDelegaRechazo = guardarEmail($username, $subjectDelega, $bodymail, $addressDelega, $modulo, null);
+		if ($idMailDelegaRechazo == -1) {
 			throw new PDOException('Error al intentar guardar el correo electronico');
+		} else {
+			$sqlInsertAutoMail = "INSERT INTO autorizacionesemail VALUES(:nrosolicitud,:idmail)";
+			$resInsertAutoMail = $dbl->prepare($sqlInsertAutoMail);
+			$resInsertAutoMail->execute(array(':nrosolicitud' => $nrosoli, ':idmail' => $idMailDelegaRechazo));
 		}
 	} 
 	
@@ -505,8 +510,13 @@ try {
 			$bodymail.="<br>La aprobacion incluye una comunicacion de la que podra tomar conocimiento a traves del modulo INTRANET DELEGACIONES.";
 		}
 		$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
-		if (guardarEmail($username, $subjectDelega, $bodymail, $addressDelega, $modulo, $arrayAttachment) == -1) {
+		$idMailDelega = guardarEmail($username, $subjectDelega, $bodymail, $addressDelega, $modulo, $arrayAttachment);
+		if ($idMailDelega == -1) {
 			throw new PDOException('Error al intentar guardar el correo electronico');
+		} else {
+			$sqlInsertAutoMail = "INSERT INTO autorizacionesemail VALUES(:nrosolicitud,:idmail)";
+			$resInsertAutoMail = $dbl->prepare($sqlInsertAutoMail);
+			$resInsertAutoMail->execute(array(':nrosolicitud' => $nrosoli, ':idmail' => $idMailDelega));
 		}
 		
 		if($apeauto==1) {
@@ -514,8 +524,13 @@ try {
 			$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
 			$subject = "AVISO: Autorizacion Aprobada incluye prestaciones SUR";
 			$address = "expedientessur@ospim.com.ar";
-			if (guardarEmail($username, $subject, $bodymail, $address, $modulo, $arrayAttachment) == -1) {
+			$idMailSur = guardarEmail($username, $subject, $bodymail, $address, $modulo, $arrayAttachment);
+			if ($idMailSur == -1) {
 				throw new PDOException('Error al intentar guardar el correo electronico');
+			} else {
+				$sqlInsertAutoMail = "INSERT INTO autorizacionesemail VALUES(:nrosolicitud,:idmail)";
+				$resInsertAutoMail = $dbl->prepare($sqlInsertAutoMail);
+				$resInsertAutoMail->execute(array(':nrosolicitud' => $nrosoli, ':idmail' => $idMailSur));
 			}
 		}
 		
@@ -527,8 +542,13 @@ try {
 			$bodymail.="<br>Se envia adjunto documento PDF con los detalles de la Autorizacion.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M. - Obra Social del Personal de la Industria Maderera<br /></body>";
 			$subject = "AVISO: Autorizacion Aprobada";
 			$address = $presmail;
-			if (guardarEmail($username, $subject, $bodymail, $address, $modulo, $arrayAttachment) == -1) {
+			$idMailPresta = guardarEmail($username, $subject, $bodymail, $address, $modulo, $arrayAttachment);
+			if ($idMailPresta == -1) {
 				throw new PDOException('Error al intentar guardar el correo electronico');
+			} else {
+				$sqlInsertAutoMail = "INSERT INTO autorizacionesemail VALUES(:nrosolicitud,:idmail)";
+				$resInsertAutoMail = $dbl->prepare($sqlInsertAutoMail);
+				$resInsertAutoMail->execute(array(':nrosolicitud' => $nrosoli, ':idmail' => $idMailPresta));
 			}
 		}
 	}
