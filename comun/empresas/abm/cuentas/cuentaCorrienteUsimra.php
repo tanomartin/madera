@@ -177,7 +177,7 @@ function encuentroPagosExtraor($db, &$arrayPagos) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
 	$sqlPagosExt = "SELECT s.anopago, s.mespago, e.relacionmes, s.fechapago, s.remuneraciones, s.montopagado
 					FROM seguvidausimra s, extraordinariosusimra e
-					WHERE s.cuit = $cuit and s.anopago = e.anio and s.mespago = e.mes and
+					WHERE s.cuit = $cuit and s.anopago = e.anio and s.mespago = e.mes and e.tipo != 3 and
 					 ((s.anopago > $anoinicio and s.anopago <= $anofin) or (s.anopago = $anoinicio and e.relacionmes >= $mesinicio))
 					group by anopago, mespago, fechapago";
 	$resPagosExt = mysql_query ( $sqlPagosExt, $db );

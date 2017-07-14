@@ -131,6 +131,7 @@ function validar(formulario) {
            			<option value='0'>0 - Contribucion Ext. No Remunerativa (Monto Fijo)</option>
            			<option value='1'>1 - Aumento No Remunerativo (Alicuota)</option>
            			<option value='2'>2 - Cuotas Extraordinarias (Monto Fijo)</option>
+           			<option value='3'>3 - Extraordinario SAC</option>
            		</select>
            </td>
          </tr>
