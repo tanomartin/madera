@@ -3,7 +3,7 @@ include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
 $arrayTipo = array();
-$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip FROM padronsss p, tipotitular t where p.parentesco = 0 and p.tipotitular = t.codtiptit LIMIT 100";
+$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip FROM padronsss p, tipotitular t where p.parentesco = 0 and p.tipotitular = t.codtiptit";
 $resTituSSS = mysql_query ( $sqlTituSSS, $db );
 $arrayTituSSS = array();
 $arrayDNISSS = array();
