@@ -35,7 +35,7 @@ while ($rowEmpresasCuit = mysql_fetch_assoc ($resEmpresasCuit)) {
 	$arrayCuit[$rowEmpresasCuit['cuit']] = $rowEmpresasCuit;
 }
 
-$sqlDelegaciones = "SELECT * FROM delegaciones WHERE codidelega not in (1000,1001,3200,3500,4000,4001)";
+$sqlDelegaciones = "SELECT * FROM delegaciones WHERE codidelega not in (3500,4000,4001)";
 $resDelegaciones = mysql_query ( $sqlDelegaciones, $db );
 $arrayInforme = array();
 while ($rowDelegaciones = mysql_fetch_assoc ($resDelegaciones)) {
@@ -56,6 +56,10 @@ foreach ($arrayTituSSS as $cuil => $titu) {
 		}
 	} 
 }
+
+$sqlMesPadron = "SELECT * FROM padronssscabecera c WHERE fechacierre is null ORDER BY c.id DESC LIMIT 1";
+$resMesPadron = mysql_query ( $sqlMesPadron, $db );
+$rowMesPadron = mysql_fetch_assoc ($resMesPadron);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -104,6 +108,12 @@ $(function() {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoTituSSS.php'" />
+		
+		<div align="center">
+			<h2>Men&uacute; Descarga Informacion de Titulares desde la S.S.S.</h2>
+			<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
+		</div>
+		
 		<h2>Descarga Alta Titulares S.S.S.</h2>
 		<h3>Informe de Titulares</h3>
 		<table style="text-align: center; width: 600px" id="tablaInfo" class="tablesorter">	
