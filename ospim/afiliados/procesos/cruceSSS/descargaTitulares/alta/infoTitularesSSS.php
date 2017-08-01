@@ -127,13 +127,13 @@ $(function() {
 				<?php 
 					$total = 0;
 					foreach ($arrayInforme as $codidelega => $info) { 
-					$total += $info['cantidad'];?>
-					<tr>	
-						<td><?php echo $codidelega ?></td>
-						<td><?php echo $info['nombre']?></td>
-						<td><?php echo $info['cantidad']?></td>
-					</tr>
-			<?php } ?>
+						$total += $info['cantidad'];?>
+						<tr>	
+							<td><?php echo $codidelega ?></td>
+							<td><?php echo $info['nombre']?></td>
+							<td><?php echo $info['cantidad']?></td>
+						</tr>
+			 <?php } ?>
 				<tr>
 					<td colspan="2" style="background-color: aqua;"><b>TOTAL</b></td>
 					<td style="background-color: aqua;"><b><?php echo $total ?></b></td>
