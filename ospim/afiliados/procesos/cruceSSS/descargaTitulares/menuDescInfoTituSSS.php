@@ -43,17 +43,23 @@ function mostrar(dire) {
 	<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
 </div>
 <div align="center">
-  <table width="600" border="3">
+  <table width="400" border="3">
     <tr>
        <td width="200"><p align="center">Descarga Titulares</p>
         <p align="center"><a class="enlace" href="javascript:mostrar('alta/altaTitularesSSS.php')"><img src="../img/descargaTitulares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
+         <td width="200"><p align="center">Informe Titulares por Delegacion</p>
+        <p align="center"><a class="enlace" href="javascript:mostrar('alta/infoTitularesSSS.php')"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p>&nbsp;</p></td> 
+     </tr>
+     <tr>
       <td width="200"><p align="center">Reactivacion Titulares</p>
           <p align="center"><a class="enlace" href="javascript:mostrar('reactivacion/reactivaTitularesSSS.php')"><img src="../img/reactivacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
          <td width="200"><p align="center">Inconsistencias Titulares</p>
         <p align="center"><a class="enlace" href="javascript:mostrar('inconsistencia/incoTitularesSSS.php')"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
+       
     </tr>
   </table>
 </div>
