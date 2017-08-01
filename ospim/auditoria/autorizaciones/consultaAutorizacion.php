@@ -216,9 +216,9 @@ function reenviarMail(solicitud, idmail, boton, mail) {
    		<h3 align="left" class="Estilo4">Reenvio de Correos</h3>
   	  <?php if ($canMailsEnviados > 0) { 
    				while ($rowSelectMails = mysql_fetch_assoc($resMailsEnviados)) {
-   					echo "<p><b>".$rowSelectMails['address']."</b> - Enviado el ".$rowSelectMails['fechaenvio']." ";
-   					if ($_SESSION['usuario'] == 'sistemas')  {?><input type="button" name="reenvio" id="reenvio" value="Reenviar" onclick="javascript:reenviarMail(<?php echo $nrosolicitud?>,<?php echo $rowSelectMails['id']?>, this, '<?php echo $rowSelectMails['address']?>')" /> <?php }?>
-   	  <?php			echo "</p>";
+   					echo "<p><b>".$rowSelectMails['address']."</b> - Enviado el ".$rowSelectMails['fechaenvio']." ";?>
+   					<input type="button" name="reenvio" id="reenvio" value="Reenviar" onclick="javascript:reenviarMail(<?php echo $nrosolicitud?>,<?php echo $rowSelectMails['id']?>, this, '<?php echo $rowSelectMails['address']?>')" />
+   	  <?php			echo "</p>"; 
    				}
    			} 
    			if ($canMailsNoEnviados > 0) { 
