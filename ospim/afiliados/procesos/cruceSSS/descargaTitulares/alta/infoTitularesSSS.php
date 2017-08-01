@@ -3,7 +3,7 @@ include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
 $arrayTipo = array();
-$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip FROM padronsss p, tipotitular t where p.parentesco = 0 and p.tipotitular = t.codtiptit";
+$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip FROM padronsss p, tipotitular t where p.parentesco = 0 and p.tipotitular = t.codtiptit LIMIT 100";
 $resTituSSS = mysql_query ( $sqlTituSSS, $db );
 $arrayTituSSS = array();
 $arrayDNISSS = array();
@@ -110,11 +110,10 @@ $(function() {
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoTituSSS.php'" />
 		
 		<div align="center">
-			<h2>Men&uacute; Descarga Informacion de Titulares desde la S.S.S.</h2>
+			<h2>Informe de Cantidad Alta Titulares S.S.S.</h2>
 			<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
 		</div>
 		
-		<h2>Descarga Alta Titulares S.S.S.</h2>
 		<h3>Informe de Titulares</h3>
 		<table style="text-align: center; width: 600px" id="tablaInfo" class="tablesorter">	
 			<thead>
