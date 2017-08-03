@@ -4,56 +4,25 @@ include ($libPath . "controlSessionOspim.php");
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 
-$sqlEmpresasCuit = "SELECT cuit FROM empresas";
-$resEmpresasCuit = mysql_query ( $sqlEmpresasCuit, $db );
-$arrayCuit = array();
-while ($rowEmpresasCuit = mysql_fetch_assoc ($resEmpresasCuit)) {
-	$arrayCuit[$rowEmpresasCuit['cuit']] = $rowEmpresasCuit['cuit'];
-}
-
-$sqlEmpresasCuit = "SELECT cuit FROM empresasdebaja";
-$resEmpresasCuit = mysql_query ( $sqlEmpresasCuit, $db );
-$arrayCuitBaja = array();
-while ($rowEmpresasCuit = mysql_fetch_assoc ($resEmpresasCuit)) {
-	$arrayCuitBaja[$rowEmpresasCuit['cuit']] = $rowEmpresasCuit['cuit'];
-}
-
 $arrayProcTitu = array();
 $arrayProcFami = array();
 $arrayInfo = array();
-$arrayTipoTitu = array();
 $arrayFechaEmpresa = array();
-$arrayTiposAceptados = array(0,2,4,5,8);
+
+$sqlTipoTitu = "SELECT codtiptit, descrip FROM tipotitular";
+$resTipoTitu = mysql_query ( $sqlTipoTitu, $db );
+$arrayDescTipo = array();
+while ($rowTipoTitu = mysql_fetch_assoc($resTipoTitu)) {
+	$codtiptit = (string)(int)$rowTipoTitu['codtiptit'];
+	$arrayDescTipo[$codtiptit] = $rowTipoTitu['descrip'];
+}
 
 foreach ($_POST as $cuil => $datos) {
-	if ($cuil != 'text' && $cuil != 'select') {
+	if ($cuil != 'text' && $cuil != 'select') {	
 		$datos = explode('-',$datos);
 		$cuit = $datos[0];
 		$tipoTitu = $datos[1];
-		$opcion = $datos[2];
-		
-		$sqlTipoTitu = "SELECT descrip FROM tipotitular where codtiptit = $tipoTitu";
-		$resTipoTitu = mysql_query ( $sqlTipoTitu, $db );
-		$rowTipoTitu = mysql_fetch_assoc($resTipoTitu);
-		$arrayTipoTitu[$cuil] = array("tipo" => $tipoTitu, "descrip" => $rowTipoTitu['descrip']);
-		
-		if ($opcion != 0) {
-			$arrayInfo[$cuil] = array("detalle" => "Opción", "cuit" => $cuit, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
-		} else {
-			if (!in_array($tipoTitu,$arrayTiposAceptados)) {		
-				$arrayInfo[$cuil] = array("detalle" => "No es un tipo de titular manejado", "cuit" => $cuit, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
-			} else {
-				if (!array_key_exists ($cuit , $arrayCuit)) {
-					if (!array_key_exists ($cuit , $arrayCuitBaja)) {
-						$arrayInfo[$cuil] = array("detalle" => "La empresa no existe", "cuit" => $cuit, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
-					} else {
-						$arrayInfo[$cuil] = array("detalle" => "La empresa esta de baja", "cuit" => $cuit, "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
-					} 
-				} else {
-					$arrayProcTitu[$cuil] = array("cuit" => $cuit, "tipotitular" => $tipoTitu, "tipodescrip" => $arrayTipoTitu[$cuil]['descrip']);	
-				}
-			}
-		}
+		$arrayProcTitu[$cuil] = array("cuit" => $cuit, "tipotitular" => $tipoTitu, "tipodescrip" => $arrayDescTipo[$tipoTitu]);	
 	}
 }
 
@@ -92,12 +61,12 @@ foreach ($arrayProcTitu as $cuil => $titu) {
 	} else {
 		unset($arrayProcTitu[$cuil]);
 		if ($titu['tipotitular'] == 2 || $titu['tipotitular'] == 8) {
-			$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar DESEMPLEO para el CUIL a procesar", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
+			$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar DESEMPLEO para el CUIL a procesar", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayDescTipo[$titu['tipotitular']]);
 		} else {
 			if ($titu['tipotitular'] == 4) {
-				$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar Aportes de la empresa declarada", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
+				$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar Aportes de la empresa declarada", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayDescTipo[$titu['tipotitular']]);
 			} else {
-				$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar DDJJ de la empresa declarada", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayTipoTitu[$cuil]['descrip']);
+				$arrayInfo[$cuil] = array("detalle" => "No se puede encontrar DDJJ de la empresa declarada", "cuit" => $titu['cuit'], "proceso" => $titu['proceso'], "tipotitular" => $arrayDescTipo[$titu['tipotitular']]);
 			}
 		}
 	}
@@ -135,15 +104,8 @@ if ($whereIn != ")") {
 		}
 			
 		$domicilio = $rowPadron['calledomicilio']." ".$rowPadron['puertadomicilio']." ". $rowPadron['pisodomicilio']." ".$rowPadron['deptodomicilio'];
-				
-		if ($rowPadron['tipotitular'] == 2 || $rowPadron['tipotitular'] == 8) {
-			$codidelega = 3200;
-		} else {
-			$sqlJuris = "SELECT codidelega FROM jurisdiccion WHERE cuit = ".$rowPadron['cuit']." order by disgdinero DESC LIMIT 1";
-			$resJuris = mysql_query ( $sqlJuris, $db );
-			$rowJuris = mysql_fetch_assoc ($resJuris);
-			$codidelega = $rowJuris['codidelega'];
-		}
+			
+		$codidelega = $_GET['codidelega'];
 		
 		if ($rowPadron['telefono'] == '') {
 			$telefono = 'NULL';
@@ -194,7 +156,7 @@ if (sizeof($sqlAEjecutar) > 0) {
 			$posT = strpos($key, 'T');
 			if ($posT !== false) {
 				$orden = 0;
-				//print($sql."<br>");
+				//print($sql."<br><br>");
 				$dbh->exec($sql);
 				$nroAfiliado = $dbh->lastInsertId();
 				$arrayProcTitu[$cuiltitular] +=  array("nroafil" => $nroAfiliado);
@@ -204,10 +166,10 @@ if (sizeof($sqlAEjecutar) > 0) {
 				if ($posF !== false) {
 					$sql = str_replace('#afi', $nroAfiliado, $sql);
 					$sql = str_replace('#ord', $orden, $sql);
-					//print($sql."<br>");
+					//print($sql."<br><br>");
 					$dbh->exec($sql);
 				} else {
-					//print($sql."<br>");
+					//print($sql."<br><br>");
 					$dbh->exec($sql);
 				}
 			}
@@ -302,7 +264,7 @@ $(function() {
 
 <body bgcolor="#CCCCCC">
 	<div align="center">
-		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoTituSSS.php'" />
+		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'altaTitularesDelegacionSSS.php'" />
 		<h2>Informe de Proceso de Alta Titulares desde la SSS</h2>
 		<h3>Titulares sin procesar</h3>
 		<?php if (sizeof($arrayInfo) > 0) { ?>

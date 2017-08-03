@@ -174,9 +174,8 @@ function validar(formulario) {
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'altaTitularesDelegacionSSS.php'" />
 		<h2>Descarga Alta Titulares S.S.S.</h2>
-		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarAltaSSS.php">
+		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarAltaSSS.php?codidelega=<?php echo $codidelega ?>">
 			<h3>Alta de Titulares - Delegacion <?php echo $datos[1] ?></h3>
-			
 			<?php if (sizeof($arrayAlta) > 0) { ?>
 			<table style="text-align: center; width: 1000px" id="tablaAlta" class="tablesorter">	
 				<thead>
@@ -195,7 +194,7 @@ function validar(formulario) {
 							<td><?php echo $titu['nombre']?></td>
 							<td><?php echo $titu['cuit']?></td>
 							<td><?php echo $arrayTipo[$cuil]?></td>
-							<td><input type="checkbox" name="<?php echo $cuil ?>" id="alta" value="<?php echo $titu['cuit'].'-'.$titu['tipotitular']."-".$titu['osopcion'] ?>" /></td>
+							<td><input type="checkbox" name="<?php echo $cuil ?>" id="alta" value="<?php echo $titu['cuit'].'-'.$titu['tipotitular'] ?>" /></td>
 						</tr>
 				<?php } ?>
 				</tbody>
