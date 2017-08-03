@@ -2,43 +2,71 @@
 include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
-$arrayTipo = array();
-$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip FROM padronsss p, tipotitular t where p.parentesco = 0 and p.tipotitular = t.codtiptit";
-$resTituSSS = mysql_query ( $sqlTituSSS, $db );
-$arrayTituSSS = array();
-$arrayDNISSS = array();
-while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
-	$arrayTituSSS[$rowTituSSS['cuiltitular']] = array('nrodoc' => $rowTituSSS['nrodocumento'], 'cuit' => $rowTituSSS['cuit'], 'nombre' => $rowTituSSS['apellidoynombre'], 'tipotitular' => $rowTituSSS['tipotitular'], 'osopcion' => $rowTituSSS['osopcion']);
-	$arrayTipo[$rowTituSSS['cuiltitular']] = $rowTituSSS['descrip'];
+$datos = explode("-",$_POST['delegacion']);
+$codidelega = $datos[0];
+$sqlEmpresasCuit = "SELECT e.cuit,j.codidelega FROM empresas e, jurisdiccion j WHERE e.cuit = j.cuit order by e.cuit, j.disgdinero;";
+$resEmpresasCuit = mysql_query ( $sqlEmpresasCuit, $db );
+$arrayCuit = array();
+while ($rowEmpresasCuit = mysql_fetch_assoc ($resEmpresasCuit)) {
+	$arrayCuit[$rowEmpresasCuit['cuit']] = $rowEmpresasCuit;
 }
 
-$sqlTitu = "SELECT DISTINCT t.cuil, t.cuitempresa, t.nrodocumento, t.nroafiliado, p.descrip  FROM titulares t, tipotitular p WHERE t.situaciontitularidad = p.codtiptit";
-$resTitu = mysql_query ( $sqlTitu, $db );
-$arrayTitu = array();
-while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
-	$arrayTitu[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
-	$arrayTipo[$rowTitu['cuil']] = $rowTitu['descrip'];
+//DEJO SOLO LA DELEGACION PEDIDA
+$whereCuit = "(";
+foreach ($arrayCuit as $empresas) {
+	if ($empresas['codidelega'] == $codidelega) {
+		$whereCuit .= "'".$empresas['cuit']."',";
+	} else {
+		unset($empresas[$empresas['cuit']]);
+	}
 }
+$whereCuit = substr($whereCuit, 0, -1);
+$whereCuit .= ")";
 
-$sqlTitu = "SELECT DISTINCT t.cuil, t.nrodocumento, t.nroafiliado, p.descrip FROM titularesdebaja t, tipotitular p WHERE t.situaciontitularidad = p.codtiptit";
-$resTitu = mysql_query ( $sqlTitu, $db );
-$arrayTituBaja = array();
-while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
-	$arrayTituBaja[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
-	$arrayTipo[$rowTitu['cuil']] = $rowTitu['descrip'];
-}
-
-$arrayActivar = array();
-foreach ($arrayTituSSS as $cuil => $titu) {
-	if (!array_key_exists ($cuil , $arrayTitu)) {
-		if (!array_key_exists ($cuil , $arrayTituBaja)) {
-			if(!in_array($titu['nrodoc'], $arrayTitu)) {
-				if(!in_array($titu['nrodoc'], $arrayTituBaja)) {
-					$arrayAlta[$cuil] = $titu; 
-				} 
+$arrayAlta = array();
+if ($whereCuit != ")") {
+	$arrayTipo = array();
+	$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip 
+						FROM padronsss p, tipotitular t 
+						WHERE p.cuit in $whereCuit and p.tipotitular in (0,2,4,5,8) and p.osopcion = 0 and p.parentesco = 0 and p.tipotitular = t.codtiptit";
+	$resTituSSS = mysql_query ( $sqlTituSSS, $db );
+	$arrayTituSSS = array();
+	while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
+		$arrayTituSSS[$rowTituSSS['cuiltitular']] = array('nrodoc' => $rowTituSSS['nrodocumento'], 'cuit' => $rowTituSSS['cuit'], 'nombre' => $rowTituSSS['apellidoynombre'], 'tipotitular' => $rowTituSSS['tipotitular'], 'osopcion' => $rowTituSSS['osopcion']);
+		$arrayTipo[$rowTituSSS['cuiltitular']] = $rowTituSSS['descrip'];
+	}
+	
+	$sqlTitu = "SELECT DISTINCT t.cuil, t.cuitempresa, t.nrodocumento, t.nroafiliado, p.descrip  FROM titulares t, tipotitular p WHERE t.situaciontitularidad = p.codtiptit";
+	$resTitu = mysql_query ( $sqlTitu, $db );
+	$arrayTitu = array();
+	while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
+		$arrayTitu[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
+		$arrayTipo[$rowTitu['cuil']] = $rowTitu['descrip'];
+	}
+	
+	$sqlTitu = "SELECT DISTINCT t.cuil, t.nrodocumento, t.nroafiliado, p.descrip FROM titularesdebaja t, tipotitular p WHERE t.situaciontitularidad = p.codtiptit";
+	$resTitu = mysql_query ( $sqlTitu, $db );
+	$arrayTituBaja = array();
+	while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
+		$arrayTituBaja[$rowTitu['cuil']] = $rowTitu['nrodocumento'];
+		$arrayTipo[$rowTitu['cuil']] = $rowTitu['descrip'];
+	}
+	
+	$arrayTiposAceptados = array(0,2,4,5,8);
+	
+	foreach ($arrayTituSSS as $cuil => $titu) {
+		if (in_array($titu['tipotitular'],$arrayTiposAceptados)) {
+			if (!array_key_exists ($cuil , $arrayTitu)) {
+				if (!array_key_exists ($cuil , $arrayTituBaja)) {
+					if(!in_array($titu['nrodoc'], $arrayTitu)) {
+						if(!in_array($titu['nrodoc'], $arrayTituBaja)) {
+							$arrayAlta[$cuil] = $titu; 
+						} 
+					} 
+				}
 			} 
 		}
-	} 
+	}
 }
 
 ?>
@@ -144,10 +172,12 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 	<div align="center">
-		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoTituSSS.php'" />
+		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'altaTitularesDelegacionSSS.php'" />
 		<h2>Descarga Alta Titulares S.S.S.</h2>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarAltaSSS.php">
-			<h3>Alta de Titulares</h3>
+			<h3>Alta de Titulares - Delegacion <?php echo $datos[1] ?></h3>
+			
+			<?php if (sizeof($arrayAlta) > 0) { ?>
 			<table style="text-align: center; width: 1000px" id="tablaAlta" class="tablesorter">	
 				<thead>
 					<tr>
@@ -193,6 +223,9 @@ function validar(formulario) {
 				</tr>
 			</table>
 			<input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
+			<?php } else {?>
+			<h2>No hay Titulares para dar de alta</h2>
+			<?php } ?>
 		</form>
 	</div>
 </body>

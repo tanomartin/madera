@@ -3,7 +3,9 @@ include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
 $arrayTipo = array();
-$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip FROM padronsss p, tipotitular t where p.parentesco = 0 and p.tipotitular = t.codtiptit";
+$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip 
+					FROM padronsss p, tipotitular t 
+					where p.tipotitular in (0,2,4,5,8) and p.osopcion = 0 and p.parentesco = 0 and p.tipotitular = t.codtiptit";
 $resTituSSS = mysql_query ( $sqlTituSSS, $db );
 $arrayTituSSS = array();
 $arrayDNISSS = array();
@@ -12,7 +14,7 @@ while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
 	$arrayTipo[$rowTituSSS['cuiltitular']] = $rowTituSSS['descrip'];
 }
 
-$sqlTitu = "SELECT DISTINCT t.cuil, t.cuitempresa, t.nrodocumento, t.nroafiliado, p.descrip  FROM titulares t, tipotitular p WHERE t.situaciontitularidad = p.codtiptit";
+$sqlTitu = "SELECT DISTINCT t.cuil, t.cuitempresa, t.nrodocumento, t.nroafiliado, p.descrip FROM titulares t, tipotitular p WHERE t.situaciontitularidad = p.codtiptit";
 $resTitu = mysql_query ( $sqlTitu, $db );
 $arrayTitu = array();
 while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
@@ -42,6 +44,7 @@ while ($rowDelegaciones = mysql_fetch_assoc ($resDelegaciones)) {
 	$arrayInforme[$rowDelegaciones['codidelega']]['nombre'] = $rowDelegaciones['nombre'];
 	$arrayInforme[$rowDelegaciones['codidelega']]['cantidad'] = 0;
 }
+
 
 foreach ($arrayTituSSS as $cuil => $titu) {
 	if (!array_key_exists ($cuil , $arrayTitu)) {

@@ -35,9 +35,7 @@ function mostrar(dire) {
 </head>
 
 <body bgcolor="#CCCCCC">
-<div align="center">
-	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuCruceSSS.php'" /> 
-</div>
+<div align="center"><input type="button" name="volver" value="Volver" onclick="location.href = '../menuCruceSSS.php'" /> </div>
 <div align="center">
 	<h2>Men&uacute; Descarga Informacion de Titulares desde la S.S.S.</h2>
 	<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
@@ -45,8 +43,8 @@ function mostrar(dire) {
 <div align="center">
   <table width="400" border="3">
     <tr>
-       <td width="200"><p align="center">Descarga Titulares</p>
-        <p align="center"><a class="enlace" href="javascript:mostrar('alta/altaTitularesSSS.php')"><img src="../img/descargaTitulares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+       <td width="200"><p align="center">Descarga Titulares por Delegacion</p>
+        <p align="center"><a class="enlace" href="alta/altaTitularesDelegacionSSS.php"><img src="../img/descargaTitulares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
          <td width="200"><p align="center">Informe Titulares por Delegacion</p>
         <p align="center"><a class="enlace" href="javascript:mostrar('alta/infoTitularesSSS.php')"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
