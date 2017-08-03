@@ -33,11 +33,20 @@ while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
 }
 
 $arrayInforme = array();
+$arrayTipoAceptados = array(0,2,4,5,8);
 foreach ($arrayTituSSS as $cuil => $titu) {
 	if (!array_key_exists ($cuil , $arrayTitu)) {
 		if (!array_key_exists ($cuil , $arrayTituBaja)) {
 			if(!in_array($titu['nrodoc'], $arrayTitu)) {
-				if(in_array($titu['nrodoc'], $arrayTituBaja)) {
+				if(!in_array($titu['nrodoc'], $arrayTituBaja)) {
+					if ($titu['osopcion'] != 0) {
+						$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular por Opcion no empadronado informado desde la S.S.S");
+					} else {
+						if (!in_array($titu['tipotitular'], $arrayTipoAceptados)) {
+							$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular con tipo de titular no aceptado por la O.S. no empadronado informado desde la S.S.S");
+						}
+					}
+				} else {
 					$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. con diferente C.U.I.L. informado desde la S.S.S");
 				}
 			} else {
