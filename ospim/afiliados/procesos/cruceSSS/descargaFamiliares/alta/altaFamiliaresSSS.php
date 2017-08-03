@@ -2,7 +2,19 @@
 include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
-$sqlFamiSSS = "SELECT DISTINCT cuilfamiliar, cuiltitular, nrodocumento, cuit, apellidoynombre, tipotitular, osopcion FROM padronsss p where parentesco != 0";
+$datos = explode("-",$_POST['delegacion']);
+$codidelega = $datos[0];
+
+$sqlCuilTitular = "SELECT nroafiliado, cuil, codidelega FROM titulares WHERE codidelega = $codidelega";
+$resCuilTitular = mysql_query ( $sqlCuilTitular, $db );
+$arrayCuilTitular = array();
+while ($rowCuilTitular = mysql_fetch_assoc ($resCuilTitular)) {
+	$arrayCuilTitular[$rowCuilTitular['cuil']] = array("codidelega" => $rowCuilTitular['codidelega'], "nroafiliado" => $rowCuilTitular['nroafiliado']);
+}
+
+$sqlFamiSSS = "SELECT DISTINCT cuilfamiliar, cuiltitular, nrodocumento, cuit, apellidoynombre, tipotitular, osopcion 
+					FROM padronsss p 
+					WHERE parentesco != 0 and tipotitular in (0,2,4,5,8) and osopcion = 0";
 $resFamiSSS = mysql_query ( $sqlFamiSSS, $db );
 $arrayFamiSSS = array();
 while ($rowFamiSSS = mysql_fetch_assoc ($resFamiSSS)) {
@@ -29,15 +41,17 @@ while ($rowFamiBaja = mysql_fetch_assoc ($resFamiBaja)) {
 
 $arrayAlta = array();
 foreach ($arrayFamiSSS as $cuil => $fami) {
-	if (!array_key_exists ($cuil , $arrayFami)) {
-		if (!array_key_exists ($cuil , $arrayFamiBaja)) {
-			if(!in_array($fami['nrodoc'], $arrayFami)) {
-				if(!in_array($fami['nrodoc'], $arrayFamiBaja)) {
-					$arrayAlta[$cuil] = $fami;
-				}
+	if (array_key_exists ($fami['cuiltitular'] , $arrayCuilTitular)) {
+		if (!array_key_exists ($cuil , $arrayFami)) {
+			if (!array_key_exists ($cuil , $arrayFamiBaja)) {
+				if(!in_array($fami['nrodoc'], $arrayFami)) {
+					if(!in_array($fami['nrodoc'], $arrayFamiBaja)) {
+						$arrayAlta[$cuil] = $fami;
+					}
+				} 
 			} 
 		} 
-	} 
+	}
 }
 
 ?>
@@ -46,7 +60,7 @@ foreach ($arrayFamiSSS as $cuil => $fami) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Alta de Titulares en SSS :.</title>
+<title>.: Alta de Familiares en SSS :.</title>
 
 <style type="text/css" media="print">
 .nover {
@@ -143,10 +157,10 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 	<div align="center">
-		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoFamiSSS.php'" />
+		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'altaFamiliaresDelegacionSSS.php'" />
 		<h2>Alta de Familiares desde S.S.S.</h2>
-		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarAltaFamiliaresSSS.php">
-			<h3>Alta de Familiares</h3>
+		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarAltaFamiliaresSSS.php?codidelega=<?php echo $codidelega?>">
+			<h3>Alta de Familiares - Delegacion <?php echo $datos[1] ?></h3>
 			<?php if (sizeof($arrayAlta) > 0) { ?>
 			<table style="text-align: center; width: 900px" id="tablaAlta" class="tablesorter">	
 				<thead>
@@ -165,17 +179,13 @@ function validar(formulario) {
 							<td><?php echo $fami['nombre']?></td>
 							<td><?php echo $fami['cuiltitular']?></td>
 							<td><?php echo $fami['cuit']?></td>
-							<td><input type="checkbox" name="<?php echo $cuil ?>" id="alta" value="<?php echo $fami['cuiltitular']."-".$fami['osopcion'] ?>" /></td>
+							<td><input type="checkbox" name="<?php echo $cuil ?>" id="alta" value="<?php echo $fami['cuiltitular']."-".$arrayCuilTitular[$fami['cuiltitular']]['nroafiliado'] ?>" /></td>
 						</tr>
 				<?php } ?>
 				</tbody>
 			</table>
-			<?php } else { ?>
-			<h4>No hay Familiares para informar</h4>
-			<?php } ?>
-			
 			<input class="nover" type="submit" name="submit" value="Procesar" />
-			
+				
 			<table class="nover">
 				<tr>
 					<td width="239">
@@ -199,6 +209,12 @@ function validar(formulario) {
 			</table>
 			
 			<input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
+		
+			<?php } else { ?>
+			<h2>No hay Familiares para dar de alta</h2>
+			<?php } ?>
+			
+			
 		</form>
 	</div>
 </body>

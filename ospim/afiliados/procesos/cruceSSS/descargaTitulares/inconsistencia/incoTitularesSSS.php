@@ -114,7 +114,7 @@ $(function() {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoTituSSS.php'" />
-		<h3>Informe de Inconsistencias de Titulares</h3>
+		<h3>Informe de Inconsistencias de Titulares desde la S.S.S.</h3>
 		<table style="text-align: center; width: 1000px" id="tablaInforme" class="tablesorter">	
 			<thead>
 				<tr>

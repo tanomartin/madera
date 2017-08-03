@@ -110,7 +110,7 @@ if ($whereIn != ")") {
 		if ($rowPadron['telefono'] == '') {
 			$telefono = 'NULL';
 		} else {
-			$telefono =  intval(preg_replace('/[^0-9]+/', '', $rowPadron['telefono']), 10);;
+			$telefono =  intval(preg_replace('/[^0-9]+/', '', $rowPadron['telefono']), 10);
 		}
 			
 		if ($rowPadron['parentesco'] == 0) {

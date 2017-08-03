@@ -4,47 +4,17 @@ include ($libPath . "controlSessionOspim.php");
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 
-$sqlCuilTitular = "SELECT nroafiliado, cuil, codidelega FROM titulares";
-$resCuilTitular = mysql_query ( $sqlCuilTitular, $db );
-$arrayCuilTitular = array();
-while ($rowCuilTitular = mysql_fetch_assoc ($resCuilTitular)) {
-	$arrayCuilTitular[$rowCuilTitular['cuil']] = array("codidelega" => $rowCuilTitular['codidelega'], "nroafiliado" => $rowCuilTitular['nroafiliado']);
-}
-
-$sqlCuilTitularBaja = "SELECT cuil, codidelega FROM titularesdebaja";
-$resCuilTitularBaja = mysql_query ( $sqlCuilTitularBaja, $db );
-$arrayCuilTitularBaja = array();
-while ($rowCuilTitularBaja = mysql_fetch_assoc ($resCuilTitularBaja)) {
-	$arrayCuilTitularBaja[$rowCuilTitularBaja['cuil']] = $rowCuilTitularBaja['cuil'];
-}
-
 $arrayProcFami = array();
-$arrayInfo = array();
 $arrayOrden = array();
 
 foreach ($_POST as $cuil => $datos) {
 	if ($cuil != 'text' && $cuil != 'select') {
 		$datos = explode('-',$datos);
 		$cuiltitular = $datos[0];
-		$opcion = $datos[1];
-		
-		if ($opcion != 0) {
-			$arrayInfo[$cuil] = array("detalle" => "Opción", "cuiltitular" => $cuiltitular);
-		} else {
-			if (!array_key_exists ($cuiltitular , $arrayCuilTitular)) {
-				if (!array_key_exists ($cuiltitular , $arrayCuilTitularBaja)) {
-					$arrayInfo[$cuil] = array("detalle" => "No existe el titular", "cuiltitular" => $cuiltitular);
-				} else {
-					$arrayInfo[$cuil] = array("detalle" => "El titular esta de Baja", "cuiltitular" => $cuiltitular);
-				} 
-			} else {
-				$arrayProcFami[$cuil] = array("cuiltitular" => $cuiltitular, "nroafil" => $arrayCuilTitular[$cuiltitular]['nroafiliado'], "codidelega" => $arrayCuilTitular[$cuiltitular]['codidelega']);
-			}
-		}
+		$nroafiliado = $datos[1];
+		$arrayProcFami[$cuil] = array("cuiltitular" => $cuiltitular, "nroafil" => $nroafiliado);
 	}
 }
-
-
 
 $whereIn = "(";
 $whereInAfil = "(";
@@ -99,19 +69,12 @@ if ($whereIn != ")") {
 			
 		$domicilio = $rowPadron['calledomicilio']." ".$rowPadron['puertadomicilio']." ". $rowPadron['pisodomicilio']." ".$rowPadron['deptodomicilio'];
 				
-		if ($rowPadron['tipotitular'] == 2 || $rowPadron['tipotitular'] == 8) {
-			$codidelega = 3200;
-		} else {
-			$sqlJuris = "SELECT codidelega FROM jurisdiccion WHERE cuit = ".$rowPadron['cuit']." order by disgdinero DESC LIMIT 1";
-			$resJuris = mysql_query ( $sqlJuris, $db );
-			$rowJuris = mysql_fetch_assoc ($resJuris);
-			$codidelega = $rowJuris['codidelega'];
-		}
+		$codidelega = $_GET['codidelega'];
 		
 		if ($rowPadron['telefono'] == '') {
 			$telefono = 'NULL';
 		} else {
-			$telefono = $rowPadron['telefono'];
+			$telefono = intval(preg_replace('/[^0-9]+/', '', $rowPadron['telefono']), 10);
 		}
 		
 		if ($rowPadron['parentesco'] == 4 || $rowPadron['parentesco'] == 6) {
@@ -220,30 +183,7 @@ $(function() {
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = '../menuDescInfoFamiSSS.php'" />
 		<h2>Informe de Proceso de Alta de Familiares en SSS</h2>
-		<h3>Familiares sin procesar</h3>
-		<?php if (sizeof($arrayInfo) > 0) { ?>
-		<table style="text-align: center; width: 900px" id="tablaInforme" class="tablesorter">
-			<thead>
-				<tr>
-					<th>C.U.I.L.</th>
-					<th>C.U.I.L. Titular</th>
-					<th>Detalle</th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php foreach ($arrayInfo as $cuil => $datos) { ?>
-				<tr>	
-					<td><?php echo $cuil ?></td>
-					<td><?php echo $datos['cuiltitular'] ?></td>
-					<td><?php echo $datos['detalle'] ?></td>
-				</tr>
-			<?php } ?>
-			</tbody>
-		</table>
-		<?php } else { ?>
-			<h4>No hay Familiares para informar</h4>
-		<?php } ?>
-		
+
 		<h3>Familiares Procesados</h3>
 		<?php if (sizeof($arrayProcFami) > 0) { ?>
 			<table style="text-align: center; width: 900px" id="tablaProcesoFami" class="tablesorter">

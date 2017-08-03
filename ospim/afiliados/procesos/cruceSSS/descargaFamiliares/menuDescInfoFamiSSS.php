@@ -43,11 +43,16 @@ function mostrar(dire) {
 	<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
 </div>
 <div align="center">
-  <table width="600" border="3">
+  <table width="400" border="3">
     <tr>
        <td width="200"><p align="center">Descarga Familiares</p>
-        <p align="center"><a class="enlace" href="javascript:mostrar('alta/altaFamiliaresSSS.php')"><img src="../img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p align="center"><a class="enlace" href="alta/altaFamiliaresDelegacionSSS.php"><img src="../img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
+          <td width="200"><p align="center">Informe Familiares por Delegacion</p>
+        <p align="center"><a class="enlace" href="javascript:mostrar('alta/infoFamiliaresSSS.php')"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p>&nbsp;</p></td> 
+    </tr>
+    <tr>
       <td width="200"><p align="center">Reactivacion Familiares</p>
           <p align="center"><a class="enlace" href="javascript:mostrar('reactivacion/reactivaFamiliaresSSS.php')"><img src="../img/reactivacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
