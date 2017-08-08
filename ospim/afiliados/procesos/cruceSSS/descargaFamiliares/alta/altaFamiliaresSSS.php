@@ -2,6 +2,10 @@
 include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
+$sqlMesPadron = "SELECT * FROM padronssscabecera c WHERE fechacierre is null ORDER BY c.id DESC LIMIT 1";
+$resMesPadron = mysql_query ( $sqlMesPadron, $db );
+$rowMesPadron = mysql_fetch_assoc ($resMesPadron);
+
 $datos = explode("-",$_POST['delegacion']);
 $codidelega = $datos[0];
 
@@ -12,7 +16,7 @@ while ($rowCuilTitular = mysql_fetch_assoc ($resCuilTitular)) {
 	$arrayCuilTitular[$rowCuilTitular['cuil']] = array("codidelega" => $rowCuilTitular['codidelega'], "nroafiliado" => $rowCuilTitular['nroafiliado']);
 }
 
-$sqlFamiSSS = "SELECT DISTINCT cuilfamiliar, cuiltitular, nrodocumento, cuit, apellidoynombre, tipotitular, osopcion 
+$sqlFamiSSS = "SELECT DISTINCT cuilfamiliar, cuiltitular, nrodocumento, cuit, apellidoynombre, tipotitular, osopcion, calledomicilio, localidad, codigopostal  
 					FROM padronsss p 
 					WHERE parentesco != 0 and tipotitular in (0,2,4,5,8) and osopcion = 0";
 $resFamiSSS = mysql_query ( $sqlFamiSSS, $db );
@@ -20,7 +24,7 @@ $arrayFamiSSS = array();
 while ($rowFamiSSS = mysql_fetch_assoc ($resFamiSSS)) {
 	$cuilfamiliar = preg_replace('/[^0-9]+/', '', $rowFamiSSS['cuilfamiliar']);
 	if (strlen($cuilfamiliar) == 11) {
-		$arrayFamiSSS[$cuilfamiliar] = array('cuiltitular'=> $rowFamiSSS['cuiltitular'], 'nrodoc' => $rowFamiSSS['nrodocumento'], 'cuit' => $rowFamiSSS['cuit'], 'nombre' => $rowFamiSSS['apellidoynombre'], 'tipotitular' => $rowFamiSSS['tipotitular'], 'osopcion' => $rowFamiSSS['osopcion']);
+		$arrayFamiSSS[$cuilfamiliar] = array('cuiltitular'=> $rowFamiSSS['cuiltitular'], 'nrodoc' => $rowFamiSSS['nrodocumento'], 'cuit' => $rowFamiSSS['cuit'], 'nombre' => $rowFamiSSS['apellidoynombre'], 'tipotitular' => $rowFamiSSS['tipotitular'], 'osopcion' => $rowFamiSSS['osopcion'], 'direccion' => $rowFamiSSS['calledomicilio'], 'localidad' => $rowFamiSSS['localidad'], 'codpostal' => $rowFamiSSS['codigopostal']);
 	}
 }
 
@@ -158,15 +162,18 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'altaFamiliaresDelegacionSSS.php'" />
-		<h2>Alta de Familiares desde S.S.S.</h2>
+		<h2>Alta de Familiares desde la S.S.S.</h2>
+		<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarAltaFamiliaresSSS.php?codidelega=<?php echo $codidelega?>">
-			<h3>Alta de Familiares - Delegacion <?php echo $datos[1] ?></h3>
+			<h3>Delegacion "<?php echo $datos[1] ?>"</h3>
 			<?php if (sizeof($arrayAlta) > 0) { ?>
-			<table style="text-align: center; width: 900px" id="tablaAlta" class="tablesorter">	
+			<table style="text-align: center; width: 1000px" id="tablaAlta" class="tablesorter">	
 				<thead>
 					<tr>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
+						<th>Direccion</th>
+						<th>Localidad</th>
 						<th>C.U.I.L. Titular</th>
 						<th>C.U.I.T.</th>
 						<th><input type="checkbox" name="selecAllAlta" id="selecAllAlta" onchange="checkall(this, this.form)" /></th>
@@ -177,6 +184,9 @@ function validar(formulario) {
 						<tr>	
 							<td><?php echo $cuil ?></td>
 							<td><?php echo $fami['nombre']?></td>
+							<?php if ($fami['direccion'] != "") { $direccion = $fami['direccion']." - C.P.: ".$fami['codpostal']; } else { $direccion = ""; }?>
+							<td><?php echo $direccion ?></td>
+							<td><?php echo $fami['localidad']?></td>
 							<td><?php echo $fami['cuiltitular']?></td>
 							<td><?php echo $fami['cuit']?></td>
 							<td><input type="checkbox" name="<?php echo $cuil ?>" id="alta" value="<?php echo $fami['cuiltitular']."-".$arrayCuilTitular[$fami['cuiltitular']]['nroafiliado'] ?>" /></td>

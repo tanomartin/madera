@@ -2,6 +2,10 @@
 include ($libPath . "controlSessionOspim.php");
 set_time_limit(0);
 
+$sqlMesPadron = "SELECT * FROM padronssscabecera c WHERE fechacierre is null ORDER BY c.id DESC LIMIT 1";
+$resMesPadron = mysql_query ( $sqlMesPadron, $db );
+$rowMesPadron = mysql_fetch_assoc ($resMesPadron);
+
 $datos = explode("-",$_POST['delegacion']);
 $codidelega = $datos[0];
 $sqlEmpresasCuit = "SELECT e.cuit,j.codidelega FROM empresas e, jurisdiccion j WHERE e.cuit = j.cuit order by e.cuit, j.disgdinero;";
@@ -26,13 +30,13 @@ $whereCuit .= ")";
 $arrayAlta = array();
 if ($whereCuit != ")") {
 	$arrayTipo = array();
-	$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip 
+	$sqlTituSSS = "SELECT DISTINCT p.cuiltitular, p.nrodocumento, p.cuit, p.apellidoynombre, p.tipotitular, p.osopcion, t.descrip, p.calledomicilio, p.localidad, p.codigopostal 
 						FROM padronsss p, tipotitular t 
 						WHERE p.cuit in $whereCuit and p.tipotitular in (0,2,4,5,8) and p.osopcion = 0 and p.parentesco = 0 and p.tipotitular = t.codtiptit";
 	$resTituSSS = mysql_query ( $sqlTituSSS, $db );
 	$arrayTituSSS = array();
 	while ($rowTituSSS = mysql_fetch_assoc ($resTituSSS)) {
-		$arrayTituSSS[$rowTituSSS['cuiltitular']] = array('nrodoc' => $rowTituSSS['nrodocumento'], 'cuit' => $rowTituSSS['cuit'], 'nombre' => $rowTituSSS['apellidoynombre'], 'tipotitular' => $rowTituSSS['tipotitular'], 'osopcion' => $rowTituSSS['osopcion']);
+		$arrayTituSSS[$rowTituSSS['cuiltitular']] = array('nrodoc' => $rowTituSSS['nrodocumento'], 'cuit' => $rowTituSSS['cuit'], 'nombre' => $rowTituSSS['apellidoynombre'], 'tipotitular' => $rowTituSSS['tipotitular'], 'osopcion' => $rowTituSSS['osopcion'], 'direccion' => $rowTituSSS['calledomicilio'], 'localidad' => $rowTituSSS['localidad'], 'codpostal' => $rowTituSSS['codigopostal']);
 		$arrayTipo[$rowTituSSS['cuiltitular']] = $rowTituSSS['descrip'];
 	}
 	
@@ -99,7 +103,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{4:{filter:false, sorter:false}},
+		headers:{6:{filter:false, sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -173,15 +177,18 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'altaTitularesDelegacionSSS.php'" />
-		<h2>Descarga Alta Titulares S.S.S.</h2>
+		<h2>Alta de Titulares desde la S.S.S.</h2>
+		<h2>Padrón SSS Periodo "<?php echo $rowMesPadron['mes'].'-'.$rowMesPadron['anio']?>" </h2>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="procesarAltaSSS.php?codidelega=<?php echo $codidelega ?>">
-			<h3>Alta de Titulares - Delegacion <?php echo $datos[1] ?></h3>
+			<h3>Delegacion "<?php echo $datos[1] ?>"</h3>
 			<?php if (sizeof($arrayAlta) > 0) { ?>
 			<table style="text-align: center; width: 1000px" id="tablaAlta" class="tablesorter">	
 				<thead>
 					<tr>
 						<th>C.U.I.L.</th>
 						<th>Apellido y Nombre</th>
+						<th>Direccion</th>
+						<th>Localidad</th>
 						<th>C.U.I.T.</th>
 						<th class="filter-select" data-placeholder="Seleccion">Tipo Titularidad</th>
 						<th><input type="checkbox" name="selecAllAlta" id="selecAllAlta" onchange="checkall(this, this.form)" /></th>
@@ -192,6 +199,9 @@ function validar(formulario) {
 						<tr>	
 							<td><?php echo $cuil ?></td>
 							<td><?php echo $titu['nombre']?></td>
+							<?php if ($titu['direccion'] != "") { $direccion = $titu['direccion']." - C.P.: ".$titu['codpostal']; } else { $direccion = ""; }?>
+							<td><?php echo $direccion ?></td>
+							<td><?php echo $titu['localidad']?></td>
 							<td><?php echo $titu['cuit']?></td>
 							<td><?php echo $arrayTipo[$cuil]?></td>
 							<td><input type="checkbox" name="<?php echo $cuil ?>" id="alta" value="<?php echo $titu['cuit'].'-'.$titu['tipotitular'] ?>" /></td>
