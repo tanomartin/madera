@@ -60,7 +60,7 @@ A:hover {text-decoration: none;color:#00FFFF }
     <tr>
     	<td>
     		<p align="center">Beneficiarios por Delegacion por Tipo de Titularidad</p>
-          	<p align="center"><a class="enlace" href="beneficiariosPorTipoTitu.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          	<p align="center"><a class="enlace" href="beneficiariosPorTipoTitu.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         	<p>&nbsp;</p>
     	</td>
     	<td>
