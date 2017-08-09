@@ -102,17 +102,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		}),
-		$.unblockUI(); 
+		})
 	});
 	
 </script>
 </head>
 
 <body bgcolor="#CCCCCC">
-<script>
-	$.blockUI({ message: "<h1>Generando Informe. Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" } );
-</script>
 <div align="center">
   <p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" /></p>
   	<p><span class="Estilo2">Cantidad Beneficiarios por Delegaci&oacute;n y Tipo de Titular al <?php echo date('d/m/Y') ?> </span></p>
