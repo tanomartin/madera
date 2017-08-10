@@ -30,7 +30,7 @@ $maquina = $_SERVER ['SERVER_NAME'];
 $carpeta = $mes . $anio;
 
 if (strcmp ( "localhost", $maquina ) == 0) {
-	$direArc = $_SERVER ['DOCUMENT_ROOT'] . "/madera/ospim/sistemas/padrones/archivos/" . $carpeta;
+	$direArc = "archivos/" . $carpeta;
 } else {
 	$direArc = "/home/sistemas/Documentos/Repositorio/Capitados/" . $carpeta;
 }
@@ -45,7 +45,10 @@ $datos = array_values ( $_POST );
 $arrayResultados = array ();
 
 for($f = 0; $f < $finalFor; $f ++) {
-	$presta = $datos [$f];
+	$datosArray = explode("-", $datos [$f]);$datos [$f];
+	$presta = $datosArray[0];
+	$capitado = $datosArray[1];
+	$tipo = $datosArray[2];
 	$descriError = "CREACION Y SUBIDA DE PADRON CORRECTA";
 	$arrayResultados [$presta] = array (
 			'presta' => $presta,
@@ -65,11 +68,15 @@ for($f = 0; $f < $finalFor; $f ++) {
 	$direCompletaZip = $direArc . "/" . $nomZip;
 	
 	try {
-		if ($presta != '009') {
-			require ("padronComun.php");
-		}
-		if ($presta == '009') {
-			require ("padronEspecial.php");
+		if ($capitado == 1) {
+			if ($tipo == 0) {
+				require ("padronComun.php");
+			}
+			if ($tipo == 1) {
+				require ("padronEspecial.php");
+			}
+		} else {
+			require ("padronNoCapitado.php");
 		}
 		
 		// CONTROLO QUE NO HAYA UNA BAJADA PARA ESTE PRESTA Y ESTE PERIDOD
@@ -96,7 +103,10 @@ for($f = 0; $f < $finalFor; $f ++) {
 			if (file_exists ( $direCompletaZip )) {
 				$carpetaFtp = $presta . "C23" . $presta;
 				$pathOspim = "/public_html/prestadores/$carpetaFtp";
-				$resultado = SubirArchivo ( $direCompletaZip, $nomZip, $pathOspim );
+				$resultado = true;
+				if ($hostOspim != "localhost") {
+					$resultado = SubirArchivo ( $direCompletaZip, $nomZip, $pathOspim );
+				} 	
 				if ($resultado) {
 					$subidaOk = 1;
 					$fecsub = date ( 'Y-m-j' );
@@ -223,15 +233,12 @@ A:hover {
 				<th>Prestador</th>
 				<th>Descripcion</th>
 			</tr>
-			  <?php
-					
-foreach ( $arrayResultados as $resultado ) {
-						print ("<tr align='center'>") ;
-						print ("<td>" . $resultado ['presta'] . "</td>") ;
-						print ("<td>" . $resultado ['descri'] . "</td>") ;
-						print ("</tr>") ;
-					}
-					?>
+			  <?php	foreach ( $arrayResultados as $resultado ) { ?>
+				<tr align='center'>
+					<td><?php echo $resultado ['presta'] ?></td>
+					<td><?php echo $resultado ['descri'] ?></td>
+				</tr>
+			  <?php } ?>
   </table>
 		<p>
 			<input type="button" name="imprimir" value="Imprimir"

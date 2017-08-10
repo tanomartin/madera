@@ -55,39 +55,29 @@ function validar(formulario) {
   <p><span class="Estilo2">Men&uacute; Padrones</span></p>
   <form id="form1" name="form1" method="post" action="generarPadrones.php" onsubmit="return validar(this)">
     <p><strong>Seleccionar Prestadore</strong>s</p>
-    <table width="400" border="1">
+    <table width="500" border="1">
 	<?php 
 		$resPresta = mysql_query("SELECT * FROM capitados", $db);
-		while($rowPresta = mysql_fetch_array($resPresta)) { 
-			echo "<tr>";
+		while($rowPresta = mysql_fetch_array($resPresta)) {  
 			$codigo = $rowPresta['codigo'];
 			$nombre = $rowPresta['nombre'];
-			echo "<td><div align='left'>$codigo - $nombre</div></td>";
-			echo "<td><input type='checkbox' id=prestadores name=$codigo value=$codigo></td>";
-			echo "</tr>";
-		} 
-	?>  
+			$capitado = $rowPresta['capitado']; 
+			$tipo = $rowPresta['tipopadron']?>
+			<tr>
+				<td align="left"><?php echo $codigo." - ".$nombre?></td>
+				<td><input type="checkbox" id="prestadores" name="<?php echo $codigo ?>" value="<?php echo $codigo."-".$capitado."-".$tipo ?>"/></td>
+			</tr>
+	<?php } ?>	 
     </table>  
     <p class="Estilo7">Periodo 
       <label>
-		  <?php 
-		  $mes = date("n");
-		  $anio = date("Y");
-		  if ($mes == 1) {
-			$anio =  $anio - 1;
-			$mes = 12;
-		  } else {
-			$mes = $mes - 1;
-		  }
-		  ?>
+		  <?php  $mes = date("n");
+		  		 $anio = date("Y");
+		  		 if ($mes == 1) { $anio =  $anio - 1; $mes = 12; } else { $mes = $mes - 1; } ?>
 		  <input name="periodo" readonly="readonly" style="background-color:#CCCCCC; width:60px; text-align:center"  value="<?php echo $mes."-".$anio  ?>" type="text" />
       </label>
     </p>
-    <p>
-      <label>
-      <input type="submit" name="Submit" value="Generar Padrones" />
-      </label>
-    </p>
+    <p><input type="submit" name="Submit" value="Generar Padrones" /> </p>
   </form>
   </div>
 </body>
