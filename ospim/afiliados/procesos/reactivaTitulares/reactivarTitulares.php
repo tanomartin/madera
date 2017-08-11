@@ -39,7 +39,6 @@ if ($wherein != ')') {
 		$rowJurisdiccion = mysql_fetch_assoc ( $resJurisdiccion );
 		$codidelega = $rowJurisdiccion['codidelega'];
 		
-		//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 		$sqlReactiva = "INSERT INTO titulares VALUE(
 						'".$rowAlta['nroafiliado']."',
 						'".addslashes($rowAlta['apellidoynombre'])."',
