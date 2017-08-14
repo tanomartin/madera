@@ -5,8 +5,6 @@ include ($libPath . "controlSessionUsimra.php");
 
 $sqlDelega = "select * from delegaciones";
 $resDelega = mysql_query ( $sqlDelega, $db );
-$err = $_GET ['err'];
-
 ?>
 
 <!DOCTYPE html>
@@ -147,26 +145,27 @@ function validar(formulario) {
 			</table>
 
 			<br />
-  <?php
-		if ($err == 1) {
-			print ("<div align='center' style='color:#FF0000'><b> CUIT INEXISTENTE </b></div>") ;
-		}
-		if ($err == 2) {
-			print ("<div align='center' style='color:#FF0000'><b> EL FILTRO POR <br>(DELEGACION - CODIDGO POSTAL)<br>NO DIO NINGUN RESULTADO </b></div>") ;
-		}
-		if ($err == 3) {
-			print ("<div align='center' style='color:#FF0000'><b> EL FILTRO POR <br>(DELEGACION - CODIDGO POSTAL - CANTIDAD PROMEDIO DE EMPLEDAOS)<br> NO DIO NINGUN RESULTADO </b></div>") ;
-		}
-		if ($err == 4) {
-			print ("<div align='center' style='color:#FF0000'><b> EL FILTRO POR <br>(DELEGACION - CODIDGO POSTAL - CANTIDAD PROMEDIO DE EMPLEDAOS - DEUDA NOMINAL)<br> NO DIO NINGUN RESULTADO </b></div>") ;
-		}
-		if ($err == 5) {
-			print ("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO NO GENERO REQUERIMIENTO DE DUEDA </b></div>") ;
-		}
-		if ($err == 6) {
-			print ("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO ESTA DE BAJA </b></div>") ;
-		}
-		?>
+  <?php if (isset($_GET ['err'])) { 
+		  	$err = $_GET ['err']; 
+				if ($err == 1) {
+					print ("<div align='center' style='color:#FF0000'><b> CUIT INEXISTENTE </b></div>") ;
+				}
+				if ($err == 2) {
+					print ("<div align='center' style='color:#FF0000'><b> EL FILTRO POR <br>(DELEGACION - CODIDGO POSTAL)<br>NO DIO NINGUN RESULTADO </b></div>") ;
+				}
+				if ($err == 3) {
+					print ("<div align='center' style='color:#FF0000'><b> EL FILTRO POR <br>(DELEGACION - CODIDGO POSTAL - CANTIDAD PROMEDIO DE EMPLEDAOS)<br> NO DIO NINGUN RESULTADO </b></div>") ;
+				}
+				if ($err == 4) {
+					print ("<div align='center' style='color:#FF0000'><b> EL FILTRO POR <br>(DELEGACION - CODIDGO POSTAL - CANTIDAD PROMEDIO DE EMPLEDAOS - DEUDA NOMINAL)<br> NO DIO NINGUN RESULTADO </b></div>") ;
+				}
+				if ($err == 5) {
+					print ("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO NO GENERO REQUERIMIENTO DE DUEDA </b></div>") ;
+				}
+				if ($err == 6) {
+					print ("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO ESTA DE BAJA </b></div>") ;
+				}
+		    } ?>
   	<table style="width: 630; text-align: center;" id="delega">
 				<tr>
 					<td height="50" colspan="2"><div align="center">

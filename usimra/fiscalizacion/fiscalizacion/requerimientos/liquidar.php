@@ -1,38 +1,26 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 set_time_limit(0);
-include($libPath."controlSessionUsimra.php"); 
-include($libPath."fechas.php"); 
+include($libPath."controlSessionUsimra.php");
+include($libPath."fechas.php");
 $fechamodif = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 $fecha = $_GET['fecha'];
-/**********************************************************************************/
 
-function obtenerMesRelacion($mes, $anio, $db) {
-	$sqlExtra = "SELECT relacionmes FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
-	$resExtra = mysql_query($sqlExtra,$db);
-	$rowExtra = mysql_fetch_assoc($resExtra);
-	return $rowExtra['relacionmes'];
-}
+/***********************************************************************************/
 
-function obtenerMesNoRem($mesrelacion, $anio, $db) {
-	$sqlExtra = "SELECT mes FROM extraordinariosusimra WHERE anio = $anio and relacionmes = $mesrelacion and tipo != 2";
-	$resExtra = mysql_query($sqlExtra,$db);
-	$rowExtra = mysql_fetch_assoc($resExtra);
-	return $rowExtra['mes'];
-}
-
-function incluyeNoRem($mesNoRem, $anio, $nroreque, $db) {
-	$sqlRequeDet = "SELECT * from detfiscalizusimra where nrorequerimiento = $nroreque and anofiscalizacion = $anio and mesfiscalizacion = $mesNoRem";
-	$resRequeDet = mysql_query($sqlRequeDet,$db);
-	$canRequeDet = mysql_num_rows($resRequeDet);
-	if ($canRequeDet > 0) {
-		return true;
-	} 
-	return false;
+function calculoDeudaNr($remu, $personal, $tipo, $valor, $porcentaje) {
+	$apagar = 0;
+	if ($tipo == 0) {
+		$apagar = $valor * $porcentaje * $personal;
+	}
+	if ($tipo == 1) {
+		$apagar = $remu * $valor * $porcentaje;
+	}
+	return $apagar;
 }
 
 function calculoBaseCalculoNR($remu, $mes, $anio, $db) {
-	$sqlExtra = "SELECT tipo, valor FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
+	$sqlExtra = "SELECT tipo, valor FROM extraordinariosusimra WHERE anio = $anio and mes = $mes";
 	$resExtra = mysql_query($sqlExtra,$db);
 	$rowExtra = mysql_fetch_assoc($resExtra);
 	$baseCalculoNR = 0;
@@ -45,6 +33,20 @@ function calculoBaseCalculoNR($remu, $mes, $anio, $db) {
 	return $baseCalculoNR;
 }
 
+function obtenerMesNoRem($mesrelacion, $anio, $tipo, $db) {
+	$sqlExtra = "SELECT mes FROM extraordinariosusimra WHERE anio = $anio and relacionmes = $mesrelacion and tipo = $tipo";
+	$resExtra = mysql_query($sqlExtra,$db);
+	$rowExtra = mysql_fetch_assoc($resExtra);
+	return $rowExtra['mes'];
+}
+
+function obtenerMesRelacion($mes, $anio, $db) {
+	$sqlExtra = "SELECT relacionmes FROM extraordinariosusimra WHERE anio = $anio and mes = $mes";
+	$resExtra = mysql_query($sqlExtra,$db);
+	$rowExtra = mysql_fetch_assoc($resExtra);
+	return $rowExtra['relacionmes'];
+}
+
 function agregaGuiones($cuit) {
 	$primero = substr ($cuit,0,2);
 	$segundo = substr ($cuit,2,8);
@@ -53,192 +55,26 @@ function agregaGuiones($cuit) {
 	return $conguiones;
 }
 
-function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc) {	
-	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit";
-	$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
-	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
-	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
-	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
-		
-	//DDJJ VALIDAS
-	$sqlDDJJ = "select anoddjj, mesddjj, cuil, sum(remuneraciones) as remuneraciones, count(cuil) as ddjjcant 
-					from detddjjusimra 
-					where cuit = $cuit and cuil != '99999999999' and
-					((anoddjj > $anoinicio and anoddjj < $ultano) or 
-	   				 (anoddjj = $ultano and mesddjj <= $ultmes) or 
-	  				 (anoddjj = $anoinicio and mesddjj >= $mesinicio)) 
-					group by anoddjj, mesddjj, cuil";
-	$arrayDDJJ = array();
-	$resDDJJ = mysql_query($sqlDDJJ,$db);
-	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
-		$mes = str_pad($rowDDJJ['mesddjj'],2,'0',STR_PAD_LEFT);
-		$id = $rowDDJJ['anoddjj'].$mes;
-		$idArray = $rowDDJJ['anoddjj'].$mes.$rowDDJJ['cuil'];
-		$arrayDDJJ[$idArray] = array ('origen' =>  1, 'datos' => $rowDDJJ, 'id' => $id);
-		$idArray++;
-	}
-	
-	//DDJJ TEMPORALES
-	$sqlDDJJNroControl = "select perano, permes, nrctrl
-							from ddjjusimra 
-					   		where nrcuit = $cuit and nrcuil = '99999999999' and
-					   			((perano > $anoinicio and perano < $ultano) or 
-	   				 			(perano = $ultano and permes <= $ultmes) or 
-	  				 			(perano = $anoinicio and permes >= $mesinicio)) order by nrctrl, nrcuil DESC";
-	$arrayNroControl = array();
-	$resDDJJNroControl = mysql_query($sqlDDJJNroControl,$db);
-	while ($rowDDJJNroControl = mysql_fetch_assoc($resDDJJNroControl)) {
-		$idNrocontrol = $rowDDJJNroControl['perano'].$rowDDJJNroControl['permes'];
-		$arrayNroControl[$idNrocontrol] =  $rowDDJJNroControl['nrctrl'];
-	}
-	foreach($arrayNroControl as $nrocontrol) {
-		$wherein = $wherein."'".$nrocontrol."',";
-	}
-	$wherein = substr($wherein, 0, -1);
-	$wherein = "(".$wherein.")";
-	if ($wherein != "()") {
-		$sqlDDJJTemp = "select perano as anoddjj, permes as mesddjj, nrcuil as cuil, remune as remuneraciones,  '1' as ddjjcant 
-							from ddjjusimra 
-							where nrcuit = $cuit and nrcuil != '99999999999' and nrctrl in $wherein";
-		$resDDJJTemp = mysql_query($sqlDDJJTemp,$db);
-		$canDDJJTemp = mysql_num_rows($resDDJJTemp);
-		if ($canDDJJTemp != 0) {
-			while ($rowDDJJTemp = mysql_fetch_assoc($resDDJJTemp)) {
-				$mes = str_pad($rowDDJJTemp['mesddjj'],2,'0',STR_PAD_LEFT);
-				$id = $rowDDJJTemp['anoddjj'].$mes;
-				$idArray = $rowDDJJTemp['anoddjj'].$mes.$rowDDJJTemp['cuil'];
-				if (!array_key_exists($idArray, $arrayDDJJ)) {
-					$arrayDDJJ[$idArray] = array ('origen' =>  1, 'datos' => $rowDDJJTemp, 'id' => $id);
-				}
-			}
-		}
-	}
-	
-	//DDJJ OSPIM			 	
-	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, sum(remundeclarada) as remuneraciones, count(cuil) as ddjjcant
-						from detddjjospim 
-						where cuit = $cuit and cuil != '99999999999' and
-							((anoddjj > $anoinicio and anoddjj < $ultano) or 
-							 (anoddjj = $ultano and mesddjj <= $ultmes) or 
-							 (anoddjj = $anoinicio and mesddjj >= $mesinicio))
-						group by anoddjj, mesddjj, cuil";
-	$resDDJJOspim = mysql_query($sqlDDJJOspim,$db);
-	while ($rowDDJJOspim = mysql_fetch_assoc($resDDJJOspim)) {
-		$mes = str_pad($rowDDJJOspim['mesddjj'],2,'0',STR_PAD_LEFT);
-		$id = $rowDDJJOspim['anoddjj'].$mes;
-		$idArray = $rowDDJJOspim['anoddjj'].$mes.$rowDDJJOspim['cuil'];
-		if (!array_key_exists($idArray, $arrayDDJJ)) {
-			$arrayDDJJ[$idArray] = array ('origen' =>  2, 'datos' => $rowDDJJOspim, 'id' => $id);
-		}
-	}
-	
-	
-	ksort($arrayDDJJ);
-	
-	//NO REMUNERATIVO
-	$sqlDDJJNR = "select d.anoddjj, d.mesddjj, e.relacionmes, d.cuil, sum(d.remuneraciones) as remuneraciones, count(d.cuil) as ddjjcant
-						from detddjjusimra d, extraordinariosusimra e
-						where d.cuit = $cuit and d.anoddjj > $anoinicio and 
-							d.anoddjj <= $ultano and 
-							d.mesddjj > 12 and 
-							d.anoddjj = e.anio and 
-							d.mesddjj = e.mes
-						group by d.anoddjj, d.mesddjj, d.cuil"; 
-	$resDDJJNR = mysql_query($sqlDDJJNR,$db);
-	$arrayNR = array();
-	while ($rowDDJJNR = mysql_fetch_assoc($resDDJJNR)) {
-		$mes = str_pad($rowDDJJNR['relacionmes'],2,'0',STR_PAD_LEFT);
-		$id = $rowDDJJNR['cuil'].$rowDDJJNR['anoddjj'].$mes;
-		$arrayNR[$id] =  array ('datos' => $rowDDJJNR);
-	}
-	
-	foreach ($cuerpo as $lineaCuerpo) {
-		$linea = explode("|",$lineaCuerpo);
-		$fechaArray =  explode("/",$linea[0]);
-		$id = $fechaArray[2].$fechaArray[1];	
-		$tipoPeriodo = $linea[5];
-		if ($tipoPeriodo == 0) {
-			$idBuscar[$id]['remun'] = 1; 
-		}
-		if ($tipoPeriodo == 1) {
-			$idBuscar[$id]['norem'] = 1; 
-		}
-	}
-	
-	$c = 0;
-	$cuerpoCUIL = array();
-	foreach($arrayDDJJ as $ddjj) {
-		$id = $ddjj['id'];
-		if (array_key_exists($id, $idBuscar)) {
-			$mes = str_pad($ddjj['datos']['mesddjj'],2,'0',STR_PAD_LEFT);
-			$ano = $ddjj['datos']['anoddjj'];
-			
-			//veo si tengo que incluir el remunerativo
-			if ($idBuscar[$id]['remun'] == 1) {
-				$remuDecl = number_format((float)$ddjj['datos']['remuneraciones'],2,',','');	
+function obtenerPagos($cuit, $db) {
+	$sqlPagos = "SELECT anopago, mespago, relacionmes, fechapago, sum(montopagado) as pago FROM seguvidausimra
+						LEFT JOIN extraordinariosusimra ON anopago = anio and mespago = mes
+						where cuit = '$cuit'
+						group by anopago, mespago, fechapago order by fechapago";
+	$resPagos = mysql_query($sqlPagos,$db);
+	$canPagos = mysql_num_rows($resPagos);
+	$arrayPagos = array();
+	if ($canPagos > 0) {
+		while ($rowPagos = mysql_fetch_assoc($resPagos)) {
+			$mes = str_pad($rowPagos['mespago'],2,'0',STR_PAD_LEFT);
+			$index = $rowPagos['anopago'].$mes;
+			if (isset($arrayPagos[$index][$rowPagos['fechapago']])) {
+				$arrayPagos[$index][$rowPagos['fechapago']] +=  $rowPagos['pago'];
 			} else {
-				$remuDecl = 0;
+				$arrayPagos[$index][$rowPagos['fechapago']] =  $rowPagos['pago'];
 			}
-			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
-				
-			//veo si tengo que incluir el no remunerativo
-			if ($idBuscar[$id]['norem'] == 1) {
-				$idNR = $ddjj['datos']['cuil'].$ano.$mes;
-				$mesNoRem = obtenerMesNoRem($mes, $ano, $db);
-				if (array_key_exists($idNR, $arrayNR)) {
-					$norem = $arrayNR[$idNR]['datos']['remuneraciones'];
-				} else {
-					$norem = calculoBaseCalculoNR($ddjj['datos']['remuneraciones'], $mesNoRem, $ano, $db);
-				}
-			} else {
-				$norem = 0;
-			}
-			$norem = number_format($norem,2,',','');
-			$norem = str_pad($norem,12,'0',STR_PAD_LEFT);
-			
-			$indexCuerpo = $ano.$mes.$ddjj['origen'].$c;
-			//$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen']."|".$ddjj['datos']['ddjjcant'];
-			$cuerpoCUIL[$indexCuerpo] = "01/".$mes."/".$ano."|".agregaGuiones($ddjj['datos']['cuil'])."|".$remuDecl."|".$norem."|".$ddjj['origen'];
-			$c++;
 		}
 	}
-	
-	//CREAMOS EL ARCHIVO
-	$ultanoArch = substr ($ultano,2,2);
-	$ultmesArch = str_pad($ultmes,2,'0',STR_PAD_LEFT);
-	$nombreArcCUIL = $cuit.$ultmesArch.$ultanoArch.'S'.$nroreqArc.".txt";
-	$maquina = $_SERVER['SERVER_NAME'];
-	if(strcmp("localhost",$maquina) == 0) {
-		$direArc = "liqui/".$nombreArcCUIL;
-	} else {
-		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArcCUIL;
-	}
-
-	//**********************************//
-	ksort($cuerpoCUIL);
-	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de detalle de CUILES en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
-	foreach ($cuerpoCUIL as $lineaCuil) {
-		fputs($ar,$lineaCuil."\r\n");
-	}
-	fclose($ar);
-	//**********************************//
-}
-
-function cambioEstadoReq($nroreq) {
-	global $fechamodif, $usuariomodif;
-	$sqlUpdateReque = "UPDATE reqfiscalizusimra SET procesoasignado = 1, fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif' WHERE nrorequerimiento = $nroreq";
-	$hostname = $_SESSION['host'];
-	$dbname = $_SESSION['dbname'];
-	try {
-		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-		$dbh->beginTransaction();
-		$dbh->exec($sqlUpdateReque);
-		$dbh->commit();
-	}catch (PDOException $e) {
-		echo $e->getMessage();
-		$dbh->rollback();
-	}
+	return $arrayPagos;
 }
 
 function grabarCabLiquidacion($nroreq, $nombreArcExc, $db) {
@@ -259,13 +95,223 @@ function grabarCabLiquidacion($nroreq, $nombreArcExc, $db) {
 	}
 }
 
+function cambioEstadoReq($nroreq) {
+	global $fechamodif, $usuariomodif;
+	$sqlUpdateReque = "UPDATE reqfiscalizusimra SET procesoasignado = 1, fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif' WHERE nrorequerimiento = $nroreq";
+	$hostname = $_SESSION['host'];
+	$dbname = $_SESSION['dbname'];
+	try {
+		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$dbh->beginTransaction();
+		$dbh->exec($sqlUpdateReque);
+		$dbh->commit();
+	}catch (PDOException $e) {
+		echo $e->getMessage();
+		$dbh->rollback();
+	}
+}
+
+function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nroreqArc) {
+	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit";
+	$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
+	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
+	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
+	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
+
+	$arrayDDJJ = array();
+	$arrayPeriodos = array();
+	//DDJJ VALIDAS
+	$sqlDDJJ = "select anoddjj, mesddjj, cuil, sum(remuneraciones) as remuneraciones, count(cuil) as ddjjcant
+	from detddjjusimra
+	where cuit = $cuit and cuil != '99999999999' and anoddjj >= $anoinicio and anoddjj <= $ultano group by anoddjj, mesddjj, cuil";
+	$resDDJJ = mysql_query($sqlDDJJ,$db);
+	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
+		$mes = str_pad($rowDDJJ['mesddjj'],2,'0',STR_PAD_LEFT);
+		$id = $rowDDJJ['anoddjj'].$mes;
+		$arrayDDJJ[$id][$rowDDJJ['cuil']] = array ('origen' =>  1, 'datos' => $rowDDJJ);
+		
+		//controlo para no mezclar ddjj
+		$idUsimra = $id."U";
+		$arrayPeriodos[$idUsimra] = $id;
+	}
+	
+	//DDJJ TEMPORALES
+	$sqlDDJJNroControl = "select perano, permes, nrctrl
+	from ddjjusimra
+	where nrcuit = $cuit and nrcuil = '99999999999' and perano >= $anoinicio and perano <= $ultano order by nrctrl, nrcuil DESC";
+	$arrayNroControl = array();
+	$resDDJJNroControl = mysql_query($sqlDDJJNroControl,$db);
+	while ($rowDDJJNroControl = mysql_fetch_assoc($resDDJJNroControl)) {
+		$idNrocontrol = $rowDDJJNroControl['perano'].$rowDDJJNroControl['permes'];
+		$arrayNroControl[$idNrocontrol] =  $rowDDJJNroControl['nrctrl'];
+	}
+	$wherein = '';
+	foreach($arrayNroControl as $nrocontrol) {
+		$wherein = $wherein."'".$nrocontrol."',";
+	}
+	$wherein = substr($wherein, 0, -1);
+	$wherein = "(".$wherein.")";
+	if ($wherein != "()") {
+		$sqlDDJJTemp = "select perano as anoddjj, permes as mesddjj, nrcuil as cuil, remune as remuneraciones,  '1' as ddjjcant
+		from ddjjusimra
+		where nrcuit = $cuit and nrcuil != '99999999999' and nrctrl in $wherein";
+		$resDDJJTemp = mysql_query($sqlDDJJTemp,$db);
+		$canDDJJTemp = mysql_num_rows($resDDJJTemp);
+		if ($canDDJJTemp != 0) {
+			while ($rowDDJJTemp = mysql_fetch_assoc($resDDJJTemp)) {
+				$mes = str_pad($rowDDJJTemp['mesddjj'],2,'0',STR_PAD_LEFT);
+				$id = $rowDDJJTemp['anoddjj'].$mes;
+				$idUsimra = $id."U";
+				$idTemp = $id."T";
+				if (!array_key_exists($idUsimra, $arrayPeriodos)) {
+					$arrayDDJJ[$id][$rowDDJJTemp['cuil']] = array ('origen' =>  1, 'datos' => $rowDDJJTemp);
+					$arrayPeriodos[$idTemp] = $id;
+				}
+			}
+		}
+	}
+	
+	//DDJJ OSPIM
+	$sqlDDJJOspim = "select anoddjj, mesddjj, cuil, sum(remundeclarada) as remuneraciones, count(cuil) as ddjjcant
+	from detddjjospim
+	where cuit = $cuit and cuil != '99999999999' and
+	((anoddjj > $anoinicio and anoddjj < $ultano) or
+	(anoddjj = $ultano and mesddjj <= $ultmes) or
+	(anoddjj = $anoinicio and mesddjj >= $mesinicio))
+	group by anoddjj, mesddjj, cuil";
+	$resDDJJOspim = mysql_query($sqlDDJJOspim,$db);
+	while ($rowDDJJOspim = mysql_fetch_assoc($resDDJJOspim)) {
+		$mes = str_pad($rowDDJJOspim['mesddjj'],2,'0',STR_PAD_LEFT);
+		$id = $rowDDJJOspim['anoddjj'].$mes;
+		$idUsimra = $id."U";
+		$idTemp = $id."T";
+		if (!array_key_exists($idUsimra, $arrayPeriodos) && !array_key_exists($idTemp, $arrayPeriodos)) {
+			$arrayDDJJ[$id][$rowDDJJOspim['cuil']] = array ('origen' =>  2, 'datos' => $rowDDJJOspim);
+		}
+	}
+	
+	//ksort($arrayDDJJ);
+	
+	/*echo "<br><br>DDJJ TODAS<br><br>";
+	foreach($arrayDDJJ as $key => $ddjj) {
+		echo $key."->";var_dump($ddjj);echo "<br>";
+	}
+	echo "<br>--------------------<br>";*/
+	
+	$sqlRequeDet = "SELECT d.*, relacionmes, tipo, valor, retiene060*0.006 + retiene100*0.01 + retiene150*0.015 as porcentaje
+					FROM detfiscalizusimra d
+					LEFT JOIN extraordinariosusimra ON anofiscalizacion = anio and mesfiscalizacion = mes
+					WHERE nrorequerimiento = $nroreqArc";
+	$resRequeDet = mysql_query($sqlRequeDet,$db);
+	while ($rowRequeDet = mysql_fetch_assoc($resRequeDet)) {
+		$mes = $rowRequeDet['mesfiscalizacion'];
+		if ($mes > 12) {
+			$mes = $rowRequeDet['relacionmes'];
+		} 
+		$mes = str_pad($mes,2,'0',STR_PAD_LEFT);
+		$idBuscadorTipo = $rowRequeDet['anofiscalizacion'].$mes;
+		$idBuscadorDDJJ = $rowRequeDet['anofiscalizacion'].str_pad($rowRequeDet['mesfiscalizacion'],2,'0',STR_PAD_LEFT);
+		
+		$tipolinea = $tiporegistro[$idBuscadorTipo];
+		$remu = 0;
+		$noremok = 0;
+		$fijook = 0;
+		$cuotaok = 0;
+		if (substr($tipolinea,0,1) == 1) {
+			$remu = 1;
+		}
+		if (substr($tipolinea,1,1) == 1) {
+			$noremok = 1;
+		}
+		if (substr($tipolinea,2,1) == 1) {
+			$fijook = 1;
+		}
+		$cuerpoCUIL[$idBuscadorTipo]['tipo'] = $tipolinea;
+		if (array_key_exists($idBuscadorDDJJ, $arrayDDJJ)) {
+			$ddjjarray = $arrayDDJJ[$idBuscadorDDJJ];
+			foreach($ddjjarray as $ddjj) {
+				$cuil = $ddjj['datos']['cuil'];
+				if (isset($cuerpoCUIL[$idBuscadorTipo][$cuil])) {
+					$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('fecha' => "01/".$mes."/".$rowRequeDet['anofiscalizacion']);
+				} else {
+					$cuerpoCUIL[$idBuscadorTipo][$cuil] = array('fecha' => "01/".$mes."/".$rowRequeDet['anofiscalizacion']);
+				}
+				if($remu == 1 and $rowRequeDet['tipo'] == null) {
+					$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('remu' => $ddjj['datos']['remuneraciones']);
+				}
+				if($noremok == 1 and $rowRequeDet['tipo'] == 1) {
+					$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('norem' => $ddjj['datos']['remuneraciones']);
+				}
+				if($fijook == 1 and $rowRequeDet['tipo'] != null and $rowRequeDet['tipo'] == 0) {
+					$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('fijo' => $ddjj['datos']['remuneraciones']);
+				}
+				$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('origen' =>  $ddjj['origen']);
+			}
+		}
+	}
+
+	$arrayCuerpoArchivo = array();
+	$i=0;
+	foreach ($cuerpoCUIL as $per => $cuiles) {
+		foreach($cuiles as $cuil => $datos) {
+			if ($cuil == 'tipo') {
+				$tipolinea = $datos;
+			} else {
+				$remu = 0;
+				if (isset($datos['remu'])) {
+					$remu = $datos['remu'];
+				}
+				$norem = 0;
+				if (isset($datos['norem'])) {
+					$norem = $datos['norem'];
+				}
+				$fijo = 0;
+				if (isset($datos['fijo'])) {
+					$fijo = $datos['fijo'];
+				}
+				$arrayCuerpoArchivo[$per][$i] = $datos['fecha']."|".$cuil."|".str_pad(number_format($remu,2,',',''),12,'0',STR_PAD_LEFT)."|".str_pad(number_format($norem,2,',',''),12,'0',STR_PAD_LEFT)."|".str_pad(number_format($fijo,2,',',''),12,'0',STR_PAD_LEFT)."|".$datos['origen']."|".$tipolinea;
+				$i++;
+			}
+		}
+	}
+	
+	//CREAMOS EL ARCHIVO
+	$ultanoArch = substr ($ultano,2,2);
+	$ultmesArch = str_pad($ultmes,2,'0',STR_PAD_LEFT);
+	$nombreArcCUIL = $cuit.$ultmesArch.$ultanoArch.'S'.$nroreqArc.".txt";
+	$maquina = $_SERVER['SERVER_NAME'];
+	if(strcmp("localhost",$maquina) == 0) {
+		$direArc = "liqui/".$nombreArcCUIL;
+	} else {
+		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArcCUIL;
+	}
+	
+	ksort($arrayCuerpoArchivo);
+	
+	//echo "<BR><BR>DETALLE<BR><BR>";
+	$ar=fopen($direArc,"x");
+	if ($ar===false) {
+		$error = "Hubo un error al generar el archivo de liquidación de detalle de CUILES en $direArc. Por favor cuminiquese con el dpto. de Sistemas";
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
+	}
+	foreach ($arrayCuerpoArchivo as $key=>$lineasCuil) {
+		foreach ($lineasCuil as $lineaCuil) {
+			//echo $key."->".$lineaCuil."<br>";
+	 		fputs($ar,$lineaCuil."\r\n");
+		}
+	}
+	fclose($ar);
+}
+
 function liquidar($nroreq, $cuit, $codidelega, $db) {
 	//CREAMOS PRIMERA LINEA DEL ARCHIVO
 	$sqlJuris = "SELECT e.*, j.*, p.descrip as provincia, l.nomlocali as localidad from empresas e, jurisdiccion j, provincia p, localidades l where j.cuit = $cuit and j.cuit = e.cuit and j.codidelega = $codidelega and j.codprovin = p.codprovin and j.codlocali = l.codlocali";
 	$resJuris = mysql_query($sqlJuris,$db);
 	$rowJuris = mysql_fetch_assoc($resJuris);
-	$cuitconguiones = agregaGuiones($cuit);
-	
+
 	//Coloco los tamaños fijos.
 	$delcod = str_pad($rowJuris['codidelega'],4,'0',STR_PAD_RIGHT);
 	$nombre = str_pad($rowJuris['nombre'],30,' ',STR_PAD_RIGHT);
@@ -273,7 +319,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 	$locaDescr = str_pad($rowJuris['localidad'],30,' ',STR_PAD_RIGHT);
 	$provDescr = str_pad($rowJuris['provincia'],20,' ',STR_PAD_RIGHT);
 	$numpostal = str_pad($rowJuris['numpostal'],4,'0',STR_PAD_RIGHT);
-	
+
 	if ($rowJuris['telefono'] == "" or $rowJuris['telefono'] == 0) {
 		$telefono = $rowJuris['ddn1'].$rowJuris['telefono1'];
 		$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
@@ -281,74 +327,184 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$telefono = $rowJuris['ddn'].$rowJuris['telefono'];
 		$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
 	}
-	
-	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono;
-	
-	//CREAMOS EL CUERPO DEL ARCHIVO CON LA DEUDA
-	$cuerpo = array();
-	$pagos = array();
-	$l = 0;
-	$sqlRequeDet = "SELECT * from detfiscalizusimra where nrorequerimiento = $nroreq";
+
+	$primeraLinea = $delcod."|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuit."|".$numpostal."|".$telefono;
+
+	$arrayPagos = obtenerPagos($cuit, $db);
+	$sqlRequeDet = "SELECT d.*, relacionmes, tipo, valor, retiene060*0.006 + retiene100*0.01 + retiene150*0.015 as porcentaje
+						FROM detfiscalizusimra d
+						LEFT JOIN extraordinariosusimra ON anofiscalizacion = anio and mesfiscalizacion = mes
+						WHERE nrorequerimiento = $nroreq";
 	$resRequeDet = mysql_query($sqlRequeDet,$db);
+	$arrayReque = array();
+	$arrayTipoLinea = array();
+	$arrayRemu = array();
+	$arrayCanPer = array();
 	while ($rowRequeDet = mysql_fetch_assoc($resRequeDet)) {
 		$mes = $rowRequeDet['mesfiscalizacion'];
-		$tipoPeriodo = 0;
+		$mes = str_pad($mes,2,'0',STR_PAD_LEFT);
 		if ($mes > 12) {
-			$mes = obtenerMesRelacion($mes,$rowRequeDet['anofiscalizacion'],$db);
-			$tipoPeriodo = 1;
+			$obligacion = calculoDeudaNr($rowRequeDet['remundeclarada'], $rowRequeDet['cantidadpersonal'], $rowRequeDet['tipo'], $rowRequeDet['valor'], $rowRequeDet['porcentaje']);
+			$mesTipo = obtenerMesRelacion($mes,$rowRequeDet['anofiscalizacion'],$db);
+			$mesTipo = str_pad($mesTipo,2,'0',STR_PAD_LEFT);
+			if ( $rowRequeDet['tipo'] == 0) {
+				$arrayTipoLinea[$rowRequeDet['anofiscalizacion'].$mesTipo][2] = 1;
+			}
+			if ( $rowRequeDet['tipo'] == 1) {
+				$arrayTipoLinea[$rowRequeDet['anofiscalizacion'].$mesTipo][1] = 1;
+			}
+		} else {
+			$arrayTipoLinea[$rowRequeDet['anofiscalizacion'].$mes][0] = 1;
+			$obligacion = $rowRequeDet['remundeclarada'] * 0.031;
+		}
+		$index = $rowRequeDet['anofiscalizacion'].$mes;
+		if (isset($arrayReque[$index])) {
+			$arrayReque[$index] += round($obligacion, 2);
+		} else {
+			$arrayReque[$index] = round($obligacion, 2);
+		}
+		if (isset($arrayRemu[$index])) {
+			$arrayRemu[$index] += round($rowRequeDet['remundeclarada'], 2);
+		} else {
+			$arrayRemu[$index] = round($rowRequeDet['remundeclarada'], 2);
+		}
+		if (isset($arrayCanPer[$index])) {
+			if ($arrayCanPer[$index] < $rowRequeDet['cantidadpersonal']) {
+				$arrayCanPer[$index] = $rowRequeDet['cantidadpersonal'];
+			}
+		} else {
+			$arrayCanPer[$index] = $rowRequeDet['cantidadpersonal'];
+		}
+	} 
+	
+	//echo "<br><br>REQUERIMIENTOS -> AGRUPACION DE OBLIGACION<br><br>";
+	$obligacion= array();
+	foreach($arrayReque as $key => $obliga) {
+		$anio = substr($key, 0, 4);
+		$mes = substr($key, -2);
+		if ($mes > 12) {
+			$mes = obtenerMesRelacion($mes,$anio,$db);
 		}
 		$mes = str_pad($mes,2,'0',STR_PAD_LEFT);
-		if ($rowRequeDet['statusfiscalizacion'] == 'F' || $rowRequeDet['statusfiscalizacion'] == 'M') {
-			//ACA PODEMOS PONER lA LINEA 0 ya que la data viene del detalle y de la consulta de agrupfisca linea de información.
-			unset($pagos);		
-			$personal = str_pad($rowRequeDet['cantidadpersonal'],4,'0',STR_PAD_LEFT);
-			$remunDec = number_format((float)$rowRequeDet['remundeclarada'],2,',','');
-			$remunDec = str_pad($remunDec,12,'0',STR_PAD_LEFT);
-			$pOrd = 0;
-			//PAGOS ORDINARIOS//
-			$sqlAfipProc = "select fechapago, sum(montopagado) from seguvidausimra where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." group by fechapago order by fechapago";
-			$resAfipProc = mysql_query($sqlAfipProc,$db);
-			while ($rowAfipProc = mysql_fetch_assoc($resAfipProc)) {
-				$fechaOrdinario = $rowAfipProc['fechapago'];
-				$importeOrdinario = $rowAfipProc['sum(montopagado)'];
-				$importeOrdinario = number_format((float)$importeOrdinario,2,',','');
-				$importeOrdinario = str_pad($importeOrdinario,12,'0',STR_PAD_LEFT);
-				$pagos[$pOrd] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaOrdinario)."|".$importeOrdinario."|".$tipoPeriodo;
-				$personal = "0000";
-				$remunDec = "000000000,00";
-				$pOrd++;
-			} 
-			//****************//
+		$index = $anio.$mes;
+		if (isset($obligacion[$index])) {
+			$obligacion[$index] += round($obliga,2);
 		} else {
-			unset($pagos);	
-			if ($rowRequeDet['statusfiscalizacion'] == 'A' || $rowRequeDet['statusfiscalizacion'] == 'O') {	
-				$personal = str_pad($rowRequeDet['cantidadpersonal'],4,'0',STR_PAD_LEFT);
-				$remunDec = number_format((float)$rowRequeDet['remundeclarada'],2,',','');
-				$remunDec = str_pad($remunDec,12,'0',STR_PAD_LEFT);
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|          |            |".$tipoPeriodo;
+			$obligacion[$index] = round($obliga,2);
+		}
+		//echo $index." -> ".$obliga."<br>";
+	}	
+	
+	//echo "<br><br>REQUERIMIENTOS -> AGRUPACION DE PAGOS y REMUNERACIONES<br><br>";
+	$pagos = array();
+	$remun = array();
+	$perso = array();
+	foreach($arrayReque as $key => $obliga) {
+		$anio = substr($key, 0, 4);
+		$mes = substr($key, -2);
+		if ($mes > 12) {
+			$mes = obtenerMesRelacion($mes,$anio,$db);
+		}
+		$mes = str_pad($mes,2,'0',STR_PAD_LEFT);
+		$index = $anio.$mes;
+	
+		//agrupo pagos
+		if (isset($arrayPagos[$key])) {
+			foreach ($arrayPagos[$key] as $fechapago => $importe) {
+				if (isset($pagos[$index][$fechapago])) {
+					$pagos[$index][$fechapago] += round($importe,2);
+				} else {
+					$pagos[$index][$fechapago] = round($importe,2);
+				}
+				//echo $index." -> ".round($importe,2)."<br>";
+			} 
+		}
+		
+		//agrupo remuneraciones
+		if (isset($arrayRemu[$key])) {
+			if (isset($remun[$index])) {
+				$remun[$index] += round($arrayRemu[$key],2);
 			} else {
-				$linea = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|0000|000000000,00|          |            |".$tipoPeriodo;
+				$remun[$index] = round($arrayRemu[$key],2);
 			}
 		}
-		$indexFecha = $rowRequeDet['anofiscalizacion'].$mes;
-		$l = 0;
-		if (sizeof($pagos) > 0) {
-			for ($n = 0; $n < sizeof($pagos); $n++) {
-				$indexCuerpo = $indexFecha.$l.$tipoPeriodo;
-				$cuerpo[$indexCuerpo] = $pagos[$n];
-				$l++;
+		
+		//agrupo cantidad personal
+		if (isset($arrayCanPer[$key])) {
+			if (isset($arrayCanPer[$index])) {
+				 if ($arrayCanPer[$index] > $arrayCanPer[$key]) {
+				 	$perso[$index] = $arrayCanPer[$index];
+				 } else {
+				 	$perso[$index] = $arrayCanPer[$key];
+				 }
+			} else {
+				$perso[$index] = $arrayCanPer[$key];
 			}
-		} else  {
-			$indexCuerpo = $indexFecha.$l.$tipoPeriodo;
-			$cuerpo[$indexCuerpo] = $linea;
+		}
+	}
+	
+	
+	$cab = 0;
+	foreach($obligacion as $key => $obliga) {
+		$obliga = str_pad(number_format((float)$obliga,2,',',''),12,'0',STR_PAD_LEFT);
+		$anio = substr($key, 0, 4);
+		$mes = substr($key, -2);
+		if ($mes > 12) {
+			$mes = obtenerMesRelacion($mes,$anio,$db);
+		}
+		$mes = str_pad($mes,2,'0',STR_PAD_LEFT);
+		$index = $anio.$mes;
+		
+		if (!isset($arrayTipoLinea[$index][0])) {
+			$arrayTipoLinea[$index][0] = 0;
+		}
+		if (!isset($arrayTipoLinea[$index][1])) {
+			$arrayTipoLinea[$index][1] = 0;
+		}
+		if (!isset($arrayTipoLinea[$index][2])) {
+			$arrayTipoLinea[$index][2] = 0;
+		}
+		
+		$remuneracion = 0;
+		if (isset($remun[$index])) {
+			$remuneracion = $remun[$index];
+		}
+		$remuneracion = number_format((float)$remuneracion,2,',','');
+		$remuneracion = str_pad($remuneracion,12,'0',STR_PAD_LEFT);
+		
+		$personal = 0;
+		if (isset($perso[$index])) {
+			$personal = $perso[$index];
+		}
+		$personal = number_format((float)$personal,0,',','');
+		$personal = str_pad($personal,4,'0',STR_PAD_LEFT);
+		
+		if (isset($pagos[$index])) {
+			$nropago = 0;	
+			foreach ($pagos[$index] as $fechapago => $importe) {
+				$importe = number_format((float)$importe,2,',','');
+				$importe = str_pad($importe,12,'0',STR_PAD_LEFT);	
+				if ($nropago == 0) {
+					$cabecera[$index][$cab] = "01/".$mes."/".$anio."|".$personal."|".$remuneracion."|".$obliga."|".invertirFecha($fechapago)."|".$importe."|".$arrayTipoLinea[$index][0].$arrayTipoLinea[$index][1].$arrayTipoLinea[$index][2];
+				} else {
+					$cabecera[$index][$cab] = "01/".$mes."/".$anio."|0000|000000000,00|000000000,00|".invertirFecha($fechapago)."|".$importe."|".$arrayTipoLinea[$index][0].$arrayTipoLinea[$index][1].$arrayTipoLinea[$index][2];
+				}
+				$nropago++;
+				$cab++;
+			}
+		} else {
+			$cabecera[$index][$cab] = "01/".$mes."/".$anio."|".$personal."|".$remuneracion."|".$obliga."|          |000000000,00|".$arrayTipoLinea[$index][0].$arrayTipoLinea[$index][1].$arrayTipoLinea[$index][2];
+			$cab++;
 		}
 		
 	}
 	
+	ksort($cabecera);
+	
 	$sqlUltimoMes = "SELECT d.anofiscalizacion,  IFNULL(e.relacionmes,d.mesfiscalizacion) as mesorden
-						FROM detfiscalizusimra d LEFT JOIN extraordinariosusimra e on d.mesfiscalizacion = e.mes and d.anofiscalizacion = e.anio
-						where d.nrorequerimiento = $nroreq
-						order by d.anofiscalizacion DESC, mesorden DESC limit 1";
+	FROM detfiscalizusimra d LEFT JOIN extraordinariosusimra e on d.mesfiscalizacion = e.mes and d.anofiscalizacion = e.anio
+	where d.nrorequerimiento = $nroreq
+	order by d.anofiscalizacion DESC, mesorden DESC limit 1";
 	$resUltimoMes = mysql_query($sqlUltimoMes,$db);
 	$rowUltimoMes = mysql_fetch_assoc($resUltimoMes);
 	$ultano = $rowUltimoMes['anofiscalizacion'];
@@ -367,16 +523,33 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArc;
 	}
 	
-	ksort($cuerpo);
-	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de Deuda en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
+	
+	
+	$ar=fopen($direArc,"x");
+
+	if ($ar===false) {
+		$error = "Hubo un error al generar el archivo de liquidación de Deuda en $direArc. Por favor cuminiquese con el dpto. de Sistemas";	
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/usimra/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
+	}
+	
+	//echo "<br><br>CABECERA<br><br>";
 	fputs($ar,$primeraLinea."\r\n");
-	foreach ($cuerpo as $linea) {
-		fputs($ar,$linea."\r\n");
+	$arrayTipoLinea = array();
+	foreach ($cabecera as $key => $lineas) {
+		foreach($lineas as $linea) {
+			//echo $key."=>".$linea."<br>";
+			fputs($ar,$linea."\r\n");
+			
+			$lineaExp = explode("|",$linea);
+			$arrayTipoLinea[$key] = $lineaExp[6];
+		}
 	}
 	fclose($ar);
 	
 	//**********************************
-	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqCompleto);
+	creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $arrayTipoLinea, $nroreqCompleto);
 	
 	grabarCabLiquidacion($nroreq, $nombreArcExc, $db);
 	
@@ -414,7 +587,7 @@ for ($i=0; $i < sizeof($datos); $i++) {
 			$resul++;
 		}
 	}
-}	
+}
 
 if (sizeof($reqALiquidar) != 0) {
 	for ($i=0; $i < sizeof($reqALiquidar); $i++) {
@@ -422,10 +595,10 @@ if (sizeof($reqALiquidar) != 0) {
 		$resultado[$resul] =  array('nroreq' => $reqALiquidar[$i]['req'], 'estado' => "Se ha liquidado en el archivo con nombre '".$nombreArc."'", 'liquidado' => 1);
 		$resul++;
 	}
-} 
+}
 
 //cambio la hora de secion por ahora para no perder la misma
-$ahora = date("Y-n-j H:i:s"); 
+$ahora = date("Y-n-j H:i:s");
 $_SESSION["ultimoAcceso"] = $ahora;
 
 ?>
@@ -449,17 +622,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script>
 function abrirInfo(dire) {
 	a= window.open(dire,"InfoInspeccion",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=700, height=400, top=10, left=10");
+			"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=700, height=400, top=10, left=10");
 }
 
 </script>
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" />
-  </span></p>
-  	<p class="Estilo2">Resultado del proceso de liquidación los los requerimientos del d&iacute;a <?php echo $fecha ?>  </p>
+<p><span style="text-align:center">
+<input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" />
+</span></p>
+<p class="Estilo2">Resultado del proceso de liquidación los los requerimientos del d&iacute;a <?php echo $fecha ?>  </p>
 	  <table style="width: 800; text-align: center;" border=1>
         <tr>
           <th>Req Nro.</th>

@@ -6,12 +6,33 @@ $fecha = $_GET['fecha'];
 $nroreq = $_GET['nroreq'];
 $cuit = $_GET['cuit'];
 
-$sqlDeta = "SELECT * from detfiscalizusimra d, periodosusimra p where nrorequerimiento = '$nroreq' and 
-				 d.anofiscalizacion = p.anio and d.mesfiscalizacion = p.mes ";
+$sqlDeta = "SELECT p.*, d.*, relacionmes, tipo, valor, retiene060*0.006 + retiene100*0.01 + retiene150*0.015 as porcentaje
+						FROM detfiscalizusimra d
+						LEFT JOIN extraordinariosusimra e ON anofiscalizacion = e.anio and mesfiscalizacion = e.mes
+            			LEFT JOIN periodosusimra p ON anofiscalizacion = p.anio and mesfiscalizacion = p.mes
+						WHERE nrorequerimiento = '$nroreq'";
+				 
 $resDeta = mysql_query($sqlDeta,$db);
 
+function calculoObligacion($remu, $personal, $tipo, $valor, $porcentaje) {
+	$apagar = 0;
+	if ($tipo == -1) {
+		$apagar = $remu * 0.031;
+	}
+	if ($tipo == 0) {
+		$apagar = $valor * $porcentaje * $personal;
+	}
+	if ($tipo == 1) {
+		$apagar = $remu * $porcentaje;
+	}
+	if ($tipo == 2) {
+		$apagar = $remu;
+	}
+	return $apagar;
+}
+
 function obtenerMesRelacion($mes, $anio, $db) {
-	$sqlExtra = "SELECT relacionmes FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
+	$sqlExtra = "SELECT relacionmes FROM extraordinariosusimra WHERE anio = $anio and mes = $mes";
 	$resExtra = mysql_query($sqlExtra,$db);
 	$rowExtra = mysql_fetch_assoc($resExtra);
 	return $rowExtra['relacionmes'];
@@ -93,23 +114,32 @@ function validar(formulario) {
 		<input name="fecha" type="text" value="<?php echo $fecha?>" style="display:none"/>
 		<input name="nroreq" type="text" value="<?php echo $nroreq?>" style="display:none"/>
 		<p class="Estilo2">Edici&oacute;n de Periodos  del  Requerimiento Nro. <?php echo $nroreq ?></p>
-		<table width="900" border="1" align="center" style="text-align: center;">
+		<table width="1200" border="1" align="center" style="text-align: center;">
 		  <tr style="font-size:12px">
 		  	<th rowspan="2">Año</th>
 		  	<th rowspan="2">Mes</th>
 			<th rowspan="2">Status</th>
-			<th colspan="2">DDJJ</th>
+			<th colspan="4">DDJJ / Pagos</th>
 			<th rowspan="2">Deuda Nominal</th>
 			<th rowspan="2">+Info</th>
 			<th rowspan="2"><input type="checkbox" name="selecAll" id="selecAll" onchange="checkall(this)" /></th>
 		  </tr>
 		  <tr style="font-size:12px">
-			<th>Remun.</th>
-			<th>Cant. Personal </th>
+			<th>Remun. / B. Cal.</th>
+			<th>Obligacion </th>
+			<th>Personal </th>
+			<th>Pago </th>
 		  </tr>
 		  <?php while($rowDeta = mysql_fetch_array($resDeta)) { 
-					$ano = $rowDeta['anofiscalizacion'];
-					$mes = $rowDeta['mesfiscalizacion'];
+		  			$ano = $rowDeta['anofiscalizacion'];
+		  			$mes = $rowDeta['mesfiscalizacion'];
+					
+		  			if ($rowDeta['tipo'] == null) {
+		  				$tipo = -1;
+		  			} else {
+		  				$tipo = $rowDeta['tipo'];
+		  			}
+		  	
 					$id = $ano."-".$mes; 
 					if ($rowDeta['statusfiscalizacion'] == 'S') {
 						$status = "S/DDJJ";
@@ -135,8 +165,21 @@ function validar(formulario) {
 						<td><?php echo $mes." - ".$rowDeta['descripcion']?></td>
 						<td><?php echo $status ?></td>   
 						<td><?php echo number_format($rowDeta['remundeclarada'],2,',','.'); ?></td> 
+						<td>
+							<?php  
+								$obliga = calculoObligacion($rowDeta['remundeclarada'],$rowDeta['cantidadpersonal'],$tipo,$rowDeta['valor'],$rowDeta['porcentaje']);
+								echo number_format($obliga,2,',','.');
+							?>
+						</td> 
 						<td><?php echo $rowDeta['cantidadpersonal'] ?></td> 
-						<td><?php echo number_format($rowDeta['deudanominal'],2,',','.'); ?></td>        
+						<td>
+							<?php 
+								$dueda = $rowDeta['deudanominal'];
+								$pago = abs($obliga - $dueda);
+								echo number_format($pago,2,',','.');
+							?>
+						</td>	
+						<td><?php echo number_format($dueda,2,',','.'); ?></td>        
 						<?php
 						
 						if ($mes > 12) {
@@ -144,19 +187,30 @@ function validar(formulario) {
 						}
 						
 						if ($rowDeta['statusfiscalizacion'] == 'M' || $rowDeta['statusfiscalizacion'] == 'F') {
-							$dire = "/madera/comun/empresas/abm/cuentas/detallePagosUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;?>
-							<td><input type="button" value="VER PAGO" onclick="javascript:abrirInfo('<?php echo $dire ?>')"/></td>
+							if ($tipo == 2) {
+								$dire = "/madera/comun/empresas/abm/cuentas/detalleCuotaUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$rowDeta['mesfiscalizacion'];?>
+								<td><input type="button" value="VER PAGO" onclick="javascript:abrirInfo('<?php echo $dire ?>')"/></td>
+					  <?php } else {
+					  			$dire = "/madera/comun/empresas/abm/cuentas/detallePagosUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
+					  			<td><input type="button" value="VER PAGO" onclick="javascript:abrirInfo('<?php echo $dire ?>')"/></td>
+					  <?php } ?>
 			<?php		} else {
 							if ($rowDeta['statusfiscalizacion'] == 'A') {
-								$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
+								if ($tipo != -1 ) {
+									$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$rowDeta['mesfiscalizacion'];
+								} else {
+									$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
+								}
+								?>
 								<td><input type="button" value="VER DDJJ" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
 			<?php			} else { 
 								if ($rowDeta['statusfiscalizacion'] == 'O') {
 									$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes; ?>
 									<td><input type="button" value="VER DDJJ OSPIM" onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
 			<?php				} else { 
-									if ($rowDeta['statusfiscalizacion'] == 'U') { ?>
-										<td>VER Per.Ord.</td> 
+									if ($rowDeta['statusfiscalizacion'] == 'U') { 
+										$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJUsimra.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;?>
+										<td><input type="button" value="VER DDJJ Per. Ord." onclick="javascript:abrirInfo('<?php echo $dire ?>')" /></td>
 						      <?php } else { ?>
 										<td>-</td> 
 							<?php	}

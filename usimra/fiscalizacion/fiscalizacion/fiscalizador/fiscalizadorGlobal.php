@@ -4,29 +4,25 @@ set_time_limit(0);
 print("<br>");
 //*************************
 
+function calculoDeudaNr($remuBase, $mes, $anio, $db) {
+	$sqlExtra = "SELECT anio, mes, tipo, valor, retiene060*0.006 + retiene100*0.01 + retiene150*0.015 as porcentaje FROM extraordinariosusimra WHERE anio = $anio and mes = $mes";
+	$resExtra = mysql_query($sqlExtra,$db);
+	$rowExtra = mysql_fetch_assoc($resExtra);
+	$apagar = 0;
+	if ($rowExtra['tipo'] == 0 || $rowExtra['tipo'] == 1) {
+		$apagar = $remuBase * $rowExtra['porcentaje'];
+	}
+	return $apagar;
+}
+
 function calculoDeuda($remu) {
 	$alicuota = 0.031;
 	$apagar = $remu * $alicuota;
 	return (float)number_format($apagar,2,'.','');
 }
 
-function calculoDeudaNr($remu, $personal, $mes, $anio, $db) {
-	$sqlExtra = "SELECT anio, mes, tipo, valor, retiene060*0.006 + retiene100*0.01 + retiene150*0.015 as porcentaje FROM extraordinariosusimra
-	WHERE anio = $anio and mes = $mes and tipo != 2";
-	$resExtra = mysql_query($sqlExtra,$db);
-	$rowExtra = mysql_fetch_assoc($resExtra);
-	$apagar = 0;
-	if ($rowExtra['tipo'] == 0) {
-		$apagar = $rowExtra['valor'] * $rowExtra['porcentaje'] * $personal;
-	}
-	if ($rowExtra['tipo'] == 1) {
-		$apagar = $remu * $rowExtra['valor'] * $rowExtra['porcentaje'];
-	}
-	return $apagar;
-}
-
 function calculoBaseCalculoNR($remu, $mes, $personal, $anio, $db) {
-	$sqlExtra = "SELECT tipo, valor FROM extraordinariosusimra WHERE anio = $anio and mes = $mes and tipo != 2";
+	$sqlExtra = "SELECT tipo, valor FROM extraordinariosusimra WHERE anio = $anio and mes = $mes";
 	$resExtra = mysql_query($sqlExtra,$db);
 	$rowExtra = mysql_fetch_assoc($resExtra);
 	$baseCalculoNR = 0;
@@ -40,7 +36,7 @@ function calculoBaseCalculoNR($remu, $mes, $personal, $anio, $db) {
 }
 
 function consultaPeriodos($db) {
-	$sqlPerExtra = "SELECT p.anio,p.mes,e.relacionmes FROM periodosusimra p, extraordinariosusimra e where p.mes = e.mes and p.anio = e.anio and e.tipo != 2";
+	$sqlPerExtra = "SELECT p.anio,p.mes,e.relacionmes FROM periodosusimra p, extraordinariosusimra e where p.mes = e.mes and p.anio = e.anio and e.tipo != 2 and e.tipo != 3";
 	$resPerExtra = mysql_query($sqlPerExtra,$db);
 	while ($rowPerExtra = mysql_fetch_assoc($resPerExtra)) {
 		$id=$rowPerExtra['anio'].$rowPerExtra['mes'];
@@ -57,7 +53,7 @@ function consultaPeriodos($db) {
 }
 
 function consultaExtra($db) {
-	$sqlExtra = "SELECT relacionmes, anio, mes, tipo, valor, retiene060*0.06 + retiene100*0.1 + retiene150*0.15 as porcentaje FROM extraordinariosusimra WHERE tipo != 2";
+	$sqlExtra = "SELECT relacionmes, anio, mes, tipo, valor, retiene060*0.006 + retiene100*0.01 + retiene150*0.015 as porcentaje FROM extraordinariosusimra WHERE tipo != 2 and tipo != 3";
 	$resExtra = mysql_query($sqlExtra,$db);
 	while ($rowExtra = mysql_fetch_assoc($resExtra)) {
 		$id=$rowExtra['anio'].$rowExtra['mes'];
@@ -131,6 +127,21 @@ function encuentroPagos($cuit, $anoinicio, $anofin, $db) {
 	} else {
 		return(0);
 	}
+}
+
+function encuentroCuotasExtra($cuit, $anoinicio, $anofin, $db, $arrayPagos) {
+	$sqlCuotasExtra = "select anopago,mespago,fechapago,sum(totalaporte) as totalaporte,sum(montopagado) as montopagado,sum(cantidadaportantes) as cantidadaportantes from cuotaextraordinariausimra
+	where cuit = $cuit and anopago >= $anoinicio and anopago <= $anofin group by anopago, mespago order by anopago, mespago";
+	//echo $sqlCuotasExtra."<br><br>";
+	$resCuotasExtra = mysql_query($sqlCuotasExtra,$db);
+	$canCuotasExtra = mysql_num_rows($resCuotasExtra);
+	if($canCuotasExtra > 0) {
+		while ($rowCuotasExtra = mysql_fetch_assoc($resCuotasExtra)) {
+			$id=$rowCuotasExtra['anopago'].$rowCuotasExtra['mespago'];
+			$arrayPagos[$id] = array('anio' => (int)$rowCuotasExtra['anopago'], 'mes' => (int)$rowCuotasExtra['mespago'], 'remu' => (float)$rowCuotasExtra['totalaporte'], 'importe' => $rowCuotasExtra['montopagado'], 'fechapago' => $rowCuotasExtra['fechapago'],  'totper' => $rowCuotasExtra['cantidadaportantes'] ,'estado' => 'P');
+		}
+	}
+	return $arrayPagos;
 }
 
 function encuentroPagosAnteriores($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
@@ -247,9 +258,11 @@ function encuentroDdjjOspim($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db
 function deudaNominal($arrayFinal) {
 	$totalDeuda = 0;
 	$alicuota = 0.031;
+	$totalDeuda = 0;
 	foreach ($arrayFinal as $perido){
-		//var_dump($perido);echo("<br>");
-		$totalDeuda = $totalDeuda + $perido['deuda'];
+		if (isset($perido['deuda'])) {
+			$totalDeuda = $totalDeuda + $perido['deuda'];
+		}
 	}
 	return($totalDeuda);
 }
@@ -272,13 +285,16 @@ $empre = 0;
 for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 	if ($empre < $filtros['empresas']) {
 		$cuit = $listadoEmpresas[$e]['cuit'];
-		$fechaInicio = $listadoEmpresas[$e]['iniobliosp'];
+		$fechaInicio = $listadoEmpresas[$e]['iniobliusi'];
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
 		
 		$arrayPagos = encuentroPagos($cuit, $anoinicio, $anofin, $db);
 		if ($arrayPagos == 0){ 
 			$arrayPagos = array();
 		}
+		$arrayPagos = encuentroCuotasExtra($cuit, $anoinicio, $anofin, $db, $arrayPagos);
+		//var_dump($arrayPagos);
+		
 		$arrayPagosAnteriores = encuentroPagosAnteriores($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db);
 		if ($arrayPagosAnteriores == 0){
 			$arrayPagosAnteriores = array();
@@ -364,7 +380,7 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 							if (array_key_exists($idArray, $arrayDdjj)) {
 								$arrayFinal[$idArray] =  $arrayDdjj[$idArray];
 								if ($perido['mes'] > 12) {
-									$arrayFinal[$idArray]['deuda'] = calculoDeudaNr($arrayFinal[$idArray]['remu'],$arrayFinal[$idArray]['totper'],$perido['mes'], $ano, $db);
+									$arrayFinal[$idArray]['deuda'] = calculoDeudaNr($arrayFinal[$idArray]['remu'],$perido['mes'], $ano, $db);
 								} else {
 									$arrayFinal[$idArray]['deuda'] = calculoDeuda($arrayFinal[$idArray]['remu']);
 								}
@@ -373,13 +389,14 @@ for ($e=0; $e < sizeof($listadoEmpresas); $e++) {
 									if (array_key_exists($idBuscador, $arrayDdjj)) {
 										$registroDDJJ = $arrayDdjj[$idBuscador];
 										$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjj[$idBuscador]['remu'], $perido['mes'], $arrayDdjj[$idBuscador]['totper'], $ano, $db);
-										$registroDDJJ['deuda'] = calculoDeudaNr($registroDDJJ['remu'],$registroDDJJ['totper'],$perido['mes'], $ano, $db);
+										$registroDDJJ['deuda'] = calculoDeudaNr($registroDDJJ['remu'],$perido['mes'], $ano, $db);
+										$registroDDJJ['estado'] = 'U';
 										$arrayFinal[$idArray] =  $registroDDJJ;
-									} else {
+									} else { //ESTE ELSE ESTA AL EPDO PORQUE ES PERIODOD MAYOR A 12 y en OSPIM no existe
 										if (array_key_exists($idBuscador, $arrayDdjjOspim)) {			
 											$registroDDJJ = $arrayDdjjOspim[$idBuscador];
 											$registroDDJJ['remu'] = calculoBaseCalculoNR($arrayDdjjOspim[$idBuscador]['remu'], $perido['mes'], $arrayDdjjOspim[$idBuscador]['totper'], $ano, $db);
-											$registroDDJJ['deuda'] = calculoDeudaNr($registroDDJJ['remu'],$registroDDJJ['totper'],$perido['mes'], $ano, $db);
+											$registroDDJJ['deuda'] = calculoDeudaNr($registroDDJJ['remu'],$perido['mes'], $ano, $db);
 											$arrayFinal[$idArray] =  $registroDDJJ;
 										} else {
 											$arrayFinal[$idArray] =  array('anio' => $ano, 'mes' => $perido['mes'], 'estado' => 'S');
