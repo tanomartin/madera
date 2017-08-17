@@ -138,16 +138,29 @@ A:hover {text-decoration: none;color:#00FFFF }
             </tr>
           </thead>
         <tbody>
-		 <?php foreach ($resultadoFinal as $resultado){ ?>
+		 <?php
+		 	$totalTitu = 0;
+		 	$totalFami = 0;		 	
+		 	foreach ($resultadoFinal as $resultado){
+		 		$totalPorDelega = 0; ?>
             	<tr>
 					<td><?php echo $resultado['nombre'] ?></td>
-					<td><?php if ($resultado['titulares'] == '') { echo 0; } else { echo $resultado['titulares']; }  ?></td>
-					<td><?php if ($resultado['familiares'] == '') { echo 0; } else { echo $resultado['familiares']; }  ?></td>
-					<?php 
-						$totalPorDelega = (int)$resultado['titulares'] + (int)$resultado['familiares']; 
-						$totalTitu += (int)$resultado['titulares'];
-						$totalFami += ( int)$resultado['familiares'];
-					?>
+					<td><?php if (!isset($resultado['titulares'])) { 
+								echo 0; 
+							  } else { 
+							  	echo $resultado['titulares']; 
+							  	$totalTitu += (int)$resultado['titulares'];
+							  	$totalPorDelega += $totalTitu;
+							  }  ?>
+					</td>
+					<td><?php if (!isset($resultado['familiares'])) { 
+								echo 0; 
+							  } else { 
+							  	echo $resultado['familiares']; 
+							  	$totalFami += ( int)$resultado['familiares'];
+							  	$totalPorDelega += $totalFami;
+							  }  ?>
+					</td>
 					<td><?php echo $totalPorDelega ?></td>
 				</tr>
 		<?php } ?>

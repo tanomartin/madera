@@ -4,8 +4,6 @@ include ($_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/controlSessionOspim.php");
 
 $sqlDelega = "select * from delegaciones";
 $resDelega = mysql_query ( $sqlDelega, $db );
-$err = $_GET ['err'];
-
 ?>
 
 <!DOCTYPE html>
@@ -155,6 +153,8 @@ function validar(formulario) {
 				</tr>
 			</table>
   <?php
+  if (isset( $_GET ['err'])) {
+  		$err = $_GET ['err'];
 		if ($err == 1) {
 			print ("<div align='center' style='color:#FF0000'><b> CUIT INEXISTENTE </b></div>") ;
 		}
@@ -173,6 +173,7 @@ function validar(formulario) {
 		if ($err == 6) {
 			print ("<div align='center' style='color:#FF0000'><b> EL CUIT INGRESADO ESTA DE BAJA </b></div>") ;
 		}
+  }
 		?>
   <table style="width: 630; text-align: center;" id="delega">
 				<tr>

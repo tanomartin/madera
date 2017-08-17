@@ -51,6 +51,7 @@ function validar(formulario) {
   <p align="center" class="Estilo1">Consulta de Aportes</p>
   <p> 
    <?php 
+    if (isset($_GET['err'])) {
   		$err = $_GET['err'];
 		if ($err == 1) {
 			print("<div align='center' style='color:#FF0000'><b> CUIT SIN APORTES REGISTRADOS </b></div>");
@@ -58,6 +59,7 @@ function validar(formulario) {
 		if ($err == 2) {
 			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
 		}
+    }
   ?>
   </p>
   <div align="center">
