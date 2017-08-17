@@ -223,9 +223,7 @@ A:hover {
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<p class="Estilo2">
-			<span style="text-align: center"> <input type="reset" name="volver"
-				value="Volver" onclick="location.href = 'menuPadrones.php'" />
-			</span>
+			<span style="text-align: center"> <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuPadrones.php'" /></span>
 		</p>
 		<p class="Estilo2">Resultado del Generacion de Padrones Período (<?php echo $mes." - ".$anio ?>) </p>
 		<table width="800" border="1" align="center">
