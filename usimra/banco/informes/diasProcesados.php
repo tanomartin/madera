@@ -13,16 +13,38 @@ $resPeriodos = mysql_query($sqlPeriodos,$db);
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-
+<script src="/madera/lib/jquery.js"></script>
+<script src="/madera/lib/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script type="text/javascript">
 
-function validar(formulario) {
-	if (formulario.periodo.value == 0) {
-		alert("Debe Seleccionar un Período");
-		return false;
+	$(function() {
+		$("#listado").tablesorter({
+			theme: 'blue',
+			widthFixed: true, 
+			widgets: ["zebra", "filter"], 
+			widgetOptions : { 
+				filter_cssFilter   : '',
+				filter_childRows   : false,
+				filter_hideFilters : false,
+				filter_ignoreCase  : true,
+				filter_searchDelay : 300,
+				filter_startsWith  : false,
+				filter_hideFilters : false,
+			}
+		})
+	});
+
+	function validar(formulario) {
+		if (formulario.periodo.value == 0) {
+			alert("Debe Seleccionar un Período");
+			return false;
+		}
+		return true;
 	}
-	return true;
-}
 
 </script>
 
@@ -46,10 +68,6 @@ A:hover {text-decoration: none;color:#33CCFF }
 </div>
 <form id="anulacion" name="anulacion" method="post" onsubmit="return validar(this)" action="diasProcesados.php">
   <div align="center">
-    <table width="371" border="0">
-      <tr>
-        <td><div align="center">
-            <label>
             <select name="periodo" id="periodo">
 				<option value='0'>Seleccione Período</option>
 				<?php
@@ -59,69 +77,53 @@ A:hover {text-decoration: none;color:#33CCFF }
 					}
 				?>
             </select>
-            </label>
-          </div></td>
-      </tr>
-      <tr>
-        <td>
-          <div align="center">
-            <input type="submit" name="anular" value="Consultar" />
-          </div>
-        </td>
-      </tr>
-    </table>
+         <p><input type="submit" name="anular" value="Consultar" /></p>   
 	<?php 
 		if(isset($_POST['periodo'])) { 
 			$periodo = $_POST['periodo'];
 			$datossplit = explode('-',$periodo); 
 			$ano = $datossplit[1];
 			$mes = $datossplit[0];
-			?>
-			<p><span class="Estilo1">Resultado Per&iacute;odo "<?php echo $periodo ?>"</span> </p>
-			<table border="1" width="800" style="text-align:center">
-				<tr>
-				  	<th>D&iacute;a </th>
-				  	<th>Convenio </th>
-				    <th>Estado </th>
-				    <th>Fecha Proceso </th>
-					<th>Observación </th>
-	  			</tr>
-	  <?php	$sqlDias = "SELECT * FROM diasbancousimra WHERE ano = $ano and mes = $mes ORDER BY dia";
-			$resDias = mysql_query($sqlDias,$db); 
-			$canDias = mysql_num_rows($resDias);
 			
-			if ($canDias != 0) {
-				while($rowDias = mysql_fetch_array($resDias)) {
-					print("<tr>");
-					$fecha = $ano."-".$mes."-".$rowDias['dia'];
-					$diaSemana = $diasArray[date('N', strtotime($fecha))];
-					print("<td>".$diaSemana." ".str_pad($rowDias['dia'],2,'0',STR_PAD_LEFT)."/".str_pad($mes,2,'0',STR_PAD_LEFT)."/".$ano."</td>");
-					print("<td>".$rowDias['nroconvenio']."</td>");
+			$sqlDias = "SELECT * FROM diasbancousimra WHERE ano = $ano and mes = $mes ORDER BY dia";
+			$resDias = mysql_query($sqlDias,$db);
+			$canDias = mysql_num_rows($resDias); ?>
+			<p><span class="Estilo1">Resultado Per&iacute;odo "<?php echo $periodo ?>"</span> </p>
+			<table class="tablesorter" id="listado" style="width: 800px">
+				<thead>
+					<tr>
+					  	<th>D&iacute;a </th>
+					  	<th class="filter-select" data-placeholder="Seleccione Convenio">Convenio </th>
+					    <th class="filter-select" data-placeholder="Seleccione Estado">Estado </th>
+					    <th>Fecha Proceso </th>
+						<th>Observación </th>
+		  			</tr>
+	  			</thead>
+	  			<tbody>
+	  <?php	if ($canDias != 0) {
+				while($rowDias = mysql_fetch_array($resDias)) { 
+					$estado = "";
 					if ($rowDias['procesado'] == '1') {
-						print("<td>Procesado</td>");
-					}
-					if ($rowDias['exceptuado'] == '1') {
-						print("<td>Exceptuado</td>");
-					}
-					if ($rowDias['procesado'] == '0' && $rowDias['exceptuado'] == '0') {
-						print("<td> Sin Procesar </td>");
-					}
-						
-					if ($rowDias['procesado'] == '1' || $rowDias['exceptuado'] == '1') {
-						print("<td>".$rowDias['fechamodificacion']."</td>");
+						$estado = "Procesado";
+					} elseif ($rowDias['exceptuado'] == '1') {
+						$estado = "Exceptuado";
 					} else {
-						print("<td>-</td>");
+						$estado = " Sin Procesar";
 					}
-					if ($rowDias['exceptuado'] == '1') {
-						print("<td>".$rowDias['observacion']."</td>");
-					} else {
-						print("<td>-</td>");
-					}
-					print("</tr>");
-				}
-			} else {
-				print("<tr><td colspan='8' style='color:#FF0000'><b>No Existen movimientos para este código</b></td></tr>");
-			} ?>
+					$fecha = $ano."-".$mes."-".$rowDias['dia'];
+					$diaSemana = $diasArray[date('N', strtotime($fecha))]; ?>
+					<tr>
+						<td><?php echo $diaSemana." ".str_pad($rowDias['dia'],2,'0',STR_PAD_LEFT)."/".str_pad($mes,2,'0',STR_PAD_LEFT)."/".$ano ?></td>
+					    <td><?php echo $rowDias['nroconvenio'] ?></td>
+						<td><?php echo $estado ?></td>
+						<td><?php echo $rowDias['fechamodificacion'] ?></td>
+						<td><?php echo $rowDias['observacion'] ?></td>
+					</tr>
+		<?php } 
+			} else { ?>
+					<tr><td colspan='8' style='color:#FF0000'><b>No Existen movimientos para este código</b></td></tr>
+	<?php	} ?>
+			</tbody>
 	</table>
 	<p><input type='button' name='imprimir' value='Imprimir' onclick='window.print();'/></p>
     <?php } ?>
