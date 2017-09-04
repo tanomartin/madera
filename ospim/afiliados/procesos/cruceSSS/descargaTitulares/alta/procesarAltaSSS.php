@@ -121,7 +121,7 @@ if ($whereIn != ")") {
 												",'".$rowPadron['sexo']."',".$rowPadron['estadocivil'].",".$rowPadron['codprovin'].",'".$indpostal.
 												"',".$codpostal.",'',".$codlocali.",'".$domicilio."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',
 												'R',NULL,".$rowPadron['tipotitular'].",".$rowPadron['incapacidad'].",NULL,'".$cuiltitular."',
-												'".$rowPadron['cuit']."','".$arrayFechaEmpresa[$cuiltitular]."',".$codidelega.",NULL,0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,
+												'".$rowPadron['cuit']."','".$arrayFechaEmpresa[$cuiltitular]."',".$codidelega.",NULL,0,1,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,
 												'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
 		} else {
 			if ($rowPadron['parentesco'] == 4 || $rowPadron['parentesco'] == 6) {
@@ -136,7 +136,7 @@ if ($whereIn != ")") {
 												.$rowPadron['tipodocumento']."',".$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',"
 												.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
 												.$rowPadron['incapacidad'].",NULL,".$estudia.",NULL,NULL,NULL,'".$rowPadron['cuilfamiliar']
-												."',0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
+												."',0,1,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
 		}
 		$orden++;
 	}
