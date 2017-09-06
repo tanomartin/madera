@@ -1,6 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 set_time_limit(0);
+ini_set('mysql.allow_local_infile', 1);
 
 $anio = $_POST['anio'];
 $mes = $_POST['mes'];
@@ -11,7 +12,7 @@ $pathArchivo = addslashes($_FILES['archivo']['tmp_name']);
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
-	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave'],array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
 	$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	
 	$dbh->beginTransaction ();
@@ -32,7 +33,6 @@ try {
 	
 	
 	//echo $sqlLoadData."<br>";
-	$dbh->prepare($sqlLoadData,array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
 	$dbh->exec($sqlLoadData);
 	
 	$dbh->commit ();
@@ -97,7 +97,6 @@ try {
 								fechapresentacion = STR_TO_DATE(@var3,'%d%m%Y')";
 	
 	//echo $sqlLoadDataHistorico."<br>";
-	$dbh->prepare($sqlLoadDataHistorico,array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
 	$dbh->exec($sqlLoadDataHistorico);
 	
 	unlink($archivoHostorico);
