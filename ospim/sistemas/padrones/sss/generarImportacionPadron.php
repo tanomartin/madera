@@ -16,7 +16,7 @@ try {
 	
 	$dbh->beginTransaction ();
 	
-	$sqlLoadData = "LOAD DATA INFILE '$pathArchivo' INTO TABLE padronsss
+	$sqlLoadData = "LOAD DATA LOCAL INFILE '$pathArchivo' INTO TABLE padronsss
 						FIELDS TERMINATED BY '|'
 						LINES TERMINATED BY '\n'
 						(codigornos, cuit, cuiltitular, parentesco, cuilfamiliar,
@@ -82,7 +82,7 @@ try {
 	fclose($file);
 	fclose($filew);
 	
-	$sqlLoadDataHistorico = "LOAD DATA INFILE '$archivoHostorico' INTO TABLE padronssshistorico
+	$sqlLoadDataHistorico = "LOAD DATA LOCAL INFILE '$archivoHostorico' INTO TABLE padronssshistorico
 								FIELDS TERMINATED BY '|'
 								LINES TERMINATED BY '\n'
 								(idcabecera, codigornos, cuit, cuiltitular, parentesco, cuilfamiliar,
