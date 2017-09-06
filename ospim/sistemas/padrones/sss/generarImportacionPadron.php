@@ -11,12 +11,12 @@ $pathArchivo = addslashes($_FILES['archivo']['tmp_name']);
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
-	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave'],array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
+	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 	$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	
 	$dbh->beginTransaction ();
 	
-	$sqlLoadData = "LOAD DATA LOCAL INFILE '$pathArchivo' INTO TABLE padronsss
+	$sqlLoadData = "LOAD DATA INFILE '$pathArchivo' INTO TABLE padronsss
 						FIELDS TERMINATED BY '|'
 						LINES TERMINATED BY '\n'
 						(codigornos, cuit, cuiltitular, parentesco, cuilfamiliar,
@@ -32,6 +32,7 @@ try {
 	
 	
 	//echo $sqlLoadData."<br>";
+	$dbh->prepare($sqlLoadData,array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
 	$dbh->exec($sqlLoadData);
 	
 	$dbh->commit ();
@@ -81,7 +82,7 @@ try {
 	fclose($file);
 	fclose($filew);
 	
-	$sqlLoadDataHistorico = "LOAD DATA LOCAL INFILE '$archivoHostorico' INTO TABLE padronssshistorico
+	$sqlLoadDataHistorico = "LOAD DATA INFILE '$archivoHostorico' INTO TABLE padronssshistorico
 								FIELDS TERMINATED BY '|'
 								LINES TERMINATED BY '\n'
 								(idcabecera, codigornos, cuit, cuiltitular, parentesco, cuilfamiliar,
@@ -96,6 +97,7 @@ try {
 								fechapresentacion = STR_TO_DATE(@var3,'%d%m%Y')";
 	
 	//echo $sqlLoadDataHistorico."<br>";
+	$dbh->prepare($sqlLoadDataHistorico,array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
 	$dbh->exec($sqlLoadDataHistorico);
 	
 	unlink($archivoHostorico);
