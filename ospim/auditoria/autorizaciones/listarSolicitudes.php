@@ -2,8 +2,9 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
-$sqlLeeAutorizacion = "SELECT a.nrosolicitud,a.fechasolicitud,a.codidelega,d.nombre as delegacion,a.cuil,a.nroafiliado,a.codiparentesco,a.apellidoynombre,a.statusverificacion
-						FROM autorizaciones a, delegaciones d WHERE a.statusautorizacion = 0 and a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
+$sqlLeeAutorizacion = "SELECT a.nrosolicitud,a.material, a.medicamento, a.practica,a.fechasolicitud,a.codidelega,d.nombre as delegacion,a.cuil,a.nroafiliado,a.codiparentesco,a.apellidoynombre,a.statusverificacion
+						FROM autorizaciones a, delegaciones d 
+						WHERE a.statusautorizacion = 0 and a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
 $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);?>
 
@@ -47,7 +48,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<div style="text-align:center"><h1>Solicitudes</h1></div>
 <?php if ($totalLeeAutorizacion !=0) { ?>
 	<div align=center>
-		<table id="listadorSolicitudes" class="tablesorter" style="width:900px; font-size:14px; text-align: center;">
+		<table id="listadorSolicitudes" class="tablesorter" style="width:1000px; font-size:14px; text-align: center;">
 			<thead>
 				<tr>
 					<th>Nro</th>
@@ -55,8 +56,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<th class="filter-select" data-placeholder="Seleccione Delegación">Delegacion</th>
 					<th>C.U.I.L.</th>
 					<th>Afiliado</th>
-					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
+					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo Afil.</th>
 					<th>Apellido y Nombre</th>
+					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo Solicitud.</th>
 					<th class="filter-select" data-placeholder="Seleccione Estado">Verificacion</th>
 					<th>Accion</th>
 				</tr>
@@ -83,6 +85,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<?php		} 
 			} ?>
 					<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
+	<?php 	if ($rowLeeAutorizacion['practica'] == 1) { 
+				$tipo = "Practica";
+			}
+			if ($rowLeeAutorizacion['material'] == 1) {
+				$tipo = "Material";
+			}
+			if ($rowLeeAutorizacion['medicamento'] == 1) {
+				$tipo = "Medicamento";
+			} ?>
+					<td><?php echo $tipo; ?></td>
 	<?php	if($rowLeeAutorizacion['statusverificacion']==0) { ?>
 					<td>No Verificada</td>
 					<td>-</td>
