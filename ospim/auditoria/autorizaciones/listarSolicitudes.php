@@ -85,7 +85,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<?php		} 
 			} ?>
 					<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
-	<?php 	if ($rowLeeAutorizacion['practica'] == 1) { 
+	<?php 	$tipo = "-";
+			if ($rowLeeAutorizacion['practica'] == 1) { 
 				$tipo = "Practica";
 			}
 			if ($rowLeeAutorizacion['material'] == 1) {
