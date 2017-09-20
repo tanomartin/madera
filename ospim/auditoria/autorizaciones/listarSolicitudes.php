@@ -25,7 +25,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{8:{sorter:false, filter: false}},
+		headers:{9:{sorter:false, filter: false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
