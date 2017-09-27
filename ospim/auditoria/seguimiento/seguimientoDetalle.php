@@ -57,12 +57,20 @@ if ($rowSeguimiento['seguimiento'] == 1) {
 						<th>Usuario Registro</th>
 					</tr>
 				</thead>
-				<tbody>
+			<tbody>
 				<?php while ($rowSeguimientoEstado = mysql_fetch_assoc($resSeguimientoEstado)) { ?>
 					<tr>
-						<td><?php echo $rowSeguimientoEstado['estado'] ?></td>	
+						<td width="20%"><?php echo $rowSeguimientoEstado['estado'] ?></td>	
 						<td><?php echo $rowSeguimientoEstado['fecharegistro'] ?></td>	
 						<td><?php echo $rowSeguimientoEstado['usuarioregistro'] ?></td>	
+					</tr>
+					<tr>
+						<td style="background-image: linear-gradient(to bottom, #8DCBEA 5%, #539BBE 100%);
+									    background-color: #99bfe6;
+									    color: #FFFFFF;
+									    font-size: 15px;
+									    font-weight: bold;">Comentario</td>
+						<td colspan="2"><?php echo $rowSeguimientoEstado['comentario'] ?></td>	
 					</tr>
 		    	<?php } ?>
 				</tbody>
