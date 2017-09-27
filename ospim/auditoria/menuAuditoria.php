@@ -5,22 +5,13 @@ include($libPath."controlSessionOspim.php"); ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Módulo Auditoria Medica OSPIM :.</title>
+<title>.: Módulo Auditoria Medica :.</title>
 
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span class="Estilo2">Men&uacute; Auditoria Medica </span></p>
+  <h2>Men&uacute; Auditoria Medica </h2>
   <table width="600" border="3">
     <tr>
       <td width="200"><p align="center">Prestadores</p>
@@ -40,7 +31,12 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><p align="center">Programa de Prevenci&oacute;n </p>
       <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/prevencion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
-      <td>&nbsp;</td>
+      <td><?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'sgiraudo' || $_SESSION['usuario'] == 'gflongo') { ?>  
+     	 	<p align="center">Gestión y Seguimiento </p>
+      		<p align="center"><a class="enlace" href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      		<p>&nbsp;</p>
+      	 <?php } ?>
+      </td>
     </tr>
   </table>
 </div>
