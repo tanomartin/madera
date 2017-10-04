@@ -5,7 +5,7 @@ print("<br>");
 //*************************
 
 function esMontoMenor($remuDDJJ, $importe) {
-	$alicuota = 0.081;
+	$alicuota = 0.0765;
 	$limiteDif = 0.01;
 	$valor81 = (float)($remuDDJJ * $alicuota );
 	$diferencia = $valor81 - $importe;
@@ -134,7 +134,7 @@ function encuentroDdjj($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db, &$a
 
 function deudaNominal($arrayFinal) {
 	$totalDeuda = 0;
-	$alicuota = 0.081;
+	$alicuota = 0.0765;
 	foreach ($arrayFinal as $perido){
 		if($perido['estado'] == "A") {
 			$valor81 = (float)($perido['remu'] * $alicuota );
