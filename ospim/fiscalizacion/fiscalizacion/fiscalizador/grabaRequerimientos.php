@@ -21,7 +21,7 @@ $origen = $listadoDatosReq['origen'];
 
 //print("DEUDA DE EMPRESAS FILSCALIZDAS<br><br>");
 $empre = 0; 
-$alicuota = 0.081;
+$alicuota = 0.0765;
 $listadoFinal = array();
 for($i=0; $i < sizeof($listadoEmpresas); $i++) {
 	$deudaFinal = array();
