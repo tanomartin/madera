@@ -15,12 +15,12 @@ include($libPath."controlSessionOspim.php"); ?>
   <table width="600" border="3">
     <tr>
       <td width="200"><p align="center">Prestadores</p>
-          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/prestadores.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Autorizaciones</p>
           <p align="center"><a class="enlace" href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
-		<td width="200"><p align="center">Nomencladores</p>
+		<td width="200"><p align="center">Nomencladores de Practicas</p>
           <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
@@ -31,13 +31,19 @@ include($libPath."controlSessionOspim.php"); ?>
       <td><p align="center">Programa de Prevenci&oacute;n </p>
       <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/prevencion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       <p>&nbsp;</p></td>
-      <td><?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'sgiraudo' || $_SESSION['usuario'] == 'gflongo') { ?>  
-     	 	<p align="center">Gestión y Seguimiento </p>
-      		<p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      		<p>&nbsp;</p>
-      	 <?php } ?>
-      </td>
+      <td><p align="center">Medicamentos (Alfa Beta)</p>
+      <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/medicamentos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      <p>&nbsp;</p></td>
     </tr>
+    <?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'sgiraudo' || $_SESSION['usuario'] == 'gflongo') { ?> 
+	    <tr>
+	    	<td><p align="center">Gestión y Seguimiento </p>
+      			<p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      			<p>&nbsp;</p></td>
+	    	<td></td>
+	    	<td></td>
+	    </tr>
+	 <?php } ?>
   </table>
 </div>
 </body>
