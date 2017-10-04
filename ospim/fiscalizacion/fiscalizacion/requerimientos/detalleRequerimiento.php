@@ -136,7 +136,7 @@ function validar(formulario) {
 						print ("<td><a href=javascript:abrirDDJJPagos('".$dire."')>Pago</a></td>");
 					} else {
 						if ($rowDeta['statusfiscalizacion'] == 'A') {
-							$dire = "madera/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
+							$dire = "/madera/comun/empresas/abm/cuentas/detalleDDJJ.php?cuit=".$cuit."&anio=".$ano."&mes=".$mes;
 							print ("<td><a href=javascript:abrirDDJJPagos('".$dire."')>DDJJ</a></td>");
 						} else {
 							print("<td>-</td>"); 
