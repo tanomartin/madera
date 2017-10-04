@@ -33,7 +33,7 @@ include($libPath."controlSessionOspim.php"); ?>
       <p>&nbsp;</p></td>
       <td><?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'sgiraudo' || $_SESSION['usuario'] == 'gflongo') { ?>  
      	 	<p align="center">Gestión y Seguimiento </p>
-      		<p align="center"><a class="enlace" href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      		<p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       		<p>&nbsp;</p>
       	 <?php } ?>
       </td>
