@@ -25,7 +25,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <table width="400" border="3">
     <tr>
 	  <td width="200"><p align="center">A.B.M.C.</p>
-          <p align="center"><a class="enlace" href="abm/moduloAbmPrestadores.php"><img src="img/prestadores.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p align="center"><a class="enlace" href="abm/moduloAbmPrestadores.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
       <td width="200"><p align="center">Auditoria Factura </p>
           <p align="center"><a class="enlace" href="#"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
