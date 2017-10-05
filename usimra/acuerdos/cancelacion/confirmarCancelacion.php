@@ -404,7 +404,7 @@ function validar(formulario) {
     </table>
      <p>
        <label>Observacion
-	   <textarea name="textarea" cols="50" rows="4"></textarea>
+	   <textarea name="textarea" cols="50" rows="4"><?php echo $rowCuo['observaciones']?></textarea>
        </label>
      </p>
      <p>

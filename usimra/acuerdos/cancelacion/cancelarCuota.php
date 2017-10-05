@@ -107,7 +107,6 @@ try {
 	//echo $sqlInsertConcila;//echo "<br>";
 	$dbh->exec($sqlInsertConcila); 
 	
-	$observ = $rowCuo['observaciones']." Obs Cancelación: ".$observ;
 	$sqlUpdateCuota = "UPDATE cuoacuerdosusimra set montopagada = '$montoCuota', observaciones = '$observ', fechapagada = '$fechaPagada', fechacancelacion = '$fechaCancela', sistemacancelacion = 'M', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 	//echo $sqlUpdateCuota;//echo "<br>";
 	$dbh->exec($sqlUpdateCuota); 
