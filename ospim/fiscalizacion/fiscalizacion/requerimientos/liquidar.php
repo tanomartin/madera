@@ -418,7 +418,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			$pOrd = 0;
 			
 			//PAGOS ORDINARIOS//
-			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and (concepto = '381' or concepto = '401') group by fechapago, debitocredito order by fechapago, debitocredito";
+			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and (concepto = '381' or concepto = '401' or concepto = '471') group by fechapago, debitocredito order by fechapago, debitocredito";
 			$resAfipProc = mysql_query($sqlAfipProc,$db);
 			while ($rowAfipProc = mysql_fetch_assoc($resAfipProc)) {
 				$fechaOrdinario = $rowAfipProc['fechapago'];
