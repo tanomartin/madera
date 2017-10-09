@@ -40,13 +40,15 @@ jQuery(function($){
   </div>
   <p align="center" class="Estilo1">M&oacute;dulo Impresi&oacute;n de Bolestas</p>
    <?php 
-  		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><p><b> CUIT SIN ACUERDOS CARGADOS </b></p></div>");
-		}
-		if ($err == 2) {
-			print("<div align='center' style='color:#FF0000'><p><b> CUIT NO ENCONTRADO </b></p></div>");
-		}
+   		if (isset( $_GET['err'])) {
+	  		$err = $_GET['err'];
+			if ($err == 1) {
+				print("<div align='center' style='color:#FF0000'><p><b> CUIT SIN ACUERDOS CARGADOS </b></p></div>");
+			}
+			if ($err == 2) {
+				print("<div align='center' style='color:#FF0000'><p><b> CUIT NO ENCONTRADO </b></p></div>");
+			}
+   		}
   ?>
   
   <div align="center"><label> CUIT <input name="cuit" id="cuit" type="text" size="10" /></label></div>
