@@ -23,7 +23,7 @@ if ($activo == 0) {
 	$inicioFor = 15;
 } else {
 	$fecBaja = '';
-	$inicioFor = 14;
+	$inicioFor = 13;
 }
 $fechamodificacion = date("Y-m-d H:i:s");
 
@@ -52,6 +52,7 @@ try {
 		//print($sqlInsuProd."<br>");
 		$dbh->exec($sqlInsuProd);
 	}
+	
 	$dbh->commit();
 	$pagina = "productos.php";
 	Header("Location: $pagina"); 
