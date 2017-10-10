@@ -20,7 +20,7 @@ $usuario = $_POST['usuario'];
 $activo = $_POST['activo'];
 if ($activo == 0) {
 	$fecBaja = fechaParaGuardar($_POST['fecBaja']);
-	$inicioFor = 15;
+	$inicioFor = 14;
 } else {
 	$fecBaja = '';
 	$inicioFor = 13;
