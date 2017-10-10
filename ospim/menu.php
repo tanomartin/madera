@@ -6,13 +6,6 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Menú OSPIM :.</title>
-<style type="text/css">
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
-</style>
-
 <script language="javascript">
 function abrirModulo(dire, titulo) {
 	a= window.open(dire,titulo,
@@ -24,7 +17,6 @@ function abrirModulo(dire, titulo) {
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span class="Estilo1">Men&uacute; Principal - Sistema OSPIM</span></p>
   <p><img src="img/logo.png" width="168" height="142" /></p>
   <table width="600" border="1" style="text-align: center;vertical-align: middle;">
     <tr>
