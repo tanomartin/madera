@@ -12,7 +12,15 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
+jQuery(function($){
+	$("#fechafile").mask("99-99-9999");
+});
+
 function validar(formulario) {
+	if (!esFechaValida(formulario.fechafile.value)) {
+		alert("La fecha de archivo no es valida");
+		return false;
+	}
 	if (formulario.manual.value == "") {
 		alert("El archivo MANUAL.dat es obligatorio");
 		return false;
@@ -39,6 +47,7 @@ function validar(formulario) {
 	 	<h3><font color="blue"><?php if ($_GET['tipo'] == "M") { echo "MENSUAL"; } else { echo "SEMANAL"; }?></font></h3>
 	 	
 	 	<form enctype="multipart/form-data" method="post" onsubmit="return validar(this)" action="<?php echo "actualizacionArchivos.php?tipo=".$_GET['tipo']; ?>">
+ 			<p><b>Fecha Archivo: </b><input type="text" name="fechafile" id="fechafile" size="8"/></p>
  			<h4>Cargar Archivo manual.dat</h4>
  			<p><input type="file" name="manual" id="manual" accept=".dat" /></p>
  			<h4>Cargar Archivo manextra.txt</h4>

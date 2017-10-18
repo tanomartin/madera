@@ -1,8 +1,10 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
+include($libPath."fechas.php");
 set_time_limit(0);
 
 $tipo = $_GET['tipo'];
+$fechafile = fechaParaGuardar($_POST['fechafile']);
 if ($_FILES['manual']['name'] != "manual.dat") {
 	$error =  "El archivo manual.dat tiene nombre incorrecto";
 	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
@@ -149,7 +151,7 @@ while(!feof($faccion)) {
 }
 fclose($fileAccion);
 
-$sqlInsertControl = "INSERT INTO medicontrol VALUES(DEFAULT, '$tipo', $cantidadMedicamento, $cantidadExtra, $cantidadAccion,'$fecharegistro', '$usuarioregistro')";
+$sqlInsertControl = "INSERT INTO medicontrol VALUES(DEFAULT, '$tipo', $cantidadMedicamento, $cantidadExtra, $cantidadAccion,'$fechafile','$fecharegistro', '$usuarioregistro')";
 
 try {
 	$hostname = $_SESSION['host'];
