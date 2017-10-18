@@ -35,7 +35,7 @@ $carpeta = "semanal";
 if ($tipo == "M") { $carpeta = "mensual"; }
 
 $maquina = $_SERVER['SERVER_NAME'];
-$pathGeneral="/home/sistemas/medicamentos/files/$carpeta/";
+$pathGeneral="/tmp/";
 if(strcmp("localhost",$maquina)==0) {
 	$pathGeneral=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/medicamentos/files/$carpeta/";
 }
