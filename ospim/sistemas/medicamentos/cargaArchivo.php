@@ -38,7 +38,7 @@ function validar(formulario) {
 	 	<h3>Actualizacion Alfa Beta </h3>
 	 	<h3><font color="blue"><?php if ($_GET['tipo'] == "M") { echo "MENSUAL"; } else { echo "SEMANAL"; }?></font></h3>
 	 	
-	 	<form onsubmit="return validar(this)"  action="<?php echo "actualizacionArchivos.php?tipo=".$_GET['tipo']; ?>" enctype="multipart/form-data" method="post">
+	 	<form enctype="multipart/form-data" method="post" onsubmit="return validar(this)" action="<?php echo "actualizacionArchivos.php?tipo=".$_GET['tipo']; ?>">
  			<h4>Cargar Archivo manual.dat</h4>
  			<p><input type="file" name="manual" id="manual" accept=".dat" /></p>
  			<h4>Cargar Archivo manextra.txt</h4>
