@@ -6,54 +6,62 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Sistemas :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span class="Estilo2">Men&uacute; Sistemas </span></p>
-  <table width="600" border="3">
+  <h2>Men&uacute; Sistemas </h2>
+  
+  <table width="900" border="3" style="text-align: center;vertical-align: middle;">
     <tr>
-      <td width="200"><p align="center">Fiscalizaci&oacute;n</p>
-          <p align="center"><a class="enlace" href="fiscalizacion/menuFiscalizacion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="200"><p align="center">Aplicativo DDJJ </p>
-      <p align="center"><a class="enlace" href="aplicativoddjj/menuAplicativoddjj.php"><img src="img/aplicativoddjj.png" width="97" height="85" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td width="200"><p align="center">Tratamiento A.F.I.P.</p>
-        <p align="center"><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.png" width="110" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
+      <td width="200">
+      	<p>Fiscalizaci&oacute;n</p>
+        <p><a class="enlace" href="fiscalizacion/menuFiscalizacion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td width="200">
+      	<p>Aplicativo DDJJ </p>
+      	<p><a class="enlace" href="aplicativoddjj/menuAplicativoddjj.php"><img src="img/aplicativoddjj.png" width="97" height="85" border="0" alt="enviar"/></a></p>
+      </td>
+      <td width="200">
+      	<p>Padrones</p>
+        <p><a class="enlace" href="padrones/menuPadrones.php"><img src="img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td width="200">
+      	<p>Stock</p>
+      	<p><a class="enlace" href="stock/menuStock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
     </tr>
     <tr>
-      <td><p align="center">Padrones</p>
-        <p align="center"><a class="enlace" href="padrones/menuPadrones.php"><img src="img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td><p align="center">Stock</p>
-      <p align="center"><a class="enlace" href="stock/menuStock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td><p align="center">Desempleo</p>
-      <p align="center"><a class="enlace" href="desempleo/menuDesempleo.php"><img src="img/anses.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
+      <td>
+      	<p>Tratamiento A.F.I.P.</p>
+        <p><a class="enlace" href="afip/menuAfip.php"><img src="img/afip.png" width="110" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+       <td>
+      	<p>Desempleo</p>
+      	<p><a class="enlace" href="desempleo/menuDesempleo.php"><img src="img/anses.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td>
+      	<p>Medicamentos (Alfa Beta)</p>
+      	<p><a class="enlace" href="medicamentos/menuMedicamentos.php"><img src="img/medicamentos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td>
+      	<p>Intranets</p>
+        <p><a class="enlace" href="intranets/menuIntranet.php"><img src="img/intranets.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
     </tr>
     <tr>
-      <td><p align="center">Intranets</p>
-        <p align="center"><a class="enlace" href="intranets/menuIntranet.php"><img src="img/intranets.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-      <td><p align="center">Usuarios</p>
-        <p align="center"><a href="usuarios/menuUsuarios.php"><img src="img/users.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-      <td><p align="center">Estado Contable</p>
-        <p align="center"><a href="estadocontable/estadoContable.php"><img src="img/estadocontable.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
+      <td>
+      	<p>Usuarios</p>
+        <p><a href="usuarios/menuUsuarios.php"><img src="img/users.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td>
+      	<p>Estado Contable</p>
+        <p><a href="estadocontable/estadoContable.php"><img src="img/estadocontable.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td>
+      </td>
+      <td>
+      </td>
     </tr>
   </table>
 </div>
