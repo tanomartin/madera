@@ -186,7 +186,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><?php echo invertirFecha($rowTitular['emailfecha']) ?></td>
 				<td><?php echo invertirFecha($rowTitular['fpp']) ?></td>
 				<td><?php if($rowTitular['nacimiento']==1) { echo 'Si'; } else { echo 'No'; }?></td>
-				<td><input class="nover" type="button" id="editatitular" name="editatitular" value="Editar" onClick="location.href = 'editaFicha.php?nroId=<?php echo $rowTitular['id']?>'"/></td>
+				<td><input class="nover" type="button" id="editatitular" name="editatitular" value="Editar" onClick="location.href = 'editarFicha.php?nroId=<?php echo $rowTitular['id']?>'"/></td>
 			</tr>
 		<?php
 		}

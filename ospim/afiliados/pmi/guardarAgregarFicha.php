@@ -6,7 +6,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = "";
 $usuariomodificacion = "";
 if(isset($_POST)) {
-	var_dump($_POST);
+	//var_dump($_POST);
 	if(isset($_POST['fechanacimiento'])) {
 		$fechanacimiento=fechaParaGuardar($_POST['fechanacimiento']);
 	} else {
