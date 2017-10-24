@@ -25,7 +25,8 @@ $canControl = mysql_num_rows($resControl);
 		.tablesorter({
 			theme: 'blue', 
 			widthFixed: true, 
-			widgets: ["zebra", "filter"], 
+			headers:{0:{sorter:false},1:{sorter:false},2:{sorter:false},3:{sorter:false},4:{sorter:false},5:{sorter:false}},
+			widgets: ["zebra"], 
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
