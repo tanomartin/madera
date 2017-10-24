@@ -4,45 +4,28 @@ include($libPath."fechas.php");
 set_time_limit(0);
 
 $tipo = $_GET['tipo'];
-$fechafile = fechaParaGuardar($_POST['fechafile']);
-if ($_FILES['manual']['name'] != "manual.dat") {
-	$error =  "El archivo manual.dat tiene nombre incorrecto";
+$pathGeneral="/tmp/";
+
+$zip = new ZipArchive;
+if ($zip->open($_FILES['archivo']['tmp_name']) === TRUE) {
+	$zip->extractTo($pathGeneral);
+	$zip->close();
+} else {
+	$error =  "Error al tratar de descomprimir el archivo";
 	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
 	header ($redire);
 	exit(0);
 }
 
-if ($_FILES['extra']['name'] != "manextra.txt") {
-	$error =  "El archivo manextra.txt tiene nombre incorrecto";
-	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
-	header ($redire);
-	exit(0);
-}
-
-if ($_FILES['accion']['name'] != "acciofar.txt") {
-	$error =  "El archivo acciofar.txt tiene nombre incorrecto";
-	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
-	header ($redire);
-	exit(0);
-}
+$fechafile = $_POST['fechafile'];
+$fecharegistro = date("Y-m-d H:i:s");
+$usuarioregistro = $_SESSION['usuario'];
 
 $deleteMedicamento = "DELETE FROM medicamentos";
 $deleteExtra = "DELETE FROM mediextra";
 $deleteAccion = "DELETE FROM mediaccion";
 
-$fecharegistro = date("Y-m-d H:i:s");
-$usuarioregistro = $_SESSION['usuario'];
-
-$carpeta = "semanal";
-if ($tipo == "M") { $carpeta = "mensual"; }
-
-$maquina = $_SERVER['SERVER_NAME'];
-$pathGeneral="/tmp/";
-if(strcmp("localhost",$maquina)==0) {
-	$pathGeneral=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/medicamentos/files/$carpeta/";
-}
-
-$archivoManual = $_FILES['manual']['tmp_name'];
+$archivoManual = $pathGeneral."manual.dat";
 $fmanual = fopen($archivoManual, "r");
 $cantidadMedicamento = 0;
 
@@ -101,7 +84,7 @@ while(!feof($fmanual)) {
 fclose($filemanual);
 fclose($filePrecio);
 
-$archivoExtra = $_FILES['extra']['tmp_name'];
+$archivoExtra = $pathGeneral."manextra.txt";
 $fextra = fopen($archivoExtra,"r");
 $cantidadExtra = 0;
 
@@ -130,7 +113,7 @@ while(!feof($fextra)) {
 }
 fclose($fileExtra);
 
-$archivoAccion = $_FILES['accion']['tmp_name'];
+$archivoAccion = $pathGeneral."acciofar.txt";
 $faccion = fopen($archivoAccion, "r");
 
 $pathAccion = $pathGeneral."archivoaccion.txt";
