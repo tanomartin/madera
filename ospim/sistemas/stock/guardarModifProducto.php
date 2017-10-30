@@ -2,8 +2,8 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 
-//var_dump($_POST);
-
+var_dump($_POST);
+echo "<br><br>";
 $id = $_POST['id'];
 $nombre = $_POST['nombre'];
 $nroserie = $_POST['nroserie'];
@@ -20,10 +20,8 @@ $usuario = $_POST['usuario'];
 $activo = $_POST['activo'];
 if ($activo == 0) {
 	$fecBaja = fechaParaGuardar($_POST['fecBaja']);
-	$inicioFor = 14;
 } else {
 	$fecBaja = '';
-	$inicioFor = 13;
 }
 $fechamodificacion = date("Y-m-d H:i:s");
 
@@ -31,8 +29,6 @@ $sqlUpdateProducto = "UPDATE producto SET nombre = '$nombre', numeroserie = '$nr
 $sqlUpdateUbicacion = "UPDATE ubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, idusuario = $usuario WHERE id = $id"; 
 $deleteInsumoPrducto = "DELETE from insumoproducto WHERE idproducto = $id";
 
-$datos = array_values($_POST);
-//var_dump($datos);
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -43,14 +39,16 @@ try {
 	$dbh->exec($sqlUpdateProducto);
 	//print($sqlUpdateUbicacion."<br>");
 	$dbh->exec($sqlUpdateUbicacion);
-	//print($deleteInsumoPrducto."<br>");
+	//print($deleteInsumoPrducto."<br><br>");
 	$dbh->exec($deleteInsumoPrducto);
-	
-	for ($i = $inicioFor; $i < sizeof($datos); $i++) {
-		$idInsumo = $datos[$i];
-		$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$id)";
-		//print($sqlInsuProd."<br>");
-		$dbh->exec($sqlInsuProd);
+
+	foreach($_POST as $key => $idInsumo) {
+		$pos = strpos($key, "insumo");
+		if ($pos !== false) {
+			$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$id)";
+			//print($sqlInsuProd."<br>");
+			$dbh->exec($sqlInsuProd);
+		}
 	}
 	
 	$dbh->commit();
