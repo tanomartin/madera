@@ -509,7 +509,7 @@ function validar(formulario) {
       	<td><div align="right"><strong>Registro SSS ||</strong></div></td>
       	<td colspan="3">
 			<div align="left">	
-            	<b>Numero </b><input name="nroSSS" type="text" id="nroSSS" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosss']?>" /> 
+            	<b>Numero </b><input name="nroSSS" type="text" id="nroSSS" size="10" value="<?php if ($rowConsultaPresta['numeroregistrosss'] != 0)  { echo $rowConsultaPresta['numeroregistrosss']; }?>" /> 
             	<?php 
             		$disabled = 'disabled=disabled';
             		$vtosss = '';
@@ -517,9 +517,9 @@ function validar(formulario) {
             			$disabled = '';
             			$vtosss = invertirFecha($rowConsultaPresta['vtoregistrosss'] );
 	            	}?>
-              - <b>Vencimiento </b><input type="text" id="vtoSSS" name="vtoSSS" size="8" <?php echo $disabled?> value="<?php echo $vtosss?>"/>         	
+              - <b>Vencimiento </b><input type="text" id="vtoSSS" name="vtoSSS" size="8" <?php echo $disabled?> value="<?php if ($vtosss != "00/00/0000") { echo $vtosss; }?>"/>         	
             	<strong>| Registro SNR ||</strong>
-            	<b>Numero </b><input name="nroSNR" type="text" id="nroSNR" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosnr']?>"/> 
+            	<b>Numero </b><input name="nroSNR" type="text" id="nroSNR" size="10" value="<?php if ($rowConsultaPresta['numeroregistrosnr'] != 0)  { echo $rowConsultaPresta['numeroregistrosnr']; }?>"/> 
             	<?php 
             		$disabled = 'disabled=disabled';
             		$vtosnr = '';
@@ -528,7 +528,7 @@ function validar(formulario) {
             			$vtosnr = invertirFecha($rowConsultaPresta['vtoregistrosnr'] );
 	            	}?>
             	
-              - <b>Vencimiento </b><input type="text" id="vtoSNR" name="vtoSNR" size="8" <?php echo $disabled?> value="<?php echo $vtosnr?>"/> |      	
+              - <b>Vencimiento </b><input type="text" id="vtoSNR" name="vtoSNR" size="8" <?php echo $disabled?> value="<?php if ($vtosnr != "00/00/0000") { echo $vtosnr; }?>"/> |      	
             	<span id="errorSSS" style="color:#FF0000;font-weight: bold;"></span>
             	<span id="errorSNR" style="color:#FF0000;font-weight: bold;"></span> 
           	</div>         
