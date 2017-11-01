@@ -6,7 +6,7 @@ $codigopresta = $_GET['codigopresta'];
 
 $codigo = $_POST['codigo'];
 $nombre = $_POST['nombre'];
-$domicilio = $_POST['domicilio'];
+$domicilio = strtoupper($_POST['domicilio']);
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];
