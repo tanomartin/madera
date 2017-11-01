@@ -16,7 +16,7 @@ include($libPath."controlSessionOspim.php"); ?>
     <tr>
       <td width="200">
       	  <p>Prestadores</p>
-          <p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p><a class="enlace" href="prestadores/menuPrestadores.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td> 	
       <td width="200">
       	  <p>Autorizaciones</p>
@@ -24,7 +24,7 @@ include($libPath."controlSessionOspim.php"); ?>
 	  </td>
 	  <td width="200">
 	  	  <p>Nomencladores de Practicas</p>
-          <p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p><a class="enlace" href="nomenclador/menuNomenclador.php"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td>  
     </tr>
     <tr>
