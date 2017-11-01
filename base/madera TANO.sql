@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-06-2017 a las 16:23:14
+-- Tiempo de generación: 01-11-2017 a las 17:25:04
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -410,6 +410,18 @@ CREATE TABLE IF NOT EXISTS `autorizaciones` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `autorizacionesemail`
+--
+
+CREATE TABLE IF NOT EXISTS `autorizacionesemail` (
+  `nrosolicitud` int(9) NOT NULL,
+  `idemail` int(6) NOT NULL,
+  PRIMARY KEY (`nrosolicitud`,`idemail`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `banacuerdosospim`
 --
 
@@ -535,7 +547,7 @@ CREATE TABLE IF NOT EXISTS `bandejasalida` (
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 -- --------------------------------------------------------
 
@@ -548,7 +560,7 @@ CREATE TABLE IF NOT EXISTS `bandejasalidaadjuntos` (
   `idemail` int(5) NOT NULL,
   `adjunto` varchar(500) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -606,38 +618,10 @@ CREATE TABLE IF NOT EXISTS `beneficiarioscapitados` (
   `tipoparentesco` int(2) NOT NULL,
   `mespadron` int(2) NOT NULL,
   `anopadron` int(4) NOT NULL,
+  `quincenapadron` int(1) NOT NULL,
   `fechainforme` date NOT NULL,
   PRIMARY KEY (`codigocapitado`,`nroafiliado`,`nroorden`,`tipoparentesco`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `bkuptransferencias`
---
-
-CREATE TABLE IF NOT EXISTS `bkuptransferencias` (
-  `nrodisco` int(6) unsigned NOT NULL COMMENT 'Nro. de Disco',
-  `nroregistro` int(6) unsigned NOT NULL COMMENT 'Nro. de Registro',
-  `cuit` char(11) NOT NULL COMMENT 'C.U.I.T. de la Empresa',
-  `anopago` int(4) unsigned NOT NULL COMMENT 'Año del Pago',
-  `mespago` int(2) unsigned NOT NULL COMMENT 'Mes del Pago',
-  `concepto` char(6) NOT NULL COMMENT 'Concepto de la Transferencia',
-  `fechapago` date NOT NULL COMMENT 'Fecha del Pago',
-  `importe` decimal(15,2) unsigned NOT NULL COMMENT 'Importe Del Pago',
-  `debitocredito` char(1) NOT NULL COMMENT 'Indicador de Debito o Credito',
-  `porcenreduccion` decimal(5,2) unsigned NOT NULL COMMENT 'Porcentaje de Reduccion para Zonas Especiales',
-  `cuil` char(11) NOT NULL COMMENT 'C.U.I.L. del Empleado',
-  `familiares` int(3) unsigned DEFAULT NULL COMMENT 'Cantidad de Familiares de los Empleados',
-  `adherentes` int(3) unsigned DEFAULT NULL COMMENT 'Cantidad de Adherentes de los Empleados',
-  `numeroobligacion` char(12) DEFAULT NULL COMMENT 'Numero de Obligacion de la Presentacion ante AFIP',
-  `secuenciapresentacion` char(3) NOT NULL COMMENT 'Secuencia de la Presentacion ante AFIP',
-  `codigobanco` char(3) NOT NULL COMMENT 'Codigo del Banco de la Presentacion',
-  `codigosucursal` char(3) NOT NULL COMMENT 'Codigo de Sucursal del Banco de la Presentacion',
-  `codigozona` char(2) DEFAULT NULL COMMENT 'Codigo de Zonas Especiales',
-  `fechaprocesoafip` date NOT NULL COMMENT 'Fecha de Procesamiento AFIP',
-  PRIMARY KEY (`nrodisco`,`nroregistro`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Historico de Informacion original de AFIP de Transferencias por Pagos de Empresas';
 
 -- --------------------------------------------------------
 
@@ -671,7 +655,7 @@ CREATE TABLE IF NOT EXISTS `boletasusimra` (
   `nrocontrol` char(14) NOT NULL COMMENT 'Nro. de Control univoco para identificacion de la Boleta',
   `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
   PRIMARY KEY (`idboleta`,`cuit`,`nroacuerdo`,`nrocuota`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=52344 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Boletas Electronicas de OSPIM Generadas' AUTO_INCREMENT=52346 ;
 
 -- --------------------------------------------------------
 
@@ -755,7 +739,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1002,7 +986,9 @@ CREATE TABLE IF NOT EXISTS `canceruterino` (
 
 CREATE TABLE IF NOT EXISTS `capitados` (
   `codigo` int(3) unsigned zerofill NOT NULL,
-  `nombre` varchar(50) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `tipopadron` int(1) NOT NULL,
+  `capitado` int(1) NOT NULL,
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -1512,11 +1498,12 @@ CREATE TABLE IF NOT EXISTS `detallepadroncapitados` (
   `codigoprestador` char(3) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL DEFAULT '',
   `mespadron` int(2) NOT NULL DEFAULT '0',
   `anopadron` int(4) NOT NULL DEFAULT '0',
+  `quincenapadron` int(1) NOT NULL,
   `codidelega` int(4) NOT NULL DEFAULT '0',
   `totaltitulares` int(6) NOT NULL DEFAULT '0',
   `totalfamiliares` int(6) NOT NULL DEFAULT '0',
   `totalbeneficiarios` int(6) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`codigoprestador`,`mespadron`,`anopadron`,`codidelega`)
+  PRIMARY KEY (`codigoprestador`,`mespadron`,`anopadron`,`quincenapadron`,`codidelega`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -1870,7 +1857,7 @@ CREATE TABLE IF NOT EXISTS `emails` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=53 ;
 
 -- --------------------------------------------------------
 
@@ -2589,6 +2576,231 @@ CREATE TABLE IF NOT EXISTS `maternoinfantil` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `mediaccion`
+--
+
+CREATE TABLE IF NOT EXISTS `mediaccion` (
+  `codigo` int(5) NOT NULL,
+  `descripcion` text NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medicamentos`
+--
+
+CREATE TABLE IF NOT EXISTS `medicamentos` (
+  `codigo` int(5) NOT NULL,
+  `troquel` int(7) NOT NULL,
+  `nombre` char(50) CHARACTER SET utf8 NOT NULL,
+  `presentacion` char(30) CHARACTER SET utf8 NOT NULL,
+  `IOMAMonto` float(6,2) NOT NULL,
+  `IOMANorma` char(1) CHARACTER SET utf8 NOT NULL,
+  `IOMAInterna` char(1) CHARACTER SET utf8 NOT NULL,
+  `laboratorio` char(20) CHARACTER SET utf8 NOT NULL,
+  `precio` float(7,2) NOT NULL,
+  `fecha` date NOT NULL,
+  `codigomarca` char(1) CHARACTER SET utf8 NOT NULL,
+  `importado` int(1) NOT NULL,
+  `codigotipoventa` char(1) NOT NULL,
+  `iva` int(1) NOT NULL,
+  `codigoPAMI` int(1) NOT NULL,
+  `codigoLab` int(3) NOT NULL,
+  `baja` int(1) NOT NULL,
+  `codbarra` char(13) CHARACTER SET utf8 NOT NULL,
+  `unidades` int(4) NOT NULL,
+  `codigotamano` char(1) CHARACTER SET utf8 NOT NULL,
+  `heladera` int(1) NOT NULL,
+  `SIFAR` char(1) CHARACTER SET utf8 NOT NULL,
+  `blanco` char(4) CHARACTER SET utf8 DEFAULT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medicodigopami`
+--
+
+CREATE TABLE IF NOT EXISTS `medicodigopami` (
+  `codigo` int(1) NOT NULL,
+  `descripcion` char(100) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medicontrol`
+--
+
+CREATE TABLE IF NOT EXISTS `medicontrol` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(1) NOT NULL,
+  `cantidamedicamento` int(9) NOT NULL,
+  `cantidadextra` int(9) NOT NULL,
+  `cantidadaccion` int(9) NOT NULL,
+  `cantidadmono` int(9) NOT NULL,
+  `cantidadtamano` int(9) NOT NULL,
+  `cantidadformas` int(9) NOT NULL,
+  `cantidadupotencia` int(9) NOT NULL,
+  `cantidadunidad` int(9) NOT NULL,
+  `cantidadvias` int(9) NOT NULL,
+  `fechaarchivo` date NOT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mediextra`
+--
+
+CREATE TABLE IF NOT EXISTS `mediextra` (
+  `codigo` int(5) NOT NULL,
+  `codigotamano` int(2) NOT NULL,
+  `codigoaccion` int(11) NOT NULL,
+  `codigomonodroga` int(5) NOT NULL,
+  `codigofarmace` int(5) NOT NULL,
+  `potencia` varchar(16) NOT NULL,
+  `codigounidadpot` int(5) NOT NULL,
+  `codigotipounidad` int(5) NOT NULL,
+  `codigovia` int(5) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mediextratamano`
+--
+
+CREATE TABLE IF NOT EXISTS `mediextratamano` (
+  `codigo` int(2) NOT NULL,
+  `descripcion` text NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mediformas`
+--
+
+CREATE TABLE IF NOT EXISTS `mediformas` (
+  `codigo` int(5) NOT NULL,
+  `descripcion` text NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medimarca`
+--
+
+CREATE TABLE IF NOT EXISTS `medimarca` (
+  `codigo` char(1) NOT NULL,
+  `descripcion` char(100) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medimono`
+--
+
+CREATE TABLE IF NOT EXISTS `medimono` (
+  `codigo` int(5) NOT NULL,
+  `descripcion` text NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medipreciohistorico`
+--
+
+CREATE TABLE IF NOT EXISTS `medipreciohistorico` (
+  `codigomedicamento` int(5) NOT NULL,
+  `fechadesde` date NOT NULL,
+  `precio` float(7,2) NOT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  PRIMARY KEY (`codigomedicamento`,`fechadesde`,`precio`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `meditamano`
+--
+
+CREATE TABLE IF NOT EXISTS `meditamano` (
+  `codigo` char(2) NOT NULL,
+  `descripcion` char(100) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `meditipoventa`
+--
+
+CREATE TABLE IF NOT EXISTS `meditipoventa` (
+  `codigo` int(1) NOT NULL,
+  `descripcion` char(100) NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mediunidad`
+--
+
+CREATE TABLE IF NOT EXISTS `mediunidad` (
+  `codigo` int(5) NOT NULL,
+  `descripcion` text NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `mediupotencia`
+--
+
+CREATE TABLE IF NOT EXISTS `mediupotencia` (
+  `codigo` int(5) NOT NULL,
+  `descripcion` text NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `medivias`
+--
+
+CREATE TABLE IF NOT EXISTS `medivias` (
+  `codigo` int(5) NOT NULL,
+  `descripcion` text NOT NULL,
+  PRIMARY KEY (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `nacionalidad`
 --
 
@@ -2815,7 +3027,7 @@ CREATE TABLE IF NOT EXISTS `padronssscabecera` (
   `fechadelete` date DEFAULT NULL,
   `usuariodelete` char(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
@@ -2946,6 +3158,30 @@ CREATE TABLE IF NOT EXISTS `periodosusimra` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `pmibeneficiarios`
+--
+
+CREATE TABLE IF NOT EXISTS `pmibeneficiarios` (
+  `id` int(9) unsigned NOT NULL AUTO_INCREMENT,
+  `nroafiliado` int(9) unsigned NOT NULL,
+  `tipoparentesco` int(2) unsigned NOT NULL,
+  `nroorden` int(3) unsigned NOT NULL,
+  `emailfecha` date NOT NULL,
+  `emailfrom` char(50) DEFAULT NULL,
+  `fpp` date DEFAULT NULL,
+  `nacimiento` int(1) unsigned DEFAULT NULL,
+  `fechanacimiento` date DEFAULT NULL,
+  `certificadonacimiento` int(1) unsigned DEFAULT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `practicas`
 --
 
@@ -3032,8 +3268,8 @@ CREATE TABLE IF NOT EXISTS `prenatal` (
 
 CREATE TABLE IF NOT EXISTS `prestadores` (
   `codigoprestador` int(4) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Código identificador de prestador',
-  `nombre` char(100) NOT NULL COMMENT 'Nombre o Razón Social del Prestador',
-  `domicilio` char(50) NOT NULL,
+  `nombre` text NOT NULL COMMENT 'Nombre o Razón Social del Prestador',
+  `domicilio` char(100) NOT NULL,
   `codlocali` int(6) unsigned NOT NULL,
   `idBarrio` int(3) NOT NULL,
   `codprovin` int(2) unsigned NOT NULL,
@@ -3047,23 +3283,23 @@ CREATE TABLE IF NOT EXISTS `prestadores` (
   `telefonofax` bigint(10) DEFAULT NULL,
   `ddnfax` char(5) DEFAULT NULL,
   `email1` char(60) DEFAULT NULL,
-  `email2` char(60) NOT NULL,
+  `email2` char(60) DEFAULT NULL,
   `cuit` char(11) NOT NULL,
   `personeria` int(1) unsigned DEFAULT NULL COMMENT '1: Fisico - 2: Juridico',
   `tratamiento` int(2) unsigned DEFAULT NULL COMMENT 'Como se llamara al profesional para la cartas o ordenes de pago',
   `matriculanacional` char(10) DEFAULT NULL COMMENT 'Matricula Nacional',
   `matriculaprovincial` char(10) DEFAULT NULL COMMENT 'Matricula Provincial',
   `numeroregistrosss` int(10) DEFAULT NULL COMMENT 'Numero de registro en la Superintendencia de Servicio de Salud',
-  `vtoregistrosss` date NOT NULL,
-  `numeroregistrosnr` int(10) NOT NULL,
-  `vtoregistrosnr` date NOT NULL,
+  `vtoregistrosss` date DEFAULT NULL,
+  `numeroregistrosnr` int(10) DEFAULT NULL,
+  `vtoregistrosnr` date DEFAULT NULL,
   `capitado` int(1) unsigned NOT NULL COMMENT '1: es capitado - 0: no es capitado',
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
-  `fehamodificacion` datetime NOT NULL,
-  `usuariomodificacion` char(50) NOT NULL,
+  `fehamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
   PRIMARY KEY (`codigoprestador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4324 ;
 
 -- --------------------------------------------------------
 
@@ -3340,7 +3576,7 @@ CREATE TABLE IF NOT EXISTS `reqfiscalizospim` (
   `fechaanulacion` datetime DEFAULT NULL COMMENT 'Fecha de Anulacion del Requerimiento',
   `usuarioanulacion` char(50) DEFAULT NULL COMMENT 'Usuario que Anula el Requerimiento',
   PRIMARY KEY (`nrorequerimiento`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de OSPIM' AUTO_INCREMENT=29925 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de OSPIM' AUTO_INCREMENT=29926 ;
 
 -- --------------------------------------------------------
 
@@ -3442,6 +3678,42 @@ CREATE TABLE IF NOT EXISTS `secretarias` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `seguimiento`
+--
+
+CREATE TABLE IF NOT EXISTS `seguimiento` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `nroafiliado` int(9) NOT NULL,
+  `nroorden` int(3) NOT NULL,
+  `seguimiento` int(1) NOT NULL,
+  `titulo` text NOT NULL,
+  `descripcion` text NOT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechamodificacion` datetime NOT NULL,
+  `usuariomodificacion` char(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `seguimientoestado`
+--
+
+CREATE TABLE IF NOT EXISTS `seguimientoestado` (
+  `id` int(9) NOT NULL AUTO_INCREMENT,
+  `idseguimiento` int(5) NOT NULL,
+  `estado` char(50) NOT NULL,
+  `comentario` text NOT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `seguvidausimra`
 --
 
@@ -3529,12 +3801,13 @@ CREATE TABLE IF NOT EXISTS `subidapadroncapitados` (
   `codigoprestador` char(3) CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL DEFAULT '',
   `mespadron` int(2) NOT NULL DEFAULT '0',
   `anopadron` int(4) NOT NULL DEFAULT '0',
+  `quincenapadron` int(1) NOT NULL,
   `fechasubida` date NOT NULL DEFAULT '0000-00-00',
   `horasubida` time NOT NULL DEFAULT '00:00:00',
   `totaltitulares` int(6) NOT NULL DEFAULT '0',
   `totalfamiliares` int(6) NOT NULL DEFAULT '0',
   `totalbeneficiarios` int(6) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`codigoprestador`,`mespadron`,`anopadron`)
+  PRIMARY KEY (`codigoprestador`,`mespadron`,`anopadron`,`quincenapadron`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -3737,7 +4010,7 @@ CREATE TABLE IF NOT EXISTS `titulares` (
   `usuariomodificacion` char(50) DEFAULT NULL,
   `mirroring` char(1) NOT NULL DEFAULT 'N',
   PRIMARY KEY (`nroafiliado`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Titulares' AUTO_INCREMENT=161207 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Beneficiarios Titulares' AUTO_INCREMENT=161307 ;
 
 -- --------------------------------------------------------
 
@@ -4094,20 +4367,6 @@ ALTER TABLE `novedadessss`
   ADD CONSTRAINT `FK_NOVEDADESSSS_SITREVISTA` FOREIGN KEY (`codsitrev`) REFERENCES `situacionrevista` (`codsitrev`),
   ADD CONSTRAINT `FK_NOVEDADESSSS_TIPODOCU` FOREIGN KEY (`codtipdoc`) REFERENCES `tipodocumento` (`codtipdoc`),
   ADD CONSTRAINT `FK_NOVEDADESSSS_TIPOTITULAR` FOREIGN KEY (`codtiptit`) REFERENCES `tipotitular` (`codtiptit`);
-
---
--- Filtros para la tabla `prestadorjurisdiccion`
---
-ALTER TABLE `prestadorjurisdiccion`
-  ADD CONSTRAINT `prestadorjurisdiccion_ibfk_3` FOREIGN KEY (`codigoprestador`) REFERENCES `prestadores` (`codigoprestador`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `prestadorjurisdiccion_ibfk_4` FOREIGN KEY (`codidelega`) REFERENCES `delegaciones` (`codidelega`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `prestadorservicio`
---
-ALTER TABLE `prestadorservicio`
-  ADD CONSTRAINT `prestadorservicio_ibfk_1` FOREIGN KEY (`codigoprestador`) REFERENCES `prestadores` (`codigoprestador`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `prestadorservicio_ibfk_2` FOREIGN KEY (`codigoservicio`) REFERENCES `tiposervicio` (`codigoservicio`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `stock`
