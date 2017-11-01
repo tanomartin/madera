@@ -540,25 +540,15 @@ function validar(formulario) {
         	<div align="left">
           	<?php 
           		$cartel = '';
-          		$profesional = "";
 				if ($rowConsultaPresta['personeria'] == 1) { 
-					$profesional = "selected"; 
-					$establecimiento = "" ; 
-					$ciculo = "";
-					$entidad = "";
 					$disabled=""; 
 					$deshabilitado = '';
 				}
 				if ($rowConsultaPresta['personeria'] == 2) {
-					$establecimiento = "selected"; 
-					$ciculo = "";
-					$entidad = "";
 					$disabled="disabled"; 
 					$deshabilitado = '';
 				}
 				if ($rowConsultaPresta['personeria'] == 3) {
-					$establecimiento = ""; 
-					$ciculo = "selected";
 					$entidad = "";
 					$disabled="disabled"; 
 					
@@ -573,8 +563,6 @@ function validar(formulario) {
 					}
 				}
 				if ($rowConsultaPresta['personeria'] == 4) {
-					$establecimiento = "";
-					$ciculo = "";
 					$entidad = "selected";
 					$disabled="disabled";
 					
@@ -597,7 +585,7 @@ function validar(formulario) {
 		              	$result=mysql_query($query,$db);
 		              	while ($rowtipos=mysql_fetch_array($result)) { 
 		              		if ($rowtipos['id'] == $rowConsultaPresta['personeria']) {   $selected = "selected"; } else { $selected = ""; } ?>
-							<option value="<?php echo $rowtipos['id']?>" <?php echo $profesional ?> <?php echo $selected ?>><?php echo $rowtipos['descripcion']?> </option>
+							<option value="<?php echo $rowtipos['id']?>" <?php echo $selected ?>><?php echo $rowtipos['descripcion']?> </option>
 				<?php 	} ?>
 				  </select>	  
 			</div>
