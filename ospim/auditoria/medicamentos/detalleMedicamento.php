@@ -6,11 +6,18 @@ $codigo = $_GET['codigo'];
 
 $sqlMedicamento = "SELECT 
 						m.*, 
+						e.potencia,
 						a.descripcion as accion, 
 						ma.descripcion as marca, 
 						t.descripcion as tamano, 
 						p.descripcion as pami, 
-						tv.descripcion as venta
+						tv.descripcion as venta,
+						mm.descripcion as mono,
+						mt.descripcion as tamanoextra,
+						mf.descripcion as forma,
+						mu.descripcion as unidad,
+						mtu.descripcion as tunidad,
+						v.descripcion as via
 					FROM 
 						medicamentos m, 
 						mediextra e,
@@ -18,7 +25,13 @@ $sqlMedicamento = "SELECT
 						meditamano t,
 						meditipoventa tv,
 						medicodigopami p, 
-						medimarca ma
+						medimarca ma,
+						medimono mm,
+						mediextratamano mt,
+						mediformas mf,
+						mediupotencia mu,
+						mediunidad mtu,
+						medivias v
 					WHERE
 						m.codigo = $codigo and
 						m.codigo = e.codigo and
@@ -26,7 +39,13 @@ $sqlMedicamento = "SELECT
 						m.codigomarca = ma.codigo and
 						m.codigotipoventa = tv.codigo and
 						m.codigoPAMI = p.codigo and
-						m.codigotamano = t.codigo";
+						m.codigotamano = t.codigo and
+						e.codigomonodroga = mm.codigo and
+						e.codigotamano = mt.codigo and
+						e.codigofarmace = mf.codigo and
+						e.codigounidadpot = mu.codigo and
+						e.codigotipounidad = mtu.codigo and
+						e.codigovia = v.codigo";
 $resMedicamento = mysql_query($sqlMedicamento,$db);
 $rowMedicamento = mysql_fetch_assoc($resMedicamento);
 
@@ -79,7 +98,7 @@ $resHistorico = mysql_query($sqlHistorico,$db);
 	        	<td><?php if ($rowMedicamento['IOMAInterna'] == 'S') { echo "SI"; } else { echo "NO"; } ?></td>
 	        </tr>
 	        <tr>
-	         	<td class="title">importado</td>
+	         	<td class="title">Importado</td>
 				<td><?php if ($rowMedicamento['importado'] == 1) { echo "SI"; } else { echo "NO"; } ?> </td>	
 				<td class="title">I.V.A. a Farmacia</td>
 				<td><?php if ($rowMedicamento['iva'] == 1) { echo "SI"; } else { echo "NO"; } ?> </td>
@@ -110,6 +129,26 @@ $resHistorico = mysql_query($sqlHistorico,$db);
 			<tr>
 				<td class="title">Accion Farmacologica</td>
 				<td><?php echo $rowMedicamento['accion']?></td>
+			</tr>
+			<tr>
+				<td class="title">Potencia</td>
+				<td><?php echo $rowMedicamento['potencia']." ".$rowMedicamento['unidad']." - ".$rowMedicamento['tunidad'] ?></td>
+			</tr>
+			<tr>
+				<td class="title">Monodroga</td>
+				<td><?php echo $rowMedicamento['mono']?></td>
+			</tr>
+			<tr>
+				<td class="title">Tamaño</td>
+				<td><?php echo $rowMedicamento['tamanoextra']?></td>
+			</tr>
+			<tr>
+				<td class="title">Forma Farmacéutica</td>
+				<td><?php echo $rowMedicamento['forma']?></td>
+			</tr>
+			<tr>
+				<td class="title">Via Administración</td>
+				<td><?php echo $rowMedicamento['via']?></td>
 			</tr>
 		</table>
 	</div>

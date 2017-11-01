@@ -27,14 +27,11 @@ $deleteAccion = "DELETE FROM mediaccion";
 
 $archivoManual = $pathGeneral."manual.dat";
 $fmanual = fopen($archivoManual, "r");
-$cantidadMedicamento = 0;
-
 $pathManual = $pathGeneral."archivomanual.txt";
 $filemanual = fopen($pathManual, "w");
-
 $pathPrecio = $pathGeneral."archivoprecio.txt";
 $filePrecio = fopen($pathPrecio, "w");
-
+$cantidadMedicamento = 0;
 while(!feof($fmanual)) {
 	$linea = fgets($fmanual);
 	if (strlen($linea) > 0) {
@@ -86,11 +83,9 @@ fclose($filePrecio);
 
 $archivoExtra = $pathGeneral."manextra.txt";
 $fextra = fopen($archivoExtra,"r");
-$cantidadExtra = 0;
-
 $pathExtra = $pathGeneral."archivoextra.txt";
 $fileExtra = fopen($pathExtra, "w");
-
+$cantidadExtra = 0;
 while(!feof($fextra)) {
 	$linea = fgets($fextra);
 	if (strlen($linea) > 0) {
@@ -115,10 +110,8 @@ fclose($fileExtra);
 
 $archivoAccion = $pathGeneral."acciofar.txt";
 $faccion = fopen($archivoAccion, "r");
-
 $pathAccion = $pathGeneral."archivoaccion.txt";
 $fileAccion = fopen($pathAccion, "w");
-
 $cantidadAccion = 0;
 while(!feof($faccion)) {
 	$linea = fgets($faccion);
@@ -134,7 +127,121 @@ while(!feof($faccion)) {
 }
 fclose($fileAccion);
 
-$sqlInsertControl = "INSERT INTO medicontrol VALUES(DEFAULT, '$tipo', $cantidadMedicamento, $cantidadExtra, $cantidadAccion,'$fechafile','$fecharegistro', '$usuarioregistro')";
+$archivoMono = $pathGeneral."monodro.txt";
+$fmono = fopen($archivoMono, "r");
+$pathMono = $pathGeneral."archivomono.txt";
+$fileMono = fopen($pathMono, "w");
+$cantidadMono = 0;
+while(!feof($fmono)) {
+	$linea = fgets($fmono);
+	if (strlen($linea) > 0) {
+		$codigo = substr($linea,0,5);
+		$descipcion = addslashes(substr($linea,5,32));
+
+		$cantidadMono++;
+
+		$lineain = $codigo."|".$descipcion;
+		fwrite($fileMono, $lineain."\n");
+	}
+}
+fclose($fileMono);
+
+$archivoTamano = $pathGeneral."tamanos.txt";
+$ftamano = fopen($archivoTamano, "r");
+$pathTamano = $pathGeneral."archivotamano.txt";
+$fileTamano = fopen($pathTamano, "w");
+$cantidadTamano = 0;
+while(!feof($ftamano)) {
+	$linea = fgets($ftamano);
+	if (strlen($linea) > 0) {
+		$codigo = substr($linea,0,2);
+		$descipcion = addslashes(substr($linea,2,32));
+
+		$cantidadTamano++;
+
+		$lineain = $codigo."|".$descipcion;
+		fwrite($fileTamano, $lineain."\n");
+	}
+}
+fclose($fileTamano);
+
+$archivoFormas = $pathGeneral."formas.txt";
+$fformas = fopen($archivoFormas, "r");
+$pathFormas = $pathGeneral."archivoformas.txt";
+$fileFormas = fopen($pathFormas, "w");
+$cantidadFormas = 0;
+while(!feof($fformas)) {
+	$linea = fgets($fformas);
+	if (strlen($linea) > 0) {
+		$codigo = substr($linea,0,5);
+		$descipcion = addslashes(substr($linea,5,32));
+
+		$cantidadFormas++;
+
+		$lineain = $codigo."|".$descipcion;
+		fwrite($fileFormas, $lineain."\n");
+	}
+}
+fclose($fileFormas);
+
+$archivoUPot = $pathGeneral."upotenci.txt";
+$fupot = fopen($archivoUPot, "r");
+$pathUpotenci = $pathGeneral."archivouptenci.txt";
+$fileUpot = fopen($pathUpotenci, "w");
+$cantidadUpot = 0;
+while(!feof($fupot)) {
+	$linea = fgets($fupot);
+	if (strlen($linea) > 0) {
+		$codigo = substr($linea,0,5);
+		$descipcion = addslashes(substr($linea,5,32));
+
+		$cantidadUpot++;
+
+		$lineain = $codigo."|".$descipcion;
+		fwrite($fileUpot, $lineain."\n");
+	}
+}
+fclose($fileUpot);
+
+$archivoUnidad = $pathGeneral."tipounid.txt";
+$funidad = fopen($archivoUnidad, "r");
+$pathUnidad = $pathGeneral."archivounidad.txt";
+$fileUnidad = fopen($pathUnidad, "w");
+$cantidadUnidad = 0;
+while(!feof($funidad)) {
+	$linea = fgets($funidad);
+	if (strlen($linea) > 0) {
+		$codigo = substr($linea,0,5);
+		$descipcion = addslashes(substr($linea,5,32));
+
+		$cantidadUnidad++;
+
+		$lineain = $codigo."|".$descipcion;
+		fwrite($fileUnidad, $lineain."\n");
+	}
+}
+fclose($fileUnidad);
+
+$archivoVias = $pathGeneral."vias.txt";
+$fvias = fopen($archivoVias, "r");
+$pathVias = $pathGeneral."archivovias.txt";
+$fileVias = fopen($pathVias, "w");
+$cantidadVias = 0;
+while(!feof($fvias)) {
+	$linea = fgets($fvias);
+	if (strlen($linea) > 0) {
+		$codigo = substr($linea,0,5);
+		$descipcion = addslashes(substr($linea,5,32));
+
+		$cantidadVias++;
+
+		$lineain = $codigo."|".$descipcion;
+		fwrite($fileVias, $lineain."\n");
+	}
+}
+fclose($fileVias);
+
+$sqlInsertControl = "INSERT INTO medicontrol VALUES(DEFAULT, '$tipo', $cantidadMedicamento, $cantidadExtra, $cantidadAccion,$cantidadMono,$cantidadTamano,$cantidadFormas,$cantidadUpot,$cantidadUnidad,$cantidadVias,'$fechafile','$fecharegistro', '$usuarioregistro')";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -188,6 +295,54 @@ try {
 	if (!$resLoadArchivoAccion) {
 		$error = mysqli_error($linkid);
 		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathAccion - $error" );
+	}
+	
+	$sqlLoadArchivoMono = "LOAD DATA LOCAL INFILE '$pathMono' REPLACE INTO TABLE medimono FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+	//echo $sqlLoadArchivoMono."<br>";
+	$resLoadArchivoMono = mysqli_query($linkid, $sqlLoadArchivoMono);
+	if (!$resLoadArchivoMono) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathMono - $error" );
+	}
+	
+	$sqlLoadArchivoTamano = "LOAD DATA LOCAL INFILE '$pathTamano' REPLACE INTO TABLE mediextratamano FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+	//echo $sqlLoadArchivoTamano."<br>";
+	$resLoadArchivoTamano = mysqli_query($linkid, $sqlLoadArchivoTamano);
+	if (!$resLoadArchivoTamano) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathTamano - $error" );
+	}
+	
+	$sqlLoadArchivoFormas = "LOAD DATA LOCAL INFILE '$pathFormas' REPLACE INTO TABLE mediformas FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+	//echo $sqlLoadArchivoFormas."<br>";
+	$resLoadArchivoFormas = mysqli_query($linkid, $sqlLoadArchivoFormas);
+	if (!$resLoadArchivoFormas) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathFormas - $error" );
+	}
+	
+	$sqlLoadArchivoUpot = "LOAD DATA LOCAL INFILE '$pathUpotenci' REPLACE INTO TABLE mediupotencia FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+	//echo $sqlLoadArchivoUpot."<br>";
+	$resLoadArchivoUpot = mysqli_query($linkid, $sqlLoadArchivoUpot);
+	if (!$resLoadArchivoUpot) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathUpotenci - $error" );
+	}
+	
+	$sqlLoadArchivoUnidad = "LOAD DATA LOCAL INFILE '$pathUnidad' REPLACE INTO TABLE mediunidad FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+	//echo $sqlLoadArchivoUnidad."<br>";
+	$resLoadArchivoUnidad = mysqli_query($linkid, $sqlLoadArchivoUnidad);
+	if (!$resLoadArchivoUnidad) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathUnidad - $error" );
+	}
+	
+	$sqlLoadArchivoVias = "LOAD DATA LOCAL INFILE '$pathVias' REPLACE INTO TABLE medivias FIELDS TERMINATED BY '|' LINES TERMINATED BY '\n'";
+	//echo $sqlLoadArchivoVias."<br>";
+	$resLoadArchivoVias = mysqli_query($linkid, $sqlLoadArchivoVias);
+	if (!$resLoadArchivoVias) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathVias - $error" );
 	}
 	
 	$dbh->beginTransaction();

@@ -48,7 +48,7 @@ $canControl = mysql_num_rows($resControl);
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuMedicamentos.php'" /></p>
 	<h3>Listado de Actualizaciones Alfa Beta </h3>
 	
-	<table style="text-align:center; width:800px" id="lista" class="tablesorter" >
+	<table style="text-align:center; width:900px" id="lista" class="tablesorter" >
 		<thead>
 			<tr>
 				<th>ID</th>
@@ -56,6 +56,12 @@ $canControl = mysql_num_rows($resControl);
 				<th># Medicamentos</th>
 				<th># Extra</th>
 				<th># Accion</th>
+				<th># Monodroga</th>
+				<th># Tamaño</th>
+				<th># Formas</th>
+				<th># Unidades</th>
+				<th># Tipo Unidades</th>
+				<th># Vias</th>
 				<th>Fecha Archivo</th>
 			</tr>
 		</thead>
@@ -67,6 +73,12 @@ $canControl = mysql_num_rows($resControl);
 				<td><?php echo $rowControl['cantidamedicamento'] ?></td>
 				<td><?php echo $rowControl['cantidadextra'] ?></td>
 				<td><?php echo $rowControl['cantidadaccion'] ?></td>
+				<td><?php echo $rowControl['cantidadmono'] ?></td>
+				<td><?php echo $rowControl['cantidadtamano'] ?></td>
+				<td><?php echo $rowControl['cantidadformas'] ?></td>			
+				<td><?php echo $rowControl['cantidadupotencia'] ?></td>
+				<td><?php echo $rowControl['cantidadunidad'] ?></td>
+				<td><?php echo $rowControl['cantidadvias'] ?></td>			
 				<td><?php echo $rowControl['fechaarchivo'] ?></td>
 			</tr>
 	<?php	}	?>

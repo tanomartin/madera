@@ -6,12 +6,9 @@ if (isset($_POST['valor'])) {
 	$seleccion = $_POST['seleccion'];
 	$valor = $_POST['valor'];
 	
-	$selectMedicamento = "SELECT m.codigo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja, a.descripcion as accion FROM medicamentos m, mediextra e,  mediaccion a WHERE m.$seleccion = '$valor' and m.codigo = e.codigo and e.codigoaccion = a.codigo";
+	$selectMedicamento = "SELECT m.codigo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja FROM medicamentos m WHERE m.$seleccion = '$valor'";
 	if ($seleccion == 'nombre') {
-		$selectMedicamento = "SELECT m.codigo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja, a.descripcion as accion FROM medicamentos m, mediextra e,  mediaccion a WHERE m.$seleccion like '%$valor%' and m.codigo = e.codigo and e.codigoaccion = a.codigo";
-	}
-	if ($seleccion == 'accion') {
-		$selectMedicamento = "SELECT m.codigo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja, a.descripcion as accion FROM medicamentos m, mediextra e,  mediaccion a WHERE a.descripcion like '%$valor%' and a.codigo = e.codigoaccion and e.codigo = m.codigo";
+		$selectMedicamento = "SELECT m.codigo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja FROM medicamentos m WHERE m.$seleccion like '%$valor%'";
 	}
 	
 	$resMedicamento = mysql_query($selectMedicamento,$db);
@@ -102,18 +99,15 @@ function abrirInfo(dire) {
 				 <b style='color:#FF0000'> LA BUSQUEDA DE MEDICAMENTO NO GENERO RESULTADOS </b>
 	      <?php } ?>
 		</p>
+		<p><b>Buscar por</b></p>
 		<table>
 			<tr>
-				<td width="23"><input name="seleccion" type="radio" value="codigo" checked="checked"/></td>
-				<td width="200"><div align="left">Código</div></td>
+				<td><input name="seleccion" type="radio" value="codigo" checked="checked"/></td>
+				<td><div align="left">Código</div></td>
 			</tr>
 			<tr>
 				<td><input name="seleccion" type="radio" value="nombre" /></td>
 				<td><div align="left">Nombre</div></td>
-			</tr>
-			<tr>
-				<td><input name="seleccion" type="radio" value="accion" /></td>
-				<td><div align="left">Acción Farmacologica</div></td>
 			</tr>
 		</table>
 		<p><b>DATO: </b><input name="valor" id="valor" type="text" size="25" /></p>
@@ -126,7 +120,6 @@ function abrirInfo(dire) {
 						<th>Código</th>
 						<th>Nombre</th>
 						<th>Presentacion</th>
-						<th>Accion Farmacologica</th>
 						<th class="filter-select" data-placeholder="Seleccion">Prestación Activa</th>
 						<th width="100px">Fecha</th>
 						<th>Último Precio</th>
@@ -139,7 +132,6 @@ function abrirInfo(dire) {
 						<td><?php echo $medicamento['codigo'] ?></td>	
 						<td><?php echo $medicamento['nombre'] ?></td>	
 						<td><?php echo $medicamento['presentacion'] ?></td>	
-						<td><?php echo $medicamento['accion'] ?> </td>	
 						<td><?php if ($medicamento['baja'] == 1) { echo "NO"; } else { echo "SI"; } ?> </td>	
 						<td><?php echo $medicamento['fecha'] ?></td>
 						<td><?php echo number_format($medicamento['precio'],2,',','.')  ?></td>
