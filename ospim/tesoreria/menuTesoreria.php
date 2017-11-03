@@ -6,32 +6,31 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Tesoreria OSPIM :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span class="Estilo2">Men&uacute; Tesorer&iacute;a </span></p>
-  <table width="600" border="3">
+  <h2>Men&uacute; Tesorer&iacute;a </h2>
+  <table width="400" border="3" style="text-align: center">
     <tr>
-	  <td width="200"><p align="center">&Oacute;rdenes de Pago </p>
-          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/ordenespago.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-          <p align="center">&nbsp;</p></td>
-      <td width="200"><p align="center">Control C&aacute;pitas</p>
-          <p align="center"><a class="enlace" href="capitas/controlCapitas.php"><img src="img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-	   <td width="200"><p align="center">Liquidaci&oacute;n </p>
-          <p align="center"><a class="enlace" href="../moduloNoDisponible.php"><img src="img/factura.png" width="119" height="92" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>		
+	  <td width="200">
+	  		<p>&Oacute;rdenes de Pago </p>
+          	<p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/ordenespago.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td width="200">
+      		<p>Control C&aacute;pitas</p>
+          	<p><a class="enlace" href="capitas/controlCapitas.php"><img src="img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+    </tr>
+    <tr>
+	   <td>
+	   		<p>Liquidaci&oacute;n </p>
+          	<p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/factura.png" width="119" height="92" border="0" alt="enviar"/></a></p>
+       </td>
+       <td>
+	   		<p>Datos Aux. Prestadores</p>
+          	<p><a class="enlace" href="prestadores/moduloPrestadores.php"><img src="img/prestador.png" width="119" height="92" border="0" alt="enviar"/></a></p>
+       </td>		
     </tr>
   </table>
 </div>
