@@ -7,15 +7,13 @@ $anio = $_POST['anio'];
 $mes = $_POST['mes'];
 $fechaproceso = date("Y-m-d");
 $usuarioproceso = $_SESSION['usuario'];
-$pathArchivo = addslashes($_FILES['archivo']['tmp_name']);
+$pathArchivo = $_FILES['archivo']['tmp_name'];
 
 try {
 	$hostname = $_SESSION['host'];
-	$dbname = $_SESSION['dbname'];
+	$dbname = $_SESSION['dbname'];	
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave'],array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
 	$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	
-	$dbh->beginTransaction ();
 	
 	$sqlLoadData = "LOAD DATA LOCAL INFILE '$pathArchivo' INTO TABLE padronsss
 						FIELDS TERMINATED BY '|'
@@ -31,11 +29,14 @@ try {
 						fechaaltaos = STR_TO_DATE(@var2,'%d%m%Y'),
 						fechapresentacion = STR_TO_DATE(@var3,'%d%m%Y')";
 	
-	
-	//echo $sqlLoadData."<br>";
-	$dbh->exec($sqlLoadData);
-	
-	$dbh->commit ();
+	$linkid = mysqli_init();
+	mysqli_options($linkid, MYSQLI_OPT_LOCAL_INFILE, true);
+	mysqli_real_connect($linkid, $hostname, $_SESSION['usuario'], $_SESSION['clave'], $dbname);
+	$resLoadArchivo = mysqli_query($linkid, $sqlLoadData);
+	if (!$resLoadArchivo) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathArchivo - $error" );
+	}
 	
 	$sqlCantidadTitulares = "SELECT count(*) as cantitu FROM padronsss WHERE parentesco = 0";
 	$resCantidadTitulares = mysql_query($sqlCantidadTitulares, $db);
@@ -54,12 +55,12 @@ try {
 	$rowCantidad = mysql_fetch_array($resCantidad);
 	$cantotal = $rowCantidad['cantidad'];
 	
-	$dbh->beginTransaction ();
-	
 	if ($total != $cantotal) {
+		$dbh->beginTransaction ();
 		$sqlTruncate = "TRUNCATE padronsss";
 		//echo $sqlTruncate."<br>";
 		$dbh->exec($sqlTruncate);
+		$dbh->commit();
 		throw new PDOException('NO concuerda el total de afiliados con la suma de titulares y famliares al realizar el LOAD DATA');
 	} 
 	
@@ -70,8 +71,9 @@ try {
 	$idPadron = $rowConsultaId['id'] + 1;
 	
 	$file = fopen($pathArchivo, "r");
-	$archivoHostorico = "historico.txt";
-	$filew = fopen($archivoHostorico, "w");
+	$archivoHistorico = "historico.txt";
+	$pathGeneral="/tmp/".$archivoHistorico;
+	$filew = fopen($pathGeneral, "w");
 	while(!feof($file)) {
 		$linea = fgets($file);
 		if ($linea != "") {
@@ -82,7 +84,7 @@ try {
 	fclose($file);
 	fclose($filew);
 	
-	$sqlLoadDataHistorico = "LOAD DATA LOCAL INFILE '$archivoHostorico' INTO TABLE padronssshistorico
+	$sqlLoadDataHistorico = "LOAD DATA LOCAL INFILE '$pathGeneral' INTO TABLE padronssshistorico
 								FIELDS TERMINATED BY '|'
 								LINES TERMINATED BY '\n'
 								(idcabecera, codigornos, cuit, cuiltitular, parentesco, cuilfamiliar,
@@ -96,13 +98,14 @@ try {
 								fechaaltaos = STR_TO_DATE(@var2,'%d%m%Y'),
 								fechapresentacion = STR_TO_DATE(@var3,'%d%m%Y')";
 	
-	//echo $sqlLoadDataHistorico."<br>";
-	$dbh->exec($sqlLoadDataHistorico);
-	
-	unlink($archivoHostorico);
-	$dbh->commit ();
-	
-	$dbh->beginTransaction ();
+	$linkid = mysqli_init();
+	mysqli_options($linkid, MYSQLI_OPT_LOCAL_INFILE, true);
+	mysqli_real_connect($linkid, $hostname, $_SESSION['usuario'], $_SESSION['clave'], $dbname);
+	$resLoadArchivoHistorico = mysqli_query($linkid, $sqlLoadDataHistorico);
+	if (!$resLoadArchivoHistorico) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $pathGeneral - $error" );
+	}
 	
 	$sqlCantidadHistorico = "SELECT count(*) as totalhistorico FROM padronssshistorico WHERE idcabecera = $idPadron";
 	$resCantidadHistorico = mysql_query($sqlCantidadHistorico, $db);
@@ -110,21 +113,21 @@ try {
 	$controlHistorico = $rowCantidadHistorico['totalhistorico'];
 	
 	if ($controlHistorico != $cantotal) {
+		$dbh->beginTransaction();
 		$sqlTruncate = "TRUNCATE padronsss";
 		//echo $sqlTruncate."<br>";
 		$dbh->exec($sqlTruncate);
-		
 		$sqlDeleteHistorico = "DELETE FROM padronssshistorico WHERE idcabecera = $idPadron";
 		//echo $sqlDeleteHistorico."<br>";
 		$dbh->exec($sqlDeleteHistorico);
-		
+		$dbh->commit();
 		throw new PDOException('NO concuerda el total HISTORICO de afiliados con el total de afiliados en tabla padronsss');
 	}
 	
+	$dbh->beginTransaction();
 	$sqlInsertCabecera = "INSERT INTO padronssscabecera VALUES ($idPadron, $anio, $mes, $cantitu, $canfami, $cantotal, '$fechaproceso','$usuarioproceso', NULL,NULL,NULL,NULL)";
 	//echo $sqlInsertCabecera."<br>";
 	$dbh->exec($sqlInsertCabecera);
-	
 	$dbh->commit ();
 	
 	//cambio la hora de secion por ahora para no perder la misma

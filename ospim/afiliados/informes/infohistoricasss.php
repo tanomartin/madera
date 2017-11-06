@@ -45,6 +45,7 @@ $canHistorico = mysql_num_rows($resHistorico);
 				<th>Cant. Titulares</th>
 				<th>Cant. Familiares</th>
 				<th>Total</th>
+				<th>Activo Busqueda</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -54,6 +55,11 @@ $canHistorico = mysql_num_rows($resHistorico);
 					<td><?php echo $rowHistorico['cantidadtitulares']?></td>
 					<td><?php echo $rowHistorico['cantidadfamiliares']?></td>
 					<td><?php echo $rowHistorico['cantidadregistros']?></td>
+					<?php 
+						$activo = "NO";
+						if($rowHistorico['fechadelete'] == NULL) { $activo = "SI"; } 
+					?>
+					<td><?php echo $activo?></td>
 				</tr>
 		<?php } ?>
 		</tbody>

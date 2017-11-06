@@ -64,11 +64,11 @@
 				$resultlocalidad =  mysql_query( $sqllocalidad,$db); 
 				$rowlocalidad = mysql_fetch_array($resultlocalidad); 
 	
-				//Ejecucion del sql para ingreso del registro en tabla boletasospim
+				//Ejecucion del sql para ingreso del registro en tabla boletasusimra
 				$sqlgrababoleta = "INSERT INTO boletasusimra (cuit,nroacuerdo,nrocuota,importe,nrocontrol,usuarioregistro) VALUES ('$cuit','$acuerdo','$cuota','$importe','$ctrlh','$_SESSION[usuario]')";
 				$dbh->exec($sqlgrababoleta);
 	
-				//Ejecucion del sql para incrementar la cantidad de boletas impresas en tabla cuoacuerdosospim
+				//Ejecucion del sql para incrementar la cantidad de boletas impresas en tabla cuoacuerdosusimra
 				if ($tipopago == 0) {
 					$sqlactcuotas = "update cuoacuerdosusimra set tipocancelacion = 8, boletaimpresa = ($cantbole+2) where cuit = $cuit and nroacuerdo = $acuerdo and nrocuota = $cuota";
 				}
