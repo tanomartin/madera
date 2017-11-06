@@ -2,43 +2,45 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 
-$dato = $_POST['dato'];
-$filtro = $_POST['filtro'];
-$cabecera = $_POST['padron'];
-
-if ($filtro == 0) {
-	$cartel = "Resultados de Busqueda por C.U.I.L. <b>'".$dato."'</b>";
-}
-if ($filtro == 1) {
-	$cartel = "Resultados de Busqueda por Nro. de Documento <b>'".$dato."'</b>";
-}
-if ($filtro == 2) {
-	$cartel = "Resultados de Busqueda por Nombre y Apellido <b>'".$dato."'</b>";
-}
-
-$resultado = array();
-if (isset($dato)) {
-	$sqlSele = "select cuit,cuilfamiliar,apellidoynombre,tipodocumento,nrodocumento,sexo, parentesco from ";
-	if ($filtro == 0) { 
-		$where = "where cuilfamiliar = $dato and idcabecera = $cabecera"; 
+if(isset($_POST['dato'])) {
+	$dato = $_POST['dato'];
+	$filtro = $_POST['filtro'];
+	$cabecera = $_POST['padron'];
+	
+	if ($filtro == 0) {
+		$cartel = "Resultados de Busqueda por C.U.I.L. <b>'".$dato."'</b>";
 	}
-	if ($filtro == 1) { 
-		$where = "where nrodocumento = $dato and idcabecera = $cabecera"; 
+	if ($filtro == 1) {
+		$cartel = "Resultados de Busqueda por Nro. de Documento <b>'".$dato."'</b>";
 	}
-	if ($filtro == 2) { 
-		$where = "where apellidoynombre like '%$dato%' and idcabecera = $cabecera"; 	
+	if ($filtro == 2) {
+		$cartel = "Resultados de Busqueda por Nombre y Apellido <b>'".$dato."'</b>";
 	}
 	
-	$tabla = "padronssshistorico ";
-	$sqlEmpleados = $sqlSele.$tabla.$where;
-	$resEmpleados = mysql_query($sqlEmpleados,$db); 
-	$canEmpleados = mysql_num_rows($resEmpleados); 
-}
-
-if (isset($cabecera)) {
-	$sqlPadronBusqueda = "SELECT * FROM padronssscabecera WHERE id = $cabecera";
-	$resPadronBusqueda = mysql_query($sqlPadronBusqueda,$db);
-	$rowPadronBusqueda = mysql_fetch_assoc($resPadronBusqueda);
+	$resultado = array();
+	if (isset($dato)) {
+		$sqlSele = "select cuit,cuilfamiliar,apellidoynombre,tipodocumento,nrodocumento,sexo, parentesco from ";
+		if ($filtro == 0) { 
+			$where = "where cuilfamiliar = $dato and idcabecera = $cabecera"; 
+		}
+		if ($filtro == 1) { 
+			$where = "where nrodocumento = $dato and idcabecera = $cabecera"; 
+		}
+		if ($filtro == 2) { 
+			$where = "where apellidoynombre like '%$dato%' and idcabecera = $cabecera"; 	
+		}
+		
+		$tabla = "padronssshistorico ";
+		$sqlEmpleados = $sqlSele.$tabla.$where;
+		$resEmpleados = mysql_query($sqlEmpleados,$db); 
+		$canEmpleados = mysql_num_rows($resEmpleados); 
+	}
+	
+	if (isset($cabecera)) {
+		$sqlPadronBusqueda = "SELECT * FROM padronssscabecera WHERE id = $cabecera";
+		$resPadronBusqueda = mysql_query($sqlPadronBusqueda,$db);
+		$rowPadronBusqueda = mysql_fetch_assoc($resPadronBusqueda);
+	}
 }
 ?>
 <!DOCTYPE html>
@@ -168,7 +170,7 @@ function validar(formulario) {
 	<?php 
 	if (isset($dato)) {
 		echo("<p> $cartel </p>");
-		echo "Padrón de Busqueda <b>".$rowPadronBusqueda['mes']."-".$rowPadronBusqueda['anio']."</b>";
+		echo "<p>Padrón de Busqueda <b>".$rowPadronBusqueda['mes']."-".$rowPadronBusqueda['anio']."</b></p>";
 		if ($canEmpleados == 0) {
 			print("<div style='color:#FF0000'><b> NO EXISTE AFILIADO CON ESTE FILTRO DE BUSQUEDA EN LA S.S.S. </b></div><br>");
 		} else { ?>
