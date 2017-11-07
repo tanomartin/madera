@@ -5,10 +5,12 @@ include($libPath."controlSessionOspim.php");
 $codigo = $_POST['codigopresta'];
 $sqlDelete = "DELETE FROM prestadorserviciodisca WHERE codigoprestador = $codigo";
 
+$tieneServicio = 0;
 $sqlInsertServicio = "INSERT INTO prestadorserviciodisca VALUES";
 foreach ($_POST as $key => $servicio) {
 	$pos = strpos($key, "servicio");	
 	if ($pos !== false) {
+		$tieneServicio = 1;
 		$sqlInsertServicio .= "($codigo,$servicio),";
 	}
 }
@@ -24,8 +26,10 @@ try {
 	
 	//echo $sqlDelete."<br>";
 	$dbh->exec($sqlDelete);
-	//echo $sqlInsertServicio."<br>";
-	$dbh->exec($sqlInsertServicio);
+	if ($tieneServicio == 1) {
+		//echo $sqlInsertServicio."<br>";
+		$dbh->exec($sqlInsertServicio);
+	}
 
 	$dbh->commit();
 	$pagina = "listadoPrestaServicios.php?codigo=$codigo";
