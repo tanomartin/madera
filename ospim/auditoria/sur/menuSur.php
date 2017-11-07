@@ -6,43 +6,37 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo SUR OSPIM :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-.Estilo6 {font-size: 24}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" />
-  </p>
-  <h2><span class="Estilo6">Men&uacute; S.U.R. </span></h2>
-  <table width="600" border="3">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" /></p>
+  <h2>Men&uacute; S.U.R.</h2>
+  <table width="600" border="3" style="text-align: center">
     <tr>
-	  <td width="200"><p align="center">Discapacitados </p>
-			<p align="center"><a class="enlace" href="abm/moduloABMDisca.php"><img src="img/discapacitados.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-			<p align="center">&nbsp;</p></td>
-		<td width="200"><p align="center">H.I.V</p>
-			<p align="center"><a class="enlace" href="#"><img src="img/hiv.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-			<p align="center">&nbsp;</p></td>
-		<td width="200"><p align="center">Drogadependencia</p>
+	  	<td width="200">
+	  		<p>Discapacitados </p>
+			<p><a class="enlace" href="abm/moduloABMDisca.php"><img src="img/discapacitados.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		</td>
+		<td width="200">
+			<p>H.I.V</p>
+			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/hiv.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		</td>
+		<td width="200">
+			<p>Drogadependencia</p>
 			<p align="center"><a class="enlace" href="#"><img src="img/drogadependencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-			<p align="center">&nbsp;</p></td>
+		</td>
     </tr>  
 	<tr>  
-	<td></td>
-	  <td width="200"><p align="center">Informes</p>
-          <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-          <p align="center">&nbsp;</p></td>
-	<td></td>
+		<td>
+			<p>Servicios Prestadores</p>
+			<p><a class="enlace" href="serviciopresta/moduloServicioPresta.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		</td>
+	  	<td>
+	  		<p>Informes</p>
+          	<p><a class="enlace" href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        </td>
+		<td></td>
 	</tr>
   </table>
 </div>
