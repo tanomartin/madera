@@ -3,9 +3,9 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 $codigopresta = $_GET['codigopresta'];
 
-$nombre = $_POST['nombre'];
+$nombre = addslashes($_POST['nombre']);
 $idcategoria = $_POST['idcategoria'];
-$domicilio = strtoupper($_POST['domicilio']);
+$domicilio = strtoupper(addslashes($_POST['domicilio']));
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];

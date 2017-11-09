@@ -5,9 +5,9 @@ $codigopresta = $_GET['codigopresta'];
 //var_dump($_POST);
 
 $codigoprof = $_POST['codigo'];
-$nombre = $_POST['nombre'];
+$nombre = addslashes($_POST['nombre']);
 $idcategoria = $_POST['idcategoria'];
-$domicilio = strtoupper($_POST['domicilio']);
+$domicilio = strtoupper(addslashes($_POST['domicilio']));
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];

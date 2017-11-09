@@ -1,8 +1,8 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
-$nombre = $_POST['nombre'];
-$domicilio = strtoupper($_POST['domicilio']);
+$nombre = addslashes($_POST['nombre']);
+$domicilio = strtoupper(addslashes($_POST['domicilio']));
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];
