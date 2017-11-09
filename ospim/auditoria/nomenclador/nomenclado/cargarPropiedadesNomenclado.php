@@ -62,6 +62,7 @@ jQuery(function($){
 		$("#practicas").html("");
 		$("#guardar").css("display", "none");
 		var valor = $(this).val();
+		var nomenclador = $("#nomenclador").val();
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
@@ -77,7 +78,7 @@ jQuery(function($){
 						type: "POST",
 						dataType: 'html',
 						url: "getPracticasPropiedades.php",
-						data: {valor:-1, tipo:valor},
+						data: {valor:-1, tipo:valor, nomenclador:nomenclador},
 					}).done(function(respuesta){
 						$("#practicas").html(respuesta);
 						$("#guardar").prop("disabled",false);	
@@ -96,6 +97,7 @@ jQuery(function($){
 		tipo = $("#tipo").val();
 		var valor = $(this).val();
 		valor = valor.split('-');
+		var nomenclador = $("#nomenclador").val();
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
@@ -110,7 +112,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticasPropiedades.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -123,7 +125,8 @@ jQuery(function($){
 	
 	$("#subcapitulo").change(function(){
 		var valor = $(this).val();
-		tipo = $("#tipo").val();
+		var tipo = $("#tipo").val();
+		var nomenclador = $("#nomenclador").val();
 		if(valor == 0) {
 			valor = $("#capitulo").val();
 			valor = valor.split('-');
@@ -142,13 +145,13 @@ jQuery(function($){
 					$("#practicas").html("");
 				}
 			});
-		} else {
+		} else {		
 			valor = valor.split('-');
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticasPropiedades.php",
-				data: {valor:valor[1],tipo:tipo},
+				data: {valor:valor[1],tipo:tipo,nomenclador:nomenclador},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -220,6 +223,7 @@ function validar(formulario) {
   </p>
   <p><span class="Estilo2">Carga de Valores del Nomenclador <?php echo $nomenclador ?> </span>  </p>
   <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardarPropiedadesNomenclado.php?codigo=<?php echo $idNomenclador ?>">
+    <input type="text" id="nomenclador" name="nomenclador" value="<?php echo $idNomenclador?>" style="display: none"/>
     <p>
       <select name="tipo" id="tipo">
 	  		  <option value='0'>Seleccione Tipo de Practica</option>
