@@ -5,8 +5,8 @@ $codigopresta = $_GET['codigopresta'];
 //var_dump($_POST);echo "<br>";
 
 $codigo = $_POST['codigo'];
-$nombre = $_POST['nombre'];
-$domicilio = strtoupper($_POST['domicilio']);
+$nombre = addslashes($_POST['nombre']);
+$domicilio = strtoupper(addslashes($_POST['domicilio']));
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];
@@ -22,6 +22,7 @@ $tel2 = $_POST['telefono2'];
 $ddnfax = $_POST['ddnfax'];
 $telfax = $_POST['telefonofax'];
 $email = $_POST['email'];
+$circulo = $_POST['circulo'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -40,7 +41,8 @@ telefono2 = '$tel2',
 ddn2 = '$ddn2', 
 telefonofax = '$telfax', 
 ddnfax = '$ddnfax', 
-email = '$email', 
+email = '$email',
+circulo = $circulo,
 fehamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'
 WHERE codigo = $codigo and codigoprestador = $codigopresta";

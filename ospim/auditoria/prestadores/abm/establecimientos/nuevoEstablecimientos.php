@@ -10,26 +10,12 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Alta Establecimientos :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
--->
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
-	$("#cuit").mask("99999999999");
 	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
@@ -132,11 +118,8 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarEstablecimientos.php?codigo=<?php echo $codigopresta ?>'" />
-  </span> 
-  </p> 
- <p class="Estilo2">Nuevo Establecimientos </p>
+  <p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarEstablecimientos.php?codigo=<?php echo $codigopresta ?>'" /></p> 
+  <h3>Nuevo Establecimientos </h3>
   <table width="500" border="1" style="margin-bottom: 20px">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -181,6 +164,15 @@ function validar(formulario) {
         <td><div align="right"><strong>Telefono FAX </strong></div></td>
         <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="5"/>)-<input name="telefonofax" type="text" id="telefonofax" size="20" /></div></td>
         <td colspan="4"><div align="left"><strong>Email</strong><input name="email" type="text" id="email" size="40" /></div></td>
+      </tr>
+       <tr>
+	    <td><div align="right"><strong>Circulo</strong></div></td>
+	    <td colspan="3">
+	    	<div align="left">
+          		<input name="circulo" type="radio" value="0" checked="checked"/> NO
+  		  		<input name="circulo" type="radio" value="1" />SI
+		  	</div>
+		</td>
       </tr>
     </table>
     <p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>

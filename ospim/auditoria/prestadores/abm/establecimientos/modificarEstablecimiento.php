@@ -31,7 +31,6 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
 <script type="text/javascript">
 
 jQuery(function($){
-	$("#cuit").mask("99999999999");
 	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
@@ -198,6 +197,23 @@ function validar(formulario) {
         <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="3" value="<?php echo $rowConsultaEsta['ddnfax'] ?>"/>)-<input name="telefonofax" type="text" id="telefonofax" size="15" value="<?php echo $rowConsultaEsta['telefonofax'] ?>"/>
 </div></td>
         <td colspan="4"><div align="left"><strong>Email</strong> <input name="email" type="text" id="email" size="30" value="<?php echo $rowConsultaEsta['email'] ?>"/></div></td>
+      </tr>
+       <tr>
+	    <td><div align="right"><strong>Circulo</strong></div></td>
+	    <td colspan="3">
+	    	<div align="left">
+	    		<?php 
+	    			$ckeckedNO = 'checked="checked"' ;
+	    			$ckeckedSI = '';
+	    			if ($rowConsultaEsta['circulo'] == 1) {
+	    				$ckeckedSI = 'checked="checked"';
+	    				$ckeckedNO = '';
+	    			}
+	    		?>
+          		<input name="circulo" type="radio" value="0" <?php echo $ckeckedNO ?> /> NO
+  		  		<input name="circulo" type="radio" value="1" <?php echo $ckeckedSI ?>/>SI
+		  	</div>
+		</td>
       </tr>
     </table>
     <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n" /></p>

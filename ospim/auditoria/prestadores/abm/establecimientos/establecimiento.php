@@ -78,6 +78,10 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
           <td><div align="left"><strong>Email</strong></div></td>
           <td colspan="4"><div align="left"><?php echo $rowConsultaEsta['email'] ?></div></td>
         </tr>
+        <tr>
+          <td><div align="right"><strong>Circulo </strong></div></td>
+          <td colspan="5"><div align="left"><?php if ($rowConsultaEsta['circulo'] == 0) { echo "NO"; } else { echo "SI"; }  ?></div></td>
+        </tr>
   </table>
 <p><input class="nover" name="modificar" type="button" value="Modificar Establecimiento" onclick="location.href='modificarEstablecimiento.php?codigo=<?php echo $codigo ?>&codigopresta=<?php echo $codigopresta ?>'" /></p>
 <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>

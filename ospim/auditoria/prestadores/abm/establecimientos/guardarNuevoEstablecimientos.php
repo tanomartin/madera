@@ -3,8 +3,8 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 $codigopresta = $_GET['codigopresta'];
 
-$nombre = $_POST['nombre'];
-$domicilio = strtoupper($_POST['domicilio']);
+$nombre = addslashes($_POST['nombre']);
+$domicilio = strtoupper(addslashes($_POST['domicilio']));
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];
@@ -20,12 +20,13 @@ $tel2 = $_POST['telefono2'];
 $ddnfax = $_POST['ddnfax'];
 $telfax = $_POST['telefonofax'];
 $email = $_POST['email'];
+$circulo = $_POST['circulo'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertProf = "INSERT INTO establecimientos VALUES(DEFAULT,'$codigopresta','$nombre','$domicilio','$localidad','$codProvin','$indpostal',$codPos,'$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertProf = "INSERT INTO establecimientos VALUES(DEFAULT,'$codigopresta','$nombre','$domicilio','$localidad','$codProvin','$indpostal',$codPos,'$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email',$circulo,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];
