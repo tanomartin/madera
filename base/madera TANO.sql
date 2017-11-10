@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-11-2017 a las 17:25:04
+-- Tiempo de generación: 10-11-2017 a las 16:52:18
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -2039,12 +2039,13 @@ CREATE TABLE IF NOT EXISTS `establecimientos` (
   `telefonofax` bigint(10) DEFAULT NULL,
   `ddnfax` char(5) CHARACTER SET latin1 DEFAULT NULL,
   `email` char(60) CHARACTER SET latin1 DEFAULT NULL,
+  `circulo` int(1) NOT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) CHARACTER SET latin1 NOT NULL,
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -3027,7 +3028,7 @@ CREATE TABLE IF NOT EXISTS `padronssscabecera` (
   `fechadelete` date DEFAULT NULL,
   `usuariodelete` char(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -3299,7 +3300,22 @@ CREATE TABLE IF NOT EXISTS `prestadores` (
   `fehamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` char(50) DEFAULT NULL,
   PRIMARY KEY (`codigoprestador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4324 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4325 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestadoresauxiliar`
+--
+
+CREATE TABLE IF NOT EXISTS `prestadoresauxiliar` (
+  `cuit` char(11) NOT NULL,
+  `retiene` int(1) NOT NULL,
+  `cbu` varchar(30) DEFAULT NULL,
+  `banco` text,
+  `cuenta` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`cuit`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -3338,6 +3354,18 @@ CREATE TABLE IF NOT EXISTS `prestadorservicio` (
   `codigoservicio` int(2) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`codigoprestador`,`codigoservicio`),
   KEY `codigoservicio` (`codigoservicio`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `prestadorserviciodisca`
+--
+
+CREATE TABLE IF NOT EXISTS `prestadorserviciodisca` (
+  `codigoprestador` int(4) NOT NULL,
+  `codigoservicio` int(2) NOT NULL,
+  PRIMARY KEY (`codigoprestador`,`codigoservicio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -3603,6 +3631,42 @@ CREATE TABLE IF NOT EXISTS `reqfiscalizusimra` (
   `usuarioanulacion` char(50) DEFAULT NULL COMMENT 'Usuario que Anula el Requerimiento',
   PRIMARY KEY (`nrorequerimiento`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de USIMRA' AUTO_INCREMENT=32529 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `resolucioncabecera`
+--
+
+CREATE TABLE IF NOT EXISTS `resolucioncabecera` (
+  `id` int(2) NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `emisor` varchar(100) NOT NULL,
+  `fecha` date NOT NULL,
+  `observacion` text NOT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `resoluciondetalle`
+--
+
+CREATE TABLE IF NOT EXISTS `resoluciondetalle` (
+  `idresolucion` int(2) NOT NULL,
+  `idpractica` int(8) NOT NULL,
+  `fechadesde` date NOT NULL,
+  `fechahasta` date DEFAULT NULL,
+  `importe` float(8,2) NOT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  PRIMARY KEY (`idresolucion`,`idpractica`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -3932,6 +3996,18 @@ CREATE TABLE IF NOT EXISTS `tiposervicio` (
   `profesional` int(1) unsigned NOT NULL COMMENT 'Servicio que presta un profesional (0: No - 1:Si - 2: Ambos)',
   PRIMARY KEY (`codigoservicio`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tiposerviciodisca`
+--
+
+CREATE TABLE IF NOT EXISTS `tiposerviciodisca` (
+  `codigoservicio` int(2) NOT NULL,
+  `descripcion` char(100) NOT NULL,
+  PRIMARY KEY (`codigoservicio`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
