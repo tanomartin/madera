@@ -217,7 +217,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<div align="center">
 		<table width="137" border="0">
 		  <tr>
-			<td width="23"><input name="seleccion" type="radio" value="nroafiliado" /></td>
+			<td width="23"><input name="seleccion" type="radio" value="nroafiliado" checked="checked"/></td>
 			<td width="104"><div align="left">Nro Afiliado</div></td>
 		  </tr>
 		  <tr>
