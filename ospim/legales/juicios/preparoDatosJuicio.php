@@ -39,28 +39,30 @@ $n = 0;
 $sqlPeriodos = array();
 $sqlDelPer = array();
 for ($i = 0; $i <= $peridosHabili; $i++) {
-	$idnombre = "id".$i;
-	$mesnombre = "mes".$i;
-	$anionombre = "anio".$i;
-	$concepto = "concepto".$i;
-	if ($_POST[$mesnombre] != "" && $_POST[$anionombre] != "") {
-		$id = $_POST[$idnombre];
-		$mes = $_POST[$mesnombre];
-		$anio = $_POST[$anionombre];
-		$concepto = $_POST[$concepto];
-		if ($id == '') {
-			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,'',$anio,$mes,0,'')"; 
-		} else {
-			$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,$id,$anio,$mes,$nroacuerdo,'$concepto')"; 
-		}
-		if ($id != '') {
-			$sqlDelete = "DELETE FROM detacuerdosospim WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo and idperiodo = $id";
-			$sqlDelPer[$m] = $sqlDelete;
-			$m++;
-		}
-		$sqlPeriodos[$n] = $sqlInsert;
-		$n++;
-	} 
+	if ($i < 120) {
+		$idnombre = "id".$i;
+		$mesnombre = "mes".$i;
+		$anionombre = "anio".$i;
+		$concepto = "concepto".$i;
+		if ($_POST[$mesnombre] != "" && $_POST[$anionombre] != "") {
+			$id = $_POST[$idnombre];
+			$mes = $_POST[$mesnombre];
+			$anio = $_POST[$anionombre];
+			$concepto = $_POST[$concepto];
+			if ($id == '') {
+				$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,'',$anio,$mes,0,'')"; 
+			} else {
+				$sqlInsert = "INSERT INTO detjuiciosospim VALUES($nroorden,$id,$anio,$mes,$nroacuerdo,'$concepto')"; 
+			}
+			if ($id != '') {
+				$sqlDelete = "DELETE FROM detacuerdosospim WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo and idperiodo = $id";
+				$sqlDelPer[$m] = $sqlDelete;
+				$m++;
+			}
+			$sqlPeriodos[$n] = $sqlInsert;
+			$n++;
+		} 
+	}
 }
 
 if (sizeof($sqlPeriodos) > 0) {

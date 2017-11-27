@@ -226,14 +226,16 @@ function limpioid(id) {
 }
 
 function mostrarPeriodos() {
-	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
-	if (n < 120) {
+	if (parseInt(document.forms.nuevoJuicio.mostrar.value) < 120) {	
+		var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
 		var o = 0;
 		var f = 0;
 		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
-			f = "fila" + o;
-			document.getElementById(f).style.display="table-row";
+			if (o < 120) {
+				f = "fila" + o;
+				document.getElementById(f).style.display="table-row";
+			}
 		}
 		document.forms.nuevoJuicio.mostrar.value = n + 12;
 	} else { 
@@ -485,7 +487,7 @@ function validar(formulario) {
 			$resPeriodos = mysql_query ( $sqlPeriodos, $db );
 			$canPeriodos = mysql_num_rows ( $resPeriodos );
 			?>
-			<input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="visibility: hidden" /> 
+			<input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="display: display" /> 
 			<table width="1001" border="0">
 				<tr>
 					<td height="43" colspan="5"><div align="center">
