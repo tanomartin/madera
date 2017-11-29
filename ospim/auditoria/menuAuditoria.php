@@ -45,7 +45,7 @@ include($libPath."controlSessionOspim.php"); ?>
 	    <tr>
 	    	<td>
 	    		<p>Gestión y Seguimiento </p>
-      			<p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      			<p><a class="enlace" href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       		</td>
 	    	<td></td>
 	    	<td></td>
