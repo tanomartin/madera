@@ -5,6 +5,8 @@ var_dump($_POST);
 $orden = $_POST['orden'];
 $nroafil = $_POST['nroafil'];
 $nombre = $_POST['nombre'];
+$delega = $_POST['delega'];
+
 $seguimiento = $_POST['seguimiento'];
 if ($seguimiento == 1) {
 	$comentario = $_POST['comentario'];
@@ -36,7 +38,7 @@ try {
 	}
 	
 	$dbh->commit();
-	$pagina = "seguimiento.php?nroafil=$nroafil&orden=$orden&nombre=$nombre";
+	$pagina = "seguimiento.php?nroafil=$nroafil&orden=$orden&nombre=$nombre&delega=$delega";
 	Header("Location: $pagina");
 	
 	

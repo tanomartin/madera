@@ -6,6 +6,7 @@ $idSeguimiento = $_POST['id'];
 $orden = $_POST['orden'];
 $nroafil = $_POST['nroafil'];
 $nombre = $_POST['nombre'];
+$delega = $_POST['delega'];
 
 $cambioEstado = $_POST['cambioEstado'];
 if ($cambioEstado != 'SC') {
@@ -36,7 +37,7 @@ try {
 	}
 	
 	$dbh->commit();
-	$pagina = "seguimientoDetalle.php?id=$idSeguimiento&nombre=$nombre";
+	$pagina = "seguimientoDetalle.php?id=$idSeguimiento&nombre=$nombre&delega=$delega";
 	Header("Location: $pagina");
 	
 	

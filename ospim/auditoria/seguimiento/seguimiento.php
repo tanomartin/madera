@@ -4,6 +4,7 @@ include($libPath."controlSessionOspim.php");
 $orden = $_GET['orden'];
 $nroafil = $_GET['nroafil'];
 $nombre = $_GET['nombre'];
+$delega = $_GET['delega'];
 
 $arraySeguimiento = array();
 $i = 0;
@@ -49,7 +50,8 @@ if ($canSeguimiento > 0) {
 	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'moduloABM.php'" /></p>
 	<h3>Listado de Entradas de Seguimiento</h3> 
 	<h3>Afiliado: <?php echo $nroafil." - ".$nombre?></h3> 
-	<p><input class="nover" type="button" name="nueva" value="Nueva Entrada" onclick="location.href = 'seguimientoNuevo.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>'" /></p>
+	<h3>Delegacion: <?php echo $delega ?></h3> 
+	<p><input class="nover" type="button" name="nueva" value="Nueva Entrada" onclick="location.href = 'seguimientoNuevo.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>&delega=<?php echo $delega ?>'" /></p>
 	<?php if (sizeof($arraySeguimiento) > 0) {?>
 			<div class="grilla">
 				<table style="width: 1000px">
@@ -79,8 +81,8 @@ if ($canSeguimiento > 0) {
 									  echo $estado; ?>
 							</td>
 							<td class="nover">
-								<input type="button" name="ver" id="ver" value="+INFO" onclick="location='seguimientoDetalle.php?id=<?php echo $seguimiento['id'] ?>&nombre=<?php echo $nombre ?>'" />
-								<?php if ($modif == 1) { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="location='seguimientoModificar.php?id=<?php echo $seguimiento['id'] ?>&nombre=<?php echo $nombre ?>'" /> <?php } ?>
+								<input type="button" name="ver" id="ver" value="+INFO" onclick="location='seguimientoDetalle.php?id=<?php echo $seguimiento['id'] ?>&nombre=<?php echo $nombre ?>&delega=<?php echo $delega ?>'" />
+								<?php if ($modif == 1) { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="location='seguimientoModificar.php?id=<?php echo $seguimiento['id'] ?>&nombre=<?php echo $nombre ?>&delega=<?php echo $delega ?>'" /> <?php } ?>
 							</td>		
 						</tr>
 			    	<?php } ?>

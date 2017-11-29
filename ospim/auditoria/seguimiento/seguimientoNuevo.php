@@ -4,7 +4,7 @@ include($libPath."controlSessionOspim.php");
 $orden = $_GET['orden'];
 $nroafil = $_GET['nroafil'];
 $nombre = $_GET['nombre'];
-
+$delega = $_GET['delega']
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -60,9 +60,10 @@ function mostrarComentario(seleccion) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'seguimiento.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>'" /></p>
+	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'seguimiento.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>&delega=<?php echo $delega?>'" /></p>
 	<h3>Nueva Entrada de Seguimiento</h3> 
 	<h3>Afiliado: <?php echo $nroafil." - ".$nombre?></h3> 
+	<h3>Delegacion: <?php echo $delega ?></h3> 
 	<form id="alta" name="alta" method="post" onsubmit="return validar(this)" action="seguimientoNuevoGuardar.php">
 		<p><b>Titulo: </b><input type="text" id="titulo" name="titulo" size="80"/></p>
 		<p><b>Descripcion</b> </p> 
@@ -77,7 +78,7 @@ function mostrarComentario(seleccion) {
 		<input style="display: none" type="text" value="<?php echo $nroafil ?>" id="nroafil" name="nroafil"/>
 		<input style="display: none" type="text" value="<?php echo $orden ?>" id="orden" name="orden"/>
 		<input style="display: none" type="text" value="<?php echo $nombre ?>" id="nombre" name="nombre"/>
-		
+		<input style="display: none" type="text" value="<?php echo $delega ?>" id="delega" name="delega"/>
 		<p><input type="submit" value="Guardar"/></p>
 	</form>
 </div>

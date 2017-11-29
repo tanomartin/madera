@@ -6,7 +6,7 @@ if (isset($_POST['valor'])) {
 	$seleccion = $_POST['seleccion'];
 	$valor = $_POST['valor'];
 	
-	$selectTitular = "SELECT t.*, d.descrip as tipdoc FROM titulares t, tipodocumento d WHERE $seleccion = $valor and t.tipodocumento = d.codtipdoc";
+	$selectTitular = "SELECT t.*, d.descrip as tipdoc, del.nombre as delegacion FROM titulares t, tipodocumento d, delegaciones del WHERE t.$seleccion = $valor and t.tipodocumento = d.codtipdoc and t.codidelega = del.codidelega";
 	$resTitular = mysql_query($selectTitular,$db);
 	$numTitular = mysql_num_rows($resTitular);
 	if ($numTitular > 0) {
@@ -16,7 +16,8 @@ if (isset($_POST['valor'])) {
 		}
 	} 
 	
-	$selectFamiliar = "SELECT f.*, p.descrip as parentesco, d.descrip as tipdoc FROM familiares f, parentesco p, tipodocumento d WHERE $seleccion = $valor and f.tipoparentesco = p.codparent and f.tipodocumento = d.codtipdoc";
+	$selectFamiliar = "SELECT f.*, p.descrip as parentesco, d.descrip as tipdoc, del.nombre as delegacion FROM familiares f, parentesco p, tipodocumento d, titulares t, delegaciones del
+						WHERE f.$seleccion = $valor and f.tipoparentesco = p.codparent and f.tipodocumento = d.codtipdoc and f.nroafiliado = t.nroafiliado and t.codidelega = del.codidelega";
 	$resFamiliar = mysql_query($selectFamiliar,$db);
 	$numFamiliar = mysql_num_rows($resFamiliar);
 	if ($numFamiliar > 0) {
@@ -119,12 +120,14 @@ function validar(formulario) {
 	</form>
 <?php if (sizeof($arrayResultado ) > 0) { ?>
 		<div class="grilla">
-			<table style="width: 1000px">
+			<table style="width: 1100px">
 				<thead>
 					<tr>
 						<th>Nro Afiliado</th>
 						<th>Nombre y Apellido</th>
 						<th>Nro Documento</th>
+						<th>C.U.I.L.</th>
+						<th>Delegacion</th>
 						<th>Tipo Afiliado</th>
 						<th></th>
 					</tr>
@@ -134,7 +137,9 @@ function validar(formulario) {
 					<tr>
 						<td><?php echo $afiliado['nroafiliado'] ?></td>	
 						<td><?php echo $afiliado['apellidoynombre'] ?></td>	
-						<td><?php echo $afiliado['tipdoc'].": ".$afiliado['nrodocumento'] ?></td>	
+						<td><?php echo $afiliado['tipdoc'].": ".$afiliado['nrodocumento'] ?></td>
+						<td><?php echo $afiliado['cuil'] ?></td>	
+						<td><?php echo $afiliado['delegacion'] ?></td>
 						<td><?php $tipo = "TITULAR";
 								  $orden = 0;
 								  if (isset($afiliado['nroorden'])) { 
@@ -143,7 +148,7 @@ function validar(formulario) {
 								  } 
 								  echo $tipo; ?>
 						</td>
-						<td><input type="button" name="ver" id="ver" value="VER" onclick="location='seguimiento.php?nroafil=<?php echo $afiliado['nroafiliado']?>&orden=<?php echo $orden?>&nombre=<?php echo $afiliado['apellidoynombre']?>'" /></td>		
+						<td><input type="button" name="ver" id="ver" value="VER" onclick="location='seguimiento.php?nroafil=<?php echo $afiliado['nroafiliado']?>&orden=<?php echo $orden?>&nombre=<?php echo $afiliado['apellidoynombre']?>&delega=<?php  echo $afiliado['delegacion']?>'" /></td>		
 					</tr>
 		    	<?php } ?>
 				</tbody>

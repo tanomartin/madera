@@ -3,6 +3,7 @@ include($libPath."controlSessionOspim.php");
 
 $id = $_GET['id'];
 $nombre =  $_GET['nombre'];
+$delega = $_GET['delega'];
 
 $sqlSeguimiento = "SELECT s.*, DATE_FORMAT(s.fecharegistro, '%d-%m-%Y %H:%i:%S') as fecharegistro, DATE_FORMAT(s.fechamodificacion, '%d-%m-%Y %H:%i:%S') as fechamodificacion 
 					FROM seguimiento s WHERE id = $id";
@@ -38,8 +39,9 @@ if ($rowSeguimiento['seguimiento'] == 1) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'seguimiento.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>'" /></p>
+	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'seguimiento.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>&delega=<?php echo $delega?>'" /></p>
 	<h3>Afiliado: <?php echo $nroafil." - ".$nombre?></h3> 
+	<h3>Delegacion: <?php echo $delega ?></h3> 
 	<p><b>Código: </b> <?php echo $rowSeguimiento['id']?></p>
 	<p><b>Fecha Alta: </b> <?php echo $rowSeguimiento['fecharegistro']?></p>
 	<p><b>Fecha U.M.: </b> <?php echo $rowSeguimiento['fechamodificacion']?></p>

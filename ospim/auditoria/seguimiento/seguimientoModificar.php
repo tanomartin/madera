@@ -3,6 +3,7 @@ include($libPath."controlSessionOspim.php");
 
 $id = $_GET['id'];
 $nombre =  $_GET['nombre'];
+$delega = $_GET['delega'];
 
 $sqlSeguimiento = "SELECT s.*, DATE_FORMAT(s.fecharegistro, '%d-%m-%Y %H:%i:%S') as fecharegistro, DATE_FORMAT(s.fechamodificacion, '%d-%m-%Y %H:%i:%S') as fechamodificacion
 FROM seguimiento s WHERE id = $id";
@@ -74,9 +75,10 @@ function mostrarComentario(seleccion) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'seguimiento.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>'" /></p>
+	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'seguimiento.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>&delega=<?php echo $delega?>'" /></p>
 	<h3>Modificar Entrada de Seguimiento</h3> 
 	<h3>Afiliado: <?php echo $nroafil." - ".$nombre?></h3> 
+	<h3>Delegacion: <?php echo $delega ?></h3> 
 	<form id="alta" name="alta" method="post" onsubmit="return validar(this)" action="seguimientoModificarGuardar.php">
 		<p><b>Titulo: </b><input type="text" id="titulo" name="titulo" size="80" value="<?php echo $rowSeguimiento['titulo'] ?>"/></p>
 		<p><b>Descripcion</b> </p> 
@@ -103,6 +105,7 @@ function mostrarComentario(seleccion) {
 		<input style="display: none" type="text" value="<?php echo $nroafil ?>" id="nroafil" name="nroafil"/>
 		<input style="display: none" type="text" value="<?php echo $orden ?>" id="orden" name="orden"/>
 		<input style="display: none" type="text" value="<?php echo $nombre ?>" id="nombre" name="nombre"/>
+		<input style="display: none" type="text" value="<?php echo $delega ?>" id="delega" name="delega"/>
 		<p><input type="submit" value="Modificar"/></p>
 	</form>
 </div>
