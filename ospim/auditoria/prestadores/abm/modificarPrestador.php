@@ -2,7 +2,8 @@
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 $codigo = $_GET['codigo'];
-$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia FROM prestadores p, localidades l, provincia r WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin";
+$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia FROM prestadores p, localidades l, provincia r 
+						WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
@@ -413,12 +414,28 @@ function validar(formulario) {
       </tr>
        <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td colspan="3">
+        <td colspan="2">
         	<div align="left">
           		<input name="cuit" type="text" id="cuit" size="13" value="<?php echo $rowConsultaPresta['cuit'] ?>"/>
  				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
+        <td>
+			<div align="left"><strong>Situacion Fiscal</strong>
+				<select id="sitfiscal" name="sitfiscal">
+				<?php 	$query = "select * from tiposituacionfiscal"; 
+	    	  			$result = mysql_query($query,$db);  
+            			while ($rowfis = mysql_fetch_array($result)) { 
+            				$selected = '';
+            				if ($rowfis['id'] == $rowConsultaPresta['situacionfiscal']) {
+            					$selected = 'selected="selected"';
+            				} ?>
+						  	<option <?php echo $selected?>  value="<?php echo $rowfis['id']?>"><?php echo $rowfis['descripcion'] ?></option>
+				  <?php 	$i++;
+						} ?>
+				</select>		
+			</div>	
+		</td>
       </tr>
       <tr>
         <td><div align="right"><strong>Domicilio</strong></div></td>

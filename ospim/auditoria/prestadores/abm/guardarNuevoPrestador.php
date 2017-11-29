@@ -18,6 +18,7 @@ $telfax = $_POST['telefonofax'];
 $email1 = $_POST['email1'];
 $email2 = $_POST['email2'];
 $cuit = $_POST['cuit'];
+$sitfiscal = $_POST['sitfiscal'];
 $personeria = $_POST['selectPersoneria'];
 $tratamiento = $_POST['selectTratamiento'];
 $matriculaNac = $_POST['matriculaNac'];
@@ -34,7 +35,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistroSSS','$vtoRegistroSSS','$nroRegistroSNR','$vtoRegistroSNR','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit',$sitfiscal,'$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistroSSS','$vtoRegistroSSS','$nroRegistroSNR','$vtoRegistroSNR','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 $sqlInsertPrestaAux = "INSERT INTO prestadoresauxiliar VALUES('$cuit',0,NULL,NULL,NULL)";
 
 try {

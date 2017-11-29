@@ -1,7 +1,8 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 $codigo = $_GET['codigo'];
-$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia, t.descripcion, b.descripcion as barrio FROM prestadores p, localidades l, provincia r, tipoprestador t, barrios b WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.personeria = t.id and p.idBarrio = b.id";
+$sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia, t.descripcion, b.descripcion as barrio, s.descripcion as situacionfiscal FROM prestadores p, localidades l, provincia r, tipoprestador t, barrios b, tiposituacionfiscal s 
+						WHERE p.codigoprestador = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.personeria = t.id and p.idBarrio = b.id and p.situacionfiscal = s.id";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
@@ -45,7 +46,9 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>C.U.I.T.</strong></div></td>
-          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
+          <td><div align="left" class="title"><strong>Situacion Fiscal</strong></div></td>
+          <td colspan="3"><div align="left"><?php echo $rowConsultaPresta['situacionfiscal'] ?></div></td>
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Raz&oacute;n Social</strong></div></td>
@@ -123,8 +126,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Personer&iacute;a</strong></div></td>
-          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['descripcion'] ?></div></td>
-         
+          <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['descripcion'] ?></div></td>         
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Tratamiento</strong></div></td>

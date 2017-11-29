@@ -62,7 +62,7 @@ jQuery(function($){
 			data: {cuit:cuit},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
-				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' ya existe (Codigo Prestador '"+ respuesta +"')");
 				$("#cuit").val("");
 			} else {
 				$("#errorCuit").html("");
@@ -377,11 +377,23 @@ function validar(formulario) {
       </tr>
        <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td colspan="3">
+        <td colspan="2">
 			<div align="left">
 				<input name="cuit" type="text" id="cuit" size="10" />
 				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
 	        </div>
+		</td>
+		<td>
+			<div align="left"><strong>Situacion Fiscal</strong>
+				<select id="sitfiscal" name="sitfiscal">
+				<?php 	$query = "select * from tiposituacionfiscal"; 
+	    	  			$result = mysql_query($query,$db);  
+            			while ($rowfis = mysql_fetch_array($result)) { ?>
+						  	<option value="<?php echo $rowfis['id']?>"><?php echo $rowfis['descripcion'] ?></option>
+				  <?php 	$i++;
+						} ?>
+				</select>		
+			</div>	
 		</td>
       </tr>
       <tr>
