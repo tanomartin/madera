@@ -68,13 +68,13 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
         </tr>
         <tr>
           <td><div align="right"><strong>Telefono 1 </strong></div></td>
-          <td><div align="left"><?php if ($rowConsultaEsta['telefono1'] != 0) echo "(".$rowConsultaEsta['ddn1'].")-".$rowConsultaEsta['telefono1']; ?></div></td>
+          <td><div align="left"><?php if ($rowConsultaEsta['telefono1'] != NULL) echo "(".$rowConsultaEsta['ddn1'].")-".$rowConsultaEsta['telefono1']; ?></div></td>
           <td><div align="left"><strong>Telefono 2 </strong></div></td>
-          <td colspan="4"><div align="left"><?php if ($rowConsultaEsta['telefono2'] != 0) echo "(".$rowConsultaEsta['ddn2'].")-".$rowConsultaEsta['telefono2']; ?></div></td>
+          <td colspan="4"><div align="left"><?php if ($rowConsultaEsta['telefono2'] != NULL) echo "(".$rowConsultaEsta['ddn2'].")-".$rowConsultaEsta['telefono2']; ?></div></td>
         </tr>
         <tr>
           <td><div align="right"><strong>Telefono FAX </strong></div></td>
-          <td><div align="left"><?php if ($rowConsultaEsta['telefonofax'] != 0) echo "(".$rowConsultaEsta['ddnfax'].")-".$rowConsultaEsta['telefonofax']; ?></div></td>
+          <td><div align="left"><?php if ($rowConsultaEsta['telefonofax'] != NULL) echo "(".$rowConsultaEsta['ddnfax'].")-".$rowConsultaEsta['telefonofax']; ?></div></td>
           <td><div align="left"><strong>Email</strong></div></td>
           <td colspan="4"><div align="left"><?php echo $rowConsultaEsta['email'] ?></div></td>
         </tr>
