@@ -10,7 +10,12 @@ $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
 $alfapostal = $_POST['alfapostal'];
 $localidad = $_POST['selectLocali'];
-$idBarrio = $_POST['selectBarrio'];
+
+$idBarrio = 0;
+if (isset($_POST['selectBarrio'])) {
+	$idBarrio = $_POST['selectBarrio'];
+}
+
 $codProvin = $_POST['codprovin'];
 $ddn1 = $_POST['ddn1'];
 $tel1 = $_POST['telefono1'];
@@ -22,10 +27,29 @@ $email1 = $_POST['email1'];
 $email2 = $_POST['email2'];
 $cuit = $_POST['cuit'];
 $sitfiscal = $_POST['sitfiscal'];
+
+$vtoexento = NULL;
+if (isset($_POST['vtoExento'])) {
+	$vtoexento = fechaParaGuardar($_POST['vtoExento']);
+}
+
 $personeria = $_POST['selectPersoneria'];
-$tratamiento = $_POST['selectTratamiento'];
-$matriculaNac = $_POST['matriculaNac'];
-$matriculaPro = $_POST['matriculaPro'];
+
+$tratamiento = NULL;
+if (isset($_POST['selectTratamiento'])) {
+	$tratamiento = $_POST['selectTratamiento'];
+}
+
+$matriculaNac = NULL;
+if (isset($_POST['matriculaNac'])) {
+	$matriculaNac = $_POST['matriculaNac'];
+}
+
+$matriculaPro = NULL;
+if (isset($_POST['matriculaPro'])) {
+	$matriculaPro = $_POST['matriculaPro'];
+}
+
 $nroRegistroSSS = $_POST['nroSSS'];
 $vtoRegistroSSS = fechaParaGuardar($_POST['vtoSSS']);
 if ($vtoRegistroSSS == "0000-00-00") { $vtoRegistroSSS = NULL; }
@@ -56,6 +80,7 @@ email1 = '$email1',
 email2 = '$email2', 
 cuit = '$cuit',
 situacionfiscal = $sitfiscal,
+vtoexento = '$vtoexento',
 personeria = '$personeria', 
 tratamiento = '$tratamiento', 
 matriculanacional = '$matriculaNac' ,
@@ -69,7 +94,7 @@ fehamodificacion = '$fechamodificacion',
 usuariomodificacion = '$usuariomodificacion'
 WHERE codigoprestador = $codigo";
 
-echo $sqlUpdatePresta."<br>";
+//echo $sqlUpdatePresta."<br>";
 
 $sqlDeleteNomenclador = "DELETE FROM prestadornomenclador WHERE codigoprestador = $codigo";
 $sqlDeleteJurisdiccion = "DELETE FROM prestadorjurisdiccion WHERE codigoprestador = $codigo";

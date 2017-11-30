@@ -23,6 +23,7 @@ jQuery(function($){
 	$("#cuit").mask("99999999999");
 	$("#vtoSSS").mask("99-99-9999");
 	$("#vtoSNR").mask("99-99-9999");
+	$("#vtoExento").mask("99-99-9999");
 	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
@@ -62,12 +63,21 @@ jQuery(function($){
 			data: {cuit:cuit},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
-				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' ya existe (Codigo Prestador '"+ respuesta +"')");
+				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' <br>ya existe (Codigo Prestador '"+ respuesta +"')");
 				$("#cuit").val("");
 			} else {
 				$("#errorCuit").html("");
 			} 
 		});
+	});
+
+	$("#sitfiscal").change(function(){
+		var sitfis = $(this).val();
+		$("#vtoExento").val("");
+		$("#vtoExento").prop("disabled", true);
+		if (sitfis == 3) {
+			$("#vtoExento").prop("disabled", false);
+		}
 	});
 	
 	$("#nroSSS").change(function(){
@@ -221,6 +231,14 @@ function validar(formulario) {
 		alert("C.U.I.T invalido");
 		return false;
 	}
+
+	if (formulario.sitfiscal.value == 3) {
+		if (!esFechaValida(formulario.vtoExento.value)){
+			alert("Fecha de vto de exento invalida");
+			return false;
+		}
+	}
+	
 	if (formulario.codPos.value == "") {
 		alert("El campo Codigo Postal es obligatrio");
 		return false;
@@ -370,14 +388,14 @@ function validar(formulario) {
 <div align="center">
   <p><strong>Nuevo Prestador </strong></p>
   <form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarNuevoPrestador.php">
-    <table border="1">
+    <table border="0">
       <tr>
         <td width="129"><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
         <td colspan="3"><div align="left"><input name="nombre" type="text" id="nombre" size="120" /></div></td>
       </tr>
        <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td colspan="2">
+        <td>
 			<div align="left">
 				<input name="cuit" type="text" id="cuit" size="10" />
 				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
@@ -393,6 +411,12 @@ function validar(formulario) {
 				  <?php 	$i++;
 						} ?>
 				</select>		
+			</div>	
+		</td>
+		<td>
+			<div align="left">
+				<strong>Vto. Exento</strong>
+				<input type="text" id="vtoExento" name="vtoExento" size="8" disabled="disabled" />
 			</div>	
 		</td>
       </tr>

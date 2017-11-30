@@ -41,6 +41,7 @@ jQuery(function($){
 	$("#cuit").mask("99999999999");
 	$("#vtoSSS").mask("99-99-9999");
 	$("#vtoSNR").mask("99-99-9999");
+	$("#vtoExento").mask("99-99-9999");
 	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
@@ -66,7 +67,7 @@ jQuery(function($){
 			data: {cuit:cuit},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
-				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' existe en el prestador con codigo '"+ respuesta +"'");
+				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' <br>ya existe (Codigo Prestador '"+ respuesta +"')");
 				$("#cuit").val("");
 			} else {
 				$("#errorCuit").html("");
@@ -74,6 +75,15 @@ jQuery(function($){
 		});
 	});
 
+	$("#sitfiscal").change(function(){
+		var sitfis = $(this).val();
+		$("#vtoExento").val("");
+		$("#vtoExento").prop("disabled", true);
+		if (sitfis == 3) {
+			$("#vtoExento").prop("disabled", false);
+		}
+	});
+	
 	$("#nroSSS").change(function(){
 		var nroreg = $(this).val();
 		$("#vtoSSS").val("");
@@ -239,6 +249,14 @@ function validar(formulario) {
 		alert("C.U.I.T invalido");
 		return false;
 	}
+
+	if (formulario.sitfiscal.value == 3) {
+		if (!esFechaValida(formulario.vtoExento.value)){
+			alert("Fecha de vto de exento invalida");
+			return false;
+		}
+	}
+	
 	if (formulario.codPos.value == "") {
 		alert("El campo Codigo Postal es obligatrio");
 		return false;
@@ -414,7 +432,7 @@ function validar(formulario) {
       </tr>
        <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td colspan="2">
+        <td>
         	<div align="left">
           		<input name="cuit" type="text" id="cuit" size="13" value="<?php echo $rowConsultaPresta['cuit'] ?>"/>
  				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
@@ -434,6 +452,19 @@ function validar(formulario) {
 				  <?php 	$i++;
 						} ?>
 				</select>		
+			</div>	
+		</td>
+		<td>
+			<div align="left">
+				<strong>Vto. Exento</strong>
+				<?php 
+            		$disabled = 'disabled=disabled';
+            		$vtoexento = '';
+            		if ($rowConsultaPresta['situacionfiscal'] == 3) {
+            			$disabled = '';
+            			$vtoexento = invertirFecha($rowConsultaPresta['vtoexento'] );
+	            	}?>
+				<input type="text" id="vtoExento" name="vtoExento" size="8" <?php echo $disabled?> value="<?php if ($vtoexento != "00/00/0000") { echo $vtoexento; }?>"/>
 			</div>	
 		</td>
       </tr>

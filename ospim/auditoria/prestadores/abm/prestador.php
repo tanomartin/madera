@@ -46,9 +46,11 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>C.U.I.T.</strong></div></td>
-          <td colspan="2"><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['cuit'] ?></div></td>
           <td><div align="left" class="title"><strong>Situacion Fiscal</strong></div></td>
-          <td colspan="2"><div align="left"><?php echo $rowConsultaPresta['situacionfiscal'] ?></div></td>
+          <td><div align="left"><?php echo $rowConsultaPresta['situacionfiscal'] ?></div></td>
+          <td><div align="left" class="title"><strong>Fecha Vto. Exento</strong></div></td>
+          <td><div align="left"><?php if ($rowConsultaPresta['vtoexento'] != NULL && $rowConsultaPresta['vtoexento'] != "0000-00-00") { echo invertirFecha($rowConsultaPresta['vtoexento']); } ?></div></td>
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Raz&oacute;n Social</strong></div></td>

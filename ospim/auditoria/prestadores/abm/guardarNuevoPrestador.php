@@ -19,10 +19,29 @@ $email1 = $_POST['email1'];
 $email2 = $_POST['email2'];
 $cuit = $_POST['cuit'];
 $sitfiscal = $_POST['sitfiscal'];
+
+$vtoexento = NULL;
+if (isset($_POST['vtoExento'])) {
+	$vtoexento = fechaParaGuardar($_POST['vtoExento']);
+}
+
 $personeria = $_POST['selectPersoneria'];
-$tratamiento = $_POST['selectTratamiento'];
-$matriculaNac = $_POST['matriculaNac'];
-$matriculaPro = $_POST['matriculaPro'];
+
+$tratamiento = NULL;
+if (isset($_POST['selectTratamiento'])) {
+	$tratamiento = $_POST['selectTratamiento'];
+}
+
+$matriculaNac = NULL;
+if (isset($_POST['matriculaNac'])) {
+	$matriculaNac = $_POST['matriculaNac'];
+}
+
+$matriculaPro = NULL;
+if (isset($_POST['matriculaPro'])) {
+	$matriculaPro = $_POST['matriculaPro'];
+}
+
 $nroRegistroSSS = $_POST['nroSSS'];
 $vtoRegistroSSS = fechaParaGuardar($_POST['vtoSSS']);
 if ($vtoRegistroSSS == "0000-00-00") { $vtoRegistroSSS = NULL; }
@@ -35,7 +54,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit',$sitfiscal,'$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistroSSS','$vtoRegistroSSS','$nroRegistroSNR','$vtoRegistroSNR','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit',$sitfiscal,'$vtoexento','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistroSSS','$vtoRegistroSSS','$nroRegistroSNR','$vtoRegistroSNR','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 $sqlInsertPrestaAux = "INSERT INTO prestadoresauxiliar VALUES('$cuit',0,NULL,NULL,NULL)";
 
 try {
