@@ -50,7 +50,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td><div align="left" class="title"><strong>Situacion Fiscal</strong></div></td>
           <td><div align="left"><?php echo $rowConsultaPresta['situacionfiscal'] ?></div></td>
           <td><div align="left" class="title"><strong>Fecha Vto. Exento</strong></div></td>
-          <td><div align="left"><?php if ($rowConsultaPresta['vtoexento'] != NULL && $rowConsultaPresta['vtoexento'] != "0000-00-00") { echo invertirFecha($rowConsultaPresta['vtoexento']); } ?></div></td>
+          <td><div align="left"><?php if ($rowConsultaPresta['vtoexento'] != NULL) { echo invertirFecha($rowConsultaPresta['vtoexento']); } ?></div></td>
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Raz&oacute;n Social</strong></div></td>
@@ -74,19 +74,19 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td><div align="right" class="title"><strong>Telefono 1 </strong></div></td>
           <td>
           	<div align="left">
-            	<?php if ($rowConsultaPresta['telefono1'] != 0) echo "(".$rowConsultaPresta['ddn1'].")-".$rowConsultaPresta['telefono1']; ?>
+            	<?php if ($rowConsultaPresta['telefono1'] != NULL) echo "(".$rowConsultaPresta['ddn1'].")-".$rowConsultaPresta['telefono1']; ?>
           	</div>
           </td>
           <td><div align="left" class="title"><strong>Telefono 2 </strong></div></td>
           <td>
           	<div align="left">
-            	<?php if ($rowConsultaPresta['telefono2'] != 0) echo "(".$rowConsultaPresta['ddn2'].")-".$rowConsultaPresta['telefono2']; ?>
+            	<?php if ($rowConsultaPresta['telefono2'] != NULL) echo "(".$rowConsultaPresta['ddn2'].")-".$rowConsultaPresta['telefono2']; ?>
           	</div>
           </td>
           <td><div align="left" class="title"><strong>Telefono FAX </strong></div></td>
           <td>
           	<div align="left">
-            	<?php if ($rowConsultaPresta['telefonofax'] != 0) echo "(".$rowConsultaPresta['ddnfax'].")-".$rowConsultaPresta['telefonofax']; ?>
+            	<?php if ($rowConsultaPresta['telefonofax'] != NULL) echo "(".$rowConsultaPresta['ddnfax'].")-".$rowConsultaPresta['telefonofax']; ?>
           	</div>
           </td>
         </tr>
@@ -102,13 +102,13 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
        	  <td><div align="right" class="title"><strong>Numero Registro SSS</strong></div></td>
           <td>
           	<div align="left">
-            	<?php if ($rowConsultaPresta['numeroregistrosss'] != 0) { echo $rowConsultaPresta['numeroregistrosss']; } ?>
+            	<?php  echo $rowConsultaPresta['numeroregistrosss']; ?>
           	</div>
           </td>
           <td><div align="left" class="title"><strong>Vto. Registro SSS</strong></div></td>
           <td colspan="3">
           	<div align="left">
-            	<?php if ($rowConsultaPresta['vtoregistrosss'] != NULL && $rowConsultaPresta['vtoregistrosss'] != "0000-00-00") { echo invertirFecha($rowConsultaPresta['vtoregistrosss']); } ?>
+            	<?php if ($rowConsultaPresta['vtoregistrosss'] != NULL) { echo invertirFecha($rowConsultaPresta['vtoregistrosss']); } ?>
           	</div>
           </td>
         </tr>
@@ -116,13 +116,13 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 	       <td><div align="left" class="title"><strong>Numero Registro SNR</strong></div></td>
 	       <td>
 	         <div align="left">
-	           <?php if ($rowConsultaPresta['numeroregistrosnr'] != 0) { echo $rowConsultaPresta['numeroregistrosnr']; } ?>
+	           <?php  echo $rowConsultaPresta['numeroregistrosnr'];  ?>
 	          </div>
 	       </td>
 	       <td><div align="left" class="title"><strong>Vto. Registro SNR</strong></div></td>
 	       <td colspan="3">
 	          <div align="left">
-	            <?php if ($rowConsultaPresta['vtoregistrosnr'] != NULL && $rowConsultaPresta['vtoregistrosnr'] != "0000-00-00") { echo invertirFecha($rowConsultaPresta['vtoregistrosnr']); } ?>
+	            <?php if ($rowConsultaPresta['vtoregistrosnr'] != NULL) { echo invertirFecha($rowConsultaPresta['vtoregistrosnr']); } ?>
 	          </div>
 	       </td>
         </tr>
