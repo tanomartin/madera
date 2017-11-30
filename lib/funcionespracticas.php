@@ -2,6 +2,10 @@
 
 function descripcionPractica($codigoPractica, $tipoPractica, $db) {
 	$codigoArray = explode(".",$codigoPractica);
+	$resultado['codigosubcapitulo'] = "";
+	$resultado['subcapitulo'] = "";
+	$resultado['codigocapitulo'] = "";
+	$resultado['capitulo'] =  "";
 	if (sizeof($codigoArray) == 2) {
 		$codCapitulo = $codigoArray[0];
 		$sqlTipoPractica = "SELECT c.descripcion as cap FROM capitulosdepracticas c WHERE c.codigo = '$codCapitulo' and c.idtipopractica = $tipoPractica";
