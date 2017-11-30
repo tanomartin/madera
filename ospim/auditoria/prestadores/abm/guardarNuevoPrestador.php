@@ -5,56 +5,137 @@ $nombre = addslashes($_POST['nombre']);
 $domicilio = strtoupper(addslashes($_POST['domicilio']));
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
+
 $alfapostal = $_POST['alfapostal'];
+if ($alfapostal == "") {
+	$alfapostal = "NULL";
+} else {
+	$alfapostal = "'$alfapostal'";
+}
+
 $localidad = $_POST['selectLocali'];
 $codProvin = $_POST['codprovin'];
-$idBarrio = $_POST['selectBarrio'];
+
+$idBarrio = 0;
+if (isset($_POST['selectBarrio'])) {
+	$idBarrio = $_POST['selectBarrio'];
+}
+
 $ddn1 = $_POST['ddn1'];
+if ($ddn1 == "") {
+	$ddn1 = "NULL";
+} else {
+	$ddn1 = "'$ddn1'";
+}
+
 $tel1 = $_POST['telefono1'];
+if ($tel1 == "") {
+	$tel1 = "NULL";
+} else {
+	$tel1 = "'$tel1'";
+}
+
 $ddn2 = $_POST['ddn2'];
+if ($ddn2 == "") {
+	$ddn2 = "NULL";
+} else {
+	$ddn2 = "'$ddn2'";
+}
+
 $tel2 = $_POST['telefono2'];
+if ($tel2 == "") {
+	$tel2 = "NULL";
+} else {
+	$tel2 = "'$tel2'";
+}
+
 $ddnfax = $_POST['ddnfax'];
+if ($ddnfax == "") {
+	$ddnfax = "NULL";
+} else {
+	$ddnfax = "'$ddnfax'";
+}
+
 $telfax = $_POST['telefonofax'];
+if ($telfax == "") {
+	$telfax = "NULL";
+} else {
+	$telfax = "'$telfax'";
+}
+
 $email1 = $_POST['email1'];
+if ($email1 == "") {
+	$email1 = "NULL";
+} else {
+	$email1 = "'$email1'";
+}
+
 $email2 = $_POST['email2'];
+if ($email2 == "") {
+	$email2 = "NULL";
+} else {
+	$email2 = "'$email2'";
+}
+
 $cuit = $_POST['cuit'];
 $sitfiscal = $_POST['sitfiscal'];
 
-$vtoexento = NULL;
+$vtoexento = "NULL";
 if (isset($_POST['vtoExento'])) {
 	$vtoexento = fechaParaGuardar($_POST['vtoExento']);
+	$vtoexento = "'$vtoexento'";
 }
 
 $personeria = $_POST['selectPersoneria'];
 
-$tratamiento = NULL;
+$tratamiento = "NULL";
 if (isset($_POST['selectTratamiento'])) {
 	$tratamiento = $_POST['selectTratamiento'];
 }
 
-$matriculaNac = NULL;
+$matriculaNac = "NULL";
 if (isset($_POST['matriculaNac'])) {
-	$matriculaNac = $_POST['matriculaNac'];
+	if ($_POST['matriculaNac'] != "") {
+		$matriculaNac = $_POST['matriculaNac'];
+		$matriculaNac = "'$matriculaNac'";
+	}
 }
 
-$matriculaPro = NULL;
+$matriculaPro = "NULL";
 if (isset($_POST['matriculaPro'])) {
-	$matriculaPro = $_POST['matriculaPro'];
+	if ($_POST['matriculaPro'] != "") {
+		$matriculaPro = $_POST['matriculaPro'];
+		$matriculaPro = "'$matriculaPro'";
+	}
 }
 
 $nroRegistroSSS = $_POST['nroSSS'];
-$vtoRegistroSSS = fechaParaGuardar($_POST['vtoSSS']);
-if ($vtoRegistroSSS == "0000-00-00") { $vtoRegistroSSS = NULL; }
+if ($nroRegistroSSS == '') {
+	$nroRegistroSSS = "NULL";
+	$vtoRegistroSSS = "NULL";
+} else {
+	$nroRegistroSSS = "'$nroRegistroSSS'";
+	$vtoRegistroSSS = fechaParaGuardar($_POST['vtoSSS']);
+	$vtoRegistroSSS = "'$vtoRegistroSSS'";
+}
+
 $nroRegistroSNR = $_POST['nroSNR'];
-$vtoRegistroSNR = fechaParaGuardar($_POST['vtoSNR']);
-if ($vtoRegistroSNR == "0000-00-00") { $vtoRegistroSNR = NULL; }
+if ($nroRegistroSNR == '') {
+	$nroRegistroSNR = "NULL";
+	$vtoRegistroSNR = "NULL";
+} else {
+	$nroRegistroSNR = "'$nroRegistroSNR'";
+	$vtoRegistroSNR = fechaParaGuardar($_POST['vtoSNR']);
+	$vtoRegistroSNR = "'$vtoRegistroSNR'";
+}
+
 $capitado = $_POST['capitado'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos','$alfapostal','$tel1','$ddn1','$tel2','$ddn2','$telfax','$ddnfax','$email1','$email2','$cuit',$sitfiscal,'$vtoexento','$personeria','$tratamiento','$matriculaNac','$matriculaPro','$nroRegistroSSS','$vtoRegistroSSS','$nroRegistroSNR','$vtoRegistroSNR','$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos',$alfapostal,$tel1,$ddn1,$tel2,$ddn2,$telfax,$ddnfax,$email1,$email2,'$cuit',$sitfiscal,$vtoexento,'$personeria',$tratamiento,$matriculaNac,$matriculaPro,$nroRegistroSSS,$vtoRegistroSSS,$nroRegistroSNR,$vtoRegistroSNR,'$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 $sqlInsertPrestaAux = "INSERT INTO prestadoresauxiliar VALUES('$cuit',0,NULL,NULL,NULL)";
 
 try {

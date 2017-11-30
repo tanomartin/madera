@@ -8,54 +8,130 @@ $nombre = addslashes($_POST['nombre']);
 $domicilio = strtoupper(addslashes($_POST['domicilio']));
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
+
 $alfapostal = $_POST['alfapostal'];
+if ($alfapostal == "") {
+	$alfapostal = "NULL";
+} else {
+	$alfapostal = "'$alfapostal'";
+}
+
 $localidad = $_POST['selectLocali'];
+$codProvin = $_POST['codprovin'];
 
 $idBarrio = 0;
 if (isset($_POST['selectBarrio'])) {
 	$idBarrio = $_POST['selectBarrio'];
 }
 
-$codProvin = $_POST['codprovin'];
 $ddn1 = $_POST['ddn1'];
+if ($ddn1 == "") {
+	$ddn1 = "NULL";
+} else {
+	$ddn1 = "'$ddn1'";
+}
+
 $tel1 = $_POST['telefono1'];
+if ($tel1 == "") {
+	$tel1 = "NULL";
+} else {
+	$tel1 = "'$tel1'";
+}
+
 $ddn2 = $_POST['ddn2'];
+if ($ddn2 == "") {
+	$ddn2 = "NULL";
+} else {
+	$ddn2 = "'$ddn2'";
+}
+
 $tel2 = $_POST['telefono2'];
+if ($tel2 == "") {
+	$tel2 = "NULL";
+} else {
+	$tel2 = "'$tel2'";
+}
+
 $ddnfax = $_POST['ddnfax'];
+if ($ddnfax == "") {
+	$ddnfax = "NULL";
+} else {
+	$ddnfax = "'$ddnfax'";
+}
+
 $telfax = $_POST['telefonofax'];
+if ($telfax == "") {
+	$telfax = "NULL";
+} else {
+	$telfax = "'$telfax'";
+}
+
 $email1 = $_POST['email1'];
+if ($email1 == "") {
+	$email1 = "NULL";
+} else {
+	$email1 = "'$email1'";
+}
+
 $email2 = $_POST['email2'];
+if ($email2 == "") {
+	$email2 = "NULL";
+} else {
+	$email2 = "'$email2'";
+}
+
 $cuit = $_POST['cuit'];
 $sitfiscal = $_POST['sitfiscal'];
 
-$vtoexento = NULL;
+$vtoexento = "NULL";
 if (isset($_POST['vtoExento'])) {
 	$vtoexento = fechaParaGuardar($_POST['vtoExento']);
+	$vtoexento = "'$vtoexento'";
 }
 
 $personeria = $_POST['selectPersoneria'];
 
-$tratamiento = NULL;
+$tratamiento = "NULL";
 if (isset($_POST['selectTratamiento'])) {
 	$tratamiento = $_POST['selectTratamiento'];
 }
 
-$matriculaNac = NULL;
+$matriculaNac = "NULL";
 if (isset($_POST['matriculaNac'])) {
-	$matriculaNac = $_POST['matriculaNac'];
+	if ($_POST['matriculaNac'] != "") {
+		$matriculaNac = $_POST['matriculaNac'];
+		$matriculaNac = "'$matriculaNac'";
+	}
 }
 
-$matriculaPro = NULL;
+$matriculaPro = "NULL";
 if (isset($_POST['matriculaPro'])) {
-	$matriculaPro = $_POST['matriculaPro'];
+	if ($_POST['matriculaPro'] != "") {
+		$matriculaPro = $_POST['matriculaPro'];
+		$matriculaPro = "'$matriculaPro'";
+	}
 }
 
 $nroRegistroSSS = $_POST['nroSSS'];
-$vtoRegistroSSS = fechaParaGuardar($_POST['vtoSSS']);
-if ($vtoRegistroSSS == "0000-00-00") { $vtoRegistroSSS = NULL; }
+if ($nroRegistroSSS == '') {
+	$nroRegistroSSS = "NULL";
+	$vtoRegistroSSS = "NULL";
+} else {
+	$nroRegistroSSS = "'$nroRegistroSSS'";
+	$vtoRegistroSSS = fechaParaGuardar($_POST['vtoSSS']);
+	$vtoRegistroSSS = "'$vtoRegistroSSS'";
+}
+
 $nroRegistroSNR = $_POST['nroSNR'];
-$vtoRegistroSNR = fechaParaGuardar($_POST['vtoSNR']);
-if ($vtoRegistroSNR == "0000-00-00") { $vtoRegistroSNR = NULL; }
+if ($nroRegistroSNR == '') {
+	$nroRegistroSNR = "NULL";
+	$vtoRegistroSNR = "NULL";
+} else {
+	$nroRegistroSNR = "'$nroRegistroSNR'";
+	$vtoRegistroSNR = fechaParaGuardar($_POST['vtoSNR']);
+	$vtoRegistroSNR = "'$vtoRegistroSNR'";
+}
+
 $capitado = $_POST['capitado'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
@@ -65,30 +141,30 @@ SET
 nombre = '$nombre', 
 domicilio = '$domicilio',
 codlocali = '$localidad',
-idBarrio = '$idBarrio',
+idBarrio = $idBarrio,
 codprovin = '$codProvin',
 indpostal = '$indpostal', 
 numpostal = '$codPos', 
-alfapostal = '$alfapostal', 
-telefono1 = '$tel1', 
-ddn1 = '$ddn1', 
-telefono2 = '$tel2', 
-ddn2 = '$ddn2', 
-telefonofax = '$telfax', 
-ddnfax = '$ddnfax', 
-email1 = '$email1', 
-email2 = '$email2', 
+alfapostal = $alfapostal, 
+telefono1 = $tel1, 
+ddn1 = $ddn1, 
+telefono2 = $tel2, 
+ddn2 = $ddn2, 
+telefonofax = $telfax, 
+ddnfax = $ddnfax, 
+email1 = $email1, 
+email2 = $email2, 
 cuit = '$cuit',
 situacionfiscal = $sitfiscal,
-vtoexento = '$vtoexento',
+vtoexento = $vtoexento,
 personeria = '$personeria', 
-tratamiento = '$tratamiento', 
-matriculanacional = '$matriculaNac' ,
-matriculaprovincial = '$matriculaPro', 
-numeroregistrosss = '$nroRegistroSSS', 
-vtoregistrosss = '$vtoRegistroSSS',
-numeroregistrosnr = '$nroRegistroSNR', 
-vtoregistrosnr = '$vtoRegistroSNR',
+tratamiento = $tratamiento, 
+matriculanacional = $matriculaNac,
+matriculaprovincial = $matriculaPro, 
+numeroregistrosss = $nroRegistroSSS, 
+vtoregistrosss = $vtoRegistroSSS,
+numeroregistrosnr = $nroRegistroSNR, 
+vtoregistrosnr = $vtoRegistroSNR,
 capitado = '$capitado', 
 fehamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'

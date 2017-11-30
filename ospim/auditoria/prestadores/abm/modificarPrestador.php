@@ -561,7 +561,7 @@ function validar(formulario) {
             	<?php 
             		$disabled = 'disabled=disabled';
             		$vtosss = '';
-            		if ($rowConsultaPresta['numeroregistrosss'] != NULL && $rowConsultaPresta['numeroregistrosss'] != '') {
+            		if ($rowConsultaPresta['numeroregistrosss'] != NULL && $rowConsultaPresta['numeroregistrosss'] != '' && $rowConsultaPresta['numeroregistrosss'] != 0) {
             			$disabled = '';
             			$vtosss = invertirFecha($rowConsultaPresta['vtoregistrosss'] );
 	            	}?>
@@ -571,7 +571,7 @@ function validar(formulario) {
             	<?php 
             		$disabled = 'disabled=disabled';
             		$vtosnr = '';
-            		if ($rowConsultaPresta['numeroregistrosnr'] != NULL && $rowConsultaPresta['numeroregistrosnr'] != '') {
+            		if ($rowConsultaPresta['numeroregistrosnr'] != NULL && $rowConsultaPresta['numeroregistrosnr'] != '' && $rowConsultaPresta['numeroregistrosnr'] != 0) {
             			$disabled = '';
             			$vtosnr = invertirFecha($rowConsultaPresta['vtoregistrosnr'] );
 	            	}?>
