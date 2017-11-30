@@ -8,26 +8,104 @@ $codigoprof = $_POST['codigo'];
 $nombre = addslashes($_POST['nombre']);
 $idcategoria = $_POST['idcategoria'];
 $domicilio = strtoupper(addslashes($_POST['domicilio']));
+
 $indpostal = $_POST['indpostal'];
-$codPos = $_POST['codPos'];
-$alfapostal = $_POST['alfapostal'];
-if ($codPos == '') {
-	$codPos = 'null';
+if ($indpostal == '') {
+	$indpostal = "NULL";
+} else {
+	$indpostal = "'$indpostal'";
 }
+
+$codPos = $_POST['codPos'];
+if ($codPos == '') {
+	$codPos = "NULL";
+} else {
+	$codPos = "'$codPos'";
+}
+
+$alfapostal = $_POST['alfapostal'];
+if ($alfapostal == '') {
+	$alfapostal = "NULL";
+} else {
+	$alfapostal = "'$alfapostal'";
+}
+
 $localidad = $_POST['selectLocali'];
 $codProvin = $_POST['codprovin'];
+
 $ddn1 = $_POST['ddn1'];
+if ($ddn1 == "") {
+	$ddn1 = "NULL";
+} else {
+	$ddn1 = "'$ddn1'";
+}
+
 $tel1 = $_POST['telefono1'];
+if ($tel1 == "") {
+	$tel1 = "NULL";
+} else {
+	$tel1 = "'$tel1'";
+}
+
 $ddn2 = $_POST['ddn2'];
+if ($ddn2 == "") {
+	$ddn2 = "NULL";
+} else {
+	$ddn2 = "'$ddn2'";
+}
+
 $tel2 = $_POST['telefono2'];
+if ($tel2 == "") {
+	$tel2 = "NULL";
+} else {
+	$tel2 = "'$tel2'";
+}
+
 $ddnfax = $_POST['ddnfax'];
+if ($ddnfax == "") {
+	$ddnfax = "NULL";
+} else {
+	$ddnfax = "'$ddnfax'";
+}
+
 $telfax = $_POST['telefonofax'];
+if ($telfax == "") {
+	$telfax = "NULL";
+} else {
+	$telfax = "'$telfax'";
+}
+
 $email = $_POST['email'];
+if ($email == "") {
+	$email = "NULL";
+} else {
+	$email = "'$email'";
+}
+
 $cuit = $_POST['cuit'];
 $tratamiento = $_POST['selectTratamiento'];
+
 $matriculaNac = $_POST['matriculaNac'];
+if ($matriculaNac == "") {
+	$matriculaNac = "NULL";
+} else {
+	$matriculaNac = "'$matriculaNac'";
+}
+
 $matriculaPro = $_POST['matriculaPro'];
+if ($matriculaPro == "") {
+	$matriculaPro = "NULL";
+} else {
+	$matriculaPro = "'$matriculaPro'";
+}
+
 $nroRegistro = $_POST['nroRegistro'];
+if ($nroRegistro == "") {
+	$nroRegistro = "NULL";
+} else {
+	$nroRegistro = "'$matriculaPro'";
+}
+
 $activo = $_POST['activo'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
@@ -39,21 +117,21 @@ idcategoria = $idcategoria,
 domicilio = '$domicilio',
 codlocali = '$localidad', 
 codprovin = '$codProvin',
-indpostal = '$indpostal', 
+indpostal = $indpostal, 
 numpostal = $codPos, 
-alfapostal = '$alfapostal', 
-telefono1 = '$tel1', 
-ddn1 = '$ddn1', 
-telefono2 = '$tel2', 
-ddn2 = '$ddn2', 
-telefonofax = '$telfax', 
-ddnfax = '$ddnfax', 
-email = '$email', 
+alfapostal = $alfapostal, 
+telefono1 = $tel1, 
+ddn1 = $ddn1, 
+telefono2 = $tel2, 
+ddn2 = $ddn2, 
+telefonofax = $telfax, 
+ddnfax = $ddnfax, 
+email = $email, 
 cuit = '$cuit', 
 tratamiento = '$tratamiento',
-matriculanacional = '$matriculaNac' ,
-matriculaprovincial = '$matriculaPro', 
-numeroregistrosss = '$nroRegistro',
+matriculanacional = $matriculaNac,
+matriculaprovincial = $matriculaPro, 
+numeroregistrosss = $nroRegistro,
 activo = '$activo', 
 fehamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'
