@@ -9,7 +9,8 @@ if (isset($_POST['seleccion'])) {
 	$arraySeguimiento = array();
 	$arrayAfiliados = array();
 	
-	$sqlSeguimiento = "SELECT e.id, e.idseguimiento, e.estado,  s.nroafiliado, s.nroorden FROM seguimientoestado e, seguimiento s WHERE e.idseguimiento = s.id order by e.idseguimiento, e.id ASC";
+	$sqlSeguimiento = "SELECT e.id, e.idseguimiento, e.estado,  s.nroafiliado, s.nroorden, DATE_FORMAT(e.fecharegistro,'%d-%m-%Y %H:%i:%s') as fecharegistro FROM seguimientoestado e, seguimiento s 
+						WHERE e.idseguimiento = s.id order by e.fecharegistro, e.idseguimiento, e.id ASC";
 	$resSeguimiento = mysql_query($sqlSeguimiento,$db);
 	while ($rowSeguimiento = mysql_fetch_assoc($resSeguimiento)) {
 		$arraySeguimiento[$rowSeguimiento['idseguimiento']] = $rowSeguimiento;
@@ -122,6 +123,7 @@ function abrirSeguimiento(dire) {
 				<thead>
 					<tr>
 						<th>Id. Seguimiento</th>
+						<th>Fecha</th>
 						<th>Nro Afiliado</th>
 						<th>Nombre y Apellido</th>
 						<th>Nro Documento</th>
@@ -135,6 +137,7 @@ function abrirSeguimiento(dire) {
 				<?php foreach($arrayResultado as $key => $resultado) { ?>
 					<tr>
 						<td><?php echo $key?></td>
+						<td><?php echo $resultado['fecharegistro']?></td>
 						<td><?php echo $arrayAfiliados[$key]['nroafiliado'] ?></td>	
 						<td><?php echo $arrayAfiliados[$key]['apellidoynombre'] ?></td>	
 						<td><?php echo $arrayAfiliados[$key]['tipdoc'].": ".$arrayAfiliados[$key]['nrodocumento'] ?></td>
@@ -147,8 +150,11 @@ function abrirSeguimiento(dire) {
 									$orden = $arrayAfiliados[$key]['nroorden']; 
 								  } 
 								  echo $tipo; ?>
-						</td>				
-						<td><input type="button" name="ver" id="ver" value="VER" onclick="javascript:abrirSeguimiento('seguimiento.php?nroafil=<?php echo $arrayAfiliados[$key]['nroafiliado']?>&orden=<?php echo $orden?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre']?>&delega=<?php  echo $arrayAfiliados[$key]['delegacion']?>')"/></td>		
+						</td>																						
+						<td>
+							<input type="button" name="ver" id="ver" value="+INFO" onclick="javascript:abrirSeguimiento('seguimientoDetalle.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion'] ?>')" />
+							<?php if ($seleccion != "FINALIZADO") { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="javascript:abrirSeguimiento('seguimientoModificar.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion']  ?>')" /> <?php } ?>	
+						</td>
 					</tr>
 		    	<?php } ?>
 				</tbody>
