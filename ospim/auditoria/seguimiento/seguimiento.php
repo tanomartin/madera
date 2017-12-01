@@ -47,7 +47,6 @@ if ($canSeguimiento > 0) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'moduloABM.php'" /></p>
 	<h3>Listado de Entradas de Seguimiento</h3> 
 	<h3>Afiliado: <?php echo $nroafil." - ".$nombre?></h3> 
 	<h3>Delegacion: <?php echo $delega ?></h3> 
@@ -70,7 +69,7 @@ if ($canSeguimiento > 0) {
 							<td><?php echo $seguimiento['id'] ?></td>	
 							<td><?php echo $seguimiento['fecharegistro'] ?></td>	
 							<td><?php echo $seguimiento['titulo'] ?></td>	
-							<td><?php $estado = "-";
+							<td><?php $estado = "Sin Seguimiento";
 									  $modif = 1;
 									  if (isset($seguimiento['estado'])) { 
 										$estado = $seguimiento['estado']['estado']."<br>".$seguimiento['estado']['fecharegistro']; 

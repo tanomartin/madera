@@ -83,6 +83,13 @@ function validar(formulario) {
 	return true;
 };
 
+
+function abrirSeguimiento(dire) {
+	a= window.open(dire,"Seguimiento del Afiliado",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1100, height=500, top=10, left=10");
+}
+
+
 </script>
 <style type="text/css" media="print">
 .nover {display:none}
@@ -147,8 +154,8 @@ function validar(formulario) {
 									$orden = $afiliado['nroorden']; 
 								  } 
 								  echo $tipo; ?>
-						</td>
-						<td><input type="button" name="ver" id="ver" value="VER" onclick="location='seguimiento.php?nroafil=<?php echo $afiliado['nroafiliado']?>&orden=<?php echo $orden?>&nombre=<?php echo $afiliado['apellidoynombre']?>&delega=<?php  echo $afiliado['delegacion']?>'" /></td>		
+						</td>				
+						<td><input type="button" name="ver" id="ver" value="VER" onclick="javascript:abrirSeguimiento('seguimiento.php?nroafil=<?php echo $afiliado['nroafiliado']?>&orden=<?php echo $orden?>&nombre=<?php echo $afiliado['apellidoynombre']?>&delega=<?php  echo $afiliado['delegacion']?>')"/></td>		
 					</tr>
 		    	<?php } ?>
 				</tbody>

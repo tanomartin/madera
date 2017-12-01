@@ -20,7 +20,7 @@ include($libPath."controlSessionOspim.php"); ?>
       </td>
       <td width="200">
       	<p>Informes </p>
-        <p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        <p><a class="enlace" href="informeSeguimiento.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p>
       </td>
     </tr>
