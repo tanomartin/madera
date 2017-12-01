@@ -101,12 +101,12 @@ function abrirSeguimiento(dire) {
 		</p>
 		<table>
 			<tr>
-				<td width="23"><input name="seleccion" type="radio" value="PENDIENTE" checked="checked"/></td>
-				<td width="104"><div align="left">PENDIENTE</div></td>
+				<td><input name="seleccion" type="radio" value="EN GESTION"  checked="checked"/></td>
+				<td><div align="left">EN GESTION</div></td>
 			</tr>
 			<tr>
-				<td><input name="seleccion" type="radio" value="EN GESTION" /></td>
-				<td><div align="left">EN GESTION</div></td>
+				<td width="23"><input name="seleccion" type="radio" value="PENDIENTE"/></td>
+				<td width="104"><div align="left">PENDIENTE</div></td>
 			</tr>
 			<tr>
 				<td><input name="seleccion" type="radio" value="FINALIZADO" /></td>
