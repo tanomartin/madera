@@ -17,13 +17,13 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	$resultado = array();
 	if (isset($dato)) {
 		if ($filtro == 0) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
-											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit 
+											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador 
 											 WHERE prestadores.codigoprestador = $dato ORDER BY codigoprestador DESC"; }
 		if ($filtro == 1) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
-											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit 
+											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador 
 											 WHERE prestadores.nombre like '%$dato%' ORDER BY codigoprestador DESC"; }
 		if ($filtro == 2) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
-											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit 
+											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador 
 											 WHERE prestadores.cuit = $dato ORDER BY codigoprestador DESC"; }		
 		$resPrestador = mysql_query($sqlPrestador,$db); 
 		$canPrestador = mysql_num_rows($resPrestador); 
@@ -35,7 +35,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	if (isset($_GET['codigo'])) {
 		$dato = $_GET['codigo'];
 		$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
-		FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit
+		FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador
 		WHERE prestadores.codigoprestador = $dato ORDER BY codigoprestador DESC";
 		$resPrestador = mysql_query($sqlPrestador,$db);
 		$noExiste = 0;

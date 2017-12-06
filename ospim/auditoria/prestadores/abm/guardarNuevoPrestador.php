@@ -136,7 +136,6 @@ $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
 $sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos',$alfapostal,$tel1,$ddn1,$tel2,$ddn2,$telfax,$ddnfax,$email1,$email2,'$cuit',$sitfiscal,$vtoexento,'$personeria',$tratamiento,$matriculaNac,$matriculaPro,$nroRegistroSSS,$vtoRegistroSSS,$nroRegistroSNR,$vtoRegistroSNR,'$capitado','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
-$sqlInsertPrestaAux = "INSERT INTO prestadoresauxiliar VALUES('$cuit',0,NULL,NULL,NULL)";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -148,6 +147,8 @@ try {
 	//print($sqlInsertPresta."<br>");
 	$dbh->exec($sqlInsertPresta);
 	$codigoNextPresta = $dbh->lastInsertId(); 
+	
+	$sqlInsertPrestaAux = "INSERT INTO prestadoresauxiliar VALUES('$codigoNextPresta',NULL,NULL,NULL)";
 	
 	//print($sqlInsertPrestaAux."<br>");
 	$dbh->exec($sqlInsertPrestaAux);
