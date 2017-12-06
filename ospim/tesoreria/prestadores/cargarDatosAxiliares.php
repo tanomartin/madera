@@ -2,19 +2,11 @@
 include($libPath."controlSessionOspim.php"); 
 
 $codigo = $_GET['codigo'];
-$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.retiene, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit
 WHERE prestadores.codigoprestador = $codigo ORDER BY codigoprestador DESC";
 $resPrestador = mysql_query($sqlPrestador,$db);
 $rowPrestador = mysql_fetch_array($resPrestador);
-
-$selectSI = '';
-$selectNO = 'checked="checked"';
-if ($rowPrestador['retiene'] == 1) {
-	$selectSI = 'checked="checked"';
-	$selectNO = '';
-} 
-
 ?>
 
 
@@ -53,11 +45,6 @@ function validar(formulario) {
 	  <h3><?php echo $rowPrestador['codigoprestador']." - ".$rowPrestador['nombre']." [".$rowPrestador['cuit']."]" ?></h3>
 	  <input type="text" value="<?php echo $rowPrestador['codigoprestador']?>" name="codigo" id="codigo" style="display: none"/>
 	  <input type="text" value="<?php echo $rowPrestador['cuit']?>" name="cuit" id="cuit" style="display: none"/>
-	  <p>
-	  	<b>Retiene</b>
-	  	<input name="retiene" id="radio" <?php echo $selectSI ?> type="radio" value="1" /> SI
-  		<input name="retiene" id="radio" <?php echo $selectNO ?> type="radio" value="0" /> NO	
-	  </p>
 	  <p><b>C.B.U.</b> <input type="text" value="<?php echo $rowPrestador['cbu']?>" name="cbu" id="cbu" /></p>
 	  <p><b>Banco</b> <input type="text" value="<?php echo $rowPrestador['banco']?>" name="banco" id="banco" /></p>
 	  <p><b>Cuenta</b> <input type="text" value="<?php echo $rowPrestador['cuenta']?>" name="cuenta" id="cuenta" /></p>

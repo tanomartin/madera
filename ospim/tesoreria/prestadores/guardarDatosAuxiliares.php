@@ -3,7 +3,6 @@ include($libPath."controlSessionOspim.php");
 
 $codigo = $_POST['codigo'];
 $cuit = $_POST['cuit'];
-$retiene = $_POST['retiene'];
 $cbu = NULL;
 if ($_POST['cbu'] != "") {
 	$cbu = $_POST['cbu'];
@@ -17,7 +16,7 @@ if ($_POST['cuenta'] != "") {
 	$cuenta = $_POST['cuenta'];
 }
 
-$updateAuxiliares = "UPDATE prestadoresauxiliar SET retiene = $retiene, cbu = '$cbu', banco = '$banco', cuenta = '$cuenta' WHERE cuit = $cuit";
+$updateAuxiliares = "UPDATE prestadoresauxiliar SET cbu = '$cbu', banco = '$banco', cuenta = '$cuenta' WHERE cuit = $cuit";
 
 try {
 	$hostname = $_SESSION['host'];

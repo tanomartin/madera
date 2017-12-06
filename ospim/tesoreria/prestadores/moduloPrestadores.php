@@ -16,13 +16,13 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	}
 	$resultado = array();
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.retiene, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+		if ($filtro == 0) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
 											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit 
 											 WHERE prestadores.codigoprestador = $dato ORDER BY codigoprestador DESC"; }
-		if ($filtro == 1) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.retiene, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+		if ($filtro == 1) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
 											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit 
 											 WHERE prestadores.nombre like '%$dato%' ORDER BY codigoprestador DESC"; }
-		if ($filtro == 2) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.retiene, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+		if ($filtro == 2) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
 											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit 
 											 WHERE prestadores.cuit = $dato ORDER BY codigoprestador DESC"; }		
 		$resPrestador = mysql_query($sqlPrestador,$db); 
@@ -34,7 +34,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 } else {
 	if (isset($_GET['codigo'])) {
 		$dato = $_GET['codigo'];
-		$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.retiene, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+		$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
 		FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.cuit = prestadoresauxiliar.cuit
 		WHERE prestadores.codigoprestador = $dato ORDER BY codigoprestador DESC";
 		$resPrestador = mysql_query($sqlPrestador,$db);
@@ -150,7 +150,6 @@ function abrirPantalla(dire) {
 			<th>C.B.U.</th>
 			<th>Banco</th>
 			<th>Cuenta</th>
-			<th>Retiene</th>
 			<th>Acci&oacute;n</th>
 		</tr>
 	</thead>
@@ -163,7 +162,6 @@ function abrirPantalla(dire) {
 			<td><?php echo $rowPrestador['cbu'];?></td>
 			<td><?php echo $rowPrestador['banco'];?></td>
 			<td><?php echo $rowPrestador['cuenta'];?></td>
-			<td><?php if ($rowPrestador['retiene'] == 1) { echo "SI"; } else { echo "NO"; }?></td>
 			<td>
 				<input type="button" value="Modificar" onclick="location.href = 'cargarDatosAxiliares.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>'"/>
 			</td>
