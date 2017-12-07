@@ -8,7 +8,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	         		<th>C&oacute;digo</th>
 					<th>Nomenclador</th>
 					<th>Descripciones</th>
-					<th>Complejidad</th>
+					<th>Clasificacion<br>Res. 650</th>
 					<th>Categoria</th>
 					<th></th>
 					<th>Modulo Consultorio / Valor General ($)</th>

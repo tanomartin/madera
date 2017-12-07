@@ -11,7 +11,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 					 <th>U. Honorarios Ayudante</th>
 			 		 <th>U. Honorarios Anestesista</th>
 			  		 <th>U. Gastos</th>
-					 <th>Complejidad</th>
+					 <th>Clasificacion<br>Res. 650</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
 		$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%' and nomenclador = $nomenclador and tipopractica = $tipo";
