@@ -223,9 +223,12 @@ try {
 	$pagina = "prestador.php?codigo=$codigo";
 	Header("Location: $pagina"); 
 	
-}catch (PDOException $e) {
-	echo $e->getMessage();
+} catch (PDOException $e) {
+	$error =  $e->getMessage();
 	$dbh->rollback();
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	Header($redire);
+	exit(0);
 }
 
 ?>
