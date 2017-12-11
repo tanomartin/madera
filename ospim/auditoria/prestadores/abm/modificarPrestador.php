@@ -518,7 +518,7 @@ function validar(formulario) {
 		        				<option title ='<?php echo $rowBarrios['descripcion']?>' value='<?php echo $rowBarrios['id'] ?>' <?php echo $selected?>><?php echo utf8_encode($rowBarrios['descripcion']) ?></option>
 		        	  <?php } ?>	
 	        		<?php } else { ?>
-	        				<option title ="Seleccione un valor" value="">Seleccione un barrio</option>
+	        				<option title ="Seleccione un valor" value="0">Seleccione un barrio</option>
 	        		<?php } ?>
 	        	</select>
         	</div>

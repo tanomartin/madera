@@ -224,7 +224,7 @@ try {
 	Header("Location: $pagina"); 
 	
 } catch (PDOException $e) {
-	$error =  $e->getMessage();
+	$error = "Cod. Error: ".$e->getCode()." - Linea: ".$e->getLine();
 	$dbh->rollback();
 	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
 	Header($redire);

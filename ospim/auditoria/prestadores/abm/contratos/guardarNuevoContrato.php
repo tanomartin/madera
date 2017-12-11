@@ -32,8 +32,11 @@ if ($numCabContratoFin > 0) {
 		$pagina = "contratosPrestador.php?codigo=$codigopresta";
 		Header("Location: $pagina"); 
 	} catch (PDOException $e) {
-		echo $e->getMessage();
+		$error = "Cod. Error: ".$e->getCode()." - Linea: ".$e->getLine();
 		$dbh->rollback();
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		Header($redire);
+		exit(0);
 	}
 }
 ?>
