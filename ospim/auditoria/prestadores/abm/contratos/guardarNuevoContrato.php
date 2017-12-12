@@ -3,7 +3,12 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
 $codigopresta = $_GET['codigo'];
 $fechaInicio = fechaParaGuardar($_POST['fechaInicio']);
-$fechaFin = fechaParaGuardar($_POST['fechaFin']);
+if ($_POST['fechaFin'] != "") {
+	$fechaFin = fechaParaGuardar($_POST['fechaFin']);
+	$fechaFin = "'$fechaFin'";
+} else {
+	$fechaFin = "NULL";
+}
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
@@ -17,7 +22,8 @@ if ($numCabContratoFin > 0) {
 	Header("Location: $pagina"); 
 	exit(0);
 } else {
-	$sqlInsertProf = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio','$fechaFin','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+	$sqlInsertProf = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio',$fechaFin,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+	echo $sqlInsertProf;
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
@@ -35,7 +41,7 @@ if ($numCabContratoFin > 0) {
 		$error = "Cod. Error: ".$e->getCode()." - Linea: ".$e->getLine();
 		$dbh->rollback();
 		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
-		Header($redire);
+		//Header($redire);
 		exit(0);
 	}
 }

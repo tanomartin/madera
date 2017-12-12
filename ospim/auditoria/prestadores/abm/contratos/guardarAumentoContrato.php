@@ -11,13 +11,20 @@ $codigopresta = $_GET['codigo'];
 $idcontrato = $_GET['idcontrato'];
 
 $fechaInicio = fechaParaGuardar($_POST['fechaInicio']);
-$fechaFin = fechaParaGuardar($_POST['fechaFin']);
+
+if ($_POST['fechaFin'] != "") {
+	$fechaFin = fechaParaGuardar($_POST['fechaFin']);
+	$fechaFin = "'$fechaFin'";
+} else {
+	$fechaFin = "NULL";
+}
+
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlCabContratoFin = "SELECT * FROM cabcontratoprestador  WHERE codigoprestador = $codigopresta and fechafin >= '$fechaInicio' and idcontrato != $idcontrato";
+$sqlCabContratoFin = "SELECT * FROM cabcontratoprestador WHERE codigoprestador = $codigopresta and fechafin >= '$fechaInicio' and idcontrato != $idcontrato";
 $resCabContratoFin = mysql_query($sqlCabContratoFin,$db);
 $numCabContratoFin = mysql_num_rows($resCabContratoFin);
 if ($numCabContratoFin > 0) {
@@ -32,7 +39,7 @@ if ($numCabContratoFin > 0) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 		
-		$sqlCabContratoFin = "SELECT * FROM cabcontratoprestador  WHERE codigoprestador = $codigopresta and fechafin >= '$fechaInicio' and idcontrato = $idcontrato";
+		$sqlCabContratoFin = "SELECT * FROM cabcontratoprestador WHERE codigoprestador = $codigopresta and (fechafin >= '$fechaInicio' or fechafin is null) and idcontrato = $idcontrato";
 		$resCabContratoFin = mysql_query($sqlCabContratoFin,$db);
 		$numCabContratoFin = mysql_num_rows($resCabContratoFin);
 		if ($numCabContratoFin == 1) {
@@ -44,7 +51,7 @@ if ($numCabContratoFin > 0) {
 			$dbh->exec($sqlUpdateFechaFin);
 		}
 		
-		$sqlInsertCabecera = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio','$fechaFin','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+		$sqlInsertCabecera = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio',$fechaFin,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 		//echo $sqlInsertCabecera."<br><br>";
 		$dbh->exec($sqlInsertCabecera);
 		$idNuevoContrato = $dbh->lastInsertId();

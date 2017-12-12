@@ -77,7 +77,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		$numCabContrato = mysql_num_rows($resCabContrato);
 		
 		$today = date("Y-m-d");
-		$sqlCabContratoAbiertos = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo and (c.fechafin = '0000-00-00' or c.fechafin > '$today')";
+		$sqlCabContratoAbiertos = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo and (c.fechafin is null or c.fechafin > '$today')";
 		$resCabContratoAbiertos = mysql_query($sqlCabContratoAbiertos,$db);
 		$numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos);
 		
@@ -102,12 +102,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<tr>
 				<td><?php echo $rowCabContrato['idcontrato'];?></td>
 				<td><?php echo invertirFecha($rowCabContrato['fechainicio']);?></td>
-				<td><?php if($rowCabContrato['fechafin'] == "0000-00-00") {
+				<td><?php if($rowCabContrato['fechafin'] == NULL) {
 							  echo "-";
 						  } else {
 						   	  echo invertirFecha($rowCabContrato['fechafin']);
 						  }?></td>
-				<td><?php if ($rowCabContrato['fechafin'] == "0000-00-00" || $rowCabContrato['fechafin'] > $today ) { ?> 
+				<td><?php if ($rowCabContrato['fechafin'] == NULL || $rowCabContrato['fechafin'] > $today ) { ?> 
 							<input type="button" value="Modificar Practicas" name="modifpracticas" id="modifpracticas" onclick="location.href='modificarPracticasContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
 							<input type="button" value="Modificar Contrato" name="modifcontrato" id="modifcontrato" onclick="location.href='modificarContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
 					<?php } else { ?>

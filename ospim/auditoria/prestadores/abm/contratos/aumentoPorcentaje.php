@@ -98,7 +98,7 @@ function validar(formulario) {
     <p>
 	<b>Id:</b> <?php echo $idcontrato ?>
 	<b>- Fecha Inicio:</b> <?php echo invertirFecha($rowContrato['fechainicio']) ?>
-	<b>- Fecha Fin:</b> <?php echo invertirFecha($rowContrato['fechafin']); ?>
+	<b>- Fecha Fin:</b> <?php if ($rowContrato['fechafin'] != NULL) { echo invertirFecha($rowContrato['fechafin']); } else { echo "-"; } ?>
     </p>
     <p><?php 
 		if (isset($_GET['err'])) {

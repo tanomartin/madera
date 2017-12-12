@@ -4,7 +4,14 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 $codigopresta = $_GET['codigo'];
 $idcontrato = $_GET['idcontrato'];
 $fechaInicio = fechaParaGuardar($_POST['fechaInicio']);
-$fechaFin = fechaParaGuardar($_POST['fechaFin']);
+
+if ($_POST['fechaFin'] != "") {
+	$fechaFin = fechaParaGuardar($_POST['fechaFin']);
+	$fechaFin = "'$fechaFin'";
+} else {
+	$fechaFin = "NULL";
+}
+
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -16,7 +23,7 @@ if ($numCabContratoFin > 0) {
 	Header("Location: $pagina"); 
 	exit(0);
 } else {
-	$sqlInsertProf = "UPDATE cabcontratoprestador SET fechainicio = '$fechaInicio', fechafin = '$fechaFin', fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE idcontrato = $idcontrato and codigoprestador = $codigopresta";
+	$sqlInsertProf = "UPDATE cabcontratoprestador SET fechainicio = '$fechaInicio', fechafin = $fechaFin, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE idcontrato = $idcontrato and codigoprestador = $codigopresta";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
