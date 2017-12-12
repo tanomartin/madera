@@ -93,7 +93,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 			  <tr>
 				<td><?php echo $rowCabContrato['idcontrato'];?></td>
 				<td><?php echo invertirFecha($rowCabContrato['fechainicio']);?></td>
-				<td><?php if($rowCabContrato['fechafin'] == "0000-00-00") {
+				<td><?php if($rowCabContrato['fechafin'] == NULL) {
 							  echo "-";
 						  } else {
 						   	  echo invertirFecha($rowCabContrato['fechafin']);
