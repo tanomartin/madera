@@ -52,7 +52,7 @@ if ($numCabContratoFin > 0) {
 		}
 		
 		$sqlInsertCabecera = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio',$fechaFin,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
-		//echo $sqlInsertCabecera."<br><br>";
+		echo $sqlInsertCabecera."<br><br>";
 		$dbh->exec($sqlInsertCabecera);
 		$idNuevoContrato = $dbh->lastInsertId();
 			
@@ -71,7 +71,7 @@ if ($numCabContratoFin > 0) {
 										ROUND (".$rowContrato['galenogastos']." * $porcentaje , 2),
 										'$fecharegistro',
 										'$usuariomodificacion')";
-			//echo $sqlInsertDetalle."<br><br>";
+			echo $sqlInsertDetalle."<br><br>";
 			$dbh->exec($sqlInsertDetalle);
 		}
 			

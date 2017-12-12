@@ -94,8 +94,8 @@ function validar(formulario) {
     <p class="Estilo2">Datos Contrato</p>
     <p class="Estilo2">
 	Fecha Inicio: <label><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowContrato['fechainicio']) ?>"/></label> - 
-    <?php if ($rowContrato['fechafin'] == "0000-00-00") {
-				$valorfin = "";
+    <?php if ($rowContrato['fechafin'] == NULL) {
+				$valorfin = "-";
 		   } else {
 		   		$valorfin = invertirFecha($rowContrato['fechafin']);
 		   }
