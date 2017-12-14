@@ -58,7 +58,7 @@ else {
 
 							if($canArchivoExiste!=0) {
 								$tituloform = "ERROR";
-								$mensaje = 'Ya EXISTEN archivos procesados para esa fecha de email y con esa fecha de transferencia.';
+								$mensaje = 'Ya EXISTEN archivos procesados de Aportes para esa fecha de email y con esa fecha de transferencia.';
 								if(unlink($archivo_descom)) {
 									$tituloaviso = "AVISO";
 									$aviso = 'El archivo descomprimido desde el ZIP SE elimino correctamente.';
@@ -85,7 +85,7 @@ else {
 
 								mkdir($destino_aporte, 0777);
 								$archivo_salida = $destino_aporte."TRAP".$proximonro.".txt";
-								$punteroarchivo = fopen($archivo_salida, 'w') or die("Hubo un error al generar el archivo de transferencias");
+								$punteroarchivo = fopen($archivo_salida, 'w') or die("Hubo un error al generar el archivo de aportes");
 							}
 						} else {
 							$codbos = substr($registros[$i], 0, 4);
@@ -131,8 +131,7 @@ else {
 								$registrosalida = str_replace(' ', '', $proximonro).'|'.str_replace(' ', '', $nroregistro).'|'.str_replace(' ', '', $cuit).'|'.str_replace(' ', '', $anopago).'|'.str_replace(' ', '', $mespago).'|'.str_replace(' ', '', $concepto).'|'.str_replace(' ', '', $fechapago).'|'.str_replace(' ', '', $importe).'|'.str_replace(' ', '', $debitocredito).'|'.str_replace(' ', '', $porcenreduccion).'|'.str_replace(' ', '', $cuil).'|'.str_replace(' ', '', $familiares).'|'.str_replace(' ', '', $adherentes).'|'.str_replace(' ', '', $numeroobligacion).'|'.str_replace(' ', '', $secuenciapresentacion).'|'.str_replace(' ', '', $codigobanco).'|'.str_replace(' ', '', $codigosucursal).'|'.str_replace(' ', '', $codigozona).'|'.str_replace(' ', '', $fechaprocesoafip);
 								fwrite($punteroarchivo, $registrosalida."\n");
 								$registrosleidos = $registrosleidos + 1;
-							}
-							else {
+							} else {
 								$footertransf = substr($registros[$i], 0, 16);
 								if(strcmp("TFTRANSF-DGI1110", $footertransf)==0) {
 									$totalregistros = substr($registros[$i], 36, 9);
@@ -252,8 +251,94 @@ else {
 	}
 
 	// Tratamiento de los Archivos de Transferencias por Autogestion
-	//if(file_exists($archivo_autogestion)) {
-	//}
+	if(file_exists($archivo_autogestion)) {
+		$registros = file($archivo_autogestion, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+		for($i=0; $i < count($registros); $i++) {
+			if($i == 0) {
+				$headertransf = substr($registros[$i], 0, 16);
+				$fechatransfcorta = substr($registros[$i], 22, 8);
+				$fechatransflarga = substr($registros[$i], 22, 14);
+			}
+			if(strcmp("HFTEX   -DGI1110", $headertransf)==0) {
+				if(strcmp($fechaarchivo, $fechatransfcorta)==0) {
+					if($i == 0) {
+						$sqlArchivoExiste = "SELECT * FROM transferenciasautogestion WHERE fechaarchivoafip = '$fechatransflarga' AND fechaemailafip = '$fechamensaje'";
+						$resArchivoExiste = mysql_query($sqlArchivoExiste,$db);
+						$canArchivoExiste = mysql_num_rows($resArchivoExiste);
+
+						if($canArchivoExiste!=0) {
+							$tituloform = "ERROR";
+							$mensaje = 'Ya EXISTEN archivos procesados de Autogestion para esa fecha de email y con esa fecha de transferencia.';
+							break;
+						} else {
+							$sqlBuscaNroDisco = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'transferenciasautogestion'";
+							$resBuscaNroDisco = mysql_query($sqlBuscaNroDisco,$db);
+							$rowBuscaNroDisco = mysql_fetch_array($resBuscaNroDisco);
+							$proximonro = $rowBuscaNroDisco['AUTO_INCREMENT'];
+
+							if(strcmp("localhost",$maquina)==0) {
+								$destino_autogestion=$_SERVER['DOCUMENT_ROOT']."/madera/ospim/sistemas/afip/Transferencias/Autogestion/Disco".$proximonro."/";
+							}
+							else {
+								$destino_autogestion="/home/sistemas/ArchivosAfip/Transferencias/Autogestion/Disco".$proximonro."/";
+							}
+
+							mkdir($destino_autogestion, 0777);
+							$archivo_salida = $destino_autogestion."TRAU".$proximonro.".txt";
+							$punteroarchivo = fopen($archivo_salida, 'w') or die("Hubo un error al generar el archivo de autogestion");
+						}
+					}
+					else {
+						$codbos = substr($registros[$i], 0, 4);
+						if(strcmp("1110", $codbos)==0) {
+							$nroregistro = $i;
+							$codbos = substr($registros[$i], 0, 4);
+							$expediente = substr($registros[$i], 4, 9);
+							$fechaprocesoafip = substr($registros[$i], 13, 10);
+							$fechatransferencia = substr($registros[$i], 23, 10);
+							$clasifexpediente = substr($registros[$i], 33, 2);
+							$totalexpedienteentero = substr($registros[$i], 35, 13);
+							$totalexpedientedecimal = substr($registros[$i], 48, 2);
+							$totalexpediente = $totalexpedienteentero.".".$totalexpedientedecimal;
+							$cuota = substr($registros[$i], 50, 4);
+							$importeentero = substr($registros[$i], 54, 13);
+							$importedecimal = substr($registros[$i], 67, 2);
+							$importe = $importeentero.".".$importedecimal;
+							$debitocredito = substr($registros[$i], 69, 1);
+							if(strcmp("C", $debitocredito)==0) {
+								$totalcredito = $totalcredito + (float)$importe;
+							}
+							else {
+								$totaldebito = $totaldebito + (float)$importe;
+							}
+							$anoafectado = substr($registros[$i], 70, 4);
+							$mesafectado = substr($registros[$i], 74, 2);
+							$expedienteoriginal = substr($registros[$i], 76, 9);
+							$hospital = substr($registros[$i], 85, 9);
+							$refexterna = substr($registros[$i], 94, 29);
+							$motivoexpediente = substr($registros[$i], 123, 50);
+							$detallejuzgado = substr($registros[$i], 173, 100);
+							$detallesecretaria = substr($registros[$i], 273, 50);
+							$autoscaso = substr($registros[$i], 323, 1024);
+							$detallefactura = substr($registros[$i], 1347, 200);
+							$registrosalida = str_replace(' ', '', $proximonro).'|'.str_replace(' ', '', $nroregistro).'|'.str_replace(' ', '', $expediente).'|'.str_replace(' ', '', $fechatransferencia).'|'.str_replace(' ', '', $clasifexpediente).'|'.str_replace(' ', '', $totalexpediente).'|'.str_replace(' ', '', $cuota).'|'.str_replace(' ', '', $importe).'|'.str_replace(' ', '', $debitocredito).'|'.str_replace(' ', '', $anoafectado).'|'.str_replace(' ', '', $mesafectado).'|'.str_replace(' ', '', $expedienteoriginal).'|'.str_replace(' ', '', $hospital).'|'.str_replace(' ', '', $refexterna).'|'.str_replace(' ', '', $motivoexpediente).'|'.str_replace(' ', '', $detallejuzgado).'|'.str_replace(' ', '', $detallesecretaria).'|'.str_replace(' ', '', $autoscaso).'|'.str_replace(' ', '', $detallefactura).'|'.str_replace(' ', '', $fechaprocesoafip);
+							fwrite($punteroarchivo, $registrosalida."\n");
+							$registroscontados = $registroscontados + 1;
+						} else {
+							$footertransf = substr($registros[$i], 0, 16);
+							if(strcmp("TFTEX   -DGI1110", $footertransf)==0) {
+								$totalregistros = substr($registros[$i], 36, 9);
+								$transferidoentero = substr($registros[$i], 45, 13);
+								$transferidodecimal = substr($registros[$i], 58, 2);
+								$totaltransferido = $transferidoentero.".".$transferidodecimal;
+								fclose($punteroarchivo);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

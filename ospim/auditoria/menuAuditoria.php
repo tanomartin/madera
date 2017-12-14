@@ -41,16 +41,21 @@ include($libPath."controlSessionOspim.php"); ?>
       	<p><a class="enlace" href="medicamentos/menuMedicamentos.php"><img src="img/medicamentos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td>
     </tr>
-    <?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'sgiraudo' || $_SESSION['usuario'] == 'gflongo') { ?> 
-	    <tr>
+    <tr>
+	    <?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'sgiraudo' || $_SESSION['usuario'] == 'gflongo') { ?> 
 	    	<td>
 	    		<p>Gestión y Seguimiento </p>
       			<p><a class="enlace" href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       		</td>
+		<?php }  else { ?>
 	    	<td></td>
-	    	<td></td>
-	    </tr>
-	 <?php } ?>
+		<?php } ?>
+	  <td>
+	   	<p>Liquidacion Prestadores</p>
+		<p><a class="enlace" href="liquidaciones/moduloLiquidaciones.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	  </td>
+	  <td></td>
+    </tr>
   </table>
 </div>
 </body>
