@@ -602,13 +602,10 @@ function validar(formulario) {
 					
 					$sqlNumProfesional = "select codigoprofesional from profesionales where codigoprestador = ".$rowConsultaPresta['codigoprestador']." and activo = 1";
 					$resNumProfesional=mysql_query($sqlNumProfesional,$db);
-					$cantidad = mysql_num_rows($resNumProfesional);
-					if ($cantidad > 0) {
-						$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
+					$cantidadProf = mysql_num_rows($resNumProfesional);
+					if ($cantidadProf > 0) {
 						$cartel = "Existe prof. activos.<br>";
-					} else {
-						$deshabilitado = '';
-					}
+					} 
 				}
 				if ($rowConsultaPresta['personeria'] == 4) {
 					$entidad = "selected";
@@ -616,23 +613,29 @@ function validar(formulario) {
 					
 					$sqlNumEstablecim = "select codigo from establecimientos where codigoprestador = ".$rowConsultaPresta['codigoprestador'];
 					$resNumEstablecim = mysql_query($sqlNumEstablecim,$db);
-					$cantidad = mysql_num_rows($resNumEstablecim);
-					if ($cantidad > 0) {
-						$deshabilitado = 'onmouseover="this.disabled=true;" onmouseout="this.disabled=false;" class="miestilo"';
+					$cantidadEsta = mysql_num_rows($resNumEstablecim);
+					if ($cantidadEsta > 0) {
 						$cartel = "Existe Establecimientos<br>";
-					} else {
-						$deshabilitado = '';
-					}
+					} 
 				}
 				
 				print("<span><font color='#0000CC'>$cartel</font></span>"); ?>
-		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" <?php echo $deshabilitado ?>>
-					<option value="0">Seleccione un valor </option>
+		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" >
+					<?php if ($cantidadProf > 0 || $cantidadEsta > 0) { $selected = "disabled = 'disabled'"; } ?>
+					
+					<option value="0" <?php echo $selected?>>Seleccione un valor </option>
 					<?php 
 		              	$query="select * from tipoprestador";  
 		              	$result=mysql_query($query,$db);
 		              	while ($rowtipos=mysql_fetch_array($result)) { 
-		              		if ($rowtipos['id'] == $rowConsultaPresta['personeria']) {   $selected = "selected"; } else { $selected = ""; } ?>
+		              		if ($rowtipos['id'] == $rowConsultaPresta['personeria']) {   
+		              			$selected = "selected"; 
+		              		} else { 
+		              			$selected = "";
+		              			if ($cantidadProf > 0 || $cantidadEsta > 0) {
+		              				$selected = "disabled = 'disabled'";
+		              			}
+		              		} ?>
 							<option value="<?php echo $rowtipos['id']?>" <?php echo $selected ?>><?php echo $rowtipos['descripcion']?> </option>
 				<?php 	} ?>
 				  </select>	  

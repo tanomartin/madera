@@ -44,7 +44,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
-
 	$(function() {
 		$("#practicaencontrato")
 		.tablesorter({
@@ -149,10 +148,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 					var urgenciaId = "moduloUrgencia-"+idArray[1];
 					var moduloConsu = document.getElementById(consultorioId);
 					var moduloUrgen = document.getElementById(urgenciaId);
-					if (!isNumberPositivo(moduloConsu.value) || !isNumberPositivo(moduloUrgen.value)) {
-						alert("Los valores por modulo deben ser numeros positivos");
+					if (moduloConsu.value == 0 && moduloUrgen.value == 0) {
+						alert("Debe ingresar un valor consultorio o general y/o valor modulo urgencia");
 						moduloConsu.focus();
 						return false;
+					} else {
+						if (!isNumberPositivo(moduloConsu.value) || !isNumberPositivo(moduloUrgen.value)) {
+							alert("Los valores por modulo deben ser numeros positivos");
+							moduloConsu.focus();
+							return false;
+						}
 					}
 				} else {
 					var honoId = "gHono-"+idArray[1];
@@ -165,12 +170,20 @@ A:hover {text-decoration: none;color:#00FFFF }
 					var honoAyud = document.getElementById(honoAyudId);
 					var honoAnes = document.getElementById(honoAnesId);
 					var honoGastos = document.getElementById(honoGastosid);
-					if (!isNumberPositivo(hono.value) || !isNumberPositivo(honoEspe.value) || 
-						!isNumberPositivo(honoAyud.value) || !isNumberPositivo(honoAnes.value) || 
-						!isNumberPositivo(honoGastos.value)) {
-						alert("Los valores por galeno deben ser numeros positivos");
+					if (hono.value == 0 && honoEspe.value == 0 && 
+						honoAyud.value == 0 && honoAnes.value == 0 && 
+						honoGastos.value == 0) {
+						alert("Debe ingresar por lo menos un valor de galeno");
 						hono.focus();
 						return false;
+					} else {	
+						if (!isNumberPositivo(hono.value) || !isNumberPositivo(honoEspe.value) || 
+							!isNumberPositivo(honoAyud.value) || !isNumberPositivo(honoAnes.value) || 
+							!isNumberPositivo(honoGastos.value)) {
+							alert("Los valores por galeno deben ser numeros positivos");
+							hono.focus();
+							return false;
+						}
 					}
 				}
 			}
@@ -179,130 +192,124 @@ A:hover {text-decoration: none;color:#00FFFF }
 		return true;
 	}
 	
-jQuery(function($){	
-	$("#tipo").change(function(){
-		$("#capitulo").html("<option value='0'>Seleccione Capitulo</option>");
-		$("#capitulo").prop("disabled",true);
-		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
-		$("#subcapitulo").prop("disabled",true);
-		$("#agregar").prop("disabled",true);
-		$("#practicas").html("");
-		var personeria = $("#personeria").val();
-		var valor = $(this).val();
-		var valores = valor.split("-");
-		var nomenclador = valores[1];
-		var tipo = valores[0];
-		$.ajax({
-			type: "POST",
-			dataType: 'html',
-			url: "getCapitulos.php",
-			data: {valor:tipo},
-		}).done(function(respuesta){
-			if (valor != 0) {
-				if (respuesta != 0) {
-					$("#capitulo").html(respuesta);
-					$("#capitulo").prop("disabled",false);
-				} else {
-					$.ajax({
-						type: "POST",
-						dataType: 'html',
-						url: "getPracticas.php",
-						data: {valor:-1, tipo:tipo, nomenclador:nomenclador, personeria:personeria},
-					}).done(function(respuesta){
-						if (respuesta != 0) {	
-							$("#practicas").html(respuesta);
-							$("#agregar").prop("disabled",false);
-						} else {
-							$("#practicas").html("NO EXISTEN PRACTICAS");
-						}
-					});
-				}
-			}
-		});
-	});
-	
-	$("#capitulo").change(function(){
-		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
-		$("#subcapitulo").prop("disabled",true);
-		$("#agregar").prop("disabled",true);	
-		$("#practicas").html("");
-		var personeria = $("#personeria").val();
-		var valor = $(this).val();
-		valor = valor.split('-');
-		tipo = $("#tipo").val();
-		tipos = tipo.split('-');
-		tipo = tipos[0];
-		nomenclador = tipos[1];
-		$.ajax({
-			type: "POST",
-			dataType: 'html',
-			url: "getSubCapitulos.php",
-			data: {valor:valor[0]},
-		}).done(function(respuesta){
-			if (respuesta != 0) {
-				$("#subcapitulo").html(respuesta);	
-				$("#subcapitulo").prop("disabled",false);			
-			}
+	jQuery(function($){	
+		$("#tipo").change(function(){
+			$("#capitulo").html("<option value='0'>Seleccione Capitulo</option>");
+			$("#capitulo").prop("disabled",true);
+			$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
+			$("#subcapitulo").prop("disabled",true);
+			$("#agregar").prop("disabled",true);
+			$("#practicas").html("");
+			var personeria = $("#personeria").val();
+			var valor = $(this).val();
+			var valores = valor.split("-");
+			var nomenclador = valores[1];
+			var tipo = valores[0];
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
-				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, personeria:personeria},
+				url: "getCapitulos.php",
+				data: {valor:tipo},
 			}).done(function(respuesta){
-				if (respuesta != 0) {
-					$("#practicas").html(respuesta);
-					$("#agregar").prop("disabled",false);
-				} else {
-					$("#practicas").html("NO EXISTEN PRACTICAS");
+				if (valor != 0) {
+					if (respuesta != 0) {
+						$("#capitulo").html(respuesta);
+						$("#capitulo").prop("disabled",false);
+					} else {
+						$.ajax({
+							type: "POST",
+							dataType: 'html',
+							url: "getPracticas.php",
+							data: {valor:-1, tipo:tipo, nomenclador:nomenclador, personeria:personeria},
+						}).done(function(respuesta){
+							if (respuesta != 0) {	
+								$("#practicas").html(respuesta);
+								$("#agregar").prop("disabled",false);
+							} else {
+								$("#practicas").html("NO EXISTEN PRACTICAS");
+							}
+						});
+					}
 				}
 			});
 		});
-	});
-	
-	$("#subcapitulo").change(function(){
-		$("#practicas").html("");
-		$("#agregar").prop("disabled",true);
-		$("#practicas").html("");
-		var personeria = $("#personeria").val();
-		tipo = $("#tipo").val();
-		tipos = tipo.split('-');
-		tipo = tipos[0];
-		nomenclador = tipos[1];
-		var valor = $(this).val();
-		if (valor == 0) { 
-			valor = $("#capitulo").val();
+		
+		$("#capitulo").change(function(){
+			$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
+			$("#subcapitulo").prop("disabled",true);
+			$("#agregar").prop("disabled",true);	
+			$("#practicas").html("");
+			var personeria = $("#personeria").val();
+			var valor = $(this).val();
 			valor = valor.split('-');
+			tipo = $("#tipo").val();
+			tipos = tipo.split('-');
+			tipo = tipos[0];
+			nomenclador = tipos[1];
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
-				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, personeria:personeria},
+				url: "getSubCapitulos.php",
+				data: {valor:valor[0]},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
-					$("#practicas").html(respuesta);
-					$("#agregar").prop("disabled",false);
-				} else {
-					$("#practicas").html("NO EXISTEN PRACTICAS");
+					$("#subcapitulo").html(respuesta);	
+					$("#subcapitulo").prop("disabled",false);			
 				}
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "getPracticas.php",
+					data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, personeria:personeria},
+				}).done(function(respuesta){
+					if (respuesta != 0) {
+						$("#practicas").html(respuesta);
+						$("#agregar").prop("disabled",false);
+					}
+				});
 			});
-		} else {
-			valor = valor.split('-');
-			$.ajax({
-				type: "POST",
-				dataType: 'html',
-				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, personeria:personeria},
-			}).done(function(respuesta){
-				if (respuesta != 0) {
-					$("#practicas").html(respuesta);
-					$("#agregar").prop("disabled",false);
-				} else {
-					$("#practicas").html("NO EXISTEN PRACTICAS");
-				}
-			});
-		}
+		});
+		
+		$("#subcapitulo").change(function(){
+			$("#practicas").html("");
+			$("#agregar").prop("disabled",true);
+			$("#practicas").html("");
+			var personeria = $("#personeria").val();
+			tipo = $("#tipo").val();
+			tipos = tipo.split('-');
+			tipo = tipos[0];
+			nomenclador = tipos[1];
+			var valor = $(this).val();
+			if (valor == 0) { 
+				valor = $("#capitulo").val();
+				valor = valor.split('-');
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "getPracticas.php",
+					data: {valor:valor[1], tipo:tipo, personeria:personeria},
+				}).done(function(respuesta){
+					if (respuesta != 0) {
+						$("#practicas").html(respuesta);
+						$("#agregar").prop("disabled",false);
+					} 
+				});
+			} else {
+				valor = valor.split('-');
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "getPracticas.php",
+					data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, personeria:personeria},
+				}).done(function(respuesta){
+					if (respuesta != 0) {
+						$("#practicas").html(respuesta);
+						$("#agregar").prop("disabled",false);
+					}
+				});
+			}
+		});
 	});
-});
 
 </script>
 </head>
