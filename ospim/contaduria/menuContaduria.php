@@ -25,7 +25,7 @@ include($libPath."controlSessionOspim.php"); ?>
     <tr>
     	<td>
     	   	<p>Datos Aux. Prestadores</p>
-          	<p><a class="enlace" href="prestadores/moduloPrestadores.php"><img src="img/prestador.png" width="119" height="92" border="0" alt="enviar"/></a></p>
+          	<p><a class="enlace" href="prestadores/moduloPrestadores.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
   		</td>
   		<td></td>
     </tr>

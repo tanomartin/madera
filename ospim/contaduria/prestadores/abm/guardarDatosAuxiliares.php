@@ -30,7 +30,7 @@ try {
 	$dbh->exec($updateAuxiliares);
 
 	$dbh->commit();
-	$pagina = "moduloPrestadores.php?codigo=$codigo";
+	$pagina = "abmPrestadores.php?codigo=$codigo";
 	Header("Location: $pagina");
 
 }catch (PDOException $e) {
