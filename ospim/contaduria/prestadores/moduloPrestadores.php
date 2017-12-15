@@ -118,7 +118,7 @@ function abrirPantalla(dire) {
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="moduloPrestadores.php">
   <div align="center">
-	  <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuTesoreria.php'" />
+	  <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuContaduria.php'" />
 	  <h3>M&oacute;dulo Datos Auxiliares Prestadores </h3>
 	  <?php 
 			if ($noExiste == 1) {
