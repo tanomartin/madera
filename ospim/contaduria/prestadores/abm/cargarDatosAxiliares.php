@@ -40,9 +40,9 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardarDatosAuxiliares.php">
 	<div align="center">
-	  <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloPrestadores.php?codigo=<?php echo $rowPrestador['codigoprestador']?>'" />
+	  <input type="reset" name="volver" value="Volver" onclick="location.href = 'abmPrestadores.php?codigo=<?php echo $rowPrestador['codigoprestador']?>'" />
 	  <h3>Carga Datos Auxiliares Prestadores </h3>
-	  <h3><?php echo $rowPrestador['codigoprestador']." - ".$rowPrestador['nombre']." [".$rowPrestador['cuit']."]" ?></h3>
+	  <h3><?php echo $rowPrestador['codigoprestador']." - ".utf8_encode($rowPrestador['nombre'])." [".$rowPrestador['cuit']."]" ?></h3>
 	  <input type="text" value="<?php echo $rowPrestador['codigoprestador']?>" name="codigo" id="codigo" style="display: none"/>
 	  <p><b>C.B.U.</b> <input type="text" value="<?php echo $rowPrestador['cbu']?>" name="cbu" id="cbu" /></p>
 	  <p><b>Banco</b> <input type="text" value="<?php echo $rowPrestador['banco']?>" name="banco" id="banco" /></p>
