@@ -148,7 +148,7 @@ try {
 	$dbh->exec($sqlInsertPresta);
 	$codigoNextPresta = $dbh->lastInsertId(); 
 	
-	$sqlInsertPrestaAux = "INSERT INTO prestadoresauxiliar VALUES('$codigoNextPresta',NULL,NULL,NULL)";
+	$sqlInsertPrestaAux = "INSERT INTO prestadoresauxiliar VALUES('$codigoNextPresta',NULL,NULL,NULL,NULL,NULL)";
 	
 	//print($sqlInsertPrestaAux."<br>");
 	$dbh->exec($sqlInsertPrestaAux);

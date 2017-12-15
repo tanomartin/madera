@@ -2,20 +2,22 @@
 include($libPath."controlSessionOspim.php"); 
 
 $codigo = $_POST['codigo'];
-$cbu = NULL;
+$cbu = "NULL";
 if ($_POST['cbu'] != "") {
-	$cbu = $_POST['cbu'];
+	$cbu = "'".$_POST['cbu']."'";
 }
-$banco = NULL;
+$banco = "NULL";
 if ($_POST['banco'] != "") {
-	$banco = $_POST['banco'];
+	$banco = "'".$_POST['banco']."'";
 }
-$cuenta = NULL;
+$cuenta = "NULL";
 if ($_POST['cuenta'] != "") {
-	$cuenta = $_POST['cuenta'];
+	$cuenta = "'".$_POST['cuenta']."'";
 }
+$fechamodificacion = date("Y-m-d H:i:s");
+$usuariomodificacion = $_SESSION['usuario'];
 
-$updateAuxiliares = "UPDATE prestadoresauxiliar SET cbu = '$cbu', banco = '$banco', cuenta = '$cuenta' WHERE codigoprestador = $codigo";
+$updateAuxiliares = "UPDATE prestadoresauxiliar SET cbu = $cbu, banco = $banco, cuenta = $cuenta, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE codigoprestador = $codigo";
 
 try {
 	$hostname = $_SESSION['host'];
