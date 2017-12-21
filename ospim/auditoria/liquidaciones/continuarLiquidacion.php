@@ -241,6 +241,7 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 	.ui-dialog .ui-state-error { padding: .3em; }
 	.validateTips { border: 1px solid transparent; padding: 0.3em; }
 	.ui-autocomplete-loading { background: white url("../img/ui-anim_basic_16x16.gif") right center no-repeat; }
+	.ui-menu .ui-menu-item a{ font-size:12px; }
 </style>
 </head>
 <body bgcolor="#CCCCCC">
@@ -348,14 +349,26 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 		</thead>
 		<tbody>
 		<?php while($rowConsultaFacturasBeneficiarios = mysql_fetch_array($resConsultaFacturasBeneficiarios)) {
+					if($rowConsultaFacturasBeneficiarios['tipoafiliado']==0) {
+						$descripcionTipo = 'Titular';
+						$nombreBeneficiario = $rowConsultaFacturasBeneficiarios['apellidoynombre'];
+						$cuilBeneficiario = $rowConsultaFacturasBeneficiarios['cuil'];
+					} else {
+						$sqlConsultaFamiliar = "SELECT f.apellidoynombre, f.cuil, p.descrip FROM familiares f, parentesco p WHERE f.nroafiliado = $rowConsultaFacturasBeneficiarios[nroafiliado] AND f.nroorden = $rowConsultaFacturasBeneficiarios[nroorden] AND f.tipoparentesco = p.codparent";
+						$resConsultaFamiliar = mysql_query($sqlConsultaFamiliar,$db);
+						$rowConsultaFamiliar = mysql_fetch_array($resConsultaFamiliar);
+						$descripcionTipo = $rowConsultaFamiliar['descrip'];
+						$nombreBeneficiario = $rowConsultaFamiliar['apellidoynombre'];
+						$cuilBeneficiario = $rowConsultaFamiliar['cuil'];
+					}
 					$botonexcepcion = 'excepcion'.$rowConsultaFacturasBeneficiarios['id'];
 					$botonconsumo = 'consumo'.$rowConsultaFacturasBeneficiarios['id'];
 					$botonanulacion = 'anula'.$rowConsultaFacturasBeneficiarios['id']; ?>
 			<tr>
 				<td><?php echo $rowConsultaFacturasBeneficiarios['nroafiliado'];?></td>
-				<td><?php echo $rowConsultaFacturasBeneficiarios['tipoafiliado'];?></td>
-				<td><?php echo $rowConsultaFacturasBeneficiarios['apellidoynombre'];?></td>
-				<td><?php echo $rowConsultaFacturasBeneficiarios['cuil'];?></td>
+				<td><?php echo $descripcionTipo;?></td>
+				<td><?php echo $nombreBeneficiario;?></td>
+				<td><?php echo $cuilBeneficiario;?></td>
 				<td><?php echo $rowConsultaFacturasBeneficiarios['codidelega'];?></td>
 				<td><?php echo $rowConsultaFacturasBeneficiarios['totalfacturado'];?></td>
 				<td><?php echo $rowConsultaFacturasBeneficiarios['totaldebito'];?></td>

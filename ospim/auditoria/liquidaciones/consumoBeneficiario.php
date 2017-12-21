@@ -29,6 +29,19 @@ if(isset($_GET)) {
 	$sqlConsultaFacturasBeneficiarios = "SELECT f.*, t.nroafiliado, t.apellidoynombre, t.cuil, t.codidelega FROM facturasbeneficiarios f, titulares t WHERE f.id = $idfacturabeneficiario AND f.nroafiliado = t.nroafiliado";
 	$resConsultaFacturasBeneficiarios = mysql_query($sqlConsultaFacturasBeneficiarios,$db);
 	$rowConsultaFacturasBeneficiarios = mysql_fetch_array($resConsultaFacturasBeneficiarios);
+
+	if($rowConsultaFacturasBeneficiarios['tipoafiliado']==0) {
+		$descripcionTipo = 'Titular';
+		$nombreBeneficiario = $rowConsultaFacturasBeneficiarios['apellidoynombre'];
+		$cuilBeneficiario = $rowConsultaFacturasBeneficiarios['cuil'];
+	} else {
+		$sqlConsultaFamiliar = "SELECT f.apellidoynombre, f.cuil, p.descrip FROM familiares f, parentesco p WHERE f.nroafiliado = $rowConsultaFacturasBeneficiarios[nroafiliado] AND f.nroorden = $rowConsultaFacturasBeneficiarios[nroorden] AND f.tipoparentesco = p.codparent";
+		$resConsultaFamiliar = mysql_query($sqlConsultaFamiliar,$db);
+		$rowConsultaFamiliar = mysql_fetch_array($resConsultaFamiliar);
+		$descripcionTipo = $rowConsultaFamiliar['descrip'];
+		$nombreBeneficiario = $rowConsultaFamiliar['apellidoynombre'];
+		$cuilBeneficiario = $rowConsultaFamiliar['cuil'];
+	}
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -53,9 +66,18 @@ if(isset($_GET)) {
 $(document).ready(function(){
 	$.datepicker.setDefaults($.datepicker.regional['es']);
 	$("#buscaprestacion").attr('disabled', true);
+	$("#fechaprestacion").inputmask("date");
+	$("#referenciaunitario").inputmask('decimal', {digits: 2});
+	$("#referenciatotal").inputmask('decimal', {digits: 2});
+	$("#cantidad").inputmask('integer');
+	$("#totalfacturado").inputmask('decimal', {digits: 2});
+	$("#totaldebito").inputmask('decimal', {digits: 2});
+	$("#totalcredito").inputmask('decimal', {digits: 2});
+	$("#motivodebito").attr('disabled', true);
+	$("#efectorpractica").attr('disabled', true);
+	$("#efectorprofesional").attr('disabled', true);
 	$("#agregarprestacion").attr('disabled', true);
 	$("#agregarcarencia").attr('disabled', true);
-	$("#fechaprestacion").inputmask("date");
 	$("#fechaprestacion").datepicker({
 		firstDay: 1,
 		maxDate: "+0d",
@@ -89,18 +111,116 @@ $(document).ready(function(){
 				}
 			});
 		},
-        minLength: 4,
+        minLength: 3,
 		select: function(event, ui) {
-			var valordevuelto = ui.item.idpractica;
+			var idpracticadevuelta = ui.item.idpractica;
+			var referenciadevuelto = ui.item.valor;
 			$("#idPractica").val(ui.item.idpractica);
-			if(valordevuelto==null) {
+			$("#cantidad").val('');
+			$("#referenciaunitario").val('0.00');
+			$("#referenciatotal").val('0.00');
+			$("#totalfacturado").val('');
+			$("#totaldebito").val('0.00');
+			$("#totalcredito").val('0.00');
+			if(idpracticadevuelta==null) {
 				$("#agregarcarencia").attr('disabled', false);
 				$("#agregarprestacion").attr('disabled', true);
 			} else {
-				$("#agregarcarencia").attr('disabled', true);
-				$("#agregarprestacion").attr('disabled', false);
+				$("#referenciaunitario").val(ui.item.valor);
+				if(referenciadevuelto==0.00) {
+					$("#agregarcarencia").attr('disabled', false);
+					$("#agregarprestacion").attr('disabled', true);
+				} else {
+					$("#agregarcarencia").attr('disabled', true);
+					$("#agregarprestacion").attr('disabled', false);
+				}
 			}
 		}  
+	});
+	$("#cantidad").change(function(){
+		if($("#cantidad").val()!='' && $("#cantidad").val()!=0) {
+			var totalreferencia = $("#cantidad").val()*$("#referenciaunitario").val();
+			if(totalreferencia==0.00) {
+				$("#referenciatotal").val('0.00');
+			} else {
+				$("#referenciatotal").val(totalreferencia);
+			}
+			if($("#totalfacturado").val()!='' && $("#totalfacturado").val()!=0.00) {
+				var calculodebito = $("#totalfacturado").val()-$("#referenciatotal").val();
+				if(calculodebito > 0.00) {
+					$("#totaldebito").val(calculodebito);
+					$("#motivodebito").attr('disabled', false);
+				} else {
+					$("#totaldebito").val(0.00);
+					$("#motivodebito").attr('disabled', true);
+				}
+				$("#totalcredito").val(($("#totalfacturado").val()-$("#totaldebito").val()));
+			} else {
+				$("#totaldebito").val('0.00');
+				$("#totalcredito").val('0.00');
+				$("#motivodebito").attr('disabled', true);
+			}
+		} else {
+			$("#referenciatotal").val('0.00');
+		}
+	});
+	$("#totalfacturado").change(function(){
+		if($("#totalfacturado").val()!='' && $("#totalfacturado").val()!=0.00) {
+			var calculodebito = $("#totalfacturado").val()-$("#referenciatotal").val();
+			if(calculodebito > 0.00) {
+				$("#totaldebito").val(calculodebito);
+				$("#motivodebito").attr('disabled', false);
+			} else {
+				$("#totaldebito").val(0.00);
+				$("#motivodebito").attr('disabled', true);
+			}
+			$("#totalcredito").val(($("#totalfacturado").val()-$("#totaldebito").val()));
+		} else {
+			$("#totaldebito").val('0.00');
+			$("#totalcredito").val('0.00');
+			$("#motivodebito").attr('disabled', true);
+		}
+	});
+	var personeria = $("#personeria").val();
+	if(personeria > 2) {
+		if(personeria == 3) {
+			$("#efectorpractica").attr('placeholder','Ingrese un minimo de 4 caracteres para iniciar la busqueda del Profesional del Circulo que efectuo la prestacion');
+		}
+		if(personeria == 4) {
+			$("#efectorpractica").attr('placeholder','Ingrese un minimo de 4 caracteres para iniciar la busqueda del Establecimiento de la Entidad Agrupadora que efectuo la prestacion');
+		}
+		$("#efectorpractica").attr('disabled', false);
+	} else {
+		$("#efectorpractica").attr('disabled', true);
+	}
+
+	$("#efectorpractica").autocomplete({
+		source: function(request, response) {
+			var idprestador = $("#idprestador").val();
+			var idpersoneria = $("#personeria").val();
+			$.ajax({
+				url: "buscaEfector.php",
+				dataType: "json",
+				data: {getPersoneria:request.term,idPrestador:idprestador,idPersoneria:personeria},
+				success: function(data) {
+					response(data);
+				}
+			});
+		},
+        minLength: 4,
+		select: function(event, ui) {
+			var escirculo = ui.item.circulo;
+			$("#idEfector").val(ui.item.idefector);
+			$("#establecimientoCirculo").val(ui.item.circulo);
+			if(escirculo==1) {
+				$("#efectorprofesional").attr('placeholder','El Establecimiento es un Circulo, por favor ingrese el profesional que efectuo la prestacion');
+				$("#efectorprofesional").attr('disabled', false);
+			} else {
+				$("#efectorprofesional").attr('disabled', true);
+			}
+		}
+	});
+	$("#totaldebito").change(function(){
 	});
 	$("#listaConsumos")
 		.tablesorter({
@@ -147,7 +267,8 @@ function consultaContratos(dire) {
 }
 </script>
 <style>
-  .ui-autocomplete-loading { background: white url("../img/ui-anim_basic_16x16.gif") right center no-repeat; }
+.ui-autocomplete-loading { background: white url("../img/ui-anim_basic_16x16.gif") right center no-repeat; }
+.ui-menu .ui-menu-item a{ font-size:10px; }
 </style>
 </head>
 <body bgcolor="#CCCCCC">
@@ -172,7 +293,7 @@ function consultaContratos(dire) {
 		</tr>
 		<tr>
 			<td align="right">Codigo: </td>
-			<td align="left"><?php echo $rowConsultaPrestador['codigoprestador'];?> <input name="idprestador" type="text" id="idprestador" size="6" value="<?php echo $rowConsultaPrestador['codigoprestador'];?>"/></td>
+			<td align="left"><?php echo $rowConsultaPrestador['codigoprestador'];?> <input name="idprestador" type="hidden" id="idprestador" size="6" value="<?php echo $rowConsultaPrestador['codigoprestador'];?>"/></td>
 			<td align="center">Servicios</td>
 		</tr>
 		<tr>
@@ -190,7 +311,7 @@ function consultaContratos(dire) {
 		</tr>
 		<tr>
 			<td align="right">Personeria: </td>
-			<td align="left"><?php echo $rowConsultaPrestador['descripcion'];?></td>
+			<td align="left"><?php echo $rowConsultaPrestador['descripcion'];?><input name="personeria" type="hidden" id="personeria" size="2" value="<?php echo $rowConsultaPrestador['personeria']; ?>"/></td>
 			<td align="center">Nomencladores</td>
 		</tr>
 		<tr>
@@ -204,7 +325,7 @@ function consultaContratos(dire) {
 				<input name="consultacontrato" type="button" id="consultacontrato" value="Ver Contratos" onclick="consultaContratos('../prestadores/abm/contratos/consultaContratosPrestador.php?codigo=<?php echo $rowConsultaFactura['idPrestador']; ?>')"/>
 			<?php
 			} ?>
-				<input name="contrato" type="text" id="contrato" size="2" value="<?php echo $contratoprestador; ?>"/>
+				<input name="contrato" type="hidden" id="contrato" size="2" value="<?php echo $contratoprestador; ?>"/>
 			</td>
 			<td align="center">
 			<?php $existesur = 0;
@@ -214,7 +335,7 @@ function consultaContratos(dire) {
 					$existesur = 1;
 				}
 			} ?>
-				<input name="nomencladorsur" type="text" id="nomencladorsur" size="2" value="<?php echo $existesur; ?>"/>
+				<input name="nomencladorsur" type="hidden" id="nomencladorsur" size="2" value="<?php echo $existesur; ?>"/>
 			</td>
 		</tr>
 	</table>
@@ -230,18 +351,18 @@ function consultaContratos(dire) {
 			<td align="right">Nro. Afiliado: </td>
 			<td align="left"><?php echo $rowConsultaFacturasBeneficiarios['nroafiliado'];?></td>
 			<td align="right">Tipo: </td>
-			<td align="right">Titular</td>
+			<td align="left"><?php echo$descripcionTipo;?></td>
 		</tr>
 		<tr>
 			<td align="right">Apellido y Nombre: </td>
-			<td align="left"><?php echo $rowConsultaFacturasBeneficiarios['apellidoynombre'];?></td>
-			<td align="right">Delegacion: </td>
+			<td align="left"><?php echo $nombreBeneficiario;?></td>
+			<td  rowspan="2"align="right">Delegacion: </td>
 			<td align="left"><?php echo $rowConsultaFacturasBeneficiarios['codidelega'];?></td>
 		</tr>
 		<tr>
 			<td align="right">C.U.I.L.: </td>
-			<td align="left"><?php echo $rowConsultaFacturasBeneficiarios['cuil'];?></td>
-			<td colspan="2" align="right">
+			<td align="left"><?php echo $cuilBeneficiario;?></td>
+			<td align="right">
 			<?php if($rowConsultaFacturasBeneficiarios['excepcionjurisdiccion'] == 1) {
 				echo 'Excepcion Jurisdiccional';
 			} ?>
@@ -262,11 +383,11 @@ function consultaContratos(dire) {
 		</tr>
 		<tr>
 			<td align="right"><strong>Buscar Prestacion</strong></td>
-			<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 4 caracteres para que se inicie la busqueda"></textarea><input name="idPractica" type="text" id="idPractica" size="5" value=""/></td>
+			<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea><input name="idPractica" type="hidden" id="idPractica" size="5" value=""/></td>
 		</tr>
 		<tr>
 			<td align="right"><strong>Cantidad</strong></td>
-			<td align="left"><input name="cantidad" type="text" id="cantidad" size="6" value=""/></td>
+			<td align="left"><input name="cantidad" type="text" id="cantidad" size="3" value="" maxlength="2"/></td>
 			<td align="right"><strong>Valor Ref. Unitario</strong></td>
 			<td align="left"><input name="referenciaunitario" type="text" id="referenciaunitario" size="10" readonly="readonly" value=""/></td>
 			<td align="right"><strong>Valor Ref. Total</strong></td>
@@ -282,11 +403,15 @@ function consultaContratos(dire) {
 		</tr>
 		<tr>
 <td align="right"><strong>Motivo Debito</strong></td>
-			<td colspan="5"><textarea name="motivodebito" rows="3" cols="100" id="motivodebito" placeholder="Motivo del Debito / Comentario / Observacion"></textarea>
+			<td colspan="5"><textarea name="motivodebito" rows="3" cols="100" id="motivodebito" placeholder="Motivo del Debito / Comentario / Observacion"></textarea></td>
 		</tr>
 		<tr>
 			<td align="right"><strong>Efector</strong></td>
-			<td colspan="5"><textarea name="efectorpractica" rows="3" cols="100" id="efectorpractica" placeholder="Ingrese quien efectua la practica"></textarea>
+			<td colspan="5"><textarea name="efectorpractica" rows="3" cols="100" id="efectorpractica" placeholder=""></textarea><input name="idEfector" type="hidden" id="idEfector" size="5" value=""/><input name="establecimientoCirculo" type="hidden" id="establecimientoCirculo" size="2" value=""/></td>
+		</tr>
+		<tr>
+			<td align="right"><strong>Prof. del Efector</strong></td>
+			<td colspan="5"><input name="efectorprofesional" type="text" id="efectorprofesional" size="100" placeholder=""></td>
 		</tr>
 	</table>
 </div>
@@ -342,5 +467,7 @@ function consultaContratos(dire) {
 		</tbody>
 	</table>
 </div>
+<div align="center">
+	<input type="button" name="cerrarliquidacion" id="cerrarliquidacion" value="Cerrar Liquidacion"/></div>
 </body>
 </html>
