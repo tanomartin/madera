@@ -59,7 +59,6 @@ if(isset($_GET)) {
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
-<script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/inputmask/dist/jquery.inputmask.bundle.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -76,8 +75,16 @@ $(document).ready(function(){
 	$("#motivodebito").attr('disabled', true);
 	$("#efectorpractica").attr('disabled', true);
 	$("#efectorprofesional").attr('disabled', true);
+	$("#integracion").hide();
+	$("#cancelaintegracion").prop("checked",false);
+	$('#datosintegracion').hide();
+	$("#solicitadointegracion").inputmask('decimal', {digits: 2});
+	$("#escuelaintegracion").inputmask('integer');
+	$("#tipoescuelaintegracion").attr('disabled', true);
+	$("#cueescuelaintegracion").attr('disabled', true);
 	$("#agregarprestacion").attr('disabled', true);
 	$("#agregarcarencia").attr('disabled', true);
+	$("#cerrarliquidacion").attr('disabled', true);
 	$("#fechaprestacion").datepicker({
 		firstDay: 1,
 		maxDate: "+0d",
@@ -115,7 +122,9 @@ $(document).ready(function(){
 		select: function(event, ui) {
 			var idpracticadevuelta = ui.item.idpractica;
 			var referenciadevuelto = ui.item.valor;
+			var integraciondevuelto = ui.item.integracion;
 			$("#idPractica").val(ui.item.idpractica);
+			$("#esIntegracion").val(ui.item.integracion);
 			$("#cantidad").val('');
 			$("#referenciaunitario").val('0.00');
 			$("#referenciatotal").val('0.00');
@@ -134,6 +143,23 @@ $(document).ready(function(){
 					$("#agregarcarencia").attr('disabled', true);
 					$("#agregarprestacion").attr('disabled', false);
 				}
+			}
+			if(integraciondevuelto==1) {
+				$("#cancelaintegracion").prop("checked",false);
+				$("#integracion").show();
+				$("#datosintegracion").hide();
+				$("#solicitadointegracion").val('');
+				$("#dependenciaintegracion").prop("checked",false);
+				$("#tipoescuelaintegracion option[value='']").prop('selected',true);
+				$("#cueescuelaintegracion").val('');
+			} else {
+				$("#cancelaintegracion").prop("checked",false);
+				$("#integracion").hide();
+				$("#datosintegracion").hide();
+				$("#solicitadointegracion").val('');
+				$("#dependenciaintegracion").prop("checked",false);
+				$("#tipoescuelaintegracion option[value='']").prop('selected',true);
+				$("#cueescuelaintegracion").val('');
 			}
 		}  
 	});
@@ -181,6 +207,21 @@ $(document).ready(function(){
 			$("#motivodebito").attr('disabled', true);
 		}
 	});
+	$("#totaldebito").change(function(){
+		if($("#totaldebito").val()!='' && $("#totaldebito").val()!=0.00) {
+			$("#motivodebito").attr('disabled', false);
+		} else {
+			$("#totaldebito").val(0.00);
+			$("#motivodebito").attr('disabled', true);
+		}
+		var calculocredito = $("#totalfacturado").val()-$("#totaldebito").val();
+		if(calculocredito > 0.00) {
+			$("#agregarprestacion").attr('disabled', false);
+		} else {
+			$("#agregarprestacion").attr('disabled', true);
+		}
+		$("#totalcredito").val(calculocredito);
+	});
 	var personeria = $("#personeria").val();
 	if(personeria > 2) {
 		if(personeria == 3) {
@@ -220,7 +261,64 @@ $(document).ready(function(){
 			}
 		}
 	});
-	$("#totaldebito").change(function(){
+	$("#cancelaintegracion").change(function(){
+		if($("#cancelaintegracion").prop('checked') ) {
+			$("#datosintegracion").show();
+			var idpracticadevuelta = $("#idPractica").val();
+			if(idpracticadevuelta==2462 || idpracticadevuelta==2471) {
+				$("#tipoescuelaintegracion").attr('disabled', false);
+				$("#cueescuelaintegracion option[value='']").prop('selected',true);
+				$("#cueescuelaintegracion").attr('disabled', true);
+			} else {
+				$("#tipoescuelaintegracion").attr('disabled', true);
+				$("#cueescuelaintegracion option[value='']").prop('selected',true);
+				$("#cueescuelaintegracion").attr('disabled', true);
+			}
+		} else {
+			$("#datosintegracion").hide();
+			$("#solicitadointegracion").val('');
+			$("#dependenciaintegracion").prop("checked",false);
+			$("#tipoescuelaintegracion option[value='']").prop('selected',true);
+			$("#cueescuelaintegracion option[value='']").prop('selected',true);
+			$("#tipoescuelaintegracion").attr('disabled', true);
+			$("#cueescuelaintegracion").attr('disabled', true);
+		}
+	});
+	$("#tipoescuelaintegracion").change(function(){
+		var tipoescuela = $(this).val();
+		if(tipoescuela!='') {
+			$.ajax({
+				dataType: 'html',
+				url: "buscaEscuelas.php",
+				data: {tipoEscuela:tipoescuela},
+			}).done(function(respuesta){
+				$("#cueescuelaintegracion").html(respuesta);
+			});
+			$("#cueescuelaintegracion").attr('disabled', false);
+		} else {
+			$("#cueescuelaintegracion option[value='']").prop('selected',true);
+			$("#cueescuelaintegracion").attr('disabled', true);
+		}
+	});
+	$("#agregarprestacion").on("click", function() {
+		var datosform = $("form#consumoPrestacional").serialize();
+		$.blockUI({ message: "<h1>Agregando Prestacion a la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+		$.ajax({
+			type: "POST",
+			url: "agregaPrestacion.php",
+			data: datosform,
+			dataType: 'json',
+			success: function(data) {
+				if(data.result == true){
+					location.reload();
+					$.unblockUI();
+				} else {
+					$.unblockUI();
+					var cajadialogo = $('<div title="Aviso"><p>Ocurrio un error al intentar agregar una prestacion. Comuniquelo al Depto. de Sistemas.</p></div>');
+					cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $("#agregarprestacion").attr('disabled', true); $("#agregarcarencia").attr('disabled', true); $("#cerrarliquidacion").attr('disabled', true); }});
+				}
+			}
+		});
 	});
 	$("#listaConsumos")
 		.tablesorter({
@@ -375,54 +473,85 @@ function consultaContratos(dire) {
 <div align="center">
 	<h2 style="margin-top:1px;margin-bottom:1px">Consumo Prestacional</h2>
 </div>
-<div align="center">
-	<table border="0">
-		<tr>
-			<td align="right" valign="bottom"><strong>Fecha</strong></td>
-			<td align="left" colspan="5"><input name="fechaprestacion" type="text" id="fechaprestacion" size="6" value=""/></td>
-		</tr>
-		<tr>
-			<td align="right"><strong>Buscar Prestacion</strong></td>
-			<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea><input name="idPractica" type="hidden" id="idPractica" size="5" value=""/></td>
-		</tr>
-		<tr>
-			<td align="right"><strong>Cantidad</strong></td>
-			<td align="left"><input name="cantidad" type="text" id="cantidad" size="3" value="" maxlength="2"/></td>
-			<td align="right"><strong>Valor Ref. Unitario</strong></td>
-			<td align="left"><input name="referenciaunitario" type="text" id="referenciaunitario" size="10" readonly="readonly" value=""/></td>
-			<td align="right"><strong>Valor Ref. Total</strong></td>
-			<td align="left"><input name="referenciatotal" type="text" id="referenciatotal" size="10" readonly="readonly" value=""/></td>
-		</tr>
-		<tr>
-			<td align="right"><strong>Facturado</strong></td>
-			<td align="left"><input name="totalfacturado" type="text" id="totalfacturado" size="10" value=""/></td>
-			<td align="right"><strong>Debito</strong></td>
-			<td align="left"><input name="totaldebito" type="text" id="totaldebito" size="10" value=""/></td>
-			<td align="right"><strong>Credito</strong></td>
-			<td align="left"><input name="totalcredito" type="text" id="totalcredito" size="10" readonly="readonly" value=""/></td>
-		</tr>
-		<tr>
-<td align="right"><strong>Motivo Debito</strong></td>
-			<td colspan="5"><textarea name="motivodebito" rows="3" cols="100" id="motivodebito" placeholder="Motivo del Debito / Comentario / Observacion"></textarea></td>
-		</tr>
-		<tr>
-			<td align="right"><strong>Efector</strong></td>
-			<td colspan="5"><textarea name="efectorpractica" rows="3" cols="100" id="efectorpractica" placeholder=""></textarea><input name="idEfector" type="hidden" id="idEfector" size="5" value=""/><input name="establecimientoCirculo" type="hidden" id="establecimientoCirculo" size="2" value=""/></td>
-		</tr>
-		<tr>
-			<td align="right"><strong>Prof. del Efector</strong></td>
-			<td colspan="5"><input name="efectorprofesional" type="text" id="efectorprofesional" size="100" placeholder=""></td>
-		</tr>
-	</table>
-</div>
-<div align="center">
-	<table border="0">
-		<tr>
-			<td><input type="button" name="agregarprestacion" id="agregarprestacion" value="Agregar Prestacion"/></td>
-			<td><input type="button" name="agregarcarencia" id="agregarcarencia" value="Agregar Carencia"/></td>
-		</tr>
-	</table>
-</div>
+<form id="consumoPrestacional">
+	<div align="center">
+		<table border="0">
+			<tr>
+				<td align="right" valign="bottom"><strong>Fecha</strong></td>
+				<td align="left" colspan="5"><input name="fechaprestacion" type="text" id="fechaprestacion" size="6" value=""/></td>
+			</tr>
+			<tr>
+				<td align="right"><strong>Buscar Prestacion</strong></td>
+				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea><input name="idPractica" type="hidden" id="idPractica" size="5" value=""/><input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/></td>
+			</tr>
+			<tr>
+				<td align="right"><strong>Cantidad</strong></td>
+				<td align="left"><input name="cantidad" type="text" id="cantidad" size="3" value="" maxlength="2"/></td>
+				<td align="right"><strong>Valor Ref. Unitario</strong></td>
+				<td align="left"><input name="referenciaunitario" type="text" id="referenciaunitario" size="10" readonly="readonly" style="background-color:#CCCCCC" value=""/></td>
+				<td align="right"><strong>Valor Ref. Total</strong></td>
+				<td align="left"><input name="referenciatotal" type="text" id="referenciatotal" size="10" readonly="readonly" style="background-color:#CCCCCC" value=""/></td>
+			</tr>
+			<tr>
+				<td align="right"><strong>Facturado</strong></td>
+				<td align="left"><input name="totalfacturado" type="text" id="totalfacturado" size="10" value=""/></td>
+				<td align="right"><strong>Debito</strong></td>
+				<td align="left"><input name="totaldebito" type="text" id="totaldebito" size="10" value=""/></td>
+				<td align="right"><strong>Credito</strong></td>
+				<td align="left"><input name="totalcredito" type="text" id="totalcredito" size="10" readonly="readonly" style="background-color:#CCCCCC" value=""/></td>
+			</tr>
+			<tr>
+	<td align="right"><strong>Motivo Debito</strong></td>
+				<td colspan="5" align="left"><textarea name="motivodebito" rows="3" cols="100" id="motivodebito" placeholder="Motivo del Debito / Comentario / Observacion"></textarea></td>
+			</tr>
+			<tr>
+				<td align="right"><strong>Efector</strong></td>
+				<td colspan="5" align="left"><textarea name="efectorpractica" rows="3" cols="100" id="efectorpractica" placeholder=""></textarea><input name="idEfector" type="hidden" id="idEfector" size="5" value=""/><input name="establecimientoCirculo" type="hidden" id="establecimientoCirculo" size="2" value=""/></td>
+			</tr>
+			<tr>
+				<td align="right"><strong>Prof. del Efector</strong></td>
+				<td colspan="5" align="left"><input name="efectorprofesional" type="text" id="efectorprofesional" size="100" maxlength="100" placeholder="" value=""></td>
+			</tr>
+			<tr id="integracion">
+				<td align="right"><strong>Paga por Integracion ?</strong></td>
+				<td colspan="5" align="left"><input name="cancelaintegracion" type="checkbox" id="cancelaintegracion" value=""/>
+			</tr>
+		</table>
+	</div>
+	<div id="datosintegracion" align="center">
+		<table border="0">
+			<tr>
+				<td align="right"><strong>Importe Solicitado</strong></td>
+				<td align="left"><input name="solicitadointegracion" type="text" id="solicitadointegracion" size="10" value=""/>
+				<td align="right"><strong>Dependencia ?</strong></td>
+				<td align="left"><input name="dependenciaintegracion" type="checkbox" id="dependenciaintegracion" value=""/>
+				<td align="right"><strong>Escuela ?</strong></td>
+				<td align="left"><select name="tipoescuelaintegracion" id="tipoescuelaintegracion">
+									<option title="Seleccione tipo" value="">Seleccione tipo</option>
+									<option title="ESCUELA COMUN (MENSUAL)" value="097">ESCUELA COMUN (MENSUAL)</option>
+									<option title="ESCUELA ESPECIAL PRE PRIMARIA (MENSUAL)" value="098">ESCUELA ESPECIAL PRE PRIMARIA (MENSUAL)</option>
+									<option title="ESCUELA ESPECIAL PRIMARIA (MENSUAL)" value="099">ESCUELA ESPECIAL PRIMARIA (MENSUAL)</option>
+								</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5" align="right"></td>
+				<td align="left"><select name="cueescuelaintegracion" id="cueescuelaintegracion">
+									<option title="Seleccione CUE" value="">Seleccione CUE</option>
+								</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div align="center">
+		<table border="0">
+			<tr>
+				<td><input type="button" name="agregarprestacion" id="agregarprestacion" value="Agregar Prestacion"/></td>
+				<td><input type="button" name="agregarcarencia" id="agregarcarencia" value="Agregar Carencia"/></td>
+			</tr>
+		</table>
+	</div>
+</form> 
 <div align="center">
 	<table id="listaConsumos" class="tablesorter" style="font-size:14px; text-align:center">
 		<thead>

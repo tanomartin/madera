@@ -29,6 +29,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 								'label' => $rowLeePracticasContrato['nombrepractica'].' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Mod. Consultorio Valor: '.$rowLeePracticasContrato['moduloconsultorio'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'],
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['moduloconsultorio'],
+								'integracion' => 0,
 							);
 						}
 						if($rowLeePracticasContrato['modulourgencia']>=0.00) {
@@ -37,6 +38,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 								'label' => $rowLeePracticasContrato['nombrepractica'].' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Mod. Urgencia Valor: '.$rowLeePracticasContrato['modulourgencia'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'],
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['modulourgencia'],
+								'integracion' => 0,
 							);
 						}
 						if($rowLeePracticasContrato['valorgaleno']>=0.00) {
@@ -45,6 +47,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 								'label' => $rowLeePracticasContrato['nombrepractica'].' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Galeno Valor: '.$rowLeePracticasContrato['valorgaleno'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'],
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['valorgaleno'],
+								'integracion' => 0,
 							);
 						}
 					}
@@ -71,7 +74,8 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 							$prestaciones[] = array(
 								'label' => $rowLeePracticasResolucion['nombrepractica'].' | Codigo: '.$rowLeePracticasResolucion['codigopractica'].' | Valor: '.$rowLeePracticasResolucion['importe'].' | Origen: Resolucion '.$rowLeePracticasResolucion['nombre'],
 								'idpractica' => $rowLeePracticasResolucion['idpractica'],
-								'valor' => $rowLeePracticasResolucion['importe']
+								'valor' => $rowLeePracticasResolucion['importe'],
+								'integracion' => 1,
 							);
 						}
 					}
@@ -97,6 +101,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 				'label' => $rowLeePracticasNomenclador['nombrepractica'].' | Codigo: '.$rowLeePracticasNomenclador['codigopractica'].' | NO VALORIZADA  | Origen: Nomenclador '.$rowLeePracticasNomenclador['nombre'],
 				'idpractica' => $rowLeePracticasNomenclador['idpractica'],
 				'valor' => '0.00',
+				'integracion' => 0,
 			);
 		}
 	}
@@ -105,6 +110,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 			'label' => 'No se encontraron resultados para la busqueda intentada',
 			'idpractica' => NULL,
 			'valor' => NULL,
+			'integracion' => 0,
 		);
 	}
 	echo json_encode($prestaciones);
