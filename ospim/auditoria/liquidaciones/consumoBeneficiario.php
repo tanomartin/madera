@@ -391,7 +391,7 @@ function consultaContratos(dire) {
 		</tr>
 		<tr>
 			<td align="right">Codigo: </td>
-			<td align="left"><?php echo $rowConsultaPrestador['codigoprestador'];?> <input name="idprestador" type="hidden" id="idprestador" size="6" value="<?php echo $rowConsultaPrestador['codigoprestador'];?>"/></td>
+			<td align="left"><?php echo $rowConsultaPrestador['codigoprestador'];?></td>
 			<td align="center">Servicios</td>
 		</tr>
 		<tr>
@@ -409,7 +409,7 @@ function consultaContratos(dire) {
 		</tr>
 		<tr>
 			<td align="right">Personeria: </td>
-			<td align="left"><?php echo $rowConsultaPrestador['descripcion'];?><input name="personeria" type="hidden" id="personeria" size="2" value="<?php echo $rowConsultaPrestador['personeria']; ?>"/></td>
+			<td align="left"><?php echo $rowConsultaPrestador['descripcion'];?></td>
 			<td align="center">Nomencladores</td>
 		</tr>
 		<tr>
@@ -478,11 +478,18 @@ function consultaContratos(dire) {
 		<table border="0">
 			<tr>
 				<td align="right" valign="bottom"><strong>Fecha</strong></td>
-				<td align="left" colspan="5"><input name="fechaprestacion" type="text" id="fechaprestacion" size="6" value=""/></td>
+				<td align="left" colspan="5"><input name="fechaprestacion" type="text" id="fechaprestacion" size="6" value=""/>
+					<input name="idFactura" type="text" id="idFactura" size="10" value="<?php echo $idfactura; ?>"/>
+					<input name="idFacturabeneficiario" type="text" id="idFacturabeneficiario" size="10" value="<?php echo $idfacturabeneficiario; ?>"/>
+					<input name="idprestador" type="text" id="idprestador" size="6" value="<?php echo $rowConsultaPrestador['codigoprestador'];?>"/>
+					<input name="personeria" type="text" id="personeria" size="2" value="<?php echo $rowConsultaPrestador['personeria']; ?>"/>
+				</td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Buscar Prestacion</strong></td>
-				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea><input name="idPractica" type="hidden" id="idPractica" size="5" value=""/><input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/></td>
+				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
+								<input name="idPractica" type="text" id="idPractica" size="5" value=""/>
+								<input name="esIntegracion" type="text" id="esIntegracion" size="2" value=""/></td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Cantidad</strong></td>
@@ -506,7 +513,9 @@ function consultaContratos(dire) {
 			</tr>
 			<tr>
 				<td align="right"><strong>Efector</strong></td>
-				<td colspan="5" align="left"><textarea name="efectorpractica" rows="3" cols="100" id="efectorpractica" placeholder=""></textarea><input name="idEfector" type="hidden" id="idEfector" size="5" value=""/><input name="establecimientoCirculo" type="hidden" id="establecimientoCirculo" size="2" value=""/></td>
+				<td colspan="5" align="left"><textarea name="efectorpractica" rows="3" cols="100" id="efectorpractica" placeholder=""></textarea>
+											<input name="idEfector" type="text" id="idEfector" size="5" value=""/>
+											<input name="establecimientoCirculo" type="text" id="establecimientoCirculo" size="2" value=""/></td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Prof. del Efector</strong></td>
@@ -514,7 +523,7 @@ function consultaContratos(dire) {
 			</tr>
 			<tr id="integracion">
 				<td align="right"><strong>Paga por Integracion ?</strong></td>
-				<td colspan="5" align="left"><input name="cancelaintegracion" type="checkbox" id="cancelaintegracion" value=""/>
+				<td colspan="5" align="left"><input name="cancelaintegracion" type="checkbox" id="cancelaintegracion" value="1"/>
 			</tr>
 		</table>
 	</div>
@@ -524,7 +533,7 @@ function consultaContratos(dire) {
 				<td align="right"><strong>Importe Solicitado</strong></td>
 				<td align="left"><input name="solicitadointegracion" type="text" id="solicitadointegracion" size="10" value=""/>
 				<td align="right"><strong>Dependencia ?</strong></td>
-				<td align="left"><input name="dependenciaintegracion" type="checkbox" id="dependenciaintegracion" value=""/>
+				<td align="left"><input name="dependenciaintegracion" type="checkbox" id="dependenciaintegracion" value="1"/>
 				<td align="right"><strong>Escuela ?</strong></td>
 				<td align="left"><select name="tipoescuelaintegracion" id="tipoescuelaintegracion">
 									<option title="Seleccione tipo" value="">Seleccione tipo</option>
