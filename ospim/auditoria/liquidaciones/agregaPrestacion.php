@@ -22,7 +22,7 @@ if(isset($_POST)) {
 
 	if(isset($_POST['idPractica'])) {
 		//idPractica
-		$idpractica = $_POST['idFacturabeneficiario'];
+		$idpractica = $_POST['idPractica'];
 	}
 
 	if(isset($_POST['cantidad'])) {
@@ -57,7 +57,7 @@ if(isset($_POST)) {
 		$totalcredito = $_POST['totalcredito'];
 	}
 
-	 if(isset($_POST['personeria'])) {
+	if(isset($_POST['personeria'])) {
 		if($_POST['personeria']==3 || $_POST['personeria']==4) {
 			if($_POST['personeria']==3) {
 				//tipoefectorpractica
@@ -89,6 +89,7 @@ if(isset($_POST)) {
 		} else {
 			//tipoefectorpractica
 			$tipoefectorpractica = 1;
+			$profesionalestablecimientocirculo = NULL;
 		}
 	}
 
@@ -137,14 +138,16 @@ if(isset($_POST)) {
 		$dbh->beginTransaction();
 		$sqlAddFacturasPrestacion = "INSERT INTO facturasprestaciones(id,idFactura,idFacturabeneficiario,tipomovimiento,idPractica,cantidad,fechapractica,totalfacturado,totaldebito,motivodebito,totalcredito,tipoefectorpractica,efectorpractica,profesionalestablecimientocirculo) VALUES(:id,:idFactura,:idFacturabeneficiario,:tipomovimiento,:idPractica,:cantidad,:fechapractica,:totalfacturado,:totaldebito,:motivodebito,:totalcredito,:tipoefectorpractica,:efectorpractica,:profesionalestablecimientocirculo)";
 		$resAddFacturasPrestacion = $dbh->prepare($sqlAddFacturasPrestacion);
-		if($resAddFacturasPrestacion->execute(array(':id' => 'DEFAULT',':idFactura' => $idfactura,':idFacturabeneficiario' => $idfacturabeneficiario,':tipomovimiento' => $tipomovimiento,':idPractica' => $idpractica,':cantidad' => $cantidad,':fechapractica' => $fechapractica,':totalfacturado' => $totalfacturado,':totaldebito' => $totaldebito,':motivodebito' => $motivodebito,':totalcredito' => $totalcredito,':tipoefectorpractica' => $tipoefectorpractica,':efectorpractica' => $efectorpractica,':profesionalestablecimientocirculo' => $profesionalestablecimientocirculo)))
+		if($resAddFacturasPrestacion->execute(array(':id' => 'DEFAULT',':idFactura' => $idfactura,':idFacturabeneficiario' => $idfacturabeneficiario,':tipomovimiento' => $tipomovimiento,':idPractica' => $idpractica,':cantidad' => $cantidad,':fechapractica' => $fechapractica,':totalfacturado' => $totalfacturado,':totaldebito' => $totaldebito,':motivodebito' => $motivodebito,':totalcredito' => $totalcredito,':tipoefectorpractica' => $tipoefectorpractica,':efectorpractica' => $efectorpractica,':profesionalestablecimientocirculo' => $profesionalestablecimientocirculo))) {
+		}
 		if($agregaintegracion) {
 			$sqlAddFacturasIntegracion = "INSERT INTO facturasintegracion(id,idFactura,idFacturabeneficiario,totalsolicitado,dependencia,tipoescuela,cueescuela) VALUES(:id,:idFactura,:idFacturabeneficiario,:totalsolicitado,:dependencia,:tipoescuela,:cueescuela)";
 			$resAddFacturasIntegracion = $dbh->prepare($sqlAddFacturasIntegracion);
-			if($resAddFacturasIntegracion->execute(array(':id' => 'DEFAULT',':idFactura' => $idfactura,':idFacturabeneficiario' => $idfacturabeneficiario,':totalsolicitado' => $totalsolicitado,':dependencia' => $dependencia,':tipoescuela' => $tipoescuela,':cueescuela' => $cueescuela)))
+			if($resAddFacturasIntegracion->execute(array(':id' => 'DEFAULT',':idFactura' => $idfactura,':idFacturabeneficiario' => $idfacturabeneficiario,':totalsolicitado' => $totalsolicitado,':dependencia' => $dependencia,':tipoescuela' => $tipoescuela,':cueescuela' => $cueescuela))) {
+			}
 		}
 		$dbh->commit();
-		echo json_encode(array('result'=> false));
+		echo json_encode(array('result'=> true));
 	}
 	catch (PDOException $e) {
 		$dbh->rollback();

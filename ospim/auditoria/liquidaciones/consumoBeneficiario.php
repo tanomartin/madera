@@ -42,6 +42,10 @@ if(isset($_GET)) {
 		$nombreBeneficiario = $rowConsultaFamiliar['apellidoynombre'];
 		$cuilBeneficiario = $rowConsultaFamiliar['cuil'];
 	}
+
+	$sqlConsultaFacturasPrestacionesConsumo = "SELECT * FROM facturasprestaciones WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 1";
+	$resConsultaFacturasPrestacionesConsumo = mysql_query($sqlConsultaFacturasPrestacionesConsumo,$db);
+
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -212,13 +216,16 @@ $(document).ready(function(){
 			$("#motivodebito").attr('disabled', false);
 		} else {
 			$("#totaldebito").val(0.00);
+			$("#motivodebito").val('');
 			$("#motivodebito").attr('disabled', true);
 		}
 		var calculocredito = $("#totalfacturado").val()-$("#totaldebito").val();
 		if(calculocredito > 0.00) {
 			$("#agregarprestacion").attr('disabled', false);
+			$("#agregarcarencia").attr('disabled', true);
 		} else {
 			$("#agregarprestacion").attr('disabled', true);
+			$("#agregarcarencia").attr('disabled', false);
 		}
 		$("#totalcredito").val(calculocredito);
 	});
@@ -479,17 +486,17 @@ function consultaContratos(dire) {
 			<tr>
 				<td align="right" valign="bottom"><strong>Fecha</strong></td>
 				<td align="left" colspan="5"><input name="fechaprestacion" type="text" id="fechaprestacion" size="6" value=""/>
-					<input name="idFactura" type="text" id="idFactura" size="10" value="<?php echo $idfactura; ?>"/>
-					<input name="idFacturabeneficiario" type="text" id="idFacturabeneficiario" size="10" value="<?php echo $idfacturabeneficiario; ?>"/>
-					<input name="idprestador" type="text" id="idprestador" size="6" value="<?php echo $rowConsultaPrestador['codigoprestador'];?>"/>
-					<input name="personeria" type="text" id="personeria" size="2" value="<?php echo $rowConsultaPrestador['personeria']; ?>"/>
+					<input name="idFactura" type="hidden" id="idFactura" size="10" value="<?php echo $idfactura; ?>"/>
+					<input name="idFacturabeneficiario" type="hidden" id="idFacturabeneficiario" size="10" value="<?php echo $idfacturabeneficiario; ?>"/>
+					<input name="idprestador" type="hidden" id="idprestador" size="6" value="<?php echo $rowConsultaPrestador['codigoprestador'];?>"/>
+					<input name="personeria" type="hidden" id="personeria" size="2" value="<?php echo $rowConsultaPrestador['personeria']; ?>"/>
 				</td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Buscar Prestacion</strong></td>
 				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
-								<input name="idPractica" type="text" id="idPractica" size="5" value=""/>
-								<input name="esIntegracion" type="text" id="esIntegracion" size="2" value=""/></td>
+								<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
+								<input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/></td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Cantidad</strong></td>
@@ -514,8 +521,8 @@ function consultaContratos(dire) {
 			<tr>
 				<td align="right"><strong>Efector</strong></td>
 				<td colspan="5" align="left"><textarea name="efectorpractica" rows="3" cols="100" id="efectorpractica" placeholder=""></textarea>
-											<input name="idEfector" type="text" id="idEfector" size="5" value=""/>
-											<input name="establecimientoCirculo" type="text" id="establecimientoCirculo" size="2" value=""/></td>
+											<input name="idEfector" type="hidden" id="idEfector" size="5" value=""/>
+											<input name="establecimientoCirculo" type="hidden" id="establecimientoCirculo" size="2" value=""/></td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Prof. del Efector</strong></td>
@@ -580,6 +587,19 @@ function consultaContratos(dire) {
 			</tr>
 		</thead>
 		<tbody>
+		<?php while($rowConsultaFacturasPrestacionesConsumo = mysql_fetch_array($resConsultaFacturasPrestacionesConsumo)) { ?>
+			<tr>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['fechapractica'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['idPractica'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['cantidad'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['totalfacturado'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['totaldebito'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['totalcredito'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['motivodebito'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['efectorpractica'];?></td>
+				<td><input type="button" name="anulacarencia" id="anulacarencia" value="Anular Consumo" style="font-size:10px" onclick="javascript:anulaConsumo(<?php echo $rowConsultaFacturasPrestacionesConsumo['id'];?>)"/></td>
+			</tr>
+		<?php } ?>
 		</tbody>
 	</table>
 </div>
