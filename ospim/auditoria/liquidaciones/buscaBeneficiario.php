@@ -2,25 +2,44 @@
 include($libPath."controlSessionOspim.php");
 if(isset($_GET['getBeneficiaro'])) {
 	$busqueda = $_GET['getBeneficiaro'];
+	$noencontro = TRUE;
 	$beneficiarios = array();  
 	if(is_numeric($busqueda)) {
-		$sqlLeeBeneficiarios="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titulares WHERE cuil like '%$busqueda%' OR nroafiliado = $busqueda";
+		$sqlLeeTitulares="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titulares WHERE cuil like '%$busqueda%' OR nroafiliado = $busqueda";
+		$sqlLeeFamiliares="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega FROM familiares f, titulares t, parentesco p WHERE (f.cuil like '%$busqueda%' OR f.nroafiliado = $busqueda) AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
 		//$sqlLeeBeneficiarios="SELECT nroafiliado, apellidoynombre, cuil FROM titulares WHERE nroafiliado = $busqueda";
 	} else {
-		$sqlLeeBeneficiarios="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titulares WHERE apellidoynombre like '%$busqueda%'";
+		$sqlLeeTitulares="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titulares WHERE apellidoynombre like '%$busqueda%'";
+		$sqlLeeFamiliares="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega FROM familiares f, titulares t, parentesco p WHERE f.apellidoynombre like '%$busqueda%' AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
 	}
-	$resLeeBeneficiarios=mysql_query($sqlLeeBeneficiarios,$db);
-	if(mysql_num_rows($resLeeBeneficiarios)!=0) {
-		while($rowLeeBeneficiarios=mysql_fetch_array($resLeeBeneficiarios)) {
+	$resLeeTitulares=mysql_query($sqlLeeTitulares,$db);
+	if(mysql_num_rows($resLeeTitulares)!=0) {
+		while($rowLeeTitulares=mysql_fetch_array($resLeeTitulares)) {
+			$noencontro = FALSE;
 			$beneficiarios[] = array(
-				'label' => $rowLeeBeneficiarios['apellidoynombre'].' | CUIL: '.$rowLeeBeneficiarios['cuil'].' | Nro. Afiliado: '.$rowLeeBeneficiarios['nroafiliado'].' | Tipo: Titular',
-				'nroafiliado' => $rowLeeBeneficiarios['nroafiliado'],
+				'label' => $rowLeeTitulares['apellidoynombre'].' | CUIL: '.$rowLeeTitulares['cuil'].' | Nro. Afiliado: '.$rowLeeTitulares['nroafiliado'].' | Tipo: Titular',
+				'nroafiliado' => $rowLeeTitulares['nroafiliado'],
 				'tipoafiliado' => 0,
 				'nroorden' => 0,
-				'delegacion' => $rowLeeBeneficiarios['codidelega'],
+				'delegacion' => $rowLeeTitulares['codidelega'],
 			);
 		}
-	} else {
+	}
+	$resLeeFamiliares=mysql_query($sqlLeeFamiliares,$db);
+	if(mysql_num_rows($resLeeFamiliares)!=0) {
+		while($rowLeeFamiliares=mysql_fetch_array($resLeeFamiliares)) {
+			$noencontro = FALSE;
+			$tipo = utf8_encode($rowLeeFamiliares['descrip']);
+			$beneficiarios[] = array(
+				'label' => $rowLeeFamiliares['apellidoynombre'].' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo,
+				'nroafiliado' => $rowLeeFamiliares['nroafiliado'],
+				'tipoafiliado' => $rowLeeFamiliares['tipoparentesco'],
+				'nroorden' => $rowLeeFamiliares['nroorden'],
+				'delegacion' => $rowLeeFamiliares['codidelega'],
+			);
+		}
+	}
+	if($noencontro) {
 		$beneficiarios[] = array(
 			'label' => 'No se encontraron resultados para la busqueda intentada',
 			'nroafiliado' => NULL,
