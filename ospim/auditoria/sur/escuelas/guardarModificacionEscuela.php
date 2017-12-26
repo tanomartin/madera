@@ -55,7 +55,7 @@ $usuariomodificacion = $_SESSION['usuario'];
 $sqlUpdateEscuela = "UPDATE escuelas 
 SET 
 nombre = '$nombre', 
-cue = $cue,
+cue = '$cue',
 domicilio = $domicilio,
 codlocali = $localidad, 
 codprovin = $codProvin,
