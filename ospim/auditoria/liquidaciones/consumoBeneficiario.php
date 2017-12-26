@@ -46,6 +46,8 @@ if(isset($_GET)) {
 	$sqlConsultaFacturasPrestacionesConsumo = "SELECT * FROM facturasprestaciones WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 1";
 	$resConsultaFacturasPrestacionesConsumo = mysql_query($sqlConsultaFacturasPrestacionesConsumo,$db);
 
+	$sqlConsultaFacturasPrestacionesCarencia = "SELECT * FROM facturasprestaciones WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 2";
+	$resConsultaFacturasPrestacionesCarencia = mysql_query($sqlConsultaFacturasPrestacionesCarencia,$db);
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -88,7 +90,6 @@ $(document).ready(function(){
 	$("#cueescuelaintegracion").attr('disabled', true);
 	$("#agregarprestacion").attr('disabled', true);
 	$("#agregarcarencia").attr('disabled', true);
-	$("#cerrarliquidacion").attr('disabled', true);
 	$("#fechaprestacion").datepicker({
 		firstDay: 1,
 		maxDate: "+0d",
@@ -225,6 +226,8 @@ $(document).ready(function(){
 			$("#agregarcarencia").attr('disabled', true);
 		} else {
 			$("#agregarprestacion").attr('disabled', true);
+			$("#cancelaintegracion").prop("checked",false);
+			$("#integracion").hide();
 			$("#agregarcarencia").attr('disabled', false);
 		}
 		$("#totalcredito").val(calculocredito);
@@ -322,11 +325,32 @@ $(document).ready(function(){
 				} else {
 					$.unblockUI();
 					var cajadialogo = $('<div title="Aviso"><p>Ocurrio un error al intentar agregar una prestacion. Comuniquelo al Depto. de Sistemas.</p></div>');
-					cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $("#agregarprestacion").attr('disabled', true); $("#agregarcarencia").attr('disabled', true); $("#cerrarliquidacion").attr('disabled', true); }});
+					cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $("#agregarprestacion").attr('disabled', true); $("#agregarcarencia").attr('disabled', true); }});
 				}
 			}
 		});
 	});
+	$("#agregarcarencia").on("click", function() {
+		var datosform = $("form#consumoPrestacional").serialize();
+		$.blockUI({ message: "<h1>Agregando Carencia a la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+		$.ajax({
+			type: "POST",
+			url: "agregaCarenciaPrestacion.php",
+			data: datosform,
+			dataType: 'json',
+			success: function(data) {
+				if(data.result == true){
+					location.reload();
+					$.unblockUI();
+				} else {
+					$.unblockUI();
+					var cajadialogo = $('<div title="Aviso"><p>Ocurrio un error al intentar agregar una carencia. Comuniquelo al Depto. de Sistemas.</p></div>');
+					cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $("#agregarprestacion").attr('disabled', true); $("#agregarcarencia").attr('disabled', true); }});
+				}
+			}
+		});
+	});
+
 	$("#listaConsumos")
 		.tablesorter({
 			theme: 'blue', 
@@ -369,7 +393,12 @@ $(document).ready(function(){
 function consultaContratos(dire) {
 	a=window.open(dire,'',
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
-}
+};
+function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiario) {
+	param = "idConsumoCarencia="+idconsumocarencia+"&idFactura="+idfactura+"&idFacturaBeneficiario="+idfacturabeneficiario;
+	$.blockUI({ message: "<h1>Anulando Consumo/Carencia de la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	window.location.href = "anulaConsumoCarencia.php?"+param;
+};
 </script>
 <style>
 .ui-autocomplete-loading { background: white url("../img/ui-anim_basic_16x16.gif") right center no-repeat; }
@@ -597,7 +626,7 @@ function consultaContratos(dire) {
 				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['totalcredito'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['motivodebito'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['efectorpractica'];?></td>
-				<td><input type="button" name="anulacarencia" id="anulacarencia" value="Anular Consumo" style="font-size:10px" onclick="javascript:anulaConsumo(<?php echo $rowConsultaFacturasPrestacionesConsumo['id'];?>)"/></td>
+				<td><input type="button" name="anulaconsumo" id="anulaconsumo" value="Anular Consumo" style="font-size:10px" onclick="javascript:anulaConsumoCarencia(<?php echo $rowConsultaFacturasPrestacionesConsumo['id'];?>,<?php echo $idfactura;?>,<?php echo $idfacturabeneficiario;?>)"/></td>
 			</tr>
 		<?php } ?>
 		</tbody>
@@ -622,10 +651,21 @@ function consultaContratos(dire) {
 			</tr>
 		</thead>
 		<tbody>
+		<?php while($rowConsultaFacturasPrestacionesCarencia = mysql_fetch_array($resConsultaFacturasPrestacionesCarencia)) { ?>
+			<tr>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['fechapractica'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['idPractica'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['cantidad'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['totalfacturado'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['totaldebito'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['totalcredito'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['motivodebito'];?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['efectorpractica'];?></td>
+				<td><input type="button" name="anulacarencia" id="anulacarencia" value="Anular Carencia" style="font-size:10px" onclick="javascript:anulaConsumoCarencia(<?php echo $rowConsultaFacturasPrestacionesCarencia['id'];?>,<?php echo $idfactura;?>,<?php echo $idfacturabeneficiario;?>)"/></td>
+			</tr>
+		<?php } ?>
 		</tbody>
 	</table>
 </div>
-<div align="center">
-	<input type="button" name="cerrarliquidacion" id="cerrarliquidacion" value="Cerrar Liquidacion"/></div>
 </body>
 </html>

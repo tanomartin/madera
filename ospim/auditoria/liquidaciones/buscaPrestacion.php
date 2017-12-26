@@ -10,8 +10,7 @@ if(isset($_GET)) {
 	$noencontro = TRUE;
 	$prestaciones = array();
 	if($tienecontrato == 1) {
-		$sqlLeePracticasContrato="SELECT c.idcontrato, c.codigoprestador, c.fechainicio, c.fechafin, d.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,80) AS nombrepractica, d.idcategoria, t.descripcion AS nombrecategoria, d.moduloconsultorio, d.modulourgencia, ((d.galenohonorario*p.unihonorario)+(d.galenohonorarioespecialista*p.unihonorarioespecialista)+(d.galenohonorarioayudante*p.unihonorarioayudante)+(d.galenohonorarioanestesista*p.unihonorarioanestesista)+(d.galenogastos*p.unigastos)) AS valorgaleno FROM cabcontratoprestador c, detcontratoprestador d, practicas p, practicascategorias t WHERE c.codigoprestador = $idprestador AND (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND c.idcontrato = d.idcontrato AND
-d.idpractica = p.idpractica AND d.idcategoria = t.id";
+		$sqlLeePracticasContrato="SELECT c.idcontrato, c.codigoprestador, c.fechainicio, c.fechafin, d.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,80) AS nombrepractica, d.idcategoria, t.descripcion AS nombrecategoria, d.moduloconsultorio, d.modulourgencia, ((d.galenohonorario*p.unihonorario)+(d.galenohonorarioespecialista*p.unihonorarioespecialista)+(d.galenohonorarioayudante*p.unihonorarioayudante)+(d.galenohonorarioanestesista*p.unihonorarioanestesista)+(d.galenogastos*p.unigastos)) AS valorgaleno FROM cabcontratoprestador c, detcontratoprestador d, practicas p, practicascategorias t WHERE c.codigoprestador = $idprestador AND (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND c.idcontrato = d.idcontrato AND d.idpractica = p.idpractica AND d.idcategoria = t.id";
 		$resLeePracticasContrato=mysql_query($sqlLeePracticasContrato,$db);
 		if(mysql_num_rows($resLeePracticasContrato)!=0) {
 			while($rowLeePracticasContrato=mysql_fetch_array($resLeePracticasContrato)) {
@@ -30,6 +29,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['moduloconsultorio'],
 								'integracion' => 0,
+								'complejidad' => NULL,
 							);
 						}
 						if($rowLeePracticasContrato['modulourgencia']>=0.00) {
@@ -39,6 +39,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['modulourgencia'],
 								'integracion' => 0,
+								'complejidad' =>NULL,
 							);
 						}
 						if($rowLeePracticasContrato['valorgaleno']>=0.00) {
@@ -48,6 +49,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['valorgaleno'],
 								'integracion' => 0,
+								'complejidad' => NULL,
 							);
 						}
 					}
@@ -76,6 +78,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 								'idpractica' => $rowLeePracticasResolucion['idpractica'],
 								'valor' => $rowLeePracticasResolucion['importe'],
 								'integracion' => 1,
+								'complejidad' => NULL,
 							);
 						}
 					}
@@ -102,6 +105,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 				'idpractica' => $rowLeePracticasNomenclador['idpractica'],
 				'valor' => '0.00',
 				'integracion' => 0,
+				'complejidad' => NULL,
 			);
 		}
 	}
@@ -111,6 +115,7 @@ d.idpractica = p.idpractica AND d.idcategoria = t.id";
 			'idpractica' => NULL,
 			'valor' => NULL,
 			'integracion' => 0,
+			'complejidad' => NULL,
 		);
 	}
 	echo json_encode($prestaciones);

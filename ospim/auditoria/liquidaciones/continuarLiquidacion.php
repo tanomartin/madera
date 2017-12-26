@@ -44,6 +44,7 @@ if(isset($_GET['idfactura'])) {
 $(document).ready(function(){
 	$("#agregarbeneficiario").attr('disabled', true);
 	$("#agregarcarencia").attr('disabled', true);
+	$("#cerrarliquidacion").attr('disabled', true);
 	$("#beneficiario").autocomplete({
 		source: function(request, response) {
 			$.ajax({
@@ -445,6 +446,9 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 			<textarea name="motivocarencia" rows="2" cols="50" id="motivocarencia" class="text ui-widget-content ui-corner-all" placeholder="Ingrese el motivo de la carencia y/o Comentario u Observacion"></textarea>
 		</fieldset>
 	</form>
+</div>
+<div align="center">
+	<input type="button" name="cerrarliquidacion" id="cerrarliquidacion" value="Cerrar Liquidacion"/>
 </div>
 </body>
 </html>
