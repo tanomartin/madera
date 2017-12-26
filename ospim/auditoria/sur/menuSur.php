@@ -41,6 +41,14 @@ include($libPath."controlSessionOspim.php"); ?>
           	<p><a class="enlace" href="resoluciones/moduloResoluciones.php"><img src="img/resoluciones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
 	</tr>
+	<tr>
+		<td></td>
+		<td>
+			<p>Escuelas</p>
+			<p><a class="enlace" href="escuelas/moduloEscuelas.php"><img src="img/escuelas.png" width="90" height="90" border="0"/></a></p>
+		</td>
+		<td></td>
+	</tr>
   </table>
 </div>
 </body>
