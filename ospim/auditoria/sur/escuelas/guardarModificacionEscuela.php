@@ -64,7 +64,7 @@ numpostal = $codPos,
 alfapostal = $alfapostal, 
 telefono = $tel, 
 email = $email,
-fehamodificacion = '$fechamodificacion', 
+fechamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'
 WHERE id = $codigo";
 

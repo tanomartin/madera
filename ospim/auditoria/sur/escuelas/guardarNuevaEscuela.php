@@ -51,10 +51,8 @@ if ($email == "") {
 
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$fechamodificacion = $fecharegistro;
-$usuariomodificacion = $usuarioregistro;
 
-$sqlInsertEscuela = "INSERT INTO escuelas VALUES(DEFAULT,'$nombre',$cue,$codProvin,$indpostal,$codPos,$alfapostal,$localidad,$domicilio,$email,$tel,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertEscuela = "INSERT INTO escuelas VALUES(DEFAULT,'$nombre',$cue,$codProvin,$indpostal,$codPos,$alfapostal,$localidad,$domicilio,$email,$tel,'$fecharegistro','$usuarioregistro',NULL,NULL)";
 
 try {
 	$hostname = $_SESSION['host'];
