@@ -2,7 +2,10 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."claves.php");
 
-
+$maquina = $_SERVER['SERVER_NAME'];
+if(strcmp("localhost",$maquina)==0) {
+	$hostUsimra = "localhost"; //para las pruebas...
+}
 $dbInternet =  mysql_connect($hostUsimra,$usuarioUsimra,$claveUsimra );
 if (!$dbInternet) {
 	die('No pudo conectarse a la base de OSPIM.COM.AR: ' . mysql_error());
