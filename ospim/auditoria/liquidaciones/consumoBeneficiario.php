@@ -43,10 +43,10 @@ if(isset($_GET)) {
 		$cuilBeneficiario = $rowConsultaFamiliar['cuil'];
 	}
 
-	$sqlConsultaFacturasPrestacionesConsumo = "SELECT * FROM facturasprestaciones WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 1";
+	$sqlConsultaFacturasPrestacionesConsumo = "SELECT f.*, p.codigopractica FROM facturasprestaciones f, practicas p WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 1 AND f.idPractica = p.idpractica";
 	$resConsultaFacturasPrestacionesConsumo = mysql_query($sqlConsultaFacturasPrestacionesConsumo,$db);
 
-	$sqlConsultaFacturasPrestacionesCarencia = "SELECT * FROM facturasprestaciones WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 2";
+	$sqlConsultaFacturasPrestacionesCarencia = "SELECT f.*, p.codigopractica FROM facturasprestaciones f, practicas p WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 2 AND f.idPractica = p.idpractica";
 	$resConsultaFacturasPrestacionesCarencia = mysql_query($sqlConsultaFacturasPrestacionesCarencia,$db);
 }
 ?>
@@ -616,16 +616,35 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			</tr>
 		</thead>
 		<tbody>
-		<?php while($rowConsultaFacturasPrestacionesConsumo = mysql_fetch_array($resConsultaFacturasPrestacionesConsumo)) { ?>
+		<?php while($rowConsultaFacturasPrestacionesConsumo = mysql_fetch_array($resConsultaFacturasPrestacionesConsumo)) {
+					if($rowConsultaFacturasPrestacionesConsumo['tipoefectorpractica']==1) {
+						$efectorpractica = $rowConsultaPrestador['nombre'];
+					} else {
+						if($rowConsultaFacturasPrestacionesConsumo['tipoefectorpractica']==2) {
+							$sqlConsultaProfesionalCirculo="SELECT nombre FROM profesionales WHERE codigoprofesional = $rowConsultaFacturasPrestacionesConsumo[efectorpractica] AND codigoprestador = $rowConsultaPrestador[codigoprestador]";
+							$resConsultaProfesionalCirculo = mysql_query($sqlConsultaProfesionalCirculo,$db);
+							$rowConsultaProfesionalCirculo = mysql_fetch_array($resConsultaProfesionalCirculo);
+							$efectorpractica = $rowConsultaProfesionalCirculo['nombre'];
+						} else {
+							if($rowConsultaFacturasPrestacionesConsumo['profesionalestablecimientocirculo']!=NULL) {
+								$efectorpractica = $rowConsultaFacturasPrestacionesConsumo['profesionalestablecimientocirculo'];
+							} else {
+								$sqlConsultaEstablecimientoEntidad="SELECT nombre FROM establecimientos WHERE codigo = $rowConsultaFacturasPrestacionesConsumo[efectorpractica] AND codigoprestador = $rowConsultaPrestador[codigoprestador]";
+								$resConsultaEstablecimientoEntidad = mysql_query($sqlConsultaEstablecimientoEntidad,$db);
+								$rowConsultaEstablecimientoEntidad = mysql_fetch_array($resConsultaEstablecimientoEntidad);
+								$efectorpractica = $rowConsultaEstablecimientoEntidad['nombre'];
+							}
+						}
+					}?>
 			<tr>
-				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['fechapractica'];?></td>
-				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['idPractica'];?></td>
+				<td><?php echo invertirFecha($rowConsultaFacturasPrestacionesConsumo['fechapractica']);?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['codigopractica'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['cantidad'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['totalfacturado'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['totaldebito'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['totalcredito'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['motivodebito'];?></td>
-				<td><?php echo $rowConsultaFacturasPrestacionesConsumo['efectorpractica'];?></td>
+				<td><?php echo $efectorpractica;?> </td>
 				<td><input type="button" name="anulaconsumo" id="anulaconsumo" value="Anular Consumo" style="font-size:10px" onclick="javascript:anulaConsumoCarencia(<?php echo $rowConsultaFacturasPrestacionesConsumo['id'];?>,<?php echo $idfactura;?>,<?php echo $idfacturabeneficiario;?>)"/></td>
 			</tr>
 		<?php } ?>
@@ -651,16 +670,35 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			</tr>
 		</thead>
 		<tbody>
-		<?php while($rowConsultaFacturasPrestacionesCarencia = mysql_fetch_array($resConsultaFacturasPrestacionesCarencia)) { ?>
+		<?php while($rowConsultaFacturasPrestacionesCarencia = mysql_fetch_array($resConsultaFacturasPrestacionesCarencia)) {
+					if($rowConsultaFacturasPrestacionesCarencia['tipoefectorpractica']==1) {
+						$efectorpractica = $rowConsultaPrestador['nombre'];
+					} else {
+						if($rowConsultaFacturasPrestacionesCarencia['tipoefectorpractica']==2) {
+							$sqlConsultaProfesionalCirculo="SELECT nombre FROM profesionales WHERE codigoprofesional = $rowConsultaFacturasPrestacionesCarencia[efectorpractica] AND codigoprestador = $rowConsultaPrestador[codigoprestador]";
+							$resConsultaProfesionalCirculo = mysql_query($sqlConsultaProfesionalCirculo,$db);
+							$rowConsultaProfesionalCirculo = mysql_fetch_array($resConsultaProfesionalCirculo);
+							$efectorpractica = $rowConsultaProfesionalCirculo['nombre'];
+						} else {
+							if($rowConsultaFacturasPrestacionesCarencia['profesionalestablecimientocirculo']!=NULL) {
+								$efectorpractica = $rowConsultaFacturasPrestacionesCarencia['profesionalestablecimientocirculo'];
+							} else {
+								$sqlConsultaEstablecimientoEntidad="SELECT nombre FROM establecimientos WHERE codigo = $rowConsultaFacturasPrestacionesCarencia[efectorpractica] AND codigoprestador = $rowConsultaPrestador[codigoprestador]";
+								$resConsultaEstablecimientoEntidad = mysql_query($sqlConsultaEstablecimientoEntidad,$db);
+								$rowConsultaEstablecimientoEntidad = mysql_fetch_array($resConsultaEstablecimientoEntidad);
+								$efectorpractica = $rowConsultaEstablecimientoEntidad['nombre'];
+							}
+						}
+					}?>
 			<tr>
-				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['fechapractica'];?></td>
-				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['idPractica'];?></td>
+				<td><?php echo invertirFecha($rowConsultaFacturasPrestacionesCarencia['fechapractica']);?></td>
+				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['codigopractica'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['cantidad'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['totalfacturado'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['totaldebito'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['totalcredito'];?></td>
 				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['motivodebito'];?></td>
-				<td><?php echo $rowConsultaFacturasPrestacionesCarencia['efectorpractica'];?></td>
+				<td><?php echo $efectorpractica;?></td>
 				<td><input type="button" name="anulacarencia" id="anulacarencia" value="Anular Carencia" style="font-size:10px" onclick="javascript:anulaConsumoCarencia(<?php echo $rowConsultaFacturasPrestacionesCarencia['id'];?>,<?php echo $idfactura;?>,<?php echo $idfacturabeneficiario;?>)"/></td>
 			</tr>
 		<?php } ?>

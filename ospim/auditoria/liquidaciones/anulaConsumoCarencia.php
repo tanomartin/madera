@@ -12,6 +12,23 @@ if(isset($_GET)) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 
+		$sqlConsultaConsumoCarencia = "SELECT totalfacturado, totaldebito, totalcredito FROM facturasprestaciones WHERE id = $idconsumocarencia";
+		$resConsultaConsumoCarencia = mysql_query($sqlConsultaConsumoCarencia,$db);
+		$rowConsultaConsumoCarencia = mysql_fetch_array($resConsultaConsumoCarencia);
+
+		$sqlConsultaTotalesBeneficiario = "SELECT totalfacturado, totaldebito, totalcredito, consumoprestacional FROM facturasbeneficiarios WHERE id = $idfacturabeneficiario AND idFactura = $idFactura";
+		$resConsultaTotalesBeneficiario = mysql_query($sqlConsultaTotalesBeneficiario,$db);
+		$rowConsultaTotalesBeneficiario = mysql_fetch_array($resConsultaTotalesBeneficiario);
+		$facturado = $rowConsultaTotalesBeneficiario['totalfacturado'] - $rowConsultaConsumoCarencia['totalfacturado'];
+		$debito  = $rowConsultaTotalesBeneficiario['totaldebito'] - $rowConsultaConsumoCarencia['totaldebito'];
+		$credito = $rowConsultaTotalesBeneficiario['totalcredito'] - $rowConsultaConsumoCarencia['totalcredito'];
+		$consumo = $rowConsultaTotalesBeneficiario['consumoprestacional'] - 1;
+
+		$sqlUpdateTotalesBeneficiario = "UPDATE facturasbeneficiarios SET totalfacturado = :totalfacturado, totaldebito = :totaldebito, totalcredito = :totalcredito, consumoprestacional = :consumoprestacional WHERE id = :id AND idFactura = :idfactura";
+		$resUpdateTotalesBeneficiario = $dbh->prepare($sqlUpdateTotalesBeneficiario);
+		if($resUpdateTotalesBeneficiario->execute(array(':totalfacturado' => $facturado, ':totaldebito' => $debito, ':totalcredito' => $credito, ':consumoprestacional' => $consumo, ':id' => $idfacturabeneficiario, ':idfactura' => $idFactura))) {
+		}
+
 		$sqlDeleteConsumoCarencia = "DELETE FROM facturasprestaciones WHERE id = :id";
 		$resDeleteConsumoCarencia = $dbh->prepare($sqlDeleteConsumoCarencia);
 		if($resDeleteConsumoCarencia->execute(array(':id' => $idconsumocarencia)))
