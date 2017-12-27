@@ -136,16 +136,32 @@ if(isset($_POST)) {
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
+
 		$sqlAddFacturasPrestacion = "INSERT INTO facturasprestaciones(id,idFactura,idFacturabeneficiario,tipomovimiento,idPractica,cantidad,fechapractica,totalfacturado,totaldebito,motivodebito,totalcredito,tipoefectorpractica,efectorpractica,profesionalestablecimientocirculo) VALUES(:id,:idFactura,:idFacturabeneficiario,:tipomovimiento,:idPractica,:cantidad,:fechapractica,:totalfacturado,:totaldebito,:motivodebito,:totalcredito,:tipoefectorpractica,:efectorpractica,:profesionalestablecimientocirculo)";
 		$resAddFacturasPrestacion = $dbh->prepare($sqlAddFacturasPrestacion);
 		if($resAddFacturasPrestacion->execute(array(':id' => 'DEFAULT',':idFactura' => $idfactura,':idFacturabeneficiario' => $idfacturabeneficiario,':tipomovimiento' => $tipomovimiento,':idPractica' => $idpractica,':cantidad' => $cantidad,':fechapractica' => $fechapractica,':totalfacturado' => $totalfacturado,':totaldebito' => $totaldebito,':motivodebito' => $motivodebito,':totalcredito' => $totalcredito,':tipoefectorpractica' => $tipoefectorpractica,':efectorpractica' => $efectorpractica,':profesionalestablecimientocirculo' => $profesionalestablecimientocirculo))) {
 		}
+
 		if($agregaintegracion) {
 			$sqlAddFacturasIntegracion = "INSERT INTO facturasintegracion(id,idFactura,idFacturabeneficiario,totalsolicitado,dependencia,tipoescuela,cueescuela) VALUES(:id,:idFactura,:idFacturabeneficiario,:totalsolicitado,:dependencia,:tipoescuela,:cueescuela)";
 			$resAddFacturasIntegracion = $dbh->prepare($sqlAddFacturasIntegracion);
 			if($resAddFacturasIntegracion->execute(array(':id' => 'DEFAULT',':idFactura' => $idfactura,':idFacturabeneficiario' => $idfacturabeneficiario,':totalsolicitado' => $totalsolicitado,':dependencia' => $dependencia,':tipoescuela' => $tipoescuela,':cueescuela' => $cueescuela))) {
 			}
 		}
+
+		$sqlConsultaTotalesBeneficiario = "SELECT totalfacturado, totaldebito, totalcredito, consumoprestacional FROM facturasbeneficiarios WHERE id = $idfacturabeneficiario AND idFactura = $idfactura";
+		$resConsultaTotalesBeneficiario = mysql_query($sqlConsultaTotalesBeneficiario,$db);
+		$rowConsultaTotalesBeneficiario = mysql_fetch_array($resConsultaTotalesBeneficiario);
+		(float)$facturado = (float)$rowConsultaTotalesBeneficiario['totalfacturado'] + (float)$totalfacturado;
+		(float)$debito  = (float)$rowConsultaTotalesBeneficiario['totaldebito'] + (float)$totaldebito;
+		(float)$credito = (float)$rowConsultaTotalesBeneficiario['totalcredito'] + (float)$totalcredito;
+		$consumo = $rowConsultaTotalesBeneficiario['consumoprestacional'] + 1;
+
+		$sqlUpdateTotalesBeneficiario = "UPDATE facturasbeneficiarios SET totalfacturado = :totalfacturado, totaldebito = :totaldebito, totalcredito = :totalcredito, consumoprestacional = :consumoprestacional WHERE id = :id AND idFactura = :idfactura";
+		$resUpdateTotalesBeneficiario = $dbh->prepare($sqlUpdateTotalesBeneficiario);
+		if($resUpdateTotalesBeneficiario->execute(array(':totalfacturado' => $facturado, ':totaldebito' => $debito, ':totalcredito' => $credito, ':consumoprestacional' => $consumo, ':id' => $idfacturabeneficiario, ':idfactura' => $idfactura))) {
+		}
+
 		$dbh->commit();
 		echo json_encode(array('result'=> true));
 	}

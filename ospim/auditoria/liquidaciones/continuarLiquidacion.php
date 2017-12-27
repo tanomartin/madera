@@ -2,6 +2,9 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $idcomprobante = 0;
+$totalbeneficiarios = 0;
+$totalconsumos = 0;
+$totalcarencias = 0;
 if(isset($_POST['idfactura'])) {
 	//var_dump($_POST);
 	$idcomprobante = $_POST['idfactura'];
@@ -212,6 +215,15 @@ $(document).ready(function(){
 			tips.removeClass( "ui-state-highlight", 1500 );
 		}, 500 );
 	};
+	if($("#totalconsumos").val() >= $("#totalbeneficiarios").val()) {
+		$("#cerrarliquidacion").attr('disabled', false);
+	} else {
+		if($("#totalcarencias").val()!=0) {
+			$("#cerrarliquidacion").attr('disabled', false);
+		} else {
+			$("#cerrarliquidacion").attr('disabled', true);
+		}
+	}
 });
 function cargaConsumo(idfactura, idfacturabeneficiario) {
 	param = "idFactura="+idfactura+"&idFacturabeneficiario="+idfacturabeneficiario;
@@ -350,6 +362,7 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 		</thead>
 		<tbody>
 		<?php while($rowConsultaFacturasBeneficiarios = mysql_fetch_array($resConsultaFacturasBeneficiarios)) {
+					$totalbeneficiarios++;
 					if($rowConsultaFacturasBeneficiarios['tipoafiliado']==0) {
 						$descripcionTipo = 'Titular';
 						$nombreBeneficiario = $rowConsultaFacturasBeneficiarios['apellidoynombre'];
@@ -376,7 +389,9 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 				<td><?php echo $rowConsultaFacturasBeneficiarios['totalcredito'];?></td>
 				<td>
 				<?php
-					if($rowConsultaFacturasBeneficiarios['consumoprestacional'] == 1) { ?>
+					if($rowConsultaFacturasBeneficiarios['consumoprestacional'] != 0) {
+						$totalconsumos++;
+					?>
 					<input name="<?php echo $botonconsumo;?>" type="button" id="<?php echo $botonconsumo;?>" value="Consumo Prestacional" style="font-size:10px" onclick="javascript:cargaConsumo(<?php echo $idcomprobante;?>,<?php echo $rowConsultaFacturasBeneficiarios['id'];?>)"/>
 				<?php
 					} else {
@@ -413,7 +428,9 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 			</tr>
 		</thead>
 		<tbody>
-		<?php while($rowConsultaCarenciasBeneficiarios = mysql_fetch_array($resConsultaCarenciasBeneficiarios)) { ?>
+		<?php while($rowConsultaCarenciasBeneficiarios = mysql_fetch_array($resConsultaCarenciasBeneficiarios)) { 
+					$totalcarencias++;
+		?>
 			<tr>
 				<td><?php echo $rowConsultaCarenciasBeneficiarios['identidadbeneficiario'];?></td>
 				<td><?php echo $rowConsultaCarenciasBeneficiarios['totalfacturado'];?></td>
@@ -448,6 +465,9 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 	</form>
 </div>
 <div align="center">
+	<input name="totalbeneficiarios" type="text" id="totalbeneficiarios" size="5" value="<?php echo $totalbeneficiarios;?>"/>
+	<input name="totalconsumos" type="text" id="totalconsumos" size="5" value="<?php echo $totalconsumos;?>"/>
+	<input name="totalcarencias" type="text" id="totalcarencias" size="5" value="<?php echo $totalcarencias;?>"/>
 	<input type="button" name="cerrarliquidacion" id="cerrarliquidacion" value="Cerrar Liquidacion"/>
 </div>
 </body>
