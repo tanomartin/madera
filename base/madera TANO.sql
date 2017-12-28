@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-11-2017 a las 16:52:18
+-- Tiempo de generación: 28-12-2017 a las 18:15:30
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -733,13 +733,13 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `idcontrato` int(4) NOT NULL AUTO_INCREMENT,
   `codigoprestador` int(4) NOT NULL,
   `fechainicio` date NOT NULL,
-  `fechafin` date NOT NULL,
+  `fechafin` date DEFAULT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -809,7 +809,7 @@ CREATE TABLE IF NOT EXISTS `cabjuiciosospim` (
   `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
   `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
   PRIMARY KEY (`nroorden`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Cabecera de Juicios de OSPIM' AUTO_INCREMENT=5895 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Cabecera de Juicios de OSPIM' AUTO_INCREMENT=5897 ;
 
 -- --------------------------------------------------------
 
@@ -1115,6 +1115,19 @@ CREATE TABLE IF NOT EXISTS `clasificamaterial` (
   `presumaximo` int(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`codigo`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Clasifica materiales para establecer puntos minimos y maximo' AUTO_INCREMENT=10 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `codigoautorizacion`
+--
+
+CREATE TABLE IF NOT EXISTS `codigoautorizacion` (
+  `id` char(1) NOT NULL COMMENT 'Id de Codigo de Autorizacion AFIP',
+  `descripcioncorta` char(10) NOT NULL COMMENT 'Abreviatura para el Codigo de Autorizacion AFIP',
+  `descripcionlarga` char(100) DEFAULT NULL COMMENT 'Descripcion del Codigo de Autorizacion AFIP',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora Tipo Autorizacion Afip para Emitir Factura';
 
 -- --------------------------------------------------------
 
@@ -1516,13 +1529,13 @@ CREATE TABLE IF NOT EXISTS `detcontratoprestador` (
   `idcontrato` int(4) NOT NULL,
   `idpractica` int(8) NOT NULL,
   `idcategoria` int(3) NOT NULL,
-  `moduloconsultorio` float(8,2) DEFAULT NULL,
-  `modulourgencia` float(8,2) DEFAULT NULL,
-  `galenohonorario` float(8,2) DEFAULT NULL,
-  `galenohonorarioespecialista` float(8,2) DEFAULT NULL,
-  `galenohonorarioayudante` float(8,2) DEFAULT NULL,
-  `galenohonorarioanestesista` float(8,2) DEFAULT NULL,
-  `galenogastos` float(8,2) DEFAULT NULL,
+  `moduloconsultorio` float(8,2) NOT NULL,
+  `modulourgencia` float(8,2) NOT NULL,
+  `galenohonorario` float(8,2) NOT NULL,
+  `galenohonorarioespecialista` float(8,2) NOT NULL,
+  `galenohonorarioayudante` float(8,2) NOT NULL,
+  `galenohonorarioanestesista` float(8,2) NOT NULL,
+  `galenogastos` float(8,2) NOT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`,`idpractica`,`idcategoria`)
@@ -2019,6 +2032,31 @@ CREATE TABLE IF NOT EXISTS `empresasdebaja` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `escuelas`
+--
+
+CREATE TABLE IF NOT EXISTS `escuelas` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `nombre` text NOT NULL,
+  `cue` char(9) NOT NULL,
+  `codprovin` int(2) DEFAULT NULL,
+  `indpostal` char(1) DEFAULT NULL,
+  `numpostal` int(4) DEFAULT NULL,
+  `alfapostal` char(3) DEFAULT NULL,
+  `codlocali` int(6) DEFAULT NULL,
+  `domicilio` char(50) DEFAULT NULL,
+  `email` char(60) DEFAULT NULL,
+  `telefono` char(20) DEFAULT NULL,
+  `fecharegistro` datetime NOT NULL,
+  `usuarioregistro` char(50) NOT NULL,
+  `fechamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `establecimientos`
 --
 
@@ -2045,7 +2083,7 @@ CREATE TABLE IF NOT EXISTS `establecimientos` (
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -2126,6 +2164,122 @@ CREATE TABLE IF NOT EXISTS `extraordinariosusimra` (
   `mensaje` text,
   PRIMARY KEY (`anio`,`mes`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora de periodos para pagos extraordinarios Aplicativo DDJJ';
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `facturas`
+--
+
+CREATE TABLE IF NOT EXISTS `facturas` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID Comprobante OSPIM',
+  `fecharecepcion` date NOT NULL COMMENT 'Fecha de Recepcion OSPIM',
+  `idPrestador` int(4) unsigned NOT NULL COMMENT 'Codigo de Prestador',
+  `idTipocomprobante` int(2) unsigned DEFAULT NULL COMMENT 'Tipo de Comprobante del Prestador',
+  `puntodeventa` int(4) unsigned zerofill NOT NULL COMMENT 'Punto de Venta del Comprobante del Prestador',
+  `nrocomprobante` int(8) unsigned zerofill NOT NULL COMMENT 'Nro. del Comprobante del Prestador',
+  `fechacomprobante` date NOT NULL COMMENT 'Fecha del Comprobante del Prestador',
+  `idCodigoautorizacion` char(1) DEFAULT NULL COMMENT 'Tipo de Codigo de Autorizacion del Comprobante del Prestador',
+  `nroautorizacion` bigint(14) unsigned zerofill DEFAULT NULL COMMENT 'Nro. de Autorizacion del Comprobante del Prestador',
+  `fechacorreo` date DEFAULT NULL COMMENT 'Fecha de Correo del Comprobante del Prestador',
+  `diasvencimiento` int(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Dias para el Vencimiento del Pago del Comprobante del Prestador',
+  `fechavencimiento` date NOT NULL COMMENT 'Fecha de Vencimiento para el pago del Comprobante del Prestador',
+  `importecomprobante` decimal(12,2) unsigned NOT NULL COMMENT 'Importe del Comprobante del Prestador',
+  `fechainicioliquidacion` datetime DEFAULT NULL COMMENT 'Fecha de Inicio de la Liquidacion/Auditoria OSPIM',
+  `usuarioliquidacion` char(50) DEFAULT NULL COMMENT 'Usuario que Gestiona la Liquidacion/Auditoria OSPIM',
+  `fechacierreliquidacion` datetime DEFAULT NULL COMMENT 'Fecha de Cierre de la Liquidacion/Auditoria OSPIM',
+  `totalcredito` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Importe Total de los Creditos de la Liquidacion',
+  `totaldebito` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Importe Total de los Debitos de la Liquidacion',
+  `importeliquidado` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Importe Total Liquidado',
+  `totalretenciones` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Importe Total de las Retenciones Impositivas Efectuadas a una Fecha',
+  `fecharetencion` date DEFAULT NULL COMMENT 'Fecha de la Ultima Retencion Impositiva Efectuada',
+  `totalpagado` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Importe Total Pagado de la Liquidacion a una Fecha',
+  `restoapagar` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Resto a Pagar de la Liquidacion a una Fecha',
+  `fechapago` date DEFAULT NULL COMMENT 'Fecha del Ultimo Pago Efectuado de la Liquidacion',
+  `fecharegistro` datetime NOT NULL COMMENT 'Fecha de Inicializacion del Registro',
+  `usuarioregistro` char(50) NOT NULL COMMENT 'Usuario que Inicializa el Registro',
+  `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
+  `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Facturacion de Prestadores' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `facturasbeneficiarios`
+--
+
+CREATE TABLE IF NOT EXISTS `facturasbeneficiarios` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id de Registro',
+  `idFactura` int(10) unsigned NOT NULL COMMENT 'Id de Comprobante Interno',
+  `nroafiliado` int(9) unsigned DEFAULT NULL COMMENT 'Nro. de Afiliado en caso de Existencia',
+  `tipoafiliado` int(2) unsigned DEFAULT NULL COMMENT 'Tipo de Afiliado en caso de Existencia (0=Titular / Resto=Familiar)',
+  `nroorden` int(3) unsigned DEFAULT NULL COMMENT 'Nro. de Orden Familiar',
+  `totalfacturado` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Importe Facturado para el Beneficiario',
+  `totaldebito` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Total de Debitos para el Beneficiario',
+  `totalcredito` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Total de Creditos para el Beneficiario',
+  `excepcionjurisdiccion` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Marca de Liquidacion por Excepcion Jurisdiccional Respecto del Prestador (0=No es Excepcion / 1=Si es Excepcion)',
+  `exceptuado` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Marca de Exceptuado Jurisdiccional para la Liquidacion (0=No se Exceptua / 1=Si se Exceptua)',
+  `consumoprestacional` int(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Marca de Carga de Consumo Prestacional (0=Sin Carga Efectuada / 1=Con Carga Efectuada)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Beneficiarios por Facturas de Prestadores' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `facturascarenciasbeneficiarios`
+--
+
+CREATE TABLE IF NOT EXISTS `facturascarenciasbeneficiarios` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id de Registro',
+  `idFactura` int(10) unsigned NOT NULL COMMENT 'Id de Comprobante Interno',
+  `identidadbeneficiario` text NOT NULL COMMENT 'Datos para Identificar al Beneficiario que Genera Carencia',
+  `totalfacturado` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Importe Facturado para el Beneficiario que Genera la Carencia',
+  `totaldebito` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Total de Debitos para el Beneficiario que Genera la Carencia',
+  `totalcredito` decimal(12,2) unsigned NOT NULL DEFAULT '0.00' COMMENT 'Total de Creditos para el Beneficiario que Genera la Carencia',
+  `motivocarencia` text NOT NULL COMMENT 'Motivo de la Carencia / Observacion / Comentario',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Carencia de Benefiario por Facturas de Prestadores' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `facturasintegracion`
+--
+
+CREATE TABLE IF NOT EXISTS `facturasintegracion` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id de Registro',
+  `idFacturaprestacion` int(10) unsigned NOT NULL COMMENT 'Id de Registro FacturasPrestaciones',
+  `totalsolicitado` decimal(12,2) unsigned NOT NULL COMMENT 'Importe Solicitado por Mecanismo de Integracion',
+  `dependencia` int(1) unsigned NOT NULL COMMENT 'Tiene Dependencia (0=No / 1=Si)',
+  `tipoescuela` int(8) unsigned DEFAULT NULL COMMENT 'Tipo de Escuela (Codigo de Practica Nomenclador SUR)',
+  `idEscuela` int(3) unsigned DEFAULT NULL COMMENT 'Id de Escuela',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Facturas que se Pagan a traves de Mecanismo de Integracion SSS' AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `facturasprestaciones`
+--
+
+CREATE TABLE IF NOT EXISTS `facturasprestaciones` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Id de Registro',
+  `idFactura` int(10) unsigned NOT NULL COMMENT 'Id de Comprobante Interno',
+  `idFacturabeneficiario` int(10) unsigned NOT NULL COMMENT 'Id de Registro FacturasBeneficiarios',
+  `tipomovimiento` int(1) unsigned NOT NULL COMMENT 'Tipo de Movimiento (1=Practica Consumo / 2=Practica Carencia)',
+  `idPractica` int(8) unsigned NOT NULL COMMENT 'Id de Practica',
+  `cantidad` int(3) unsigned NOT NULL COMMENT 'Cantidad de Practica',
+  `fechapractica` date NOT NULL COMMENT 'Fecha de Practica',
+  `totalfacturado` decimal(12,2) unsigned NOT NULL COMMENT 'Importe Facturado para la Practica',
+  `totaldebito` decimal(12,2) unsigned NOT NULL COMMENT 'Total de Debito para la Practica',
+  `motivodebito` text COMMENT 'Motivo del Debito para la Practica',
+  `totalcredito` decimal(12,2) unsigned NOT NULL COMMENT 'Total de Credito para la Practica',
+  `tipoefectorpractica` int(1) unsigned NOT NULL COMMENT 'Tipo Efector Practica (1=Prestador / 2=Profesional Circulo / 3=Establecimiento Entidad Agrupadora)',
+  `efectorpractica` int(4) unsigned NOT NULL COMMENT 'Codigo de Prestador / Profesional / Establecimiento que Efectua la Practica',
+  `profesionalestablecimientocirculo` char(100) DEFAULT NULL COMMENT 'Profesional que efectua la practica si el Establecimiento de la Entidad Agrupadora es un Circulo',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Detalles de Prestaciones por Beneficiario para Facturas de Prestadores' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -2268,6 +2422,32 @@ CREATE TABLE IF NOT EXISTS `familiausimra` (
   `bajada` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `formularios650`
+--
+
+CREATE TABLE IF NOT EXISTS `formularios650` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `descripcion` varchar(200) NOT NULL,
+  `titulo` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `formularios650campos`
+--
+
+CREATE TABLE IF NOT EXISTS `formularios650campos` (
+  `id` int(3) NOT NULL AUTO_INCREMENT,
+  `formulario` int(2) NOT NULL,
+  `tipocomplejidad` int(2) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 -- --------------------------------------------------------
 
@@ -3286,6 +3466,8 @@ CREATE TABLE IF NOT EXISTS `prestadores` (
   `email1` char(60) DEFAULT NULL,
   `email2` char(60) DEFAULT NULL,
   `cuit` char(11) NOT NULL,
+  `situacionfiscal` int(1) NOT NULL,
+  `vtoexento` date DEFAULT NULL,
   `personeria` int(1) unsigned DEFAULT NULL COMMENT '1: Fisico - 2: Juridico',
   `tratamiento` int(2) unsigned DEFAULT NULL COMMENT 'Como se llamara al profesional para la cartas o ordenes de pago',
   `matriculanacional` char(10) DEFAULT NULL COMMENT 'Matricula Nacional',
@@ -3300,7 +3482,7 @@ CREATE TABLE IF NOT EXISTS `prestadores` (
   `fehamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` char(50) DEFAULT NULL,
   PRIMARY KEY (`codigoprestador`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4325 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4331 ;
 
 -- --------------------------------------------------------
 
@@ -3309,12 +3491,13 @@ CREATE TABLE IF NOT EXISTS `prestadores` (
 --
 
 CREATE TABLE IF NOT EXISTS `prestadoresauxiliar` (
-  `cuit` char(11) NOT NULL,
-  `retiene` int(1) NOT NULL,
+  `codigoprestador` int(4) NOT NULL,
   `cbu` varchar(30) DEFAULT NULL,
   `banco` text,
   `cuenta` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`cuit`)
+  `fechamodificacion` datetime DEFAULT NULL,
+  `usuariomodificacion` char(50) DEFAULT NULL,
+  PRIMARY KEY (`codigoprestador`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -3406,8 +3589,8 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `domicilio` char(50) NOT NULL,
   `codlocali` int(6) unsigned NOT NULL,
   `codprovin` int(2) unsigned NOT NULL,
-  `indpostal` char(1) NOT NULL,
-  `numpostal` int(4) unsigned NOT NULL,
+  `indpostal` char(1) DEFAULT NULL,
+  `numpostal` int(4) unsigned DEFAULT NULL,
   `alfapostal` char(3) DEFAULT NULL,
   `telefono1` bigint(10) DEFAULT NULL,
   `ddn1` char(5) DEFAULT NULL,
@@ -3418,8 +3601,8 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `email` char(60) DEFAULT NULL,
   `cuit` char(11) NOT NULL,
   `tratamiento` int(2) unsigned NOT NULL COMMENT 'Como se llamara al profesional para la cartas o ordenes de pago',
-  `matriculanacional` char(10) NOT NULL COMMENT 'Matricula Nacional',
-  `matriculaprovincial` char(10) NOT NULL COMMENT 'Matricula Provincial',
+  `matriculanacional` char(10) DEFAULT NULL COMMENT 'Matricula Nacional',
+  `matriculaprovincial` char(10) DEFAULT NULL COMMENT 'Matricula Provincial',
   `numeroregistrosss` int(10) DEFAULT NULL COMMENT 'Numero de registro en la Superintendencia de Servicio de Salud',
   `activo` int(1) NOT NULL DEFAULT '1',
   `fecharegistro` datetime NOT NULL,
@@ -3427,7 +3610,7 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`codigoprofesional`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -3757,7 +3940,7 @@ CREATE TABLE IF NOT EXISTS `seguimiento` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -3773,7 +3956,7 @@ CREATE TABLE IF NOT EXISTS `seguimientoestado` (
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -3882,9 +4065,21 @@ CREATE TABLE IF NOT EXISTS `subidapadroncapitados` (
 
 CREATE TABLE IF NOT EXISTS `tipocomplejidad` (
   `codigocomplejidad` int(2) NOT NULL AUTO_INCREMENT,
-  `descripcion` char(20) NOT NULL,
+  `descripcion` char(50) NOT NULL,
   PRIMARY KEY (`codigocomplejidad`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipocomprobante`
+--
+
+CREATE TABLE IF NOT EXISTS `tipocomprobante` (
+  `id` int(2) NOT NULL,
+  `descripcion` char(50) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Codificadora para Tipos de Comprobantes de Facturacion';
 
 -- --------------------------------------------------------
 
@@ -4007,6 +4202,18 @@ CREATE TABLE IF NOT EXISTS `tiposerviciodisca` (
   `codigoservicio` int(2) NOT NULL,
   `descripcion` char(100) NOT NULL,
   PRIMARY KEY (`codigoservicio`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tiposituacionfiscal`
+--
+
+CREATE TABLE IF NOT EXISTS `tiposituacionfiscal` (
+  `id` int(11) NOT NULL,
+  `descripcion` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
