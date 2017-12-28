@@ -90,6 +90,19 @@ $(document).ready(function(){
 	$("#cueescuelaintegracion").attr('disabled', true);
 	$("#agregarprestacion").attr('disabled', true);
 	$("#agregarcarencia").attr('disabled', true);
+	var i = 0;
+	while(i<17) {
+		var idspan = '#span'+i;
+		var idchec = '#chec'+i;
+		if(i == 0) {
+			$(idspan).hide();
+		} else {
+			$(idchec).hide();
+			$(idspan).hide();
+		}
+		i++;
+	};
+	$("#estadisticas").hide();
 	$("#fechaprestacion").datepicker({
 		firstDay: 1,
 		maxDate: "+0d",
@@ -128,8 +141,10 @@ $(document).ready(function(){
 			var idpracticadevuelta = ui.item.idpractica;
 			var referenciadevuelto = ui.item.valor;
 			var integraciondevuelto = ui.item.integracion;
+			var complejidaddevuelto = ui.item.complejidad;
 			$("#idPractica").val(ui.item.idpractica);
 			$("#esIntegracion").val(ui.item.integracion);
+			$("#clasificacionComplejidad").val(ui.item.complejidad);
 			$("#cantidad").val('');
 			$("#referenciaunitario").val('0.00');
 			$("#referenciatotal").val('0.00');
@@ -165,6 +180,33 @@ $(document).ready(function(){
 				$("#dependenciaintegracion").prop("checked",false);
 				$("#tipoescuelaintegracion option[value='']").prop('selected',true);
 				$("#cueescuelaintegracion").val('');
+			}
+			var i = 0;
+			while(i<17) {
+				var idspan = '#span'+i;
+				var idchec = '#chec'+i;
+				if(i == 0) {
+					$(idspan).hide();
+				} else {
+					$(idchec).hide();
+					$(idspan).hide();
+				}
+				i++;
+			};
+			$("#estadisticas").hide();
+			if(complejidaddevuelto==null) {
+				$("#estadisticas").hide();
+			} else {
+				$("#estadisticas").show();
+				var idspan = '#span'+complejidaddevuelto;
+				var idchec = '#chec'+complejidaddevuelto;
+				if(complejidaddevuelto==0) {
+					$(idspan).show();
+				} else {
+					$(idspan).show();
+					$(idchec).prop("checked",true);
+					$(idchec).show();
+				}
 			}
 		}  
 	});
@@ -524,8 +566,10 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			<tr>
 				<td align="right"><strong>Buscar Prestacion</strong></td>
 				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
-								<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
-								<input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/></td>
+								<input name="idPractica" type="text" id="idPractica" size="5" value=""/>
+								<input name="esIntegracion" type="text" id="esIntegracion" size="2" value=""/>
+								<input name="clasificacionComplejidad" type="text" id="clasificacionComplejidad" size="2" value=""/>
+				</td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Cantidad</strong></td>
@@ -587,6 +631,65 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 				</td>
 			</tr>
 		</table>
+	</div>
+	<div id="estadisticas" align="center">
+		<h3 style="margin-bottom:1px">Calculo Estadistico Resol. 650</h3>
+		<span id="span0">
+			<strong>Prestacion no Clasificada. No hay computo estadistico.</strong>
+		</span>
+		<span id="span1">
+			<strong>Baja Complejidad</strong><input name="baja" type="checkbox" id="chec1" value="1"/>
+		</span>
+		<span id="span2">
+			<strong>Media Complejidad</strong><input name="media" type="checkbox" id="chec2" value="1"/>
+			Ecografia<input name="ecografia" type="checkbox" id="ecografia" value="1"/>
+			Tomografia<input name="tomografia" type="checkbox" id="tomografia" value="1"/>
+		</span>
+		<span id="span3">
+			<strong>Alta Complejidad</strong><input name="alta" type="checkbox" id="chec3" value="1"/>
+			Med. Nuclear<input name="nuclear" type="checkbox" id="nuclear" value="1"/>
+			Est. Hemodinamia<input name="hemodinamia" type="checkbox" id="hemodinamia" value="1"/>
+			Res. Magnetica<input name="resonancia" type="checkbox" id="resonancia" value="1"/>
+		</span>
+		<span id="span4">
+			<strong>Consulta Ambulatoria</strong><input name="ambulatoria" type="checkbox" id="chec4" value="1"/>
+		</span>
+		<span id="span5">
+			<strong>Consulta Psiquiatrica</strong><input name="psiquiatrica" type="checkbox" id="chec5" value="1"/>
+		</span>
+		<span id="span6">
+			<strong>Paciente En Rehabilitacion</strong><input name="rehabilitacion" type="checkbox" id="chec6" value="1"/>
+		</span>
+		<span id="span7">
+			<strong>Paciente Terapia Citostatica</strong><input name="citostatica" type="checkbox" id="chec7" value="1"/>
+		</span>
+		<span id="span8">
+			<strong>Paciente Hemodialisis</strong><input name="hemodialisis" type="checkbox" id="chec8" value="1"/>
+		</span>
+		<span id="span9">
+			<strong>Cirugia Cardiovascular</strong><input name="cardiovascular" type="checkbox" id="chec9" value="1"/>
+		</span>
+		<span id="span10">
+			<strong>Cirugia Prostatectomia</strong><input name="prostatectomia" type="checkbox" id="chec10" value="1"/>
+		</span>
+		<span id="span11">
+			<strong>C.A. de Cuello Uterino</strong><input name="uterino" type="checkbox" id="chec11" value="1"/>
+		</span>
+		<span id="span12">
+			<strong>C.A. de Mama</strong><input name="mama" type="checkbox" id="chec12" value="1"/>
+		</span>
+		<span id="span13">
+			<strong>Parto Normal</strong><input name="parto" type="checkbox" id="chec13" value="1"/>
+		</span>
+		<span id="span14">
+			<strong>Parto Cesarea</strong><input name="cesarea" type="checkbox" id="chec14" value="1"/>
+		</span>
+		<span id="span15">
+			<strong>Egreso Clinico</strong><input name="clinico" type="checkbox" id="chec15" value="1"/>
+		</span>
+		<span id="span16">
+			<strong>Egreso Quirugico</strong><input name="quirurgico" type="checkbox" id="chec16" value="1"/>
+		</span>
 	</div>
 	<div align="center">
 		<table border="0">

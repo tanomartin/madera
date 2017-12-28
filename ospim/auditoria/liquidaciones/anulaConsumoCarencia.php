@@ -31,7 +31,14 @@ if(isset($_GET)) {
 
 		$sqlDeleteConsumoCarencia = "DELETE FROM facturasprestaciones WHERE id = :id";
 		$resDeleteConsumoCarencia = $dbh->prepare($sqlDeleteConsumoCarencia);
-		if($resDeleteConsumoCarencia->execute(array(':id' => $idconsumocarencia)))
+		if($resDeleteConsumoCarencia->execute(array(':id' => $idconsumocarencia))){
+		}
+
+		$sqlDeleteIntegracion = "DELETE FROM facturasintegracion WHERE idFacturaprestacion = :idFacturaprestacion";
+		$resDeleteIntegracion = $dbh->prepare($sqlDeleteIntegracion);
+		if($resDeleteIntegracion->execute(array(':idFacturaprestacion' => $idconsumocarencia))){
+		}
+
 		$dbh->commit();
 		$pagina = "consumoBeneficiario.php?idFactura=$idFactura&idFacturabeneficiario=$idfacturabeneficiario";
 		header("Location: $pagina");
