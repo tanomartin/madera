@@ -5,6 +5,9 @@ $idcomprobante = 0;
 $totalbeneficiarios = 0;
 $totalconsumos = 0;
 $totalcarencias = 0;
+$totalfacturado = 0.00;
+$totaldebito = 0.00;
+$totalcredito = 0.00;
 if(isset($_POST['idfactura'])) {
 	//var_dump($_POST);
 	$idcomprobante = $_POST['idfactura'];
@@ -217,9 +220,39 @@ $(document).ready(function(){
 	};
 	if($("#totalconsumos").val() >= $("#totalbeneficiarios").val()) {
 		$("#cerrarliquidacion").attr('disabled', false);
+		if(parseFloat($("#facturadototal").val()) != parseFloat($("#importecomprobante").val())) {
+			$("#cerrarliquidacion").attr('disabled', true);
+		} else {
+			$("#cerrarliquidacion").attr('disabled', false);
+			if(parseFloat($("#debitototal").val()) > parseFloat($("#importecomprobante").val())) {
+				$("#cerrarliquidacion").attr('disabled', true);
+			} else {
+				$("#cerrarliquidacion").attr('disabled', false);
+				if(parseFloat($("#creditototal").val()) > parseFloat($("#importecomprobante").val())) {
+					$("#cerrarliquidacion").attr('disabled', true);
+				} else {
+					$("#cerrarliquidacion").attr('disabled', false);
+				}
+			}
+		}
 	} else {
 		if($("#totalcarencias").val()!=0) {
 			$("#cerrarliquidacion").attr('disabled', false);
+			if(parseFloat($("#facturadototal").val()) != parseFloat($("#importecomprobante").val())) {
+				$("#cerrarliquidacion").attr('disabled', true);
+			} else {
+				$("#cerrarliquidacion").attr('disabled', false);
+				if(parseFloat($("#debitototal").val()) > parseFloat($("#importecomprobante").val())) {
+					$("#cerrarliquidacion").attr('disabled', true);
+				} else {
+					$("#cerrarliquidacion").attr('disabled', false);
+					if(parseFloat($("#creditototal").val()) > parseFloat($("#importecomprobante").val())) {
+						$("#cerrarliquidacion").attr('disabled', true);
+					} else {
+						$("#cerrarliquidacion").attr('disabled', false);
+					}
+				}
+			}
 		} else {
 			$("#cerrarliquidacion").attr('disabled', true);
 		}
@@ -314,7 +347,7 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 		</tr>
 		<tr>
 			<td align="right" colspan="3">Importe: </td>
-			<td align="left"><?php echo $rowConsultaFactura['importecomprobante'];?></td>
+			<td align="left"><?php echo $rowConsultaFactura['importecomprobante'];?><input name="importecomprobante" type="hidden" id="importecomprobante" size="10" value="<?php echo $rowConsultaFactura['importecomprobante'];?>"/></td>
 		</tr>
 	</table>
 	</div>
@@ -363,6 +396,9 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 		<tbody>
 		<?php while($rowConsultaFacturasBeneficiarios = mysql_fetch_array($resConsultaFacturasBeneficiarios)) {
 					$totalbeneficiarios++;
+					$totalfacturado = $totalfacturado + $rowConsultaFacturasBeneficiarios['totalfacturado'];
+					$totaldebito = $totaldebito + $rowConsultaFacturasBeneficiarios['totaldebito'];
+					$totalcredito = $totalcredito + $rowConsultaFacturasBeneficiarios['totalcredito'];
 					if($rowConsultaFacturasBeneficiarios['tipoafiliado']==0) {
 						$descripcionTipo = 'Titular';
 						$nombreBeneficiario = $rowConsultaFacturasBeneficiarios['apellidoynombre'];
@@ -430,6 +466,9 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 		<tbody>
 		<?php while($rowConsultaCarenciasBeneficiarios = mysql_fetch_array($resConsultaCarenciasBeneficiarios)) { 
 					$totalcarencias++;
+					$totalfacturado = $totalfacturado + $rowConsultaCarenciasBeneficiarios['totalfacturado'];
+					$totaldebito = $totaldebito + $rowConsultaCarenciasBeneficiarios['totaldebito'];
+					$totalcredito = $totalcredito + $rowConsultaCarenciasBeneficiarios['totalcredito'];
 		?>
 			<tr>
 				<td><?php echo $rowConsultaCarenciasBeneficiarios['identidadbeneficiario'];?></td>
@@ -465,9 +504,12 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 	</form>
 </div>
 <div align="center">
-	<input name="totalbeneficiarios" type="text" id="totalbeneficiarios" size="5" value="<?php echo $totalbeneficiarios;?>"/>
-	<input name="totalconsumos" type="text" id="totalconsumos" size="5" value="<?php echo $totalconsumos;?>"/>
-	<input name="totalcarencias" type="text" id="totalcarencias" size="5" value="<?php echo $totalcarencias;?>"/>
+	<input name="totalbeneficiarios" type="hidden" id="totalbeneficiarios" size="5" value="<?php echo $totalbeneficiarios;?>"/>
+	<input name="totalconsumos" type="hidden" id="totalconsumos" size="5" value="<?php echo $totalconsumos;?>"/>
+	<input name="totalcarencias" type="hidden" id="totalcarencias" size="5" value="<?php echo $totalcarencias;?>"/>
+	<input name="facturadototal" type="hidden" id="facturadototal" size="5" value="<?php echo $totalfacturado;?>"/>
+	<input name="debitototal" type="hidden" id="debitototal" size="5" value="<?php echo $totaldebito;?>"/>
+	<input name="creditototal" type="hidden" id="creditototal" size="5" value="<?php echo $totalcredito;?>"/>
 	<input type="button" name="cerrarliquidacion" id="cerrarliquidacion" value="Cerrar Liquidacion"/>
 </div>
 </body>

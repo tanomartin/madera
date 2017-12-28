@@ -141,10 +141,12 @@ if(isset($_POST)) {
 		if($resAddFacturasPrestacion->execute(array(':id' => 'DEFAULT',':idFactura' => $idfactura,':idFacturabeneficiario' => $idfacturabeneficiario,':tipomovimiento' => $tipomovimiento,':idPractica' => $idpractica,':cantidad' => $cantidad,':fechapractica' => $fechapractica,':totalfacturado' => $totalfacturado,':totaldebito' => $totaldebito,':motivodebito' => $motivodebito,':totalcredito' => $totalcredito,':tipoefectorpractica' => $tipoefectorpractica,':efectorpractica' => $efectorpractica,':profesionalestablecimientocirculo' => $profesionalestablecimientocirculo))) {
 		}
 
+		$lastidfacturaprestacion = $dbh->lastInsertId();
+
 		if($agregaintegracion) {
-			$sqlAddFacturasIntegracion = "INSERT INTO facturasintegracion(id,idFactura,idFacturabeneficiario,totalsolicitado,dependencia,tipoescuela,cueescuela) VALUES(:id,:idFactura,:idFacturabeneficiario,:totalsolicitado,:dependencia,:tipoescuela,:cueescuela)";
+			$sqlAddFacturasIntegracion = "INSERT INTO facturasintegracion(id,idFacturaprestacion,totalsolicitado,dependencia,tipoescuela,idEscuela) VALUES(:id,:idFacturaprestacion,:totalsolicitado,:dependencia,:tipoescuela,:idEscuela)";
 			$resAddFacturasIntegracion = $dbh->prepare($sqlAddFacturasIntegracion);
-			if($resAddFacturasIntegracion->execute(array(':id' => 'DEFAULT',':idFactura' => $idfactura,':idFacturabeneficiario' => $idfacturabeneficiario,':totalsolicitado' => $totalsolicitado,':dependencia' => $dependencia,':tipoescuela' => $tipoescuela,':cueescuela' => $cueescuela))) {
+			if($resAddFacturasIntegracion->execute(array(':id' => 'DEFAULT',':idFacturaprestacion' => $lastidfacturaprestacion,':totalsolicitado' => $totalsolicitado,':dependencia' => $dependencia,':tipoescuela' => $tipoescuela,':idEscuela' => $cueescuela))) {
 			}
 		}
 
