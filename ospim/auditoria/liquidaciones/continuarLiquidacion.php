@@ -256,7 +256,7 @@ $(document).ready(function(){
 		} else {
 			$("#cerrarliquidacion").attr('disabled', true);
 		}
-	}
+	};
 });
 function cargaConsumo(idfactura, idfacturabeneficiario) {
 	param = "idFactura="+idfactura+"&idFacturabeneficiario="+idfacturabeneficiario;
@@ -281,6 +281,12 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 	} else {
 		$(nombreconsumo).attr('disabled', 'disabled');
 	}
+};
+
+function cierraLiquidacion(idfactura) {
+	param = "idFactura="+idfactura;
+	$.blockUI({ message: "<h1>Procesando el Cierre de la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	window.location.href="cerrarLiquidacion.php?"+param;
 };
 </script>
 <style>
@@ -510,7 +516,7 @@ function verificaExcepcion(nombreconsumo,nombreexcepcion) {
 	<input name="facturadototal" type="hidden" id="facturadototal" size="5" value="<?php echo $totalfacturado;?>"/>
 	<input name="debitototal" type="hidden" id="debitototal" size="5" value="<?php echo $totaldebito;?>"/>
 	<input name="creditototal" type="hidden" id="creditototal" size="5" value="<?php echo $totalcredito;?>"/>
-	<input type="button" name="cerrarliquidacion" id="cerrarliquidacion" value="Cerrar Liquidacion"/>
+	<input type="button" name="cerrarliquidacion" id="cerrarliquidacion" value="Cerrar Liquidacion" onclick="javascript:cierraLiquidacion(<?php echo $idcomprobante;?>)"/>
 </div>
 </body>
 </html>

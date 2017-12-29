@@ -566,9 +566,9 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			<tr>
 				<td align="right"><strong>Buscar Prestacion</strong></td>
 				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
-								<input name="idPractica" type="text" id="idPractica" size="5" value=""/>
-								<input name="esIntegracion" type="text" id="esIntegracion" size="2" value=""/>
-								<input name="clasificacionComplejidad" type="text" id="clasificacionComplejidad" size="2" value=""/>
+								<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
+								<input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/>
+								<input name="clasificacionComplejidad" type="hidden" id="clasificacionComplejidad" size="2" value=""/>
 				</td>
 			</tr>
 			<tr>
