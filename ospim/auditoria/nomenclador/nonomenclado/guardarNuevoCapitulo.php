@@ -8,7 +8,8 @@ $sqlExisteCodigo = "SELECT * FROM capitulosdepracticas WHERE codigo = '$codigo' 
 $resExisteCodigo = mysql_query($sqlExisteCodigo,$db);
 $numExisteCodigo = mysql_num_rows($resExisteCodigo);
 //print($sqlExisteCodigo."<br>");
-if ($numExisteCodigo == 0) {	
+if ($numExisteCodigo == 0) {
+	$descri = strtoupper($descri);
 	$sqlInsertCapitulo = "INSERT INTO capitulosdepracticas VALUES(DEFAULT,'$codigo',$tipo,'$descri')";
 	try {
 		$hostname = $_SESSION['host'];

@@ -11,7 +11,8 @@ $sqlExisteCodigo = "SELECT * FROM subcapitulosdepracticas WHERE codigo = '$codig
 $resExisteCodigo = mysql_query($sqlExisteCodigo,$db);
 $numExisteCodigo = mysql_num_rows($resExisteCodigo);
 //print($sqlExisteCodigo."<br>");
-if ($numExisteCodigo == 0) {	
+if ($numExisteCodigo == 0) {
+	$descri = strtoupper($descri);
 	$sqlInsertSubCapitulo = "INSERT INTO subcapitulosdepracticas VALUES(DEFAULT,'$codigoCompleto',$idcapitulo,'$descri')";
 	try {
 		$hostname = $_SESSION['host'];
