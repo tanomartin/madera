@@ -7,7 +7,7 @@ foreach($_POST as $key => $value) {
 		$sqlUpdatePractica[$i] = "UPDATE practicas SET ";
 		$codigoPractica = $value;
 	}
-	$resultado = strpos($key, "unihonorario");
+	$resultado = strpos($key, "unihonorariosolo");
 	if($resultado !== FALSE){
 		$unihonorario = $value;
 		if ($unihonorario != '') { $sqlUpdatePractica[$i] .= "unihonorario = $unihonorario, "; }
@@ -49,13 +49,13 @@ try {
 	$dbh->beginTransaction();
 	
 	foreach($sqlUpdatePractica as $sqlUpdate) {
-		//print($sqlUpdate."<br>");
-		$dbh->exec($sqlUpdate);
+		print($sqlUpdate."<br>");
+		//$dbh->exec($sqlUpdate);
 	}
 	
 	$dbh->commit();
 	$pagina = "menuNomenclado.php?codigo=".$idNomenclador;
-	Header("Location: $pagina"); 
+	//Header("Location: $pagina"); 
 }catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
