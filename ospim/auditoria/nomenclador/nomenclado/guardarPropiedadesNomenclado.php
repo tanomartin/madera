@@ -38,7 +38,6 @@ foreach($_POST as $key => $value) {
 		$sqlUpdatePractica[$i] .= "codigocomplejidad = $codigoComplejidad WHERE codigopractica = '$codigoPractica' and nomenclador = '$idNomenclador'";
 		$i++;
 	}
-	
 }
 
 try {
