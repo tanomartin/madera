@@ -49,13 +49,13 @@ try {
 	$dbh->beginTransaction();
 	
 	foreach($sqlUpdatePractica as $sqlUpdate) {
-		print($sqlUpdate."<br>");
-		//$dbh->exec($sqlUpdate);
+		//print($sqlUpdate."<br>");
+		$dbh->exec($sqlUpdate);
 	}
 	
 	$dbh->commit();
 	$pagina = "menuNomenclado.php?codigo=".$idNomenclador;
-	//Header("Location: $pagina"); 
+	Header("Location: $pagina"); 
 }catch (PDOException $e) {
 	echo $e->getMessage();
 	$dbh->rollback();
