@@ -59,6 +59,8 @@ jQuery(function($){
 		$("#capitulo").prop("disabled",true);
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
 		$("#subcapitulo").prop("disabled",true);
+		$("#res650total").val(0);
+		$("#res650total").prop("disabled",true);
 		$("#practicas").html("");
 		$("#guardar").css("display", "none");
 		var valor = $(this).val();
@@ -81,6 +83,7 @@ jQuery(function($){
 						data: {valor:-1, tipo:valor, nomenclador:nomenclador},
 					}).done(function(respuesta){
 						$("#practicas").html(respuesta);
+						$("#res650total").prop("disabled",false);
 						$("#guardar").prop("disabled",false);	
 						$("#guardar").css("display", "block");
 					});
@@ -91,7 +94,9 @@ jQuery(function($){
 	
 	$("#capitulo").change(function(){
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
-		$("#subcapitulo").prop("disabled",true);	
+		$("#subcapitulo").prop("disabled",true);
+		$("#res650total").val(0);
+		$("#res650total").prop("disabled",true);	
 		$("#practicas").html("");
 		$("#guardar").css("display", "none");
 		tipo = $("#tipo").val();
@@ -116,6 +121,7 @@ jQuery(function($){
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
+					$("#res650total").prop("disabled",false);
 					$("#guardar").prop("disabled",false);
 					$("#guardar").css("display", "block");
 				}
@@ -124,6 +130,8 @@ jQuery(function($){
 	});
 	
 	$("#subcapitulo").change(function(){
+		$("#res650total").val(0);
+		$("#res650total").prop("disabled",true);
 		var valor = $(this).val();
 		var tipo = $("#tipo").val();
 		var nomenclador = $("#nomenclador").val();
@@ -155,6 +163,7 @@ jQuery(function($){
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
+					$("#res650total").prop("disabled",false);
 					$("#guardar").prop("disabled",false);	
 					$("#guardar").css("display", "block");
 				}
@@ -163,13 +172,25 @@ jQuery(function($){
 	});
 });
 
+function cambiarClasificaion(valor) {
+	var tabla = document.getElementById('practicas');
+	var nombre = "";
+	cantFilas = tabla.rows.length;
+	cantFilas--;
+	for (var i = 0; i < cantFilas; i++) {
+		nombre = "complejidad" + i;
+		selectElemento = document.getElementById(nombre);
+		selectElemento.selectedIndex = valor;
+	}
+}
+
 function validar(formulario) {
 	var tabla = document.getElementById('practicas');
 	var nombre = "";
 	cantFilas = tabla.rows.length;
 	cantFilas--;
 	for (var i = 0; i < cantFilas; i++){
-		nombre = "unihonorario" + i;
+		nombre = "unihonorariosolo" + i;
 		inputElement = document.getElementById(nombre);
 		if(!isNumberPositivo(inputElement.value)) {
 			alert("El valor de la unidad debe ser positivo");
@@ -209,7 +230,8 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	document.getElementById("guardar").disabled = true;
+	formulario.res650total.disabled = true;
+	formulario.guardar.disabled = true;
 	return true;
 }
 
@@ -244,6 +266,18 @@ function validar(formulario) {
 	  	<option value='0'>Seleccione SubCapitulo</option>
       </select>
 	</p>
+	<p>
+	<b>Complejidad Capitulo Completo</b>
+		<select name="res650total" id="res650total" disabled="disabled" onchange="cambiarClasificaion(this.value)">
+			<?php 
+			$sqlComplejida = "SELECT * FROM tipocomplejidad";
+			$resComplejida = mysql_query($sqlComplejida,$db);
+			while($rowComplejida = mysql_fetch_assoc($resComplejida)) { ?>
+				<option value="<?php echo $rowComplejida['codigocomplejidad']?>"><?php echo $rowComplejida['descripcion']?></option>
+	  <?php } ?>
+		</select>
+	</p>
+	
 	<table style="text-align:center; width:1000px" id="practicas" class="tablesorter" >
      <thead>
      </thead>
