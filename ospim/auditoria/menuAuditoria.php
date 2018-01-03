@@ -52,7 +52,7 @@ include($libPath."controlSessionOspim.php"); ?>
 		<?php } ?>
 	  <td>
 	   	<p>Liquidacion Prestadores</p>
-		<p><a class="enlace" href="liquidaciones/moduloLiquidaciones.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		<p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
 	  <td></td>
     </tr>
