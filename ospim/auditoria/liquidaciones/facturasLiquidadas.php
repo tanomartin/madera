@@ -16,6 +16,40 @@ include($libPath."fechas.php");
 <script type="text/javascript">
 $(document).ready(function(){
 });
+
+function muestraDetalle(cuit,cantidad) {
+	var ocultar = '#ocultar'+cuit;
+	var mostrar = '#mostrar'+cuit;
+	$(mostrar).hide();
+	$(ocultar).show();
+	var tit1 = '#tit1'+cuit;
+	var tit2 = '#tit2'+cuit;
+	$(tit1).css('display', '');
+	$(tit2).css('display', '');
+	var i=0;
+	while(i<cantidad) {
+		var factura = '#fact'+i+cuit;
+		$(factura).css('display', '');
+		i++;
+	};
+};
+
+function ocultaDetalle(cuit,cantidad) {
+	var ocultar = '#ocultar'+cuit;
+	var mostrar = '#mostrar'+cuit;
+	$(mostrar).show();
+	$(ocultar).hide();
+	var tit1 = '#tit1'+cuit;
+	var tit2 = '#tit2'+cuit;
+	$(tit1).css('display', 'none');
+	$(tit2).css('display', 'none');
+	var i=0;
+	while(i<cantidad) {
+		var factura = '#fact'+i+cuit;
+		$(factura).css('display', 'none');
+		i++;
+	};
+};
 </script>
 </head>
 <body bgcolor="#CCCCCC">
@@ -29,33 +63,35 @@ $(document).ready(function(){
 	<h2>Facturas Liquidadas por el Usuario @<?php echo $_SESSION['usuario'];?></h2>
 	<div class="grilla" style="margin-top:10px; margin-bottom:10px">
 		<table style="text-align:center; width:1000px" id="listaFacturasUsuario">
-					<?php while($rowFacturasAgrupadas = mysql_fetch_array($resFacturasAgrupadas)) { ?>
+					<?php while($rowFacturasAgrupadas = mysql_fetch_array($resFacturasAgrupadas)) { 
+						$botonocultar='ocultar'.$rowFacturasAgrupadas['cuit'];
+						$botonmostrar='mostrar'.$rowFacturasAgrupadas['cuit'];
+						$trTitulo1='tit1'.$rowFacturasAgrupadas['cuit'];
+						$trTitulo2='tit2'.$rowFacturasAgrupadas['cuit'];
+					?>
 			<thead>
 				<tr>
-					<th colspan="12">Prestador</th>
+					<th colspan="9" style="color:#00557F">Prestador</th>
 				</tr>
 				<tr>
-					<th colspan="3">C.U.I.T.</th>
-					<th colspan="3">Nombre</th>
-					<th colspan="2">Cantidad Facturas</th>
-					<th colspan="2">Total a Pagar</th>
-					<th colspan="2">Accion</th>
+					<th colspan="2" style="color:#00557F">C.U.I.T.</th>
+					<th colspan="2" style="color:#00557F">Nombre</th>
+					<th colspan="2" style="color:#00557F">Cantidad Facturas</th>
+					<th colspan="2" style="color:#00557F">Total a Pagar</th>
+					<th colspan="1" style="color:#00557F">Accion</th>
 				</tr>
 				<tr>
-					<th colspan="3"><?php echo $rowFacturasAgrupadas['cuit'];?></th>
-					<th colspan="3"><?php echo $rowFacturasAgrupadas['nombre'];?></th>
+					<th colspan="2"><?php echo $rowFacturasAgrupadas['cuit'];?></th>
+					<th colspan="2"><?php echo $rowFacturasAgrupadas['nombre'];?></th>
 					<th colspan="2"><?php echo $rowFacturasAgrupadas['cantidadfacturas'];?></th>
 					<th colspan="2"><?php echo $rowFacturasAgrupadas['totalimporte'];?></th>
-					<th colspan="2">-</th>
+					<th colspan="1"><input name="<?php echo $botonocultar;?>" type="button" id="<?php echo $botonocultar;?>" value="Ocultar Facturas" style="display:none" onclick="javascript:ocultaDetalle(<?php echo $rowFacturasAgrupadas['cuit'];?>, <?php echo $rowFacturasAgrupadas['cantidadfacturas'];?>)"/><input name="<?php echo $botonmostrar;?>" type="button" id="<?php echo $botonmostrar;?>" value="Mostrar Facturas" onclick="javascript:muestraDetalle(<?php echo $rowFacturasAgrupadas['cuit'];?>, <?php echo $rowFacturasAgrupadas['cantidadfacturas'];?>)"/></th>
 				</tr>
-				<tr>
-					<th colspan="2">Prestador</th>
+				<tr id="<?php echo $trTitulo1;?>" style="display:none">
 					<th colspan="8">Factura</th>
-					<th colspan="2">Acciones</th>
+					<th colspan="1">Accion</th>
 				</tr>
-				<tr>
-					<th>Nombre</th>
-					<th>C.U.I.T.</th>
+				<tr id="<?php echo $trTitulo2;?>" style="display:none">
 					<th>ID Interno</th>
 					<th>Nro.</th>
 					<th>Fecha</th>
@@ -65,7 +101,6 @@ $(document).ready(function(){
 					<th>Liquidado</th>
 					<th>Fecha Cierre</th>
 					<th>Autorizacion Pago</th>
-					<th>Estadisticas</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -73,10 +108,11 @@ $(document).ready(function(){
 							$sqlFacturasUsuario = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento, f.totaldebito, f.totalcredito, f.importeliquidado, f.fechacierreliquidacion FROM facturas f, prestadores p WHERE f.id = $rowFacturasAgrupadas[id] AND f.idPrestador = p.codigoprestador ORDER by p.cuit";
 							$resFacturasUsuario = mysql_query($sqlFacturasUsuario,$db);
 							$totalfacturasusuario = mysql_num_rows($resFacturasUsuario);
-							while($rowFacturasUsuario = mysql_fetch_array($resFacturasUsuario)) { ?>
-							<tr>
-								<td><?php echo $rowFacturasUsuario['nombre'];?></td>
-								<td><?php echo $rowFacturasUsuario['cuit'];?></td>
+							$i=0;
+							while($rowFacturasUsuario = mysql_fetch_array($resFacturasUsuario)) { 
+								$trFactura='fact'.$i.$rowFacturasUsuario['cuit'];
+							?>
+							<tr id="<?php echo $trFactura;?>" style="display:none">
 								<td><?php echo $rowFacturasUsuario['id'];?></td>
 								<td><?php echo $rowFacturasUsuario['puntodeventa'].'-'.$rowFacturasUsuario['nrocomprobante'];?></td>
 								<td><?php echo invertirFecha($rowFacturasUsuario['fechacomprobante']);?></td>
@@ -86,9 +122,10 @@ $(document).ready(function(){
 								<td><?php echo $rowFacturasUsuario['importeliquidado'];?></td>
 								<td><?php echo invertirFecha($rowFacturasUsuario['fechacierreliquidacion']);?></td>
 								<td><input name="autorizacion[]" type="checkbox" id="autorizacion[]" value="<?php echo $rowFacturasUsuario['id'];?>"/></td>
-								<td><input class="nover" type="button" id="consultarestadistica" name="consultarestadistica" value="Consultar" onclick="location.href = 'consultarEstadistica.php?idfactura=<?php echo $rowFacturasUsuario['id'];?>'"/></td>
 							</tr>
-						<?php } ?>
+						<?php
+								$i++;
+							} ?>
 			</tbody>
 					<?php } ?>
 			</thead>
