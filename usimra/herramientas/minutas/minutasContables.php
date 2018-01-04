@@ -54,10 +54,10 @@ function validar(formulario) {
 		alert("El Detalle es obligatorio");
 		return false;
 	} else {
-		maximo_lineas = 12;
+		maximo_lineas = 15;
 		lineas=formulario.detalle.value.split("\n");
 		if(lineas.length > maximo_lineas){
-			alert("El Detalle tiene como máximo 12 lineas");
+			alert("El Detalle tiene como máximo 15 lineas");
 			return false;
 		} else {
 			maximo_linea = 70;	
@@ -151,8 +151,8 @@ function validar(formulario) {
 	  				<td><b>$</b> <input id="importe" name="importe" type="text" size="18"/></td>
 	  			</tr>
 	  			<tr>
-	  				<td>Detalle <br />(12 Lineas) </td>
-	  				<td><textarea style="resize:none;" name="detalle" id="detalle" cols="71" rows="13"></textarea>  </td>
+	  				<td>Detalle <br />(15 Lineas) </td>
+	  				<td><textarea style="resize:none;" name="detalle" id="detalle" cols="71" rows="18"></textarea>  </td>
 	  			</tr>
 	  			<tr>
 	  				<td>Cuenta Debe <br /> (3 Lineas)</td>
