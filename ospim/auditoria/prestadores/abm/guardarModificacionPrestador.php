@@ -133,6 +133,7 @@ if ($nroRegistroSNR == '') {
 }
 
 $capitado = $_POST['capitado'];
+$fijo = $_POST['fijo'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -165,7 +166,8 @@ numeroregistrosss = $nroRegistroSSS,
 vtoregistrosss = $vtoRegistroSSS,
 numeroregistrosnr = $nroRegistroSNR, 
 vtoregistrosnr = $vtoRegistroSNR,
-capitado = '$capitado', 
+capitado = $capitado,
+montofijo = $fijo,
 fehamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'
 WHERE codigoprestador = $codigo";

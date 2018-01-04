@@ -674,12 +674,20 @@ function validar(formulario) {
       </tr>
       <tr>
         <td><div align="right"><strong>Capitado</strong></div></td>
-        <td colspan="3">
+        <td>
         	<div align="left">
 	          	<?php if ($rowConsultaPresta['capitado'] == 0) { $nocapitado = "checked"; $capitado = ""; } else { $nocapitado = ""; $capitado = "checked"; } ?>
 	          	<input name="capitado" type="radio" value="0" <?php echo $nocapitado ?> /> NO
 				<input name="capitado" type="radio" value="1" <?php echo $capitado ?> /> SI 
 			</div>
+		</td>
+		<td>
+			<div align="left">
+				<strong>Arancel Fijo</strong>
+				<?php if ($rowConsultaPresta['montofijo'] == 0) { $nofijo = "checked"; $sifijo = ""; } else { $nofijo = ""; $sifijo = "checked"; } ?>
+          		<input name="fijo" type="radio" value="0" <?php echo $nofijo ?>/> NO
+  		  		<input name="fijo" type="radio" value="1" <?php echo $sifijo ?>/>SI
+		  	</div>
 		</td>
       </tr>
       <tr>

@@ -154,8 +154,12 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         </tr>
         <tr>
           <td><div align="right" class="title"><strong>Capitado</strong></div></td>
-          <td colspan="6"><div align="left">
+          <td colspan="2"><div align="left">
             <?php if ($rowConsultaPresta['capitado'] == 1) { echo "SI"; } else { echo "NO"; } ?>
+          </div></td>
+          <td><div align="right" class="title"><strong>Arancel Fijo</strong></div></td>
+            <td colspan="2"><div align="left">
+            <?php if ($rowConsultaPresta['montofijo'] == 1) { echo "SI"; } else { echo "NO"; } ?>
           </div></td>
         </tr>
   	  </table>
@@ -205,8 +209,12 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
         </div></td> 
 
         <td width="200"><div align="center">		
-        	<?php if ($canConsultaNomenclador == 1 and $canConsultaServcio == 1 and $codNomenclador == 7 and $codServicio == 8) { $disabled = "disabled='disabled'"; } else { $disabled = ""; } ?>
-         	<input <?php echo $disabled?> class="nover" name="modificar2" type="button" value="Modificar Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
+      <?php if ($rowConsultaPresta['montofijo'] == 0 ) {
+        		if (($canConsultaNomenclador == 1 and $canConsultaServcio == 1 and $codNomenclador == 7 and $codServicio == 8) or ($canConsultaNomenclador == 0)) { $disabled = "disabled='disabled'"; } else { $disabled = ""; } ?>
+         		<input <?php echo $disabled?> class="nover" name="modificarContrato" type="button" value="Modificar Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
+      <?php } else { ?>
+      			<input class="nover" name="modificarArancel" type="button" value="Modificar Aranceles"  onclick="location.href = 'aranceles/arancelesPrestador.php?codigo=<?php echo $codigo ?>'" />
+      <?php	} ?>
         </div></td>
       </tr>
     </table>

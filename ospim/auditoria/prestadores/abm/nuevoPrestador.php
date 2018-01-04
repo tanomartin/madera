@@ -541,10 +541,16 @@ function validar(formulario) {
       </tr>
 	  <tr>
 	    <td><div align="right"><strong>Capitado</strong></div></td>
-	    <td colspan="3">
+	    <td>
 	    	<div align="left">
           		<input name="capitado" type="radio" value="0" checked="checked"/> NO
   		  		<input name="capitado" type="radio" value="1" />SI
+		  	</div>
+		</td>
+		<td><div align="left">
+				<strong>Arancel Fijo</strong>
+          		<input name="fijo" type="radio" value="0" checked="checked"/> NO
+  		  		<input name="fijo" type="radio" value="1" />SI
 		  	</div>
 		</td>
       </tr>
