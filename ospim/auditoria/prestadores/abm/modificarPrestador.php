@@ -687,7 +687,7 @@ function validar(formulario) {
 	    <td colspan="3"><div align="left">
             <?php 	
 		          $today = date("Y-m-d");
-		          $sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin = '0000-00-00' or c.fechafin > '$today')";
+		          $sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin is null or c.fechafin > '$today')";
 		          $resContratoActivo = mysql_query($sqlContratoActivo,$db);
 		          $canContratoActivo = mysql_num_rows($resContratoActivo);
 		          $tieneContrato = false;
