@@ -498,7 +498,6 @@ function validar(formulario) {
         <td><div align="right"><strong>Personería</strong></div></td>
         <td colspan="3"><div align="left">
             <select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)">
-              <option value="0">Seleccione un valor </option>
               <?php 
               	$query="select * from tipoprestador";  
               	$result=mysql_query($query,$db);
