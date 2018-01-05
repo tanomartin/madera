@@ -45,7 +45,7 @@ A:hover {text-decoration: none;color:#00FFFF }
         <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=5"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p>
       </td>
-       <td width="200"><p align="center">ANESTESISTAS</p>
+       <td width="200"><p align="center">FEMEBA</p>
         <p align="center"><a class="enlace" href="nomenclado/menuNomenclado.php?codigo=6"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p align="center">&nbsp;</p></td>
     </tr>
