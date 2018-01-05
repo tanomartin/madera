@@ -4,6 +4,10 @@ $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
+
+$sqlAranceles = "SELECT c.* FROM aranceles c  WHERE c.codigoprestador = $codigo";
+$resAranceles = mysql_query($sqlAranceles,$db);
+$numAranceles = mysql_num_rows($resAranceles);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -11,17 +15,6 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Aranceles Prestador :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-<style type="text/css" media="print">
-.nover {display:none}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -70,8 +63,38 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
           </div></td>
         </tr>
   </table>
-  	<p><strong>Aranceles</strong></p>
-  	<div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE ARANCEL CARGADO </b></div>
+  <?php if ($numAranceles > 0) { ?>
+		<p><strong>Aranceles</strong></p>
+		   <table style="text-align:center; width:400px" id="practicas" class="tablesorter" >
+				<thead>
+				  <tr>
+					<th>C&oacute;digo</th>
+					<th>Fecha Inicio</th>
+					<th>Fecha Fin</th>
+					<th>Monto</th>
+				  </tr>
+				</thead>
+				<tbody>
+				  <?php
+				while($rowArancel = mysql_fetch_array($resAranceles)) { ?>
+				  <tr>
+					<td><?php echo $rowArancel['id'];?></td>
+					<td><?php echo invertirFecha($rowArancel['fechainicio']);?></td>
+					<td><?php if($rowArancel['fechafin'] == NULL) {
+								  echo "-";
+							  } else {
+							   	  echo invertirFecha($rowArancel['fechafin']);
+							  }
+							 ?>
+					</td>
+					<td><?php echo number_format($rowArancel['monto'],2,',','.')  ?></td>
+				  </tr>
+			<?php } ?>
+			</tbody>
+		  </table>
+	<?php } else { ?>	
+	 		<div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE ARANCEL CARGADO </b></div>
+	<?php } ?>
 </div>
 </body>
 </html>

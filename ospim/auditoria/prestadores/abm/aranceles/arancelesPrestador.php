@@ -7,6 +7,16 @@ $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
+
+$sqlAranceles = "SELECT c.* FROM aranceles c  WHERE c.codigoprestador = $codigo";
+$resAranceles = mysql_query($sqlAranceles,$db);
+$numAranceles = mysql_num_rows($resAranceles);
+
+$today = date("Y-m-d");
+$sqlArancelesAbiertos = "SELECT c.* FROM aranceles c  WHERE c.codigoprestador = $codigo and (c.fechafin is null or c.fechafin > '$today')";
+$resArancelesAbiertos = mysql_query($sqlArancelesAbiertos,$db);
+$numArancelesAbiertos = mysql_num_rows($resArancelesAbiertos);
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -14,16 +24,6 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: ABM Aranceles :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
@@ -56,10 +56,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href = '../prestador.php?codigo=<?php echo $codigo ?>'" />
-  </span></p>
-  <p class="Estilo2">ABM de Aranceles </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../prestador.php?codigo=<?php echo $codigo ?>'" /></p>
+  <h3>ABM de Aranceles </h3>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -70,8 +68,45 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
-   <p><strong>Aranceles</strong></p>
-
+   <h3>Aranceles</h3>
+	 <?php 
+		if ($numArancelesAbiertos == 0) { ?>
+			<p><input type="button" name="nuevoArancel" id="nuevoArancel" value="Nuevo Arancel" onclick="location.href='nuevoArancel.php?codigo=<?php echo $codigo ?>'"/></p>
+  <?php } 
+		if ($numAranceles > 0) { ?>
+        <table style="text-align:center; width:800px" id="contratos" class="tablesorter" >
+          <thead>
+            <tr>
+             	<th>C&oacute;digo</th>
+				<th>Fecha Inicio</th>
+				<th>Fecha Fin</th>
+				<th>Monto</th>
+				<th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+			while($rowAranceles = mysql_fetch_array($resAranceles)) { ?>
+				<tr>
+					<td><?php echo $rowAranceles['id'];?></td>
+					<td><?php echo invertirFecha($rowAranceles['fechainicio']);?></td>
+					<td><?php if($rowAranceles['fechafin'] == NULL) {
+								  echo "-";
+							  } else {
+							   	  echo invertirFecha($rowAranceles['fechafin']);
+							  }?></td>
+					<td><?php echo number_format($rowAranceles['monto'],2,',','.') ?></td>
+					<td><?php if ($rowAranceles['fechafin'] == NULL || $rowAranceles['fechafin'] > $today ) { ?> 
+								<input type="button" value="Modificar Arancel" name="modifarancel" id="modifarancel" onclick="location.href='modificarArancel.php?id=<?php echo $rowAranceles['id'] ?>&codigo=<?php echo $codigo ?>'"/>
+						<?php } ?>
+					</td>
+				</tr>
+         <?php } ?>
+          </tbody>
+        </table> 
+   <?php } else { 	?>
+        	<h3><font color="red"> ESTE PRESTADOR NO TIENE ARANCELES CARGADO </font></h3>
+  <?php  } ?>	
 </div>
 </body>
 </html>
