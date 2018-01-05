@@ -22,8 +22,7 @@ if ($numCabContratoFin > 0) {
 	Header("Location: $pagina"); 
 	exit(0);
 } else {
-	$sqlInsertProf = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio',$fechaFin,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
-	echo $sqlInsertProf;
+	$sqlInsertCab = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio',$fechaFin,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
@@ -31,8 +30,8 @@ if ($numCabContratoFin > 0) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 	
-		//print($sqlInsertProf."<br>");
-		$dbh->exec($sqlInsertProf);
+		//print($sqlInsertCab."<br>");
+		$dbh->exec($sqlInsertCab);
 		
 		$dbh->commit();
 		$pagina = "contratosPrestador.php?codigo=$codigopresta";

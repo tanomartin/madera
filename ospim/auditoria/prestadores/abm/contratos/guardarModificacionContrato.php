@@ -23,7 +23,7 @@ if ($numCabContratoFin > 0) {
 	Header("Location: $pagina"); 
 	exit(0);
 } else {
-	$sqlInsertProf = "UPDATE cabcontratoprestador SET fechainicio = '$fechaInicio', fechafin = $fechaFin, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE idcontrato = $idcontrato and codigoprestador = $codigopresta";
+	$sqlUpdateContrato = "UPDATE cabcontratoprestador SET fechainicio = '$fechaInicio', fechafin = $fechaFin, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE idcontrato = $idcontrato and codigoprestador = $codigopresta";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
@@ -31,8 +31,8 @@ if ($numCabContratoFin > 0) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 	
-		//print($sqlInsertProf."<br>");
-		$dbh->exec($sqlInsertProf);
+		//print($sqlUpdateContrato."<br>");
+		$dbh->exec($sqlUpdateContrato);
 		$dbh->commit();
 		
 		$pagina = "contratosPrestador.php?codigo=$codigopresta";

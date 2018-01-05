@@ -14,16 +14,6 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Contrato :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -67,10 +57,8 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
-  </span></p>
-  <p class="Estilo2">Alta Contratos </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" /></p>
+  <h3>Alta Contratos </h3>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -83,21 +71,20 @@ function validar(formulario) {
   </table>
   
   <form id="nuevoContrato" name="nuevoContrato" method="post" onsubmit="return validar(this)" action="guardarNuevoContrato.php?codigo=<?php echo $codigo ?>">
-    <p class="Estilo2">Datos Contrato</p>
+    <h3>Datos Contrato</h3>
     <?php 
+    	$fi = ""; $ff = "";
 		if (isset($_GET['err'])) {
-  			print("<font color='#FF0000'><b>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</b></font>");
 			$fi = $_GET['fi'];
-			$ff = $_GET['ff'];
- 		}
-	?>
-    <p class="Estilo2">
-	Fecha Inicio: <label><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo $fi ?>"/></label> - 
-    Fecha Fin: <label><input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo $ff ?>"/> </label>
-    </p>
+			$ff = $_GET['ff']; ?>
+  			<h4><font color='#FF0000'>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</font></h4>
+			
+ <?php 	} ?>
     <p>
-      <label><input type="submit" name="Submit" value="Guardar" /></label>	
-	</p>
+		<b>Fecha Inicio:</b> <input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo $fi ?>"/> - 
+   	 	<b>Fecha Fin:</b> <input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo $ff ?>"/>
+    </p>
+    <p><input type="submit" name="Submit" value="Guardar" /></p>
   </form>
 </div>
 </body>

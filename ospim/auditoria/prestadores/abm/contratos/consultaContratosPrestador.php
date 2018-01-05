@@ -4,6 +4,10 @@ $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
+
+$sqlCabContrato = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo";
+$resCabContrato = mysql_query($sqlCabContrato,$db);
+$numCabContrato = mysql_num_rows($resCabContrato);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -11,14 +15,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Contrato Prestador :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
+
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -57,7 +54,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><strong>Contrato Prestador</strong></p>
+  <h3>Contrato Prestador</h3>
 	  <table width="500" border="1">
         <tr>
           <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -70,14 +67,8 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
           </div></td>
         </tr>
   </table>
-  	<p><strong>Contratos</strong></p>
-  <?php 
-  		$sqlCabContrato = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo";
-		$resCabContrato = mysql_query($sqlCabContrato,$db);
-		$numCabContrato = mysql_num_rows($resCabContrato);
-		if ($numCabContrato > 0) {
-  ?>
-	
+  <h3>Contratos</h3>
+  <?php if ($numCabContrato > 0) { ?>
 	 <table style="text-align:center; width:400px" id="practicas" class="tablesorter" >
 			<thead>
 			  <tr>
@@ -88,8 +79,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 			  </tr>
 			</thead>
 			<tbody>
-			  <?php
-			while($rowCabContrato = mysql_fetch_array($resCabContrato)) { ?>
+ 	<?php while($rowCabContrato = mysql_fetch_array($resCabContrato)) { ?>
 			  <tr>
 				<td><?php echo $rowCabContrato['idcontrato'];?></td>
 				<td><?php echo invertirFecha($rowCabContrato['fechainicio']);?></td>
@@ -107,7 +97,9 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 		?>
 			</tbody>
 		  </table>
-	<?php } else { 	print("<div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </b></div><br>"); } ?>
+	<?php } else { 	?>
+			<h3><font color="red"> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </font></h3>
+	<?php } ?>
 	
 </div>
 </body>

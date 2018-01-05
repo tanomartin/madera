@@ -20,20 +20,11 @@ $rowContrato = mysql_fetch_assoc($resContrato);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Contrato :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 jQuery(function($){
 	$("#fechaInicio").mask("99-99-9999");
 	$("#fechaFin").mask("99-99-9999");
@@ -73,10 +64,8 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
-  </span></p>
-  <p class="Estilo2">Modificación Contratos </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" /></p>
+  <h3>Modificación Contratos </h3>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -87,24 +76,21 @@ function validar(formulario) {
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
+  <h3>Datos Contrato</h3>
   <?php if (isset($_GET['err'])) {
   			print("<font color='#FF0000'><b>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</b></font>");
  		 } ?>
-  <form id="modifContrato" name="modifContrato" method="post" onsubmit="return validar(this)" action="guardarModificacionContrato.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo  $rowContrato['idcontrato'] ?>">
-    <p class="Estilo2">Datos Contrato</p>
-    <p class="Estilo2">
-	Fecha Inicio: <label><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowContrato['fechainicio']) ?>"/></label> - 
-    <?php if ($rowContrato['fechafin'] == NULL) {
-				$valorfin = "-";
-		   } else {
-		   		$valorfin = invertirFecha($rowContrato['fechafin']);
-		   }
-	?>
-	Fecha Fin: <label><input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo $valorfin ?>"/> </label>
-    </p>
+  <form id="modifContrato" name="modifContrato" method="post" onsubmit="return validar(this)" action="guardarModificacionContrato.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo  $rowContrato['idcontrato'] ?>"> 
     <p>
-      <label><input type="submit" name="Submit" value="Guardar" /></label>	
+	  <b>Fecha Inicio: </b><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowContrato['fechainicio']) ?>"/> - 
+	    <?php if ($rowContrato['fechafin'] == NULL) {
+					$valorfin = "-";
+			   } else {
+			   		$valorfin = invertirFecha($rowContrato['fechafin']);
+			   } ?>
+		<b>Fecha Fin: </b><input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo $valorfin ?>"/>
 	</p>
+    <p><input type="submit" name="Submit" value="Guardar" /></p>
   </form>
 </div>
 </body>

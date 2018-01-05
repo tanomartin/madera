@@ -7,6 +7,16 @@ $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
+
+$sqlCabContrato = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo";
+$resCabContrato = mysql_query($sqlCabContrato,$db);
+$numCabContrato = mysql_num_rows($resCabContrato);
+
+$today = date("Y-m-d");
+$sqlCabContratoAbiertos = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo and (c.fechafin is null or c.fechafin > '$today')";
+$resCabContratoAbiertos = mysql_query($sqlCabContratoAbiertos,$db);
+$numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos);
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -15,15 +25,6 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: ABM Contrato :.</title>
 
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
@@ -56,10 +57,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href = '../prestador.php?codigo=<?php echo $codigo ?>'" />
-  </span></p>
-  <p class="Estilo2">ABM de Contratos </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../prestador.php?codigo=<?php echo $codigo ?>'" /></p>
+  <h3>ABM de Contratos </h3>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -70,23 +69,11 @@ A:hover {text-decoration: none;color:#00FFFF }
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
-   <p><strong>Contratos</strong></p>
-		<?php 
-  		$sqlCabContrato = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo";
-		$resCabContrato = mysql_query($sqlCabContrato,$db);
-		$numCabContrato = mysql_num_rows($resCabContrato);
-		
-		$today = date("Y-m-d");
-		$sqlCabContratoAbiertos = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo and (c.fechafin is null or c.fechafin > '$today')";
-		$resCabContratoAbiertos = mysql_query($sqlCabContratoAbiertos,$db);
-		$numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos);
-		
-		if ($numCabContratoAbiertos == 0) { ?>
+  <h3>Contratos</h3>
+  <?php if ($numCabContratoAbiertos == 0) { ?>
 			<p><input type="button" name="nuevoContrato" id="nuevoContrato" value="Nuevo Contrato" onclick="location.href='nuevoContrato.php?codigo=<?php echo $codigo ?>'"/></p>
   <?php } 
-		
-		if ($numCabContrato > 0) {
- 		 ?>
+        if ($numCabContrato > 0) { ?>
         <table style="text-align:center; width:800px" id="contratos" class="tablesorter" >
           <thead>
             <tr>
@@ -119,11 +106,9 @@ A:hover {text-decoration: none;color:#00FFFF }
          <?php } ?>
           </tbody>
         </table>
-        <p> 
-        	<?php } else { 	print("<div style='color:#000099'><b> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </b></div><br>"); } ?>	
-			
-		</p>
-
+        <?php } else { ?> 	
+        			<h3><font color="red"> ESTE PRESTADOR NO TIENE CONTRATO CARGADO</font></h3>
+        <?php } ?>	
 </div>
 </body>
 </html>

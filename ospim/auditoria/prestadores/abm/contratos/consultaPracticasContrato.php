@@ -6,6 +6,32 @@ $idcontrato = $_GET['idcontrato'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre, personeria FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
+
+$sqlPracticas = "SELECT pr.*,
+p.*,
+t.descripcion as tipo,
+tc.descripcion as complejidad,
+n.nombre as nombrenomenclador,
+pc.descripcion as categoria
+FROM
+cabcontratoprestador c,
+detcontratoprestador p,
+practicas pr,
+tipopracticas t,
+tipocomplejidad tc,
+nomencladores n,
+practicascategorias pc
+WHERE
+c.codigoprestador = $codigo and
+c.idcontrato = $idcontrato and
+c.idcontrato = p.idcontrato and
+p.idpractica = pr.idpractica and
+pr.nomenclador = n.id and
+pr.tipopractica = t.id and
+pr.codigocomplejidad = tc.codigocomplejidad and
+p.idcategoria = pc.id";
+$resPracticas = mysql_query($sqlPracticas,$db);
+$numPracticas = mysql_num_rows($resPracticas);
 ?>
 
 <!DOCTYPE>
@@ -13,14 +39,6 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Contrato Prestador :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -59,10 +77,8 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href = 'consultaContratosPrestador.php?codigo=<?php echo $codigo ?>'" />
-  </span></p>
-  <p><strong>Contrato Prestador</strong></p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'consultaContratosPrestador.php?codigo=<?php echo $codigo ?>'" /></p>
+  <h3>Contrato Prestador</h3>
 	  <table style="width: 500" border="1">
         <tr>
           <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -76,34 +92,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
         </tr>
   </table>
    <p><strong>Pr&aacute;cticas dentro del contrato </strong></p>
-		<?php 
-  		$sqlPracticas = "SELECT pr.*,
-  								p.*, 
-  								t.descripcion as tipo, 
-  								tc.descripcion as complejidad, 
-  								n.nombre as nombrenomenclador,
-  								pc.descripcion as categoria
-  								FROM 
-  									cabcontratoprestador c, 
-  									detcontratoprestador p, 
-  									practicas pr, 
-  									tipopracticas t, 
-  									tipocomplejidad tc,
-  									nomencladores n,
-  									practicascategorias pc
-  								WHERE 
-  									c.codigoprestador = $codigo and 
-  									c.idcontrato = $idcontrato and 
-  									c.idcontrato = p.idcontrato and 
-  									p.idpractica = pr.idpractica and 
-  									pr.nomenclador = n.id and
-  									pr.tipopractica = t.id and 
-  									pr.codigocomplejidad = tc.codigocomplejidad and
-  									p.idcategoria = pc.id";
-  		$resPracticas = mysql_query($sqlPracticas,$db);
-		$numPracticas = mysql_num_rows($resPracticas);
-		if ($numPracticas > 0) {
- 		 ?>
+		<?php  if ($numPracticas > 0) { ?>
         <table style="text-align:center; width:1000px; font-size: 13px" id="practicaencontrato" class="tablesorter" >
           <thead>
             <tr>
@@ -148,9 +137,9 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
          <?php } ?>
           </tbody>
         </table>
-        <p> 
-        	<?php } else { 	print("<div style='color:#000099'><b> ESTE CONTRATO NO TIENE PRACTICAS CARGADAS </b></div>"); } ?>
-		</p>
+   <?php } else { ?>
+        	<h3><font color='#000099'> ESTE CONTRATO NO TIENE PRACTICAS CARGADAS </font></h3>
+	<?php } ?>
 </div>
 </body>
 </html>

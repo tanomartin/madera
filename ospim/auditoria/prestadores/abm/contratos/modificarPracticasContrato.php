@@ -23,16 +23,6 @@ $whereNom = substr($whereNom, 0, -1);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Contrato :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -319,10 +309,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	$.blockUI({ message: "<h1>Cargando Contrato<br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" } );
 </script>
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
-  </span></p>
-  <p class="Estilo2">ABM de Contratos </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" /></p>
+  <h3>ABM de Contratos </h3>
   <table border="1">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -340,7 +328,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <!--******************************************************************************************************************************************************************** -->
  
   <form name="editarContrato" id="editarContrato" onsubmit="return validarDelete(this)" method="post" action="eliminarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
-    <p><strong>Pr&aacute;cticas dentro del contrato </strong></p>
+    <h3>Pr&aacute;cticas dentro del contrato </h3>
 		<?php 
   		$sqlPracticas = "SELECT pr.*,
   								p.*, 
@@ -414,16 +402,16 @@ A:hover {text-decoration: none;color:#00FFFF }
          <?php } ?>
           </tbody>
         </table>
-        <p> 
-			<input type="submit" name="eliminar" id="eliminar" value="Eliminar Seleccionados" />
-        	<?php } else { 	print("<div style='color:#000099'><b> ESTE CONTRATO NO TIENE PRACTICAS CARGADAS </b></div>"); } ?>
-		</p>
+			<p><input type="submit" name="eliminar" id="eliminar" value="Eliminar Seleccionados" /></p>
+        	<?php } else { 	?>
+        		<h4><font color='#000099'> ESTE CONTRATO NO TIENE PRACTICAS CARGADAS</font></h4>
+			<?php } ?>
     </form>
 	
 	<!--******************************************************************************************************************************************************************** -->	
 	
 	<form name="agregarContrato" id="agregarContrato" onsubmit="return validarAdd(this)" method="post" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
-	  <p><strong>Pr&aacute;cticas para Agregar al contrato </strong></p>
+	  <h3>Pr&aacute;cticas para Agregar al contrato </h3>
 	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS DE LA MISMA CATEGORIA<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?>
 	  <p>
 	  <?php $sqlTipos = "SELECT t.*, n.nombre FROM tipopracticas t, nomencladores n WHERE t.codigonomenclador in ($whereNom) and t.codigonomenclador = n.id"; 

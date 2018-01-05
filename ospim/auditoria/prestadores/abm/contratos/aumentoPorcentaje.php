@@ -21,19 +21,11 @@ $rowContrato = mysql_fetch_assoc($resContrato);
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar por Porcentaje Contrato :.</title>
 
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script type="text/javascript">
+
 jQuery(function($){
 	$("#fechaInicio").mask("99-99-9999");
 	$("#fechaFin").mask("99-99-9999");
@@ -79,10 +71,8 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
-  </span></p>
-  <p class="Estilo2">Duplicacion de Contrato con Aumento por Porcentaje </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'contratosPrestador.php?codigo=<?php echo $codigo ?>'" /></p>
+  <h3>Duplicacion de Contrato con Aumento por Porcentaje </h3>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -94,13 +84,14 @@ function validar(formulario) {
     </tr>
   </table>
   <form id="modifContrato" name="modifContrato" method="post" onsubmit="return validar(this)" action="guardarAumentoContrato.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo  $rowContrato['idcontrato'] ?>">
-    <p class="Estilo2">Datos Contrato a Duplicar</p>
+    <h3>Datos Contrato a Duplicar</h3>
     <p>
 	<b>Id:</b> <?php echo $idcontrato ?>
 	<b>- Fecha Inicio:</b> <?php echo invertirFecha($rowContrato['fechainicio']) ?>
 	<b>- Fecha Fin:</b> <?php if ($rowContrato['fechafin'] != NULL) { echo invertirFecha($rowContrato['fechafin']); } else { echo "-"; } ?>
     </p>
     <p><?php 
+    	$fi = ""; $ff = "";
 		if (isset($_GET['err'])) {
   			print("<font color='#FF0000'><b>Existe un contrato fuera del seleccionado con fecha de finalización posterior a la fecha de inicio que quiere ingresar</b></font>");
 			$fi = $_GET['fi'];
@@ -108,17 +99,13 @@ function validar(formulario) {
  		}
 	?>
 	</p>
-    <p class="Estilo2">Datos Nuevo Contrato</p>
-    <p class="Estilo2">
-		Fecha Inicio: <label><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo $fi ?>"/></label> - 
-   		Fecha Fin: <label><input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo $ff ?>"/> </label>
-    </p>
-    <p class="Estilo2">
-    	Aumento: <input type="text" id="porcentaje" name="porcentaje" size="4"/> %
-    </p>
+    <h3>Datos Nuevo Contrato</h3>
     <p>
-      <label><input type="submit" name="Submit" value="Guardar" /></label>	
-	</p>
+		<b>Fecha Inicio: </b><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo $fi ?>"/> - 
+   		<b>Fecha Fin: </b><input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo $ff ?>"/>
+    </p>
+    <p><b>Aumento:</b> <input type="text" id="porcentaje" name="porcentaje" size="4"/> %</p>
+    <p><input type="submit" name="Submit" value="Guardar" /></p>
   </form>
 </div>
 </body>
