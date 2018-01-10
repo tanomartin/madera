@@ -65,10 +65,13 @@ function reverificaPeriodo($estado, $ano, $me, $db) {
 	$idArray = $ano.$me;
 	if(array_key_exists($idArray, $arrayAcuerdos)) {
 		$nroacuerdo = $arrayAcuerdos[$idArray]['nroacuerdo'];
+		$des = "ACUER.-".$nroacuerdo;
 		if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 0 ) {
 			$des = "P. ACUER.-".$nroacuerdo;
 		} else {
-			$des = "ACUER.-".$nroacuerdo;
+			if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 2) {
+				$des = "ACU. INC.-".$nroacuerdo;
+			}
 		}
 		return($des);
 	} else {
@@ -210,10 +213,13 @@ function estado($ano, $me, $db) {
 		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
 		if(array_key_exists($idArray, $arrayAcuerdos)) {
 			$nroacuerdo = $arrayAcuerdos[$idArray]['nroacuerdo'];
-			if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 0 ) {
-				$des = "P. ACUER.-".$nroacuerdo;
+			$des = "ACUER.-".$nroacuerdo;
+			if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 0) {
+				$des = "P. ACUER.-" . $nroacuerdo;
 			} else {
-				$des = "ACUER.-".$nroacuerdo;
+				if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 2) {
+					$des = "ACU. INC.-".$nroacuerdo;
+				}
 			}
 		} else {
 			//VEO LOS JUICIOS
@@ -257,7 +263,7 @@ function imprimeTabla($periodo) {
 			print ("<a href=javascript:abrirInfo('detallePagos.php?cuit=".$cuit."&anio=".$ano."&mes=".$me."')>".$estado."</a>");
 		} else {
 			$pacuerdo = explode('-',$estado);
-			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.') {
+			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.' or $pacuerdo[0] == 'ACU. INC.') {
 				print ("<a href=javascript:abrirInfo('/madera/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$estado."</a>"); 
 			} else {
 				$juicioEstado = explode('-',$estado);
@@ -377,15 +383,15 @@ while($ano<=$anofin) {
 	<td>*ACUER. =  EN ACUERDO</td>
   </tr>
   <tr>
+    <td>*ACU. INC. = ACUERDO INCOBRABLE</td>
     <td>*NO PAGO =  NO PAGO CON DDJJ</td>
 	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
 	<td>*REQ. (nro. requerimiento) = FISCALIZADO</td>
-    <td>*J.EJEC (nro. orden) = EN JUICIO EJECUCI&Oacute;N </td>
   </tr>
   <tr>
+  	<td>*J.EJEC (nro. orden) = EN JUICIO EJECUCI&Oacute;N </td>
     <td>*J.CONV (nro. orden) = EN JUICIO CONVOCATORIA </td>
     <td>*J.QUIEB (nro. orden) = EN JUICIO QUIEBRA </td>
-    <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
 </table>
