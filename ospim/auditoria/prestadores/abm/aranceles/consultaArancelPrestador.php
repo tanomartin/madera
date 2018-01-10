@@ -93,7 +93,7 @@ $numAranceles = mysql_num_rows($resAranceles);
 			</tbody>
 		  </table>
 	<?php } else { ?>	
-	 		<div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE ARANCEL CARGADO </b></div>
+	 		<p><font style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE ARANCEL CARGADO </b></font></p>
 	<?php } ?>
 </div>
 </body>
