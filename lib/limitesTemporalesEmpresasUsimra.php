@@ -13,7 +13,7 @@ if ($diahoy > 15) {
 } else {
 	if ($mesactual == 1) {
 		$anofin = $anofin - 1;
-		$ano = $anofin - 11;
+		$ano = $anofin - 6;
 		$anoinicio = $ano;
 		$mesfin = 11;
 	} else {
