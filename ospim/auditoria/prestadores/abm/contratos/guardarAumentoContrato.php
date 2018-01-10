@@ -71,7 +71,7 @@ if ($numCabContratoFin > 0) {
 										ROUND (".$rowContrato['galenogastos']." * $porcentaje , 2),
 										'$fecharegistro',
 										'$usuariomodificacion')";
-			echo $sqlInsertDetalle."<br><br>";
+			//echo $sqlInsertDetalle."<br><br>";
 			$dbh->exec($sqlInsertDetalle);
 		}
 			
