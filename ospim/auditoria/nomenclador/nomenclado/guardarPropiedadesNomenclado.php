@@ -53,7 +53,7 @@ try {
 	}
 	
 	$dbh->commit();
-	$pagina = "menuNomenclado.php?codigo=".$idNomenclador;
+	$pagina = "menuNomenclado.php";
 	Header("Location: $pagina"); 
 }catch (PDOException $e) {
 	echo $e->getMessage();

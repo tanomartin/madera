@@ -18,7 +18,7 @@ $resExisteCodigo = mysql_query($sqlExisteCodigo,$db);
 $numExisteCodigo = mysql_num_rows($resExisteCodigo);
 if ($numExisteCodigo == 0) {	
 	$descri = strtoupper($descri);
-	$sqlInsertPractica = "INSERT INTO practicas VALUES(DEFAULT,'$codigoCompleto',$tipopractica,$complejidad,2,'$descri',DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT)";
+	$sqlInsertPractica = "INSERT INTO practicas VALUES(DEFAULT,'$codigoCompleto',$tipopractica,$complejidad,2,'$descri',DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT,DEFAULT)";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];

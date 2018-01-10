@@ -10,7 +10,8 @@ if(isset($_POST['valor'])) {
 		$respuesta='<option value="0">Seleccione Capitulo</option>';
 		while($rowCapitulo=mysql_fetch_assoc($resCapitulo)) {
 			$value = $rowCapitulo['id']."-".$rowCapitulo['codigo'];
-			$respuesta.="<option value='$value'>".$rowCapitulo['codigo']."-".$rowCapitulo['descripcion']."</option>";
+			$descri = substr($rowCapitulo['descripcion'],0,90);
+			$respuesta.="<option value='$value'>".$rowCapitulo['codigo']."-".$descri."</option>";
 		}
 	}
 	echo $respuesta;

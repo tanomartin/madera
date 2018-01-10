@@ -204,10 +204,7 @@ function validarPractica(formulario) {
 		alert("Debe ingresar una descripción para la practica");
 		return false;
 	}
-	if(formulario.complejidad.value == 0) {
-		alert("Debe seleccionar la complejidad para la practica");
-		return false;
-	}
+	
 	formulario.Submit.disabled = true;
 	return true;
 }

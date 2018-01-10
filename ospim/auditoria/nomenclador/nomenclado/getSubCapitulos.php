@@ -11,7 +11,8 @@ if(isset($_POST['valor'])) {
 		$resSubCapitulo=mysql_query($sqlSubCapitulo,$db);
 		while($rowSubCapitulo=mysql_fetch_assoc($resSubCapitulo)) {
 			$value = $rowSubCapitulo['id']."-".$rowSubCapitulo['codigo'];
-			$respuesta.="<option value='$value'>".$rowSubCapitulo['codigo']."-".$rowSubCapitulo['descripcion']."</option>";
+			$descri = substr($rowSubCapitulo['descripcion'],0,90);
+			$respuesta.="<option value='$value'>".$rowSubCapitulo['codigo']."-".$descri."</option>";
 		}
 	}
 	echo $respuesta;

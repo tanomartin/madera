@@ -6,6 +6,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
+					 <th>Modulo</th>
 					 <th>U. Honorarios</th>
 					 <th>U. Honorarios Especialista</th>
 					 <th>U. Honorarios Ayudante</th>
@@ -33,6 +34,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
+						<td>".$rowPractica['modulo']."</td>
 						<td>".$rowPractica['unihonorario']."</td>
 						<td>".$rowPractica['unihonorarioespecialista']."</td>
 						<td>".$rowPractica['unihonorarioayudante']."</td>

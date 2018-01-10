@@ -159,7 +159,7 @@ jQuery(function($){
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p>
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNomenclado.php?codigo=<?php echo $idNomenclador ?>'" />
+    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNomenclado.php'" />
   </p>
   <p><span class="Estilo2">Listador Nomenclador <?php echo $nomenclador ?></span>  </p>
   <form id="form1" name="form1" method="post" action="">
