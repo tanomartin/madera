@@ -72,7 +72,12 @@ $(document).ready(function(){
 	$.datepicker.setDefaults($.datepicker.regional['es']);
 	$("#buscaprestacion").attr('disabled', true);
 	$("#fechaprestacion").inputmask("date");
-	$("#referenciaunitario").inputmask('decimal', {digits: 2});
+	$("#referenciaunitario").inputmask('decimal', {digits: 2})
+	$("#galenoHonorario").inputmask('decimal', {digits: 2})
+	$("#galenoEspecialista").inputmask('decimal', {digits: 2})
+	$("#galenoAyudante").inputmask('decimal', {digits: 2})
+	$("#galenoAnestesista").inputmask('decimal', {digits: 2})
+	$("#galenoGastos").inputmask('decimal', {digits: 2})
 	$("#referenciatotal").inputmask('decimal', {digits: 2});
 	$("#cantidad").inputmask('integer');
 	$("#totalfacturado").inputmask('decimal', {digits: 2});
@@ -139,10 +144,12 @@ $(document).ready(function(){
         minLength: 3,
 		select: function(event, ui) {
 			var idpracticadevuelta = ui.item.idpractica;
+			var galenodevuelto = ui.item.galeno;
 			var referenciadevuelto = ui.item.valor;
 			var integraciondevuelto = ui.item.integracion;
 			var complejidaddevuelto = ui.item.complejidad;
 			$("#idPractica").val(ui.item.idpractica);
+			$("#esGaleno").val(ui.item.galeno);
 			$("#esIntegracion").val(ui.item.integracion);
 			$("#clasificacionComplejidad").val(ui.item.complejidad);
 			$("#cantidad").val('');
@@ -163,6 +170,31 @@ $(document).ready(function(){
 					$("#agregarcarencia").attr('disabled', true);
 					$("#agregarprestacion").attr('disabled', false);
 				}
+			}
+			if(galenodevuelto==1) {
+				$("#honorario").prop("checked",true);
+				$("#galenoHonorario").val(ui.item.honorario);
+				$("#especialista").prop("checked",true);
+				$("#galenoEspecialista").val(ui.item.especialista);
+				$("#ayudante").prop("checked",true);
+				$("#galenoAyudante").val(ui.item.ayudante);
+				$("#anestesista").prop("checked",true);
+				$("#galenoAnestesista").val(ui.item.anestesista);
+				$("#gastos").prop("checked",true);
+				$("#galenoGastos").val(ui.item.gastos);
+				$("#conformaciongaleno").css('display', '');
+			} else {
+				$("#honorario").prop("checked",false);
+				$("#galenoHonorario").val('');
+				$("#especialista").prop("checked",false);
+				$("#galenoEspecialista").val('');
+				$("#ayudante").prop("checked",false);
+				$("#galenoAyudante").val('');
+				$("#anestesista").prop("checked",false);
+				$("#galenoAnestesista").val('');
+				$("#gastos").prop("checked",false);
+				$("#galenoGastos").val('');
+				$("#conformaciongaleno").css('display', 'none');
 			}
 			if(integraciondevuelto==1) {
 				$("#cancelaintegracion").prop("checked",false);
@@ -209,6 +241,81 @@ $(document).ready(function(){
 				}
 			}
 		}  
+	});
+	$("#honorario").change(function(){
+		if($("#honorario").prop('checked') ) {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) + parseFloat($("#galenoHonorario").val());
+		} else {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) - parseFloat($("#galenoHonorario").val());
+		}
+		$("#cantidad").val('');
+		$("#referenciaunitario").val(nuevovalor);
+		$("#referenciatotal").val('');
+		$("#totalfacturado").val('');
+		$("#totaldebito").val('');
+		$("#totalcredito").val('');
+		$("#motivodebito").val('');
+		$("#motivodebito").attr('disabled', true);
+	});
+	$("#especialista").change(function(){
+		if($("#especialista").prop('checked') ) {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) + parseFloat($("#galenoEspecialista").val());
+		} else {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) - parseFloat($("#galenoEspecialista").val());
+		}
+		$("#cantidad").val('');
+		$("#referenciaunitario").val(nuevovalor);
+		$("#referenciatotal").val('');
+		$("#totalfacturado").val('');
+		$("#totaldebito").val('');
+		$("#totalcredito").val('');
+		$("#motivodebito").val('');
+		$("#motivodebito").attr('disabled', true);
+	});
+	$("#ayudante").change(function(){
+		if($("#ayudante").prop('checked') ) {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) + parseFloat($("#galenoAyudante").val());
+		} else {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) - parseFloat($("#galenoAyudante").val());
+		}
+		$("#cantidad").val('');
+		$("#referenciaunitario").val(nuevovalor);
+		$("#referenciatotal").val('');
+		$("#totalfacturado").val('');
+		$("#totaldebito").val('');
+		$("#totalcredito").val('');
+		$("#motivodebito").val('');
+		$("#motivodebito").attr('disabled', true);
+	});
+	$("#anestesista").change(function(){
+		if($("#anestesista").prop('checked') ) {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) + parseFloat($("#galenoAnestesista").val());
+		} else {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) - parseFloat($("#galenoAnestesista").val());
+		}
+		$("#cantidad").val('');
+		$("#referenciaunitario").val(nuevovalor);
+		$("#referenciatotal").val('');
+		$("#totalfacturado").val('');
+		$("#totaldebito").val('');
+		$("#totalcredito").val('');
+		$("#motivodebito").val('');
+		$("#motivodebito").attr('disabled', true);
+	});
+	$("#gastos").change(function(){
+		if($("#gastos").prop('checked') ) {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) + parseFloat($("#galenoGastos").val());
+		} else {
+			var nuevovalor = parseFloat($("#referenciaunitario").val()) - parseFloat($("#galenoGastos").val());
+		}
+		$("#cantidad").val('');
+		$("#referenciaunitario").val(nuevovalor);
+		$("#referenciatotal").val('');
+		$("#totalfacturado").val('');
+		$("#totaldebito").val('');
+		$("#totalcredito").val('');
+		$("#motivodebito").val('');
+		$("#motivodebito").attr('disabled', true);
 	});
 	$("#cantidad").change(function(){
 		if($("#cantidad").val()!='' && $("#cantidad").val()!=0) {
@@ -560,16 +667,24 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 					<input name="idFactura" type="hidden" id="idFactura" size="10" value="<?php echo $idfactura; ?>"/>
 					<input name="idFacturabeneficiario" type="hidden" id="idFacturabeneficiario" size="10" value="<?php echo $idfacturabeneficiario; ?>"/>
 					<input name="idprestador" type="hidden" id="idprestador" size="6" value="<?php echo $rowConsultaPrestador['codigoprestador'];?>"/>
-					<input name="personeria" type="hidden" id="personeria" size="2" value="<?php echo $rowConsultaPrestador['personeria']; ?>"/>
-				</td>
+					<input name="personeria" type="hidden" id="personeria" size="2" value="<?php echo $rowConsultaPrestador['personeria']; ?>"/>				</td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Buscar Prestacion</strong></td>
-				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="100" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
-								<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
-								<input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/>
-								<input name="clasificacionComplejidad" type="hidden" id="clasificacionComplejidad" size="2" value=""/>
-				</td>
+				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="125" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
+				<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
+					<input name="esGaleno" type="text" id="esGaleno" size="2" value=""/>
+					<input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/>
+					<input name="clasificacionComplejidad" type="hidden" id="clasificacionComplejidad" size="2" value=""/>				</td>
+			</tr>
+			<tr id="conformaciongaleno" style="display:none">
+				<td align="right"><strong>Conformacion Galeno</strong></td>
+				<td align="left" colspan="5">
+					 Honorario <input name="honorario" type="checkbox" id="honorario" value="1"/> <input name="galenoHonorario" type="text" id="galenoHonorario" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>
+					 | Especialista <input name="especialista" type="checkbox" id="especialista" value="1"/> <input name="galenoEspecialista" type="text" id="galenoEspecialista" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>
+					 | Ayudante <input name="ayudante" type="checkbox" id="ayudante" value="1"/> <input name="galenoAyudante" type="text" id="galenoAyudante" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>
+					 | Anestesista <input name="anestesista" type="checkbox" id="anestesista" value="1"/> <input name="galenoAnestesista" type="text" id="galenoAnestesista" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>
+					 | Gastos/U.B. <input name="gastos" type="checkbox" id="gastos" value="1"/> <input name="galenoGastos" type="text" id="galenoGastos" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>				</td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Cantidad</strong></td>
@@ -589,11 +704,11 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			</tr>
 			<tr>
 	<td align="right"><strong>Motivo Debito</strong></td>
-				<td colspan="5" align="left"><textarea name="motivodebito" rows="3" cols="100" id="motivodebito" placeholder="Motivo del Debito / Comentario / Observacion"></textarea></td>
+				<td colspan="5" align="left"><textarea name="motivodebito" rows="3" cols="125" id="motivodebito" placeholder="Motivo del Debito / Comentario / Observacion"></textarea></td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Efector</strong></td>
-				<td colspan="5" align="left"><textarea name="efectorpractica" rows="3" cols="100" id="efectorpractica" placeholder=""></textarea>
+				<td colspan="5" align="left"><textarea name="efectorpractica" rows="3" cols="125" id="efectorpractica" placeholder=""></textarea>
 											<input name="idEfector" type="hidden" id="idEfector" size="5" value=""/>
 											<input name="establecimientoCirculo" type="hidden" id="establecimientoCirculo" size="2" value=""/></td>
 			</tr>
@@ -603,8 +718,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			</tr>
 			<tr id="integracion">
 				<td align="right"><strong>Paga por Integracion ?</strong></td>
-				<td colspan="5" align="left"><input name="cancelaintegracion" type="checkbox" id="cancelaintegracion" value="1"/>
-			</tr>
+			<td colspan="5" align="left"><input name="cancelaintegracion" type="checkbox" id="cancelaintegracion" value="1"/>			</tr>
 		</table>
 	</div>
 	<div id="datosintegracion" align="center">
@@ -667,28 +781,20 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			<strong>Paciente Hemodialisis</strong><input name="hemodialisis" type="checkbox" id="chec8" value="1"/>
 		</span>
 		<span id="span9">
-			<strong>Cirugia Cardiovascular</strong><input name="cardiovascular" type="checkbox" id="chec9" value="1"/>
+			<strong>Parto Normal</strong><input name="parto" type="checkbox" id="chec9" value="1"/>
 		</span>
 		<span id="span10">
-			<strong>Cirugia Prostatectomia</strong><input name="prostatectomia" type="checkbox" id="chec10" value="1"/>
+			<strong>Parto Cesarea</strong><input name="cesarea" type="checkbox" id="chec10" value="1"/>
 		</span>
 		<span id="span11">
-			<strong>C.A. de Cuello Uterino</strong><input name="uterino" type="checkbox" id="chec11" value="1"/>
+			<strong>Egreso Clinico</strong><input name="clinico" type="checkbox" id="chec11" value="1"/>
 		</span>
 		<span id="span12">
-			<strong>C.A. de Mama</strong><input name="mama" type="checkbox" id="chec12" value="1"/>
-		</span>
-		<span id="span13">
-			<strong>Parto Normal</strong><input name="parto" type="checkbox" id="chec13" value="1"/>
-		</span>
-		<span id="span14">
-			<strong>Parto Cesarea</strong><input name="cesarea" type="checkbox" id="chec14" value="1"/>
-		</span>
-		<span id="span15">
-			<strong>Egreso Clinico</strong><input name="clinico" type="checkbox" id="chec15" value="1"/>
-		</span>
-		<span id="span16">
-			<strong>Egreso Quirugico</strong><input name="quirurgico" type="checkbox" id="chec16" value="1"/>
+			<strong>Egreso Quirugico</strong><input name="quirurgico" type="checkbox" id="chec12" value="1"/>
+			Cirugia Cardiovascular<input name="cardiovascular" type="checkbox" id="cardiovascular" value="1"/>
+			Cirugia Prostatectomia<input name="prostatectomia" type="checkbox" id="prostatectomia" value="1"/>
+			C.A. de Cuello Uterino<input name="uterino" type="checkbox" id="uterino" value="1"/>
+			C.A. de Mama<input name="mama" type="checkbox" id="mama" value="1"/>
 		</span>
 	</div>
 	<div align="center">
