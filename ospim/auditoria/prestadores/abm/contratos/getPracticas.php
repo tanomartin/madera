@@ -48,15 +48,13 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 						<td>".$rowPractica['descripcion']."</td>
 						<td>".$rowPractica['complejidad']."</td>";
 		$respuesta.="<td><select id='categoria-".$id."' name='categoria-".$id."'>";
-		if ($personeria == 3 || $personeria == 2) {
-			$sqlCategoria = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
-			$resCategoria = mysql_query($sqlCategoria,$db);
-			while($rowCategoria = mysql_fetch_assoc($resCategoria)) { 
-				$respuesta.="<option value='".$rowCategoria['id']."'>".$rowCategoria['descripcion']."</option>";
-			}
-		} else {
-			$respuesta.="<option value='0'>Sin Categoria</option>";
+		
+		$sqlCategoria = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
+		$resCategoria = mysql_query($sqlCategoria,$db);
+		while($rowCategoria = mysql_fetch_assoc($resCategoria)) { 
+			$respuesta.="<option value='".$rowCategoria['id']."'>".$rowCategoria['descripcion']."</option>";
 		}
+		
 		$respuesta.="</select></td>";
 		$respuesta.=   "<td><select id='tipoCarga-".$id."' name='tipoCarga-".$id."' onchange=habilitarValores('".$id."',this)>
 								<option value='0'>Tipo Carga</option>
