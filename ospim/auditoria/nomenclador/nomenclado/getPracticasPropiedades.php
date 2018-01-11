@@ -13,6 +13,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 			 		 <th>U. Honorarios Anestesista</th>
 			  		 <th>U. Gastos</th>
 					 <th>Clasificacion<br>Res. 650</th>
+					 <th>Interancion</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
 		$sqlPractica="SELECT * FROM practicas WHERE `codigopractica` not like '%.%' and `codigopractica` not like '%.%.%' and nomenclador = $nomenclador and tipopractica = $tipo";
@@ -38,6 +39,13 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
 		$practica = $rowPractica['codigopractica'];
+		if ($rowPractica['internacion'] == 0) {
+			$selectNO = "selected";
+			$selectSI = "";
+		} else {
+			$selectNO = "";
+			$selectSI = "selected";
+		}
 		$respuesta.="<tr>
 						<td><input name=\"codigopractica".$i."\" id=\"codigopractica".$i."\" type=\"text\" value=\"".$rowPractica['codigopractica']."\" size=\"5\" readonly=\"readonly\" style=\"background-color: #CCCCCC; text-align:center\"  /></td>
 						<td>".$rowPractica['descripcion']."</td>
@@ -59,6 +67,11 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 								next($tipoComplejidad);
 						}
 		$respuesta.= "</select>
+					  <td>
+						<select name=\"internacion".$i."\" id=\"internacion".$i."\">
+							<option value=0 ".$selectNO.">NO</opction>
+							<option value=1 ".$selectSI.">SI</opction>
+						</select>
 					</tr>";
 		$i++;
 	}

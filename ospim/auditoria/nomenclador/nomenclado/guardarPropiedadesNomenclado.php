@@ -35,7 +35,12 @@ foreach($_POST as $key => $value) {
 	$resultado = strpos($key, "complejidad");
 	if($resultado !== FALSE){
 		$codigoComplejidad = $value;
-		$sqlUpdatePractica[$i] .= "codigocomplejidad = $codigoComplejidad WHERE codigopractica = '$codigoPractica' and nomenclador = '$idNomenclador'";
+		$sqlUpdatePractica[$i] .= "codigocomplejidad = $codigoComplejidad, ";
+	}
+	$resultado = strpos($key, "internacion");
+	if($resultado !== FALSE){
+		$interancion = $value;
+		$sqlUpdatePractica[$i] .= "internacion = $interancion WHERE codigopractica = '$codigoPractica' and nomenclador = '$idNomenclador'";
 		$i++;
 	}
 }
@@ -48,7 +53,7 @@ try {
 	$dbh->beginTransaction();
 	
 	foreach($sqlUpdatePractica as $sqlUpdate) {
-		//print($sqlUpdate."<br>");
+		print($sqlUpdate."<br>");
 		$dbh->exec($sqlUpdate);
 	}
 	

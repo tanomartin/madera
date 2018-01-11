@@ -5,10 +5,11 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	$nomenclador = $_POST['nomenclador'];
 	$personeria = $_POST['personeria'];
 	$respuesta = "<thead><tr>
-	         		<th>C&oacute;digo</th>
+	         		<th>Cod.</th>
 					<th>Nomenclador</th>
 					<th>Descripciones</th>
 					<th>Clasificacion<br>Res. 650</th>
+					<th>Internacion</th>
 					<th>Categoria</th>
 					<th></th>
 					<th>Modulo Consultorio / Valor General ($)</th>
@@ -42,11 +43,16 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
 		$id = $rowPractica['idpractica'];
+		$inte = "NO";
+		if ($rowPractica['internacion'] == 1) {
+			$inte = "SI";
+		}
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['nombrenomenclador']."</td>
-						<td>".$rowPractica['descripcion']."</td>
-						<td>".$rowPractica['complejidad']."</td>";
+						<td>".$rowPractica['descripcion']."</td>		
+						<td>".$rowPractica['complejidad']."</td>
+						<td>".$inte."</td>";
 		$respuesta.="<td><select id='categoria-".$id."' name='categoria-".$id."'>";
 		
 		$sqlCategoria = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
@@ -69,6 +75,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 						<td><input id='gHonoAyud-".$id."' name='gHonoAyud-".$id."' type='text' disabled=true size='7'/></td>
 						<td><input id='gHonoAnes-".$id."' name='gHonoAnes-".$id."' type='text' disabled=true size='7'/></td>
 						<td><input id='gGastos-".$id."' name='gGastos-".$id."' type='text' disabled=true size='7'/></td>
+						
 					</tr>";
 	}
 	$respuesta.="</tbody>";

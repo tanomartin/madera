@@ -149,6 +149,7 @@ function validar(formulario) {
 		 <th>U. Honorarios Anestesista</th>
 		 <th>U. Gastos</th>
 		 <th>Complejidad</th>
+		 <th>Interancion</th>
 		 <th>Acciones</th>
        </tr>
      </thead>
@@ -169,6 +170,7 @@ function validar(formulario) {
 			 <td><?php echo $rowPracticas['unihonorarioanestesista'];?></td>
 			 <td><?php echo $rowPracticas['unigastos'];?></td>
 			 <td><?php echo $rowPracticas['complejidad']; ?></td>
+			 <td><?php if ($rowPracticas['internacion'] == 0) { echo "NO"; } else { echo "SI";} ?>
 			 <td>
 			 	 <input name="prestadores" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>
 			 	 <input name="agregar" type="button" value="Agregar Prestador" onclick="abrirPantalla('agregarPracticaPrestador.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>

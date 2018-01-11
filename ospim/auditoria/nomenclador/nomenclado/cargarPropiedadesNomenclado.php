@@ -61,6 +61,8 @@ jQuery(function($){
 		$("#subcapitulo").prop("disabled",true);
 		$("#res650total").val(0);
 		$("#res650total").prop("disabled",true);
+		$("#intetotal").val(0);
+		$("#intetotal").prop("disabled",true);
 		$("#practicas").html("");
 		$("#guardar").css("display", "none");
 		var valor = $(this).val();
@@ -84,6 +86,7 @@ jQuery(function($){
 					}).done(function(respuesta){
 						$("#practicas").html(respuesta);
 						$("#res650total").prop("disabled",false);
+						$("#intetotal").prop("disabled",false);
 						$("#guardar").prop("disabled",false);	
 						$("#guardar").css("display", "block");
 					});
@@ -96,7 +99,9 @@ jQuery(function($){
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
 		$("#subcapitulo").prop("disabled",true);
 		$("#res650total").val(0);
-		$("#res650total").prop("disabled",true);	
+		$("#res650total").prop("disabled",true);
+		$("#intetotal").val(0);
+		$("#intetotal").prop("disabled",true);
 		$("#practicas").html("");
 		$("#guardar").css("display", "none");
 		tipo = $("#tipo").val();
@@ -122,6 +127,7 @@ jQuery(function($){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
 					$("#res650total").prop("disabled",false);
+					$("#intetotal").prop("disabled",false);
 					$("#guardar").prop("disabled",false);
 					$("#guardar").css("display", "block");
 				}
@@ -132,6 +138,8 @@ jQuery(function($){
 	$("#subcapitulo").change(function(){
 		$("#res650total").val(0);
 		$("#res650total").prop("disabled",true);
+		$("#intetotal").val(0);
+		$("#intetotal").prop("disabled",true);
 		var valor = $(this).val();
 		var tipo = $("#tipo").val();
 		var nomenclador = $("#nomenclador").val();
@@ -164,6 +172,7 @@ jQuery(function($){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
 					$("#res650total").prop("disabled",false);
+					$("#intetotal").prop("disabled",false);
 					$("#guardar").prop("disabled",false);	
 					$("#guardar").css("display", "block");
 				}
@@ -179,6 +188,18 @@ function cambiarClasificaion(valor) {
 	cantFilas--;
 	for (var i = 0; i < cantFilas; i++) {
 		nombre = "complejidad" + i;
+		selectElemento = document.getElementById(nombre);
+		selectElemento.selectedIndex = valor;
+	}
+}
+
+function cambiarInternacion(valor) {
+	var tabla = document.getElementById('practicas');
+	var nombre = "";
+	cantFilas = tabla.rows.length;
+	cantFilas--;
+	for (var i = 0; i < cantFilas; i++) {
+		nombre = "internacion" + i;
 		selectElemento = document.getElementById(nombre);
 		selectElemento.selectedIndex = valor;
 	}
@@ -231,6 +252,7 @@ function validar(formulario) {
 		}
 	}
 	formulario.res650total.disabled = true;
+	formulario.intetotal.disabled = true;
 	formulario.guardar.disabled = true;
 	return true;
 }
@@ -266,8 +288,7 @@ function validar(formulario) {
 	  	<option value='0'>Seleccione SubCapitulo</option>
       </select>
 	</p>
-	<p>
-	<b>Complejidad Capitulo Completo</b>
+	<p><b>Complejidad Capitulo Completo</b>
 		<select name="res650total" id="res650total" disabled="disabled" onchange="cambiarClasificaion(this.value)">
 			<?php 
 			$sqlComplejida = "SELECT * FROM tipocomplejidad";
@@ -277,7 +298,12 @@ function validar(formulario) {
 	  <?php } ?>
 		</select>
 	</p>
-	
+	<p><b>Internacino Capitulo Completo</b>
+		<select name="intetotal" id="intetotal" disabled="disabled" onchange="cambiarInternacion(this.value)">
+			<option value="0" selected="selected">NO</option>
+			<option value="1">SI</option>
+		</select>
+	</p>
 	<table style="text-align:center; width:1000px" id="practicas" class="tablesorter" >
      <thead>
      </thead>

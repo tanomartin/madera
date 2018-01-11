@@ -75,6 +75,12 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 						next($tipoComplejidad);
 				  }
 				  $respuesta.= "</select></p>
+				  <p> Interancion: 
+				  		<select name=\"internacion\" id=\"internacion\">
+				  	 		<option value=0 selected>NO</opction>
+				  			<option value=1>SI</opction>
+				  		</select>
+				  </p>
 				  <p><input type='submit' name='Submit' value='Guardar' sub/></p>";
 	echo $respuesta;
 }

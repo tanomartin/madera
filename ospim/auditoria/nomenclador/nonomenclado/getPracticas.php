@@ -6,6 +6,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
          			 <th>C&oacute;digo</th> 
 					 <th>Descripciones</th>
 					 <th>Complejidad</th>
+					 <th>Internacion</th>
 					 <th>Acciones</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
@@ -23,10 +24,13 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
 		$practica = $rowPractica['idpractica'];
+		$inter = "NO";
+		if ($rowPractica['internacion'] == 1) { $inter = "SI"; }
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>	
 						<td>".$rowPractica['descripcion']."</td>
 						<td>".$rowPractica['complejidad']."</td>
+						<td>".$inter."</td>
 						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?idpractica=$practica&nomenclador=2')\"/></td>
 					</tr>";
 	}
