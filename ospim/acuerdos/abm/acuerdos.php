@@ -61,8 +61,12 @@ $cantacuerdos = mysql_num_rows($resulacuerdos);
 							if (($rowCuotas['tipocancelacion'] != 8 && $reemplazable == true) || $rowCuotas['boletaimpresa'] != 0){
 								$reemplazable = false;
 							}	
-						}										
+						} else {
+							$reemplazable = false;
+						}
 					}
+				} else {
+					$reemplazable = false;
 				}
 				if ($reemplazable == true) { ?>
 					<input type="button" onclick="location.href = 'reemplazarAcuerdo.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $rowacuerdos['nroacuerdo'] ?>'" value="REEMPLAZAR" /> - 
