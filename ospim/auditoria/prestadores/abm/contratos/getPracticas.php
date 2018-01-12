@@ -32,12 +32,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 			$sqlPractica="SELECT p.*, t.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipocomplejidad t, nomencladores n WHERE p.codigopractica like '$codigo.%' and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
 		}
 	}
-	
-	if ($nomenclador != 3) {
-		$sqlPractica .= " and p.nomenclador = $nomenclador and p.nomenclador = n.id order by p.idpractica";
-	} else {
-		$sqlPractica .= " order by p.idpractica";
-	}
+	$sqlPractica .= " and p.nomenclador = $nomenclador and p.nomenclador = n.id order by p.idpractica";
 
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
