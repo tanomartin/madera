@@ -61,8 +61,6 @@ $cantacuerdos = mysql_num_rows($resulacuerdos);
 							if (($rowCuotas['tipocancelacion'] != 8 && $reemplazable == true) || $rowCuotas['boletaimpresa'] != 0){
 								$reemplazable = false;
 							}	
-						} else {
-							$reemplazable = false;
 						}
 					}
 				} else {
