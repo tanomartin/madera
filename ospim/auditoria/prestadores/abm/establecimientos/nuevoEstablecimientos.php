@@ -1,4 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspim.php"); 
+
 $codigopresta = $_GET['codigopresta'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigopresta";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
@@ -16,6 +18,8 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <script type="text/javascript">
 
 jQuery(function($){
+	$("#fechadesde").mask("99-99-9999");
+	$("#fechahasta").mask("99-99-9999");
 	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
@@ -47,6 +51,19 @@ jQuery(function($){
 	});
 	
 });
+
+function habilitaFecha(valor) {
+	var fechadesde = document.getElementById("fechadesde");
+	var fechahasta = document.getElementById("fechahasta");
+	fechadesde.value = "";
+	fechahasta.value = "";
+	fechadesde.disabled = true;
+	fechahasta.disabled = true;
+	if(valor == 1) {
+		fechadesde.disabled = false;
+		fechahasta.disabled = false;
+	}
+}
 
 function validar(formulario) {
 	if (formulario.nombre.value == "") {
@@ -109,6 +126,24 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	if (formulario.calidad.value == 1) {
+		var fechadesde = formulario.fechadesde.value;
+		var fechahasta = formulario.fechahasta.value;
+		if (!esFechaValida(fechadesde)) {
+			alert("La Fecha Desde de la acreditacion no de calidad no es valida");
+			return false
+		}
+		if (!esFechaValida(fechahasta)) {
+			alert("La Fecha Hasta de la acreditacion no de calidad no es valida");
+			return false
+		}
+		fechaInicio = new Date(invertirFecha(fechadesde));
+		fechaFin = new Date(invertirFecha(fechahasta));
+		if (fechaInicio >= fechaFin) {
+			alert("La Fecha Desde debe ser superior a la Fecha de Hasta");
+			return false ;
+		}
+	}
 	formulario.Submit.disabled = true;
 	return true;
 }
@@ -163,7 +198,18 @@ function validar(formulario) {
 	  <tr>
         <td><div align="right"><strong>Telefono FAX </strong></div></td>
         <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="5"/>)-<input name="telefonofax" type="text" id="telefonofax" size="20" /></div></td>
-        <td colspan="4"><div align="left"><strong>Email</strong><input name="email" type="text" id="email" size="40" /></div></td>
+        <td colspan="4"><div align="left"><strong>Email </strong><input name="email" type="text" id="email" size="40" /></div></td>
+      </tr>
+      <tr>
+      	<td><div align="right"><strong>Acrditacion Calidad</strong></div></td>
+      	<td>
+	    	<div align="left">
+          		<input name="calidad" type="radio" value="0" checked="checked" onclick="habilitaFecha(this.value)"/> NO
+  		  		<input name="calidad" type="radio" value="1" onclick="habilitaFecha(this.value)"/>SI
+		  	</div>
+		</td>
+		<td><b>Fecha Desde</b> <input id="fechadesde" name="fechadesde" size="8" disabled="disabled"></input></td>
+		<td><b>Fecha Hasta</b> <input id="fechahasta" name="fechahasta" size="8" disabled="disabled"></input></td>
       </tr>
        <tr>
 	    <td><div align="right"><strong>Circulo</strong></div></td>

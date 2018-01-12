@@ -82,6 +82,18 @@ if ($email == "") {
 }
 
 $circulo = $_POST['circulo'];
+
+$calidad = $_POST['calidad'];
+if ($calidad == 0) {
+	$fechainiciocalidad = "NULL";
+	$fechafincalidad = "NULL";
+} else {
+	$fechadesde = fechaParaGuardar($_POST['fechadesde']);
+	$fechahasta = fechaParaGuardar($_POST['fechahasta']);
+	$fechainiciocalidad = "'$fechadesde'";
+	$fechafincalidad = "'$fechahasta'";
+}
+
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -102,6 +114,9 @@ telefonofax = $telfax,
 ddnfax = $ddnfax, 
 email = $email,
 circulo = $circulo,
+calidad = $calidad,
+fechainiciocalidad = $fechainiciocalidad,
+fechafincalidad = $fechafincalidad,
 fehamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'
 WHERE codigo = $codigo and codigoprestador = $codigopresta";

@@ -1,4 +1,6 @@
-<?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspim.php"); 
+include($libPath."fechas.php");
 
 $codigopresta = $_GET['codigopresta'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigopresta";
@@ -77,6 +79,14 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
           <td><div align="left"><?php if ($rowConsultaEsta['telefonofax'] != NULL) echo "(".$rowConsultaEsta['ddnfax'].")-".$rowConsultaEsta['telefonofax']; ?></div></td>
           <td><div align="left"><strong>Email</strong></div></td>
           <td colspan="4"><div align="left"><?php echo $rowConsultaEsta['email'] ?></div></td>
+        </tr>
+        <tr>
+          <td><div align="right"><strong>Acreditacion Calidad </strong></div></td>
+          <td><div align="left"><?php if ($rowConsultaEsta['calidad'] == 0) { echo "NO"; } else { echo "SI"; }  ?></div></td>
+          <td><div align="left"><strong>Fecha Desde</strong></div></td>
+          <td><div align="left"><?php if ($rowConsultaEsta['fechainiciocalidad'] != NULL) { echo invertirFecha($rowConsultaEsta['fechainiciocalidad']); } ?></div></td>
+          <td><div align="left"><strong>Fecha Hasta</strong></div></td>
+          <td><div align="left"><?php if ($rowConsultaEsta['fechafincalidad'] != NULL) { echo invertirFecha($rowConsultaEsta['fechafincalidad']); } ?></div></td>
         </tr>
         <tr>
           <td><div align="right"><strong>Circulo </strong></div></td>
