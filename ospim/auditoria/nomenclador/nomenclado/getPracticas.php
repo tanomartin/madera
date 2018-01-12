@@ -11,7 +11,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 					 <th>U. Honorarios Especialista</th>
 					 <th>U. Honorarios Ayudante</th>
 			 		 <th>U. Honorarios Anestesista</th>
-			  		 <th>U. Gastos</th>
+			  		 <th>U. Gastos / U.B.</th>
 					 <th>Clasificacion<br>Res. 650</th>
 					 <th>Internacion</th>
 					 <th>Acciones</th>
