@@ -20,7 +20,7 @@ foreach($_POST as $key => $value) {
 			$id = "categoria-".$idpractica;
 			$idCategoria = $_POST[$id];
 			if ($value == 1) {
-				$id = "moduloConultorio-".$idpractica;
+				$id = "moduloConsultorio-".$idpractica;
 				$moduloConsultorio = $_POST[$id];
 				if($moduloConsultorio == '') { $moduloConsultorio = 0; }
 				$id = "moduloUrgencia-".$idpractica;

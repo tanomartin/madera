@@ -32,6 +32,7 @@ $whereNom = substr($whereNom, 0, -1);
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/madera/lib/tablas.css"/>
 <script type="text/javascript">
 
 	$(function() {
@@ -78,22 +79,20 @@ $whereNom = substr($whereNom, 0, -1);
 		$.unblockUI(); 
 	});
 	
-	function habilitarValores(idpractica,seleccion) {
-		var opcion = seleccion.options[seleccion.selectedIndex].value;
-
-		var idname = "moduloConultorio-"+idpractica;
+	function habilitarValores(posicion,opcion) {	
+		var idname = "moduloConsultorio-"+posicion;
 		var modCons = document.getElementById(idname);
-		idname = "moduloUrgencia-"+idpractica;
+		idname = "moduloUrgencia-"+posicion;
 		var modUrge = document.getElementById(idname);
-		idname = "gHono-"+idpractica;
+		idname = "gHono-"+posicion;
 		var gHono = document.getElementById(idname);
-		idname = "gHonoEspe-"+idpractica;
+		idname = "gHonoEspe-"+posicion;
 		var gHonoEspe = document.getElementById(idname);
-		idname = "gHonoAyud-"+idpractica;
+		idname = "gHonoAyud-"+posicion;
 		var gHonoAyud = document.getElementById(idname);
-		idname = "gHonoAnes-"+idpractica;
+		idname = "gHonoAnes-"+posicion;
 		var gHonoAnes = document.getElementById(idname);
-		idname = "gGastos-"+idpractica;
+		idname = "gGastos-"+posicion;
 		var gGastos = document.getElementById(idname);
 		gHono.value = '';
 		gHonoEspe.value = '';
@@ -134,7 +133,7 @@ $whereNom = substr($whereNom, 0, -1);
 			if (elemento.id.indexOf("tipoCarga") !== -1 && elemento.value != 0) {
 				var idArray = elemento.id.split("-");
 				if (elemento.value == 1) {
-					var consultorioId = "moduloConultorio-"+idArray[1];
+					var consultorioId = "moduloConsultorio-"+idArray[1];
 					var urgenciaId = "moduloUrgencia-"+idArray[1];
 					var moduloConsu = document.getElementById(consultorioId);
 					var moduloUrgen = document.getElementById(urgenciaId);
@@ -178,6 +177,16 @@ $whereNom = substr($whereNom, 0, -1);
 				}
 			}
 		}
+		formulario.cattotal.disabled = true;
+		formulario.tipocargatotal.disabled = true;
+		formulario.moduloConsultoriototal.disabled = true;
+		formulario.moduloUrgenciatotal.disabled = true;
+		formulario.gHonototal.disabled = true;
+		formulario.gHonoEspetotal.disabled = true;
+		formulario.gHonoAyudtotal.disabled = true;
+		formulario.gHonoAnestotal.disabled = true;
+		formulario.gHonoAnestotal.disabled = true;
+		formulario.gGastostotal.disabled = true;
 		$.blockUI({ message: "<h1>Agregando Practicas Seleccionadas</h1>" });
 		return true;
 	}
@@ -189,7 +198,11 @@ $whereNom = substr($whereNom, 0, -1);
 			$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
 			$("#subcapitulo").prop("disabled",true);
 			$("#agregar").prop("disabled",true);
+			$("#cattotal").prop("disabled",true);
+			$("#tipocargatotal").prop("disabled",true);
+			limpiarCargaMasiva();
 			$("#practicas").html("");
+			$("#tituloPraticas").hide();
 			var personeria = $("#personeria").val();
 			var valor = $(this).val();
 			var valores = valor.split("-");
@@ -212,9 +225,12 @@ $whereNom = substr($whereNom, 0, -1);
 							url: "getPracticas.php",
 							data: {valor:-1, tipo:tipo, nomenclador:nomenclador, personeria:personeria},
 						}).done(function(respuesta){
+							$("#tituloPraticas").show();
 							if (respuesta != 0) {	
 								$("#practicas").html(respuesta);
 								$("#agregar").prop("disabled",false);
+								$("#cattotal").prop("disabled",false);
+								$("#tipocargatotal").prop("disabled",false);
 							} else {
 								$("#practicas").html("NO EXISTEN PRACTICAS");
 							}
@@ -228,7 +244,11 @@ $whereNom = substr($whereNom, 0, -1);
 			$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
 			$("#subcapitulo").prop("disabled",true);
 			$("#agregar").prop("disabled",true);	
+			$("#cattotal").prop("disabled",true);
+			$("#tipocargatotal").prop("disabled",true);
+			limpiarCargaMasiva();
 			$("#practicas").html("");
+			$("#tituloPraticas").hide();
 			var personeria = $("#personeria").val();
 			var valor = $(this).val();
 			valor = valor.split('-');
@@ -254,7 +274,10 @@ $whereNom = substr($whereNom, 0, -1);
 				}).done(function(respuesta){
 					if (respuesta != 0) {
 						$("#practicas").html(respuesta);
+						$("#tituloPraticas").show();
 						$("#agregar").prop("disabled",false);
+						$("#cattotal").prop("disabled",false);
+						$("#tipocargatotal").prop("disabled",false);
 					}
 				});
 			});
@@ -262,7 +285,11 @@ $whereNom = substr($whereNom, 0, -1);
 		
 		$("#subcapitulo").change(function(){
 			$("#practicas").html("");
+			$("#tituloPraticas").hide();
 			$("#agregar").prop("disabled",true);
+			$("#cattotal").prop("disabled",true);
+			$("#tipocargatotal").prop("disabled",true);
+			limpiarCargaMasiva();
 			$("#practicas").html("");
 			var personeria = $("#personeria").val();
 			tipo = $("#tipo").val();
@@ -281,7 +308,10 @@ $whereNom = substr($whereNom, 0, -1);
 				}).done(function(respuesta){
 					if (respuesta != 0) {
 						$("#practicas").html(respuesta);
+						$("#tituloPraticas").show();
 						$("#agregar").prop("disabled",false);
+						$("#cattotal").prop("disabled",false);
+						$("#tipocargatotal").prop("disabled",false);
 					} 
 				});
 			} else {
@@ -294,13 +324,86 @@ $whereNom = substr($whereNom, 0, -1);
 				}).done(function(respuesta){
 					if (respuesta != 0) {
 						$("#practicas").html(respuesta);
+						$("#tituloPraticas").show();
 						$("#agregar").prop("disabled",false);
+						$("#cattotal").prop("disabled",false);
+						$("#tipocargatotal").prop("disabled",false);
 					}
 				});
 			}
 		});
 	});
 
+	function cambiarcat(catetotal) {
+		var tabla = document.getElementById('practicas');
+		var nombre = "";
+		cantFilas = tabla.rows.length;
+		cantFilas--;
+		for (var i = 0; i < cantFilas; i++) {
+			nombre = "categoria-" + i;
+			selectElemento = document.getElementById(nombre);
+			selectElemento.selectedIndex = catetotal;
+		}
+	}
+
+	function limpiarCargaMasiva() {
+		document.getElementById("cattotal").selectedIndex = 0;
+		document.getElementById("tipocargatotal").selectedIndex = 0;
+		limpiarCargaMasivaValores();
+	}
+
+	function limpiarCargaMasivaValores() {
+		document.getElementById('moduloConsultoriototal').disabled = true;
+		document.getElementById('moduloUrgenciatotal').disabled  = true;	
+		document.getElementById('gHonototal').disabled = true;
+		document.getElementById('gHonoEspetotal').disabled = true;
+		document.getElementById('gHonoAyudtotal').disabled = true;
+		document.getElementById('gHonoAnestotal').disabled = true;
+		document.getElementById('gGastostotal').disabled = true;	
+
+		document.getElementById('moduloConsultoriototal').value = "";
+		document.getElementById('moduloUrgenciatotal').value  = "";	
+		document.getElementById('gHonototal').value = "";
+		document.getElementById('gHonoEspetotal').value = "";
+		document.getElementById('gHonoAyudtotal').value = "";
+		document.getElementById('gHonoAnestotal').value = "";
+		document.getElementById('gGastostotal').value = "";	
+	}
+
+	function habilitarValorestotales(opcion) {
+		limpiarCargaMasivaValores();
+		var tabla = document.getElementById('practicas');
+		var nombre = "";
+		cantFilas = tabla.rows.length;
+		cantFilas--;
+		for (var i = 0; i < cantFilas; i++) {
+			nombre = "tipoCarga-" + i;
+			selectElemento = document.getElementById(nombre);
+			selectElemento.selectedIndex = opcion;	
+			if (opcion != 0) {
+				if (opcion == 1) {
+					document.getElementById('moduloConsultoriototal').disabled = false;
+					document.getElementById('moduloUrgenciatotal').disabled  = false;	
+				} else {
+					document.getElementById('gHonototal').disabled = false;
+					document.getElementById('gHonoEspetotal').disabled = false;
+					document.getElementById('gHonoAyudtotal').disabled = false;
+					document.getElementById('gHonoAnestotal').disabled = false;
+					document.getElementById('gGastostotal').disabled = false;	
+				}
+			} 
+			habilitarValores(i,opcion);
+		}	
+	}
+
+	function cambiarvalor(nombre,valor) {
+		for (var i = 0; i < cantFilas; i++) {
+			nombreelemento = nombre+"-"+i;
+			selectElemento = document.getElementById(nombreelemento);
+			selectElemento.value = valor;	
+		}
+	}
+	
 </script>
 </head>
 
@@ -435,6 +538,57 @@ $whereNom = substr($whereNom, 0, -1);
           <option value="0">Seleccione SubCapitulo</option>
         </select>
       </p>
+     
+     <div id="tituloPraticas" style="display: none">
+    	<h3>Aplica a todas las Prácticas en pantalla</h3>
+     	<div class="grilla">
+	     	<table style="width: 900px">
+		     <thead>
+		     	<tr>
+		     		<th>Categoria</th>
+					<th></th>
+					<th>Modulo Consultorio / Valor General ($)</th>
+					<th>Modulo Urgencia ($)</th>
+					<th>G. Honorarios ($)</th>
+					<th>G. Honorarios Especialista ($)</th>
+					<th>G. Honorarios Ayudante ($)</th>
+					<th>G. Honorarios Anestesista ($)</th>
+					<th>G. Gastos ($)</th>
+		     	</tr>
+			 </thead>
+			 <tbody>	
+				<tr>
+				    <td>
+						<select name="cattotal" id="cattotal" disabled="disabled" onchange="cambiarcat(this.selectedIndex)">
+						<?php $personeria = $rowConsultaPresta['personeria'];
+							  $sqlCategoriaTotal = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
+							  $resCategoriaTotal = mysql_query($sqlCategoriaTotal,$db);
+							  while($rowCategoriaTotal = mysql_fetch_assoc($resCategoriaTotal)) {  ?>
+								<option value='<?php echo $rowCategoriaTotal['id']?>'><?php echo $rowCategoriaTotal['descripcion']?></option>
+						<?php } ?>
+						</select>
+					</td>
+					<td>
+						<select id='tipocargatotal' name='tipocargatotal' onchange="habilitarValorestotales(this.selectedIndex)" disabled="disabled">
+							<option value='0'>Tipo Carga</option>
+							<option value='1'>Por Modulo</option>
+							<option value='2'>Por Galeno</option>
+						</select>
+					</td>
+					<td><input id='moduloConsultoriototal' name='moduloConsultoriototal' onchange="cambiarvalor('moduloConsultorio', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='moduloUrgenciatotal' name='moduloUrgenciatotal' onchange="cambiarvalor('moduloUrgencia', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gHonototal' name='gHonototal' onchange="cambiarvalor('gHono', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gHonoEspetotal' name='gHonoEspetotal' onchange="cambiarvalor('gHonoEspe', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gHonoAyudtotal' name='gHonoAyudtotal' onchange="cambiarvalor('gHonoAyud', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gHonoAnestotal' name='gHonoAnestotal' onchange="cambiarvalor('gHonoAnes', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gGastostotal' name='gGastostotal' onchange="cambiarvalor('gGastos', this.value)" type='text' disabled="disabled" size='7'/></td>
+				</tr>
+			</tbody>
+		 	</table>
+	 	</div>
+	 	<h3>Practicas</h3>
+	 </div>
+	
 	 <table style="text-align:center; width:1000px; font-size: 13px" id="practicas" class="tablesorter" >
 		 <thead>
 		 </thead>

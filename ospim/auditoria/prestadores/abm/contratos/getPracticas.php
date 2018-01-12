@@ -36,6 +36,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
+	$i= 0;
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
 		$id = $rowPractica['idpractica'];
 		$inte = "NO";
@@ -48,7 +49,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 						<td>".$rowPractica['descripcion']."</td>		
 						<td>".$rowPractica['complejidad']."</td>
 						<td>".$inte."</td>";
-		$respuesta.="<td><select id='categoria-".$id."' name='categoria-".$id."'>";
+		$respuesta.="<td><select id='categoria-".$i."' name='categoria-".$id."'>";
 		
 		$sqlCategoria = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
 		$resCategoria = mysql_query($sqlCategoria,$db);
@@ -57,21 +58,21 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 		}
 		
 		$respuesta.="</select></td>";
-		$respuesta.=   "<td><select id='tipoCarga-".$id."' name='tipoCarga-".$id."' onchange=habilitarValores('".$id."',this)>
+		$respuesta.=   "<td><select id='tipoCarga-".$i."' name='tipoCarga-".$id."' onchange=habilitarValores('".$i."',this.value)>
 								<option value='0'>Tipo Carga</option>
 								<option value='1'>Por Modulo</option>
 								<option value='2'>Por Galeno</option>
 							</select>
 						</td>
-						<td><input id='moduloConultorio-".$id."' name='moduloConultorio-".$id."' type='text' disabled=true size='7'/></td>
-						<td><input id='moduloUrgencia-".$id."' name='moduloUrgencia-".$id."' type='text' disabled=true size='7'/></td>
-						<td><input id='gHono-".$id."' name='gHono-".$id."' type='text' disabled=true size='7'/></td>
-						<td><input id='gHonoEspe-".$id."' name='gHonoEspe-".$id."' type='text' disabled=true size='7'/></td>
-						<td><input id='gHonoAyud-".$id."' name='gHonoAyud-".$id."' type='text' disabled=true size='7'/></td>
-						<td><input id='gHonoAnes-".$id."' name='gHonoAnes-".$id."' type='text' disabled=true size='7'/></td>
-						<td><input id='gGastos-".$id."' name='gGastos-".$id."' type='text' disabled=true size='7'/></td>
-						
+						<td><input id='moduloConsultorio-".$i."' name='moduloConsultorio-".$id."' type='text' disabled=true size='7'/></td>
+						<td><input id='moduloUrgencia-".$i."' name='moduloUrgencia-".$id."' type='text' disabled=true size='7'/></td>
+						<td><input id='gHono-".$i."' name='gHono-".$id."' type='text' disabled=true size='7'/></td>
+						<td><input id='gHonoEspe-".$i."' name='gHonoEspe-".$id."' type='text' disabled=true size='7'/></td>
+						<td><input id='gHonoAyud-".$i."' name='gHonoAyud-".$id."' type='text' disabled=true size='7'/></td>
+						<td><input id='gHonoAnes-".$i."' name='gHonoAnes-".$id."' type='text' disabled=true size='7'/></td>
+						<td><input id='gGastos-".$i."' name='gGastos-".$id."' type='text' disabled=true size='7'/></td>
 					</tr>";
+		$i++;
 	}
 	$respuesta.="</tbody>";
 	
