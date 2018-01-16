@@ -19,6 +19,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 					<th>G. Honorarios Ayudante ($)</th>
 					<th>G. Honorarios Anestesista ($)</th>
 					<th>G. Gastos ($)</th>
+					<th>Coseguro ($)</th>
 	       		</tr></thead><tbody>";
 				
 	if ($codigo == -1) {
@@ -71,6 +72,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 						<td><input id='gHonoAyud-".$i."' name='gHonoAyud-".$id."' type='text' disabled=true size='7'/></td>
 						<td><input id='gHonoAnes-".$i."' name='gHonoAnes-".$id."' type='text' disabled=true size='7'/></td>
 						<td><input id='gGastos-".$i."' name='gGastos-".$id."' type='text' disabled=true size='7'/></td>
+						<td><input id='coseguro-".$i."' name='coseguro-".$id."' type='text' disabled=true size='7'/></td>
 					</tr>";
 		$i++;
 	}

@@ -69,6 +69,7 @@ if ($numCabContratoFin > 0) {
 										ROUND (".$rowContrato['galenohonorarioayudante']." * $porcentaje , 2),
 										ROUND (".$rowContrato['galenohonorarioanestesista']." * $porcentaje , 2),
 										ROUND (".$rowContrato['galenogastos']." * $porcentaje , 2),
+										ROUND (".$rowContrato['coseguro']." * $porcentaje , 2),
 										'$fecharegistro',
 										'$usuariomodificacion')";
 			//echo $sqlInsertDetalle."<br><br>";

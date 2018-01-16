@@ -94,6 +94,8 @@ $whereNom = substr($whereNom, 0, -1);
 		var gHonoAnes = document.getElementById(idname);
 		idname = "gGastos-"+posicion;
 		var gGastos = document.getElementById(idname);
+		idname = "coseguro-"+posicion;
+		var coseguro = document.getElementById(idname);
 		gHono.value = '';
 		gHonoEspe.value = '';
 		gHonoAyud.value = '';
@@ -108,7 +110,10 @@ $whereNom = substr($whereNom, 0, -1);
 		modUrge.value = '';
 		modCons.disabled = true;
 		modUrge.disabled = true;
+		coseguro.value = '';
+		coseguro.disabled = true;
 		if (opcion != 0) {
+			coseguro.disabled = false;
 			if (opcion == 1) {
 				modCons.disabled = false;
 				modUrge.disabled = false;	
@@ -187,6 +192,7 @@ $whereNom = substr($whereNom, 0, -1);
 		formulario.gHonoAnestotal.disabled = true;
 		formulario.gHonoAnestotal.disabled = true;
 		formulario.gGastostotal.disabled = true;
+		formulario.cosegurototal.disabled = true;
 		$.blockUI({ message: "<h1>Agregando Practicas Seleccionadas</h1>" });
 		return true;
 	}
@@ -360,7 +366,8 @@ $whereNom = substr($whereNom, 0, -1);
 		document.getElementById('gHonoAyudtotal').disabled = true;
 		document.getElementById('gHonoAnestotal').disabled = true;
 		document.getElementById('gGastostotal').disabled = true;	
-
+		document.getElementById('cosegurototal').disabled = true;
+		
 		document.getElementById('moduloConsultoriototal').value = "";
 		document.getElementById('moduloUrgenciatotal').value  = "";	
 		document.getElementById('gHonototal').value = "";
@@ -368,6 +375,7 @@ $whereNom = substr($whereNom, 0, -1);
 		document.getElementById('gHonoAyudtotal').value = "";
 		document.getElementById('gHonoAnestotal').value = "";
 		document.getElementById('gGastostotal').value = "";	
+		document.getElementById('cosegurototal').value = "";	
 	}
 
 	function habilitarValorestotales(opcion) {
@@ -381,6 +389,7 @@ $whereNom = substr($whereNom, 0, -1);
 			selectElemento = document.getElementById(nombre);
 			selectElemento.selectedIndex = opcion;	
 			if (opcion != 0) {
+				document.getElementById('cosegurototal').disabled = false;
 				if (opcion == 1) {
 					document.getElementById('moduloConsultoriototal').disabled = false;
 					document.getElementById('moduloUrgenciatotal').disabled  = false;	
@@ -477,6 +486,7 @@ $whereNom = substr($whereNom, 0, -1);
 			  <th>G. Honorarios Ayudante ($)</th>
 			  <th>G. Honorarios Anestesista ($)</th>
 			  <th>G. Gastos ($)</th>
+			  <th>Coseguro ($)</th>
 			  <th class="filter-select" data-placeholder="Seleccione">Internacion</th>
 			  <th></th>
             </tr>
@@ -501,6 +511,7 @@ $whereNom = substr($whereNom, 0, -1);
 				  <td><?php echo $rowPracticas['galenohonorarioayudante'];?></td>
 				  <td><?php echo $rowPracticas['galenohonorarioanestesista'];?></td>
 				  <td><?php echo $rowPracticas['galenogastos'];?></td>
+				  <td><?php echo $rowPracticas['coseguro'];?></td>
 				  <td><?php if ($rowPracticas['internacion'] == 0) { echo "NO"; } else { echo "SI"; }?></td>
 				  <td><input type='checkbox' name='<?php echo $rowPracticas["idpractica"]; ?>' id='practicasactuales' value='<?php echo $rowPracticas["idpractica"]; ?>' /></td>	   
 				</tr>
@@ -554,7 +565,8 @@ $whereNom = substr($whereNom, 0, -1);
 					<th>G. Honorarios Ayudante ($)</th>
 					<th>G. Honorarios Anestesista ($)</th>
 					<th>G. Gastos ($)</th>
-		     	</tr>
+					<th>Coseguro ($)</th>
+				</tr>
 			 </thead>
 			 <tbody>	
 				<tr>
@@ -582,6 +594,7 @@ $whereNom = substr($whereNom, 0, -1);
 					<td><input id='gHonoAyudtotal' name='gHonoAyudtotal' onchange="cambiarvalor('gHonoAyud', this.value)" type='text' disabled="disabled" size='7'/></td>
 					<td><input id='gHonoAnestotal' name='gHonoAnestotal' onchange="cambiarvalor('gHonoAnes', this.value)" type='text' disabled="disabled" size='7'/></td>
 					<td><input id='gGastostotal' name='gGastostotal' onchange="cambiarvalor('gGastos', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='cosegurototal' name='cosegurototal' onchange="cambiarvalor('coseguro', this.value)" type='text' disabled="disabled" size='7'/></td>
 				</tr>
 			</tbody>
 		 	</table>

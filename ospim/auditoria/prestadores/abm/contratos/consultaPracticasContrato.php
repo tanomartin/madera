@@ -111,6 +111,7 @@ $numPracticas = mysql_num_rows($resPracticas);
 			  <th>G. Honorarios Ayudante ($)</th>
 			  <th>G. Honorarios Anestesista ($)</th>
 			  <th>G. Gastos ($)</th>
+			  <th>Coseguro ($)</th>
             </tr>
           </thead>
           <tbody>
@@ -133,6 +134,7 @@ $numPracticas = mysql_num_rows($resPracticas);
 				  <td><?php echo $rowPracticas['galenohonorarioayudante'];?></td>
 				  <td><?php echo $rowPracticas['galenohonorarioanestesista'];?></td>
 				  <td><?php echo $rowPracticas['galenogastos'];?></td>
+				  <td><?php echo $rowPracticas['coseguro'];?></td>
 				</tr>
          <?php } ?>
           </tbody>
