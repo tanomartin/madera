@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-01-2018 a las 14:00:02
+-- Tiempo de generación: 18-01-2018 a las 15:16:40
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -758,7 +758,7 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 -- --------------------------------------------------------
 
@@ -1548,13 +1548,14 @@ CREATE TABLE IF NOT EXISTS `detcontratoprestador` (
   `idcontrato` int(4) NOT NULL,
   `idpractica` int(8) NOT NULL,
   `idcategoria` int(3) NOT NULL,
-  `moduloconsultorio` float(8,2) NOT NULL,
-  `modulourgencia` float(8,2) NOT NULL,
-  `galenohonorario` float(8,2) NOT NULL,
-  `galenohonorarioespecialista` float(8,2) NOT NULL,
-  `galenohonorarioayudante` float(8,2) NOT NULL,
-  `galenohonorarioanestesista` float(8,2) NOT NULL,
-  `galenogastos` float(8,2) NOT NULL,
+  `moduloconsultorio` decimal(8,2) NOT NULL,
+  `modulourgencia` decimal(8,2) NOT NULL,
+  `galenohonorario` decimal(8,2) NOT NULL,
+  `galenohonorarioespecialista` decimal(8,2) NOT NULL,
+  `galenohonorarioayudante` decimal(8,2) NOT NULL,
+  `galenohonorarioanestesista` decimal(8,2) NOT NULL,
+  `galenogastos` decimal(8,2) NOT NULL,
+  `coseguro` decimal(8,2) NOT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`,`idpractica`,`idcategoria`)
@@ -2105,7 +2106,7 @@ CREATE TABLE IF NOT EXISTS `establecimientos` (
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=swe7 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -3393,7 +3394,7 @@ CREATE TABLE IF NOT EXISTS `practicas` (
   `unigastos` decimal(6,2) NOT NULL DEFAULT '0.00',
   `internacion` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idpractica`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7585 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7595 ;
 
 -- --------------------------------------------------------
 
@@ -4151,9 +4152,21 @@ CREATE TABLE IF NOT EXISTS `tipodomicilio` (
 --
 
 CREATE TABLE IF NOT EXISTS `tipopracticas` (
+  `id` int(2) NOT NULL,
+  `descripcion` char(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipopracticasnomenclador`
+--
+
+CREATE TABLE IF NOT EXISTS `tipopracticasnomenclador` (
   `id` int(2) unsigned NOT NULL AUTO_INCREMENT,
   `codigonomenclador` int(4) NOT NULL,
-  `descripcion` char(100) NOT NULL,
+  `idtipo` int(2) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
