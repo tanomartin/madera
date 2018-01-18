@@ -453,6 +453,7 @@ $whereNom = substr($whereNom, 0, -1);
   									detcontratoprestador p, 
   									practicas pr, 
   									tipopracticas t, 
+  									tipopracticasnomenclador tn, 
   									tipocomplejidad tc,
   									nomencladores n,
   									practicascategorias pc
@@ -460,11 +461,13 @@ $whereNom = substr($whereNom, 0, -1);
   									c.codigoprestador = $codigo and 
   									c.idcontrato = $idcontrato and 
   									c.idcontrato = p.idcontrato and 
+  									p.idcategoria = pc.id and
   									p.idpractica = pr.idpractica and 
   									pr.nomenclador = n.id and
-  									pr.tipopractica = t.id and 
+  									pr.tipopractica = tn.id and 
   									pr.codigocomplejidad = tc.codigocomplejidad and
-  									p.idcategoria = pc.id";
+  									n.id = tn.codigonomenclador and
+  									tn.idtipo = t.id";
   		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas > 0) { ?>
@@ -530,8 +533,10 @@ $whereNom = substr($whereNom, 0, -1);
 	  <h3>Pr&aacute;cticas para Agregar al contrato </h3>
 	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS DE LA MISMA CATEGORIA<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?>
 	  <p>
-	  <?php $sqlTipos = "SELECT t.*, n.nombre FROM tipopracticas t, nomencladores n WHERE t.codigonomenclador in ($whereNom) and t.codigonomenclador = n.id"; 
-			$resTipos = mysql_query($sqlTipos,$db);?>
+	  <?php $sqlTipos = "SELECT tn.id, tn.codigonomenclador, n.nombre, t.descripcion
+	  						FROM tipopracticas t, tipopracticasnomenclador tn, nomencladores n 
+							WHERE tn.codigonomenclador in ($whereNom) and tn.codigonomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by tn.id"; 
+	  		$resTipos = mysql_query($sqlTipos,$db);?>
         <select name="tipo" id="tipo">
           <option value="0">Seleccione Tipo de Practica</option>  
           <?php while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>

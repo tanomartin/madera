@@ -160,7 +160,7 @@ jQuery(function($){
       <select name="tipo" id="tipo">
 	  		  <option value='0'>Seleccione Tipo de Practica</option>
 		<?php 
-			$sqlTipos = "SELECT * FROM tipopracticas WHERE codigonomenclador = 2";
+			$sqlTipos = "SELECT tn.id, t.descripcion FROM tipopracticas t, tipopracticasnomenclador tn WHERE tn.codigonomenclador = 2 and tn.idtipo = t.id";
 			$resTipos = mysql_query($sqlTipos,$db);
 			while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
 			  <option value='<?php echo $rowTipos['id'] ?>'><?php echo $rowTipos['descripcion'] ?></option>

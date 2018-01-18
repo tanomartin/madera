@@ -17,6 +17,7 @@ FROM
 cabcontratoprestador c,
 detcontratoprestador p,
 practicas pr,
+tipopracticasnomenclador tn,
 tipopracticas t,
 tipocomplejidad tc,
 nomencladores n,
@@ -25,11 +26,13 @@ WHERE
 c.codigoprestador = $codigo and
 c.idcontrato = $idcontrato and
 c.idcontrato = p.idcontrato and
+p.idcategoria = pc.id and
 p.idpractica = pr.idpractica and
 pr.nomenclador = n.id and
-pr.tipopractica = t.id and
+pr.tipopractica = tn.id and
 pr.codigocomplejidad = tc.codigocomplejidad and
-p.idcategoria = pc.id";
+n.id = tn.codigonomenclador and
+tn.idtipo = t.id";
 $resPracticas = mysql_query($sqlPracticas,$db);
 $numPracticas = mysql_num_rows($resPracticas);
 ?>
