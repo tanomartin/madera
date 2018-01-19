@@ -28,10 +28,10 @@ $cantacuerdos = mysql_num_rows($resulacuerdos);
   <p><input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php'" /></p>
   <?php 	
   	include($libPath."cabeceraEmpresa.php"); 
-	if ($cantacuerdos != 0) { ?>
- 	 <?php  if ($tipo == "activa") { ?>
+	if ($tipo == "activa") { ?>
     	 		<p><input type="submit" name="nuevoAcuerdo" value="Nuevo Acuerdo" onclick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?> '" /> </p>
- 	 <?php }?>
+<?php }
+ 	 if ($cantacuerdos != 0) { ?>
  	 <h3>Acuerdos Existentes </h3>
  	 <table width="900" border="1" style="text-align: center;">
      <?php 
