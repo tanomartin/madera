@@ -29,7 +29,7 @@ $cantacuerdos = mysql_num_rows($resulacuerdos);
   <?php 	
   	include($libPath."cabeceraEmpresa.php"); 
 	if ($tipo == "activa") { ?>
-    	 		<p><input type="submit" name="nuevoAcuerdo" value="Nuevo Acuerdo" onclick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?> '" /> </p>
+    	 <p><input type="submit" name="nuevoAcuerdo" value="Nuevo Acuerdo" onclick="location.href = 'formularioCarga.php?cuit=<?php echo $cuit ?> '" /> </p>
 <?php }
  	 if ($cantacuerdos != 0) { ?>
  	 <h3>Acuerdos Existentes </h3>
