@@ -42,14 +42,10 @@ include($libPath."controlSessionOspim.php"); ?>
       </td>
     </tr>
     <tr>
-	    <?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'sgiraudo' || $_SESSION['usuario'] == 'gflongo') { ?> 
-	    	<td>
-	    		<p>Gestión y Seguimiento </p>
-      			<p><a class="enlace" href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      		</td>
-		<?php }  else { ?>
-	    	<td></td>
-		<?php } ?>
+	  <td>
+	   	<p>Gestión y Seguimiento </p>
+      	<p><a class="enlace" href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
 	  <td>
 	   	<p>Liquidacion Prestadores</p>
 		<p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>

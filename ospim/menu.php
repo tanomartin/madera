@@ -50,10 +50,9 @@ function abrirModulo(dire, titulo) {
     </tr>
     
 	<tr>
-	  <td> <?php if ($_SESSION['usuario'] == 'sistemas') { ?> 
-			<p>Sistemas</p>
-			<p><a href="javascript:abrirModulo('sistemas/menuSistemas.php','SistemasOspim')"><img src="img/sistemas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	  <?php } ?>
+	  <td> 
+		<p>Sistemas</p>
+		<p><a href="javascript:abrirModulo('sistemas/menuSistemas.php','SistemasOspim')"><img src="img/sistemas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
 	  <td>
 	    <p>Tesorería </p>
