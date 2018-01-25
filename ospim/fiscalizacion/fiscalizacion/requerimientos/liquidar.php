@@ -438,7 +438,7 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			//********************//
 			
 			//PAGOS EXTRAORDINARIOS//
-			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and concepto != 'REM' and concepto != '381' and concepto != '401' group by fechapago, debitocredito order by fechapago, debitocredito";
+			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and concepto != 'REM' and concepto != '381' and concepto != '401' and concepto != '471' group by fechapago, debitocredito order by fechapago, debitocredito";
 			$resAfipProc = mysql_query($sqlAfipProc,$db);
 			while ($rowAfipProc = mysql_fetch_assoc($resAfipProc)) {
 				$fechaExtra = $rowAfipProc['fechapago'];
