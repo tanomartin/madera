@@ -6,17 +6,6 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Sistemas Prevencion :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -30,21 +19,22 @@ function importar() {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" />
-  </span></p>
-  <p><span class="Estilo2">Men&uacute; Programa Prevenci&oacute;n </span></p>
-  <table width="600" border="3">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" /></p>
+  <h3>Men&uacute; Programa Prevenci&oacute;n </h3>
+  <table width="600" border="1" style="text-align: center;vertical-align: middle;">
     <tr>
-      <td width="200"><p align="center">Descarga Información Programa de Prevención</p>
-          <p align="center"><a href="javascript:importar()"><img src="img/Download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-	  <td width="200"><p align="center">Programas</p>
-          <p align="center"><a href="#"><img src="img/prevencion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-	 <td width="200"><p align="center">Informes</p>
-          <p align="center"><a href="#"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
+    	<td width="200">
+      		<p>DESCARGA INFORMACION</p>
+        	<p><a href="javascript:importar()"><img src="img/Download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      	</td>
+	  	<td width="200">
+	  		<p>PROGRAMAS</p>
+         	<p><a href="#"><img src="img/prevencion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        </td>
+	 	<td width="200">
+	 		<p>INFORME</p>
+          	<p><a href="#"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+       </td>
     </tr>
   </table>
 </div>
