@@ -2,15 +2,20 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."claves.php"); 
 set_time_limit(0);
+
 /*****************************************************/
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-// $hostprevencion = $hostOspim;
-// $usuarioaprevencion = $usuarioOspim;
-// $claveprevencion = $claveOspim;
-$hostprevencion = $hostLocal ;
-$usuarioaprevencion = $usuarioLocal; 
-$claveprevencion = $claveLocal;
+
+$maquina = $_SERVER ['SERVER_NAME'];
+if (strcmp ( "localhost", $maquina ) == 0) {
+	$hostprevencion = $hostLocal ;
+} else {
+	$hostprevencion = $hostOspim;
+}
+
+$usuarioaprevencion = $usuarioOspim;
+$claveprevencion = $claveOspim;
 
 $dbprevencion =  mysql_connect($hostprevencion, $usuarioaprevencion, $claveprevencion);
 if (!$dbprevencion) {
@@ -75,7 +80,8 @@ foreach($arrayTablas as $tabla) {
 	$resDescarga = mysql_query($sqlDescarga,$dbprevencion); 
 	$canDescarga = mysql_num_rows($resDescarga); 
 	if ($canDescarga > 0) {
-		$ingresdas = insertTablaMadera($tabla,$resDescarga);
+		$tablaInsert = "prev".$tabla;
+		$ingresdas = insertTablaMadera($tablaInsert,$resDescarga);
 		$resultados[$r] = array('tabla' => $tabla, 'ingreso' => $ingresdas); 
 	} else {
 		$resultados[$r] = array('tabla' => $tabla, 'ingreso' => 0); 
