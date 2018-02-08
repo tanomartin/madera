@@ -424,7 +424,7 @@ $(document).ready(function(){
 		if($("#cancelaintegracion").prop('checked') ) {
 			$("#datosintegracion").show();
 			var idpracticadevuelta = $("#idPractica").val();
-			if(idpracticadevuelta==2462 || idpracticadevuelta==2471) {
+			if(idpracticadevuelta==2400 || idpracticadevuelta==2409) {
 				$("#tipoescuelaintegracion").attr('disabled', false);
 				$("#cueescuelaintegracion option[value='']").prop('selected',true);
 				$("#cueescuelaintegracion").attr('disabled', true);
