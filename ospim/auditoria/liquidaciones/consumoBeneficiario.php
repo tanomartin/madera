@@ -688,7 +688,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			</tr>
 			<tr>
 				<td align="right"><strong>Cantidad</strong></td>
-				<td align="left"><input name="cantidad" type="text" id="cantidad" size="3" value="" maxlength="2"/></td>
+				<td align="left"><input name="cantidad" type="text" id="cantidad" size="3" value="" maxlength="4"/></td>
 				<td align="right"><strong>Valor Ref. Unitario</strong></td>
 				<td align="left"><input name="referenciaunitario" type="text" id="referenciaunitario" size="10" readonly="readonly" style="background-color:#CCCCCC" value=""/></td>
 				<td align="right"><strong>Valor Ref. Total</strong></td>
