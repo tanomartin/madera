@@ -24,7 +24,7 @@ include($libPath."controlSessionOspim.php"); ?>
 		</td>
 		<td width="200">
 			<p>Drogadependencia</p>
-			<p align="center"><a class="enlace" href="#"><img src="img/drogadependencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/drogadependencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
     </tr>  
 	<tr>  

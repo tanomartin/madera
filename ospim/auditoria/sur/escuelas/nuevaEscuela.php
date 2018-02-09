@@ -100,10 +100,10 @@ function validar(formulario) {
         <td colspan="5"><div align="left"><input name="cue" type="text" id="cue" size="10" /></div></td>
       </tr>
       <tr>
-      <tr>
         <td><div align="right"><strong>Domicilio</strong></div></td>
         <td colspan="5"><div align="left"><input name="domicilio" type="text" id="domicilio" size="90" /></div></td>
       </tr>
+      <tr>
         <td><div align="right"><strong>Codigo Postal</strong></div></td>
         <td><div align="left">
           <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1"/>
