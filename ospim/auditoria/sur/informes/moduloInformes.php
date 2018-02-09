@@ -27,34 +27,30 @@ function informes(dire) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuSur.php'" /> 
-</div>
-<div align="center">
-	<h2>Men&uacute; Consultas e Informes</h2>
-</div>
-<div align="center">
-  <table width="600" border="3">
-    <tr>
-      <td width="200"><p align="center">Certificado por Fecha Vto. </p>
-          <p align="center"><a class="enlace" href="certificadosPorVto.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-		 <td width="200"><p align="center">Cantidad de Discapacitados por Delegación</p>
-          <p align="center"><a class="enlace" href="#"><img onclick="informes('cantidadDicapacitadosPorDelegacion.php')" src="img/listado.png" width="90" height="90" border="0"/></a></p>
-        <p align="center">&nbsp;</p></td>
-		<td width="200"><p align="center">Discapacitados por Delegación</p>
-          <p align="center"><a class="enlace" href="discapacitadosPorDelegacion.php"><img src="img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-    </tr>
-    <tr>
-      <td><p align="center">&nbsp;</p>
-        
-      <p>&nbsp;</p></td>
-      <td><p align="center">Expendientes Incompletos </p>
-      <p align="center"><a class="enlace" href="expedientesIncompletos.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td>&nbsp;</td>
-    </tr>
-  </table>
+	  <input type="button" name="volver" value="Volver" onclick="location.href = '../menuSur.php'" /> 
+	  <h2>Men&uacute; Consultas e Informes</h2>
+	  <table width="600" border="3">
+	    <tr>
+	      <td width="200"><p align="center">CERTIFICADOS POR FECHA VTO. </p>
+	          <p align="center"><a class="enlace" href="certificadosPorVto.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	        <p align="center">&nbsp;</p></td>
+			 <td width="200"><p align="center">CANTIDAD DISCAPACITADOS POR DELEGACION</p>
+	          <p align="center"><a class="enlace" href="#"><img onclick="informes('cantidadDicapacitadosPorDelegacion.php')" src="img/listado.png" width="90" height="90" border="0"/></a></p>
+	        <p align="center">&nbsp;</p></td>
+			<td width="200"><p align="center">DISCAPACITADOS POR DELEGACION</p>
+	          <p align="center"><a class="enlace" href="discapacitadosPorDelegacion.php"><img src="img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	        <p align="center">&nbsp;</p></td>
+	    </tr>
+	    <tr>
+	      <td><p align="center">&nbsp;</p>
+	        
+	      <p>&nbsp;</p></td>
+	      <td><p align="center">EXPEDIENTES INCOMPLETOS</p>
+	      <p align="center"><a class="enlace" href="expedientesIncompletos.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      <p align="center">&nbsp;</p></td>
+	      <td>&nbsp;</td>
+	    </tr>
+	  </table>
 </div>
 </body>
 </html>

@@ -15,7 +15,7 @@ include($libPath."controlSessionOspim.php"); ?>
   <table width="600" border="3" style="text-align: center">
     <tr>
 	  	<td width="200">
-	  		<p>Discapacitados </p>
+	  		<p>DISCAPACITADOS </p>
 			<p><a class="enlace" href="abm/moduloABMDisca.php"><img src="img/discapacitados.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
 		<td width="200">
@@ -23,28 +23,28 @@ include($libPath."controlSessionOspim.php"); ?>
 			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/hiv.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
 		<td width="200">
-			<p>Drogadependencia</p>
+			<p>DROGADEPENDENCIA</p>
 			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/drogadependencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
     </tr>  
 	<tr>  
 		<td>
-			<p>Servicios Prestadores</p>
+			<p>SERVICIOS PRESTADORES</p>
 			<p><a class="enlace" href="serviciopresta/moduloServicioPresta.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
 	  	<td>
-	  		<p>Informes</p>
+	  		<p>INFORMES</p>
           	<p><a class="enlace" href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         </td>
 		<td>
-			<p>Resoluciones</p>
+			<p>RESOLUCIONES</p>
           	<p><a class="enlace" href="resoluciones/moduloResoluciones.php"><img src="img/resoluciones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>
-			<p>Escuelas</p>
+			<p>ESCUELAS</p>
 			<p><a class="enlace" href="escuelas/moduloEscuelas.php"><img src="img/escuelas.png" width="90" height="90" border="0"/></a></p>
 		</td>
 		<td></td>

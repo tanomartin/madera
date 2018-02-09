@@ -15,15 +15,15 @@ include($libPath."controlSessionOspim.php"); ?>
   <table width="600" border="3" style="text-align: center">
     <tr>
 	  	<td width="200">
-	  		<p>Carga de Servicios</p>
+	  		<p>CARGA SERVICIOS</p>
           	<p><a class="enlace" href="seleccionPrestadorServicio.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         </td>
       	<td width="200">
-      		<p>Listado Servicios </p>
+      		<p>LISTADO SERVICIOS </p>
           	<p><a class="enlace" href="listadoServicios.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         </td>
       	<td width="200">
-      		<p>Buscador </p>
+      		<p>BUSCADOR </p>
           	<p><a class="enlace" href="buscador.php"><img src="img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         </td>
     </tr>
