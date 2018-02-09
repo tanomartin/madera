@@ -56,7 +56,7 @@ function abrirPantalla(dire) {
 					<th>Codigo</th>
 					<th>Nombre</th>
 					<th>C.U.E.</th>
-					<th class="filter-select" data-placeholder="Seleccione Delegación">Provincia</th>
+					<th class="filter-select" data-placeholder="Seleccione Provincia">Provincia</th>
 					<th></th>
 				</tr>
 			</thead>
