@@ -15,11 +15,11 @@ include($libPath."controlSessionOspim.php"); ?>
   <table width="400" border="3" style="text-align: center">
     <tr>
 	  	<td width="200">
-	  		<p>A.B.M Escuelas</p>
+	  		<p>A.B.M</p>
           	<p><a class="enlace" href="abmEscuela.php"><img src="img/escuelas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         </td>
       	<td width="200">
-      		<p>Listado Servicios </p>
+      		<p>LISTADO ESCUELAS </p>
           	<p><a class="enlace" href="listadoEscuelas.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         </td>
     </tr>
