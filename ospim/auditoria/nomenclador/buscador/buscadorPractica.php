@@ -15,8 +15,8 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	}
 	$resultado = array();
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.codigopractica = '$dato' and p.tipopractica = t.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and  tn.idtipo = t.id order by codigopractica DESC";}
-		if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.descripcion like '%$dato%' and p.tipopractica = t.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by codigopractica DESC"; }
+		if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.codigopractica = '$dato' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and  tn.idtipo = t.id order by codigopractica DESC";}
+		if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.descripcion like '%$dato%' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by codigopractica DESC"; }
 		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas == 0) {
