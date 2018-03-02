@@ -51,11 +51,8 @@ function printHeader($pdf, $nomdelega) {
 }
 
 function printFooterAndDiv($pdf, $pagNumber) {
-	$pdf->Line(7, 109, 212, 109);
-	$pdf->Line(7, 179, 212, 179);
-	$pdf->Line(7, 250, 212, 250);
 	$pdf->SetFont('Courier','B',10);
-	$pdf->SetXY(7, 253);
+	$pdf->SetXY(7, 330);
 	$pdf->Cell(205,5,$pagNumber,0,0,"C");
 }
 
@@ -83,16 +80,16 @@ $sqlTitularesSSS = "SELECT
 						t.estadocivil = e.codestciv";
 $resTitularesSSS = mysql_query($sqlTitularesSSS,$db);
 $canTitularesSSS = mysql_num_rows($resTitularesSSS);
-echo $canTitularesSSS."<br>";
+
 if ($canTitularesSSS != 0) {
-	$pdf = new FPDF('P','mm','Letter');
-	$pdf->SetMargins(3, 3);
+	$pdf = new FPDF('P','mm','Legal');
+	$pdf->SetMargins(1, 1);
 	$pdf->AddPage();
 	$contador = 1;
 	$pagNumber = 1;
 	$salto = 0;
 	while ($rowTitularesSSS = mysql_fetch_array($resTitularesSSS)) {
-		if ($contador > 3) {
+		if ($contador > 4) {
 			$pdf->AddPage();
 			$pagNumber++;
 			$contador = 1;
@@ -190,7 +187,8 @@ if ($canTitularesSSS != 0) {
 		$data = "Inicio Actividad de la Empresa: ".$fechainicio;
 		$pdf->Cell(80,7,$data,0,0);
 		
-		$salto += 70;	
+		$pdf->Line(7, 109 + $salto , 212, 109 + $salto);
+		$salto += 72;	
 		$contador++;
 	}
 	
