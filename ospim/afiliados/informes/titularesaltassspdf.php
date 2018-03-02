@@ -14,9 +14,6 @@ $nomdelega = $arrayDelegacion[1];
 $fecha = date("d-m-Y His");
 $nombreArchivo = "FICHA ALTA SSS DELEGACION $delegacion AL $fecha.pdf";
 
-echo $delegacion;
-echo $nomdelega;
-
 function printHeader($pdf) {
 	$pdf->Image('../img/Logo Membrete OSPIM.jpg',7,7,25,20,'JPG');
 	$pdf->SetFont('Courier','B',30);
@@ -49,8 +46,8 @@ function printHeader($pdf) {
 }
 
 function printFooterAndDiv($pdf, $pagNumber) {
-	$pdf->Line(7, 105, 210, 105);
-	$pdf->Line(7, 175, 210, 175);
+	$pdf->Line(7, 109, 210, 109);
+	$pdf->Line(7, 179, 210, 179);
 	$pdf->Line(7, 250, 210, 250);
 	$pdf->SetFont('Courier','B',10);
 	$pdf->SetXY(7, 253);
@@ -127,52 +124,60 @@ if ($canTitularesSSS != 0) {
 		$pdf->Cell(80,7,$data,0,0);
 		
 		$pdf->SetXY(7, 58+$salto);
-		$data = "Domicilio: ".$rowTitularesSSS['domicilio']." - C.P: ".$rowTitularesSSS['numpostal']." - LOC: ".$rowTitularesSSS['localidad']." - PROV: ".$rowTitularesSSS['provincia'];
+		$data = "Domicilio: ".$rowTitularesSSS['domicilio'];
 		$pdf->Cell(80,7,$data,0,0);
 		
 		$pdf->SetXY(7, 62+$salto);
-		$data = "E-mail: ".$rowTitularesSSS['email'];
-		$pdf->Cell(80,7,$data,0,0);
-		
-		$pdf->SetXY(144, 62+$salto);
-		$data = "Telefono: (".$rowTitularesSSS['ddn'].") ".$rowTitularesSSS['telefono'];
+		$data = "C.P: ".$rowTitularesSSS['numpostal']." - LOC: ".$rowTitularesSSS['localidad']." - PROV: ".$rowTitularesSSS['provincia'];
 		$pdf->Cell(80,7,$data,0,0);
 		
 		$pdf->SetXY(7, 66+$salto);
-		$data = "Fecha Ingreso Empresa que trabaja (Según DDJJ): ".$rowTitularesSSS['fechaempresa'];
+		$data = "E-mail: ".$rowTitularesSSS['email'];
 		$pdf->Cell(80,7,$data,0,0);
 		
 		$pdf->SetXY(144, 66+$salto);
+		$data = "Telefono: (".$rowTitularesSSS['ddn'].") ".$rowTitularesSSS['telefono'];
+		$pdf->Cell(80,7,$data,0,0);
+		
+		$pdf->SetXY(7, 70+$salto);
+		$data = "Fecha Ingreso Empresa que trabaja (Según DDJJ): ".$rowTitularesSSS['fechaempresa'];
+		$pdf->Cell(80,7,$data,0,0);
+		
+		$pdf->SetXY(144, 70+$salto);
 		$data = "C.U.I.L.: ".$rowTitularesSSS['cuil'];;
 		$pdf->Cell(80,7,$data,0,0);
 		
 		$pdf->SetFont('Courier','B',15);
-		$pdf->SetXY(7, 75+$salto);
+		$pdf->SetXY(7, 79+$salto);
 		$pdf->Cell(80,7,"DATOS DE LA EMPRESA DONDE TRABAJA",0,0);
 		
 		$pdf->SetFont('Courier','B',10);
 		
-		$pdf->SetXY(7, 81+$salto);
+		$pdf->SetXY(7, 85+$salto);
 		$data = "Razon Social: ".$rowTitularesSSS['empresa'];
 		$pdf->Cell(80,7,$data,0,0);
 		
-		$pdf->SetXY(144, 81+$salto);
+		$pdf->SetXY(144, 85+$salto);
 		$data = "C.U.I.T.: ".$rowTitularesSSS['cuitempresa'];
 		$pdf->Cell(80,7,$data,0,0);
 		
-		$pdf->SetXY(7, 85+$salto);
-		$data = "Domicilio: ".$rowTitularesSSS['domiempresa']. " - C.P.: ".$rowTitularesSSS['postalempresa']. " - LOC: ".$rowTitularesSSS['localiempresa']." - PROV: ".$rowTitularesSSS['proviempresa'];
-		$pdf->Cell(80,7,$data,0,0);
-		
 		$pdf->SetXY(7, 89+$salto);
-		$data = "Telefono 1: (".$rowTitularesSSS['ddn1'].") ".$rowTitularesSSS['telefono1'];
-		$pdf->Cell(80,7,$data,0,0);
-		
-		$pdf->SetXY(144, 89+$salto);
-		$data = "Telefono 2: (".$rowTitularesSSS['ddn2'].") ".$rowTitularesSSS['telefono2'];
+		$data = "Domicilio: ".$rowTitularesSSS['domiempresa'];
 		$pdf->Cell(80,7,$data,0,0);
 		
 		$pdf->SetXY(7, 93+$salto);
+		$data = "C.P.: ".$rowTitularesSSS['postalempresa']. " - LOC: ".$rowTitularesSSS['localiempresa']." - PROV: ".$rowTitularesSSS['proviempresa'];
+		$pdf->Cell(80,7,$data,0,0);
+		
+		$pdf->SetXY(7, 97+$salto);
+		$data = "Telefono 1: (".$rowTitularesSSS['ddn1'].") ".$rowTitularesSSS['telefono1'];
+		$pdf->Cell(80,7,$data,0,0);
+		
+		$pdf->SetXY(144, 97+$salto);
+		$data = "Telefono 2: (".$rowTitularesSSS['ddn2'].") ".$rowTitularesSSS['telefono2'];
+		$pdf->Cell(80,7,$data,0,0);
+		
+		$pdf->SetXY(7, 101+$salto);
 		$fechainicio = $rowTitularesSSS['fechainicio'];
 		if ($rowTitularesSSS['fechainicio'] == "00/12/0000") {
 			$fechainicio = "Sin datos";
