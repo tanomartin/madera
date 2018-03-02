@@ -46,9 +46,9 @@ function printHeader($pdf) {
 }
 
 function printFooterAndDiv($pdf, $pagNumber) {
-	$pdf->Line(7, 109, 210, 109);
-	$pdf->Line(7, 179, 210, 179);
-	$pdf->Line(7, 250, 210, 250);
+	$pdf->Line(7, 109, 212, 109);
+	$pdf->Line(7, 179, 212, 179);
+	$pdf->Line(7, 250, 212, 250);
 	$pdf->SetFont('Courier','B',10);
 	$pdf->SetXY(7, 253);
 	$pdf->Cell(205,5,$pagNumber,0,0,"C");
