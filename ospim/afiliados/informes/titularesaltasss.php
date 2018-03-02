@@ -5,20 +5,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Listado De Beneficiarios por Delegacion :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-<style type="text/css" media="print">
-.nover {display:none}
-</style>
+<title>.: Listado De Titulares alta SSS por Delegacion :.</title>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
@@ -37,10 +24,11 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" /></p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" /></p>
   	
-	<form  name="listadoEmpresa" id="listadoEmpresa" method="post" onsubmit="return validar(this)" action="beneficiariosPorDelegacionExcel.php">
-  	<p><span class="Estilo2">Beneficiarios por Delegaci&oacute;n </span></p>
+	<form  name="selectDelegacion" id="selectDelegacion" method="post" onsubmit="return validar(this)" action="titularesaltassspdf.php">
+  	<h3>Listado Titulares Alta SSS por Delegaci&oacute;n </h3>
+  	
   	<?php if (isset($_GET['error'])) { 
 			if ($_GET['error'] == 0) {
 				$nomdelega = $_GET['delega'];
@@ -49,6 +37,10 @@ function validar(formulario) {
 			if ($_GET['error'] == 1) {
 				$descerror = $_GET['mensaje'];
 				print("<p><font color='#FF0000'><b> Hubo un error. $descerror. Comuníquese con el Dpto. de Sistemas </b></font></p>");
+			}
+			if ($_GET['error'] == 2) {
+				$nomdelega = $_GET['delega'];
+				print("<p><font color='#0000FF'><b> No existen titulares de alta desde la SSS para la delegación $nomdelega.</b></font></p>");
 			}
   	 } ?>
 	<table>

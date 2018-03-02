@@ -6,75 +6,62 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Afiliados OSPIM :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
-
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<input type="button" name="volver" value="Volver" onclick="location.href = '../menuAfiliados.php'" /> 
-</div>
-<div align="center">
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAfiliados.php'" /> </p>
 	<h2>Men&uacute; Consultas e Informes</h2>
-</div>
-<div align="center">
-  <table width="600" border="3">
-    <tr>
-        <td width="200">
-        	<p align="center">DDJJ / Aportes</p>
-        	<p align="center"><a class="enlace" href="ddjjAportesCuil.php"><img src="../img/ddjjaportes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        	<p>&nbsp;</p>
-        </td>
-      	<td width="200">
-      		<p align="center">Titulares por Empresa</p>
-          	<p align="center"><a class="enlace" href="titularesPorEmpresa.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        	<p>&nbsp;</p>
-        </td>
-      	<td width="200">
-      		<p align="center">Cantidad de Beneficiarios por Delegaci&oacute;n </p>
-        	<p align="center"><a class="enlace" href="cantBeneficiariosPorDelegacion.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      		<p>&nbsp;</p>
-      	</td>
-    </tr>
-    <tr>
-     	<td>
-     		<p align="center">Beneficiarios por Grupo Etario </p>
-        	<p align="center"><a class="enlace" href="beneficiariosPorGrupoEtario.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      		<p>&nbsp;</p>
-      	</td>
-       	<td>
-       		<p align="center">Beneficiarios por Delegación</p>
-          	<p align="center"><a class="enlace" href="beneficiariosPorDelegacion.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        	<p>&nbsp;</p>
-        </td>
-      	<td>
-      		<p align="center">Beneficiarios por Localidad</p>
-          	<p align="center"><a class="enlace" href="beneficiariosPorLocalidad.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        	<p>&nbsp;</p>
-        </td>
-    </tr>
-    <tr>
-    	<td>
-    		<p align="center">Beneficiarios por Delegacion por Tipo de Titularidad</p>
-          	<p align="center"><a class="enlace" href="beneficiariosPorTipoTitu.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        	<p>&nbsp;</p>
-    	</td>
-    	<td>
-    		<p align="center">Busqueda </p>
-        	<p align="center"><a class="enlace" href="buscadorAfiliado.php"><img src="../img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        	<p>&nbsp;</p>
-    	</td>
-    	<td>
-    		<p align="center">Padron SSS</p>
-        	<p align="center"><a class="enlace" href="menuSSS.php"><img src="../img/padronsss.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        	<p>&nbsp;</p>
-    	</td>
-    </tr>
-  </table>
+
+  	<table width="800" border="3" style="text-align: center;">
+    	<tr>
+	        <td width="200">
+	        	<p>DDJJ / APORTES</p>
+	        	<p><a class="enlace" href="ddjjAportesCuil.php"><img src="../img/ddjjaportes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	        </td>
+	      	<td width="200">
+	      		<p>TITU x EMPRESA</p>
+	          	<p><a class="enlace" href="titularesPorEmpresa.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	        </td>
+	      	<td width="200">
+	      		<p>CANT. BENEFICIARIOS x DELEGACION </p>
+	        	<p><a class="enlace" href="cantBeneficiariosPorDelegacion.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      	</td>
+	      	<td width="200">
+	    		<p>BENEFICIARIOS x DELEGACION Y TIPO</p>
+	          	<p><a class="enlace" href="beneficiariosPorTipoTitu.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    	</td>
+    	</tr>
+   	 	<tr>
+	     	<td>
+	     		<p>BENEFICIARIOS X GRUPO ETARIO </p>
+	        	<p><a class="enlace" href="beneficiariosPorGrupoEtario.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      	</td>
+	       	<td>
+	       		<p>BENEFICIARIOS X DELEGACION</p>
+	          	<p><a class="enlace" href="beneficiariosPorDelegacion.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	        </td>
+	      	<td>
+	      		<p>BENEFICIARIOS X LOCALIDAD</p>
+	          	<p><a class="enlace" href="beneficiariosPorLocalidad.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	        </td>
+	        <td>
+	        	<p>PLANILLA ALTA SSS X DELEGACION</p>
+	        	<p><a class="enlace" href="titularesaltasss.php"><img src="../img/pdflogo.png" width="100" height="100" border="0" alt="enviar"/></a></p>
+	        </td>
+	    </tr>
+    	<tr>
+	    	<td></td>
+	    	<td>
+	    		<p>BUSCADOR</p>
+	        	<p><a class="enlace" href="buscadorAfiliado.php"><img src="../img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    	</td>
+	    	<td>
+	    		<p>PADRON S.S.S.</p>
+	        	<p><a class="enlace" href="menuSSS.php"><img src="../img/padronsss.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    	</td>
+	    	<td></td>
+    	</tr>
+  	</table>
 </div>
 </body>
 </html>
