@@ -14,7 +14,7 @@ $nomdelega = $arrayDelegacion[1];
 $fecha = date("d-m-Y His");
 $nombreArchivo = "FICHA ALTA SSS DELEGACION $delegacion AL $fecha.pdf";
 
-function printHeader($pdf) {
+function printHeader($pdf, $nomdelega) {
 	$pdf->Image('../img/Logo Membrete OSPIM.jpg',7,7,25,20,'JPG');
 	$pdf->SetFont('Courier','B',30);
 	$pdf->SetXY(35, 7);
@@ -29,11 +29,16 @@ function printHeader($pdf) {
 	$pdf->Cell(80,7,"Solidaridad y Organizacion al Servicio de la Familia",0,0);
 	
 	$pdf->SetFont('Courier','B',13);
-	$pdf->SetXY(135, 7);
+	$pdf->SetXY(135, 5);
 	$pdf->Cell(75,10,"Alta Titulares desde la SSS",0,0,"R");
+	
+	$pdf->SetFont('Courier','B',11);
+	$pdf->SetXY(135, 11);
+	$data = "Delegacione ".$nomdelega;
+	$pdf->Cell(75,10,$data,0,0,"R");
 		
 	$pdf->SetFont('Courier','B',8);
-	$pdf->SetXY(135, 15);
+	$pdf->SetXY(135, 17);
 	$pdf->Cell(75,10,"Pedido de Actualización de datos",0,0,"R");
 	$pdf->SetXY(135, 20);
 	$pdf->Cell(75,10,"e Información de Familiares",0,0,"R");
@@ -94,7 +99,7 @@ if ($canTitularesSSS != 0) {
 			$salto = 0;
 		}
 		if ($contador == 1) {
-			printHeader($pdf);
+			printHeader($pdf, $nomdelega);
 			printFooterAndDiv($pdf, $pagNumber);			
 		}
 		
