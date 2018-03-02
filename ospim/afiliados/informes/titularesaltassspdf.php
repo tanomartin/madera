@@ -34,7 +34,7 @@ function printHeader($pdf, $nomdelega) {
 	
 	$pdf->SetFont('Courier','B',11);
 	$pdf->SetXY(135, 11);
-	$data = "Delegacione ".$nomdelega;
+	$data = "Delegación ".$nomdelega;
 	$pdf->Cell(75,10,$data,0,0,"R");
 		
 	$pdf->SetFont('Courier','B',8);
