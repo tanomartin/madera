@@ -32,6 +32,20 @@ function UltimoDiaHábil($anho,$mes){
 	return $ultimoDia;
 }
 
+function PrimerDiaHábil($anho,$mes){
+	$dia = 1;
+	$dia = str_pad($dia ,2,'0',STR_PAD_LEFT);
+	$ultimoDia = $anho."-".$mes."-".$dia;
+	$diaSemana = date ('N',strtotime($ultimoDia));
+	while ($diaSemana > 5) {
+		$dia += 1;
+		$dia = str_pad($dia ,2,'0',STR_PAD_LEFT);
+		$ultimoDia = $anho."-".$mes."-".$dia;
+		$diaSemana = date ('N',strtotime($ultimoDia));
+	}
+	return $ultimoDia;
+}
+
 $sqlUltimaActualizacion = "SELECT * FROM medicontrol WHERE tipo = '".$_GET['tipo']."' ORDER BY id DESC limit 1";
 $resUltimaActualizacion = mysql_query($sqlUltimaActualizacion,$db);
 $rowUltimaActualizacion = mysql_fetch_assoc($resUltimaActualizacion);
@@ -39,10 +53,10 @@ $rowUltimaActualizacion = mysql_fetch_assoc($resUltimaActualizacion);
 if ($_GET['tipo'] == 'M') {
 	$nuevafecha = date('Y',strtotime($rowUltimaActualizacion['fechaarchivo']))."-".date('m',strtotime($rowUltimaActualizacion['fechaarchivo']))."-01";
 	$nuevafecha = strtotime ('+1 month',strtotime($nuevafecha )) ;
-	$fechaArchivo = date ('Y-m-d',$nuevafecha);
-	//$ano = date('Y',strtotime($nuevafecha));
-	//$mes = date('m',strtotime($nuevafecha));
-	//$fechaArchivo = UltimoDiaHábil($ano,$mes);
+	$nuevafecha = date ('Y-m-d',$nuevafecha);
+	$ano = date('Y',strtotime($nuevafecha));
+	$mes = date('m',strtotime($nuevafecha));
+	$fechaArchivo = PrimerDiaHábil($ano,$mes);
 } else {
 	$sqlUltimaMensual = "SELECT * FROM medicontrol WHERE tipo = 'M' ORDER BY id DESC limit 1";
 	$resUltimaMensual = mysql_query($sqlUltimaMensual,$db);
