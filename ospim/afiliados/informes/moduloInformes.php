@@ -45,12 +45,15 @@ include($libPath."controlSessionOspim.php"); ?>
 	          	<p><a class="enlace" href="beneficiariosPorLocalidad.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	        </td>
 	        <td>
-	        	<p>PLANILLA ALTA SSS X DELEGACION</p>
-	        	<p><a class="enlace" href="titularesaltasss.php"><img src="../img/pdflogo.png" width="100" height="100" border="0" alt="enviar"/></a></p>
+	        	<p>FUTURA ALTA SSS X DELEGACION</p>
+	          	<p><a class="enlace" href="titularesfuturaaltasss.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	        </td>
 	    </tr>
     	<tr>
-	    	<td></td>
+	    	<td>
+	    		<p>PLANILLA ALTA SSS X DELEGACION</p>
+	        	<p><a class="enlace" href="titularesaltasss.php"><img src="../img/pdflogo.png" width="100" height="100" border="0" alt="enviar"/></a></p>
+	    	</td>
 	    	<td>
 	    		<p>BUSCADOR</p>
 	        	<p><a class="enlace" href="buscadorAfiliado.php"><img src="../img/buscar.png" width="90" height="90" border="0" alt="enviar"/></a></p>
