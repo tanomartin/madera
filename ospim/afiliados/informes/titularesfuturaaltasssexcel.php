@@ -139,30 +139,28 @@ if (sizeof($arrayAlta) > 0) {
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('E')->setWidth(5);
 	$objPHPExcelTitular->getActiveSheet()->setCellValue('E1', 'Sexo');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('F')->setWidth(15);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('F1', 'Telefono');
-	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('G1', 'C.U.I.L.');
-	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('H')->setWidth(50);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('H1', 'Domicilio');
-	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('I')->setWidth(40);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('I1', 'Localidad');
-	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('J')->setWidth(30);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('J1', 'Provincia');
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('F1', 'C.U.I.L.');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('G')->setWidth(50);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('G1', 'Domicilio');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('H')->setWidth(40);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('H1', 'Localidad');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('I')->setWidth(30);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('I1', 'Provincia');
 	
-	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('K')->setWidth(18);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('K1', 'C.U.I.T. Empresa');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('J')->setWidth(18);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('J1', 'C.U.I.T. Empresa');
+	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('K')->setWidth(50);
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('K1', 'Nombre Empresa');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('L')->setWidth(50);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('L1', 'Nombre Empresa');
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('L1', 'Direccion Empresa');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('M')->setWidth(50);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('M1', 'Direccion Empresa');
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('M1', 'Localidad Empresa');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('N')->setWidth(50);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('N1', 'Localidad Empresa');
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('N1', 'Privincia Empresa');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('O')->setWidth(50);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('O1', 'Privincia Empresa');
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('O1', 'Telefono 1');
 	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('P')->setWidth(50);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('P1', 'Telefono 1');
-	$objPHPExcelTitular->getActiveSheet()->getColumnDimension('Q')->setWidth(50);
-	$objPHPExcelTitular->getActiveSheet()->setCellValue('Q1', 'Telefono 2');
+	$objPHPExcelTitular->getActiveSheet()->setCellValue('P1', 'Telefono 2');
 	
 	$fila=1;
 	foreach ($arrayAlta as $titu){
@@ -172,23 +170,18 @@ if (sizeof($arrayAlta) > 0) {
 		$objPHPExcelTitular->getActiveSheet()->setCellValue('C'.$fila, $titu['nrodocumento']);
 		$objPHPExcelTitular->getActiveSheet()->setCellValue('D'.$fila, $titu['fechanacimiento']);
 		$objPHPExcelTitular->getActiveSheet()->setCellValue('E'.$fila, $titu['sexo']);
-		$telefono = '';
-		if ($titu['telefono'] != '') {
-			$telefono = "'".$titu['telefono']."'";
-		}
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('F'.$fila, $telefono);
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('G'.$fila, $titu['cuiltitular']);
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('H'.$fila, $titu['calledomicilio']);
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('I'.$fila, $titu['localidad']);
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('J'.$fila, $titu['provincia']);
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('K'.$fila, $titu['cuit']);
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('L'.$fila, $titu['empresa']);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('F'.$fila, $titu['cuiltitular']);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('G'.$fila, $titu['calledomicilio']);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('H'.$fila, $titu['localidad']);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('I'.$fila, $titu['provincia']);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('J'.$fila, $titu['cuit']);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('K'.$fila, $titu['empresa']);
 		$direccion = $titu['domiempresa']." - C.P.: ".$titu['postalempresa'];	
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('M'.$fila, $direccion);
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('N'.$fila, $titu['localiempresa']);
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('O'.$fila, $titu['proviempresa']);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('L'.$fila, $direccion);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('M'.$fila, $titu['localiempresa']);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('N'.$fila, $titu['proviempresa']);
 		$tel1 = "(".$titu['ddn1'].") ".$titu['telefono1'];
-		$objPHPExcelTitular->getActiveSheet()->setCellValue('P'.$fila, $tel1);
+		$objPHPExcelTitular->getActiveSheet()->setCellValue('O'.$fila, $tel1);
 		$tel2 = "(".$titu['ddn2'].") ".$titu['telefono2'];
 		$objPHPExcelTitular->getActiveSheet()->setCellValue('P'.$fila, $tel2);
 	}
@@ -196,10 +189,10 @@ if (sizeof($arrayAlta) > 0) {
 	$objPHPExcelTitular->getDefaultStyle()->getFont()->setName('Arial');
 	$objPHPExcelTitular->getDefaultStyle()->getFont()->setSize(8);
 	
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:Q1')->getFont()->setBold(true);
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:Q1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:Q1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:Q1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:P1')->getFont()->setBold(true);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:P1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:P1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcelTitular->getActiveSheet()->getStyle('A1:P1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcelTitular, 'Excel5');
 	$objWriter->save($archivo_name);
