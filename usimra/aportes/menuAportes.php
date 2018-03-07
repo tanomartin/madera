@@ -13,7 +13,7 @@ include($libPath."controlSessionUsimra.php"); ?>
   <table width="600" border="3" style="text-align: center">
     <tr>
       <td width="200">
-      	  <p>DESCARGA</br>APLICATIVO DDJJ </p>
+      	  <p>DESCARGA<br/>APLICATIVO DDJJ </p>
           <p><a class="enlace" href="descarga/moduloDescarga.php"><img src="img/download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td>
       <td width="200">
@@ -27,11 +27,11 @@ include($libPath."controlSessionUsimra.php"); ?>
     </tr>
     <tr>
       <td>
-      	<p>CANCELACION </br> MANUAL APORTES</p>
+      	<p>CANCELACION <br/> MANUAL APORTES</p>
 	  	<p><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
 	  </td>
       <td>
-      	<p>CANCELACION </br> MANUAL CUOTA EXTRA.</p>
+      	<p>CANCELACION <br/> MANUAL CUOTA EXTRA.</p>
 	  	<p><a class="enlace" href="cancelacionExtraordinaria/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
 	  </td>
 	  <td></td>
