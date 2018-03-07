@@ -6,35 +6,35 @@ include($libPath."controlSessionUsimra.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Aportes USIMRA:.</title>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><span class="Estilo2">Men&uacute; Aportes </span></p>
-  <table width="614" border="3">
+  <h3>MENU APORTES </h3>
+  <table width="600" border="3" style="text-align: center">
     <tr>
-      <td width="294"><p align="center">Descarga Aplicativo DDJJ </p>
-          <p align="center"><a class="enlace" href="descarga/moduloDescarga.php"><img src="img/download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-          <p align="center">&nbsp;</p></td>
-      <td width="294"><p align="center">Informes</p>
-          <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-          <p align="center">&nbsp;</p></td>
+      <td width="200">
+      	  <p>DESCARGA</br>APLICATIVO DDJJ </p>
+          <p><a class="enlace" href="descarga/moduloDescarga.php"><img src="img/download.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td width="200">
+      	  <p>INFORMES</p>
+          <p><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
+      <td width="200">
+      	  <p>EMPRESAS PAGO MINIMO</p>
+          <p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/minimo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
     </tr>
     <tr>
-      <td width="294"><p align="center">Cancelaci&oacute;n Manual Aportes</p>
-	  	  <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
-	  	  <p align="center">&nbsp;</p></td>
-      <td width="294"><p align="center">Cancelaci&oacute;n Manual Cuota Extraordinaria</p>
-	  	  <p align="center"><a class="enlace" href="cancelacionExtraordinaria/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
-	  	  <p align="center">&nbsp;</p></td>
+      <td>
+      	<p>CANCELACION </br> MANUAL APORTES</p>
+	  	<p><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
+	  </td>
+      <td>
+      	<p>CANCELACION </br> MANUAL CUOTA EXTRA.</p>
+	  	<p><a class="enlace" href="cancelacionExtraordinaria/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
+	  </td>
+	  <td></td>
     </tr>
   </table>
 </div>

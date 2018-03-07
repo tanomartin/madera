@@ -6,12 +6,6 @@ include($libPath."controlSessionUsimra.php");?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Men&uacute; USIMRA :.</title>
-<style type="text/css">
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
-</style>
 
 <script language="javascript">
 function abrirAcuerdos(dire) {
@@ -65,59 +59,48 @@ function abrirMinutas(dire) {
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><span class="Estilo1">Men&uacute; Principal</span></p>
-  <p>
-    <img src="img/logo.png" width="168" height="168" /></p>
-  <table width="600" border="2">
+  <h2>MENU PRINCIPAL</h2>
+  <p><img src="img/logo.png" width="168" height="168" /></p>
+  <table width="600" border="2" style="text-align: center;">
     <tr>
-      <td> <div align="center">
-        <p>Acuerdos</p>
+      <td width="200">
+        <p>ACUERDOS</p>
         <p><a href="javascript:abrirAcuerdos('acuerdos/menuAcuerdos.php')"><img src="img/acuerdos.png" width="90" height="90" border="0"/></a></p>
-        <p>&nbsp;</p>
-        </div></td>
-      <td><div align="center">
-	    <p>Empresas</p>
+      </td>
+      <td width="200">
+	    <p>EMPRESAS</p>
 	    <p><a  href="javascript:abrirEmpresa('../comun/empresas/menuEmpresa.php?origen=usimra')"><img src="img/empresa.png" width="90" height="90" border="0"/></a></p>
-	    <p>&nbsp;</p>
-      </div></td>
-	 <td><div align="center">
-	  <p>Empleados </p>
-      <p><a href="javascript:abrirEmpleados('empleados/menuEmpleados.php')"><img src="img/empleados.png" width="90" height="90" border="0"/></a></p>
-      <p>&nbsp;</p> 
-    </div></td>
+      </td>
+	  <td width="200">
+	  	<p>EMPLEADOS</p>
+      	<p><a href="javascript:abrirEmpleados('empleados/menuEmpleados.php')"><img src="img/empleados.png" width="90" height="90" border="0"/></a></p>
+      </td>
     </tr>
     <tr>
-     <td><div align="center">
-       <p>Aportes </p>
+      <td>
+       <p>APORTES</p>
        <p><a href="javascript:abrirAportes('aportes/menuAportes.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
-       <p>&nbsp;</p>
-     </div></td>
-      <td><div align="center">
-        <p>Fiscalizacion </p>
+	  </td>
+      <td>
+        <p>FISCALIZACION </p>
         <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0"/></a></p>
-        <p>&nbsp;</p>
-      </div></td>
-	  <td><div align="center">
-        <p>Juicios </p>
+      </td>
+	  <td>
+        <p>JUICIOS </p>
 	    <p><a href="javascript:abrirLegales('legales/menuLegales.php')"><img src="img/juicios.png" width="90" height="90" border="0"/></a></p>
-	    <p>&nbsp;</p>
-      </div></td>
+      </td>
     </tr>
     <tr>
        <td> 
        	<?php if ($_SESSION['usuario'] == 'sistemas' || $_SESSION['usuario'] == 'dbarreiro' || $_SESSION['usuario'] == 'mvoilhaborda') { ?> 
-			      <div align="center">
-			          <p>Herramientas</p>
-			          <p><a href="javascript:abrirMinutas('herramientas/menuHerramientas.php')"><img src="img/herramientas.png" width="90" height="90" border="0"/></a></p>
-			          <p>&nbsp;</p>
-			      </div>
+			      <p>HERRAMIENTAS</p>
+			      <p><a href="javascript:abrirMinutas('herramientas/menuHerramientas.php')"><img src="img/herramientas.png" width="90" height="90" border="0"/></a></p>
 	   	<?php } ?>
 	   </td>
-      <td><div align="center">
-          <p>Banco </p>
+      <td>
+          <p>BANCO </p>
           <p><a href="javascript:abrirBanco('banco/moduloBanco.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
-          <p>&nbsp;</p>
-      </div></td>
+      </td>
       <td>&nbsp;</td>
     </tr>
   </table>
