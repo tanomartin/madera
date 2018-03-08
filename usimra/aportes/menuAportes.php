@@ -22,7 +22,7 @@ include($libPath."controlSessionUsimra.php"); ?>
       </td>
       <td width="200">
       	  <p>EMPRESAS PAGO MINIMO</p>
-          <p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/minimo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p><a class="enlace" href="minimo/moduloMinimo.php"><img src="img/minimo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td>
     </tr>
     <tr>

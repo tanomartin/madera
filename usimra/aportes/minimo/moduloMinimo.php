@@ -44,6 +44,44 @@ $canMinimoHistorico = mysql_num_rows($resMinimoHistorico);
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"  type="text/javascript" ></script> 
 <script language="javascript" type="text/javascript">
 
+jQuery(function($){
+	$("#cuit").mask("99999999999");
+});
+
+$(document).ready(function(){
+	$("#buscar").click(function() {
+		$("#error").html('');	
+		var cuit = $("#cuit").val();
+		if (cuit != "") {
+			$.blockUI({ message: "<h1>Buscando Empresa en Aplicativo DDJJ. <br> Aguarde por favor</h1>" });
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "getEmpresa.php",
+				data: {cuit:cuit},
+			}).done(function(respuesta) {
+				$.unblockUI();
+				if (respuesta == 1 || respuesta == 2) {
+					if (respuesta == 1) {
+						$("#error").html("CUIT NO ENCONTRADO EN APLICATIVO ONLINE D.D.J.J.");
+					} else {
+						$("#error").html("CUIT YA HABILITADO PARA PAGAR BAJO EL MINIMO");
+					}
+				} else {
+					var r = confirm("Desea dar autorizacion C.U.I.T.: "+cuit+" Razon Social: "+respuesta);
+					if (r == true) {
+						$.blockUI({ message: "<h1>Autorizando pago bajo el mínimo. <br> Aguarde por favor</h1>" });
+						var redireccion = "nuevoMinimo.php?cuit="+cuit;
+						location.href=redireccion;
+					}
+				}	
+			});
+		} else {
+			alert("Debe ingresar el C.U.I.T. a buscar");
+		}
+	});
+});
+
 $(function() {
 	$("#listador")
 	.tablesorter({
@@ -78,11 +116,6 @@ $(function() {
 	}).tablesorterPager({container: $("#paginadorHistorico")}); 
 });
 
-
-jQuery(function($){
-	$("#cuit").mask("99999999999");
-});
-
 function bajarAutorizacion(cuit) {
 	var r = confirm("Desea dar de baja la autorizacion del C.U.I.T. "+cuit);
 	if (r == true) {
@@ -92,34 +125,18 @@ function bajarAutorizacion(cuit) {
 	}
 }
 
-function cartelBlock() {
-	$.blockUI({ message: "<h1>Buscando Empresa en Aplicativo DDJJ. <br> Aguarde por favor</h1>" });
-	return true;
-}
-
 </script>
 </head>
 <body bgcolor="#B2A274">
 	<div align="center">	
 		<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAportes.php'" /></p> 
-		<form id="minimo" name="minimo" method="post" onsubmit="cartelBlock()" action="nuevoMinimo.php">
-			<h3>HABILITAR EMPRESA DDJJ DEBAJO DEL MINIMO</h3>
-			<h3>Habilitar Nueva Empresa</h3>
-			  <?php 
-			  	if (isset($_GET['err'])) {
-					$err = $_GET['err'];
-					if ($err == 1) {
-						print("<p><div align='center' style='color:DarkRed'><b>CUIT NO ENCONTRADO EN APLICATIVO</b></div></p>");
-					}
-					if ($err == 2) {
-						print("<p><div align='center' style='color:DarkBlue'><b>CUIT YA HABILITADO PARA PAGAR BAJO EL MINIMO</b></div></p>");
-					}
-			  	}
-			  ?>
-			<p>CUIT <input name="cuit" id="cuit" type="text" size="10" /></p>
-			<p><input type="submit" name="Submit" value="Buscar" /></p>
-		</form>
+		<h3>HABILITAR EMPRESA DDJJ DEBAJO DEL MINIMO</h3>
+		<h3>Habilitar Nueva Empresa</h3>
+		<div id="error" style="color: DarkRed"></div>
+		<p>C.U.I.T.: <input name="cuit" id="cuit" type="text" size="10" /></p>
+		<p><input type="button" id="buscar" name="buscar" value="Buscar" /></p>
 		<h3>Empresas Habilitadas</h3>
+		<p>(Valor inferior límite del pago mínimo $80)</p>
 		  <?php if ($canMinimo > 0) { ?>
 		 			<table id="listador" class="tablesorter" style="width:1000px; font-size:14px; text-align: center;">
 		 				<thead>
