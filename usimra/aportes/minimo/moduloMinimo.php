@@ -163,11 +163,11 @@ function bajarAutorizacion(cuit) {
 			  		<div id="paginador" class="pager">
 						<form>
 							<p>
-								<img src="img/first.png" width="16" height="16" class="first"/>
-								<img src="img/prev.png" width="16" height="16" class="prev"/>
+								<img src="../img/first.png" width="16" height="16" class="first"/>
+								<img src="../img/prev.png" width="16" height="16" class="prev"/>
 								<input type="text" class="pagedisplay" size="8" readonly="readonly" style="background:#CCCCCC; text-align:center"/>
-								<img src="img/next.png" width="16" height="16" class="next"/>
-								<img src="img/last.png" width="16" height="16" class="last"/>
+								<img src="../img/next.png" width="16" height="16" class="next"/>
+								<img src="../img/last.png" width="16" height="16" class="last"/>
 							</p>
 							<p>
 								<select class="pagesize">
@@ -184,7 +184,7 @@ function bajarAutorizacion(cuit) {
 					<h3 style="color: blue">No existen empresas habilitadas para pagar bajo el minimo</h3>
 		  <?php } ?>
 		  
-		  <h3>Historial de Habilitacioes</h3>
+		  <h3>Historial de Habilitaciones</h3>
 		  <?php if ($canMinimoHistorico > 0) { ?>
 		 			<table id="listadorHistorico" class="tablesorter" style="width:1000px; font-size:14px; text-align: center;">
 		 				<thead>
@@ -213,11 +213,11 @@ function bajarAutorizacion(cuit) {
 			  		<div id="paginadorHistorico" class="pager">
 						<form>
 							<p>
-								<img src="img/first.png" width="16" height="16" class="first"/>
-								<img src="img/prev.png" width="16" height="16" class="prev"/>
+								<img src="../img/first.png" width="16" height="16" class="first"/>
+								<img src="../img/prev.png" width="16" height="16" class="prev"/>
 								<input type="text" class="pagedisplay" size="8" readonly="readonly" style="background:#CCCCCC; text-align:center"/>
-								<img src="img/next.png" width="16" height="16" class="next"/>
-								<img src="img/last.png" width="16" height="16" class="last"/>
+								<img src="../img/next.png" width="16" height="16" class="next"/>
+								<img src="../img/last.png" width="16" height="16" class="last"/>
 							</p>
 							<p>
 								<select class="pagesize">
