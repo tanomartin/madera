@@ -9,8 +9,9 @@ if (isset($_POST['seleccion'])) {
 	$arraySeguimiento = array();
 	$arrayAfiliados = array();
 	
-	$sqlSeguimiento = "SELECT e.id, e.idseguimiento, e.estado,  s.nroafiliado, s.nroorden, DATE_FORMAT(e.fecharegistro,'%d-%m-%Y %H:%i:%s') as fecharegistro FROM seguimientoestado e, seguimiento s 
-						WHERE e.idseguimiento = s.id order by e.fecharegistro, e.idseguimiento, e.id ASC";
+	$sqlSeguimiento = "SELECT e.id, e.idseguimiento, e.estado,  s.nroafiliado, s.nroorden, p.descrip as parentesco, DATE_FORMAT(e.fecharegistro,'%d-%m-%Y %H:%i:%s') as fecharegistro 
+						FROM seguimientoestado e, seguimiento s, parentesco p
+						WHERE e.idseguimiento = s.id and s.nroorden = p.codparent order by e.fecharegistro, e.idseguimiento, e.id ASC";
 	$resSeguimiento = mysql_query($sqlSeguimiento,$db);
 	while ($rowSeguimiento = mysql_fetch_assoc($resSeguimiento)) {
 		$arraySeguimiento[$rowSeguimiento['idseguimiento']] = $rowSeguimiento;
@@ -125,11 +126,11 @@ function abrirSeguimiento(dire) {
 						<th>Id. Seguimiento</th>
 						<th>Fecha</th>
 						<th>Nro Afiliado</th>
+						<th>Tipo Afiliado</th>
 						<th>Nombre y Apellido</th>
 						<th>Nro Documento</th>
 						<th>C.U.I.L.</th>
-						<th>Delegacion</th>
-						<th>Tipo Afiliado</th>
+						<th>Delegacion</th>	
 						<th></th>
 					</tr>
 				</thead>
@@ -138,28 +139,25 @@ function abrirSeguimiento(dire) {
 					<tr>
 						<td><?php echo $key?></td>
 						<td><?php echo $resultado['fecharegistro']?></td>
-						<td><?php echo $resultado['nroafiliado'] ?></td>	
+						<td><?php echo $resultado['nroafiliado'] ?></td>
+						<td><?php $tipo = "TITULAR";
+								  if (($resultado['nroorden']) != 0) { 
+										$tipo = "FAMILIAR - ".$resultado['parentesco']; 
+								  } 
+								  echo $tipo; ?>
+								</td>	
 						<?php if (isset($arrayAfiliados[$key]['nroafiliado'])) { ?>
-							
 								<td><?php echo $arrayAfiliados[$key]['apellidoynombre'] ?></td>	
 								<td><?php echo $arrayAfiliados[$key]['tipdoc'].": ".$arrayAfiliados[$key]['nrodocumento'] ?></td>
 								<td><?php echo $arrayAfiliados[$key]['cuil'] ?></td>	
-								<td><?php echo $arrayAfiliados[$key]['delegacion'] ?></td>
-								<td><?php $tipo = "TITULAR";
-										  $orden = 0;
-										  if (isset($arrayAfiliados[$key]['nroorden'])) { 
-											$tipo = "FAMILIAR - ".$arrayAfiliados[$key]['parentesco']; 
-											$orden = $arrayAfiliados[$key]['nroorden']; 
-										  } 
-										  echo $tipo; ?>
-								</td>	
+								<td><?php echo $arrayAfiliados[$key]['delegacion'] ?></td>	
 								<td>
 									<input type="button" name="ver" id="ver" value="+INFO" onclick="javascript:abrirSeguimiento('seguimientoDetalle.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion'] ?>')" />
 									<?php if ($seleccion != "FINALIZADO") { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="javascript:abrirSeguimiento('seguimientoModificar.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion']  ?>')" /> <?php } ?>	
 								</td>
 						<?php  } else { ?>
-								<td colspan="6">AFILIADO INACTIVO</td>
-						<?php } ?>																					
+								<td colspan="5">AFILIADO INACTIVO</td>
+						<?php  } ?>																					
 						
 					</tr>
 		    	<?php } ?>
