@@ -138,23 +138,29 @@ function abrirSeguimiento(dire) {
 					<tr>
 						<td><?php echo $key?></td>
 						<td><?php echo $resultado['fecharegistro']?></td>
-						<td><?php echo $arrayAfiliados[$key]['nroafiliado'] ?></td>	
-						<td><?php echo $arrayAfiliados[$key]['apellidoynombre'] ?></td>	
-						<td><?php echo $arrayAfiliados[$key]['tipdoc'].": ".$arrayAfiliados[$key]['nrodocumento'] ?></td>
-						<td><?php echo $arrayAfiliados[$key]['cuil'] ?></td>	
-						<td><?php echo $arrayAfiliados[$key]['delegacion'] ?></td>
-						<td><?php $tipo = "TITULAR";
-								  $orden = 0;
-								  if (isset($arrayAfiliados[$key]['nroorden'])) { 
-									$tipo = "FAMILIAR - ".$arrayAfiliados[$key]['parentesco']; 
-									$orden = $arrayAfiliados[$key]['nroorden']; 
-								  } 
-								  echo $tipo; ?>
-						</td>																						
-						<td>
-							<input type="button" name="ver" id="ver" value="+INFO" onclick="javascript:abrirSeguimiento('seguimientoDetalle.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion'] ?>')" />
-							<?php if ($seleccion != "FINALIZADO") { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="javascript:abrirSeguimiento('seguimientoModificar.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion']  ?>')" /> <?php } ?>	
-						</td>
+						<td><?php echo $resultado['nroafiliado'] ?></td>	
+						<?php if (isset($arrayAfiliados[$key]['nroafiliado'])) { ?>
+							
+								<td><?php echo $arrayAfiliados[$key]['apellidoynombre'] ?></td>	
+								<td><?php echo $arrayAfiliados[$key]['tipdoc'].": ".$arrayAfiliados[$key]['nrodocumento'] ?></td>
+								<td><?php echo $arrayAfiliados[$key]['cuil'] ?></td>	
+								<td><?php echo $arrayAfiliados[$key]['delegacion'] ?></td>
+								<td><?php $tipo = "TITULAR";
+										  $orden = 0;
+										  if (isset($arrayAfiliados[$key]['nroorden'])) { 
+											$tipo = "FAMILIAR - ".$arrayAfiliados[$key]['parentesco']; 
+											$orden = $arrayAfiliados[$key]['nroorden']; 
+										  } 
+										  echo $tipo; ?>
+								</td>	
+								<td>
+									<input type="button" name="ver" id="ver" value="+INFO" onclick="javascript:abrirSeguimiento('seguimientoDetalle.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion'] ?>')" />
+									<?php if ($seleccion != "FINALIZADO") { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="javascript:abrirSeguimiento('seguimientoModificar.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion']  ?>')" /> <?php } ?>	
+								</td>
+						<?php  } else { ?>
+								<td colspan="6">AFILIADO INACTIVO</td>
+						<?php } ?>																					
+						
 					</tr>
 		    	<?php } ?>
 				</tbody>
