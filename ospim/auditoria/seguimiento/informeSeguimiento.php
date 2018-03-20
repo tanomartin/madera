@@ -156,7 +156,7 @@ function abrirSeguimiento(dire) {
 			<table style="width: 1100px">
 				<thead>
 					<tr>
-						<th>Id. Seguimiento</th>
+						<th>Codigo</th>
 						<th>Fecha</th>
 						<th>Nro Afiliado</th>
 						<th>Tipo Afiliado</th>
