@@ -180,7 +180,10 @@ function abrirSeguimiento(dire) {
 								  } 
 								  echo $tipo; ?>
 						</td>	
-						<td><?php echo $resultado['estadoafiliado']?></td>
+						<?php 
+							$color = "";
+							if ($resultado['estadoafiliado'] == "INACTIVO") { $color = "red";}  ?>
+						<td style="color: <?php echo $color ?>"><?php echo $resultado['estadoafiliado']?></td>
 						<?php if (isset($arrayAfiliados[$key])) { ?>
 								<td><?php echo $arrayAfiliados[$key]['apellidoynombre'] ?></td>	
 								<td><?php echo $arrayAfiliados[$key]['tipdoc'].": ".$arrayAfiliados[$key]['nrodocumento'] ?></td>
