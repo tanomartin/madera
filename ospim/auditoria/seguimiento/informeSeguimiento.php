@@ -26,10 +26,21 @@ if (isset($_POST['seleccion'])) {
 				$resTitular = mysql_query($selectTitular,$db);
 				$numTitular = mysql_num_rows($resTitular);
 				if ($numTitular > 0) {
+					$arrayResultado[$key]['estado'] = "ACTIVO";
 					while ($rowTitular = mysql_fetch_assoc($resTitular)) {
 						$arrayAfiliados[$key] = $rowTitular;
 					}
-				}	
+				} else {
+					$selectTitular = "SELECT t.*, d.descrip as tipdoc, del.nombre as delegacion FROM titularesdebaja t, tipodocumento d, delegaciones del WHERE t.nroafiliado = $nroafiliado and t.tipodocumento = d.codtipdoc and t.codidelega = del.codidelega";
+					$resTitular = mysql_query($selectTitular,$db);
+					$numTitular = mysql_num_rows($resTitular);
+					if ($numTitular > 0) {
+						$arrayAfiliados[$key]['estado'] = "INACTIVO";
+						while ($rowTitular = mysql_fetch_assoc($resTitular)) {
+							$arrayAfiliados[$key] = $rowTitular;
+						}
+					}
+				}
 			} else {
 				$nroorden = $segui['nroorden'];
 				$selectFamiliar = "SELECT f.*, p.descrip as parentesco, d.descrip as tipdoc, del.nombre as delegacion FROM familiares f, parentesco p, tipodocumento d, titulares t, delegaciones del
@@ -37,8 +48,31 @@ if (isset($_POST['seleccion'])) {
 				$resFamiliar = mysql_query($selectFamiliar,$db);
 				$numFamiliar = mysql_num_rows($resFamiliar);
 				if ($numFamiliar > 0) {
+					$arrayResultado[$key]['estado'] = "ACTIVO";
 					while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
 						$arrayAfiliados[$key] = $rowFamiliar;
+					}
+				} else {
+					$selectFamiliar = "SELECT f.*, p.descrip as parentesco, d.descrip as tipdoc, del.nombre as delegacion FROM familiaresdebaja f, parentesco p, tipodocumento d, titularesdebaja t, delegaciones del
+					WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent and f.tipodocumento = d.codtipdoc and f.nroafiliado = t.nroafiliado and t.codidelega = del.codidelega";
+					$resFamiliar = mysql_query($selectFamiliar,$db);
+					$numFamiliar = mysql_num_rows($resFamiliar);
+					if ($numFamiliar > 0) {
+						$arrayResultado[$key]['estado'] = "INACTIVO";
+						while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
+							$arrayAfiliados[$key] = $rowFamiliar;
+						}
+					} else {
+						$selectFamiliar = "SELECT f.*, p.descrip as parentesco, d.descrip as tipdoc, del.nombre as delegacion FROM familiaresdebaja f, parentesco p, tipodocumento d, titulares t, delegaciones del
+						WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent and f.tipodocumento = d.codtipdoc and f.nroafiliado = t.nroafiliado and t.codidelega = del.codidelega";
+						$resFamiliar = mysql_query($selectFamiliar,$db);
+						$numFamiliar = mysql_num_rows($resFamiliar);
+						if ($numFamiliar > 0) {
+							$arrayResultado[$key]['estado'] = "INACTIVO";
+							while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
+								$arrayAfiliados[$key] = $rowFamiliar;
+							}
+						}
 					}
 				}
 			}
@@ -76,8 +110,7 @@ function validar(formulario) {
 	}
 	$.blockUI({ message: "<h1>Realizando informe. Aguarde por favor...</h1>" });
 	return true;
-};
-
+}
 
 function abrirSeguimiento(dire) {
 	a= window.open(dire,"Seguimiento del Afiliado",
@@ -127,6 +160,7 @@ function abrirSeguimiento(dire) {
 						<th>Fecha</th>
 						<th>Nro Afiliado</th>
 						<th>Tipo Afiliado</th>
+						<th>Estado</th>
 						<th>Nombre y Apellido</th>
 						<th>Nro Documento</th>
 						<th>C.U.I.L.</th>
@@ -145,20 +179,20 @@ function abrirSeguimiento(dire) {
 										$tipo = "FAMILIAR - ".$resultado['parentesco']; 
 								  } 
 								  echo $tipo; ?>
-								</td>	
-						<?php if (isset($arrayAfiliados[$key]['nroafiliado'])) { ?>
+						</td>	
+						<td><?php echo $resultado['estado']?></td>
+						<?php if (isset($arrayAfiliados[$key])) { ?>
 								<td><?php echo $arrayAfiliados[$key]['apellidoynombre'] ?></td>	
 								<td><?php echo $arrayAfiliados[$key]['tipdoc'].": ".$arrayAfiliados[$key]['nrodocumento'] ?></td>
 								<td><?php echo $arrayAfiliados[$key]['cuil'] ?></td>	
 								<td><?php echo $arrayAfiliados[$key]['delegacion'] ?></td>	
 								<td>
-									<input type="button" name="ver" id="ver" value="+INFO" onclick="javascript:abrirSeguimiento('seguimientoDetalle.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion'] ?>')" />
-									<?php if ($seleccion != "FINALIZADO") { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="javascript:abrirSeguimiento('seguimientoModificar.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion']  ?>')" /> <?php } ?>	
+									<input type="button" name="ver" id="ver" value="+INFO" onclick="javascript:abrirSeguimiento('seguimientoDetalle.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion'] ?>&volver=none')" />
+									<?php if ($seleccion != "FINALIZADO" && $resultado['estado'] == "ACTIVO") { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="javascript:abrirSeguimiento('seguimientoModificar.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion']  ?>')" /> <?php } ?>	
 								</td>
 						<?php  } else { ?>
-								<td colspan="5">AFILIADO INACTIVO</td>
-						<?php  } ?>																					
-						
+								<td colspan="5">NO SE ENCONTRO AFILIADO</td>
+						<?php  } ?>																			
 					</tr>
 		    	<?php } ?>
 				</tbody>

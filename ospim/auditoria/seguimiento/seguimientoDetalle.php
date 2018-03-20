@@ -39,7 +39,9 @@ if ($rowSeguimiento['seguimiento'] == 1) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'seguimiento.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>&delega=<?php echo $delega?>'" /></p>
+	<?php if (!isset($_GET['volver'])) { ?>
+		<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'seguimiento.php?nroafil=<?php echo $nroafil ?>&orden=<?php echo $orden?>&nombre=<?php echo $nombre ?>&delega=<?php echo $delega?>'" /></p>
+	<?php }?>
 	<h3>Afiliado: <?php echo $nroafil." - ".$nombre?></h3> 
 	<h3>Delegacion: <?php echo $delega ?></h3> 
 	<p><b>Código: </b> <?php echo $rowSeguimiento['id']?></p>

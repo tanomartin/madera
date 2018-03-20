@@ -24,7 +24,7 @@ if ($_SESSION['usuario'] != 'sistemas' && $_SESSION['usuario'] != 'sgiraudo' && 
         <p>&nbsp;</p>
       </td>
       <td width="200">
-      	<p>Informes </p>
+      	<p>INFORMES </p>
         <p><a class="enlace" href="informeSeguimiento.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p>
       </td>
