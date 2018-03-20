@@ -188,7 +188,7 @@ function abrirSeguimiento(dire) {
 								<td><?php echo $arrayAfiliados[$key]['delegacion'] ?></td>	
 								<td>
 									<input type="button" name="ver" id="ver" value="+INFO" onclick="javascript:abrirSeguimiento('seguimientoDetalle.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion'] ?>&volver=none')" />
-									<?php if ($seleccion != "FINALIZADO" && $resultado['estado'] == "ACTIVO") { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="javascript:abrirSeguimiento('seguimientoModificar.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion']  ?>')" /> <?php } ?>	
+									<?php if ($seleccion != "FINALIZADO" && $resultado['estadoafiliado'] == "ACTIVO") { ?><input type="button" name="ver" id="ver" value="Modificar" onclick="javascript:abrirSeguimiento('seguimientoModificar.php?id=<?php echo $resultado['idseguimiento'] ?>&nombre=<?php echo $arrayAfiliados[$key]['apellidoynombre'] ?>&delega=<?php echo $arrayAfiliados[$key]['delegacion']  ?>')" /> <?php } ?>	
 								</td>
 						<?php  } else { ?>
 								<td colspan="5">NO SE ENCONTRO AFILIADO</td>
