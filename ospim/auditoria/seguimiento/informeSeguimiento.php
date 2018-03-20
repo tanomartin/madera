@@ -26,7 +26,7 @@ if (isset($_POST['seleccion'])) {
 				$resTitular = mysql_query($selectTitular,$db);
 				$numTitular = mysql_num_rows($resTitular);
 				if ($numTitular > 0) {
-					$arrayResultado[$key]['estado'] = "ACTIVO";
+					$arrayResultado[$key]['estadoafiliado'] = "ACTIVO";
 					while ($rowTitular = mysql_fetch_assoc($resTitular)) {
 						$arrayAfiliados[$key] = $rowTitular;
 					}
@@ -35,7 +35,7 @@ if (isset($_POST['seleccion'])) {
 					$resTitular = mysql_query($selectTitular,$db);
 					$numTitular = mysql_num_rows($resTitular);
 					if ($numTitular > 0) {
-						$arrayAfiliados[$key]['estado'] = "INACTIVO";
+						$arrayAfiliados[$key]['estadoafiliado'] = "INACTIVO";
 						while ($rowTitular = mysql_fetch_assoc($resTitular)) {
 							$arrayAfiliados[$key] = $rowTitular;
 						}
@@ -48,7 +48,7 @@ if (isset($_POST['seleccion'])) {
 				$resFamiliar = mysql_query($selectFamiliar,$db);
 				$numFamiliar = mysql_num_rows($resFamiliar);
 				if ($numFamiliar > 0) {
-					$arrayResultado[$key]['estado'] = "ACTIVO";
+					$arrayResultado[$key]['estadoafiliado'] = "ACTIVO";
 					while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
 						$arrayAfiliados[$key] = $rowFamiliar;
 					}
@@ -58,7 +58,7 @@ if (isset($_POST['seleccion'])) {
 					$resFamiliar = mysql_query($selectFamiliar,$db);
 					$numFamiliar = mysql_num_rows($resFamiliar);
 					if ($numFamiliar > 0) {
-						$arrayResultado[$key]['estado'] = "INACTIVO";
+						$arrayResultado[$key]['estadoafiliado'] = "INACTIVO";
 						while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
 							$arrayAfiliados[$key] = $rowFamiliar;
 						}
@@ -68,7 +68,7 @@ if (isset($_POST['seleccion'])) {
 						$resFamiliar = mysql_query($selectFamiliar,$db);
 						$numFamiliar = mysql_num_rows($resFamiliar);
 						if ($numFamiliar > 0) {
-							$arrayResultado[$key]['estado'] = "INACTIVO";
+							$arrayResultado[$key]['estadoafiliado'] = "INACTIVO";
 							while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
 								$arrayAfiliados[$key] = $rowFamiliar;
 							}
@@ -180,7 +180,7 @@ function abrirSeguimiento(dire) {
 								  } 
 								  echo $tipo; ?>
 						</td>	
-						<td><?php echo $resultado['estado']?></td>
+						<td><?php echo $resultado['estadoafiliado']?></td>
 						<?php if (isset($arrayAfiliados[$key])) { ?>
 								<td><?php echo $arrayAfiliados[$key]['apellidoynombre'] ?></td>	
 								<td><?php echo $arrayAfiliados[$key]['tipdoc'].": ".$arrayAfiliados[$key]['nrodocumento'] ?></td>
