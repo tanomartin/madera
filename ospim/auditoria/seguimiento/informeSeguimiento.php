@@ -35,7 +35,7 @@ if (isset($_POST['seleccion'])) {
 					$resTitular = mysql_query($selectTitular,$db);
 					$numTitular = mysql_num_rows($resTitular);
 					if ($numTitular > 0) {
-						$arrayAfiliados[$key]['estadoafiliado'] = "INACTIVO";
+						$arrayResultado[$key]['estadoafiliado'] = "INACTIVO";
 						while ($rowTitular = mysql_fetch_assoc($resTitular)) {
 							$arrayAfiliados[$key] = $rowTitular;
 						}
