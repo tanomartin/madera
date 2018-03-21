@@ -49,10 +49,15 @@ if (isset($_POST['delega'])) {
 			$cuit = $rowConsulta['cuit'];
 			if ($delegacion != '0') {
 				if ($jurisdiccion[$cuit] == $delegacion) {
+					$rowConsulta['codidelega'] = $delegacion;
 					$arrayResultado[$i] = $rowConsulta;
 				}
 			} else {
-				$rowConsulta['codidelega'] = $jurisdiccion[$cuit];
+				if (isset($jurisdiccion[$cuit])) {
+					$rowConsulta['codidelega'] = $jurisdiccion[$cuit];
+				} else {
+					$rowConsulta['codidelega'] = "-";
+				}
 				$arrayResultado[$i] = $rowConsulta;
 			}
 			$i++;
