@@ -6,42 +6,37 @@ include($libPath."controlSessionUsimra.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Acuerdo USIMRA:.</title>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><span class="Estilo2">Men&uacute; Acuerdos </span></p>
-  <table width="612" border="3">
-    <tr>
-      <td width="204"><p align="center">Alta, Modificaci&oacute;n y Consulta</p>
-        <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmacuerdo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="204"><p align="center"> Boletas de Pago </p>
-          <p align="center"><a class="enlace" href="impresion/menuBoletas.php"><img src="img/impresora.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="204"><p align="center">Cancelaci&oacute;n Manual de Cuotas</p>
-	  	  <!-- href="banco/moduloBanco.php" -->
-           <p align="center"><a class="enlace" href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
-        <p align="center">&nbsp;</p></td>
-    </tr>
-    <tr>
-      <td><p align="center">Informes</p>
-        <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td><p align="center">Valores al Cobro</p>
-      <p align="center"><a href="valores/menuValores.php"><img src="img/valores.png" width="90" height="90" border="0" /></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td><p align="center">&nbsp;</p></td>
-    </tr>
-  </table>
+	<h3>Men&uacute; Acuerdos </h3>
+  	<table style="width: 600px; text-align: center;" border="1">
+    	<tr>
+      		<td width="200px">
+      			<p>A.B.M.C.</p>
+        		<p><a href="abm/moduloABM.php"><img src="img/abmacuerdo.png" width="90" height="90" border="0" /></a></p>
+        	</td>
+      		<td width="200px">
+      			<p>BOLETAS DE PAGO</p>
+         		<p><a href="impresion/menuBoletas.php"><img src="img/impresora.png" width="90" height="90" border="0"/></a></p>
+        	</td>
+      		<td width="200px">
+      			<p>CANCELACION <br/> MANUAL DE CUOTAS</p>
+           		<p><a href="cancelacion/moduloCancelacion.php"><img src="img/cancelado.png" width="90" height="90" border="0" /></a></p>
+        	</td>
+    	</tr>
+    	<tr>
+	      	<td>
+	      		<p>INFORMES</p>
+	        	<p><a href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" /></a></p>
+	      	</td>
+	      	<td>
+	      		<p>VALORES AL COBRO</p>
+	      		<p><a href="valores/menuValores.php"><img src="img/valores.png" width="90" height="90" border="0" /></a></p>
+	      	</td>
+	      	<td></td>
+    	</tr>
+  	</table>
 </div>
 </body>
 </html>

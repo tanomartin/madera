@@ -1,63 +1,67 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionUsimra.php");
-?>
+include($libPath."controlSessionUsimra.php");?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Informes de Acuerdos :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#B2A274">
 <div align="center">
-	<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'"/> 
-  <p><span class="Estilo2">M&oacute;dulo De Informes</span></p>
-  <table style="width: 614; height: 506" border="1">
-    <tr>
-     <td width="196" height="164"><p align="center">Cheques en Cartera</p>
-        <p align="center"><a class="enlace" href="chequesCartera.php"><img src="img/excellogo.png" width="105" height="106" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td width="196" height="164"><p align="center">Liquidaciones</p>
-      <p align="center"><a class="enlace" href="liquidaComisiones.php"><img src="img/excellogo.png" width="105" height="106" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td width="196" height="164"><p align="center">Cuotas Vencidas</p>
-        <p align="center"><a class="enlace" href="cuotasVencidas.php"><img src="img/excellogo.png" width="105" height="106" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-    </tr>
-    <tr>
-      <td width="196" height="164"><p align="center">Cheques Rechazados</p>
-        <p align="center"><a class="enlace" href="chequesRechazados.php"><img src="img/excellogo.png" width="105" height="106" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-      <td width="196" height="164"><p align="center">Deuda de Acuerdos Por Año</p>
-          <p align="center"><a class="enlace" href="deudaAcuerdos.php"><img src="img/excellogo.png" width="105" height="106" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="196" height="164"><p align="center">Verificacion de Cuotas </p>
-          <p align="center"><a class="enlace" href="verificacionCuotas.php"><img src="img/excellogo.png" width="105" height="106" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-    </tr>
-    <tr>
-      <td height="164"><p align="center">Distintos Montos </p>
-      <p align="center"><a class="enlace" href="distintoMonto.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-      <td height="164"><p align="center">Periodos Repetidos </p>
-      <p align="center"><a class="enlace" href="repeticionPeriodos.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td height="164"><p align="center">Existencia de Caja </p>
-        <p align="center"><a class="enlace" href="caja.php"><img src="img/excellogo.png" width="105" height="105" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-    </tr>
-  </table>
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'"/></p>
+  	<h3>M&oacute;dulo De Informes Acuerdos</h3>
+  	<table style="width: 800px; text-align: center" border="1">
+	    <tr>
+	    	<td width="200px">
+	    		<p>CHEQUES <br/> EN CARTERA</p>
+	        	<p><a href="chequesCartera.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
+	     	</td>
+	      	<td width="200px">
+	      		<p>LIQUIDACIONES</p>
+	      		<p><a href="liquidaComisiones.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
+	      	</td>
+	      	<td width="200px">
+	      		<p>CUOTAS VENCIDAS</p>
+	        	<p><a href="cuotasVencidas.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
+	      	</td>
+	      	<td width="200px">
+	      		<p>CHEQUES <br/> RECHAZADOS</p>
+        		<p><a href="chequesRechazados.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
+	      	</td>
+	    </tr>
+    	<tr>
+      		<td>
+      			<p>DISTINTOS MONTOS</p>
+      			<p><a href="distintoMonto.php"><img src="img/excellogo.png" width="90" height="90" border="0" /></a></p>
+      		</td>
+      		<td>
+      			<p>DEUDA POR AÑO</p>
+        		<p><a href="deudaAcuerdos.php"><img src="img/excellogo.png" width="90" height="90" border="0" /></a></p>
+        	</td>
+      		<td>
+      			<p>VERIFICACION DE CUOTAS</p>
+          		<p><a href="verificacionCuotas.php"><img src="img/excellogo.png" width="90" height="90" border="0" /></a></p>
+        	</td>
+        	<td>
+        		<p>PERIODOS REPETIDOS</p>
+        		<p><a href="repeticionPeriodos.php"><img src="img/excellogo.png" width="90" height="90" border="0" /></a></p>
+        	</td>
+    	</tr>
+    	<tr>
+      		<td>
+      			<p>EXISTENCIA DE CAJA</p>
+      			<p><a href="caja.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
+      		</td>
+      		<td>
+      			<p>ACUERDOS POR DELEGACION</p>
+      			<p><a href="acupordelega.php"><img src="img/consultas.png" width="90" height="90" border="0"/></a></p>
+      		</td>
+      		<td></td>
+      		<td></td>
+    	</tr>
+  	</table>
 </div>
 </body>
 </html>
