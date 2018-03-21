@@ -8,13 +8,6 @@ if (isset($_POST['delega'])) {
 	$wheredelega = "";
 	if ($delegacion != '0') {
 		$wheredelega = "jurisdiccion.codidelega = $delegacion and ";
-		$sqlJurisPrincipal = "SELECT * FROM jurisdiccion j ORDER BY cuit, disgdinero ASC";
-		$resJurisPrincipal = mysql_query($sqlJurisPrincipal,$db);
-		$jurisdiccion = array();
-		while($rowJurisPrincipal = mysql_fetch_assoc($resJurisPrincipal)) {
-			$cuit = $rowJurisPrincipal['cuit'];
-			$jurisdiccion[$cuit] = $rowJurisPrincipal['codidelega'];
-		}
 	}
 	$estadoToSplit = $_POST['estado'];
 	$estadoArray = explode("|",$estadoToSplit);
@@ -29,29 +22,37 @@ if (isset($_POST['delega'])) {
 						DATE_FORMAT(cabacuerdosusimra.fechaacuerdo,'%d-%m-%Y') as fechaacuerdo,
 						tiposdeacuerdos.descripcion as tipoacuerdo,
 						estadosdeacuerdos.descripcion as estado,
-						jurisdiccion.codidelega as codidelega,
 						empresas.nombre as nombreactivo,
 						empresasdebaja.nombre as nombreinactivo
 					FROM estadosdeacuerdos, tiposdeacuerdos, cabacuerdosusimra
-					LEFT JOIN jurisdiccion ON cabacuerdosusimra.cuit = jurisdiccion.cuit
-					LEFT JOIN empresas ON jurisdiccion.cuit = empresas.cuit
-					LEFT JOIN empresasdebaja ON jurisdiccion.cuit = empresasdebaja.cuit
+					LEFT JOIN empresas ON cabacuerdosusimra.cuit = empresas.cuit
+					LEFT JOIN empresasdebaja ON cabacuerdosusimra.cuit = empresasdebaja.cuit
 					WHERE
-						$wheredelega $whereestado
+						$whereestado
 						cabacuerdosusimra.tipoacuerdo = tiposdeacuerdos.codigo and
 						cabacuerdosusimra.estadoacuerdo = estadosdeacuerdos.codigo";
 	$resConsulta = mysql_query($sqlConsulta,$db);
 	$canConsulta = mysql_num_rows($resConsulta);
 	if ($canConsulta > 0) {
+		
+		$sqlJurisPrincipal = "SELECT * FROM jurisdiccion j ORDER BY cuit, disgdinero ASC";
+		$resJurisPrincipal = mysql_query($sqlJurisPrincipal,$db);
+		$jurisdiccion = array();
+		while($rowJurisPrincipal = mysql_fetch_assoc($resJurisPrincipal)) {
+			$cuit = $rowJurisPrincipal['cuit'];
+			$jurisdiccion[$cuit] = $rowJurisPrincipal['codidelega'];
+		}
+		
 		$arrayResultado = array();
 		$i = 0;
 		while($rowConsulta = mysql_fetch_assoc($resConsulta)) {
+			$cuit = $rowConsulta['cuit'];
 			if ($delegacion != '0') {
-				$cuit = $rowConsulta['cuit'];
 				if ($jurisdiccion[$cuit] == $delegacion) {
 					$arrayResultado[$i] = $rowConsulta;
 				}
 			} else {
+				$rowConsulta['codidelega'] = $jurisdiccion[$cuit];
 				$arrayResultado[$i] = $rowConsulta;
 			}
 			$i++;
