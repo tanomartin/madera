@@ -1,5 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionUsimra.php"); 
+include($libPath."controlSessionOspim.php"); 
 
 if (isset($_POST['delega'])) {
 	$deleToSplit = $_POST['delega'];
@@ -14,23 +14,23 @@ if (isset($_POST['delega'])) {
 	$estado = $estadoArray[0];
 	$whereestado = "";
 	if ($estado != 'x') {
-		$whereestado = "cabacuerdosusimra.estadoacuerdo = $estado and ";
+		$whereestado = "cabacuerdosospim.estadoacuerdo = $estado and ";
 	}
 	$sqlConsulta = "SELECT
-						cabacuerdosusimra.nroacuerdo,
-						cabacuerdosusimra.cuit,
-						DATE_FORMAT(cabacuerdosusimra.fechaacuerdo,'%d-%m-%Y') as fechaacuerdo,
+						cabacuerdosospim.nroacuerdo,
+						cabacuerdosospim.cuit,
+						DATE_FORMAT(cabacuerdosospim.fechaacuerdo,'%d-%m-%Y') as fechaacuerdo,
 						tiposdeacuerdos.descripcion as tipoacuerdo,
 						estadosdeacuerdos.descripcion as estado,
 						empresas.nombre as nombreactivo,
 						empresasdebaja.nombre as nombreinactivo
-					FROM estadosdeacuerdos, tiposdeacuerdos, cabacuerdosusimra
-					LEFT JOIN empresas ON cabacuerdosusimra.cuit = empresas.cuit
-					LEFT JOIN empresasdebaja ON cabacuerdosusimra.cuit = empresasdebaja.cuit
+					FROM estadosdeacuerdos, tiposdeacuerdos, cabacuerdosospim
+					LEFT JOIN empresas ON cabacuerdosospim.cuit = empresas.cuit
+					LEFT JOIN empresasdebaja ON cabacuerdosospim.cuit = empresasdebaja.cuit
 					WHERE
 						$whereestado
-						cabacuerdosusimra.tipoacuerdo = tiposdeacuerdos.codigo and
-						cabacuerdosusimra.estadoacuerdo = estadosdeacuerdos.codigo";
+						cabacuerdosospim.tipoacuerdo = tiposdeacuerdos.codigo and
+						cabacuerdosospim.estadoacuerdo = estadosdeacuerdos.codigo";
 	$resConsulta = mysql_query($sqlConsulta,$db);
 	$canConsulta = mysql_num_rows($resConsulta);
 	if ($canConsulta > 0) {
@@ -68,7 +68,7 @@ if (isset($_POST['delega'])) {
 				}
 				$arrayResultado[$i] = $rowConsulta;
 				$i++;
-			}
+			}	
 		}
 	}
 }
@@ -79,7 +79,7 @@ if (isset($_POST['delega'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Acuerdos por Delegacion :.</title>
+<title>.: Acuerdos por Delegacion O.S.P.I.M. :.</title>
 
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
@@ -125,7 +125,7 @@ if (isset($_POST['delega'])) {
 			}
 		})
 	});
-	
+
 	function validar(formulario) {
 		var estadoArray = formulario.estado.value.split("|");
 		var estado = estadoArray[0];
@@ -140,7 +140,7 @@ if (isset($_POST['delega'])) {
 
 </head>
 
-<body bgcolor="#B2A274">
+<body bgcolor="#CCCCCC">
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'"/></p>
   	<h3>Acuerdos por Delegación</h3>
