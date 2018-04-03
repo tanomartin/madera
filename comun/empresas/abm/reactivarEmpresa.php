@@ -41,9 +41,9 @@ $usuariomodificacion = $rowTomarDatos['usuariomodificacion'];
 
 $sqlReactivaEmpresa = "INSERT INTO empresas VALUES ('$cuit','$nombre','$codprovin','$indpostal','$codpostal','$alfapostal','$localidad','$domicilio','$ddn1','$telefono1','$contacto1','$ddn2','$telefono2','$contacto2','$codigotipo','$peretenencia','$actividad','$obsOspim','$obsUsimra','$inicioOspim','$inicioUsimra','$email','$carpetaArchivo','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion','S')";
 
-$sqlUpdateModficador = "UPDATE empresas set fechamodificacion = '$fechamodificacionUpdate', usuariomodificacion = '$usuariomodificacionUpdate' where cuit = $cuit";
+$sqlUpdateModficador = "UPDATE empresas SET fechamodificacion = '$fechamodificacionUpdate', usuariomodificacion = '$usuariomodificacionUpdate' where cuit = $cuit";
 
-$sqlDeleteEmpresaBaja = "DELETE from empresasdebaja where cuit = $cuit";
+$sqlDeleteEmpresaBaja = "DELETE FROM empresasdebaja where cuit = $cuit";
 
 /*print($sqlTomarDatos);print("<br>");
 print($sqlReactivaEmpresa);print("<br>");
@@ -63,7 +63,10 @@ try {
 	$pagina = "empresa.php?cuit=$cuit&origen=$origen&reactiva=1";
 	Header("Location: $pagina"); 
 }catch (PDOException $e) {
-	echo $e->getMessage();
+	$error = $e->getMessage();
 	$dbh->rollback();
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/".$origen."/errorSistemas.php?&error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	header ($redire);
+	exit(0);
 }
 ?>

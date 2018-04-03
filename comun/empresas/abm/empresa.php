@@ -115,7 +115,7 @@ function rediBeneficiarios(origen, cuit) {
     </tr>
   </table>
   <p>
-  <?php if (isset($_GET['bajaempre'])) { ?>  <font color="red"><b>No se puede dar de baja la empresa</b></font>  <?php } else { ?>
+  <?php if (isset($_GET['bajaempre'])) { ?>  <font color="red"><b>No se puede dar de baja la empresa. <br>Hay DDJJ, acuerdos y/o juicios activos</b></font>  <?php } else { ?>
    	 	<input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()"/>
   <?php } ?>
   </p>

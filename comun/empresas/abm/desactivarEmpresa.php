@@ -97,8 +97,11 @@ try {
 	$dbh->commit();
 	$pagina = "empresaBaja.php?cuit=$cuit&origen=$origen";
 	Header("Location: $pagina"); 
-}catch (PDOException $e) {
-	echo $e->getMessage();
+} catch (PDOException $e) {
+	$error = $e->getMessage();
 	$dbh->rollback();
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/$origen/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	Header($redire);
+	exit(0);
 }
 ?>
