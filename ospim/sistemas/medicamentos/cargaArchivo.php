@@ -52,11 +52,12 @@ $rowUltimaActualizacion = mysql_fetch_assoc($resUltimaActualizacion);
 
 if ($_GET['tipo'] == 'M') {
 	$nuevafecha = date('Y',strtotime($rowUltimaActualizacion['fechaarchivo']))."-".date('m',strtotime($rowUltimaActualizacion['fechaarchivo']))."-01";
-	$nuevafecha = strtotime ('+1 month',strtotime($nuevafecha )) ;
+	//$nuevafecha = strtotime ('+1 month',strtotime($nuevafecha )) ;
+	$nuevafecha = strtotime($nuevafecha);
 	$nuevafecha = date ('Y-m-d',$nuevafecha);
 	$ano = date('Y',strtotime($nuevafecha));
 	$mes = date('m',strtotime($nuevafecha));
-	$fechaArchivo = PrimerDiaHábil($ano,$mes);
+	$fechaArchivo = UltimoDiaHábil($ano,$mes);
 } else {
 	$sqlUltimaMensual = "SELECT * FROM medicontrol WHERE tipo = 'M' ORDER BY id DESC limit 1";
 	$resUltimaMensual = mysql_query($sqlUltimaMensual,$db);
