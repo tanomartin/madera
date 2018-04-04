@@ -26,9 +26,11 @@ function guardarEmail($username, $subject, $bodymail, $address, $modulo, $attach
 		return $lastId;
 		
 	} catch (PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbhEmail->rollback();
-		return -1;
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 	
 }
@@ -55,9 +57,11 @@ function reenviarEmail($idEmail) {
 		return $rowGetEnviado['id'];
 		
 	} catch (PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbhEmail->rollback();
-		return -1;
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 }
 
