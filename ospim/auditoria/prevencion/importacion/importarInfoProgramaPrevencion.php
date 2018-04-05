@@ -65,10 +65,12 @@ function insertTablaMadera($tabla, $resSql) {
 		$dbhInternet->commit();
 		
 	} catch (PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbh->rollback();
 		$dbhInternet->rollback();
-		return (0);
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 	return ($ingresados);
 }
