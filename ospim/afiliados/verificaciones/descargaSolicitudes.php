@@ -94,9 +94,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 		$dbl->commit();
 	}
 	catch (PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbr->rollback();
 		$dbl->rollback();
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);	
 	}
 ?>
 	<p>&nbsp;</p>

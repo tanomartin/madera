@@ -113,8 +113,11 @@ if ($wherein != ')') {
 		$dbh->commit();
 	
 	}catch (PDOException $e) {
-		echo $e->getMessage();
+		$error =  $e->getMessage();
 		$dbh->rollback();
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		header ($redire);
+		exit(0);
 	}
 }
 
