@@ -10,17 +10,6 @@ if ($row = mysql_fetch_row($rs)) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Juzgado :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <script type="text/javascript">
 
 function validar(formulario) {
@@ -37,27 +26,12 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'estados.php'"/>
- </p>
-  <p><span class="Estilo2">Nuevo Estado </span></p>
+  <p><input type="reset" name="volver" value="Volver" onclick="location.href = 'estados.php'"/></p>
+  <h3>Nuevo Estado </h3>
   <form id="nuevoEstado" name="nuevoEstado" method="post" action="guardarNuevoEstado.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">
-						
-			<p>
-			  <label>Nuevo Código: <b><?php echo $codigo ?></b></label>
-			</p>			
-			<p>
-				  <label>Descripción
-				  <input name="descri" type="text" id="descri" size="100" maxlength="100"/>
-				  </label>
-				</p>
-				<table width="173" border="0">
-                  <tr>
-                    <td width="167"><div align="center">
-                      <input type="submit" name="Submit" value="Guardar" />
-                    </div></td>
-                  </tr>
-                </table>
+	<p>Nuevo Código: <b><?php echo $codigo ?></b></p>			
+	<p>Descripción <input name="descri" type="text" id="descri" size="100" maxlength="100"/></p>
+	<p><input type="submit" name="Submit" value="Guardar" /></p>
   </form>
 </div>
 </body>

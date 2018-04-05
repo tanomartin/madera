@@ -5,16 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Secretarias :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -48,11 +38,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuConfiguracion.php'" />
-</p>
-  <p><span class="Estilo2">Secretarias</span></p>
-  <input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevaSecretaria.php'"  value="Nueva" />
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuConfiguracion.php'" /></p>
+  <h3>Secretarias</h3>
+  <p><input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevaSecretaria.php'"  value="Nueva" /></p>
   <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 	  <thead>
 		<tr>

@@ -10,17 +10,6 @@ if ($row = mysql_fetch_row($rs)) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Gestor :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <script type="text/javascript">
 
 function validar(formulario) {
@@ -37,33 +26,18 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'asesores.php'" />
- </p>
-  <p><span class="Estilo2">Nuevo Asesor Legal </span></p>
-  <form id="modifGestor" name="modifGestor" method="post" action="guardarNuevoAsesor.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">
-				
-	<p>
-	  <label></label>
-	</p>			
-				<p>
-				  <label>Apellido y Nombre 
-				  <input name="apeynombre" type="text" id="apeynombre" size="100" maxlength="100"/>
-				  </label>
-				</p>
-				<p>
-                  <?php 
-						$error = $_GET['error'];
-						if ($error == 1) {
-							print("<div align='center' style='color:#FF0000'><b> Debe elegir una o varias delegaciones </b></div>");
-						}
-					?>
-</p>
-				<table width="300" border="1">
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td>Delegaciones</td>
-                  </tr>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'asesores.php'" /></p>
+  <h3>Nuevo Asesor Legal </h3>
+  <form id="modifGestor" name="modifGestor" method="post" action="guardarNuevoAsesor.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">			
+	<p>Apellido y Nombre <input name="apeynombre" type="text" id="apeynombre" size="100" maxlength="100"/></p>
+	<p> <?php if (isset($_GET['error'])) {
+				$error = $_GET['error'];
+				if ($error == 1) {
+					print("<div align='center' style='color:#FF0000'><b> Debe elegir una o varias delegaciones </b></div>");
+				}
+              } ?></p>
+	<h4>Delegaciones</h4>
+		<table width="300" border="1">
                   <?php 
 					$i = 0;
 					$resDelega= mysql_query("SELECT * FROM delegaciones where codidelega > 1001 and codidelega < 3500", $db);
@@ -76,9 +50,8 @@ function validar(formulario) {
 						echo '</tr>';
 					} 
 					?>
-                </table>
-               <p><input type="submit" name="Submit" value="Guardar" /></p>
-               
+		</table>
+	<p><input type="submit" name="Submit" value="Guardar" /></p>        
   </form>
 </div>
 </body>

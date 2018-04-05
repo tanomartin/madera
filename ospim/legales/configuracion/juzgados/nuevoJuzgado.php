@@ -5,17 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Juzgado :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <script type="text/javascript">
 
 function validar(formulario) {
@@ -36,39 +25,19 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'juzgados.php'" />
- </p>
-  <p><span class="Estilo2">Nuevo Juzgado </span></p>
-  <form id="nuevoJuzgado" name="nuevoJuzgado" method="post" action="guardarNuevoJuzgado.php" onsubmit="return validar(this)">
-				
-	<p>
-	  <label></label>
-	</p>			
-				<p>
-				  <label>Denominación
-				  <input name="denominacion" type="text" id="denominacion" size="100" maxlength="100"/>
-				  </label>
-				</p>
-				<p>Fuero 
-				  <label>
-				  <select name="fuero" id="fuero">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'juzgados.php'" /></p>
+  <h3>Nuevo Juzgado </h3>
+  <form id="nuevoJuzgado" name="nuevoJuzgado" method="post" action="guardarNuevoJuzgado.php" onsubmit="return validar(this)">				
+	<p>Denominación <input name="denominacion" type="text" id="denominacion" size="100" maxlength="100"/></p>
+	<p>Fuero 	<select name="fuero" id="fuero">
 				  	<option value="0" selected="selected">SELECCIONE FUERO</option>
 				    <option value="CIVIL Y COMERCIAL">CIVIL Y COMERCIAL</option>
 				    <option value="COMERCIAL">COMERCIAL</option>
 				    <option value="COMERCIAL CAP.FEDERAL">COMERCIAL CAP.FEDERAL</option>
 				    <option value="FEDERAL">FEDERAL</option>
 				    <option value="FEDERAL SEGURIDAD SOCIAL">FEDERAL SEGURIDAD SOCIAL</option>
-			      </select>
-				  </label>
-				</p>
-				<table width="173" border="0">
-                  <tr>
-                    <td width="167"><div align="center">
-                      <input type="submit" name="Submit" value="Guardar" />
-                    </div></td>
-                  </tr>
-                </table>
+			      </select></p>
+	<p><input type="submit" name="Submit" value="Guardar" /></p>
   </form>
 </div>
 </body>

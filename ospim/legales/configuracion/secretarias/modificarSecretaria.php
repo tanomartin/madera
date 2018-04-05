@@ -18,17 +18,6 @@ $rowSecretaria = mysql_fetch_array($resSecretaria);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Secretaria :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <script type="text/javascript">
 
 function validar(formulario) {
@@ -46,42 +35,20 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'secretarias.php'" />
- </p>
-  <p><span class="Estilo2">Modificar Juzgado </span></p>
+  <p><input type="reset" name="volver" value="Volver" onclick="location.href = 'secretarias.php'" /></p>
+  <h3>Modificar Juzgado </h3>
   <form id="modifSecre" name="modifSecre" method="post" action="guardarModifSecretaria.php?codsecre=<?php echo $codigosecre ?>&codjuz=<?php echo $codigoJuzga ?>" onsubmit="return validar(this)">
-				
-				<p>
-				  <label>Codigo Secretaría: <b> <?php echo $codigosecre ?> </b></label>
-				</p>
-				<p>
-				  <label>Juzgado: <b> <?php echo $codigoJuzga ?> - <?php echo $rowJuzgado['denominacion'] ?></b></label>
-				</p>
-				<p>
-				  <label>Denominación
-				  <input name="denominacion" type="text" id="denominacion" value="<?php echo $rowSecretaria['denominacion'];?>" size="100" maxlength="100"/>
-				  </label>
-				</p>
-				<table border="0">
-                  <tr>
-                    
-                      <?php
-					  $sqlTraJuicios = "select * from trajuiciosospim where codigojuzgado = $codigoJuzga and codigosecretaria = $codigosecre";
-					  $resTraJuicios = mysql_query($sqlTraJuicios,$db); 
-					  $canTraJuicios = mysql_num_rows($resTraJuicios); 
-					 			  
-					  if ($canTraJuicios == 0) { ?>
-					  <td><div align="center">
-					  		<input type="button" name="eliminar" onclick="location.href = 'eliminarSecretaria.php?codsecre=<?php echo $codigosecre ?>&codjuz=<?php echo $codigoJuzga ?>'" value="Eliminar" />
-						</div></td>
-			   <?php } ?>
-                    
-                    <td><div align="center">
-                      <input type="submit" name="guardar" value="Guardar Cambios" />
-                    </div></td>
-                  </tr>
-                </table>
+	<?php
+		$sqlTraJuicios = "select * from trajuiciosospim where codigojuzgado = $codigoJuzga and codigosecretaria = $codigosecre";
+		$resTraJuicios = mysql_query($sqlTraJuicios,$db); 
+		$canTraJuicios = mysql_num_rows($resTraJuicios); 				 			  
+		if ($canTraJuicios == 0) { ?>
+			<p><input type="button" name="eliminar" onclick="location.href = 'eliminarSecretaria.php?codsecre=<?php echo $codigosecre ?>&codjuz=<?php echo $codigoJuzga ?>'" value="Eliminar" /></p>
+  <?php } ?>
+	<p>Codigo Secretaría: <b> <?php echo $codigosecre ?> </b></p>
+	<p>Juzgado: <b> <?php echo $codigoJuzga ?> - <?php echo $rowJuzgado['denominacion'] ?></b></p>
+	<p>Denominación <input name="denominacion" type="text" id="denominacion" value="<?php echo $rowSecretaria['denominacion'];?>" size="100" maxlength="100"/></p>
+	<p><input type="submit" name="guardar" value="Guardar Cambios" /></p>
     </form>
 </div>
 </body>

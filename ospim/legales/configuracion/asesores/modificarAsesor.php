@@ -12,17 +12,6 @@ $rowAsesor = mysql_fetch_array($resAsesor);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Asesores :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <script type="text/javascript">
 
 function validar(formulario) {
@@ -53,26 +42,21 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'asesores.php'" />
- </p>
-  <p><span class="Estilo2">Modificar Asesores Legales </span></p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'asesores.php'" /></p>
+  <h3>Modificar Asesores Legales </h3>
   <form id="modifGestor" name="modifGestor" method="post" action="guardarModifAsesor.php?codigo=<?php echo $codigo ?>" onsubmit="return validar(this)">
-				
-				<p>
-				  <label>Codigo: <b> <?php echo $rowAsesor['codigo']; ?> </b></label>
-				</p>
-				<p>
-				  <label>Apellido y Nombre 
-				  <input name="apeynombre" type="text" id="apeynombre" value="<?php echo $rowAsesor['apeynombre'];?>" size="100" maxlength="100"/>
-				  </label>
-				</p>
-				<table width="300" border="1">
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td>Delegaciones</td>
-                  </tr>
-                  <?php 
+	<?php
+		$sqlCabJuicios = "select * from cabjuiciosospim where codasesorlegal = $codigo";
+		$resCabJuicios = mysql_query($sqlCabJuicios,$db); 
+		$canCabJuicios = mysql_num_rows($resCabJuicios); 		  
+		if ($canCabJuicios == 0) { ?>
+			<p><input type="button" name="eliminar" onclick="location.href = 'eliminarAsesor.php?codigo=<?php echo $codigo ?>'" value="Eliminar" /></p>
+ <?php } ?>
+	<p>Codigo: <b> <?php echo $rowAsesor['codigo']; ?> </b></p>
+	<p>Apellido y Nombre <input name="apeynombre" type="text" id="apeynombre" value="<?php echo $rowAsesor['apeynombre'];?>" size="100" maxlength="100"/></p>
+	<h4>Delegaciones</h4>
+	<table width="300" border="1">
+		<?php 
 					$i = 0;
 					$resDelega= mysql_query("SELECT * FROM delegaciones where codidelega > 1001 and codidelega < 3500", $db);
 					while($rowDelega= mysql_fetch_array($resDelega)) { 
@@ -90,20 +74,8 @@ function validar(formulario) {
 							<td><span class="Estilo1"><?php echo $rowDelega["nombre"] ?></span></td>
 						</tr>
 			<?php	} ?>
-                </table>
-				<table border="0">
-                  <tr>
-                      <?php
-					  $sqlCabJuicios = "select * from cabjuiciosospim where codasesorlegal = $codigo";
-					  $resCabJuicios = mysql_query($sqlCabJuicios,$db); 
-					  $canCabJuicios = mysql_num_rows($resCabJuicios); 		  
-					  if ($canCabJuicios == 0) { ?>
-					  <td><input type="button" name="eliminar" onclick="location.href = 'eliminarAsesor.php?codigo=<?php echo $codigo ?>'" value="Eliminar" /></td>
-			   <?php } ?>
-                    
-                    <td><input type="submit" name="guardar" value="Guardar Cambios" /></td>
-                  </tr>
-                </table>
+    </table>
+	<p><input type="submit" name="guardar" value="Guardar Cambios" /></p>
   </form>
 </div>
 </body>
