@@ -6,31 +6,21 @@ include($libPath."controlSessionUsimra.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Legales :.</title>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <p><span class="Estilo2">Men&uacute; Legales </span></p>
-  <table width="400" border="2">
-    <tr>
-     <td width="200"><p align="center">Juicios</p>
-        <p align="center"><a class="enlace" href="juicios/moduloJuicios.php"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p>	
-	</td>
-      <td width="200"><p align="center">Informes</p>
-        <p align="center"><a class="enlace" href="#"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p>	
-	</td>
-	  
+  <h3>Men&uacute; Legales </h3>
+  <table width="400" border="2" style="text-align: center">
+  	<tr>
+    	<td width="200">
+     		<p>JUICIOS</p>
+        	<p><a class="enlace" href="juicios/moduloJuicios.php"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		</td>
+      	<td width="200">
+        	<p>INFROMES</p>
+       		<p><a class="enlace" href="#"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		</td> 
     </tr>
   </table>
 </div>

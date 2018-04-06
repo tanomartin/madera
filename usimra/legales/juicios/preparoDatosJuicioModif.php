@@ -22,7 +22,7 @@ $usuarioejecutor = $_POST['ejecutor'];
 
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion =  $_SESSION['usuario'];
-
+$listaDetAcuQui = array();
 if ($rowJuicio['acuerdorelacionado'] == 1) {
 	$nroAcuQuit = $rowJuicio['nroacuerdo'];
 	$sqlDetalleQuitar = "SELECT * FROM detjuiciosusimra WHERE nroorden = $nroorden and nroacuerdo = $nroAcuQuit";
@@ -39,6 +39,7 @@ if ($rowJuicio['acuerdorelacionado'] == 1) {
 	}
 }
 
+$sqlUpdateAcuQuitado = "";
 if ($rowJuicio['acuerdorelacionado'] == 1) {
 	$nroAcuQuit = $rowJuicio['nroacuerdo'];
 	$sqlCabObser = "SELECT observaciones FROM cabacuerdosusimra WHERE cuit = '$cuit' and nroacuerdo = $nroAcuQuit";
@@ -54,6 +55,7 @@ if ($rowJuicio['acuerdorelacionado'] == 1) {
 
 $sqlDeletePeriodos = "DELETE FROM detjuiciosusimra WHERE nroorden = $nroorden";
 
+$sqlUpdateAcuAbs = "";
 if ($acuAbs == 1) {
 	$nroacuerdo = $_POST['nroacu'];
 	$sqlCabObser = "SELECT observaciones FROM cabacuerdosusimra WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
@@ -79,9 +81,12 @@ if ($rowJuicio['acuerdorelacionado'] == 1) {
 
 
 $peridosHabili = $_POST['mostrar'];
+if ($peridosHabili > 120) { $peridosHabili = 120; }
 $m = 0;
 $n = 0;
-for ($i = 0; $i <= $peridosHabili; $i++) {
+$sqlDelPer = array();
+$sqlPeriodos = array();
+for ($i = 0; $i < $peridosHabili; $i++) {
 	$idnombre = "id".$i;
 	$mesnombre = "mes".$i;
 	$anionombre = "anio".$i;
@@ -97,8 +102,7 @@ for ($i = 0; $i <= $peridosHabili; $i++) {
 			$sqlInsert = "INSERT INTO detjuiciosusimra VALUES($nroorden,$id,$anio,$mes,$nroacuerdo,'$concepto')"; 
 		}
 		if ($id != 0) {
-			$sqlDelete = "DELETE FROM detacuerdosusimra WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo and idperiodo = $id";
-			$sqlDelPer[$m] = $sqlDelete;
+			$sqlDelPer[$m] = "DELETE FROM detacuerdosusimra WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo and idperiodo = $id";;
 			$m++;
 		}
 		$sqlPeriodos[$n] = $sqlInsert;

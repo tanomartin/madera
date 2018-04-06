@@ -42,13 +42,14 @@ jQuery(function($){
 </div>
   <p align="center" class="Estilo1">M&oacute;dulo De Juicios</p>
   <?php 
+  	if (isset($_GET['err'])) {
 		$err = $_GET['err'];
 		if ($err == 1) {
 			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
 		}
-
+  	}
   ?>
-  <p align="center"><label>CUIT <input name="cuit" type="text" id="cuit" size="13" />
+  <p align="center"><label>CUIT <input name="cuit" type="text" id="cuit" size="10" />
   </label></p>
   <p align="center"><label><input type="submit" name="Submit" value="Buscar" /></label></p>
 </form>

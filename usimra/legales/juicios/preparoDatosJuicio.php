@@ -21,6 +21,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
+$sqlUpdateAcu = "";
 if ($acuAbs == 1) {
 	$nroacuerdo = $_POST['nroacu'];
 	$sqlCabObser = "SELECT observaciones FROM cabacuerdosusimra WHERE cuit = '$cuit' and nroacuerdo = $nroacuerdo";
@@ -34,9 +35,12 @@ if ($acuAbs == 1) {
 $sqlCabecera = "INSERT INTO cabjuiciosusimra VALUE($nroorden,'$cuit',$nrocerti,$status,'$fecExpe',$acuAbs,$nroacuerdo,$deudaHisto,$intereses,$duedaActual,$asesor,$inspector,'$usuarioejecutor',$tramiteJudicial,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 $peridosHabili = $_POST['mostrar'];
+if ($peridosHabili > 120) { $peridosHabili = 120; }
 $m = 0;
 $n = 0;
-for ($i = 0; $i <= $peridosHabili; $i++) {
+$sqlDelPer = array();
+$sqlPeriodos = array();
+for ($i = 0; $i < $peridosHabili; $i++) {
 	$idnombre = "id".$i;
 	$mesnombre = "mes".$i;
 	$anionombre = "anio".$i;

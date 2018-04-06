@@ -16,10 +16,9 @@ $sqlPeriodos = unserialize(urldecode($listadoPeriodosSerializado));
 $sqlDelPer = unserialize(urldecode($listadoPeriodosAcuSerializado));
 
 
-print($cuit."<br>");
+/*print($cuit."<br>");
 print($nroorden."<br>");
-
-/*print("<br>PRIMERO: DEVUELVO LOS PERIODOS AL ACUERDO<br>");
+print("<br>PRIMERO: DEVUELVO LOS PERIODOS AL ACUERDO<br>");
 var_dump($sqlPeriodosQuitar);
 print("<br>SEGUNDO: Desabsorvo el acuerdo si pide hacerlo<br>");
 print($sqlUpdateAcuQuitado."<br>");
