@@ -14,7 +14,7 @@ if ($cant != 1) {
 	header ("Location: moduloJuicios.php?err=1");
 }
 
-include($libPath."cabeceraEmpresaConsulta.php");
+
 
 $sqlJuicios =  "select * from cabjuiciosospim where cuit = $cuit";
 $resJuicios = mysql_query($sqlJuicios); 
@@ -25,19 +25,18 @@ $cantJuicios = mysql_num_rows($resJuicios);
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <title>.: Sistema de Juicios :.</title>
 </head>
 <body bgcolor="#CCCCCC" > 
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onClick="location.href = 'moduloJuicios.php'" /></p>
-  <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); ?>
-  <p><strong>Juicios Existentes </strong></p>
+  <?php 
+  		include($libPath."cabeceraEmpresaConsulta.php");
+  		include($libPath."cabeceraEmpresa.php"); 
+  	?>
+  <p><input type="submit" name="nuevoJuicio" value="Nuevo Juicio" onClick="location.href = 'nuevoJuicio.php?cuit=<?php echo $cuit ?> '" ></p>
+  <h3>Juicios Existentes </h3>
+    
   <?php if($cantJuicios > 0) { ?>
   <table width="600" border="1" style="text-align: center">
      <?php 
@@ -63,7 +62,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 <?php } ?>	
   </table>
   <?php } ?>
-  <p><input type="submit" name="nuevoJuicio" value="Nuevo Juicio" onClick="location.href = 'nuevoJuicio.php?cuit=<?php echo $cuit ?> '" ></p>
-</div>
+ </div>
 </body>
 </html>

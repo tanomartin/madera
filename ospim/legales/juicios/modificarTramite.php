@@ -11,12 +11,6 @@ $rowTramite = mysql_fetch_array($resTramite);
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -122,7 +116,7 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC" >
 <form id="nuevoTramiteJudicial" name="nuevoTramiteJudicial" method="post" action="guardarModifTramite.php?cuit=<?php echo $cuit ?>" onsubmit="return validar(this)" >
   <div align="center">
-   	<input type="reset" name="volver" value="Volver" onclick="location.href = 'modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/>
+   	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/></p>
     <input name="cuit" type="hidden" value="<?php echo $cuit ?>"/>
 	<input name="nroorden" type="hidden" value="<?php echo $nroorden ?>"/>
    	<input name="insertCabeceraJui" type="hidden" value="<?php echo $sqlCabecera ?>"/>
@@ -133,12 +127,9 @@ function validar(formulario) {
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresaConsulta.php"); 
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
-  </div>
-  <p align="center"><strong>Modifcación Tramite Judicial </strong></p>
-   	<p align="center"><strong>NRO ORDEN </strong>
-      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color:#CCCCCC; text-align:center" />
-  </p>
-  	<table align="center">
+  	<p><b>Modifcación Tramite Judicial </b></p>
+   	<p><b>NRO ORDEN </b><input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color:#CCCCCC; text-align:center" /></p>
+  	<table>
 		<tr>
 			<td>Fecha Inicio</td>
 			<td><input id="fechaInicio" type="text" size="12" name="fechaInicio" value="<?php echo invertirFecha($rowTramite['fechainicio']) ?>"/></td>
@@ -178,7 +169,7 @@ function validar(formulario) {
 		  		
 	      <td>Nro. Expediente</td>
 	      <td><input id="nroexpe" type="text" name="nroexpe" value="<?php echo $rowTramite['nroexpediente'] ?>"/></td>
-	  </tr>
+	  	</tr>
 		<tr>
 			<td>Estado Procesal</td>
 			<td>
@@ -201,19 +192,17 @@ function validar(formulario) {
 	    	<td colspan="3"><textarea name="observacion" id="observacion" cols="99" rows="3"><?php echo $rowTramite['observacion'] ?></textarea></td>
 	    </tr>
 		<tr>
-		  <td colspan="4"><div align="center"><strong>FINALIZACION DE TRAMITE JUDCIAL</strong></div></td>
-	  </tr>
+		  <td colspan="4"><div align="center" style="margin-top: 20px"><b>FINALIZACION DE TRAMITE JUDCIAL</b></div></td>
+	  	</tr>
 		<tr>
 			<td>Fecha Finalizaci&oacute;n </td>
 			<td><input name="fechafinal" type="text" id="fechafinal" size="12"/></td>
 			<td>Monto Cobrado</td>
 			<td><input id="montocobrado" type="text" name="montocobrado"/></td>
 		</tr>
-</table>
-
-    <div align="center">
-      <p><input type="submit" name="Submit" value="Guardar" /></p>
-    </div>
+	</table>
+    <p><input type="submit" name="Submit" value="Guardar" /></p>
+   </div>
 </form>
 </body>
 </html>

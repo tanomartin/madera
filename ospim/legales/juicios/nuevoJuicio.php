@@ -51,12 +51,6 @@ $sqlInsp = $sqlInsp.")";
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -147,11 +141,11 @@ function formatoPeriodoInicio() {
 
 function mostrarBotones() {
 	if (document.forms.nuevoJuicio.tramite[0].checked) {
-		document.getElementById("bguardar").style.visibility="visible";
-		document.getElementById("btramite").style.visibility="hidden";
+		document.getElementById("bguardar").style.display="block";
+		document.getElementById("btramite").style.display="none";
 	} else {
-		document.getElementById("bguardar").style.visibility="hidden";
-		document.getElementById("btramite").style.visibility="visible";
+		document.getElementById("bguardar").style.display="none";
+		document.getElementById("btramite").style.display="block";
 	}
 }
 
@@ -289,31 +283,27 @@ function validar(formulario) {
 <form id="nuevoJuicio" name="nuevoJuicio" method="post" action="preparoDatosJuicio.php" >
   <div align="center">
     <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>"/>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>
-    <?php 	
-		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
-	?>
-  </div>
-  <p align="center"><strong>M&oacute;dulo de Carga - Nuevo Juicio </strong></p>
-   	<p align="center"><strong>NRO ORDEN </strong>
-      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center" />
-</p>
-   	<div align="center">
-   	<table width="1000" border="0" style="text-align:left">
+    <p><input type="button" name="volver" value="Volver" onclick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/></p>
+    <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); ?>
+  	<h3>M&oacute;dulo de Carga - Nuevo Juicio </h3>
+   	<p><b>NRO ORDEN </b><input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center" /></p>
+
+   	<table width="1000" border="0" style="text-align: left">
       <tr>
-        <td width="85">Nro. Certificado</td>
-        <td width="144"><input id="nrocert" type="text" name="nrocert"/></td>
-        <td width="70">Status Deuda</td>
-        <td width="156"><label>
+        <td>Nro. Certificado</td>
+        <td><input id="nrocert" type="text" name="nrocert"/></td>
+        <td>Status Deuda</td>
+        <td><label>
           <select name="status" id="status">
             <option value="0" selected="selected">Seleccione Status</option>
             <option value="1">EJECUCION</option>
             <option value="2">CONVOCATORIA</option>
             <option value="3">QUIEBRA</option>
           </select>
-          </label>        </td>
-        <td width="125">Fecha Expedición</td>
-        <td width="241"><input id="fechaexp" type="text" name="fechaexp" size="12"/></td>
+          </label>        
+        </td>
+        <td>Fecha Expedición</td>
+        <td><input id="fechaexp" type="text" name="fechaexp" size="12"/></td>
       </tr>
       <tr>
         <td>Deuda Histórica</td>
@@ -347,90 +337,85 @@ function validar(formulario) {
 			<td><input id="ejecutor" type="text" name="ejecutor"/></td>
       </tr>
       
-      <tr>
-	  		 
-     <?php 
-	 if (sizeof($acuAbs) > 0) { ?>
-        <td height="35" colspan="6"><div align="center"><strong>Acuerdos a Absorver </strong>[
-            <label>
-                <input name="acuabs" type="radio" value="0" checked="checked" onchange="mostrarAcuerdos()"/>
-            NO - </label>
-                <label>
-                <input name="acuabs" type="radio" value="1" onchange="mostrarAcuerdos()"/>
-                  SI</label>
-          ]</div></td>
+<?php if (sizeof($acuAbs) > 0) { ?>
+	  <tr>
+        <td colspan="6">
+        	<div align="center">
+        		<b>Acuerdos a Absorver </b>[<input name="acuabs" type="radio" value="0" checked="checked" onchange="mostrarAcuerdos()"/> NO -<input name="acuabs" type="radio" value="1" onchange="mostrarAcuerdos()"/> SI ]
+        	</div>
+        </td>
       </tr>
       <tr>
         <td colspan="6">
-		<div align="center" id="acuerdos" style="visibility:hidden">
-            <table>
-              <?php 
-			  foreach($acuAbs as $acuerdo) { ?>
-              <tr>
-                <td><input name="nroacu" type="radio" value="<?php echo $acuerdo['nroacu']?>" onclick="cargarPeriodosAbsorvidos(this.value)"/></td>
-                <td align="left"><?php echo $acuerdo['nroacu']." - ".$acuerdo['tipo']. " - Acta: ".$acuerdo['acta']?></td>
-                <td></td>
-              </tr>
-		<?php } ?>
-            </table>
-        </div>		</td>
+			<div align="center" id="acuerdos" style="visibility:hidden">
+            	<table>
+	 	 <?php  foreach($acuAbs as $acuerdo) { ?>
+              		<tr>
+                		<td><input name="nroacu" type="radio" value="<?php echo $acuerdo['nroacu']?>" onclick="cargarPeriodosAbsorvidos(this.value)"/></td>
+                		<td align="left"><?php echo $acuerdo['nroacu']." - ".$acuerdo['tipo']. " - Acta: ".$acuerdo['acta']?></td>
+             		</tr>
+		 <?php } ?>
+            	</table>
+        	</div>		
+        </td>
+       </tr>
   <?php } else { ?>
-        <td width="149" colspan="6"><div align="center"><strong>Acuerdos a Absorver</strong> [
-            <label>
-                <input name="acuabs" type="radio" value="0" checked="checked"/>
-            NO ]</label>
-        </div></td>
-      </tr>
-      <tr>
-        <td colspan="6"><div align="center"><b>No hay acuerdos posibles</b><input name="nroacu" type="radio" value="0" checked="checked" style="visibility:hidden"/> </div></td>
-        <?php } ?>
-      </tr>
+  		<tr>
+        	<td colspan="6">
+        		<div align="center">
+        			<b>Acuerdos a Absorver</b> [<input name="acuabs" type="radio" value="0" checked="checked"/> NO ]
+        		</div>
+        	</td>
+      	</tr>
+      	<tr>
+        	<td colspan="6">
+        		<div align="center">
+        			<b>No hay acuerdos posibles</b> <input name="nroacu" type="radio" value="0" checked="checked" style="visibility:hidden"/> 
+        		</div>
+        	</td>
+        </tr>
+  <?php } ?>
     </table>
     <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="display: none"/>
-   	<table width="1001" border="0" style="text-align: center">
+   	<table width="800" style="text-align: center; margin-top: 15px">
         <tr>
-          <td height="43" colspan="4">
-              <p><strong>PER&Iacute;ODOS DEL JUICIO</strong></p>
-              <input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
+          <td width="50%">
+              <p><b>PER&Iacute;ODOS DEL JUICIO</b></p>
+              <p><input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/></p>
           </td>
-		  <td width="551" colspan="4"><div align="center">
-		    <p><strong>TRAMITE JUDICIAL</strong> [
-		        <input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/>
-		    NO -
-  				<input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/>
-	      SI ]	      </p>
-		    <p>
-		      <input name="btramite" type="button" id="btramite" value="Cargar Tramite Judicial" style="visibility:hidden" onclick="validar(document.forms.nuevoJuicio)"/>
-	        </p>
-		  </div></td>
+		  <td>
+		      <p><b>TRAMITE JUDICIAL</b> [<input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/> NO - <input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/> SI ]</p>
+		  </td>
         </tr>
         <tr>
-          <td width="138"></td>
-          <td width="80" align="center">Mes</td>
-          <td width="70" align="center">A&ntilde;o</td>
-          <td width="140"></td>
-		  <td colspan="4"><div align="center">
-            <input name="bguardar" type="button" id="bguardar" value="Guardar Juicio" onclick="validar(document.forms.nuevoJuicio)"/>
-		  </div></td>
+          <td width="80" align="center"><b>Mes | Año</b></td>
         </tr>
         <?php 	for ($i = 0 ; $i < 120; $i ++) {
 					if ($i < 12) { ?>
 						<tr id="fila<?php echo $i?>">
-							<td><input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' style='visibility:hidden'/></td>
-							<td><input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/></td>
-							<td><input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' size='4' onchange='limpioid(<?php echo $i ?>)'/></td>
-							<td><input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' style='visibility:hidden'/></td>
+							<td>
+								<input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' style='visibility:hidden'/>
+								<input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/>
+								<input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' size='4' onchange='limpioid(<?php echo $i ?>)'/>
+								<input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' style='visibility:hidden'/>
+							</td>
 						</tr>
 		<?php		} else { ?>
 						<tr id="fila<?php echo $i?>" style="display: none">
-							<td><input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' style='visibility:hidden' /></td>			 
-							<td><input name='mes<?php echo $i ?>' id='mes<?php echo $i ?>' type='text' size='2' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/></td>
-							<td><input name='anio<?php echo $i ?>' id='anio<?php echo $i ?>' type='text'  size='4' onchange='limpioid(<?php echo $i ?>)'/></td>
-							<td><input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' style='visibility:hidden'/></td>		 
+							<td>
+								<input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' style='visibility:hidden' />		 
+								<input name='mes<?php echo $i ?>' id='mes<?php echo $i ?>' type='text' size='2' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/>
+								<input name='anio<?php echo $i ?>' id='anio<?php echo $i ?>' type='text'  size='4' onchange='limpioid(<?php echo $i ?>)'/>
+								<input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' style='visibility:hidden'/>
+							</td>		 
 						</tr>
 		<?php		}	
         		} ?>
       </table>
+      <p>
+      	<input name="bguardar" type="button" id="bguardar" value="Guardar Juicio" onclick="validar(document.forms.nuevoJuicio)"/>
+  	  	<input name="btramite" type="button" id="btramite" value="Cargar Tramite Judicial" style="display: none" onclick="validar(document.forms.nuevoJuicio)"/>
+  	  </p>
   </div>
 </form>
 </body>

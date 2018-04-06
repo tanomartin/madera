@@ -7,12 +7,6 @@ $nroorden = $_GET['nroorden'];
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -116,20 +110,17 @@ function validar(formulario) {
 </head>
 <body bgcolor="#CCCCCC" >
 <form id="nuevoTramiteJudicial" name="nuevoTramiteJudicial" method="post" action="guardarTramite.php" onsubmit="return validar(this)" >
-  <div align="center">
-   	<input type="button" name="volver" value="Volver" onclick="location.href = 'modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/>
+<div align="center">
+   	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'modificarJuicio.php?nroorden=<?php echo $nroorden?>'"/></p>
     <input name="cuit" type="hidden" value="<?php echo $cuit ?>"/>
 	<input name="nroorden" type="hidden" value="<?php echo $nroorden ?>"/>
     <?php 
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresaConsulta.php"); 	
 		include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); 
 	?>
-  </div>
-  <p align="center"><strong>M&oacute;dulo de Carga - Tramite Judicial </strong></p>
-   	<p align="center"><strong>NRO ORDEN </strong>
-      <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color:#CCCCCC; text-align:center" />
-  </p>
-  	<table align="center">
+  	<p><b>M&oacute;dulo de Carga - Tramite Judicial </b></p>
+   	<p><b>NRO ORDEN </b><input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color:#CCCCCC; text-align:center" /></p>
+  	<table>
 		<tr>
 			<td>Fecha Inicio</td>
 			<td><input id="fechaInicio" type="text" size="12" name="fechaInicio"/></td>
@@ -156,21 +147,22 @@ function validar(formulario) {
           </select></td>
 	      <td>Nro. Expediente</td>
 	      <td><input id="nroexpe" type="text" name="nroexpe"/></td>
-	  </tr>
+	  	</tr>
 		<tr>
 			<td>Estado Procesal</td>
 			<td>
-			<select name="estado" id="estado">
-				<option value='0' selected="selected">Seleccione Estado Procesal</option>
-				<?php 
-					$sqlEstados ="select * from estadosprocesales";
-					$resEstados = mysql_query($sqlEstados,$db);
-					while ($rowEstados = mysql_fetch_assoc($resEstados)) { ?>
-					  	<option value="<?php echo $rowEstados['codigo'] ?>"><?php echo $rowEstados['descripcion'] ?></option>
-			  <?php } ?>
-			</select>			</td>
-			   <td>Bienes Embargados</td>
-			   <td><textarea name="bienes" id="bienes" cols="50" rows="2"></textarea></td>
+				<select name="estado" id="estado">
+					<option value='0' selected="selected">Seleccione Estado Procesal</option>
+					<?php 
+						$sqlEstados ="select * from estadosprocesales";
+						$resEstados = mysql_query($sqlEstados,$db);
+						while ($rowEstados = mysql_fetch_assoc($resEstados)) { ?>
+						  	<option value="<?php echo $rowEstados['codigo'] ?>"><?php echo $rowEstados['descripcion'] ?></option>
+				  <?php } ?>
+				</select>			
+			</td>
+			<td>Bienes Embargados</td>
+			<td><textarea name="bienes" id="bienes" cols="50" rows="2"></textarea></td>
 	    </tr>
 	    <tr>
 	    	<td>Observación</td>
@@ -185,11 +177,9 @@ function validar(formulario) {
 			<td>Monto Cobrado</td>
 			<td><input id="montocobrado" type="text" name="montocobrado"/></td>
 		</tr>
-</table>
-
-    <div align="center">
-      <p><input type="submit" name="Submit" value="Guardar" /></p>
-    </div>
+	</table>
+    <p><input type="submit" name="Submit" value="Guardar" /></p>
+</div>
 </form>
 </body>
 </html>
