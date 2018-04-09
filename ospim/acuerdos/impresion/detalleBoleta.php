@@ -85,7 +85,7 @@ $rowAMostrar = mysql_fetch_array($resBoleta);
         <td><div align="left" style="border:groove">
             <div align="left"><strong>
               <?php 
-		   if($rowAMostrar['documentacionenmano'] == 0) {
+		   if($rowAMostrar['documentoenmano'] == 0) {
 		   		echo "NO";
 		   } else {
 		   		echo "SI";
