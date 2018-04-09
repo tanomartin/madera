@@ -1,10 +1,8 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 include($libPath."fechas.php");
-
 $sqlLista = "select * from valoresalcobrousimra where chequenrousimra = '' order by cuit";
 $resLista = mysql_query( $sqlLista,$db); 
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -12,15 +10,8 @@ $resLista = mysql_query( $sqlLista,$db);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado Valores :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
+<style type="text/css" media="print">
+.nover {display:none}
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
@@ -83,35 +74,32 @@ function validar(formulario) {
 
 <body bgcolor="#B2A274">
 <div align="center"> 
-  <input type="button" name="volver" value="Volver" onclick="location.href = 'menuValores.php'" />
-</div>
-<p align="center" class="Estilo2">Listado Valores al Cobro</p>
-<div align="center">
-  <form id="listadoValoresUsimra" name="listadoValoresUsimra" onsubmit="return validar(this)" method="post" action="cargaInfoChequeUsimra.php">
-    <table width="935" border="0">
-      <tr>
-        <td><div align="left"><input type="submit" name="Submit" value="Valor de Depósito" /></div></td>
-        <td><div align="right"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" /></div></td>
-      </tr>
-    </table>
+  	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'menuValores.php'" /></p>
+	<h3>Listado Valores al Cobro</h3>
+  	<form id="listadoValoresUsimra" name="listadoValoresUsimra" onsubmit="return validar(this)" method="post" action="cargaInfoChequeUsimra.php">
+	    <table width="935" border="0" style="margin: 15px">
+	      <tr>
+	        <td><div align="left"><input class="nover" type="submit" name="Submit" value="Valor de Depósito" /></div></td>
+	        <td><div align="right"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" /></div></td>
+	      </tr>
+	    </table>
    
-   <table class="tablesorter" id="listado" style="width:935px; font-size:14px">
-     <thead>
-	  <tr>
-			<th>CUIT</th>
-			<th>Raz&oacute;n Social</th>
-			<th>Acuerdo</th>
-			<th>Cuota</th>
-			<th>Monto</th>
-			<th>Nro Cheque</th>
-			<th>Banco</th>
-			<th>Fecha Cheque</th>
-			<th>Seleccionar</th>
-      </tr>
-	 </thead>
-	 <tbody>
-      <?php	
-			while ($rowLista = mysql_fetch_array($resLista)) {
+   		<table class="tablesorter" id="listado" style="width:935px; font-size:14px">
+     		<thead>
+	  			<tr>
+					<th>CUIT</th>
+					<th>Raz&oacute;n Social</th>
+					<th>Acuerdo</th>
+					<th>Cuota</th>
+					<th>Monto</th>
+					<th>Nro Cheque</th>
+					<th>Banco</th>
+					<th>Fecha Cheque</th>
+					<th>Seleccionar</th>
+      			</tr>
+	 		</thead>
+	 		<tbody>
+      <?php while ($rowLista = mysql_fetch_array($resLista)) {
 				$cuit = $rowLista['cuit'];
 				$nroacuerdo = $rowLista['nroacuerdo'];
 				$nrocuota = $rowLista['nrocuota'];
@@ -132,9 +120,9 @@ function validar(formulario) {
 				</tr>
 			
 		<?php }?>
-		</tbody>
-    </table>
+			</tbody>
+    	</table>
   </form>
-  </div>
+</div>
 </body>
 </html>

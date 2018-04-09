@@ -6,31 +6,22 @@ include($libPath."controlSessionUsimra.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Acuerdo OSPIM :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <p>
-   <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /> 
-  </p>
-  <p><span class="Estilo2">Men&uacute; Valores </span></p>
-  <table width="412" border="3">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /></p>
+  <h3>Menú Valores </h3>
+  <table width="400" border="3" style="text-align: center">
     <tr>
-      <td width="196"><p align="center">Listado de Valores </p>
-        <p align="center"><a class="enlace" href="valoresRealizados.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="196" valign="top"><p align="center">Nuevo Valor </p>
-        <p align="center"><a class="enlace" href="listadoValores.php"><img src="img/valores.png" width="90" height="90" border="0" alt="enviar"/>	</a></p></td>
+      <td width="200">
+      	<p>LISTADO DE VALORES</p>
+        <p><a href="valoresRealizados.php"><img src="img/informes.png" width="90" height="90" border="0"/></a></p>
+      </td>
+      <td width="200" valign="top">
+      	<p>NUEVO VALOR</p>
+        <p><a href="listadoValores.php"><img src="img/valores.png" width="90" height="90" border="0"/></a></p>
+      </td>
     </tr>
   </table>
 </div>

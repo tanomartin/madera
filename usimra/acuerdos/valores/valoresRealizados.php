@@ -8,15 +8,8 @@ include($libPath."fechas.php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Valores al Cobro Realizados :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
+<style type="text/css" media="print">
+.nover {display:none}
 </style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
@@ -56,10 +49,8 @@ function abrirDetalle(dire) {
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <p>
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuValores.php'" />
-</p>
-  <p><span class="Estilo2">Valores al Cobro Realizados </span></p>
+  <p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'menuValores.php'" /></p>
+  <h3>Valores al Cobro Realizados </h3>
   <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
 	  <thead>
 		<tr>
@@ -105,7 +96,7 @@ function abrirDetalle(dire) {
 			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
 		  </form>	
 		</div>
-	</td>
+		</td>
       </tr>
   </table>
 </div>
