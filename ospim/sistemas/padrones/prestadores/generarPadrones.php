@@ -24,19 +24,8 @@ $periodo = explode ( '-', $_POST ['periodo'] );
 $mes = $periodo [0];
 $mes = str_pad ( $periodo [0], 2, '0', STR_PAD_LEFT );
 $anio = $periodo [1];
-$quincena = $periodo [2];
-$dia = "15";
-if ($quincena == 2) {
-	$dia = "01";
-	$fecha = $anio . "-" . $mes . "-" .$dia;
-	$fechaLimite = date ( 'Y-m-j', strtotime ( '+1 month', strtotime ( $fecha ) ) );
-} else {
-	$fecha = $anio . "-" . $mes . "-" .$dia;
-	$fechaLimite = date ( 'Y-m-j', strtotime ($fecha) );
-}
-
-echo $fechaLimite;
-
+$fecha = $anio . "-" . $mes . "-01";
+$fechaLimite = date ( 'Y-m-j', strtotime ( '+1 month', strtotime ( $fecha ) ) );
 $maquina = $_SERVER ['SERVER_NAME'];
 $carpeta = $mes . $anio;
 
@@ -66,13 +55,16 @@ for($f = 0; $f < $finalFor; $f ++) {
 			'descri' => $descriError 
 	);
 	
-	$nomExcelTitu = $presta . "T" . $mes . $anio . $quincena .".xls";
+	$nomExcelTitu = $presta . "T" . $mes . $anio . ".xls";
 	$direCompletaTitulares = $direArc . "/" . $nomExcelTitu;
 	
-	$nomExcelFami = $presta . "F" . $mes . $anio . $quincena .".xls";
+	$nomExcelFami = $presta . "F" . $mes . $anio . ".xls";
 	$direCompletaFamiliares = $direArc . "/" . $nomExcelFami;
-
-	$nomZip = $presta . $mes . $anio . $quincena .".zip";
+	
+	$nomTxtTeso = $presta . "D" . $mes . $anio . ".txt";
+	$direCompletaTesoreria = $direArc . "/" . $nomTxtTeso;
+	
+	$nomZip = $presta . $mes . $anio . ".zip";
 	$direCompletaZip = $direArc . "/" . $nomZip;
 	
 	try {
@@ -87,6 +79,7 @@ for($f = 0; $f < $finalFor; $f ++) {
 			require ("padronNoCapitado.php");
 		}
 		
+		// CONTROLO QUE NO HAYA UNA BAJADA PARA ESTE PRESTA Y ESTE PERIDOD
 		if (strcmp ( "localhost", $maquina ) == 0) {
 			$hostOspim = "localhost";
 		}
@@ -101,8 +94,8 @@ for($f = 0; $f < $finalFor; $f ++) {
 		$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 		$dbh->beginTransaction ();
 		
-		$sqlConsultaBajada = "SELECT count(*) FROM descarga WHERE codigo = $presta and anopad = $anio and mespad = $mes and quincena = $quincena";
-		//print($sqlConsultaBajada."<br>");
+		$sqlConsultaBajada = "SELECT count(*) FROM descarga WHERE codigo = $presta and anopad = $anio and mespad = $mes";
+		// print($sqlConsultaBajada."<br>");
 		$resConsultaBajada = $dbhInternet->query ( $sqlConsultaBajada );
 		$canConsultaBajada = $resConsultaBajada->fetchColumn ();
 		
@@ -110,60 +103,59 @@ for($f = 0; $f < $finalFor; $f ++) {
 			if (file_exists ( $direCompletaZip )) {
 				$carpetaFtp = $presta . "C23" . $presta;
 				$pathOspim = "/public_html/prestadores/$carpetaFtp";
-				
 				$resultado = true;
 				if ($hostOspim != "localhost") {
 					$resultado = SubirArchivo ( $direCompletaZip, $nomZip, $pathOspim );
 				} 	
-				
 				if ($resultado) {
 					$subidaOk = 1;
 					$fecsub = date ( 'Y-m-j' );
 					$horsub = date ( "H:i:s" );
 					
-					$sqlEliminaSubidaInternet = "DELETE FROM subida WHERE codigo = '$presta' and anopad = $anio and mespad = $mes and quincena = $quincena";
-					//print($sqlEliminaSubidaInternet."<br>");
+					$sqlEliminaSubidaInternet = "DELETE FROM subida WHERE codigo = '$presta' and anopad = $anio and mespad = $mes";
+					// print($sqlEliminaSubidaInternet."<br>");
 					$dbhInternet->exec ( $sqlEliminaSubidaInternet );
 					
-					$sqlEliminaSubidaMadera = "DELETE FROM subidapadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes and quincenapadron = $quincena";
-					//print($sqlEliminaSubidaMadera."<br>");
+					$sqlEliminaSubidaMadera = "DELETE FROM subidapadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes";
+					// print($sqlEliminaSubidaMadera."<br>");
 					$dbh->exec ( $sqlEliminaSubidaMadera );
 					
-					$sqlEliminaDetalleMadera = "DELETE FROM detallepadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes  and quincenapadron = $quincena";
-					//print($sqlEliminaDetalleMadera."<br>");
+					$sqlEliminaDetalleMadera = "DELETE FROM detallepadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes";
+					// print($sqlEliminaDetalleMadera."<br>");
 					$dbh->exec ( $sqlEliminaDetalleMadera );
 					
-					$sqlEliminaInformeGlobalMadera = "DELETE FROM beneficiarioscapitados WHERE codigocapitado = '$presta' and anopadron = $anio and mespadron = $mes and quincenapadron = $quincena";
-					//print($sqlEliminaDetalleMadera."<br>");
+					$sqlEliminaInformeGlobalMadera = "DELETE FROM beneficiarioscapitados WHERE codigocapitado = '$presta' and anopadron = $anio and mespadron = $mes";
+					// print($sqlEliminaDetalleMadera."<br>");
 					$dbh->exec ( $sqlEliminaInformeGlobalMadera );
 					
 					foreach ( $totalizador as $totalDele ) {
-						$sqlInsertDetalle = "INSERT INTO detallepadroncapitados VALUE('$presta', $mes, $anio, $quincena, " . $totalDele ['delega'] . "," . $totalDele ['tottit'] . "," . $totalDele ['totfam'] . "," . $totalDele ['total'] . ")";
-						//print($sqlInsertDetalle."<br>");
+						$sqlInsertDetalle = "INSERT INTO detallepadroncapitados VALUE('$presta',$mes,$anio," . $totalDele ['delega'] . "," . $totalDele ['tottit'] . "," . $totalDele ['totfam'] . "," . $totalDele ['total'] . ")";
+						// print($sqlInsertDetalle."<br>");
 						$dbh->exec ( $sqlInsertDetalle );
 					}
 					
 					foreach ( $insertInforme as $informe ) {
 						$sqlEliminaInformePorAfiliado = "DELETE FROM beneficiarioscapitados WHERE codigocapitado = '$presta' and nroafiliado = ".$informe['nroafiliado']." and nroorden = ".$informe['nroorden']." and tipoparentesco =".$informe['tipoparentesco'];
-						//print($sqlEliminaInformePorAfiliado."<br>");
+						// print($sqlEliminaInformePorAfiliado."<br>");
 						$dbh->exec ( $sqlEliminaInformePorAfiliado );
 						
-						$sqlInforme = "INSERT INTO beneficiarioscapitados VALUE('$presta',".$informe['nroafiliado'].",".$informe['nroorden'].",".$informe['tipoparentesco'].",".$mes.",".$anio.",".$quincena.",'".$fecsub."')";
-						//print($sqlInforme."<br>");
+						$sqlInforme = "INSERT INTO beneficiarioscapitados VALUE('$presta',".$informe['nroafiliado'].",".$informe['nroorden'].",".$informe['tipoparentesco'].",".$mes.",".$anio.",'".$fecsub."')";
+						// print($sqlInforme."<br>");
 						$dbh->exec ( $sqlInforme );
 					}
 					
-					$sqlInsertInternet = "INSERT INTO subida VALUE('$presta', $mes, $anio, $quincena, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
-					//print($sqlInsertInternet."<br>");
+					$sqlInsertInternet = "INSERT INTO subida VALUE('$presta', $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
+					// print($sqlInsertInternet."<br>");
 					$dbhInternet->exec ( $sqlInsertInternet );
 					
-					$sqlInsertMadera = "INSERT INTO subidapadroncapitados VALUE('$presta', $mes, $anio, $quincena, '$fecsub','$horsub',$totalTitulares,$totalFamiliares,$totalBeneficiarios)";
-					//print($sqlInsertMadera."<br>");
+					$sqlInsertMadera = "INSERT INTO subidapadroncapitados VALUE('$presta',$mes,$anio,'$fecsub','$horsub',$totalTitulares,$totalFamiliares,$totalBeneficiarios)";
+					// print($sqlInsertMadera."<br>");
 					$dbh->exec ( $sqlInsertMadera );
 					
 					$dbhInternet->commit ();
 					$dbh->commit ();
-
+					
+					// print("<br>");
 				} else {
 					$subidaOk = 2;
 					$descriError = "ERROR AL SUBIR EL ZIP A OSPIM";
