@@ -73,8 +73,19 @@ function validar(formulario) {
       <label>
 		  <?php  $mes = date("n");
 		  		 $anio = date("Y");
-		  		 if ($mes == 1) { $anio =  $anio - 1; $mes = 12; } else { $mes = $mes - 1; } ?>
-		  <input name="periodo" readonly="readonly" style="background-color:#CCCCCC; width:60px; text-align:center"  value="<?php echo $mes."-".$anio  ?>" type="text" />
+		  		 $dia = date("j");
+				 $quincena = 2;
+				 if ($dia > 15) {
+					 $quincena = 1;
+				 } else {
+				 	 if ($mes == 1) { 
+				 	 	$anio =  $anio - 1; $mes = 12; 
+				 	 } else { 
+				 	 	$mes = $mes - 1; 
+				 	 }
+				 }
+				 ?>
+		  <input name="periodo" readonly="readonly" style="background-color:#CCCCCC; width:80px; text-align:center"  value="<?php echo $mes."-".$anio."-".$quincena  ?>" type="text" />
       </label>
     </p>
     <p><input type="submit" name="Submit" value="Generar Padrones" /> </p>

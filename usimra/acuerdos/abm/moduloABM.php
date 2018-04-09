@@ -6,21 +6,6 @@ include($libPath."controlSessionUsimra.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo ABM Acuerdos :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -35,19 +20,18 @@ jQuery(function($){
 
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="acuerdos.php">
-<div align="center">
-<input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /> 
-</div>
-  <p align="center" class="Estilo1">M&oacute;dulo De ABM de Acuerdos U.S.I.M.R.A </p>
-  <?php 
-		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<p><div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO</b></div></p>");
-		}
-  ?>
-  
-  <div align="center"><label>CUIT <input name="cuit" id="cuit" type="text" size="10" /></label></div>
-  <p align="center"><input type="submit" name="Submit" value="Buscar" /></p>
+	<div align="center">
+		<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /></p> 
+	 	<h3>Módulo De ABM de Acuerdos U.S.I.M.R.A </h3>
+	<?php if (isset($_GET['err'])) {
+			$err = $_GET['err'];
+			if ($err == 1) {
+				print("<p><div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO</b></div></p>");
+			}
+	  	  } ?>
+	 	<p>C.U.I.T. <input name="cuit" id="cuit" type="text" size="10" /></p>
+	  	<p><input type="submit" name="Submit" value="Buscar" /></p>
+	</div>
 </form>
 </body>
 </html>
