@@ -6,19 +6,6 @@ include($libPath."controlSessionUsimra.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Cancelacion USIMRA :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -32,31 +19,22 @@ jQuery(function($){
 </head>
 
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" method="post" action="selecCanCuotas.php">
-  
-  <div align="center">
-  <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /> 
-  </div>
-  <p align="center" class="Estilo1">M&oacute;dulo de Cancelaci&oacute;n de Cuotas </p>
-   <?php 
-  		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><p><b> CUIT SIN ACUERDOS CARGADOS </b></p></div>");
-		}
-		if ($err == 2) {
-			print("<div align='center' style='color:#FF0000'><p><b> CUIT NO ENCONTRADO </b></p></div>");
-		}
-  ?>
-  
-  <div align="center"><label> CUIT <input name="cuit" id="cuit" type="text" size="10" /></label></div>
-  
-  <p align="center">
-    <label>
-    <input type="submit" name="Submit" value="Buscar" />
-    </label>
-  </p>
-  <p>&nbsp;</p>
-</form>
-<p align="center">&nbsp;</p>
+<div align="center">
+	<form id="form1" name="form1" method="post" action="selecCanCuotas.php">
+	  	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /></p>
+	  	<h3>Módulo de Cancelación de Cuotas </h3>
+		 <?php if (isset($_GET['err'])) {
+			  		$err = $_GET['err'];
+					if ($err == 1) {
+						print("<div align='center' style='color:#FF0000'><p><b> CUIT SIN ACUERDOS CARGADOS </b></p></div>");
+					}
+					if ($err == 2) {
+						print("<div align='center' style='color:#FF0000'><p><b> CUIT NO ENCONTRADO </b></p></div>");
+					}
+			   	} ?>
+	  	<p><b> C.U.I.T.</b> <input name="cuit" id="cuit" type="text" size="10" /></p>
+	  	<p><input type="submit" name="Submit" value="Buscar" /></p>
+	</form>
+</div>
 </body>
 </html>

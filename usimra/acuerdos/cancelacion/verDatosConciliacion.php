@@ -32,10 +32,6 @@ if ($rowConcilia['cuentaremesa'] != 0) {
 $fechaRemesa = invertirFecha($fechaRemesa);
 $fechaRemito = invertirFecha($fechaRemito);
 
-$sql = "select e.*, l.nomlocali, p.descrip as nomprovin from empresas e, localidades l, provincia p where e.cuit = $cuit and e.codlocali = l.codlocali and e.codprovin = p.codprovin";
-$result = mysql_query( $sql,$db); 
-$row=mysql_fetch_array($result); 
-
 $sqlCab = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo";
 $resCab = mysql_query($sqlCab,$db); 
 $rowCab = mysql_fetch_array($resCab);
@@ -50,68 +46,51 @@ $rowCuo = mysql_fetch_array($resCuo);
 <head>
 <title>.: Ver Datos Banco:.</title>
 </head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none;color:#0033FF}
-A:hover {text-decoration: none;color:#33CCFF }
-</style>
-
 <script src="/lib/jquery.js" type="text/javascript"></script>
 <script src="/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/lib/funcionControl.js" type="text/javascript"></script>
 
 <body bgcolor="#B2A274" onLoad="logicaHabilitacion()">
 <div align="center">
-  <p>
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" />
-  </p>
-  <p>
-    <?php 	
-		include($libPath."cabeceraEmpresa.php"); 
-	?>
-  </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" /></p>
+  <p><?php include($libPath."cabeceraEmpresaConsulta.php"); 
+		   include($libPath."cabeceraEmpresa.php"); ?></p>
   <form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="modificarDatosConciliacion.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
-  <div align="center">
-    <p><strong>Acuerdo N&uacute;mero </strong> <?php echo $acuerdo ?> <strong>Cuota</strong> <?php echo $cuota ?> </p>
-	 <table border="1" width="935" bordercolor="#000000" cellpadding="2" cellspacing="0">
-				<tr>
-   					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Vto.</font></strong></div></td>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Tipo Cancelacion</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cheque</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Banco</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Cheque</font></strong></div></td>
-				</tr>
-				<?php
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['montocuota']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowCuo['fechacuota'])."</font></div></td>");
-				
-				$sqltipocan = "select * from tiposcancelaciones where codigo = $rowCuo[tipocancelacion]";
+     <h3>Acuerdo Número <?php echo $acuerdo ?> Cuota <?php echo $cuota ?> </h3>
+	 <table border="1" style="text-align: center; width: 800; margin-bottom: 15px">
+			<tr>
+   			   	<th>Monto</th>
+    			<th>Fecha Vto.</th>
+    			<th>Tipo Cancelacion</th>
+				<th>Nro Cheque</th>
+				<th>Banco</th>
+				<th>Fecha Cheque</th>		
+			</tr>
+		<?php 	$sqltipocan = "select * from tiposcancelaciones where codigo = $rowCuo[tipocancelacion]";
 				$restipocan =  mysql_query( $sqltipocan,$db);
-				$rowtipocan = mysql_fetch_array($restipocan);
-				
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowtipocan['descripcion']."</font></div></td>");
-				
-				if ($rowCuo['chequenro'] == 0) {
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-				} else {
-					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['chequenro']."</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['chequebanco']."</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowCuo['chequefecha'])."</font></div></td>");
-				}
-				print ("</tr>"); 
-				?>
+				$rowtipocan = mysql_fetch_array($restipocan);?>
+			<tr>
+			  <td><?php echo $rowCuo['montocuota'] ?></td>
+			  <td><?php echo invertirFecha($rowCuo['fechacuota']) ?></td>
+			  <td><?php echo $rowtipocan['descripcion'] ?></td>	
+		<?php if ($rowCuo['chequenro'] == 0) { ?>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+		<?php } else { ?>
+					<td><?php echo $rowCuo['chequenro'] ?></td>
+					<td><?php echo $rowCuo['chequebanco'] ?></td>
+					<td><?php echo invertirFecha($rowCuo['chequefecha']) ?></td>
+		<?php } ?>
+			</tr>
 	</table>
-     <p>&nbsp;</p>
-     <table width="415" border="1">
+    <table width="400" border="1" style="margin-bottom: 15px">
        <tr>
-         <td width="197"><div align="right">Fecha de Pago</div></td>
-         <td width="202"><?php echo invertirFecha($rowCuo['fechacancelacion']); ?></td>
+         <td width="200"><div align="right"><b>Fecha de Pago</b></div></td>
+         <td><?php echo invertirFecha($rowCuo['fechacancelacion']); ?></td>
        </tr>
        <tr>
-         <td><div align="right">Cuenta de la Boleta</div></td>
+         <td><div align="right"><b>Cuenta de la Boleta</b></div></td>
          <td><?php 
 		 		$sqlcue = "select * from cuentasusimra where codigocuenta = $cuentaBoleta";
 				$rescue = mysql_query($sqlcue,$db);
@@ -120,77 +99,71 @@ A:hover {text-decoration: none;color:#33CCFF }
 			?></td>
        </tr>
        <tr>
-         <td><div align="right">Fecha Conciliaci&oacute;n </div></td>
+         <td><div align="right"><b>Fecha Conciliación</b></div></td>
          <td><?php echo invertirFecha($rowConcilia['fechaconciliacion']); ?></td>
        </tr>
      </table>
-     <p>
-       <?php if ($quees == "remesa") { ?>
-     </p>
-     <table width="415" border="1">
+     <?php if ($quees == "remesa") { ?>
+     <table width="400" border="1" style="margin-bottom: 15px">
        <tr>
-		 <td colspan="2"><div align="center"><strong>REMESA </strong></div></td>
+		 <td colspan="2"><div align="center"><b>REMESA </b></div></td>
        </tr>
        <tr>
-		 <td width="199"><div align="right">Cuenta de la Remesa</div></td>
-         <td width="200">  
+		 <td width="200"><div align="right"><b>Cuenta de la Remesa</b></div></td>
+         <td>  
 		          <?php 
 					$sqlcue = "select * from cuentasusimra where codigocuenta = $cuentaRemesa";
 					$rescue = mysql_query($sqlcue,$db);
 					$rowcue = mysql_fetch_array($rescue);
 					echo $rowcue['descripcioncuenta']; 
-				?>         </td>
-	    </tr>
+				?>         
+		 </td>
+	   </tr>
        <tr>
-         <td>
-           <div align="right">Fecha de la Remesa</div></td>
+         <td><div align="right"><b>Fecha de la Remesa</b></div></td>
          <td><?php if ($fechaRemesa!="0000-00-00" && $fechaRemesa!="00/00/0000") echo $fechaRemesa; ?></td>
         </tr>
        <tr>
-         <td>
-          <div align="right">Nro Remesa</div></td>
+         <td><div align="right"><b>Nro Remesa</b></div></td>
          <td><?php echo $nroremesa; ?></td>
         </tr>
        <tr>
-         <td>
-          <div align="right">Nro Remito</div></td>
-         <td> <?php echo $nroremito ?> </td>
+         <td><div align="right"><b>Nro Remito</b></div></td>
+         <td><?php echo $nroremito ?> </td>
         </tr>
     </table>
-	<?php } ?>
-<?php if ($quees == "remito") { ?>
-     <table width="415" border="1">
+	<?php } 
+	 if ($quees == "remito") { ?>
+     <table width="400" border="1" style="margin-bottom: 15px">
 	   <tr>
-         <td colspan="2"><div align="center"><strong>REMITO SUELTO </strong></div></td>
+         <td colspan="2"><div align="center"><b>REMITO SUELTO </b></div></td>
        </tr>
        <tr>
-         <td width="200"><div align="right">Cuenta Reminto Suelto</div></td>
-         <td width="199">
+         <td width="200"><div align="right"><b>Cuenta Reminto Suelto</b></div></td>
+         <td>
              <?php 
 					$sqlcue = "select * from cuentasusimra where codigocuenta = $cuentaRemito";
 					$rescue = mysql_query($sqlcue,$db);
 					$rowcue = mysql_fetch_array($rescue);
 					echo $rowcue['descripcioncuenta']; 
-			?>       </td>
+				?>      
+		  </td>
        </tr>
        <tr>
-         <td><div align="right">Fecha Remito Suelto</div></td>
+         <td><div align="right"><b>Fecha Remito Suelto</b></div></td>
          <td><?php if ($fechaRemito!="0000-00-00" && $fechaRemito!="00/00/0000") echo $fechaRemito ?> </tr>
        <tr>
-         <td><div align="right">Nro Remito Suelto</div></td>
+         <td><div align="right"><b>Nro Remito Suelto</b></div></td>
          <td><?php echo $nroRemitoSuelto; ?></td>
        </tr>
      </table>
-<p>
 <?php } ?>
-</p>
-	 <table width="701" border="1">
+	 <table width="800" border="1">
        <tr>
-         <td width="101"><div align="right">Observacion</div></td>
-         <td width="584"><?php echo  $rowCuo['observaciones'] ?></td>
+         <td><div align="right"><b>Observacion</b></div></td>
+         <td><?php echo  $rowCuo['observaciones'] ?></td>
        </tr>
      </table>
-    </div>
 </form>
 </div>
 </body>

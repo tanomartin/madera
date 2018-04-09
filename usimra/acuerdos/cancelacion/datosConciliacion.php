@@ -14,8 +14,8 @@ if (sizeof($datos) != 0) {
 		$cuentaRemesa = $datos[3];
 		$fechaRemesa = $datos[4];
 		$nroremesa = $datos[5];
-		$nroremito = $datos[6];
-		$observ = $datos[7];
+		if (isset($datos[6])) { $nroremito = $datos[6]; }
+		if (isset($datos[7])) { $observ = $datos[7]; }
 		$cuentaRemito = 0;
 		$fechaRemito = "0000-00-00";
 		$nroRemitoSuelto = 0;
@@ -68,18 +68,6 @@ if (sizeof($datos) != 0) {
 	$fechaRemesa = invertirFecha($fechaRemesa);
 	$fechaRemito = invertirFecha($fechaRemito);
 }
-
-$sql = "select * from empresas where cuit = $cuit";
-$result = mysql_query( $sql,$db); 
-$row=mysql_fetch_array($result); 
-
-$sqllocalidad = "select * from localidades where codlocali = $row[codlocali]";
-$resultlocalidad = mysql_query( $sqllocalidad,$db); 
-$rowlocalidad = mysql_fetch_array($resultlocalidad); 
-
-$sqlprovi =  "select * from provincia where codprovin = $row[codprovin]";
-$resultprovi = mysql_query( $sqlprovi,$db); 
-$rowprovi = mysql_fetch_array($resultprovi);
 
 $sqlCab = "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $acuerdo";
 $resCab = mysql_query($sqlCab,$db); 
@@ -285,48 +273,40 @@ function validar(formulario) {
 
 <body bgcolor="#B2A274" onLoad="logicaHabilitacion()">
 <div align="center">
-  <input type="button" name="volver" value="Volver" onClick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" />
-	 <?php 	
-		include($libPath."cabeceraEmpresa.php"); 
-	?>
-<form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="modificarDatosConciliacion.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
-  <div align="center">
-    <p><strong>Acuerdo N&uacute;mero </strong> <?php echo $acuerdo ?> <strong>Cuota</strong> <?php echo $cuota ?> </p>
-	 <table border="1" width="935" bordercolor="#000000" cellpadding="2" cellspacing="0">
-				<tr>
-   					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Monto</font></strong></div></td>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Vto.</font></strong></div></td>
-    				<td width="168"><div align="center"><strong><font size="1" face="Verdana">Tipo Cancelacion</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Nro Cheque</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Banco</font></strong></div></td>
-					<td width="168"><div align="center"><strong><font size="1" face="Verdana">Fecha Cheque</font></strong></div></td>
-				</tr>
-				<?php
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['montocuota']."</font></div></td>");
-				print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowCuo['fechacuota'])."</font></div></td>");
-				
-				$sqltipocan = "select * from tiposcancelaciones where codigo = $rowCuo[tipocancelacion]";
+  	<p><input type="button" name="volver" value="Volver" onClick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" /></p>
+	  <?php include($libPath."cabeceraEmpresaConsulta.php"); 
+			include($libPath."cabeceraEmpresa.php"); ?>
+	<form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="modificarDatosConciliacion.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
+    	<h3>Acuerdo N&uacute;mero <?php echo $acuerdo ?> Cuota <?php echo $cuota ?> </h3>
+	 	<table border="1" style="text-align: center; width: 800">
+			<tr>
+   			   	<th>Monto</th>
+    			<th>Fecha Vto.</th>
+    			<th>Tipo Cancelacion</th>
+				<th>Nro Cheque</th>
+				<th>Banco</th>
+				<th>Fecha Cheque</th>	
+			</tr>	
+		<?php 	$sqltipocan = "select * from tiposcancelaciones where codigo = $rowCuo[tipocancelacion]";
 				$restipocan =  mysql_query( $sqltipocan,$db);
-				$rowtipocan = mysql_fetch_array($restipocan);
-				
-				print ("<td width=168><div align=center><font face=Verdana size=1>".$rowtipocan['descripcion']."</font></div></td>");
-				
-				if ($rowCuo['chequenro'] == 0) {
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>-</font></div></td>");
-				} else {
-					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['chequenro']."</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>".$rowCuo['chequebanco']."</font></div></td>");
-					print ("<td width=168><div align=center><font face=Verdana size=1>".invertirFecha($rowCuo['chequefecha'])."</font></div></td>");
-				}
-				print ("</tr>"); 
-				?>
-	</table>
-     <p>Fecha de Pago <input name="fechapagada" readonly="readonly" value="<?php echo invertirFecha($rowCuo['fechapagada']); ?>" type="text" id="fechapagada" size="8" style="background-color:#CCCCCC">
-     </p>
-     <p>Cuenta de la Boleta
-       <label>
+				$rowtipocan = mysql_fetch_array($restipocan);?>
+			<tr>
+			  <td><?php echo $rowCuo['montocuota'] ?></td>
+			  <td><?php echo invertirFecha($rowCuo['fechacuota']) ?></td>
+			  <td><?php echo $rowtipocan['descripcion'] ?></td>	
+		<?php if ($rowCuo['chequenro'] == 0) { ?>
+					<td>-</td>
+					<td>-</td>
+					<td>-</td>
+		<?php } else { ?>
+					<td><?php echo $rowCuo['chequenro'] ?></td>
+					<td><?php echo $rowCuo['chequebanco'] ?></td>
+					<td><?php echo invertirFecha($rowCuo['chequefecha']) ?></td>
+		<?php } ?>
+			</tr>
+		</table>
+    	<p>Fecha de Pago <input name="fechapagada" readonly="readonly" value="<?php echo invertirFecha($rowCuo['fechapagada']); ?>" type="text" id="fechapagada" size="8" style="background-color:#CCCCCC"></p>
+     	<p>Cuenta de la Boleta
         <select name="selectCuenta"  id="selectCuenta">
 		          <option value=0>Seleccione una Cuenta </option>
 		          <?php 
@@ -340,21 +320,14 @@ function validar(formulario) {
 				   <?php } ?>
 			 <?php } ?>
        </select>
-       </label>
-       <label>
-       <input type="text" name="quees" id="quees" value="<?php echo $quees ?>" style="visibility:hidden" size="1">
-       </label>
-</p>
-     <label></label>
-     <table width="834" border="0">
+       <input type="text" name="quees" id="quees" value="<?php echo $quees ?>" style="visibility:hidden" size="1"></p>
+       <table width="834" border="0">
        <tr>
-         <td colspan="2"><div align="center"><strong>REMESA </strong></div></td>
-         <td colspan="2"><div align="center"><strong>REMITO SUELTO </strong></div></td>
+         <td colspan="2"><div align="center"><b>REMESA </b></div></td>
+         <td colspan="2"><div align="center"><b>REMITO SUELTO </b></div></td>
        </tr>
        <tr>
-         <td width="142"><div align="right">Cuenta de la Remesa
-           
-         </div></td>
+         <td width="142"><div align="right">Cuenta de la Remesa</div></td>
          <td width="263">  
 		 	<select name="selectCuentaRemesa" id="selectCuentaRemesa" onChange="LogicaCargaRemesa(document.forms.formularioSeleCuotas.selectCuentaRemesa[selectedIndex].value);">
 		          <option value=0 selected="selected">Seleccione Cuenta de Remesa </option>
@@ -390,19 +363,24 @@ function validar(formulario) {
        <tr>
          <td>
            <div align="right">Fecha de la Remesa</div></td>
-         <td><label>
-          <input name="fecharemesa" type="text" id="fecharemesa" size="8" disabled="disabled" value="<?php if ($fechaRemesa!="0000-00-00" && $fechaRemesa!="00/00/0000") echo $fechaRemesa ?>" onblur="validarFechaHabilitaBoton(this.value)" onFocus="limpiarSelect()">
-           <input name="botonRemesas" type="button" id="botonRemesas" value="Ver Remesas" disabled="disabled" onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();">
-           </label></td>
          <td>
-           <div align="right">Fecha Remito Suelto</div></td>
-         <td> <input name="fecharemito" type="text" id="fecharemito" size="8" disabled="disabled" value="<?php if ($fechaRemito!="0000-00-00" && $fechaRemito!="00/00/0000") echo $fechaRemito ?>" onblur="validarFechaHabilitaBotonRemitoSuelto(this.value)" onFocus="limpiarSelectRemitoSuelto()">
-         <input name="botonRemitos" type="button" id="botonRemitos" value="Ver Remitos" disabled="disabled"  onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();"></td>
+           <input name="fecharemesa" type="text" id="fecharemesa" size="8" disabled="disabled" value="<?php if ($fechaRemesa!="0000-00-00" && $fechaRemesa!="00/00/0000") echo $fechaRemesa ?>" onfocusout="validarFechaHabilitaBoton(this.value)" onFocus="limpiarSelect()">
+           <input name="botonRemesas" type="button" id="botonRemesas" value="Ver Remesas" disabled="disabled" onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();">
+         </td>
+         <td>
+           <div align="right">Fecha Remito Suelto</div>
+         </td>
+         <td> 
+         	<input name="fecharemito" type="text" id="fecharemito" size="8" disabled="disabled" value="<?php if ($fechaRemito!="0000-00-00" && $fechaRemito!="00/00/0000") echo $fechaRemito ?>" onfocusout="validarFechaHabilitaBotonRemitoSuelto(this.value)" onFocus="limpiarSelectRemitoSuelto()">
+         	<input name="botonRemitos" type="button" id="botonRemitos" value="Ver Remitos" disabled="disabled"  onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();">
+         </td>
        </tr>
        <tr>
          <td>
-          <div align="right">Nro Remesa</div></td>
-         <td><select name="selectRemesa" id="selectRemesa" disabled="disabled" onChange="habilitarBotonRemito(this.value)"> 
+          <div align="right">Nro Remesa</div>
+         </td>
+         <td>
+         	<select name="selectRemesa" id="selectRemesa" disabled="disabled" onChange="habilitarBotonRemito(this.value)"> 
 		 <?php while ($rowRemesa=mysql_fetch_array($resRemesa)) { 
 		 		  if ($rowRemesa['nroremesa'] == $nroremesa ) { ?>
 				    <option value="<?php echo $rowRemesa['nroremesa'] ?>" selected="selected"><?php echo $rowRemesa['nroremesa'] ?></option>
@@ -410,24 +388,30 @@ function validar(formulario) {
 					<option value="<?php echo $rowRemesa['nroremesa'] ?>"><?php echo $rowRemesa['nroremesa'] ?></option>
 				<?php }
 				} ?>
-		  </select><input name="botonRemitoRemesa" type="button" id="botonRemitoRemesa" value="Ver Remitos" disabled="disabled" onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();"></td>
+		  </select><input name="botonRemitoRemesa" type="button" id="botonRemitoRemesa" value="Ver Remitos" disabled="disabled" onClick="this.form.action='datosConciliacion.php?cuota=<?php echo $cuota ?>&acuerdo=<?php echo $acuerdo ?>&cuit=<?php echo $cuit ?>';this.form.submit();">
+		 </td>
          <td>
-           <div align="right">Nro Remito Suelto</div></td>
-         <td><select name="selectRemitoSuelto" id="selectRemitoSuelto" disabled="disabled"> 
-		 <?php while ($rowRemitoSuelto=mysql_fetch_array($resRemitoSuelto)) { 
+           <div align="right">Nro Remito Suelto</div>
+         </td>
+         <td>
+         	<select name="selectRemitoSuelto" id="selectRemitoSuelto" disabled="disabled"> 
+		 	<?php while ($rowRemitoSuelto=mysql_fetch_array($resRemitoSuelto)) { 
 		 			if ($rowRemitoSuelto['nroremito'] == $nroRemitoSuelto) {?>
 						<option value="<?php echo $rowRemitoSuelto['nroremito'] ?>" selected="selected"><?php echo $rowRemitoSuelto['nroremito'] ?></option>
 					<?php } else { ?>
 						<option value="<?php echo $rowRemitoSuelto['nroremito'] ?>"><?php echo $rowRemitoSuelto['nroremito'] ?></option>
 					<?php }
 					}?>
-		  </select></td>
+		  	</select>
+		  </td>
        </tr>
        <tr>
          <td>
-          <div align="right">Nro Remito</div></td>
-         <td><select name="selectRemito" id="selectRemito" disabled="disabled">
-		  <?php while ($rowRem=mysql_fetch_array($resRem)) { 
+          <div align="right">Nro Remito</div>
+         </td>
+         <td>
+         	<select name="selectRemito" id="selectRemito" disabled="disabled">
+		  	<?php while ($rowRem=mysql_fetch_array($resRem)) { 
 		  			echo $rowRem['nroremito'];
 		  			if ($rowRem['nroremito'] == $nroremito) { ?>
 						<option value="<?php echo $rowRem['nroremito'] ?>" selected="selected"><?php echo $rowRem['nroremito'] ?></option>
@@ -435,22 +419,13 @@ function validar(formulario) {
 			  			<option value="<?php echo $rowRem['nroremito'] ?>"><?php echo $rowRem['nroremito'] ?></option>
 				<?php }
 				} ?>
-         </select></td>
+         	</select>
+         </td>
          <td colspan="2">&nbsp;</td>
        </tr>
-    </table>
-     <p>
-       <label></label>
-       <label></label><label>Observacion
-	   <textarea name="textarea" style="background:#CCCCCC" cols="50" rows="4" readonly="readonly"><?php echo  $rowCuo['observaciones'] ?> </textarea>
-       </label>
-     </p>
-     <p>
-       <label>
-       <input type="submit" name="Submit" id="Submit" value="Modificar Datos Conciliacion">
-       </label>
-     </p>
-  </div>
+     </table>
+     <p>Observacion <textarea name="textarea" style="background:#CCCCCC" cols="50" rows="4" readonly="readonly"><?php echo  $rowCuo['observaciones'] ?> </textarea></p>
+     <p><input type="submit" name="Submit" id="Submit" value="Modificar Datos Conciliacion"> </p>
 </form>
 </div>
 </body>
