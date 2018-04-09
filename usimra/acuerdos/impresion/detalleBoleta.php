@@ -20,86 +20,63 @@ $rowAMostrar = mysql_fetch_array($resBoleta);
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-    <p><strong>DETALLE DE BOLETE CON NRO DE CONTROL <?php echo $nrocontrol ?></strong></p>
-    <table width="543" border="2">
+    <p><strong>DETALLE DE BOLETE CON NRO DE CONTROL "<?php echo $nrocontrol ?>"</strong></p>
+    <table width="550" border="2">
       <tr>
-        <td width="160"><div align="right">CUIT</div></td>
-        <td width="371"><div align="left"><strong><?php echo $rowAMostrar['cuit']; ?></strong></div></td>
+        <td width="200"><div align="right">CUIT</div></td>
+        <td width="350"><div align="left"><b><?php echo $rowAMostrar['cuit']; ?></b></div></td>
       </tr>
       <tr>
-        <td><div align="right">Raz&oacute;n Social </div></td>
-        <td><div align="left">
-          <div align="left"><strong>
-            <?php echo $rowAMostrar['nombre']; ?>
-          </strong></div>
-        </div></td>
+        <td><div align="right">Razón Social </div></td>
+        <td><div align="left"><b><?php echo $rowAMostrar['nombre']; ?></b></div></td>
       </tr>
       <tr>
         <td><div align="right">Nro Acuerdo </div></td>
-        <td><div align="left">
-          <div align="left"><strong><?php echo $rowAMostrar['nroacuerdo']; ?></strong></div>
-        </div></td>
+        <td><div align="left"><b><?php echo $rowAMostrar['nroacuerdo']; ?></b></div></td>
       </tr>
       <tr>
         <td><div align="right">Nro Cuota</div></td>
-        <td><div align="left">
-          <div align="left"><strong><?php echo $rowAMostrar['nrocuota']; ?></strong></div>
-        </div></td>
+        <td><div align="left"><b><?php echo $rowAMostrar['nrocuota']; ?></b></div></td>
       </tr>
       <tr>
         <td><div align="right">Importe</div></td>
-        <td><div align="left">
-          <div align="left"><strong><?php echo $rowAMostrar['importe']; ?></strong></div>
-        </div></td>
+        <td><div align="left"><b><?php echo $rowAMostrar['importe']; ?></b></div></td>
       </tr>
       <tr>
         <td><div align="right">Identificacion Boleta </div></td>
-        <td><div align="left">
-          <div align="left"><strong><?php echo $rowAMostrar['nrocontrol']; ?></strong></div>
-        </div></td>
+        <td><div align="left"><b><?php echo $rowAMostrar['nrocontrol']; ?></b></div></td>
       </tr>
       <tr>
-        <td><div align="right">Usuario Emisi&oacute;n </div></td>
-        <td><div align="left">
-          <div align="left"><strong><?php echo $rowAMostrar['usuarioregistro']; ?></strong></div>
-        </div></td>
+        <td><div align="right">Usuario Emisión </div></td>
+        <td><div align="left"><b><?php echo $rowAMostrar['usuarioregistro']; ?></b></div></td>
       </tr>
     </table>
-    <p>
-      <?php 
-	if ($estado == "Anulada") {
-		print("<div align='center' style='color:#000000'><b> INFORMACION DE ANULACION</b></div><br>"); ?>
-	</p>
-    <table width="543" border="2">
-      <tr>
-        <td width="180"><div align="right">Fecha Anulacion</div></td>
-        <td width="351"><div align="left"><strong><?php echo $rowAMostrar['fechaanulacion']; ?></strong></div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Docuemtancion en Mano</div></td>
-        <td><div align="left">
-            <div align="left"><strong>
-              <?php 
-		   if($rowAMostrar['documentacionenmano'] == 0) {
-		   		echo "NO";
-		   } else {
-		   		echo "SI";
-		   }
-		?>
-            </strong></div>
-        </div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Motivo</div></td>
-        <td><div align="left">
-            <div align="left"><strong><?php if($rowAMostrar['motivoanulacion'] != "" ) {echo $rowAMostrar['motivoanulacion'];} else { echo "-"; } ?></strong></div>
-        </div></td>
-      </tr>
-    </table>
-		 <?php } ?>
-    <p>
-      <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />
-    </p>
+<?php if ($estado == "Anulada") { ?>
+		<p style='color:#000000'><b> INFORMACION DE ANULACION</b></p>
+	    <table width="550" border="2">
+	      <tr>
+	        <td width="200"><div align="right">Fecha Anulacion</div></td>
+	        <td width="350"><div align="left"><b><?php echo $rowAMostrar['fechaanulacion']; ?></b></div></td>
+	      </tr>
+	      <tr>
+	        <td><div align="right">Docuemtancion en Mano</div></td>
+	        <td>
+	        	<div align="left"><b>
+		    <?php  if($rowAMostrar['documentoenmano'] == 0) {
+				   		echo "NO";
+				   } else {
+				   		echo "SI";
+				   } ?>
+	            </b></div>
+	        </td>
+	      </tr>
+	      <tr>
+	        <td><div align="right">Motivo</div></td>
+	        <td><div align="left"><b><?php if($rowAMostrar['motivoanulacion'] != "" ) {echo $rowAMostrar['motivoanulacion'];} else { echo "-"; } ?></b></div></td>
+	      </tr>
+	    </table>
+<?php } ?>
+    <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" /></p>
 </div>
 </body>
 </html>
