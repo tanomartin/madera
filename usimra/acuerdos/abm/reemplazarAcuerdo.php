@@ -250,9 +250,8 @@ function validar(formulario) {
 				</table>
 	<?php	} else { ?>
 				<p style="color: blue">No hay periodos cargados en este acuerdo</p>		
-	<?php	}	?>
-			    
-    <p align="center"><input type="submit" name="reemplazar" value="Reemplazar Acuerdo" /></p>
+	<?php	}	?>		    
+    <p><input type="submit" name="reemplazar" value="Reemplazar Acuerdo" /></p>
   </div>
 </form>
 </body>
