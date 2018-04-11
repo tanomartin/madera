@@ -186,7 +186,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><?php echo invertirFecha($rowTitular['emailfecha']) ?></td>
 				<td><?php echo invertirFecha($rowTitular['fpp']) ?></td>
 				<td><?php if($rowTitular['nacimiento']==1) { echo 'Si'; } else { echo 'No'; }?></td>
-				<td><input class="nover" type="button" id="editatitular" name="editatitular" value="Editar" onClick="location.href = 'editarFicha.php?nroId=<?php echo $rowTitular['id']?>'"/></td>
+				<td><input class="nover" type="button" id="editatitular" name="editatitular" value="Editar" onclick="location.href = 'editarFicha.php?nroId=<?php echo $rowTitular['id']?>'"/></td>
 			</tr>
 		<?php
 		}
@@ -204,7 +204,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><?php echo invertirFecha($rowFamiliar['emailfecha']) ?></td>
 				<td><?php echo invertirFecha($rowFamiliar['fpp']) ?></td>
 				<td><?php if($rowFamiliar['nacimiento']==1) { echo 'Si'; } else { echo 'No'; }?></td>
-				<td><input class="nover" type="button" id="editafamiliar" name="editafamiliar" value="Editar" onClick="location.href = 'editarFicha.php?nroId=<?php echo $rowFamiliar['id']?>'"/></td>
+				<td><input class="nover" type="button" id="editafamiliar" name="editafamiliar" value="Editar" onclick="location.href = 'editarFicha.php?nroId=<?php echo $rowFamiliar['id']?>'"/></td>
 			</tr>
 		<?php
 		}
@@ -296,7 +296,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 						<td><?php echo $rowBusquedaTitular['nrodocumento'] ?></td>
 						<td><?php echo $rowBusquedaTitular['cuil'] ?></td>
 						<td><?php echo $rowBusquedaTitular['codidelega'] ?></td>
-						<td><input class="nover" type="button" id="agregatitular" name="agregatitular" value="Agregar" onClick="location.href = 'agregarFicha.php?nroAfi=<?php echo $rowBusquedaTitular['nroafiliado']?>&tipPar=0&nroOrd=0'"/></td>
+						<td><input class="nover" type="button" id="agregatitular" name="agregatitular" value="Agregar" onclick="location.href = 'agregarFicha.php?nroAfi=<?php echo $rowBusquedaTitular['nroafiliado']?>&tipPar=0&nroOrd=0'"/></td>
 					</tr>
 			<?php
 					}
@@ -310,7 +310,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 						<td><?php echo $rowBusquedaFamiliar['nrodocumento'] ?></td>
 						<td><?php echo $rowBusquedaFamiliar['cuil'] ?></td>
 						<td><?php echo $rowBusquedaFamiliar['codidelega'] ?></td>
-						<td><input class="nover" type="button" id="agregafamiliar" name="agregafamiliar" value="Agregar" onClick="location.href = 'agregarFicha.php?nroAfi=<?php echo $rowBusquedaFamiliar['nroafiliado']?>&tipPar=<?php echo $rowBusquedaFamiliar['tipoparentesco']?>&nroOrd=<?php echo $rowBusquedaFamiliar['nroorden']?>'"/></td>
+						<td><input class="nover" type="button" id="agregafamiliar" name="agregafamiliar" value="Agregar" onclick="location.href = 'agregarFicha.php?nroAfi=<?php echo $rowBusquedaFamiliar['nroafiliado']?>&tipPar=<?php echo $rowBusquedaFamiliar['tipoparentesco']?>&nroOrd=<?php echo $rowBusquedaFamiliar['nroorden']?>'"/></td>
 					</tr>
 			<?php
 					}
