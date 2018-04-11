@@ -227,6 +227,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 							<option value="30">30 por pagina</option>
 							<option value="<?php echo $totalpmi;?>">Todos</option>
 							</select>
+						</p>
 					</form>	
 				</div>
 			</td>

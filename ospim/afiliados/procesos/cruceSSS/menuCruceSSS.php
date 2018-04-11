@@ -45,18 +45,18 @@ function mostrar(dire) {
 <div align="center">
   <table width="400" border="3">
     <tr>
-       <td width="200"><p align="center">Descarga INFO</br> Titulares de SSS</p>
+       <td width="200"><p align="center">Descarga INFO<br/> Titulares de SSS</p>
         <p align="center"><a class="enlace" href="descargaTitulares/menuDescInfoTituSSS.php"><img src="img/descargaTitulares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
-      <td width="200"><p align="center">Descarga INFO</br> Familiares de SSS</p>
+      <td width="200"><p align="center">Descarga INFO<br/> Familiares de SSS</p>
           <p align="center"><a class="enlace" href="descargaFamiliares/menuDescInfoFamiSSS.php"><img src="img/descargaFamiliares.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
     </tr>
     <tr>
-       <td width="200"><p align="center">Subida de</br> Titulares a SSS</p>
+       <td width="200"><p align="center">Subida de<br/> Titulares a SSS</p>
         <p align="center"><a class="enlace" href="javascript:mostrar('subidaTitulares/buscaTitulares.php')"><img src="img/subida.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
-      <td width="200"><p align="center">Subida de</br> Famliares a SSS</p>
+      <td width="200"><p align="center">Subida de<br/> Famliares a SSS</p>
           <p align="center"><a class="enlace" href="javascript:mostrar('subidaFamiliares/buscaFamiliares.php')"><img src="img/subida.png" width="90" height="90" border="0" alt="enviar"/></a></p>
         <p>&nbsp;</p></td>
     </tr>
