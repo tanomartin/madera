@@ -714,20 +714,21 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			</tr>
 			<tr>
 				<td align="right"><strong>Prof. del Efector</strong></td>
-				<td colspan="5" align="left"><input name="efectorprofesional" type="text" id="efectorprofesional" size="100" maxlength="100" placeholder="" value=""></td>
+				<td colspan="5" align="left"><input name="efectorprofesional" type="text" id="efectorprofesional" size="100" maxlength="100" placeholder="" value="" /></td>
 			</tr>
 			<tr id="integracion">
 				<td align="right"><strong>Paga por Integracion ?</strong></td>
-			<td colspan="5" align="left"><input name="cancelaintegracion" type="checkbox" id="cancelaintegracion" value="1"/>			</tr>
+				<td colspan="5" align="left"><input name="cancelaintegracion" type="checkbox" id="cancelaintegracion" value="1"/></td>
+			</tr>
 		</table>
 	</div>
 	<div id="datosintegracion" align="center">
 		<table border="0">
 			<tr>
 				<td align="right"><strong>Importe Solicitado</strong></td>
-				<td align="left"><input name="solicitadointegracion" type="text" id="solicitadointegracion" size="10" value=""/>
+				<td align="left"><input name="solicitadointegracion" type="text" id="solicitadointegracion" size="10" value=""/></td>
 				<td align="right"><strong>Dependencia ?</strong></td>
-				<td align="left"><input name="dependenciaintegracion" type="checkbox" id="dependenciaintegracion" value="1"/>
+				<td align="left"><input name="dependenciaintegracion" type="checkbox" id="dependenciaintegracion" value="1"/></td>
 				<td align="right"><strong>Escuela ?</strong></td>
 				<td align="left"><select name="tipoescuelaintegracion" id="tipoescuelaintegracion">
 									<option title="Seleccione tipo" value="">Seleccione tipo</option>

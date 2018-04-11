@@ -139,6 +139,7 @@ $(document).ready(function(){
 							<option value="60">60 por pagina</option>
 							<option value="<?php echo $totalfacturasingresadas;?>">Todas</option>
 							</select>
+						</p>
 					</form>	
 				</div>
 			</td>
@@ -198,6 +199,7 @@ $(document).ready(function(){
 							<option value="60">60 por pagina</option>
 							<option value="<?php echo $totalfacturasusuario;?>">Todas</option>
 							</select>
+						</p>
 					</form>	
 				</div>
 			</td>

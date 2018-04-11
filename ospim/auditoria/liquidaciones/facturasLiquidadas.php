@@ -127,8 +127,7 @@ function ocultaDetalle(cuit,cantidad) {
 								$i++;
 							} ?>
 			</tbody>
-					<?php } ?>
-			</thead>
+			<?php } ?>
 		</table>
 	</div>
 </div>
