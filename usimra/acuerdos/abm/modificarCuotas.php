@@ -23,8 +23,9 @@ $nroNuevaCuota = $rowUltima['nrocuota'] + 1;
 
 $sqlMontoImpresas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu and montopagada = 0 and boletaimpresa != 0";
 $resMontoImpresas = mysql_query($sqlMontoImpresas,$db);
+$montoBoletasImpresas = 0;
 while ($rowMontoImpresas=mysql_fetch_array($resMontoImpresas)) {
-	$montoBoletasImpresas = $montoBoletasImpresas + $rowMontoImpresas['montocuota'];
+	$montoBoletasImpresas += $rowMontoImpresas['montocuota'];
 }
 
 $sqlMonto =  "select * from cabacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
@@ -39,12 +40,6 @@ $resCuotas = mysql_query($sqlCuotas,$db);
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -217,38 +212,34 @@ function validarYGuardar(formulario) {
 </head>
 <body bgcolor="#B2A274" >
 <div align="center">
-<input type="button" name="volver" value="Volver" onClick="location.href = 'formularioModif.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>'" />
-</div>
-<p  align="center"><strong>Cuotas del Acuerdo </strong></p>
-<form id="modifCuotas" name="modifCuotas" onSubmit="return validarYGuardar(this)" method="POST" action="actualizarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu?>&canMod=<?php echo $canMod ?>">
- <input name="cantCuotas" type="text" id="cantCuotas" size="4" readonly="readonly" style="visibility:hidden; position:absolute; z-index:1">
-  <div align="center"></div>
-  <div align="center">
-    <table width="800" border="1">
-      <tr>
-        <td width="134"><div align="center">Cuota </div></td>
-        <td width="107"><div align="center">Monto</div></td>
-        <td width="116"><div align="center">Fecha</div></td>
-        <td width="300"><div align="center">Cancelacion</div></td>
-		<td width="200"><div align="center">Nro Cheque </div></td>
-		<td width="212"><div align="center">Banco </div></td>
-		<td width="212"><div align="center">Fecha Cheque </div></td>
-  	 </tr>
-    <?php
-	$contadorCuotas = 0;
-	while ($rowCuotas=mysql_fetch_array($resCuotas)) {
-		if (($rowCuotas['montopagada'] == 0 && $rowCuotas['boletaimpresa'] == 0 && $rowCuotas['fechapagada'] == '0000-00-00') || ($rowCuotas['tipocancelacion'] == 8 && $rowCuotas['boletaimpresa'] != 0)) {
-			if ($rowCuotas['tipocancelacion'] == 8 && $rowCuotas['boletaimpresa'] != 0) {
-				$precuota = true;
-			} else {
-				$precuota = false;
-			}
-			$contadorCuotas = $contadorCuotas + 1;	 ?>
+	<p><input type="button" name="volver" value="Volver" onClick="location.href = 'modificarAcuerdo.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $nroacu?>'" /></p>
+	<p><b>Cuotas del Acuerdo </b></p>
+	<form id="modifCuotas" name="modifCuotas" onSubmit="return validarYGuardar(this)" method="POST" action="actualizarCuotas.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacu?>&canMod=<?php echo $canMod ?>">
+ 		<input name="cantCuotas" type="text" id="cantCuotas" size="4" readonly="readonly" style="display: none">
+    	<table width="800" border="1">
+	    	<tr>
+		        <th>Cuota </th>
+		        <th>Monto</th>
+		        <th>Fecha</th>
+		        <th>Cancelacion</th>
+				<th>Nro Cheque </th>
+				<th>Banco </th>
+				<th>Fecha Cheque </th>
+	  	 	</tr>
+  <?php $contadorCuotas = 0;
+		while ($rowCuotas=mysql_fetch_array($resCuotas)) {
+			if (($rowCuotas['montopagada'] == 0 && $rowCuotas['boletaimpresa'] == 0 && $rowCuotas['fechapagada'] == '0000-00-00') || ($rowCuotas['tipocancelacion'] == 8 && $rowCuotas['boletaimpresa'] != 0)) {
+				if ($rowCuotas['tipocancelacion'] == 8 && $rowCuotas['boletaimpresa'] != 0) {
+					$precuota = true;
+				} else {
+					$precuota = false;
+				}
+				$contadorCuotas = $contadorCuotas + 1;	 ?>
 			<tr>
-				<td width=134> <input style='background-color:#B2A274' name='nroCuota<?php echo $contadorCuotas ?>' id='nroCuota<?php echo $contadorCuotas ?>' type='text' size='2' value='<?php echo $rowCuotas['nrocuota'] ?>' readonly='readonly'></td>
-				<td width=107> <input name='monto<?php echo $contadorCuotas ?>' id='monto<?php echo $contadorCuotas ?>' type='text' size='10' value='<?php echo $rowCuotas['montocuota'] ?>'></td>
-				<td width=116> <input name='fecha<?php echo $contadorCuotas ?>' id='fecha<?php echo $contadorCuotas ?>' type='text' size='10' value='<?php echo invertirFecha($rowCuotas['fechacuota']) ?>'></td>
-				<td width=212>
+				<td><input style='background-color:#B2A274' name='nroCuota<?php echo $contadorCuotas ?>' id='nroCuota<?php echo $contadorCuotas ?>' type='text' size='2' value='<?php echo $rowCuotas['nrocuota'] ?>' readonly='readonly'></td>
+				<td><input name='monto<?php echo $contadorCuotas ?>' id='monto<?php echo $contadorCuotas ?>' type='text' size='10' value='<?php echo $rowCuotas['montocuota'] ?>'></td>
+				<td><input name='fecha<?php echo $contadorCuotas ?>' id='fecha<?php echo $contadorCuotas ?>' type='text' size='10' value='<?php echo invertirFecha($rowCuotas['fechacuota']) ?>'></td>
+				<td>
 					<select name=<?php echo "tipo".$contadorCuotas ?> id=<?php echo "tipo".$contadorCuotas ?> onchange="verInfoCheques(document.forms.modifCuotas.<?php echo "tipo".$contadorCuotas."[selectedIndex]" ?>.value ,<?php echo $contadorCuotas ?>)">
 					  <option value=-1>Seleccione un valor </option>
 			  <?php
@@ -268,30 +259,27 @@ function validarYGuardar(formulario) {
 					</select>
 			  	</td>
 			  	<?php if ($rowCuotas['tipocancelacion'] == 3 || $rowCuotas['tipocancelacion'] == 1) { $visible = 'visible'; } else { $visible = 'hidden'; } ?>
-				<td width=212> <input name='ncheque<?php echo $contadorCuotas ?>' id='ncheque<?php echo $contadorCuotas ?>' value='<?php echo $rowCuotas['chequenro'] ?>' type='text' size='12' style='visibility: <?php echo $visible ?>'> </td>
-				<td width=212> <input name='bcheque<?php echo $contadorCuotas ?>' id='bcheque<?php echo $contadorCuotas ?>' value='<?php echo $rowCuotas['chequebanco'] ?>' type='text' size='12'  style='visibility: <?php echo $visible ?>'> </td>
-				<td width=212> <input name='fcheque<?php echo $contadorCuotas ?>' id='fcheque<?php echo $contadorCuotas ?>' value='<?php echo invertirFecha($rowCuotas['chequefecha'])?>' type='text' size='12' style='visibility: <?php echo $visible ?>'> </td>
+				<td><input name='ncheque<?php echo $contadorCuotas ?>' id='ncheque<?php echo $contadorCuotas ?>' value='<?php echo $rowCuotas['chequenro'] ?>' type='text' size='12' style='visibility: <?php echo $visible ?>'> </td>
+				<td><input name='bcheque<?php echo $contadorCuotas ?>' id='bcheque<?php echo $contadorCuotas ?>' value='<?php echo $rowCuotas['chequebanco'] ?>' type='text' size='12'  style='visibility: <?php echo $visible ?>'> </td>
+				<td><input name='fcheque<?php echo $contadorCuotas ?>' id='fcheque<?php echo $contadorCuotas ?>' value='<?php echo invertirFecha($rowCuotas['chequefecha'])?>' type='text' size='12' style='visibility: <?php echo $visible ?>'> </td>
 			</tr>
-			
 			<tr>
-				<td width=134 align='center'><font face=Verdana size=1>Obs.</font></td>
-				<td colspan='6'> <textarea name='obs<?php echo $contadorCuotas ?>' id='obs<?php echo $contadorCuotas ?>' cols='93' rows='2' ><?php echo $rowCuotas['observaciones'] ?></textarea> </td>
+				<td><b>Obs.</b></td>
+				<td colspan='6'> <textarea name='obs<?php echo $contadorCuotas ?>' id='obs<?php echo $contadorCuotas ?>' cols='120' rows='2' ><?php echo $rowCuotas['observaciones'] ?></textarea> </td>
 			</tr>
-	  <?php 
-			} 
+	  <?php } 
 		} 
 		if ($cantCuotas != 0) {	
 			for ( $i = 1 ; $i <= $cantCuotas ; $i ++) {
 				$contadorCuotas = $contadorCuotas + 1; ?>
 				<tr>
-				<td width=134> <input name='nroCuota<?php echo $contadorCuotas ?>' id='nroCuota<?php echo $contadorCuotas ?>' type='text' size='2' value='<?php echo $nroNuevaCuota ?>' readonly='readonly' style='background-color:#B2A274'></td>
-				<td width=107> <input name='monto<?php echo $contadorCuotas?>' id='monto<?php echo $contadorCuotas?>' type='text' size='10'></td>
-				<td width=116> <input name='fecha<?php echo $contadorCuotas?>' id='fecha<?php echo $contadorCuotas?>' type='text' size='10'></td>
-				<td width=212>
-					<select name=<?php echo "tipo".$contadorCuotas ?> id=<?php echo "tipo".$contadorCuotas ?> onChange="verInfoCheques(document.forms.modifCuotas.<?php echo "tipo".$contadorCuotas."[selectedIndex]" ?>.value ,<?php echo $contadorCuotas ?>)">
-				 		 <option value=0>Seleccione un valor </option>
-				 		 <?php
-								$query="select * from tiposcancelaciones";
+					<td><input name='nroCuota<?php echo $contadorCuotas ?>' id='nroCuota<?php echo $contadorCuotas ?>' type='text' size='2' value='<?php echo $nroNuevaCuota ?>' readonly='readonly' style='background-color:#B2A274'></td>
+					<td><input name='monto<?php echo $contadorCuotas?>' id='monto<?php echo $contadorCuotas?>' type='text' size='10'></td>
+					<td><input name='fecha<?php echo $contadorCuotas?>' id='fecha<?php echo $contadorCuotas?>' type='text' size='10'></td>
+					<td>
+						<select name=<?php echo "tipo".$contadorCuotas ?> id=<?php echo "tipo".$contadorCuotas ?> onChange="verInfoCheques(document.forms.modifCuotas.<?php echo "tipo".$contadorCuotas."[selectedIndex]" ?>.value ,<?php echo $contadorCuotas ?>)">
+				 			<option value=0>Seleccione un valor </option>
+				 		 <?php  $query="select * from tiposcancelaciones";
 								$result=mysql_query($query,$db);
 								while ($rowtipos=mysql_fetch_array($result)) { 
 										if ($rowtipos['codigo'] == $rowCuotas['tipocancelacion']) { ?>
@@ -300,38 +288,28 @@ function validarYGuardar(formulario) {
 											<option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
 								  <?php } ?>
 							<?php } ?>
-					</select>
-				</td> 
-				<td width=212> <input name='ncheque<?php echo $contadorCuotas ?>' id='ncheque<?php echo $contadorCuotas ?>' type='text' size='12' style='visibility: hidden'> </td>
-				<td width=212> <input name='bcheque<?php echo $contadorCuotas ?>' id='bcheque<?php echo $contadorCuotas ?>' type='text' size='12'  style='visibility: hidden'> </td> 
-				<td width=212> <input name='fcheque<?php echo $contadorCuotas ?>' id='fcheque<?php echo $contadorCuotas ?>' type='text' size='12' style='visibility: hidden'> </td>
+						</select>
+					</td> 
+					<td><input name='ncheque<?php echo $contadorCuotas ?>' id='ncheque<?php echo $contadorCuotas ?>' type='text' size='12' style='visibility: hidden'> </td>
+					<td><input name='bcheque<?php echo $contadorCuotas ?>' id='bcheque<?php echo $contadorCuotas ?>' type='text' size='12'  style='visibility: hidden'> </td> 
+					<td><input name='fcheque<?php echo $contadorCuotas ?>' id='fcheque<?php echo $contadorCuotas ?>' type='text' size='12' style='visibility: hidden'> </td>
 				</tr>
 				<tr>
-					<td width=134 id='titobs<?php echo $contadorCuotas ?>' align='center' ><font face=Verdana size=1>Obs.</font></td>
-					<td colspan='6'> <textarea name='obs<?php echo $contadorCuotas ?>' id='obs<?php echo $contadorCuotas ?>' cols='93' rows='2' ></textarea> </td>
+					<td width=134 id='titobs<?php echo $contadorCuotas ?>' align='center' ><b>Obs.</b></td>
+					<td colspan='6'> <textarea name='obs<?php echo $contadorCuotas ?>' id='obs<?php echo $contadorCuotas ?>' cols='120' rows='2' ></textarea> </td>
 				</tr> 
-				<?php 
-					$nroNuevaCuota = $nroNuevaCuota+1;
+			<?php $nroNuevaCuota = $nroNuevaCuota+1;
 				}
 			}?>	
-    </table>
-  </div>
-  <div align="center">
-    <table width="739" border="0">
-      <tr>
-        <td width="365">
-          <div align="left">
-            <input type="button" id="nuevaCuota" name="nuevaCuota" value="Agregar Cuotas" onclick="cartelCantidadCuotas()" />
-            </div>
-        <div align="right"></div></td>
-        <td width="364">
-          <div align="right">
-            <input type="submit" name="guardar" id="guardar" value="Guardar Cambios"  />
-          </div></td>
-      </tr>
-    </table>
-  </div>
-</form>
+	    </table>
+	  	<table width="800" border="0" style="text-align: center; margin-top: 15px">
+	      <tr>
+	      	<td><input type="button" id="nuevaCuota" name="nuevaCuota" value="Agregar Cuotas" onclick="cartelCantidadCuotas()" /></td>
+	        <td><input type="submit" name="guardar" id="guardar" value="Guardar Cambios"  /></td>
+	      </tr>
+	    </table>
+	</form>
+</div>
 </body>
 </html>
 

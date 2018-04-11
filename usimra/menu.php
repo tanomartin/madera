@@ -59,8 +59,8 @@ function abrirMinutas(dire) {
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-  <h2>MENU PRINCIPAL</h2>
   <p><img src="img/logo.png" width="168" height="168" /></p>
+  <h3>MENU PRINCIPAL</h3>
   <table width="600" border="2" style="text-align: center;">
     <tr>
       <td width="200">
@@ -82,11 +82,11 @@ function abrirMinutas(dire) {
        <p><a href="javascript:abrirAportes('aportes/menuAportes.php')"><img src="img/aportes.png" width="90" height="90" border="0"/></a></p>
 	  </td>
       <td>
-        <p>FISCALIZACION </p>
+        <p>FISCALIZACION</p>
         <p><a href="javascript:abrirFiscalizacion('fiscalizacion/menuFiscalizacion.php')"><img src="img/fiscalizacion.png" width="90" height="90" border="0"/></a></p>
       </td>
 	  <td>
-        <p>JUICIOS </p>
+        <p>JUICIOS</p>
 	    <p><a href="javascript:abrirLegales('legales/menuLegales.php')"><img src="img/juicios.png" width="90" height="90" border="0"/></a></p>
       </td>
     </tr>
@@ -98,15 +98,13 @@ function abrirMinutas(dire) {
 	   	<?php } ?>
 	   </td>
       <td>
-          <p>BANCO </p>
+          <p>BANCO</p>
           <p><a href="javascript:abrirBanco('banco/moduloBanco.php')"><img src="img/banco.png" width="90" height="90" border="0"/></a></p>
       </td>
       <td>&nbsp;</td>
     </tr>
   </table>
-   <p><strong><a href="logout.php">
-     <input type="button" name="salir" value="SALIR" onclick="location.href='logout.php'" />
-  </a></strong></p>
+   <p><a href="logout.php"><input type="button" name="salir" value="SALIR" onclick="location.href='logout.php'" /></a></p>
 </div>
 </body>
 

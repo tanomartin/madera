@@ -201,6 +201,7 @@ function validar(formulario) {
 							<option value="60">60 por pagina</option>
 							<option value="<?php echo $totalfacturas;?>">Todas</option>
 							</select>
+						</p>
 					</form>	
 				</div>
 			</td>

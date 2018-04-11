@@ -48,4 +48,3 @@ header("Content-Disposition: attachment; filename=$file");
 		</table>
 	</div>
 </body>
-</header>

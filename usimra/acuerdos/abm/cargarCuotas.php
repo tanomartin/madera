@@ -79,19 +79,14 @@ for ($i = 16; $i <= $finFor; $i++) {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
-	for (i=0; i<=<?php echo $cuotasapagar ?>; i++) {
+	for (var i=0; i<=<?php echo $cuotasapagar ?>; i++) {
 		$("#fecha"+i).mask("99-99-9999");
 		$("#fcheque"+i).mask("99-99-9999");
 	}
@@ -137,7 +132,7 @@ function hayInfoCheque(id) {
 
 function validoMontos(formulario) {
 	var monto = 0;
-	for (i=1; i<=<?php echo $cuotasapagar ?>; i++) {
+	for (var i=1; i<=<?php echo $cuotasapagar ?>; i++) {
 		monto = monto + parseFloat(document.getElementById("monto"+i).value);
 	}
 	monto = Math.round(monto*100)/100;
@@ -146,14 +141,14 @@ function validoMontos(formulario) {
 		document.getElementById("monto1").focus();
 		return false;
 	}
-	formulario.Submit.disabled = true;
-	return true;
+	$.blockUI({ message: "<h1>Guardando Nuevo Acuerdo... <br>Esto puede tardar unos segundo.<br> Aguarde por favor</h1>" });
+	return true
 }
 
 function validarYGuardar(formulario) {
 	var nombreMonto, nombreFecha, nombreTipo;
 	var monto, fecha, tipoCance;
-	for (i=1; i<=<?php echo $cuotasapagar ?>; i++) {
+	for (var i=1; i<=<?php echo $cuotasapagar ?>; i++) {
 		nombreMonto = "monto"+i;
 		monto = document.getElementById(nombreMonto).value;
 		nombreFecha = "fecha"+i;
@@ -189,67 +184,59 @@ function validarYGuardar(formulario) {
 
 <title>.: Carga Periodos y Cuotas :.</title>
 </head>
-<body bgcolor="#B2A274" >
-<p  align="center">
-<input type="button" onclick="location.href='formularioCarga.php?cuit=<?php echo $cuit ?>'" value="Volver"> 
-<p  align="center"><strong>Cuotas del Acuerdo </strong></p>
-<form id="cuotas" name="cuotas" onSubmit="return validarYGuardar(this)" method="POST" action="guardoAcuerdo.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacuerdo?>">
-
-	<input name="sqlCabe" type="text" readonly="readonly" id="sqlCabe" style="visibility:hidden; position:absolute; z-index:inherit" value="<?php echo $sqlCargaCabecera ?>" size="2"> 
-	<input name="canPer" type="text" readonly="readonly" id="sqlCabe" style="visibility:hidden; position:absolute; z-index:inherit" value="<?php echo $id-1 ?>" size="2"> 
-	<?php if ($id != 1) { 
-			for ($i = 0; $i < $id-1; $i++) {?>
-			<input name="cantPer<?php echo $i ?>" id="sqlPeri<?php echo $i ?>" type="text" readonly="readonly"  style="visibility:hidden; position:absolute; z-index:inherit " value="<?php echo $listaPeriodos[$i] ?>" size="2">
-	<?php 	} 
-		}
-	?>
-	<input name="canCuo" type="text" readonly="readonly" id="sqlCabe" style="visibility:hidden; position:absolute; z-index:inherit" value="<?php echo $cuotasapagar ?>" size="2"> 
-
-  <div align="center"></div>
-  <div align="center">
-    <table width="800" border="1">
-      <tr>
-        <td width="134"><div align="center">Cuota </div></td>
-        <td width="107"><div align="center">Monto</div></td>
-        <td width="116"><div align="center">Fecha</div></td>
-        <td width="300"><div align="center">Cancelacion</div></td>
-		<td width="200"><div align="center">Nro Cheque </div></td>
-		<td width="212"><div align="center">Banco </div></td>
-		<td width="212"><div align="center">Fecha Cheque </div></td>
-  	 </tr>
-    <?php
-    
-	for ( $i = 1 ; $i <= $cuotasapagar ; $i ++) { ?>
-		<tr>
-			<td width=134 align='center'><font face=Verdana size=1><?php echo $i ?></font></td>
-			<td width=107><input name='monto<?php echo $i ?>"' id='monto<?php echo $i ?>' type='text' size='10'></td>
-			<td width=116> <input name='fecha<?php echo $i ?>' id='fecha<?php echo $i ?>' type='text' size='10'></td>
-			<td width=212>
-				<select name=<?php print("tipo".$i);?> id=<?php print("tipo".$i);?> onChange="verInfoCheques(document.forms.cuotas.<?php print("tipo".$i."[selectedIndex]");?>.value ,<?php echo $i ?>)">
-			      <option value=-1>Seleccione un valor </option>
-      		 <?php $query="select * from tiposcancelaciones";
-					$result=mysql_query($query,$db);
-					while ($rowtipos=mysql_fetch_array($result)) { ?>
-			      <option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
-			        <?php } ?>
-			    </select>
-     		</td>
-     		<td width=212> <input name='ncheque<?php echo $i ?>' id='ncheque<?php echo $i ?>' type='text' size='12' style='visibility: hidden'> </td>
-     		<td width=212> <input name='bcheque<?php echo $i ?>' id='bcheque<?php echo $i ?>' type='text' size='12'  style='visibility: hidden'> </td>
-     		<td width=212> <input name='fcheque<?php echo $i ?>' id='fcheque<?php echo $i ?>' type='text' size='12' style='visibility: hidden'> </td>
-     	</tr>
-     	<tr>
-     		<td width=134 align='center'><font face=Verdana size=1>Obs.</font></td>
-     		<td colspan='6'> <textarea name='obs<?php echo $i ?>' id='obs<?php echo $i ?>' cols='93' rows='2' ></textarea> </td>
-      	</tr>
- <?php } ?>
-    </table>
-  </div>
-  <p align="center"> 
-  	<input type="submit" name="Submit" id="Submit" value="Guardar" />
-	<label></label>
-  </p>
-</form>
+<body bgcolor="#B2A274">
+<div align="center">
+	<form id="cuotas" name="cuotas" onSubmit="return validarYGuardar(this)" method="POST" action="guardoAcuerdo.php?cuit=<?php echo $cuit?>&nroacu=<?php echo $nroacuerdo?>">
+		<p><input type="button" onclick="location.href='nuevoAcuerdo.php?cuit=<?php echo $cuit ?>'" value="Volver"> </p>
+		<h3>Cuotas del Acuerdo </h3>
+		<input name="sqlCabe" type="text" readonly="readonly" id="sqlCabe" style="display: none" value="<?php echo $sqlCargaCabecera ?>" size="2"> 
+		<input name="canPer" type="text" readonly="readonly" id="sqlCabe" style="display: none" value="<?php echo $id-1 ?>" size="2"> 
+		<?php if ($id != 1) { 
+				for ($i = 0; $i < $id-1; $i++) {?>
+				<input name="cantPer<?php echo $i ?>" id="sqlPeri<?php echo $i ?>" type="text" readonly="readonly"  style="display: none" value="<?php echo $listaPeriodos[$i] ?>" size="2">
+		<?php 	} 
+			}
+		?>
+		<input name="canCuo" type="text" readonly="readonly" id="sqlCabe" style="display: none" value="<?php echo $cuotasapagar ?>" size="2"> 
+	    <table width="800" border="1" style="text-align: center">
+	      <tr>
+	        <th>Cuota </th>
+	        <th>Monto </th>
+	        <th>Fecha </th>
+	        <th>Cancelacion </th>
+			<th>Nro Cheque </th>
+			<th>Banco </th>
+			<th>Fecha Cheque </th>
+	  	 </tr>
+	    <?php  
+		for ( $i = 1 ; $i <= $cuotasapagar ; $i ++) { ?>
+			<tr>
+				<td><b><?php echo $i ?></b></td>
+				<td><input name='monto<?php echo $i ?>"' id='monto<?php echo $i ?>' type='text' size='10'></td>
+				<td> <input name='fecha<?php echo $i ?>' id='fecha<?php echo $i ?>' type='text' size='10'></td>
+				<td>
+					<select name=<?php print("tipo".$i);?> id=<?php print("tipo".$i);?> onChange="verInfoCheques(document.forms.cuotas.<?php print("tipo".$i."[selectedIndex]");?>.value ,<?php echo $i ?>)">
+				      <option value=-1>Seleccione un valor </option>
+	      		 <?php $query="select * from tiposcancelaciones";
+						$result=mysql_query($query,$db);
+						while ($rowtipos=mysql_fetch_array($result)) { ?>
+				      <option value="<?php echo $rowtipos['codigo'] ?>"><?php echo $rowtipos['codigo'].' - '.$rowtipos['descripcion']  ?></option>
+				        <?php } ?>
+				    </select>
+	     		</td>
+	     		<td> <input name='ncheque<?php echo $i ?>' id='ncheque<?php echo $i ?>' type='text' size='12' style='visibility: hidden'> </td>
+	     		<td> <input name='bcheque<?php echo $i ?>' id='bcheque<?php echo $i ?>' type='text' size='12'  style='visibility: hidden'> </td>
+	     		<td> <input name='fcheque<?php echo $i ?>' id='fcheque<?php echo $i ?>' type='text' size='12' style='visibility: hidden'> </td>
+	     	</tr>
+	     	<tr>
+	     		<td><b>Obs.</b></td>
+	     		<td colspan='6'> <textarea name='obs<?php echo $i ?>' id='obs<?php echo $i ?>' cols='116' rows='2' ></textarea> </td>
+	      	</tr>
+	 <?php } ?>
+	    </table>
+	  	<p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
+	</form>
+</div>
 </body>
 </html>
 
