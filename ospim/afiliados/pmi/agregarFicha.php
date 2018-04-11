@@ -165,7 +165,7 @@ function validar(formulario) {
 								<input name="edad" type="text" id="edad" readonly="readonly" value="<?php echo $rowLeeAfiliado['edadactual'] ?>" size="3" class="style_input_readonly"/>
 							  </span>
 							  <span class="style_texto_input"><strong>Delegacion : </strong>
-								<input name="codidelega" type="codidelega" id="codidelega" readonly="readonly" value="<?php echo $rowLeeAfiliado['codidelega'] ?>" size="4" class="style_input_readonly"/>
+								<input name="codidelega" type="text" id="codidelega" readonly="readonly" value="<?php echo $rowLeeAfiliado['codidelega'] ?>" size="4" class="style_input_readonly"/>
 							  </span>
 							  <p>							  </p>
 							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n de Email</span></p>
