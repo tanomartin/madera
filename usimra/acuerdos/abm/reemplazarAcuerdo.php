@@ -232,29 +232,26 @@ function validar(formulario) {
 		} ?>
     </table>
     <p><b>Períodos </b> </p>
-    <?php 
-	
-	?>
     <input  name="mostrar" type="text" id="mostrar" size="4" value="<?php echo $canPeridos?>" readonly="readonly" style="display:none"/>
-    <table width="300" border="1" style="text-align: center">
-      <tr>
-        <th>Mes</th>
-        <th>Año</th>
-        <th>Concepto de deuda </th>
-      </tr>
-     <?php	if ($canPeridos > 0) { 
-				while ($rowPeriodos=mysql_fetch_array($resPeridos)) { ?>
+    <?php	if ($canPeridos > 0) { ?>
+			    <table width="300" border="1" style="text-align: center">
+			      <tr>
+			        <th>Mes</th>
+			        <th>Año</th>
+			        <th>Concepto de deuda </th>
+			      </tr>
+		<?php 	while ($rowPeriodos=mysql_fetch_array($resPeridos)) { ?>
 					<tr>
 						<td><?php echo $rowPeriodos['mesacuerdo'] ?></td>
 						<td><?php echo $rowPeriodos['anoacuerdo'] ?></td>
 						<td><?php echo $rowPeriodos['descripcion'] ?></td>
 					</tr>
-		<?php 	} 
-			} else {
-				print("No hay periodos");
-			}
-			?>
-    </table>
+		<?php 	} ?>
+				</table>
+	<?php	} else { ?>
+				<p style="color: blue">No hay periodos cargados en este acuerdo</p>		
+	<?php	}	?>
+			    
     <p align="center"><input type="submit" name="reemplazar" value="Reemplazar Acuerdo" /></p>
   </div>
 </form>
