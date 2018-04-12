@@ -60,7 +60,6 @@ function abrirMinutas(dire) {
 <body bgcolor="#B2A274">
 <div align="center">
   <p><img src="img/logo.png" width="168" height="168" /></p>
-  <h3>MENU PRINCIPAL</h3>
   <table width="600" border="2" style="text-align: center;">
     <tr>
       <td width="200">
