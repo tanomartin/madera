@@ -77,7 +77,8 @@ $sqlTitularesSSS = "SELECT
 						t.fechacarnet is null and
 						t.codprovin = p.codprovin and
 						t.codlocali = l.codlocali and 
-						t.estadocivil = e.codestciv";
+						t.estadocivil = e.codestciv
+					ORDER BY t.cuitempresa";
 $resTitularesSSS = mysql_query($sqlTitularesSSS,$db);
 $canTitularesSSS = mysql_num_rows($resTitularesSSS);
 
