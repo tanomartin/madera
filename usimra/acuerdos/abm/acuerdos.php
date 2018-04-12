@@ -14,7 +14,10 @@ if ($cant != 1) {
 	header ("Location: moduloABM.php?err=1");
 }
 $row = mysql_fetch_array($result); 
-$sqlacuerdos =  "select * from cabacuerdosusimra c, estadosdeacuerdos e where c.cuit = $cuit and c.estadoacuerdo = e.codigo order by nroacuerdo";
+$sqlacuerdos =  "SELECT c.*, e.descripcion as estado, t.descripcion as tipo 
+					FROM cabacuerdosusimra c, estadosdeacuerdos e, tiposdeacuerdos t
+					WHERE c.cuit = $cuit and c.estadoacuerdo = e.codigo and c.tipoacuerdo = t.codigo
+					ORDER BY nroacuerdo";
 $resulacuerdos= mysql_query($sqlacuerdos); 
 
 ?>
@@ -36,18 +39,15 @@ $resulacuerdos= mysql_query($sqlacuerdos);
   <table width="700" border="1" style="text-align: center">
      <?php 
 		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) {
-			$nroacu = $rowacuerdos['nroacuerdo'];
-			$query = "select * from tiposdeacuerdos where codigo = $rowacuerdos[tipoacuerdo]";
-			$result=mysql_query($query,$db);
-			$rowtipos=mysql_fetch_array($result); ?>
+			$nroacu = $rowacuerdos['nroacuerdo']; ?>
 			<tr>
-				<td width=350><?php echo $rowacuerdos['nroacuerdo']." - ".$rowtipos['descripcion']." - Acta: ".$rowacuerdos['nroacta'] ?></td>
+				<td width=350><?php echo $rowacuerdos['nroacuerdo']." - ".$rowacuerdos['tipo']." - Acta: ".$rowacuerdos['nroacta'] ?></td>
 				<td>
 			 <?php 	if ($rowacuerdos['estadoacuerdo'] == 1 || $rowacuerdos['estadoacuerdo'] == 5) { 
 						if ($rowacuerdos['estadoacuerdo'] == 1) { ?>
 							<input type="button" value="Modificar" onclick="location.href = 'modificarAcuerdo.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $rowacuerdos['nroacuerdo']?>'" />
 				 <?php	} else { 
-				 		 	echo $rowacuerdos['descripcion']; 
+				 		 	echo $rowacuerdos['estado']; 
 						}
 						$sqlCuotas = "select * from cuoacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
 						$resCuotas = mysql_query($sqlCuotas,$db); 
@@ -68,7 +68,7 @@ $resulacuerdos= mysql_query($sqlacuerdos);
 							<input type="button" value="Reemplazar" onclick="location.href = 'reemplazarAcuerdo.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $rowacuerdos['nroacuerdo'] ?>'" />
 				<?php	} 
 					} else { 
-						echo $rowacuerdos['descripcion']." - ";
+						echo $rowacuerdos['estado']." - ";
 					} ?>
 					<input type="button" value="Consultar" onclick="location.href = 'consultaAcuerdo.php?cuit=<?php echo $cuit ?>&nroacu=<?php echo $rowacuerdos['nroacuerdo'] ?>'" />
 				</td>
