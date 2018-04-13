@@ -17,7 +17,8 @@ $resCabecera = mysql_query($sqlCabecera,$db);
 $rowCebecera = mysql_fetch_array($resCabecera); 
 
 $sqlPeriodos = "SELECT * FROM detacuerdosospim d, conceptosdeudas c
-				WHERE d.cuit = $cuit and d.nroacuerdo = $nroacu and d.conceptodeuda = c.codigo";
+				WHERE d.cuit = $cuit and d.nroacuerdo = $nroacu and d.conceptodeuda = c.codigo 
+				ORDER BY anoacuerdo, mesacuerdo";
 $resPeriodos = mysql_query($sqlPeriodos,$db);
 $canPeriodos = mysql_num_rows($resPeriodos);
 
