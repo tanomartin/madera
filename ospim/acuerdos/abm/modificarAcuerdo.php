@@ -4,11 +4,13 @@ include($libPath."fechas.php");
 $nroacu=$_GET['nroacu'];
 $cuit=$_GET['cuit'];
 
-$sqlacu = "select c.*, e.descripcion from cabacuerdosospim c, estadosdeacuerdos e where c.cuit = $cuit and c.nroacuerdo = $nroacu and  c.estadoacuerdo = e.codigo";
+$sqlacu = "SELECT c.*, e.descripcion FROM cabacuerdosospim c, estadosdeacuerdos e
+			WHERE c.cuit = $cuit and c.nroacuerdo = $nroacu and  c.estadoacuerdo = e.codigo";
 $resulacu=  mysql_query( $sqlacu,$db); 
 $rowacu = mysql_fetch_array($resulacu);
 
-$sqlPeridos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
+$sqlPeridos = "SELECT * FROM detacuerdosospim WHERE cuit = $cuit and nroacuerdo = $nroacu 
+				ORDER BY anoacuerdo, mesacuerdo";
 $resPeridos =  mysql_query( $sqlPeridos,$db);
 $canPeridos = mysql_num_rows($resPeridos);
 ?>

@@ -9,7 +9,8 @@ $sqlacu = "SELECT * FROM cabacuerdosusimra c, estadosdeacuerdos e
 $resulacu=  mysql_query( $sqlacu,$db); 
 $rowacu = mysql_fetch_array($resulacu);
 
-$sqlPeridos = "select * from detacuerdosusimra where cuit = $cuit and nroacuerdo = $nroacu";
+$sqlPeridos = "SELECT * FROM detacuerdosusimra 
+				WHERE cuit = $cuit and nroacuerdo = $nroacu ORDER BY anoacuerdo, mesacuerdo";
 $resPeridos =  mysql_query( $sqlPeridos,$db);
 $canPeridos = mysql_num_rows($resPeridos);
 ?>
