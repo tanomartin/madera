@@ -12,12 +12,14 @@ include($libPath."cabeceraEmpresaConsulta.php");
 
 if ($tipo == "noexiste") {
 	header ("Location: moduloImpresion.php?err=2");
+	exit(0);
 } else {
 	$sqlacuerdos =  "select c.*, e.*, t.descripcion as tipo from cabacuerdosospim c, estadosdeacuerdos e, tiposdeacuerdos t where c.cuit = $cuit and c.estadoacuerdo = e.codigo and c.tipoacuerdo = t.codigo order by nroacuerdo";
 	$resulacuerdos= mysql_query( $sqlacuerdos,$db); 
 	$cant = mysql_num_rows($resulacuerdos); 
 	if ($cant == 0) {
 		header('Location: moduloImpresion.php?err=1');
+		exit(0);
 	}
 }
 
@@ -27,24 +29,14 @@ if ($tipo == "noexiste") {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none;color:#0033FF}
-A:hover {text-decoration: none;color:#33CCFF }
-</style>
-
 <title>.: Sistema de Acuerdos OSPIM :.</title>
 </head>
 <body bgcolor="#CCCCCC">
-<div align="center">
-  <p>
-  <input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloImpresion.php'" />
-  </p>
-	 <?php 	
-		include($libPath."cabeceraEmpresa.php"); 
-	?>
-  <p><strong>Acuerdos Existentes </strong></p>
-	  <table width="550" border="1" style="text-align: center">
+	<div align="center">
+  		<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloImpresion.php'" /></p>
+	  	<?php include($libPath."cabeceraEmpresa.php"); ?>
+  		<p><b>Acuerdos Existentes </b></p>
+	  	<table width="550" border="1" style="text-align: center">
 	     <?php 
 			while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) { ?>
 				<tr>
@@ -55,12 +47,11 @@ A:hover {text-decoration: none;color:#33CCFF }
 		 <?php	} ?>
 				</tr>
 	<?php	} ?>	
-	  </table>
-    <?php
-    if (isset($_GET["acuerdo"])) {
-  		$acuerdo = $_GET["acuerdo"];?>
-		  <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
-		  <table border="1" width="935" style="text-align: center">
+	  	</table>
+    <?php if (isset($_GET["acuerdo"])) {
+  			$acuerdo = $_GET["acuerdo"];?>
+		  	<p><b>Cuotas Acuerdo Nº <?php echo $acuerdo ?></b></p>
+		  	<table border="1" width="940" style="text-align: center">
 				<tr>
     				<th>Nro Cuota</th>
    					<th>Monto</th>
@@ -71,17 +62,14 @@ A:hover {text-decoration: none;color:#33CCFF }
 					<th>Fecha Cheque</th>
 					<th>Estado</th>
 				</tr>
-			
-			<?php	
-			$sqllistado = "select c.*, t.descripcion, t.imprimible from cuoacuerdosospim c, tiposcancelaciones t where c.cuit = $cuit and c.nroacuerdo = $acuerdo and c.tipocancelacion = t.codigo";
+	 <?php	$sqllistado = "select c.*, t.descripcion, t.imprimible from cuoacuerdosospim c, tiposcancelaciones t where c.cuit = $cuit and c.nroacuerdo = $acuerdo and c.tipocancelacion = t.codigo";
 			$reslistado = mysql_query( $sqllistado,$db); 
 			while ($rowListado = mysql_fetch_array($reslistado)) {  ?>
 				<tr>
 					<td><?php echo $rowListado['nrocuota']?></td>
 					<td><?php echo $rowListado['montocuota']?></td>
 					<td><?php echo invertirFecha($rowListado['fechacuota'])?></td>
-					<td><?php echo $rowListado['descripcion']?></td>
-		
+					<td><?php echo $rowListado['descripcion']?></td>	
 		<?php	if ($rowListado['chequenro'] == 0) { ?>
 					<td>-</td>
 					<td>-</td>

@@ -16,15 +16,10 @@ $rowCuo = mysql_fetch_array($resCuo);
 <head>
 <title>.: Confirmar Cancelacion :.</title>
 </head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none;color:#0033FF}
-A:hover {text-decoration: none;color:#33CCFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 jQuery(function($){
 	$("#fechapagada").mask("99-99-9999");
@@ -37,20 +32,21 @@ function validar(formulario) {
 		formulario.fechapagada.focus = true;
 		return false;
 	}
-	return true;
+	$.blockUI({ message: "<h1>Cancelando cuota... <br>Esto puede tardar unos segundo.<br> Aguarde por favor</h1>" });
+	return true
 }
 
 </script>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" /></p>
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'selecCanCuotas.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>'" /></p>
 	 <?php 	
 		include($libPath."cabeceraEmpresaConsulta.php");
 		include($libPath."cabeceraEmpresa.php"); 
-	?>
+	  ?>
 	<form id="formularioSeleCuotas" name="formularioSeleCuotas" method="post" action="cancelarCuota.php?cuit=<?php echo $cuit ?>&acuerdo=<?php echo $acuerdo ?>&cuota=<?php echo $cuota ?>"  onSubmit="return validar(this)">
-      <p><strong>Acuerdo N&uacute;mero </strong> <?php echo $acuerdo ?> <strong>Cuota</strong> <?php echo $cuota ?> </p>
+    	<p><b>Acuerdo Nº <?php echo $acuerdo ?> Cuota Nº<?php echo $cuota ?> </b></p>
 	  	<table border="1" width="935" style="text-align: center">
 			<tr>
    				<th>Monto</th>

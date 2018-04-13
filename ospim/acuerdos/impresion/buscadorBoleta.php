@@ -7,13 +7,13 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	$filtro = $_POST['filtro'];
 	
 	if ($filtro == 0) {
-		$cartel = "Resultados de Busqueda por Nro. Control <b>".$dato."</b>";
+		$cartel = "Resultados de Busqueda por Nro. Control <b>'".$dato."'</b>";
 	}
 	if ($filtro == 1) {
-		$cartel = "Resultados de Busqueda por Nro. Cheque <b>".$dato."</b>";
+		$cartel = "Resultados de Busqueda por Nro. Cheque <b>'".$dato."'</b>";
 	}
 	if ($filtro == 2) {
-		$cartel = "Resultados de Busqueda por C.U.I.T. <b>".$dato."</b>";
+		$cartel = "Resultados de Busqueda por C.U.I.T. <b>'".$dato."'</b>";
 	}
 	
 	$tipoBoletas = "";
@@ -72,22 +72,6 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Acuerdo ospim :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
-
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" />
@@ -132,69 +116,55 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorBoleta.php">
-  <div align="center" >
-  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" /></p>
-  <p align="center" class="Estilo1">M&oacute;dulo Buscador de Bolestas</p>
-   <?php 
-		if ($noExiste == 1) {
-			print("<div style='color:#FF0000'><b> NO EXISTE BOLETA CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
-		}
-  ?>
-  </div>
-  
-  <div align="center">
-    <table style="width: 300; border: 0">
-      <tr>
-        <td rowspan="3"><div align="center"><strong>Buscar por </strong></div></td>
-        <td><div align="left"><input type="radio" name="filtro"  value="0" checked="checked" /> Nro Control </div></td>
-      </tr>
-      <tr>
-        <td><div align="left"><input type="radio" name="filtro" value="1" /> Nro Cheque </div></td>
-      </tr>
-      <tr>
-        <td><div align="left"><input type="radio" name="filtro" value="2" />
-          C.U.I.T.</div></td>
-      </tr>
-    </table>
-    <p><strong>Dato</strong> 
-      <input name="dato" type="text" id="dato" size="14" />
-    </p>
-  </div>
-  <p align="center">
-    <label>
-    <input type="submit" name="Buscar" value="Buscar" />
-    </label>
-  </p>
-  <div align="center">
-   <?php if ($noExiste == 0 and isset($dato)) { ?>
-   <p><?php echo $cartel ?></p>
-  <table class="tablesorter" id="listaResultado" style="width:600px; font-size:14px">
-	  <thead>
-		<tr>
-			<th>Nro. Control</th>
-			<th>C.U.I.T.</th>
-			<th>Acuerdo</th>
-			<th>Cuota</th>
-			<th>Importe</th>
-			<th class="filter-select" data-placeholder="Seleccion Estado">Estado</th>
-			<th></th>
-		</tr>
-	</thead>
-<?php foreach($resultado as $boleta) { 
-		$detalle = ""?>
-		<tr align="center">
-			<td><?php echo $boleta['nrocontrol'];?></td>	
-			<td><?php echo $boleta['cuit'];?></td>	
-			<td><?php echo $boleta['acuerdo'];?></td>	
-			<td><?php echo $boleta['cuota'];?></td>	
-			<td><?php echo $boleta['importe'];?></td>	
-			<td><?php echo $boleta['estado'];?></td>
-			<td><input type="button" onclick='abrirDetalle("detalleBoleta.php?nrocontrol=<?php echo $boleta['nrocontrol']?>&estado=<?php echo $boleta['estado'] ?>")' value="Detalle"/></td>
-		</tr>
-	<?php } ?>
-  </table>
+	<div align="center">
+	  	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuBoletas.php'" /></p>
+	  	<h3>Módulo Buscador de Bolestas</h3>
+	    <?php if ($noExiste == 1) { ?>
+				<p style='color:red'><b> NO EXISTE BOLETA CON ESTE FILTRO DE BUSQUEDA </b><p>
+	    <?php } ?>
+	    <table style="width: 300; border: 0; text-align: left">
+	    	<tr>
+		        <td><b>Buscar por </b></td>
+		        <td>
+		        	<input type="radio" name="filtro"  value="0" checked="checked" /> Nro Control <br/>
+		        	<input type="radio" name="filtro" value="1" /> Nro Cheque <br/>
+		        	<input type="radio" name="filtro" value="2" /> C.U.I.T.
+		        </td>
+	      	</tr>
+	    </table>
+	    <p><b>Dato</b> <input name="dato" type="text" id="dato" size="14" /></p>
+  		<p><input type="submit" name="Buscar" value="Buscar" /></p>
+  <?php if ($noExiste == 0 and isset($dato)) { ?>
+   			<p><?php echo $cartel ?></p>
+  			<table class="tablesorter" id="listaResultado" style="width:600px; font-size:14px">
+		  		<thead>
+					<tr>
+						<th>Nro. Control</th>
+						<th>C.U.I.T.</th>
+						<th>Acuerdo</th>
+						<th>Cuota</th>
+						<th>Importe</th>
+						<th class="filter-select" data-placeholder="Seleccion Estado">Estado</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+	  <?php foreach($resultado as $boleta) { 
+				$detalle = "" ?>
+				<tr align="center">
+					<td><?php echo $boleta['nrocontrol'];?></td>	
+					<td><?php echo $boleta['cuit'];?></td>	
+					<td><?php echo $boleta['acuerdo'];?></td>	
+					<td><?php echo $boleta['cuota'];?></td>	
+					<td><?php echo $boleta['importe'];?></td>	
+					<td><?php echo $boleta['estado'];?></td>
+					<td><input type="button" onclick='abrirDetalle("detalleBoleta.php?nrocontrol=<?php echo $boleta['nrocontrol']?>&estado=<?php echo $boleta['estado'] ?>")' value="Detalle"/></td>
+				</tr>
+		<?php } ?>
+				</tbody>
+  			</table>
   <?php } ?>
-  </div>
+	</div>
 </form>
 </body>
 </html>

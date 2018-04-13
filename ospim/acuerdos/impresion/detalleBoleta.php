@@ -3,9 +3,9 @@ include($libPath."controlSessionOspim.php");
 
 $nrocontrol = $_GET['nrocontrol'];
 $estado = $_GET['estado'];
-if ($estado == "Generada") { $sqlBoleta = "SELECT * from boletasospim where nrocontrol = $nrocontrol"; }
-if ($estado == "Validada") { $sqlBoleta = "SELECT * from validasospim where nrocontrol = $nrocontrol"; }
-if ($estado == "Anulada") { $sqlBoleta = "SELECT * from anuladasospim where nrocontrol = $nrocontrol"; }
+if ($estado == "Generada") { $sqlBoleta = "SELECT * from boletasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"  ; }
+if ($estado == "Validada") { $sqlBoleta = "SELECT * from validasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"; }
+if ($estado == "Anulada") { $sqlBoleta = "SELECT * from anuladasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"; }
 
 $resBoleta = mysql_query($sqlBoleta,$db); 
 $rowAMostrar = mysql_fetch_array($resBoleta);
@@ -20,91 +20,63 @@ $rowAMostrar = mysql_fetch_array($resBoleta);
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-    <p><strong>DETALLE DE BOLETE CON NRO DE CONTROL <?php echo $nrocontrol ?></strong></p>
-    <table width="543">
-      <tr>
-        <td width="160"><div align="right">CUIT</div></td>
-        <td width="371" style="border:groove"><div align="left"><strong><?php echo $rowAMostrar['cuit']; ?></strong></div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Raz&oacute;n Social </div></td>
-        <td><div align="left" style="border:groove">
-          <div align="left"><strong>
-            <?php 
-			$sqlEmp = "select * from empresas where cuit = ".$rowAMostrar['cuit'];
-			$resEmp = mysql_query($sqlEmp,$db); 
-			$rowEmp = mysql_fetch_array($resEmp); 
-			echo $rowEmp['nombre']; 
-		?>
-          </strong></div>
-        </div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Nro Acuerdo </div></td>
-        <td><div align="left" style="border:groove">
-          <div align="left"><strong><?php echo $rowAMostrar['nroacuerdo']; ?></strong></div>
-        </div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Nro Cuota</div></td>
-        <td><div align="left" style="border:groove">
-          <div align="left"><strong><?php echo $rowAMostrar['nrocuota']; ?></strong></div>
-        </div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Importe</div></td>
-        <td><div align="left" style="border:groove">
-          <div align="left"><strong><?php echo $rowAMostrar['importe']; ?></strong></div>
-        </div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Identificacion Boleta </div></td>
-        <td><div align="left" style="border:groove">
-          <div align="left"><strong><?php echo $rowAMostrar['nrocontrol']; ?></strong></div>
-        </div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Usuario Emisi&oacute;n </div></td>
-        <td><div align="left" style="border:groove">
-          <div align="left"><strong><?php echo $rowAMostrar['usuarioregistro']; ?></strong></div>
-        </div></td>
-      </tr>
+    <p><b>DETALLE DE BOLETE CON NRO DE CONTROL <?php echo $nrocontrol ?></b></p>
+    <table border="1" width="600" style="text-align: center">
+    	<tr>
+        	<td>C.U.I.T.</td>
+        	<td><b><?php echo $rowAMostrar['cuit']; ?></b></td>
+      	</tr>
+      	<tr>
+        	<td>Razón Social</td>
+        	<td><b><?php echo $rowAMostrar['nombre']; ?></b></td>
+      	</tr>
+      	<tr>
+        	<td>Nº Acuerdo</td>
+        	<td><b><?php echo $rowAMostrar['nroacuerdo']; ?></b></td>
+      	</tr>
+      	<tr>
+        	<td>Nº Cuota</td>
+        	<td><b><?php echo $rowAMostrar['nrocuota']; ?></b></td>
+      	</tr>
+      	<tr>
+       		<td>Importe</td>
+        	<td><b><?php echo $rowAMostrar['importe']; ?></b></td>
+      	</tr>
+      	<tr>
+        	<td>Identificacion Boleta</td>
+        	<td><b><?php echo $rowAMostrar['nrocontrol']; ?></b></td>
+      	</tr>
+      	<tr>
+       		<td>Usuario Emisión</td>
+        	<td><b><?php echo $rowAMostrar['usuarioregistro']; ?></b></td>
+      	</tr>
     </table>
-    <p>
-      <?php 
-	if ($estado == "Anulada") {
-		print("<div align='center' style='color:#000000'><b> INFORMACION DE ANULACION</b></div><br>"); ?>
-	</p>
-    <table width="543">
-      <tr>
-        <td width="180"><div align="right">Fecha Anulacion</div></td>
-        <td width="351" style="border:groove"><div align="left"><strong><?php echo $rowAMostrar['fechaanulacion']; ?></strong></div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Docuemtancion en Mano</div></td>
-        <td><div align="left" style="border:groove">
-            <div align="left"><strong>
-              <?php 
-		   if($rowAMostrar['documentoenmano'] == 0) {
-		   		echo "NO";
-		   } else {
-		   		echo "SI";
-		   }
-		?>
-            </strong></div>
-        </div></td>
-      </tr>
-      <tr>
-        <td><div align="right">Motivo</div></td>
-        <td><div align="left" style="border:groove">
-            <div align="left"><strong><?php if($rowAMostrar['motivoanulacion'] != "" ) {echo $rowAMostrar['motivoanulacion'];} else { echo "-"; } ?></strong></div>
-        </div></td>
-      </tr>
-    </table>
-		 <?php } ?>
-    <p>
-      <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" />
-    </p>
+<?php if ($estado == "Anulada") { ?>
+		<p style='color:#000000'><b> INFORMACION DE ANULACION</b></p>
+    	<table border="1" width="600" style="text-align: center">
+      		<tr>
+        		<td>Fecha Anulacion</td>
+        		<td><b><?php echo $rowAMostrar['fechaanulacion']; ?></b></td>
+      		</tr>
+      		<tr>
+        		<td>Docuemtancion en Mano</td>
+       	 		<td>
+       	 			<b>
+	              <?php if($rowAMostrar['documentoenmano'] == 0) {
+			   				echo "NO";
+			   			} else {
+			   				echo "SI";
+			   			} ?>
+            		</b>
+            	</td>
+      		</tr>
+      		<tr>
+        		<td>Motivo</td>
+        		<td><b><?php if($rowAMostrar['motivoanulacion'] != "" ) {echo $rowAMostrar['motivoanulacion'];} else { echo "-"; } ?></b></td>
+      		</tr>
+    	</table>
+<?php } ?>
+    <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>

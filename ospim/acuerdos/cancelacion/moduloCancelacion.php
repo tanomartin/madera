@@ -16,30 +16,14 @@ jQuery(function($){
 });
 
 </script>
-
-<style>
-
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" action="selecCanCuotas.php">
-  <p align="center">
-   <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" />
-  </p>
-  <p align="center" class="Estilo1">M&oacute;dulo de Cancelaci&oacute;n de Cuotas </p>
-   <?php 
-   		if (isset($_GET['err'])) {
+<div align="center">
+	<form id="form1" name="form1" method="post" action="selecCanCuotas.php">
+  		<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /></p>
+  		<h3>Módulo de Cancelación de Cuotas </h3>
+   <?php if (isset($_GET['err'])) {
 	  		$err = $_GET['err'];
 			if ($err == 1) {
 				print("<p><div align='center' style='color:#FF0000'><b> CUIT SIN ACUERDOS CARGADOS </b></div></p>");
@@ -47,13 +31,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 			if ($err == 2) {
 				print("<p><div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div></p>");
 			}
-   		}
-  ?>
-  
-  <div align="center">
-  	<p><label> CUIT <input name="cuit" id="cuit" type="text" size="10" /></label></p>
-  	<p><label><input type="submit" name="Submit" value="Buscar" /></label></p>
-  </div>
-</form>
+   		} ?>
+  		<p>C.U.I.T.: <input name="cuit" id="cuit" type="text" size="10" /></p>
+  		<p><input type="submit" name="Submit" value="Buscar" /></p>
+	</form>
+</div>
 </body>
 </html>

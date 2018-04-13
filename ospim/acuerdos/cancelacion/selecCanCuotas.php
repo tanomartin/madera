@@ -10,12 +10,14 @@ if (isset($_POST['cuit'])) {
 include($libPath."cabeceraEmpresaConsulta.php");
 if ($tipo == "noexiste") {
 	header('Location: moduloCancelacion.php?err=2');
+	exit(0);
 } else {	
 	$sqlacuerdos =  "select c.*, e.*, t.descripcion as tipo from cabacuerdosospim c, estadosdeacuerdos e, tiposdeacuerdos t where c.cuit = $cuit and c.estadoacuerdo = e.codigo and c.tipoacuerdo = t.codigo order by nroacuerdo";
 	$resulacuerdos= mysql_query( $sqlacuerdos,$db); 
 	$cant = mysql_num_rows($resulacuerdos); 
 	if ($cant == 0) {
 		header('Location: moduloCancelacion.php?err=1');
+		exit(0);
 	}
 }
 ?>
@@ -24,33 +26,24 @@ if ($tipo == "noexiste") {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none;color:#0033FF}
-A:hover {text-decoration: none;color:#33CCFF }
-</style>
-
 <title>.: Seleccion cuata a cancelar :.</title>
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-  <input type="button" name="volver" value="Volver" onclick="location.href = 'moduloCancelacion.php'" />
-  </p>
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloCancelacion.php'" /></p>
 	 <?php include($libPath."cabeceraEmpresa.php"); ?>
-  <p><strong>Acuerdos Existentes </strong></p>
-  <table width="550" border="1" style="text-align: center">
-     <?php 
-		while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) { ?>
-			<tr>
-				<td><a href="selecCanCuotas.php?acuerdo=<?php echo $rowacuerdos['nroacuerdo']?>&cuit=<?php echo $cuit?>"> Acuerdo <?php echo $rowacuerdos['nroacuerdo']?> - <?php echo $rowacuerdos['tipo'] ?> - Acta: <?php echo $rowacuerdos['nroacta'] ?> - <?php echo $rowacuerdos['descripcion'] ?></a></td>
-			</tr>
- <?php 	} ?>
-  </table>
+  	<h3>Acuerdos Existentes </h3>
+  	<table width="550" border="1" style="text-align: center">
+<?php while ($rowacuerdos = mysql_fetch_array($resulacuerdos)) { ?>
+		<tr>
+			<td><a href="selecCanCuotas.php?acuerdo=<?php echo $rowacuerdos['nroacuerdo']?>&cuit=<?php echo $cuit?>"> Acuerdo <?php echo $rowacuerdos['nroacuerdo']?> - <?php echo $rowacuerdos['tipo'] ?> - Acta: <?php echo $rowacuerdos['nroacta'] ?> - <?php echo $rowacuerdos['descripcion'] ?></a></td>
+		</tr>
+<?php } ?>
+  	</table>
 <?php  if (isset($_GET["acuerdo"])) {
-  		$acuerdo = $_GET["acuerdo"]; ?>
-		  <p><strong>Cuotas</strong> <strong>Acuerdo Número </strong> <?php echo $acuerdo ?></p>
-		  <table border="1" width="935" style="text-align: center">
+  			$acuerdo = $_GET["acuerdo"]; ?>
+		  	<p><b>Cuotas Acuerdo Nº <?php echo $acuerdo ?></b> </p>
+		  	<table border="1" width="935" style="text-align: center">
 				<tr>
     				<th>Nro Cuota</th>
    					<th>Monto</th>
@@ -61,9 +54,7 @@ A:hover {text-decoration: none;color:#33CCFF }
 					<th>Fecha Cheque</th>
 					<th>Estado</th>
 				</tr>
-			
-			<?php	
-			$sqllistado = "select c.*, t.descripcion, t.imprimible from cuoacuerdosospim c, tiposcancelaciones t where c.cuit = $cuit and c.nroacuerdo = $acuerdo and c.tipocancelacion = t.codigo";
+	<?php	$sqllistado = "select c.*, t.descripcion, t.imprimible from cuoacuerdosospim c, tiposcancelaciones t where c.cuit = $cuit and c.nroacuerdo = $acuerdo and c.tipocancelacion = t.codigo";
 			$reslistado = mysql_query( $sqllistado,$db); 
 			while ($rowListado = mysql_fetch_array($reslistado)) { ?>
 				<tr>
@@ -96,9 +87,8 @@ A:hover {text-decoration: none;color:#33CCFF }
 				} ?>
 				</tr> 
 	<?php	} ?>
-  </table>
+  			</table>
 <?php	}?>
-
 </div>
 </body>
 </html>

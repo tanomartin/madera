@@ -11,16 +11,6 @@ $feccheque =  $_GET['feccheque'];
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Detalle Valor al Cobro Realizado :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -52,7 +42,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onclick="location.href = 'valoresRealizados.php'"/></p>
-  <p><span class="Estilo2">Valor al Cobro Cheque Nro. '<?php echo $nrocheque ?>' con fecha '<?php echo $feccheque ?>' generado el '<?php echo $fecdep ?>'  </span></p>
+  <h3>Valor al Cobro Cheque Nro. '<?php echo $nrocheque ?>' con fecha '<?php echo $feccheque ?>' generado el '<?php echo $fecdep ?>'  </h3>
   <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 	  <thead>
 		<tr>
@@ -71,8 +61,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<?php	
 			$sqlValores = "SELECT v.cuit, v.nroacuerdo, v.nrocuota, v.chequenro, DATE_FORMAT(v.chequefecha,'%d/%m/%Y') as chequefecha, v.chequebanco, 
 								  v.idresumenbancario, DATE_FORMAT(v.fecharesumenbancario,'%d/%m/%Y') as fecharesumenbancario, c.montocuota
-							FROM valoresalcobro v, cuoacuerdosospim c Where
-							v.chequenroospim = '$nrocheque' and
+							FROM valoresalcobro v, cuoacuerdosospim c 
+							WHERE v.chequenroospim = '$nrocheque' and
 							v.chequenro = c.chequenro and
 							v.cuit = c.cuit and
 							v.nroacuerdo = c.nroacuerdo and
@@ -98,13 +88,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 	 		<tr>
 				<td colspan="8" align="right"><b>TOTAL</b></td>
 				<td align="right"><b><?php echo number_format($total,2,',','.') ?></b></td>
-			</tr>
-			
+			</tr>	
     </tbody>
   </table>
-  <p>
-    <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/>
-  </p>
+  <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
 </div>
 </body>
 </html>

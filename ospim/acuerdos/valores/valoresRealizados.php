@@ -7,16 +7,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Valores al Cobro Realizados :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -50,7 +40,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input type="reset" name="volver" value="Volver" onclick="location.href = 'menuValores.php'"/></p>
-  <p><span class="Estilo2">Valores al Cobro Realizados </span></p>
+  <h3>Valores al Cobro Realizados </h3>
   <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
 	  <thead>
 		<tr>
@@ -77,8 +67,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 	 <?php } ?>
     </tbody>
   </table>
-   <table width="245" border="0">
-      <tr>
+  <table width="245" border="0">
+	<tr>
         <td width="239">
 		<div id="paginador" class="pager">
 		  <form>
@@ -96,8 +86,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="right"/></p>
 		  </form>	
 		</div>
-	</td>
-      </tr>
+		</td>
+	</tr>
   </table>
 </div>
 </body>

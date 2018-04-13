@@ -3,230 +3,177 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 $cuit = $_GET['cuit'];
 $nroacu = $_GET['nroacu'];
+
+$sqlCabecera = "SELECT c.*, e.descripcion as estado, t.descripcion as tipo, g.apeynombre as gestor, i.apeynombre as inspector
+				FROM cabacuerdosospim c, estadosdeacuerdos e, tiposdeacuerdos t, gestoresdeacuerdos g, inspectores i
+				WHERE 
+					c.cuit = $cuit and 
+					c.nroacuerdo = $nroacu and 
+					c.estadoacuerdo = e.codigo and 
+					c.tipoacuerdo = t.codigo and
+					c.gestoracuerdo = g.codigo and
+					c.inspectorinterviene = i.codigo";
+$resCabecera = mysql_query($sqlCabecera,$db);
+$rowCebecera = mysql_fetch_array($resCabecera); 
+
+$sqlPeriodos = "SELECT * FROM detacuerdosospim d, conceptosdeudas c
+				WHERE d.cuit = $cuit and d.nroacuerdo = $nroacu and d.conceptodeuda = c.codigo";
+$resPeriodos = mysql_query($sqlPeriodos,$db);
+$canPeriodos = mysql_num_rows($resPeriodos);
+
+$sqlCuotas = "SELECT * FROM cuoacuerdosospim c, tiposcancelaciones t 
+				WHERE c.cuit = $cuit and c.nroacuerdo = $nroacu and c.tipocancelacion = t.codigo";
+$resCuotas = mysql_query($sqlCuotas,$db); 
+$canCuotas = mysql_num_rows($resCuotas); 
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 <title>.: Consulta Acuerdo :.</title>
 </head>
 <body bgcolor="#CCCCCC">
 <form name="verificador">
-  <div align="center">
-  	<?php 
-  		if (!isset($_GET['origen'])) { ?>
-			<input type="reset" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" />
-	<?php } ?>
-  </div>
-  <div align="center">
-    <?php 
-	include($libPath."cabeceraEmpresaConsulta.php"); 
-	include($libPath."cabeceraEmpresa.php"); 
-	
-	$sqlCabecera = "select * from cabacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-	$resCabecera = mysql_query($sqlCabecera,$db); 
-	$canCabecera = mysql_num_rows($resCabecera); 
-	if ($canCabecera == 1) {
-		$rowCebecera = mysql_fetch_array($resCabecera); 
-	} else {
-		echo ("<div align='center'> Error en la lectura de la cabecera de acuerdo cargada </div>");
-	}	
-	
-	?> 
-    <p><strong>O.S.P.I.M. - Acuerdo Cargado </strong><strong> NUMERO <?php echo $rowCebecera['nroacuerdo'] ?></strong>	</p>
-    <p><strong>ESTADO </strong>
-	<?php 
-		$sqlEstado = "select * from estadosdeacuerdos where codigo = $rowCebecera[estadoacuerdo]";
-		$resEstado= mysql_query($sqlEstado,$db); 
-		$rowEstado = mysql_fetch_array($resEstado);
-		echo $rowEstado['descripcion'];
-	?>
-	</p>
-    <p><strong>Cabecera</strong></p>
-    <table width="954" border="1">
-      <tr>
-        <td width="126" valign="bottom"><div align="left"><b>Tipo de Acuerdo</b></div></td>
-        <td width="225" valign="bottom"><div align="left">
-		<?php 
-			$sqlTipoAcuerdo = "select * from tiposdeacuerdos where codigo = ".$rowCebecera['tipoacuerdo'];
-			$resTipoAcuerdo = mysql_query($sqlTipoAcuerdo,$db);
-			$rowTipoAcuerdo = mysql_fetch_array($resTipoAcuerdo);	
-			echo $rowTipoAcuerdo['descripcion'];
-		?>
-		</div></td>
-        <td width="106" valign="bottom"><div align="left"><b>Fecha Acuerdo</b></div></td>
-        <td width="144" valign="bottom"><div align="left"><?php echo invertirFecha($rowCebecera['fechaacuerdo']) ?></div></td>
-        <td width="158" valign="bottom"><div align="left"><b>N&uacute;mero de Acta</b></div></td>
-        <td valign="bottom"><div align="left"><?php echo $rowCebecera['nroacta'] ?></div></td>
-      </tr>
-      <tr>
-        <td valign="bottom"><div align="left"><b>Gestor</b></div></td>
-        <td valign="bottom"><div align="left">
-		<?php 
-			$sqlGestor = "select * from gestoresdeacuerdos where codigo =". $rowCebecera['gestoracuerdo'];
-			$resGestor = mysql_query($sqlGestor,$db);
-			$rowGestor = mysql_fetch_array($resGestor);	
-			echo $rowGestor['apeynombre'];
-		?>
-		</div>
-		</td>
-		<td valign="bottom"><div align="left"><b>Inspector</b></div></td>
-        <td valign="bottom"><div align="left">
-		<?php 
-			if ($rowCebecera['inspectorinterviene'] == 0) {
-				echo "No Especificado";
-			} else {
-				$sqlInspec = "select * from inspectores where codigo = ".$rowCebecera['inspectorinterviene'];
-				$resInspec = mysql_query($sqlInspec,$db);
-				$rowInspec = mysql_fetch_array($resInspec);	
-				echo $rowInspec['apeynombre'];
-			}
-		?></div></td>
-        <td valign="bottom"><div align="left"><b>Requerimiento de Origen</b></div></td>
-        <td valign="bottom"><div align="left"><?php if ($rowCebecera['requerimientoorigen'] == 0) { echo "-"; } else { echo $rowCebecera['requerimientoorigen']; }  ?></div></td>
-      </tr>
-      <tr>
-        <td valign="bottom"><div align="left"><b>Liquidacion Origen</b></div></td>
-        <td valign="bottom"><div align="left">
-		<?php 
-			if ($rowCebecera['requerimientoorigen'] == 0) {
-				echo "-";
-			} else {
-				echo $rowCebecera['liquidacionorigen'];
-			}
-		?>
-		</div></td>
-        <td valign="bottom"><div align="left"><b>Monto Acuerdo</b> </div></td>
-        <td valign="bottom"><div align="left"><?php echo $rowCebecera['montoacuerdo'] ?></div></td>
-        <td valign="bottom"><div align="left"><b>Gastos Administrativos</b> </div></td>
-        <td valign="bottom"><div align="left"><?php echo $rowCebecera['porcengastoadmin']."%" ?></div></td>
-      </tr>
-      <tr>
-        <td height="23" valign="bottom"><div align="left"><b>Observaciones</b> </div></td>
-        <td colspan="5" valign="bottom"><div align="left"><?php echo $rowCebecera['observaciones'] ?></div></td>
-      </tr>
-    </table>
-    <p><strong>Per&iacute;odos</strong></p>
-    <?php 
-		$sqlPeriodos = "select * from detacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-		$resPeriodos = mysql_query($sqlPeriodos,$db); 
-		$canPeriodos = mysql_num_rows($resPeriodos); 
-		if ($canPeriodos != 0 ) { ?>
-			<table width="431" height="32" border="1">
-      			<tr>
-        			<td width="107"><div align="center"><b>Mes</b></div></td>
-					<td width="140"><div align="center"><b>A&ntilde;o</b></div></td>
-					<td width="170"><div align="center"><b>Concepto de deuda </b></div></td>
-      			</tr>
+	<div align="center">
+	<?php if (!isset($_GET['origen'])) { ?>
+			<p><input type="button" name="volver" value="Volver" onClick="location.href = 'acuerdos.php?cuit=<?php echo $cuit ?>'" /></p>
+	<?php } 
+		include($libPath."cabeceraEmpresaConsulta.php"); 
+		include($libPath."cabeceraEmpresa.php"); ?> 
+    	<p><b>O.S.P.I.M. - Acuerdo Cargado Nº <?php echo $rowCebecera['nroacuerdo'] ?></b>	</p>
+   	 	<p><b>ESTADO "<?php echo $rowCebecera['estado']; ?>"</b></p>
     	
-		
-		<?php 
-			while ($rowPeriodos = mysql_fetch_array($resPeriodos)) {
-				print ("<td width=107 align='center'><font face=Verdana size=2>".$rowPeriodos['mesacuerdo']."</font></td>");
-				print ("<td width=140 align='center'><font face=Verdana size=2>".$rowPeriodos['anoacuerdo']."</font></td>");
-				$sqlConcep = "select * from conceptosdeudas where codigo = '".$rowPeriodos['conceptodeuda']."'";
-				$resConcep = mysql_query($sqlConcep,$db);
-				$rowConcep = mysql_fetch_array($resConcep);	
-				print ("<td width=170 align='center'><font face=Verdana size=2>".$rowConcep['descripcion']."</font></td>");
-				print ("</tr>");
-			} 
-		?>
-			</table>
-		<?php 
-		} else {
-			echo ("<div align='center'>No hay periódos cargados relacionados con este acuerdo</div>");
-		}	
-	?>
-	
-	
-    <p><strong>Cuotas</strong></p>
+    	<p><b>Cabecera</b></p>
+    	
+    	<table width="900" border="1" style="text-align: left">
+	      	<tr>
+		        <td><b>Tipo</b></td>
+		        <td><?php echo $rowCebecera['tipo'];?></td>
+		        <td><b>Fecha</b></td>
+		        <td><?php echo invertirFecha($rowCebecera['fechaacuerdo']) ?></td>
+		        <td><b>Nº de Acta</b></td>
+		        <td><?php echo $rowCebecera['nroacta'] ?></td>
+	      	</tr>
+	      	<tr>
+	        	<td><b>Gestor</b></td>
+	        	<td><?php echo $rowCebecera['gestor'];?></td>
+				<td><b>Inspector</b></td>
+	        	<td><?php echo $rowCebecera['inspector'];?></td>
+	        	<td><b>Req. Origen</b></td>
+	        	<td><?php if ($rowCebecera['requerimientoorigen'] == 0) { echo "-"; } else { echo $rowCebecera['requerimientoorigen']; }  ?></td>
+	      	</tr>
+	      	<tr>
+	        	<td><b>Liq. Origen</b></td>
+	        	<td>
+				<?php 
+					if ($rowCebecera['requerimientoorigen'] == 0) {
+						echo "-";
+					} else {
+						echo $rowCebecera['liquidacionorigen'];
+					}
+				?>
+				</td>
+	        	<td><b>Monto</b></td>
+	       	 	<td><?php echo $rowCebecera['montoacuerdo'] ?></td>
+	        	<td><b>Gastos Admin.</b></td>
+	        	<td><?php echo $rowCebecera['porcengastoadmin']."%" ?></td>
+	      	</tr>
+	     	<tr>
+	        	<td><b>Observ.</b></td>
+	        	<td colspan="5"><?php echo $rowCebecera['observaciones'] ?></td>
+	      	</tr>
+    	</table>
     
-	<?php 
-		$sqlCuotas = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu";
-		$resCuotas = mysql_query($sqlCuotas,$db); 
-		$canCuotas = mysql_num_rows($resCuotas); 
-		if ($canCuotas != 0) { ?>
-			<table width="972" border="1">
-		      <tr>
-		        <td width="79"><div align="center"><b>N&deg; </b></div></td>
-		        <td width="78"><div align="center"><b>Monto </b></div></td>
-		        <td width="71"><div align="center"><b>Fecha </b></div></td>
-		        <td width="102"><div align="center"><b>Cancelacion</b></div></td>
-		        <td width="85"><div align="center"><b>Nro Cheque</b> </div></td>
-		        <td width="78"><div align="center"><b>Banco </b></div></td>
-		        <td width="100"><div align="center"><b>Fecha Cheque </b></div></td>
-				<td width="114"><div align="center"><b>Observaciones</b> </div></td>
-				<td width="109"><div align="center"><b>Estado</b> </div></td>
-				<td width="92"><div align="center"><b>Fecha Pago</b> </div></td>
-		      </tr> 
+    	<p><b>Períodos</b></p>
+  <?php if ($canPeriodos != 0 ) { ?>
+			<table width="300" border="1" style="text-align: center">
+      			<tr>
+        			<th>Mes</th>
+					<th>Año</th>
+					<th>Concepto de deuda </th>
+      			</tr>
+		<?php while ($rowPeriodos = mysql_fetch_array($resPeriodos)) { ?>
+				<tr>
+					<td><?php echo $rowPeriodos['mesacuerdo'] ?></td>
+					<td><?php echo $rowPeriodos['anoacuerdo'] ?></td>
+					<td><?php echo $rowPeriodos['descripcion'] ?></td>
+				</tr>
+		<?php } ?>
+			</table>
+<?php 	} else { ?>
+			<p style="color: blue">No hay periódos cargados relacionados con este acuerdo</p>
+<?php	}	?>
+	
+    	<p><strong>Cuotas</strong></p>
+  <?php if ($canCuotas != 0) { ?>
+			<table width="972" border="1" style="text-align: center">
+		    	<tr>
+			        <th>Nº </th>
+			        <th>Monto </th>
+			        <th>Fecha </th>
+			        <th>Cancelacion</th>
+			        <th>Nº Cheque</th>
+			        <th>Banco </th>
+			        <th>Fecha Cheque </th>
+					<th>Observ.</th>
+					<th>Estado</th>
+					<th>Fecha Pago</th>
+		      	</tr> 
 	<?php 	while ($rowCuotas = mysql_fetch_array($resCuotas)) { ?>
-			<tr>
-				<td width=28 align='center'><font face=Verdana size=2><?php echo $rowCuotas['nrocuota'] ?></font></td>
-				<td width=81 align='center'><font face=Verdana size=2><?php echo $rowCuotas['montocuota'] ?></font></td>
-				<td width=82 align='center'><font face=Verdana size=2><?php echo invertirFecha($rowCuotas['fechacuota']) ?></font></td>		
-<?php 			$sqlTipo = "select * from tiposcancelaciones where codigo =".$rowCuotas['tipocancelacion'];
-				$resTipo = mysql_query($sqlTipo,$db);  
-				$rowTipo = mysql_fetch_array($resTipo); ?>
-					<td width=106 align='center'><font face=Verdana size=2><?php echo $rowTipo['descripcion'] ?></font></td>
+				<tr>
+					<td><?php echo $rowCuotas['nrocuota'] ?></td>
+					<td><?php echo $rowCuotas['montocuota'] ?></td>
+					<td><?php echo invertirFecha($rowCuotas['fechacuota']) ?></td>		
+					<td><?php echo $rowCuotas['descripcion'] ?></td>
 		<?php 		if ($rowCuotas['chequenro'] != 0) { ?>
-						<td width=91 align='center'><font face=Verdana size=2><?php echo $rowCuotas['chequenro'] ?></font></td>
-						<td width=83 align='center'><font face=Verdana size=2><?php echo $rowCuotas['chequebanco'] ?></font></td>
-						<td width=99 align='center'><font face=Verdana size=2><?php echo invertirFecha($rowCuotas['chequefecha']) ?></font></td>
+						<td><?php echo $rowCuotas['chequenro'] ?></td>
+						<td><?php echo $rowCuotas['chequebanco'] ?></td>
+						<td><?php echo invertirFecha($rowCuotas['chequefecha']) ?></td>
 		<?php 		} else { ?>
-						<td width=91 align='center'><font face=Verdana size=2>-</font></td>
-						<td width=83 align='center'><font face=Verdana size=2>-</font></td>
-						<td width=99 align='center'><font face=Verdana size=2>-</font></td>
+						<td>-</td>
+						<td>-</td>
+						<td>-</td>
 		<?php 	 	}
 					if ($rowCuotas['observaciones'] == "") { ?>
-						<td width=125 align='center'><font face=Verdana size=2>-</font></td>
+						<td>-</td>
 	<?php			} else { ?>
-						<td width=125 align='center'><font face=Verdana size=2><?php echo $rowCuotas['observaciones'] ?></font></td>
+						<td><?php echo $rowCuotas['observaciones'] ?></td>
 	<?php			}
 					if ($rowCuotas['montopagada'] != 0 || $rowCuotas['fechapagada'] != '0000-00-00') { ?>
-						<td width=119 align='center'><font face=Verdana size=2>CANCELADA (<?php echo $rowCuotas['sistemacancelacion'] ?>)</font></td>
-						<td width=94 align='center'><font face=Verdana size=2><?php echo invertirFecha($rowCuotas['fechapagada'])  ?></font></td>
+						<td>CANCELADA (<?php echo $rowCuotas['sistemacancelacion'] ?>)</td>
+						<td><?php echo invertirFecha($rowCuotas['fechapagada'])  ?></td>
 	<?php			} else {
 						if ($rowCuotas['boletaimpresa'] != 0) { ?>
-							<td width=119 align='center'><font face=Verdana size=2>BOLETA IMPRESA</font></td>
-							<td width=94 align='center'><font face=Verdana size=2>-</font></td>
+							<td>BOLETA IMPRESA</td>
+							<td>-</td>
 	<?php				} else { ?>
-							<td width=119 align='center'><font face=Verdana size=2>A PAGAR</font></td>
-							<td width=94 align='center'><font face=Verdana size=2>-</font></td>
+							<td>A PAGAR</td>
+							<td>-</td>
 	<?php				}
 					} ?>
 				</tr>
-<?php	} ?>
+<?php } ?>
 				<tr>
-				    <td width="79"><div align="center"><b>Total Cuotas</b></div></td>
-					<td width=79 align='center'><font face=Verdana size=2><b><?php echo $rowCebecera['montoapagar'] ?></b></font></td>
+				    <td><b>Total <br/> Cuotas</b></td>
+					<td><b><?php echo $rowCebecera['montoapagar'] ?></b></td>
 				</tr>
 				<tr>
-				    <td width="79"><div align="center"><b>Total Pagado</b></div></td>
-					<td width=79 align='center'><font face=Verdana size=2><b><?php echo $rowCebecera['montopagadas'] ?></b></font></td>
+				    <td><b>Total <br/> Pagado</b></td>
+					<td><b><?php echo $rowCebecera['montopagadas'] ?></b></td>
 				</tr>
 				<tr>
-				    <td width="79"><div align="center"><b>Saldo</b></div></td>
+				    <td><b>Saldo</b></td>
 					 <?php $saldoRestante = $rowCebecera['montoapagar'] - $rowCebecera['montopagadas']; ?>
-					<td width=79 align='center'><font face=Verdana size=2><b><?php echo number_format($saldoRestante,2,'.','') ?></b></font></td> 
+					<td><b><?php echo number_format($saldoRestante,2,'.','') ?></b></td> 
 				</tr>
-		</table>
-<?php  } else { ?>
-			<div align='center'>No existen cuotas cargadas.</div>
-<?php	}
-	?>
-  </div>
-  <div align="center">
-        <p>
-       	<?php if (!isset($_GET['origen'])) { ?>
-			 <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" /> 
-	<?php } ?>
-        </p>
-  </div>
+			</table>
+<?php } else { ?>
+		<p style="color:blue">No existen cuotas cargadas.</p>
+<?php }
+	  if (!isset($_GET['origen'])) { ?>
+		<p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();" /></p>
+<?php } ?>
+  	</div>
 </form>
 </body>
 </html>

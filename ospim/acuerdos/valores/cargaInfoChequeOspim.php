@@ -85,91 +85,82 @@ function validar(formulario) {
 
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Carga Datos Cheque OSPIM :.</title>
-<style type="text/css">
-<!--
-.Estilo2 {	font-weight: bold;
-	font-size: 18px;
-}
--->
-</style>
 <link rel="stylesheet" href="/madera/lib/tablas.css"/>
 </head>
 <body bgcolor="#CCCCCC">
-<div align="center">
-  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" /></p>
-  <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardoValorAlCobro.php">
-  	<p><input type="hidden" value="<?php echo $datosArrayEnvia  ?>" name="datos" /></p>
-  	<p><b>Informaci&oacute;n Cheque OSPIM</b></p>
-  	<table width="660">
-      <tr>
-        <td width="334"><label>N&uacute;mero de Cheque
-          <input name="nroCheque" type="text" id="nroCheque" />
-        </label></td>
-        <td width="316"><label>Fecha del Cheque
-          <input name="fechaCheque" type="text" id="fechaCheque" size="8" />
-        </label></td>
-      </tr>
-    </table>
-  	<p><strong>Informaci&oacute;n Valores al Cobro </strong></p>
-  	<div class="grilla">
-  	<table>
-      <tr>
-        <td><div class="title">CUIT</div></td>
-        <td><div class="title">Raz&oacute;n Social</div></td>
-        <td><div class="title">Acuerdo</div></td>
-        <td><div class="title">Cuota</div></td>
-        <td><div class="title">Nro Cheque</div></td>
-        <td><div class="title">Banco</div></td>
-        <td><div class="title">Fecha Cheque</div></td>
-        <td><div class="title">Monto</div></td>
-		<td><div class="title">Id. Resumen</div></td>
-		<td><div class="title">Fecha Resumen</div></td>
-      </tr>
-      <?php	
-  	$suma = 0;	
-	$i = 0;
-	foreach ($datos as $array) {
-		$info = desglosar($array);
-		$cuit = $info[0];
-		$nroacu = $info[1];
-		$nrocuo = $info[2];
-		$sqlCuota = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
-		$resCuota = mysql_query( $sqlCuota,$db); 
-		$rowCuota = mysql_fetch_array($resCuota); 
+	<div align="center">
+  		<p><input type="button" name="volver" value="Volver" onclick="location.href = 'listadoValores.php'" /></p>
+  		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardoValorAlCobro.php">
+  			<p><input type="hidden" value="<?php echo $datosArrayEnvia  ?>" name="datos" /></p>
+  			<h3>Información Cheque OSPIM</h3>
+  			<table>
+      			<tr>
+			        <td><b>Nº de Cheque <input name="nroCheque" type="text" id="nroCheque" /> </b></td>
+			        <td><b>Fecha del Cheque <input name="fechaCheque" type="text" id="fechaCheque" size="8" /></b></td>
+		      	</tr>
+    		</table>
+  			<h3>Información Valores al Cobro </h3>
+  			<div class="grilla">
+  				<table>
+	  				<thead>
+	     				<tr>
+					        <th>CUIT</th>
+					        <th>Razón Social</th>
+					        <th>Acuerdo</th>
+					        <th>Cuota</th>
+					        <th>Nro Cheque</th>
+					        <th>Banco</th>
+					        <th>Fecha Cheque</th>
+					        <th>Monto</th>
+							<th>Id. Resumen</th>
+							<th>Fecha Resumen</th>
+	      				</tr>
+	      			</thead>
+	      			<tbody>
+      	<?php $suma = 0;	
+			  $i = 0;
+			  foreach ($datos as $array) {
+				$info = desglosar($array);
+				$cuit = $info[0];
+				$nroacu = $info[1];
+				$nrocuo = $info[2];
+				$sqlCuota = "select * from cuoacuerdosospim where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
+				$resCuota = mysql_query( $sqlCuota,$db); 
+				$rowCuota = mysql_fetch_array($resCuota); 
+				
+				$sqlValor= "select * from valoresalcobro where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
+				$resValor = mysql_query( $sqlValor,$db); 
+				$rowValor = mysql_fetch_array($resValor); 
 		
-		$sqlValor= "select * from valoresalcobro where cuit = $cuit and nroacuerdo = $nroacu and nrocuota = $nrocuo";
-		$resValor = mysql_query( $sqlValor,$db); 
-		$rowValor = mysql_fetch_array($resValor); 
-
-		$sqlRazon = "select * from empresas where cuit = $cuit";
-		$resRazon = mysql_query( $sqlRazon,$db); 
-		$rowRazon = mysql_fetch_array($resRazon); ?>
-		<tr>
-			<td><?php echo $cuit ?></td>
-			<td><?php echo $rowRazon['nombre'] ?></td>
-			<td><?php echo $nroacu ?></td>
-			<td><?php echo $nrocuo ?></td>
-			<td><?php echo $rowValor['chequenro'] ?></td>
-			<td><?php echo $rowValor['chequebanco'] ?></td>
-			<td><?php echo invertirFecha($rowValor['chequefecha']) ?></td>
-			<td><?php echo number_format($rowCuota['montocuota'],2,',','.') ?></td>
-			<td><input name='idResumen<?php echo $i ?>' type='text' id='idResumen<?php echo $i ?>'/></td>
-			<td><input name='fechaResumen<?php echo $i ?>' type='text' id='fechaResumen<?php echo $i ?>' size='8'/></td>
-		</tr>	
-		<?php 
-		$suma = $suma + $rowCuota['montocuota'];
-		$i = $i + 1;
-	} ?>
-	<tr>
-		<td colspan="6"></td>
-		<td><b>TOTAL</b></td>
-		<td><b><?php echo number_format($suma,2,',','.') ?></b></td>
-		<td colspan="2"></td>
-	</tr> 
-    </table>
-    </div>
-    <p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
-  </form>
-</div>
+				$sqlRazon = "select * from empresas where cuit = $cuit";
+				$resRazon = mysql_query( $sqlRazon,$db); 
+				$rowRazon = mysql_fetch_array($resRazon); ?>
+					<tr>
+						<td><?php echo $cuit ?></td>
+						<td><?php echo $rowRazon['nombre'] ?></td>
+						<td><?php echo $nroacu ?></td>
+						<td><?php echo $nrocuo ?></td>
+						<td><?php echo $rowValor['chequenro'] ?></td>
+						<td><?php echo $rowValor['chequebanco'] ?></td>
+						<td><?php echo invertirFecha($rowValor['chequefecha']) ?></td>
+						<td><?php echo number_format($rowCuota['montocuota'],2,',','.') ?></td>
+						<td><input name='idResumen<?php echo $i ?>' type='text' id='idResumen<?php echo $i ?>'/></td>
+						<td><input name='fechaResumen<?php echo $i ?>' type='text' id='fechaResumen<?php echo $i ?>' size='8'/></td>
+					</tr>	
+		<?php   $suma = $suma + $rowCuota['montocuota'];
+				$i = $i + 1;
+			  } ?>
+					<tr>
+						<td colspan="6"></td>
+						<td><b>TOTAL</b></td>
+						<td><b><?php echo number_format($suma,2,',','.') ?></b></td>
+						<td colspan="2"></td>	
+					</tr> 
+				</tbody>
+		    </table>
+		    </div>
+    		<p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
+		</form>
+	</div>
 </body>
 </html>

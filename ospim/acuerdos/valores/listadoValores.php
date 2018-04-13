@@ -9,16 +9,6 @@ $resLista = mysql_query( $sqlLista,$db);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado Valores :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -77,35 +67,32 @@ function validar(formulario) {
 </head>
 
 <body bgcolor="#CCCCCC">
-<p align="center">
-<input type="reset" name="volver" value="Volver" onclick="location.href = 'menuValores.php'" />
-</p>
-<p align="center" class="Estilo2">Listado Valores al Cobro</p>
 <div align="center">
-  <form id="formNuevoValor" name="formNuevoValor" onsubmit="return validar(this)" method="post" action="cargaInfoChequeOspim.php">
-    <table width="935" border="0">
-      <tr>
-        <td><div align="left"><input type="submit" name="Submit" id="Submit" value="Valor de Depósito" /></div></td>
-        <td><div align="right"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" /></div></td></tr>
-    </table>
-   
-    <table class="tablesorter" id="listado" style="width:935px; font-size:14px">
-       <thead>
-		 <tr>
-			<th>CUIT</th>
-			<th>Raz&oacute;n Social</th>
-			<th>Acuerdo</th>
-			<th>Cuota</th>
-			<th>Monto</th>
-			<th>Nro Cheque</th>
-			<th>Banco</th>
-			<th>Fecha Cheque</th>
-			<th>Seleccionar</th>
-		</tr>
-	   </thead> 
-	<tbody>
-      <?php	
-			while ($rowLista = mysql_fetch_array($resLista)) {
+	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'menuValores.php'" /></p>
+	<h3>Listado Valores al Cobro</h3>
+  	<form id="formNuevoValor" name="formNuevoValor" onsubmit="return validar(this)" method="post" action="cargaInfoChequeOspim.php">
+	    <table width="935" border="0">
+	    	<tr>
+	        	<td><div align="left"><input type="submit" name="Submit" id="Submit" value="Valor de Depósito" /></div></td>
+	        	<td><div align="right"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" align="left" /></div></td>
+	        </tr>
+	    </table>
+    	<table class="tablesorter" id="listado" style="width:935px; font-size:14px; margin-top: 15px">
+       		<thead>
+			 	<tr>
+					<th>CUIT</th>
+					<th>Raz&oacute;n Social</th>
+					<th>Acuerdo</th>
+					<th>Cuota</th>
+					<th>Monto</th>
+					<th>Nro Cheque</th>
+					<th>Banco</th>
+					<th>Fecha Cheque</th>
+					<th>Seleccionar</th>
+				</tr>
+	   		</thead> 
+			<tbody>
+      <?php	 while ($rowLista = mysql_fetch_array($resLista)) {
 				$cuit = $rowLista['cuit'];
 				$nroacuerdo = $rowLista['nroacuerdo'];
 				$nrocuota = $rowLista['nrocuota'];
@@ -125,9 +112,9 @@ function validar(formulario) {
 					<td><input type='checkbox' name='elegidos[]' id='valores' value='<?php echo $valor ?>' /></td>
 				</tr>	
 		<?php } ?>
-		</tbody>
-    </table>
-  </form>
-  </div>
+			</tbody>
+    	</table>
+	</form>
+</div>
 </body>
 </html>

@@ -5,33 +5,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Acuerdo OSPIM :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /></p>
-  <p><span class="Estilo2">Men&uacute; Boletas </span></p>
-  <table width="614" border="3">
-    <tr>
-      <td width="196"><p align="center">Anulacion de Boletas </p>
-        <p align="center"><a class="enlace" href="cargaAnulacion.php"><img src="img/anulacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="196" valign="top"><p align="center">Impresi&oacute;n de Boletas </p>
-      <p align="center"><a class="enlace" href="moduloImpresion.php"><img src="img/impresora.png" width="90" height="90" border="0" alt="enviar"/>	</a></p></td>
-      <td width="196" valign="top"><p align="center">Buscador de Boletas </p>
-      <p align="center"><a class="enlace" href="buscadorBoleta.php"><img src="img/lupa.png" width="90" height="90" border="0" /> </a></p></td>
-    </tr>
-  </table>
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAcuerdos.php'" /></p>
+	<h3>Menú Boletas </h3>
+	<table width="600" border="1" style="text-align: center">
+		<tr>
+      		<td width="200">
+      			<p>ANULACION</p>
+        		<p><a href="cargaAnulacion.php"><img src="img/anulacion.png" width="90" height="90" border="0" /></a></p>
+			</td>
+      		<td width="200">
+      			<p>IMPRESION</p>
+      			<p><a href="moduloImpresion.php"><img src="img/impresora.png" width="90" height="90" border="0" /></a></p></td>
+      		<td width="200">
+      			<p>BUSCADOR</p>
+      			<p><a href="buscadorBoleta.php"><img src="img/lupa.png" width="90" height="90" border="0" /> </a></p></td>
+    		</tr>
+  	</table>
 </div>
 </body>
 </html>
