@@ -23,15 +23,15 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	}
 
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.nrosolicitud = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 0) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.nrosolicitud = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
 		if ($filtro == 1) { 
 			$dato = fechaParaGuardar($dato);
-			$sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.fechasolicitud = '$dato' and a.codidelega = d.codidelega order by nrosolicitud DESC"; 
+			$sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.fechasolicitud = '$dato' and a.codidelega = d.codidelega order by nrosolicitud DESC"; 
 		}
-		if ($filtro == 2) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.cuil = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-		if ($filtro == 3) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.codidelega = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-		if ($filtro == 4) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.nroafiliado = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-		if ($filtro == 5) { $sqlAutoriza = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.apellidoynombre like '%$dato%' and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 2) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.cuil = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 3) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.codidelega = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 4) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.nroafiliado = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 5) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.apellidoynombre like '%$dato%' and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
 		$resAutoriza = mysql_query($sqlAutoriza,$db); 
 		$canAutoriza = mysql_num_rows($resAutoriza); 
 		if ($canAutoriza == 0) {
@@ -192,6 +192,7 @@ function validar(formulario) {
 		<tr>
 			<th>Nro</th>
 			<th>Fecha</th>
+			<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
 			<th class="filter-select" data-placeholder="Seleccione Delegación">Delegaci&oacute;n</th>
 			<th>C.U.I.L.</th>
 			<th>Afiliado</th>
@@ -209,6 +210,18 @@ function validar(formulario) {
 		<tr>
 			<td><?php echo $rowLeeAutorizacion['nrosolicitud'];?></td>
 			<td><?php echo invertirFecha($rowLeeAutorizacion['fechasolicitud']);?></td>
+			<td><?php if($rowLeeAutorizacion['practica']==1) {
+						echo "Practica"; 
+					  } else { 
+						 if($rowLeeAutorizacion['material']==1) { 
+							echo "Material"; 
+						 } else { 
+							if($rowLeeAutorizacion['medicamento']==1) { 
+								echo "Medicamento";
+							}
+						 } 
+					  } ?>
+			</td>
 			<td><?php echo $rowLeeAutorizacion['codidelega']." - ".$rowLeeAutorizacion['nombre'];?></td>
 			<td><?php echo $rowLeeAutorizacion['cuil'];?></td>
 			<td><?php if($rowLeeAutorizacion['nroafiliado']==0) echo "-"; else echo $rowLeeAutorizacion['nroafiliado'];?></td>
