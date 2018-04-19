@@ -77,7 +77,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			theme: 'blue', 
 			widthFixed: true, 
 			widgets: ["zebra", "filter"], 
-			headers:{9:{sorter:false, filter:false}},
+			headers:{10:{sorter:false, filter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
