@@ -3,9 +3,9 @@ include($libPath."controlSessionOspim.php");
 
 $nrocontrol = $_GET['nrocontrol'];
 $estado = $_GET['estado'];
-if ($estado == "Generada") { $sqlBoleta = "SELECT * from boletasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"  ; }
-if ($estado == "Validada") { $sqlBoleta = "SELECT * from validasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"; }
-if ($estado == "Anulada") { $sqlBoleta = "SELECT * from anuladasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"; }
+if ($estado == "Generada") { $sqlBoleta = "SELECT b.*, e.nombre from boletasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"  ; }
+if ($estado == "Validada") { $sqlBoleta = "SELECT b.*, e.nombre from validasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"; }
+if ($estado == "Anulada") { $sqlBoleta = "SELECT b.*, e.nombre from anuladasospim b, empresas e where b.nrocontrol = $nrocontrol and b.cuit = e.cuit"; }
 
 $resBoleta = mysql_query($sqlBoleta,$db); 
 $rowAMostrar = mysql_fetch_array($resBoleta);
