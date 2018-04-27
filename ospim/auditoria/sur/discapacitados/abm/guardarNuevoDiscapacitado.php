@@ -10,8 +10,8 @@ $fechaEmision = fechaParaGuardar($_POST['fechaInicio']);
 $fechaVto = fechaParaGuardar($_POST['fechaFin']);
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$fechamodificacion = "";
-$usuariomodificacion = "";
+$fechamodificacion = $fecharegistro;
+$usuariomodificacion = $usuarioregistro;
 
 
 //var_dump($_FILES['certificado']);
@@ -24,9 +24,9 @@ if ($fp){
 fclose($fp);
 $sqlInsertDisca = "INSERT INTO discapacitados VALUE(:nroafiliado,:nroorden,1,:fechaalta,:fechaemision,:fechavto,:certificado)";
 if ($nroorden == 0) { 
-	$sqlUpdateBene = "UPDATE titulares SET discapacidad = 1, certificadodiscapacidad = 1 WHERE nroafiliado = :nroafiliado";
+	$sqlUpdateBene = "UPDATE titulares SET discapacidad = 1, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
 } else {
-	$sqlUpdateBene = "UPDATE familiares SET discapacidad = 1, certificadodiscapacidad = 1 WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+	$sqlUpdateBene = "UPDATE familiares SET discapacidad = 1, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 } 
 
 $sqlInserTipo = array();
@@ -63,9 +63,9 @@ try {
 	
 	$resUpdateBene = $dbh->prepare($sqlUpdateBene);
 	if ($nroorden == 0) { 
-		$resUpdateBene->execute(array(':nroafiliado' => $nroafiliado));
+		$resUpdateBene->execute(array(':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado));
 	} else {
-		$resUpdateBene->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden));
+		$resUpdateBene->execute(array(':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden));
 	}
 	//echo($sqlUpdateBene."<br>");
 	
