@@ -12,6 +12,33 @@ $fechaVto = fechaParaGuardar($_POST['fechaFin']);
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
+if ($nroorden == 0) {
+	$sqlTitular = "SELECT informesss, tipoinformesss, fechainformesss, usuarioinformesss FROM titulares WHERE nroafiliado = '$nroafiliado'";
+	$resTitular = mysql_query($sqlTitular,$db);
+	$rowTitular = mysql_fetch_array($resTitular);
+	
+	if($rowTitular['informesss'] == 0) {
+		$informesss = 1;
+		$tipoinformesss = "M";
+	} else {
+		$informesss = $rowTitular['informesss'];
+		$tipoinformesss = $rowTitular['tipoinformesss'];
+	}
+} else {
+	$sqlFamilia = "SELECT informesss, tipoinformesss, fechainformesss, usuarioinformesss FROM familiares WHERE nroafiliado = '$nroafiliado' and nroorden = '$nroorden'";
+	$resFamilia = mysql_query($sqlFamilia,$db);
+	$rowFamilia = mysql_fetch_array($resFamilia);
+	
+	if($rowFamilia['informesss'] == 0) {
+		$informesss = 1;
+		$tipoinformesss = "M";
+	} else {
+		$informesss = $rowFamilia['informesss'];
+		$tipoinformesss = $rowFamilia['tipoinformesss'];
+	}
+	
+}
+
 
 //var_dump($_FILES['certificado']);
 $archivo = $_FILES['certificado']['tmp_name'];
@@ -26,16 +53,16 @@ if ($archivo != '') {
 if ($archivo != '') {
 	$sqlUpdateDisca = "UPDATE discapacitados SET fechaalta = :fechaalta, emisioncertificado = :fechaemision, vencimientocertificado = :fechavto, documentocertificado = :certificado WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 	if ($nroorden == 0) { 
-		$sqlUpdateBene = "UPDATE titulares SET certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
+		$sqlUpdateBene = "UPDATE titulares SET informesss = :informesss, tipoinformesss = :tipoinformesss, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
 	} else {
-		$sqlUpdateBene = "UPDATE familiares SET certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+		$sqlUpdateBene = "UPDATE familiares SET informesss = :informesss, tipoinformesss = :tipoinformesss, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 	}	
 } else {
 	$sqlUpdateDisca = "UPDATE discapacitados SET fechaalta = :fechaalta, emisioncertificado = :fechaemision, vencimientocertificado = :fechavto WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 	if ($nroorden == 0) {
-		$sqlUpdateBene = "UPDATE titulares SET fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
+		$sqlUpdateBene = "UPDATE titulares SET informesss = :informesss, tipoinformesss = :tipoinformesss, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
 	} else {
-		$sqlUpdateBene = "UPDATE familiares SET fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+		$sqlUpdateBene = "UPDATE familiares SET informesss = :informesss, tipoinformesss = :tipoinformesss, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 	}
 }
 
@@ -88,9 +115,9 @@ try {
 	
 	$resUpdateBene = $dbh->prepare($sqlUpdateBene);
 	if ($nroorden == 0) {
-		$resUpdateBene->execute(array(':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion,':nroafiliado' => $nroafiliado));
+		$resUpdateBene->execute(array(':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion,':nroafiliado' => $nroafiliado));
 	} else {
-		$resUpdateBene->execute(array(':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion,':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden));
+		$resUpdateBene->execute(array(':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion,':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden));
 	}
 	
 	$resDeleteTipo = $dbh->prepare($sqlDeletTipo);

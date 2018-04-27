@@ -13,6 +13,32 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
+if ($nroorden == 0) {
+	$sqlTitular = "SELECT informesss, tipoinformesss, fechainformesss, usuarioinformesss FROM titulares WHERE nroafiliado = '$nroafiliado'";
+	$resTitular = mysql_query($sqlTitular,$db);
+	$rowTitular = mysql_fetch_array($resTitular);
+
+	if($rowTitular['informesss'] == 0) {
+		$informesss = 1;
+		$tipoinformesss = "M";
+	} else {
+		$informesss = $rowTitular['informesss'];
+		$tipoinformesss = $rowTitular['tipoinformesss'];
+	}
+} else {
+	$sqlFamilia = "SELECT informesss, tipoinformesss, fechainformesss, usuarioinformesss FROM familiares WHERE nroafiliado = '$nroafiliado' and nroorden = '$nroorden'";
+	$resFamilia = mysql_query($sqlFamilia,$db);
+	$rowFamilia = mysql_fetch_array($resFamilia);
+
+	if($rowFamilia['informesss'] == 0) {
+		$informesss = 1;
+		$tipoinformesss = "M";
+	} else {
+		$informesss = $rowFamilia['informesss'];
+		$tipoinformesss = $rowFamilia['tipoinformesss'];
+	}
+
+}
 
 //var_dump($_FILES['certificado']);
 $archivo = $_FILES['certificado']['tmp_name'];
@@ -24,9 +50,9 @@ if ($fp){
 fclose($fp);
 $sqlInsertDisca = "INSERT INTO discapacitados VALUE(:nroafiliado,:nroorden,1,:fechaalta,:fechaemision,:fechavto,:certificado)";
 if ($nroorden == 0) { 
-	$sqlUpdateBene = "UPDATE titulares SET discapacidad = 1, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
+	$sqlUpdateBene = "UPDATE titulares SET informesss = :informesss, tipoinformesss = :tipoinformesss, discapacidad = 1, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
 } else {
-	$sqlUpdateBene = "UPDATE familiares SET discapacidad = 1, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+	$sqlUpdateBene = "UPDATE familiares SET informesss = :informesss, tipoinformesss = :tipoinformesss, discapacidad = 1, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 } 
 
 $sqlInserTipo = array();
@@ -63,9 +89,9 @@ try {
 	
 	$resUpdateBene = $dbh->prepare($sqlUpdateBene);
 	if ($nroorden == 0) { 
-		$resUpdateBene->execute(array(':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado));
+		$resUpdateBene->execute(array(':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado));
 	} else {
-		$resUpdateBene->execute(array(':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden));
+		$resUpdateBene->execute(array(':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden));
 	}
 	//echo($sqlUpdateBene."<br>");
 	
