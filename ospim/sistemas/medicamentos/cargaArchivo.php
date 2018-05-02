@@ -52,8 +52,8 @@ $rowUltimaActualizacion = mysql_fetch_assoc($resUltimaActualizacion);
 
 if ($_GET['tipo'] == 'M') {
 	$nuevafecha = date('Y',strtotime($rowUltimaActualizacion['fechaarchivo']))."-".date('m',strtotime($rowUltimaActualizacion['fechaarchivo']))."-01";
-	//$nuevafecha = strtotime ('+1 month',strtotime($nuevafecha )) ;
-	$nuevafecha = strtotime($nuevafecha);
+	$nuevafecha = strtotime ('+1 month',strtotime($nuevafecha )) ;
+	//$nuevafecha = strtotime($nuevafecha);
 	$nuevafecha = date ('Y-m-d',$nuevafecha);
 	$ano = date('Y',strtotime($nuevafecha));
 	$mes = date('m',strtotime($nuevafecha));
