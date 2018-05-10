@@ -14,17 +14,17 @@ include($libPath."controlSessionOspim.php"); ?>
   <table width="400" border="3" style="text-align: center">
     <tr>
 	  <td width="200">
-	  	  <p>Estados Contables </p>
+	  	  <p>ESTADOS CONTABLES </p>
           <p><a class="enlace" href="estadocontable/moduloEstadoContable.php"><img src="img/estadocontable.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td>
 	  <td width="200">
-	      <p>Diferencia DDJJ vs Pagos</p>
+	      <p>DIF. DDJJ vs PAGOS</p>
           <p><a class="enlace" href="ddjjvspagos/moduloDiferencia.php"><img src="img/diferencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
      </td>
     </tr>
     <tr>
     	<td>
-    	   	<p>Datos Aux. Prestadores</p>
+    	   	<p>DATOS AUX. PRESTA</p>
           	<p><a class="enlace" href="prestadores/moduloPrestadores.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
   		</td>
   		<td></td>

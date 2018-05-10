@@ -233,42 +233,13 @@ try {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Detalle Estado Contable :.</title>
-
-<style>
-A:link {
-	text-decoration: none;
-	color: #0033FF
-}
-
-A:visited {
-	text-decoration: none
-}
-
-A:hover {
-	text-decoration: none;
-	color: #00FFFF
-}
-
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-<style type="text/css" media="print">
-.nover {
-	display: none
-}
-</style>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
-<link rel="stylesheet"
-	href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" />
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" />
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
-<script
-	src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
-<script
-	src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script>
 <script type="text/javascript">
 $(function() {
 	$("#listado")
@@ -302,21 +273,19 @@ $(function() {
 	
 <?php if (sizeof($detalleEstado) > 0) { ?>
 
-	<table class="tablesorter" id="listado"
-		style="width: 900px; font-size: 16px">
-			<thead>
-				<tr>
-					<th class="filter-select" data-placeholder="Seleccion Año">Año</th>
-					<th class="filter-select" data-placeholder="Seleccion Mes">Mes</th>
-					<th>Remuneración</th>
-					<th>Obligación</th>
-					<th>Pagos</th>
-					<th>Debito/Credito</th>
-				</tr>
-			</thead>
-			<tbody>
-			<?php
-			$totalRemune = 0;
+	<table class="tablesorter" id="listado" style="width: 900px; font-size: 16px">
+		<thead>
+			<tr>
+				<th class="filter-select" data-placeholder="Seleccion Año">Año</th>
+				<th class="filter-select" data-placeholder="Seleccion Mes">Mes</th>
+				<th>Remuneración</th>
+				<th>Obligación</th>
+				<th>Pagos</th>
+				<th>Debito/Credito</th>
+			</tr>
+		</thead>
+		<tbody>
+	<?php   $totalRemune = 0;
 			$totalObliga = 0;
 			$totalPagos = 0;
 			$totalDife = 0;
@@ -331,21 +300,17 @@ $(function() {
 				if ($dife < 50 && $dife > -50) {
 					$dife = 0;
 				}
-				$totalDife += $dife;
-				
-				?>
-					<tr align="center">
-							<td width="50"><?php echo $anio;?></td>
-							<td width="50"><?php echo $mes;?></td>
-							<td width="190"><?php echo number_format($detalle['remuneracion'],2,',','')?></td>
-							<td width="190"><?php echo number_format($detalle['obligacion'],2,',','') ?></td>
-							<td width="190"><?php echo number_format($detalle['totpagos'],2,',','') ?></td>
-							<td width="190"><?php echo number_format($dife,2,',','') ?></td>
-			  </tr>
-				<?php
-			}
-			?>
-			</tbody>
+				$totalDife += $dife; ?>
+				<tr align="center">
+					<td width="50"><?php echo $anio;?></td>
+					<td width="50"><?php echo $mes;?></td>
+					<td width="190"><?php echo number_format($detalle['remuneracion'],2,',','')?></td>
+					<td width="190"><?php echo number_format($detalle['obligacion'],2,',','') ?></td>
+					<td width="190"><?php echo number_format($detalle['totpagos'],2,',','') ?></td>
+					<td width="190"><?php echo number_format($dife,2,',','') ?></td>
+			  	</tr>
+	  <?php } ?>
+		</tbody>
 	</table>
 	<table style="width: 900px; font-size: 16px; border: 1px solid black; background-color:'#3399CC' " >
 		<tbody>
@@ -366,12 +331,10 @@ $(function() {
 						<p align="center">
 							<img src="img/first.png" width="16" height="16" class="first" />
 							<img src="img/prev.png" width="16" height="16" class="prev" />
-							<input name="text" type="text" class="pagedisplay" 
-								style="background: #CCCCCC; text-align: center" size="8"
-								readonly="readonly" /> 
-								<img src="img/next.png" width="16" height="16" class="next" /> 
-								<img src="img/last.png" width="16" height="16" class="last" /> 
-								<select name="select" class="pagesize">
+							<input name="text" type="text" class="pagedisplay"  style="background: #CCCCCC; text-align: center" size="8" readonly="readonly" /> 
+							<img src="img/next.png" width="16" height="16" class="next" /> 
+							<img src="img/last.png" width="16" height="16" class="last" /> 
+							<select name="select" class="pagesize">
 								<option selected="selected" value="10">10 por pagina</option>
 								<option value="20">20 por pagina</option>
 								<option value="30">30 por pagina</option>

@@ -1,22 +1,11 @@
-<?php 
-$libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspim.php"); 
-?>
+<?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspim.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Estados Contables :.</title>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -31,19 +20,18 @@ function abrirExcel(dire) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = 'moduloEstadoContable.php'" /></p>
-  <p class="Estilo2">Estados Contables</p>
-
-		 <table width="1053" border="1" align="center" style="text-align: center;">
-			<tr>
-			  <td><strong>Período</strong></td>
-			  <td><strong>Remuneración</strong></td>
-			  <td><strong>Obligación</strong></td>
-			  <td><strong>Pagos</strong></td>
-			  <td><strong>Debito/Credito</strong></td>
-			  <td><strong>Incobrables</strong></td>
-			  <td><strong>Diferencia</strong></td>
-			  <td></td>
-			</tr>
+  	<h3>Estados Contables</h3>
+	<table width="1053" border="1" align="center" style="text-align: center;">
+		<tr>
+			<td><b>Período</b></td>
+		 	<td><b>Remuneración</b></td>
+			<td><b>Obligación</b></td>
+			<td><b>Pagos</b></td>
+			<td><b>Debito/Credito</b></td>
+			<td><b>Incobrables</b></td>
+			<td><b>Diferencia</b></td>
+			<td></td>
+		</tr>
 		<?php 
 			$sqlEstadosContables = "SELECT * FROM estadocontablecontrol ORDER BY anio DESC, mes DESC LIMIT 12";
 			$resEstadosContables = mysql_query($sqlEstadosContables,$db);

@@ -5,13 +5,6 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Detalle Estado Contable :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -36,19 +29,13 @@ function validar(formulario) {
 	return true;
 }
 </script>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" onsubmit="return validar(this)" method="post" action="detalleEstadoContable.php" >
 	<div align="center">
-		<input type="button" name="volver" value="Volver" onclick="location.href = 'moduloEstadoContable.php'" /> 
-		<p class="Estilo1">Detalle Estado Contable</p>
+		<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloEstadoContable.php'" /> </p>
+		<h3>Detalle Estado Contable</h3>
 		<?php if(isset($_GET['err'])) { ?> <p align="center" style="color: red;"><b>No existe empresa con el C.U.I.T.: <?php echo $_GET['cuit']?></b></p>   <?php } ?>
 		<p><b>C.U.I.T.: </b><label><input id="cuit" name="cuit" type="text" size="10"/></label></p>
 		<?php 
@@ -60,7 +47,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<option value='<?php echo $rowEstadoContable['id']?>'><?php echo $rowEstadoContable['mes']."-".$rowEstadoContable['anio']?></option>
 		  <?php } ?>	
 			</select>
-		<p><label><input type="submit" name="Submit" value="Buscar"/></label></p>
+		<p><input type="submit" name="Submit" value="Buscar"/></p>
 	</div>
 </form>
 </body>
