@@ -2,7 +2,9 @@
 include($libPath."controlSessionOspim.php"); 
 
 $codigo = $_GET['codigo'];
-$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, 
+prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, 
+prestadoresauxiliar.cuenta, prestadoresauxiliar.banco, prestadoresauxiliar.interbanking, DATE_FORMAT(prestadoresauxiliar.fechainterbanking ,'%d-%m-%Y') as fechainterbanking
 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador
 WHERE prestadores.codigoprestador = $codigo ORDER BY codigoprestador DESC";
 $resPrestador = mysql_query($sqlPrestador,$db);
@@ -28,6 +30,12 @@ jQuery(function($){
 });
 
 function validar(formulario) {	
+	if (formulario.inter.value == 1) {
+		if (formulario.cbu.value == "" || formulario.banco.value == "" || formulario.cuenta.value == "") {
+			alert("Si desea asociar el prestador a INTERBANKING todos los datos son obligatorios");
+			return false;
+		}
+	}
 	formulario.Submit.disabled = true;
 	$.blockUI({ message: "<h1>Guardando Datos Auxiliares. Aguarde por favor...</h1>" });
 	return true;
@@ -47,6 +55,17 @@ function validar(formulario) {
 	  <p><b>C.B.U.</b> <input type="text" value="<?php echo $rowPrestador['cbu']?>" name="cbu" id="cbu" /></p>
 	  <p><b>Banco</b> <input type="text" value="<?php echo $rowPrestador['banco']?>" name="banco" id="banco" /></p>
 	  <p><b>Cuenta</b> <input type="text" value="<?php echo $rowPrestador['cuenta']?>" name="cuenta" id="cuenta" /></p>
+	  <?php if ($rowPrestador['interbanking'] == 0) { ?>
+	  	<p>
+	  		<b>Asociar a Interbanking</b> 
+	  		<select name="inter" id="inter">
+	  			<option value="0" selected="selected">NO</option>
+	  			<option value="1">SI</option>
+	  		</select>
+	  	</p>
+	  <?php } else { ?>
+	  	<p style="color: blue"><b>Prestador Asociado a Interbanking el <?php echo $rowPrestador['fechainterbanking'] ?></b></p>
+	  <?php }?>
 	  <p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
 	</div>
 </form>

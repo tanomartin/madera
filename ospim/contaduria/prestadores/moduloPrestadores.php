@@ -11,16 +11,20 @@ include($libPath."controlSessionOspim.php"); ?>
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuContaduria.php'" /></p> 
-  <h2>Menú Prestadores - Datos Auxiliares</h2>
-  <table width="400" border="3" style="text-align: center">
+  <h2>Datos Auxiliares Prestadores</h2>
+  <table width="600" border="3" style="text-align: center">
     <tr>
 	  <td width="200">
-	  	  <p>ABMC Datos Auxiliares</p>
+	  	  <p>ABMC DATOS AUX.</p>
           <p><a class="enlace" href="abm/abmPrestadores.php"><img src="../img/prestador.png" width="90" height="90" border="0"/></a></p>
       </td>
 	  <td width="200">
-	      <p>Informes</p>
+	      <p>INFORMES</p>
           <p><a class="enlace" href="informes/informeDatosAuxiliares.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+     </td>
+     <td width="200">
+	      <p>ARC. INTERBANKING</p>
+          <p><a class="enlace" href="interbanking/listadoPrestaSubir.php"><img src="../img/txtlogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
      </td>
     </tr>
   </table>

@@ -16,13 +16,13 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	}
 	$resultado = array();
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+		if ($filtro == 0) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco, prestadoresauxiliar.interbanking, DATE_FORMAT(prestadoresauxiliar.fechainterbanking ,'%d-%m-%Y') as fechainterbanking
 											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador 
 											 WHERE prestadores.codigoprestador = $dato ORDER BY codigoprestador DESC"; }
-		if ($filtro == 1) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+		if ($filtro == 1) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco, prestadoresauxiliar.interbanking, DATE_FORMAT(prestadoresauxiliar.fechainterbanking ,'%d-%m-%Y') as fechainterbanking
 											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador 
 											 WHERE prestadores.nombre like '%$dato%' ORDER BY codigoprestador DESC"; }
-		if ($filtro == 2) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+		if ($filtro == 2) { $sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco, prestadoresauxiliar.interbanking, DATE_FORMAT(prestadoresauxiliar.fechainterbanking ,'%d-%m-%Y') as fechainterbanking
 											 FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador 
 											 WHERE prestadores.cuit = $dato ORDER BY codigoprestador DESC"; }		
 		$resPrestador = mysql_query($sqlPrestador,$db); 
@@ -34,7 +34,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 } else {
 	if (isset($_GET['codigo'])) {
 		$dato = $_GET['codigo'];
-		$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco
+		$sqlPrestador = "SELECT prestadores.cuit, prestadores.nombre, prestadores.codigoprestador, prestadores.telefono1, prestadores.email1, prestadoresauxiliar.cbu, prestadoresauxiliar.cuenta, prestadoresauxiliar.banco, prestadoresauxiliar.interbanking, DATE_FORMAT(prestadoresauxiliar.fechainterbanking ,'%d-%m-%Y') as fechainterbanking
 		FROM prestadores LEFT JOIN prestadoresauxiliar on prestadores.codigoprestador = prestadoresauxiliar.codigoprestador
 		WHERE prestadores.codigoprestador = $dato ORDER BY codigoprestador DESC";
 		$resPrestador = mysql_query($sqlPrestador,$db);
@@ -150,6 +150,7 @@ function abrirPantalla(dire) {
 			<th>C.B.U.</th>
 			<th>Banco</th>
 			<th>Cuenta</th>
+			<th>Interbanking</th>
 			<th>Acci&oacute;n</th>
 		</tr>
 	</thead>
@@ -162,6 +163,14 @@ function abrirPantalla(dire) {
 			<td><?php echo $rowPrestador['cbu'];?></td>
 			<td><?php echo $rowPrestador['banco'];?></td>
 			<td><?php echo $rowPrestador['cuenta'];?></td>
+			<td><?php 
+					if ($rowPrestador['interbanking'] == 0) { 
+						echo "NO"; 
+					} else { 
+						$fecha = $rowPrestador['fechainterbanking'];
+						if ($rowPrestador['fechainterbanking'] == NULL) { $fecha = "No subido"; }
+						echo "SI (".$fecha.")"; 
+					} ?></td>
 			<td>
 				<input type="button" value="Modificar" onclick="location.href = 'cargarDatosAxiliares.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>'"/>
 			</td>
