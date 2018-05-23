@@ -30,7 +30,7 @@ header("Content-Disposition: attachment; filename=$file");
 			 	<th>C.U.I.T.</th>
 			 	<th>RAZON SOCIAL</th>
 			 	<th>CUENTA</th>
-			 	<th>ITERBANKING</th>
+			 	<th>INTERBANKING</th>
 			 	<th>EMAIL</th>
 			 </tr>
 			</thead>
