@@ -21,7 +21,7 @@ else
 $file = fopen($archivo_name, "w");
 
 //primera linea
-$codigoCliente = str_pad("CODIGO",7," ",STR_PAD_LEFT);
+$codigoCliente = str_pad("X88739A",7," ",STR_PAD_LEFT);
 $restoPrimera = str_pad(" ",152," ",STR_PAD_LEFT);
 $primeraLinea = "1".$codigoCliente.$restoPrimera;
 fwrite($file, $primeraLinea . PHP_EOL);
