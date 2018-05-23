@@ -10,26 +10,23 @@ include($libPath."controlSessionOspim.php"); ?>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <h2>Menú Contaduría</h2>
-  <table width="400" border="3" style="text-align: center">
-    <tr>
-	  <td width="200">
-	  	  <p>ESTADOS CONTABLES </p>
-          <p><a class="enlace" href="estadocontable/moduloEstadoContable.php"><img src="img/estadocontable.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      </td>
-	  <td width="200">
-	      <p>DIF. DDJJ vs PAGOS</p>
-          <p><a class="enlace" href="ddjjvspagos/moduloDiferencia.php"><img src="img/diferencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-     </td>
-    </tr>
-    <tr>
-    	<td>
-    	   	<p>DATOS AUX. PRESTA</p>
-          	<p><a class="enlace" href="prestadores/moduloPrestadores.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-  		</td>
-  		<td></td>
-    </tr>
-  </table>
+  	<h2>Menú Contaduría</h2>
+  	<table width="600" border="1" style="text-align: center">
+		<tr>
+		  	<td width="200">
+			  	<p>ESTADOS CONTABLES </p>
+		        <p><a class="enlace" href="estadocontable/moduloEstadoContable.php"><img src="img/estadocontable.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      	</td>
+	  		<td width="200">
+	      		<p>DIF. DDJJ vs PAGOS</p>
+          		<p><a class="enlace" href="ddjjvspagos/moduloDiferencia.php"><img src="img/diferencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+     		</td>
+     		<td width="200">
+    	   		<p>DATOS AUX. PRESTA</p>
+          		<p><a class="enlace" href="prestadores/moduloPrestadores.php"><img src="img/prestador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+  			</td>
+  		</tr>
+  	</table>
 </div>
 </body>
 </html>
