@@ -5,27 +5,27 @@ include($libPath."controlSessionOspim.php"); ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: M&oacute;dulo Tesoreria OSPIM :.</title>
+<title>.: Modulo Tesoreria :.</title>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <h2>Men&uacute; Tesorer&iacute;a </h2>
-  <table width="400" border="3" style="text-align: center">
+  <h2>Menú Tesoreríaa </h2>
+  <table width="400" border="1" style="text-align: center">
     <tr>
 	  <td width="200">
-	  		<p>&Oacute;rdenes de Pago </p>
-          	<p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/ordenespago.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	  		<p>ORDENES DE PAGO </p>
+          	<p><a href="../moduloNoDisponible.php"><img src="img/ordenespago.png" width="90" height="90" border="0"/></a></p>
       </td>
       <td width="200">
-      		<p>Control C&aacute;pitas</p>
-          	<p><a class="enlace" href="capitas/controlCapitas.php"><img src="img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      		<p>CONTROL CAPITAS</p>
+          	<p><a href="capitas/controlCapitas.php"><img src="img/padrones.png" width="90" height="90" border="0" /></a></p>
       </td>
     </tr>
     <tr>
 	   <td>
-	   		<p>Facturacion Prestadores</p>
-          	<p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/factura.png" width="119" height="92" border="0" alt="enviar"/></a></p>
+	   		<p>FACTURACION PRESTADORES</p>
+          	<p><a href="../moduloNoDisponible.php"><img src="img/factura.png" width="119" height="92" border="0" /></a></p>
        </td>
        <td></td>		
     </tr>
