@@ -16,7 +16,7 @@ $fechagenera=date("YmdHis");
 if(strcmp("localhost",$maquina)==0)
 	$archivo_name="archivos/imp_prestadores_$fechagenera.txt";
 else
-	$archivo_name="/home/sistemas/Documentos/Repositorio/Transferencias/imp_prestadores_$fechagenera.txt";
+	$archivo_name="/home/sistemas/Documentos/Repositorio/Interbanking/imp_prestadores_$fechagenera.txt";
 
 $file = fopen($archivo_name, "w");
 
