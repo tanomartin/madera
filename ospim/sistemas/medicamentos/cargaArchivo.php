@@ -120,7 +120,7 @@ function validar(formulario) {
 	 	<h3><font color="blue"><?php if ($_GET['tipo'] == "M") { echo "MENSUAL"; } else { echo "SEMANAL"; }?></font></h3>
 	 	
 	 	<form enctype="multipart/form-data" method="post" onsubmit="return validar(this)" action="<?php echo "actualizacionArchivos.php?tipo=".$_GET['tipo']; ?>">
- 			<p><b>Fecha Archivo: </b><input type="text" value="<?php echo $fechaArchivo?>" readonly="readonly" name="fechafile" id="fechafile" size="8" style="background-color: silver"/></p>
+ 			<p><b>Fecha Archivo: </b><input type="text" value="<?php echo $fechaArchivo?>" name="fechafile" id="fechafile" size="8" /></p>
  			<h4>Cargar Archivo ZIP</h4>
  			<p><input type="file" name="archivo" id="archivo" accept=".zip" /></p>
  			<p><input type="submit" name="importar"  value="Actualizar"/></p>

@@ -31,8 +31,8 @@ jQuery(function($){
 
 function validar(formulario) {	
 	if (formulario.inter.value == 1) {
-		if (formulario.cbu.value == "" || formulario.banco.value == "" || formulario.cuenta.value == "") {
-			alert("Si desea asociar el prestador a INTERBANKING todos los datos son obligatorios");
+		if (formulario.cbu.value == "") {
+			alert("Si desea asociar el prestador a INTERBANKING el CBU es obligatorio");
 			return false;
 		}
 	}
