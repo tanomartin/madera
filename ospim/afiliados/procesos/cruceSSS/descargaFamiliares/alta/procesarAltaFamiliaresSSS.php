@@ -72,7 +72,7 @@ if ($whereIn != ")") {
 		$codidelega = $_GET['codidelega'];
 		
 		if ($rowPadron['telefono'] == '') {
-			$telefono = 'NULL';
+			$telefono = 0;
 		} else {
 			$telefono = intval(preg_replace('/[^0-9]+/', '', $rowPadron['telefono']), 10);
 		}
@@ -89,7 +89,7 @@ if ($whereIn != ")") {
 								.$arrayProcFami[$cuilfamiliar]['nroafil'].",".$arrayOrden[$arrayProcFami[$cuilfamiliar]['nroafil']].","
 								.$rowPadron['parentesco'].",'".$rowPadron['apellidoynombre']."','"
 								.$rowPadron['tipodocumento']."',".$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',"
-								.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
+								.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',0,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
 								.$rowPadron['incapacidad'].",NULL,".$estudia.",NULL,NULL,NULL,'".$rowPadron['cuilfamiliar']
 								."',0,1,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
 	}

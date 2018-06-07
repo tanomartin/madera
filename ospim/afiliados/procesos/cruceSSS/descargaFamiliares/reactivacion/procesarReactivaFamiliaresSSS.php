@@ -109,7 +109,7 @@ if ($whereIn != ")") {
 		}
 		
 		if ($rowPadron['telefono'] == '') {
-			$telefono = 'NULL';
+			$telefono = 0;
 		} else {
 			$telefono = $rowPadron['telefono'];
 		}
@@ -126,7 +126,7 @@ if ($whereIn != ")") {
 								.$arrayProcFami[$cuilfamiliar]['nroafil'].",".$arrayOrden[$arrayProcFami[$cuilfamiliar]['nroafil']].","
 								.$rowPadron['parentesco'].",'".$rowPadron['apellidoynombre']."','"
 								.$rowPadron['tipodocumento']."',".$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',"
-								.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
+								.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',0,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
 								.$rowPadron['incapacidad'].",NULL,".$estudia.",NULL,NULL,NULL,'".$rowPadron['cuilfamiliar']
 								."',0,0,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
 		

@@ -108,9 +108,9 @@ if ($whereIn != ")") {
 		$codidelega = $_GET['codidelega'];
 		
 		if ($rowPadron['telefono'] == '') {
-			$telefono = 'NULL';
+			$telefono = 0;
 		} else {
-			$telefono =  intval(preg_replace('/[^0-9]+/', '', $rowPadron['telefono']), 10);
+			$telefono = intval(preg_replace('/[^0-9]+/', '', $rowPadron['telefono']), 10);
 		}
 			
 		if ($rowPadron['parentesco'] == 0) {
@@ -119,7 +119,7 @@ if ($whereIn != ")") {
 			$sqlAEjecutar[$index] = "INSERT INTO titulares VALUES(DEFAULT,'".$rowPadron['apellidoynombre']."','".$rowPadron['tipodocumento']."',"
 												.$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',".$rowPadron['nacionalidad'].
 												",'".$rowPadron['sexo']."',".$rowPadron['estadocivil'].",".$rowPadron['codprovin'].",'".$indpostal.
-												"',".$codpostal.",'',".$codlocali.",'".$domicilio."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',
+												"',".$codpostal.",'',".$codlocali.",'".$domicilio."',0,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',
 												'R',NULL,".$rowPadron['tipotitular'].",".$rowPadron['incapacidad'].",NULL,'".$cuiltitular."',
 												'".$rowPadron['cuit']."','".$arrayFechaEmpresa[$cuiltitular]."',".$codidelega.",NULL,0,1,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,
 												'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
@@ -134,7 +134,7 @@ if ($whereIn != ")") {
 			$arrayProcFami[$rowPadron['cuilfamiliar']] = array("cuiltitular" => $cuiltitular, "nombre" => $rowPadron['apellidoynombre']);
 			$sqlAEjecutar[$index] = "INSERT INTO familiares VALUES(#afi,#ord,".$rowPadron['parentesco'].",'".$rowPadron['apellidoynombre']."','"
 												.$rowPadron['tipodocumento']."',".$rowPadron['nrodocumento'].",'".$rowPadron['fechanacimiento']."',"
-												.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',NULL,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
+												.$rowPadron['nacionalidad'].",'".$rowPadron['sexo']."',0,".$telefono.",NULL,'".$rowPadron['fechaaltaos']."',"
 												.$rowPadron['incapacidad'].",NULL,".$estudia.",NULL,NULL,NULL,'".$rowPadron['cuilfamiliar']
 												."',0,1,NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,NULL,'".$fecharegistro."','".$usuarioregistro."',NULL,NULL,'N')";
 		}
