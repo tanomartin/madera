@@ -1,5 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspim.php");?>
+include($libPath."controlSessionOspim.php"); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -39,10 +39,10 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuTesoreria.php'" /></p>	
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuOrdenes.php'" /></p>	
 	<form id="buscarFacturas" name="buscarFacturas" method="post" onsubmit="return validar(this)" action="listadoFacturas.php">
-	  	<h3>Módulo Ordenes de Pago </h3>
-    	<table>
+	  	<h3>Nueva Orden de Pago </h3>
+	  	<table>
       		<tr>
         		<td rowspan="2"><b>Buscar por </b></td>
         		<td><input type="radio" name="filtro"  value="0" checked="checked" /> Código </td>
@@ -53,21 +53,45 @@ function validar(formulario) {
 		</table>
     	<p><strong>Dato</strong> <input name="dato" type="text" id="dato" size="14" /></p>
     	<p><input type="submit" name="Buscar" value="Buscar" /></p>
-    	<?php 
-	  		if (isset($_GET['err'])) {
-				$err = $_GET['err'];
-				$des =  $_GET['error'];
-				if ($err == 1) {
-					echo $des;
-					echo "<font color='blue'>NO EXISTEN FACTURAS PENDIENTES DE PAGO</font>";
-				}
-				if ($err == 2) {
-					echo $des;
-					echo "<font color='red'>NO EXISTEN PRESTADOR CON ESTOS DATOS</font>";
-				}
-	  		}
-	  	?>
-	</form>	
+	</form>
+	<?php if (isset($_GET['error'])) {
+			echo "<font color='red'><b>NO EXISTEN PRESTADOR CON ESTOS DATOS</b></font>";
+	  	  } else { 
+	  	  	if (isset($_POST['dato']) || isset($_GET['codigo'])) { ?>
+	  	  		<h4> Código: <font color='blue'><?php echo $rowPrestador['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowPrestador['cuit']?></font> 
+				<br/> Razon Social: <font color='blue'><?php echo $rowPrestador['nombre'] ?></font></h4>
+	  	  		<input type="button" value="Nueva Orden" name="nueva" onclick="location.href = 'listadoFacturas.php?codigo=<?php echo $rowPrestador['codigoprestador'] ?>'"/>
+	 		<?php if ($canOrdenesCabecera > 0) { ?>
+	 				<h3>Ordenes Genearadas</h3>	
+	 				<div class="grilla">
+		 				<table>
+		 					<thead>
+			 					<tr>
+			 						<th>Nro. Orden</th>
+			 						<th>Fecha</th>
+			 						<th>Retencion</th>
+			 						<th>Importe</th>
+			 						<th></th>		 						
+			 					</tr>
+		 					</thead>
+		 					<tbody>
+		 		  		<?php while ($rowOrdenesCabecera = mysql_fetch_array($resOrdenesCabecera)) { ?>
+		 		  				<tr>
+		 		  					<td><?php echo $rowOrdenesCabecera['nroordenpago'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['fecha'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['retencion'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['importepago'] ?></td>
+		 		  					<td><input type="button" value="DETALLE" name="detalle" onclick="location.href = 'ordenPagoConsulta.php?nroorden=<?php echo $rowOrdenesCabecera['nroordenpago'] ?>'" /></td>
+		 		  				</tr>
+		 				<?php } ?>
+		 					</tbody>
+		 				</table>
+	 				</div>
+			<?php } else { ?>
+					<h3 style="color: blue">No Existen Ordenes de Pago realizadas</h3>
+			<?php }
+		  	}
+	  	  }?>
 </div>
 </body>
 </html>

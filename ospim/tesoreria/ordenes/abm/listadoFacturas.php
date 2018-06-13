@@ -1,76 +1,81 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
-$dato = "";
-$filtro = "";
-if (isset($_GET['codigo'])) {
-	$dato = $_GET['codigo'];
-	$filtro = 0;
-} else {
-	$dato = $_POST['dato'];
-	$filtro = $_POST['filtro'];
-}
-
-if ($filtro == 0) { 
-	$sqlPrestador = "SELECT * FROM prestadores WHERE codigoprestador = $dato order by codigoprestador DESC";
-} else { 
-	$sqlPrestador = "SELECT * from prestadores where cuit = $dato order by codigoprestador DESC";
-}
-
-$resPrestador = mysql_query($sqlPrestador,$db);
-$canPrestador = mysql_num_rows($resPrestador);
-if ($canPrestador == 1) {
-	$rowPrestador = mysql_fetch_array($resPrestador);
-	$sqlFacPendientesInte = "SELECT
-								f.*,
-							  	DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
-							  	DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
-							  FROM facturas f, facturasprestaciones p, facturasintegracion i
-							  WHERE
-								f.idPrestador = ".$rowPrestador['codigoprestador']." and
-								f.fechacierreliquidacion is not null and
-								f.restoapagar > 0 and 
-								f.id = p.idFactura and p.id = i.idFacturaPrestacion
-							  ORDER BY f.fechacomprobante ASC";
-	$resFacPendientesInte = mysql_query($sqlFacPendientesInte,$db);
-	$canFacPendientesInte = mysql_num_rows($resFacPendientesInte);
-	$arrayInte = array();
-	if ($canFacPendientesInte > 0) {
-		while($rowFacPendientesInte = mysql_fetch_array($resFacPendientesInte)) {
-			$arrayInte[$rowFacPendientesInte['id']] = $rowFacPendientesInte;
-		}
-	}
-	
-	$sqlFacPendientes = "SELECT
-								f.*,
-							  	DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
-							  	DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
-							  FROM facturas f
-							  LEFT JOIN facturasintegracion i ON f.id = i.id
-							  WHERE
-								f.idPrestador = ".$rowPrestador['codigoprestador']." and
-								f.fechacierreliquidacion is not null and
-								f.restoapagar > 0
-							  ORDER BY f.fechacomprobante ASC";
-	$resFacPendientes = mysql_query($sqlFacPendientes,$db);
-	$canFacPendientes = mysql_num_rows($resFacPendientes);
-	
-	$arrayNoInte = array();
-	if ($canFacPendientes > 0) {
-		while($rowFacPendientes = mysql_fetch_array($resFacPendientes)) {
-			if (!array_key_exists ($rowFacPendientes['id'] , $arrayInte )) {
-				$arrayNoInte[$rowFacPendientes['id']] = $rowFacPendientes;
-			}
-		}
-	}
-} else {
-	if ($filtro == 0) { 
-		$error = "<b>Código:</b> <font color='blue'>$dato</font><br><br>";
+if (isset($_POST['dato']) || isset($_GET['codigo'])) {
+	$dato = "";
+	$filtro = "";
+	if (isset($_GET['codigo'])) {
+		$dato = $_GET['codigo'];
+		$filtro = 0;
 	} else {
-		$error = "<b>C.U.I.T.:</b> <font color='blue'>$dato</font><br><br>";
+		$dato = $_POST['dato'];
+		$filtro = $_POST['filtro'];
 	}
-	header ("Location: moduloOrdenes.php?err=2&error=$error");
-	exit (0);
+
+	if ($filtro == 0) {
+		$sqlPrestador = "SELECT * FROM prestadores WHERE codigoprestador = $dato order by codigoprestador DESC";
+	} else {
+		$sqlPrestador = "SELECT * FROM prestadores where cuit = $dato order by codigoprestador DESC";
+	}
+
+	$resPrestador = mysql_query($sqlPrestador,$db);
+	$canPrestador = mysql_num_rows($resPrestador);
+	if ($canPrestador == 1) {
+		$rowPrestador = mysql_fetch_array($resPrestador);
+		$codigo = $rowPrestador['codigoprestador'];
+		$sqlOrdenesCabecera = "SELECT * FROM ordencabecera WHERE codigoprestador = $codigo ORDER BY nroordenpago DESC";
+		$resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
+		$canOrdenesCabecera = mysql_num_rows($resOrdenesCabecera);
+	} else {
+		$redire = "nuevaOrden.php?error=1";
+		header("Location: $redire");
+		exit(0);
+	}
+}
+
+$sqlPrestador = "SELECT * FROM prestadores WHERE codigoprestador = $codigo order by codigoprestador DESC";
+$resPrestador = mysql_query($sqlPrestador,$db);
+$rowPrestador = mysql_fetch_array($resPrestador);
+$sqlFacPendientesInte = "SELECT
+							f.*,
+							DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
+							DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
+						 FROM facturas f, facturasprestaciones p, facturasintegracion i
+						 WHERE
+							f.idPrestador = ".$rowPrestador['codigoprestador']." and
+							f.fechacierreliquidacion is not null and
+							f.restoapagar > 0 and 
+							f.id = p.idFactura and p.id = i.idFacturaPrestacion
+						 ORDER BY f.fechacomprobante ASC";
+$resFacPendientesInte = mysql_query($sqlFacPendientesInte,$db);
+$canFacPendientesInte = mysql_num_rows($resFacPendientesInte);
+$arrayInte = array();
+if ($canFacPendientesInte > 0) {
+	while($rowFacPendientesInte = mysql_fetch_array($resFacPendientesInte)) {
+		$arrayInte[$rowFacPendientesInte['id']] = $rowFacPendientesInte;
+	}
+}
+	
+$sqlFacPendientes = "SELECT
+						f.*,
+						DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
+						DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
+					 FROM facturas f
+					 LEFT JOIN facturasintegracion i ON f.id = i.id
+					 WHERE
+						f.idPrestador = ".$rowPrestador['codigoprestador']." and
+						f.fechacierreliquidacion is not null and
+						f.restoapagar > 0
+					 ORDER BY f.fechacomprobante ASC";
+$resFacPendientes = mysql_query($sqlFacPendientes,$db);
+$canFacPendientes = mysql_num_rows($resFacPendientes);
+$arrayNoInte = array();
+if ($canFacPendientes > 0) {
+	while($rowFacPendientes = mysql_fetch_array($resFacPendientes)) {
+		if (!array_key_exists ($rowFacPendientes['id'] , $arrayInte )) {
+			$arrayNoInte[$rowFacPendientes['id']] = $rowFacPendientes;
+		}
+	}
 }
 ?>
 
@@ -127,8 +132,8 @@ function validarValor(valor, totalApagar, id) {
 
 	var ok = 0;
 	if (isNumber(valor)) {
-		if (valor >= totalApagar || valor <= 0) {
-			alert("El valor de pago parcial no puede ser igual ni mayor al Resto a Pagar y debe ser positivo");
+		if (valor > totalApagar || valor <= 0) {
+			alert("El valor de pago parcial no puede ser mayor al Resto a Pagar y debe ser positivo");
 		} else {
 			var total = document.getElementById("totalNoInte");
 			total.value = parseFloat(total.value) + parseFloat(valor);
@@ -173,18 +178,19 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloOrdenes.php'" /></p>
+	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'nuevaOrden.php'" /></p>
 	<h3>Facturas Pendientes de Pago</h3>
 	<h4> Código: <font color='blue'><?php echo $rowPrestador['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowPrestador['cuit']?></font> 
 	<br/> Razon Social: <font color='blue'><?php echo $rowPrestador['nombre'] ?></font></h4>
 	<h3>NO Integración</h3>
-<?php if ($canFacPendientes != 0) { ?>
+<?php if (sizeof($arrayNoInte) > 0) { ?>
 		<form id="formNointe" name="formNointe" method="post" onsubmit="return validar(this)" action="ordenPago.php?tipo=N">	
 			<input type="text" style="display: none" value="<?php echo $rowPrestador['codigoprestador']?>" id="codigo" name="codigo"/>
 		   	<div class="grilla">
 		   		<table>
 					<thead>
 						<tr>
+							<th>Nro. Interno</th>
 							<th>Nro. Factura</th>
 							<th>Fecha</th>
 							<th>Fecha Vto.</th>
@@ -199,6 +205,7 @@ function validar(formulario) {
 					<tbody>
 				<?php foreach ($arrayNoInte as $facturaNoInte) {?>
 						<tr>
+							<td><?php echo $facturaNoInte['id'];?></td>
 							<td><?php echo $facturaNoInte['puntodeventa']."-".$facturaNoInte['nrocomprobante'] ?></td>
 							<td><?php echo $facturaNoInte['fechamostrar'];?></td>
 							<td><?php echo $facturaNoInte['fechavencimiento'];?></td>
@@ -221,7 +228,7 @@ function validar(formulario) {
 						</tr>
 				<?php } ?>
 						<tr>
-							<td colspan="8">TOTAL</td>
+							<td colspan="9">TOTAL</td>
 							<td><input type="text" id="totalNoInte" name="totalNoInte" size="14" value="0" style="background-color: silver; text-align: center"/></td>
 						</tr>
 					</tbody>
@@ -233,13 +240,14 @@ function validar(formulario) {
 		<h3 style="color: blue">No existen facturas pendientes de pago</h3>
 <?php } ?>
 	<h3>Integración</h3>
-<?php if ($canFacPendientesInte != 0) { ?>
+<?php if (sizeof($arrayInte) > 0) { ?>
 		<form id="formInte" name="formInte" method="post" onsubmit="return validar(this)" action="ordenPago.php?tipo=I">	
 			<input type="text" style="display: none" value="<?php echo $rowPrestador['codigoprestador']?>" id="codigo" name="codigo"/>
 			<div class="grilla">
 		   		<table>
 					<thead>
 						<tr>
+							<th>Nro. Interno</th>
 							<th>Nro. Factura</th>
 							<th>Fecha</th>
 							<th>Fecha Vto.</th>
@@ -254,6 +262,7 @@ function validar(formulario) {
 					<tbody>
 				<?php foreach ($arrayInte as $facturaInte) {?>
 						<tr>
+							<td><?php echo $facturaInte['id'];?></td>
 							<td><?php echo $facturaInte['puntodeventa']."-".$facturaInte['nrocomprobante'] ?></td>
 							<td><?php echo $facturaInte['fechamostrar'];?></td>
 							<td><?php echo $facturaInte['fechavencimiento'];?></td>
@@ -273,7 +282,7 @@ function validar(formulario) {
 						</tr>
 				<?php } ?>
 						<tr>
-							<td colspan="8">TOTAL</td>
+							<td colspan="9">TOTAL</td>
 							<td><input type="text" id="totalInte" name="totalInte" size="14" value="0" style="background-color: silver; text-align: center"/></td>
 						</tr>
 					</tbody>

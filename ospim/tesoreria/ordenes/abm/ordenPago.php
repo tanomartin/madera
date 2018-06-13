@@ -1,7 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
-
 $codigo = $_POST['codigo'];
 $tipo = $_GET['tipo'];
 
@@ -82,11 +81,26 @@ $(document).ready(function(){
 
 function calcularRetencion(valor, total) {
 	if (valor == 0) {
-		document.getElementById("rete").value = "0";
-		document.getElementById("apagar").value = total;
+		document.getElementById("rete").value = "0.00";
+		document.getElementById("apagar").value = parseFloat(total).toFixed(2);
+		document.getElementById("rete").disabled = true;
 	} else {
-		var rete = parseFloat(parseFloat(total) * 0.04).toFixed(2);
+		var rete = parseFloat(0).toFixed(2);
+		document.getElementById("rete").disabled = false;
+		if (total > 30000) {
+			rete = parseFloat(parseFloat(total) * 0.02).toFixed(2);
+		}
 		document.getElementById("rete").value = rete;
+		document.getElementById("apagar").value = parseFloat(total - rete).toFixed(2);
+	}
+}
+
+function calcularApagar(rete, total) {
+	if (!isNumberPositivo(rete) || rete > total) {
+		alert("La retencion debe ser un numero positivo y menor al total a pagar");
+		document.getElementById("rete").value = "0.00";
+		document.getElementById("apagar").value = parseFloat(total).toFixed(2);
+	} else {
 		document.getElementById("apagar").value = parseFloat(total - rete).toFixed(2);
 	}
 }
@@ -139,10 +153,12 @@ function validar(formulario) {
 	<br/> Razon Social: <font color='blue'><?php echo $rowPrestador['nombre'] ?></font></h4>
 
 	<form id="formorden" name="formorden" method="post" onsubmit="return validar(this)" action="guardarOrdenPago.php" >
+		<input type="text" value="<?php echo $rowPrestador['codigoprestador'] ?>" id="codigo" name="codigo" style="display: none"/>
 		<div class="grilla">
 		   	<table>
 				<thead>
 					<tr>
+						<th>Nro. Interno</th>
 						<th>Nro. Factura</th>
 						<th>Fecha</th>
 						<th>Fecha Vto.</th>
@@ -158,6 +174,7 @@ function validar(formulario) {
 			<?php while($rowFacturas = mysql_fetch_array($resFacturas)) { 
 					$idfactura = $rowFacturas['id'];?>
 					<tr>
+						<td><?php echo $idfactura;?></td>
 						<td>
 							<?php echo $rowFacturas['puntodeventa']."-".$rowFacturas['nrocomprobante'] ?>
 							<input style="display: none" type="text" value="<?php echo $idfactura?>" id="id<?php echo $idfactura ?>" name="id<?php echo $idfactura ?>"/>
@@ -179,7 +196,7 @@ function validar(formulario) {
 					</tr>
 			<?php } ?>	
 					<tr>
-						<td colspan="8">TOTAL</td>
+						<td colspan="9">TOTAL</td>
 						<td>
 							<?php echo number_format($total,2,',','.'); ?>
 							<input style="display: none" type="text" value="<?php echo $total?>" id="total" name="total"/>	
@@ -217,10 +234,10 @@ function validar(formulario) {
 	  			<td align="right"><b>Retención</b></td>
 	  			<td>
 					<input type="radio" name="retencion" value="0" checked="checked" onclick="calcularRetencion(this.value, <?php echo $total?>)"/> NO <br/>
-		  			<input type="radio" name="retencion" value="1" onclick="calcularRetencion(this.value, <?php echo $total?>)"/> SI (4 %)
+		  			<input type="radio" name="retencion" value="1" onclick="calcularRetencion(this.value, <?php echo $total?>)"/> SI (2 %)
 		  		</td>
 		  		<td><b>Monto</b></td>
-		  		<td><input size="12" type="text" name="rete" id="rete" style="background-color: silver;" readonly="readonly" value="0"/></td>
+		  		<td><input size="12" type="text" name="rete" id="rete" disabled="disabled" value="0.00" onchange="calcularApagar(this.value, <?php echo $total?>)"/></td>
 	  			<td><b>A pagar</b></td>
 		  		<td><input size="12" type="text" name="apagar" id="apagar" style="background-color: silver;" readonly="readonly" value="<?php echo $total ?>" /></td>
 	  		</tr>
