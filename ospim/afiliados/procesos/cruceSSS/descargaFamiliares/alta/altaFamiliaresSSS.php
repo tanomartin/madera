@@ -136,6 +136,8 @@ function validar(formulario) {
 		if (!grupo1.checked) {
 			alert(mensaje);
 			return false;
+		} else {
+			checkeados++;
 		}
 	} else {
 		for (var i = 0; i < total1; i++) {

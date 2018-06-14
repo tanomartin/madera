@@ -143,7 +143,6 @@ function checkall(seleccion, formulario) {
 function validar(formulario) {
 	var grupo1 = formulario.alta;
 	var total1 = grupo1.length;
-
 	var mensaje = "Debe seleccionar algun titular para dar dar de Alta";
 	var checkeados = 0; 
 	
@@ -151,6 +150,8 @@ function validar(formulario) {
 		if (!grupo1.checked) {
 			alert(mensaje);
 			return false;
+		} else {
+			checkeados++;
 		}
 	} else {
 		for (var i = 0; i < total1; i++) {
