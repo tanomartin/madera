@@ -106,7 +106,13 @@ function validar(formulario) {
 		 					<tbody>
 		 		  		<?php while ($rowOrdenesCabecera = mysql_fetch_array($resOrdenesCabecera)) { ?>
 		 		  				<tr>
-		 		  					<td><?php echo $rowOrdenesCabecera['nroordenpago'] ?></td>
+		 		  					<td>
+		 		  					<?php echo $rowOrdenesCabecera['nroordenpago'];
+		 		  						if ($rowOrdenesCabecera['fechacancelacion'] != null) { 
+		 		  							echo "<br><font color='red'> [CANCELADA] </font>"; 
+		 		  						}
+		 		  					?>
+		 		  					</td>
 		 		  					<td><?php echo $rowOrdenesCabecera['codigoprestador'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['cuit'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['fecha'] ?></td>

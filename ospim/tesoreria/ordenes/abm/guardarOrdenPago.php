@@ -21,7 +21,7 @@ $email = "";
 if ($envioEmail != 0) {
 	$email = $_POST['email'];
 }
-$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo, '$tipoPago', '$nroPago', '$fechaPago', $impRetencion, $impApagar, NULL)";
+$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo, '$tipoPago', '$nroPago', '$fechaPago', $impRetencion, $impApagar, NULL, NULL, NULL)";
 
 $arrayDetalle = array();
 $arrayUpdateFactura = array();
@@ -35,7 +35,7 @@ foreach ($_POST as $key => $facturas) {
 		$valorPagoFactura = $_POST[$indexValor];
 		$sqlDetalleOrden = "INSERT INTO ordendetalle VALUE(nroorden, $id, '$tipoPagoFactura', $valorPagoFactura, NULL, NULL, NULL)";
 		$arrayDetalle[$id] = $sqlDetalleOrden;
-		$sqlUpdateFactura = "UPDATE facturas SET totalpagado = $valorPagoFactura, restoapagar = restoapagar - $valorPagoFactura, fechapago = '$fechaPago' WHERE id = $id";
+		$sqlUpdateFactura = "UPDATE facturas SET totalpagado = totalpagado + $valorPagoFactura, restoapagar = restoapagar - $valorPagoFactura, fechapago = '$fechaPago' WHERE id = $id";
 		$arrayUpdateFactura[$id] = $sqlUpdateFactura;
 	}
 }
@@ -63,7 +63,7 @@ try {
 	}
 	
 	$dbh->commit();
-	$pagina = "ordenPagoDocumento.php?nroorden=$lastId&email=$email";
+	$pagina = "documentoOrdenPago.php?nroorden=$lastId&email=$email";
 	Header("Location: $pagina");
 } catch (PDOException $e) {
 	$error = $e->getMessage();

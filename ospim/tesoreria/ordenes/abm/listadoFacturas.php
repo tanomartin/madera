@@ -178,13 +178,13 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'nuevaOrden.php'" /></p>
+	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'nuevaOrdenPago.php'" /></p>
 	<h3>Facturas Pendientes de Pago</h3>
 	<h4> Código: <font color='blue'><?php echo $rowPrestador['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowPrestador['cuit']?></font> 
 	<br/> Razon Social: <font color='blue'><?php echo $rowPrestador['nombre'] ?></font></h4>
 	<h3>NO Integración</h3>
 <?php if (sizeof($arrayNoInte) > 0) { ?>
-		<form id="formNointe" name="formNointe" method="post" onsubmit="return validar(this)" action="ordenPago.php?tipo=N">	
+		<form id="formNointe" name="formNointe" method="post" onsubmit="return validar(this)" action="cargarOrdenPago.php?tipo=N">	
 			<input type="text" style="display: none" value="<?php echo $rowPrestador['codigoprestador']?>" id="codigo" name="codigo"/>
 		   	<div class="grilla">
 		   		<table>
@@ -241,7 +241,7 @@ function validar(formulario) {
 <?php } ?>
 	<h3>Integración</h3>
 <?php if (sizeof($arrayInte) > 0) { ?>
-		<form id="formInte" name="formInte" method="post" onsubmit="return validar(this)" action="ordenPago.php?tipo=I">	
+		<form id="formInte" name="formInte" method="post" onsubmit="return validar(this)" action="cargarOrdenPago.php?tipo=I">	
 			<input type="text" style="display: none" value="<?php echo $rowPrestador['codigoprestador']?>" id="codigo" name="codigo"/>
 			<div class="grilla">
 		   		<table>

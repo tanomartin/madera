@@ -16,7 +16,7 @@ include($libPath."controlSessionOspim.php"); ?>
     	<tr>
 	  		<td width="200">
 	  			<p>GENERAR ORDEN</p>
-          		<p><a href="abm/nuevaOrden.php"><img src="img/ordenespago.png" width="90" height="90" border="0"/></a></p>
+          		<p><a href="abm/nuevaOrdenPago.php"><img src="img/ordenespago.png" width="90" height="90" border="0"/></a></p>
       		</td>
       		<td width="200">
       			<p>CONSULTAR</p>

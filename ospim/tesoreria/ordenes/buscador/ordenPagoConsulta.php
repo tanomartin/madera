@@ -41,6 +41,15 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 	}
 }
 
+function cancelarOrden(nroorden, boton) {
+	var r = confirm("Desea cancelar la orden de pago Nro " + nroorden);
+	if (r == true) {
+		boton.disabled = true;
+		var redireccion = "cancelarOrden.php?nroorden="+nroorden;
+		location.href=redireccion;
+	}
+}
+
 </script>
 </head>
 
@@ -90,7 +99,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 					<td><?php echo number_format($rowCabecera['importepago'],2,',','.'); ?></td>
 					<td colspan="2"></td>
 				</tr>
-					<?php if ($rowCabecera['idemail']) { 
+		<?php if ($rowCabecera['idemail']) { 
 					$sqlEmail = "SELECT * FROM bandejaenviados WHERE id = ".$rowCabecera['idemail']; 
 					$resEmail = mysql_query($sqlEmail,$db);
 					$canEmail = mysql_num_rows($resEmail);
@@ -99,20 +108,28 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 						<tr>
 							<td style="background-image: linear-gradient(to bottom, #8DCBEA 5%, #539BBE 100%) ;background-color: #99bfe6 ; color: white"><b>Info. Email</b></td>
 							<td colspan="5">Enviado a "<?php echo $rowEmail['address'] ?>" el día "<?php echo $rowEmail['fechaenvio'] ?>"</td>
-							<td><input type="button" value="Reenviar" onclick="javascript:reenviarMail(<?php echo $nroorden?>,<?php echo $rowEmail['id']?>, this, '<?php echo $rowEmail['address']?>')" /></td>
+							<td>	
+							<?php if ($rowCabecera['fechacancelacion'] != null) { ?>
+								<input type="button" value="Reenviar" onclick="reenviarMail(<?php echo $nroorden?>,<?php echo $rowEmail['id']?>, this, '<?php echo $rowEmail['address']?>')" />
+							<?php } ?>
+							</td>
 						</tr>
 			<?php 	} else { ?>
 						<tr>
-							<td>Info. Email</td>
+							<td style="background-image: linear-gradient(to bottom, #8DCBEA 5%, #539BBE 100%) ;background-color: #99bfe6 ; color: white"><b>Info. Email</b></td>
 							<td colspan="5">EN PROCESO DE ENVIO</td>
 							<td></td>
 						</tr>
 				<?php  }
 					}?>
 				<tr>
-					<td colspan="2"><input type="button" value="Ver Original" onclick="window.open('<?php echo $carpetaOrden ?>/OP<?php echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" /></td>
-					<td colspan="3"><input type="button" value="Cancelar Orden" /></td>
-					<td colspan="2"><input type="button" value="Ver Copias" onclick="window.open('<?php echo $carpetaOrden ?>/OP<?php echo $nroorden ?>C.pdf', '_blank', 'fullscreen=yes');" /></td>
+				<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
+						<td colspan="2"><input type="button" value="Ver Original" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" /></td>
+						<td colspan="3"><input type="button" value="Cancelar Orden" onclick="cancelarOrden(<?php echo $nroorden?>, this)" /></td>
+						<td colspan="2"><input type="button" value="Ver Copias" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo $nroorden ?>C.pdf', '_blank', 'fullscreen=yes');" /></td>
+					<?php } else { ?>
+						<td colspan="7" style="color: red">Orden de pago Cancelada el "<?php echo $rowCabecera['fechacancelacion'] ?>"</td>
+					<?php }?>
 				</tr>
 			</tbody>
 		</table>
