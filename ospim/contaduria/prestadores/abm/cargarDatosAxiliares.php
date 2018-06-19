@@ -63,9 +63,13 @@ function validar(formulario) {
 	  			<option value="1">SI</option>
 	  		</select>
 	  	</p>
-	  <?php } else { ?>
-	  	<p style="color: blue"><b>Prestador Asociado a Interbanking el <?php echo $rowPrestador['fechainterbanking'] ?></b></p>
-	  <?php }?>
+	  <?php } else { 
+	  			if ($rowPrestador['fechainterbanking']  != NULL) { ?>
+	  				<p style="color: blue"><b>Prestador Asociado a Interbanking el <?php echo $rowPrestador['fechainterbanking'] ?></b></p>
+	  	  <?php } else { ?>
+	  				<p style="color: blue"><b>Prestador Seleccionado para ser Asociado a Interbanking (No Subido)</b></p>
+	  	  <?php } 
+	  		}?>
 	  <p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
 	</div>
 </form>

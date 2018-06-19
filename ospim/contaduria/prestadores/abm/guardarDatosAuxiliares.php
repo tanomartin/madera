@@ -14,11 +14,15 @@ $cuenta = "NULL";
 if ($_POST['cuenta'] != "") {
 	$cuenta = "'".$_POST['cuenta']."'";
 }
-$interbanking = $_POST['inter'];
+if (isset($_POST['inter'])) {
+	$interbanking = $_POST['inter'];
+} else {
+	$interbanking = 1;
+}
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
-$updateAuxiliares = "UPDATE prestadoresauxiliar SET cbu = $cbu, banco = $banco, cuenta = $cuenta, interbanking = $interbanking, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE codigoprestador = $codigo";
+$updateAuxiliares = "UPDATE prestadoresauxiliar SET cbu = $cbu, banco = $banco, cuenta = $cuenta, interbanking = $interbanking, fechainterbanking = NULL, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE codigoprestador = $codigo";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -41,5 +45,4 @@ try {
 	header ($redire);
 	exit(0);
 }
-
 ?>	
