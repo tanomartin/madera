@@ -36,7 +36,7 @@ $sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where STR_TO_DATE(CONCAT(an
 $sqlPagos = "SELECT DISTINCT cuil FROM afiptransferencias d where STR_TO_DATE(CONCAT(anopago,'/', mespago, '/01'),'%Y/%m/%d') BETWEEN '$fechaInicio' and '$fecha'";
 //echo $sqlPagos . "<br>";
 
-$sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where STR_TO_DATE(CONCAT(anodesempleo,'/', mesdesempleo, '/01'),'%Y/%m/%d') BETWEEN '$fechaInicio' and '$fecha'";
+$sqlDesempleo = "SELECT DISTINCT cuilbeneficiario FROM desempleosss d where STR_TO_DATE(CONCAT(anodesempleo,'/', mesdesempleo, '/01'),'%Y/%m/%d') BETWEEN '$fechaDesempleo' and '$fecha'";
 //echo $sqlDesempleo . "<br><br>";
 
 $resTitulares = mysql_query ( $sqlTitulares, $db );
