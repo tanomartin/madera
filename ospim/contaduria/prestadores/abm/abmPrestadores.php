@@ -139,7 +139,10 @@ function abrirPantalla(dire) {
 	</table>
     <p><strong>Dato</strong> <input name="dato" type="text" id="dato" size="14" /></p>
     <p><input type="submit" name="Buscar" value="Buscar" /></p>
-   <?php if ($noExiste == 0 and isset($dato)) { ?>
+   <?php if ($noExiste == 0 and isset($dato)) {
+  			if (isset($_GET['codigoRepe'])) {
+				print("<div style='color:#FF0000'><b> YA EXISTE EL PRESTADOR CODIGO ".$_GET['codigoRepe']." CON ESTE C.B.U. ".$_GET['cbu']." </b></div>");
+			} ?>
   		<p><?php echo $cartel ?></p>
    <table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
 	<thead>
