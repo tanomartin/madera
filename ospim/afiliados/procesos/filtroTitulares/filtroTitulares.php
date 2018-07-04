@@ -23,7 +23,7 @@ $fechaInicio = date ( 'Y-m-d', $fechaInicio );
 //echo $fechaInicio . "<br>";
 
 $fechaDesempleo = date('Y')."-".date('m')."-01";
-$fechaDesempleo = strtotime ( '-2 month', strtotime ( $fechaDesempleo ) );
+$fechaDesempleo = strtotime ( '-1 month', strtotime ( $fechaDesempleo ) );
 $fechaDesempleo = date ( 'Y-m-d', $fechaDesempleo );
 //echo $fechaDesempleo . "<br>";
 
