@@ -18,7 +18,7 @@ function mayorFecha($fechaDDJJ, $fechaPago, $fechaDesempleo) {
 
 $fecha = date ( 'Y-m-d' );
 $fechaInicio = date('Y')."-".date('m')."-01";
-$fechaInicio = strtotime ( '-4 month', strtotime ( $fechaInicio ) );
+$fechaInicio = strtotime ( '-3 month', strtotime ( $fechaInicio ) );
 $fechaInicio = date ( 'Y-m-d', $fechaInicio );
 //echo $fechaInicio . "<br>";
 
@@ -280,6 +280,7 @@ A:hover {
 		<p><span class="Estilo2">Titulares para dar de Baja</span></p>
 		<p><span class="Estilo2"><?php echo $canTituParaBajar ?> Titulares de <?php echo $cantidadTotal ?> a Bajar </span></p>
 		<p><span class="Estilo2">Sin Movimientos desde <?php echo invertirFecha($fechaInicio) ?> </span></p>
+		<p><span class="Estilo2">Sin Desempleo desde <?php echo invertirFecha($fechaDesempleo) ?> </span></p>
 		<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="bajarTitulares.php">
 			<table style="text-align: center; width: 800px" id="tabla"
 				class="tablesorter">
