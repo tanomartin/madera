@@ -1,9 +1,9 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
+include($libPath."bandejaSalida.php");
 
 if(isset($_POST) && !empty($_POST)) {
-	//var_dump($_POST);
 	$nroafiliado = $_POST['nroafiliado'];
 	$tipafiliado = $_POST['tipafiliado'];
 	$ordafiliado = $_POST['nroorden'];
@@ -18,24 +18,31 @@ if(isset($_POST) && !empty($_POST)) {
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
-		//echo "$hostname"; echo "<br>";
-		//echo "$dbname"; echo "<br>";
 		$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
-		//echo 'Connected to database<br/>';
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
-	
+		
+		$bodyDisca = "";
 		if($tipafiliado==1) {
 			$sqlLeeTitular = "SELECT * FROM titulares WHERE nroafiliado = '$nroafiliado'";
 			$resLeeTitular = mysql_query($sqlLeeTitular,$db);
 			$rowLeeTitular = mysql_fetch_array($resLeeTitular);
 	
+			if ($rowLeeTitular['discapacidad'] == 1) { 
+				$bodyDisca = $rowLeeTitular['nroafiliado']." - ".$rowLeeTitular['apellidoynombre']." - TITULAR<br>"; 
+			}
+			
 			$sqlBajaTitular = "INSERT INTO titularesdebaja (nroafiliado, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento, nacionalidad, sexo, estadocivil, codprovin, indpostal, numpostal, alfapostal, codlocali, domicilio, ddn, telefono, email, fechaobrasocial, tipoafiliado, solicitudopcion, situaciontitularidad, discapacidad, certificadodiscapacidad, cuil, cuitempresa, fechaempresa, codidelega, categoria, emitecarnet, cantidadcarnet, fechacarnet, lote, tipocarnet, vencimientocarnet, informesss, tipoinformesss, fechainformesss, usuarioinformesss, foto, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion, mirroring, fechabaja, motivobaja, fechaefectivizacion, usuarioefectivizacion) VALUES (:nroafiliado, :apellidoynombre, :tipodocumento, :nrodocumento, :fechanacimiento, :nacionalidad, :sexo, :estadocivil, :codprovin, :indpostal, :numpostal, :alfapostal, :codlocali, :domicilio, :ddn, :telefono, :email, :fechaobrasocial, :tipoafiliado, :solicitudopcion, :situaciontitularidad, :discapacidad, :certificadodiscapacidad, :cuil, :cuitempresa, :fechaempresa, :codidelega, :categoria, :emitecarnet, :cantidadcarnet, :fechacarnet, :lote, :tipocarnet, :vencimientocarnet, :informesss, :tipoinformesss, :fechainformesss, :usuarioinformesss, :foto, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion, :mirroring, :fechabaja, :motivobaja, :fechaefectivizacion, :usuarioefectivizacion)";
 			$resBajaTitular = $dbh->prepare($sqlBajaTitular);
 			if($resBajaTitular->execute(array(':nroafiliado' => $rowLeeTitular['nroafiliado'], ':apellidoynombre' => $rowLeeTitular['apellidoynombre'], ':tipodocumento' => $rowLeeTitular['tipodocumento'], ':nrodocumento' => $rowLeeTitular['nrodocumento'], ':fechanacimiento' => $rowLeeTitular['fechanacimiento'], ':nacionalidad' => $rowLeeTitular['nacionalidad'], ':sexo' => $rowLeeTitular['sexo'], ':estadocivil' => $rowLeeTitular['estadocivil'], ':codprovin' => $rowLeeTitular['codprovin'], ':indpostal' => $rowLeeTitular['indpostal'], ':numpostal' => $rowLeeTitular['numpostal'], ':alfapostal' => $rowLeeTitular['alfapostal'], ':codlocali' => $rowLeeTitular['codlocali'], ':domicilio' => $rowLeeTitular['domicilio'], ':ddn' => $rowLeeTitular['ddn'], ':telefono' => $rowLeeTitular['telefono'], ':email' => $rowLeeTitular['email'], ':fechaobrasocial' => $rowLeeTitular['fechaobrasocial'], ':tipoafiliado' => $rowLeeTitular['tipoafiliado'], ':solicitudopcion' => $rowLeeTitular['solicitudopcion'], ':situaciontitularidad' => $rowLeeTitular['situaciontitularidad'], ':discapacidad' => $rowLeeTitular['discapacidad'], ':certificadodiscapacidad' => $rowLeeTitular['certificadodiscapacidad'], ':cuil' => $rowLeeTitular['cuil'], ':cuitempresa' => $rowLeeTitular['cuitempresa'], ':fechaempresa' => $rowLeeTitular['fechaempresa'], ':codidelega' => $rowLeeTitular['codidelega'], ':categoria' => $rowLeeTitular['categoria'], ':emitecarnet' => $rowLeeTitular['emitecarnet'], ':cantidadcarnet' => $rowLeeTitular['cantidadcarnet'], ':fechacarnet' => $rowLeeTitular['fechacarnet'], ':lote' => $rowLeeTitular['lote'], ':tipocarnet' => $rowLeeTitular['tipocarnet'], ':vencimientocarnet' => $rowLeeTitular['vencimientocarnet'], ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechainformesss' => $fechainformesss, ':usuarioinformesss' => $usuarioinformesss, ':foto' => $rowLeeTitular['foto'], ':fecharegistro' => $rowLeeTitular['fecharegistro'], ':usuarioregistro' => $rowLeeTitular['usuarioregistro'], ':fechamodificacion' => $rowLeeTitular['fechamodificacion'], ':usuariomodificacion' => $rowLeeTitular['usuariomodificacion'], ':mirroring' => $rowLeeTitular['mirroring'], ':fechabaja' => fechaParaGuardar($_POST['fechabaja']), ':motivobaja' => $_POST['motivobaja'], ':fechaefectivizacion' => $fechaefectivizacion, ':usuarioefectivizacion' => $usuarioefectivizacion))) {
 				$sqlLeeFamilia = "SELECT * FROM familiares WHERE nroafiliado = '$nroafiliado'";
 				$resLeeFamilia = mysql_query($sqlLeeFamilia,$db);
 				while($rowLeeFamilia = mysql_fetch_array($resLeeFamilia)) {
+					
+					if ($rowLeeFamilia['discapacidad'] == 1) {
+						$bodyDisca .= $rowLeeFamilia['nroafiliado']." - ".$rowLeeFamilia['apellidoynombre']." - FAMILIAR<br>";
+					}
+					
 					$sqlBajaFamilia = "INSERT INTO familiaresdebaja (nroafiliado, nroorden, tipoparentesco, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento, nacionalidad, sexo, ddn, telefono, email, fechaobrasocial, discapacidad, certificadodiscapacidad, estudia, certificadoestudio, cuil, emitecarnet, cantidadcarnet, fechacarnet, lote, tipocarnet, vencimientocarnet, informesss, tipoinformesss, fechainformesss, usuarioinformesss, foto, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion, mirroring, fechabaja, motivobaja, fechaefectivizacion, usuarioefectivizacion) VALUES (:nroafiliado, :nroorden, :tipoparentesco, :apellidoynombre, :tipodocumento, :nrodocumento, :fechanacimiento, :nacionalidad, :sexo, :ddn, :telefono, :email, :fechaobrasocial, :discapacidad, :certificadodiscapacidad, :estudia, :certificadoestudio, :cuil, :emitecarnet, :cantidadcarnet, :fechacarnet, :lote, :tipocarnet, :vencimientocarnet, :informesss, :tipoinformesss, :fechainformesss, :usuarioinformesss, :foto, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion, :mirroring, :fechabaja, :motivobaja, :fechaefectivizacion, :usuarioefectivizacion)";
 					$resBajaFamilia = $dbh->prepare($sqlBajaFamilia);
 					if($resBajaFamilia->execute(array(':nroafiliado' => $rowLeeFamilia['nroafiliado'], ':nroorden' => $rowLeeFamilia['nroorden'], ':tipoparentesco' => $rowLeeFamilia['tipoparentesco'], ':apellidoynombre' => $rowLeeFamilia['apellidoynombre'], ':tipodocumento' => $rowLeeFamilia['tipodocumento'], ':nrodocumento' => $rowLeeFamilia['nrodocumento'], ':fechanacimiento' => $rowLeeFamilia['fechanacimiento'], ':nacionalidad' => $rowLeeFamilia['nacionalidad'], ':sexo' => $rowLeeFamilia['sexo'], ':ddn' => $rowLeeFamilia['ddn'], ':telefono' => $rowLeeFamilia['telefono'], ':email' => $rowLeeFamilia['email'], ':fechaobrasocial' => $rowLeeFamilia['fechaobrasocial'], ':discapacidad' => $rowLeeFamilia['discapacidad'], ':certificadodiscapacidad' => $rowLeeFamilia['certificadodiscapacidad'], ':estudia' => $rowLeeFamilia['estudia'], ':certificadoestudio' => $rowLeeFamilia['certificadoestudio'], ':cuil' => $rowLeeFamilia['cuil'], ':emitecarnet' => $rowLeeFamilia['emitecarnet'], ':cantidadcarnet' => $rowLeeFamilia['cantidadcarnet'], ':fechacarnet' => $rowLeeFamilia['fechacarnet'], ':lote' => $rowLeeFamilia['lote'], ':tipocarnet' => $rowLeeFamilia['tipocarnet'], ':vencimientocarnet' => $rowLeeFamilia['vencimientocarnet'], ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechainformesss' => $fechainformesss, ':usuarioinformesss' => $usuarioinformesss, ':foto' => $rowLeeFamilia['foto'], ':fecharegistro' => $rowLeeFamilia['fecharegistro'], ':usuarioregistro' => $rowLeeFamilia['usuarioregistro'], ':fechamodificacion' => $rowLeeFamilia['fechamodificacion'], ':usuariomodificacion' => $rowLeeFamilia['usuariomodificacion'], ':mirroring' => $rowLeeFamilia['mirroring'], ':fechabaja' => fechaParaGuardar($_POST['fechabaja']), ':motivobaja' => $motivobajafami, ':fechaefectivizacion' => $fechaefectivizacion, ':usuarioefectivizacion' => $usuarioefectivizacion))) {
@@ -55,6 +62,10 @@ if(isset($_POST) && !empty($_POST)) {
 			$resLeeFamilia = mysql_query($sqlLeeFamilia,$db);
 			$rowLeeFamilia = mysql_fetch_array($resLeeFamilia);
 	
+			if ($rowLeeFamilia['discapacidad'] == 1) {
+				$bodyDisca = $rowLeeFamilia['nroafiliado']." - ".$rowLeeFamilia['apellidoynombre']." - FAMILIAR<br>";
+			}
+			
 			$sqlBajaFamilia = "INSERT INTO familiaresdebaja (nroafiliado, nroorden, tipoparentesco, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento, nacionalidad, sexo, ddn, telefono, email, fechaobrasocial, discapacidad, certificadodiscapacidad, estudia, certificadoestudio, cuil, emitecarnet, cantidadcarnet, fechacarnet, lote, tipocarnet, vencimientocarnet, informesss, tipoinformesss, fechainformesss, usuarioinformesss, foto, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion, mirroring, fechabaja, motivobaja, fechaefectivizacion, usuarioefectivizacion) VALUES (:nroafiliado, :nroorden, :tipoparentesco, :apellidoynombre, :tipodocumento, :nrodocumento, :fechanacimiento, :nacionalidad, :sexo, :ddn, :telefono, :email, :fechaobrasocial, :discapacidad, :certificadodiscapacidad, :estudia, :certificadoestudio, :cuil, :emitecarnet, :cantidadcarnet, :fechacarnet, :lote, :tipocarnet, :vencimientocarnet, :informesss, :tipoinformesss, :fechainformesss, :usuarioinformesss, :foto, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion, :mirroring, :fechabaja, :motivobaja, :fechaefectivizacion, :usuarioefectivizacion)";
 			$resBajaFamilia = $dbh->prepare($sqlBajaFamilia);
 			if($resBajaFamilia->execute(array(':nroafiliado' => $rowLeeFamilia['nroafiliado'], ':nroorden' => $rowLeeFamilia['nroorden'], ':tipoparentesco' => $rowLeeFamilia['tipoparentesco'], ':apellidoynombre' => $rowLeeFamilia['apellidoynombre'], ':tipodocumento' => $rowLeeFamilia['tipodocumento'], ':nrodocumento' => $rowLeeFamilia['nrodocumento'], ':fechanacimiento' => $rowLeeFamilia['fechanacimiento'], ':nacionalidad' => $rowLeeFamilia['nacionalidad'], ':sexo' => $rowLeeFamilia['sexo'], ':ddn' => $rowLeeFamilia['ddn'], ':telefono' => $rowLeeFamilia['telefono'], ':email' => $rowLeeFamilia['email'], ':fechaobrasocial' => $rowLeeFamilia['fechaobrasocial'], ':discapacidad' => $rowLeeFamilia['discapacidad'], ':certificadodiscapacidad' => $rowLeeFamilia['certificadodiscapacidad'], ':estudia' => $rowLeeFamilia['estudia'], ':certificadoestudio' => $rowLeeFamilia['certificadoestudio'], ':cuil' => $rowLeeFamilia['cuil'], ':emitecarnet' => $rowLeeFamilia['emitecarnet'], ':cantidadcarnet' => $rowLeeFamilia['cantidadcarnet'], ':fechacarnet' => $rowLeeFamilia['fechacarnet'], ':lote' => $rowLeeFamilia['lote'], ':tipocarnet' => $rowLeeFamilia['tipocarnet'], ':vencimientocarnet' => $rowLeeFamilia['vencimientocarnet'], ':informesss' => $informesss, ':tipoinformesss' => $tipoinformesss, ':fechainformesss' => $fechainformesss, ':usuarioinformesss' => $usuarioinformesss, ':foto' => $rowLeeFamilia['foto'], ':fecharegistro' => $rowLeeFamilia['fecharegistro'], ':usuarioregistro' => $rowLeeFamilia['usuarioregistro'], ':fechamodificacion' => $rowLeeFamilia['fechamodificacion'], ':usuariomodificacion' => $rowLeeFamilia['usuariomodificacion'], ':mirroring' => $rowLeeFamilia['mirroring'], ':fechabaja' => fechaParaGuardar($_POST['fechabaja']), ':motivobaja' => $_POST['motivobaja'], ':fechaefectivizacion' => $fechaefectivizacion, ':usuarioefectivizacion' => $usuarioefectivizacion))) {
@@ -64,7 +75,18 @@ if(isset($_POST) && !empty($_POST)) {
 				}
 			}
 		}
-	
+		
+		if ($bodyDisca != "") {
+			$subject = "Aviso Automático - Dpto. de Afiliaciones";
+			$address = "discapacidad@ospim.com.ar";
+			$username ="afiliaciones@ospim.com.ar";
+			$modulo = "Afiliaciones";
+			$bodymail = "Este es un aviso para informar que el modulo de Afiliaciones a dado de baja al/los siguiente/s beneficiario/s:<br><br>";
+			$bodymail .= $bodyDisca;
+			$bodymail .= "<br>Para tener en cuenta los detalles particulares tome contacto en el Dpto. de Afiliaciones.<br>Este mail ha sido enviado el ".date("d-m-Y")." a las ".date("H:i:s");
+			guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
+		}
+		
 		$dbh->commit();
 		
 		if($tipafiliado==1)
@@ -81,20 +103,4 @@ if(isset($_POST) && !empty($_POST)) {
 		header ($redire);
 		exit(0);
 	}
-}
-?>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
-<title>.: Baja :.</title>
-</head>
-<body bgcolor="#CCCCCC" > 
-</body>
-</html>
+} ?>
