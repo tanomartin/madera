@@ -46,7 +46,7 @@ $canControl = mysql_num_rows($resControl);
 <body bgcolor="#CCCCCC">
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuMedicamentos.php'" /></p>
-	<h3>Listado de Actualizaciones Alfa Beta </h3>
+	<h3>Listado de Actualizaciones [alfaBETA] </h3>
 	
 	<table style="text-align:center; width:900px" id="lista" class="tablesorter" >
 		<thead>

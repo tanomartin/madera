@@ -11,18 +11,16 @@ include($libPath."controlSessionOspim.php");
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" />
-  </span></p>
-  <h3>Men&uacute; Medicamentos Alfa Beta</h3>
-  <table width="400" border="3" style="text-align: center;vertical-align: middle;">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" /></p>
+  <h3>Menú Medicamentos [alfaBETA]</h3>
+  <table width="400" border="3" style="text-align: center">
     <tr>
       <td width="200">
-      	<p>Buscador</p>
+      	<p>BUSCADOR</p>
         <p><a href="buscadorMedicamentos.php"><img src="img/buscar.png" width="90" height="90" border="0" /></a></p>
       </td>
        <td width="200">
-      	<p>Listado Actualizaciones</p>
+      	<p>ACTUALIZACIONES</p>
         <p><a href="controlActualizacion.php"><img src="img/listado.png" width="90" height="90" border="0" /></a></p>
       </td>
     </tr>

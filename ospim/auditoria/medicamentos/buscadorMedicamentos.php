@@ -93,7 +93,7 @@ function abrirInfo(dire) {
 <div align="center">
 	<form id="moduloABM" name="moduloABM" method="post"  onsubmit="return validar(this)" action="buscadorMedicamentos.php">
 		<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'menuMedicamentos.php'" /></p>
-		<h3>Buscador de Medicamentos (Alfa Beta)</h3> 
+		<h3>Buscador de Medicamentos [alfaBETA]</h3> 
 	    <p> <?php 
 		    	if (sizeof($arrayResultado) == 0  && isset($_POST['valor'])) { ?>
 				 <b style='color:#FF0000'> LA BUSQUEDA DE MEDICAMENTO NO GENERO RESULTADOS </b>
