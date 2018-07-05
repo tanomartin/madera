@@ -83,7 +83,7 @@ if(isset($_POST) && !empty($_POST)) {
 			$modulo = "Afiliaciones";
 			$bodymail = "Este es un aviso para informar que el modulo de Afiliaciones a dado de baja al/los siguiente/s beneficiario/s:<br><br>";
 			$bodymail .= $bodyDisca;
-			$bodymail .= "<br>Para tener en cuenta los detalles particulares tome contacto en el Dpto. de Afiliaciones.";
+			$bodymail .= "<br>Para tener en cuenta los detalles particulares tome contacto en el Dpto. de Afiliaciones.<br>";
 			guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
 		}
 		
