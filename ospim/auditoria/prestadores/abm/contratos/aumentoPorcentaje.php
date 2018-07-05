@@ -93,7 +93,7 @@ function validar(formulario) {
     <p><?php 
     	$fi = ""; $ff = "";
 		if (isset($_GET['err'])) {
-  			print("<font color='#FF0000'><b>Existe un contrato fuera del seleccionado con fecha de finalización posterior a la fecha de inicio que quiere ingresar</b></font>");
+  			print("<font color='#FF0000'><b>Existe un contrato con fechas en conflicto con las que se quieren cargar. Verifique las fechas.</b></font>");
 			$fi = $_GET['fi'];
 			$ff = $_GET['ff'];
  		}

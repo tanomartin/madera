@@ -24,7 +24,7 @@ $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlCabContratoFin = "SELECT * FROM cabcontratoprestador WHERE codigoprestador = $codigopresta and fechafin >= '$fechaInicio' and idcontrato != $idcontrato";
+$sqlCabContratoFin = "SELECT * FROM cabcontratoprestador WHERE codigoprestador = $codigopresta and (fechafin >= '$fechaInicio' || fechainicio >= '$fechaInicio')";
 $resCabContratoFin = mysql_query($sqlCabContratoFin,$db);
 $numCabContratoFin = mysql_num_rows($resCabContratoFin);
 if ($numCabContratoFin > 0) {
