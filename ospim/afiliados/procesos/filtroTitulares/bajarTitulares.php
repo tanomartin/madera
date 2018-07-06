@@ -1,7 +1,8 @@
 <?php
 $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
-include ($libPath . "controlSessionOspim.php");
-include ($libPath . "fechas.php");
+include($libPath . "controlSessionOspim.php");
+include($libPath . "fechas.php");
+include($libPath."bandejaSalida.php");
 set_time_limit(0);
 
 $wherein = "(";
