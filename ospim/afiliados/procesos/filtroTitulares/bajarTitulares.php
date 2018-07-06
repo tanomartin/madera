@@ -23,13 +23,17 @@ $arrayInforme = array ();
 
 $sqlBajar = "SELECT * FROM titulares  WHERE cuil IN " . $wherein;
 $resBajar = mysql_query ( $sqlBajar, $db );
-
 $whereinfamilia = "(";
+$bodyDisca = "";
 while ( $rowBajar = mysql_fetch_assoc ( $resBajar ) ) {
 	
 	$fechaBaja = $arrayFechaBaja[$rowBajar['cuil']];
 	$arrayFechaBajaFamiliar[$rowBajar['nroafiliado']] = $fechaBaja;
 	$whereinfamilia .= "'" . $rowBajar['nroafiliado'] . "',";
+	
+	if ($rowBajar['discapacidad'] == 1) {
+		$bodyDisca .= $rowBajar['nroafiliado']." - ".$rowBajar['apellidoynombre']." - TITULAR<br>";
+	}
 	
 	//'".$rowBajar['foto']."', -> ¿¿¿¿FOTO????
 	$sqlBaja = "INSERT INTO titularesdebaja VALUE(
@@ -101,6 +105,11 @@ $resBajarFami = mysql_query ( $sqlBajarFami, $db );
 while ( $rowBajarFami = mysql_fetch_assoc ( $resBajarFami ) ) {
 	$fechaBajaFami = $arrayFechaBajaFamiliar[$rowBajarFami['nroafiliado']];
 	//'".$rowBajarFami['foto']."', -> ¿¿¿¿FOTO????
+	
+	if ($rowBajarFami['discapacidad'] == 1) {
+		$bodyDisca .= $rowBajarFami['nroafiliado']." - ".$rowBajarFami['apellidoynombre']." - FAMILIAR<br>";
+	}
+	
 	$sqlBajaFamilia = "INSERT INTO familiaresdebaja VALUE(
 						'".$rowBajarFami['nroafiliado']."',
 						'".$rowBajarFami['nroorden']."',
@@ -174,6 +183,17 @@ try {
 	
 	//print($sqlDeleteTitu."<br>");
 	$dbh->exec($sqlDeleteTitu);
+	
+	if ($bodyDisca != "") {
+		$subject = "Aviso Automático - Dpto. de Afiliaciones";
+		$address = "discapacidad@ospim.com.ar";
+		$username ="afiliaciones@ospim.com.ar";
+		$modulo = "Afiliaciones";
+		$bodymail = "Este es un aviso para informar que el modulo de Afiliaciones a dado de baja al/los siguiente/s beneficiario/s:<br><br>";
+		$bodymail .= $bodyDisca;
+		$bodymail .= "<br>Para tener en cuenta los detalles particulares tome contacto en el Dpto. de Afiliaciones.<br>";
+		guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
+	}
 	
 	$dbh->commit();
 
