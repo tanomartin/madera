@@ -6,7 +6,7 @@ $sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provinc
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
-$sqlConsultaNomenclador = "SELECT p.*, n.id, n.nombre FROM prestadornomenclador p, nomencladores n WHERE p.codigoprestador = $codigo and p.codigonomenclador = n.id";
+$sqlConsultaNomenclador = "SELECT * FROM prestadornomenclador p, nomencladores n WHERE p.codigoprestador = $codigo and p.codigonomenclador = n.id";
 $resConsultaNomenclador = mysql_query($sqlConsultaNomenclador,$db);
 $canConsultaNomenclador = mysql_num_rows($resConsultaNomenclador);
 
@@ -165,21 +165,24 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
   	  </table>
   	  </div>
 	  <div class="grilla" style="margin-top: 20px;margin-bottom: 20px">
-	  <table width="700" border="1">
+	  <table width="900" border="1">
         <thead>
 			<tr>
-			  <th width="233"><div align="center" class="Estilo1"><strong>Nomencladores </strong></div></th>
-	          <th width="233"><div align="center" class="Estilo1"><strong>Servicios </strong></div></th>
-	          <th width="233"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></th>
+			  <th width="300"><div align="center" class="Estilo1"><strong>Nomencladores </strong></div></th>
+	          <th width="300"><div align="center" class="Estilo1"><strong>Servicios </strong></div></th>
+	          <th width="300"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></th>
 	        </tr>
 		</thead>
         <tbody>
 			<tr>
 			 <td valign="top"><div align="left">
-	            <?php while ($rowConsultaNomenclador = mysql_fetch_assoc($resConsultaNomenclador)) {
+	            <?php 
+	            	$contrato = 0;
+	            	while ($rowConsultaNomenclador = mysql_fetch_assoc($resConsultaNomenclador)) {
 						echo $rowConsultaNomenclador['nombre']."<br>";
 						$codNomenclador = $rowConsultaNomenclador['codigonomenclador'];
-					  } ?>
+						$contrato += $rowConsultaNomenclador['contrato'];
+				    } ?>
 	          </div></td>		
 	          <td valign="top"><div align="left">
 	            <?php while ($rowConsultaServcio = mysql_fetch_assoc($resConsultaServcio)) {
@@ -196,26 +199,25 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 		</tbody>
 	</table>
 	</div>
-	  <table width="600" border="0">
+	  <table width="900" border="0" style="text-align: center">
       <tr>
-        <td width="200"><div align="left">
+        <td width="300">
           <input class="nover" name="modificar" type="button" value="Modificar Prestador" onclick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
-        </div></td>
-		<td width="200"><div align="center">
+        </td>
+		<td width="300">
 		<?php if ($rowConsultaPresta['personeria'] == 3) { ?>
             <input class="nover" name="profesionales" type="button" value="Modificar Profesionales"  onclick="location.href = 'profesionales/modificarProfesionales.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
         <?php if ($rowConsultaPresta['personeria'] == 4) { ?>
             <input class="nover" name="establecimientos" type="button" value="Modificar Establecimientos"  onclick="location.href = 'establecimientos/modificarEstablecimientos.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
-        </div></td> 
-
-        <td width="200"><div align="center">		
+        </td> 
+        <td width="300">		
       <?php if ($rowConsultaPresta['montofijo'] == 0 ) {
-        		if (($canConsultaNomenclador == 1 and $canConsultaServcio == 1 and $codNomenclador == 7 and $codServicio == 8) or ($canConsultaNomenclador == 0)) { $disabled = "disabled='disabled'"; } else { $disabled = ""; } ?>
+        		if ($contrato == 0) { $disabled = "disabled='disabled'"; } else { $disabled = ""; } ?>
          		<input <?php echo $disabled?> class="nover" name="modificarContrato" type="button" value="Modificar Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
       <?php } else { ?>
       			<input class="nover" name="modificarArancel" type="button" value="Modificar Aranceles"  onclick="location.href = 'aranceles/arancelesPrestador.php?codigo=<?php echo $codigo ?>'" />
       <?php	} ?>
-        </div></td>
+        </td>
       </tr>
     </table>
     <p> <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>

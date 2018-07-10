@@ -535,7 +535,7 @@ $whereNom = substr($whereNom, 0, -1);
 	  <p>
 	  <?php $sqlTipos = "SELECT tn.id, tn.codigonomenclador, n.nombre, t.descripcion
 	  						FROM tipopracticas t, tipopracticasnomenclador tn, nomencladores n 
-							WHERE tn.codigonomenclador in ($whereNom) and tn.codigonomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by tn.id"; 
+							WHERE tn.codigonomenclador in ($whereNom) and n.contrato = 1 and tn.codigonomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by tn.id"; 
 	  		$resTipos = mysql_query($sqlTipos,$db);?>
         <select name="tipo" id="tipo">
           <option value="0">Seleccione Tipo de Practica</option>  
