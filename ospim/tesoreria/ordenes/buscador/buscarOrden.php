@@ -14,15 +14,15 @@ if (isset($_POST['dato']) || isset($_GET['nroroden'])) {
 	}
 	if ($filtro == 0) {
 		$cartel = "<b>Nro Orden:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT * FROM prestadores p, ordencabecera o WHERE o.nroordenpago = $dato and o.codigoprestador = p.codigoprestador";
+		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE o.nroordenpago = $dato and o.codigoprestador = p.codigoprestador";
 	} 
 	if ($filtro == 1) {
 		$cartel = "<b>Código:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT * FROM prestadores p, ordencabecera o WHERE o.codigoprestador = $dato and o.codigoprestador = p.codigoprestador order by o.codigoprestador DESC";
+		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE o.codigoprestador = $dato and o.codigoprestador = p.codigoprestador order by o.codigoprestador DESC";
 	} 
 	if ($filtro == 2) {
 		$cartel = "<b>C.U.I.T.:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT * FROM prestadores p, ordencabecera o WHERE p.cuit = $dato and o.codigoprestador = p.codigoprestador order by o.codigoprestador DESC";
+		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE p.cuit = $dato and o.codigoprestador = p.codigoprestador order by o.codigoprestador DESC";
 	}
 	$resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
 	$canOrdenesCabecera = mysql_num_rows($resOrdenesCabecera);
@@ -115,9 +115,9 @@ function validar(formulario) {
 		 		  					</td>
 		 		  					<td><?php echo $rowOrdenesCabecera['codigoprestador'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['cuit'] ?></td>
-		 		  					<td><?php echo $rowOrdenesCabecera['fecha'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['fechaorden'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['retencion'] ?></td>
-		 		  					<td><?php echo $rowOrdenesCabecera['importepago'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['importe'] ?></td>
 		 		  					<td><input type="button" value="DETALLE" name="detalle" onclick="location.href = 'ordenPagoConsulta.php?nroorden=<?php echo $rowOrdenesCabecera['nroordenpago'] ?>'" /></td>
 		 		  				</tr>
 		 				<?php } ?>

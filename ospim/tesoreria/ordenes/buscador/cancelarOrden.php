@@ -11,8 +11,8 @@ while($rowDetalle = mysql_fetch_array($resDetalle)) {
 }
 
 $fechacancelacion = date("Y-m-d H:i:s");
-$usuarioregistro = $_SESSION['usuario'];
-$updateCancelacion = "UPDATE ordencabecera SET fechacancelacion = '$fechacancelacion', usuariocancelacion = '$usuarioregistro' WHERE nroordenpago = $nroorden";
+$usuariomodificacion = $_SESSION['usuario'];
+$updateCancelacion = "UPDATE ordencabecera SET fechacancelacion = '$fechacancelacion', fechamodificacion = '$fechacancelacion', usuariomodificacion = '$usuariomodificacion' WHERE nroordenpago = $nroorden";
 
 try {
 	$hostname = $_SESSION['host'];

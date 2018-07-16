@@ -4,6 +4,7 @@ include($libPath."fechas.php");
 
 $importeTotal = $_POST['total'];
 $codigo = $_POST['codigo'];
+$fechaorden = date("Y-m-d");
 $tipoPago = $_POST['tipopago'];
 $nroPago = NULL;
 if ($tipoPago != 'E') {
@@ -21,7 +22,9 @@ $email = "";
 if ($envioEmail != 0) {
 	$email = $_POST['email'];
 }
-$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo, '$tipoPago', '$nroPago', '$fechaPago', $impRetencion, $impApagar, NULL, NULL, NULL)";
+$fecharegistro = date("Y-m-d H:i:s");
+$usuarioregistro = $_SESSION['usuario'];
+$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo,'$fechaorden','$tipoPago', '$nroPago', '$fechaPago', $impRetencion, $impApagar, NULL, NULL, NULL, '$fecharegistro', '$usuarioregistro',NULL,NULL)";
 
 $arrayDetalle = array();
 $arrayUpdateFactura = array();

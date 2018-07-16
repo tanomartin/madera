@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 $nroorden = $_GET['nroorden'];
-$sqlCabecera = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, pr.descrip as provincia
+$sqlCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fecha, pr.descrip as provincia
 				FROM ordencabecera o, prestadores p, provincia pr
 				WHERE o.nroordenpago = $nroorden and o.codigoprestador = p.codigoprestador and p.codprovin = pr.codprovin";
 $resCabecera = mysql_query($sqlCabecera,$db);
@@ -80,13 +80,13 @@ function cancelarOrden(nroorden, boton) {
 					<td><?php echo number_format($rowDetalle['importecomprobante'],2,',','.');?></td>
 					<td><?php echo number_format($rowDetalle['totaldebito'],2,',','.');?></td>
 					<td><?php echo number_format($rowDetalle['importepago'],2,',','.');?></td>
-					<td><?php echo $rowDetalle['tipopago'] ?></td>
+					<td><?php echo $rowDetalle['tipocancelacion'] ?></td>
 					<td><?php echo number_format($rowDetalle['restoapagar'],2,',','.');?></td>
 				</tr>
 	  <?php } ?>	
 				<tr>
 					<td colspan="4">TOTAL</td>
-					<td><?php echo number_format($rowCabecera['importepago']+$rowCabecera['retencion'],2,',','.'); ?></td>
+					<td><?php echo number_format($rowCabecera['importe']+$rowCabecera['retencion'],2,',','.'); ?></td>
 					<td colspan="2"></td>
 				</tr>
 				<tr>
@@ -96,7 +96,7 @@ function cancelarOrden(nroorden, boton) {
 				</tr>
 				<tr>
 					<td colspan="4">TOTAL PAGADO</td>
-					<td><?php echo number_format($rowCabecera['importepago'],2,',','.'); ?></td>
+					<td><?php echo number_format($rowCabecera['importe'],2,',','.'); ?></td>
 					<td colspan="2"></td>
 				</tr>
 		<?php if ($rowCabecera['idemail']) { 

@@ -5,7 +5,7 @@ include($libPath."bandejaSalida.php");
 
 $nroOrden = $_GET['nroorden'];
 $email = $_GET['email'];
-$sqlCabecera = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, pr.descrip as provincia
+$sqlCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden, pr.descrip as provincia
 				FROM ordencabecera o, prestadores p, provincia pr
 				WHERE o.nroordenpago = $nroOrden and o.codigoprestador = p.codigoprestador and p.codprovin = pr.codprovin";
 $resCabecera = mysql_query($sqlCabecera,$db);
@@ -48,7 +48,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	$nroOrden = $rowCabecera['nroordenpago'];
 	$pdf->SetFont('Courier','B',8);
 	$pdf->SetXY(7, 21);
-	$pdf->Cell(20,5,$rowCabecera['fecha'],0,0,"R");
+	$pdf->Cell(20,5,$rowCabecera['fechaorden'],0,0,"R");
 	$pdf->SetXY(130, 21);
 	$pdf->Cell(80,5,"Orden de Pago: ".$rowCabecera['nroordenpago']." - $tipo",0,0,"R");
 	$pdf->SetXY(7, 25);
@@ -59,13 +59,13 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	$pdf->Cell(203,5,"EMAIL: ".$rowCabecera['email1']." - ".$rowCabecera['email2']." | TEL: ".$rowCabecera['ddn1']."-".$rowCabecera['telefono1'],0,0,"L");
 	
 	$principioOrden = "Ha sido emitido el pago";
-	if ($rowCabecera['tipopago'] == "E") {
+	if ($rowCabecera['formapago'] == "E") {
 		$principioOrden .= " en efectivo correspondiente a prestaciones medicas";
 	}
-	if ($rowCabecera['tipopago'] == "T") {
+	if ($rowCabecera['formapago'] == "T") {
 		$principioOrden .= " a traves de la transfeencia Nro ".$rowCabecera['nrotipopago']." correspondiente a prestaciones medicas";
 	}
-	if ($rowCabecera['tipopago'] == "C") {
+	if ($rowCabecera['formapago'] == "C") {
 		$principioOrden .= " a traves del cheque Nro ".$rowCabecera['nrotipopago']." correspondiente a prestaciones medicas";
 	}
 	$finalOrden = "asistenciales brindadas a nuestros afiliados, segun el siguiente detalle: ";
@@ -104,7 +104,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 		 $pdf->SetXY(108.49, $y);
 		 $pdf->Cell(33.83,4,$rowDetalle['importepago'],1,1,"C");
 		 $pdf->SetXY(142.32, $y);
-		 $pdf->Cell(33.83,4,$rowDetalle['tipopago'],1,1,"C");
+		 $pdf->Cell(33.83,4,$rowDetalle['tipocancelacion'],1,1,"C");
 		 $pdf->SetXY(176.15, $y);
 		 $pdf->Cell(33.83,4,$rowDetalle['restoapagar'],1,1,"C");
 	 	 $y += 4;
@@ -113,7 +113,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	$pdf->SetXY(74.66, $y);
 	$pdf->Cell(33.83,5,"TOTAL",0,0,"C");
 	$pdf->SetXY(108.49, $y);
-	$total = number_format(round($rowCabecera['importepago']+$rowCabecera['retencion'],2),2,'.','');
+	$total = number_format(round($rowCabecera['importe']+$rowCabecera['retencion'],2),2,'.','');
 	$pdf->Cell(33.83,5,$total,0,0,"C");
 	$y += 5;
 	$pdf->SetXY(74.66, $y);
@@ -124,7 +124,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	$pdf->SetXY(74.66, $y);
 	$pdf->Cell(33.83,5,"A PAGAR",0,0,"C");
 	$pdf->SetXY(108.49, $y);
-	$pdf->Cell(33.83,5,$rowCabecera['importepago'],0,0,"C");
+	$pdf->Cell(33.83,5,$rowCabecera['importe'],0,0,"C");
 	
 	$y = 190;
 	$pdf->Image('../img/fgornatti.png',25,$y,15,20,'PNG');
@@ -144,21 +144,21 @@ function printRecibo($pdf, $rowCabecera) {
 	$pdf->Cell(43,5,"Buenos Aires, ".date("d-m-Y"),0,0,"R");
 	
 	$y += 4;
-	$textoRecibo = "Recibimos de O.S.P.I.M. la cantidad de pesos ".cfgValorEnLetras($rowCabecera['importepago']);
-	if ($rowCabecera['tipopago'] == "E") {
+	$textoRecibo = "Recibimos de O.S.P.I.M. la cantidad de pesos ".cfgValorEnLetras($rowCabecera['importe']);
+	if ($rowCabecera['formapago'] == "E") {
 		$textoRecibo .= " en efectivo";
 	}
-	if ($rowCabecera['tipopago'] == "T") {
+	if ($rowCabecera['formapago'] == "T") {
 		$textoRecibo2 = "Por intermedio de la transferencia Nro. ".$rowCabecera['nrotipopago'];
 	}
-	if ($rowCabecera['tipopago'] == "C") {
+	if ($rowCabecera['formapago'] == "C") {
 		$textoRecibo2 = "Por intermedio del Nro ".$rowCabecera['nrotipopago'];
 	}
 	$textoFin = "En concepto de pago de prestaciones medicas asistenciales detallas en la orden de pago nro ".$rowCabecera['nroordenpago'];
 	$pdf->SetXY(7, $y);
 	$pdf->Cell(200,5,$textoRecibo,0,0,"L");
 	
-	if ($rowCabecera['tipopago'] != "E") {
+	if ($rowCabecera['formapago'] != "E") {
 		$y += 4;
 		$pdf->SetXY(7, $y);
 		$pdf->Cell(200,5,$textoRecibo2,0,0,"L");
@@ -170,7 +170,7 @@ function printRecibo($pdf, $rowCabecera) {
 	$y += 5;
 	$pdf->SetFont('Courier','B',8);
 	$pdf->SetXY(160, $y);
-	$pdf->Cell(50,4,"SON $: ".$rowCabecera['importepago'],1,1,"R");
+	$pdf->Cell(50,4,"SON $: ".$rowCabecera['importe'],1,1,"R");
 	$y += 4;
 	$pdf->SetFont('Courier','B',6);
 	$pdf->SetXY(7, $y);

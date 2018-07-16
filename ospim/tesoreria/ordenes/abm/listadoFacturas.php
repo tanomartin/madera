@@ -27,7 +27,7 @@ if (isset($_POST['dato']) || isset($_GET['codigo'])) {
 		$resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
 		$canOrdenesCabecera = mysql_num_rows($resOrdenesCabecera);
 	} else {
-		$redire = "nuevaOrden.php?error=1";
+		$redire = "nuevaOrdenPago.php?error=1";
 		header("Location: $redire");
 		exit(0);
 	}
