@@ -128,8 +128,6 @@ function formatoPeriodoInicio() {
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
 		document.getElementById(con).value="";
-		document.getElementById(m).style.visibility="hidden";
-		document.getElementById(a).style.visibility="hidden";
 	}
 	document.forms.nuevoJuicio.mostrar.value = 12;
 }
@@ -186,14 +184,15 @@ function limpioid(id) {
 }
 
 function mostrarPeriodos() {
-	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
-	if (n < 120) {
+	if (parseInt(document.forms.nuevoJuicio.mostrar.value) < 120) {	
+		var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
 		var o = 0;
+		var f = 0;
 		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
 			if (o < 120) {
-				t = "tr" + o;
-				document.getElementById(t).style.display="table-row";
+				f = "fila" + o;
+				document.getElementById(f).style.display="table-row";
 			}
 		}
 		document.forms.nuevoJuicio.mostrar.value = n + 12;
@@ -367,25 +366,23 @@ function validar(formulario) {
       </tr>
 <?php } ?>
     </table>
+    <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="display: none"/>
    	<table width="800" style="text-align: center; margin-top: 15px">
         <tr>
           <td width="50%">
             <p><b>PER&Iacute;ODOS DEL JUICIO</b></p>
-            <p>
-            	<input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="display: none"/>
-           		<input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
-          	</p>
+            <p><input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/></p>
           </td>
 		  <td>
 		    <b>TRAMITE JUDICIAL</b> [<input name="tramite" type="radio" value="0" checked="checked" onchange="mostrarBotones()"/> NO - <input name="tramite" type="radio" value="1" onchange="mostrarBotones()"/> SI ]	
 		  </td>
         </tr>
         <tr>
-          <td><b>Mes | Año</b></td>
+          <td width="80" align="center"><b>Mes | Año</b></td>
         </tr>
 <?php	for ($i = 0 ; $i < 120; $i ++) { 
 			if ($i < 12) { ?>
-				<tr>
+				<tr id="fila<?php echo $i?>">
 					<td>
 						<input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' style='visibility:hidden'/>
 						<input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/>
@@ -394,7 +391,7 @@ function validar(formulario) {
 					</td>
 				</tr>
 	<?php	} else { ?>
-				<tr style="display: none" id="tr<?php echo $i?>">
+				<tr id="fila<?php echo $i?>" style="display: none">
 					<td>
 						<input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' style='visibility:hidden' />		 
 						<input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/>

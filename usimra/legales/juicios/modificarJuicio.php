@@ -145,9 +145,6 @@ function formatoPeriodoInicio() {
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
 		document.getElementById(con).value="";
-		document.getElementById(m).style.visibility="hidden";
-		document.getElementById(a).style.visibility="hidden";
-		document.getElementById(men).style.visibility="hidden";
 	}
 	document.forms.nuevoJuicio.mostrar.value = 12;
 }
@@ -206,14 +203,15 @@ function limpioid(id) {
 }
 
 function mostrarPeriodos() {
-	var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
-	if (n < 120) {
+	if (parseInt(document.forms.nuevoJuicio.mostrar.value) < 120) {	
+		var n = parseInt(document.forms.nuevoJuicio.mostrar.value);
 		var o = 0;
+		var f = 0;
 		for (var i=0; i<=12; i++){
 			o = parseInt(document.forms.nuevoJuicio.mostrar.value) + i;
 			if (o < 120) {
-				t = "tr" + o;
-				document.getElementById(t).style.display="table-row";
+				f = "fila" + o;
+				document.getElementById(f).style.display="table-row";
 			}
 		}
 		document.forms.nuevoJuicio.mostrar.value = n + 12;
@@ -455,30 +453,30 @@ function validar(formulario) {
           <td width="80" align="center">Mes | Año</td>
         </tr>
         <?php 	$i = 0;
-			  	while ($rowPeriodos=mysql_fetch_assoc($resPeriodos)) { ?>
-					<tr>
+				while ( $rowPeriodos = mysql_fetch_assoc ( $resPeriodos ) ) { 
+					if ($rowPeriodos ['mesjuicio'] < 10) {
+						$mes = "0" . $rowPeriodos ['mesjuicio'];
+					} else {
+						$mes = $rowPeriodos ['mesjuicio'];
+					}
+					if ($rowPeriodos ['nroacuerdo'] != 0) {
+						$mensaje = "Abs A. Nro: " . $rowPeriodos ['nroacuerdo'];
+					} else {
+						$mensaje = '';
+					} ?>
+					<tr id="fila<?php echo $i?>">
 						<td>
-							<input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' value='<?php echo $rowPeriodos['idperiodo'] ?>' style='visibility:hidden'/>
-					<?php	if ($rowPeriodos['mesjuicio'] < 10) { 
-								$mes = "0".$rowPeriodos['mesjuicio'];
-							} else {
-								$mes = $rowPeriodos['mesjuicio'];
-							} ?>
+							<input name='id<?php echo $i ?>' type='text' id='id<?php echo $i ?>' size='2' value='<?php echo $rowPeriodos ['idperiodo']?>' style='visibility:hidden'/>
 							<input name='mes<?php echo $i ?>' type='text' id='mes<?php echo $i ?>' size='2' value='<?php echo $mes ?>' onfocusout='validoMes(<?php echo $i ?>)' onchange='limpioid(<?php echo $i ?>)'/>
-							<input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' size='4' value='<?php echo $rowPeriodos['anojuicio'] ?>' onchange='limpioid(<?php echo $i ?>)'/>
-					<?php	if ($rowPeriodos['nroacuerdo'] != 0) {
-								$mensaje = "Abs A. Nro: ".$rowPeriodos['nroacuerdo'];
-							} else {
-								$mensaje = '';
-							}  ?>
-							<input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' value='<?php echo $rowPeriodos['conceptodeuda'] ?>' style='visibility:hidden'/>
+							<input name='anio<?php echo $i ?>' type='text' id='anio<?php echo $i ?>' size='4' value='<?php echo $rowPeriodos ['anojuicio'] ?>' onchange='limpioid(<?php echo $i ?>)'/>
+							<input name='concepto<?php echo $i ?>' type='text' id='concepto<?php echo $i ?>' size='2' value='<?php echo $rowPeriodos ['conceptodeuda']?>' style='visibility:hidden'/>
 						</td>
-						<td id='mensaje<?php echo $i ?>'><?php echo $mensaje ?></td>
+						<td id='mensaje<?php echo $i ?>'><?php echo $mensaje?></td>
 					</tr>
 			<?php	$i++;
 				} 
 				for ($n = $i; $n < 120; $n++) { ?>
-					<tr style="display: none" id="tr<?php echo $n?>">
+					<tr id="fila<?php echo $n?>" style="display: none">
 						<td>
 							<input name='id<?php echo $n ?>' type='text' id='id<?php echo $n ?>' size='2' style='visibility:hidden'/>
 							<input name='mes<?php echo $n ?>' id='mes<?php echo $n ?>' type='text' size='2' onfocusout='validoMes(<?php echo $n ?>)' onchange='limpioid(<?php echo $n ?>)'/>
