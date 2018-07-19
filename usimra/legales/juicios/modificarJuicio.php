@@ -424,20 +424,15 @@ function validar(formulario) {
        </tr>
   <?php } ?>   
     </table>
-	
+	<?php $sqlPeriodos = "SELECT * FROM detjuiciosusimra WHERE nroorden = $nroorden";
+		  $resPeriodos = mysql_query($sqlPeriodos,$db);
+		  $canPeriodos = mysql_num_rows($resPeriodos); 	?>
+    <input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="display: none"/>
    	<table width="1001" style="text-align: center; margin-top: 15px">
         <tr>
           <td width="50%">
               <b>PER&Iacute;ODOS DEL JUICIO</b>
-				<?php
-					$sqlPeriodos = "SELECT * FROM detjuiciosusimra WHERE nroorden = $nroorden";
-					$resPeriodos = mysql_query($sqlPeriodos,$db);
-					$canPeriodos = mysql_num_rows($resPeriodos); 	
-				?>
-			  <p>
-            	<input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="display: none"/>
-            	<input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/>
-        	  </p>
+			  <p><input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/></p>
           </td>
 		  <td>	   
 			<?php if ($rowJuicio['tramitejudicial'] == 0) { ?>	
