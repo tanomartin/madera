@@ -56,6 +56,12 @@ function validar(formulario) {
 	return true;
 }
 
+function exportar(dato) {
+	var redire = "buscarMontoExcel.php?monto="+dato;
+	//$.blockUI({ message: "<h1>Generando Exportacion... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
+	location.href = redire;
+}
+
 </script>
 
 </head>
@@ -99,7 +105,7 @@ function validar(formulario) {
 								<td><?php echo $rowEmpleados['apo100']?></td>
 								<td><?php echo $rowEmpleados['apo150']?></td>
 								<td><?php echo $rowEmpleados['recarg']?></td>
-								<td><?php echo $rowEmpleados['recarg']+$rowEmpleados['totapo']?></td>
+								<td><?php echo number_format($rowEmpleados['recarg']+$rowEmpleados['totapo'],"2",".","")?></td>
 								<td><?php if ($rowEmpleados['instrumento'] == "B") { echo "BOLETA DE PAGO"; } 
 										  if ($rowEmpleados['instrumento'] == "T") { echo "LINK PAGOS"; } ?>
 								</td>
@@ -107,7 +113,12 @@ function validar(formulario) {
 			<?php		} ?>
 						</tbody>
 					</table>
-					<input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>
+					<table width="1200px">
+						<tr>
+							<td align="left"><input type="button" name="exportar" value="Exportar Excel" onclick="exportar('<?php echo $_POST['monto'] ?>')"/></td>
+							<td align="right"><input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></td>
+						</tr>
+					</table>
 		<?php	} else { ?>
 					<h3 style="color: blue;">No existe D.D.J.J. con el monto "<?php echo $_POST['monto'] ?>"</h3>
 		<?php	}
