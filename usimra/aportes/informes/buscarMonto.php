@@ -1,6 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php"); 
-
+set_time_limit(0);
 $canDDJJMonto = 0;
 if (isset($_POST['monto'])) {
 	$sqlDDJJMonto = "SELECT d.*, p.descripcion as periodo, e.nombre FROM ddjjusimra d, periodosusimra p, empresas e
