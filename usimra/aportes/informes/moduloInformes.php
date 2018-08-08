@@ -7,35 +7,33 @@ include($libPath."controlSessionUsimra.php");
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Informes de Aportes :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
 <body bgcolor="#B2A274">
 	<div align="center">
-	  <p>
-	    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAportes.php'" />
-      </p>
-	  <p><span class="Estilo1">Men&uacute; Informes </span></p>
-	  <table style="width: 660; height: 168" border="1">
+	  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAportes.php'" /></p>
+	  <h3>Menú Informes </h3>
+	  <table width="600" border="1" style="text-align: center">
 		<tr>
-	    	<td width="220" height="164"><p align="center">Ingresos por Aportes</p>
-        		<p align="center"><a class="enlace" href="ingresosAportes.php"><img src="img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	      		<p align="center">&nbsp;</p></td>
-        	<td width="220" height="164"><p align="center">Descargas Aplicativo D.D.J.J. </p>
-         		<p align="center"><a class="enlace" href="listadoDescarga.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	            <p align="center">&nbsp;</p></td>
-   			<td width="220" height="164"><p align="center">Ingresos por Cuota Excepcional</p>
-		        <p align="center"><a class="enlace" href="ingresosExtraordinaria.php"><img src="img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-		      <p>&nbsp;</p></td>
+	    	<td width="200">
+	    		<p>INGRESO POR APORTE</p>
+        		<p><a href="ingresosAportes.php"><img src="img/excellogo.png" width="90" height="90" border="0" /></a></p>
+	      	</td>
+        	<td width="200">
+        		<p>DESCARGA <br/> APLICATIVO DDJJ</p>
+         		<p><a href="listadoDescarga.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+	        </td>
+   			<td width="200">
+   				<p>INGRESO POR CUOTA EXCEPCIONAL</p>
+		        <p><a href="ingresosExtraordinaria.php"><img src="img/excellogo.png" width="90" height="90" border="0" /></a></p>
+		    </td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<p>BUSQUEDA DDJJ <br/> POR MONTO</p>
+         		<p><a href="buscarMonto.php"><img src="img/buscar.png" width="90" height="90" border="0" /></a></p>
+			</td>
+			<td></td>
 		</tr>
       </table>
 </div>
