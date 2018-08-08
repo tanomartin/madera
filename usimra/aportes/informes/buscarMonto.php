@@ -35,7 +35,6 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{5:{sorter:false},6:{sorter:false},8:{sorter:false, filter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -84,7 +83,7 @@ function validar(formulario) {
 								<th>Aporte 1.5</th>
 								<th>Recargo</th>
 								<th>A pagar</th>
-								<th>Doc. para Pagar</th>
+								<th class="filter-select" data-placeholder="Seleccione">Doc. para Pagar</th>
 							</tr>
 						</thead>
 						<tbody>
