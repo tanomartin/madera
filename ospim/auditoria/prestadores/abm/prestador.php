@@ -162,6 +162,10 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
             <?php if ($rowConsultaPresta['montofijo'] == 1) { echo "SI"; } else { echo "NO"; } ?>
           </div></td>
         </tr>
+        <tr>
+        	<td><div align="right" class="title"><strong>Observación</strong></div></td>
+        	<td colspan="6" style="text-align: left;"><?php echo $rowConsultaPresta['observacion'] ?></td>
+        </tr>
   	  </table>
   	  </div>
 	  <div class="grilla" style="margin-top: 20px;margin-bottom: 20px">

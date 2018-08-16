@@ -131,12 +131,13 @@ if ($nroRegistroSNR == '') {
 
 $capitado = $_POST['capitado'];
 $fijo = $_POST['fijo'];
+$obs = strtoupper(addslashes($_POST['observacion']));
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $fechamodificacion = $fecharegistro;
 $usuariomodificacion = $usuarioregistro;
 
-$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos',$alfapostal,$tel1,$ddn1,$tel2,$ddn2,$telfax,$ddnfax,$email1,$email2,'$cuit',$sitfiscal,$vtoexento,'$personeria',$tratamiento,$matriculaNac,$matriculaPro,$nroRegistroSSS,$vtoRegistroSSS,$nroRegistroSNR,$vtoRegistroSNR,$capitado,$fijo,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad','$idBarrio','$codProvin','$indpostal','$codPos',$alfapostal,$tel1,$ddn1,$tel2,$ddn2,$telfax,$ddnfax,$email1,$email2,'$cuit',$sitfiscal,$vtoexento,'$personeria',$tratamiento,$matriculaNac,$matriculaPro,$nroRegistroSSS,$vtoRegistroSSS,$nroRegistroSNR,$vtoRegistroSNR,$capitado,$fijo,'$obs','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];

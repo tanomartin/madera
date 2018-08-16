@@ -98,7 +98,7 @@ jQuery(function($){
 				data: {nroreg:nroreg, codigo:codigo},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
-					$("#errorSSS").html("<br>El Nro de Registro de la SSS '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+					$("#errorSSS").html("El Nro de Registro de la SSS '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
 					$("#vtoSSS").prop("disabled", true );
 					$("#nroSSS").val("");
 				} else {
@@ -123,7 +123,7 @@ jQuery(function($){
 				data: {nroreg:nroreg, codigo:codigo},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
-					$("#errorSNR").html("<br>El Nro de Registro de la SNR '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+					$("#errorSNR").html("El Nro de Registro de la SNR '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
 					$("#vtoSNR").prop("disabled", true );
 					$("#nroSNR").val("");
 				} else {
@@ -408,14 +408,12 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'prestador.php?codigo=<?php echo $codigo ?>'" />
-  </span></p>
-  <p><strong>Modificar Prestador</strong></p>
+  <p><input type="reset" name="volver" value="Volver" onclick="location.href = 'prestador.php?codigo=<?php echo $codigo ?>'" /></p>
+  <h3>Modificar Prestador</h3>
   <form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarModificacionPrestador.php">
-    <table border="0">
+    <table width="100%" border="0">
       <tr>
-        <td><div align="right"><strong>C&oacute;digo</strong></div></td>
+        <td width="130"><div align="right"><b>Código</b></div></td>
         <td colspan="3">
         	<div align="left">
           		<input name="codigo" readonly="readonly" style="background:#CCCCCC" type="text" id="codigo" size="4" value="<?php echo $rowConsultaPresta['codigoprestador'] ?>"/>
@@ -423,7 +421,7 @@ function validar(formulario) {
         </td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
+        <td><div align="right"><b>Raz&oacute;n Social</b></div></td>
         <td colspan="3">
         	<div align="left">
             	<input name="nombre" type="text" id="nombre" size="120" value="<?php echo $rowConsultaPresta['nombre'] ?>"/>
@@ -431,15 +429,15 @@ function validar(formulario) {
         </td>
       </tr>
        <tr>
-        <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td>
+        <td><div align="right"><b>C.U.I.T.</b></div></td>
+        <td width="320">
         	<div align="left">
           		<input name="cuit" type="text" id="cuit" size="13" value="<?php echo $rowConsultaPresta['cuit'] ?>"/>
  				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
         <td>
-			<div align="left"><strong>Situacion Fiscal</strong>
+			<div align="left"><b>Situacion Fiscal</b>
 				<select id="sitfiscal" name="sitfiscal">
 				<?php 	$query = "select * from tiposituacionfiscal"; 
 	    	  			$result = mysql_query($query,$db);  
@@ -456,7 +454,7 @@ function validar(formulario) {
 		</td>
 		<td>
 			<div align="left">
-				<strong>Vto. Exento</strong>
+				<b>Vto. Exento</b>
 				<?php 
             		$disabled = 'disabled=disabled';
             		$vtoexento = '';
@@ -469,7 +467,7 @@ function validar(formulario) {
 		</td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Domicilio</strong></div></td>
+        <td><div align="right"><b>Domicilio</b></div></td>
         <td colspan="2">
         	<div align="left">
           		<input name="domicilio" type="text" id="domicilio" size="70" value="<?php echo $rowConsultaPresta['domicilio'] ?>" />
@@ -477,14 +475,14 @@ function validar(formulario) {
         </td>
         <td>
         	<div align="left">
-        		<strong>Provincia</strong>
+        		<b>Provincia</b>
           		<input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $rowConsultaPresta['provincia'] ?>"/>
           		<input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2" value="<?php echo $rowConsultaPresta['codprovin'] ?>"/>
         	</div>
       	</td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Codigo Postal</strong></div></td>
+        <td><div align="right"><b>Codigo Postal</b></div></td>
         <td>
         	<div align="left">
           		<input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1" value="<?php echo $rowConsultaPresta['indpostal'] ?>"/>
@@ -494,7 +492,7 @@ function validar(formulario) {
 		</td>
         <td>
         	<div align="left">
-	        	<strong>Localidad</strong>
+	        	<b>Localidad</b>
 		        <select name="selectLocali" id="selectLocali">
 		        	<option value="0">Seleccione un valor </option>
 		            <option value="<?php echo $rowConsultaPresta['codlocali'] ?>" selected="selected"><?php echo $rowConsultaPresta['localidad'] ?></option>
@@ -507,7 +505,7 @@ function validar(formulario) {
         ?>
         <td>
         	<div align="left">
-	        	<strong>Barrio</strong>
+	        	<b>Barrio</b>
 	        	<select name="selectBarrio" id="selectBarrio" <?php echo $disabled?>>
 	        		<?php if ($disabled == "") {
 		        			$sqlBarrios="SELECT * FROM barrios";
@@ -525,7 +523,7 @@ function validar(formulario) {
         </td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Telefono 1 </strong></div></td>
+        <td><div align="right"><b>Telefono 1 </b></div></td>
         <td>
         	<div align="left">
         		(<input name="ddn1" type="text" id="ddn1" size="3" value="<?php echo $rowConsultaPresta['ddn1'] ?>"/>)-
@@ -533,31 +531,30 @@ function validar(formulario) {
 			</div>
 		</td>
         <td>
-        	<div align="left"><strong>Telefono 2 </strong>
+        	<div align="left"><b>Telefono 2 </b>
         		(<input name="ddn2" type="text" id="ddn2" size="3" value="<?php echo $rowConsultaPresta['ddn2'] ?>"/>)-
 				<input name="telefono2" type="text" id="telefono2" size="15" value="<?php echo $rowConsultaPresta['telefono2'] ?>"/>
             </div>
         </td>
         <td>
-        	<div align="left"><strong>Telefono FAX </strong>
+        	<div align="left"><b>Telefono FAX </b>
         		(<input name="ddnfax" type="text" id="ddnfax" size="3" value="<?php echo $rowConsultaPresta['ddnfax'] ?>"/>)-
             	<input name="telefonofax" type="text" id="telefonofax" size="15" value="<?php echo $rowConsultaPresta['telefonofax'] ?>"/>
 			</div>
 		</td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Email Primario</strong></div></td>
+        <td><div align="right"><b>Email Primario</b></div></td>
         <td colspan="3"><input name="email1" type="text" id="email1" size="60" value="<?php echo $rowConsultaPresta['email1'] ?>"/></td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Email Secundario</strong></div></td>
+        <td><div align="right"><b>Email Secundario</b></div></td>
         <td colspan="3"><input name="email2" type="text" id="email2" size="60" value="<?php echo $rowConsultaPresta['email2'] ?>"/></td>
       </tr>
       <tr>
-      	<td><div align="right"><strong>Registro SSS ||</strong></div></td>
-      	<td colspan="3">
-			<div align="left">	
-            	<b>Numero </b><input name="nroSSS" type="text" id="nroSSS" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosss']; ?>" /> 
+      	<td><div align="right"><b>Registro SSS </b></div></td>
+      	<td>
+            	<b>- Numero </b><input name="nroSSS" type="text" id="nroSSS" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosss']; ?>" /> 
             	<?php 
             		$disabled = 'disabled=disabled';
             		$vtosss = '';
@@ -565,9 +562,14 @@ function validar(formulario) {
             			$disabled = '';
             			$vtosss = invertirFecha($rowConsultaPresta['vtoregistrosss'] );
 	            	}?>
-              - <b>Vencimiento </b><input type="text" id="vtoSSS" name="vtoSSS" size="8" <?php echo $disabled?> value="<?php if ($vtosss != NULL) { echo $vtosss; }?>"/>         	
-            	<strong>| Registro SNR ||</strong>
-            	<b>Numero </b><input name="nroSNR" type="text" id="nroSNR" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosnr']; ?>"/> 
+              - <b>VTO </b><input type="text" id="vtoSSS" name="vtoSSS" size="8" <?php echo $disabled?> value="<?php if ($vtosss != NULL) { echo $vtosss; }?>"/>         	       
+        </td>
+        <td colspan="2"><span id="errorSSS" style="color:#FF0000;font-weight: bold;"></span></td>
+      </tr>
+      <tr>
+      	<td><div align="right"><b>Registro SNR </b></div></td>
+      	<td>
+            <b>- Numero </b><input name="nroSNR" type="text" id="nroSNR" size="10" value="<?php echo $rowConsultaPresta['numeroregistrosnr']; ?>"/> 
             	<?php 
             		$disabled = 'disabled=disabled';
             		$vtosnr = '';
@@ -575,15 +577,12 @@ function validar(formulario) {
             			$disabled = '';
             			$vtosnr = invertirFecha($rowConsultaPresta['vtoregistrosnr'] );
 	            	}?>
-            	
-              - <b>Vencimiento </b><input type="text" id="vtoSNR" name="vtoSNR" size="8" <?php echo $disabled?> value="<?php if ($vtosnr != NULL) { echo $vtosnr; }?>"/> |      	
-            	<span id="errorSSS" style="color:#FF0000;font-weight: bold;"></span>
-            	<span id="errorSNR" style="color:#FF0000;font-weight: bold;"></span> 
-          	</div>         
-        </td>
+              - <b>VTO </b><input type="text" id="vtoSNR" name="vtoSNR" size="8" <?php echo $disabled?> value="<?php if ($vtosnr != NULL) { echo $vtosnr; }?>"/>     	
+      	</td>
+      	<td colspan="2"><span id="errorSNR" style="color:#FF0000;font-weight: bold;"></span> </td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Personer&iacute;a</strong></div></td>
+        <td><div align="right"><b>Personer&iacute;a</b></div></td>
         <td colspan="3">
         	<div align="left">
           	<?php 
@@ -640,7 +639,7 @@ function validar(formulario) {
 		</td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Tratamiento</strong></div></td>
+        <td><div align="right"><b>Tratamiento</b></div></td>
         <td><div align="left">
 	          <select name="selectTratamiento" size="1" id="selectTratamiento" <?php echo $disabled ?> >
 	            <option value="0">Seleccione un valor </option>
@@ -656,21 +655,21 @@ function validar(formulario) {
         </td>
         <td>
         	<div align="left">
-        		<strong>Matr&iacute;cula Nacional </strong>
+        		<b>Matr&iacute;cula Nacional </b>
           		<input name="matriculaNac" type="text" id="matriculaNac" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaPresta['matriculanacional']?>"/>
         		<span id="errorMatNac" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
         <td>
         	<div align="left">
-        		<strong>Matr&iacute;cula Provincial </strong>
+        		<b>Matr&iacute;cula Provincial </b>
           		<input name="matriculaPro" type="text" id="matriculaPro" size="10" <?php echo $disabled ?> value="<?php echo $rowConsultaPresta['matriculaprovincial'] ?>"/>
         		<span id="errorMatPro" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Capitado</strong></div></td>
+        <td><div align="right"><b>Capitado</b></div></td>
         <td>
         	<div align="left">
 	          	<?php if ($rowConsultaPresta['capitado'] == 0) { $nocapitado = "checked"; $capitado = ""; } else { $nocapitado = ""; $capitado = "checked"; } ?>
@@ -678,9 +677,9 @@ function validar(formulario) {
 				<input name="capitado" type="radio" value="1" <?php echo $capitado ?> /> SI 
 			</div>
 		</td>
-		<td>
+		<td colspan="2">
 			<div align="left">
-				<strong>Arancel Fijo</strong>
+				<b>Arancel Fijo</b>
 				<?php if ($rowConsultaPresta['montofijo'] == 0) { $nofijo = "checked"; $sifijo = ""; } else { $nofijo = ""; $sifijo = "checked"; } ?>
           		<input name="fijo" type="radio" value="0" <?php echo $nofijo ?>/> NO
   		  		<input name="fijo" type="radio" value="1" <?php echo $sifijo ?>/>SI
@@ -688,7 +687,7 @@ function validar(formulario) {
 		</td>
       </tr>
       <tr>
-	    <td><div align="right"><strong>Nomenclador </strong></div></td>
+	    <td><div align="right"><b>Nomenclador </b></div></td>
 	    <td colspan="3"><div align="left">
             <?php 	
 		          $today = date("Y-m-d");
@@ -727,12 +726,16 @@ function validar(formulario) {
 				?>
         </div></td>
       </tr>
+      <tr>
+      	<td><div align="right"><b>Observacion </b></div></td>
+      	<td colspan="5"><textarea rows="3" cols="130" id="observacion" name="observacion"><?php echo $rowConsultaPresta['observacion'] ?></textarea></td>
+      </tr>
       <tr><td colspan="4" style="text-align: center"><font color='#0000CC'><?php echo $cartel ?></font></td></tr> 
     </table>
     <table width="884" border="0">
       <tr>
-        <td width="284" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></td>
-        <td colspan="2"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></td>
+        <td width="284" height="46"><div align="center" class="Estilo1"><b>Servicios </b></div></td>
+        <td colspan="2"><div align="center" class="Estilo1"><b>Jurisdiccion </b></div></td>
       </tr>
       <tr>
         <td valign="top">

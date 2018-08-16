@@ -93,7 +93,7 @@ jQuery(function($){
 				data: {nroreg:nroreg},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
-					$("#errorSSS").html("<br>El Nro de Registro de la SSS '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+					$("#errorSSS").html("El Nro de Registro de la SSS '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
 					$("#vtoSSS").prop("disabled", true );
 					$("#nroSSS").val("");
 				} else {
@@ -117,7 +117,7 @@ jQuery(function($){
 				data: {nroreg:nroreg},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
-					$("#errorSNR").html("<br>El Nro de Registro de la SNR '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
+					$("#errorSNR").html("El Nro de Registro de la SNR '" + nroreg + "' ya existe en el prestador con codigo '"+ respuesta +"'");
 					$("#vtoSNR").prop("disabled", true );
 					$("#nroSNR").val("");
 				} else {
@@ -386,16 +386,16 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><strong>Nuevo Prestador </strong></p>
+  <h3>Nuevo Prestador </h3>
   <form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarNuevoPrestador.php">
-    <table border="0">
+    <table width="100%" border="0">
       <tr>
-        <td width="129"><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
+        <td width="130"><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
         <td colspan="3"><div align="left"><input name="nombre" type="text" id="nombre" size="120" /></div></td>
       </tr>
        <tr>
         <td><div align="right"><strong>C.U.I.T.</strong></div></td>
-        <td>
+        <td width="320">
 			<div align="left">
 				<input name="cuit" type="text" id="cuit" size="10" />
 				<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>
@@ -483,16 +483,18 @@ function validar(formulario) {
         <td colspan="3"><div align="left"><input name="email2" type="text" id="email2" size="60" /></div></td>
       </tr>
       <tr>
-      	<td><div align="right"><strong>Registro SSS ||</strong></div></td>
-      	<td colspan="3">
-			<div align="left">	
-            	<b>Numero </b><input name="nroSSS" type="text" id="nroSSS" size="10" /> - <b>Vencimiento </b><input type="text" id="vtoSSS" name="vtoSSS" size="8" disabled="disabled"/>         	
-            	<strong>| Registro SNR ||</strong>
-            	<b>Numero </b><input name="nroSNR" type="text" id="nroSNR" size="10" /> - <b>Vencimiento </b><input type="text" id="vtoSNR" name="vtoSNR" size="8" disabled="disabled"/> |      	
-            	<span id="errorSSS" style="color:#FF0000;font-weight: bold;"></span>
-            	<span id="errorSNR" style="color:#FF0000;font-weight: bold;"></span> 
-          	</div>         
+      	<td><div align="right"><strong>Registro SSS </strong></div></td>
+      	<td>
+            <b>- Numero </b><input name="nroSSS" type="text" id="nroSSS" size="10" /> - <b>VTO </b><input type="text" id="vtoSSS" name="vtoSSS" size="8" disabled="disabled"/>         	      	     
         </td>
+        <td colspan="2"><span id="errorSSS" style="color:#FF0000;font-weight: bold;"/></td>
+      </tr>
+      <tr>
+      	<td><div align="right"><strong>Registro SNR </strong></div></td>
+      	<td>
+      		<b>- Numero </b><input name="nroSNR" type="text" id="nroSNR" size="10" /> - <b>VTO </b><input type="text" id="vtoSNR" name="vtoSNR" size="8" disabled="disabled"/>    	
+      	</td>
+      	<td colspan="2"><span id="errorSNR" style="color:#FF0000;font-weight: bold;"/> </td>
       </tr>
 	  <tr>
         <td><div align="right"><strong>Personería</strong></div></td>
@@ -525,14 +527,14 @@ function validar(formulario) {
 	    </td>
         <td>
 		   	<div align="left">
-		   		<strong>Matr&iacute;cula Nacional </strong>
+		   		<strong>Matrícula Nacional </strong>
           		<input name="matriculaNac" type="text" id="matriculaNac" size="10" disabled="disabled"/>
           		<span id="errorMatNac" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
         </td>
         <td>
 			<div align="left">
-				<strong>Matr&iacute;cula Provincial </strong>
+				<strong>Matrícula Provincial </strong>
             	<input name="matriculaPro" type="text" id="matriculaPro" size="10" disabled="disabled"/>
             	<span id="errorMatPro" style="color:#FF0000;font-weight: bold;"></span>
         	</div>
@@ -546,12 +548,17 @@ function validar(formulario) {
   		  		<input name="capitado" type="radio" value="1" />SI
 		  	</div>
 		</td>
-		<td><div align="left">
+		<td colspan="2">
+			<div align="left">
 				<strong>Arancel Fijo</strong>
           		<input name="fijo" type="radio" value="0" checked="checked"/> NO
   		  		<input name="fijo" type="radio" value="1" />SI
 		  	</div>
 		</td>
+      </tr>
+      <tr>
+      	<td><div align="right"><b>Observacion </b></div></td>
+      	<td colspan="5"><textarea rows="3" cols="130" id="observacion" name="observacion"></textarea></td>
       </tr>
 	  <tr>
 	    <td><div align="right"><strong>Nomenclador </strong></div></td>
@@ -568,9 +575,9 @@ function validar(formulario) {
         </td>
       </tr>
     </table>
-    <table width="884" border="0">
+    <table width="900">
       <tr>
-        <td width="284" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></td>
+        <td width="300" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></td>
         <td colspan="2"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></td>
       </tr>
       <tr>
@@ -578,7 +585,7 @@ function validar(formulario) {
 			<div id="divServicios" align="left" >	 
 			</div>
 		</td>
-        <td width="281" valign="top"><div align="left">
+        <td width="300" valign="top"><div align="left">
             <?php 
 				$query="select * from delegaciones where codidelega >= 1002 and codidelega <= 1702";
 				$result=mysql_query($query,$db);
@@ -589,7 +596,7 @@ function validar(formulario) {
             <?php 	$i++;
 				} ?>
                 </div></td>
-        <td width="297" valign="top"><div align="left">
+        <td width="300" valign="top"><div align="left">
           <?php 
 				$query="select * from delegaciones where codidelega > 1702 and codidelega < 3200";
 				$result=mysql_query($query,$db);

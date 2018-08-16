@@ -134,6 +134,7 @@ if ($nroRegistroSNR == '') {
 
 $capitado = $_POST['capitado'];
 $fijo = $_POST['fijo'];
+$obs = strtoupper(addslashes($_POST['observacion']));
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 
@@ -168,6 +169,7 @@ numeroregistrosnr = $nroRegistroSNR,
 vtoregistrosnr = $vtoRegistroSNR,
 capitado = $capitado,
 montofijo = $fijo,
+observacion = '$obs',
 fehamodificacion = '$fechamodificacion', 
 usuariomodificacion = '$usuariomodificacion'
 WHERE codigoprestador = $codigo";
