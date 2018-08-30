@@ -5,6 +5,7 @@ $noExiste = 0;
 if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	$dato = $_POST['dato'];
 	$filtro = $_POST['filtro'];
+	$fecha = $_POST['fecha'];
 	$resultado = array();
 	if (isset($dato)) {
 		if ($filtro == 0) { $sqlPrestador = "SELECT * from prestadores where codigoprestador = $dato order by codigoprestador DESC"; }
@@ -15,8 +16,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$noExiste = 1;
 		} else {
 			$rowPrestador = mysql_fetch_array($resPrestador);
-			$cartel = "Cuenta Corriente Prestador <b>'".$rowPrestador['nombre']." - ".$rowPrestador['codigoprestador']."'</b>";
-				
+			$cartel = "<b>'".$rowPrestador['nombre']." - ".$rowPrestador['codigoprestador']."'</b></br>Detalle desde <b>'$fecha'</b>";		
 		}
 	}
 }
@@ -75,6 +75,10 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 				alert("C.U.I.T. invalido");
 				return false;
 			}
+		}
+		if (!esFechaValida(formulario.fecha.value)) {
+			alert("Debe colocar una fecha valida");
+			return false;
 		}
 		$.blockUI({ message: "<h1>Generando Busqueda... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 		return true;

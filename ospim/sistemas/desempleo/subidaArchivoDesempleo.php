@@ -1,6 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 include($libPath."claves.php");
+include($libPath."bandejaSalida.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 
@@ -84,6 +85,13 @@ $resLoadAnses = mysqli_query($linkid, $sqlImport);
 mysqli_close($linkid);
 if (!$resLoadAnses) {
 	$mensajeError = 'La carga de los registros de desempleo de anses (Desempleo.txt) FALLO.';
+} else {
+	$subject = "Aviso Automático - Proceso de Archivo de Desempleo";
+	$address = "contaduria@ospim.com.ar; afiliaciones@ospim.com.ar";
+	$username ="sistemas@ospim.com.ar";
+	$modulo = "Desempleo";
+	$bodymail = "Este es un aviso para informar que se proceso el archivo de Desempleo del periodo $carpetaMes.<br><br>Dpto. Sistemas";
+	guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
 }
 
 ?>
