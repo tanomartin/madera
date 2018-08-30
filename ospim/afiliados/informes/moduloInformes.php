@@ -62,7 +62,11 @@ include($libPath."controlSessionOspim.php"); ?>
 	    		<p>PADRON S.S.S.</p>
 	        	<p><a class="enlace" href="menuSSS.php"><img src="../img/padronsss.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	    	</td>
-	    	<td></td>
+	    	<td>
+	    		<p>DESEMPLEO</p>
+	        	<p><a class="enlace" href="desempleo.php"><img src="../img/anses.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	   
+	    	</td>
     	</tr>
   	</table>
 </div>
