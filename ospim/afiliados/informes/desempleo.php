@@ -6,8 +6,12 @@ if (isset($_POST['periodo'])) {
 	$sqlDesempleo = "SELECT d.cuilbeneficiario, d.apellidoynombre, 
 							d.fechacobro, d.anofinrelacion, 
 							d.mesfinrelacion, d.fechainformesss,
-							titulares.nroafiliado as nrotitu, titulares.situaciontitularidad as sitututi,
-							titularesdebaja.nroafiliado as nrobaja, titularesdebaja.situaciontitularidad as situbaja
+							titulares.nroafiliado as nrotitu, 
+							titulares.situaciontitularidad as sitututi, 
+							titulares.codidelega as deletitu, 
+							titularesdebaja.nroafiliado as nrobaja, 
+							titularesdebaja.situaciontitularidad as situbaja, 
+							titularesdebaja.codidelega as delebaja
 					FROM desempleosss d
 					LEFT JOIN titulares on d.cuilbeneficiario = titulares.cuil
 					LEFT JOIN titularesdebaja on d.cuilbeneficiario = titularesdebaja.cuil
@@ -122,6 +126,7 @@ $(function() {
   				<thead>
 	  				<tr>
 	  					<td>Nro Afiliado</td>
+	  					<td class="filter-select" data-placeholder="Seleccione">Dele</td>
 	  					<td class="filter-select" data-placeholder="Seleccione">Estado</td>
 	  					<td class="filter-select" data-placeholder="Seleccione">Tipo</td>
 	  					<td>C.U.I.L.</td>
@@ -131,9 +136,13 @@ $(function() {
 	  				</tr>
   				</thead>
   				<tbody>
-  				<?php while ($rowDesempleo = mysql_fetch_assoc($resDesempleo)) {  ?>
+  				<?php
+  					$arrayDele = array();
+  					while ($rowDesempleo = mysql_fetch_assoc($resDesempleo)) {  
+  						$arrayDele[$rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']] = $rowDesempleo['deletitu'].$rowDesempleo['delebaja'] ?>
   						<tr>
   							<td><?php echo $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']; ?></td>
+  							<td><?php echo $rowDesempleo['deletitu'].$rowDesempleo['delebaja']; ?></td>
   						<?php $estado = "NO EMPADRONADO";
   							  if ($rowDesempleo['nrotitu'] != null) { $estado = "ACTIVO"; }
 				 			  if ($rowDesempleo['nrobaja'] != null) { $estado = "DE BAJA"; } ?>
@@ -176,7 +185,8 @@ $(function() {
   				<thead>
 	  				<tr>
 	  					<td>Nro Afiliado</td>
-	  					<td  class="filter-select" data-placeholder="Seleccione">Estado</td>
+	  					<td class="filter-select" data-placeholder="Seleccione">Dele</td>
+	  					<td class="filter-select" data-placeholder="Seleccione">Estado</td>
 	  					<td>C.U.I.L.</td>
 	  					<td>Apellido y Nombre</td>
 	  					<td>C.U.I.L. Titular</td>
@@ -188,6 +198,10 @@ $(function() {
   				<?php while ($rowDesempleoFami = mysql_fetch_assoc($resDesempleoFami)) {  ?>
   						<tr>
   							<td><?php echo $rowDesempleoFami['nrotitu'].$rowDesempleoFami['nrobaja']; ?></td>
+  					  <?php $dele = "";
+  							$index = $rowDesempleoFami['nrotitu'].$rowDesempleoFami['nrobaja'];
+  							if (array_key_exists($index, $arrayDele)) { $dele = $arrayDele[$index]; } ?>
+  							<td><?php echo $dele ?></td>
   						<?php $estado = "NO EMPADRONADO";
   							  if ($rowDesempleoFami['nrotitu'] != null) { $estado = "ACTIVO"; }
 				 			  if ($rowDesempleoFami['nrobaja'] != null) { $estado = "DE BAJA"; } ?>
@@ -221,6 +235,7 @@ $(function() {
 					</p>
 				</form>
 			</div>
+			<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 <?php } ?>
   	
 </div>
