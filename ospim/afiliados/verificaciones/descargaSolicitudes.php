@@ -10,7 +10,7 @@ if(strcmp("localhost",$maquina)==0)
 	$hostremoto = "localhost";
 else
 	$hostremoto = $hostOspim;
-
+	
 $dbremota = $baseOspimIntranet;
 $hostlocal = $_SESSION['host'];
 $dblocal = $_SESSION['dbname'];
@@ -73,15 +73,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 					foreach ($resultLeePedidas as $pedidas) {
 						$statusverifi=0;
 						$statusautori=0;
-
-						$sqlAddAutorizacion="INSERT INTO autorizaciones (nrosolicitud, codidelega, fechasolicitud, cuil, nroafiliado, codiparentesco, apellidoynombre, telefonoafiliado, movilafiliado, emailafiliado, practica, material, tipomaterial, medicamento, pedidomedico, resumenhc, avalsolicitud, presupuesto1, presupuesto2, presupuesto3, presupuesto4, presupuesto5, statusverificacion, statusautorizacion, usuariodescarga, fechadescarga) VALUES (:nrosolicitud, :codidelega, :fechasolicitud, :cuil, :nroafiliado, :codiparentesco, :apellidoynombre, :telefonoafiliado, :movilafiliado, :emailafiliado, :practica, :material, :tipomaterial, :medicamento, :pedidomedico, :resumenhc, :avalsolicitud, :presupuesto1, :presupuesto2, :presupuesto3, :presupuesto4, :presupuesto5, :statusverificacion, :statusautorizacion, :usuariodescarga, :fechadescarga)";
+						
+						$sqlAddAutorizacion="INSERT INTO autorizaciones (nrosolicitud, codidelega, fechasolicitud, cuil, nroafiliado, codiparentesco, apellidoynombre, comentario, telefonoafiliado, movilafiliado, emailafiliado, practica, material, tipomaterial, medicamento, pedidomedico, resumenhc, avalsolicitud, presupuesto1, presupuesto2, presupuesto3, presupuesto4, presupuesto5, statusverificacion, statusautorizacion, usuariodescarga, fechadescarga) VALUES (:nrosolicitud, :codidelega, :fechasolicitud, :cuil, :nroafiliado, :codiparentesco, :apellidoynombre, :comentario, :telefonoafiliado, :movilafiliado, :emailafiliado, :practica, :material, :tipomaterial, :medicamento, :pedidomedico, :resumenhc, :avalsolicitud, :presupuesto1, :presupuesto2, :presupuesto3, :presupuesto4, :presupuesto5, :statusverificacion, :statusautorizacion, :usuariodescarga, :fechadescarga)";
 						$resultAddAutorizacion = $dbl->prepare($sqlAddAutorizacion);
-						if ($resultAddAutorizacion->execute(array(':nrosolicitud' => $pedidas[nrosolicitud], ':codidelega' => $pedidas[delcod], ':fechasolicitud' => $pedidas[fechasolicitud], ':cuil' => $pedidas[nrcuil], ':nroafiliado' => $pedidas[nrafil], ':codiparentesco' => $pedidas[codpar], ':apellidoynombre' => $pedidas[nombre], ':telefonoafiliado' => $pedidas[telefono], ':movilafiliado' => $pedidas[movil], ':emailafiliado' => $pedidas[email],':practica' => $pedidas[practica], ':material' => $pedidas[material], ':tipomaterial' => $pedidas[tipomaterial], ':medicamento' => $pedidas[medicamento], ':pedidomedico' => $pedidas[pedidomedico], ':resumenhc' => $pedidas[resumenhc], ':avalsolicitud' => $pedidas[avalsolicitud], ':presupuesto1' => $pedidas[presupuesto1], ':presupuesto2' => $pedidas[presupuesto2], ':presupuesto3' => $pedidas[presupuesto3], ':presupuesto4' => $pedidas[presupuesto4], ':presupuesto5' => $pedidas[presupuesto5], ':statusverificacion' => $statusverifi, ':statusautorizacion' => $statusautori, ':usuariodescarga' => $usuariodescarga, ':fechadescarga' => $fechadescarga))) {
+						if ($resultAddAutorizacion->execute(array(':nrosolicitud' => $pedidas['nrosolicitud'], ':codidelega' => $pedidas['delcod'], ':fechasolicitud' => $pedidas['fechasolicitud'], ':cuil' => $pedidas['nrcuil'], ':nroafiliado' => $pedidas['nrafil'], ':codiparentesco' => $pedidas['codpar'], ':apellidoynombre' => $pedidas['nombre'], ':comentario' => $pedidas['comentario'], ':telefonoafiliado' => $pedidas['telefono'], ':movilafiliado' => $pedidas['movil'], ':emailafiliado' => $pedidas['email'],':practica' => $pedidas['practica'], ':material' => $pedidas['material'], ':tipomaterial' => $pedidas['tipomaterial'], ':medicamento' => $pedidas['medicamento'], ':pedidomedico' => $pedidas['pedidomedico'], ':resumenhc' => $pedidas['resumenhc'], ':avalsolicitud' => $pedidas['avalsolicitud'], ':presupuesto1' => $pedidas['presupuesto1'], ':presupuesto2' => $pedidas['presupuesto2'], ':presupuesto3' => $pedidas['presupuesto3'], ':presupuesto4' => $pedidas['presupuesto4'], ':presupuesto5' => $pedidas['presupuesto5'], ':statusverificacion' => $statusverifi, ':statusautorizacion' => $statusautori, ':usuariodescarga' => $usuariodescarga, ':fechadescarga' => $fechadescarga))) {
 							//echo "AGREGA AUTORIZACIONES"; echo "<br>";
 
 							$sqlBorraPedidas="DELETE FROM autorizacionpedida WHERE nrosolicitud = :nrosolicitud";
 							$resultBorraPedidas = $dbr->prepare($sqlBorraPedidas);
-							if ($resultBorraPedidas->execute(array(':nrosolicitud' => $pedidas[nrosolicitud]))) {
+							if ($resultBorraPedidas->execute(array(':nrosolicitud' => $pedidas['nrosolicitud']))) {
 								//echo "BORRA AUTORIZACIONPEDIDA"; echo "<br>";
 							}
 						}

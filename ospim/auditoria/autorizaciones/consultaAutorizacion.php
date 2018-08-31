@@ -152,13 +152,14 @@ function reenviarMail(solicitud, idmail, boton, mail) {
   </tr>
 </table>
 
-<table width="1100">
+<table width="100%">
   <tr>
-    <td valign="top">
+    <td width="50%" valign="top">
     	<h3 align="left" class="Estilo4">Informaci&oacute;n del Beneficiario</h3>
     	<p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
         <p><strong>Clasificacion del Titular: </strong> <?php echo $tipoTitular ?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+        <p><strong>Comentario: </strong><?php echo $rowLeeSolicitud['comentario']?></p>
         <p><strong>Tipo Afiliado:</strong> 
 <?php	if($rowLeeSolicitud['codiparentesco']>=0) {
 			if($rowLeeSolicitud['codiparentesco']==0) {

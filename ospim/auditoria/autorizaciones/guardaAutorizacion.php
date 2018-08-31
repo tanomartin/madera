@@ -8,8 +8,6 @@ require_once($libPath."FPDI-1.6.1/fpdi.php");
 
 //var_dump($_POST);
 
-//$datos = array_values($_POST);
-
 $nrosoli = $_POST['solicitud'];
 $presupue = 0;
 
@@ -71,8 +69,8 @@ if($staauto==2) {
 	$presfech = "";
 	$patoauto = "";
 	$montauto = "0.00";
-}
-else {
+	$montoMostrar = $montauto;
+} else {
 	$estauto = "Aprobada";
 	$recauto = $_POST['motivoRechazo'];
 
@@ -105,6 +103,15 @@ else {
 	if(isset($_POST['montoAutoriza'])) {
 		$montauto = $_POST['montoAutoriza'];
 	}
+	
+	if(isset($_POST['tipomonto'])) {
+		$tipomonto = $_POST['tipomonto'];
+	}
+	
+	$montoMostrar = $montauto;
+	if ($tipomonto == 2) {
+		$montoMostrar = $montauto." %";
+	}
 
 	if($presupue != 0) {
 		if($montauto > 0.00) {
@@ -115,7 +122,7 @@ else {
 			$fondo = imagecolorallocatealpha($im, 255, 255, 255, 127);
 			$color_texto = imagecolorallocate($im, 0, 0, 0);
 			$fuente = $fuentePath.'arialbd.ttf';
-			imagettftext($im, 20, 0, 50, 60, $color_texto, $fuente, 'Monto Autorizado: '.$montauto);
+			imagettftext($im, 20, 0, 50, 60, $color_texto, $fuente, 'Monto Autorizado: '.$montoMostrar);
 			// Guardar la imagen como archivo .png
 			imagepng($im, $imagenmonto);
 			// Liberar memoria
@@ -195,8 +202,6 @@ $resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
 $rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
 
 $cuilSolicitud = $rowLeeSolicitud['cuil'];
-
-//echo "Apellido y Nombre: "; echo $rowLeeSolicitud['apellidoynombre']; echo "<br>";
 
 $sqlLeeDeleg = "SELECT nombre FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
 $resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
@@ -306,7 +311,7 @@ try {
 		$pdf->Cell(113,6,"Tipo: ".$tiposoli,1,0,'L');
 		$pdf->Cell(70,6,"Documento: ".$docuTyNro,1,1,'L');
 		$pdf->Cell(10);
-		$pdf->Cell(113,6,"Monto Autorizado: ".$montauto,1,0,'L');
+		$pdf->Cell(113,6,"Monto Autorizado: ".$montoMostrar,1,0,'L');
 		$pdf->Cell(70,6,"Delegacion: ".$rowLeeDeleg['nombre'],1,1,'L');
 
 		if($rowLeeSolicitud['pedidomedico']!=NULL) {
@@ -466,7 +471,7 @@ try {
 	$sqlActualizaAuto="UPDATE autorizaciones SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, patologia = :patologia, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
 	//echo $sqlActualizaAuto; echo "<br>";
 	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':patologia' => $patoauto, ':montoautorizacion' => $montauto, ':nrosolicitud' => $nrosoli)))
+	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':patologia' => $patoauto, ':montoautorizacion' => $montoMostrar, ':nrosolicitud' => $nrosoli)))
 	{	
 		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion, fechaemail = :fechaemail WHERE nrosolicitud = :nrosolicitud";
 		//echo $sqlActualizaProcesadas; echo "<br>";

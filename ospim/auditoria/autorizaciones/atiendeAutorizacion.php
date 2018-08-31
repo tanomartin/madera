@@ -375,12 +375,18 @@ function validar(formulario) {
 			alert("Debe ingresar el monto autorizado");
 			document.getElementById("montoAutoriza").focus();
 			return false;
-		}
-		else {
+		} else {
 			if (!isNumberPositivo(document.getElementById("montoAutoriza").value)) {
 				alert("El monto autorizado ingresado es incorrecto");
 				document.getElementById("montoAutoriza").focus();
 				return false;
+			}
+			if (formulario.porcentaje.checked == true) {
+				if (document.getElementById("montoAutoriza").value < 1 || document.getElementById("montoAutoriza").value > 100) {
+					alert("Al seleccionar porcentaje el valor ingresado debe estar entre 1 y 100");
+					document.getElementById("montoAutoriza").focus();
+					return false;
+				}
 			}
 		}
 
@@ -469,13 +475,14 @@ function validar(formulario) {
 	  	</td>
 	  </tr>
 	</table>
-	<table width="1100">
+	<table width="100%">
 	  <tr>
-	    <td  width="500" valign="top">
+	    <td width="50%" valign="top">
 	    	<h3 align="left" class="Estilo4">Informaci&oacute;n del Beneficiario</h3>
 	    	<p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) { echo $rowLeeSolicitud['nroafiliado']; } else { echo "-"; }?></p>
 	        <p><strong>Clasificacion del Titular: </strong> <?php echo $tipoTitular;?></p>
 	        <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+	        <p><strong>Comentario: </strong><?php echo $rowLeeSolicitud['comentario']?></p>
 	        <p><strong>Tipo:</strong>
 	<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
 				if($rowLeeSolicitud['codiparentesco']==0) {
@@ -526,15 +533,15 @@ function validar(formulario) {
 	   		<label><input name="autori" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada</label><br />
 	      	<label><input name="autori" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada</label>
 	      	<p><textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo"></textarea></p>
-	      	<p>Expediente SUR :
+	      	<p><b>Expediente SUR :</b>
 	        	<label><input name="ape" id="apeSi" type="radio" value="1"/>Si</label>
 	        	<label><input name="ape" id="apeNo" type="radio" value="0"/>No</label></p>
-	      	<p>Comunica al Prestador ?:
+	      	<p><b>Comunica al Prestador ?:</b>
 		         <label><input name="presta" id="prestaSi" type="radio" value="1" onchange="mostrarEmail(1)"/>Si</label>
 	             <label><input name="presta" id="prestaNo" type="radio" value="0" onchange="mostrarEmail(0)"/>No</label>
 			- Email <input name="emailPresta" type="text" id="emailPresta" size="50" maxlength="50" disabled="disabled"/>
 	     	</p>
-	      	<p>Clasificacion Patologia: <label>
+	      	<p><b>Clasificacion Patologia:</b> <label>
 		  	<select name="selectPatologia" id="selectPatologia">
 	        	<option title="Seleccione un valor" value="">Seleccione un valor</option>
 				<?php 
@@ -545,7 +552,12 @@ function validar(formulario) {
 					}
 	        	?>
 	        </select></label></p>
-	      	<p>Monto Autorizado: <label><input name="montoAutoriza" type="text" id="montoAutoriza" size="10" maxlength="10" /></label></p>
+	      	<p><b>Monto Autorizado</b></p>
+	      	<p><label>
+	      			<b>Monto: </b><input type="radio" id="monto" name="tipomonto" value="1" checked /> | 
+	      			<b>Porcentaje: </b><input type="radio" id="porcentaje" name="tipomonto"  value="2"  /> | 
+	      			<b>Valor: </b><input name="montoAutoriza" type="text" id="montoAutoriza" size="10" maxlength="10" />
+	      		</label></p>
 	   	</td>
 	  </tr>
 	   <tr>
