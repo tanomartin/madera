@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php");
 
 $noExiste = 0;
 if (isset($_POST['dato']) && isset($_POST['filtro'])) {
@@ -16,8 +17,70 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$noExiste = 1;
 		} else {
 			$rowPrestador = mysql_fetch_array($resPrestador);
-			$cartel = "<b>'".$rowPrestador['nombre']." - ".$rowPrestador['codigoprestador']."'</b></br>Detalle desde <b>'$fecha'</b>";		
+			$codigo = $rowPrestador['codigoprestador'];
+			$cartel = "<b>'".$rowPrestador['nombre']." - ".$codigo."'</b></br>Detalle desde <b>'$fecha'</b>";		
+			
+			$fechaBuscar = fechaParaGuardar($fecha);
+			$sqlFacturas = "SELECT sum(importeliquidado) as sumdebe FROM facturas WHERE idPrestador = $codigo and fechacomprobante < '$fechaBuscar'";
+			$resFacturas = mysql_query($sqlFacturas,$db);
+			$rowFacturas = mysql_fetch_array($resFacturas);
+			
+			$sqlPagos = "SELECT sum(retencion) as sumrete, sum(importe) as sumimporte FROM ordencabecera where codigoprestador = $codigo and fechacomprobante < '$fechaBuscar'";
+			$resPagos = mysql_query($sqlPagos,$db);
+			$rowPagos = mysql_fetch_array($resPagos);
+			
+			$haber = 0;
+			if ($rowFacturas['sumdebe'] != null) {
+				$haber = $rowFacturas['sumdebe'];
+			} 
+			$rete = 0;
+			if ($rowPagos['sumrete'] != null) {
+				$rete = $rowFacturas['sumrete'];
+			}
+			$debe = 0;
+			if ($rowPagos['sumimporte'] != null) {
+				$debe = $rowFacturas['sumimporte'];
+			}
+			
+			$saldo = $haber - $rete - $debe;
+			
+			$sqlFacturasDet = "SELECT puntodeventa, nrocomprobante, fechacomprobante, totaldebito, importeliquidado, totalpagado FROM facturas WHERE idPrestador = $codigo and fechacomprobante >= '$fechaBuscar'";
+			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
+
+			$sqlPagosDet = "SELECT o.nroordenpago, o.fechacomprobante, o.formapago, o.comprobantepago, o.retencion, d.importepago, d.idfactura, d.tipocancelacion, f.puntodeventa, f.nrocomprobante
+								FROM ordencabecera o, ordendetalle d, facturas f  WHERE o.codigoprestador = $codigo and o.fechacancelacion is null and o.fechacomprobante >= '$fechaBuscar' and o.nroordenpago = d.nroordenpago and d.idfactura = f.id";
+			$resPagosDet = mysql_query($sqlPagosDet,$db);
+			
+			$arrayDetalle = array();
+			$index = 0;
+			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
+				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
+				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => 0, "haber" => $rowFacturasDet['importeliquidado']);
+				if ($rowFacturasDet['totaldebito'] != 0) {
+					$index++;
+					$descripcion = "Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
+					$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => 0);
+				}
+			}
+			
+			$arrayRete = array();
+			while($rowPagosDet = mysql_fetch_array($resPagosDet)) {
+				$index++;
+				$descripcion = "Pago ".$rowPagosDet['tipocancelacion']." Fact. ".$rowPagosDet['puntodeventa']." - ".$rowPagosDet['nrocomprobante']." Orden ".$rowPagosDet['nroordenpago']." ".$rowPagosDet['formapago']." ".$rowPagosDet['comprobantepago']; 
+				$arrayDetalle[$rowPagosDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowPagosDet['importepago'], "haber" => 0);
+				if ($rowPagosDet['retencion'] != 0) {
+					$arrayRete[$rowPagosDet['nroordenpago']] = array('fecha' => $rowPagosDet['fechacomprobante'], 'rete' =>  $rowPagosDet['retencion'], 'factura' => $rowPagosDet['puntodeventa']." - ".$rowPagosDet['nrocomprobante']);
+				}
+			}
+			
+			foreach ($arrayRete as $nroorden => $datos) {
+				$index++;
+				$descripcion = "Ret. Fac ".$datos['factura'];
+				$arrayDetalle[$datos['fecha'].$index] = array("descripcion" => $descripcion, "debe" => $datos['rete'], "haber" => 0);
+			}
 		}
+		
+		ksort($arrayDetalle);
 	}
 }
 ?>
@@ -38,12 +101,15 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+	jQuery(function($){
+		$("#fecha").mask("99-99-9999");
+	});
+
 	$(function() {
 		$("#listaResultado")
 		.tablesorter({
 			theme: 'blue', 
 			widthFixed: true, 
-			headers:{3:{sorter:false, filter: false},4:{sorter:false, filter: false},5:{sorter:false, filter: false}},
 			widgets: ["zebra", "filter"], 
 			widgetOptions : { 
 				filter_cssFilter   : '',
@@ -105,22 +171,50 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	      </tr> 
 		</table>
    		<p><b>Dato</b> <input name="dato" type="text" id="dato" size="14" /></p>
-    	<p><b>Fecha Desde</b> <input name="fecha" type="text" id="fecha" size="10" /></p>
+    	<p><b>Fecha Desde</b> <input name="fecha" type="text" id="fecha" size="9" /></p>
     	<p><input type="submit" name="Buscar" value="Buscar" /></p>
-   <?php if ($noExiste == 0 and isset($dato)) { ?>
+   <?php 
+   		$totalDebe = 0;
+   		$totalHaber = 0;
+   		if ($noExiste == 0 and isset($dato)) { ?>
   			<p><?php echo $cartel ?></p>
   			<table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
 				<thead>
 					<tr>
-						<th></th>
+						<th>Fecha</th>
+						<th>Descripcion</th>
+						<th>DEBE</th>
+						<th>HABER</th>
+						<th>SALDO</th>
 					</tr>
 				</thead>
 				<tbody>
-			<?php // while() { ?>
 					<tr>
-						<td></td>
+						<td><?php echo str_replace("-","/",$fecha); ?></td>
+						<td><?php echo "Saldo Consolidado al $fecha"?></td>
+						<td><?php if ($saldo < 0) { echo number_format($saldo,2,",","."); $totalDebe += $saldo; } ?></td>
+						<td><?php if ($saldo > 0) { echo number_format($saldo,2,",","."); $totalHaber += $saldo; } ?></td>
+						<td><?php echo number_format($saldo,2,",","."); ?></td>
 					</tr>
-			<?php // } ?>
+			<?php foreach ($arrayDetalle as $fechas => $detalle) {  
+					$saldo -= $detalle['debe']; 
+					$saldo += $detalle['haber']; 
+					$totalDebe += $detalle['debe'];
+					$totalHaber += $detalle['haber']; ?>
+					<tr>
+						<td><?php echo invertirFecha(substr($fechas,0,10)); ?></td>
+						<td><?php echo $detalle['descripcion'] ?></td>
+						<td><?php echo number_format($detalle['debe'],2,",","."); ?></td>
+						<td><?php echo number_format($detalle['haber'],2,",","."); ?></td>
+						<td><?php echo number_format($saldo,2,",","."); ?></td>
+					</tr>
+			<?php } ?>
+					<tr>
+						<th colspan="2">TOTALES</th>
+						<th><?php echo number_format($totalDebe,2,",","."); ?></th>
+						<th><?php echo number_format($totalHaber,2,",","."); ?></th>
+						<th><?php echo number_format($saldo,2,",","."); ?></th>
+					</tr>
 				</tbody>
 		   </table>
 	 <?php } ?>
