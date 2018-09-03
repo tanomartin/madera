@@ -113,21 +113,19 @@ if($staauto==2) {
 		$montoMostrar = $montauto." %";
 	}
 
-	if($presupue != 0) {
-		if($montauto > 0.00) {
-			$fuentePath = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/auditoria/autorizaciones/";
-			// Crear una imagen fondo blanco transparente y añadir texto negro
-			$imagenmonto="../tempautorizaciones/monto".$nrosoli.".png"; 
-			$im = imagecreate(560, 130);
-			$fondo = imagecolorallocatealpha($im, 255, 255, 255, 127);
-			$color_texto = imagecolorallocate($im, 0, 0, 0);
-			$fuente = $fuentePath.'arialbd.ttf';
-			imagettftext($im, 20, 0, 50, 60, $color_texto, $fuente, 'Monto Autorizado: '.$montoMostrar);
-			// Guardar la imagen como archivo .png
-			imagepng($im, $imagenmonto);
-			// Liberar memoria
-			imagedestroy($im);
-		}
+	if($montauto > 0.00) {
+		$fuentePath = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/auditoria/autorizaciones/";
+		// Crear una imagen fondo blanco transparente y añadir texto negro
+		$imagenmonto="../tempautorizaciones/monto".$nrosoli.".png"; 
+		$im = imagecreate(560, 130);
+		$fondo = imagecolorallocatealpha($im, 255, 255, 255, 127);
+		$color_texto = imagecolorallocate($im, 0, 0, 0);
+		$fuente = $fuentePath.'arialbd.ttf';
+		imagettftext($im, 20, 0, 50, 60, $color_texto, $fuente, 'Monto Autorizado: '.$montoMostrar);
+		// Guardar la imagen como archivo .png
+		imagepng($im, $imagenmonto);
+		// Liberar memoria
+		imagedestroy($im);
 	}
 }
 
@@ -382,7 +380,16 @@ try {
 				$pdf->Cell(183,8,"Pedido Medico - Hoja ".$nropagina,1,1,'C');
 				$tplIdx = $pdf->importPage($nropagina);
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
-				$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
+				
+				if($rowLeeSolicitud['medicamento'] == 1) {
+					$pdf->Image('../img/Sello Presupuesto.png',87,130,60,40);
+					if($montauto > 0.00) {
+						$pdf->Image($imagenmonto,89,140,60,40);
+					}
+				} else {
+					$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
+				}
+				
 				$pdf->Image('../img/Sello OSPIM.png',21,190,45,45);
 				if(strcmp($usuauto,"gflongo")==0) {
 					$pdf->Image('../img/Firma Longo.png',160,190,18,50);
