@@ -51,11 +51,11 @@ if($rowLeeSolicitud['nroafiliado']!=0) {
 //VEO SI ES DISCAPACITADO Y SACO EDAD
 if ($rowLeeSolicitud['codiparentesco'] >=0) {
 	if ($rowLeeSolicitud['codiparentesco']>0) {
-		$sqlDisca = "SELECT f.nroafiliado, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
+		$sqlDisca = "SELECT f.nroafiliado, f.nroorden as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
 						FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
 		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil']. " and nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
 	} else {
-		$sqlDisca = "SELECT d.*,DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
+		$sqlDisca = "SELECT d.*, 0 as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
 						FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
 		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM titulares WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
 	}
@@ -110,6 +110,11 @@ body {
 </style>
 <script language="javascript" type="text/javascript">
 
+function verCertificado(dire){	
+	window.open(dire,'Certificado de Discapacidad','width=800, height=500,resizable=yes');
+}
+
+
 function muestraArchivo(solicitud, archivo) {
 	param = "nroSolicitud=" + solicitud;
 	param += "&archivo=" + archivo;
@@ -160,24 +165,28 @@ function reenviarMail(solicitud, idmail, boton, mail) {
         <p><strong>Clasificacion del Titular: </strong> <?php echo $tipoTitular ?></p>
         <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
         <p><strong>Comentario: </strong><?php echo $rowLeeSolicitud['comentario']?></p>
-        <p><strong>Tipo Afiliado:</strong> 
-<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
-			if($rowLeeSolicitud['codiparentesco']==0) {
-				echo "TITULAR";
-			} else {
-				echo "FAMILIAR ".$rowLeeParentesco['descrip'];
-			}
-		 } else {
-			echo "NO EMPADRONADO";
-		 }
-		
-		 if ($canDisca == 1) {
-			$rowDisca = mysql_fetch_assoc($resDisca);
-			echo "<p><b>Discapacitado:</b> SI (FA: ".$rowDisca['fechaalta']." - FE: ".$rowDisca['emisioncertificado']." - FV: ".$rowDisca['vencimientocertificado'].")";
-		 } else {
-		 	echo "<p><b>Discapacitado:</b> NO</p>";
-		 }?>
-		</p>
+        <p><strong>Tipo:</strong>
+		<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
+					if($rowLeeSolicitud['codiparentesco']==0) {
+						echo "Titular";
+					} else {
+						echo "Familiar ".$rowLeeParentesco['descrip'];
+					}
+				} else {
+					echo "No Empadronado";
+				} ?>
+			</p>
+			<p>
+				<b>Discapacitado:</b>
+		<?php	if ($canDisca == 1) {
+					$rowDisca = mysql_fetch_assoc($resDisca); 
+					$nroorden = $rowDisca['nroorden']; 
+					echo "SI (FA: ".$rowDisca['fechaalta']." - FE: ".$rowDisca['emisioncertificado']." - FV: ".$rowDisca['vencimientocertificado'].")"; ?>
+					<input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/>
+		<?php 	} else { 
+					echo "NO"; 
+				} ?>
+			</p>
         <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
         <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
         <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> </p>
