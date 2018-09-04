@@ -9,8 +9,8 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	$fecha = $_POST['fecha'];
 	$resultado = array();
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlPrestador = "SELECT * from prestadores where codigoprestador = $dato order by codigoprestador DESC"; }
-		if ($filtro == 1) { $sqlPrestador = "SELECT * from prestadores where cuit = $dato order by codigoprestador DESC"; }
+		if ($filtro == 0) { $sqlPrestador = "SELECT * FROM prestadores WHERE codigoprestador = $dato order by codigoprestador DESC"; }
+		if ($filtro == 1) { $sqlPrestador = "SELECT * FROM prestadores WHERE cuit = $dato order by codigoprestador DESC"; }
 		$resPrestador = mysql_query($sqlPrestador,$db); 
 		$canPrestador = mysql_num_rows($resPrestador); 
 		if ($canPrestador == 0) {
