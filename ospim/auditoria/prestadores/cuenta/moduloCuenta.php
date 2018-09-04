@@ -21,11 +21,15 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$cartel = "<b>'".$rowPrestador['nombre']." - ".$codigo."'</b></br>Detalle desde <b>'$fecha'</b>";		
 			
 			$fechaBuscar = fechaParaGuardar($fecha);
-			$sqlFacturas = "SELECT sum(importeliquidado) as sumdebe FROM facturas WHERE idPrestador = $codigo and fechacomprobante < '$fechaBuscar'";
+			$sqlFacturas = "SELECT sum(totalcredito) - sum(totaldebito) as sumdebe 
+							FROM facturas 
+							WHERE idPrestador = $codigo and fechacomprobante < '$fechaBuscar'";
 			$resFacturas = mysql_query($sqlFacturas,$db);
 			$rowFacturas = mysql_fetch_array($resFacturas);
 			
-			$sqlPagos = "SELECT sum(retencion) as sumrete, sum(importe) as sumimporte FROM ordencabecera where codigoprestador = $codigo and fechacomprobante < '$fechaBuscar'";
+			$sqlPagos = "SELECT sum(retencion) + sum(importe) as sumhaber 
+							FROM ordencabecera 
+							WHERE codigoprestador = $codigo and fechacancelacion is null and fechacomprobante < '$fechaBuscar'";
 			$resPagos = mysql_query($sqlPagos,$db);
 			$rowPagos = mysql_fetch_array($resPagos);
 			
@@ -33,53 +37,54 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			if ($rowFacturas['sumdebe'] != null) {
 				$haber = $rowFacturas['sumdebe'];
 			} 
-			$rete = 0;
-			if ($rowPagos['sumrete'] != null) {
-				$rete = $rowFacturas['sumrete'];
-			}
 			$debe = 0;
-			if ($rowPagos['sumimporte'] != null) {
-				$debe = $rowFacturas['sumimporte'];
+			if ($rowPagos['sumhaber'] != null) {
+				$debe = $rowPagos['sumimporte'];
 			}
-			
-			$saldo = $haber - $rete - $debe;
-			
-			$sqlFacturasDet = "SELECT puntodeventa, nrocomprobante, fechacomprobante, totaldebito, importeliquidado, totalpagado FROM facturas WHERE idPrestador = $codigo and fechacomprobante >= '$fechaBuscar'";
-			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
-
-			$sqlPagosDet = "SELECT o.nroordenpago, o.fechacomprobante, o.formapago, o.comprobantepago, o.retencion, d.importepago, d.idfactura, d.tipocancelacion, f.puntodeventa, f.nrocomprobante
-								FROM ordencabecera o, ordendetalle d, facturas f  WHERE o.codigoprestador = $codigo and o.fechacancelacion is null and o.fechacomprobante >= '$fechaBuscar' and o.nroordenpago = d.nroordenpago and d.idfactura = f.id";
-			$resPagosDet = mysql_query($sqlPagosDet,$db);
+			$saldo = $haber - $debe;
 			
 			$arrayDetalle = array();
 			$index = 0;
+			
+			$sqlFacturasDet = "SELECT puntodeventa, nrocomprobante, fechacomprobante, totaldebito, totalcredito, importeliquidado, totalpagado 
+								FROM facturas 
+								WHERE idPrestador = $codigo and fechacomprobante >= '$fechaBuscar'";
+			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
-				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
-				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => 0, "haber" => $rowFacturasDet['importeliquidado']);
+				$index++;
+				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];	
 				if ($rowFacturasDet['totaldebito'] != 0) {
-					$index++;
-					$descripcion = "Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
-					$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => 0);
+					$descripcion .= "<br> Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
 				}
+				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['totalcredito']);
 			}
 			
+			$sqlPagosDet = "SELECT * FROM ordencabecera
+							WHERE codigoprestador = $codigo and fechacancelacion is null and fechacomprobante >= '$fechaBuscar'";
+			$resPagosDet = mysql_query($sqlPagosDet,$db);
 			$arrayRete = array();
 			while($rowPagosDet = mysql_fetch_array($resPagosDet)) {
 				$index++;
-				$descripcion = "Pago ".$rowPagosDet['tipocancelacion']." Fact. ".$rowPagosDet['puntodeventa']." - ".$rowPagosDet['nrocomprobante']." Orden ".$rowPagosDet['nroordenpago']." ".$rowPagosDet['formapago']." ".$rowPagosDet['comprobantepago']; 
-				$arrayDetalle[$rowPagosDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowPagosDet['importepago'], "haber" => 0);
+				$descripcion = "Orden de Pago ".$rowPagosDet['nroordenpago']." ".$rowPagosDet['formapago']." ".$rowPagosDet['comprobantepago']; 
+				$sqlDetalleOP = "SELECT * FROM ordendetalle o, facturas f 
+								 WHERE o.nroordenpago = ".$rowPagosDet['nroordenpago']." and o.idfactura = f.id";
+				$resDetalleOP= mysql_query($sqlDetalleOP,$db);
+				$arrayDetOP = array();
+				while ($rowDetalleOP = mysql_fetch_array($resDetalleOP)) {
+					$arrayDetOP[$rowDetalleOP['idfactura']] = array("tipo" => $rowDetalleOP['tipocancelacion'], "importe" => $rowDetalleOP['importepago'], "factura" => $rowDetalleOP['puntodeventa']."-".$rowDetalleOP['nrocomprobante']);
+				}				
+				$arrayDetalle[$rowPagosDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowPagosDet['importe'], "haber" => 0, "facturas" => $arrayDetOP);				
 				if ($rowPagosDet['retencion'] != 0) {
-					$arrayRete[$rowPagosDet['nroordenpago']] = array('fecha' => $rowPagosDet['fechacomprobante'], 'rete' =>  $rowPagosDet['retencion'], 'factura' => $rowPagosDet['puntodeventa']." - ".$rowPagosDet['nrocomprobante']);
+					$arrayRete[$rowPagosDet['nroordenpago']] = array('fecha' => $rowPagosDet['fechacomprobante'], 'rete' =>  $rowPagosDet['retencion']);
 				}
 			}
 			
 			foreach ($arrayRete as $nroorden => $datos) {
 				$index++;
-				$descripcion = "Ret. Fac ".$datos['factura'];
+				$descripcion = "Ret. Orden de Pago $nroorden";
 				$arrayDetalle[$datos['fecha'].$index] = array("descripcion" => $descripcion, "debe" => $datos['rete'], "haber" => 0);
 			}
 		}
-		
 		ksort($arrayDetalle);
 	}
 }
@@ -89,6 +94,9 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
 <title>.: Módulo Prestadores :.</title>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
@@ -154,27 +162,27 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 </head>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="moduloCuenta.php">
-  <div align="center">
-	  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuPrestadores.php'" /></p>
-	  <h3>Cuenta Corriente </h3>
-	  <?php if ($noExiste == 1) { ?>
-				<div style='color:#FF0000'><b> NO EXISTE PRESTADOR CON ESTE FILTRO DE BUSQUEDA </b></div>
-	  <?php }  ?>   
-    	<table width="200" border="0">
-	      <tr>
-	        <td rowspan="2"><div align="center"><strong>Buscar por </strong></div></td>
-	        <td><div align="left"><input type="radio" name="filtro"  value="0" checked="checked" /> Código </div></td>
-	      </tr>
-	      <tr>
-	        <td><div align="left"><input type="radio" name="filtro" value="1" /> C.U.I.T.</div></td>
-	      </tr> 
-		</table>
-   		<p><b>Dato</b> <input name="dato" type="text" id="dato" size="14" /></p>
-    	<p><b>Fecha Desde</b> <input name="fecha" type="text" id="fecha" size="9" /></p>
-    	<p><input type="submit" name="Buscar" value="Buscar" /></p>
-   <?php 
-   		$totalDebe = 0;
+<div align="center">
+	<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="moduloCuenta.php" class="nover">
+		<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuPrestadores.php'" /></p>
+		<h3>Cuenta Corriente </h3>
+		  <?php if ($noExiste == 1) { ?>
+					<div style='color:#FF0000'><b> NO EXISTE PRESTADOR CON ESTE FILTRO DE BUSQUEDA </b></div>
+		  <?php }  ?>   
+	    	<table width="200" border="0">
+		      <tr>
+		        <td rowspan="2"><div align="center"><strong>Buscar por </strong></div></td>
+		        <td><div align="left"><input type="radio" name="filtro"  value="0" checked="checked" /> Código </div></td>
+		      </tr>
+		      <tr>
+		        <td><div align="left"><input type="radio" name="filtro" value="1" /> C.U.I.T.</div></td>
+		      </tr> 
+			</table>
+	   		<p><b>Dato</b> <input name="dato" type="text" id="dato" size="14" /></p>
+	    	<p><b>Fecha Desde</b> <input name="fecha" type="text" id="fecha" size="9" /></p>
+	    	<p><input type="submit" name="Buscar" value="Buscar" /></p>
+	</form>
+  <?php $totalDebe = 0;
    		$totalHaber = 0;
    		if ($noExiste == 0 and isset($dato)) { ?>
   			<p><?php echo $cartel ?></p>
@@ -203,7 +211,15 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 					$totalHaber += $detalle['haber']; ?>
 					<tr>
 						<td><?php echo invertirFecha(substr($fechas,0,10)); ?></td>
-						<td><?php echo $detalle['descripcion'] ?></td>
+						<td><?php echo $detalle['descripcion']."<br>";
+								  if (isset($detalle['facturas'])) {
+								  	echo "---------------------------------------------------------------------<br>";
+									foreach ($detalle['facturas'] as $facturas) {
+										echo "Fac: ".$facturas['factura']." - Tipo.: ".$facturas['tipo']." - Imp: $".number_format($facturas['importe'],2,",",".")."<br>";
+									}
+									echo "----------------------------------------------------------------------";
+								  } ?>
+						</td>
 						<td><?php echo number_format($detalle['debe'],2,",","."); ?></td>
 						<td><?php echo number_format($detalle['haber'],2,",","."); ?></td>
 						<td><?php echo number_format($saldo,2,",","."); ?></td>
@@ -217,8 +233,8 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 					</tr>
 				</tbody>
 		   </table>
-	 <?php } ?>
-		</div>
-</form>
+		   <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" class="nover"/>
+  <?php } ?>
+	</div>
 </body>
 </html>
