@@ -126,7 +126,7 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td><?php echo $rowInsumos['stockminimo'] ?></td>
 					<?php 
 						$color = "";
-						$estado = " - ";
+						$estado = "OK";
 						if ($rowInsumos['cantidad'] <= $rowInsumos['puntopromedio']) {
 							$color = "#CC9999";
 							$estado = "PUNTO PROMEDIO";
