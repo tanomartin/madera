@@ -50,7 +50,19 @@ include($libPath."controlSessionOspimSistemas.php");
 		var pagina = "alta.php?idInsumo="+idInsumo+"&cantidad="+cantidad+"&stock="+stock;
 		location.href=pagina;
 	}
-	
+
+	function baja(confirma, id) {
+		var redireccion = "cargarUsuarioBaja.php?idInsumo="+id;
+		if (confirma == 1) {
+			var r = confirm("Esta queriendo bajar el stock por debajo del minimo. Desea continuar?");
+			if (r == true) {
+				location.href = redireccion;
+			}
+		} else {
+			location.href = redireccion;
+		}	
+	}
+		
 </script>
 </head>
 
@@ -131,9 +143,13 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td style="color:<?php echo $color ?>"><?php echo $rowInsumos['cantidad'] ?></td>
 					<td style="color:<?php echo $color ?>"><?php echo $estado ?></td>
 					<td>
-				  <?php if ($rowInsumos['cantidad'] > $rowInsumos['stockminimo']) { ?>
-						<img src="../img/baja.png" width="20" height="20" border="0" onclick="location.href='cargarUsuarioBaja.php?idInsumo=<?php echo $rowInsumos['id']?>'"/><br>
-				  <?php } ?> 
+				  <?php if ($rowInsumos['cantidad'] > 0) {
+				  			$confirma = 1;
+					  		if ($rowInsumos['cantidad'] > $rowInsumos['stockminimo']) { 
+					  			$confirma = 0;
+							} ?> 
+					  		<img src="../img/baja.png" width="20" height="20" border="0" onclick="baja(<?php echo $confirma ?>,<?php echo $rowInsumos['id']?>)"/><br>
+				  <?php } ?>	
 						<img src="../img/alta.png" width="20" height="20" border="0" onclick="alta(<?php echo $rowInsumos['id']?>,<?php echo $rowInsumos['cantidad']?>)"/>
 					</td>
 		</tr>
