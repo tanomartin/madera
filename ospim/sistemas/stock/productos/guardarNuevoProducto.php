@@ -2,28 +2,28 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 
-var_dump($_POST);
-
-$arrayProducto = $_POST['producto'];
 $nombre = $_POST['nombre'];
 $nroserie = $_POST['nroserie'];
 $descrip = $_POST['descrip'];
 $valor = number_format($_POST['valor'],2,'.','');
-$fecIni = fechaParaGuardar($_POST['fecIni']);
-$sisop = $_POST['sisop'];
-$idsisop = $_POST['idsisop'];
-$office = $_POST['office'];
-$idoffice = $_POST['idoffice'];
+$fecIni = fechaParaGuardar($_POST['fecini']);
+
+$sisop = "NULL";
+if ($_POST['sisop'] != "") { $sisop = "'".$_POST['sisop']."'"; }
+$idsisop = "NULL";
+if (isset($_POST['idsisop'])) { $idsisop = "'".$_POST['idsisop']."'"; }
+$office = "NULL";
+if ($_POST['office'] != "") { $office = "'".$_POST['office']."'"; }
+$idoffice = "NULL";
+if (isset($_POST['idoffice'])) { $idoffice = "'".$_POST['idoffice']."'"; }
+
 $ubicacion = $_POST['ubicacion'];
 $sector = $_POST['sector'];
 $usuario = $_POST['usuario'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 
-$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip','$sisop','$idsisop','$office','$idoffice','$fecIni',DEFAULT,DEFAULT)";
-
-$datos = array_values($_POST);
-//var_dump($datos);
+$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip',$sisop,$idsisop,$office,$idoffice,'$fecIni',DEFAULT,DEFAULT)";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -39,18 +39,20 @@ try {
 	//print($sqlInsertUbicacion."<br>");
 	$dbh->exec($sqlInsertUbicacion);
 	
-	for ($i = 11; $i < sizeof($datos); $i++) {
-		$idInsumo = $datos[$i];
-		$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$idProd)";
-		//print($sqlInsuProd."<br>");
-		$dbh->exec($sqlInsuProd);
+	foreach ($_POST as $key => $idInsumo) {
+		$pos = strpos($key, "insumo");
+		if ($pos !== false) {
+			$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$idProd)";
+			//print($sqlInsuProd."<br>");
+			$dbh->exec($sqlInsuProd);
+		}
 	}
 	
 	$dbh->commit();
 	$pagina = "productos.php";
 	Header("Location: $pagina"); 
 	
-}catch (PDOException $e) {
+} catch (PDOException $e) {
 	$error =  $e->getMessage();
 	$dbh->rollback();
 	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";

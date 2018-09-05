@@ -1,16 +1,11 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
-
-//var_dump($_POST);
+$id = $_GET['id'];
 $fechasoli = fechaParaGuardar($_POST['fecsoli']);
 $descripcion = $_POST['descripcion'];
-
-$sqlInsertCabPedido = "INSERT INTO cabpedidos VALUE(DEFAULT,'$fechasoli','$descripcion',DEFAULT,1,'0000-00-00')";
-
-
-$datos = array_values($_POST);
-//var_dump($datos);
+$sqlUpdateCabPedido = "UPDATE cabpedidos SET fechasolicitud = '$fechasoli', descripcion = '$descripcion', costototal = 0 WHERE id = $id";
+$sqlDeleteDetPedido = "DELETE FROM detpedidos WHERE idpedido = $id";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -18,20 +13,22 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	//print($sqlInsertCabPedido."<br>");
-	$dbh->exec($sqlInsertCabPedido);
-	$idPedido = $dbh->lastInsertId('id'); 
-	//print($idPedido."<br>");
-
-	
-	for ($i = 2; $i < sizeof($datos); $i++) {
-		$idinsumo = $datos[$i];
-		$i++;
-		$cantidad = $datos[$i];
-		if ($cantidad != "") {
-			$sqlInsuProd = "INSERT INTO detpedidos VALUE($idPedido,$idinsumo,'',$cantidad,DEFAULT,0,'0000-00-00')";
-			//print($sqlInsuProd."<br>");
-			$dbh->exec($sqlInsuProd);
+	//print($sqlUpdateCabPedido."<br>");
+	$dbh->exec($sqlUpdateCabPedido);
+	//print($sqlDeleteDetPedido."<br>");
+	$dbh->exec($sqlDeleteDetPedido);
+	foreach($_POST as $key => $dato) {
+		$pos = strpos($key, "idInsumo");
+		if ($pos !== false) {
+			$keyArray = explode("-",$key);
+			$idinsumo = $dato;
+			$indexCantidad = "cantidad".$idinsumo;
+			$cantidad = $_POST[$indexCantidad];
+			if ($cantidad != "") {
+				$sqlInsuProd = "INSERT INTO detpedidos VALUE($id,$idinsumo,'',$cantidad,DEFAULT,0,'0000-00-00')";
+				//print($sqlInsuProd."<br>");
+				$dbh->exec($sqlInsuProd);
+			}
 		}
 	}
 	

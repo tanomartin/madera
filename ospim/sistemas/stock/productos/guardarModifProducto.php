@@ -10,10 +10,16 @@ $nroserie = $_POST['nroserie'];
 $descrip = $_POST['descrip'];
 $valor = number_format($_POST['valor'],2,'.','');
 $fecIni = fechaParaGuardar($_POST['fecIni']);
-$sisop = $_POST['sisop'];
-$idsisop = $_POST['idsisop'];
-$office = $_POST['office'];
-$idoffice = $_POST['idoffice'];
+
+$sisop = "NULL";
+if ($_POST['sisop'] != "") { $sisop = "'".$_POST['sisop']."'"; }
+$idsisop = "NULL";
+if (isset($_POST['idsisop'])) { $idsisop = "'".$_POST['idsisop']."'"; }
+$office = "NULL";
+if ($_POST['office'] != "") { $office = "'".$_POST['office']."'"; }
+$idoffice = "NULL";
+if (isset($_POST['idoffice'])) { $idoffice = "'".$_POST['idoffice']."'"; }
+
 $ubicacion = $_POST['ubicacion'];
 $sector = $_POST['sector'];
 $usuario = $_POST['usuario'];
@@ -25,7 +31,7 @@ if ($activo == 0) {
 }
 $fechamodificacion = date("Y-m-d H:i:s");
 
-$sqlUpdateProducto = "UPDATE producto SET nombre = '$nombre', numeroserie = '$nroserie', valororiginal = $valor, activo = $activo, descripcion = '$descrip', sistemaoperativo = '$sisop', idso = '$idsisop', office = '$office', idoffice = '$idoffice',fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
+$sqlUpdateProducto = "UPDATE producto SET nombre = '$nombre', numeroserie = '$nroserie', valororiginal = $valor, activo = $activo, descripcion = '$descrip', sistemaoperativo = $sisop, idso = $idsisop, office = $office, idoffice = $idoffice, fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
 $sqlUpdateUbicacion = "UPDATE ubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, idusuario = $usuario WHERE id = $id"; 
 $deleteInsumoPrducto = "DELETE from insumoproducto WHERE idproducto = $id";
 

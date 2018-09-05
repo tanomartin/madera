@@ -52,22 +52,12 @@ include($libPath."controlSessionOspimSistemas.php");
 	}
 	
 </script>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuStock.php'" />
-</p>
-  <p><span class="Estilo1">STOCK</span></p>
+  <p><input type="reset" name="volver" value="Volver" onclick="location.href = '../menuStock.php'" /></p>
+  <h3>STOCK</h3>
   <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 	  <thead>
 		<tr>
@@ -142,9 +132,9 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td style="color:<?php echo $color ?>"><?php echo $estado ?></td>
 					<td>
 				  <?php if ($rowInsumos['cantidad'] > $rowInsumos['stockminimo']) { ?>
-						<img src="img/baja.png" width="20" height="20" border="0" alt="enviar" onclick="location.href='cargarUsuarioBaja.php?idInsumo=<?php echo $rowInsumos['id']?>'"/><br>
+						<img src="../img/baja.png" width="20" height="20" border="0" onclick="location.href='cargarUsuarioBaja.php?idInsumo=<?php echo $rowInsumos['id']?>'"/><br>
 				  <?php } ?> 
-						<img src="img/alta.png" width="20" height="20" border="0" alt="enviar" onclick="alta(<?php echo $rowInsumos['id']?>,<?php echo $rowInsumos['cantidad']?>)"/>
+						<img src="../img/alta.png" width="20" height="20" border="0" onclick="alta(<?php echo $rowInsumos['id']?>,<?php echo $rowInsumos['cantidad']?>)"/>
 					</td>
 		</tr>
 	 <?php } ?>
@@ -156,14 +146,14 @@ include($libPath."controlSessionOspimSistemas.php");
 		<div id="paginador" class="pager">
 		  <form>
 			<p align="center">
-			  <img src="img/first.png" width="16" height="16" class="first"/> <img src="img/prev.png" width="16" height="16" class="prev"/>
+			  <img src="../img/first.png" width="16" height="16" class="first"/> <img src="../img/prev.png" width="16" height="16" class="prev"/>
 			  <input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
-		    <img src="img/next.png" width="16" height="16" class="next"/> <img src="img/last.png" width="16" height="16" class="last"/>
-		    <select name="select" class="pagesize">
-		      <option selected="selected" value="10">10 por pagina</option>
-		      <option value="20">20 por pagina</option>
-		      <option value="30">30 por pagina</option>
-		      <option value="<?php echo $canInsumos;?>">Todos</option>
+		      <img src="../img/next.png" width="16" height="16" class="next"/> <img src="../img/last.png" width="16" height="16" class="last"/>
+		      <select name="select" class="pagesize">
+			      <option selected="selected" value="10">10 por pagina</option>
+			      <option value="20">20 por pagina</option>
+			      <option value="30">30 por pagina</option>
+			      <option value="<?php echo $canInsumos;?>">Todos</option>
 		      </select>
 		    </p>
 			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>

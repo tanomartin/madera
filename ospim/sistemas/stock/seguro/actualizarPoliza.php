@@ -15,7 +15,7 @@ try {
 	$dbh->exec($sqlUpdatePoliza);
 	$dbh->commit();
 	
-	$pagina = "menuStock.php";
+	$pagina = "moduloSeguro.php";
 	Header("Location: $pagina"); 
 	
 }catch (PDOException $e) {

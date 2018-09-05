@@ -6,48 +6,42 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Stock :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" />
-  </span></p>
-  <p><span class="Estilo2">Men&uacute; Stock</span></p>
-  <table width="600" border="3">
-    <tr>
-       <td><p align="center">Productos </p>
-         <p align="center"><a class="enlace" href="productos.php"><img src="img/productos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-         <p align="center">&nbsp;</p></td>
-	   <td><p align="center">Seguro</p>
-       <p align="center"><a class="enlace" href="moduloSeguro.php"><img src="img/seguro.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-       <p align="center">&nbsp;</p></td>
-	   <td><p align="center">Pedidos</p>
-         <p align="center"><a class="enlace" href="pedidos.php"><img src="img/pedidos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-       <p align="center">&nbsp;</p></td>
-    </tr>
-    <tr>
-      <td><p align="center">Insumos  </p>
-      <p align="center"><a class="enlace" href="insumos.php"><img src="img/insumos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td><p align="center">Stock</p>
-        <p align="center"><a class="enlace" href="stock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-      <td><p align="center">Consumos</p>
-        <p align="center"><a class="enlace" href="consumos.php"><img src="img/consumos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-    </tr>
-  </table>
+	<p><input type="reset" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" /></p>
+  	<h3>Menú Stock</h3>
+  	<table width="600px" border="1" style="text-align: center">
+	    <tr>
+	    	<td width="200px">
+	      		<p>STOCK</p>
+	       		<p><a href="abm/stock.php"><img src="img/stock.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      	</td>
+	      	<td width="200px">
+	      		<p>CONSUMOS</p>
+	        	<p><a href="consumos/consumos.php"><img src="img/consumos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      	</td>
+		   	<td width="200px">
+		   		<p>PEIDIDOS</p>
+	        		<p><a href="pedidos/pedidos.php"><img src="img/pedidos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      	</td>
+	    </tr>
+	    <tr>
+	    	<td>
+	       		<p>PRODUCTOS</p>
+	       		<p><a href="productos/productos.php"><img src="img/productos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	       	</td>
+	      	<td>
+	      		<p>INSUMOS</p>
+	      		<p><a href="insumos/insumos.php"><img src="img/insumos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      	</td>
+	      	 <td>
+		   		<p>SEGURO</p>
+	       		<p><a href="seguro/moduloSeguro.php"><img src="img/seguro.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	      	</td>
+	    </tr>
+  	</table>
 </div>
 </body>
 </html>
