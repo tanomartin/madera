@@ -77,12 +77,12 @@ include($libPath."controlSessionOspimSistemas.php");
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
 		  <th width="300">Productos - Usuario</th>
-		  <th class="filter-select" data-placeholder="Seleccion Estado">Activo</th>
+		  <th class="filter-select" data-placeholder="Seleccion">Activo</th>
 		  <th>Pto. Prom</th>
 		  <th>Pto. Ped</th>
 		  <th>Stock Min.</th>
 		  <th>Stock Actual</th>
-		  <th>Estado</th>
+		  <th class="filter-select" data-placeholder="Seleccion">Estado</th>
 		  <th>Acciones</th>
 		</tr>
 	 </thead>
