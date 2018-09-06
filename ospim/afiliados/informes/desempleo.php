@@ -150,18 +150,20 @@ function redireccionarExcel() {
   				<tbody>
   				<?php
   					$arrayDele = array();
+  					$arrayAfiDeleCuil = array();
   					while ($rowDesempleo = mysql_fetch_assoc($resDesempleo)) {  
-  						$arrayDele[$rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']] = $rowDesempleo['deletitu'].$rowDesempleo['delebaja'] ?>
+  						$arrayDele[$rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']] = $rowDesempleo['deletitu'].$rowDesempleo['delebaja'];
+  						$arrayAfiDeleCuil[$rowDesempleo['cuilbeneficiario']] = array ('dele' => $rowDesempleo['deletitu'].$rowDesempleo['delebaja'], "afil" => $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']);  
+  						$estado = "NO EMPADRONADO";
+  						if ($rowDesempleo['nrotitu'] != null) { $estado = "ACTIVO"; }
+  						if ($rowDesempleo['nrobaja'] != null) { $estado = "DE BAJA"; }
+  						$situ = "SIN INFORMACION";
+  						if ($rowDesempleo['sitututi'] != null) { $situ = $arrayTipo[$rowDesempleo['sitututi']]; }
+  						if ($rowDesempleo['situbaja'] != null) { $situ = $arrayTipo[$rowDesempleo['situbaja']]; } ?>
   						<tr>
   							<td><?php echo $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']; ?></td>
   							<td><?php echo $rowDesempleo['deletitu'].$rowDesempleo['delebaja']; ?></td>
-  						<?php $estado = "NO EMPADRONADO";
-  							  if ($rowDesempleo['nrotitu'] != null) { $estado = "ACTIVO"; }
-				 			  if ($rowDesempleo['nrobaja'] != null) { $estado = "DE BAJA"; } ?>
   							<td><?php echo $estado ?></td>
-  						<?php $situ = "SIN INFORMACION";
-  							  if ($rowDesempleo['sitututi'] != null) { $situ = $arrayTipo[$rowDesempleo['sitututi']]; }
-				 			  if ($rowDesempleo['situbaja'] != null) { $situ = $arrayTipo[$rowDesempleo['situbaja']]; } ?>
   							<td><?php echo $situ ?></td>
   							<td><?php echo $rowDesempleo['cuilbeneficiario'] ?></td>
   							<td><?php echo $rowDesempleo['apellidoynombre'] ?></td>
@@ -190,8 +192,7 @@ function redireccionarExcel() {
 						</select>
 					</p>
 				</form>
-			</div>
-  			
+			</div>		
   			<h3>FAMILIARES [<?php echo $canDesempleoFami?>]</h3>
   			<table style="text-align:center" id="famiDesemple" class="tablesorter" >
   				<thead>
@@ -207,16 +208,25 @@ function redireccionarExcel() {
 	  				</tr>
   				</thead>
   				<tbody>
-  				<?php while ($rowDesempleoFami = mysql_fetch_assoc($resDesempleoFami)) {  ?>
+  				<?php while ($rowDesempleoFami = mysql_fetch_assoc($resDesempleoFami)) { 
+  						$nroafil = $rowDesempleoFami['nrotitu'].$rowDesempleoFami['nrobaja']; 
+  						$dele = "";
+  						if (array_key_exists($nroafil, $arrayDele)) {
+  							$dele = $arrayDele[$nroafil];
+  						}
+  						if ($dele == "" and $nroafil == "") {
+  							if (array_key_exists($rowDesempleoFami['cuiltitular'], $arrayAfiDeleCuil)) {
+  								$dele = $arrayAfiDeleCuil[$rowDesempleoFami['cuiltitular']]['dele'];
+  								$nroafil = $arrayAfiDeleCuil[$rowDesempleoFami['cuiltitular']]['afil'];
+  							}
+  						}
+  						$estado = "NO EMPADRONADO";
+  						if ($rowDesempleoFami['nrotitu'] != null) { $estado = "ACTIVO"; }
+  						if ($rowDesempleoFami['nrobaja'] != null) { $estado = "DE BAJA"; }
+  						?>
   						<tr>
-  							<td><?php echo $rowDesempleoFami['nrotitu'].$rowDesempleoFami['nrobaja']; ?></td>
-  					  <?php $dele = "";
-  							$index = $rowDesempleoFami['nrotitu'].$rowDesempleoFami['nrobaja'];
-  							if (array_key_exists($index, $arrayDele)) { $dele = $arrayDele[$index]; } ?>
+  							<td><?php echo $nroafil ?></td>
   							<td><?php echo $dele ?></td>
-  						<?php $estado = "NO EMPADRONADO";
-  							  if ($rowDesempleoFami['nrotitu'] != null) { $estado = "ACTIVO"; }
-				 			  if ($rowDesempleoFami['nrobaja'] != null) { $estado = "DE BAJA"; } ?>
   							<td><?php echo $estado ?></td>
   							<td><?php echo $rowDesempleoFami['cuilbeneficiario'] ?></td>
   							<td><?php echo $rowDesempleoFami['apellidoynombre'] ?></td>
