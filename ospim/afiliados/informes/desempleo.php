@@ -97,6 +97,15 @@ $(function() {
 	}).tablesorterPager({container: $("#paginadorFami")}); 
 });
 
+function redireccionarExcel() {
+	var periodo = document.getElementById("periodo").value
+	if (periodo == 0) {
+		alert("Debe elegir un Periodo");
+	} else {
+		var redire = "desempleoExcel.php?periodo="+periodo;
+		location.href = redire;
+	}
+}
 
 </script>
 </head>
@@ -116,7 +125,10 @@ $(function() {
 					  <option value="<?php echo $rowPeriodo['mesdesempleo']."-".$rowPeriodo['anodesempleo'] ?>"><?php echo $rowPeriodo['mesdesempleo']."-".$rowPeriodo['anodesempleo']  ?></option>
 		    <?php } ?>
 		</select>
-		<p><input type="submit" name="Submit" value="Listar Desempleo" class="nover"/></p>
+		<p>
+			<input type="submit" name="Submit" value="Listar Desempleo" class="nover"/>
+			<input type="button" name="excelDesempleo" value="Excel Desempelo" onclick="redireccionarExcel()" />
+		</p>
   	</form>
 
 <?php if (isset($_POST['periodo'])) { ?>
