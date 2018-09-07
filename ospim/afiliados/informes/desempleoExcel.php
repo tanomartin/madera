@@ -43,22 +43,21 @@ while ($rowTipoBene  = mysql_fetch_assoc($resTipoBene)) {
 
 $arrayListadoCompleto = array();
 $arrayDele = array();
+$arrayAfiDeleCuil = array();
 $i = 0;
 while ($rowDesempleo = mysql_fetch_assoc($resDesempleo)) {
-	$index = $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja'];
-	if ($index == "") {
-		$index = "NP".$i;
-		$i++;
-	}
-	$arrayDele[$index] = $rowDesempleo['deletitu'].$rowDesempleo['delebaja'];
+	$i++;
+	$nroafil = $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja'];
+	$arrayDele[$nroafil] = $rowDesempleo['deletitu'].$rowDesempleo['delebaja'];
+	$arrayAfiDeleCuil[$rowDesempleo['cuilbeneficiario']] = array ('dele' => $rowDesempleo['deletitu'].$rowDesempleo['delebaja'], "afil" => $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']);
 	$estado = "NO EMPADRONADO";
 	if ($rowDesempleo['nrotitu'] != null) { $estado = "ACTIVO"; }
 	if ($rowDesempleo['nrobaja'] != null) { $estado = "DE BAJA"; }
-	$situ = "SIN INFORMACION";
+	$situ = "";
 	if ($rowDesempleo['sitututi'] != null) { $situ = $arrayTipo[$rowDesempleo['sitututi']]; }
 	if ($rowDesempleo['situbaja'] != null) { $situ = $arrayTipo[$rowDesempleo['situbaja']]; }
 	
-	$arrayListadoCompleto[$index."-0"] = array("nroafil" => $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja'],
+	$arrayListadoCompleto[$nroafil."T".$i] = array("nroafil" => $nroafil,
 									  "tipo" => "TITULAR",
 									  "delega" => $rowDesempleo['deletitu'].$rowDesempleo['delebaja'],
 									  "estado" => $estado, "situ" => $situ, 
@@ -69,19 +68,22 @@ while ($rowDesempleo = mysql_fetch_assoc($resDesempleo)) {
 }
 
 while ($rowDesempleoFami = mysql_fetch_assoc($resDesempleoFami)) {
+	$i++;
 	$orden = $rowDesempleoFami['ordentitu'].$rowDesempleoFami['ordenbaja'];
 	$dele = "";
-	$index = $rowDesempleoFami['nrotitu'].$rowDesempleoFami['nrobaja'];
-	if ($index == "") {
-		$index = "NP".$i;
-		$i++;
+	$nroafil = $rowDesempleoFami['nrotitu'].$rowDesempleoFami['nrobaja'];
+	if (array_key_exists($nroafil, $arrayDele)) { $dele = $arrayDele[$nroafil]; }
+	if ($nroafil == "" and $dele == "") {
+		if (array_key_exists($rowDesempleoFami['cuiltitular'], $arrayAfiDeleCuil)) {
+			$dele = $arrayAfiDeleCuil[$rowDesempleoFami['cuiltitular']]['dele'];
+			$nroafil = $arrayAfiDeleCuil[$rowDesempleoFami['cuiltitular']]['afil'];
+		}
 	}
-	if (array_key_exists($index, $arrayDele)) { $dele = $arrayDele[$index]; }
 	$estado = "NO EMPADRONADO";
 	if ($rowDesempleoFami['nrotitu'] != null) { $estado = "ACTIVO"; }
 	if ($rowDesempleoFami['nrobaja'] != null) { $estado = "DE BAJA"; }
 	
-	$arrayListadoCompleto[$index."-".$orden] = array("nroafil" => $rowDesempleoFami['nrotitu'].$rowDesempleoFami['nrobaja'],
+	$arrayListadoCompleto[$nroafil."F".$i] = array("nroafil" => $nroafil,
 									  "tipo" => "FAMILIAR",
 									  "delega" => $dele,
 									  "estado" => $estado, "situ" => "",

@@ -153,7 +153,7 @@ function redireccionarExcel() {
   					$arrayAfiDeleCuil = array();
   					while ($rowDesempleo = mysql_fetch_assoc($resDesempleo)) {  
   						$arrayDele[$rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']] = $rowDesempleo['deletitu'].$rowDesempleo['delebaja'];
-  						$arrayAfiDeleCuil[$rowDesempleo['cuilbeneficiario']] = array ('dele' => $rowDesempleo['deletitu'].$rowDesempleo['delebaja'], "afil" => $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']);  
+  						$arrayAfiDeleCuil[$rowDesempleo['cuilbeneficiario']] = array ('dele' => $rowDesempleo['deletitu'].$rowDesempleo['delebaja'], "afil" => $rowDesempleo['nrotitu'].$rowDesempleo['nrobaja']);
   						$estado = "NO EMPADRONADO";
   						if ($rowDesempleo['nrotitu'] != null) { $estado = "ACTIVO"; }
   						if ($rowDesempleo['nrobaja'] != null) { $estado = "DE BAJA"; }
