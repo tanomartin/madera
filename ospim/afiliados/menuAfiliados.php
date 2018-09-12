@@ -6,45 +6,40 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Afiliados OSPIM :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
 <body bgcolor="#CCCCCC">
-<div align="center">
-	<h2>Men&uacute; Afiliados</h2>
-</div>
-<div align="center">
-  <table width="600" border="3">
-    <tr>
-      <td width="196"><p align="center">ALTA, MODIFICACIÓN Y CONSULTA</p>
-        <p align="center"><a class="enlace" href="abm/moduloABM.php"><img src="img/abmafil.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">CARNETS</p>
-          <p align="center"><a class="enlace" href="carnets/moduloImpresion.php"><img src="img/carnet.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">AUTORIZACIONES</p>
-          <!--  <p align="center"><a class="enlace" href="verificaciones/buscaSolicitudes.php"><img src="img/autorizaciones.png" width="90" height="90" border="0" alt="enviar"/></a></p> -->
-          <p align="center"><a class="enlace" href="verificaciones/buscaSolicitudes.php"><img src="img/autorizaciones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p align="center">&nbsp;</p></td>
-    </tr>
-	<tr>
-      <td width="196">
-      	<p align="center">PROCESOS</p>
-      	 <p align="center"><a class="enlace" href="procesos/moduloProcesos.php"><img src="img/procesos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      	<p>&nbsp;</p>
-      </td>
-      <td width="196"><p align="center">INFORMES</p>
-          <p align="center"><a class="enlace" href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="196"><p align="center">PLAN MATERNO INFANTIL</p>
-	  		<p align="center"><a class="enlace" href="pmi/moduloPMI.php"><img src="img/pmi.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	   <p align="center">&nbsp;</p></td>
-    </tr>
-  </table>
-</div>
+	<div align="center">
+		<h2>Menú Afiliados</h2>
+	  	<table width="600" border="1" style="text-align: center" >
+		    <tr>
+		      <td width="200">
+		      	<p>ALTA, MODIFICACIÓN Y CONSULTA</p>
+		        <p><a href="abm/moduloABM.php"><img src="img/abmafil.png" width="90" height="90" border="0" /></a></p>
+		      </td>
+		      <td width="200">
+		      	<p>CARNETS</p>
+		        <p><a href="carnets/moduloImpresion.php"><img src="img/carnet.png" width="90" height="90" border="0"/></a></p>
+		      </td>
+		      <td width="200">
+		      	<p>AUTORIZACIONES</p>
+		        <p><a href="verificaciones/buscaSolicitudes.php"><img src="img/autorizaciones.png" width="90" height="90" border="0" /></a></p>
+		      <p align="center">&nbsp;</p></td>
+		    </tr>
+			<tr>
+		      <td>
+		      	<p>PROCESOS</p>
+		      	<p><a class="enlace" href="procesos/moduloProcesos.php"><img src="img/procesos.png" width="90" height="90" border="0"/></a></p>
+		      </td>
+		      <td>
+		      	<p>INFORMES</p>
+		        <p><a class="enlace" href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" /></a></p>
+		      </td>
+		      <td>
+		      	<p>PLAN MATERNO INFANTIL</p>
+			  	<p><a href="pmi/moduloPMI.php"><img src="img/pmi.png" width="90" height="90" border="0" /></a></p>
+			   </td>
+		    </tr>
+	  	</table>
+	</div>
 </body>
 </html>
