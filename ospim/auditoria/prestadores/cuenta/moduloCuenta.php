@@ -39,7 +39,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			} 
 			$debe = 0;
 			if ($rowPagos['sumhaber'] != null) {
-				$debe = $rowPagos['sumimporte'];
+				$debe = $rowPagos['sumhaber'];
 			}
 			$saldo = $haber - $debe;
 			
