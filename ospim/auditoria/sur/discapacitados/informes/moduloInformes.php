@@ -6,13 +6,6 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Informes SUR OSPIM :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -26,31 +19,36 @@ function informes(dire) {
 </head>
 
 <body bgcolor="#CCCCCC">
-<div align="center">
+	<div align="center">
 	  <input type="button" name="volver" value="Volver" onclick="location.href = '../moduloDisca.php'" /> 
 	  <h2>Men&uacute; Consultas e Informes</h2>
-	  <table width="600" border="3">
-	    <tr>
-	      <td width="200"><p align="center">CERTIFICADOS POR FECHA VTO. </p>
-	          <p align="center"><a class="enlace" href="certificadosPorVto.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	        <p align="center">&nbsp;</p></td>
-			 <td width="200"><p align="center">CANTIDAD DISCAPACITADOS POR DELEGACION</p>
-	          <p align="center"><a class="enlace" href="#"><img onclick="informes('cantidadDicapacitadosPorDelegacion.php')" src="img/listado.png" width="90" height="90" border="0"/></a></p>
-	        <p align="center">&nbsp;</p></td>
-			<td width="200"><p align="center">DISCAPACITADOS POR DELEGACION</p>
-	          <p align="center"><a class="enlace" href="discapacitadosPorDelegacion.php"><img src="img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	        <p align="center">&nbsp;</p></td>
+	  <table width="600" border="1" style="text-align: center">
+	  	<tr>
+	  		<td width="200">
+	      		<p>CERTIFICADOS POR FECHA VTO. </p>
+	          	<p><a href="certificadosPorVto.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+	        </td>
+			<td width="200">
+				<p>CANTIDAD DISCAPACITADOS POR DELEGACION</p>
+	          	<p><a href="#"><img onclick="informes('cantidadDicapacitadosPorDelegacion.php')" src="img/listado.png" width="90" height="90" border="0"/></a></p>
+	        </td>
+			<td width="200">
+				<p>DISCAPACITADOS POR DELEGACION</p>
+	          	<p><a href="discapacitadosPorDelegacion.php"><img src="img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	       	</td>
 	    </tr>
 	    <tr>
-	      <td><p align="center">&nbsp;</p>
-	        
-	      <p>&nbsp;</p></td>
-	      <td><p align="center">EXPEDIENTES INCOMPLETOS</p>
-	      <p align="center"><a class="enlace" href="expedientesIncompletos.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	      <p align="center">&nbsp;</p></td>
-	      <td>&nbsp;</td>
-	    </tr>
+	      	<td>
+				<p>CANTIDAD DISCAPACITADOS POR TIPO DE DISCAPACIDAD</p>
+	          	<p><a href="#"><img onclick="informes('cantidadDicapacitadosPorTipo.php')" src="img/listado.png" width="90" height="90" border="0"/></a></p>
+	       	</td>
+	      	<td>
+	      		<p>EXPEDIENTES INCOMPLETOS</p>
+	      		<p><a href="expedientesIncompletos.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+	      	</td>
+			<td></td>
+	  	</tr>
 	  </table>
-</div>
+	</div>
 </body>
 </html>
