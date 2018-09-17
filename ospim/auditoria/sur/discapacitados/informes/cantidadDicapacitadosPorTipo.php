@@ -21,6 +21,15 @@ disca.nroorden =  f.nroorden and
 disca.nroafiliado = f.nroafiliado
 GROUP BY disca.iddiscapacidad";
 
+$sqlCanTituSin = "SELECT * FROM titulares
+WHERE discapacidad = 1 and
+nroafiliado not in (SELECT nroafiliado FROM discapacidadbeneficiario WHERE nroorden = 0)";
+		
+$sqlCanFamiSIN = "SELECT 0 as iddiscapacidad, count(*) as familiares
+FROM familiares
+WHERE discapacidad = 1 and
+nroafiliado not in (SELECT nroafiliado FROM discapacidadbeneficiario WHERE nroorden != 0)";
+
 $sqlTipoDisca = "SELECT * FROM tipodiscapacidad";
 
 try {
@@ -30,11 +39,14 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
+	$resultTipoDisca = $dbh->query($sqlTipoDisca);
 	$resultCanTitulares = $dbh->query($sqlCantTitulares);
 	$resultCanFamiliares = $dbh->query($sqlCantFamiliares);
-	$resultTipoDisca = $dbh->query($sqlTipoDisca);
+	$resultCanTituSin = $dbh->query($sqlCanTituSin);
+	$resultCanFamiSin = $dbh->query($sqlCanFamiSin);
 	
 	$resultadoFinal = array();
+	$resultadoFinal[0] = array('descripcion' => "Sin Especificar");
 	foreach ($resultTipoDisca as $tipoDisca){
 		$resultadoFinal[$tipoDisca['iddiscapacidad']] = array('descripcion' => $tipoDisca['descripcion']);
 	}
@@ -48,6 +60,18 @@ try {
 	if ($resultCanFamiliares){
 		foreach ($resultCanFamiliares as $cantFamiliares){
 			array_push_key($resultadoFinal[$cantFamiliares['iddiscapacidad']],'familiares',$cantFamiliares['familiares']);
+		}
+	}
+	
+	if ($resultCanTituSin){
+		foreach ($resultCanTituSin as $cantTitularesSin){
+			array_push_key($resultadoFinal[$cantTitularesSin['iddiscapacidad']],'titulares',$cantTitularesSin['titulares']);
+		}
+	}
+	
+	if ($resultCanFamiSin){
+		foreach ($resultCanFamiSin as $cantFamiliaresSin){
+			array_push_key($resultadoFinal[$cantFamiliaresSin['iddiscapacidad']],'familiares',$cantFamiliaresSin['familiares']);
 		}
 	}
 
