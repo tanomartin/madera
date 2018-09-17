@@ -21,11 +21,12 @@ disca.nroorden =  f.nroorden and
 disca.nroafiliado = f.nroafiliado
 GROUP BY disca.iddiscapacidad";
 
-$sqlCanTituSin = "SELECT * FROM titulares
+$sqlCanTituSin = "SELECT 0 as iddiscapacidad, count(*) as titulares
+FROM titulares
 WHERE discapacidad = 1 and
 nroafiliado not in (SELECT nroafiliado FROM discapacidadbeneficiario WHERE nroorden = 0)";
 		
-$sqlCanFamiSIN = "SELECT 0 as iddiscapacidad, count(*) as familiares
+$sqlCanFamiSin = "SELECT 0 as iddiscapacidad, count(*) as familiares
 FROM familiares
 WHERE discapacidad = 1 and
 nroafiliado not in (SELECT nroafiliado FROM discapacidadbeneficiario WHERE nroorden != 0)";
