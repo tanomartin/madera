@@ -8,6 +8,7 @@ function array_push_key(&$array, $key, $value) {
 $sqlCantTitulares = "SELECT disca.iddiscapacidad, count(*) as titulares
 FROM discapacidadbeneficiario disca, titulares t
 WHERE
+t.discapacidad = 1 and
 disca.nroorden = 0 and
 disca.nroafiliado = t.nroafiliado
 GROUP BY disca.iddiscapacidad";
@@ -15,7 +16,8 @@ GROUP BY disca.iddiscapacidad";
 $sqlCantFamiliares = "SELECT disca.iddiscapacidad, count(*) as familiares
 FROM discapacidadbeneficiario disca, familiares f
 WHERE
-disca.nroorden != 0 and
+f.discapacidad = 1 and
+disca.nroorden =  f.nroorden and
 disca.nroafiliado = f.nroafiliado
 GROUP BY disca.iddiscapacidad";
 
