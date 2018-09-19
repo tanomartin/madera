@@ -158,33 +158,19 @@ try {
 	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
 	header ($redire);
 	exit(0);
-}
-?>
-
-
+} ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Cierre de Liquidacion :.</title>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
-
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuFiscalizacion.php'"/></p>
-  <p class="Estilo2">Resultado del proceso de cierra de liquidación </p>
-  
-  <p class="Estilo2">O.S.P.I.M.</p>
+  <h3>Resultado del proceso de cierra de liquidación </h3>
+  <h3>O.S.P.I.M.</h3>
   <?php if (sizeof($liqCargadas) != 0) { ?>
   		 <p class="Estilo2">El archivo Seguimiento.txt conten&iacute;a <?php echo sizeof($liqCargadas) ?> líneas</p>
 			  <table style="width: 900; text-align: center;" border="1" >
@@ -228,7 +214,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			 <p><b style="color:blue;"> NO SE ENCONTRÓ EL ARCHIVO Seguimiento.txt </b></p>
 <?php	  }  ?>
 		
-	<p class="Estilo2">U.S.I.M.R.A.</p>
+	<h3>U.S.I.M.R.A.</h3>
   	<?php if (sizeof($liqCargadasUsimra) != 0) { ?>
   		 <p class="Estilo2">El archivo SegUsimra.txt conten&iacute;a <?php echo sizeof($liqCargadasUsimra) ?> líneas</p>
 			  <table style="width: 900; text-align: center;" border="1" >
@@ -273,7 +259,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 <?php 	  } else { ?>
 			 <p><b style="color:blue;"> NO SE ENCONTRÓ EL ARCHIVO SegUSIMRA.txt </b></p>
 <?php	  }  ?>
-		
 		  <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 </div>
 </body>

@@ -21,28 +21,14 @@ if (file_exists($direArcUsimra)) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Sistemas :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
-
 <body bgcolor="#CCCCCC">
-<div align="center">
-  <?php 
-  	if ($borrado == 1) {
-		print("<p><div align='center' style='color:#0033FF'><b> SE BORRO EL ARCHIVO SegUSIMRA.txt </b></div></p>");
-	} else {
-		print("<p><div align='center' style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUSIMRA.txt </b></div></p>");
-	}
-  
-  ?>
-</div>
+	<div align="center">
+	<?php if ($borrado == 1) { ?>
+			<p style='color:#0033FF'><b> SE BORRO EL ARCHIVO SegUSIMRA.txt </b></p>
+	<?php } else { ?>
+			<p style='color:#000000'><b> NO SE ENCONTRÓ EL ARCHIVO SegUSIMRA.txt </b></p>
+	<?php } ?>
+	</div>
 </body>
 </html>

@@ -6,29 +6,18 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Sistemas :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" />
-  </span></p>
-  <p><span class="Estilo2">Men&uacute; Fiscalizaci&oacute;n - Sistemas </span></p>
-  <table width="214" border="3">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" /></p>
+  <h3>Menú Fiscalización - Sistemas</h3>
+  <table width="200" border="1" style="text-align: center">
     <tr>
-      <td width="200"><p align="center">Cierre de Liquidaci&oacute;n </p>
-          <p align="center"><a class="enlace" href="cierreLiquidacion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
+      <td width="200">
+      	<p>CIERRE DE LIQUIDACIONES</p>
+        <p><a href="cierreLiquidacion.php"><img src="img/fiscalizacion.png" width="90" height="90" border="0" /></a></p>
+      </td>
     </tr>
   </table>
 </div>
