@@ -33,25 +33,13 @@ LEFT OUTER JOIN
 extraordinariosusimra as e on p.anio = e.anio and p.mes = e.mes
 order by p.anio DESC, p.mes DESC limit 30";
 $resPeriodos = mysql_query($sqlPeriodos,$db);
-$canPeriodos = mysql_num_rows($resPeriodos);
-
-?>
+$canPeriodos = mysql_num_rows($resPeriodos); ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Titulares por Empresa :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -110,7 +98,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <div align="center">
 	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = '../menuAplicativoddjj.php'" /></p>
 	<p><input class="nover" type="button" name="nuevo" value="Nuevo Periodo" onclick="location.href = 'nuevoPeriodo.php'" /></p>
-	<p><span class="Estilo2">Periodos Aplicativo </span></p>
+	<h3>Periodos Aplicativo </h3>
 	<?php if ($canPeriodosApli > 0) { ?>
 	<table class="tablesorter" id="listadoApli" style="width:1100px; font-size:14px">
 	<thead>
@@ -165,13 +153,12 @@ A:hover {text-decoration: none;color:#00FFFF }
 	</td>
       </tr>
   </table>
- <?php } else {
-   		print("<p><span class='Estilo2'>No existen periodos en Poseidon</span><p>");
-    }?>
+<?php } else { ?>
+   		<h3>No existen periodos en Aplicativo DDJJ (Intranet)</h3>
+<?php } ?>
     
-    
-    <p><span class="Estilo2">Periodos POSEIDON </span></p>
-	<?php if ($canPeriodos > 0) { ?>
+    <h3>Periodos POSEIDON </h3>
+<?php if ($canPeriodos > 0) { ?>
 	<table class="tablesorter" id="listado" style="width:1100px; font-size:14px">
 	<thead>
 		<tr>
@@ -225,12 +212,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 	</td>
       </tr>
   </table>
- <?php } else {
-   		print("<p><span class='Estilo2'>No existen periodos en Poseidon</span><p>");
-    }?>
-    <p>
-      <input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/>
-    </p>
+<?php } else { ?>
+   		<h3>No existen periodos en Poseidon</h3>
+<?php } ?>
+    <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 </div>
 </body>
 </html>
