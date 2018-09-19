@@ -1,27 +1,20 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
-
 $sqlEmails = "SELECT u.nombre, d.nombre as depto, e.* FROM usuarios u, departamentos d, emails e WHERE u.id = e.idusuario and u.departamento = d.id";
 $resEmails = mysql_query($sqlEmails,$db);
-$canEmails = mysql_num_rows($resEmails);
-?>
-
+$canEmails = mysql_num_rows($resEmails); ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Usuarios :.</title>
-
-
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
-
-
 <script>
 	$(function() {
 		$("#listado")
@@ -51,14 +44,6 @@ function controlEliminacion(idEmail) {
 }
 	
 </script>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -66,10 +51,8 @@ function controlEliminacion(idEmail) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuUsuarios.php'" />
-</p>
-  <p><span class="Estilo1">Listado de Emails </span></p>
+  <p><input type="reset" name="volver" value="Volver" onclick="location.href = 'menuUsuarios.php'" /></p>
+  <h3>Listado de Emails </h3>
   <input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevoEmail.php'"  value="Nuevo" />
   <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	  <thead>
@@ -83,19 +66,18 @@ function controlEliminacion(idEmail) {
 		</tr>
 	 </thead>
 	 <tbody>
-		<?php	
-			while ($rowEmails = mysql_fetch_assoc($resEmails)) { ?>
+	<?php	while ($rowEmails = mysql_fetch_assoc($resEmails)) { ?>
 			<tr align="center">
-					<td><?php echo $rowEmails['id'] ?></td>
-					<td><?php echo $rowEmails['nombre']?></td>
-					<td><?php echo $rowEmails['depto'] ?></td>
-					<td><?php echo $rowEmails['email'] ?></td>
-					<td><?php echo $rowEmails['password'] ?></td>
-					<td>
-						<input type="button" value="Modificar" onclick="location.href = 'modificarEmail.php?id=<?php echo $rowEmails['id'] ?>'" />
-						<input type="button" value="Eliminar" onclick="controlEliminacion('<?php echo $rowEmails['id'] ?>')" />
-					</td>
-		</tr>
+				<td><?php echo $rowEmails['id'] ?></td>
+				<td><?php echo $rowEmails['nombre']?></td>
+				<td><?php echo $rowEmails['depto'] ?></td>
+				<td><?php echo $rowEmails['email'] ?></td>
+				<td><?php echo $rowEmails['password'] ?></td>
+				<td>
+					<input type="button" value="Modificar" onclick="location.href = 'modificarEmail.php?id=<?php echo $rowEmails['id'] ?>'" />
+					<input type="button" value="Eliminar" onclick="controlEliminacion('<?php echo $rowEmails['id'] ?>')" />
+				</td>
+			</tr>
 	 <?php } ?>
     </tbody>
   </table>

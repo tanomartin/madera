@@ -6,30 +6,22 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Usuarios :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'"/></p>
-  <p><span class="Estilo2">Men&uacute; Usuarios </span></p>
-  <table width="400" border="3">
+  <h3>Menú Usuarios </h3>
+  <table width="400" border="1" style="text-align: center">
     <tr>
-      <td width="200"><p align="center">Usuarios </p>
-        <p align="center"><a class="enlace" href="usuarios.php"><img src="img/users.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
-      <td  width="200"><p align="center">E-mails </p>
-        <p align="center"><a href="emails.php"><img src="img/email.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      <p>&nbsp;</p></td>
+      <td width="200">
+      	<p>USUARIO </p>
+        <p><a href="usuarios.php"><img src="img/users.png" width="90" height="90" border="0" /></a></p>
+      </td>
+      <td  width="200">
+      	<p>E-MAILS </p>
+        <p><a href="emails.php"><img src="img/email.png" width="90" height="90" border="0" /></a></p>
+      </td>
     </tr>
   </table>
 </div>

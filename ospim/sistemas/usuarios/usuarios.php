@@ -1,15 +1,10 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspimSistemas.php"); 
-?>
-
-
+include($libPath."controlSessionOspimSistemas.php"); ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Usuarios :.</title>
-
-
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -40,14 +35,6 @@ include($libPath."controlSessionOspimSistemas.php");
 		.tablesorterPager({container: $("#paginador")}); 
 	});
 </script>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -55,10 +42,8 @@ include($libPath."controlSessionOspimSistemas.php");
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = 'menuUsuarios.php'" />
-</p>
-  <p><span class="Estilo1">Listado de Usuarios </span></p>
+  <p><input type="reset" name="volver" value="Volver" onclick="location.href = 'menuUsuarios.php'" /></p>
+  <h3>Listado de Usuarios </h3>
   <input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevoUsuario.php'"  value="Nuevo" />
   <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	  <thead>
