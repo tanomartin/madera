@@ -22,22 +22,22 @@ include($libPath."controlSessionOspim.php"); ?>
 		      </td>
 		      <td width="200">
 		      	<p>AUTORIZACIONES</p>
-		        <p><a href="verificaciones/buscaSolicitudes.php"><img src="img/autorizaciones.png" width="90" height="90" border="0" /></a></p>
-		      <p align="center">&nbsp;</p></td>
+		        <p><a href="../moduloNoDisponible.php"><img src="img/autorizaciones.png" width="90" height="90" border="0" /></a></p>
+		      </td>
 		    </tr>
 			<tr>
 		      <td>
 		      	<p>PROCESOS</p>
-		      	<p><a class="enlace" href="procesos/moduloProcesos.php"><img src="img/procesos.png" width="90" height="90" border="0"/></a></p>
+		      	<p><a href="procesos/moduloProcesos.php"><img src="img/procesos.png" width="90" height="90" border="0"/></a></p>
 		      </td>
 		      <td>
 		      	<p>INFORMES</p>
-		        <p><a class="enlace" href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" /></a></p>
+		        <p><a href="informes/moduloInformes.php"><img src="img/informesconsultas.png" width="90" height="90" border="0" /></a></p>
 		      </td>
 		      <td>
 		      	<p>PLAN MATERNO INFANTIL</p>
 			  	<p><a href="pmi/moduloPMI.php"><img src="img/pmi.png" width="90" height="90" border="0" /></a></p>
-			   </td>
+			  </td>
 		    </tr>
 	  	</table>
 	</div>

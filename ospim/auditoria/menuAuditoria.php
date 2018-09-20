@@ -11,7 +11,7 @@ include($libPath."controlSessionOspim.php"); ?>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <h2>Men&uacute; Auditoria Medica </h2>
+  <h2>Menú Auditoria Medica </h2>
   <table width="600" border="1" style="text-align: center;vertical-align: middle;">
     <tr>
       <td width="200">
@@ -20,7 +20,7 @@ include($libPath."controlSessionOspim.php"); ?>
       </td> 	
       <td width="200">
       	  <p>AUTORIZACIONES</p>
-          <p><a href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+          <p><a href="../moduloNoDisponible.php"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
 	  <td width="200">
 	  	  <p>NOMENCLADORES</p>
