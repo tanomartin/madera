@@ -3,19 +3,15 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $nrosolicitud=$_GET['nroSolicitud'];
 
-$sqlLeeSolicitud="SELECT * FROM autorizaciones WHERE nrosolicitud = $nrosolicitud";
-$resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
-$rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
-
-if($rowLeeSolicitud['codiparentesco']>0) {
-	$sqlLeeParentesco = "SELECT * FROM parentesco where codparent = $rowLeeSolicitud[codiparentesco]";
-	$resultLeeParentesco = mysql_query($sqlLeeParentesco,$db);
-	$rowLeeParentesco = mysql_fetch_array($resultLeeParentesco);
-}
-
-$sqlLeeDeleg = "SELECT * FROM delegaciones WHERE codidelega = $rowLeeSolicitud[codidelega]";
-$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db);
-$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
+$sqlLeeSolicitud = "SELECT a.*, doc.*, d.nombre as delegacion, parentesco.descrip as paretensco, autorizacioneshistoria.detalle
+					FROM delegaciones d, autorizacionesdocoriginales doc, autorizacionesatendidas a
+					LEFT JOIN parentesco ON a.codiparentesco = parentesco.codparent
+					LEFT JOIN autorizacioneshistoria ON a.nrosolicitud = autorizacioneshistoria.nrosolicitud
+					WHERE a.nrosolicitud = $nrosolicitud and 
+						  a.nrosolicitud = doc.nrosolicitud and
+						  a.codidelega = d.codidelega";
+$resultLeeSolicitud = mysql_query($sqlLeeSolicitud,$db);
+$rowLeeSolicitud = mysql_fetch_array($resultLeeSolicitud);
 
 $patologia = "Sin Clasificar";
 if ($rowLeeSolicitud['patologia'] != null) {
@@ -92,28 +88,16 @@ if($rowLeeSolicitud['statusautorizacion'] != 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Detalle Solicitud</title>
-<style type="text/css">
-<!--
-.Estilo3 {
-	font-family: Papyrus;
-	font-weight: bold;
-	font-size: 24px;
-}
-body {
-	background-color: #CCCCCC;
-}
-.Estilo4 {
-	color: #990000;
-	font-weight: bold;
-}
--->
-</style>
 <script language="javascript" type="text/javascript">
 
 function verCertificado(dire){	
 	window.open(dire,'Certificado de Discapacidad','width=800, height=500,resizable=yes');
 }
 
+function muestraHistoria(solicitud,cuil,nombre){	
+	var dire = "historiaClinica.php?nrosol="+solicitud+"&cuil="+cuil+"&nombre="+nombre;
+	window.open(dire,'Historia Clinica Autorizaciones','width=800, height=500,resizable=yes');
+}
 
 function muestraArchivo(solicitud, archivo) {
 	param = "nroSolicitud=" + solicitud;
@@ -134,114 +118,107 @@ function reenviarMail(solicitud, idmail, boton, mail) {
 </script>
 </head>
 
-<body>
-<table width="1100">
-  <tr>
-    <td colspan="2" scope="row">
-    	<div align="left"><p class="Estilo3">Consulta de Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p></div>
-    </td>
-    <td width="550">
-	    <div align="right">
-	      <table style="width: 450; height: 60" border="2">
-	        <tr>
-	          <td width="143" height="25"><div align="center"><strong>Fecha Solicitud</strong> </div></td>
-	          <td width="289"><div align="center"><?php echo invertirFecha($rowLeeSolicitud['fechasolicitud']);?></div></td>
-	        </tr>
-	        <tr>
-	          <td width="143" height="25"><div align="center"><strong>Delegaci&oacute;n</strong></div></td>
-	          <td width="289"><div align="center"><?php echo "".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];?></div></td>
-	        </tr>
-	      </table>
-	    </div>
-    </td>
-  </tr>
-</table>
-
-<table width="100%">
-  <tr>
-    <td width="50%" valign="top">
-    	<h3 align="left" class="Estilo4">Informaci&oacute;n del Beneficiario</h3>
-    	<p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
-        <p><strong>Clasificacion del Titular: </strong> <?php echo $tipoTitular ?></p>
-        <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
-        <p><strong>Comentario: </strong><?php echo $rowLeeSolicitud['comentario']?></p>
-        <p><strong>Tipo:</strong>
-		<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
-					if($rowLeeSolicitud['codiparentesco']==0) {
-						echo "Titular";
-					} else {
-						echo "Familiar ".$rowLeeParentesco['descrip'];
-					}
-				} else {
-					echo "No Empadronado";
-				} ?>
-			</p>
-			<p>
-				<b>Discapacitado:</b>
-		<?php	if ($canDisca == 1) {
-					$rowDisca = mysql_fetch_assoc($resDisca); 
-					$nroorden = $rowDisca['nroorden']; 
-					echo "SI (FA: ".$rowDisca['fechaalta']." - FE: ".$rowDisca['emisioncertificado']." - FV: ".$rowDisca['vencimientocertificado'].")"; ?>
-					<input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/>
-		<?php 	} else { 
-					echo "NO"; 
-				} ?>
-			</p>
-        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
-        <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
-        <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> </p>
-        <p><strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
-        <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
-		
-		<h3 align="left" class="Estilo4">Documentaci&oacute;n de la Solicitud</h3>
-		<p><strong>Tipo:</strong> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeMaterial['descripcion']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
-      	<p><strong>Pedido Medico:</strong> <?php if($rowLeeSolicitud['pedidomedico']!=NULL) {?> <input type="button" name="pedidomedico" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,1)" /><?php }?></p>
-      	<p><strong>Historia Cl&iacute;nica:</strong> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?>  <input type="button" name="historiaclinica" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" /><?php }?></p>
-      	<p><strong>Estudios:</strong> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" /><?php }?></p>
-      	<p><strong>Presupuestos:</strong></p>
-      	<p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" /><?php if($rowLeeSolicitud['aprobado1']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-      	<p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" /><?php if($rowLeeSolicitud['aprobado2']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-      	<p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" /><?php if($rowLeeSolicitud['aprobado3']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-      	<p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" /><?php if($rowLeeSolicitud['aprobado4']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-      	<p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" /><?php if($rowLeeSolicitud['aprobado5']!=0) { print(" ===> Presupuesto Aprobado"); };} ?></p>
-    </td>
-    
-    <td valign="top">
-    	<h3 align="left" class="Estilo4">Resultado de la Verificaci&oacute;n</h3>
-    	<p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)"/><?php }?></p>
-		<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']); else echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']);?></p>
-   	  	<p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p>
+<body bgcolor="#CCCCCC">
+<div align="center">
+	<h3>Solicitud Nº <?php echo $nrosolicitud ?></h3>
+	<table style="width: 50%; text-align: center" border="1">
+	    <tr>
+	       <td><b>Fecha Solicitud</b></td>
+	       <td><?php echo invertirFecha($rowLeeSolicitud['fechasolicitud']);?></td>
+	    </tr>
+	    <tr>
+	       <td><b>Delegación</b></td>
+	       <td><?php echo "".$rowLeeSolicitud['codidelega']." - ".$rowLeeSolicitud['delegacion'];?></td>
+	     </tr>
+	</table>
+	<table width="100%" style="text-align: center">
+		<tr>
+	   		<td width="40%" valign="top">
+	    		<p style="color: maroon;"><b>Información del Beneficiario</b></p>
+	    		<p><b>Nº de Afiliado:</b> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
+	        	<p><b>Clasificacion del Titular: </b> <?php echo $tipoTitular ?></p>
+	        	<p><b>Apellido y Nombre: </b><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+	        	<p><b>Comentario: </b><?php echo $rowLeeSolicitud['comentario']?></p>
+	        	<p><b>Tipo:</b>
+				<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
+							if($rowLeeSolicitud['codiparentesco']==0) {
+								echo "Titular";
+							} else {
+								echo "Familiar ".$rowLeeSolicitud['paretensco'];
+							}
+						} else {
+							echo "No Empadronado";
+						} ?>
+				</p>
+				<p><b>Discapacitado:</b>
+				<?php	if ($canDisca == 1) {
+							$rowDisca = mysql_fetch_assoc($resDisca); 
+							$nroorden = $rowDisca['nroorden']; 
+							echo "SI (FA: ".$rowDisca['fechaalta']." - FE: ".$rowDisca['emisioncertificado']." - FV: ".$rowDisca['vencimientocertificado'].")"; ?>
+							<input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/>
+				<?php 	} else { 
+							echo "NO"; 
+						} ?>
+				</p>
+	        	<p><b>Fecha Nacimiento:</b> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
+	        	<p><b>C.U.I.L.:</b> <?php echo $rowLeeSolicitud['cuil'] ?></p>
+	        	<p><b>Telefono:</b> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> </p>
+	        	<p><b>Celular:</b> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
+	        	<p><b>Email:</b> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
+	        	
+	        	<p style="color: maroon;"><b>Historia Clinica Autorizaciones</b></p>
+				<p><input type="button" value="Ver Historia" name="historia" id="historia" onclick="javascript:muestraHistoria(<?php echo  $rowLeeSolicitud['nrosolicitud'] ?>,<?php echo  $rowLeeSolicitud['cuil'] ?>,'<?php echo  $rowLeeSolicitud['apellidoynombre'] ?>')" /></p>
+			</td>
+			<td width="20%" valign="top">
+				<p style="color: maroon;"><b>Documentación de la Solicitud</b></p>
+				<p><b>Tipo:</b> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeMaterial['descripcion']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
+	      		<p><b>Pedido Medico:</b> <?php if($rowLeeSolicitud['pedidomedico']!=NULL) {?> <input type="button" name="pedidomedico" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,1)" /><?php }?></p>
+	      		<p><b>Historia Clínica:</b> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?>  <input type="button" name="historiaclinica" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" /><?php }?></p>
+	      		<p><b>Estudios:</b> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" /><?php }?></p>
+	      		<p><b>Presupuestos:</b></p>
+	      		<p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) { echo "1 - ";?><input type="button" name="presupuesto1" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" /><?php if($rowLeeSolicitud['aprobado1']!=0) { print(" (Aprobado)"); };} ?></p>
+	      		<p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) { echo "2 - ";?><input type="button" name="presupuesto2" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" /><?php if($rowLeeSolicitud['aprobado2']!=0) { print(" (Aprobado)"); };} ?></p>
+	      		<p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) { echo "3 - ";?><input type="button" name="presupuesto3" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" /><?php if($rowLeeSolicitud['aprobado3']!=0) { print(" (Aprobado)"); };} ?></p>
+	      		<p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) { echo "4 - ";?><input type="button" name="presupuesto4" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" /><?php if($rowLeeSolicitud['aprobado4']!=0) { print(" (Aprobado)"); };} ?></p>
+	      		<p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) { echo "5 - ";?><input type="button" name="presupuesto5" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" /><?php if($rowLeeSolicitud['aprobado5']!=0) { print(" (Aprobado)"); };} ?></p>
+	    		
+	    		<p style="color: maroon;"><b>Resultado de la Verificación</b></p>
+    			<p><b>Consulta SSS:</b> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)"/><?php }?></p>
+				<p><b>Verificación:</b> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']); else echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaverificacion']);?></p>
+   	  			<p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p>
+	    	</td>
+    		<td width="40%" valign="top">	
+   				<p style="color: maroon;"><b>Resultado de la Autorización</b></p>
+   				<p><b>Autorización:</b> <?php if($rowLeeSolicitud['statusautorizacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']); else { if($rowLeeSolicitud['statusautorizacion']==2) echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']);}?></p>
+   	  			<p><b>Observacion / Motivo de Rechazo:</b><?php echo " ".$rowLeeSolicitud['rechazoautorizacion'];?></p>
+   	  			<p><b>Historia Clinica:</b><?php echo " ".$rowLeeSolicitud['detalle'];?></p>
+      			<p><b>Expediente SUR:</b><?php if($rowLeeSolicitud['clasificacionape']==1) { echo " SI"; } else { echo " NO";} ?></p>
+      			<p><b>Comunica al Prestador ?:</b> <?php if($rowLeeSolicitud['emailprestador']!=NULL) { echo " SI <br/> <b>Email:</b> ".$rowLeeSolicitud['emailprestador']; } else { echo "NO";} ?> </p>
+      			<p><b>Clasificacion Patologia:</b> <?php echo $patologia;?></p>
+      			<p><b>Monto Autorizado:</b> <?php echo $rowLeeSolicitud['montoautorizacion'];?></p>
+	      <?php if($rowLeeSolicitud['statusautorizacion'] == 1) { ?> 
+	      			<p><b>Documento Autorizacion:</b> <?php if($rowLeeDocumento['documentofinal']!=NULL) {?><input type="button" name="docuauto" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,10)" /><?php }?></p>
+	   	  <?php } ?>
    		
-   		<h3 align="left" class="Estilo4">Resultado de la Autorizaci&oacute;n</h3>
-   		<p><strong>Autorizaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusautorizacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']); else { if($rowLeeSolicitud['statusautorizacion']==2) echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']);}?></p>
-   	  	<p><strong>Observacion / Motivo de Rechazo:</strong><?php echo " ".$rowLeeSolicitud['rechazoautorizacion'];?></p>
-      	<p><strong>Expediente SUR:</strong><?php if($rowLeeSolicitud['clasificacionape']==1) { echo " SI"; } else { echo " NO";} ?></p>
-      	<p><strong>Comunica al Prestador ?:</strong> <?php if($rowLeeSolicitud['emailprestador']!=NULL) { echo " SI - Email: ".$rowLeeSolicitud['emailprestador']; } else { echo "NO";} ?> </p>
-      	<p><strong>Clasificacion Patologia:</strong> <?php echo $patologia;?></p>
-      	<p><strong>Monto Autorizado:</strong> <?php echo $rowLeeSolicitud['montoautorizacion'];?></p>
-      <?php if($rowLeeSolicitud['statusautorizacion'] == 1) { ?> 
-      		<p><strong>Documento Autorizacion:</strong> <?php if($rowLeeDocumento['documentofinal']!=NULL) {?><input type="button" name="docuauto" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,10)" /><?php }?></p>
-   	  <?php } ?>
-   		
-   		<h3 align="left" class="Estilo4">Reenvio de Correos</h3>
-  	  <?php if ($canMailsEnviados > 0) { 
-   				while ($rowSelectMails = mysql_fetch_assoc($resMailsEnviados)) {
-   					echo "<p><b>".$rowSelectMails['address']."</b> - Enviado el ".$rowSelectMails['fechaenvio']." ";?>
-   					<input type="button" name="reenvio" id="reenvio" value="Reenviar" onclick="javascript:reenviarMail(<?php echo $nrosolicitud?>,<?php echo $rowSelectMails['id']?>, this, '<?php echo $rowSelectMails['address']?>')" />
-   	  <?php			echo "</p>"; 
-   				}
-   			} 
-   			if ($canMailsNoEnviados > 0) { 
-   				while ($rowSelectMails = mysql_fetch_assoc($resMailsNoEnviados)) {
-   					echo "<p><b>".$rowSelectMails['address']."</b> - En proceso de envio</p>";
-   				}
-   			} 
-   			if ($canMailsEnviados == 0 && $canMailsNoEnviados == 0) {
-   				echo "<b>No hay mails para enviar</b>";
-   			} ?>
-    </td>
-    
-  </tr>
-</table>
+   				<p style="color: maroon;"><b>Reenvio de Correos</b></p>
+	  	  <?php if ($canMailsEnviados > 0) { 
+	   				while ($rowSelectMails = mysql_fetch_assoc($resMailsEnviados)) {
+	   					echo "<p><b>".$rowSelectMails['address']."</b> - Enviado el ".$rowSelectMails['fechaenvio']." ";?>
+	   					<input type="button" name="reenvio" id="reenvio" value="Reenviar" onclick="javascript:reenviarMail(<?php echo $nrosolicitud?>,<?php echo $rowSelectMails['id']?>, this, '<?php echo $rowSelectMails['address']?>')" />
+	   	  <?php			echo "</p>"; 
+	   				}
+	   			} 
+	   			if ($canMailsNoEnviados > 0) { 
+	   				while ($rowSelectMails = mysql_fetch_assoc($resMailsNoEnviados)) {
+	   					echo "<p><b>".$rowSelectMails['address']."</b> - En proceso de envio</p>";
+	   				}
+	   			} 
+	   			if ($canMailsEnviados == 0 && $canMailsNoEnviados == 0) {
+	   				echo "<b>No hay mails para enviar</b>";
+	   			} ?>
+    		</td>
+  		</tr>
+	</table>
+</div>
 </body>
 </html>

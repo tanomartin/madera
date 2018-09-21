@@ -62,6 +62,7 @@ if($staauto==2) {
 	$presupue = 0;
 	$estauto = "Rechazada";
 	$recauto = $_POST['motivoRechazo'];
+	$historia = $_POST['historiaClinica'];
 	$apeauto = "";
 	$apefech = "";
 	$presauto = "";
@@ -73,7 +74,8 @@ if($staauto==2) {
 } else {
 	$estauto = "Aprobada";
 	$recauto = $_POST['motivoRechazo'];
-
+	$historia = $_POST['historiaClinica'];
+	
 	if(isset($_POST['ape'])) {
 		$apeauto = $_POST['ape'];
 	}
@@ -195,16 +197,13 @@ switch ($presupue) {
 $fechamail=date("d/m/Y");
 $horamail=date("H:i");
 
-$sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosoli";
-$resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
-$rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
+$sqlLeeSolicitud = "SELECT a.*, d.*, del.nombre as delegacion 
+					FROM autorizaciones a, autorizacionesdocoriginales d, delegaciones del
+					WHERE a.nrosolicitud = $nrosoli and a.nrosolicitud = d.nrosolicitud and a.codidelega = del.codidelega";
+$resultLeeSolicitud = mysql_query($sqlLeeSolicitud,$db);
+$rowLeeSolicitud = mysql_fetch_array($resultLeeSolicitud);
 
 $cuilSolicitud = $rowLeeSolicitud['cuil'];
-
-$sqlLeeDeleg = "SELECT nombre FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
-$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
-$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
-
 $sqlLeeTitular = "SELECT nroafiliado, tipodocumento, nrodocumento FROM titulares where cuil = $cuilSolicitud";
 $resultLeeTitular = mysql_query($sqlLeeTitular,$db); 
 if(mysql_num_rows($resultLeeTitular)!=0) {
@@ -232,7 +231,7 @@ if($rowLeeSolicitud['practica']==1)
 	$tiposoli="Practica";
 else {
 	if($rowLeeSolicitud['material']==1)	{
-		$sqlLeeMaterial = "SELECT descripcion FROM clasificamaterial where codigo = $rowLeeSolicitud[tipomaterial]";
+		$sqlLeeMaterial = "SELECT descripcion FROM clasificamaterial where codigo = ".$rowLeeSolicitud['tipomaterial'];
 		$resultLeeMaterial = mysql_query($sqlLeeMaterial,$db); 
 		$rowLeeMaterial = mysql_fetch_array($resultLeeMaterial);
 
@@ -251,10 +250,10 @@ $docpa=0;
 
 //Conexion local y remota.
 $maquina = $_SERVER['SERVER_NAME'];
-if(strcmp("localhost",$maquina)==0)
-	$hostremoto = "localhost";
-else
+if(strcmp("poseidon",$maquina)==0)
 	$hostremoto = $hostOspim;
+else
+	$hostremoto = "localhost";
 	
 $dbremota = $baseOspimIntranet;
 $hostlocal = $_SESSION['host'];
@@ -310,7 +309,7 @@ try {
 		$pdf->Cell(70,6,"Documento: ".$docuTyNro,1,1,'L');
 		$pdf->Cell(10);
 		$pdf->Cell(113,6,"Monto Autorizado: ".$montoMostrar,1,0,'L');
-		$pdf->Cell(70,6,"Delegacion: ".$rowLeeDeleg['nombre'],1,1,'L');
+		$pdf->Cell(70,6,"Delegacion: ".$rowLeeSolicitud['delegacion'],1,1,'L');
 
 		if($rowLeeSolicitud['pedidomedico']!=NULL) {
 			$docpm=1;
@@ -475,23 +474,32 @@ try {
 	}
 
 	
-	$sqlActualizaAuto="UPDATE autorizaciones SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, patologia = :patologia, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
+	$sqlActualizaAuto="UPDATE autorizacionesatendidas SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, patologia = :patologia, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
 	//echo $sqlActualizaAuto; echo "<br>";
 	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':patologia' => $patoauto, ':montoautorizacion' => $montoMostrar, ':nrosolicitud' => $nrosoli)))
-	{	
+	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':patologia' => $patoauto, ':montoautorizacion' => $montoMostrar, ':nrosolicitud' => $nrosoli))) {	
 		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion, fechaemail = :fechaemail WHERE nrosolicitud = :nrosolicitud";
 		//echo $sqlActualizaProcesadas; echo "<br>";
 		$resultActualizaProcesadas = $dbr->prepare($sqlActualizaProcesadas);
-		if($resultActualizaProcesadas->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':rechazoautorizacion' => $recauto, ':fechaemail' => $fecauto, ':nrosolicitud' => $nrosoli)))
-		{
+		if($resultActualizaProcesadas->execute(array(':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':rechazoautorizacion' => $recauto, ':fechaemail' => $fecauto, ':nrosolicitud' => $nrosoli))) { 
+			if ($historia != "") {
+				$sqlHistoria = "INSERT INTO autorizacioneshistoria (nrosolicitud, detalle) VALUES (:nrosolicitud, :detalle)";
+				$resHistoria  = $dbl->prepare($sqlHistoria);
+				if ($resHistoria->execute(array(':nrosolicitud' => $nrosoli, ':detalle' => $historia))) {
+					$sqlDeleteAuto = "DELETE FROM autorizaciones WHERE nrosolicitud = :nrosolicitud";
+					$resDeleteAuto = $dbl->prepare($sqlDeleteAuto);
+					if ($resDeleteAuto->execute(array(':nrosolicitud' => $nrosoli))) {}
+				}
+			} else {
+				$sqlDeleteAuto = "DELETE FROM autorizaciones WHERE nrosolicitud = :nrosolicitud";
+				$resDeleteAuto = $dbl->prepare($sqlDeleteAuto);
+				if ($resDeleteAuto->execute(array(':nrosolicitud' => $nrosoli))) {}
+			}
 		}
 		if ($staauto==1)  {
 			$sqlAddDocumento="INSERT INTO autorizaciondocumento (nrosolicitud, documentofinal) VALUES (:nrosolicitud, :documentofinal)";
 			$resultAddDocumento = $dbl->prepare($sqlAddDocumento);
-			if($resultAddDocumento->execute(array(':nrosolicitud' => $nrosoli, ':documentofinal' => $contenidodoc)))
-			{
-			}
+			if($resultAddDocumento->execute(array(':nrosolicitud' => $nrosoli, ':documentofinal' => $contenidodoc))) { }
 		}
 	}
 	

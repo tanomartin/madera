@@ -2,11 +2,11 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
-$sqlLeeAutorizacion = "SELECT a.nrosolicitud,a.material, a.medicamento, a.practica,a.fechasolicitud,a.codidelega,d.nombre as delegacion,a.cuil,a.nroafiliado,a.codiparentesco,a.apellidoynombre,a.statusverificacion
-						FROM autorizaciones a, delegaciones d 
-						WHERE a.statusautorizacion = 0 and a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
+$sqlLeeAutorizacion = "SELECT * FROM autorizaciones a, delegaciones d 
+						WHERE a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
-$totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);?>
+$totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
+?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -25,7 +25,7 @@ $(function() {
 		theme: 'blue', 
 		widthFixed: true, 
 		widgets: ["zebra", "filter"], 
-		headers:{9:{sorter:false, filter: false}},
+		headers:{9:{sorter:false, filter: false},10:{sorter:false, filter: false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -38,17 +38,13 @@ $(function() {
 	})
 });
 </script>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
 <body bgcolor="#CCCCCC">
-	<div style="text-align:center"><h1>Solicitudes</h1></div>
-<?php if ($totalLeeAutorizacion !=0) { ?>
 	<div align=center>
-		<table id="listadorSolicitudes" class="tablesorter" style="width:1000px; font-size:14px; text-align: center;">
+		<p><input type="button" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'"/></p>
+		<h3>Solicitudes Sin Atención</h3>
+<?php 	if ($totalLeeAutorizacion !=0) { ?>
+		<table id="listadorSolicitudes" class="tablesorter" style="width:90%; font-size:14px; text-align: center;">
 			<thead>
 				<tr>
 					<th>Nro</th>
@@ -61,6 +57,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo Solicitud.</th>
 					<th class="filter-select" data-placeholder="Seleccione Estado">Verificacion</th>
 					<th>Accion</th>
+					<th>Vista</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -95,7 +92,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			if ($rowLeeAutorizacion['medicamento'] == 1) {
 				$tipo = "Medicamento";
 			} ?>
-					<td><?php echo $tipo; ?></td>
+				<td><?php echo $tipo; ?></td>
 	<?php	if($rowLeeAutorizacion['statusverificacion']==0) { ?>
 					<td>No Verificada</td>
 					<td>-</td>
@@ -112,45 +109,19 @@ A:hover {text-decoration: none;color:#00FFFF }
 					<td>No Reverificada</td>
 					<td>-</td>
 	<?php	}   ?>
+					<td>
+					  <?php if(isset($_COOKIE[$rowLeeAutorizacion['nrosolicitud']])) {?> 
+								<img src="img/visited.png" height="20" width="20" style="vertical-align: middle;" id="visited<?php echo  $rowLeeAutorizacion['nrosolicitud'] ?>" name="visited<?php echo  $rowLeeAutorizacion['nrosolicitud'] ?>" /> 
+					  <?php } ?>
+					</td>
 				</tr>
-<?php	}	?>
+	<?php	}	?>
 			</tbody>
 		</table>
-	</div>
-<!-- <div id="paginador" class="pager">
-		<form>
-			<p align="center">
-				<img src="../img/first.png" width="16" height="16" class="first"/>
-				<img src="../img/prev.png" width="16" height="16" class="prev"/>
-				<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
-			    <img src="../img/next.png" width="16" height="16" class="next"/>
-				<img src="../img/last.png" width="16" height="16" class="last"/>
-			    <select name="select" class="pagesize">
-			    	<option value="10">10 por pagina</option>
-			    	<option value="20">20 por pagina</option>
-			    	<option value="30">30 por pagina</option>
-					<option value="50">50 por pagina</option>
-			    	<option selected="selected"  value="<?php // echo $totalLeeAutorizacion;?>">Todos</option>
-			    </select>
-			</p>
-		</form>	
-	</div> -->	
 <?php } else { ?>
-	<div style="text-align:center"><h3>No existen solicitudes que atender.</h3></div>
+		  <h3 style="color: blue">No existen solicitudes que atender</h3>
 <?php } ?>
-<div align="center">
-  <table width="800" border="0">
-    <tr>
-      <td width="400">
-        <div align="left">
-          <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'" align="left"/>
-        </div>
-      <td width="400">
-        <div align="right">
-          <input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
-        </div>
-    </tr>
-  </table>
-</div>
+         <p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();" /></p>
+	</div>
 </body>
 </html>

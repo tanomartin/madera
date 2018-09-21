@@ -2,7 +2,6 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 
-
 $noExiste = 0;
 $resultado = array();
 if (isset($_POST['dato']) && isset($_POST['filtro'])) {
@@ -23,15 +22,15 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	}
 
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.nrosolicitud = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 0) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizacionesatendidas a, delegaciones d where a.nrosolicitud = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
 		if ($filtro == 1) { 
 			$dato = fechaParaGuardar($dato);
-			$sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.fechasolicitud = '$dato' and a.codidelega = d.codidelega order by nrosolicitud DESC"; 
+			$sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizacionesatendidas a, delegaciones d where a.fechasolicitud = '$dato' and a.codidelega = d.codidelega order by nrosolicitud DESC"; 
 		}
-		if ($filtro == 2) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.cuil = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-		if ($filtro == 3) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.codidelega = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-		if ($filtro == 4) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.nroafiliado = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
-		if ($filtro == 5) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizaciones a, delegaciones d where a.apellidoynombre like '%$dato%' and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 2) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizacionesatendidas a, delegaciones d where a.cuil = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 3) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizacionesatendidas a, delegaciones d where a.codidelega = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 4) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizacionesatendidas a, delegaciones d where a.nroafiliado = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
+		if ($filtro == 5) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizacionesatendidas a, delegaciones d where a.apellidoynombre like '%$dato%' and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
 		$resAutoriza = mysql_query($sqlAutoriza,$db); 
 		$canAutoriza = mysql_num_rows($resAutoriza); 
 		if ($canAutoriza == 0) {
@@ -46,20 +45,6 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Acuerdo ospim :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -87,12 +72,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		});
+		}).tablesorterPager({container: $("#paginador")}); 
 	});
 
-function abrirDetalle(dire) {
-	a= window.open(dire,"Detalle Autorizacion",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+function abrirDetalle(solicitud) {
+	namevisited = "visited"+solicitud;
+	document.getElementById(namevisited).style.display = "inline";
+	var dire = "consultaAutorizacion.php?nroSolicitud="+solicitud;
+	a= window.open(dire,"Detalle Autorizacion","toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 	
 function validar(formulario) {
@@ -144,16 +131,12 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onSubmit="return validar(this)" action="buscadorAutorizacion.php">
-  <div align="center" >
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'"/>
-  <p align="center" class="Estilo1">M&oacute;dulo Buscador de Autorizaciones</p>
-   <?php 
-		if ($noExiste == 1) {
-			print("<div style='color:#FF0000'><b> NO EXISTE AUTORIZACION CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
-		}
-  ?>
-  </div>
-  <div align="center"> 
+<div align="center">
+  <p><input type="button" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'"/></p>
+  <h3>M&oacute;dulo Buscador de Autorizaciones</h3>
+   <?php if ($noExiste == 1) { ?>
+			<div style='color:#FF0000'><b>NO EXISTE AUTORIZACION CON ESTE FILTRO DE BUSQUEDA </b></div><br>
+  <?php  } ?>
     <table style="width: 400; border: 0">
       <tr>
         <td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
@@ -175,19 +158,11 @@ function validar(formulario) {
         <td><div align="left"><input type="radio" name="filtro" value="5" /> Apellido y/o Nombre Afiliado</div></td>
       </tr>  
 	</table>
-    <p><strong>Dato</strong> 
-      <input name="dato" type="text" id="dato" size="14" />
-    </p>
-  </div>
-  <p align="center">
-    <label>
-    <input type="submit" name="Buscar" value="Buscar" />
-    </label>
-  </p>
-  <div align="center">
+   <p><b>Dato: </b> <input name="dato" type="text" id="dato" size="14" /> </p>
+   <p><input type="submit" name="Buscar" value="Buscar" /></p>
    <?php if ($noExiste == 0 and isset($dato)) { ?>
    <p><?php echo $cartel ?></p>
-  <table id="listaResultado" class="tablesorter" style="text-align: center;">
+   <table id="listaResultado" class="tablesorter" style="text-align: center;">
 	<thead>
 		<tr>
 			<th>Nro</th>
@@ -204,9 +179,7 @@ function validar(formulario) {
 		</tr>
 	</thead>
 	<tbody>
-<?php
-		while($rowLeeAutorizacion = mysql_fetch_array($resAutoriza)) {
-?>
+<?php while($rowLeeAutorizacion = mysql_fetch_array($resAutoriza)) { ?>
 		<tr>
 			<td><?php echo $rowLeeAutorizacion['nrosolicitud'];?></td>
 			<td><?php echo invertirFecha($rowLeeAutorizacion['fechasolicitud']);?></td>
@@ -227,26 +200,47 @@ function validar(formulario) {
 			<td><?php if($rowLeeAutorizacion['nroafiliado']==0) echo "-"; else echo $rowLeeAutorizacion['nroafiliado'];?></td>
 			<td><?php if($rowLeeAutorizacion['codiparentesco']<0) echo "-"; else { if($rowLeeAutorizacion['codiparentesco']==0) echo "Titular"; else echo "Familiar ".$rowLeeAutorizacion['codiparentesco'];};?></td>
 			<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
-			<td><?php	if($rowLeeAutorizacion['statusverificacion']==0) echo "No Verificada";
-						if($rowLeeAutorizacion['statusverificacion']==1) echo "Aprobada - ".$rowLeeAutorizacion['usuarioverificacion'];
-						if($rowLeeAutorizacion['statusverificacion']==2) echo "Rechazada - ".$rowLeeAutorizacion['usuarioverificacion'];
-						if($rowLeeAutorizacion['statusverificacion']==3) echo "No Reverificada"; ?>
+			<td><?php if($rowLeeAutorizacion['statusverificacion']==0) echo "No Verificada";
+					  if($rowLeeAutorizacion['statusverificacion']==1) echo "Aprobada - ".$rowLeeAutorizacion['usuarioverificacion'];
+					  if($rowLeeAutorizacion['statusverificacion']==2) echo "Rechazada - ".$rowLeeAutorizacion['usuarioverificacion'];
+					  if($rowLeeAutorizacion['statusverificacion']==3) echo "No Reverificada"; ?>
 			</td>
-			<td><?php	if($rowLeeAutorizacion['statusautorizacion']==0) echo "No Atendida";
-						if($rowLeeAutorizacion['statusautorizacion']==1) echo "Aprobada - ".$rowLeeAutorizacion['usuarioautorizacion'];
-						if($rowLeeAutorizacion['statusautorizacion']==2) echo "Rechazada - ".$rowLeeAutorizacion['usuarioautorizacion'];?>
+			<td><?php if($rowLeeAutorizacion['statusautorizacion']==0) echo "No Atendida";
+  					  if($rowLeeAutorizacion['statusautorizacion']==1) echo "Aprobada - ".$rowLeeAutorizacion['usuarioautorizacion'];
+					  if($rowLeeAutorizacion['statusautorizacion']==2) echo "Rechazada - ".$rowLeeAutorizacion['usuarioautorizacion'];?>
 			</td>
-			<td><?php if($rowLeeAutorizacion['statusverificacion'] != 0 && $rowLeeAutorizacion['statusautorizacion'] != 0) {?>
-					<input type="button" value="Consultar" onclick="abrirDetalle('consultaAutorizacion.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud']; ?>')" />
+			<td width="8%"><?php if($rowLeeAutorizacion['statusverificacion'] != 0 && $rowLeeAutorizacion['statusautorizacion'] != 0) {?>
+					<input type="button" value="Consultar" onClick="abrirDetalle('<?php echo $rowLeeAutorizacion['nrosolicitud'] ?>')" />
+					<img src="img/visited.png" height="20" width="20" style="display: none; vertical-align: middle;" id="visited<?php echo  $rowLeeAutorizacion['nrosolicitud'] ?>" name="visited<?php echo  $rowLeeAutorizacion['nrosolicitud'] ?>" />
 			<?php }?>
 			</td>
 		</tr>
-<?php
-		}
-?>
+<?php } ?>
 	</tbody>
 </table>
-  <?php } ?>
+<table width="245" border="0" style="text-align: center">
+	<tr>
+		<td width="239">
+			<div id="paginador" class="pager">
+				<form>
+					<p>
+						<img src="img/first.png" width="16" height="16" class="first"/> <img src="img/prev.png" width="16" height="16" class="prev"/>
+						<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
+						<img src="img/next.png" width="16" height="16" class="next"/> <img src="img/last.png" width="16" height="16" class="last"/>
+						<select name="select" class="pagesize">
+							<option selected="selected" value="10">10 por pagina</option>
+							<option value="20">20 por pagina</option>
+							<option value="30">30 por pagina</option>
+							<option value="50">50 por pagina</option>
+							<option value="<?php echo $canAutoriza;?>">Todos</option>
+						</select>
+					</p>
+				</form>	
+			</div>
+		</td>
+	</tr>
+</table>
+<?php } ?>
   </div>
 </form>
 </body>

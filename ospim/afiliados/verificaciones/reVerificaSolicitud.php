@@ -1,45 +1,21 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
-$nrosolicitud=$_GET['nroSolicitud'];
-
-$sqlLeeSolicitud="SELECT * FROM autorizaciones where nrosolicitud = $nrosolicitud";
-$resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
-$rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
-
-if($rowLeeSolicitud['codiparentesco']>0) {
-  $sqlLeeParentesco = "SELECT * FROM parentesco where codparent = $rowLeeSolicitud[codiparentesco]";
-  $resultLeeParentesco = mysql_query($sqlLeeParentesco,$db); 
-  $rowLeeParentesco = mysql_fetch_array($resultLeeParentesco);
-}
-
-$sqlLeeDeleg = "SELECT * FROM delegaciones where codidelega = $rowLeeSolicitud[codidelega]";
-$resultLeeDeleg = mysql_query($sqlLeeDeleg,$db); 
-$rowLeeDeleg = mysql_fetch_array($resultLeeDeleg);
-?>
+$nrosolicitud = $_GET['nroSolicitud'];
+$sqlLeeSolicitud = "SELECT a.*, d.nombre as delegacion, parentesco.descrip as paretensco, doc.consultasssverificacion
+					FROM delegaciones d, autorizacionesdocoriginales doc, autorizaciones a
+					LEFT JOIN parentesco ON a.codiparentesco = parentesco.codparent
+					WHERE a.nrosolicitud = $nrosolicitud and 
+						  a.nrosolicitud = doc.nrosolicitud and
+						  a.codidelega = d.codidelega";				 
+$resultLeeSolicitud = mysql_query($sqlLeeSolicitud,$db);
+$rowLeeSolicitud = mysql_fetch_array($resultLeeSolicitud); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Detalle Solicitud</title>
-<style type="text/css">
-<!--
-.Estilo3 {
-	font-family: Papyrus;
-	font-weight: bold;
-	color: #999999;
-	font-size: 24px;
-}
-body {
-	background-color: #CCCCCC;
-}
-.Estilo4 {
-	color: #990000;
-	font-weight: bold;
-}
--->
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
@@ -61,8 +37,7 @@ function mostrarMotivo(muestra) {
 }
 
 function validar(formulario) {
-	if (formulario.rechazada.checked == true)
-	{
+	if (formulario.rechazada.checked == true) {
 		if(document.getElementById("motivoRechazo").value == "") {
 			alert("Debe especificar un Motivo de Rechazo de la Solicitud");
 			return false;
@@ -73,88 +48,70 @@ function validar(formulario) {
 }
 </script>
 </head>
-<body>
-<form id="verificaSolicitud" name="verificaSolicitud" method="post" action="guardaReVerificacion.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
-<table width="1100" border="0">
-  <tr>
-    <td width="92" scope="row"><div align="center"><span class="Estilo3"><img src="../img/logoSolo.JPG" width="92" height="81" /></span></div></td>
-    <td colspan="2" scope="row"><div align="left">
-      <p class="Estilo3">Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
-    </div></td>
-    <td width="550"><div align="right">
-      <table style="width: 450; height: 60" border="2">
-        <tr>
-          <td width="143" height="25"><div align="center"><strong>Fecha Solicitud</strong> </div></td>
-          <td width="289"><div align="center"><?php echo invertirFecha($rowLeeSolicitud['fechasolicitud']);?></div></td>
-        </tr>
-        <tr>
-          <td width="143" height="25"><div align="center"><strong>Delegaci&oacute;n</strong></div></td>
-          <td width="289"><div align="center"><?php echo "".$rowLeeSolicitud['codidelega']." - ".$rowLeeDeleg['nombre'];?></div></td>
-        </tr>
-      </table>
-    </div>
-      <div align="right"></div></td>
-  </tr>
-</table>
-<table width="1100" border="0">
-  <tr>
-    <td width="500" height="50"><h3 align="left" class="Estilo4">Informaci&oacute;n del Beneficiario</h3></td>
-    <td width="600" height="50"><h3 align="left" class="Estilo4">Resultado de la Verificaci&oacute;n</h3></td>
-  </tr>
-  <tr>
-    <td><p><strong>N&uacute;mero de Afiliado:</strong>
-          <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?>
-    </p>
-      <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
-      <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
-      <p><strong>Tipo:</strong>
-<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
-			if($rowLeeSolicitud['codiparentesco']==0) {
-				echo "Titular";
-			} else {
-				echo "Familiar ".$rowLeeParentesco['descrip'];
-			}
-		} else {
-			echo "No Empadronado";
-		}
-?>
-      </p>
-        <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> <strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
-        <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
-      <input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly"  style="visibility:hidden"/></td>
-    <td><p><strong>Consulta SSS:</strong>
-          <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?>
-      <input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" />
-      <?php }?>
-    </p>
-      <p><strong>Verificaci&oacute;n:</strong>
-          <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada"; else echo "Rechazada";?>
-      </p>
-      <p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p>
-      <p><strong>Motivo de Solicitud de Reverificaci&oacute;n:</strong></p>
-      <p><?php echo "".$rowLeeSolicitud['motivopidereverificacion'];?></p></td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td width="600" height="50"><h3 align="left" class="Estilo4">Resultado de la Reverificaci&oacute;n</h3></td>
-  </tr>
-  <tr>
-    <td><p>&nbsp;</p>        </td>
-    <td><p><strong>Verificaci&oacute;n:</strong> </p>
-		<label><input name="veri" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada</label>
-      	<br />
-      	<label><input name="veri" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada</label>
-      	<p>
-          <textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo" disabled="disabled"></textarea>
-    	</p>	</td>
-  </tr>
-  <tr>
-    <td width="500">
-	<div align="left"><input type="reset" name="volver" value="Volver" onclick="location.href = 'listarSolicitudes.php'"/></div>	</td>
-    <td width="600">
-	<div align="right"><input type="submit" name="guardar" id="guardar" value="Guardar"/></div>	</td>
-  </tr>
-</table>
-</form>
+<body bgcolor="#CCCCCC">
+<div align="center">
+	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'listarSolicitudes.php'"/></p>
+	<form id="verificaSolicitud" name="verificaSolicitud" method="post" action="guardaReVerificacion.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
+		<input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" style="display: none"/>
+		<h3>Solicitud Nº <?php echo $nrosolicitud ?></h3>
+		
+		<table style="width: 50%; text-align: center" border="1">
+	    	<tr>
+	          <td><b>Fecha Solicitud</b></td>
+	          <td><?php echo invertirFecha($rowLeeSolicitud['fechasolicitud']);?></td>
+	        </tr>
+	        <tr>
+	          <td><b>Delegación</b></td>
+	          <td><?php echo "".$rowLeeSolicitud['codidelega']." - ".$rowLeeSolicitud['delegacion'];?></td>
+	        </tr>
+	   	</table>
+		<table width="90%" style="text-align: center">
+  			<tr>
+    			<td width="50%" valign="top">
+    				<p style="color: maroon;"><b>Información del Beneficiario</b></p>
+    				<p><b>Número de Afiliado:</b><?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
+      				<p><b>Apellido y Nombre: </b><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+      				<p><b>C.U.I.L.:</b> <?php echo $rowLeeSolicitud['cuil'] ?></p>
+      				<p><b>Tipo:</b>
+				<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
+							echo "Familiar ".$rowLeeSolicitud['paretensco'];
+						} else {
+							echo "No Empadronado";
+						} ?>
+      				</p>
+        			<p><b>Telefono:</b> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> </p>
+        			<p><b>Celular:</b> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
+        			<p><b>Email:</b> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
+      			</td>
+    			<td valign="top">
+    				<p style="color: maroon;"><b>Resultado de la Verificación</b></p>
+    				<p><b>Consulta SSS:</b>
+				  <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?>
+				      		<input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" />
+				  <?php }?>
+    				</p>
+      				<p><b>Verificación:</b>
+          	   	  <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada"; else echo "Rechazada";?>
+     				</p>
+      				<p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p>
+      				<p><b>Motivo de Solicitud de Reverificación:</b></p>
+      				<p><?php echo "".$rowLeeSolicitud['motivopidereverificacion'];?></p>
+      			
+      				<p style="color: maroon;"><b>Resultado de la Reverificación</b></p>
+      				<p><b>Re-Verificación:</b></p>
+      				<p>
+      					<input name="veri" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada
+				      	<br />
+				      	<input name="veri" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada
+      				</p>
+      				<p>
+          				<textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo" disabled="disabled"></textarea>
+    				</p>
+      			</td>
+  			</tr>
+		</table>
+		<p><input type="submit" name="guardar" id="guardar" value="Guardar"/></p>
+	</form>
+</div>
 </body>
 </html>

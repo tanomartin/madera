@@ -22,7 +22,7 @@ include($libPath."controlSessionOspim.php"); ?>
 		      </td>
 		      <td width="200">
 		      	<p>AUTORIZACIONES</p>
-		        <p><a href="../moduloNoDisponible.php"><img src="img/autorizaciones.png" width="90" height="90" border="0" /></a></p>
+		        <p><a href="verificaciones/buscaSolicitudes.php"><img src="img/autorizaciones.png" width="90" height="90" border="0" /></a></p>
 		      </td>
 		    </tr>
 			<tr>

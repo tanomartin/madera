@@ -2,7 +2,11 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
-$sqlLeeAutorizacion = "SELECT a.nrosolicitud, a.fechasolicitud, a.codidelega, d.nombre, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.statusautorizacion FROM autorizaciones a, delegaciones d WHERE (a.statusverificacion = 0 or a.statusverificacion = 3) and a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
+$sqlLeeAutorizacion = "SELECT * FROM autorizaciones a, delegaciones d 
+						WHERE 
+							(a.statusverificacion = 0 or a.statusverificacion = 3) and 
+							a.codidelega = d.codidelega 
+						ORDER BY nrosolicitud DESC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
 $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 ?>
@@ -21,20 +25,14 @@ $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 $(function() {
 	$("#listadorSolicitudes")
 	.tablesorter({theme: 'blue', widthFixed: true, widgets:['zebra'], headers:{3:{sorter:false}, 5:{sorter:false}}})
-	.tablesorterPager({container: $("#paginador")}); 
 });
 </script>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
 <body bgcolor="#CCCCCC">
-	<div style="text-align:center"><h1>Solicitudes</h1></div>
-	<?php
-	if ($totalLeeAutorizacion !=0) { ?>
 	<div align="center">
+		<p><input type="button" name="volver" value="Volver" onClick="location.href = '../menuAfiliados.php'" /></p>
+		<h3>Solicitudes No Verificadas</h3>
+<?php if ($totalLeeAutorizacion !=0) { ?>
 		<table id="listadorSolicitudes" class="tablesorter"  style="width:900px; font-size:14px; text-align: center;">
 			<thead>
 				<tr>
@@ -49,86 +47,42 @@ A:hover {text-decoration: none;color:#00FFFF }
 				</tr>
 			</thead>
 			<tbody>
-	<?php
-		while($rowLeeAutorizacion = mysql_fetch_array($resultLeeAutorizacion)) { ?>
-				<tr>
-					<td><?php echo $rowLeeAutorizacion['nrosolicitud'];?></td>
-					<td><?php echo invertirFecha($rowLeeAutorizacion['fechasolicitud']);?></td>
-					<td><?php echo $rowLeeAutorizacion['codidelega'];?></td>
-					<td><?php echo $rowLeeAutorizacion['cuil'];?></td>
-	<?php
-			if($rowLeeAutorizacion['nroafiliado']==0) {	?>
-					<td>-</td>
-	<?php
-			} else { ?>
-					<td><?php echo $rowLeeAutorizacion['nroafiliado'];?></td>
-	<?php
-			}
-
+<?php while($rowLeeAutorizacion = mysql_fetch_array($resultLeeAutorizacion)) { ?>
+			<tr>
+				<td><?php echo $rowLeeAutorizacion['nrosolicitud'];?></td>
+				<td><?php echo invertirFecha($rowLeeAutorizacion['fechasolicitud']);?></td>
+				<td><?php echo $rowLeeAutorizacion['codidelega'];?></td>
+				<td><?php echo $rowLeeAutorizacion['cuil'];?></td>
+	  <?php if($rowLeeAutorizacion['nroafiliado']==0) {	?>
+				<td>-</td>
+	  <?php } else { ?>
+				<td><?php echo $rowLeeAutorizacion['nroafiliado'];?></td>
+	  <?php }
 			if($rowLeeAutorizacion['codiparentesco']<0) { ?>
-					<td>-</td>
-	<?php
-			} else {
+				<td>-</td>
+	  <?php } else {
 				if($rowLeeAutorizacion['codiparentesco']==0) { ?>
 					<td>Titular</td>
-	<?php
-				} else { ?>
+		  <?php } else { ?>
 					<td><?php echo 'Familiar '.$rowLeeAutorizacion['codiparentesco']?></td>
-	<?php
-				}
+		  <?php }
 			} ?>
-					<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
-	<?php
-			if($rowLeeAutorizacion['statusverificacion']==0) { ?>
-					<td><input type="button" value="Verificar" onClick="window.location.href='verificaSolicitud.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud'];?>'"/></td>
-	<?php
-			} else { ?>
-					<td><input type="button" value="Reverificar" onClick="window.location.href='reVerificaSolicitud.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud'];?>'"/></td>
-	<?php
-			} ?>
-				</tr>
-	<?php
-		} ?>
+				<td><?php echo $rowLeeAutorizacion['apellidoynombre'];?></td>
+	<?php   if($rowLeeAutorizacion['statusverificacion']==0) { ?>
+				<td><input type="button" value="Verificar" onClick="window.location.href='verificaSolicitud.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud'];?>'"/></td>
+	  <?php } else { ?>
+				<td><input type="button" value="Reverificar" onClick="window.location.href='reVerificaSolicitud.php?nroSolicitud=<?php echo $rowLeeAutorizacion['nrosolicitud'];?>'"/></td>
+	  <?php } ?>
+			</tr>
+	<?php } ?>
 			</tbody>
 		</table>
-	</div>
-	<div id="paginador" class="pager">
-		<form>
-			<p align="center">
-				<img src="../img/first.png" width="16" height="16" class="first"/> <img src="../img/prev.png" width="16" height="16" class="prev"/>
-				<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
-			    <img src="../img/next.png" width="16" height="16" class="next"/> <img src="../img/last.png" width="16" height="16" class="last"/>
-			    <select name="select" class="pagesize">
-			    	<option selected="selected" value="10">10 por pagina</option>
-			    	<option value="20">20 por pagina</option>
-			    	<option value="30">30 por pagina</option>
-					<option value="50">50 por pagina</option>
-			    	<option value="<?php echo $totalLeeAutorizacion;?>">Todos</option>
-			    </select>
-			</p>
-		</form>	
-	</div>
 	<?php
-	}
-	else { ?>
-		<div style="text-align:center"><h3>No existen solicitudes que atender.</h3></div>
+	} else { ?>
+		<h3 style="color: blue">No existen solicitudes para atender</h3>
 	<?php
 	} ?>
-	<div align="center">
-		<table width="800" border="0">
-		    <tr>
-		    	<td width="400">
-		        	<div align="left">
-		          		<input type="reset" name="volver" value="Volver" onClick="location.href = '../menuAfiliados.php'" align="left"/>
-		        	</div>
-		        </td>
-		    	<td width="400">
-		        	<div align="right">
-		          		<input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/>
-		        	</div>
-		        </td>
-		    </tr>
-		</table>
+		<p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();" align="right"/></p>
 	</div>
 </body>
 </html>

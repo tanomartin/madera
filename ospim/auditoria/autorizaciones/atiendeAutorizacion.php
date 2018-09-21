@@ -2,16 +2,15 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $nrosolicitud=$_GET['nroSolicitud'];
-
-$sqlLeeSolicitud="SELECT a.*, d.nombre as delegacion FROM autorizaciones a, delegaciones d where a.nrosolicitud = $nrosolicitud and a.codidelega = d.codidelega";
-$resultLeeSolicitud=mysql_query($sqlLeeSolicitud,$db);
-$rowLeeSolicitud=mysql_fetch_array($resultLeeSolicitud);
-
-if($rowLeeSolicitud['codiparentesco']>0) {
-	$sqlLeeParentesco = "SELECT * FROM parentesco where codparent = $rowLeeSolicitud[codiparentesco]";
-	$resultLeeParentesco = mysql_query($sqlLeeParentesco,$db);
-	$rowLeeParentesco = mysql_fetch_array($resultLeeParentesco);
-}
+setcookie($nrosolicitud, $_SESSION['usuario'], time() + (86400 * 7));
+$sqlLeeSolicitud = "SELECT a.*, doc.*, d.nombre as delegacion, parentesco.descrip as paretensco
+					FROM delegaciones d, autorizacionesdocoriginales doc, autorizaciones a
+					LEFT JOIN parentesco ON a.codiparentesco = parentesco.codparent
+					WHERE a.nrosolicitud = $nrosolicitud and 
+						  a.nrosolicitud = doc.nrosolicitud and
+						  a.codidelega = d.codidelega";
+$resultLeeSolicitud = mysql_query($sqlLeeSolicitud,$db);
+$rowLeeSolicitud = mysql_fetch_array($resultLeeSolicitud);
 
 if($rowLeeSolicitud['material'] == 1) {
 	$sqlLeeMaterial = "SELECT * FROM clasificamaterial where codigo = $rowLeeSolicitud[tipomaterial]";
@@ -31,8 +30,8 @@ if($rowLeeSolicitud['nroafiliado']!=0) {
 }
 
 //VEO SI ES DISCAPACITADO Y SACO EDAD
-if ($rowLeeSolicitud['codiparentesco'] >=0) {
-	if ($rowLeeSolicitud['codiparentesco']>0) {
+if ($rowLeeSolicitud['codiparentesco'] >= 0) {
+	if ($rowLeeSolicitud['codiparentesco'] > 0) {
 		$sqlDisca = "SELECT f.nroafiliado, f.nroorden as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
 						FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
 		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil']. " and nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
@@ -61,22 +60,6 @@ if ($rowLeeSolicitud['codiparentesco'] >=0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Detalle Solicitud</title>
-<style type="text/css">
-<!--
-.Estilo3 {
-	font-family: Papyrus;
-	font-weight: bold;
-	font-size: 24px;
-}
-body {
-	background-color: #CCCCCC;
-}
-.Estilo4 {
-	color: #990000;
-	font-weight: bold;
-}
--->
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -91,6 +74,11 @@ function muestraArchivo(solicitud, archivo) {
 
 function verCertificado(dire){	
 	window.open(dire,'Certificado de Discapacidad','width=800, height=500,resizable=yes');
+}
+
+function muestraHistoria(solicitud,cuil,nombre){	
+	var dire = "historiaClinica.php?nrosol="+solicitud+"&cuil="+cuil+"&nombre="+nombre;
+	window.open(dire,'Historia Clinica Autorizaciones','width=800, height=500,resizable=yes');
 }
 
 function mostrarMotivo(muestra) {
@@ -456,123 +444,121 @@ function validar(formulario) {
 </script>
 </head>
 
-<body>
-<form id="atiendeAutorizacion" name="atiendeAutorizacion" method="post" action="guardaAutorizacion.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
-	<table width="1100">
-	  <tr>
-	    <td colspan="2" scope="row"><div align="left">
-	      <p class="Estilo3">Solicitud N&uacute;mero <?php echo $nrosolicitud ?></p>
-	    </div></td>
-	    <td width="550">
-	    	<div align="right">
-		      <table style="width: 450; height: 60" border="2">
-		        <tr>
-		          <td width="143" height="25"><div align="center"><strong>Fecha Solicitud</strong> </div></td>
-		          <td width="289"><div align="center"><?php echo invertirFecha($rowLeeSolicitud['fechasolicitud']);?></div></td>
-		        </tr>
-		        <tr>
-		          <td width="143" height="25"><div align="center"><strong>Delegaci&oacute;n</strong></div></td>
-		          <td width="289"><div align="center"><?php echo "".$rowLeeSolicitud['codidelega']." - ".$rowLeeSolicitud['delegacion'];?></div></td>
-		        </tr>
-		      </table>
-	    	</div>
-	  	</td>
-	  </tr>
-	</table>
-	<table width="100%">
-	  <tr>
-	    <td width="50%" valign="top">
-	    	<h3 align="left" class="Estilo4">Informaci&oacute;n del Beneficiario</h3>
-	    	<p><strong>N&uacute;mero de Afiliado:</strong> <?php if($rowLeeSolicitud['nroafiliado']!=0) { echo $rowLeeSolicitud['nroafiliado']; } else { echo "-"; }?></p>
-	        <p><strong>Clasificacion del Titular: </strong> <?php echo $tipoTitular;?></p>
-	        <p><strong>Apellido y Nombre: </strong><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
-	        <p><strong>Comentario: </strong><?php echo $rowLeeSolicitud['comentario']?></p>
-	        <p><strong>Tipo:</strong>
-		<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
-					if($rowLeeSolicitud['codiparentesco']==0) {
-						echo "Titular";
+<body bgcolor="#CCCCCC">
+<div align="center">
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'listarSolicitudes.php'"/></p>
+	<form id="atiendeAutorizacion" name="atiendeAutorizacion" method="post" action="guardaAutorizacion.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
+		<input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly" style="display: none"/>	
+		<input id="delegacion" name="delegacion" value="<?php echo $rowLeeSolicitud['codidelega']." - ".$rowLeeSolicitud['delegacion']?>" type="text" readonly="readonly"  style="display: none"/>	
+		<h3>Solicitud Nº <?php echo $nrosolicitud ?></h3>
+		<table style="width: 50%; text-align: center" border="1">
+	    	<tr>
+	          <td><b>Fecha Solicitud</b></td>
+	          <td><?php echo invertirFecha($rowLeeSolicitud['fechasolicitud']);?></td>
+	        </tr>
+	        <tr>
+	          <td><b>Delegación</b></td>
+	          <td><?php echo "".$rowLeeSolicitud['codidelega']." - ".$rowLeeSolicitud['delegacion'];?></td>
+	        </tr>
+	   	</table>
+		
+		<table width="100%" style="text-align: center">
+		  	<tr>
+		    	<td width="40%" valign="top">
+		    		<p style="color: maroon;"><b>Información del Beneficiario</b></p>
+		    		<p><b>Nº de Afiliado:</b> <?php if($rowLeeSolicitud['nroafiliado']!=0) { echo $rowLeeSolicitud['nroafiliado']; } else { echo "-"; }?></p>
+		       		<p><b>Clasificacion del Titular: </b> <?php echo $tipoTitular;?></p>
+		        	<p><b>Apellido y Nombre: </b><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+		        	<p><b>Comentario: </b><?php echo $rowLeeSolicitud['comentario']?></p>
+		        	<p><b>Tipo:</b>
+			<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
+						if($rowLeeSolicitud['codiparentesco']==0) {
+							echo "Titular";
+						} else {
+							echo "Familiar ".$rowLeeSolicitud['paretensco'];
+						}
 					} else {
-						echo "Familiar ".$rowLeeParentesco['descrip'];
-					}
-				} else {
-					echo "No Empadronado";
-				} ?>
-			</p>
-			<p>
-				<b>Discapacitado:</b>
-		<?php	if ($canDisca == 1) {
-					$rowDisca = mysql_fetch_assoc($resDisca); 
-					$nroorden = $rowDisca['nroorden']; 
-					echo "SI (FA: ".$rowDisca['fechaalta']." - FE: ".$rowDisca['emisioncertificado']." - FV: ".$rowDisca['vencimientocertificado'].")"; ?>
-					<input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/>
-		<?php 	} else { 
-					echo "NO"; 
-				} ?>
-			</p>
-	        <p><strong>Fecha Nacimiento:</strong> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
-	        <p><strong>C.U.I.L.:</strong> <?php echo $rowLeeSolicitud['cuil'] ?></p>
-	        
-	        <p><strong>Telefono:</strong> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> </p>
-	        <p><strong>Celular:</strong> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
-	        <p><strong>Email:</strong> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>		
-	      	<input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" size="2" readonly="readonly" style="display: none"/>	
-	    	
-	    	<h3 align="left" class="Estilo4">Documentaci&oacute;n de la Solicitud</h3>
-	    	
-	    	<p><strong>Tipo:</strong> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeMaterial['descripcion']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
-		    <p><strong>Pedido Medico:</strong> <?php if($rowLeeSolicitud['pedidomedico']!=NULL) {?><input type="button" name="pedidomedico" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,1)" /><?php }?></p>
-		    <p><strong>Historia Cl&iacute;nica:</strong> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?><input type="button" name="historiaclinica" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" /><?php }?></p>
-		    <p><strong>Estudios:</strong> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" /><?php }?></p>
-		    <p><strong>Presupuestos:</strong></p>
-		    <p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" /><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige1' onchange='controlaElige(1)'> <input id='elegido1' name='elegido1' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
-		    <p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" /><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige2' onchange='controlaElige(2)'> <input id='elegido2' name='elegido2' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
-		    <p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" /><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige3' onchange='controlaElige(3)'> <input id='elegido3' name='elegido3' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
-		    <p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" /><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige4' onchange='controlaElige(4)'> <input id='elegido4' name='elegido4' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
-		    <p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" /><?php print(" ===> Seleccione el Aprobado: <input type='checkbox' name='elige5' onchange='controlaElige(5)'> <input id='elegido5' name='elegido5' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
-		    
-	    </td>
-	    <td  width="600" valign="top">
-	    	<h3 align="left" class="Estilo4">Resultado de la Verificaci&oacute;n</h3>
-	    	<p><strong>Consulta SSS:</strong> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" /><?php }?></p>
-			<p><strong>Verificaci&oacute;n:</strong> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada"; else echo "Rechazada";?></p>
-	   	  	<p><?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p>
-	   	  	
-	   		<h3 align="left" class="Estilo4">Autorizaci&oacute;n</h3>
-	   		<label><input name="autori" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada</label><br />
-	      	<label><input name="autori" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada</label>
-	      	<p><textarea name="motivoRechazo" cols="80" rows="5" id="motivoRechazo"></textarea></p>
-	      	<p><b>Expediente SUR :</b>
-	        	<label><input name="ape" id="apeSi" type="radio" value="1"/>Si</label>
-	        	<label><input name="ape" id="apeNo" type="radio" value="0"/>No</label></p>
-	      	<p><b>Comunica al Prestador ?:</b>
-		         <label><input name="presta" id="prestaSi" type="radio" value="1" onchange="mostrarEmail(1)"/>Si</label>
-	             <label><input name="presta" id="prestaNo" type="radio" value="0" onchange="mostrarEmail(0)"/>No</label>
-			- Email <input name="emailPresta" type="text" id="emailPresta" size="50" maxlength="50" disabled="disabled"/>
-	     	</p>
-	      	<p><b>Clasificacion Patologia:</b> <label>
-		  	<select name="selectPatologia" id="selectPatologia">
-	        	<option title="Seleccione un valor" value="">Seleccione un valor</option>
-				<?php 
-					$sqlPatologia="SELECT * FROM patologiasautorizaciones order by descripcion";
-					$resPatologia=mysql_query($sqlPatologia,$db);
-					while($rowPatologia=mysql_fetch_array($resPatologia)) {
-						echo "<option title ='$rowPatologia[descripcion]' value='$rowPatologia[codigo]'>".$rowPatologia['descripcion']."</option>";
-					}
-	        	?>
-	        </select></label></p>
-	      	<p><b>Monto Autorizado</b></p>
-	      	<p><label>
-	      			<b>Monto: </b><input type="radio" id="monto" name="tipomonto" value="1" checked /> | 
-	      			<b>Porcentaje: </b><input type="radio" id="porcentaje" name="tipomonto"  value="2"  /> | 
-	      			<b>Valor: </b><input name="montoAutoriza" type="text" id="montoAutoriza" size="10" maxlength="10" />
-	      		</label></p>
-	   	</td>
-	  </tr>
-	   <tr>
-	    <td width="500"><div align="left"><input type="reset" name="volver" value="Volver" onclick="location.href = 'listarSolicitudes.php'"/></div></td>
-	    <td width="600"><div align="right"><input type="submit" name="guardar" id="guardar" value="Guardar"/></div></td>
-	  </tr>
-	</table>
-</form>
+						echo "No Empadronado";
+					} ?>
+					</p>
+					<p><b>Discapacitado:</b>
+			<?php	if ($canDisca == 1) {
+						$rowDisca = mysql_fetch_assoc($resDisca); 
+						$nroorden = $rowDisca['nroorden']; 
+						echo "SI (FA: ".$rowDisca['fechaalta']." - FE: ".$rowDisca['emisioncertificado']." - FV: ".$rowDisca['vencimientocertificado'].")"; ?>
+						<input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/>
+			<?php 	} else { 
+						echo "NO"; 
+					} ?>
+					</p>
+		        	<p><b>Fecha Nacimiento:</b> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
+		        	<p><b>C.U.I.L.:</b> <?php echo $rowLeeSolicitud['cuil'] ?></p>
+		        	<p><b>Telefono:</b> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> </p>
+		        	<p><b>Celular:</b> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
+		       	 	<p><b>Email:</b> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>		
+		       	 	
+		       	 	<p style="color: maroon;"><b>Historia Clinica Autorizaciones</b></p>
+					<p><input type="button" value="Ver Historia" name="historia" id="historia" onclick="javascript:muestraHistoria(<?php echo  $rowLeeSolicitud['nrosolicitud'] ?>,<?php echo  $rowLeeSolicitud['cuil'] ?>,'<?php echo  $rowLeeSolicitud['apellidoynombre'] ?>')" /></p>
+		      	</td>
+		      	<td width="20%" valign="top">
+		    		<p style="color: maroon;"><b>Documentación de la Solicitud</b></p>
+		    		<p><b>Tipo:</b> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeMaterial['descripcion']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
+			    	<p><b>Pedido Medico:</b> <?php if($rowLeeSolicitud['pedidomedico']!=NULL) {?><input type="button" name="pedidomedico" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,1)" /><?php }?></p>
+			    	<p><b>Historia Clínica:</b> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?><input type="button" name="historiaclinica" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" /><?php }?></p>
+			    	<p><b>Estudios:</b> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" /><?php }?></p>
+			    	<p><b>Presupuestos:</b></p>
+			    	<p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) {?><input type="button" name="presupuesto1" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" /><?php print(" Aprobado: <input type='checkbox' name='elige1' onchange='controlaElige(1)'> <input id='elegido1' name='elegido1' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+			    	<p><?php if($rowLeeSolicitud['presupuesto2']!=NULL) {?><input type="button" name="presupuesto2" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,5)" /><?php print(" Aprobado: <input type='checkbox' name='elige2' onchange='controlaElige(2)'> <input id='elegido2' name='elegido2' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+			    	<p><?php if($rowLeeSolicitud['presupuesto3']!=NULL) {?><input type="button" name="presupuesto3" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,6)" /><?php print(" Aprobado: <input type='checkbox' name='elige3' onchange='controlaElige(3)'> <input id='elegido3' name='elegido3' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+			    	<p><?php if($rowLeeSolicitud['presupuesto4']!=NULL) {?><input type="button" name="presupuesto4" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,7)" /><?php print(" Aprobado: <input type='checkbox' name='elige4' onchange='controlaElige(4)'> <input id='elegido4' name='elegido4' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+			    	<p><?php if($rowLeeSolicitud['presupuesto5']!=NULL) {?><input type="button" name="presupuesto5" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,8)" /><?php print(" Aprobado: <input type='checkbox' name='elige5' onchange='controlaElige(5)'> <input id='elegido5' name='elegido5' value='' type='text' size='1' readonly='readonly' style='visibility:hidden' />");} ?></p>
+					
+					<p style="color: maroon;"><b>Resultado de la Verificación</b></p>
+		    		<p><b>Consulta SSS:</b> <?php if($rowLeeSolicitud['consultasssverificacion']!=NULL) {?><input type="button" name="consultasss" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,9)" /><?php }?></p>
+					<p><b>Verificación:</b> <?php if($rowLeeSolicitud['statusverificacion']==1) echo "Aprobada"; else echo "Rechazada";?></p>
+		   	  		<p><b>Observacion:</b> <?php echo "".$rowLeeSolicitud['rechazoverificacion'];?></p>
+				</td>
+		    	<td width="40%" valign="top">
+		    		
+		   			<p style="color: maroon;"><b>Autorización</b></p>
+		   			<p>
+		   				<input name="autori" id="aprobada" type="radio" value="1" onchange="mostrarMotivo(0)" checked="checked"/>Aprobada<br />
+		      			<input name="autori" id="rechazada" type="radio" value="2" onchange="mostrarMotivo(1)"/>Rechazada
+		      		</p>
+		      		<p><b>Observacion / Motivo de Rechazo:</b></p>
+		      		<p><textarea name="motivoRechazo" cols="60" rows="5" id="motivoRechazo"></textarea></p>
+		      		<p><b>Historia Clinica:</b></p>
+		      		<p><textarea name="historiaClinica" cols="60" rows="5" id="historiaClinica"></textarea></p>
+		      		<p><b>Expediente SUR :</b>
+		        		<input name="ape" id="apeSi" type="radio" value="1"/>Si
+		        		<input name="ape" id="apeNo" type="radio" value="0"/>No
+		        	</p>
+		      		<p><b>Comunica al Prestador ?:</b>
+			        	<input name="presta" id="prestaSi" type="radio" value="1" onchange="mostrarEmail(1)"/>Si
+		             	<input name="presta" id="prestaNo" type="radio" value="0" onchange="mostrarEmail(0)"/>No<br/>
+						<b>Email: </b> <input name="emailPresta" type="text" id="emailPresta" size="50" maxlength="50" disabled="disabled"/>
+		     		</p>
+		      		<p><b>Clasificacion Patologia:</b>
+				  		<select name="selectPatologia" id="selectPatologia">
+			        		<option title="Seleccione un valor" value="">Seleccione un valor</option>
+						<?php $sqlPatologia="SELECT * FROM patologiasautorizaciones order by descripcion";
+							  $resPatologia=mysql_query($sqlPatologia,$db);
+							  while($rowPatologia=mysql_fetch_array($resPatologia)) { ?>
+								 <option title="<?php echo $rowPatologia[descripcion] ?>" value="<?php echo $rowPatologia[codigo] ?>"><?php echo $rowPatologia['descripcion'] ?></option>
+						<?php } ?>
+			        	</select>
+			        </p>
+		      		<p><b>Monto Autorizado</b></p>
+		      		<p>
+		      			<b>Monto: </b><input type="radio" id="monto" name="tipomonto" value="1" checked /> | 
+		      			<b>Porcentaje: </b><input type="radio" id="porcentaje" name="tipomonto"  value="2"  /> | 
+		      			<b>Valor: </b><input name="montoAutoriza" type="text" id="montoAutoriza" size="10" maxlength="10" />
+		      		</p>
+		   		</td>
+		  	</tr>
+		</table>
+		<p><input type="submit" name="guardar" id="guardar" value="Guardar"/></p>
+	</form>
+</div>
 </body>
 </html>
