@@ -27,17 +27,6 @@ try {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: M&oacute;dulo Generaci&oacute;n Archivos Intranet OSPIM :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-.Estilo7 {font-weight: bold}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -72,38 +61,32 @@ A:hover {text-decoration: none;color:#00FFFF }
 		location.href=pagina;
 		$.blockUI({ message: mensaje });
 	}
-	
 </script>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuActualizacionOspim.php'" />
-  </span></p>
-  <p><span class="Estilo2">Men&uacute; Generaci&oacute;n de Archivos Intranet O.S.P.I.M. </span></p>
-    <p><strong>Seleccionar Delegaci&oacute;n para Generar Archivos </strong></p>
+  	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuActualizacionOspim.php'" /></p>
+  	<h3>Menú Generación de Archivos Intranet O.S.P.I.M. </h3>
+    <p><b>Seleccionar Delegación para Generar Archivos </b></p>
     <table class="tablesorter" id="listado" style="width:600px; font-size:14px">
   	<thead align="center">
 		<tr>
-		  <th>C&oacute;digo</th>
+		  <th>Código</th>
 		  <th>Nombre</th>
 		  <th>Acceso</th>
-		  <th>Fecha Actualizaci&oacute;n</th>
+		  <th>Fecha Actualización</th>
 		  <th>Tiempo Trascurrido</th>
-		  <th>Acci&oacute;n</th>
+		  <th>Acción</th>
 		</tr>
 	 </thead>
 	<tbody>
-    <?php	
-		foreach($resultado as $res) { 
+  <?php	foreach($resultado as $res) { 
 			$fechaAct = $res['fechaactualizacion'];
 			$today = date("Y-m-d");			
 			$dias = (strtotime($fechaAct)-strtotime($today))/86400;
 			$dias = abs($dias); 
-			$dias = floor($dias);		
-			
-	 ?>
+			$dias = floor($dias); ?>
 			<tr align="center">
 				<td><?php echo $res['delcod'] ?></td>
 				<td><?php echo $res['nombre'] ?></td>

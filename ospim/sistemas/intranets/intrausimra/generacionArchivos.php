@@ -316,42 +316,29 @@ $enMintuos = number_format($tiempoTranscurrido,2,',','.');
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Resultado Actua OSPIM  :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p class="Estilo2"><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuActualizacionUsimra.php'" />
-  </span></p>
-  <p class="Estilo2">Resultado de la Generacion de Archivos Intranet U.S.I.M.R.A.</p>
-  <p class="Estilo2">Fecha <?php echo invertirFecha($today) ?> </p>
-  <p class="Estilo2" style="color:#0000FF">Tiempo de Proceso: <?php echo $enMintuos ?> Minutos</p>
-  <p class="Estilo2">Procesos</p>
-   <table border="1" align="center" width="800">
+  	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuActualizacionUsimra.php'" /></p>
+  	<h3>Resultado de la Generacion de Archivos Intranet U.S.I.M.R.A.</h3>
+  	<h3>Fecha <?php echo invertirFecha($today) ?> </h3>
+  	<h3 style="color:#0000FF">Tiempo de Proceso: <?php echo $enMintuos ?> Minutos</h3>
+  	<h3>Procesos</h3>
+   	<table border="1" align="center" width="800">
 	  <tr>
 		<th>Etapa</th>
 		<th>Resultado</th>
 		<th>Descripcion</th>
 	  </tr>
-<?php foreach ($resultados as $res) {
-			print("<tr align='center'>");
-			print("<td>".$res['etapa']."</td>");
-			print("<td>".$res['estado']."</td>");
-			print("<td>".$res['descripcion']."</td>");
-			print("</tr>");
-		}
-?>
-  </table>
+<?php foreach ($resultados as $res) { ?>
+		<tr>
+			<td><?php echo $res['etapa'] ?> </td>
+			<td><?php echo $res['estado'] ?> </td>
+			<td><?php echo $res['descripcion'] ?> </td>
+		</tr>
+<?php  } ?>
+  	</table>
  	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>

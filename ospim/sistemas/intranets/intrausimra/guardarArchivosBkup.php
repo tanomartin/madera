@@ -53,25 +53,13 @@ if ($error == 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Generacion de Padrones :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p class="Estilo2"><span style="text-align:center">
-  	<input type="button" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'" />
-  </span></p>
-  <p class="Estilo2">Resultado del Back Up Archivos Intranet U.S.I.M.R.A.</p>
-  <p class="Estilo2">Fecha <?php echo invertirFecha($today) ?> </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'" /></p>
+  <h3>Resultado del Back Up Archivos Intranet U.S.I.M.R.A.</h3>
+  <h3>Fecha <?php echo invertirFecha($today) ?> </h3>
   <?php if ($error == 0) {
 			$subidaAcceso = 0;
 			try {	
@@ -98,8 +86,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		} else {
 			print("<font color='#FF0000'>Se ha producido un errro al querer mover los archivo</font>");
 		}
-?>
-	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
+?> <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>

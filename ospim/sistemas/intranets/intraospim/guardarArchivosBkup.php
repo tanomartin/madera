@@ -54,54 +54,41 @@ if ($error == 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Generacion de Padrones :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p class="Estilo2"><span style="text-align:center">
-  	<input type="button" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'" />
-  </span></p>
-  <p class="Estilo2">Resultado del Back Up Archivos Intranet O.S.P.I.M.</p>
-  <p class="Estilo2">Delegación <?php echo $delega ?> - Fecha <?php echo invertirFecha($today) ?> </p>
-  <?php if ($error == 0) {
-  			$subidaAcceso = 0;
-			try {	
-				if(strcmp("localhost",$maquina)==0) {
-					$hostOspim = "localhost"; //para las pruebas...
-				}
-				$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
-				$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-				$dbhInternet->beginTransaction();
-				$sqlAltaAcceso = "UPDATE usuarios SET acceso = 1, fechaactualizacion = '$today' WHERE delcod = $delega || delcod >= 3200";
-				//print($sqlAltaAcceso."<br>");
-				$dbhInternet->exec($sqlAltaAcceso);
-				$dbhInternet->commit();
-				$subidaAcceso = 1;
-			} catch (PDOException $e) {
-				$descriError = $e->getMessage();
-				print("$descriError<br><br>");
-				$dbhInternet->rollback();
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'" /></p>
+  <h3>Resultado del Back Up Archivos Intranet O.S.P.I.M.</h3>
+  <h3>Delegación <?php echo $delega ?> - Fecha <?php echo invertirFecha($today) ?> </h3>
+<?php if ($error == 0) {
+  		$subidaAcceso = 0;
+		try {	
+			if(strcmp("localhost",$maquina)==0) {
+				$hostOspim = "localhost"; //para las pruebas...
 			}
-			if ($subidaAcceso == 1) {
-				print("<font color='#0000FF'>Se han movido todos los archivos a la siguiente direccion <b>$directorioBK</b> y se dio de alta el acceso de la delegación</font><br>");
-			} else {
-				print("<font color='#0000FF'>Se han movido todos los archivos a la siguiente direccion <b>$directorioBK</b><br>");
-				print("<font color='#FF0000'>Se ha producido un error al querer dar de alta el acceso a la delegación</font>");
-			}
-		} else {
-			print("<font color='#FF0000'>Se ha producido un error al querer mover los archivo <br> $descri </font>");
+			$dbhInternet = new PDO("mysql:host=$hostOspim;dbname=$baseOspimIntranet",$usuarioOspim ,$claveOspim);
+			$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$dbhInternet->beginTransaction();
+			$sqlAltaAcceso = "UPDATE usuarios SET acceso = 1, fechaactualizacion = '$today' WHERE delcod = $delega || delcod >= 3200";
+			//print($sqlAltaAcceso."<br>");
+			$dbhInternet->exec($sqlAltaAcceso);
+			$dbhInternet->commit();
+			$subidaAcceso = 1;
+		} catch (PDOException $e) {
+			$descriError = $e->getMessage();
+			print("$descriError<br><br>");
+			$dbhInternet->rollback();
 		}
-?>
+		if ($subidaAcceso == 1) {
+			print("<font color='#0000FF'>Se han movido todos los archivos a la siguiente direccion <b>$directorioBK</b> y se dio de alta el acceso de la delegación</font><br>");
+		} else {
+			print("<font color='#0000FF'>Se han movido todos los archivos a la siguiente direccion <b>$directorioBK</b><br>");
+			print("<font color='#FF0000'>Se ha producido un error al querer dar de alta el acceso a la delegación</font>");
+		}
+	  } else {
+		print("<font color='#FF0000'>Se ha producido un error al querer mover los archivo <br> $descri </font>");
+	  } ?>
 	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>

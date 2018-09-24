@@ -234,44 +234,31 @@ $enMintuos = number_format($tiempoTranscurrido,2,',','.');
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Actualizacion Intra USIMRA :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-   <p class="Estilo2"><span style="text-align:center">
-     <input type="button" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'"/>
-   </span></p>
-   <p class="Estilo2">Resultado del Actualizacion Intranet U.S.I.M.R.A. </p>
-   <p class="Estilo2">Fecha <?php echo invertirFecha($today) ?> </p>
-  <p class="Estilo2" style="color:#0000FF">Tiempo de Proceso: <?php echo $enMintuos ?> Minutos</p>
-  <p class="Estilo2">Procesos</p>
-   <table border="1" align="center" width="800">
+   	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloActualizacion.php'"/></p>
+   	<h3>Resultado del Actualizacion Intranet U.S.I.M.R.A. </h3>
+   	<h3>Fecha <?php echo invertirFecha($today) ?> </h3>
+  	<h3 style="color:#0000FF">Tiempo de Proceso: <?php echo $enMintuos ?> Minutos</h3>
+  	<h3>Procesos</h3>
+   	<table border="1" align="center" width="800">
 	  <tr>
 		<th>Etapa</th>
 		<th>Resultado</th>
 		<th>Descripcion</th>
 	  </tr>
-<?php foreach ($resultados as $res) {
-			print("<tr align='center'>");
-			print("<td>".$res['etapa']."</td>");
-			print("<td>".$res['estado']."</td>");
-			print("<td>".$res['descripcion']."</td>");
-			print("</tr>");
-		}
-?>
-  </table>
-  <p class="Estilo2">Control</p>
-  <?php if (sizeof($control) > 1) { ?>
+<?php foreach ($resultados as $res) { ?>
+		<tr>
+			<td><?php echo $res['etapa'] ?></td>
+			<td><?php echo $res['estado'] ?></td>
+			<td><?php echo $res['descripcion'] ?></td>
+		</tr>
+<?php } ?>
+  	</table>
+  	<h3>Control</h3>
+<?php if (sizeof($control) > 1) { ?>
 	  <table border="1" align="center">
 			<tr>
 				<th>Tabla</th>
@@ -279,27 +266,24 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<th>Count</th>
 				<th>Control</th>
 			</tr>
-	   <?php foreach ($control as $resultado) {
-				print("<tr align='center'>");
-				print("<td>".$resultado['tabla']."</td>");
-				print("<td>".$resultado['archivo']."</td>");
-				print("<td>".$resultado['count']."</td>");
-				$resta = (int)$resultado['archivo'] - (int)$resultado['count'];
-				if ($resta != 0) {
-					print("<td><font color='#FF0000'>$resta</font></td>");
-				} else {
-					print("<td>-</td>");
-				}
-				print("</tr>");
-			}
-		?>
+	<?php foreach ($control as $resultado) { ?>
+			<tr>
+				<td><?php echo $resultado['tabla'] ?></td>
+				<td><?php echo $resultado['archivo'] ?></td>
+				<td><?php echo $resultado['count'] ?></td>
+		<?php 	$resta = (int)$resultado['archivo'] - (int)$resultado['count'];
+				if ($resta != 0) { ?>
+					<td><font color='#FF0000'><?php echo $resta ?></font></td>
+		<?php	} else {  ?>
+					<td>-</td>
+		<?php	}  ?>
+			</tr>
+	<?php  } ?>
 	  </table>
 <?php }
-
 	if ($resultados[5]['estado'] == "Error" or $resultados[6]['estado'] == "Error" or $resultados[7]['estado'] == "Error") { ?>
-	  <p><input type="reset" name="volver2" value="Forzar Cierre Proceso" onclick="location.href = 'guardarArchivosBkup.php'" /></p
-><?php	} ?>
-	<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
+	  <p><input type="reset" name="volver2" value="Forzar Cierre Proceso" onclick="location.href = 'guardarArchivosBkup.php'" /></p><?php	} ?>
+	  <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>
