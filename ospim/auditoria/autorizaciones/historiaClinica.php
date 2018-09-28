@@ -51,6 +51,14 @@ function verDocumentoFinal(solicitud){
 	opciones = "top=50,left=50,width=1205,height=800,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=no,resizable=no"
 	window.open ("mostrarArchivo.php?" + param, "", opciones);
 }
+
+function verSolicitud(solicitud){	
+	namevisited = "visited"+solicitud;
+	document.getElementById(namevisited).style.display = "inline";
+	param = "nroSolicitud=" + solicitud + "&hc=1";
+	opciones = "top=50,left=50,width=1205,height=800,toolbar=no,menubar=no,status=no,dependent=yes,hotkeys=no,scrollbars=no,resizable=no"
+	window.open ("consultaAutorizacion.php?" + param, "", opciones);
+}
 </script>
 </head>
 
@@ -89,8 +97,10 @@ function verDocumentoFinal(solicitud){
 					<img src="img/visited.png" height="20" width="20" style="display: none; vertical-align: middle;" id="visited<?php echo  $rowAutorizaciones['nrosolicitud'] ?>" name="visited<?php echo  $rowAutorizaciones['nrosolicitud'] ?>" />
 		<?php 	} 
 				if ($rowAutorizaciones['statusautorizacion'] == 2 ) { 
-					echo $rowAutorizaciones['rechazoautorizacion'];
-				} ?>		
+					echo $rowAutorizaciones['rechazoautorizacion']; ?>
+					<input type="button" value="+ INFO" name="historia" id="historia" onclick="javascript:verSolicitud(<?php echo  $rowAutorizaciones['nrosolicitud'] ?>)" />
+					<img src="img/visited.png" height="20" width="20" style="display: none; vertical-align: middle;" id="visited<?php echo  $rowAutorizaciones['nrosolicitud'] ?>" name="visited<?php echo  $rowAutorizaciones['nrosolicitud'] ?>" />
+		<?php 	} ?>		
 				</td>
 			</tr>
 	<?php } ?>

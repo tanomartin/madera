@@ -165,9 +165,10 @@ function reenviarMail(solicitud, idmail, boton, mail) {
 	        	<p><b>Telefono:</b> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> </p>
 	        	<p><b>Celular:</b> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
 	        	<p><b>Email:</b> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>
-	        	
-	        	<p style="color: maroon;"><b>Historia Clinica Autorizaciones</b></p>
-				<p><input type="button" value="Ver Historia" name="historia" id="historia" onclick="javascript:muestraHistoria(<?php echo  $rowLeeSolicitud['nrosolicitud'] ?>,<?php echo  $rowLeeSolicitud['cuil'] ?>,'<?php echo  $rowLeeSolicitud['apellidoynombre'] ?>')" /></p>
+	        <?php if (!isset($_GET['hc'])) { ?>	
+	        		<p style="color: maroon;"><b>Historia Clinica Autorizaciones</b></p>
+					<p><input type="button" value="Ver Historia" name="historia" id="historia" onclick="javascript:muestraHistoria(<?php echo  $rowLeeSolicitud['nrosolicitud'] ?>,<?php echo  $rowLeeSolicitud['cuil'] ?>,'<?php echo  $rowLeeSolicitud['apellidoynombre'] ?>')" /></p>
+			<?php } ?>
 			</td>
 			<td width="20%" valign="top">
 				<p style="color: maroon;"><b>Documentación de la Solicitud</b></p>
@@ -204,7 +205,7 @@ function reenviarMail(solicitud, idmail, boton, mail) {
 	  	  <?php if ($canMailsEnviados > 0) { 
 	   				while ($rowSelectMails = mysql_fetch_assoc($resMailsEnviados)) {
 	   					echo "<p><b>".$rowSelectMails['address']."</b> - Enviado el ".$rowSelectMails['fechaenvio']." ";?>
-	   					<input type="button" name="reenvio" id="reenvio" value="Reenviar" onclick="javascript:reenviarMail(<?php echo $nrosolicitud?>,<?php echo $rowSelectMails['id']?>, this, '<?php echo $rowSelectMails['address']?>')" />
+	   				<?php if (!isset($_GET['hc'])) { ?><input type="button" name="reenvio" id="reenvio" value="Reenviar" onclick="javascript:reenviarMail(<?php echo $nrosolicitud?>,<?php echo $rowSelectMails['id']?>, this, '<?php echo $rowSelectMails['address']?>')" /> <?php } ?>
 	   	  <?php			echo "</p>"; 
 	   				}
 	   			} 
