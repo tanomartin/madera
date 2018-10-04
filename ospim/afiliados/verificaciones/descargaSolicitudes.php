@@ -91,19 +91,19 @@ try{
 						}
 						$presupuesto2 = NULL;
 						if ($pedidas['presupuesto2'] != "") {
-							$presupuesto1 = $pedidas['presupuesto2'];
+							$presupuesto2 = $pedidas['presupuesto2'];
 						}
 						$presupuesto3 = NULL;
 						if ($pedidas['presupuesto3'] != "") {
-							$presupuesto1 = $pedidas['presupuesto3'];
+							$presupuesto3 = $pedidas['presupuesto3'];
 						}
 						$presupuesto4 = NULL;
 						if ($pedidas['presupuesto4'] != "") {
-							$presupuesto1 = $pedidas['presupuesto4'];
+							$presupuesto4 = $pedidas['presupuesto4'];
 						}
 						$presupuesto5 = NULL;
 						if ($pedidas['presupuesto5'] != "") {
-							$presupuesto1 = $pedidas['presupuesto5'];
+							$presupuesto5 = $pedidas['presupuesto5'];
 						}
 						
 						if ($resAddDocuOriginal->execute(array(':nrosolicitud' => $pedidas['nrosolicitud'], ':pedidomedico' => $pedidomedico, ':resumenhc' => $resumenhc, 
