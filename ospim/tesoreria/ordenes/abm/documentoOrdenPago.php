@@ -14,9 +14,9 @@ $rowCabecera = mysql_fetch_assoc($resCabecera);
 require($libPath."fpdf.php");
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
-	$carpetaOrden="../pdf/";
+	$carpetaOrden="../OrdenesPagoPDF/";
 else
-	$carpetaOrden="/home/sistemas/Documentos/Repositorio/OrdenesPago/";
+	$carpetaOrden="/home/sistemas/Documentos/Repositorio/OrdenesPagoPDF/";
 
 function printHeader($pdf) {
 	$pdf->Image('../img/Logo Membrete OSPIM.jpg',7,1,25,20,'JPG');

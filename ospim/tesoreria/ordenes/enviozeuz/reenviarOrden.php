@@ -5,6 +5,7 @@ include($libPath."bandejaSalida.php");
 $idMail = $_GET['idmail'];
 $nroorden = $_GET['nroorden'];
 $idReenvio = reenviarEmail($idMail);
-$pagina = "ordenPagoConsulta.php?nroorden=$nroorden";
+$pagina = "buscarOrdenEnviadas.php?nroorden=$nroorden";
 Header("Location: $pagina"); 
+
 ?>

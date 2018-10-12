@@ -12,7 +12,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuTesoreria.php'" /></p>	
 	<h2>Menú Ordenes de Pago </h2>
-  	<table width="400" border="1" style="text-align: center">
+  	<table width="600" border="1" style="text-align: center">
     	<tr>
 	  		<td width="200">
 	  			<p>GENERAR ORDEN</p>
@@ -22,7 +22,11 @@ include($libPath."controlSessionOspim.php"); ?>
       			<p>CONSULTAR</p>
           		<p><a href="buscador/buscarOrden.php"><img src="img/buscar.png" width="90" height="90" border="0" /></a></p>
       		</td>
-    	</tr>
+      		<td>
+      			<p>ENVIO SISTEMA ZEUZ</p>
+          		<p><a href="enviozeuz/moduloEnvio.php"><img src="img/envio.png" width="90" height="90" border="0" /></a></p>
+      		</td>
+      	</tr>
   	</table>
 </div>
 </body>
