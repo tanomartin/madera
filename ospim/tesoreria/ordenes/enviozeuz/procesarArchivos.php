@@ -92,7 +92,7 @@ function validar(formulario) {
 	<p><input type="button" class="nover" name="volver" value="Volver" onclick="location.href = 'moduloEnvio.php'" /></p>	
 	<h3>Resultados del proceso de envio de Ordenes de Pago </br> Fecha de Proceso "<?php echo date("d-m-Y");  ?>"</h3>
 <?php if (sizeof($arrayNOK) == 0 && sizeof($arrayOK) == 0) { ?>
-		<h3>No existen registros para procesar</h3>
+		<h3 style="color: blue;">No existen registros para procesar</h3>
 <?php } else { ?>
 	  <form id="procesoArchivo" name="procesoArchivo" method="post" onsubmit="return validar(this)" action="generarCorreos.php">
 <?php	if (sizeof($arrayNOK) > 0) {   ?>
@@ -136,7 +136,7 @@ function validar(formulario) {
 		 		  	<tr>
 		 		  		<td>
 		 		  			<?php echo $lineas['codigo'] ?>
-		 		  			<input type="text" id="datos<?php echo $key ?>" name="datos<?php echo $key ?>" value="<?php echo $lineas['datos']?>" />
+		 		  			<input style="display: none" type="text" id="datos<?php echo $key ?>" name="datos<?php echo $key ?>" value="<?php echo $lineas['datos']?>" />
 		 		  		</td>
 		 		  		<td>
 		 		  			<?php echo $lineas['email'] ?>

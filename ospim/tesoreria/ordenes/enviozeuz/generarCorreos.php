@@ -2,11 +2,30 @@
 include($libPath."controlSessionOspim.php"); 
 include($libPath."bandejaSalida.php");
 
+function delete_archivos_txt($ruta){
+	$arrayArchivos = array();
+	$i = 0;
+	if (is_dir($ruta)) {
+		if ($dh = opendir($ruta)) {
+			while (($file = readdir($dh)) !== false) {
+				$pos = strpos($file, ".txt");
+				if ($pos !== false) {
+					unlink($ruta.$file);
+				}
+			}
+			closedir($dh);
+		}
+	}
+	return true;
+}
+
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0) {
 	$carpetaOrden = $nombrearchivo = $_SERVER['DOCUMENT_ROOT']."/OrdenesPagoPDF/";
+	$carpetaDatos = "../OrdenesPagoPDF/datos/";
 } else {
 	$carpetaOrden = "/home/sistemas/Documentos/Repositorio/OrdenesPagoPDF/";
+	$carpetaDatos = "/home/sistemas/Documentos/Repositorio/OrdenesPagoPDF/datos/";
 }
 
 foreach($_POST as $datos) {
@@ -24,8 +43,7 @@ foreach($_POST as $datos) {
 	guardarEmail($username, $subject, $bodymail, $email, $modulo, $arrayAttachment);
 	
 	//delete de archivos de datos
-
-	
+	delete_archivos_txt($carpetaDatos);
 	$redire = "Location: buscarOrdenEnviadas.php?fecha=".date("Y-m-d");
 	header($redire);
 }
