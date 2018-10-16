@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
@@ -21,6 +22,9 @@ if (isset($_POST['dato']) || isset($_GET['fecha']) || isset($_GET['nroorden'])) 
 		} else { 
 			$dato = $_POST['dato'];
 			$filtro = $_POST['filtro'];
+			if ($filtro == 0) {
+				$dato = fechaParaGuardar($dato);
+			}
 		}
 	}
 	if ($filtro == 0) {
@@ -63,6 +67,27 @@ if (isset($_POST['dato']) || isset($_GET['fecha']) || isset($_GET['nroorden'])) 
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
+function validar(formulario) {
+	if(formulario.dato.value == "") {
+		alert("Debe colocar un dato de busqueda");
+		return false;
+	}
+	if (formulario.filtro[0].checked) {
+		if (!esFechaValida(formulario.dato.value)) {
+			return false;
+		}
+	}
+	if (formulario.filtro[1].checked || formulario.filtro[2].checked) {
+		resultado = esEnteroPositivo(formulario.dato.value);
+		if (!resultado) {
+			alert("El Código de Prestador o en Nro. Orden debe ser un numero entero positivo");
+			return false;
+		} 
+	}
+	$.blockUI({ message: "<h1>Generando Busqueda... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
+	return true;
+}
+
 function reenviarMail(nroorden, idmail, boton, mail) {
 	var r = confirm("Desea reenviar la orden de pago a la siguiente direccion "+mail);
 	if (r == true) {
@@ -103,19 +128,29 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 		 				<table>
 		 					<thead>
 			 					<tr>
-			 						<th>Motivo</th>
+			 						<th>Codigo</th>
+			 						<th>Razon Social</th>
+			 						<th>C.U.I.T.</th>
+			 						<th>Nro. Orden</th>
 			 						<th>Email</th>
 			 						<th>Fecha</th>
 			 						<th></th>	 						
 			 					</tr>
 		 					</thead>
 		 					<tbody>
-		 		  		<?php while ($rowCorreosAEnviar = mysql_fetch_array($resCorreosAEnviar)) { 
+		 		  		<?php while ($rowCorreosAEnviar = mysql_fetch_assoc($resCorreosAEnviar)) { 
 		 		  				$arraySubject = explode("-",$rowCorreosAEnviar['subject']);
 		 		  				$nroorden = $resultado = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[1]), 10);
-		 		  				$codigo = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[2]), 10);?>
+		 		  				$codigo = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[2]), 10); 
+		 		  				
+		 		  				$sqlPresta = "SELECT nombre, cuit FROM prestadores WHERE codigoprestador = $codigo";
+		 		  				$resPresta = mysql_query($sqlPresta,$db);
+		 		  				$rowPresta = mysql_fetch_assoc($resPresta); ?>
 		 		  				<tr>
-		 		  					<td><?php echo $rowCorreosAEnviar['subject'];?></td>
+		 		  					<td><?php echo $codigo;?></td>
+		 		  					<td><?php echo $rowPresta['nombre'];?></td>
+		 		  					<td><?php echo $rowPresta['cuit'];?></td>
+		 		  					<td><?php echo $nroorden;?></td>
 		 		  					<td><?php echo $rowCorreosAEnviar['address'] ?></td>
 		 		  					<td><?php echo $rowCorreosAEnviar['fecharegistro'] ?></td>
 		 		  					<td><input type="button" value="Ver Orden" name="orden" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" /></td>
