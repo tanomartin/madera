@@ -134,7 +134,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 			 						<th>Nro. Orden</th>
 			 						<th>Email</th>
 			 						<th>Fecha</th>
-			 						<th></th>	 						
+			 					<!-- 	<th></th>	 --> 						
 			 					</tr>
 		 					</thead>
 		 					<tbody>
@@ -153,7 +153,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 		 		  					<td><?php echo $nroorden;?></td>
 		 		  					<td><?php echo $rowCorreosAEnviar['address'] ?></td>
 		 		  					<td><?php echo $rowCorreosAEnviar['fecharegistro'] ?></td>
-		 		  					<td><input type="button" value="Ver Orden" name="orden" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" /></td>
+		 		  					<!-- <td><input type="button" value="Ver Orden" name="orden" onclick="window.open('<?php // echo $carpetaOrden ?>OP<?php //echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" /></td> -->
 		 		  				</tr>
 		 				<?php } ?>
 		 					</tbody>
@@ -187,7 +187,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 					 		  		<td><?php echo $rowCorreosEnviados['fecharegistro'] ?></td>
 					 		  		<td><?php echo $rowCorreosEnviados['fechaenvio'] ?></td>
 					 		  		<td>
-					 		  			<input type="button" value="Ver Orden" name="orden" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" />
+					 		  	<!-- 	<input type="button" value="Ver Orden" name="orden" onclick="window.open('<?php // echo $carpetaOrden ?>OP<?php // echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" />  -->	
 					 		  			<input type="button" value="Reenviar" onclick="reenviarMail(<?php echo $nroorden?>,<?php echo $rowCorreosEnviados['id']?>, this, '<?php echo $rowCorreosEnviados['address']?>')" />
 					 		  		</td>
 					 		  	</tr>
