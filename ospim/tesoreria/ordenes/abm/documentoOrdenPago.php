@@ -184,7 +184,8 @@ function printRecibo($pdf, $rowCabecera) {
 }
 
 /************************************************/
-$nombreArchivoO = "OP".$nroOrden."O.pdf";
+$ordenNombreArchivo = str_pad($nroOrden, 8, '0', STR_PAD_LEFT);
+$nombreArchivoO = "OP".$ordenNombreArchivo."O.pdf";
 
 $pdf = new FPDF('P','mm','Letter');
 $pdf->AddPage();
@@ -195,7 +196,7 @@ printRecibo($pdf, $rowCabecera);
 $nombrearchivoO = $carpetaOrden.$nombreArchivoO;
 $pdf->Output($nombrearchivoO,'F');
 
-$nombreArchivoC = "OP".$nroOrden."C.pdf";
+$nombreArchivoC = "OP".$ordenNombreArchivo."C.pdf";
 $pdf = new FPDF('P','mm','Letter');
 $pdf->AddPage();
 printHeader($pdf);

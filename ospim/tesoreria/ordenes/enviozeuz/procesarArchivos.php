@@ -39,6 +39,7 @@ foreach (listar_archivos_txt($carpetaDatos) as $pathArchivo) {
 		$codigo = trim($arrayDatos[0]);
 		$email = trim($arrayDatos[1]);
 		$nroorden = trim($arrayDatos[2]);
+		$nroorden = str_pad($nroorden, 8, '0', STR_PAD_LEFT);
 		$nombrePDF = "OP".$nroorden."O.pdf";
 		if (!file_exists ($carpetaOrden.$nombrePDF)) {
 			$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No existe documento PDF de la Orden de Pago");

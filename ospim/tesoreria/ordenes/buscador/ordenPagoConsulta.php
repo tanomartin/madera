@@ -124,9 +124,9 @@ function cancelarOrden(nroorden, boton) {
 					}?>
 				<tr>
 				<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
-						<td colspan="2"><input type="button" value="Ver Original" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" /></td>
+						<td colspan="2"><input type="button" value="Ver Original" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>O.pdf', '_blank', 'fullscreen=yes');" /></td>
 						<td colspan="3"><input type="button" value="Cancelar Orden" onclick="cancelarOrden(<?php echo $nroorden?>, this)" /></td>
-						<td colspan="2"><input type="button" value="Ver Copias" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo $nroorden ?>C.pdf', '_blank', 'fullscreen=yes');" /></td>
+						<td colspan="2"><input type="button" value="Ver Copias" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>C.pdf', '_blank', 'fullscreen=yes');" /></td>
 					<?php } else { ?>
 						<td colspan="7" style="color: red">Orden de pago Cancelada el "<?php echo $rowCabecera['fechacancelacion'] ?>"</td>
 					<?php }?>
