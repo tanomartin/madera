@@ -140,7 +140,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 		 					<tbody>
 		 		  		<?php while ($rowCorreosAEnviar = mysql_fetch_assoc($resCorreosAEnviar)) { 
 		 		  				$arraySubject = explode("-",$rowCorreosAEnviar['subject']);
-		 		  				$nroorden = $resultado = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[1]), 10);
+		 		  				$nroorden = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[1]), 10);
 		 		  				$codigo = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[2]), 10); 
 		 		  				
 		 		  				$sqlPresta = "SELECT nombre, cuit FROM prestadores WHERE codigoprestador = $codigo";

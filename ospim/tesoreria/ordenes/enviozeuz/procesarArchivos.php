@@ -35,30 +35,31 @@ foreach (listar_archivos_txt($carpetaDatos) as $pathArchivo) {
 	$fp = fopen($pathArchivo, "r");
 	while (!feof($fp)){
 		$linea = fgets($fp);
-		$arrayDatos = explode("|",$linea);
-		$codigo = trim($arrayDatos[0]);
-		$email = trim($arrayDatos[1]);
-		$nroorden = trim($arrayDatos[2]);
-		$nroorden = str_pad($nroorden, 8, '0', STR_PAD_LEFT);
-		$nombrePDF = "OP".$nroorden."O.pdf";
-		if (!file_exists ($carpetaOrden.$nombrePDF)) {
-			$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No existe documento PDF de la Orden de Pago");
-		} else {
-			$sqlPrestador = "SELECT email1,email2 FROM prestadores WHERE codigoprestador = $codigo";
-			$resPrestador = mysql_query($sqlPrestador,$db);
-			$canPrestador = mysql_num_rows($resPrestador);
-			if ($canPrestador == 0) {
-				$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No existe el prestador con ese codigo");
+		if (strlen($linea) != 0) {
+			$arrayDatos = explode("|",$linea);
+			$codigo = trim($arrayDatos[0]);
+			$email = trim($arrayDatos[1]);
+			$nroorden = trim($arrayDatos[2]);
+			$nombrePDF = "OP".$nroorden."O.pdf";
+			if (!file_exists ($carpetaOrden.$nombrePDF)) {
+				$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No existe documento PDF de la Orden de Pago");
 			} else {
-				$rowPrestador = mysql_fetch_array($resPrestador);
-				if ($email != $rowPrestador['email1'] && $email != $rowPrestador['email2']) {
-					$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No concuerda el correo informado en el archivo con los correos cargados");
+				$sqlPrestador = "SELECT email1,email2 FROM prestadores WHERE codigoprestador = $codigo";
+				$resPrestador = mysql_query($sqlPrestador,$db);
+				$canPrestador = mysql_num_rows($resPrestador);
+				if ($canPrestador == 0) {
+					$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No existe el prestador con ese codigo");
 				} else {
-					$arrayOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "datos" => $linea);
+					$rowPrestador = mysql_fetch_array($resPrestador);
+					if ($email != $rowPrestador['email1'] && $email != $rowPrestador['email2']) {
+						$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No concuerda el correo informado en el archivo con los correos cargados");
+					} else {
+						$arrayOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "datos" => $linea);
+					}
 				}
 			}
+			$i++;
 		}
-		$i++;
 	}
 	fclose($fp);
 }
@@ -121,7 +122,7 @@ function validar(formulario) {
 		 	</table>
 	 	</div>
 <?php } 
-	  if (sizeof($arrayNOK) > 0) {  ?>
+	  if (sizeof($arrayOK) > 0) {  ?>
 		<h3 style="color: blue">Correos a Enviar</h3>
 	 	<div class="grilla">
 		 	<table>
@@ -136,14 +137,14 @@ function validar(formulario) {
 		 <?php foreach ($arrayOK as $key=>$lineas) { ?>
 		 		  	<tr>
 		 		  		<td>
-		 		  			<?php echo $lineas['codigo'] ?>
+		 		  			<?php echo preg_replace('/^0+/', '', $lineas['codigo']); ?>
 		 		  			<input style="display: none" type="text" id="datos<?php echo $key ?>" name="datos<?php echo $key ?>" value="<?php echo $lineas['datos']?>" />
 		 		  		</td>
 		 		  		<td>
 		 		  			<?php echo $lineas['email'] ?>
 		 		  		</td>
 		 		  		<td>
-		 		  			<?php echo $lineas['nroorden'] ?> 
+		 		  			<?php echo preg_replace('/^0+/', '', $lineas['nroorden']); ?> 
 		 		  		</td>
 		 		  	</tr>
 		 <?php } ?>
@@ -152,7 +153,7 @@ function validar(formulario) {
 	 	</div>
 <?php } ?>   
 		<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
-<?php if (sizeof($arrayNOK) > 0) {  ?>		
+<?php if (sizeof($arrayOK) > 0) {  ?>		
 		<p><input type="submit" id="Submit" name="Procesar" value="Procesar" /></p>
 <?php } ?>
 	</form>

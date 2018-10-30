@@ -33,8 +33,10 @@ foreach($_POST as $datos) {
 	$codigo = trim($arrayDatos[0]);
 	$email = trim($arrayDatos[1]);
 	$nroorden = trim($arrayDatos[2]);
-	$nroordenNombre = str_pad($nroorden, 8, '0', STR_PAD_LEFT);
-	$nombrePDF = $carpetaOrden."OP".$nroordenNombre."O.pdf";
+	$nombrePDF = $carpetaOrden."OP".$nroorden."O.pdf";
+
+	$codigo = preg_replace('/^0+/', '', $codigo);
+	$nroorden = preg_replace('/^0+/', '', $nroorden);
 	
 	$subject = "Orden de Pago OSPIM - Nro $nroorden - Cod $codigo";
 	$bodymail="<body><br><br>Este es un mensaje de Aviso de ORDEN DE PAGO Nº $nroorden Adjunto la orden en pdf<br><br>";
