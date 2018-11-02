@@ -161,4 +161,3 @@ function validar(formulario) {
 </div>
 </body>
 </html>
-
