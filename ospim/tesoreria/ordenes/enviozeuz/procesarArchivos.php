@@ -32,7 +32,7 @@ $arrayOK = array();
 $arrayNOK = array();
 $i = 0;
 foreach (listar_archivos_txt($carpetaDatos) as $pathArchivo) {
-	$fp = fopen($pathArchivo, "r");
+	$fp = fopen($pathArchivo, "r") or die("NO SE PUEDEN ABRIR LOS ARCHIVOS DE DATOS");
 	while (!feof($fp)){
 		$linea = fgets($fp);
 		if (strlen($linea) != 0) {
