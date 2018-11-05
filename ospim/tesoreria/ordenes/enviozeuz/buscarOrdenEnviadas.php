@@ -28,17 +28,17 @@ if (isset($_POST['dato']) || isset($_GET['fecha']) || isset($_GET['nroorden'])) 
 		}
 	}
 	if ($filtro == 0) {
-		$cartel = "<b>Busqueda por Fecha:$dato</b>";
+		$cartel = "<b>Busqueda por Fecha:<font color='blue'> $dato</font></b>";
 		$sqlCorreosEnviados = "SELECT * FROM bandejaenviados WHERE modulocreador like '%Ordenes de Pago' and fecharegistro like '$dato%'";
 		$sqlCorreosAEnviar = "SELECT * FROM bandejasalida WHERE modulocreador like '%Ordenes de Pago' and fecharegistro like '$dato%'";
 	} 
 	if ($filtro == 1) {
-		$cartel = "<b>Busqueda por Código de Prestador: $dato</b>";
+		$cartel = "<b>Busqueda por Código de Prestador:<font color='blue'> $dato</font></b>";
 		$sqlCorreosEnviados = "SELECT * FROM bandejaenviados WHERE modulocreador like '%Ordenes de Pago' and subject like '%Cod $dato%'";
 		$sqlCorreosAEnviar = "SELECT * FROM bandejasalida WHERE modulocreador like '%Ordenes de Pago' and subject like '%Cod $dato%'";
 	} 
 	if ($filtro == 2) {
-		$cartel = "<b>Busqueda por Nro. Orden: $dato</b>";
+		$cartel = "<b>Busqueda por Nro. Orden:<font color='blue'> $dato</font></b>";
 		$sqlCorreosEnviados = "SELECT * FROM bandejaenviados WHERE modulocreador like '%Ordenes de Pago' and subject like '%Nro $dato%'";
 		$sqlCorreosAEnviar = "SELECT * FROM bandejasalida WHERE modulocreador like '%Ordenes de Pago' and subject like '%Nro $dato%'";
 	}
@@ -160,7 +160,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 		 				</table>
 	 				</div>
 			<?php } else { ?>
-					<h3 style="color: blue">No Existen Ordenes de Pago En proceso de Envio</h3>
+					<h3>No Existen Ordenes de Pago En proceso de Envio</h3>
 			<?php }
 			
 			if ($canCorreosEnviado > 0) { ?>
@@ -196,7 +196,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 					 	</table>
 				 	</div>
 			<?php } else { ?>
-						<h3 style="color: blue">No Existen Ordenes de Pago Enviadas</h3>
+						<h3>No Existen Ordenes de Pago Enviadas</h3>
 			<?php }
 	  	 	 } ?>
 	  	<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
