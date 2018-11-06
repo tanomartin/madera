@@ -42,6 +42,11 @@ if (isset($_POST['dato']) || isset($_GET['fecha']) || isset($_GET['nroorden'])) 
 		$sqlCorreosEnviados = "SELECT * FROM bandejaenviados WHERE modulocreador like '%Ordenes de Pago' and subject like '%Nro $dato%'";
 		$sqlCorreosAEnviar = "SELECT * FROM bandejasalida WHERE modulocreador like '%Ordenes de Pago' and subject like '%Nro $dato%'";
 	}
+	if ($filtro == 3) {
+		$cartel = "<b>Busqueda por Nro. Comp Interno:<font color='blue'> $dato</font></b>";
+		$sqlCorreosEnviados = "SELECT * FROM bandejaenviados WHERE modulocreador like '%Ordenes de Pago' and subject like '%Nro Int $dato%'";
+		$sqlCorreosAEnviar = "SELECT * FROM bandejasalida WHERE modulocreador like '%Ordenes de Pago' and subject like '%Nro Int $dato%'";
+	}
 
 	$resCorreosEnviados = mysql_query($sqlCorreosEnviados,$db);
 	$canCorreosEnviado = mysql_num_rows($resCorreosEnviados);
@@ -77,10 +82,10 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	if (formulario.filtro[1].checked || formulario.filtro[2].checked) {
+	if (formulario.filtro[1].checked || formulario.filtro[2].checked || formulario.filtro[3].checked) {
 		resultado = esEnteroPositivo(formulario.dato.value);
 		if (!resultado) {
-			alert("El Código de Prestador o en Nro. Orden debe ser un numero entero positivo");
+			alert("El Código de Prestador, Nro. Orden o Nro. Comp Interno debe ser un numero entero positivo");
 			return false;
 		} 
 	}
@@ -107,7 +112,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 	  	<h3>Buscador de Ordenes de Pago Enviadas de Zeuz</h3>
     	<table>
       		<tr>
-        		<td rowspan="3"><b>Buscar por </b></td>
+        		<td rowspan="4"><b>Buscar por </b></td>
         		<td><input type="radio" name="filtro"  value="0" checked="checked" /> Fecha Generación </td>
       		</tr>
       		<tr>
@@ -116,6 +121,9 @@ function reenviarMail(nroorden, idmail, boton, mail) {
       		<tr>
         		<td><input type="radio" name="filtro"  value="2" /> Nro. Orden </td>
       		</tr> 
+      		<tr>
+        		<td><input type="radio" name="filtro"  value="3" /> Nro. Comp. Interno </td>
+      		</tr>
 		</table>
     	<p><strong>Dato</strong> <input name="dato" type="text" id="dato" size="14" /></p>
     	<p><input type="submit" name="Buscar" value="Buscar" /></p>
@@ -132,6 +140,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 			 						<th>Razon Social</th>
 			 						<th>C.U.I.T.</th>
 			 						<th>Nro. Orden</th>
+			 						<th>Nro. Comp. Interno</th>
 			 						<th>Email</th>
 			 						<th>Fecha</th>
 			 					<!-- 	<th></th>	 --> 						
@@ -142,6 +151,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 		 		  				$arraySubject = explode("-",$rowCorreosAEnviar['subject']);
 		 		  				$nroorden = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[1]), 10);
 		 		  				$codigo = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[2]), 10); 
+		 		  				$nrointer = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[3]), 10);
 		 		  				
 		 		  				$sqlPresta = "SELECT nombre, cuit FROM prestadores WHERE codigoprestador = $codigo";
 		 		  				$resPresta = mysql_query($sqlPresta,$db);
@@ -151,6 +161,7 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 		 		  					<td><?php echo $rowPresta['nombre'];?></td>
 		 		  					<td><?php echo $rowPresta['cuit'];?></td>
 		 		  					<td><?php echo $nroorden;?></td>
+		 		  					<td><?php echo $nrointer;?></td>
 		 		  					<td><?php echo $rowCorreosAEnviar['address'] ?></td>
 		 		  					<td><?php echo $rowCorreosAEnviar['fecharegistro'] ?></td>
 		 		  					<!-- <td><input type="button" value="Ver Orden" name="orden" onclick="window.open('<?php // echo $carpetaOrden ?>OP<?php //echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" /></td> -->
@@ -180,15 +191,15 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 					   <?php while ($rowCorreosEnviados = mysql_fetch_array($resCorreosEnviados)) { 
 					   			$arraySubject = explode("-",$rowCorreosEnviados['subject']);
 		 		  				$nroorden = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[1]), 10);
-		 		  				$codigo = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[2]), 10);?>
-					 		  	<tr>
+		 		  				$codigo = intval(preg_replace('/[^0-9]+/', '',  $arraySubject[2]), 10); ?>
+		 		  			  	<tr>
 					 		  		<td><?php echo $rowCorreosEnviados['subject'];?></td>
 					 		  		<td><?php echo $rowCorreosEnviados['address'] ?></td>
 					 		  		<td><?php echo $rowCorreosEnviados['fecharegistro'] ?></td>
 					 		  		<td><?php echo $rowCorreosEnviados['fechaenvio'] ?></td>
 					 		  		<td>
 					 		  	<!-- 	<input type="button" value="Ver Orden" name="orden" onclick="window.open('<?php // echo $carpetaOrden ?>OP<?php // echo $nroorden ?>O.pdf', '_blank', 'fullscreen=yes');" />  -->	
-					 		  			<input type="button" value="Reenviar" onclick="reenviarMail(<?php echo $nroorden?>,<?php echo $rowCorreosEnviados['id']?>, this, '<?php echo $rowCorreosEnviados['address']?>')" />
+					 		  			<input type="button" value="Reenviar" onclick="reenviarMail(<?php echo $nroorden ?>,<?php echo $rowCorreosEnviados['id']?>, this, '<?php echo $rowCorreosEnviados['address']?>')" />
 					 		  		</td>
 					 		  	</tr>
 					 	<?php } ?>

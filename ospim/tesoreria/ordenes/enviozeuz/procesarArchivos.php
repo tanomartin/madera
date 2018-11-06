@@ -40,21 +40,22 @@ foreach (listar_archivos_txt($carpetaDatos) as $pathArchivo) {
 			$codigo = trim($arrayDatos[0]);
 			$email = trim($arrayDatos[1]);
 			$nroorden = trim($arrayDatos[2]);
-			$nombrePDF = "OP".$nroorden."O.pdf";
+			$nrointer = trim($arrayDatos[3]);
+			$nombrePDF = "NI".$nrointer."-OP".$nroorden."-O.pdf";
 			if (!file_exists ($carpetaOrden.$nombrePDF)) {
-				$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No existe documento PDF de la Orden de Pago");
+				$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden,  "nrointer" => $nrointer, "error" => "No existe documento PDF de la Orden de Pago");
 			} else {
 				$sqlPrestador = "SELECT email1,email2 FROM prestadores WHERE codigoprestador = $codigo";
 				$resPrestador = mysql_query($sqlPrestador,$db);
 				$canPrestador = mysql_num_rows($resPrestador);
 				if ($canPrestador == 0) {
-					$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No existe el prestador con ese codigo");
+					$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "nrointer" => $nrointer, "error" => "No existe el prestador con ese codigo");
 				} else {
 					$rowPrestador = mysql_fetch_array($resPrestador);
 					if ($email != $rowPrestador['email1'] && $email != $rowPrestador['email2']) {
-						$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "error" => "No concuerda el correo informado en el archivo con los correos cargados");
+						$arrayNOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "nrointer" => $nrointer, "error" => "No concuerda el correo informado en el archivo con los correos cargados");
 					} else {
-						$arrayOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "datos" => $linea);
+						$arrayOK[$i] = array("codigo" => $codigo, "email" => $email, "nroorden" => $nroorden, "nrointer" => $nrointer, "datos" => $linea);
 					}
 				}
 			}
@@ -106,6 +107,7 @@ function validar(formulario) {
 			 			<th>Codigo Prestador</th>
 			 			<th>Email</th>
 			 			<th>Nro Orden</th>
+			 			<th>Nro Comp. Interno</th>
 			 			<th>ERROR</th> 						
 			 		</tr>
 		 		</thead>
@@ -114,7 +116,8 @@ function validar(formulario) {
 		 		  	<tr>
 		 		  		<td><?php echo $lineasError['codigo'] ?></td>
 		 		  		<td><?php echo $lineasError['email'] ?></td>
-		 		  		<td><?php echo $lineasError['nroorden'] ?> </td>
+		 		  		<td><?php echo preg_replace('/^0+/', '', $lineasError['nroorden']); ?> </td>
+		 		  		<td><?php echo preg_replace('/^0+/', '',$lineasError['nrointer']); ?> </td>
 		 		  		<td><?php echo $lineasError['error'] ?> </td>
 		 		  	</tr>
 		 <?php } ?>
@@ -130,7 +133,8 @@ function validar(formulario) {
 			 		<tr>
 			 			<th>Codigo Prestador</th>
 			 			<th>Email</th>
-			 			<th>Nro Orden</th>				
+			 			<th>Nro Orden</th>
+			 			<th>Nro Comp. Interno</th>				
 			 		</tr>
 		 		</thead>
 		 		<tbody>
@@ -145,6 +149,9 @@ function validar(formulario) {
 		 		  		</td>
 		 		  		<td>
 		 		  			<?php echo preg_replace('/^0+/', '', $lineas['nroorden']); ?> 
+		 		  		</td>
+		 		  		<td>
+		 		  			<?php echo preg_replace('/^0+/', '', $lineas['nrointer']); ?> 
 		 		  		</td>
 		 		  	</tr>
 		 <?php } ?>
