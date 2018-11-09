@@ -119,10 +119,10 @@ function cambioEstadoReq($nroreq) {
 }
 
 function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nroreqArc) {
-	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit";
+	$sqlEmpresasInicioActividad = "select iniobliusi from empresas where cuit = $cuit";
 	$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
 	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
-	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
+	$fechaInicio = $rowEmpresasInicioActividad['iniobliusi'];
 	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresasUsimra.php");
 
 	$arrayDDJJ = array();
