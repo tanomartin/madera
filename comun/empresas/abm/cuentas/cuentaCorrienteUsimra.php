@@ -384,7 +384,7 @@ function imprimeTabla($periodo) {
 	$ano = $periodo ['anio'];
 	$me = $periodo ['mes'];
 	print ("<td>") ;
-	if ($estado == 'NO PAGO') {
+	if (strpos($estado, 'NO PAGO') !== false) {
 		print ("<a href=javascript:abrirInfo('detalleDDJJUsimra.php?cuit=" . $cuit . "&anio=" . $ano . "&mes=" . $me . "')>" . $estado . "</a>") ;
 	} else {
 		if (strpos ( $estado, 'P.F.T.' ) !== false or strpos ( $estado, 'PAGO' ) !== false or strpos ( $estado, 'P.M.' ) !== false) {
