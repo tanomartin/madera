@@ -21,11 +21,6 @@ if ($tipo == "noexiste") {
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -78,9 +73,8 @@ function rediBeneficiarios(origen, cuit) {
 </head>
 <body bgcolor=<?php echo $bgcolor ?>>
 <div align="center">
-  <input type="reset" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'"/>
-  <p>
-    <?php 
+  <p><input type="button" name="volver" value="Volver" onClick="location.href = 'moduloABM.php?origen=<?php echo $origen ?>'"/></p>
+  <p><?php 
     	if (isset($_GET['err'])) {
 			$err = $_GET['err'];
 			if ($err > 0) {
@@ -101,17 +95,17 @@ function rediBeneficiarios(origen, cuit) {
 		include($libPath."cabeceraEmpresa.php"); 
 	?>
   </p>
-  <table width="346" border="0">
+  <table width="40%" border="0" style="text-align: center">
     <tr>
-      <td width="112"><div align="center">
+      <td width="33%">
           <input name="modifCabecera" type="button" value="Modificar Cabecera" onClick="location.href='modificarCabecera.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?> '"/>
-        </div></td>
-      <td width="123"><div align="center">
+      </td>
+      <td width="33%">
           <input name="ctacteOspim" type="button" value="Cuenta Corriente" onClick="rediSabanaCtaCte('<?php echo $origen ?>','<?php echo $cuit ?>')"/>
-        </div></td>
-      <td width="97"><div align="center">
+      </td>
+      <td width="33%">
           <input name="titulares" type="button" value="Nómina Empleados" onClick="rediBeneficiarios('<?php echo $origen ?>','<?php echo $cuit ?>')" />
-        </div></td>
+      </td>
     </tr>
   </table>
   <p>
@@ -119,18 +113,12 @@ function rediBeneficiarios(origen, cuit) {
    	 	<input name="bajaEmpresa" type="button" id="bajaEmpresa" value="Bajar Empresa" onClick="validarBaja()"/>
   <?php } ?>
   </p>
+  <p><?php include("jurisdicEmpresa.php");?></p>
   <p>
-    <?php
-		include("jurisdicEmpresa.php");
-	?>
+    <input name="disgregacion" type="button" value="Disgregacion Dineraria" onClick='location.href="disgregaDinero.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'/>
+    <input name="jurisdiccion" type="button" value="Agregar Jurisdiccion" onclick='location.href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'/>
   </p>
-  <p>
-    <input name="Input5" type="button" value="Disgregacion Dineraria" onClick='location.href="disgregaDinero.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'/>
-    <input name="Input4" type="button" value="Agregar Jurisdiccion" onclick='location.href="nuevaJurisdiccion.php?origen=<?php echo $origen ?>&cuit=<?php echo $cuit ?>"'/>
-  </p>
-  <p>
-    <input type="button" name="imprimir" value="Imprimir" onClick="window.print();"/>
-  </p>
+  <p><input type="button" name="imprimir" value="Imprimir" onClick="window.print();"/></p>
 </div>
 </body>
 </html>

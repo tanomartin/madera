@@ -9,42 +9,47 @@ include($libPath."fechas.php");
 
 $cuit=$_GET['cuit'];
 include($libPath."cabeceraEmpresaConsulta.php"); 
-
 $anio=$_GET['anio'];
 $mes=$_GET['mes'];
 
-$sqlDdjj = "select *
-			from cabddjjospim 
-			where 
-			cuit = $cuit and 
-			anoddjj = $anio and 
-			mesddjj = $mes";
-
-//print($sqlDdjj );
+$sqlDdjj = "select * from cabddjjospim where cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
 $resDdjj = mysql_query($sqlDdjj,$db); 
 $rowDdjj = mysql_fetch_array($resDdjj); 
-//var_dump($rowDdjj);
 
-$sqlDdjjDet = "select *
-from detddjjospim
-where
-cuit = $cuit and
-anoddjj = $anio and
-mesddjj = $mes";
-
+$sqlDdjjDet = "select * from detddjjospim where cuit = $cuit and anoddjj = $anio and mesddjj = $mes";
 $resDdjjDet = mysql_query($sqlDdjjDet,$db);
 
-
+$sqlPagos = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas 
+				where cuit = $cuit and
+					  anopago = $anio and
+					  mespago = $mes
+				group by concepto, fechapago, debitocredito
+				order by fechapago, concepto, debitocredito";
+$resPagos = mysql_query($sqlPagos,$db);
+$i = 0;
+while ($rowPagos = mysql_fetch_array($resPagos)) {
+	$pagos[$i] = $rowPagos;
+	$i = $i + 1;
+}
+$total = 0;
+$totalRemu = 0;
+$pagos = array();
+for ($n=0; $n < sizeof($pagos); $n++) {
+	if ($pagos[$n]['debitocredito'] == 'D') {
+		$total = $total - $pagos[$n]['sum(importe)'];
+	} else {
+		if ($pagos[$n]['concepto'] != 'REM') {
+			$total = $total + $pagos[$n]['sum(importe)'];
+		} else {
+			$totalRemu = $totalRemu + $pagos[$n]['sum(importe)'];
+		}
+	}
+}
 ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
 
 <title>.: Ddjj Empresa :.</title>
@@ -85,6 +90,34 @@ A:hover {text-decoration: none;color:#00FFFF }
 	<?php } ?>
   </table>
   
+<?php if (sizeof($pagos) > 0) {  ?>
+		  <p><strong>Detalle Ingresos</strong></p>
+		  <table width="400" border="1" style="text-align: center">
+		    <tr>
+		      <th>Concepto</th>
+		      <th>Fecha de Pago</th>
+		      <th>Remuneración</th>
+			  <th>Importe</th>
+		    </tr>
+		<?php foreach ($pagos as $pago) {  ?>
+				<tr>
+					<td width='193'><?php echo $pago['concepto'] ?></td>
+					<td width='192'><?php echo invertirFecha($pago['fechapago'])  ?></td>
+			<?php 	if ($pago['concepto'] == 'REM') { ?>
+						<td width='97'><?php echo number_format($pago['sum(importe)'],2,',','.') ?></td>
+						<td width='88'>-</td>
+			<?php 	} else { ?>
+						<td width='97'>-</td>
+			<?php		if ($pago['debitocredito'] == 'D') {  ?>
+							<td width='88'><?php echo "-".number_format($pago['sum(importe)'],2,',','.') ?></td>
+			<?php		} else { ?>
+							<td width='88'><?php echo number_format($pago['sum(importe)'],2,',','.') ?></td>
+			<?php		}
+					} ?>
+				</tr>
+		<?php } ?>
+		 </table> 
+<?php } ?>
 </div>
 </body>
 

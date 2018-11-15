@@ -6,37 +6,6 @@ $cuit=$_GET['cuit'];
 include($libPath."cabeceraEmpresaConsulta.php");
 $fechaInicio= $row['iniobliosp'];
 include($libPath."limitesTemporalesEmpresas.php");
-?>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-<style type="text/css" media="print">
-.nover {display:none}
-</style>
-
-<style type="text/css">
-<!--
-.Estilo6 {
-	font-size: 12px;
-	font-weight: bold;
-}
-.Estilo7 {font-size: 14px}
--->
-</style>
-<script language="javascript">
-function abrirInfo(dire) {
-	a= window.open(dire,"InfoPeriodoCuentaCorrienteEmpresa",
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
-}
-</script>
-</head>
-<?php
 
 function estaVencido($fechaPago, $me, $ano) {
 	if ($me == 12) {
@@ -60,7 +29,7 @@ function estaVencido($fechaPago, $me, $ano) {
 function reverificaPeriodo($estado, $ano, $me, $db) {
 	global $cuit;
 	global $arrayAcuerdos, $arrayJuicios, $arrayRequerimientos;
-	
+
 	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
 	$idArray = $ano.$me;
 	if(array_key_exists($idArray, $arrayAcuerdos)) {
@@ -105,19 +74,26 @@ function reverificaPeriodo($estado, $ano, $me, $db) {
 
 function encuentroPagos($db) {
 	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
-	$sqlPagos = "select anopago, mespago, fechapago from afipprocesadas where cuit = $cuit and (concepto = '381' or concepto = '401' or concepto = '471') and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago";
+	$sqlPagos = "select anopago, mespago, fechapago, concepto from afipprocesadas where cuit = $cuit and (concepto = '381' or concepto = '401') and ((anopago > $anoinicio and anopago <= $anofin) or (anopago = $anoinicio and mespago >= $mesinicio)) group by anopago, mespago, fechapago, concepto";
 	$resPagos = mysql_query($sqlPagos,$db);
-	$CantPagos = mysql_num_rows($resPagos); 
+	$CantPagos = mysql_num_rows($resPagos);
+	$arrayConc = array();
 	if($CantPagos > 0) {
-		while ($rowPagos = mysql_fetch_assoc($resPagos)) { 
-			$id=$rowPagos['anopago'].$rowPagos['mespago'];
-			$arrayPagos[$id] = array('anio' => $rowPagos['anopago'], 'mes' => $rowPagos['mespago'], 'fechapago' =>  $rowPagos['fechapago']);
+		while ($rowPagos = mysql_fetch_assoc($resPagos)) {
+			$id = $rowPagos['anopago'].$rowPagos['mespago'];
+			$arrayConc[$id][$rowPagos['concepto']] = array('anio' => $rowPagos['anopago'], 'mes' => $rowPagos['mespago'], 'fechapago' =>  $rowPagos['fechapago']);	
 		}
-		$resPagos = array(); 
+		$resPagos = array();
+		foreach($arrayConc as $concepto) {
+			if (isset($concepto['401']) && isset($concepto['381'])) {
+				$id = $concepto['401']['anio'].$concepto['401']['mes'];
+				$arrayPagos[$id] = array('anio' => $concepto['401']['anio'], 'mes' => $concepto['401']['mes'], 'fechapago' =>  $concepto['401']['fechapago']);
+			}
+		}
 		foreach ($arrayPagos as $pago) {
 			$id=$pago['anio'].$pago['mes'];
 			if (estaVencido($pago['fechapago'], $pago['mes'], $pago['anio'])) {
-				$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'P.F.T.');		
+				$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'P.F.T.');
 			} else {
 				$resPagos[$id] = array('anio' => $pago['anio'], 'mes' => $pago['mes'], 'estado' => 'PAGO');
 			}
@@ -193,61 +169,61 @@ function encuentroDdjj($db) {
 }
 
 function estado($ano, $me, $db) {
-		global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
-		global $arrayAcuerdos, $arrayJuicios, $arrayRequerimientos, $arrayDdjj;
-		//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
-		if ($ano == $anoinicio) {
-			if ($me < $mesinicio) {
-				$des = "-";
-				return($des);
-			}
+	global $cuit, $anoinicio, $mesinicio, $anofin, $mesfin;
+	global $arrayAcuerdos, $arrayJuicios, $arrayRequerimientos, $arrayDdjj;
+	//VEO QUE EL MES Y EL AÑO ESTEND DENTRO DE LOS PERIODOS A MOSTRAR
+	if ($ano == $anoinicio) {
+		if ($me < $mesinicio) {
+			$des = "-";
+			return($des);
 		}
-		if ($ano == $anofin) {
-			if ($me > $mesfin) {
-				$des = "-";
-				return($des);
-			}
+	}
+	if ($ano == $anofin) {
+		if ($me > $mesfin) {
+			$des = "-";
+			return($des);
 		}
-		
-		$idArray = $ano.$me;
-		// VEO LOS PERIODOS ABARCADOS POR ACUERDO
-		if(array_key_exists($idArray, $arrayAcuerdos)) {
-			$nroacuerdo = $arrayAcuerdos[$idArray]['nroacuerdo'];
-			$des = "ACUER.-".$nroacuerdo;
-			if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 0) {
-				$des = "P. ACUER.-" . $nroacuerdo;
-			} else {
-				if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 2) {
-					$des = "ACU. INC.-".$nroacuerdo;
-				}
-			}
+	}
+
+	$idArray = $ano.$me;
+	// VEO LOS PERIODOS ABARCADOS POR ACUERDO
+	if(array_key_exists($idArray, $arrayAcuerdos)) {
+		$nroacuerdo = $arrayAcuerdos[$idArray]['nroacuerdo'];
+		$des = "ACUER.-".$nroacuerdo;
+		if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 0) {
+			$des = "P. ACUER.-" . $nroacuerdo;
 		} else {
-			//VEO LOS JUICIOS
-			if (array_key_exists($idArray, $arrayJuicios)) {
-				$statusDeuda = $arrayJuicios[$idArray]['statusdeuda'];
-				$nrocertificado = $arrayJuicios[$idArray]['nrocertificado'];
-				$nroorden = $arrayJuicios[$idArray]['nroorden'];
-				if ($statusDeuda == 1) {
-					$des = "J.EJEC";
-				}
-				if ($statusDeuda == 2) {
-					$des = "J.CONV";
-				}
-				if ($statusDeuda == 3) {
-					$des = "J.QUIEB";
-				}
-				$des = $des." (".$nrocertificado.")-".$nroorden;
+			if ($arrayAcuerdos[$idArray]['estadoacuerdo'] == 2) {
+				$des = "ACU. INC.-".$nroacuerdo;
+			}
+		}
+	} else {
+		//VEO LOS JUICIOS
+		if (array_key_exists($idArray, $arrayJuicios)) {
+			$statusDeuda = $arrayJuicios[$idArray]['statusdeuda'];
+			$nrocertificado = $arrayJuicios[$idArray]['nrocertificado'];
+			$nroorden = $arrayJuicios[$idArray]['nroorden'];
+			if ($statusDeuda == 1) {
+				$des = "J.EJEC";
+			}
+			if ($statusDeuda == 2) {
+				$des = "J.CONV";
+			}
+			if ($statusDeuda == 3) {
+				$des = "J.QUIEB";
+			}
+			$des = $des." (".$nrocertificado.")-".$nroorden;
+		} else {
+			// VEO LAS DDJJ REALIZADAS SIN PAGOS
+			if(array_key_exists($idArray, $arrayDdjj)) {
+				$des = "NO PAGO";
 			} else {
-				// VEO LAS DDJJ REALIZADAS SIN PAGOS
-				if(array_key_exists($idArray, $arrayDdjj)) {
-					$des = "NO PAGO";
-				} else {
-					// NO HAY DDJJ SIN PAGOS
-					$des = "S.DJ.";
-				} //else DDJJ
-			} //else JUICIOS
-		}//else ACUERDOS
-		return $des;
+				// NO HAY DDJJ SIN PAGOS
+				$des = "S.DJ.";
+			} //else DDJJ
+		} //else JUICIOS
+	}//else ACUERDOS
+	return $des;
 } //function
 
 function imprimeTabla($periodo) {
@@ -264,13 +240,13 @@ function imprimeTabla($periodo) {
 		} else {
 			$pacuerdo = explode('-',$estado);
 			if ($pacuerdo[0] == 'P. ACUER.' or $pacuerdo[0] == 'ACUER.' or $pacuerdo[0] == 'ACU. INC.') {
-				print ("<a href=javascript:abrirInfo('/madera/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$estado."</a>"); 
+				print ("<a href=javascript:abrirInfo('/madera/ospim/acuerdos/abm/consultaAcuerdo.php?cuit=".$cuit."&nroacu=".$pacuerdo[1]."&origen=empresa')>".$estado."</a>");
 			} else {
 				$juicioEstado = explode('-',$estado);
 				$pjuicio = explode('(',$juicioEstado[0]);
 				if ($pjuicio[0] == 'J.CONV ' or $pjuicio[0] == 'J.QUIEB ' or $pjuicio[0] == 'J.EJEC ') {
 					$nroorden = $juicioEstado[1];
-					print ("<a href=javascript:abrirInfo('/madera/ospim/legales/juicios/consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."&origen=empresa')>".$juicioEstado[0]."</a>"); 
+					print ("<a href=javascript:abrirInfo('/madera/ospim/legales/juicios/consultaJuicio.php?cuit=".$cuit."&nroorden=".$nroorden."&origen=empresa')>".$juicioEstado[0]."</a>");
 				} else {
 					print ($estado);
 				}
@@ -280,49 +256,9 @@ function imprimeTabla($periodo) {
 	print("</td>");
 }
 
-?>
-<title>.: Cuenta Corriente Empresa :.</title>
-<body bgcolor="#CCCCCC">
-<div align="center">
-	<?php if ($tipo == "activa") { ?>
-			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresa.php?origen=ospim&cuit=<?php echo $cuit ?>'" /> 
-	<?php } else { ?>
-			<input type="reset" class="nover" name="volver" value="Volver" onClick="location.href = '../empresaBaja.php?origen=ospim&cuit=<?php echo $cuit ?>'" /> 
-	<?php } ?>
-	 <p>
-    <?php 
-		include($libPath."cabeceraEmpresa.php"); 
-	?>
-  </p>
-   <p><strong>Cuenta Corriente </strong></p>
-   <p><strong>Inicio Actividad: <?php echo invertirFecha($fechaInicio) ?></strong></p>
-  	<?php if ($tipo == "baja") {?>
-   		<p><strong>Fecha Baja Empresa: <?php echo invertirFecha($fechaBaja) ?></strong></p>
-	<?php } ?>	
-	
-   <table width="1024" border="1" bordercolor="#000000" style="text-align:center; font-family:Verdana, Arial, Helvetica, sans-serif; font-size:10px">
-  <tr>
-    <td width="52" rowspan="2"><span class="Estilo6">A&Ntilde;OS</span></td>
-    <td colspan="12"><span class="Estilo6">MESES</span></td>
-  </tr>
-  <tr> 
-	<td width="81" class="Estilo6">Enero</td>
-    <td width="81" class="Estilo6">Febrero</td>
-    <td width="81" class="Estilo6">Marzo</td>
-    <td width="81" class="Estilo6">Abril</td>
-    <td width="81" class="Estilo6">Mayo</td>
-    <td width="81" class="Estilo6">Junio</td>
-    <td width="81" class="Estilo6">Julio</td>
-    <td width="81" class="Estilo6">Agosto</td>
-    <td width="81" class="Estilo6">Setiembre</td>
-    <td width="81" class="Estilo6">Octubre</td>
-    <td width="81" class="Estilo6">Noviembre</td>
-    <td width="81" class="Estilo6">Diciembre</td>
-  </tr>
-<?php
 
 $arrayPagos = encuentroPagos($db);
-if ($arrayPagos==0){ 
+if ($arrayPagos==0){
 	$arrayPagos = array();
 }
 
@@ -345,58 +281,106 @@ $arrayDdjj = encuentroDdjj($db);
 if ($arrayDdjj == 0){
 	$arrayDdjj = array();
 }
-
-while($ano<=$anofin) {
-  	print("<tr>");
-  	print("<td width='52'><strong>".$ano."</strong></td>");
-	for ($i=1;$i<13;$i++){
-		$idArray = $ano.$i;
-		if (!array_key_exists($idArray, $arrayPagos)) {
-			$estado = estado($ano, $i, $db);
-			if ($estado == 'NO PAGO' || $estado == 'S.DJ.') {
-				$resultado = reverificaPeriodo ( $estado, $ano, $i, $db );
-			} else {
-				$resultado = $estado;
-			}
-			$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
-		} else {
-			$estado = $arrayPagos[$idArray]['estado'];
-			if($estado == 'P.F.T.') {
-				$resultado = reverificaPeriodo($estado, $ano, $i, $db);
-				$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
-			}
-		}
-		imprimeTabla($arrayPagos[$idArray]);
-	}
-	print("</tr>");
-	$ano++;
-}
-
 ?>
-</table>
-<br>
-<table width="1024" border="0" style="font-size:12px">
-  <tr>
-  	<td>*PAGO =  PAGO CON DDJJ</td>
-	<td>*P. ACUER. =  PAGO POR ACUERDO </td>
-    <td>*P.F.T. = PAGO FUERA DE TERMINO </td>
-	<td>*ACUER. =  EN ACUERDO</td>
-  </tr>
-  <tr>
-    <td>*ACU. INC. = ACUERDO INCOBRABLE</td>
-    <td>*NO PAGO =  NO PAGO CON DDJJ</td>
-	<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
-	<td>*REQ. (nro. requerimiento) = FISCALIZADO</td>
-  </tr>
-  <tr>
-  	<td>*J.EJEC (nro. orden) = EN JUICIO EJECUCI&Oacute;N </td>
-    <td>*J.CONV (nro. orden) = EN JUICIO CONVOCATORIA </td>
-    <td>*J.QUIEB (nro. orden) = EN JUICIO QUIEBRA </td>
-    <td>&nbsp;</td>
-  </tr>
-</table>
-<br>
-<input type="button" class="nover" name="imprimir" value="Imprimir" onClick="window.print();" />
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>.: Cuenta Corriente Empresa :.</title>
+<script language="javascript">
+function abrirInfo(dire) {
+	a= window.open(dire,"InfoPeriodoCuentaCorrienteEmpresa",
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+}
+</script>
+<style type="text/css" media="print">
+	.nover {display:none}
+</style>
+</head>
+<body bgcolor="#CCCCCC">
+<div align="center">
+	<p>
+<?php if ($tipo == "activa") { ?>
+		<input type="button" class="nover" name="volver" value="Volver" onclick="location.href = '../empresa.php?origen=ospim&cuit=<?php echo $cuit ?>'" /> 
+<?php } else { ?>
+		<input type="button" class="nover" name="volver" value="Volver" onclick="location.href = '../empresaBaja.php?origen=ospim&cuit=<?php echo $cuit ?>'" /> 
+<?php } ?>
+	</p>
+	<p>
+    <?php include($libPath."cabeceraEmpresa.php"); ?>
+  	</p>
+    <p><b>Cuenta Corriente </b></p>
+    <p><b>Inicio Actividad: <?php if ($fechaInicio == "" || $fechaInicio == "0000-00-00") { echo  "Sin Datos"; } else { echo invertirFecha($fechaInicio); }?> </b></p>
+  	<?php if ($tipo == "baja") {?>
+   		<p><b>Fecha Baja Empresa: <?php echo invertirFecha($fechaBaja) ?></b></p>
+	<?php } ?>	
+	
+    <table width="1024" border="1" style="text-align:center; font-size:12px">
+	  <tr>
+	    <td width="52" rowspan="2"><b>AÑOS</b></td>
+	    <td colspan="12"><b>MESES</b></td>
+	  </tr>
+	  <tr> 
+		<td width="81"><b>Enero</b></td>
+	    <td width="81"><b>Febrero</b></td>
+	    <td width="81"><b>Marzo</b></td>
+	    <td width="81"><b>Abril</b></td>
+	    <td width="81"><b>Mayo</b></td>
+	    <td width="81"><b>Junio</b></td>
+	    <td width="81"><b>Julio</b></td>
+	    <td width="81"><b>Agosto</b></td>
+	    <td width="81"><b>Setiembre</b></td>
+	    <td width="81"><b>Octubre</b></td>
+	    <td width="81"><b>Noviembre</b></td>
+	    <td width="81"><b>Diciembre</b></td>
+	  </tr>
+<?php while($ano<=$anofin) { ?>
+	  <tr>
+		<td width='52'><b><?php echo $ano ?></b></td>
+	<?php	for ($i=1;$i<13;$i++) {
+				$idArray = $ano.$i;
+				if (!array_key_exists($idArray, $arrayPagos)) {
+					$estado = estado($ano, $i, $db);
+					if ($estado == 'NO PAGO' || $estado == 'S.DJ.') {
+						$resultado = reverificaPeriodo ( $estado, $ano, $i, $db );
+					} else {
+						$resultado = $estado;
+					}
+					$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
+				} else {
+					$estado = $arrayPagos[$idArray]['estado'];
+					if($estado == 'P.F.T.') {
+						$resultado = reverificaPeriodo($estado, $ano, $i, $db);
+						$arrayPagos[$idArray] =  array('anio' => $ano, 'mes' => $i, 'estado' => $resultado);
+					}
+				}
+				imprimeTabla($arrayPagos[$idArray]);
+			}
+			$ano++; ?>
+		</tr>
+<?php } ?>
+	</table>
+	<table width="1024" border="0" style="font-size:12px; margin-top: 15px">
+	  <tr>
+	  	<td>*PAGO =  PAGO CON DDJJ</td>
+		<td>*P. ACUER. =  PAGO POR ACUERDO </td>
+	    <td>*P.F.T. = PAGO FUERA DE TERMINO </td>
+		<td>*ACUER. =  EN ACUERDO</td>
+	  </tr>
+	  <tr>
+	    <td>*ACU. INC. = ACUERDO INCOBRABLE</td>
+	    <td>*NO PAGO =  NO PAGO CON DDJJ</td>
+		<td>*S. DJ.=  NO PAGO SIN DDJJ</td>
+		<td>*REQ. (nro. requerimiento) = FISCALIZADO</td>
+	  </tr>
+	  <tr>
+	  	<td>*J.EJEC (nro. orden) = EN JUICIO EJECUCIÓN </td>
+	    <td>*J.CONV (nro. orden) = EN JUICIO CONVOCATORIA </td>
+	    <td>*J.QUIEB (nro. orden) = EN JUICIO QUIEBRA </td>
+	    <td>&nbsp;</td>
+	  </tr>
+	</table>
+	<p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>
