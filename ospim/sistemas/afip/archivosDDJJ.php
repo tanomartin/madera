@@ -137,7 +137,7 @@ if($noHayDDJJ) {
 												$tituloform = "ERROR";
 												$mensaje = 'La carga de los registros de DDJJ (AFIPDDJJ) desde el archivo FALLO.';
 											} else {
-												$sqlCabeceraDJ = "SELECT cuit, anoddjj, mesddjj, COUNT(cuil) AS totalpersonal, SUM(remundeclarada) AS totalremundeclarada, IF(anoddjj>=2007,0.00,(SUM(remundecreto))) AS totalremundecreto FROM afipddjj WHERE nrodisco = '$proximonro' AND anoddjj >= 2000 GROUP BY cuit, anoddjj, mesddjj, secuenciapresentacion ORDER BY cuit, anoddjj, mesddjj, secuenciapresentacion";
+												$sqlCabeceraDJ = "SELECT cuit, anoddjj, mesddjj, COUNT(cuil) AS totalpersonal, SUM(remundeclarada+importeosadicional) AS totalremundeclarada, IF(anoddjj>=2007,0.00,(SUM(remundecreto))) AS totalremundecreto FROM afipddjj WHERE nrodisco = '$proximonro' AND anoddjj >= 2000 GROUP BY cuit, anoddjj, mesddjj, secuenciapresentacion ORDER BY cuit, anoddjj, mesddjj, secuenciapresentacion";
 												$resCabeceraDJ = $dbl->query($sqlCabeceraDJ);
 												if (!$resCabeceraDJ){
 													$tituloform = "ERROR";
@@ -157,7 +157,7 @@ if($noHayDDJJ) {
 														$tituloform = "ERROR";
 														$mensaje = 'La carga de los registros de agrupamiento para la cabecera de DDJJ (CABDDJJOSPIM) FALLO.';
 													} else {
-														$sqlDetalleDJ = "SELECT cuit, anoddjj, mesddjj, cuil, IF(anoddjj>=2007,remundeclarada,(remundeclarada+remundecreto)) AS remundeclarada, adherentes FROM afipddjj WHERE nrodisco = '$proximonro' AND anoddjj >= 2000 ORDER BY cuit, anoddjj, mesddjj, cuil, secuenciapresentacion";
+														$sqlDetalleDJ = "SELECT cuit, anoddjj, mesddjj, cuil, IF(anoddjj>=2007,(remundeclarada+importeosadicional),(remundeclarada+remundecreto+importeosadicional)) AS remundeclarada, adherentes FROM afipddjj WHERE nrodisco = '$proximonro' AND anoddjj >= 2000 ORDER BY cuit, anoddjj, mesddjj, cuil, secuenciapresentacion";
 														$resDetalleDJ = $dbl->query($sqlDetalleDJ);
 														if (!$resDetalleDJ){
 															$tituloform = "ERROR";
