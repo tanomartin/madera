@@ -9,9 +9,9 @@ $datos = array_values($_POST);
 
 $cuit = $datos[0];
 $nombre = $datos[1];
-$nombre = strtoupper($nombre);
+$nombre = addslashes(strtoupper($nombre));
 $domicilio = $datos[2];
-$domicilio = strtoupper($domicilio);
+$domicilio = addslashes(strtoupper($domicilio));
 $indpostal = $datos[3];
 $codpostal = $datos[4];
 $alfapostal = $datos[5];
