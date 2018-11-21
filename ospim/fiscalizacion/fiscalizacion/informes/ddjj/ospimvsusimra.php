@@ -2,10 +2,6 @@
 
 if (isset($_POST['periodo'])) {	
 	$arrayPeriodo = explode("-",$_POST['periodo']);
-	
-	$arrayPeriodo[0] = 2016;
-	$arrayPeriodo[1] = 9;
-	
 	$sqlOSPIM = "SELECT count(DISTINCT cuit) as cantidad, sum(totalremundeclarada)+sum(totalremundecreto) as totremun 
 				 FROM cabddjjospim c WHERE anoddjj = ".$arrayPeriodo[0]." and mesddjj = ".$arrayPeriodo[1];
 	$resOSPIM = mysql_query($sqlOSPIM,$db);
