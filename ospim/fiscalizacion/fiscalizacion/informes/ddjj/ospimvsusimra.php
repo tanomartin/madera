@@ -1,4 +1,5 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+set_time_limit(0);
 
 if (isset($_POST['periodo'])) {	
 	$arrayPeriodo = explode("-",$_POST['periodo']);
