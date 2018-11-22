@@ -4,10 +4,6 @@ set_time_limit(0);
 
 if (isset($_POST['periodo'])) {	
 	$arrayPeriodo = explode("-",$_POST['periodo']);
-	
-	$arrayPeriodo[0] = 2016;
-	$arrayPeriodo[1] = 6;
-	
 	$sqlUSIMRA = "SELECT cuit, remuneraciones
 				 FROM cabddjjusimra c WHERE anoddjj = ".$arrayPeriodo[0]." and mesddjj = ".$arrayPeriodo[1];
 	$resUSIMRA = mysql_query($sqlUSIMRA,$db);
