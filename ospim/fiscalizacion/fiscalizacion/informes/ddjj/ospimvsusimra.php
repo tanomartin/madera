@@ -7,6 +7,11 @@ if (isset($_POST['periodo'])) {
 	$resOSPIM = mysql_query($sqlOSPIM,$db);
 	$rowOSPIM = mysql_fetch_assoc($resOSPIM);
 	
+	$sqlOSPIMDet = "SELECT count(DISTINCT cuil) as cantidad
+				 FROM detddjjospim c WHERE anoddjj = ".$arrayPeriodo[0]." and mesddjj = ".$arrayPeriodo[1];
+	$resOSPIMDet = mysql_query($sqlOSPIMDet,$db);
+	$rowOSPIMDet = mysql_fetch_assoc($resOSPIMDet);
+	
 	$sqlUSIMRA = "SELECT cuit, remuneraciones
 				 FROM cabddjjusimra c WHERE anoddjj = ".$arrayPeriodo[0]." and mesddjj = ".$arrayPeriodo[1];
 	$resUSIMRA = mysql_query($sqlUSIMRA,$db);
@@ -21,15 +26,27 @@ if (isset($_POST['periodo'])) {
 		$arrayResultValidas['totremun'] += $rowUSIMRA['remuneraciones'];
 	}
 	
+	$sqlUSIMRADet = "SELECT count(DISTINCT cuil) as cantidad
+				 	 FROM detddjjusimra c WHERE anoddjj = ".$arrayPeriodo[0]." and mesddjj = ".$arrayPeriodo[1];
+	$resUSIMRADet = mysql_query($sqlUSIMRADet,$db);
+	$rowUSIMRADet = mysql_fetch_assoc($resUSIMRADet);
+	
 	$sqlUSIMRANoValidas = "SELECT nrcuit, remune FROM ddjjusimra c 
-							WHERE perano = ".$arrayPeriodo[0]." and 
-								  permes = ".$arrayPeriodo[1]." and 
-								  nrcuil = '99999999999' order by id DESC";
+						   WHERE perano = ".$arrayPeriodo[0]." and 
+								 permes = ".$arrayPeriodo[1]." and 
+								 nrcuil = '99999999999' order by id DESC";
 	$resUSIMRANoValidas = mysql_query($sqlUSIMRANoValidas,$db);
 	$arrayFiltro = array();
 	while($rowUSIMRANoValidas = mysql_fetch_assoc($resUSIMRANoValidas)) {
 		$arrayFiltro[$rowUSIMRANoValidas['nrcuit']] = $rowUSIMRANoValidas['remune'];
 	}
+	
+	$sqlUSIMRANoValidasDet = "SELECT count(DISTINCT nrcuil) as cantidad FROM ddjjusimra 
+							  WHERE perano = ".$arrayPeriodo[0]." and
+								  	permes = ".$arrayPeriodo[1]." and
+								  	nrcuil != '99999999999' order by id DESC";
+	$resUSIMRANoValidasDet = mysql_query($sqlUSIMRANoValidasDet,$db);
+	$rowUSIMRANoValidasDet = mysql_fetch_assoc($resUSIMRANoValidasDet);
 	
 	$arrayResultNoValidas['cantidad'] = 0;
 	$arrayResultNoValidas['totremun'] = 0;
@@ -85,17 +102,21 @@ function validar(formulario) {
 		</form>
   <?php if (isset($_POST['periodo'])) { ?>
   			<h3>Resultado de busqueda periodo '<?php echo $_POST['periodo'] ?>'</h3>
-			<table border="1" style="text-align: center; width: 800px">
+			<table border="1" style="text-align: center; width: 1000px">
 				<thead>
 					<tr>
 						<th rowspan="2">TIPO</th>
-						<th colspan="2">OSPIM</th>
-						<th colspan="2">USIMRA</th>
+						<th colspan="4">OSPIM</th>
+						<th colspan="4">USIMRA</th>
 					</tr>
 					<tr>
-						<th>Cantidad</th>
+						<th>Empresas</th>
+						<th>Afiliados</th>
+						<th>Afi/Emp</th>
 						<th>Tot. Remun.</th>
-						<th>Cantidad</th>
+						<th>Empresas</th>
+						<th>Empleados</th>
+						<th>Emple/Emp</th>
 						<th>Tot. Remun.</th>
 					</tr>
 				</thead>
@@ -103,22 +124,37 @@ function validar(formulario) {
 					<tr>
 						<td><b>Validas</b></td>
 						<td><?php echo $rowOSPIM['cantidad'] ?></td>
+						<td><?php echo $rowOSPIMDet['cantidad'] ?></td>
+						<td><?php echo number_format($rowOSPIMDet['cantidad']/$rowOSPIM['cantidad'],2,',','.') ?></td>
 						<td><?php echo number_format($rowOSPIM['totremun'],2,',','.') ?></td>
 						<td><?php echo $arrayResultValidas['cantidad'] ?></td>
+						<td><?php echo $rowUSIMRADet['cantidad'] ?></td>
+						<td><?php echo number_format($rowUSIMRADet['cantidad']/$arrayResultValidas['cantidad'],2,',','.') ?></td>
 						<td><?php echo number_format($arrayResultValidas['totremun'],2,',','.') ?></td>
 					</tr>
 					<tr>
 						<td><b>No Validadas</b></td>
 						<td>0</td>
+						<td>0</td>
+						<td>0,00</td>
 						<td><?php echo number_format(0,2,',','.') ?></td>
 						<td><?php echo $arrayResultNoValidas['cantidad'] ?></td>
+						<td><?php echo $rowUSIMRANoValidasDet['cantidad'] ?></td>
+						<td><?php echo number_format($rowUSIMRANoValidasDet['cantidad']/$arrayResultNoValidas['cantidad'],2,',','.') ?></td>
 						<td><?php echo number_format($arrayResultNoValidas['totremun'],2,',','.') ?></td>
 					</tr>
 					<tr>
 						<td><b>Total</b></td>
 						<td><?php echo $rowOSPIM['cantidad'] ?></td>
+						<td><?php echo $rowOSPIMDet['cantidad'] ?></td>
+						<td><?php echo number_format($rowOSPIMDet['cantidad']/$rowOSPIM['cantidad'],2,',','.') ?></td>
 						<td><?php echo number_format($rowOSPIM['totremun'],2,',','.') ?></td>
-						<td><?php echo $arrayResultValidas['cantidad']+$arrayResultNoValidas['cantidad'] ?></td>
+						<?php $totalUsimra = $arrayResultValidas['cantidad']+$arrayResultNoValidas['cantidad'];
+							  $totalUsimraAfi = $rowUSIMRADet['cantidad']+$rowUSIMRANoValidasDet['cantidad']; 
+							  $promedioUsimra = $totalUsimraAfi / $totalUsimra; ?>
+						<td><?php echo $totalUsimra ?></td>
+						<td><?php echo $totalUsimraAfi ?></td>
+						<td><?php echo number_format($promedioUsimra,2,',','.') ?></td>
 						<td><?php echo number_format($arrayResultValidas['totremun']+$arrayResultNoValidas['totremun'],2,',','.') ?></td>
 					</tr>
 				</tbody>
