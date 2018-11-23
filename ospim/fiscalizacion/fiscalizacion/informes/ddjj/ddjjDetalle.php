@@ -12,7 +12,7 @@ $sqlDetalle = "SELECT * FROM detddjjospim FORCE INDEX (busqueda) where cuit = $c
 $resDetalle = mysql_query($sqlDetalle,$db);
 $canDetalle = mysql_num_rows($resDetalle);
 
-$sqlDetalleAdicional = "SELECT cuil, importeosadicional FROM afipddjj where cuit = $cuit and anoddjj = $anoddjj  and mesddjj = $mesddjj order by secuenciapresentacion";
+/*$sqlDetalleAdicional = "SELECT cuil, importeosadicional FROM afipddjj where cuit = $cuit and anoddjj = $anoddjj  and mesddjj = $mesddjj order by secuenciapresentacion";
 $resDetalleAdicional = mysql_query($sqlDetalleAdicional,$db);
 $canDetalleAdicional = mysql_num_rows($resDetalleAdicional);
 $arrayAdicional = array();
@@ -20,7 +20,7 @@ if ($canDetalleAdicional > 0) {
 	while($rowDetalleAdicional = mysql_fetch_assoc($resDetalleAdicional)) {
 		$arrayAdicional[$rowDetalleAdicional['cuil']] = $rowDetalleAdicional['importeosadicional'];
 	}
-}
+}*/
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -65,13 +65,13 @@ if ($canDetalleAdicional > 0) {
 <div align="center">
   <h3>Detalle de DDJJ Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (O.S.P.I.M.)</h3>
   <h3>Periodo: <?php echo $mesddjj ?>-<?php echo $anoddjj ?></h3>
-  <table class="tablesorter" id="listado" style="width:800px; font-size:14px">
+  <table class="tablesorter" id="listado" style="width:600px; font-size:14px; text-align: center">
 	<thead>
 		<tr>
 			<th>C.U.I.L.</th>
 			<th>Remuneracion</th>
-			<th>Ap. Adicional</th>
-			<th>Total</th>
+			<!--  <th>Ap. Adicional</th> -->
+			<!--  <th>Total</th> -->
 			<th>Adherentes</th>
 		</tr>
 	</thead>
@@ -81,24 +81,25 @@ if ($canDetalleAdicional > 0) {
 		$remuntotal = 0;
 		while($rowDetalle = mysql_fetch_assoc($resDetalle)) {
 			$total += $rowDetalle['remundeclarada'];
-			$remun = $rowDetalle['remundeclarada'] - $arrayAdicional[$rowDetalle['cuil']]; 
+			//$remun = $rowDetalle['remundeclarada'] - $arrayAdicional[$rowDetalle['cuil']]; 
+			$remun = $rowDetalle['remundeclarada'];
 			$remuntotal += $remun;
-			$totAdic += $arrayAdicional[$rowDetalle['cuil']]; ?>
+			//$totAdic += $arrayAdicional[$rowDetalle['cuil']]; ?>
 			<tr align="center">
 				<td><?php echo $rowDetalle['cuil'];?></td>
 				<td><?php echo number_format($remun,2,',','.'); ?></td>
-				<td><?php echo number_format($arrayAdicional[$rowDetalle['cuil']],2,',','.');?></td>
-				<td><?php echo number_format($rowDetalle['remundeclarada'],2,',','.');  ?></td>
+			<!--  	<td><?php //echo number_format($arrayAdicional[$rowDetalle['cuil']],2,',','.');?></td> -->
+			<!--  	<td><?php //echo number_format($rowDetalle['remundeclarada'],2,',','.');  ?></td>  -->
 				<td><?php echo $rowDetalle['adherentes'];?></td>
 			</tr>
  <?php } ?>
 	</tbody>
 	<tr>
-		<td align="center" style="background-color: #99bfe6"><b>TOTAL</b></td>
-		<td align="center" style="background-color: #99bfe6"><b><?php echo number_format($remuntotal,2,',','.');?></b></td>
-		<td align="center" style="background-color: #99bfe6"><b><?php echo number_format($totAdic,2,',','.');?></b></td>
-		<td align="center" style="background-color: #99bfe6"><b><?php echo number_format($total,2,',','.');?></b></td>
-		<td style="background-color: #99bfe6"></td>
+		<th>TOTAL</th>
+		<th><?php echo number_format($remuntotal,2,',','.');?></th>
+		<!--  <th><?php // echo number_format($totAdic,2,',','.'); ?></th> -->
+		<!-- <th><?php echo number_format($total,2,',','.');?></th> -->
+		<th></th>
 	</tr>
   </table>
     <table width="245" border="0">
