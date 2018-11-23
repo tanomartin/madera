@@ -3,7 +3,7 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
 $sqlLeeAutorizacion = "SELECT * FROM autorizaciones a, delegaciones d 
-						WHERE a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
+						WHERE a.codidelega = d.codidelega ORDER BY nrosolicitud ASC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
 $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 ?>
