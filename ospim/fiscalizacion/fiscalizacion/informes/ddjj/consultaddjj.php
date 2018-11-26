@@ -5,27 +5,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Consulta de D.D.J.J. :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
-
 
 jQuery(function($){
 	$("#dato").mask("99999999999");
@@ -46,40 +30,28 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" action="ddjjListado.php" onsubmit="return validar(this)">
-  <p align="center">
-   <input type="reset" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'" />
-  </p>
-  <p align="center" class="Estilo1">Consulta de D.D.J.J.</p>
-  <p> 
-   <?php 
-   	if (isset($_GET['err'])) {
-  		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> CUIT SIN DDJJ REGISTRADOS </b></div>");
-		}
-		if ($err == 2) {
-			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
-		}
-   	}
-  ?>
-  </p>
-  <div align="center">
-    <table width="295" border="0">
-      
-      <tr>
-        <td width="174"><div align="right">C.U.I.T.</div></td>
-        <td width="173"><div align="left">
-            <input name="dato" id="dato" type="text" size="13" />
-        </div></td>
-      </tr>
-    </table>
-  </div>
-  <p align="center">
-    <label>
-    <input type="submit" name="Submit" value="Buscar" />
-    </label>
-  </p>
+	<div align="center">
+  		<p><input type="button" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'" /></p>
+  		<h3>Consulta de D.D.J.J.</h3>
+  		<p><?php 
+  			if (isset($_GET['err'])) {
+			  	$err = $_GET['err'];
+				if ($err == 1) {
+					print("<div align='center' style='color:#FF0000'><b> CUIT SIN DDJJ REGISTRADOS </b></div>");
+				}
+				if ($err == 2) {
+					print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
+				}
+		  	} ?>
+ 	 	</p>
+    	<table width="300" border="0">
+	     	<tr>
+		        <td width="100"><div align="right">C.U.I.T.</div></td>
+		        <td width="200"><div align="left"><input name="dato" id="dato" type="text" size="13" /></div></td>
+	      	</tr>
+    	</table>
+  		<p><input type="submit" name="Submit" value="Buscar" /></p>
+  	</div>
 </form>
-<p align="center">&nbsp;</p>
 </body>
 </html>

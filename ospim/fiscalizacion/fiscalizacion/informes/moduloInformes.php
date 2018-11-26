@@ -28,13 +28,16 @@
         <tr>
           <td>
           	<p>CANT. DDJJ OSPIM-USIMRA</p>
-            <p><a href="ddjj/ospimvsusimra.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+            <p><a href="ddjj/ddjjospimusimraper.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
           </td>
           <td>
           	<p>LIQUIDACIONES</p>
             <p><a href="liquidaciones/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0"/></a></p>
           </td>
-          <td>&nbsp;</td>
+          <td>
+          	<p>CANT. DDJJ OSPIM-USIMRA X DEL</p>
+            <p><a href="ddjj/ddjjospimusimradel.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+          </td>
         </tr>
       </table>
 	</div>
