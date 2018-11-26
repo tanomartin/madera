@@ -33,14 +33,7 @@ if (isset($_POST['periodo'])) {
 	while($rowUSIMRANoValidas = mysql_fetch_assoc($resUSIMRANoValidas)) {
 		$arrayFiltro[$rowUSIMRANoValidas['nrcuit']] = array("remune" => $rowUSIMRANoValidas['remune'], "personal" => $rowUSIMRANoValidas['nfilas']);
 	}
-	
-	$sqlUSIMRANoValidasDet = "SELECT count(DISTINCT nrcuil) as cantidad FROM ddjjusimra 
-							  WHERE perano = ".$arrayPeriodo[0]." and
-								  	permes = ".$arrayPeriodo[1]." and
-								  	nrcuil != '99999999999' order by id DESC";
-	$resUSIMRANoValidasDet = mysql_query($sqlUSIMRANoValidasDet,$db);
-	$rowUSIMRANoValidasDet = mysql_fetch_assoc($resUSIMRANoValidasDet);
-	
+		
 	$arrayResultNoValidas['cantidad'] = 0;
 	$arrayResultNoValidas['totremun'] = 0;
 	$arrayResultNoValidas['personal'] = 0;
