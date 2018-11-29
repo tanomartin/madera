@@ -3,6 +3,8 @@ set_time_limit(0);
 
 if (isset($_POST['periodo']) && isset($_POST['delegacion'])) {
 	$arrayPeriodo = explode("-",$_POST['periodo']);
+	
+	/*************************************************************************************************/
 	$delegacion = $_POST['delegacion'];
 	$sqlEmpresas100 = "SELECT e.cuit, e.nombre
 						FROM jurisdiccion j, empresas e
@@ -13,22 +15,50 @@ if (isset($_POST['periodo']) && isset($_POST['delegacion'])) {
 		$arrayEmpresas[$rowEmpresas100['cuit']] = $rowEmpresas100['nombre'];
 	}
 	
+	$sqlEmpresas100 = "SELECT e.cuit, e.nombre
+						FROM jurisdiccion j, empresasdebaja e
+						WHERE j.codidelega = $delegacion and j.cuit = e.cuit and j.disgdinero = 100.00";
+	$resEmpresas100 = mysql_query($sqlEmpresas100,$db);
+	while ($rowEmpresas100 = mysql_fetch_assoc($resEmpresas100)) {
+		$arrayEmpresas[$rowEmpresas100['cuit']] = $rowEmpresas100['nombre'];
+	}
+	/*************************************************************************************************/
+	
+	/*************************************************************************************************/
+	$whereIn = "(";
 	$sqlEmpresas = "SELECT e.cuit, e.nombre, j.codidelega, disgdinero
 					FROM jurisdiccion j, empresas e
 					WHERE j.codidelega = $delegacion and j.cuit = e.cuit and j.disgdinero != 100.00";
 	$resEmpresas = mysql_query($sqlEmpresas,$db);
-	$whereIn = "(";
 	while($rowEmpresas = mysql_fetch_assoc($resEmpresas)) {
 		$whereIn .= "'".$rowEmpresas['cuit']."',";
 	}
+	
+	$sqlEmpresas = "SELECT e.cuit, e.nombre, j.codidelega, disgdinero
+					FROM jurisdiccion j, empresasdebaja e
+					WHERE j.codidelega = $delegacion and j.cuit = e.cuit and j.disgdinero != 100.00";
+	$resEmpresas = mysql_query($sqlEmpresas,$db);
+	while($rowEmpresas = mysql_fetch_assoc($resEmpresas)) {
+		$whereIn .= "'".$rowEmpresas['cuit']."',";
+	}	
 	$whereIn = substr($whereIn, 0, -1);
 	$whereIn .= ")";
+	/*************************************************************************************************/
 	
+	/*************************************************************************************************/
+	$arrayEmpreasControl = array();
 	$sqlEmpresasDisg = "SELECT e.cuit, e.nombre, j.codidelega
 						FROM jurisdiccion j, empresas e
-						WHERE e.cuit in $whereIn and e.cuit = j.cuit";
+						WHERE e.cuit in $whereIn and e.cuit = j.cuit ORDER BY j.codidelega";
 	$resEmpresasDisg = mysql_query($sqlEmpresasDisg,$db);
-	$arrayEmpreasControl = array();
+	while($rowEmpresasDisg = mysql_fetch_assoc($resEmpresasDisg)) {
+		$arrayEmpreasControl[$rowEmpresasDisg['cuit']] = array('delega' => $rowEmpresasDisg['codidelega'], 'nombre' => $rowEmpresasDisg['nombre']);
+	}
+	
+	$sqlEmpresasDisg = "SELECT e.cuit, e.nombre, j.codidelega
+						FROM jurisdiccion j, empresasdebaja e
+						WHERE e.cuit in $whereIn and e.cuit = j.cuit ORDER BY j.codidelega";
+	$resEmpresasDisg = mysql_query($sqlEmpresasDisg,$db);
 	while($rowEmpresasDisg = mysql_fetch_assoc($resEmpresasDisg)) {
 		$arrayEmpreasControl[$rowEmpresasDisg['cuit']] = array('delega' => $rowEmpresasDisg['codidelega'], 'nombre' => $rowEmpresasDisg['nombre']);
 	}
@@ -37,6 +67,8 @@ if (isset($_POST['periodo']) && isset($_POST['delegacion'])) {
 			$arrayEmpresas[$cuit] = $datos['nombre'];
 		}
 	}
+	/*************************************************************************************************/
+	
 	
 	$cantidadTotalEmpresas = sizeof($arrayEmpresas);
 
