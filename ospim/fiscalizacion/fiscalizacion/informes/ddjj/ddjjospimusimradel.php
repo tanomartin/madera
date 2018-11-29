@@ -92,10 +92,30 @@ if (isset($_POST['periodo']) && isset($_POST['delegacion'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Consulta de D.D.J.J. :.</title>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
-<script>
+<link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" />
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
+<script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script type="text/javascript">
+
+$(function() {
+	$("#listado")
+	.tablesorter({
+		theme: 'blue', 
+		widthFixed: true, 
+		widgets: ["zebra", "filter"], 
+		widgetOptions : { 
+			filter_cssFilter   : '',
+			filter_childRows   : false,
+			filter_hideFilters : false,
+			filter_ignoreCase  : true,
+			filter_searchDelay : 300,
+			filter_startsWith  : false,
+			filter_hideFilters : false,	
+		}		
+	});
+});
 
 function validar(formulario) {
 	if (formulario.periodo.value == 0) {
@@ -119,7 +139,7 @@ function validar(formulario) {
 <div align="center">
 	<p><input type="button" name="volver" class="nover" value="Volver" onclick="location.href = '../moduloInformes.php'" /></p>
 	<h3>DETALLE CUIT DDJJ OSPIM y USIMRA</h3>
-	<form id="consultaOSUS" name="consultaOSUS" method="post" action="ddjjospimusimradel.php" onsubmit="return validar(this)" class="nover">
+	<form id="consultaOSUS" class="nover" name="consultaOSUS" method="post" action="ddjjospimusimradel.php" onsubmit="return validar(this)" class="nover">
 		<p>
 			<b>Periodo: </b>
 			<select name="periodo" id="periodo" >
@@ -148,7 +168,7 @@ function validar(formulario) {
 	<?php if (isset($_POST['periodo']) && isset($_POST['delegacion'])) { ?>
 			<h3>Resultado de busqueda delegacion '<?php echo $_POST['delegacion'] ?>' periodo '<?php echo $_POST['periodo'] ?>' </h3>
 			<h3>TOTAL DE EMPRESAS ACTIVAS <font color="blue"> '<?php echo $cantidadTotalEmpresas ?>' </font></h3>
-			<table border="1" style="text-align: center; width: 1000px">
+			<table class="tablesorter" id="listado" style="text-align: center; width: 1100px">
 				<thead>
 					<tr>
 						<th rowspan="2">CUIT</th>
@@ -198,6 +218,7 @@ function validar(formulario) {
 					</tr>
 				</tbody>
 			</table>
+			<p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 	<?php } ?>
 </div>
 </body>
