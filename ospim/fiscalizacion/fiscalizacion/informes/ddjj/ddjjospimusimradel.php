@@ -4,11 +4,6 @@ set_time_limit(0);
 if (isset($_POST['periodo']) && isset($_POST['delegacion'])) {
 	$arrayPeriodo = explode("-",$_POST['periodo']);
 	$delegacion = $_POST['delegacion'];
-	
-	$arrayPeriodo[0] = 2016;
-	$arrayPeriodo[1] = 9;
-	
-	
 	$sqlEmpresas100 = "SELECT e.cuit, e.nombre
 						FROM jurisdiccion j, empresas e
 						WHERE j.codidelega = $delegacion and j.cuit = e.cuit and j.disgdinero = 100.00";
