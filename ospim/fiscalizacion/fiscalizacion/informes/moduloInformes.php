@@ -36,7 +36,7 @@
           </td>
           <td>
           	<p>CANT. DDJJ OSPIM-USIMRA X DEL</p>
-            <p><a href="../../../moduloNoDisponible.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+            <p><a href="ddjj/ddjjospimusimradel.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
           </td>
         </tr>
       </table>
