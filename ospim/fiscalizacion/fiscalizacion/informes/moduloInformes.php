@@ -5,50 +5,41 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Fiscalisador OSPIM :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 </head>
-
 <body bgcolor="#CCCCCC">
 	<div align="center">
-	  <p>
-	    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" />
-      </p>
-	  <p><span class="Estilo1">Men&uacute; Consultas </span></p>
-	  <table width="626" border="3">
+	  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" /></p>
+	  <h3>Men&uacute; Consultas </h3>
+	  <table width="600" border="1" style="text-align: center">
         <tr>
-          <td width="200"><p align="center">Aportes</p>
-              <p align="center"><a class="enlace" href="aportes/consultaAportes.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-            <p align="center">&nbsp;</p></td>
-          <td width="200"><p align="center">DDJJ</p>
-              <p align="center"><a class="enlace" href="ddjj/consultaddjj.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-            <p align="center">&nbsp;</p></td>
-          <td width="200"><p align="center">Requerimientos </p>
-              <p align="center"><a class="enlace"  href="requerimientos/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-            <p align="center">&nbsp;</p></td>
+          <td width="200">
+          	<p>APORTES</p>
+            <p><a href="aportes/consultaAportes.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+          </td>
+          <td width="200">
+          	<p>DDJJ</p>
+            <p><a href="ddjj/consultaddjj.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+          </td>
+          <td width="200">
+          	<p>REQUERIMIENTO </p>
+            <p><a href="requerimientos/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0"/></a></p>
+          </td>
         </tr>
         <tr>
-          <td><p align="center">&nbsp;</p>
-              <p align="center">&nbsp;</p></td>
-          <td><p align="center">Liquidaciones</p>
-              <p align="center"><a class="enlace" href="liquidaciones/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-            <p>&nbsp;</p></td>
-          <td>&nbsp;</td>
+          <td>
+          	<p>CANT. DDJJ OSPIM-USIMRA</p>
+            <p><a href="ddjj/ddjjospimusimraper.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+          </td>
+          <td>
+          	<p>LIQUIDACIONES</p>
+            <p><a href="liquidaciones/filtrosBusqueda.php"><img src="img/consultas.png" width="90" height="90" border="0"/></a></p>
+          </td>
+          <td>
+          	<p>CANT. DDJJ OSPIM-USIMRA X DEL</p>
+            <p><a href="ddjj/ddjjospimusimradel.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+          </td>
         </tr>
       </table>
-	  </div>
+	</div>
 </body>
 </html>

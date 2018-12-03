@@ -11,7 +11,7 @@ $datos = array_values($_POST);
 
 $cuit = $datos[0];
 $domicilio = $datos[1];
-$domicilio = strtoupper($domicilio);
+$domicilio = addslashes(strtoupper($domicilio));
 $indpostal = $datos[2];
 $codpostal = $datos[3];
 $alfapostal = $datos[4];

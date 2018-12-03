@@ -15,30 +15,13 @@ if ($canEmpresa == 0) {
 	if ($canDdjj == 0) {
 		header ("Location: consultaddjj.php?err=1");
 	}
-}
-	
-
-
-?>
+} ?>
 
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de DDJJ por C.U.I.T. :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-<style type="text/css" media="print">
-.nover {display:none}
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -73,37 +56,37 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-	 <input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'consultaddjj.php'" />
-	<p><span class="Estilo2">D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (O.S.P.I.M.) </span></p>
-	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
-	<thead>
-		<tr>
-			<th class="filter-select" data-placeholder="Seleccion Año">Año</th>
-			<th class="filter-select" data-placeholder="Seleccion Mes">Mes</th>
-			<th>Personal</th>
-			<th>Remuneracion</th>
-			<th>Remu. Decreto</th>
-			<th class="nover">Acciones</th>
-		</tr>
-	</thead>
-	<tbody>
-		<?php
-		while($rowDdjj = mysql_fetch_assoc($resDdjj)) {
-			$linkDetalle = "ddjjDetalle.php?anoddjj=".$rowDdjj['anoddjj']."&mesddjj=".$rowDdjj['mesddjj']."&cuit=".$rowDdjj['cuit'];
-		?>
-		<tr align="center">
-			<td><?php echo $rowDdjj['anoddjj'];?></td>
-			<td><?php echo $rowDdjj['mesddjj'];?></td>
-			<td><?php echo $rowDdjj['totalpersonal'];?></td>
-			<td><?php echo $rowDdjj['totalremundeclarada'];?></td>
-			<td><?php echo $rowDdjj['totalremundecreto'];?></td>
-			<td class="nover"><input type="button" value="Detalle" onclick="detalleDdjj('<?php echo $linkDetalle ?>')" /></td>
-		</tr>
-		<?php
-		}
-		?>
-	</tbody>
-  </table>
+	<p><input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'consultaddjj.php'" /></p>
+	<h3>D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (O.S.P.I.M.) </h3>
+	<table class="tablesorter" id="listado" style="width:800px; font-size:14px; text-align: center">
+		<thead>
+			<tr>
+				<th class="filter-select" data-placeholder="Seleccion Año">Año</th>
+				<th class="filter-select" data-placeholder="Seleccion Mes">Mes</th>
+				<th>Personal</th>
+				<th>Remuneracion</th>
+				<th>Remu. Decreto</th>
+				<th class="nover">Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			while($rowDdjj = mysql_fetch_assoc($resDdjj)) {
+				$linkDetalle = "ddjjDetalle.php?anoddjj=".$rowDdjj['anoddjj']."&mesddjj=".$rowDdjj['mesddjj']."&cuit=".$rowDdjj['cuit'];
+			?>
+			<tr>
+				<td><?php echo $rowDdjj['anoddjj'];?></td>
+				<td><?php echo $rowDdjj['mesddjj'];?></td>
+				<td><?php echo $rowDdjj['totalpersonal'];?></td>
+				<td><?php echo $rowDdjj['totalremundeclarada'];?></td>
+				<td><?php echo $rowDdjj['totalremundecreto'];?></td>
+				<td class="nover"><input type="button" value="Detalle" onclick="detalleDdjj('<?php echo $linkDetalle ?>')" /></td>
+			</tr>
+			<?php
+			}
+			?>
+		</tbody>
+  	</table>
     <table style="width: 245; border: 0">
       <tr>
         <td width="239">
@@ -123,7 +106,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<p align="center"><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();"/></p>
 		  </form>	
 		</div>
-	</td>
+		</td>
       </tr>
   </table>
 </div>

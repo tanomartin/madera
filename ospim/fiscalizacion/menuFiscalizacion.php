@@ -6,35 +6,27 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Fiscalizacion :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
-<div align="center">
-  <p><span class="Estilo2">Men&uacute; Fiscalizacion </span></p>
-  <table width="600" border="3">
-    <tr>
-      <td width="200"><p align="center">Configuraci&oacute;n</p>
-          <p align="center"><a class="enlace" href="configuracion/menuConfiguracionFiscalizacion.php"><img src="img/configuracion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-      <td width="200"><p align="center">Boletas de Acuerdo </p>
-        <p align="center"><a class="enlace" href="acuerdos/fiscalizacionImpresion.php"><img src="img/impresora.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-	  <td width="200"><p align="center">Fiscalizaciones </p>
-        
-		<p align="center"><a class="enlace" href="fiscalizacion/menuFiscalizaciones.php"><img src="img/fiscalizador.png" width="90" height="78" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p></td>
-    </tr>
-  </table>
-</div>
+	<div align="center">
+	  <h3>Menú Fiscalizacion </h3>
+	  <table width="600" border="1" style="text-align: center">
+	    <tr>
+	      <td width="200">
+	      	<p>CONFIGURACIÓN</p>
+	        <p><a href="configuracion/menuConfiguracionFiscalizacion.php"><img src="img/configuracion.png" width="90" height="90" border="0" /></a></p>
+	      </td>
+	      <td width="200">
+	      	<p>BOLETAS DE ACUERDOS</p>
+	        <p><a href="acuerdos/fiscalizacionImpresion.php"><img src="img/impresora.png" width="90" height="90" border="0" /></a></p>
+	      </td>
+		  <td width="200">
+		  	<p>FISCALIZACION </p>
+			<p><a href="fiscalizacion/menuFiscalizaciones.php"><img src="img/fiscalizador.png" width="90" height="78" border="0" /></a></p>
+	      </td>
+	    </tr>
+	  </table>
+	</div>
 </body>
 </html>

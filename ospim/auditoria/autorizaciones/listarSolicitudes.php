@@ -3,7 +3,7 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 
 $sqlLeeAutorizacion = "SELECT * FROM autorizaciones a, delegaciones d 
-						WHERE a.codidelega = d.codidelega ORDER BY nrosolicitud DESC";
+						WHERE a.codidelega = d.codidelega ORDER BY nrosolicitud ASC";
 $resultLeeAutorizacion = mysql_query($sqlLeeAutorizacion,$db);
 $totalLeeAutorizacion = mysql_num_rows($resultLeeAutorizacion);
 ?>
@@ -42,7 +42,7 @@ $(function() {
 <body bgcolor="#CCCCCC">
 	<div align=center>
 		<p><input type="button" name="volver" value="Volver" onClick="location.href = 'moduloAutorizaciones.php'"/></p>
-		<h3>Solicitudes Sin Atención</h3>
+		<h3>Solicitudes Sin Atención [<?php echo $totalLeeAutorizacion?>]</h3>
 <?php 	if ($totalLeeAutorizacion !=0) { ?>
 		<table id="listadorSolicitudes" class="tablesorter" style="width:90%; font-size:14px; text-align: center;">
 			<thead>
