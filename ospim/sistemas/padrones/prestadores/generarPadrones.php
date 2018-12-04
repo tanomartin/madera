@@ -43,7 +43,6 @@ $carpeta = $mes . $anio;
 
 if (strcmp ( "localhost", $maquina ) == 0) {
 	$direArc = "archivos/" . $carpeta;
-	$hostOspim = "localhost"; 
 } else {
 	$direArc = "/home/sistemas/Documentos/Repositorio/Capitados/" . $carpeta;
 }
