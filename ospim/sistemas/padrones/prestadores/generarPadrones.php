@@ -109,7 +109,7 @@ for($f = 0; $f < $finalFor; $f ++) {
 			require ("padronNoCapitado.php");
 		}
 		
-		if (strcmp ( "Poseidon", $maquina ) != 0) {
+		if (strcmp ( "poseidon", $maquina ) != 0) {
 			$hostOspim = "localhost";
 		}
 		
