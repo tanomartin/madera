@@ -71,7 +71,7 @@ function validar(formulario) {
     </table>  
     <p class="Estilo7">Periodo 
       <label>
-		  <?php  $mes = date("n");
+		  <?php  $mes = date("m");
 		  		 $anio = date("Y");
 		  		 $dia = date("j");
 				 $quincena = 2;
