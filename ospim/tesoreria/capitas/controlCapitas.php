@@ -1,79 +1,19 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 include($libPath."claves.php");
+$maquina = $_SERVER ['SERVER_NAME'];
 
 if(isset($_POST['periodo'])) {
 	$periodo = explode('-',$_POST['periodo']);
 	$mesPedido = $periodo[0];
 	$mesPedido = str_pad($periodo[0],2,'0',STR_PAD_LEFT);
 	$anioPedido = $periodo[1];
+	$quinPedido = $periodo[2];
 }
 
-function formatoPerido($per) {
-	if ($per == 1) {
-		return "01";
-	}
-	if ($per == 2) {
-		return "02";
-	}
-	if ($per == 3) {
-		return "03";
-	}
-	if ($per == 4) {
-		return "04";
-	}
-	if ($per == 5) {
-		return "05";
-	}
-	if (($per == 6) || ($per == -6)) {
-		return "06";
-	}
-	if (($per == 7) || ($per == -5)) {
-		return "07";
-	}
-	if (($per == 8) || ($per == -4)) {
-		return "08";
-	}
-	if (($per == 9) || ($per == -3)) {
-		return "09";
-	}
-	if (($per == 10) || ($per == -2)) {
-		return "10";
-	}
-	if (($per == 11) || ($per == -1)) {
-		return "11";
-	}
-	if (($per == 12) || ($per == 0)){
-		return "12";
-	}
-}
-
-$dia=date("j");
-$mes=date("m");
-$anio=date("Y");
-/*if ($dia < 14) {
-	$inicio=2;
-	$fin=7;
-}
-else  {*/
-	$inicio=1;
-	$fin=6;
-//}
-
-for ( $i = $inicio ; $i <= $fin ; $i++) {
-	$perAux=$mes - $i;
-	if ($perAux <= 0) {
-		$anioArc[$i]=$anio-1;
-		$mesArc[$i]=formatoPerido($perAux);
-	}
-	else {
-		$anioArc[$i]=$anio;
-		$mesArc[$i]=formatoPerido($perAux);
-	}
-}
-/*if(strcmp("localhost",$maquina)==0) {
+if(strcmp("localhost",$maquina)==0) {
 	$hostOspim = "localhost"; //para las pruebas...
-}*/
+}
 $dbInternet =  mysql_connect($hostOspim,$usuarioOspim,$claveOspim );
 if (!$dbInternet) {
 	die('No pudo conectarse a la base de OSPIM.COM.AR: ' . mysql_error());
@@ -86,96 +26,106 @@ mysql_select_db($baseOspimPrestadores);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>Control Capitas</title>
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
+<link rel="stylesheet" href="/madera/lib/tablas.css"/>
+
 <script language="javascript">
+
+function validar(formulario) {
+	if (formulario.periodo.value == 0){
+		alert("Debe Seleccionar un Periodo");
+		return false;
+	}
+	return true;
+}
+
 function abrirDetelle(dire) {
 	a= window.open(dire,"InfoCapitas",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
+
 </script>
 </head>
+
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><span style="text-align:center"><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = '../menuTesoreria.php'" /></span></p>
-  <p class="Estilo2">Informacion de Subida y Descarga de Padrones - Capitas </p>
-  <p class="nover"><b>Seleccione Per&iacute;odo</b></p>
-  
-  <form name="controlCapitas" action="controlCapitas.php" method="post">	 
+  <h3>Informacion de Subida y Descarga de Padrones - Capitas </h3>
+  <h3 class="nover">Seleccione Per&iacute;odo</h3>
+  <?php $sqlPeriodos = "SELECT * FROM periodos ORDER BY anopad DESC, mespad DESC, quincena DESC LIMIT 6"; 
+  		$resPeriodos = mysql_query($sqlPeriodos,$dbInternet); ?>
+  <form name="controlCapitas" action="controlCapitas.php" method="post" onsubmit="return validar(this)">	 
 	  <select class="nover" name="periodo" id="periodo">
 	  <option selected="selected" value="0"> Seleccione Periodo </option>
-		  <?php 
-			for ($i=$inicio;$i<=$fin;$i++){
-				$valor = $mesArc[$i]."-".$anioArc[$i];
-				print("<option value=$valor>$valor</option>");	
-			}	
-		  ?>
+		  <?php while($rowPeriodos=mysql_fetch_array($resPeriodos)) {
+					$valor1 = $rowPeriodos['mespad']."-".$rowPeriodos['anopad']."-".$rowPeriodos['quincena']; ?>
+					<option value="<?php echo $valor1?>"><?php echo $valor1 ?></option>
+	   	  <?php } ?>
 	  </select>
   <label><input class="nover" type="submit" name="Submit" value="Listar" /></label>
   </form>
-  
   <?php
-	$sqlPrestador = "select * from capitados";
-	$resPrestador = mysql_query($sqlPrestador,$db);
-	if (isset($mesPedido) && isset($anioPedido)) { ?>
-		 <p class="Estilo2">Periodo <?php echo $mesPedido."/".$anioPedido ?></p>
-		 <table width="1053" border="1" align="center">
-			<tr>
-			  <td><div align="center"><strong>Prestador</strong></div></td>
-			  <td><div align="center"><strong>Fecha de Subida</strong></div></td>
-			  <td><div align="center"><strong>Primera Bajada</strong></div></td>
-			  <td><div align="center"><strong>Cant. Titulares</strong></div></td>
-			  <td><div align="center"><strong>Cant. Familiares</strong></div></td>
-			  <td><div align="center"><strong>Total de Beneficiarios</strong></div></td>
-			  <td class="nover"><div align="center"><strong>Benef. por Deleg. </strong></div></td>
-			</tr>
-		<?php while($rowPrestador=mysql_fetch_array($resPrestador)) {
+	if (isset($mesPedido) && isset($anioPedido)) {
+		 $sqlPrestador = "select * from usuarios";
+		 $resPrestador = mysql_query($sqlPrestador,$dbInternet); ?>
+		 <?php $cartel = $quinPedido." º Quincena";
+		 		if ($quinPedido == 0)  { $cartel = "MENSUAL"; } ?>
+		 <h3>Periodo <?php echo "$mesPedido/$anioPedido - $cartel "?></h3>
+		 <div class="grilla">
+		 <table style="width: 900px">
+			<thead>
+				<tr>
+				  <th>Prestador</th>
+				  <th>Fecha de Subida</th>
+				  <th>Primera Bajada</th>
+				  <th>Cant. Titulares</th>
+				  <th>Cant. Familiares</th>
+				  <th>Total de Beneficiarios</th>
+				  <th class="nover">Benef. por Deleg. </th>
+				</tr>
+			</thead>
+			<tbody>
+	  <?php while($rowPrestador=mysql_fetch_array($resPrestador)) {
 				$presta = $rowPrestador['codigo'];
-				$sql2 = "select * from subidapadroncapitados where codigoprestador = $presta and mespadron = $mesPedido and anopadron = $anioPedido"  ;
-				$result2 = mysql_query($sql2,$db);
+				$sql2 = "select * from subida where codigo = $presta and mespad = $mesPedido and anopad = $anioPedido and quincena = $quinPedido"  ;
+				$result2 = mysql_query($sql2,$dbInternet);
 				$row2=mysql_fetch_array($result2); 
 				if (mysql_num_rows($result2)==0) {
 					$subida="NO SUBIDO";
 				} else {
-					$subida=$row2['fechasubida']." (".$row2['horasubida'].")";
+					$subida=$row2['fecsub']." (".$row2['horsub'].")";
 				}
 				
-				$sql3 = "select * from descarga where codigo = $presta and mespad = $mesPedido and anopad = $anioPedido and estdes='S' order by codigo, anopad, mespad, nrodes LIMIT 1";
+				$sql3 = "select * from descarga where codigo = $presta and mespad = $mesPedido and anopad = $anioPedido and quincena = $quinPedido and estdes='S' order by codigo, anopad, mespad, nrodes LIMIT 1";
 				$result3 = mysql_query($sql3,$dbInternet);
 				$row3=mysql_fetch_array($result3); 
 				if (mysql_num_rows($result3)==0) {
 					$descarga="NUNCA";
 				} else {
 					$descarga=$row3['fecdes']." (".$row3['hordes'].")";
-				}
-				print ("<tr>");
-				print ("<td><div align=center><font face=Verdana size=2>".$presta." - ".$rowPrestador['nombre']."</font></div></td>");
-				print ("<td><div align=center><font face=Verdana size=2>".$subida."</font></div></td>");
-				print ("<td><div align=center><font face=Verdana size=2>".$descarga."</font></div></td>");
-				print ("<td><div align=center><font face=Verdana size=2>".$row2['totaltitulares']."</font></div></td>");
-				print ("<td><div align=center><font face=Verdana size=2>".$row2['totalfamiliares']."</font></div></td>");
-				print ("<td><div align=center><font face=Verdana size=2>".$row2['totalbeneficiarios']."</font></div></td>");
-				if ($subida=="NO SUBIDO") {
-					print ("<td class='nover'><div align=center><font face=Verdana size=2>".$subida."</font></div></td>");
-				} else {
-					$dire = "detalleCapitas.php?presta=$presta&ano=$anioPedido&mes=$mesPedido";
-					print ("<td class='nover' align=center><a href=javascript:abrirDetelle('$dire')>VER</a></td>"); 
-				}
-				print ("</tr>");
-			?>
-        <?php } ?>
+				}?>
+				<tr>
+					<td><?php echo "$presta - ".$rowPrestador['nombre'] ?></td>
+					<td><?php echo $subida ?></td>
+					<td><?php echo $descarga ?></td>
+					<td><?php echo $row2['tottit'] ?></td>
+					<td><?php echo $row2['totfam'] ?></td>
+					<td><?php echo $row2['totben'] ?></td>
+				
+			<?php 	if ($subida=="NO SUBIDO") { ?>
+						<td class='nover'><?php echo $subida ?></td>
+			<?php	} else {
+						$dire = "detalleCapitas.php?presta=$presta&ano=$anioPedido&mes=$mesPedido&quin=$quinPedido";  ?>
+						<td><input class="nover" type="button" value="Ver Detalle"  onclick="javascript:abrirDetelle('<?php echo $dire ?>')" /></td>
+			<?php	} ?>
+				</tr>
+	<?php	} ?>
+        	</tbody>
 		</table>
-		 <p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
+		</div>
+		<p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
   <?php	} ?> 
 </div>
 </body>

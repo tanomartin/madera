@@ -1,6 +1,4 @@
-<?php
-
-$libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
+<?php $libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
 set_time_limit ( 0 );
 ini_set ( 'memory_limit', '448M' );
 include ($libPath . "controlSessionOspimSistemas.php");
@@ -24,13 +22,28 @@ $periodo = explode ( '-', $_POST ['periodo'] );
 $mes = $periodo [0];
 $mes = str_pad ( $periodo [0], 2, '0', STR_PAD_LEFT );
 $anio = $periodo [1];
-$fecha = $anio . "-" . $mes . "-01";
-$fechaLimite = date ( 'Y-m-j', strtotime ( '+1 month', strtotime ( $fecha ) ) );
+$quincena = $periodo [2];
+if ($quincena == 2) {
+	$dia = "01";
+	$fecha = $anio . "-" . $mes . "-" .$dia;
+	$fechaLimite = date ( 'Y-m-j', strtotime ( '+1 month', strtotime ( $fecha ) ) );
+	$fechaMuestra = date ( 'Y-m-j', strtotime ( '+7 day', strtotime ( $fechaLimite ) ) );
+} else {
+	$dia = "15";
+	$fecha = $anio . "-" . $mes . "-" .$dia;
+	$fechaLimite = date ( 'Y-m-j', strtotime ($fecha) );
+	$fechaMuestra = date ( 'Y-m-j', strtotime ( '+7 day', strtotime ( $fechaLimite ) ) );
+}
+
+//echo $fechaLimite."<br>";
+//echo $fechaMuestra."<br>";
+
 $maquina = $_SERVER ['SERVER_NAME'];
 $carpeta = $mes . $anio;
 
 if (strcmp ( "localhost", $maquina ) == 0) {
 	$direArc = "archivos/" . $carpeta;
+	$hostOspim = "localhost"; 
 } else {
 	$direArc = "/home/sistemas/Documentos/Repositorio/Capitados/" . $carpeta;
 }
@@ -44,6 +57,27 @@ $finalFor = sizeof ( $_POST ) - 2;
 $datos = array_values ( $_POST );
 $arrayResultados = array ();
 
+$dbhInternet = new PDO ( "mysql:host=$hostOspim;dbname=$baseOspimPrestadores", $usuarioOspim, $claveOspim );
+$dbhInternet->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+$dbhInternet->beginTransaction ();
+
+$hostname = $_SESSION ['host'];
+$dbname = $_SESSION ['dbname'];
+$dbh = new PDO ( "mysql:host=$hostname;dbname=$dbname", $_SESSION ['usuario'], $_SESSION ['clave'] );
+$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+$dbh->beginTransaction ();
+
+$sqlConsultaPeriodo = "SELECT * FROM periodos WHERE anopad = $anio and mespad = $mes and quincena = $quincena";
+//print($sqlConsultaPeriodo."<br>");
+$resConsultaPeriodo = $dbhInternet->query ( $sqlConsultaPeriodo );
+$canConsultaPeriodo = $resConsultaPeriodo->fetchColumn ();
+if ($canConsultaPeriodo == 0) {
+	$sqlInsertarPeriodo = "INSERT INTO periodos VALUES ($anio, $mes, $quincena,'$fechaMuestra')";
+	//print($sqlInsertarPeriodo."<br>");
+	$dbhInternet->exec ( $sqlInsertarPeriodo );
+}
+
 for($f = 0; $f < $finalFor; $f ++) {
 	$datosArray = explode("-", $datos [$f]);$datos [$f];
 	$presta = $datosArray[0];
@@ -55,16 +89,13 @@ for($f = 0; $f < $finalFor; $f ++) {
 			'descri' => $descriError 
 	);
 	
-	$nomExcelTitu = $presta . "T" . $mes . $anio . ".xls";
+	$nomExcelTitu = $presta . "T" . $mes . $anio . $quincena .".xls";
 	$direCompletaTitulares = $direArc . "/" . $nomExcelTitu;
 	
-	$nomExcelFami = $presta . "F" . $mes . $anio . ".xls";
+	$nomExcelFami = $presta . "F" . $mes . $anio . $quincena .".xls";
 	$direCompletaFamiliares = $direArc . "/" . $nomExcelFami;
-	
-	$nomTxtTeso = $presta . "D" . $mes . $anio . ".txt";
-	$direCompletaTesoreria = $direArc . "/" . $nomTxtTeso;
-	
-	$nomZip = $presta . $mes . $anio . ".zip";
+
+	$nomZip = $presta . $mes . $anio . $quincena .".zip";
 	$direCompletaZip = $direArc . "/" . $nomZip;
 	
 	try {
@@ -79,23 +110,12 @@ for($f = 0; $f < $finalFor; $f ++) {
 			require ("padronNoCapitado.php");
 		}
 		
-		// CONTROLO QUE NO HAYA UNA BAJADA PARA ESTE PRESTA Y ESTE PERIDOD
-		if (strcmp ( "localhost", $maquina ) == 0) {
+		if (strcmp ( "Poseidon", $maquina ) != 0) {
 			$hostOspim = "localhost";
 		}
-		$dbhInternet = new PDO ( "mysql:host=$hostOspim;dbname=$baseOspimPrestadores", $usuarioOspim, $claveOspim );
-		$dbhInternet->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-		$dbhInternet->beginTransaction ();
 		
-		$hostname = $_SESSION ['host'];
-		$dbname = $_SESSION ['dbname'];
-		$dbh = new PDO ( "mysql:host=$hostname;dbname=$dbname", $_SESSION ['usuario'], $_SESSION ['clave'] );
-		$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-		$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-		$dbh->beginTransaction ();
-		
-		$sqlConsultaBajada = "SELECT count(*) FROM descarga WHERE codigo = $presta and anopad = $anio and mespad = $mes";
-		// print($sqlConsultaBajada."<br>");
+		$sqlConsultaBajada = "SELECT count(*) FROM descarga WHERE codigo = $presta and anopad = $anio and mespad = $mes and quincena = $quincena";
+		//print($sqlConsultaBajada."<br>");
 		$resConsultaBajada = $dbhInternet->query ( $sqlConsultaBajada );
 		$canConsultaBajada = $resConsultaBajada->fetchColumn ();
 		
@@ -103,59 +123,57 @@ for($f = 0; $f < $finalFor; $f ++) {
 			if (file_exists ( $direCompletaZip )) {
 				$carpetaFtp = $presta . "C23" . $presta;
 				$pathOspim = "/public_html/prestadores/$carpetaFtp";
+				
 				$resultado = true;
 				if ($hostOspim != "localhost") {
 					$resultado = SubirArchivo ( $direCompletaZip, $nomZip, $pathOspim );
 				} 	
+				
 				if ($resultado) {
 					$subidaOk = 1;
 					$fecsub = date ( 'Y-m-j' );
 					$horsub = date ( "H:i:s" );
 					
-					$sqlEliminaSubidaInternet = "DELETE FROM subida WHERE codigo = '$presta' and anopad = $anio and mespad = $mes";
-					// print($sqlEliminaSubidaInternet."<br>");
+					$sqlEliminaSubidaInternet = "DELETE FROM subida WHERE codigo = '$presta' and anopad = $anio and mespad = $mes and quincena = $quincena";
+					//print($sqlEliminaSubidaInternet."<br>");
 					$dbhInternet->exec ( $sqlEliminaSubidaInternet );
 					
-					$sqlEliminaSubidaMadera = "DELETE FROM subidapadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes";
-					// print($sqlEliminaSubidaMadera."<br>");
+					$sqlEliminaSubidaMadera = "DELETE FROM subidapadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes and quincenapadron = $quincena";
+					//print($sqlEliminaSubidaMadera."<br>");
 					$dbh->exec ( $sqlEliminaSubidaMadera );
 					
-					$sqlEliminaDetalleMadera = "DELETE FROM detallepadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes";
-					// print($sqlEliminaDetalleMadera."<br>");
+					$sqlEliminaDetalleMadera = "DELETE FROM detallepadroncapitados WHERE codigoprestador = '$presta' and anopadron = $anio and mespadron = $mes  and quincenapadron = $quincena";
+					//print($sqlEliminaDetalleMadera."<br>");
 					$dbh->exec ( $sqlEliminaDetalleMadera );
 					
-					$sqlEliminaInformeGlobalMadera = "DELETE FROM beneficiarioscapitados WHERE codigocapitado = '$presta' and anopadron = $anio and mespadron = $mes";
-					// print($sqlEliminaDetalleMadera."<br>");
+					$sqlEliminaInformeGlobalMadera = "DELETE FROM beneficiarioscapitados WHERE codigocapitado = '$presta' and anopadron = $anio and mespadron = $mes and quincenapadron = $quincena";
+					//print($sqlEliminaDetalleMadera."<br>");
 					$dbh->exec ( $sqlEliminaInformeGlobalMadera );
 					
 					foreach ( $totalizador as $totalDele ) {
-						$sqlInsertDetalle = "INSERT INTO detallepadroncapitados VALUE('$presta',$mes,$anio," . $totalDele ['delega'] . "," . $totalDele ['tottit'] . "," . $totalDele ['totfam'] . "," . $totalDele ['total'] . ")";
-						// print($sqlInsertDetalle."<br>");
+						$sqlInsertDetalle = "INSERT INTO detallepadroncapitados VALUE('$presta', $mes, $anio, $quincena, " . $totalDele ['delega'] . "," . $totalDele ['tottit'] . "," . $totalDele ['totfam'] . "," . $totalDele ['total'] . ")";
+						//print($sqlInsertDetalle."<br>");
 						$dbh->exec ( $sqlInsertDetalle );
 					}
 					
 					foreach ( $insertInforme as $informe ) {
 						$sqlEliminaInformePorAfiliado = "DELETE FROM beneficiarioscapitados WHERE codigocapitado = '$presta' and nroafiliado = ".$informe['nroafiliado']." and nroorden = ".$informe['nroorden']." and tipoparentesco =".$informe['tipoparentesco'];
-						// print($sqlEliminaInformePorAfiliado."<br>");
+						//print($sqlEliminaInformePorAfiliado."<br>");
 						$dbh->exec ( $sqlEliminaInformePorAfiliado );
 						
-						$sqlInforme = "INSERT INTO beneficiarioscapitados VALUE('$presta',".$informe['nroafiliado'].",".$informe['nroorden'].",".$informe['tipoparentesco'].",".$mes.",".$anio.",'".$fecsub."')";
-						// print($sqlInforme."<br>");
+						$sqlInforme = "INSERT INTO beneficiarioscapitados VALUE('$presta',".$informe['nroafiliado'].",".$informe['nroorden'].",".$informe['tipoparentesco'].",".$mes.",".$anio.",".$quincena.",'".$fecsub."')";
+						//print($sqlInforme."<br>");
 						$dbh->exec ( $sqlInforme );
 					}
 					
-					$sqlInsertInternet = "INSERT INTO subida VALUE('$presta', $mes, $anio, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
-					// print($sqlInsertInternet."<br>");
+					$sqlInsertInternet = "INSERT INTO subida VALUE('$presta', $mes, $anio, $quincena, '$fecsub', '$horsub', $totalTitulares, $totalFamiliares, $totalBeneficiarios, 'N')";
+					//print($sqlInsertInternet."<br>");
 					$dbhInternet->exec ( $sqlInsertInternet );
 					
-					$sqlInsertMadera = "INSERT INTO subidapadroncapitados VALUE('$presta',$mes,$anio,'$fecsub','$horsub',$totalTitulares,$totalFamiliares,$totalBeneficiarios)";
-					// print($sqlInsertMadera."<br>");
+					$sqlInsertMadera = "INSERT INTO subidapadroncapitados VALUE('$presta', $mes, $anio, $quincena, '$fecsub','$horsub',$totalTitulares,$totalFamiliares,$totalBeneficiarios)";
+					//print($sqlInsertMadera."<br>");
 					$dbh->exec ( $sqlInsertMadera );
 					
-					$dbhInternet->commit ();
-					$dbh->commit ();
-					
-					// print("<br>");
 				} else {
 					$subidaOk = 2;
 					$descriError = "ERROR AL SUBIR EL ZIP A OSPIM";
@@ -185,6 +203,8 @@ for($f = 0; $f < $finalFor; $f ++) {
 		$dbhInternet->rollback ();
 	}
 }
+$dbhInternet->commit ();
+$dbh->commit ();
 
 // cambio la hora de secion por ahora para no perder la misma
 $ahora = date ( "Y-n-j H:i:s" );
@@ -197,35 +217,12 @@ $_SESSION ["ultimoAcceso"] = $ahora;
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Generacion de Padrones :.</title>
-
-<style>
-A:link {
-	text-decoration: none;
-	color: #0033FF
-}
-
-A:visited {
-	text-decoration: none
-}
-
-A:hover {
-	text-decoration: none;
-	color: #00FFFF
-}
-
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 </head>
 
 <body bgcolor="#CCCCCC">
 	<div align="center">
-		<p class="Estilo2">
-			<span style="text-align: center"> <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuPadrones.php'" /></span>
-		</p>
-		<p class="Estilo2">Resultado del Generacion de Padrones Período (<?php echo $mes." - ".$anio ?>) </p>
+		<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuPadrones.php'" /></p>
+		<h3>Resultado del Generacion de Padrones Período (<?php echo $mes." - ".$anio." - ".$quincena ?>) </h3>
 		<table width="800" border="1" align="center">
 			<tr>
 				<th>Prestador</th>
@@ -237,11 +234,8 @@ A:hover {
 					<td><?php echo $resultado ['descri'] ?></td>
 				</tr>
 			  <?php } ?>
-  </table>
-		<p>
-			<input type="button" name="imprimir" value="Imprimir"
-				onclick="window.print();" />
-		</p>
+  		</table>
+		<p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 	</div>
 </body>
 </html>

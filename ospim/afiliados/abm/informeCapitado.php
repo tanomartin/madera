@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspim.php");
 $nroafiliado=$_GET['nroafil'];
 $sqlCapitados = "SELECT
-b.mespadron, b.anopadron, DATE_FORMAT(b.fechainforme,'%d-%m-%Y') as fechainforme,
+b.mespadron, b.anopadron, b.quincenapadron, DATE_FORMAT(b.fechainforme,'%d-%m-%Y') as fechainforme,
 c.nombre as nombreCapitado,
 p.descrip as parentesco,
 CASE WHEN b.nroorden = 0 THEN t.apellidoynombre ELSE f.apellidoynombre END AS nombreActivo,
@@ -72,7 +72,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><?php echo $rowCapitados['parentesco']?></td>
 				<td><?php if ($rowCapitados['nombreActivo'] != NULL) { echo $rowCapitados['nombreActivo']; } else { echo $rowCapitados['nombreBaja'];  }  ?></td>
 				<td><?php echo $rowCapitados['nombreCapitado']?></td>
-				<td><?php echo $rowCapitados['mespadron']."-".$rowCapitados['anopadron']?></td>
+				<?php
+				 	$periodo = $rowCapitados['mespadron']."-".$rowCapitados['anopadron']."-".$rowCapitados['quincenapadron'];
+					if ($rowCapitados['quincenapadron'] == 0) { $periodo = $rowCapitados['mespadron']."-".$rowCapitados['anopadron']; } ?>
+				<td><?php echo $periodo ?></td>
 				<td><?php echo $rowCapitados['fechainforme']?></td>
 			</tr>
 		<?php } ?>
