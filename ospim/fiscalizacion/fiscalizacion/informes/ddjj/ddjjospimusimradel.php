@@ -92,6 +92,7 @@ if (isset($_POST['periodo']) && isset($_POST['delegacion'])) {
 	$resUSIMRA = mysql_query($sqlUSIMRA,$db);
 
 	$arrayCUIT = array();
+	$arrayResultUsimra = array();
 	while($rowUSIMRA = mysql_fetch_assoc($resUSIMRA)) {
 		if (!isset($arrayCUIT[$rowUSIMRA['cuit']])) {
 			$arrayCUIT[$rowUSIMRA['cuit']] = $rowUSIMRA['cuit'];
@@ -241,14 +242,14 @@ function validar(formulario) {
 								<td><?php echo number_format($remuneUsimra,"2",",","."); ?></td>
 							</tr>
 					<?php } ?>
-					<tr>
-						<th colspan="2">TOTAL <?php echo sizeof($resultadoFinal) ?>  (OSPIM: <?php echo sizeof($arrayResultOspim) ?> - USIMRA: <?php echo sizeof($arrayResultUsimra) ?>)</th>
-						<th><?php echo $totalPersonalOspim ?></th>
-						<th><?php echo number_format($totalRemuneraOspim,"2",",","."); ?></th>
-						<th><?php echo $totalPersonalUsimra ?></th>
-						<th><?php echo number_format($totalRemuneraUsimra,"2",",","."); ?></th>
-					</tr>
 				</tbody>
+				<tr>
+					<th colspan="2">TOTAL <?php echo sizeof($resultadoFinal) ?>  (OSPIM: <?php echo sizeof($arrayResultOspim) ?> - USIMRA: <?php echo sizeof($arrayResultUsimra) ?>)</th>
+					<th><?php echo $totalPersonalOspim ?></th>
+					<th><?php echo number_format($totalRemuneraOspim,"2",",","."); ?></th>
+					<th><?php echo $totalPersonalUsimra ?></th>
+					<th><?php echo number_format($totalRemuneraUsimra,"2",",","."); ?></th>
+				</tr>
 			</table>
 			<p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 	<?php } ?>
