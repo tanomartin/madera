@@ -1,6 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
-if ($_SESSION['usuario'] != 'sistemas' && $_SESSION['usuario'] != 'sgiraudo' && $_SESSION['usuario'] != 'gflongo') {
+if ($_SESSION['usuario'] != 'sistemas' && $_SESSION['usuario'] != 'sgiraudo' && $_SESSION['usuario'] != 'gflongo' && $_SESSION['usuario'] != 'mlrepetti') {
 	$redire = "Location: http://".$_SERVER['SERVER_NAME']."/madera/ospim/moduloNoDisponible.php";
 	header($redire);
 }
