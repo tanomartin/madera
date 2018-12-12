@@ -68,7 +68,7 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuOrdenes.php'" /></p>	
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../moduloOrdenPago.php'" /></p>	
 	<form id="buscarFacturas" name="buscarFacturas" method="post" onsubmit="return validar(this)" action="buscarOrden.php">
 	  	<h3>Buscador de Ordenes de Pago </h3>
     	<table>
