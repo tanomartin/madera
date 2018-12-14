@@ -1,7 +1,14 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 
-$nroProximo = 24075;
+$sqlProximo = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'madera' AND TABLE_NAME = 'ordennmcabecera'";
+$resProximo = mysql_query($sqlProximo,$db);
+$rowProximo = mysql_fetch_array($resProximo);
+$nroProximo = $rowProximo['AUTO_INCREMENT'];
+
+//VARIABLES PARA CONTROL DE LIMITE//
+$LIMITECONCEPTO = 11;
+$LIMITEIMPUTA = 5;
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,14 +28,150 @@ jQuery(function($){
 	$("#fecha").mask("99-99-9999");
 });
 
-function vermasconcepto() {
+function vermasconcepto(limite) {
 	var importeValue = document.getElementById("conceptoaver").value;
-	if (importeValue < 14) { 
+	if (importeValue <= limite) { 
+		importeValue++
 		var datos = "datos"+importeValue;
 		var datosLinea = document.getElementById(datos);
 		datosLinea.style.display = "table-row";
-		document.getElementById("conceptoaver").value++;
+		document.getElementById("conceptoaver").value = importeValue;
 	}
+}
+
+function vermenosconcepto(limiteImput) {
+	var linea = document.getElementById("conceptoaver").value;
+	if (linea > 1) { 
+		var datos = "datos"+linea;
+		var datosLinea = document.getElementById(datos);
+		datosLinea.style.display = "none";
+		limpiaImputacion(linea, limiteImput);
+
+		var concepto = "concepto"+linea;
+		var inputconcepto = document.getElementById(concepto);
+		inputconcepto.value = "";
+
+		var importe = "importe"+linea;
+		var inputimporte = document.getElementById(importe);
+		inputimporte.value = "0.00";
+		
+		linea--
+		document.getElementById("conceptoaver").value = linea;
+		calcularSaldos();
+	}
+}
+
+function limpiaImputacion(linea, limiteImput) {
+	var nombreimputaver = "imputaaver"+linea;
+	var inputaver = document.getElementById(nombreimputaver);
+	inputaver.value = 1;
+
+	for(var i=limiteImput; i>0; i--) {
+		var nombrecuenta = "impucuenta"+linea+"-"+i;
+		var inputcuenta = document.getElementById(nombrecuenta);
+		inputcuenta.value = "";
+		if (i != 1) { inputcuenta.style.display = "none"; }
+
+		var nombreimporte = "impusaldo"+linea+"-"+i;
+		var inputimporte = document.getElementById(nombreimporte);
+		inputimporte.value = "";
+		if (i != 1) { inputimporte.style.display = "none"; }
+
+		var nombredc = "impudc"+linea+"-"+i;
+		var selectdc = document.getElementById(nombredc);
+		selectdc.value = 'C';
+		if (i != 1) { selectdc.style.display = "none"; }
+	}
+}
+
+function vermasimputa(linea, limite) {
+	var nombreImputa = "imputaaver"+linea;
+	var imputaValue = document.getElementById(nombreImputa).value;
+	if (imputaValue < limite) {
+		imputaValue++
+		
+		var nombrecuenta = "impucuenta"+linea+"-"+imputaValue;
+		var inputcuenta = document.getElementById(nombrecuenta);
+		inputcuenta.style.display = "table-row";
+
+		var nombreimporte = "impusaldo"+linea+"-"+imputaValue;
+		var inputimporte = document.getElementById(nombreimporte);
+		inputimporte.style.display = "table-row";
+
+		var nombredc = "impudc"+linea+"-"+imputaValue;
+		var selectdc = document.getElementById(nombredc);
+		selectdc.style.display = "table-row";
+		
+		document.getElementById(nombreImputa).value = imputaValue;
+	}
+}
+
+function vermenosimputa(linea) {
+	var nombreImputa = "imputaaver"+linea;
+	var imputaValue = document.getElementById(nombreImputa).value;
+	if (imputaValue > 1) {
+		
+		var nombrecuenta = "impucuenta"+linea+"-"+imputaValue;
+		var inputcuenta = document.getElementById(nombrecuenta);
+		inputcuenta.value = "";
+		inputcuenta.style.display = "none";
+
+		var nombreimporte = "impusaldo"+linea+"-"+imputaValue;
+		var inputimporte = document.getElementById(nombreimporte);
+		inputimporte.value = "";
+		inputimporte.style.display = "none";
+
+		var nombredc = "impudc"+linea+"-"+imputaValue;
+		var selectdc = document.getElementById(nombredc);
+		selectdc.value = 'C';
+		selectdc.style.display = "none";
+		
+		imputaValue--
+		document.getElementById(nombreImputa).value = imputaValue;
+		calcularSaldos();
+	}
+}
+
+function verificarImporte(importe) {
+	valor = importe.value;
+	if (!isNumberPositivo(valor)) {
+		alert("El importe debe ser un numero positivo");
+		importe.value = "";
+		importe.focus();
+	} 
+	if (importe.value != "") {
+		importe.value = parseFloat(importe.value).toFixed(2);
+	}
+	calcularSaldos();
+}
+
+function calcularSaldos() {
+	var linea = document.getElementById("conceptoaver").value;
+	var saldoTotal = 0;
+	for(var i=linea; i>0; i--) {
+		var nombreImputa = "imputaaver"+i;
+		var valorImputaAver = document.getElementById(nombreImputa).value;
+		var saldoLinea = 0;
+		for (var n=1; n <= valorImputaAver; n++) {
+			var nombreimporte = "impusaldo"+i+"-"+n;
+			var valorimporte = document.getElementById(nombreimporte).value;		
+			if (valorimporte != "") {
+				var nombredc = "impudc"+i+"-"+n;
+				var selectdc = document.getElementById(nombredc);	
+				if (selectdc.value == 'C') {
+ 					saldoLinea += parseFloat(valorimporte);
+				} else {
+					saldoLinea -= parseFloat(valorimporte);
+				}
+			}
+		}
+		var nombreImporte = "importe"+i;
+		var inputimportelinea = document.getElementById(nombreImporte);
+		inputimportelinea.value = saldoLinea.toFixed(2);
+
+		saldoTotal += parseFloat(saldoLinea);
+	}
+	document.getElementById("monto").value = saldoTotal.toFixed(2);
 }
 
 function validar(formulario) {
@@ -40,50 +183,54 @@ function validar(formulario) {
 		alert("El beneficiario es obligatorio");
 		return false;	
 	}
-	if (formulario.monto.value == "" || formulario.monto.value == 0 || !isNumberPositivo(formulario.monto.value)) {
-		alert("El Monto es obligatorio y debe ser un numero positivo");
-		return false;	
-	}
-	if (formulario.cheque.value == "" || formulario.cheque.value == 0 || !esEnteroPositivo(formulario.cheque.value)) {
-		alert("El Nro de Cheque es obligatorio y debe ser un numero entero positivo");
-		return false;	
-	}
-	if (formulario.facturas.value == "") {
-		alert("El detalle de facturas es obligatorio");
+	if (formulario.ropago.value == "" || formulario.ropago.value == 0 || !esEnteroPositivo(formulario.ropago.value)) {
+		alert("El Nro de Cheque o Transferencia es obligatorio y debe ser un numero entero positivo");
 		return false;	
 	}
 
 	var datosControl = document.getElementById("conceptoaver").value;
-	for (var i=1; i < datosControl; i++) {
+	var totalCaracteres = 0;
+	var totalLineasImpu = 0;
+	for (var i=1; i <= datosControl; i++) {		
 		var concepto = "concepto"+i;
 		var importe = "importe"+i;
-		var imputacion = "imputacion"+i;
 
 		var conceptoValue = document.getElementById(concepto).value;
-		if (conceptoValue == "") {
-			alert("El concepto es obligatorio");
+		if (conceptoValue == "" || conceptoValue.length > 170) {
+			alert("El concepto es obligatorio y debe tener menos de 170 caracteres");
 			document.getElementById(concepto).focus();
 			return false;
 		}
-		var importeValue = document.getElementById(importe).value;
-		if (importeValue == "" || importeValue == 0 || !isNumberPositivo(importeValue)) {
-			alert("El importe es obligatorio  y debe ser un numero positivo");
-			document.getElementById(importe).focus();
-			return false;
-		}
-		var imputacionValue = document.getElementById(imputacion).value;
-		if (imputacionValue == "") {
-			alert("La imputación contable es obligatoria");
-			document.getElementById(imputacion).focus();
-			return false;
+		totalCaracteres += conceptoValue.length;
+		
+		var nombreImputa = "imputaaver"+i;
+		var valorImputaAver = document.getElementById(nombreImputa).value;
+		for (var n=1; n <= valorImputaAver; n++) {		
+			var nombrecuenta = "impucuenta"+i+"-"+n;
+			var inputcuenta = document.getElementById(nombrecuenta);
+			if (inputcuenta.value == "") {
+				alert("La cuenta de imputacion contable es obligatoria");
+				inputcuenta.focus();
+				return false;
+			}
+			var nombreimporte = "impusaldo"+i+"-"+n;
+			var inputimporte = document.getElementById(nombreimporte);
+			if (inputimporte.value == "" || inputimporte.value == 0 || !isNumberPositivo(inputimporte.value) || inputimporte.value >= 10000000) {
+				alert("El importe de la imputacion contable debe ser un numero positivo menor a 10 millones");
+				inputimporte.focus();
+				return false;
+			}
+			totalLineasImpu++
 		}
 	}
-
-	if (formulario.aclaracion.value == "") {
-		alert("Debe ingresar la Aclaración de la firma Contabilizado");
-		return false;	
+	if (totalCaracteres > 1870) {
+		alert("La cantidad total de caracteres sumados en los conceptos supera el limite por hoja.");
+		return false;
 	}
-	
+	if (totalLineasImpu > 33) {
+		alert("La cantidad de imputaciones contables supera los limites por hoja")
+		return false;
+	}
 	$.blockUI({ message: "<h1>Generando Orden de Pago... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 	return true;
 }
@@ -100,39 +247,79 @@ function validar(formulario) {
 			<div style="text-align: left; width: 850px; ">
 				<p>
 					<b>Fecha: </b><input name="fecha" id="fecha" size="8"/>
-					<b style="float: right; font-size: x-large;">Nº <?php echo $nroProximo ?></b>
+					<b style="float: right; font-size: x-large;">Nº <u style="color: maroon;"><?php echo $nroProximo ?></u></b>
 				</p>
-				<p><b>Beneficiario: </b><input name="beneficiario" id="beneficiario" size="102"/></p>
-				<p><b>$: </b><input name="monto" id="monto" size="20"/></p>
-				<p><b>Cheque Nro: <input name="cheque" id="cheque" size="25"/> C/Banco Nacion Argentina Suc. Caballito </b></p>
-				<p><b>Factura/s Nro: </b><input name="facturas" id="facturas" size="101"/></p>
-				<p><b>Aclaracion Firma Contabilizado: </b><input name="aclaracion" id="aclaracion" size="40" /></p>
+				<p><b>Beneficiario: </b><input name="beneficiario" id="beneficiario" size="75" maxlength="75"/></p>
+				<p><b>$: </b><input value="0.00" name="monto" id="monto" size="12" readonly="readonly" style="background: silver; text-align: center; font-weight: bold;"/></p>
+				<p>
+					<b>Tipo Pago: 
+						<input type="radio" id="tipo" name="tipo" value="T" checked="checked" /><label>Transferencia</label>
+						<input type="radio" id="tipo" name="tipo" value="C" /><label>Cheque</label>
+					</b>
+				</p>
+				<p><b>Nro: <input name="nropago" id="ropago" size="25"/></b></p>		
+				<p align="center">
+					<input type="button" value="+ Conceptos" onclick="vermasconcepto(<?php echo $LIMITECONCEPTO?>)"/>
+					<input type="button" value="- Conceptos" onclick="vermenosconcepto(<?php echo $LIMITEIMPUTA?>)"/>
+					<input size="1" style="display: none" type="text" value="1" id="conceptoaver" name="conceptoaver"/>
+				</p>
 			</div>
 		</div>
 		<table border="1" style="width: 900px; text-align: center">
 			<thead>
 				<tr>
-					<th width="40%">CONCEPTO</th>
-					<th width="10%">IMPORTE</th>
-					<th width="50%">IMPUTACION CONTABLE</th>
+					<th width="40%" rowspan="2">CONCEPTO</th>
+					<th width="10%" rowspan="2">IMPORTE</th>
+					<th width="50%" colspan="4">IMPUTACION CONTABLE</th>
+				</tr>
+				<tr>
+					<th width="30%">CUENTA</th>
+					<th>IMPORTE</th>
+					<th>D/C</th>
+					<th width="10%"></th>
 				</tr>
 			</thead>
 			<tbody>
-			<?php
-				for ($i = 1; $i<15; $i++) {
+		<?php	for ($i = 1; $i<=$LIMITECONCEPTO; $i++) {
 					$display = 'style="display: none"';
 					if ($i == 1) { $display = ""; } ?>
 					<tr <?php echo $display?> id="datos<?php echo $i?>">
-						<td><input name="concepto<?php echo $i?>" id="concepto<?php echo $i?>" size="39" maxlength="48"/></td>
-						<td><input name="importe<?php echo $i?>" id="importe<?php echo $i?>" size="10"/></td>
-						<td><input name="imputacion<?php echo $i?>" id="imputacion<?php echo $i?>" size="52" maxlength="60"/></td>
+						<td><textarea name="concepto<?php echo $i?>" id="concepto<?php echo $i?>" rows="3" cols="50"></textarea></td>
+						<td><input name="importe<?php echo $i?>" id="importe<?php echo $i?>" value="0.00" size="10" readonly="readonly" style="background: silver; text-align: center; font-weight: bold;"/></td>
+						<td>
+				<?php	for ($n = 1; $n<=$LIMITEIMPUTA; $n++) {
+							$display = 'style="display: none"';
+							if ($n == 1) { $display = ''; } ?>
+							<input <?php echo $display?> name="impucuenta<?php echo $i."-".$n ?>" id="impucuenta<?php echo $i."-".$n ?>" size="15" maxlength="10"/>
+				 <?php } ?>		
+						</td>
+						<td>
+				<?php	for ($n = 1; $n<=$LIMITEIMPUTA; $n++) {
+							$display = 'style="display: none; text-align: center; font-weight: bold;"';
+							if ($n == 1) { $display = 'style="text-align: center; font-weight: bold;"'; } ?>
+							<input <?php echo $display?> name="impusaldo<?php echo $i."-".$n ?>" id="impusaldo<?php echo $i."-".$n?>" size="10" maxlength="10" onchange="verificarImporte(this)"/>
+				  <?php } ?>
+				 	   </td>		
+						<td>
+				<?php	for ($n = 1; $n<=$LIMITEIMPUTA; $n++) {
+							$display = 'style="display: none"';
+							if ($n == 1) { $display = ""; } ?>
+							<select <?php echo $display?> name="impudc<?php echo $i."-".$n  ?>" id="impudc<?php echo $i."-".$n  ?>" onchange="calcularSaldos()">
+								<option value="C" selected="selected">C</option>
+								<option value="D">D</option>
+							</select>
+				 <?php } ?>
+						</td>
+						<td>
+							<input type="button" value="+" onclick="vermasimputa(<?php echo $i ?>, <?php echo $LIMITEIMPUTA?>)"/>
+							<input type="button" value="-" onclick="vermenosimputa(<?php echo $i ?>)"/>
+							<input size="1" style="display: none" type="text" value="1" id="imputaaver<?php echo $i ?>" name="imputaaver<?php echo $i ?>"/>
+						</td>
 					</tr>
 			<?php } ?>
 			</tbody>	
 		</table>
-		<p><input style="display: none" type="text" value="2" id="conceptoaver" name="conceptoaver"/></p>
-		<p><input type="button" value="Ver + Conceptos" onclick="vermasconcepto()"/></p>
-		<p><input type="submit" value="Generar" /></p>
+		<p><input type="submit" value="Generar Orden" /></p>
 	</form>
 </div>
 </body>

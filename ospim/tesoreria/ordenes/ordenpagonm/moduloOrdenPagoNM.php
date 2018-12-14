@@ -16,11 +16,11 @@ include($libPath."controlSessionOspim.php"); ?>
     	<tr>
 	  		<td width="200">
 	  			<p>GENERAR ORDEN</p>
-          		<p><a href="abm/nuevaOrdenPagonm.php"><img src="../img/ordenespagonm.png" width="90" height="90" border="0"/></a></p>
+          		<p><a href="abm/nuevaOrdenPagoNM.php"><img src="../img/ordenespagonm.png" width="90" height="90" border="0"/></a></p>
       		</td>
       		<td width="200">
       			<p>CONSULTAR</p>
-          		<p><a href="buscador/buscarOrden.php"><img src="../img/buscar.png" width="90" height="90" border="0" /></a></p>
+          		<p><a href="buscador/buscarOrdenNM.php"><img src="../img/buscar.png" width="90" height="90" border="0" /></a></p>
       		</td>	
       	</tr>
   	</table>
