@@ -29,7 +29,7 @@ if (isset($_POST['dato']) || isset($_GET['nroorden'])) {
 	} 
 	if ($filtro == 2) {
 		$datoBusqeuda = fechaParaGuardar($dato);
-		$cartel = "<b>Beneficiario:<font color='blue'> $dato</font></b>";
+		$cartel = "<b>Fecha Generacion:<font color='blue'> $dato</font></b>";
 		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha FROM ordennmcabecera o WHERE o.fecha = '$datoBusqeuda'";
 	}
 
