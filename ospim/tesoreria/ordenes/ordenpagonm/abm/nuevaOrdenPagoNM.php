@@ -189,22 +189,23 @@ function validar(formulario) {
 	}
 
 	var datosControl = document.getElementById("conceptoaver").value;
-	var totalCaracteres = 0;
-	var totalLineasImpu = 0;
+
+	var totalLineas = 0;
 	for (var i=1; i <= datosControl; i++) {		
 		var concepto = "concepto"+i;
 		var importe = "importe"+i;
-
+		var lineasConcepto = 0;
 		var conceptoValue = document.getElementById(concepto).value;
 		if (conceptoValue == "" || conceptoValue.length > 170) {
 			alert("El concepto es obligatorio y debe tener menos de 170 caracteres");
 			document.getElementById(concepto).focus();
 			return false;
 		}
-		totalCaracteres += conceptoValue.length;
-		
+		lineasConcepto = Math.ceil(conceptoValue.length / 58);
+				
 		var nombreImputa = "imputaaver"+i;
 		var valorImputaAver = document.getElementById(nombreImputa).value;
+		var totalLineasImpu = 0;
 		for (var n=1; n <= valorImputaAver; n++) {		
 			var nombrecuenta = "impucuenta"+i+"-"+n;
 			var inputcuenta = document.getElementById(nombrecuenta);
@@ -222,13 +223,11 @@ function validar(formulario) {
 			}
 			totalLineasImpu++
 		}
+		totalLineas += Math.max(lineasConcepto, totalLineasImpu);
 	}
-	if (totalCaracteres > 1870) {
-		alert("La cantidad total de caracteres sumados en los conceptos supera el limite por hoja.");
-		return false;
-	}
-	if (totalLineasImpu > 33) {
-		alert("La cantidad de imputaciones contables supera los limites por hoja")
+
+	if (totalLineas > 33) {
+		alert("La cantidad total de lineas supera el limite por hoja.");
 		return false;
 	}
 	$.blockUI({ message: "<h1>Generando Orden de Pago... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
