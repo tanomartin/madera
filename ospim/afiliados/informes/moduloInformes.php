@@ -12,7 +12,7 @@ include($libPath."controlSessionOspim.php"); ?>
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAfiliados.php'" /> </p>
 	<h2>Men&uacute; Consultas e Informes</h2>
 
-  	<table width="800" border="3" style="text-align: center;">
+  	<table width="1000" border="3" style="text-align: center;">
     	<tr>
 	        <td width="200">
 	        	<p>DDJJ / APORTES</p>
@@ -29,6 +29,10 @@ include($libPath."controlSessionOspim.php"); ?>
 	      	<td width="200">
 	    		<p>BENEFICIARIOS x DELEGACION Y TIPO</p>
 	          	<p><a class="enlace" href="beneficiariosPorTipoTitu.php"><img src="../img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    	</td>
+	      	<td width="200">
+	    		<p></p>
+	          	<p></p>
 	    	</td>
     	</tr>
    	 	<tr>
@@ -48,6 +52,10 @@ include($libPath."controlSessionOspim.php"); ?>
 	        	<p>FUTURA ALTA SSS X DELEGACION</p>
 	          	<p><a class="enlace" href="titularesfuturaaltasss.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	        </td>
+	      	<td>
+	    		<p>TOTAL X LOCALIDAD Y DELEGACION</p>
+	          	<p><a class="enlace" href="totalBeneficiariosLocalidadDelegacion.php"><img src="../img/excellogo.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	    	</td>
 	    </tr>
     	<tr>
 	    	<td>
@@ -65,7 +73,10 @@ include($libPath."controlSessionOspim.php"); ?>
 	    	<td>
 	    		<p>DESEMPLEO</p>
 	        	<p><a class="enlace" href="desempleo.php"><img src="../img/anses.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	   
+	    	</td>
+	      	<td>
+	    		<p></p>
+	          	<p></p>
 	    	</td>
     	</tr>
   	</table>
