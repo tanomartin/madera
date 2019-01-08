@@ -83,7 +83,7 @@ try{
 						}
 						$avalsolicitud = NULL;
 						if ($pedidas['avalsolicitud'] != "") {
-							$resumenhc = $pedidas['avalsolicitud'];
+							$avalsolicitud = $pedidas['avalsolicitud'];
 						}
 						$presupuesto1 = NULL;
 						if ($pedidas['presupuesto1'] != "") {
