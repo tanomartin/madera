@@ -4,13 +4,10 @@ include($libPath."fechas.php");
 
 $fecha = fechaParaGuardar($_POST['fecha']);
 $importeTotal = $_POST['monto'];
-$beneficiario = $_POST['beneficiario'];
-$tipoPago = $_POST['tipo'];
-$nroPago = $_POST['nropago'];
-$fechageneracion = date("Y-m-d");
+$codigoprestador = $_POST['codigoprestador'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$sqlInsertCabecera = "INSERT INTO ordennmcabecera VALUES(DEFAULT,'$fecha',$importeTotal,'$beneficiario','$tipoPago','$nroPago','$fechageneracion',NULL,NULL,'$fecharegistro','$usuarioregistro')";
+$sqlInsertCabecera = "INSERT INTO ordennmcabecera VALUES(DEFAULT,'$fecha',$importeTotal,$codigoprestador,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro')";
 
 
 $lineas = $_POST['conceptoaver'];
@@ -19,28 +16,13 @@ $arrayImputacion = array();
 for($i=1; $i<=$lineas; $i++) {
 	$conceptoNombre = "concepto".$i;
 	$concepto = $_POST[$conceptoNombre];
+	$tipoNombre = "tipo".$i;
+	$tipo = $_POST[$tipoNombre];
 	$importeLineaNombre = "importe".$i;
 	$importeLinea = $_POST[$importeLineaNombre];
 	
-	$sqlInsertConcepto = "INSERT INTO ordennmdetalle VALUES(nroorden, $i, '$concepto', $importeLinea)";
+	$sqlInsertConcepto = "INSERT INTO ordennmdetalle VALUES(nroorden, $i, '$concepto', '$tipo', $importeLinea)";
 	$arrayConcepto[$i] = $sqlInsertConcepto;
-	
-	$cantImputaNombre = "imputaaver".$i;
-	$cantImputa = $_POST[$cantImputaNombre];
-
-	for($n=1; $n<=$cantImputa; $n++) {
-		$imputaCuentaNombre = "impucuenta".$i."-".$n;
-		$imputaCuenta = $_POST[$imputaCuentaNombre];
-		
-		$imputaSaldoNombre = "impusaldo".$i."-".$n;
-		$imputaSaldo = $_POST[$imputaSaldoNombre];
-		
-		$selectDBNombre = "impudc".$i."-".$n;
-		$selectDB = $_POST[$selectDBNombre];
-		
-		$sqlInsertImputacion = "INSERT INTO ordennmimputacion VALUES(nroorden, $i, $n, '$imputaCuenta', $imputaSaldo, '$selectDB')";
-		$arrayImputacion[$i."-".$n] = $sqlInsertImputacion;
-	}
 }
 
 try {
@@ -60,14 +42,8 @@ try {
 		$dbh->exec($sqlconcepto);
 	}
 
-	foreach ($arrayImputacion as $sqlimputacion) {
-		$sqlimputacion = str_replace("nroorden", $lastId, $sqlimputacion);
-		print($sqlimputacion."<br>");
-		$dbh->exec($sqlimputacion);
-	}
-
 	$dbh->commit();
-	$pagina = "documentoOrdenPagoNM.php?nroorden=$lastId";
+	$pagina = "imputaOrdenPagoNM.php?nroorden=$lastId";
 	Header("Location: $pagina");
 } catch (PDOException $e) {
 	$error = $e->getMessage();

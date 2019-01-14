@@ -12,16 +12,20 @@ include($libPath."controlSessionOspim.php"); ?>
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuOrdenes.php'" /></p>	
 	<h3>Menú Ordenes de Pago Médicas No Médicas </h3>
-  	<table width="400" border="1" style="text-align: center">
+  	<table width="600" border="1" style="text-align: center">
     	<tr>
 	  		<td width="200">
-	  			<p>GENERAR ORDEN</p>
+	  			<p>CARGAR</p>
           		<p><a href="abm/nuevaOrdenPagoNM.php"><img src="../img/ordenespagonm.png" width="90" height="90" border="0"/></a></p>
       		</td>
       		<td width="200">
-      			<p>CONSULTAR</p>
+	  			<p>IMPUTAR / GENERAR</p>
+          		<p><a href="abm/listadoImputaOrdenPagoNM.php"><img src="../img/imputarpagonm.png" width="90" height="90" border="0"/></a></p>
+      		</td>
+      		<td width="200">
+      	  		<p>CONSULTAR</p>
           		<p><a href="buscador/buscarOrdenNM.php"><img src="../img/buscar.png" width="90" height="90" border="0" /></a></p>
-      		</td>	
+     		</td>	
       	</tr>
   	</table>
 </div>

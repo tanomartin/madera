@@ -21,18 +21,23 @@ if (isset($_POST['dato']) || isset($_GET['nroorden'])) {
 	}
 	if ($filtro == 0) {
 		$cartel = "<b>Nro Orden:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha FROM ordennmcabecera o WHERE o.nroorden = $dato";
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.dirigidoa as beneficiario 
+								FROM ordennmcabecera o, prestadoresnm p 
+								WHERE o.nroorden = $dato and o.codigoprestador = p.codigo";
 	} 
 	if ($filtro == 1) {
 		$cartel = "<b>Beneficiario:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha FROM ordennmcabecera o WHERE o.beneficiario like '%".$dato."%'";
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.dirigidoa as beneficiario 
+								FROM ordennmcabecera o, prestadoresnm p 
+								WHERE (p.dirigidoa like '%".$dato."%' or  p.nombre like '%".$dato."%') and o.codigoprestador = p.codigo";
 	} 
 	if ($filtro == 2) {
 		$datoBusqeuda = fechaParaGuardar($dato);
 		$cartel = "<b>Fecha Generacion:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha FROM ordennmcabecera o WHERE o.fecha = '$datoBusqeuda'";
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.dirigidoa as beneficiario  
+								FROM ordennmcabecera o, prestadoresnm p 
+								WHERE o.fecha = '$datoBusqeuda' and o.codigoprestador = p.codigo";
 	}
-
 	$resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
 	$canOrdenesCabecera = mysql_num_rows($resOrdenesCabecera);
 }
@@ -83,6 +88,13 @@ function cancelarOrden(nroorden, boton) {
 	}
 }
 
+
+function imputarOrden(nroorden) {
+	var redireccion = "../abm/imputaOrdenPagoNM.php?nroorden="+nroorden;
+	location.href=redireccion;
+
+}
+
 </script>
 </head>
 
@@ -119,6 +131,7 @@ function cancelarOrden(nroorden, boton) {
 									<th>Fecha</th>
 									<th>Tipo - Nro Pago</th>
 			 						<th>Importe</th>
+			 						<th>Estado</th>
 			 						<th>Acciones</th>		 						
 			 					</tr>
 		 					</thead>
@@ -131,12 +144,30 @@ function cancelarOrden(nroorden, boton) {
 		 		  					<td><?php echo $rowOrdenesCabecera['tipopago']." - ".$rowOrdenesCabecera['nropago'] ?></td>
 		 		  					<td><?php echo number_format($rowOrdenesCabecera['importe'],2,",",".") ?></td>
 		 		  					<td>
-		 		  					<?php if ($rowOrdenesCabecera['fechacancelacion'] != null) {  
-	  										echo "<font color='red'> [CANCELADA] </font>"; 
-		 		  						  } else { ?>
-		 		  						<input type="button" value="Ver Orden" onclick="window.open('<?php echo $carpetaOrden ?>OP-NM<?php echo str_pad($rowOrdenesCabecera['nroorden'], 8, '0', STR_PAD_LEFT) ?>.pdf', '_blank', 'fullscreen=yes');" />
-		 		  						<input type="button" value="Anular Orden" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this)" />
-		 		  					<?php } ?>
+		 		  					<?php   
+		 		  						if ($rowOrdenesCabecera['fechacancelacion'] != null) { 
+		 		  							echo "<font color='red'> CANCELADA </font>"; 
+		 		  						} else {
+	  										if ($rowOrdenesCabecera['fechageneracion'] != null) { 
+	  											echo "<font color='green'> EMITIDA </font>"; 
+	  										} else {
+	  											if ($rowOrdenesCabecera['fechaimputacion'] != null) {
+	  												echo "<font color='olive'> PARA EMITIR </font>";
+	  											} else {
+	  												echo "<font color='blue'> PARA IMPUTAR </font>";
+	  											}
+	  										}
+		 		  						}
+	  								?>
+		 		  					</td>
+		 		  					
+		 		  					<td>
+		 		  			  <?php if ($rowOrdenesCabecera['fechacancelacion'] == null) {  ?>
+		 		  						<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this)" />
+		 		  			  	  <?php if ($rowOrdenesCabecera['fechageneracion'] != null) { ?>
+		 		  			  				<input type="button" value="VER PDF" onclick="window.open('<?php echo $carpetaOrden ?>OP-NM<?php echo str_pad($rowOrdenesCabecera['nroorden'], 8, '0', STR_PAD_LEFT) ?>.pdf', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=900, height=650, top=10, left=10');" />
+		 		  			  	  <?php } 
+		 		  			 		} ?>
 		 		  					</td>
 		 		  				</tr>
 		 				<?php } ?>

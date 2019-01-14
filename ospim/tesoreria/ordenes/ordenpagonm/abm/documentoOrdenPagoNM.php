@@ -66,14 +66,20 @@ function printDetalle($pdf, $resDetalle, $db) {
 	$pdf->SetXY(107, 55);
 	$pdf->Cell(25,165,'',1,1);
 	$pdf->SetXY(132, 55);
-	$pdf->Cell(75,165,'',1,1);
+	$pdf->Cell(10,165,'',1,1);
+	$pdf->SetXY(142, 55);
+	$pdf->Cell(65,165,'',1,1);
 	
 	$pdf->SetXY(7, 48);
 	$pdf->Cell(100,7,'CONCEPTO',1,1,'C');
 	$pdf->SetXY(107, 48);
 	$pdf->Cell(25,7,'IMPORTE',1,1,'C');
+	
 	$pdf->SetXY(132, 48);
-	$pdf->Cell(75,7,'IMPUTACION CONTABLE',1,1,'C');
+	$pdf->Cell(10,7,'TIPO',1,1,'C');
+	
+	$pdf->SetXY(142, 48);
+	$pdf->Cell(65,7,'IMPUTACION CONTABLE',1,1,'C');
 	
 	$pdf->SetFont('Courier','',8);
 	$posY = 55;
@@ -88,13 +94,19 @@ function printDetalle($pdf, $resDetalle, $db) {
 		
 		$pdf->SetXY(107, $posY);
 		$pdf->Cell(25,5,number_format($rowDetalle['importe'],2,",","."),0,0,'C');
-	
-		$sqlImputacion = "SELECT * FROM ordennmimputacion WHERE nroorden = ".$rowDetalle['nroorden']." and concepto = ".$rowDetalle['concepto'];
+		
+		$pdf->SetXY(132, $posY);
+		$pdf->Cell(10,5,$rowDetalle['tipo'],0,0,'C');
+		
+		$sqlImputacion = "SELECT o.*, c.nrocta as cuenta FROM ordennmimputacion o, cuentasospim c 
+							WHERE o.nroorden = ".$rowDetalle['nroorden']." and 
+								  o.concepto = ".$rowDetalle['concepto']." and 
+								  o.idcuenta = c.id";
 		$resImputacion = mysql_query($sqlImputacion,$db);
 		while($rowImputacion = mysql_fetch_assoc($resImputacion)) {
-			$pdf->SetXY(132, $posY);
-			$imputacion = $rowImputacion['cuenta']." - ".$rowImputacion['tipo']." - ".number_format($rowImputacion['importe'],2,",",".");
-			$pdf->Cell(75,5,$imputacion,0,0,'C');
+			$pdf->SetXY(142, $posY);
+			$imputacion = 'CTA: '.$rowImputacion['cuenta']." | IMP: ".number_format($rowImputacion['importe'],2,",",".");
+			$pdf->Cell(65,5,$imputacion,0,0,'C');
 			$posY += 5;
 		}
 		if ($posSegunDetalle > $posY) {
@@ -139,8 +151,30 @@ printFooter($pdf);
 $nombrearchivo = $carpetaOrden.$nombreArchivo;
 $pdf->Output($nombrearchivo,'F');
 
-$pagina = "../buscador/buscarOrdenNM.php?nroorden=$nroorden";
-Header("Location: $pagina");
+$fechacancelacion = date("Y-m-d");
+$sqlUpdateCabecera = "UPDATE ordennmcabecera SET fechageneracion = '$fechacancelacion' WHERE nroorden = $nroorden";
+try {
+	$hostname = $_SESSION['host'];
+	$dbname = $_SESSION['dbname'];
+	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	$dbh->beginTransaction();
+
+	//print($sqlUpdateCabecera."<br>");
+	$dbh->exec($sqlUpdateCabecera);
+
+	$dbh->commit();
+	$nombrearchivo;
+	Header("Location: $nombrearchivo");
+} catch (PDOException $e) {
+	$error = $e->getMessage();
+	$dbh->rollback();
+	unlink($nombrearchivo);
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	Header($redire);
+	exit(0);
+}
+
 
 /************************************************/
 ?>

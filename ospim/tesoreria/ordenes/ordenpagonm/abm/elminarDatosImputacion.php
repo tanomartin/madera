@@ -1,9 +1,8 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 $nroorden = $_GET['nroorden'];
-$fechacancelacion = date("Y-m-d");
-$usuariomodificacion = $_SESSION['usuario'];
-$updateCancelacion = "UPDATE ordennmcabecera SET fechacancelacion = '$fechacancelacion', usuariocancelacion = '$usuariomodificacion' WHERE nroorden = $nroorden";
+$updateCabecera = "UPDATE ordennmcabecera SET idcuenta = NULL, fechaimputacion = NULL WHERE nroorden = $nroorden";
+$deleteImputacion = "DELETE FROM ordennmimputacion WHERE nroorden = $nroorden";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -12,11 +11,13 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	//print($updateCancelacion."<br>");
-	$dbh->exec($updateCancelacion);
-
+	//print($updateCabecera."<br>");
+	$dbh->exec($updateCabecera);
+	//print($deleteImputacion."<br>");
+	$dbh->exec($deleteImputacion);
+	
 	$dbh->commit();
-	$pagina = "buscarOrdenNM.php?nroorden=$nroorden";
+	$pagina = "imputaOrdenPagoNM.php?nroorden=$nroorden";
 	Header("Location: $pagina");
 } catch (PDOException $e) {
 	$error = $e->getMessage();
@@ -25,4 +26,3 @@ try {
 	Header($redire);
 	exit(0);
 }
-?>
