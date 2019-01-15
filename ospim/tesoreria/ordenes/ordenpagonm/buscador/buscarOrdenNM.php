@@ -162,12 +162,12 @@ function imputarOrden(nroorden) {
 		 		  					</td>
 		 		  					
 		 		  					<td>
-		 		  			  <?php if ($rowOrdenesCabecera['fechacancelacion'] == null) {  ?>
-		 		  						<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this)" />
-		 		  			  	  <?php if ($rowOrdenesCabecera['fechageneracion'] != null) { ?>
-		 		  			  				<input type="button" value="VER PDF" onclick="window.open('<?php echo $carpetaOrden ?>OP-NM<?php echo str_pad($rowOrdenesCabecera['nroorden'], 8, '0', STR_PAD_LEFT) ?>.pdf', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=900, height=650, top=10, left=10');" />
-		 		  			  	  <?php } 
-		 		  			 		} ?>
+		 		  				 <?php if ($rowOrdenesCabecera['fechageneracion'] != null) {  ?>	
+		 		  							<input type="button" value="VER PDF" onclick="window.open('<?php echo $carpetaOrden ?>OP-NM<?php echo str_pad($rowOrdenesCabecera['nroorden'], 8, '0', STR_PAD_LEFT) ?>.pdf', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=900, height=650, top=10, left=10');" />
+		 		  			  	  <?php }
+		 		  			  			if ($rowOrdenesCabecera['fechacancelacion'] == null) {  ?>
+		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this)" />
+		 		  				 <?php  }?>
 		 		  					</td>
 		 		  				</tr>
 		 				<?php } ?>

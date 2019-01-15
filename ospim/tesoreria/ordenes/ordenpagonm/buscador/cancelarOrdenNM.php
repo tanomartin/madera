@@ -1,10 +1,18 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+require_once($libPath."fpdf.php");
+require_once($libPath."FPDI-1.6.1/fpdi.php");
 $nroorden = $_GET['nroorden'];
+
+$maquina = $_SERVER['SERVER_NAME'];
+if(strcmp("localhost",$maquina)==0)
+	$carpetaOrden="../OrdenesPagoPDF/";
+else
+	$carpetaOrden="/home/sistemas/Documentos/Repositorio/OrdenesPagoNMPDF/";
+
 $fechacancelacion = date("Y-m-d");
 $usuariomodificacion = $_SESSION['usuario'];
 $updateCancelacion = "UPDATE ordennmcabecera SET fechacancelacion = '$fechacancelacion', usuariocancelacion = '$usuariomodificacion' WHERE nroorden = $nroorden";
-
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -15,6 +23,19 @@ try {
 	//print($updateCancelacion."<br>");
 	$dbh->exec($updateCancelacion);
 
+	$ordenNombreArchivo = str_pad($nroorden, 8, '0', STR_PAD_LEFT);
+	$nombreArchivo = "OP-NM".$ordenNombreArchivo.".pdf";
+	$filename = $carpetaOrden.$nombreArchivo;
+	if (file_exists($filename)) {
+		$pdf = new FPDI();
+		$pdf->AddPage();
+		$pdf->setSourceFile($filename);
+		$page = $pdf->importPage(1);
+		$pdf->useTemplate($page);
+		$pdf->Image('anulada.png',7,48,200,200);
+		$pdf->Output($filename,'F');
+	}
+	
 	$dbh->commit();
 	$pagina = "buscarOrdenNM.php?nroorden=$nroorden";
 	Header("Location: $pagina");

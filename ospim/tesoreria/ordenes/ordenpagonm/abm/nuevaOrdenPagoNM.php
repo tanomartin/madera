@@ -187,7 +187,7 @@ function limpiarBeneficiario(inputBene) {
 					<b style="float: right; font-size: x-large;">Nº <u style="color: maroon;"><?php echo $nroProximo ?></u></b>
 				</p>
 				<p><b>Beneficiario: </b>
-					<input name="nombrebene" id="nombrebene" size="75" maxlength="60" onfocusout="limpiarBeneficiario(this)"/>
+					<input autocomplete="off" name="nombrebene" id="nombrebene" size="75" onfocusout="limpiarBeneficiario(this)" />
 					<input name="codigoprestador" id="codigoprestador" size="5" maxlength="5" readonly="readonly" style="background-color: silver"/>
 				</p>
 				<p><b>$: </b><input value="0.00" name="monto" id="monto" size="12" readonly="readonly" style="background: silver; text-align: center; font-weight: bold;"/></p>
@@ -218,7 +218,7 @@ function limpiarBeneficiario(inputBene) {
 								<option value="D">D</option>
 							</select>
 						</td>
-						<td><input name="importe<?php echo $i?>" id="importe<?php echo $i?>" size="10" style="text-align: center; font-weight: bold;" onchange="verificarImporte(this)"/></td>
+						<td><input autocomplete="off" name="importe<?php echo $i?>" id="importe<?php echo $i?>" size="10" style="text-align: center; font-weight: bold;" onchange="verificarImporte(this)"/></td>
 					</tr>
 			<?php } ?>
 			</tbody>	
