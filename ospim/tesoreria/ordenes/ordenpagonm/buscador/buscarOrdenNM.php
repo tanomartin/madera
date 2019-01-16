@@ -79,8 +79,12 @@ function validar(formulario) {
 	return true;
 }
 
-function cancelarOrden(nroorden, boton) {
-	var r = confirm("Desea anular la orden de pago Nro " + nroorden);
+function cancelarOrden(nroorden, boton, migrada) {
+	var cartel = "Desea anular la orden de pago Nro " + nroorden;
+	if (migrada == 1) {
+		cartel = cartel + "\nTenga en cuenta que esta orden ya fue migrada al sistema contable";
+	}
+	var r = confirm(cartel);
 	if (r == true) {
 		boton.disabled = true;
 		var redireccion = "cancelarOrdenNM.php?nroorden="+nroorden;
@@ -149,7 +153,11 @@ function imputarOrden(nroorden) {
 		 		  							echo "<font color='red'> CANCELADA </font>"; 
 		 		  						} else {
 	  										if ($rowOrdenesCabecera['fechageneracion'] != null) { 
-	  											echo "<font color='green'> EMITIDA </font>"; 
+	  											if ($rowOrdenesCabecera['fechamigracion'] != null) {
+	  												echo "<font color='green'> MIGRADA </font>";
+	  											} else {
+	  												echo "<font color='green'> EMITIDA </font>"; 
+	  											}
 	  										} else {
 	  											if ($rowOrdenesCabecera['fechaimputacion'] != null) {
 	  												echo "<font color='olive'> PARA EMITIR </font>";
@@ -165,8 +173,10 @@ function imputarOrden(nroorden) {
 		 		  				 <?php if ($rowOrdenesCabecera['fechageneracion'] != null) {  ?>	
 		 		  							<input type="button" value="VER PDF" onclick="window.open('<?php echo $carpetaOrden ?>OP-NM<?php echo str_pad($rowOrdenesCabecera['nroorden'], 8, '0', STR_PAD_LEFT) ?>.pdf', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=900, height=650, top=10, left=10');" />
 		 		  			  	  <?php }
-		 		  			  			if ($rowOrdenesCabecera['fechacancelacion'] == null) {  ?>
-		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this)" />
+		 		  			  			if ($rowOrdenesCabecera['fechacancelacion'] == null) {  
+		 		  			  				$migrada = 0; 
+		 		  			  				if ($rowOrdenesCabecera['fechamigracion'] != null) { $migrada = 1; } ?>
+		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this, <?php echo $migrada?>)" />
 		 		  				 <?php  }?>
 		 		  					</td>
 		 		  				</tr>

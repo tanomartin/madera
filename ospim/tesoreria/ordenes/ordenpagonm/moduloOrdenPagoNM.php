@@ -23,9 +23,18 @@ include($libPath."controlSessionOspim.php"); ?>
           		<p><a href="abm/listadoImputaOrdenPagoNM.php"><img src="../img/imputarpagonm.png" width="90" height="90" border="0"/></a></p>
       		</td>
       		<td width="200">
-      	  		<p>CONSULTAR</p>
-          		<p><a href="buscador/buscarOrdenNM.php"><img src="../img/buscar.png" width="90" height="90" border="0" /></a></p>
+     			<p>MIGRAR</p>
+          		<p><a href="migracion/listadoOrdenesMigrar.php"><img src="../img/migracion.png" width="90" height="90" border="0"/></a></p>
+      	
      		</td>	
+      	</tr>
+      	<tr>
+      		<td></td>
+      		<td>
+      			<p>CONSULTAR</p>
+          		<p><a href="buscador/buscarOrdenNM.php"><img src="../img/buscar.png" width="90" height="90" border="0" /></a></p>
+     		</td>
+      		<td></td>
       	</tr>
   	</table>
 </div>

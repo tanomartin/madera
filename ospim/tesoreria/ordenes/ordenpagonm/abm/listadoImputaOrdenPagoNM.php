@@ -23,7 +23,6 @@ $(function() {
 		theme: 'blue',
 		widthFixed: true, 
 		widgets: ["zebra","filter"],
-		headers:{2:{sorter:false, filter: false}, 3:{sorter:false, filter: false}, 4:{sorter:false, filter: false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -37,11 +36,15 @@ $(function() {
 	})
 });
 
-function cancelarOrden(nroorden, boton) {
-	var r = confirm("Desea anular la orden de pago Nro " + nroorden);
+function cancelarOrden(nroorden, boton, migrada) {
+	var cartel = "Desea anular la orden de pago Nro " + nroorden;
+	if (migrada == 1) {
+		cartel = cartel + "\nTenga en cuenta que esta orden ya fue migrada al sistema contable";
+	}
+	var r = confirm(cartel);
 	if (r == true) {
 		boton.disabled = true;
-		var redireccion = "../buscador/cancelarOrdenNM.php?nroorden="+nroorden;
+		var redireccion = "cancelarOrdenNM.php?nroorden="+nroorden;
 		location.href=redireccion;
 	}
 }
@@ -78,8 +81,10 @@ function cancelarOrden(nroorden, boton) {
 		 		  			<input type="button" value="IMPUTAR" onclick="window.location = 'imputaOrdenPagoNM.php?nroorden=<?php echo $rowOrdenesAImputar['nroorden'] ?>'" />
 		 	  	  <?php } else { ?>
 		 	  	  			<input type="button" value="VER" onclick="window.location = 'verOrdenPagoNM.php?nroorden=<?php echo $rowOrdenesAImputar['nroorden'] ?>'" />
-		 	  	  <?php } ?>
-		 	  			<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesAImputar['nroorden'] ?>, this)" />
+		 	  	  <?php } 
+		 	  	 	 	$migrada = 0; 
+		 		  		if ($rowOrdenesAImputar['fechamigracion'] != null) { $migrada = 1; } ?>
+		 	  			<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesAImputar['nroorden'] ?>, this, <?php echo $migrada ?>)" />
 		 	 		</td>
 		 	 	</tr>
 	  <?php } ?>
