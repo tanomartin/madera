@@ -2,10 +2,10 @@
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia
-						FROM prestadoresnm p, localidades l, provincia r
-						WHERE p.codigo = $codigo and 
-							  p.codlocali = l.codlocali and 
-							  p.codprovin = r.codprovin";
+						FROM prestadoresnm p
+						LEFT JOIN localidades l on p.codlocali = l.codlocali
+						LEFT JOIN provincia r on p.codprovin = r.codprovin
+						WHERE p.codigo = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 ?>
