@@ -37,7 +37,10 @@ include($libPath."controlSessionOspim.php"); ?>
       			<p>CONSULTAR</p>
           		<p><a href="buscador/buscarOrdenNM.php"><img src="../img/buscar.png" width="90" height="90" border="0" /></a></p>
      		</td>
-      		<td></td>
+      		<td>
+      			<p>INFORMES</p>
+          		<p><a href="informes/menuInformes.php"><img src="../img/informes.png" width="90" height="90" border="0" /></a></p>
+      		</td>
       	</tr>
   	</table>
 </div>
