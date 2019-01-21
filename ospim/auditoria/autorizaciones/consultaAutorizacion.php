@@ -115,6 +115,21 @@ function reenviarMail(solicitud, idmail, boton, mail) {
 	}
 }
 
+function varModifHC(buttonModif) {
+	buttonModif.style.display = "none";
+	document.getElementById("historiaTexto").style.display = "none";
+	document.getElementById("guardar").style.display = "block";
+	document.getElementById("historiaClinicaTextarea").style.display = "block";
+}
+
+function guardarModifHC(buttonGuardar, nrosolicitud) {
+	buttonGuardar.disabled = true;
+	var textoHC = document.getElementById("historiaClinicaTextarea").value;
+	console.log(textoHC);
+	var redireccion = "guardarModificacionHC.php?nrosolicitud="+nrosolicitud+"&texto="+textoHC;
+	location.href=redireccion;
+}
+
 </script>
 </head>
 
@@ -174,7 +189,7 @@ function reenviarMail(solicitud, idmail, boton, mail) {
 				<p style="color: maroon;"><b>Documentación de la Solicitud</b></p>
 				<p><b>Tipo:</b> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeMaterial['descripcion']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
 	      		<p><b>Pedido Medico:</b> <?php if($rowLeeSolicitud['pedidomedico']!=NULL) {?> <input type="button" name="pedidomedico" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,1)" /><?php }?></p>
-	      		<p><b>Historia Clínica:</b> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?>  <input type="button" name="historiaclinica" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" /><?php }?></p>
+	      		<p><b>Historia Clínica Doc:</b> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?>  <input type="button" name="historiaclinica" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" /><?php }?></p>
 	      		<p><b>Estudios:</b> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" /><?php }?></p>
 	      		<p><b>Presupuestos:</b></p>
 	      		<p><?php if($rowLeeSolicitud['presupuesto1']!=NULL) { echo "1 - ";?><input type="button" name="presupuesto1" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,4)" /><?php if($rowLeeSolicitud['aprobado1']!=0) { print(" (Aprobado)"); };} ?></p>
@@ -192,7 +207,12 @@ function reenviarMail(solicitud, idmail, boton, mail) {
    				<p style="color: maroon;"><b>Resultado de la Autorización</b></p>
    				<p><b>Autorización:</b> <?php if($rowLeeSolicitud['statusautorizacion']==1) echo "Aprobada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']); else { if($rowLeeSolicitud['statusautorizacion']==2) echo "Rechazada el ".invertirFecha($rowLeeSolicitud['fechaautorizacion']);}?></p>
    	  			<p><b>Observacion / Motivo de Rechazo:</b><?php echo " ".$rowLeeSolicitud['rechazoautorizacion'];?></p>
-   	  			<p><b>Historia Clinica:</b><?php echo " ".$rowLeeSolicitud['detalle'];?></p>
+   	  			<p id="historiaTexto"><b>Historia Clinica: </b><?php echo $rowLeeSolicitud['detalle'];?></p>
+   	  			<p align="center">
+   	  				<textarea style="display: none" name="historiaClinicaTextarea" cols="50" rows="5" id="historiaClinicaTextarea"><?php echo $rowLeeSolicitud['detalle'];?></textarea>
+   	  				<button id="modificar" onclick="varModifHC(this)">Modificar</button>
+   	  				<button style="display: none" id="guardar"  onclick="guardarModifHC(this, <?php echo $nrosolicitud?>)">Guardar</button>
+   	  			</p>
       			<p><b>Expediente SUR:</b><?php if($rowLeeSolicitud['clasificacionape']==1) { echo " SI"; } else { echo " NO";} ?></p>
       			<p><b>Comunica al Prestador ?:</b> <?php if($rowLeeSolicitud['emailprestador']!=NULL) { echo " SI <br/> <b>Email:</b> ".$rowLeeSolicitud['emailprestador']; } else { echo "NO";} ?> </p>
       			<p><b>Clasificacion Patologia:</b> <?php echo $patologia;?></p>
