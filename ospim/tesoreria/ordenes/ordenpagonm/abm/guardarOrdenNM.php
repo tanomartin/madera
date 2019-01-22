@@ -7,7 +7,7 @@ $importeTotal = $_POST['monto'];
 $codigoprestador = $_POST['codigoprestador'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$sqlInsertCabecera = "INSERT INTO ordennmcabecera VALUES(DEFAULT,'$fecha',$importeTotal,$codigoprestador,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro')";
+$sqlInsertCabecera = "INSERT INTO ordennmcabecera VALUES(DEFAULT,'$fecha',$importeTotal,$codigoprestador,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro')";
 
 
 $lineas = $_POST['conceptoaver'];
