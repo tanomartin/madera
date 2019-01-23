@@ -278,9 +278,11 @@ $(document).ready(function(){
 			        var nomnroa = "#nroafil"+id;
 			        if (ui.item.pidebene == 1) {
 			        	$(nomdele).attr("disabled", false);
-			        	$(nomdele).val(ui.item.codidelega);  	
+			        	$(nomdele).val(ui.item.codidelega); 
+			        	$(nombene).val(""); 	
 			        	$(nombene).attr("readonly", false);  
 			        	$(nombene).attr("disabled", false);
+			        	$(nomnroa).val("");
 			        	$(nomnroa).attr("disabled", false);
 			        	$(nomnroa).css("background-color", "silver");
 				    } else {
