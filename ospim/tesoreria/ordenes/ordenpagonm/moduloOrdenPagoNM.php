@@ -34,12 +34,12 @@ include($libPath."controlSessionOspim.php"); ?>
           		<p><a href="beneficiario/menuBeneficiario.php"><img src="../img/beneficiarios.png" width="90" height="90" border="0" /></a></p>
       		</td>
       		<td>
-      			<p>CONSULTAR</p>
+      			<p>BUSCADOR</p>
           		<p><a href="buscador/buscarOrdenNM.php"><img src="../img/buscar.png" width="90" height="90" border="0" /></a></p>
      		</td>
       		<td>
       			<p>INFORMES</p>
-          		<p><a href="informes/menuInformes.php"><img src="../img/informes.png" width="90" height="90" border="0" /></a></p>
+          		<p><a href="../../../moduloNoDisponible.php"><img src="../img/informes.png" width="90" height="90" border="0" /></a></p>
       		</td>
       	</tr>
   	</table>
