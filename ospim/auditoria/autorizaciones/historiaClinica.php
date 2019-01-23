@@ -4,9 +4,10 @@ $cuil = $_GET['cuil'];
 $nombre = $_GET['nombre'];
 $soli = $_GET['nrosol'];
 
-$sqlAutorizaciones = "SELECT a.nrosolicitud, a.statusautorizacion, a.rechazoautorizacion, a.usuarioautorizacion,
-							DATE_FORMAT(a.fechasolicitud,'%d-%m-%Y') as fechasolicitud, 
-							autorizaciondocumento.documentofinal, autorizacioneshistoria.detalle 
+$sqlAutorizaciones = "SELECT a.practica, a.medicamento, a.material, a.nrosolicitud, 
+							 a.statusautorizacion, a.rechazoautorizacion, a.usuarioautorizacion,
+							 DATE_FORMAT(a.fechasolicitud,'%d-%m-%Y') as fechasolicitud, 
+							 autorizaciondocumento.documentofinal, autorizacioneshistoria.detalle 
 						FROM autorizacionesatendidas a
 						LEFT JOIN autorizaciondocumento ON a.nrosolicitud = autorizaciondocumento.nrosolicitud
 						LEFT JOIN autorizacioneshistoria ON a.nrosolicitud = autorizacioneshistoria.nrosolicitud
@@ -70,6 +71,7 @@ function verSolicitud(solicitud){
 		<thead>
 			<tr>
 				<th>Nro Solicitud</th>
+				<th>Tipo</th>
 				<th>Fecha</th>
 				<th>Detalle Historia</th>
 				<th>Estado</th>
@@ -84,6 +86,10 @@ function verSolicitud(solicitud){
 			}?>
 			<tr>
 				<td <?php echo $color?>><?php echo $rowAutorizaciones['nrosolicitud'] ?></td>
+				<td <?php echo $color?>>
+					<?php if($rowAutorizaciones['practica']==1) echo "Practica"; 
+						  elseif($rowAutorizaciones['material']==1) echo "Material"; 
+						  elseif($rowAutorizaciones['medicamento']==1) echo "Medicamento";?></td>
 				<td <?php echo $color?>><?php echo $rowAutorizaciones['fechasolicitud'] ?></td>
 				<td <?php echo $color?>><?php echo $rowAutorizaciones['detalle'] ?></td>
 				<td <?php echo $color?>>
