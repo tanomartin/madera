@@ -8,7 +8,7 @@ foreach ($_POST as $ordenes) {
 $whereIn = substr($whereIn, 0, -1);
 $whereIn .= ")";
 
-$sqlOrdenesCabecera = "SELECT o.*, b.dirigidoa, c.nrocta, c.titulo
+$sqlOrdenesCabecera = "SELECT o.*, b.dirigidoa, c.nrocta
 						FROM ordennmcabecera o, prestadoresnm b, cuentasospim c
 						WHERE o.nroorden in $whereIn and
 							  o.codigoprestador = b.codigo and
@@ -40,7 +40,7 @@ while ($rowOrdenesCabecera = mysql_fetch_assoc($resOrdenesCabecera)) {
 	$arrayLineas[$index] = "D".$fecha.$nroorden.$nrocuenta."-".$total.$tipo.$nropago.$nroafil;
 }
 
-$sqlOrdenesDetalle = "SELECT d.*, i.imputacion, i.importe, i.nroafiliado , i.nroordenfami, c.nrocta, c.titulo 
+$sqlOrdenesDetalle = "SELECT d.*, i.imputacion, i.importe, i.nroafiliado , i.nroordenfami, c.nrocta
 						FROM ordennmdetalle d, ordennmimputacion i, cuentasospim c
 						WHERE d.nroorden in $whereIn and 
 							  d.nroorden = i.nroorden and 
@@ -56,9 +56,8 @@ while ($rowOrdenesDetalle = mysql_fetch_assoc($resOrdenesDetalle)) {
 	$nroorden = str_pad($rowOrdenesDetalle['nroorden'],6,"0",STR_PAD_LEFT);
 	$nrocuenta = str_pad($rowOrdenesDetalle['nrocta'],9,"0",STR_PAD_LEFT);
 	
-	$pos = strpos($rowOrdenesDetalle['titulo'], "BANCO");
 	$signo = " ";
-	if ($pos !== false or $rowOrdenesDetalle['tipo'] == "D") {
+	if ($rowOrdenesDetalle['tipo'] == "D") {
 		$signo = "-";
 	}
 	$importe = $rowOrdenesDetalle['importe'] * 100;
