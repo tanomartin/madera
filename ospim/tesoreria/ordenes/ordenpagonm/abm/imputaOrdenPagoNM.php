@@ -404,7 +404,7 @@ function limpiarNroAfil(inputAfiliado) {
 					</b>
 				</p>
 				<p>
-					<b>Nro: <input type="text" name="nropago" id="nropago" size="25" /></b>
+					<b>Nro: <input type="text" name="nropago" id="nropago" size="10" maxlength="8" /></b>
 					<input type="button" value="CARGAR INFO FORMA DE PAGO" id="guardarInfoPago" name="guardarInfoPago" style="float: right;" onclick="cambioDatosPago(<?php echo $nroorden ?>,'C')"/>
 				</p>
 	 <?php  } else { ?>

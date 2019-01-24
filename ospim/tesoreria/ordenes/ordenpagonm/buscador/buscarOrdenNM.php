@@ -79,10 +79,10 @@ function validar(formulario) {
 	return true;
 }
 
-function cancelarOrden(nroorden, boton, migrada) {
+function cancelarOrden(nroorden, boton, fechamigrada, nroarchivo) {
 	var cartel = "Desea anular la orden de pago Nro " + nroorden;
-	if (migrada == 1) {
-		cartel = cartel + "\nTenga en cuenta que esta orden ya fue migrada al sistema contable";
+	if (fechamigrada != null) {
+		cartel = cartel + "\nTenga en cuenta que esta orden ya fue migrada al sistema contable\nInfo Migracion dia: "+fechamigrada+" - archivo Nro: "+nroarchivo;
 	}
 	var r = confirm(cartel);
 	if (r == true) {
@@ -173,10 +173,8 @@ function imputarOrden(nroorden) {
 		 		  				 <?php if ($rowOrdenesCabecera['fechageneracion'] != null) {  ?>	
 		 		  							<input type="button" value="VER PDF" onclick="window.open('<?php echo $carpetaOrden ?>OP-NM<?php echo str_pad($rowOrdenesCabecera['nroorden'], 8, '0', STR_PAD_LEFT) ?>.pdf', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=900, height=650, top=10, left=10');" />
 		 		  			  	  <?php }
-		 		  			  			if ($rowOrdenesCabecera['fechacancelacion'] == null) {  
-		 		  			  				$migrada = 0; 
-		 		  			  				if ($rowOrdenesCabecera['fechamigracion'] != null) { $migrada = 1; } ?>
-		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this, <?php echo $migrada?>)" />
+		 		  			  			if ($rowOrdenesCabecera['fechacancelacion'] == null) {   ?>
+		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this, '<?php echo date("d-m-Y",strtotime($rowOrdenesCabecera['fechamigracion'])) ?>','<?php echo $rowOrdenesCabecera['nroarchivomigra']?>' )" />
 		 		  				 <?php  }?>
 		 		  					</td>
 		 		  				</tr>

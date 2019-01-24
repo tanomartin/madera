@@ -17,6 +17,8 @@ $canOrdenesAMigrar = mysql_num_rows($resOrdenesAMigrar); ?>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery-ui.min.js"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script>
 
 $(function() {
@@ -38,6 +40,12 @@ $(function() {
 	})
 });
 
+function generarArchivo(formulario) {
+	$.blockUI({ message: "<h1>Generando Archivo... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
+	formulario.submit.disabled = true;
+	return true;
+}
+
 </script>
 <title>.: Modulo Migracion Ordenes de Pago :.</title>
 </head>
@@ -47,31 +55,36 @@ $(function() {
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../moduloOrdenPagoNM.php'" /></p>
 	<h3>Módulo de Migración Ordenes de Pago No Médicas </h3>
 <?php if ($canOrdenesAMigrar > 0) { ?>
-	  	<h3>Ordenes a Migrar al Sistema Contable</h3>	
-	 	<table class="tablesorter" id="listado" style="width:70%; font-size:14px; text-align: center">
-		 	<thead>
-			 	<tr>
-			 		<th width="10%">Nro. Orden</th>
-			 		<th>Beneficiario</th>
-					<th>Fecha</th>
-			 		<th>Importe</th>					
-			 	</tr>
-		 	</thead>
-		 	<tbody>
-	  <?php while ($rowOrdenesAMigrar = mysql_fetch_array($resOrdenesAMigrar)) { ?>
-	  	  		<tr>
-		 		  	<td><?php echo $rowOrdenesAMigrar['nroorden'];?></td>
-		 		  	<td><?php echo $rowOrdenesAMigrar['beneficiario'] ?></td>
-		 		  	<td><?php echo $rowOrdenesAMigrar['fecha'] ?></td>
-		 		  	<td><?php echo number_format($rowOrdenesAMigrar['importe'],2,",",".") ?></td>
-		 	 	</tr>
-	  <?php } ?>
-		 	</tbody>
-		</table>
+		<h3>Ordenes a Migrar al Sistema Contable</h3>	
+	 	<form id="migracion" name="migracion" method="post" onsubmit="return generarArchivo(this)" action="generarArchivoMigracion.php">
+		 	<table class="tablesorter" id="listado" style="width:70%; font-size:14px; text-align: center">
+			 	<thead>
+				 	<tr>
+				 		<th width="10%">Nro. Orden</th>
+				 		<th>Beneficiario</th>
+						<th>Fecha</th>
+				 		<th>Importe</th>					
+				 	</tr>
+			 	</thead>
+			 	<tbody>
+		  <?php while ($rowOrdenesAMigrar = mysql_fetch_array($resOrdenesAMigrar)) { ?>
+		  	  		<tr>
+			 		  	<td>
+			 		  		<input style="display: none" type="text" value="<?php echo $rowOrdenesAMigrar['nroorden'] ?>" name="nroorden<?php echo $rowOrdenesAMigrar['nroorden']?>" id="nroorden<?php echo $rowOrdenesAMigrar['nroorden']?>"/>
+			 		  		<?php echo $rowOrdenesAMigrar['nroorden'];?>
+			 		  	</td>
+			 		  	<td><?php echo $rowOrdenesAMigrar['beneficiario'] ?></td>
+			 		  	<td><?php echo $rowOrdenesAMigrar['fecha'] ?></td>
+			 		  	<td><?php echo number_format($rowOrdenesAMigrar['importe'],2,",",".") ?></td>
+			 	 	</tr>
+		  <?php } ?>
+			 	</tbody>
+			</table>
+			<p><input type="submit" name="submit" value="Generar Archivo"/></p>
+		</form>
 <?php } else { ?>
 		<h3 style="color: blue">No Existen Ordenes de Pago para Migrar</h3>
 <?php } ?>
-	<p><input type="button" value="Generar Archivo"/></p>
 </div>
 </body>
 </html>
