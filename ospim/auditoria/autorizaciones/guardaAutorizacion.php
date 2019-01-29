@@ -69,6 +69,7 @@ if($staauto==2) {
 	$presmail = "";
 	$presfech = "";
 	$patoauto = "";
+	$montcose = "0.00";
 	$montauto = "0.00";
 	$montoMostrar = $montauto;
 } else {
@@ -102,6 +103,22 @@ if($staauto==2) {
 		$patoauto = $_POST['selectPatologia'];
 	}
 
+	if(isset($_POST['montoCoseguro'])) {
+		$montcose = $_POST['montoCoseguro'];
+	}
+	
+	if($montcose > 0.00) {
+		$fuentePath = $_SERVER['DOCUMENT_ROOT']."/madera/ospim/auditoria/autorizaciones/";
+		$imagencose="../tempautorizaciones/cose".$nrosoli.".png";
+		$im = imagecreate(560, 130);
+		$fondo = imagecolorallocatealpha($im, 255, 255, 255, 127);
+		$color_texto = imagecolorallocate($im, 0, 0, 0);
+		$fuente = $fuentePath.'arialbd.ttf';
+		imagettftext($im, 20, 0, 50, 60, $color_texto, $fuente, 'Monto Coseguro: '.$montcose);
+		imagepng($im, $imagencose);
+		imagedestroy($im);
+	}
+	
 	if(isset($_POST['montoAutoriza'])) {
 		$montauto = $_POST['montoAutoriza'];
 	}
@@ -308,7 +325,8 @@ try {
 		$pdf->Cell(113,6,"Tipo: ".$tiposoli,1,0,'L');
 		$pdf->Cell(70,6,"Documento: ".$docuTyNro,1,1,'L');
 		$pdf->Cell(10);
-		$pdf->Cell(113,6,"Monto Autorizado: ".$montoMostrar,1,0,'L');
+		$pdf->Cell(57,6,"Monto Autorizado: ".$montoMostrar,1,0,'L');
+		$pdf->Cell(56,6,"Monto Coseguro: ".$montcose,1,0,'L');
 		$pdf->Cell(70,6,"Delegacion: ".$rowLeeSolicitud['delegacion'],1,1,'L');
 
 		if($rowLeeSolicitud['pedidomedico']!=NULL) {
@@ -370,6 +388,7 @@ try {
 			$pdf->Image('../img/Firma Giraudo.png',160,190,18,50);
 			$pdf->Image('../img/Sello Giraudo.png',150,220,35,13);
 		}
+		
 		if($docpm==1) {
 			$totalpaginas=$pdf->setSourceFile($nombrepedido);
 			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
@@ -380,12 +399,21 @@ try {
 				$tplIdx = $pdf->importPage($nropagina);
 				$pdf->useTemplate($tplIdx, 10, 30, 196);
 				
+				$pusoAprobado = 0;
 				if($rowLeeSolicitud['medicamento'] == 1) {
-					$pdf->Image('../img/Sello Presupuesto.png',87,130,60,40);
+					$pdf->Image('../img/Sello Presupuesto.png',37,130,60,40);
 					if($montauto > 0.00) {
-						$pdf->Image($imagenmonto,89,140,60,40);
+						$pdf->Image($imagenmonto,39,140,60,40);
+						$pusoAprobado = 1;
 					}
-				} else {
+				} 
+				if($montcose > 0.00) {
+					$pdf->Image('../img/Sello Presupuesto.png',117,130,60,40);
+					$pdf->Image($imagencose,119,140,60,40);
+					$pusoAprobado = 1;
+				}
+				
+				if($pusoAprobado == 0) {
 					$pdf->Image('../img/Sello Autorizado.png',87,130,50,30);
 				}
 				
@@ -399,6 +427,7 @@ try {
 				}
 			}
 		}
+		
 		if($docrh==1) {
 			$totalpaginas=$pdf->setSourceFile($nombreresumen);
 			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
@@ -419,6 +448,7 @@ try {
 				}
 			}
 		}
+		
 		if($docas==1) {
 			$totalpaginas=$pdf->setSourceFile($nombreaval);
 			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
@@ -439,6 +469,7 @@ try {
 				}
 			}
 		}
+		
 		if($docpa==1) {
 			$totalpaginas=$pdf->setSourceFile($nombrepresupue);
 			for($nropagina=1; $nropagina<=$totalpaginas; $nropagina++) { 
@@ -474,10 +505,10 @@ try {
 	}
 
 	
-	$sqlActualizaAuto="UPDATE autorizacionesatendidas SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, patologia = :patologia, montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
+	$sqlActualizaAuto="UPDATE autorizacionesatendidas SET aprobado1 = :aprobado1, aprobado2 = :aprobado2, aprobado3 = :aprobado3, aprobado4 = :aprobado4, aprobado5 = :aprobado5, statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, usuarioautorizacion = :usuarioautorizacion, clasificacionape = :clasificacionape, fechaemailape = :fechaemailape, rechazoautorizacion = :rechazoautorizacion, fechaemaildelega = :fechaemaildelega, emailprestador = :emailprestador, fechaemailprestador = :fechaemailprestador, patologia = :patologia, montocoseguro = :montocoseguro,  montoautorizacion = :montoautorizacion WHERE nrosolicitud = :nrosolicitud";
 	//echo $sqlActualizaAuto; echo "<br>";
 	$resultActualizaAuto = $dbl->prepare($sqlActualizaAuto);
-	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':patologia' => $patoauto, ':montoautorizacion' => $montoMostrar, ':nrosolicitud' => $nrosoli))) {	
+	if($resultActualizaAuto->execute(array(':aprobado1' => $presapr1, ':aprobado2' => $presapr2, ':aprobado3' => $presapr3, ':aprobado4' => $presapr4, ':aprobado5' => $presapr5, ':statusautorizacion' => $staauto, ':fechaautorizacion' => $fecauto, ':usuarioautorizacion' => $usuauto, ':clasificacionape' => $apeauto, ':fechaemailape' => $apefech, ':rechazoautorizacion' => $recauto, ':fechaemaildelega' => $fecauto, ':emailprestador' => $presmail, ':fechaemailprestador' => $presfech, ':patologia' => $patoauto, ':montocoseguro' => $montcose ,':montoautorizacion' => $montoMostrar, ':nrosolicitud' => $nrosoli))) {	
 		$sqlActualizaProcesadas="UPDATE autorizacionprocesada SET statusautorizacion = :statusautorizacion, fechaautorizacion = :fechaautorizacion, rechazoautorizacion = :rechazoautorizacion, fechaemail = :fechaemail WHERE nrosolicitud = :nrosolicitud";
 		//echo $sqlActualizaProcesadas; echo "<br>";
 		$resultActualizaProcesadas = $dbr->prepare($sqlActualizaProcesadas);

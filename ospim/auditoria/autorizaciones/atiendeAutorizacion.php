@@ -29,20 +29,13 @@ if($rowLeeSolicitud['nroafiliado']!=0) {
 	}
 }
 
-//VEO SI ES DISCAPACITADO Y SACO EDAD
+//SACO LA EDAD
 if ($rowLeeSolicitud['codiparentesco'] >= 0) {
 	if ($rowLeeSolicitud['codiparentesco'] > 0) {
-		$sqlDisca = "SELECT f.nroafiliado, f.nroorden as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
-						FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
 		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil']. " and nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
 	} else {
-		$sqlDisca = "SELECT d.*, 0 as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
-						FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
 		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM titulares WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
 	}
-	$resDisca = mysql_query($sqlDisca,$db);
-	$canDisca = mysql_num_rows($resDisca);
-
 	$resEdad = mysql_query($sqlEdad,$db);
 	$rowEdad = mysql_fetch_assoc($resEdad);
 	$edad = $rowEdad['edad'];
@@ -50,9 +43,74 @@ if ($rowLeeSolicitud['codiparentesco'] >= 0) {
 } else {
 	$edad = "-";
 	$naci = "-";
+}
+
+//VEO SI ES DISCAPACITADO
+if ($rowLeeSolicitud['codiparentesco'] >= 0) {
+	if ($rowLeeSolicitud['codiparentesco'] > 0) {
+		$sqlDisca = "SELECT f.nroafiliado, f.nroorden as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
+						FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";		
+	} else {
+		$sqlDisca = "SELECT d.*, 0 as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
+						FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
+
+	}
+	$resDisca = mysql_query($sqlDisca,$db);
+	$canDisca = mysql_num_rows($resDisca);
+} else {
 	$canDisca = 0;
 }
 
+//VEO SI ES HIV 
+if ($rowLeeSolicitud['codiparentesco'] >= 0) {
+	if ($rowLeeSolicitud['codiparentesco'] > 0) {
+		$sqlHIV = "SELECT h.* FROM familiares f, hivbeneficiarios h WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = h.nroafiliado and f.nroorden = h.nroorden";		
+	} else {
+		$sqlHIV = "SELECT h.* FROM hivbeneficiarios h WHERE h.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and h.nroorden = 0";
+	}
+	$resHIV = mysql_query($sqlHIV,$db);
+	$canHIV = mysql_num_rows($resHIV);
+} else {
+	$canHIV = 0;
+}
+
+//VEO SI ES ONCO
+if ($rowLeeSolicitud['codiparentesco'] >= 0) {
+	if ($rowLeeSolicitud['codiparentesco'] > 0) {
+		$sqlOnco = "SELECT o.* FROM familiares f, oncologiabeneficiarios o WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = o.nroafiliado and f.nroorden = o.nroorden";		
+	} else {
+		$sqlOnco = "SELECT o.* FROM oncologiabeneficiarios o WHERE o.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and o.nroorden = 0";
+	}
+	$resOnco = mysql_query($sqlOnco,$db);
+	$canOnco = mysql_num_rows($resOnco);
+} else {
+	$canOnco = 0;
+}
+
+//VEO SI ES ESTA EN PMI
+if ($rowLeeSolicitud['codiparentesco'] >= 0) {
+	$fechaLimite = date('Y-m-d',strtotime('-1 month',strtotime (date('Y-m-d'))));
+	if ($rowLeeSolicitud['codiparentesco'] > 0) {
+		$sqlPMI = "SELECT p.*, DATE_FORMAT(p.fpp,'%d/%m/%Y') as fpp, DATE_FORMAT(p.fechanacimiento,'%d/%m/%Y') as fechanacimiento 
+					FROM familiares f, pmibeneficiarios p 
+					WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and 
+						  f.nroafiliado = p.nroafiliado and 
+						  f.nroorden = p.nroorden and 
+						  (p.fechanacimiento != '0000-00-00' and p.fechanacimiento >= '$fechaLimite'
+						  or p.fechanacimiento = '0000-00-00' and p.fpp >= '$fechaLimite')";	
+	} else {
+		$sqlPMI = "SELECT p.*, DATE_FORMAT(p.fpp,'%d/%m/%Y') as fpp, DATE_FORMAT(p.fechanacimiento,'%d/%m/%Y') as fechanacimiento  
+					FROM pmibeneficiarios p 
+				 	WHERE p.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and
+				 		  p.nroorden = 0 and
+						  (p.fechanacimiento != '0000-00-00' and p.fechanacimiento >= '$fechaLimite'
+						  or p.fechanacimiento = '0000-00-00' and p.fpp >= '$fechaLimite')";	
+	}
+	$resPMI = mysql_query($sqlPMI,$db);
+	$canPMI = mysql_num_rows($resPMI);
+} else {
+	$canPMI = 0;
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -90,6 +148,9 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.prestaNo.disabled=false;
 		document.forms.atiendeAutorizacion.emailPresta.disabled=false;
 		document.forms.atiendeAutorizacion.selectPatologia.disabled=false;
+		document.forms.atiendeAutorizacion.montoCoseguro.disabled=false;
+		document.forms.atiendeAutorizacion.monto.disabled=false;
+		document.forms.atiendeAutorizacion.porcentaje.disabled=false;
 		document.forms.atiendeAutorizacion.montoAutoriza.disabled=false;
 		document.forms.atiendeAutorizacion.elige1.disabled=false;
 		document.forms.atiendeAutorizacion.elige2.disabled=false;
@@ -108,8 +169,12 @@ function mostrarMotivo(muestra) {
 		document.forms.atiendeAutorizacion.prestaNo.disabled=true;
 		document.forms.atiendeAutorizacion.emailPresta.value="";
 		document.forms.atiendeAutorizacion.emailPresta.disabled=true;
-		document.forms.atiendeAutorizacion.selectPatologia.selectedIndex = -1;
+		document.forms.atiendeAutorizacion.selectPatologia.selectedIndex = 0;
 		document.forms.atiendeAutorizacion.selectPatologia.disabled=true;
+		document.forms.atiendeAutorizacion.montoCoseguro.value="";
+		document.forms.atiendeAutorizacion.montoCoseguro.disabled=true;
+		document.forms.atiendeAutorizacion.monto.disabled=true;
+		document.forms.atiendeAutorizacion.porcentaje.disabled=true;
 		document.forms.atiendeAutorizacion.montoAutoriza.value="";
 		document.forms.atiendeAutorizacion.montoAutoriza.disabled=true;
 		document.forms.atiendeAutorizacion.elige1.checked=false;
@@ -363,6 +428,12 @@ function validar(formulario) {
 			return false;
 		}
 
+		if(document.getElementById("montoCoseguro").value == "" || !isNumber(document.getElementById("montoCoseguro").value)) {
+			alert("Debe ingresar el Monto de Coseguro y debe ser un número");
+			document.getElementById("montoCoseguro").focus();
+			return false;
+		}
+
 		if(document.getElementById("montoAutoriza").value == "") {
 			alert("Debe ingresar el monto autorizado");
 			document.getElementById("montoAutoriza").focus();
@@ -480,23 +551,33 @@ function validar(formulario) {
 					} else {
 						echo "No Empadronado";
 					} ?>
-					</p>
-					<p><b>Discapacitado:</b>
-			<?php	if ($canDisca == 1) {
-						$rowDisca = mysql_fetch_assoc($resDisca); 
-						$nroorden = $rowDisca['nroorden']; 
-						echo "SI (FA: ".$rowDisca['fechaalta']." - FE: ".$rowDisca['emisioncertificado']." - FV: ".$rowDisca['vencimientocertificado'].")"; ?>
-						<input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/>
-			<?php 	} else { 
-						echo "NO"; 
-					} ?>
-					</p>
+					</p>					
+
 		        	<p><b>Fecha Nacimiento:</b> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
 		        	<p><b>C.U.I.L.:</b> <?php echo $rowLeeSolicitud['cuil'] ?></p>
 		        	<p><b>Telefono:</b> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?> </p>
 		        	<p><b>Celular:</b> <?php echo $rowLeeSolicitud['movilafiliado'] ?></p>
 		       	 	<p><b>Email:</b> <?php echo $rowLeeSolicitud['emailafiliado'] ?></p>		
-		       	 	
+		       	 	<p style="color: maroon;"><b>Informacion Medica</b></p>
+		      <?php	if ($canDisca == 1) {
+						$rowDisca = mysql_fetch_assoc($resDisca); 
+						$nroorden = $rowDisca['nroorden']; ?>
+						<p><b>Disca.: SI </b>(FA: <?php echo $rowDisca['fechaalta'] ?> - FE: <?php echo $rowDisca['emisioncertificado'] ?> - FV: <?php echo $rowDisca['vencimientocertificado'] ?> ) 
+						<input name="ver" type="button" id="ver" value="Ver Cert." onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/></p>
+			<?php 	} ?>
+			<?php	if ($canHIV == 1) { ?>
+						<p><b>H.I.V.:</b> SI </p>
+			<?php 	} ?>
+			<?php	if ($canOnco == 1) { ?>
+						<p><b>Oncológico:</b> SI </p>
+			<?php 	} ?>
+			<?php	if ($canPMI == 1) {
+						$rowPMI = mysql_fetch_assoc($resPMI); ?>
+					<p><b>P.M.I.:</b> SI (FPP: <?php echo $rowPMI['fpp'] ?> - FP: <?php if ($rowPMI['fechanacimiento'] != "00/00/0000") { echo $rowPMI['fechanacimiento']; } else { echo "Sin Dato"; } ?>) </p>
+		  <?php 	} ?>
+		      <?php if ($canDisca == 0 && $canHIV == 0 && $canOnco == 0 && $canPMI == 0) { ?>
+		    			<p>Sin Información para mostrar</p>
+		     <?php  }?>
 		       	 	<p style="color: maroon;"><b>Historia Clinica Autorizaciones</b></p>
 					<p><input type="button" value="Ver Historia" name="historia" id="historia" onclick="javascript:muestraHistoria(<?php echo  $rowLeeSolicitud['nrosolicitud'] ?>,<?php echo  $rowLeeSolicitud['cuil'] ?>,'<?php echo  $rowLeeSolicitud['apellidoynombre'] ?>')" /></p>
 		      	</td>
@@ -527,7 +608,7 @@ function validar(formulario) {
 		      		</p>
 		      		<p><b>Observacion / Motivo de Rechazo:</b></p>
 		      		<p><textarea name="motivoRechazo" cols="60" rows="5" id="motivoRechazo"></textarea></p>
-		      		<p><b>Historia Clinica:</b></p>
+		      		<p><b>Historia Clinica Autorizaciones:</b></p>
 		      		<p><textarea name="historiaClinica" cols="60" rows="5" id="historiaClinica"></textarea></p>
 		      		<p><b>Expediente SUR :</b>
 		        		<input name="ape" id="apeSi" type="radio" value="1"/>Si
@@ -548,6 +629,11 @@ function validar(formulario) {
 						<?php } ?>
 			        	</select>
 			        </p>
+			  <?php if ($canDisca == 0 && $canHIV == 0 && $canOnco == 0 && $canPMI == 0) { ?>
+			        	<p><b>Monto Coseguro: </b><input name="montoCoseguro" type="text" id="montoCoseguro" size="10" maxlength="10" /></p>
+			  <?php } else { ?>
+			  			<p><b>Monto Coseguro: </b><input value="0.00" style="background-color: silver" name="montoCoseguro" type="text" id="montoCoseguro" size="10" maxlength="10" readonly="readonly"/></p>
+			  <?php } ?>
 		      		<p><b>Monto Autorizado</b></p>
 		      		<p>
 		      			<b>Monto: </b><input type="radio" id="monto" name="tipomonto" value="1" checked /> | 
