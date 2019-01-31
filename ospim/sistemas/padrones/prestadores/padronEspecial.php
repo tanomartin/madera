@@ -1,5 +1,4 @@
-<?php
-		//ARCHIVO TITULARES
+<?php	//ARCHIVO TITULARES
 		$objPHPExcel = new PHPExcel();
 		$objPHPExcel->getProperties()->setCreator($_SESSION['usuario'])
 									 ->setLastModifiedBy($_SESSION['usuario'])
@@ -48,11 +47,13 @@
 		$objPHPExcel->getActiveSheet()->setCellValue('P1', 'DPTO');
 		$objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->setCellValue('Q1', 'PLAN');
+		$objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->setCellValue('R1', 'COSEGURO');
 			
 		// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-		$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFill()->getStartColor()->setARGB('FF808080');
+		$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFill()->getStartColor()->setARGB('FF808080');
 		
 		$fila=1;
 		$filaFamilia=1;	
@@ -87,9 +88,6 @@
 							WHERE t.codidelega = $delega and t.cantidadcarnet != 0 and t.fecharegistro < '$fechaLimite' and t.codlocali = l.codlocali";
 			//print($sqlTitulares."<br>");
 			$resTitulares = mysql_query($sqlTitulares, $db);	
-			
-			
-			
 			while($rowTitulares = mysql_fetch_array($resTitulares)) {
 				$fila++;
 				
@@ -106,6 +104,13 @@
 				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['codprovin']);
 				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, utf8_encode($rowTitulares['nomlocali']));		
 				$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, utf8_encode($rowTitulares['domicilio']));
+				
+				$coseguro = 1;
+				$indexCoseguro = $rowTitulares['nroafiliado']."-0";
+				if (array_key_exists($indexCoseguro,$arrayCoseguro)) {
+					$coseguro = 0;
+				}
+				$objPHPExcel->getActiveSheet()->setCellValue('R'.$fila, $coseguro);
 				$totalTituXDelega++;
 			
 				$nroafil = $rowTitulares['nroafiliado'];
@@ -132,6 +137,11 @@
 				
 				while($rowFamiliares = mysql_fetch_array($resFamiliares)) {
 					$nroAfiliadoFamiliar = $rowFamiliares['nroafiliado']."/".$rowFamiliares['nroorden'];
+					$coseguro = 1;
+					$indexCoseguro = $rowFamiliares['nroafiliado']."-".$rowFamiliares['nroorden'];
+					if (array_key_exists($indexCoseguro,$arrayCoseguro)) {
+						$coseguro = 0;
+					}
 					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $nroAfiliadoFamiliar,
 														 'cuiltitular' => $rowTitulares['cuil'], 
 														 'cuilbeneficiario' => $rowFamiliares['cuil'],
@@ -144,7 +154,8 @@
 														 'fechaalta' => invertirFecha($rowFamiliares['fechaobrasocial']), 
 														 'provincia' => $rowTitulares['codprovin'], 
 														 'localidad' => utf8_encode($rowTitulares['nomlocali']), 
-														 'domicilio' => utf8_encode($rowTitulares['domicilio']));
+														 'domicilio' => utf8_encode($rowTitulares['domicilio']),
+														 'coseguro' => $coseguro);
 					$filaFamilia++;
 					
 					$insertInforme[$indexInforme] = array('nroafiliado' => $rowFamiliares['nroafiliado'], 'nroorden' => $rowFamiliares['nroorden'], 'tipoparentesco' => $rowFamiliares['tipoparentesco']);
@@ -157,7 +168,11 @@
 			$totalizador[$delega] = array('delega' => $delega, 'tottit' => $totalTituXDelega, 'totfam' => $totalFamiXDelega, "total" => $totalDele);
 		}
 		
-		for($col = 'A'; $col !== 'Q'; $col++) {
+		if ($medicina == 0) {
+			$objPHPExcel->removeColumn('R');
+		}
+		
+		for($col = 'A'; $col !== 'S'; $col++) {
 			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
 		
@@ -219,11 +234,13 @@
 		$objPHPExcel->getActiveSheet()->setCellValue('P1', 'DPTO');
 		$objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->setCellValue('Q1', 'PLAN');
+		$objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->setCellValue('R1', 'COSEGURO');
 			
 		// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-		$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFill()->getStartColor()->setARGB('FF808080');
+		$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFill()->getStartColor()->setARGB('FF808080');
 			
 		$fila=1;	
 		$objPHPExcel->getDefaultStyle()->getFont()->setSize(10);	
@@ -241,10 +258,15 @@
 			$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $familiar['fechaalta']);
 			$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $familiar['provincia']);
 			$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $familiar['localidad']);
-			$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $familiar['domicilio']);		
+			$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $familiar['domicilio']);
+			$objPHPExcel->getActiveSheet()->setCellValue('R'.$fila, $familiar['coseguro']);
 		}
 		
-		for($col = 'A'; $col !== 'M'; $col++) {
+		if ($medicina == 0) {
+			$objPHPExcel->removeColumn('R');
+		}
+		
+		for($col = 'A'; $col !== 'S'; $col++) {
 			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
 

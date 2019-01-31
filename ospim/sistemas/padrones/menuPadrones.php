@@ -6,24 +6,22 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Menu Padrones :.</title>
-
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" /></p>
   <h2>Men&uacute; Padrones </h2>
-  <table width="400" border="3">
+  <table width="400" border="1" style="text-align: center">
     <tr>
       <td width="200">
-      	<p align="center">Subida Prestadores</p>
-        <p align="center"><a class="enlace" href="prestadores/moduloPrestadores.php"><img src="../img/padrones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-        <p align="center">&nbsp;</p>
-      </td>
+      	<p>SUBIDA PADRONES CAPITADOS</p>
+        <p><a href="prestadores/moduloPrestadores.php"><img src="../img/padrones.png" width="90" height="90" border="0" /></a></p>
+     </td>
       <td width="200">
-      	<p align="center">Importación SSS</p>
-      	<p align="center"><a class="enlace" href="sss/moduloSSS.php"><img src="../img/importSSS.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      	<p align="center">&nbsp;</p></td>
+      	<p>IMPORTACION S.S.S.</p>
+      	<p><a href="sss/moduloSSS.php"><img src="../img/importSSS.png" width="90" height="90" border="0" /></a></p>
+      </td>
     </tr>
   </table>
 </div>

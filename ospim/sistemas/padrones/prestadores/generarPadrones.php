@@ -6,7 +6,8 @@ include ($libPath . "fechas.php");
 include ($libPath . "ftpOspim.php");
 include ($libPath . "funcionesFTP.php");
 include ($libPath . "claves.php");
-require_once ($libPath . "phpExcel/Classes/PHPExcel.php");
+require_once ($libPath . "PHPExcel-1.8.2/Classes/PHPExcel.php");
+
 function eliminarDir($carpeta) {
 	foreach ( glob ( $carpeta . "/*" ) as $archivos_carpeta ) {
 		if (is_dir ( $archivos_carpeta )) {
@@ -39,8 +40,10 @@ if ($quincena == 2) {
 //echo $fechaMuestra."<br>";
 
 $maquina = $_SERVER ['SERVER_NAME'];
+if (strcmp ( "poseidon", $maquina ) != 0) {
+	$hostOspim = "localhost";
+}
 $carpeta = $mes . $anio;
-
 if (strcmp ( "localhost", $maquina ) == 0) {
 	$direArc = "archivos/" . $carpeta;
 } else {
@@ -77,11 +80,13 @@ if ($canConsultaPeriodo == 0) {
 	$dbhInternet->exec ( $sqlInsertarPeriodo );
 }
 
+require ("getArrayCoseguro.php");
 for($f = 0; $f < $finalFor; $f ++) {
 	$datosArray = explode("-", $datos [$f]);$datos [$f];
 	$presta = $datosArray[0];
 	$capitado = $datosArray[1];
 	$tipo = $datosArray[2];
+	$medicina = $datosArray[3];
 	$descriError = "CREACION Y SUBIDA DE PADRON CORRECTA";
 	$arrayResultados [$presta] = array (
 			'presta' => $presta,
@@ -98,19 +103,10 @@ for($f = 0; $f < $finalFor; $f ++) {
 	$direCompletaZip = $direArc . "/" . $nomZip;
 	
 	try {
-		if ($capitado == 1) {
-			if ($tipo == 0) {
-				require ("padronComun.php");
-			}
-			if ($tipo == 1) {
-				require ("padronEspecial.php");
-			}
+		if ($tipo == 0) {
+			require ("padronComun.php");
 		} else {
-			require ("padronNoCapitado.php");
-		}
-		
-		if (strcmp ( "poseidon", $maquina ) != 0) {
-			$hostOspim = "localhost";
+			require ("padronEspecial.php");
 		}
 		
 		$sqlConsultaBajada = "SELECT count(*) FROM descarga WHERE codigo = $presta and anopad = $anio and mespad = $mes and quincena = $quincena";
