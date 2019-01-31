@@ -168,10 +168,6 @@
 			$totalizador[$delega] = array('delega' => $delega, 'tottit' => $totalTituXDelega, 'totfam' => $totalFamiXDelega, "total" => $totalDele);
 		}
 		
-		if ($medicina == 0) {
-			$objPHPExcel->removeColumn('R');
-		}
-		
 		for($col = 'A'; $col !== 'S'; $col++) {
 			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
@@ -260,10 +256,6 @@
 			$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $familiar['localidad']);
 			$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $familiar['domicilio']);
 			$objPHPExcel->getActiveSheet()->setCellValue('R'.$fila, $familiar['coseguro']);
-		}
-		
-		if ($medicina == 0) {
-			$objPHPExcel->removeColumn('R');
 		}
 		
 		for($col = 'A'; $col !== 'S'; $col++) {
