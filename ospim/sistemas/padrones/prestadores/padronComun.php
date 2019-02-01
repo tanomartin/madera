@@ -117,6 +117,7 @@
 									  FROM familiares f
 									  WHERE f.nroafiliado = $nroafil and f.fecharegistro < '$fechaLimite'";
 				}
+				
 				//print($sqlFamiliares."<br>");				
 				$resFamiliares = mysql_query($sqlFamiliares, $db);
 				while($rowFamiliares = mysql_fetch_array($resFamiliares)) {
