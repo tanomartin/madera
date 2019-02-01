@@ -27,13 +27,13 @@ $quincena = $periodo [2];
 if ($quincena == 2) {
 	$dia = "01";
 	$fecha = $anio . "-" . $mes . "-" .$dia;
-	$fechaLimite = date ( 'Y-m-j', strtotime ( '+1 month', strtotime ( $fecha ) ) );
-	$fechaMuestra = date ( 'Y-m-j', strtotime ( '+7 day', strtotime ( $fechaLimite ) ) );
+	$fechaLimite = date ( 'Y-m-d', strtotime ( '+1 month', strtotime ( $fecha ) ) );
+	$fechaMuestra = date ( 'Y-m-d', strtotime ( '+7 day', strtotime ( $fechaLimite ) ) );
 } else {
 	$dia = "15";
 	$fecha = $anio . "-" . $mes . "-" .$dia;
-	$fechaLimite = date ( 'Y-m-j', strtotime ($fecha) );
-	$fechaMuestra = date ( 'Y-m-j', strtotime ( '+7 day', strtotime ( $fechaLimite ) ) );
+	$fechaLimite = date ( 'Y-m-d', strtotime ($fecha) );
+	$fechaMuestra = date ( 'Y-m-d', strtotime ( '+7 day', strtotime ( $fechaLimite ) ) );
 }
 
 //echo $fechaLimite."<br>";

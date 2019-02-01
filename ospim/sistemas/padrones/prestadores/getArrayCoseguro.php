@@ -21,10 +21,10 @@ while($rowONCO = mysql_fetch_assoc($resONCO)) {
 	$arrayCoseguro[$index] = $index;
 }
 
-$fechaLimite = date('Y-m-d',strtotime('-1 month',strtotime (date('Y-m-d'))));
+$fechaLimitePMI = date('Y-m-d',strtotime('-1 month',strtotime (date('Y-m-d'))));
 $sqlPMI = "SELECT nroafiliado, nroorden FROM pmibeneficiarios p 
-			WHERE (p.fechanacimiento != '0000-00-00' and p.fechanacimiento >= '$fechaLimite')
-				  or (p.fechanacimiento = '0000-00-00' and p.fpp >= '$fechaLimite')";
+			WHERE (p.fechanacimiento != '0000-00-00' and p.fechanacimiento >= '$fechaLimitePMI')
+				  or (p.fechanacimiento = '0000-00-00' and p.fpp >= '$fechaLimitePMI')";
 $resPMI = mysql_query($sqlPMI,$db);
 while($rowPMI = mysql_fetch_assoc($resPMI)) {
 	$index = $rowPMI['nroafiliado']."-".$rowPMI['nroorden'];
