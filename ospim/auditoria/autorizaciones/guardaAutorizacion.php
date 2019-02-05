@@ -402,9 +402,9 @@ try {
 				$pusoAprobado = 0;
 				if($rowLeeSolicitud['medicamento'] == 1) {
 					$pdf->Image('../img/Sello Presupuesto.png',37,130,60,40);
+					$pusoAprobado = 1;
 					if($montauto > 0.00) {
 						$pdf->Image($imagenmonto,39,140,60,40);
-						$pusoAprobado = 1;
 					}
 				} 
 				if($montcose > 0.00) {
