@@ -3,8 +3,9 @@ include($libPath."controlSessionOspim.php");
 require($libPath."fpdf.php");
 
 $nroorden = $_GET['nroorden'];
-$sqlCabecera = "SELECT ordennmcabecera.*, DATE_FORMAT(fecha,'%d/%m/%Y') as fecha 
-				FROM ordennmcabecera WHERE nroorden = $nroorden";
+$sqlCabecera = "SELECT o.*, DATE_FORMAT(fecha,'%d/%m/%Y') as fecha, p.dirigidoa as beneficiario
+				FROM ordennmcabecera o, prestadoresnm p 
+				WHERE o.nroorden = $nroorden and o.codigoprestador = p.codigo";
 $resCabecera = mysql_query($sqlCabecera,$db);
 $rowCabecera = mysql_fetch_assoc($resCabecera);
 
