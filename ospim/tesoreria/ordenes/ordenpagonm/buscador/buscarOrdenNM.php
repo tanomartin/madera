@@ -21,20 +21,20 @@ if (isset($_POST['dato']) || isset($_GET['nroorden'])) {
 	}
 	if ($filtro == 0) {
 		$cartel = "<b>Nro Orden:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.dirigidoa as beneficiario 
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.dirigidoa as beneficiario 
 								FROM ordennmcabecera o, prestadoresnm p 
 								WHERE o.nroorden = $dato and o.codigoprestador = p.codigo";
 	} 
 	if ($filtro == 1) {
 		$cartel = "<b>Beneficiario:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.dirigidoa as beneficiario 
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.dirigidoa as beneficiario 
 								FROM ordennmcabecera o, prestadoresnm p 
 								WHERE (p.dirigidoa like '%".$dato."%' or  p.nombre like '%".$dato."%') and o.codigoprestador = p.codigo";
 	} 
 	if ($filtro == 2) {
 		$datoBusqeuda = fechaParaGuardar($dato);
 		$cartel = "<b>Fecha Generacion:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.dirigidoa as beneficiario  
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.dirigidoa as beneficiario  
 								FROM ordennmcabecera o, prestadoresnm p 
 								WHERE o.fecha = '$datoBusqeuda' and o.codigoprestador = p.codigo";
 	}
@@ -81,7 +81,8 @@ function validar(formulario) {
 
 function cancelarOrden(nroorden, boton, fechamigrada, nroarchivo) {
 	var cartel = "Desea anular la orden de pago Nro " + nroorden;
-	if (fechamigrada != null) {
+	console.log(fechamigrada);
+	if (fechamigrada != "") {
 		cartel = cartel + "\nTenga en cuenta que esta orden ya fue migrada al sistema contable\nInfo Migracion dia: "+fechamigrada+" - archivo Nro: "+nroarchivo;
 	}
 	var r = confirm(cartel);
@@ -174,7 +175,7 @@ function imputarOrden(nroorden) {
 		 		  							<input type="button" value="VER PDF" onclick="window.open('<?php echo $carpetaOrden ?>OP-NM<?php echo str_pad($rowOrdenesCabecera['nroorden'], 8, '0', STR_PAD_LEFT) ?>.pdf', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=900, height=650, top=10, left=10');" />
 		 		  			  	  <?php }
 		 		  			  			if ($rowOrdenesCabecera['fechacancelacion'] == null) {   ?>
-		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this, '<?php echo date("d-m-Y",strtotime($rowOrdenesCabecera['fechamigracion'])) ?>','<?php echo $rowOrdenesCabecera['nroarchivomigra']?>' )" />
+		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this, '<?php echo $rowOrdenesCabecera['fechamigracion'] ?>','<?php echo $rowOrdenesCabecera['nroarchivomigra']?>' )" />
 		 		  				 <?php  }?>
 		 		  					</td>
 		 		  				</tr>
