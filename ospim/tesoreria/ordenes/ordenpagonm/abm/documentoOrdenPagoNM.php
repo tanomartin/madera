@@ -165,7 +165,14 @@ try {
 
 	$dbh->commit();
 	$nombrearchivo;
-	Header("Location: $nombrearchivo");
+	$archivo = 	$carpetaOrden.$nombreArchivo;
+	$tamanio = filesize($archivo);
+	header("Content-type: application/pdf");
+	header("Content-Length: $tamanio");
+	header("Content-Disposition: inline; filename=$archivo");
+	$respuesta=readfile($archivo);
+	echo $respuesta;
+	
 } catch (PDOException $e) {
 	$error = $e->getMessage();
 	$dbh->rollback();
