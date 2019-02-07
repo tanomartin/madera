@@ -97,7 +97,13 @@ function cancelarOrden(nroorden, boton, fechamigrada, nroarchivo) {
 function imputarOrden(nroorden) {
 	var redireccion = "../abm/imputaOrdenPagoNM.php?nroorden="+nroorden;
 	location.href=redireccion;
+}
 
+function verOrden(nroorden) {
+	var redireccion = "verOrdenNM.php?nroorden="+nroorden;
+	var titulo = "ORDEN DE PAGO NO MEDICA NUM "+nroorden;
+	a= window.open(redireccion,titulo,
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
 }
 
 </script>
@@ -172,7 +178,7 @@ function imputarOrden(nroorden) {
 		 		  					
 		 		  					<td>
 		 		  				 <?php if ($rowOrdenesCabecera['fechageneracion'] != null) {  ?>	
-		 		  							<input type="button" value="VER PDF" onclick="window.open('<?php echo $carpetaOrden ?>OP-NM<?php echo str_pad($rowOrdenesCabecera['nroorden'], 8, '0', STR_PAD_LEFT) ?>.pdf', '_blank', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=900, height=650, top=10, left=10');" />
+		 		  							<input type="button" value="VER PDF" onclick="verOrden('<?php echo $rowOrdenesCabecera['nroorden'] ?>')" />
 		 		  			  	  <?php }
 		 		  			  			if ($rowOrdenesCabecera['fechacancelacion'] == null) {   ?>
 		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this, '<?php echo $rowOrdenesCabecera['fechamigracion'] ?>','<?php echo $rowOrdenesCabecera['nroarchivomigra']?>' )" />
