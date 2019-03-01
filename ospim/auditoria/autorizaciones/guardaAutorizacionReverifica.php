@@ -11,7 +11,7 @@ if (isset($_COOKIE[$nrosoli])) {
 
 $staauto = $_POST['autori'];
 $recauto = $_POST['motivoRechazo'];
-$delegacion = explode($_POST['delegacion']);
+$delegacion = explode("-",$_POST['delegacion']);
 
 if($staauto==1) {
 	$staauto = 3;
@@ -91,7 +91,7 @@ if($staauto == 2) {
 		$bodymail.="<br>Verifique la situacion de la solicitud a traves del modulo INTRANET DELEGACIONES.<br><br><br><br />Depto. de Autorizaciones<br />O.S.P.I.M.<br /></body>";
 		$username="autorizaciones@ospim.com.ar";
 		$subject="AVISO: Solicitud de Autorizacion Atendida";
-		$address = "autorizaciones".$rowLeeSolicitud['codidelega']."@ospim.com.ar";
+		$address = "autorizaciones".$delegacion[0]."@ospim.com.ar";
 		$modulo = "Autorizaciones";
 		$idMailDelgaRechazo = guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
 		if ($idMailDelgaRechazo == -1) {

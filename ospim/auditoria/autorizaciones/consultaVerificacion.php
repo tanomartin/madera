@@ -160,7 +160,7 @@ function validar(formulario) {
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'listarSolicitudes.php'"/></p>
 	<form id="consultaVerificacion" name="consultaVerificacion" method="post" action="guardaAutorizacionReverifica.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 		<input id="solicitud" name="solicitud" value="<?php echo $nrosolicitud ?>" type="text" readonly="readonly"  style="display: none"/>	
-		<input id="delegacion" name="delegacion" value="<?php echo $rowLeeSolicitud['codidelega']." - ".$rowLeeSolicitud['delegacion']?>" type="text" readonly="readonly"  style="display: none"/>	
+		<input id="delegacion" name="delegacion" value="<?php echo $rowLeeSolicitud['codidelega']."-".$rowLeeSolicitud['delegacion']?>" type="text" readonly="readonly"  style="display: none"/>	
 		<h3>Solicitud Nº <?php echo $nrosolicitud ?></h3>
 		<table style="width: 50%; text-align: center" border="1">
 	    	<tr>
