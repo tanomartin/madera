@@ -32,4 +32,15 @@ function fechaParaGuardar($fecha) {
 	$fechaLista = $anio."-".$mes."-".$dia;
 	return($fechaLista);
 }
+
+function fechaParaGuardarNula($fecha) {
+	if ($fecha == "") {
+		return NULL;
+	}
+	$dia = substr($fecha,0,2);
+	$mes = substr($fecha,3,2);
+	$anio = substr($fecha,6,4);
+	$fechaLista = $anio."-".$mes."-".$dia;
+	return($fechaLista);
+}
 ?>
