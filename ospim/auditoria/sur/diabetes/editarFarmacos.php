@@ -473,62 +473,64 @@ function validar(formulario) {
 							  <table width="950" border="0" class="style_texto_input" style="text-align:left">
 								  <tr>
 									<th scope="col" style="border:double">Farmaco</th>
+									<th scope="col" style="border:double"></th>
 									<th scope="col" style="border:double">Especificacion</th>
 									<th scope="col" style="border:double">Presentacion</th>
 									<th scope="col" style="border:double">Dosis Diaria</th>
 									<th scope="col" style="border:double">A&ntilde;o de Inicio</th>
 								  </tr>
 								  <tr>
-									<th scope="row">Metformina
+									<th scope="row">Metformina</th>
+									<td>
 									<?php if($rowLeeFarmacos['metformina']==1) { ?>
 										<input name="metformina" type="checkbox" id="metformina" checked="checked"/>
 									<?php } else { ?>
 										<input name="metformina" type="checkbox" id="metformina"/>
-									<?php } ?></th>
+									<?php } ?></td>
 									<td></td>
 									<td><input name="metforminapresentacion" type="text" id="metforminapresentacion" value="<?php echo $rowLeeFarmacos['metforminapresentacion'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="metforminadosis" type="text" id="metforminadosis" value="<?php echo $rowLeeFarmacos['metforminadosis'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="metforminainicio" type="text" id="metforminainicio" value="<?php echo $rowLeeFarmacos['metforminainicio'] ?>" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Sulfonilureas
-									<?php if($rowLeeFarmacos['sulfonilureas']==1) { ?>
+									<th scope="row">Sulfonilureas</th>
+									<td><?php if($rowLeeFarmacos['sulfonilureas']==1) { ?>
 										<input name="sulfonilureas" type="checkbox" id="sulfonilureas" checked="checked"/>
 									<?php } else { ?>
 										<input name="sulfonilureas" type="checkbox" id="sulfonilureas"/>
-									<?php } ?></th>
+									<?php } ?></td>
 									<td><input name="sulfonilureasnombre" type="text" id="sulfonilureasnombre" value="<?php echo $rowLeeFarmacos['sulfonilureasnombre'] ?>" size="30" maxlength="100" placeholder="Especificar Cual" class="style_input"/></td>
 									<td><input name="sulfonilureaspresentacion" type="text" id="sulfonilureaspresentacion" value="<?php echo $rowLeeFarmacos['sulfonilureaspresentacion'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="sulfonilureasdosis" type="text" id="sulfonilureasdosis" value="<?php echo $rowLeeFarmacos['sulfonilureasdosis'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="sulfonilureasinicio" type="text" id="sulfonilureasinicio" value="<?php echo $rowLeeFarmacos['sulfonilureasinicio'] ?>" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">IDPP4
-									<?php if($rowLeeFarmacos['idpp4']==1) { ?>
+									<th scope="row">IDPP4</th>
+									<td><?php if($rowLeeFarmacos['idpp4']==1) { ?>
 										<input name="idpp4" type="checkbox" id="idpp4" checked="checked"/>
 									<?php } else { ?>
 										<input name="idpp4" type="checkbox" id="idpp4"/>
-									<?php } ?></th>
+									<?php } ?></td>
 									<td><input name="idpp4nombre" type="text" id="idpp4nombre" value="<?php echo $rowLeeFarmacos['idpp4nombre'] ?>" size="30" maxlength="100" placeholder="Especificar Cual (v1)" class="style_input"/></td>
 									<td><input name="idpp4presentacion" type="text" id="idpp4presentacion" value="<?php echo $rowLeeFarmacos['idpp4presentacion'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="idpp4dosis" type="text" id="idpp4dosis" value="<?php echo $rowLeeFarmacos['idpp4dosis'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="idpp4inicio" type="text" id="idpp4inicio" value="<?php echo $rowLeeFarmacos['idpp4inicio'] ?>" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Insulina Basal
-									<?php if($rowLeeFarmacos['insulinabasal']==1) { ?>
+									<th scope="row">Insulina Basal</th>
+									<td><?php if($rowLeeFarmacos['insulinabasal']==1) { ?>
 										<input name="insulinabasal" type="checkbox" id="insulinabasal" checked="checked"/>
 									<?php } else { ?>
 										<input name="insulinabasal" type="checkbox" id="insulinabasal"/>
-									<?php } ?></th>
+									<?php } ?></td>
 									<td><select name="insulinabasalcodigo" id="insulinabasalcodigo">
 									   <option title="Seleccione un valor" value="">Seleccione un valor</option>
 									   <?php 
 											while($rowBuscaInsulinaBasal=mysql_fetch_array($resBuscaInsulinaBasal)) { 	
 												if($rowLeeFarmacos['insulinabasalcodigo']==$rowBuscaInsulinaBasal['id']) {
-													echo "<option title ='$rowBuscaInsulinaBasal[nombrecomercial]' value='$rowBuscaInsulinaBasal[id]'  selected='selected'>".$rowBuscaInsulinaBasal['nombrecomercial']."</option>";
+													echo "<option title ='$rowBuscaInsulinaBasal[nombrecomercial]' value='$rowBuscaInsulinaBasal[id]'  selected='selected'>".$rowBuscaInsulinaBasal['nombrecomercial']." - ".$rowBuscaInsulinaBasal['nombregenerico']."</option>";
 												} else {
-													echo "<option title ='$rowBuscaInsulinaBasal[nombrecomercial]' value='$rowBuscaInsulinaBasal[id]'>".$rowBuscaInsulinaBasal['nombrecomercial']."</option>";
+													echo "<option title ='$rowBuscaInsulinaBasal[nombrecomercial]' value='$rowBuscaInsulinaBasal[id]'>".$rowBuscaInsulinaBasal['nombrecomercial']." - ".$rowBuscaInsulinaBasal['nombregenerico']."</option>";
 												}
 											}
 										?>
@@ -538,20 +540,20 @@ function validar(formulario) {
 									<td><input name="insulinabasalinicio" type="text" id="insulinabasalinicio" value="<?php echo $rowLeeFarmacos['insulinabasalinicio'] ?>" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Insulina Rapida
-									<?php if($rowLeeFarmacos['insulinacorreccion']==1) { ?>
+									<th scope="row">Insulina Rapida</th>
+									<td><?php if($rowLeeFarmacos['insulinacorreccion']==1) { ?>
 										<input name="insulinacorreccion" type="checkbox" id="insulinacorreccion" checked="checked"/>
 									<?php } else { ?>
 										<input name="insulinacorreccion" type="checkbox" id="insulinacorreccion"/>
-									<?php } ?></th>
+									<?php } ?></td>
 									<td><select name="insulinacorreccioncodigo" id="insulinacorreccioncodigo">
 									   <option title="Seleccione un valor" value="">Seleccione un valor</option>
 									   <?php 
 											while($rowBuscaInsulinaCorrecion=mysql_fetch_array($resBuscaInsulinaCorrecion)) {
 												if($rowLeeFarmacos['insulinacorreccioncodigo']==$rowBuscaInsulinaCorrecion['id']) {
-													echo "<option title ='$rowBuscaInsulinaCorrecion[nombrecomercial]' value='$rowBuscaInsulinaCorrecion[id]'  selected='selected'>".$rowBuscaInsulinaCorrecion['nombrecomercial']."</option>";
+													echo "<option title ='$rowBuscaInsulinaCorrecion[nombrecomercial]' value='$rowBuscaInsulinaCorrecion[id]'  selected='selected'>".$rowBuscaInsulinaCorrecion['nombrecomercial']." - ".$rowBuscaInsulinaCorrecion['nombregenerico']."</option>";
 												} else {
-													echo "<option title ='$rowBuscaInsulinaCorrecion[nombrecomercial]' value='$rowBuscaInsulinaCorrecion[id]'>".$rowBuscaInsulinaCorrecion['nombrecomercial']."</option>";
+													echo "<option title ='$rowBuscaInsulinaCorrecion[nombrecomercial]' value='$rowBuscaInsulinaCorrecion[id]'>".$rowBuscaInsulinaCorrecion['nombrecomercial']." - ".$rowBuscaInsulinaCorrecion['nombregenerico']."</option>";
 												}
 											}
 										?>
@@ -561,24 +563,24 @@ function validar(formulario) {
 									<td><input name="insulinacorreccioninicio" type="text" id="insulinacorreccioninicio" value="<?php echo $rowLeeFarmacos['insulinacorreccioninicio'] ?>" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Otros 1
-									<?php if($rowLeeFarmacos['otros1']==1) { ?>
+									<th scope="row">Otros 1</th>
+									<td><?php if($rowLeeFarmacos['otros1']==1) { ?>
 										<input name="otros1" type="checkbox" id="otros1" checked="checked"/>
 									<?php } else { ?>
 										<input name="otros1" type="checkbox" id="otros1"/>
-									<?php } ?></th>
+									<?php } ?></td>
 									<td><input name="otros1nombre" type="text" id="otros1nombre" value="<?php echo $rowLeeFarmacos['otros1nombre'] ?>" size="30" maxlength="100" placeholder="Especificar Cual" class="style_input"/></td>
 									<td><input name="otros1presentacion" type="text" id="otros1presentacion" value="<?php echo $rowLeeFarmacos['otros1presentacion'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="otros1dosis" type="text" id="otros1dosis" value="<?php echo $rowLeeFarmacos['otros1dosis'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="otros1inicio" type="text" id="otros1inicio" value="<?php echo $rowLeeFarmacos['otros1inicio'] ?>" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Otros 2
-									<?php if($rowLeeFarmacos['otros2']==1) { ?>
+									<th scope="row">Otros 2</th>
+									<td><?php if($rowLeeFarmacos['otros2']==1) { ?>
 										<input name="otros2" type="checkbox" id="otros2" checked="checked"/>
 									<?php } else { ?>
 										<input name="otros2" type="checkbox" id="otros2"/>
-									<?php } ?></th>
+									<?php } ?></td>
 									<td><input name="otros2nombre" type="text" id="otros2nombre" value="<?php echo $rowLeeFarmacos['otros2nombre'] ?>" size="30" maxlength="100" placeholder="Especificar Cual" class="style_input"/></td>
 									<td><input name="otros2presentacion" type="text" id="otros2presentacion" value="<?php echo $rowLeeFarmacos['otros2presentacion'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="otros2dosis" type="text" id="otros2dosis" value="<?php echo $rowLeeFarmacos['otros2dosis'] ?>" size="30" maxlength="50" class="style_input"/></td>

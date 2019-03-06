@@ -394,42 +394,47 @@ function validar(formulario) {
 							  </span>
 							  <p>							  </p>
 							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n de Farmacos</span></p>
-							  <table width="950" border="0" class="style_texto_input" style="text-align:left">
+							  <table width="1000" border="0" class="style_texto_input" style="text-align:left">
 								  <tr>
 									<th scope="col" style="border:double">Farmaco</th>
+									<th scope="col" style="border:double"></th>
 									<th scope="col" style="border:double">Especificacion</th>
 									<th scope="col" style="border:double">Presentacion</th>
 									<th scope="col" style="border:double">Dosis Diaria</th>
-									<th scope="col" style="border:double">A&ntilde;o de Inicio</th>
+									<th scope="col" style="border:double">Año de Inicio</th>
 								  </tr>
 								  <tr>
-									<th scope="row">Metformina <input name="metformina" type="checkbox" id="metformina" /></th>
+									<th scope="row">Metformina</th>
+									<td><input name="metformina" type="checkbox" id="metformina" /></td>
 									<td></td>
 									<td><input name="metforminapresentacion" type="text" id="metforminapresentacion" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="metforminadosis" type="text" id="metforminadosis" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="metforminainicio" type="text" id="metforminainicio" value="" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Sulfonilureas <input name="sulfonilureas" type="checkbox" id="sulfonilureas" /></th>
+									<th scope="row">Sulfonilureas </th>
+									<td><input name="sulfonilureas" type="checkbox" id="sulfonilureas" /></td>
 									<td><input name="sulfonilureasnombre" type="text" id="sulfonilureasnombre" value="" size="30" maxlength="100" placeholder="Especificar Cual" class="style_input"/></td>
 									<td><input name="sulfonilureaspresentacion" type="text" id="sulfonilureaspresentacion" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="sulfonilureasdosis" type="text" id="sulfonilureasdosis" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="sulfonilureasinicio" type="text" id="sulfonilureasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">IDPP4 <input name="idpp4" type="checkbox" id="idpp4" /></th>
+									<th scope="row">IDPP4 </th>
+									<td><input name="idpp4" type="checkbox" id="idpp4" /></td>
 									<td><input name="idpp4nombre" type="text" id="idpp4nombre" value="" size="30" maxlength="100" placeholder="Especificar Cual (v1)" class="style_input"/></td>
 									<td><input name="idpp4presentacion" type="text" id="idpp4presentacion" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="idpp4dosis" type="text" id="idpp4dosis" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="idpp4inicio" type="text" id="idpp4inicio" value="" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Insulina Basal <input name="insulinabasal" type="checkbox" id="insulinabasal" /></th>
+									<th scope="row">Insulina Basal</th>
+									<td> <input name="insulinabasal" type="checkbox" id="insulinabasal" /></td>
 									<td><select name="insulinabasalcodigo" id="insulinabasalcodigo">
 									   <option title="Seleccione un valor" value="">Seleccione un valor</option>
 									   <?php 
 											while($rowBuscaInsulinaBasal=mysql_fetch_array($resBuscaInsulinaBasal)) { 	
-												echo "<option title ='$rowBuscaInsulinaBasal[nombrecomercial]' value='$rowBuscaInsulinaBasal[id]'>".$rowBuscaInsulinaBasal['nombrecomercial']."</option>";
+												echo "<option title ='$rowBuscaInsulinaBasal[nombrecomercial]' value='$rowBuscaInsulinaBasal[id]'>".$rowBuscaInsulinaBasal['nombrecomercial']." - ".$rowBuscaInsulinaBasal['nombregenerico']."</option>";
 											}
 										?>
 										</select></td>
@@ -438,12 +443,13 @@ function validar(formulario) {
 									<td><input name="insulinabasalinicio" type="text" id="insulinabasalinicio" value="" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Insulina Rapida <input name="insulinacorreccion" type="checkbox" id="insulinacorreccion" /></th>
+									<th scope="row">Insulina Rapida </th>
+									<td><input name="insulinacorreccion" type="checkbox" id="insulinacorreccion" /></td>
 									<td><select name="insulinacorreccioncodigo" id="insulinacorreccioncodigo">
 									   <option title="Seleccione un valor" value="">Seleccione un valor</option>
 									   <?php 
 											while($rowBuscaInsulinaCorrecion=mysql_fetch_array($resBuscaInsulinaCorrecion)) { 	
-												echo "<option title ='$rowBuscaInsulinaCorrecion[nombrecomercial]' value='$rowBuscaInsulinaCorrecion[id]'>".$rowBuscaInsulinaCorrecion['nombrecomercial']."</option>";
+												echo "<option title ='$rowBuscaInsulinaCorrecion[nombrecomercial]' value='$rowBuscaInsulinaCorrecion[id]'>".$rowBuscaInsulinaCorrecion['nombrecomercial']." - ".$rowBuscaInsulinaCorrecion['nombregenerico']."</option>";
 											}
 										?>
 										</select></td>
@@ -452,14 +458,16 @@ function validar(formulario) {
 									<td><input name="insulinacorreccioninicio" type="text" id="insulinacorreccioninicio" value="" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Otros 1 <input name="otros1" type="checkbox" id="otros1" /></th>
+									<th scope="row">Otros 1</th>
+									<td><input name="otros1" type="checkbox" id="otros1" /></td>
 									<td><input name="otros1nombre" type="text" id="otros1nombre" value="" size="30" maxlength="100" placeholder="Especificar Cual" class="style_input"/></td>
 									<td><input name="otros1presentacion" type="text" id="otros1presentacion" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="otros1dosis" type="text" id="otros1dosis" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="otros1inicio" type="text" id="otros1inicio" value="" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
 								  <tr>
-									<th scope="row">Otros 2 <input name="otros2" type="checkbox" id="otros2" /></th>
+									<th scope="row">Otros 2 </th>
+									<td><input name="otros2" type="checkbox" id="otros2" /></td>
 									<td><input name="otros2nombre" type="text" id="otros2nombre" value="" size="30" maxlength="100" placeholder="Especificar Cual" class="style_input"/></td>
 									<td><input name="otros2presentacion" type="text" id="otros2presentacion" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="otros2dosis" type="text" id="otros2dosis" value="" size="30" maxlength="50" class="style_input"/></td>
