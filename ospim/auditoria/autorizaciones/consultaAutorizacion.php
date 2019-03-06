@@ -125,6 +125,19 @@ if ($rowLeeSolicitud['codiparentesco'] >= 0) {
 	$canPMI = 0;
 }
 
+//VEO SI ES DIABETES
+if ($rowLeeSolicitud['codiparentesco'] >= 0) {
+	if ($rowLeeSolicitud['codiparentesco'] > 0) {
+		$sqlDiabetes = "SELECT o.* FROM familiares f, diabetesbeneficiarios o WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = o.nroafiliado and f.nroorden = o.nroorden";
+	} else {
+		$sqlDiabetes = "SELECT o.* FROM diabetesbeneficiarios o WHERE o.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and o.nroorden = 0";
+	}
+	$resDiabetes = mysql_query($sqlDiabetes,$db);
+	$canDiabetes = mysql_num_rows($resDiabetes);
+} else {
+	$canDiabetes = 0;
+}
+
 //VEO SI HAY CORREOS
 $canMailsNoEnviados = 0;
 $canMailsEnviados = 0;
@@ -233,21 +246,24 @@ function guardarModifHC(buttonGuardar, nrosolicitud) {
 					$nroorden = $rowDisca['nroorden']; ?>
 					<p><b>Disca.: SI </b>(FA: <?php echo $rowDisca['fechaalta'] ?> - FE: <?php echo $rowDisca['emisioncertificado'] ?> - FV: <?php echo $rowDisca['vencimientocertificado'] ?> ) 
 					<input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/></p>
-		<?php 	} ?>
-		<?php	if ($canHIV == 1) { ?>
+		<?php 	} 
+				if ($canHIV == 1) { ?>
 					<p><b>H.I.V.:</b> SI </p>
-		<?php 	} ?>
-		<?php	if ($canOnco == 1) { ?>
+		<?php 	} 
+				if ($canOnco == 1) { ?>
 					<p><b>Oncológico:</b> SI </p>
-		<?php 	} ?>
-		<?php	if ($canPMI == 1) {
+		<?php 	}
+				if ($canDiabetes == 1) { ?>
+					<p><b>Diabítico:</b> SI </p>
+		<?php 	} 
+				if ($canPMI == 1) {
 					$rowPMI = mysql_fetch_assoc($resPMI); ?>
 					<p><b>P.M.I.:</b> SI (FPP: <?php echo $rowPMI['fpp'] ?> - FP: <?php if ($rowPMI['fechanacimiento'] != "00/00/0000") { echo $rowPMI['fechanacimiento']; } else { echo "Sin Dato"; } ?>) </p>
-		<?php 	} ?>
-		  <?php if ($canDisca == 0 && $canHIV == 0 && $canOnco == 0 && $canPMI == 0) { ?>
+		<?php 	}
+			    if ($canDisca == 0 && $canHIV == 0 && $canOnco == 0 && $canPMI == 0 && $canDiabetes == 0) { ?>
 		    		<p>Sin Información para mostrar</p>
-		 <?php  }?>
-	      <?php if (!isset($_GET['hc'])) { ?>	
+		 <?php  }
+		 		if (!isset($_GET['hc'])) { ?>	
 	        		<p style="color: maroon;"><b>Historia Clinica Autorizaciones</b></p>
 					<p><input type="button" value="Ver Historia" name="historia" id="historia" onclick="javascript:muestraHistoria(<?php echo  $rowLeeSolicitud['nrosolicitud'] ?>,<?php echo  $rowLeeSolicitud['cuil'] ?>,'<?php echo  $rowLeeSolicitud['apellidoynombre'] ?>')" /></p>
 		  <?php } ?>

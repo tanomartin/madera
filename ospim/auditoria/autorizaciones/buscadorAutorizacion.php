@@ -20,6 +20,12 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	if ($filtro == 3) {
 		$cartel = "Resultados de Busqueda por Delegación <b>".$dato."</b>";
 	}
+	if ($filtro == 4) {
+		$cartel = "Resultados de Busqueda por Nro. Afiliado <b>".$dato."</b>";
+	}
+	if ($filtro == 5) {
+		$cartel = "Resultados de Busqueda por Apellido y Nombre <b>".$dato."</b>";
+	}
 
 	if (isset($dato)) {
 		if ($filtro == 0) { $sqlAutoriza = "SELECT a.practica, a.material, a.medicamento, a.nrosolicitud, a.fechasolicitud, a.codidelega, a.cuil, a.nroafiliado, a.codiparentesco, a.apellidoynombre, a.statusverificacion, a.usuarioverificacion, a.statusautorizacion, a.usuarioautorizacion, d.nombre from autorizacionesatendidas a, delegaciones d where a.nrosolicitud = $dato and a.codidelega = d.codidelega order by nrosolicitud DESC"; }
