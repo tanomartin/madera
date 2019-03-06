@@ -5,8 +5,8 @@ $nroorden = NULL;
 $existehiv = 0;
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$fechamodificacion = "";
-$usuariomodificacion = "";
+$fechamodificacion = NULL;
+$usuariomodificacion = NULL;
 if(isset($_GET['nroAfi'])) {
 	$nroafiliado=$_GET['nroAfi'];
 	if(isset($_GET['nroOrd'])) {

@@ -103,8 +103,8 @@ $(document).ready(function(){
 
 function validar(formulario) {
 	formulario.buscar.disabled = true;
-	var elementos = document.forms.moduloPMI.elements;
-	var longitud = document.forms.moduloPMI.length;
+	var elementos = document.forms.moduloHiv.elements;
+	var longitud = document.forms.moduloHiv.length;
 	var elementoradio = 0;
 	for(var i=0; i<longitud; i++) {
 		if(elementos[i].name == "seleccion" && elementos[i].type == "radio" && elementos[i].checked == true) {
@@ -122,6 +122,14 @@ function validar(formulario) {
 			formulario.buscar.disabled = false;
 			return false;
 		} else {
+			if(elementoradio == 2) {
+				if(!isNumber(formulario.valor.value)){
+					alert("El Nro. de Documento debes ser un numero");
+					document.getElementById("valor").focus();
+					formulario.buscar.disabled = false;
+					return false;
+				}
+			}
 			if(elementoradio == 3) {
 				if(!verificaCuilCuit(formulario.valor.value)){
 					alert("El C.U.I.L. es invalido");
