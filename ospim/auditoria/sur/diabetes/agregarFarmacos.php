@@ -60,7 +60,7 @@ if(isset($_GET['idDiag'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 <title>.: Diabeticos :.</title>
-<link rel="stylesheet" href="/madera/lib/style.css">
+<link rel="stylesheet" href="/madera/lib/style.css"/>
 <link rel="stylesheet" href="/madera/lib/general.css" />
 <link rel="stylesheet" href="/madera/lib/jquery-ui-1.9.2.custom/css/smoothness/jquery-ui-1.9.2.custom.css"/>
 <script src="/madera/lib/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js" type="text/javascript"></script>
@@ -359,10 +359,10 @@ function validar(formulario) {
 <body>
 		<div class="row" align="center" style="background-color: #CCCCCC;">
 			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onClick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
+				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
 			</div>
 			<h2>Farmacos</h2>
-				<form id="agregarFarmacos" name="agregarFarmacos" method="post" action="guardarAgregarFarmacos.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
+				<form id="agregarFarmacos" name="agregarFarmacos" method="post" action="guardarAgregarFarmacos.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 					<table style="width: 979px">
 						<tr>
 							<td valign="top">
@@ -450,7 +450,7 @@ function validar(formulario) {
 									<td><input name="insulinacorreccionpresentacion" type="text" id="insulinacorreccionpresentacion" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="insulinacorrecciondosis" type="text" id="insulinacorrecciondosis" value="" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="insulinacorreccioninicio" type="text" id="insulinacorreccioninicio" value="" size="5" maxlength="4" class="style_input"/></td>
-								  </tr>>
+								  </tr>
 								  <tr>
 									<th scope="row">Otros 1 <input name="otros1" type="checkbox" id="otros1" /></th>
 									<td><input name="otros1nombre" type="text" id="otros1nombre" value="" size="30" maxlength="100" placeholder="Especificar Cual" class="style_input"/></td>

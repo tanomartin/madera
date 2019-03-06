@@ -63,7 +63,7 @@ if(isset($_GET['idDiag'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 <title>.: Diabeticos :.</title>
-<link rel="stylesheet" href="/madera/lib/style.css">
+<link rel="stylesheet" href="/madera/lib/style.css" />
 <link rel="stylesheet" href="/madera/lib/general.css" />
 <link rel="stylesheet" href="/madera/lib/jquery-ui-1.9.2.custom/css/smoothness/jquery-ui-1.9.2.custom.css"/>
 <script src="/madera/lib/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js" type="text/javascript"></script>
@@ -435,10 +435,10 @@ function validar(formulario) {
 <body>
 		<div class="row" align="center" style="background-color: #CCCCCC;">
 			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onClick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
+				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
 			</div>
 			<h2>Farmacos</h2>
-				<form id="editarFarmacos" name="editarFarmacos" method="post" action="guardarEditarFarmacos.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
+				<form id="editarFarmacos" name="editarFarmacos" method="post" action="guardarEditarFarmacos.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 					<table style="width: 979px">
 						<tr>
 							<td valign="top">
@@ -481,7 +481,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Metformina
 									<?php if($rowLeeFarmacos['metformina']==1) { ?>
-										<input name="metformina" type="checkbox" id="metformina" checked/>
+										<input name="metformina" type="checkbox" id="metformina" checked="checked"/>
 									<?php } else { ?>
 										<input name="metformina" type="checkbox" id="metformina"/>
 									<?php } ?></th>
@@ -493,7 +493,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Sulfonilureas
 									<?php if($rowLeeFarmacos['sulfonilureas']==1) { ?>
-										<input name="sulfonilureas" type="checkbox" id="sulfonilureas" checked/>
+										<input name="sulfonilureas" type="checkbox" id="sulfonilureas" checked="checked"/>
 									<?php } else { ?>
 										<input name="sulfonilureas" type="checkbox" id="sulfonilureas"/>
 									<?php } ?></th>
@@ -505,7 +505,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">IDPP4
 									<?php if($rowLeeFarmacos['idpp4']==1) { ?>
-										<input name="idpp4" type="checkbox" id="idpp4" checked/>
+										<input name="idpp4" type="checkbox" id="idpp4" checked="checked"/>
 									<?php } else { ?>
 										<input name="idpp4" type="checkbox" id="idpp4"/>
 									<?php } ?></th>
@@ -517,7 +517,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Insulina Basal
 									<?php if($rowLeeFarmacos['insulinabasal']==1) { ?>
-										<input name="insulinabasal" type="checkbox" id="insulinabasal" checked/>
+										<input name="insulinabasal" type="checkbox" id="insulinabasal" checked="checked"/>
 									<?php } else { ?>
 										<input name="insulinabasal" type="checkbox" id="insulinabasal"/>
 									<?php } ?></th>
@@ -540,7 +540,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Insulina Rapida
 									<?php if($rowLeeFarmacos['insulinacorreccion']==1) { ?>
-										<input name="insulinacorreccion" type="checkbox" id="insulinacorreccion" checked/>
+										<input name="insulinacorreccion" type="checkbox" id="insulinacorreccion" checked="checked"/>
 									<?php } else { ?>
 										<input name="insulinacorreccion" type="checkbox" id="insulinacorreccion"/>
 									<?php } ?></th>
@@ -559,11 +559,11 @@ function validar(formulario) {
 									<td><input name="insulinacorreccionpresentacion" type="text" id="insulinacorreccionpresentacion" value="<?php echo $rowLeeFarmacos['insulinacorreccionpresentacion'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="insulinacorrecciondosis" type="text" id="insulinacorrecciondosis" value="<?php echo $rowLeeFarmacos['insulinacorrecciondosis'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="insulinacorreccioninicio" type="text" id="insulinacorreccioninicio" value="<?php echo $rowLeeFarmacos['insulinacorreccioninicio'] ?>" size="5" maxlength="4" class="style_input"/></td>
-								  </tr>>
+								  </tr>
 								  <tr>
 									<th scope="row">Otros 1
 									<?php if($rowLeeFarmacos['otros1']==1) { ?>
-										<input name="otros1" type="checkbox" id="otros1" checked/>
+										<input name="otros1" type="checkbox" id="otros1" checked="checked"/>
 									<?php } else { ?>
 										<input name="otros1" type="checkbox" id="otros1"/>
 									<?php } ?></th>
@@ -575,7 +575,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Otros 2
 									<?php if($rowLeeFarmacos['otros2']==1) { ?>
-										<input name="otros2" type="checkbox" id="otros2" checked/>
+										<input name="otros2" type="checkbox" id="otros2" checked="checked"/>
 									<?php } else { ?>
 										<input name="otros2" type="checkbox" id="otros2"/>
 									<?php } ?></th>

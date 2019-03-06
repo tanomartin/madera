@@ -55,7 +55,7 @@ if(isset($_GET['idDiag'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 <title>.: Diabeticos :.</title>
-<link rel="stylesheet" href="/madera/lib/style.css">
+<link rel="stylesheet" href="/madera/lib/style.css"/>
 <link rel="stylesheet" href="/madera/lib/general.css" />
 <link rel="stylesheet" href="/madera/lib/jquery-ui-1.9.2.custom/css/smoothness/jquery-ui-1.9.2.custom.css"/>
 <script src="/madera/lib/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js" type="text/javascript"></script>
@@ -99,10 +99,10 @@ function validar(formulario) {
 <body>
 		<div class="row" align="center" style="background-color: #CCCCCC;">
 			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onClick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
+				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
 			</div>
 			<h2>Comorbilidad</h2>
-				<form id="agregarComorbilidad" name="agregarComorbilidad" method="post" action="guardarAgregarComorbilidad.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
+				<form id="agregarComorbilidad" name="agregarComorbilidad" method="post" action="guardarAgregarComorbilidad.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 					<table style="width: 979px">
 						<tr>
 							<td valign="top">

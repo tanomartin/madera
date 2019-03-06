@@ -63,7 +63,7 @@ if(isset($_GET['idDiag'])) {
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
 <title>.: Diabeticos :.</title>
-<link rel="stylesheet" href="/madera/lib/style.css">
+<link rel="stylesheet" href="/madera/lib/style.css"/>
 <link rel="stylesheet" href="/madera/lib/general.css" />
 <link rel="stylesheet" href="/madera/lib/jquery-ui-1.9.2.custom/css/smoothness/jquery-ui-1.9.2.custom.css"/>
 <script src="/madera/lib/jquery-ui-1.9.2.custom/js/jquery-1.8.3.js" type="text/javascript"></script>
@@ -259,10 +259,10 @@ function validar(formulario) {
 <body>
 		<div class="row" align="center" style="background-color: #CCCCCC;">
 			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onClick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
+				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
 			</div>
 			<h2>Insumos</h2>
-				<form id="editarInsumos" name="editarInsumos" method="post" action="guardarEditarInsumos.php" onSubmit="return validar(this)" enctype="multipart/form-data" >
+				<form id="editarInsumos" name="editarInsumos" method="post" action="guardarEditarInsumos.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
 					<table style="width: 979px">
 						<tr>
 							<td valign="top">
@@ -304,7 +304,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Tiras Reactivas
 									<?php if($rowLeeInsumos['tirasreactivas']==1) { ?>
-										<input name="tirasreactivas" type="checkbox" id="tirasreactivas" checked/>
+										<input name="tirasreactivas" type="checkbox" id="tirasreactivas" checked="checked"/>
 									<?php } else { ?>
 										<input name="tirasreactivas" type="checkbox" id="tirasreactivas"/>
 									<?php } ?></th>
@@ -315,7 +315,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Lancetas
 									<?php if($rowLeeInsumos['lancetas']==1) { ?>
-										<input name="lancetas" type="checkbox" id="lancetas" checked/>
+										<input name="lancetas" type="checkbox" id="lancetas" checked="checked"/>
 									<?php } else { ?>
 										<input name="lancetas" type="checkbox" id="lancetas"/>
 									<?php } ?></th>
@@ -326,7 +326,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Agujas para Insulinas
 									<?php if($rowLeeInsumos['agujas']==1) { ?>
-										<input name="agujas" type="checkbox" id="agujas" checked/>
+										<input name="agujas" type="checkbox" id="agujas" checked="checked"/>
 									<?php } else { ?>
 										<input name="agujas" type="checkbox" id="agujas"/>
 									<?php } ?></th>
@@ -337,7 +337,7 @@ function validar(formulario) {
 								  <tr>
 									<th scope="row">Jeringas para  Insulinas
 									<?php if($rowLeeInsumos['jeringas']==1) { ?>
-										<input name="jeringas" type="checkbox" id="jeringas" checked/>
+										<input name="jeringas" type="checkbox" id="jeringas" checked="checked"/>
 									<?php } else { ?>
 										<input name="jeringas" type="checkbox" id="jeringas"/>
 									<?php } ?></th>
@@ -345,7 +345,6 @@ function validar(formulario) {
 									<td><input name="jeringasdosis" type="text" id="jeringasdosis" value="<?php echo $rowLeeInsumos['jeringasdosis'] ?>" size="30" maxlength="50" class="style_input"/></td>
 									<td><input name="jeringasinicio" type="text" id="jeringasinicio" value="<?php echo $rowLeeInsumos['jeringasinicio'] ?>" size="5" maxlength="4" class="style_input"/></td>
 								  </tr>
-								  <tr>
 								</table>
 							</td>
 						</tr>
