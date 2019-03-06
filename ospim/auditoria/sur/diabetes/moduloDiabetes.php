@@ -86,8 +86,8 @@ $(document).ready(function(){
 		.tablesorter({
 			theme: 'blue',
 			widthFixed: true, 
-			widgets: ["zebra"],
-			headers:{0:{sorter:false}, 7:{sorter:false}}
+			widgets: ["zebra", "filter"],
+			headers:{0:{sorter:false}, 7:{sorter:false}, 6: {filter: false}}
 		})
 		.tablesorterPager({
 			container: $("#paginador")
@@ -167,7 +167,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				</tr>
 				<tr>
 					<th>Nro. Afiliado </th>
-					<th>Tipo</th>
+					<th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
 					<th>Apellido y Nombre</th>
 					<th>Documento</th>
 					<th>C.U.I.L.</th>

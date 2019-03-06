@@ -86,7 +86,7 @@ $(document).ready(function(){
 		.tablesorter({
 			theme: 'blue',
 			widthFixed: true, 
-			widgets: ["zebra"],
+			widgets: ["zebra",  "filter"],
 			headers:{0:{sorter:false}}
 		})
 		.tablesorterPager({
