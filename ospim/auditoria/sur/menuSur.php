@@ -16,30 +16,27 @@ include($libPath."controlSessionOspim.php"); ?>
     <tr>
 	  	<td width="200">
 	  		<p>DISCAPACITADOS </p>
-			<p><a class="enlace" href="discapacitados/moduloDisca.php"><img src="img/discapacitados.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p><a class="enlace" href="discapacitados/moduloDisca.php"><img src="img/discapacitados.png" width="90" height="90" border="0" /></a></p>
 		</td>
 		<td width="200">
 			<p>H.I.V</p>
-			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/hiv.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-		</td>
-		<td width="200">
-			<p>DROGADEPENDENCIA</p>
-			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/drogadependencia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-		</td>
-    </tr>  
-    <tr>
-	  	<td width="200">
-	  		<p>DIABETES </p>
-			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/diabetes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p><a class="enlace" href="hiv/moduloHiv.php"><img src="img/hiv.png" width="90" height="90" border="0" /></a></p>
 		</td>
 		<td width="200">
 			<p>ONCOLOGIA</p>
-			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/oncologia.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p><a class="enlace" href="oncologia/moduloOncologia.php"><img src="img/oncologia.png" width="90" height="90" border="0" /></a></p>
 		</td>
-		<td width="200">
-			<p></p>
-			<p></p>
+    </tr>  
+    <tr>
+	  	<td>
+	  		<p>DIABETES </p>
+			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/diabetes.png" width="90" height="90" border="0" /></a></p>
 		</td>
+		<td>
+			<p>DROGADEPENDENCIA</p>
+			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/drogadependencia.png" width="90" height="90" border="0" /></a></p>
+		</td>
+		<td></td>
     </tr> 
   </table>
 </div>
