@@ -1,29 +1,16 @@
 <html>
 <head>
-<style>
-
-A:link {text-decoration: none}
-A:visited {text-decoration: none}
-A:hover {text-decoration:underline; color:FCF63C}
-
-.Estilo1 {
-	font-size: 24px;
-	font-weight: bold;
-}
-</style>
 
 <title>.: U.S.I.M.R.A. :.</title>
 </head>
 
 <body bgcolor="#B2A274">
-<form method="POST" action="verificador.php">
-  <div align="center">
-    <p class="Estilo1">ALTO</p>
-    <p><img src="img/stop.png" > </p>
-    <p>MODULO NO DISPONBLE </p>
-  </div>
-</form>
-
+	<div align="center">
+		<p><input class="nover" type="button" name="volver" value="Volver" onclick="window.history.go(-1); return false;" /></p>
+	    <h2>ALTO</h2>
+	    <p><img src="img/stop.png"> </p>
+	    <h2>MODULO NO DISPONBLE </h2>
+  	</div>
 </body>
 
 </html>
