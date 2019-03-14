@@ -21,20 +21,23 @@ while ($rowOrdenesCabecera = mysql_fetch_assoc($resOrdenesCabecera)) {
 	$index = $rowOrdenesCabecera['nroorden'].$tipolinea;
 	$fecha = date("dmy", strtotime($rowOrdenesCabecera['fecha'])); 
 	$nroorden = str_pad($rowOrdenesCabecera['nroorden'],6,"0",STR_PAD_LEFT);
-	$benefici = str_pad($rowOrdenesCabecera['dirigidoa'],33," ",STR_PAD_LEFT);
-	$total = $rowOrdenesCabecera['importe'] * 100;
-	$total = str_pad($total,15,"0",STR_PAD_LEFT);
+	$benefici = str_pad($rowOrdenesCabecera['dirigidoa'],33," ",STR_PAD_RIGHT);
+	$credito = $rowOrdenesCabecera['credito'] * 100;
+	$credito = str_pad($credito,15,"0",STR_PAD_LEFT);
 	$arrayOrdenes[$index] = $rowOrdenesCabecera;
-	$arrayLineas[$index] = $tipolinea.$fecha.$nroorden.$benefici.$total;
+	$arrayLineas[$index] = $tipolinea.$fecha.$nroorden.$benefici.$credito;
 
 	$tipolinea = "D00";
 	$index = $rowOrdenesCabecera['nroorden'].$tipolinea;
 	$nrocuenta = str_pad($rowOrdenesCabecera['nrocta'],9,"0",STR_PAD_LEFT);
-	
+	$total = $rowOrdenesCabecera['importe'] * 100;
+	$total = str_pad($total,15,"0",STR_PAD_LEFT);
 	$tipo = "CH";
 	if ($rowOrdenesCabecera['tipopago'] == "T") {
 		$tipo = "TR";
 	}
+	
+	
 	$nropago = str_pad($rowOrdenesCabecera['nropago'],8,"0",STR_PAD_LEFT);
 	$nroafil = str_pad("",8," ",STR_PAD_LEFT);
 	$arrayLineas[$index] = "D".$fecha.$nroorden.$nrocuenta."-".$total.$tipo.$nropago.$nroafil;
@@ -86,7 +89,7 @@ $rowGetProxNroMigra = mysql_fetch_assoc($resGetProxNroMigra);
 $nroMigra = $rowGetProxNroMigra['nroarchivomigra'] + 1;	
 $nroMigraArch = str_pad($nroMigra,5,"0",STR_PAD_LEFT);
 
-$nombreArchivo = $nroMigraArch."migraorden.txt";
+$nombreArchivo = $nroMigraArch."mig.txt";
 $archivo = $carpetaArchivo.$nombreArchivo;
 ksort($arrayLineas);
 if($archivo = fopen($archivo, "w")) {		

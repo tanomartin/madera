@@ -7,12 +7,13 @@ $importeTotal = $_POST['monto'];
 $codigoprestador = $_POST['codigoprestador'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$sqlInsertCabecera = "INSERT INTO ordennmcabecera VALUES(DEFAULT,'$fecha',$importeTotal,$codigoprestador,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro')";
-
 
 $lineas = $_POST['conceptoaver'];
 $arrayConcepto = array();
 $arrayImputacion = array();
+
+$credito = 0;
+$debito = 0;
 for($i=1; $i<=$lineas; $i++) {
 	$conceptoNombre = "concepto".$i;
 	$concepto = $_POST[$conceptoNombre];
@@ -23,7 +24,16 @@ for($i=1; $i<=$lineas; $i++) {
 	
 	$sqlInsertConcepto = "INSERT INTO ordennmdetalle VALUES(nroorden, $i, '$concepto', '$tipo', $importeLinea)";
 	$arrayConcepto[$i] = $sqlInsertConcepto;
+	
+	if ($tipo == 'C') {
+		$credito += $importeLinea;
+	} else {
+		$debito += $importeLinea;
+	}
+	
 }
+
+$sqlInsertCabecera = "INSERT INTO ordennmcabecera VALUES(DEFAULT,'$fecha',$credito, $debito, $importeTotal,$codigoprestador,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro')";
 
 try {
 	$hostname = $_SESSION['host'];
