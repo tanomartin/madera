@@ -30,7 +30,7 @@ include($libPath."controlSessionOspim.php"); ?>
     <tr>
 	  	<td>
 	  		<p>DIABETES </p>
-			<p><a class="enlace" href="../../moduloNoDisponible.php"><img src="img/diabetes.png" width="90" height="90" border="0" /></a></p>
+			<p><a class="enlace" href="diabetes/moduloDiabetes.php"><img src="img/diabetes.png" width="90" height="90" border="0" /></a></p>
 		</td>
 		<td>
 			<p>DROGADEPENDENCIA</p>
