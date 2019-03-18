@@ -10,6 +10,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -51,6 +52,7 @@ function validar(formulario) {
 		formulario.fechahasta.focus();
 		return(false);
 	}
+	$.blockUI({ message: "<h1>Listado Beneficiarios entre las fechas dadas. Aguarde por favor...</h1>" });
 	formulario.Submit.disabled = true;
 	return true;
 }

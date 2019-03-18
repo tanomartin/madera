@@ -5,7 +5,6 @@ include($libPath."fechas.php");
 $fechaDesde = fechaParaGuardar($_POST['fechadesde']);
 $fechaHasta = fechaParaGuardar($_POST['fechahasta']);
 
-
 //BUSCO LA CANTIDAD TOTAL DE BENEFICIAIRIOS MARCADOS COMO DAIBETICOS//
 $sqlCantidadBeneDiab = "SELECT * FROM diabetesbeneficiarios";
 $resCantidadBeneDiab = mysql_query($sqlCantidadBeneDiab,$db);
@@ -56,7 +55,7 @@ while ($rowFamiliarDeBaja = mysql_fetch_assoc($resFamiliarDeBaja)) {
 //*****************************************************//
 
 //VEO COMO ESTAN CON RESPECTO A LA INFORMACION//
-$sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d.fechadiagnostico, 
+$sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, DATE_FORMAT(d.fechadiagnostico,'%d-%m-%Y') as fechadiagnostico, 
 							  diabetescomorbilidad.idDiagnostico as comorbilidad,
 							  diabetescomplicaciones.idDiagnostico as complicaciones,
 							  diabetesestudios.idDiagnostico as estudios,
@@ -132,6 +131,7 @@ foreach ($arrayBeneDiab as $beneTodos) {
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 $(function() {
@@ -171,6 +171,7 @@ $(function() {
 
 function validar(formulario) {
 	formulario.Submit.disabled = true;
+	$.blockUI({ message: "<h1>Generando Archivo de Exportacion de Diabetes. Aguarde por favor...</h1>" });
 	return true; 
 }
 
@@ -306,8 +307,8 @@ function validar(formulario) {
 						} 
 				 		if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
 							$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
-							
-							$busquedaCUILTitu = $completo['nroafiliado']."-0";
+
+							$busquedaCUILTitu = $incompleto['nroafiliado']."-0";
 							if (array_key_exists($busquedaCUILTitu,$arrayTitulares)) {
 								$cuil = $arrayTitulares[$busquedaCUILTitu]['cuil'];
 							} else {
