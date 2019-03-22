@@ -410,7 +410,62 @@ try{
 			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('P'.$fila, "INACTIVO");
 		}
 	}
-
+	
+	$sqlFamiliaresBaja = "SELECT
+	f.nroafiliado,
+	p.descrip as parentesco,
+	f.apellidoynombre,
+	tipo.descrip as tipodocumento,
+	f.nrodocumento,
+	f.fechanacimiento,
+	f.sexo,
+	f.cuil,
+	t.domicilio,
+	t.numpostal,
+	l.nomlocali,
+	pr.descrip as provincia,
+	d.emisioncertificado,
+	d.vencimientocertificado,
+	d.certificadodiscapacidad
+	FROM discapacitados d, titularesdebaja t, familiaresdebaja f, tipodocumento tipo, parentesco p, localidades l, provincia pr
+	WHERE
+	d.nroorden != 0 and
+	d.nroafiliado = f.nroafiliado and
+	d.nroorden = f.nroorden and
+	f.nroafiliado = t.nroafiliado and
+	f.tipodocumento = tipo.codtipdoc and
+	t.codidelega = $delegacion and
+	f.tipoparentesco = p.codparent and
+	t.codlocali = l.codlocali and
+	t.codprovin = pr.codprovin";
+	
+	$resultFamiliaresBaja = $dbh->query($sqlFamiliaresBaja);
+	if ($resultFamiliaresBaja){
+		foreach ($resultFamiliaresBaja as $familiarBaja){
+			$fila++;
+			// Agrega datos a las celdas de datos
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('A'.$fila, $familiarBaja['nroafiliado']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('B'.$fila, $familiarBaja['parentesco']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('C'.$fila, $familiarBaja['apellidoynombre']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('D'.$fila, $familiarBaja['tipodocumento']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('E'.$fila, $familiarBaja['nrodocumento']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('F'.$fila, invertirfecha($familiarBaja['fechanacimiento']));
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('G'.$fila, $familiarBaja['sexo']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('H'.$fila, $familiarBaja['cuil']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('I'.$fila, $familiarBaja['domicilio']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('J'.$fila, $familiarBaja['numpostal']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('K'.$fila, $familiarBaja['nomlocali']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('L'.$fila, $familiarBaja['provincia']);
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('M'.$fila, invertirfecha($familiarBaja['emisioncertificado']));
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('N'.$fila, invertirfecha($familiarBaja['vencimientocertificado']));
+			if ($familiarBaja['certificadodiscapacidad'] == 1) {
+				$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O'.$fila, 'SI');
+			} else {
+				$objPHPExcelFamiliar->getActiveSheet()->setCellValue('O'.$fila, 'NO');
+			}
+			$objPHPExcelFamiliar->getActiveSheet()->setCellValue('P'.$fila, "INACTIVO");
+		}
+	}
 
 	// Setea fuente tipo y tamaño a la hoja activa
 	$objPHPExcelFamiliar->getDefaultStyle()->getFont()->setName('Arial');
