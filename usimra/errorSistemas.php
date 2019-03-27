@@ -23,7 +23,7 @@ A:hover {text-decoration:underline; color:FCF63C}
 <body bgcolor="#B2A274" link="#D5913A" vlink="#CF8B34" alink="#D18C35">
   <div align="center">
     <p class="Estilo1">&iexcl;&iexcl;ERROR de Sistema!!</p>
-    <p class="Estilo2">Cualquier duda imprimir y comunicarse son Dpto. de Sistemas</p>
+    <p class="Estilo2">Cualquier duda imprimir y comunicarse con Dpto. de Sistemas</p>
     <p><img src="img/stop.png" width="128" height="128"> </p>
     <table border="1" style="width: 800px">
       <tr>
