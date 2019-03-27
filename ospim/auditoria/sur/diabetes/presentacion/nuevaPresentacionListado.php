@@ -2,8 +2,10 @@
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php");
 
-$fechaDesde = fechaParaGuardar($_POST['fechadesde']);
-$fechaHasta = fechaParaGuardar($_POST['fechahasta']);
+$periodo = $_POST['periodo'];
+$fechaHasta = substr($periodo,0,4)."-".substr($periodo,4,2)."-01";
+$fechaHasta = strtotime ('+1 month' , strtotime ($fechaHasta));
+$fechaHasta = date('Y-m-d',$fechaHasta);
 
 //BUSCO LA CANTIDAD TOTAL DE BENEFICIAIRIOS MARCADOS COMO DAIBETICOS//
 $sqlCantidadBeneDiab = "SELECT * FROM diabetesbeneficiarios";
@@ -29,12 +31,12 @@ while ($rowTitulares = mysql_fetch_assoc($resTitulares)) {
 	$arrayTitulares[$index] = array("nombre" => $rowTitulares['apellidoynombre'], "cuil" => $rowTitulares['cuil']);
 }
 
-$sqlTitularesDeBaja = "SELECT nroafiliado, apellidoynombre, cuil FROM titularesdebaja WHERE nroafiliado in $whereIn";
+$sqlTitularesDeBaja = "SELECT nroafiliado, apellidoynombre, cuil, fechabaja FROM titularesdebaja WHERE nroafiliado in $whereIn";
 $resTitularesDeBaja = mysql_query($sqlTitularesDeBaja,$db);
 $arrayTitularesDeBaja = array();
 while ($rowTitularesDeBaja = mysql_fetch_assoc($resTitularesDeBaja)) {
 	$index = $rowTitularesDeBaja['nroafiliado']."-0";
-	$arrayTitularesDeBaja[$index] = array("nombre" => $rowTitularesDeBaja['apellidoynombre'], "cuil" => $rowTitularesDeBaja['cuil']);
+	$arrayTitularesDeBaja[$index] = array("nombre" => $rowTitularesDeBaja['apellidoynombre'], "cuil" => $rowTitularesDeBaja['cuil'], "fechabaja" =>  $rowTitularesDeBaja['fechabaja']);
 }
 
 $sqlFamiliar = "SELECT nroafiliado, nroorden, apellidoynombre, cuil FROM familiares WHERE nroafiliado in $whereIn";
@@ -45,12 +47,12 @@ while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
 	$arrayFamiliares[$index] = array("nombre" => $rowFamiliar['apellidoynombre']);
 }
 
-$sqlFamiliarDeBaja = "SELECT nroafiliado, nroorden, apellidoynombre, cuil FROM familiaresdebaja WHERE nroafiliado in $whereIn";
+$sqlFamiliarDeBaja = "SELECT nroafiliado, nroorden, apellidoynombre, cuil, fechabaja FROM familiaresdebaja WHERE nroafiliado in $whereIn";
 $resFamiliarDeBaja = mysql_query($sqlFamiliarDeBaja,$db);
 $arrayFamiliaresDeBaja = array();
 while ($rowFamiliarDeBaja = mysql_fetch_assoc($resFamiliarDeBaja)) {
 	$index = $rowFamiliarDeBaja['nroafiliado']."-".$rowFamiliarDeBaja['nroorden'];
-	$arrayFamiliaresDeBaja[$index] = array("nombre" => $rowFamiliarDeBaja['apellidoynombre']);
+	$arrayFamiliaresDeBaja[$index] = array("nombre" => $rowFamiliarDeBaja['apellidoynombre'], "fechabaja" =>  $rowFamiliarDeBaja['fechabaja']);
 }
 //*****************************************************//
 
@@ -67,7 +69,7 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, D
 						LEFT JOIN diabetesestudios on diabetesestudios.idDiagnostico = d.id
 						LEFT JOIN diabetestratamientos on diabetestratamientos.idDiagnostico = d.id
 						LEFT JOIN diabetesfarmacos on diabetesfarmacos.idDiagnostico = d.id
-						WHERE fechadiagnostico >= '$fechaDesde' and fechadiagnostico <= '$fechaHasta'
+						WHERE fechadiagnostico < '$fechaHasta'
 						ORDER BY fechadiagnostico ASC";
 $resListadoDiabetes = mysql_query($sqlListadoDiabetes,$db);
 $canListadoDiabetes = mysql_num_rows($resListadoDiabetes);
@@ -81,10 +83,30 @@ if ($canListadoDiabetes != 0) {
 		if ($rowListadoDiabetes['comorbilidad'] != NULL && $rowListadoDiabetes['complicaciones'] != NULL && 
 			$rowListadoDiabetes['estudios'] != NULL && $rowListadoDiabetes['tratamiento'] != NULL && 
 			$rowListadoDiabetes['farmacos'] != NULL) {
-				$arrayCompletos[$indexBene] = $rowListadoDiabetes;
-				$arrayCompletos[$indexBene]['diagnosticos'] = 1;
-				if (array_key_exists($indexBene,$arrayIncompletos)) {
-					unset($arrayIncompletos[$indexBene]);		
+				$fechaBaja = "";
+				if (array_key_exists($indexBene,$arrayTitularesDeBaja)) {
+					$fechaBaja = $arrayTitularesDeBaja[$indexBene]['fechabaja'];
+				}
+				if (array_key_exists($indexBene,$arrayFamiliaresDeBaja)) {
+					$fechaBaja = $arrayFamiliaresDeBaja[$indexBene]['fechabaja'];
+				}
+				if ($fechaBaja != "") {
+					if (strtotime($fechaBaja) >= strtotime($fechaHasta)) {
+						$arrayCompletos[$indexBene] = $rowListadoDiabetes;
+						$arrayCompletos[$indexBene]['diagnosticos'] = 1;
+						if (array_key_exists($indexBene,$arrayIncompletos)) {
+							unset($arrayIncompletos[$indexBene]);
+						}
+					} else {
+						$arrayIncompletos[$indexBene] = $rowListadoDiabetes;
+						$arrayIncompletos[$indexBene]['diagnosticos'] = -2;
+					}
+				} else {
+					$arrayCompletos[$indexBene] = $rowListadoDiabetes;
+					$arrayCompletos[$indexBene]['diagnosticos'] = 1;
+					if (array_key_exists($indexBene,$arrayIncompletos)) {
+						unset($arrayIncompletos[$indexBene]);		
+					}
 				}
 		} else {
 			if (!array_key_exists($indexBene,$arrayCompletos)) {
@@ -185,10 +207,10 @@ function validar(formulario) {
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'nuevaPresentacion.php'" class="nover"  /></p>
 	<h2>Nueva Presentación Listado Beneficiarios (<?php echo "# ".$canCantidadBeneDiab?>)</h2>
-	<h3>Diagnósticos desde '<?php echo $_POST['fechadesde'] ?>' hasta '<?php echo $_POST['fechahasta'] ?>'</h3>
+	<h3>Periodo a Generar '<?php echo $periodo ?>'</h3>
 	<h3>Beneficiarios a Presentar (<?php echo "# ".sizeof($arrayCompletos) ?>)</h3>
 <?php if (sizeof($arrayCompletos) > 0) { ?>
-		<form id="nuevaPresentacionListado" name="nuevaPresentacionListado" method="post" onsubmit="return validar(this)" action="nuevaPresentacionArchivo.php?desde=<?php echo $fechaDesde ?>&hasta=<?php echo $fechaHasta ?>">	
+		<form id="nuevaPresentacionListado" name="nuevaPresentacionListado" method="post" onsubmit="return validar(this)" action="nuevaPresentacionArchivo.php?periodo=<?php echo $periodo ?>">	
 			<table style="text-align:center; width:1000px;" id="completos" class="tablesorter" >
 				<thead>
 					<tr>
@@ -197,7 +219,7 @@ function validar(formulario) {
 						<th>CUIL Titular</th>
 						<th>Tipo Bene.</th>
 						<th>Fecha Diagnóstico</th>
-						<th>Tipo Diabetes</th>
+						<th>Tipo</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -212,9 +234,9 @@ function validar(formulario) {
 							$tipoBene = "TITULAR";
 						} 
 						if (array_key_exists($indexBusqueda, $arrayTitularesDeBaja)) {
-							$nombre = $arrayTitularesDeBaja[$indexBusqueda]; 
+							$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']; 
 							$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
-							$tipoBene = "TITULAR DE BAJA";
+							$tipoBene = "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayTitularesDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 						}
 						if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
 							$nombre = $arrayFamiliares[$indexBusqueda]; 
@@ -231,7 +253,7 @@ function validar(formulario) {
 							$tipoBene = "FAMILIAR";
 						} 
 						if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
-							$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]; 
+							$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
 							
 							$busquedaCUILTitu = $completo['nroafiliado']."-0";
 							if (array_key_exists($busquedaCUILTitu,$arrayTitulares)) {
@@ -242,7 +264,7 @@ function validar(formulario) {
 								}
 							}
 							
-							$tipoBene = "FAMILIAR DE BAJA";
+							$tipoBene = "FAMILIAR DE BAJA (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 						} ?>
 						<tr>
 							<td>
@@ -272,7 +294,7 @@ function validar(formulario) {
 						<th>Nombre y Apellido</th>
 						<th>CUIL Titular</th>
 						<th>Tipo Bene.</th>
-						<th>Faltante</th>
+						<th>Motivo</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -289,7 +311,7 @@ function validar(formulario) {
 						if (array_key_exists($indexBusqueda, $arrayTitularesDeBaja)) {
 							$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']."<br>"; 
 							$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
-							$tipoBene .= "TITULAR DE BAJA<br>";
+							$tipoBene .= "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayTitularesDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 						}
 						if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
 							$nombre = $arrayFamiliares[$indexBusqueda]['nombre']."<br>"; 
@@ -317,7 +339,7 @@ function validar(formulario) {
 								}
 							}
 							
-							$tipoBene .= "FAMILIAR DE BAJA<br>";
+							$tipoBene .= "FAMILIAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 						} 
 						if ($tipoBene == "") { $tipoBene = "-"; }?>
 						<tr>
@@ -329,8 +351,9 @@ function validar(formulario) {
 						<?php if ($incompleto['diagnosticos'] == 0) {
 									echo "SIN DIAGNOSTICO";
 							  } else {
-							  		if ($incompleto['diagnosticos'] == -1) {
-							  			echo "SIN DIAGNOSTICO EN FECHA";
+							  		if ($incompleto['diagnosticos'] < 0) {
+							  			if ($incompleto['diagnosticos'] == -1) { echo "CON DIAGNOSTICO <br> FUERA DE PERIODO"; }
+							  			if ($incompleto['diagnosticos'] == -2) { echo "CON DIAGNOSTICO <br> AFIL. DE BAJA"; }
 							  		} else { 
 							  			echo "<b>F.D: ".$incompleto['fechadiagnostico']."</b><br>";
 										if ($incompleto['comorbilidad'] == NULL) { echo "COMORBILIDAD<br>"; }  	

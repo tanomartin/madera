@@ -11,8 +11,7 @@ foreach ($_POST as $datos) {
 $whereIn = substr($whereIn, 0, -1);
 $whereIn .= ")";
 
-$fechaDesde = $_GET['desde'];
-$fechaHasta = $_GET['hasta'];
+$periodo = $_GET['periodo'];
 
 $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d.fechadiagnostico, d.edaddiagnostico,
 							  
@@ -81,7 +80,7 @@ $cantidadBene = sizeof($arrayCuiles);
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $timestamp = date("YmdHis");
-$nombreArchivo = "DIAB".$timestamp.".csv";
+$nombreArchivo = "DIAB-$periodo-$timestamp.csv";
 
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina) == 0)
@@ -89,9 +88,7 @@ if(strcmp("localhost",$maquina) == 0)
 else
 	$archivoImportacion="/home/sistemas/Documentos/Diabetes/$nombreArchivo";
 
-	$insertPresentacion = "INSERT INTO diabetespresentacion VALUES(DEFAULT, '$fechaDesde', '$fechaHasta', $cantidadBene,'$archivoImportacion', NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro',NULL,NULL)";
-
-
+$insertPresentacion = "INSERT INTO diabetespresentacion VALUES(DEFAULT, '$periodo', $cantidadBene,'$archivoImportacion', NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro',NULL,NULL)";
 $file = fopen($archivoImportacion, "w");
 if ($file !== false) {
 	while ($rowListadoDiabetes = mysql_fetch_assoc($resListadoDiabetes)) {

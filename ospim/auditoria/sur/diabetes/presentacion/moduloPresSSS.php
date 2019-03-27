@@ -2,26 +2,20 @@
 include($libPath."controlSessionOspim.php"); 
 
 $sqlPresSSSFinalizadas = "SELECT *,
-							DATE_FORMAT(d.fechadesde,'%d/%m/%Y') as fechadesde, 
-							DATE_FORMAT(d.fechahasta,'%d/%m/%Y') as fechahasta,
 							DATE_FORMAT(d.fechacancelacion,'%d/%m/%Y') as fechacancelacion, 
-							DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion
+							DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion,
+							DATE_FORMAT(d.fechadevolucion,'%d/%m/%Y') as fechadevolucion
 							FROM diabetespresentacion d
 							WHERE d.fechacancelacion is not null or d.fechadevolucion is not null order by id DESC";
 $resPresSSSFinalizadas = mysql_query($sqlPresSSSFinalizadas,$db);
 $canPresSSSFinalizadas = mysql_num_rows($resPresSSSFinalizadas);
 
-$sqlPresSSSActiva = "SELECT d.*, 
-						DATE_FORMAT(d.fechadesde,'%d/%m/%Y') as fechadesde, 
-						DATE_FORMAT(d.fechahasta,'%d/%m/%Y') as fechahasta,
+$sqlPresSSSActiva = "SELECT d.*,
 						DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion
 						FROM diabetespresentacion d
 						WHERE d.fechacancelacion is null and d.fechadevolucion is null order by id DESC";
 $resPresSSSActiva = mysql_query($sqlPresSSSActiva,$db);
 $canPresSSSActiva = mysql_num_rows($resPresSSSActiva);
-if ($canPresSSSActiva == 1) {
-	$rowPresSSSActiva = mysql_fetch_assoc($resPresSSSActiva);
-}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -33,6 +27,7 @@ if ($canPresSSSActiva == 1) {
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
+<script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js" type="text/javascript"></script> 
 <script type="text/javascript">
 
 $(function() {
@@ -51,6 +46,9 @@ $(function() {
 			filter_hideFilters : false,
 		}
 	})
+	.tablesorterPager({
+		container: $("#paginador")
+	});
 });
 
 </script>
@@ -70,7 +68,7 @@ $(function() {
 	  				<thead>
 	  					<tr>
 		  					<th>ID</th>
-		  					<th>Fecha Desde - Hasta</th>
+		  					<th>Periodo</th>
 		  					<th># Bene</th>
 		  					<th>Archivo</th>
 		  					<th>Estado</th>
@@ -78,14 +76,15 @@ $(function() {
 	  					</tr>
 	  				</thead>
 					<tbody>
+			<?php  while ($rowPresSSSActiva = mysql_fetch_assoc($resPresSSSActiva)) { ?>
 			  			<tr>
 			  				<td><?php echo $rowPresSSSActiva['id']?></td>
-			  				<td><?php echo $rowPresSSSActiva['fechadesde']." - ".$rowPresSSSActiva['fechahasta']?></td>
+			  				<td><?php echo $rowPresSSSActiva['periodo']?></td>
 			  				<td><?php echo $rowPresSSSActiva['cantidadbeneficiario']?></td>
-			  				<td><?php echo substr($rowPresSSSActiva['patharchivo'],-22)?></td>
+			  				<td><?php echo substr($rowPresSSSActiva['patharchivo'],-30)?></td>
 			  			  <?php $estado = "SIN PRESENTAR";
 			  					if ($rowPresSSSActiva['fechapresentacion'] != NULL) {
-			  						$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']." - EXP: ".$rowPresSSSActiva['nroexpediente'];
+			  						$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>EXP: ".$rowPresSSSActiva['nroexpediente'];
 			  					} ?>
 			  				<td><?php echo $estado ?></td>
 			  				<td>
@@ -94,20 +93,21 @@ $(function() {
 			  					<?php if ($rowPresSSSActiva['fechapresentacion'] != NULL) { ?><input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> <?php } ?>
 			  				</td>
 			  			</tr>
+			  	<?php } ?>
 		  			</tbody>
 	  			</table>
 	  		</div>
   	<?php } else { ?>
   			<h3 style="color: blue">No Existe Presentacion Activas</h3>
-  			<button onclick="location.href = 'nuevaPresentacion.php'">Nueva Presentacion</button>
   	<?php } ?>
+  	<p><button onclick="location.href = 'nuevaPresentacion.php'">Nueva Presentacion</button></p>
   	<h3>Presentaciones Finalizadas</h3>
   	<?php if ($canPresSSSFinalizadas != 0) { ?>
   			<table style="text-align:center; width:1000px;" id="finalizadas" class="tablesorter">
   				<thead>
   					<tr>
 	  					<th>ID</th>
-	  					<th>Fecha Desde - Hasta</th>
+	  					<th>Periodo</th>
 	  					<th># Bene</th>
 	  					<th>Estado</th>
   					</tr>
@@ -116,7 +116,7 @@ $(function() {
   			<?php  while ($rowPresSSSFinalizadas = mysql_fetch_assoc($resPresSSSFinalizadas)) { ?>
   					<tr>
   						<td><?php echo $rowPresSSSFinalizadas['id'] ?></td>
-  						<td><?php echo $rowPresSSSFinalizadas['fechadesde']." - ".$rowPresSSSFinalizadas['fechahasta']?></td>
+  						<td><?php echo $rowPresSSSFinalizadas['periodo']?></td>
   						<td><?php echo $rowPresSSSFinalizadas['cantidadbeneficiario']?></td>
   						 <?php  $estado = "";
 			  					$color = "";
@@ -133,6 +133,29 @@ $(function() {
   			<?php } ?>
   				</tbody>
   			</table>
+  			<table class="nover" align="center" width="245" border="0">
+				<tr>
+					<td width="239">
+						<div id="paginador" class="pager">
+							<form>
+								<p align="center">
+								<img src="../../img/first.png" width="16" height="16" class="first"/> <img src="../../img/prev.png" width="16" height="16" class="prev"/>
+								<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
+								<img src="../../img/next.png" width="16" height="16" class="next"/> <img src="../../img/last.png" width="16" height="16" class="last"/>
+								</p>
+								<p align="center">
+									<select name="select" class="pagesize">
+									<option selected="selected" value="10">10 por pagina</option>
+									<option value="20">20 por pagina</option>
+									<option value="30">30 por pagina</option>
+									<option value="<?php echo $canPresSSSFinalizadas;?>">Todos</option>
+									</select>
+								</p>
+							</form>	
+						</div>
+					</td>
+				</tr>
+			</table>
   	<?php } else { ?>
   			<h3 style="color: blue">No Existen Presentaciones Finalizadas</h3>
   	<?php } ?>

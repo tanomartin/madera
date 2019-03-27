@@ -1,6 +1,6 @@
 <?php
 $ruta = $_GET['file'];
-$archivo = substr($ruta,-22);
+$archivo = substr($ruta,-30);
 header('Content-Type: application/force-download');
 header('Content-Disposition: attachment; filename='.$archivo);
 header('Content-Transfer-Encoding: binary');
