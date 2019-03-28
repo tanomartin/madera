@@ -103,8 +103,8 @@ $(document).ready(function(){
 
 function validar(formulario) {
 	formulario.buscar.disabled = true;
-	var elementos = document.forms.moduloPMI.elements;
-	var longitud = document.forms.moduloPMI.length;
+	var elementos = document.forms.moduloDiabetes.elements;
+	var longitud = document.forms.moduloDiabetes.length;
 	var elementoradio = 0;
 	for(var i=0; i<longitud; i++) {
 		if(elementos[i].name == "seleccion" && elementos[i].type == "radio" && elementos[i].checked == true) {
