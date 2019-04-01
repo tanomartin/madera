@@ -36,6 +36,7 @@
 								t.fechanacimiento, 
 								t.sexo, 
 								t.domicilio, 
+								t.numpostal,
 								l.nomlocali, 
 								t.codprovin, 
 								t.codidelega,
@@ -52,6 +53,7 @@
 								t.fechanacimiento,
 								t.sexo,
 								t.domicilio,
+								t.numpostal,
 								l.nomlocali,
 								t.codprovin,
 								t.codidelega,
@@ -73,18 +75,19 @@
 				$objPHPExcel->getActiveSheet()->setCellValue('E'.$fila, invertirFecha($rowTitulares['fechanacimiento']));
 				$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $rowTitulares['sexo']);
 				$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, utf8_encode($rowTitulares['domicilio']));
-				$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, utf8_encode($rowTitulares['nomlocali']));
-				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $rowTitulares['codprovin']);
-				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $rowTitulares['cuitempresa']);
-				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['codidelega']);	
-				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, utf8_encode($rowTitulares['nomempresa']));
+				$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, utf8_encode($rowTitulares['numpostal']));
+				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, utf8_encode($rowTitulares['nomlocali']));
+				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $rowTitulares['codprovin']);
+				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['cuitempresa']);
+				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowTitulares['codidelega']);	
+				$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, utf8_encode($rowTitulares['nomempresa']));
 	
 				$coseguro = 1;
 				$indexCoseguro = $rowTitulares['nroafiliado']."-0";
 				if (array_key_exists($indexCoseguro,$arrayCoseguro)) {
 					$coseguro = 0;
 				}
-				$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, $coseguro);
+				$objPHPExcel->getActiveSheet()->setCellValue('N'.$fila, $coseguro);
 				$totalTituXDelega++;
 				
 				$nroafil = $rowTitulares['nroafiliado'];
@@ -139,7 +142,7 @@
 			$totalizador[$delega] = array('delega' => $delega, 'tottit' => $totalTituXDelega, 'totfam' => $totalFamiXDelega, "total" => $totalDele);
 		}
 		
-		for($col = 'A'; $col !== 'N'; $col++) {
+		for($col = 'A'; $col !== 'O'; $col++) {
 			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
 		
