@@ -5,8 +5,6 @@ $nroorden = NULL;
 $existediabetico = 0;
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$fechamodificacion = "";
-$usuariomodificacion = "";
 if(isset($_GET['nroAfi'])) {
 	$nroafiliado=$_GET['nroAfi'];
 	if(isset($_GET['nroOrd'])) {
@@ -28,9 +26,9 @@ if(isset($_GET['nroAfi'])) {
 				$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$dbh->beginTransaction();
 						
-				$sqlAgregaBeneficiario = "INSERT INTO diabetesbeneficiarios (nroafiliado,nroorden,diagnosticos, fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES (:nroafiliado,:nroorden,:diagnosticos,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
+				$sqlAgregaBeneficiario = "INSERT INTO diabetesbeneficiarios (nroafiliado,nroorden,diagnosticos, fechadiagnostico, edaddiagnostico,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES (:nroafiliado,:nroorden,:diagnosticos,:fechadiagnostico, :edaddiagnostico, :fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
 				$resAgregaBeneficiario = $dbh->prepare($sqlAgregaBeneficiario);
-				if($resAgregaBeneficiario->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden, ':diagnosticos' => 0, ':fecharegistro' => $fecharegistro, ':usuarioregistro' => $usuarioregistro, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion)))
+				if($resAgregaBeneficiario->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden, ':diagnosticos' => 0, ':fechadiagnostico' => NULL, ':edaddiagnostico' => NULL, ':fecharegistro' => $fecharegistro, ':usuarioregistro' => $usuarioregistro, ':fechamodificacion' => NULL, ':usuariomodificacion' => NULL)))
 				$dbh->commit();
 				$pagina = "moduloDiabetes.php";
 				header("Location: $pagina");

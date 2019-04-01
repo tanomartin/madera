@@ -9,6 +9,10 @@ if(isset($_GET['nroAfi'])) {
 	if(isset($_GET['nroOrd'])) {
 		$nroorden=$_GET['nroOrd'];
 		if(isset($_GET['estAfi'])) {
+			$sqlDiabetes = "SELECT fechadiagnostico, edaddiagnostico FROM diabetesbeneficiarios WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
+			$resDiabetes = mysql_query($sqlDiabetes,$db);
+			$rowDiabetes = mysql_fetch_array($resDiabetes);
+			
 			$estafiliado=$_GET['estAfi'];
 			if($nroorden == 0) {
 				if(strcmp($estafiliado, 'A')==0) {
@@ -65,6 +69,7 @@ if(isset($_GET['nroAfi'])) {
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js" type="text/javascript"></script> 
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
+
 $(document).ready(function(){
 	$("#diagnosticos")
 		.tablesorter({
@@ -77,49 +82,15 @@ $(document).ready(function(){
 			container: $("#paginador")
 		});
 });
+
 </script>
 </head>
 <body bgcolor="#CCCCCC">
 	<div class="row" align="center" style="background-color: #CCCCCC;">
-			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'moduloDiabetes.php'" /> 
-			</div>
-			<h2>Diagnosticos</h2>
-					<table style="width: 979px">
-						<tr>
-						  <td valign="top">
-							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n del Beneficiario</span></p>
-							  <span class="style_texto_input"><strong>Afiliado Nro.:</strong>
-								  <input name="nroafiliado" type="text" id="nroafiliado" size="9" readonly="readonly" value="<?php echo $rowLeeAfiliado['nroafiliado'] ?>" class="style_input_readonly"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Apellido y Nombre :</strong>
-								  <input name="apellidoynombre" type="text" id="apellidoynombre" readonly="readonly" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="60" class="style_input_readonly"/>
-								  <input name="nroorden" type="text" id="nroorden" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $nroorden ?>"/>
-								  <input name="estafiliado" type="text" id="estafiliado" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $estafiliado ?>"/>
-							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Tipo: <?php echo $tipoAfiliado ?></strong>							  </span>
-							  <span class="style_texto_input"><strong><?php echo $estadoAfiliado ?></strong>							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Documento:</strong>
-								  <input name="nrodocumento" type="text" id="nrodocumento" readonly="readonly" value="<?php echo $rowLeeAfiliado['nrodocumento'] ?>" size="11" class="style_input_readonly"/>
-						      </span>
-							  <span class="style_texto_input"><strong>C.U.I.L.:</strong>
-								  <input name="cuil" type="text" id="cuil" readonly="readonly" value="<?php echo $rowLeeAfiliado['cuil'] ?>" size="11" class="style_input_readonly"/>
-						      </span>
-							  <span class="style_texto_input"><strong>Fecha Nacimiento: </strong>
-								<input name="fechanacimiento" type="text" id="fechanacimiento" readonly="readonly" value="<?php echo invertirFecha($rowLeeAfiliado['fechanacimiento']) ?>" size="10" class="style_input_readonly"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Edad Actual: </strong>
-								<input name="edad" type="text" id="edad" readonly="readonly" value="<?php echo $rowLeeAfiliado['edadactual'] ?>" size="3" class="style_input_readonly"/>
-							  </span>
-							  <p>							  </p>
-							  </td>
-						</tr>
-					</table>
-	</div>
-	<div align="center">
-		<table id="diagnosticos" class="tablesorter" style="font-size:14px; text-align:center">
+		<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'moduloDiabetes.php'" /> 
+		<h2>Diagnosticos</h2>
+		<?php include_once 'infoBeneficiario.php' ?>	
+		<table id="diagnosticos" class="tablesorter" style="font-size:14px; text-align:center; width: 980px">
 			<thead>
 				<tr>
 					<th colspan="8">Diagnosticos Existentes </th>
@@ -137,11 +108,11 @@ $(document).ready(function(){
 			</thead>
 			<tbody>
 		<?php
-			$sqlListaDiagnosticos = "SELECT id, fechadiagnostico FROM diabetesdiagnosticos WHERE nroafiliado = $nroafiliado AND nroorden = $nroorden ORDER BY fechadiagnostico, id";
+			$sqlListaDiagnosticos = "SELECT id, fechaficha FROM diabetesdiagnosticos WHERE nroafiliado = $nroafiliado AND nroorden = $nroorden ORDER BY fechaficha, id";
 			$resListaDiagnosticos = mysql_query($sqlListaDiagnosticos,$db);
 			while($rowListaDiagnosticos = mysql_fetch_array($resListaDiagnosticos)) { ?>
 				<tr>
-					<td><?php echo invertirFecha($rowListaDiagnosticos['fechadiagnostico']) ?></td>
+					<td><?php echo invertirFecha($rowListaDiagnosticos['fechaficha']) ?></td>
 					<td><input class="nover" type="button" id="editadiagnostico" name="editadiagnostico" value="Editar" onclick="location.href = 'editarDiagnostico.php?idDiag=<?php echo $rowListaDiagnosticos['id']?>&nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'"/></td>
 					<?php
 						$sqlBuscaComorbilidad = "SELECT idDiagnostico FROM diabetescomorbilidad WHERE idDiagnostico = $rowListaDiagnosticos[id]";

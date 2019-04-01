@@ -12,6 +12,10 @@ if(isset($_GET['idDiag'])) {
 		if(isset($_GET['nroOrd'])) {
 			$nroorden=$_GET['nroOrd'];
 			if(isset($_GET['estAfi'])) {
+				$sqlDiabetes = "SELECT fechadiagnostico, edaddiagnostico FROM diabetesbeneficiarios WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
+				$resDiabetes = mysql_query($sqlDiabetes,$db);
+				$rowDiabetes = mysql_fetch_array($resDiabetes);
+				
 				$estafiliado=$_GET['estAfi'];
 				$sqlLeeEstudios = "SELECT * FROM diabetesestudios WHERE iddiagnostico = $iddiagnostico";
 				$resLeeEstudios = mysql_query($sqlLeeEstudios,$db);
@@ -548,77 +552,47 @@ function validar(formulario) {
 </script>
 </head>
 <body>
-		<div class="row" align="center" style="background-color: #CCCCCC;">
-			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
-			</div>
-			<h2>Estudios</h2>
-				<form id="editarEstudios" name="editarEstudios" method="post" action="guardarEditarEstudios.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
-					<table style="width: 979px">
-						<tr>
-							<td valign="top">
-							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n del Beneficiario</span></p>
-							  <span class="style_texto_input"><strong>Afiliado Nro.:</strong>
-								  <input name="nroafiliado" type="text" id="nroafiliado" size="9" readonly="readonly" value="<?php echo $rowLeeAfiliado['nroafiliado'] ?>" class="style_input_readonly"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Apellido y Nombre :</strong>
-								  <input name="apellidoynombre" type="text" id="apellidoynombre" readonly="readonly" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="60" class="style_input_readonly"/>
-								  <input name="nroorden" type="text" id="nroorden" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $nroorden ?>"/>
-								  <input name="estafiliado" type="text" id="estafiliado" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $estafiliado ?>"/>
-								  <input name="iddiagnostico" type="text" id="iddiagnostico" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $iddiagnostico ?>"/>
-							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Tipo: <?php echo $tipoAfiliado ?></strong>							  </span>
-							  <span class="style_texto_input"><strong><?php echo $estadoAfiliado ?></strong>							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Documento:</strong>
-								  <input name="nrodocumento" type="text" id="nrodocumento" readonly="readonly" value="<?php echo $rowLeeAfiliado['nrodocumento'] ?>" size="11" class="style_input_readonly"/>
-						      </span>
-							  <span class="style_texto_input"><strong>C.U.I.L.:</strong>
-								  <input name="cuil" type="text" id="cuil" readonly="readonly" value="<?php echo $rowLeeAfiliado['cuil'] ?>" size="11" class="style_input_readonly"/>
-						      </span>
-							  <span class="style_texto_input"><strong>Fecha Nacimiento: </strong>
-								<input name="fechanacimiento" type="text" id="fechanacimiento" readonly="readonly" value="<?php echo invertirFecha($rowLeeAfiliado['fechanacimiento']) ?>" size="10" class="style_input_readonly"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Edad Actual: </strong>
-								<input name="edad" type="text" id="edad" readonly="readonly" value="<?php echo $rowLeeAfiliado['edadactual'] ?>" size="3" class="style_input_readonly"/>
-							  </span>
-							  <p>							  </p>
-							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n de Estudios</span></p>
-							  <span><strong>Datos Antopodemicos</strong></span>
-								<table width="600" border="0" class="style_texto_input" style="text-align:left">
-								  <tr>
-									<th scope="col" style="border:double">Determinacion</th>
-									<th scope="col" style="border:double">Valor</th>
-									<th scope="col" style="border:double">Fecha</th>
-								  </tr>
-								  <tr>
-									<th scope="row">Glucemia en Ayunas </th>
-									<td><input name="glucemiavalor" type="text" id="glucemiavalor" value="<?php echo $rowLeeEstudios['glucemiavalor'] ?>" size="12" maxlength="4" placeholder="Entre 0 y 1500" class="style_input"/></td>
-									<td><input name="glucemiafecha" type="text" id="glucemiafecha" value="<?php echo invertirFecha($rowLeeEstudios['glucemiafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">HbA1C</th>
-									<td><input name="hba1cvalor" type="text" id="hba1cvalor" value="<?php echo $rowLeeEstudios['hba1cvalor'] ?>" size="12" maxlength="5" placeholder="Entre 1.00 y 20.00" class="style_input"/></td>
-									<td><input name="hba1cfecha" type="text" id="hba1cfecha" value="<?php echo invertirFecha($rowLeeEstudios['hba1cfecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">LDLc</th>
-									<td><input name="ldlcvalor" type="text" id="ldlcvalor" value="<?php echo $rowLeeEstudios['ldlcvalor'] ?>" size="12" maxlength="4" placeholder="Entre 0 y 1000" class="style_input"/></td>
-									<td><input name="ldlcfecha" type="text" id="ldlcfecha" value="<?php echo invertirFecha($rowLeeEstudios['ldlcfecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">Trigliceridos</th>
-									<td><input name="trigliceridosvalor" type="text" id="trigliceridosvalor" value="<?php echo $rowLeeEstudios['trigliceridosvalor'] ?>" size="12" maxlength="4" placeholder="Entre 0 y 2000" class="style_input"/></td>
-									<td><input name="trigliceridosfecha" type="text" id="trigliceridosfecha" value="<?php echo invertirFecha($rowLeeEstudios['trigliceridosfecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">Microalbuminuria</th>
-									<td>
-									  <select name="microalbuminuriavalor" id="microalbuminuriavalor" class="style_input">
-										<option title="Seleccione un valor" value="">Seleccione un valor</option>
-										<?php 
-										if($rowLeeEstudios['microalbuminuriavalor'] == 0)
+	<div class="row" align="center" style="background-color: #CCCCCC;">
+		<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
+		<h2>Editar Estudios</h2>
+		<form id="editarEstudios" name="editarEstudios" method="post" action="guardarEditarEstudios.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
+			<?php include_once 'infoBeneficiario.php' ?>
+			<p align="left" style="margin-left: 174px"><span class="style_subtitulo">Información de Estudios</span></p>
+			<table style="width: 980px; text-align: left; border: double; margin-bottom: 10px">
+				<tr>
+					<th colspan="3" style="color: maroon;">Datos Antopodemicos</th>
+				</tr>
+				<tr>
+					<th style="color: maroon;">Determinacion</th>
+					<th style="color: maroon;">Valor</th>
+					<th style="color: maroon;">Fecha</th>
+				</tr>
+				<tr>
+					<th scope="row">Glucemia en Ayunas </th>
+					<td><input name="glucemiavalor" type="text" id="glucemiavalor" value="<?php echo $rowLeeEstudios['glucemiavalor'] ?>" size="12" maxlength="4" placeholder="Entre 0 y 1500" class="style_input"/></td>
+					<td><input name="glucemiafecha" type="text" id="glucemiafecha" value="<?php echo invertirFecha($rowLeeEstudios['glucemiafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">HbA1C</th>
+					<td><input name="hba1cvalor" type="text" id="hba1cvalor" value="<?php echo $rowLeeEstudios['hba1cvalor'] ?>" size="12" maxlength="5" placeholder="Entre 1.00 y 20.00" class="style_input"/></td>
+					<td><input name="hba1cfecha" type="text" id="hba1cfecha" value="<?php echo invertirFecha($rowLeeEstudios['hba1cfecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">LDLc</th>
+					<td><input name="ldlcvalor" type="text" id="ldlcvalor" value="<?php echo $rowLeeEstudios['ldlcvalor'] ?>" size="12" maxlength="4" placeholder="Entre 0 y 1000" class="style_input"/></td>
+					<td><input name="ldlcfecha" type="text" id="ldlcfecha" value="<?php echo invertirFecha($rowLeeEstudios['ldlcfecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">Trigliceridos</th>
+					<td><input name="trigliceridosvalor" type="text" id="trigliceridosvalor" value="<?php echo $rowLeeEstudios['trigliceridosvalor'] ?>" size="12" maxlength="4" placeholder="Entre 0 y 2000" class="style_input"/></td>
+					<td><input name="trigliceridosfecha" type="text" id="trigliceridosfecha" value="<?php echo invertirFecha($rowLeeEstudios['trigliceridosfecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">Microalbuminuria</th>
+					<td>
+						<select name="microalbuminuriavalor" id="microalbuminuriavalor" class="style_input">
+							<option title="Seleccione un valor" value="">Seleccione un valor</option>
+							<?php 		if($rowLeeEstudios['microalbuminuriavalor'] == 0)
 											echo "<option title='Sin Datos' value='0' selected='selected'>Sin Datos</option>";
 										else
 											echo "<option title='Sin Datos' value='0'>Sin Datos</option>";
@@ -631,45 +605,47 @@ function validar(formulario) {
 										else
 											echo "<option title='Patologicos' value='4'>Patologicos</option>";
 										?>
-									  </select>
-									</td>
-									<td><input name="microalbuminuriafecha" type="text" id="microalbuminuriafecha" value="<?php echo invertirFecha($rowLeeEstudios['microalbuminuriafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">TA Sistolica </th>
-									<td><input name="tasistolicavalor" type="text" id="tasistolicavalor" value="<?php echo $rowLeeEstudios['tasistolicavalor'] ?>" size="12" maxlength="3" placeholder="Entre 20 y 300" class="style_input"/></td>
-									<td><input name="tasistolicafecha" type="text" id="tasistolicafecha" value="<?php echo invertirFecha($rowLeeEstudios['tasistolicafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">TA Diastolica </th>
-									<td><input name="tadiastolicavalor" type="text" id="tadiastolicavalor" value="<?php echo $rowLeeEstudios['tadiastolicavalor'] ?>" size="12" maxlength="3" placeholder="Entre 10 y 200" class="style_input"/></td>
-									<td><input name="tadiastolicafecha" type="text" id="tadiastolicafecha" value="<?php echo invertirFecha($rowLeeEstudios['tadiastolicafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">Creatinina Serica </th>
-									<td><input name="creatininasericavalor" type="text" id="creatininasericavalor" value="<?php echo $rowLeeEstudios['creatininasericavalor'] ?>" size="12" maxlength="5" placeholder="Entre 0.00 y 20.00" class="style_input"/></td>
-									<td><input name="creatininasericafecha" type="text" id="creatininasericafecha" value="<?php echo invertirFecha($rowLeeEstudios['creatininasericafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
-								  </tr>
-								</table>
-								<p></p>
-							  <span class="style_texto_input"><strong>Indice Albumina/Creatinina:</strong>
-								  <select name="indicealbuminacreatinina" id="indicealbuminacreatinina" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<?php 
-									if($rowLeeEstudios['indicealbuminacreatinina'] == 1)
-										echo "<option title='Realizado' value='1' selected='selected'>Realizado</option>";
-									else
-										echo "<option title='Realizado' value='1'>Realizado</option>";
-									if($rowLeeEstudios['indicealbuminacreatinina'] == 0)
-										echo "<option title='No Realizado' value='0' selected='selected'>No Realizado</option>";
-									else
-										echo "<option title='No Realizado' value='0'>No Realizado</option>";
-									?>
-								  </select>
-							  </span>
-							  <span class="style_texto_input"><strong>Fondo de Ojo:</strong>
-								  <select name="fondodeojo" id="fondodeojo" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
+						</select>
+					</td>
+					<td><input name="microalbuminuriafecha" type="text" id="microalbuminuriafecha" value="<?php echo invertirFecha($rowLeeEstudios['microalbuminuriafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">TA Sistolica </th>
+					<td><input name="tasistolicavalor" type="text" id="tasistolicavalor" value="<?php echo $rowLeeEstudios['tasistolicavalor'] ?>" size="12" maxlength="3" placeholder="Entre 20 y 300" class="style_input"/></td>
+					<td><input name="tasistolicafecha" type="text" id="tasistolicafecha" value="<?php echo invertirFecha($rowLeeEstudios['tasistolicafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">TA Diastolica </th>
+					<td><input name="tadiastolicavalor" type="text" id="tadiastolicavalor" value="<?php echo $rowLeeEstudios['tadiastolicavalor'] ?>" size="12" maxlength="3" placeholder="Entre 10 y 200" class="style_input"/></td>
+					<td><input name="tadiastolicafecha" type="text" id="tadiastolicafecha" value="<?php echo invertirFecha($rowLeeEstudios['tadiastolicafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">Creatinina Serica </th>
+					<td><input name="creatininasericavalor" type="text" id="creatininasericavalor" value="<?php echo $rowLeeEstudios['creatininasericavalor'] ?>" size="12" maxlength="5" placeholder="Entre 0.00 y 20.00" class="style_input"/></td>
+					<td><input name="creatininasericafecha" type="text" id="creatininasericafecha" value="<?php echo invertirFecha($rowLeeEstudios['creatininasericafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/></td>
+				</tr>
+			</table>
+			<table style="width: 980px">
+				<tr>
+					<td>
+						<span class="style_texto_input"><strong>Indice Albumina/Creatinina:</strong>
+							<select name="indicealbuminacreatinina" id="indicealbuminacreatinina" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+										<?php 
+										if($rowLeeEstudios['indicealbuminacreatinina'] == 1)
+											echo "<option title='Realizado' value='1' selected='selected'>Realizado</option>";
+										else
+											echo "<option title='Realizado' value='1'>Realizado</option>";
+										if($rowLeeEstudios['indicealbuminacreatinina'] == 0)
+											echo "<option title='No Realizado' value='0' selected='selected'>No Realizado</option>";
+										else
+											echo "<option title='No Realizado' value='0'>No Realizado</option>";
+										?>
+							</select>
+						</span>
+						<span class="style_texto_input"><strong>Fondo de Ojo:</strong>
+							<select name="fondodeojo" id="fondodeojo" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
 										<?php 
 										if($rowLeeEstudios['fondodeojo'] == 0)
 											echo "<option title='Sin Datos' value='0' selected='selected'>Sin Datos</option>";
@@ -684,10 +660,10 @@ function validar(formulario) {
 										else
 											echo "<option title='Retinopatia Diabetica' value='4'>Retinopatia Diabetica</option>";
 										?>
-								  </select>
-									<input name="fondodeojofecha" type="text" id="fondodeojofecha" value="<?php echo invertirFecha($rowLeeEstudios['fondodeojofecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
-								  <select name="fondodeojotipo" id="fondodeojotipo" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
+							</select>
+							<input name="fondodeojofecha" type="text" id="fondodeojofecha" value="<?php echo invertirFecha($rowLeeEstudios['fondodeojofecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
+							<select name="fondodeojotipo" id="fondodeojotipo" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
 									<?php 
 									if($rowLeeEstudios['fondodeojotipo'] == 1)
 										echo "<option title='RD No Proliferante' value='1' selected='selected'>RD No Proliferante</option>";
@@ -698,29 +674,35 @@ function validar(formulario) {
 									else
 										echo "<option title='RD Proliferante' value='2'>RD Proliferante</option>";
 									?>
-								  </select>
-							  </span>
-								<p></p>
-							  <span class="style_texto_input"><strong>Peso:</strong>
-								  <input name="pesovalor" type="text" id="pesovalor" value="<?php echo $rowLeeEstudios['pesovalor'] ?>" size="12" maxlength="3" placeholder="Entre 5 y 450" class="style_input"/>
-								  <input name="pesofecha" type="text" id="pesofecha" value="<?php echo invertirFecha($rowLeeEstudios['pesofecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Talla:</strong>
-								  <input name="tallavalor" type="text" id="tallavalor" value="<?php echo $rowLeeEstudios['tallavalor'] ?>" size="12" maxlength="4" placeholder="Entre 0.50 y 2.40" class="style_input"/>
-								  <input name="tallafecha" type="text" id="tallafecha" value="<?php echo invertirFecha($rowLeeEstudios['tallafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
-							  </span>
-							  <span class="style_texto_input"><strong>IMC:</strong>
-								  <input name="imcvalor" type="text" id="imcvalor" value="<?php echo $rowLeeEstudios['imcvalor'] ?>" size="13" maxlength="5" placeholder="Entre 10.00 y 50.00" class="style_input"/>
-								  <input name="imcfecha" type="text" id="imcfecha" value="<?php echo invertirFecha($rowLeeEstudios['imcfecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
-							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Circunferencia Abdominal:</strong>
-								  <input name="cinturavalor" type="text" id="cinturavalor" value="<?php echo $rowLeeEstudios['cinturavalor'] ?>" size="12" maxlength="3" placeholder="Entre 40 y 220" class="style_input"/>
-								  <input name="cinturafecha" type="text" id="cinturafecha" value="<?php echo invertirFecha($rowLeeEstudios['cinturafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Examen de Pie:</strong>
-								  <select name="examendepie" id="examendepie" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
+							</select>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="style_texto_input"><strong>Peso:</strong>
+							<input name="pesovalor" type="text" id="pesovalor" value="<?php echo $rowLeeEstudios['pesovalor'] ?>" size="12" maxlength="3" placeholder="Entre 5 y 450" class="style_input"/>
+							<input name="pesofecha" type="text" id="pesofecha" value="<?php echo invertirFecha($rowLeeEstudios['pesofecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
+						</span>
+						<span class="style_texto_input"><strong>Talla:</strong>
+							<input name="tallavalor" type="text" id="tallavalor" value="<?php echo $rowLeeEstudios['tallavalor'] ?>" size="12" maxlength="4" placeholder="Entre 0.50 y 2.40" class="style_input"/>
+							<input name="tallafecha" type="text" id="tallafecha" value="<?php echo invertirFecha($rowLeeEstudios['tallafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
+						</span>
+						<span class="style_texto_input"><strong>IMC:</strong>
+							<input name="imcvalor" type="text" id="imcvalor" value="<?php echo $rowLeeEstudios['imcvalor'] ?>" size="13" maxlength="5" placeholder="Entre 10.00 y 50.00" class="style_input"/>
+							<input name="imcfecha" type="text" id="imcfecha" value="<?php echo invertirFecha($rowLeeEstudios['imcfecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="style_texto_input"><strong>Circunferencia Abdominal:</strong>
+							<input name="cinturavalor" type="text" id="cinturavalor" value="<?php echo $rowLeeEstudios['cinturavalor'] ?>" size="12" maxlength="3" placeholder="Entre 40 y 220" class="style_input"/>
+							<input name="cinturafecha" type="text" id="cinturafecha" value="<?php echo invertirFecha($rowLeeEstudios['cinturafecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
+						</span>
+						<span class="style_texto_input"><strong>Examen de Pie:</strong>
+							<select name="examendepie" id="examendepie" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
 									<?php 
 									if($rowLeeEstudios['examendepie'] == 1)
 										echo "<option title='Realizado' value='1' selected='selected'>Realizado</option>";
@@ -731,10 +713,10 @@ function validar(formulario) {
 									else
 										echo "<option title='No Realizado' value='0'>No Realizado</option>";
 									?>
-								  </select>
-								  <input name="examendepiefecha" type="text" id="examendepiefecha" value="<?php echo invertirFecha($rowLeeEstudios['examendepiefecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
-								  <select name="examendepietipo" id="examendepietipo" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
+							</select>
+							<input name="examendepiefecha" type="text" id="examendepiefecha" value="<?php echo invertirFecha($rowLeeEstudios['examendepiefecha']) ?>" size="12" placeholder="DD/MM/AAAA" class="style_input"/>
+							<select name="examendepietipo" id="examendepietipo" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
 										<?php 
 										if($rowLeeEstudios['examendepietipo'] == 1)
 											echo "<option title='Monofilamento' value='1' selected='selected'>Monofilamento</option>";
@@ -749,14 +731,13 @@ function validar(formulario) {
 										else
 											echo "<option title='Alterado' value='3'>Alterado</option>";
 										?>
-								  </select>
-							  </span>
-							</td>
-						</tr>
-					</table>
-					<p></p>
-					<input name="guardar" type="submit" id="guardar" class="style_boton4" value="Guardar" />
-				</form>
-		</div>
+							</select>
+						</span>
+					</td>
+				</tr>
+			</table>
+			<p><input name="guardar" type="submit" id="guardar" class="style_boton4" value="Guardar" /></p>
+		</form>
+	</div>
 </body>
 </html>

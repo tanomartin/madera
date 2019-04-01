@@ -13,18 +13,18 @@ if(isset($_POST)) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 
-		$sqlAgregaDiagnostico = "INSERT INTO diabetesdiagnosticos (id,nroafiliado,nroorden,tipodiabetes,fechadiagnostico,edaddiagnostico,familiaresdbt,medicotratante,ddnmedico,telefonomedico,institucionasiste,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES(:id,:nroafiliado,:nroorden,:tipodiabetes,:fechadiagnostico,:edaddiagnostico,:familiaresdbt,:medicotratante,:ddnmedico,:telefonomedico,:institucionasiste,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
+		$sqlAgregaDiagnostico = "INSERT INTO diabetesdiagnosticos (id,nroafiliado,nroorden,tipodiabetes,fechaficha,familiaresdbt,medicotratante,ddnmedico,telefonomedico,institucionasiste,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES(:id,:nroafiliado,:nroorden,:tipodiabetes,:fechaficha,:familiaresdbt,:medicotratante,:ddnmedico,:telefonomedico,:institucionasiste,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
 		$resAgregaDiagnostico = $dbh->prepare($sqlAgregaDiagnostico);
-		if($resAgregaDiagnostico->execute(array(':id' => 'DEFAULT',':nroafiliado' => $_POST['nroafiliado'],':nroorden' => $_POST['nroorden'],':tipodiabetes' => $_POST['tipodiabetes'],':fechadiagnostico' => fechaParaGuardar($_POST['fechadiagnostico']),':edaddiagnostico' => $_POST['edaddiagnostico'],':familiaresdbt' => $_POST['familiaresdbt'],':medicotratante' => $_POST['medicotratante'],':ddnmedico' => $_POST['ddnmedico'],':telefonomedico' => $_POST['telefonomedico'],':institucionasiste' => $_POST['institucionasiste'],':fecharegistro' => $fecharegistro,':usuarioregistro' => $usuarioregistro,':fechamodificacion' => NULL,':usuariomodificacion' => NULL)))
+		if($resAgregaDiagnostico->execute(array(':id' => 'DEFAULT',':nroafiliado' => $_POST['nroafiliado'],':nroorden' => $_POST['nroorden'],':tipodiabetes' => $_POST['tipodiabetes'],':fechaficha' => fechaParaGuardar($_POST['fechaficha']),':familiaresdbt' => $_POST['familiaresdbt'],':medicotratante' => $_POST['medicotratante'],':ddnmedico' => $_POST['ddnmedico'],':telefonomedico' => $_POST['telefonomedico'],':institucionasiste' => $_POST['institucionasiste'],':fecharegistro' => $fecharegistro,':usuarioregistro' => $usuarioregistro,':fechamodificacion' => NULL,':usuariomodificacion' => NULL)))
 
 		$sqlLeeBeneficiario = "SELECT diagnosticos FROM diabetesbeneficiarios WHERE nroafiliado = $_POST[nroafiliado] AND nroorden = $_POST[nroorden]";
 		$resLeeBeneficiario = mysql_query($sqlLeeBeneficiario,$db);
 		$rowLeeBeneficiario = mysql_fetch_array($resLeeBeneficiario);
 		$totaldiagnosticos = $rowLeeBeneficiario['diagnosticos'] + 1;
 
-		$sqlActualizaBeneficiario = "UPDATE diabetesbeneficiarios SET diagnosticos = :diagnosticos, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado AND nroorden = :nroorden";
+		$sqlActualizaBeneficiario = "UPDATE diabetesbeneficiarios SET diagnosticos = :diagnosticos, fechadiagnostico = :fechadiagnostico, edaddiagnostico = :edaddiagnostico, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado AND nroorden = :nroorden";
 		$resActualizaBeneficiario = $dbh->prepare($sqlActualizaBeneficiario);
-		if($resActualizaBeneficiario->execute(array(':diagnosticos' => $totaldiagnosticos, ':fechamodificacion' => $fecharegistro, ':usuariomodificacion' => $usuarioregistro, ':nroafiliado' => $_POST['nroafiliado'], ':nroorden' => $_POST['nroorden'])))
+		if($resActualizaBeneficiario->execute(array(':diagnosticos' => $totaldiagnosticos,':fechadiagnostico' => fechaParaGuardar($_POST['fechadiagnostico']),':edaddiagnostico' => $_POST['edaddiagnostico'], ':fechamodificacion' => $fecharegistro, ':usuariomodificacion' => $usuarioregistro, ':nroafiliado' => $_POST['nroafiliado'], ':nroorden' => $_POST['nroorden'])))
 
 		$dbh->commit();
 		$pagina ="listarDiagnosticos.php?nroAfi=$_POST[nroafiliado]&nroOrd=$_POST[nroorden]&estAfi=$_POST[estafiliado]";

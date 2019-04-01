@@ -12,6 +12,10 @@ if(isset($_GET['idDiag'])) {
 		if(isset($_GET['nroOrd'])) {
 			$nroorden=$_GET['nroOrd'];
 			if(isset($_GET['estAfi'])) {
+				$sqlDiabetes = "SELECT fechadiagnostico, edaddiagnostico FROM diabetesbeneficiarios WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
+				$resDiabetes = mysql_query($sqlDiabetes,$db);
+				$rowDiabetes = mysql_fetch_array($resDiabetes);
+				
 				$estafiliado=$_GET['estAfi'];
 				if($nroorden == 0) {
 					if(strcmp($estafiliado, 'A')==0) {
@@ -218,81 +222,52 @@ function validar(formulario) {
 </script>
 </head>
 <body>
-		<div class="row" align="center" style="background-color: #CCCCCC;">
-			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
-			</div>
-			<h2>Insumos</h2>
-				<form id="agregarInsumos" name="agregarInsumos" method="post" action="guardarAgregarInsumos.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
-					<table style="width: 979px">
-						<tr>
-							<td valign="top">
-							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n del Beneficiario</span></p>
-							  <span class="style_texto_input"><strong>Afiliado Nro.:</strong>
-								  <input name="nroafiliado" type="text" id="nroafiliado" size="9" readonly="readonly" value="<?php echo $rowLeeAfiliado['nroafiliado'] ?>" class="style_input_readonly"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Apellido y Nombre :</strong>
-								  <input name="apellidoynombre" type="text" id="apellidoynombre" readonly="readonly" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="60" class="style_input_readonly"/>
-								  <input name="nroorden" type="text" id="nroorden" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $nroorden ?>"/>
-								  <input name="estafiliado" type="text" id="estafiliado" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $estafiliado ?>"/>
-								  <input name="iddiagnostico" type="text" id="iddiagnostico" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $iddiagnostico ?>"/>
-							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Tipo: <?php echo $tipoAfiliado ?></strong>							  </span>
-							  <span class="style_texto_input"><strong><?php echo $estadoAfiliado ?></strong>							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Documento:</strong>
-								  <input name="nrodocumento" type="text" id="nrodocumento" readonly="readonly" value="<?php echo $rowLeeAfiliado['nrodocumento'] ?>" size="11" class="style_input_readonly"/>
-						      </span>
-							  <span class="style_texto_input"><strong>C.U.I.L.:</strong>
-								  <input name="cuil" type="text" id="cuil" readonly="readonly" value="<?php echo $rowLeeAfiliado['cuil'] ?>" size="11" class="style_input_readonly"/>
-						      </span>
-							  <span class="style_texto_input"><strong>Fecha Nacimiento: </strong>
-								<input name="fechanacimiento" type="text" id="fechanacimiento" readonly="readonly" value="<?php echo invertirFecha($rowLeeAfiliado['fechanacimiento']) ?>" size="10" class="style_input_readonly"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Edad Actual: </strong>
-								<input name="edad" type="text" id="edad" readonly="readonly" value="<?php echo $rowLeeAfiliado['edadactual'] ?>" size="3" class="style_input_readonly"/>
-							  </span>
-							  <p>							  </p>
-							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n de Insumos </span></p>
-							  <table width="850" border="0" class="style_texto_input" style="text-align:left">
-								  <tr>
-									<th scope="col" style="border:double">Insumos</th>
-									<th scope="col" style="border:double">Presentacion</th>
-									<th scope="col" style="border:double">Dosis Diaria</th>
-									<th scope="col" style="border:double">A&ntilde;o de Inicio</th>
-								  </tr>
-								  <tr>
-									<th scope="row">Tiras Reactivas  <input name="tirasreactivas" type="checkbox" id="tirasreactivas" /></th>
-									<td><input name="tirasreactivaspresentacion" type="text" id="tirasreactivaspresentacion" value="" size="30" maxlength="50" class="style_input"/></td>
-									<td><input name="tirasreactivasdosis" type="text" id="tirasreactivasdosis" value="" size="30" maxlength="50" class="style_input"/></td>
-									<td><input name="tirasreactivasinicio" type="text" id="tirasreactivasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">Lancetas <input name="lancetas" type="checkbox" id="lancetas" /></th>
-									<td><input name="lancetaspresentacion" type="text" id="lancetaspresentacion" value="" size="30" maxlength="50" class="style_input"/></td>
-									<td><input name="lancetasdosis" type="text" id="lancetasdosis" value="" size="30" maxlength="50" class="style_input"/></td>
-									<td><input name="lancetasinicio" type="text" id="lancetasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">Agujas para Insulinas  <input name="agujas" type="checkbox" id="agujas" /></th>
-									<td><input name="agujaspresentacion" type="text" id="agujaspresentacion" value="" size="30" maxlength="50" class="style_input"/></td>
-									<td><input name="agujasdosis" type="text" id="agujasdosis" value="" size="30" maxlength="50" class="style_input"/></td>
-									<td><input name="agujasinicio" type="text" id="agujasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
-								  </tr>
-								  <tr>
-									<th scope="row">Jeringas para  Insulinas <input name="jeringas" type="checkbox" id="jeringas" /></th>
-									<td><input name="jeringaspresentacion" type="text" id="jeringaspresentacion" value="" size="30" maxlength="50" class="style_input"/></td>
-									<td><input name="jeringasdosis" type="text" id="jeringasdosis" value="" size="30" maxlength="50" class="style_input"/></td>
-									<td><input name="jeringasinicio" type="text" id="jeringasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
-								  </tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-					<p></p>
-					<input name="guardar" type="submit" id="guardar" class="style_boton4" value="Guardar" />
-				</form>
-		</div>
+	<div class="row" align="center" style="background-color: #CCCCCC;">
+		<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
+		<h2>Insumos</h2>
+		<form id="agregarInsumos" name="agregarInsumos" method="post" action="guardarAgregarInsumos.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
+			<?php include_once 'infoBeneficiario.php' ?>
+			<table class="style_texto_input" style="text-align:left; width: 980px">
+				<tr>
+					<td colspan="4"><p><span class="style_subtitulo">Información de Insumos </span></p></td>
+				</tr>
+				<tr>
+					<th colspan="2" style="color:maroon;">Insumos</th>
+					<th style="color:maroon;">Presentacion</th>
+					<th style="color:maroon;">Dosis Diaria</th>
+					<th style="color:maroon;">Año Inicio</th>
+				</tr>
+				<tr>
+					<th scope="row">Tiras Reactivas</th> 
+					<td><input name="tirasreactivas" type="checkbox" id="tirasreactivas" /></td>
+					<td><input name="tirasreactivaspresentacion" type="text" id="tirasreactivaspresentacion" value="" size="48" maxlength="50" class="style_input"/></td>
+					<td><input name="tirasreactivasdosis" type="text" id="tirasreactivasdosis" value="" size="48" maxlength="50" class="style_input"/></td>
+					<td><input name="tirasreactivasinicio" type="text" id="tirasreactivasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">Lancetas</th>
+					<td><input name="lancetas" type="checkbox" id="lancetas" /></td> 
+					<td><input name="lancetaspresentacion" type="text" id="lancetaspresentacion" value="" size="48" maxlength="50" class="style_input"/></td>
+					<td><input name="lancetasdosis" type="text" id="lancetasdosis" value="" size="48" maxlength="50" class="style_input"/></td>
+					<td><input name="lancetasinicio" type="text" id="lancetasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">Agujas para Insulinas </th> 
+					<td><input name="agujas" type="checkbox" id="agujas" /></td>
+					<td><input name="agujaspresentacion" type="text" id="agujaspresentacion" value="" size="48" maxlength="50" class="style_input"/></td>
+					<td><input name="agujasdosis" type="text" id="agujasdosis" value="" size="48" maxlength="50" class="style_input"/></td>
+					<td><input name="agujasinicio" type="text" id="agujasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
+				</tr>
+				<tr>
+					<th scope="row">Jeringas para  Insulinas</th>
+					<td><input name="jeringas" type="checkbox" id="jeringas" /></td> 
+					<td><input name="jeringaspresentacion" type="text" id="jeringaspresentacion" value="" size="48" maxlength="50" class="style_input"/></td>
+					<td><input name="jeringasdosis" type="text" id="jeringasdosis" value="" size="48" maxlength="50" class="style_input"/></td>
+					<td><input name="jeringasinicio" type="text" id="jeringasinicio" value="" size="5" maxlength="4" class="style_input"/></td>
+				</tr>
+			</table>
+			<p><input name="guardar" type="submit" id="guardar" class="style_boton4" value="Guardar" /></p>
+		</form>
+	</div>
 </body>
 </html>

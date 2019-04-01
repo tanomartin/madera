@@ -12,6 +12,10 @@ if(isset($_GET['idDiag'])) {
 		if(isset($_GET['nroOrd'])) {
 			$nroorden=$_GET['nroOrd'];
 			if(isset($_GET['estAfi'])) {
+				$sqlDiabetes = "SELECT fechadiagnostico, edaddiagnostico FROM diabetesbeneficiarios WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
+				$resDiabetes = mysql_query($sqlDiabetes,$db);
+				$rowDiabetes = mysql_fetch_array($resDiabetes);
+				
 				$estafiliado=$_GET['estAfi'];
 				if($nroorden == 0) {
 					if(strcmp($estafiliado, 'A')==0) {
@@ -127,115 +131,97 @@ function validar(formulario) {
 </script>
 </head>
 <body>
-		<div class="row" align="center" style="background-color: #CCCCCC;">
-			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
-			</div>
-			<h2>Tratamiento</h2>
-				<form id="agregarTratamiento" name="agregarTratamiento" method="post" action="guardarAgregarTratamiento.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
-					<table style="width: 979px">
-						<tr>
-							<td valign="top">
-							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n del Beneficiario</span></p>
-							  <span class="style_texto_input"><strong>Afiliado Nro.:</strong>
-								  <input name="nroafiliado" type="text" id="nroafiliado" size="9" readonly="readonly" value="<?php echo $rowLeeAfiliado['nroafiliado'] ?>" class="style_input_readonly"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Apellido y Nombre :</strong>
-								  <input name="apellidoynombre" type="text" id="apellidoynombre" readonly="readonly" value="<?php echo $rowLeeAfiliado['apellidoynombre'] ?>" size="60" class="style_input_readonly"/>
-								  <input name="nroorden" type="text" id="nroorden" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $nroorden ?>"/>
-								  <input name="estafiliado" type="text" id="estafiliado" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $estafiliado ?>"/>
-								  <input name="iddiagnostico" type="text" id="iddiagnostico" size="2" readonly="readonly" style="visibility:hidden" value="<?php echo $iddiagnostico ?>"/>
-							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Tipo: <?php echo $tipoAfiliado ?></strong>							  </span>
-							  <span class="style_texto_input"><strong><?php echo $estadoAfiliado ?></strong>							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Documento:</strong>
-								  <input name="nrodocumento" type="text" id="nrodocumento" readonly="readonly" value="<?php echo $rowLeeAfiliado['nrodocumento'] ?>" size="11" class="style_input_readonly"/>
-						      </span>
-							  <span class="style_texto_input"><strong>C.U.I.L.:</strong>
-								  <input name="cuil" type="text" id="cuil" readonly="readonly" value="<?php echo $rowLeeAfiliado['cuil'] ?>" size="11" class="style_input_readonly"/>
-						      </span>
-							  <span class="style_texto_input"><strong>Fecha Nacimiento: </strong>
-								<input name="fechanacimiento" type="text" id="fechanacimiento" readonly="readonly" value="<?php echo invertirFecha($rowLeeAfiliado['fechanacimiento']) ?>" size="10" class="style_input_readonly"/>
-							  </span>
-							  <span class="style_texto_input"><strong>Edad Actual: </strong>
-								<input name="edad" type="text" id="edad" readonly="readonly" value="<?php echo $rowLeeAfiliado['edadactual'] ?>" size="3" class="style_input_readonly"/>
-							  </span>
-							  <p>							  </p>
-							  <p align="left"><span class="style_subtitulo">Informaci&oacute;n de Tratamiento</span></p>
-							  <span class="style_texto_input"><strong>Plan de Alimentacion Saludable:</strong>
-								  <select name="alimentacionsaludable" id="alimentacionsaludable" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							  <span class="style_texto_input"><strong>Actividad Fisica:</strong>
-								  <select name="actividadfisica" id="actividadfisica" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							  <span class="style_texto_input"><strong>Educacion Diabetologica:</strong>
-								  <select name="educaciondiabetologica" id="educaciondiabetologica" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Cumple adecuadamente Tratamiento:</strong>
-								  <select name="cumpletratamiento" id="cumpletratamiento" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							  <span class="style_texto_input"><strong>Automonitoreo Glucemico:</strong>
-								  <select name="automonitoreoglucemico" id="automonitoreoglucemico" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Farmacos Antihipertensivos:</strong>
-								  <select name="farmacosantihipertensivos" id="farmacosantihipertensivos" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							  <span class="style_texto_input"><strong>Farmacos Hipolipemiantes:</strong>
-								  <select name="farmacoshipolipemiantes" id="farmacoshipolipemiantes" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							  <p>							  </p>
-							  <span class="style_texto_input"><strong>Acido Acetil Salicilico:</strong>
-								  <select name="acidoacetilsalicilico" id="acidoacetilsalicilico" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							  <span class="style_texto_input"><strong>Hipoglucemiantes Orales:</strong>
-								  <select name="hipoglucemiantesorales" id="hipoglucemiantesorales" class="style_input">
-									<option title="Seleccione un valor" value="">Seleccione un valor</option>
-									<option title="Si" value="1">Si</option>
-									<option title="No" value="0">No</option>
-								  </select>
-							  </span>
-							</td>
-						</tr>
-					</table>
-					<p></p>
-					<input name="guardar" type="submit" id="guardar" class="style_boton4" value="Guardar" />
-				</form>
-		</div>
+	<div class="row" align="center" style="background-color: #CCCCCC;">
+		<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'listarDiagnosticos.php?nroAfi=<?php echo $nroafiliado?>&nroOrd=<?php echo $nroorden ?>&estAfi=<?php echo $estafiliado ?>'" /> 
+		<h2>Tratamiento</h2>
+		<form id="agregarTratamiento" name="agregarTratamiento" method="post" action="guardarAgregarTratamiento.php" onsubmit="return validar(this)" enctype="multipart/form-data" >
+			<?php include_once 'infoBeneficiario.php' ?>	
+			<table style="width: 980px">
+				<tr>
+					<td><p><span class="style_subtitulo">Informaci&oacute;n de Tratamiento</span></p></td>
+				</tr>
+				<tr>
+					<td>
+						<span class="style_texto_input"><strong>Plan de Alimentacion Saludable:</strong>
+							<select name="alimentacionsaludable" id="alimentacionsaludable" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+						<span class="style_texto_input"><strong>Actividad Fisica:</strong>
+							<select name="actividadfisica" id="actividadfisica" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+						<span class="style_texto_input"><strong>Educacion Diabetologica:</strong>
+							<select name="educaciondiabetologica" id="educaciondiabetologica" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="style_texto_input"><strong>Cumple adecuadamente Tratamiento:</strong>
+							<select name="cumpletratamiento" id="cumpletratamiento" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+						<span class="style_texto_input"><strong>Automonitoreo Glucemico:</strong>
+							<select name="automonitoreoglucemico" id="automonitoreoglucemico" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="style_texto_input"><strong>Farmacos Antihipertensivos:</strong>
+							<select name="farmacosantihipertensivos" id="farmacosantihipertensivos" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+						<span class="style_texto_input"><strong>Farmacos Hipolipemiantes:</strong>
+							<select name="farmacoshipolipemiantes" id="farmacoshipolipemiantes" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="style_texto_input"><strong>Acido Acetil Salicilico:</strong>
+							<select name="acidoacetilsalicilico" id="acidoacetilsalicilico" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+						<span class="style_texto_input"><strong>Hipoglucemiantes Orales:</strong>
+							<select name="hipoglucemiantesorales" id="hipoglucemiantesorales" class="style_input">
+								<option title="Seleccione un valor" value="">Seleccione un valor</option>
+								<option title="Si" value="1">Si</option>
+								<option title="No" value="0">No</option>
+							</select>
+						</span>
+					</td>
+				</tr>
+			</table>
+			<p><input name="guardar" type="submit" id="guardar" class="style_boton4" value="Guardar" /></p>
+		</form>
+	</div>
 </body>
 </html>

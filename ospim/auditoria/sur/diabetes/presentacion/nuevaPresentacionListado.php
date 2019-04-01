@@ -57,7 +57,7 @@ while ($rowFamiliarDeBaja = mysql_fetch_assoc($resFamiliarDeBaja)) {
 //*****************************************************//
 
 //VEO COMO ESTAN CON RESPECTO A LA INFORMACION//
-$sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, DATE_FORMAT(d.fechadiagnostico,'%d-%m-%Y') as fechadiagnostico, 
+$sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, DATE_FORMAT(d.fechaficha,'%d-%m-%Y') as fechaficha, 
 							  diabetescomorbilidad.idDiagnostico as comorbilidad,
 							  diabetescomplicaciones.idDiagnostico as complicaciones,
 							  diabetesestudios.idDiagnostico as estudios,
@@ -69,8 +69,8 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, D
 						LEFT JOIN diabetesestudios on diabetesestudios.idDiagnostico = d.id
 						LEFT JOIN diabetestratamientos on diabetestratamientos.idDiagnostico = d.id
 						LEFT JOIN diabetesfarmacos on diabetesfarmacos.idDiagnostico = d.id
-						WHERE fechadiagnostico < '$fechaHasta'
-						ORDER BY fechadiagnostico ASC";
+						WHERE fechaficha < '$fechaHasta'
+						ORDER BY fechaficha ASC";
 $resListadoDiabetes = mysql_query($sqlListadoDiabetes,$db);
 $canListadoDiabetes = mysql_num_rows($resListadoDiabetes);
 $arrayCompletos = array();
@@ -218,7 +218,7 @@ function validar(formulario) {
 						<th>Nombre y Apellido</th>
 						<th>CUIL Titular</th>
 						<th>Tipo Bene.</th>
-						<th>Fecha Diagnóstico</th>
+						<th>Fecha Ficha</th>
 						<th>Tipo</th>
 					</tr>
 				</thead>
@@ -274,7 +274,7 @@ function validar(formulario) {
 							<td><?php echo $nombre; ?></td>
 							<td><?php echo $cuil; ?></td>
 							<td><?php echo $tipoBene; ?></td>
-							<td><?php echo $completo['fechadiagnostico'] ?></td>
+							<td><?php echo $completo['fechaficha'] ?></td>
 							<td><?php echo $completo['tipodiabetes'] ?></td>
 						</tr>
 				<?php } ?>
@@ -355,7 +355,7 @@ function validar(formulario) {
 							  			if ($incompleto['diagnosticos'] == -1) { echo "CON DIAGNOSTICO <br> FUERA DE PERIODO"; }
 							  			if ($incompleto['diagnosticos'] == -2) { echo "CON DIAGNOSTICO <br> AFIL. DE BAJA"; }
 							  		} else { 
-							  			echo "<b>F.D: ".$incompleto['fechadiagnostico']."</b><br>";
+							  			echo "<b>F.F: ".$incompleto['fechaficha']."</b><br>";
 										if ($incompleto['comorbilidad'] == NULL) { echo "COMORBILIDAD<br>"; }  	
 										if ($incompleto['complicaciones'] == NULL) { echo "COMPLICACIONES<br>"; }
 										if ($incompleto['estudios'] == NULL) { echo "ESTUDIOS<br>"; }

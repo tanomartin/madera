@@ -13,7 +13,7 @@ $whereIn .= ")";
 
 $periodo = $_GET['periodo'];
 
-$sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d.fechadiagnostico, d.edaddiagnostico,
+$sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d.fechaficha, b.edaddiagnostico,
 							  
 							  diabetescomorbilidad.dislipemia as dislipemia,
 							  diabetescomorbilidad.obesidad as obesidad,
@@ -66,13 +66,14 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d
 							  				  
 							  diabetesfarmacos.insulinacorreccioncodigo as insulinacorreccioncodigo,
 							  diabetesfarmacos.insulinabasalcodigo as insulinabasalcodigo
-					   FROM diabetesdiagnosticos d
+					   FROM diabetesbeneficiarios b, diabetesdiagnosticos d
 					   LEFT JOIN diabetescomorbilidad on diabetescomorbilidad.idDiagnostico = d.id
 					   LEFT JOIN diabetescomplicaciones on diabetescomplicaciones.idDiagnostico = d.id
 					   LEFT JOIN diabetesestudios on diabetesestudios.idDiagnostico = d.id
 					   LEFT JOIN diabetestratamientos on diabetestratamientos.idDiagnostico = d.id
 					   LEFT JOIN diabetesfarmacos on diabetesfarmacos.idDiagnostico = d.id
-					   WHERE d.id in $whereIn";
+					   WHERE d.id in $whereIn and d.nroafiliado = b.nroafiliado and d.nroorden = b.nroorden";
+
 //echo $sqlListadoDiabetes."<br><br>";
 $resListadoDiabetes = mysql_query($sqlListadoDiabetes,$db);
 
@@ -92,7 +93,7 @@ $insertPresentacion = "INSERT INTO diabetespresentacion VALUES(DEFAULT, '$period
 $file = fopen($archivoImportacion, "w");
 if ($file !== false) {
 	while ($rowListadoDiabetes = mysql_fetch_assoc($resListadoDiabetes)) {
-		$fechaRegistro = date_format(date_create($rowListadoDiabetes['fechadiagnostico']),"Ymd");
+		$fechaRegistro = date_format(date_create($rowListadoDiabetes['fechaficha']),"Ymd");
 		$edadDiag = str_pad($rowListadoDiabetes['edaddiagnostico'],2,0,STR_PAD_LEFT);
 		
 		$hipertrofiaventricular = $rowListadoDiabetes['hipertrofiaventricular'];
