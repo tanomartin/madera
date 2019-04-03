@@ -16,8 +16,8 @@ function agregaGuiones($cuit) {
 }
 
 function encuentroPagos($cuit, $anoInicioActivida, $mesInicioActividad, $anoInicioDeuda, $mesInicioDeuda, $db) {
-	if (($anoInicioActivida == $anoInicioDeuda) || $anoInicioActivida == "") {
-		$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and (anopago = $anoInicioDeuda and mespago < $mesInicioDeuda) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
+	if (($anoInicioActivida == $anoInicioDeuda) || $anoInicioActivida == "" || $anoInicioActivida == "0000") {
+		$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago < $anoInicioDeuda) or  (anopago = $anoInicioDeuda and mespago < $mesInicioDeuda)) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
 	} else {
 		$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoInicioActivida and anopago < $anoInicioDeuda) or (anopago = $anoInicioDeuda and mespago < $mesInicioDeuda) or (anopago = $anoInicioActivida and mespago >= $mesInicioActividad)) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
 	}
@@ -36,7 +36,7 @@ function encuentroPagos($cuit, $anoInicioActivida, $mesInicioActividad, $anoInic
 }
 
 function encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	if ($anoinicio != "") {
+	if ($anoinicio == $anofin || $anoinicio != "" || $anoinicio == "0000") {
 		$sqlAcuerdos = "select anoacuerdo, mesacuerdo from detacuerdosospim where cuit = $cuit and ((anoacuerdo > $anoinicio and anoacuerdo <= $anofin) or (anoacuerdo = $anoinicio and mesacuerdo >= $mesinicio)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
 	} else {
 		$sqlAcuerdos = "select anoacuerdo, mesacuerdo from detacuerdosospim where cuit = $cuit and ((anoacuerdo < $anofin) or (anoacuerdo = $anofin and mesacuerdo <= $mesfin)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
@@ -56,7 +56,7 @@ function encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db)
 }
 
 function encuentroJuicios($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	if ($anoinicio != "") {
+	if ($anoinicio == $anofin || $anoinicio != "" || $anoinicio == "0000") {
 		$sqlJuicios = "select d.anojuicio, d.mesjuicio from cabjuiciosospim c, detjuiciosospim d  where c.cuit = $cuit and c.nroorden = d.nroorden and ((d.anojuicio > $anoinicio and d.anojuicio <= $anofin) or (d.anojuicio = $anoinicio and d.mesjuicio >= $mesinicio)) group by d.anojuicio, d.mesjuicio order by d.anojuicio, d.mesjuicio";
 	} else {
 		$sqlJuicios = "select d.anojuicio, d.mesjuicio from cabjuiciosospim c, detjuiciosospim d  where c.cuit = $cuit and c.nroorden = d.nroorden and ((d.anojuicio < $anofin) or (d.anojuicio = $anofin and d.mesjuicio <= $mesfin)) group by d.anojuicio, d.mesjuicio order by d.anojuicio, d.mesjuicio";
@@ -76,7 +76,7 @@ function encuentroJuicios($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) 
 }
 
 function encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	if ($anoinicio != "") {
+	if ($anoinicio == $anofin || $anoinicio != "" || $anoinicio == "0000") {
 		$sqlRequerimientos = "select d.anofiscalizacion, d.mesfiscalizacion from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and ((d.anofiscalizacion > $anoinicio and d.anofiscalizacion <= $anofin) or (d.anofiscalizacion = $anoinicio and d.mesfiscalizacion >= $mesinicio)) group by d.anofiscalizacion, d.mesfiscalizacion order by d.anofiscalizacion, d.mesfiscalizacion";
 	} else {
 		$sqlRequerimientos = "select d.anofiscalizacion, d.mesfiscalizacion from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and ((d.anofiscalizacion < $anofin) or (d.anofiscalizacion = $anofin and d.mesfiscalizacion >= $mesfin)) group by d.anofiscalizacion, d.mesfiscalizacion order by d.anofiscalizacion, d.mesfiscalizacion";
@@ -105,10 +105,10 @@ function deudaAnterior($cuit, $db) {
 	$mesInicioActi = substr($fechaInicio,5,2);
 	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresas.php");
 	
-	print("ANO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
+	/*print("ANO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
 	print("MES INICIO ACTIVIDAD: ".$mesInicioActi."<br>");
 	print("ANO INICIO CALCULO DEUDA: ".$anoinicio."<br>");
-	print("MES INICIO CALCULO DEUDA: ".$mesinicio."<br>");
+	print("MES INICIO CALCULO DEUDA: ".$mesinicio."<br>");*/
 	
 	if ($anioInicioActi == $anoinicio) {
 		if ($mesInicioActi == $mesinicio) {
@@ -120,10 +120,10 @@ function deudaAnterior($cuit, $db) {
 		$pagos = encuentroPagos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
 	} 
 
-	if ($anioInicioActi == '0000' && $pagos == 0) {
+	if (($anioInicioActi == '0000' || $anioInicioActi == '') && $pagos == 0) {
 		return "N";
 	} else {
-		if ($anioInicioActi == '0000') {
+		if ($anioInicioActi == '0000' || $anioInicioActi == '') {
 			foreach($pagos as $pago) {
 				$anioInicioActi = $pago['anio'];
 				$mesInicioActi = $pago['mes'];
