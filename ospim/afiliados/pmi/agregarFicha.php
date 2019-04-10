@@ -12,6 +12,13 @@ if(isset($_GET['nroAfi'])) {
 	}
 }
 
+$sqlLeePMI = "SELECT * from pmibeneficiarios WHERE nroafiliado = $nroafiliado AND tipoparentesco = $tipoparentesco AND nroorden = $nroorden AND nacimiento = 0";
+$resLeePMI = mysql_query($sqlLeePMI,$db);
+if (mysql_num_rows($resLeePMI)!=0) {
+	$errorbusqueda = 4;
+	header("Location: moduloPMI.php?err=$errorbusqueda");
+}
+
 if($tipoparentesco == 0) {
 	$descriAfiliado = 'Titular';
 	$sqlLeeAfiliado = "SELECT nroafiliado, apellidoynombre, nrodocumento, cuil, codidelega, YEAR(CURDATE())-YEAR(fechanacimiento)+IF(DATE_FORMAT(CURDATE(),'%m-%d') > DATE_FORMAT(fechanacimiento,'%m-%d'), 0, -1) AS `edadactual` FROM titulares WHERE nroafiliado = $nroafiliado";
@@ -137,7 +144,7 @@ function validar(formulario) {
 <body>
 		<div class="row" align="center" style="background-color: #CCCCCC;">
 			<div align="center">
-				<input class="style_boton4" type="button" name="volver" value="Volver" onclick="location.href = 'moduloPMI.php'" /> 
+				<input class="style_boton4" type="button" name="volver" value="Volver" onClick="location.href = 'moduloPMI.php'" /> 
 			</div>
 			<h2>Plan Materno Infantil</h2>
 				<form id="agregarFicha" name="agregarFicha" method="post" action="guardarAgregarFicha.php" onSubmit="return validar(this)" enctype="multipart/form-data" >

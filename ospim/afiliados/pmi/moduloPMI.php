@@ -267,6 +267,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 		if ($err == 3) {
 			print("<div align='center' style='color:#FF0000'><b> LA BUSQUEDA DE BENEFICIARIA POR CUIL NO GENERO RESULTADOS </b></div>");
 		}
+		if ($err == 4) {
+			print("<div align='center' style='color:#FF0000'><b> LA BENEFICIARIA QUE INTENTA AGREGAR YA EXISTE EN LA LISTA DE PMI SIN REGISTRO DE NACIMIENTO </b></div>");
+		}
 	?>
 	</div>
 	<div id="resultados" align="center">
