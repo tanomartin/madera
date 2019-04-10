@@ -17,6 +17,9 @@ if(isset($_GET['idDiag'])) {
 				$rowDiabetes = mysql_fetch_array($resDiabetes);
 				
 				$estafiliado=$_GET['estAfi'];
+				$sqlLeeDiagnostico = "SELECT tipodiabetes FROM diabetesdiagnosticos WHERE id = $iddiagnostico";
+				$resLeeDiagnostico = mysql_query($sqlLeeDiagnostico,$db);
+				$rowLeeDiagnostico = mysql_fetch_array($resLeeDiagnostico);	
 				$sqlLeeFarmacos = "SELECT * FROM diabetesfarmacos WHERE iddiagnostico = $iddiagnostico";
 				$resLeeFarmacos = mysql_query($sqlLeeFarmacos,$db);
 				$rowLeeFarmacos = mysql_fetch_array($resLeeFarmacos);	
@@ -79,6 +82,7 @@ if(isset($_GET['idDiag'])) {
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 $(document).ready(function(){
+	$('#tipodiabetes').hide();
 	$("#metforminainicio").inputmask('integer');
 	$("#sulfonilureasinicio").inputmask('integer');
 	$("#idpp4inicio").inputmask('integer');
@@ -355,10 +359,12 @@ function validar(formulario) {
 		}
 	}	
 	if (formulario.insulinabasal.checked == false) {
-		var cajadialogo = $('<div title="Aviso"><p>Debe especificar datos de Insulina Basal.</p></div>');
-   		cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#insulinabasal').focus(); }});
-		formulario.guardar.disabled = false;
-		return false;
+		if(formulario.tipodiabetes.value == 1) {
+			var cajadialogo = $('<div title="Aviso"><p>Debe especificar datos de Insulina Basal.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#insulinabasal').focus(); }});
+			formulario.guardar.disabled = false;
+			return false;
+		}
 	} else {
 		if (formulario.insulinabasalcodigo.options[formulario.insulinabasalcodigo.selectedIndex].value == "") {
 			var cajadialogo = $('<div title="Aviso"><p>Debe seleccionar una Insulina Basal.</p></div>');
@@ -431,6 +437,14 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	if (formulario.metformina.checked == false && formulario.sulfonilureas.checked == false && formulario.idpp4.checked == false &&
+		formulario.insulinabasal.checked == false && formulario.insulinacorreccion.checked == false && formulario.otros1.checked == false &&
+		formulario.otros2.checked == false) {
+		var cajadialogo = $('<div title="Aviso"><p>No ha efectuado ninguna seleccion de farmacos para guardar informacion.</p></div>');
+		cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#metformina').focus(); }});
+		formulario.guardar.disabled = false;
+		return false;
+	}
 	$.blockUI({ message: "<h1>Guardando Farmacos del Beneficiario. Aguarde por favor...</h1>" });
 	return true;
 };
@@ -444,7 +458,7 @@ function validar(formulario) {
 			<?php include_once 'infoBeneficiario.php' ?>	
 			<table class="style_texto_input" style="text-align:left; width: 980px">
 				<tr>
-					<td colspan="6"><p><span class="style_subtitulo">Informaci&oacute;n de Farmacos</span></p></td>
+					<td colspan="6"><p><span class="style_subtitulo">Informaci&oacute;n de Farmacos<input name="tipodiabetes" id="tipodiabetes" type="text" value="<?php echo $rowLeeDiagnostico['tipodiabetes'] ?>" size="1"/></span></p></td>
 				</tr>
 				<tr>
 					<th style="color:maroon;" colspan=2>Farmaco</th>

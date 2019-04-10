@@ -236,8 +236,13 @@ $(document).ready(function(){
 					changeYear: true
 				});
 				$("#fondodeojofecha").datepicker( "option", "showOn", 'button' );
-				$("#fondodeojotipo option[value='']").prop('selected',true);
-				$("#fondodeojotipo").attr('disabled', false);
+				if(fondoojo == 4) {
+					$("#fondodeojotipo option[value='']").prop('selected',true);
+					$("#fondodeojotipo").attr('disabled', false);
+				} else {
+					$("#fondodeojotipo option[value='']").prop('selected',true);
+					$("#fondodeojotipo").attr('disabled', true);
+				}
 			}
 			if(fondoojo == 0) {
 				$("#fondodeojofecha").val("");
@@ -469,7 +474,7 @@ function validar(formulario) {
 		formulario.guardar.disabled = false;
 		return false;
 	} else {
-		if (formulario.fondodeojo.value != 0){
+		if (formulario.fondodeojo.value == 4){
 			if (formulario.fondodeojotipo.options[formulario.fondodeojotipo.selectedIndex].value == "") {
 				var cajadialogo = $('<div title="Aviso"><p>Debe seleccionar un valor para Tipo de Fondo de Ojo.</p></div>');
 				cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#fondodeojotipo').focus(); }});
