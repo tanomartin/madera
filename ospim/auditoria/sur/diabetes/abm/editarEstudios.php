@@ -261,7 +261,19 @@ $(document).ready(function(){
 			$("#fondodeojotipo").attr('disabled', true);
 		}
 	});
+	$("#imcvalor").inputmask('decimal', {digits: 2});
 	$("#pesovalor").inputmask('integer');
+	$("#pesovalor").change(function(){
+		var peso = $("#pesovalor").val();
+		if(peso != "") {
+			var talla = $("#tallavalor").val();
+			if(talla != "") {
+				$("#imcvalor").val(peso/(talla*talla));
+			}
+		} else {
+			$("#imcvalor").val("");
+		}
+	});
 	$("#pesofecha").inputmask("date",{placeholder:"DD/MM/AAAA"});
 	$("#pesofecha").datepicker({
 		firstDay: 1,
@@ -275,6 +287,17 @@ $(document).ready(function(){
 		changeYear: true
     });
 	$("#tallavalor").inputmask('decimal', {digits: 2});
+	$("#tallavalor").change(function(){
+		var talla = $("#tallavalor").val();
+		if(talla != "") {
+			var peso = $("#pesovalor").val();
+			if(peso != "") {
+				$("#imcvalor").val(peso/(talla*talla));
+			}
+		} else {
+			$("#imcvalor").val("");
+		}
+	});
 	$("#tallafecha").inputmask("date",{placeholder:"DD/MM/AAAA"});
 	$("#tallafecha").datepicker({
 		firstDay: 1,
@@ -287,7 +310,6 @@ $(document).ready(function(){
 		changeMonth: true,
 		changeYear: true
     });
-	$("#imcvalor").inputmask('decimal', {digits: 2});
 	$("#imcfecha").inputmask("date",{placeholder:"DD/MM/AAAA"});
 	$("#imcfecha").datepicker({
 		firstDay: 1,
