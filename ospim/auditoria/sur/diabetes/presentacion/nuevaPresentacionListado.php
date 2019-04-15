@@ -57,7 +57,7 @@ while ($rowFamiliarDeBaja = mysql_fetch_assoc($resFamiliarDeBaja)) {
 //*****************************************************//
 
 //VEO COMO ESTAN CON RESPECTO A LA INFORMACION//
-$sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, DATE_FORMAT(d.fechaficha,'%d-%m-%Y') as fechaficha, 
+$sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, fechaficha, 
 							  diabetescomorbilidad.idDiagnostico as comorbilidad,
 							  diabetescomplicaciones.idDiagnostico as complicaciones,
 							  diabetesestudios.idDiagnostico as estudios,
