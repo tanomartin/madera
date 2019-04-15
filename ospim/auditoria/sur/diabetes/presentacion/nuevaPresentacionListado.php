@@ -239,7 +239,7 @@ function validar(formulario) {
 							$tipoBene = "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayTitularesDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 						}
 						if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
-							$nombre = $arrayFamiliares[$indexBusqueda]; 
+							$nombre = $arrayFamiliares[$indexBusqueda]['nombre']; 
 							
 							$busquedaCUILTitu = $completo['nroafiliado']."-0";
 							if (array_key_exists($busquedaCUILTitu,$arrayTitulares)) {
