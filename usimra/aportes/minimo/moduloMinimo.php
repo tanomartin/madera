@@ -131,12 +131,12 @@ function bajarAutorizacion(cuit) {
 	<div align="center">	
 		<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAportes.php'" /></p> 
 		<h3>HABILITAR EMPRESA DDJJ DEBAJO DEL MINIMO</h3>
+		<p>(Empresas Habilitado  <b>mínimo $200</b> - Empresas No Habilitadas <b>mínimo $400</b>)</p>
 		<h3>Habilitar Nueva Empresa</h3>
 		<div id="error" style="color: DarkRed"></div>
 		<p>C.U.I.T.: <input name="cuit" id="cuit" type="text" size="10" /></p>
 		<p><input type="button" id="buscar" name="buscar" value="Buscar" /></p>
 		<h3>Empresas Habilitadas</h3>
-		<p>(Valor inferior límite del pago mínimo $80)</p>
 		  <?php if ($canMinimo > 0) { ?>
 		 			<table id="listador" class="tablesorter" style="width:1000px; font-size:14px; text-align: center;">
 		 				<thead>
