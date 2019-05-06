@@ -65,17 +65,19 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d
 							  diabetestratamientos.acidoacetilsalicilico as acidoacetilsalicilico,
 							  diabetestratamientos.hipoglucemiantesorales as hipoglucemiantesorales,
 							  				  
-							  diabetesfarmacos.insulinacorreccioncodigo as insulinacorreccioncodigo,
-							  diabetesfarmacos.insulinabasalcodigo as insulinabasalcodigo
+							  d1.codigosss as insulinabasalcodigo,
+							  d2.codigosss as insulinacorreccioncodigo
 					   FROM diabetesbeneficiarios b, diabetesdiagnosticos d
 					   LEFT JOIN diabetescomorbilidad on diabetescomorbilidad.idDiagnostico = d.id
 					   LEFT JOIN diabetescomplicaciones on diabetescomplicaciones.idDiagnostico = d.id
 					   LEFT JOIN diabetesestudios on diabetesestudios.idDiagnostico = d.id
 					   LEFT JOIN diabetestratamientos on diabetestratamientos.idDiagnostico = d.id
 					   LEFT JOIN diabetesfarmacos on diabetesfarmacos.idDiagnostico = d.id
+					   LEFT JOIN diabetesinsulinas d1 on d1.id = diabetesfarmacos.insulinabasalcodigo
+					   LEFT JOIN diabetesinsulinas d2 on d2.id = diabetesfarmacos.insulinacorreccioncodigo
 					   WHERE d.id in $whereIn and d.nroafiliado = b.nroafiliado and d.nroorden = b.nroorden";
 
-//echo $sqlListadoDiabetes."<br><br>";
+echo $sqlListadoDiabetes."<br><br>";
 $resListadoDiabetes = mysql_query($sqlListadoDiabetes,$db);
 
 $cantidadBene = sizeof($arrayCuiles);
