@@ -27,30 +27,24 @@ jQuery(function($){
 function validar(formulario) {
 	var fecha = formulario.fecha.value;
 	if (fecha == "") {
-		alert("Debe ingresar un Fecha de Devolución de la Presentación");
+		alert("Debe ingresar un Fecha de Presentación");
 		formulario.fecha.focus();
 		return(false);
 	} else {
 		if (!esFechaValida(fecha)) {
-			alert("La fecha de devolución no es valida");
+			alert("La fecha de presentacion no es valida");
 			formulario.fecha.focus();
 			return(false);
 		} 
 	}
 
-	if (formulario.monto.value != "") {
-		if (!isNumberPositivo(formulario.monto.value)) {
-			alert("El monto de la devolución debe ser un numero positivo");
-			formulario.monto.focus();
-			return(false);
-		}
-	} else {
-		alert("El monto de la devolución es obligatorio");
-		formulario.monto.focus();
+	if (formulario.solicitud.value == "") {
+		alert("El Nro de solicitud es obligatorio");
+		formulario.solicitud.focus();
 		return(false);
 	}
 	formulario.guardar.disabled = true;
-	$.blockUI({ message: "<h1>Guardando Devolución de Presentación. Aguarde por favor...</h1>" });
+	$.blockUI({ message: "<h1>Guardando Presentación a la Super. Aguarde por favor...</h1>" });
 	return true;
 }
 
@@ -60,7 +54,7 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloPresSSS.php'" /></p>
-	<h3>Devolucion Presentacion Diabetes S.S.S.</h3>
+	<h3>Presentacion Diabetes S.S.S.</h3>
 	<div class="grilla">
 	  	<table>
 	  		<thead>
@@ -78,17 +72,17 @@ function validar(formulario) {
 			  		<td><?php echo $rowPresSSS['periodo']?></td>
 			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
 			  		<td><?php echo substr($rowPresSSS['patharchivo'],-22)?></td>
-			  		<td><?php echo "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']." - EXP: ".$rowPresSSS['nroexpediente']; ?></td>
+			  		<td><?php echo "SIN PRESENTAR"; ?></td>
 			  	</tr>
 		  	</tbody>
 	  	</table>
 	 </div>
-	 <form id="devolucionPresentacion" name="devolucionPresentacion" method="post" onsubmit="return validar(this)" action="devolucionPresentacionGuardar.php">
+	 <form id="cancelarPresentacion" name="cancelarPresentacion" method="post" onsubmit="return validar(this)" action="presentacionSSSSolicitudGuardar.php">
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
-	 	<h3>Datos de la Devolución</h3>
-	 	<p><b>Fecha Devolución: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
-	 	<p><b>Monto: </b><input type="text" id="monto" name="monto" size="8"/></p>
-	 	<p><input type="submit" id="guardar" name="guardar" value="FINALIZAR"/></p>
+	 	<h3>Datos Presenetación Solicitud</h3>
+	 	<p><b>Fecha Subida: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
+	 	<p><b>Nro. Solicitud: </b><input type="text" id="solicitud" name="solicitud" size="20"/></p>
+	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR SOLICITUD SSS"/></p>
 	 </form>
 </div>
 </body>

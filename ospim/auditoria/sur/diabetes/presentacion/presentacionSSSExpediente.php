@@ -2,8 +2,7 @@
 include($libPath."controlSessionOspim.php");
 
 $id = $_GET['id'];
-$sqlPresSSS = "SELECT d.*
-			   FROM diabetespresentacion d WHERE id = $id";
+$sqlPresSSS = "SELECT d.* FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
 $rowPresSSS = mysql_fetch_assoc($resPresSSS)
 ?>
@@ -72,18 +71,14 @@ function validar(formulario) {
 			  		<td><?php echo $rowPresSSS['periodo']?></td>
 			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
 			  		<td><?php echo substr($rowPresSSS['patharchivo'],-22)?></td>
-			  	    <?php $estado = "SIN PRESENTAR";
-			  			  if ($rowPresSSS['fechapresentacion'] != NULL) {
-			  				$estado = "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']." - EXP: ".$rowPresSSS['nroexpediente'];
-			  			  } ?>
-			  		<td><?php echo $estado ?></td>
+			  		<td><?php echo "SOLICITADA <br>FEC: ".$rowPresSSS['fechasolicitud']."<br>NRO.: ".$rowPresSSS['nrosolicitud']; ?></td>
 			  	</tr>
 		  	</tbody>
 	  	</table>
 	 </div>
-	 <form id="cancelarPresentacion" name="cancelarPresentacion" method="post" onsubmit="return validar(this)" action="presentacionSSSGuardar.php">
+	 <form id="cancelarPresentacion" name="cancelarPresentacion" method="post" onsubmit="return validar(this)" action="presentacionExpedienteGuardar.php">
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
-	 	<h3>Datos Presenetación</h3>
+	 	<h3>Datos Presenetación Expediente</h3>
 	 	<p><b>Fecha Presentación: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
 	 	<p><b>Expediente: </b><input type="text" id="expediente" name="expediente" size="20"/></p>
 	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR PRESENTACION SSS"/></p>

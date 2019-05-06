@@ -83,13 +83,22 @@ $(function() {
 			  				<td><?php echo $rowPresSSSActiva['cantidadbeneficiario']?></td>
 			  				<td><?php echo substr($rowPresSSSActiva['patharchivo'],-30)?></td>
 			  			  <?php $estado = "SIN PRESENTAR";
-			  					if ($rowPresSSSActiva['fechapresentacion'] != NULL) {
-			  						$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>EXP: ".$rowPresSSSActiva['nroexpediente'];
+			  					if ($rowPresSSSActiva['fechasolicitud'] != NULL) {
+			  						$estado = "SOLICITADA <br>FEC: ".$rowPresSSSActiva['fechasolicitud']."<br>NRO.: ".$rowPresSSSActiva['nrosolicitud'];
+			  						if ($rowPresSSSActiva['fechapresentacion'] != NULL) {
+			  							$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>NRO.: ".$rowPresSSSActiva['nroexpediente'];
+			  						}
 			  					} ?>
 			  				<td><?php echo $estado ?></td>
-			  				<td>
-			  					<?php if ($rowPresSSSActiva['fechapresentacion'] == NULL) { ?> <input type="button" value="DESCARGAR" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['patharchivo'] ?>'"/> <input type="button" value="PRESENTACION" onclick="location.href = 'presentacionSSS.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> <?php } ?>
-			  					<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
+			  				<td>			  					
+			  					<?php if ($rowPresSSSActiva['fechasolicitud'] == NULL) { ?> 
+			  							<input type="button" value="DESCARGAR" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['patharchivo'] ?>'"/> 
+			  							<input type="button" value="SOLICITUD" onclick="location.href = 'presentacionSSSSolicitud.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
+			  							<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
+			  					<?php } ?>
+			  					<?php if ($rowPresSSSActiva['fechapresentacion'] == NULL && $rowPresSSSActiva['fechasolicitud'] != NULL) { ?> 
+			  							<input type="button" value="EXPEDIENTE" onclick="location.href = 'presentacionSSSExpediente.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
+			  					<?php } ?>  					
 			  					<?php if ($rowPresSSSActiva['fechapresentacion'] != NULL) { ?><input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> <?php } ?>
 			  				</td>
 			  			</tr>
