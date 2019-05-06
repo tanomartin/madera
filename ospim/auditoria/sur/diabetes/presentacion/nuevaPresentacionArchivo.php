@@ -28,6 +28,7 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d
 							  diabetescomplicaciones.neuropatiaperiferica as neuropatiaperiferica,
 							  diabetescomplicaciones.vasculopatiaperiferica as vasculopatiaperiferica,
 							  diabetescomplicaciones.amputacion as amputacion,
+							  diabetescomplicaciones.nefropatia as nefropatia,
 							  diabetescomplicaciones.dialisis as dialisis,
 							  diabetescomplicaciones.transplanterenal as transplanterenal,
 							  
@@ -150,6 +151,12 @@ if ($file !== false) {
 		}
 		$amputacion = str_pad($amputacion,8,0,STR_PAD_LEFT);
 		
+		$nefropatia = $rowListadoDiabetes['nefropatia'];
+		if ($nefropatia == 1) {
+			$nefropatia = 2;
+		}
+		$nefropatia = str_pad($nefropatia,8,0,STR_PAD_LEFT);
+		
 		$dialisis = $rowListadoDiabetes['dialisis'];
 		if ($dialisis == 1) {
 			$dialisis = 2;
@@ -262,9 +269,9 @@ if ($file !== false) {
 	
 		$linea = $arrayCuiles[$rowListadoDiabetes['id']]."|".$rowListadoDiabetes['tipodiabetes']."|".$fechaRegistro."|".$edadDiag."|".
 				 $rowListadoDiabetes['dislipemia']."|".$rowListadoDiabetes['obesidad']."|".$rowListadoDiabetes['tabaquismo']."|".
-				 $hipertrofiaventricular."|".$infartomiocardio."|".$insuficienciacardiaca."|".$accidentecerebrovascular."|".
-				 $retinopatia."|".$ceguera."|".$neuropatiaperiferica."|".$vasculopatiaperiferica."|".$amputacion."|".$dialisis."|".
-				 $transplanterenal."|".$glucemia."|".$glucemiafecha."|".$hba1cvalor."|".$hba1cfecha."|".$ldlcvalor."|".$ldlcfecha."|".
+				 $hipertrofiaventricular."|".$infartomiocardio."|".$insuficienciacardiaca."|".$accidentecerebrovascular."|".$retinopatia."|".
+				 $ceguera."|".$neuropatiaperiferica."|".$vasculopatiaperiferica."|".$amputacion."|".$nefropatia."|".$dialisis."|".$transplanterenal."|".
+				 $glucemia."|".$glucemiafecha."|".$hba1cvalor."|".$hba1cfecha."|".$ldlcvalor."|".$ldlcfecha."|".
 				 $trigliceridosvalor."|".$trigliceridosfecha."|".$microalbuminuriavalor."|".$microalbuminuriafecha."|".$tasistolicavalor."|".
 				 $tasistolicafecha."|".$tadiastolicavalor."|".$tadiastolicafecha."|".$creatininasericavalor."|".$creatininasericafecha."|".
 				 $fondodeojo."|".$fondodeojofecha."|".$pesovalor."|".$pesofecha."|".$tallavalor."|".$tallafecha."|".$cinturavalor."|".$cinturafecha."|".
