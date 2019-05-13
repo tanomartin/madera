@@ -49,7 +49,8 @@ try {
 	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getFill()->getStartColor()->setARGB('FF808080');
 	$objPHPExcel->getActiveSheet()->getStyle('A1:E1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
-	$sqlInsumos = "SELECT * FROM detpedidos d, insumo i WHERE d.idpedido = '$id' and d.idinsumo = i.id";
+	$sqlInsumos = "SELECT * FROM stockdetpedidos d, stockinsumo i 
+					WHERE d.idpedido = '$id' and d.idinsumo = i.id";
 	$resInsumos = mysql_query($sqlInsumos,$db);
 	$fila=1;	
 	while ($rowInsumos = mysql_fetch_assoc($resInsumos)) { 

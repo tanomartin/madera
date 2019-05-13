@@ -37,10 +37,8 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuStock.php'" />
-</p>
-  <p><span class="Estilo1">Listado de Insumo </span></p>
+  <p><input type="reset" name="volver" value="Volver" onclick="location.href = '../menuStock.php'" /></p>
+  <h3>Listado de Insumo </h3>
   <input name="nuevo" type="button" id="nuevo" onclick="location.href = 'nuevoInsumo.php'"  value="Nuevo" />
   <table class="tablesorter" id="listado" style="width:800px; font-size:14px; text-align: center">
 	  <thead>
@@ -57,7 +55,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlInsumo = "SELECT * FROM insumo";
+			$sqlInsumo = "SELECT * FROM stockinsumo";
 			$resInsumo = mysql_query($sqlInsumo,$db);
 			$canInsumo = mysql_num_rows($resInsumo);
 			while ($rowInsumo = mysql_fetch_assoc($resInsumo)) { ?>
@@ -67,7 +65,9 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 				<td><?php echo $rowInsumo['descripcion'] ?></td>
 				<td><?php 
 					$idInsumo = $rowInsumo['id'];
-					$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+					$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto 
+											FROM stockinsumoproducto i, stockproducto p, stockubicacionproducto u, departamentos d 
+											WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 					$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 					while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
 						if ($rowInsumoProducto['activo'] == 0) {

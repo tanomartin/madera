@@ -3,7 +3,9 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php"); 
 
 $id = $_GET['id'];
-$sqlProd = "SELECT p.*, u.* FROM producto p, ubicacionproducto u, departamentos d WHERE p.id = $id and p.id = u.id";
+$sqlProd = "SELECT p.*, u.* 
+				FROM stockproducto p, stockubicacionproducto u, departamentos d 
+				WHERE p.id = $id and p.id = u.id";
 $resProd = mysql_query($sqlProd,$db);
 $rowProd = mysql_fetch_assoc($resProd);
 
@@ -292,12 +294,12 @@ function validar(formulario) {
                	</tr>
             </thead>
             <tbody>
-			<?php $sqlInsumos = "SELECT * FROM insumo order by nombre";
+			<?php $sqlInsumos = "SELECT * FROM stockinsumo order by nombre";
 				  $resInsumos = mysql_query($sqlInsumos,$db); 
 				  $canInsumos = mysql_num_rows($resInsumos);
 				  while ($rowInsumos = mysql_fetch_array($resInsumos)) {
 					$idInsumo = $rowInsumos['id'];
-					$sqlInsumoProducto = "SELECT * FROM insumoproducto WHERE idproducto = $id and idinsumo = $idInsumo";
+					$sqlInsumoProducto = "SELECT * FROM stockinsumoproducto WHERE idproducto = $id and idinsumo = $idInsumo";
 					$resInsumoProducto = mysql_query($sqlInsumoProducto,$db); 
 					$numInsumoProducto = mysql_num_rows($resInsumoProducto);
 					if ($numInsumoProducto == 1) { ?>

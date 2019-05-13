@@ -2,10 +2,10 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 $id = $_GET['id'];
-$sqlPedido = "SELECT * FROM cabpedidos WHERE id = $id";
+$sqlPedido = "SELECT * FROM stockcabpedidos WHERE id = $id";
 $resPedido = mysql_query($sqlPedido,$db);
 $rowPedido = mysql_fetch_assoc($resPedido);
-$sqlInsumo = "SELECT * FROM insumo i, stock s WHERE i.id = s.id";
+$sqlInsumo = "SELECT * FROM stockinsumo i, stock s WHERE i.id = s.id";
 $resInsumo = mysql_query($sqlInsumo,$db);
 $canInsumo = mysql_num_rows($resInsumo); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -119,7 +119,9 @@ $canInsumo = mysql_num_rows($resInsumo); ?>
 						<td>
 							<?php 	
 								$idInsumo = $rowInsumo['id'];
-								$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+								$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto 
+														FROM stockinsumoproducto i, stockproducto p, stockubicacionproducto u, departamentos d 
+														WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 								$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 								$canInsumoProducto = mysql_num_rows($resInsumoProducto);
 								if ($canInsumoProducto == 0) {
@@ -165,7 +167,8 @@ $canInsumo = mysql_num_rows($resInsumo); ?>
 							<input style="display: none" name="idInsumo-<?php echo $rowInsumo['id'] ?>" id="idInsumo-<?php echo $rowInsumo['id'] ?>" size="4" value="<?php echo $rowInsumo['id'] ?>"/>
 						<?php			
 							$idinsumo = $rowInsumo['id'];				
-							$sqlInsumoPedido = "SELECT * FROM cabpedidos c, detpedidos d WHERE id = $id and c.id = d.idpedido and d.idinsumo = $idinsumo";
+							$sqlInsumoPedido = "SELECT * FROM stockcabpedidos c, stockdetpedidos d 
+												WHERE id = $id and c.id = d.idpedido and d.idinsumo = $idinsumo";
 							$resInsumoPedido = mysql_query($sqlInsumoPedido,$db);
 							$canInsumoPedido = mysql_num_rows($resInsumoPedido);
 							if ($canInsumoPedido == 1) {

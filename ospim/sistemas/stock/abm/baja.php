@@ -9,7 +9,7 @@ $fechaconsumo = date("Y-m-d H:m:s");
 $usuariomodif = $_SESSION['usuario'];
 $nuevoStock = $stock - 1;
 
-$sqlInsertConsumo = "INSERT INTO consumoinsumo VALUE(DEFAULT, $idInsumo, $usuario, '$fechaconsumo')";
+$sqlInsertConsumo = "INSERT INTO stockconsumoinsumo VALUE(DEFAULT, $idInsumo, $usuario, '$fechaconsumo')";
 $sqlUpdateStock = "UPDATE stock SET cantidad = $nuevoStock, fechamodificacion = '$fechaconsumo', usuariomodificacion = '$usuariomodif'  WHERE id = $idInsumo";
 
 try {

@@ -67,7 +67,8 @@ $(function() {
 	    </tr>
 	 </thead>
 	 <tbody>
-	<?php	$sqlProd = "SELECT * FROM producto p, ubicacionproducto u WHERE p.activo = 1 and p.id = u.id and u.pertenencia = 'O'";
+	<?php	$sqlProd = "SELECT * FROM stockproducto p, stockubicacionproducto u 
+						WHERE p.activo = 1 and p.id = u.id and u.pertenencia = 'O'";
 			$resProd = mysql_query($sqlProd,$db);
 			$canProd = mysql_num_rows($resProd);
 			while ($rowProd = mysql_fetch_assoc($resProd)) { ?>		

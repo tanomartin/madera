@@ -11,7 +11,7 @@ $ptoPedido = $_POST['ptoPedido'];
 $stockmin = $_POST['stockmin'];
 $ptopromedio = $_POST['ptoPromedio'];
 
-$sqlUpdateInsumo = "UPDATE insumo SET nombre = '$nombreInsu', numeroserie = '$nroserie', descripcion = '$descrip', puntopedido = $ptoPedido, stockminimo = $stockmin, puntopromedio = $ptopromedio WHERE id = $id";
+$sqlUpdateInsumo = "UPDATE stockinsumo SET nombre = '$nombreInsu', numeroserie = '$nroserie', descripcion = '$descrip', puntopedido = $ptoPedido, stockminimo = $stockmin, puntopromedio = $ptopromedio WHERE id = $id";
 
 try {
 	$hostname = $_SESSION['host'];

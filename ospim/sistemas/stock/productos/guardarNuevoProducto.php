@@ -23,7 +23,7 @@ $usuario = $_POST['usuario'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 
-$sqlInsertProducto = "INSERT INTO producto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip',$sisop,$idsisop,$office,$idoffice,'$fecIni',DEFAULT,DEFAULT)";
+$sqlInsertProducto = "INSERT INTO stockproducto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip',$sisop,$idsisop,$office,$idoffice,'$fecIni',DEFAULT,DEFAULT)";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -35,14 +35,14 @@ try {
 	$dbh->exec($sqlInsertProducto);
 	$idProd = $dbh->lastInsertId('id'); 
 	//print($idProd."<br>");
-	$sqlInsertUbicacion = "INSERT INTO ubicacionproducto VALUE($idProd,$sector,'$ubicacion',$usuario)";
+	$sqlInsertUbicacion = "INSERT INTO stockubicacionproducto VALUE($idProd,$sector,'$ubicacion',$usuario)";
 	//print($sqlInsertUbicacion."<br>");
 	$dbh->exec($sqlInsertUbicacion);
 	
 	foreach ($_POST as $key => $idInsumo) {
 		$pos = strpos($key, "insumo");
 		if ($pos !== false) {
-			$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$idProd)";
+			$sqlInsuProd = "INSERT INTO stockinsumoproducto VALUE($idInsumo,$idProd)";
 			//print($sqlInsuProd."<br>");
 			$dbh->exec($sqlInsuProd);
 		}

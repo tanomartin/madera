@@ -12,7 +12,7 @@ $ptopromedio = $_POST['ptoPromedio'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 
-$sqlInsertInsumos = "INSERT INTO insumo VALUE (DEFAULT, '$nombreInsu','$nroserie','$descrip',$ptoPedido,$stockmin,$ptopromedio)";
+$sqlInsertInsumos = "INSERT INTO stockinsumo VALUE (DEFAULT, '$nombreInsu','$nroserie','$descrip',$ptoPedido,$stockmin,$ptopromedio)";
 
 try {
 	$hostname = $_SESSION['host'];

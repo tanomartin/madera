@@ -1,8 +1,5 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionOspimSistemas.php"); 
-?>
-
-
+include($libPath."controlSessionOspimSistemas.php"); ?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -88,7 +85,7 @@ include($libPath."controlSessionOspimSistemas.php");
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlInsumos = "SELECT i.*, s.* FROM insumo i, stock s WHERE i.id = s.id";
+			$sqlInsumos = "SELECT i.*, s.* FROM stockinsumo i, stock s WHERE i.id = s.id";
 			$resInsumos = mysql_query($sqlInsumos,$db);
 			$canInsumos = mysql_num_rows($resInsumos);
 			while ($rowInsumos = mysql_fetch_assoc($resInsumos)) { ?>
@@ -99,7 +96,10 @@ include($libPath."controlSessionOspimSistemas.php");
 					<td>
 					<?php 
 						$idInsumo = $rowInsumos['id'];
-						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, s.nombre as usuario FROM insumoproducto i, producto p, ubicacionproducto u LEFT OUTER JOIN usuarios s on u.idusuario = s.id, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+						$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto, s.nombre as usuario 
+												FROM stockinsumoproducto i, stockproducto p, departamentos d, stockubicacionproducto u 
+												LEFT OUTER JOIN usuarios s on u.idusuario = s.id
+												WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 						$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);		
 						$canInsumoProducto = mysql_num_rows($resInsumoProducto);
 						if ($canInsumoProducto == 0) {

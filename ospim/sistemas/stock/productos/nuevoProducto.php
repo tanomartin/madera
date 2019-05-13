@@ -216,7 +216,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
                	</tr>
             </thead>
             <tbody>
-			<?php $sqlInsumos = "SELECT * FROM insumo order by nombre";
+			<?php $sqlInsumos = "SELECT * FROM stockinsumo order by nombre";
 				  $resInsumos = mysql_query($sqlInsumos,$db); 
 				  $canInsumos = mysql_num_rows($resInsumos);
 				  while ($rowInsumos = mysql_fetch_array($resInsumos)) {?>

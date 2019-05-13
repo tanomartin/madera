@@ -4,8 +4,8 @@ include($libPath."fechas.php");
 $id = $_GET['id'];
 $fechasoli = fechaParaGuardar($_POST['fecsoli']);
 $descripcion = $_POST['descripcion'];
-$sqlUpdateCabPedido = "UPDATE cabpedidos SET fechasolicitud = '$fechasoli', descripcion = '$descripcion', costototal = 0 WHERE id = $id";
-$sqlDeleteDetPedido = "DELETE FROM detpedidos WHERE idpedido = $id";
+$sqlUpdateCabPedido = "UPDATE stockcabpedidos SET fechasolicitud = '$fechasoli', descripcion = '$descripcion', costototal = 0 WHERE id = $id";
+$sqlDeleteDetPedido = "DELETE FROM stockdetpedidos WHERE idpedido = $id";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -25,7 +25,7 @@ try {
 			$indexCantidad = "cantidad".$idinsumo;
 			$cantidad = $_POST[$indexCantidad];
 			if ($cantidad != "") {
-				$sqlInsuProd = "INSERT INTO detpedidos VALUE($id,$idinsumo,'',$cantidad,DEFAULT,0,'0000-00-00')";
+				$sqlInsuProd = "INSERT INTO stockdetpedidos VALUE($id,$idinsumo,'',$cantidad,DEFAULT,0,'0000-00-00')";
 				//print($sqlInsuProd."<br>");
 				$dbh->exec($sqlInsuProd);
 			}

@@ -1,6 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
-$sqlInsumo = "SELECT * FROM insumo i, stock s WHERE i.id = s.id";
+$sqlInsumo = "SELECT * FROM stockinsumo i, stock s WHERE i.id = s.id";
 $resInsumo = mysql_query($sqlInsumo,$db);
 $canInsumo = mysql_num_rows($resInsumo); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -111,7 +111,9 @@ $canInsumo = mysql_num_rows($resInsumo); ?>
 						<td><?php echo $rowInsumo['nombre']?></td>
 						<td><?php echo $rowInsumo['descripcion'] ?></td>
 						<td><?php $idInsumo = $rowInsumo['id'];
-								  $sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+								  $sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto 
+								  						FROM stockinsumoproducto i, stockproducto p, stockubicacionproducto u, departamentos d 
+								  						WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 								  $resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 							      $canInsumoProducto = mysql_num_rows($resInsumoProducto);
 								  if ($canInsumoProducto == 0) {

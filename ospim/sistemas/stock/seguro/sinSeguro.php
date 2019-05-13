@@ -1,6 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
-$sqlProd = "SELECT * FROM producto p, ubicacionproducto u WHERE p.activo = 1 and p.id = u.id and u.pertenencia = 'O' and p.numeropoliza is null";
+$sqlProd = "SELECT * FROM stockproducto p, stockubicacionproducto u 
+			  WHERE p.activo = 1 and p.id = u.id and u.pertenencia = 'O' and p.numeropoliza is null";
 $resProd = mysql_query($sqlProd,$db);
 $canProd = mysql_num_rows($resProd);?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

@@ -67,7 +67,7 @@ include($libPath."fechas.php"); ?>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlPedido = "SELECT * FROM cabpedidos order by id DESC";
+			$sqlPedido = "SELECT * FROM stockcabpedidos order by id DESC";
 			$resPedido = mysql_query($sqlPedido,$db);
 			$canPedido = mysql_num_rows($resPedido);
 			while ($rowPedido = mysql_fetch_assoc($resPedido)) { ?>

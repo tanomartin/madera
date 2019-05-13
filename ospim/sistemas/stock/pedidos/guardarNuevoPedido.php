@@ -3,7 +3,7 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php"); 
 $fechasoli = fechaParaGuardar($_POST['fecsoli']);
 $descripcion = $_POST['descripcion'];
-$sqlInsertCabPedido = "INSERT INTO cabpedidos VALUE(DEFAULT,'$fechasoli','$descripcion',DEFAULT,1,'0000-00-00')";
+$sqlInsertCabPedido = "INSERT INTO stockcabpedidos VALUE(DEFAULT,'$fechasoli','$descripcion',DEFAULT,1,'0000-00-00')";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -24,7 +24,7 @@ try {
 			$indexCantidad = "cantidad".$idinsumo;
 			$cantidad = $_POST[$indexCantidad];
 			if ($cantidad != "") {
-				$sqlInsuProd = "INSERT INTO detpedidos VALUE($idPedido,$idinsumo,'',$cantidad,DEFAULT,0,'0000-00-00')";
+				$sqlInsuProd = "INSERT INTO stockdetpedidos VALUE($idPedido,$idinsumo,'',$cantidad,DEFAULT,0,'0000-00-00')";
 				//print($sqlInsuProd."<br>");
 				$dbh->exec($sqlInsuProd);
 			}

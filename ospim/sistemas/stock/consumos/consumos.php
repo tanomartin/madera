@@ -1,7 +1,9 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
-$sqlConsumo = "SELECT c.*, i.nombre as nombre, i.descripcion as descri, u.nombre as usuario, d.nombre as depto FROM consumoinsumo c, insumo i, usuarios u, departamentos d WHERE i.id = c.idinsumo and c.idusuario = u.id and u.departamento = d.id";
+$sqlConsumo = "SELECT c.*, i.nombre as nombre, i.descripcion as descri, u.nombre as usuario, d.nombre as depto 
+				FROM stockconsumoinsumo c, stockinsumo i, usuarios u, departamentos d 
+				WHERE i.id = c.idinsumo and c.idusuario = u.id and u.departamento = d.id";
 $resConsumo = mysql_query($sqlConsumo,$db);
 $canConsumo = mysql_num_rows($resConsumo); ?>
 <!DOCTYPE html>
@@ -62,7 +64,9 @@ $canConsumo = mysql_num_rows($resConsumo); ?>
 				<td><?php echo $rowConsumo['descri']?></td>
 				<td><?php 
 					$idInsumo = $rowConsumo['idinsumo'];
-					$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto FROM insumoproducto i, producto p, ubicacionproducto u, departamentos d WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
+					$sqlInsumoProducto = "SELECT p.activo as activo, p.nombre as prod, d.nombre as depto 
+											FROM stockinsumoproducto i, stockproducto p, stockubicacionproducto u, departamentos d 
+											WHERE i.idinsumo = $idInsumo and i.idproducto = p.id and p.id = u.id and u.departamento = d.id";
 					$resInsumoProducto = mysql_query($sqlInsumoProducto,$db);
 					while ($rowInsumoProducto = mysql_fetch_assoc($resInsumoProducto)) {
 						print("* ".$rowInsumoProducto['prod']." (".$rowInsumoProducto['depto'].")"."</br>");

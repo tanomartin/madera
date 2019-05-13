@@ -2,7 +2,8 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 $id = $_GET['id'];
-$sqlDetPedido = "SELECT d.*, d.descripcion as descri, i.* FROM detpedidos d, insumo i where d.idpedido = $id and d.idinsumo = i.id";
+$sqlDetPedido = "SELECT d.*, d.descripcion as descri, i.* 
+					FROM stockdetpedidos d, stockinsumo i where d.idpedido = $id and d.idinsumo = i.id";
 $resDetPedido = mysql_query($sqlDetPedido,$db);
 $canDetPedido = mysql_num_rows($resDetPedido);?>
 

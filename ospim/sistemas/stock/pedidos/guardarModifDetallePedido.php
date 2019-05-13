@@ -39,7 +39,7 @@ try {
 		} else {
 			$fechacierre = "DEFAULT";
 		}
-		$sqlUpdatePedido = "UPDATE detpedidos SET descripcion = '$descrip', costounitario = $costo, cantidadentregada = $entregado, fechacierre = '$fechacierre' WHERE idpedido = $idPedido and idinsumo = $id";
+		$sqlUpdatePedido = "UPDATE stockdetpedidos SET descripcion = '$descrip', costounitario = $costo, cantidadentregada = $entregado, fechacierre = '$fechacierre' WHERE idpedido = $idPedido and idinsumo = $id";
 		//print($sqlUpdatePedido."<br>");
 		$dbh->exec($sqlUpdatePedido);
 	}
@@ -50,7 +50,7 @@ try {
 		$fechacierre = "0000-00-00";
 	}	
 	
-	$sqlCierrePedido = "UPDATE cabpedidos SET costototal = $totalPedido, fechacierre = '$fechacierre' WHERE id = $idPedido";
+	$sqlCierrePedido = "UPDATE stockcabpedidos SET costototal = $totalPedido, fechacierre = '$fechacierre' WHERE id = $idPedido";
 	//print($sqlCierrePedido."<br>");
 	$dbh->exec($sqlCierrePedido);
 	

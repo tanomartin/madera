@@ -3,7 +3,7 @@ include($libPath."controlSessionOspimSistemas.php");
 
 $poliza = $_GET['poliza'];
 
-$sqlUpdatePoliza = "UPDATE producto SET numeropoliza = '$poliza'  WHERE activo = 1";
+$sqlUpdatePoliza = "UPDATE stockproducto SET numeropoliza = '$poliza'  WHERE activo = 1";
 
 try {
 	$hostname = $_SESSION['host'];

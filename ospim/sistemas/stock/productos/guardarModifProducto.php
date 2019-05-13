@@ -31,9 +31,9 @@ if ($activo == 0) {
 }
 $fechamodificacion = date("Y-m-d H:i:s");
 
-$sqlUpdateProducto = "UPDATE producto SET nombre = '$nombre', numeroserie = '$nroserie', valororiginal = $valor, activo = $activo, descripcion = '$descrip', sistemaoperativo = $sisop, idso = $idsisop, office = $office, idoffice = $idoffice, fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
-$sqlUpdateUbicacion = "UPDATE ubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, idusuario = $usuario WHERE id = $id"; 
-$deleteInsumoPrducto = "DELETE from insumoproducto WHERE idproducto = $id";
+$sqlUpdateProducto = "UPDATE stockproducto SET nombre = '$nombre', numeroserie = '$nroserie', valororiginal = $valor, activo = $activo, descripcion = '$descrip', sistemaoperativo = $sisop, idso = $idsisop, office = $office, idoffice = $idoffice, fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
+$sqlUpdateUbicacion = "UPDATE stockubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, idusuario = $usuario WHERE id = $id"; 
+$deleteInsumoPrducto = "DELETE from stockinsumoproducto WHERE idproducto = $id";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -51,7 +51,7 @@ try {
 	foreach($_POST as $key => $idInsumo) {
 		$pos = strpos($key, "insumo");
 		if ($pos !== false) {
-			$sqlInsuProd = "INSERT INTO insumoproducto VALUE($idInsumo,$id)";
+			$sqlInsuProd = "INSERT INTO stockinsumoproducto VALUE($idInsumo,$id)";
 			//print($sqlInsuProd."<br>");
 			$dbh->exec($sqlInsuProd);
 		}
