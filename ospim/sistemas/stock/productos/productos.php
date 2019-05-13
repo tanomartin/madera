@@ -48,6 +48,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 		  <th>Nombre</th>
 		  <th>Descripcion</th>
 		  <th class="filter-select" data-placeholder="Seleccion Estado">Activo</th>
+		  <th class="filter-select" data-placeholder="Seleccion Seguro">Seguro</th>
 		  <th class="filter-select" data-placeholder="Seleccione Ubicacion">Ubicacion</th>
 		  <th>Usuario</th>
 		  <th>Acciones</th>
@@ -67,6 +68,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 					<td><?php echo $rowProd['nombre']?></td>
 					<td><?php echo $rowProd['descripcion'] ?></td>
 					<td><?php if ($rowProd['activo'] == 1) { echo "SI"; } else { echo "NO"; } ?></td>
+					<td><?php if ($rowProd['seguro'] == 1) { echo "SI"; } else { echo "NO"; } ?></td>
 					<td><?php echo $rowProd['deptos'] ?></td>
 					<td><?php echo $rowProd['usuario'] ?></td>
 					<td><input type="button" value="Modificar" onclick="location.href = 'modificarProducto.php?id=<?php echo $rowProd['id'] ?>' "/></td>

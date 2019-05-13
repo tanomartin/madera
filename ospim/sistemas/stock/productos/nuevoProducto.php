@@ -109,9 +109,11 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
 			alert("Debe completar en Nombre");
 			return(false);
 		}
-		if (formulario.valor.value == "" || !isNumberPositivo(formulario.valor.value)) {
-			alert("Error en valor original");
-			return(false);
+		if (formulario.seguro.value == 1 || formulario.valor.value != "") {
+			if (formulario.valor.value == "" || !isNumberPositivo(formulario.valor.value)) {
+				alert("Error en valor original");
+				return(false);
+			}
 		}
 		if (formulario.fecini.value != "") {
 			if (!esFechaValida(formulario.fecini.value)) {
@@ -155,7 +157,7 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
   	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'productos.php'" /></p>
   	<h3>Nuevo Producto</h3>
   	<form id="nuevoProducto" name="nuevoProducto" method="post" action="guardarNuevoProducto.php" onsubmit="return validar(this)">		
-		<table width="80%" border="0" style="text-align:left">
+		<table width="80%" style="text-align:left">
         	<tr>
             	<td><b>Nombre</b></td>
                 <td><input name="nombre" type="text" id="nombre" size="50" maxlength="50"/></td>
@@ -164,8 +166,17 @@ include($libPath."controlSessionOspimSistemas.php"); ?>
             </tr>
             <tr>
                 <td><b>Descripcion</b></td>
-                <td><textarea name="descrip" style="width: 378px; height: 80px;" cols="30" rows="3" id="descrip"></textarea></td>
-                <td><b>Valor Original</b></td>
+                <td colspan="3"><textarea name="descrip" cols="125" rows="2" id="descrip"></textarea></td>
+            </tr>
+            <tr>
+            	<td><b>Asegurado</b></td>
+                <td>
+                	<select name="seguro">
+                        <option value="1" selected="selected">SI</option>
+                        <option value="0">NO</option>
+                    </select>
+                </td>
+            	<td><b>Valor Original</b></td>
                 <td><input name="valor" type="text" id="valor" size="14" maxlength="14"/></td>
             </tr>
             <tr>

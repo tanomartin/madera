@@ -8,7 +8,9 @@ $id = $_POST['id'];
 $nombre = $_POST['nombre'];
 $nroserie = $_POST['nroserie'];
 $descrip = $_POST['descrip'];
-$valor = number_format($_POST['valor'],2,'.','');
+$seguro = $_POST['seguro'];
+$valor = "NULL";
+if ($_POST['valor'] != "") { $valor = number_format($_POST['valor'],2,'.',''); }
 $fecIni = fechaParaGuardar($_POST['fecIni']);
 
 $sisop = "NULL";
@@ -31,7 +33,7 @@ if ($activo == 0) {
 }
 $fechamodificacion = date("Y-m-d H:i:s");
 
-$sqlUpdateProducto = "UPDATE stockproducto SET nombre = '$nombre', numeroserie = '$nroserie', valororiginal = $valor, activo = $activo, descripcion = '$descrip', sistemaoperativo = $sisop, idso = $idsisop, office = $office, idoffice = $idoffice, fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
+$sqlUpdateProducto = "UPDATE stockproducto SET nombre = '$nombre', numeroserie = '$nroserie', seguro = $seguro, valororiginal = $valor, activo = $activo, descripcion = '$descrip', sistemaoperativo = $sisop, idso = $idsisop, office = $office, idoffice = $idoffice, fechainicio = '$fecIni', fechabaja = '$fecBaja', fechamodificacion = '$fechamodificacion ' WHERE id = $id";
 $sqlUpdateUbicacion = "UPDATE stockubicacionproducto SET pertenencia = '$ubicacion', departamento = $sector, idusuario = $usuario WHERE id = $id"; 
 $deleteInsumoPrducto = "DELETE from stockinsumoproducto WHERE idproducto = $id";
 

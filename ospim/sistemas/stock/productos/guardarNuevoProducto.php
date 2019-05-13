@@ -5,7 +5,9 @@ include($libPath."fechas.php");
 $nombre = $_POST['nombre'];
 $nroserie = $_POST['nroserie'];
 $descrip = $_POST['descrip'];
-$valor = number_format($_POST['valor'],2,'.','');
+$seguro = $_POST['seguro'];
+$valor = "NULL";
+if ($_POST['valor'] != "") { $valor = number_format($_POST['valor'],2,'.',''); }
 $fecIni = fechaParaGuardar($_POST['fecini']);
 
 $sisop = "NULL";
@@ -23,7 +25,7 @@ $usuario = $_POST['usuario'];
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 
-$sqlInsertProducto = "INSERT INTO stockproducto VALUE(DEFAULT,'$nombre','$nroserie',$valor,DEFAULT,1,'$descrip',$sisop,$idsisop,$office,$idoffice,'$fecIni',DEFAULT,DEFAULT)";
+$sqlInsertProducto = "INSERT INTO stockproducto VALUE(DEFAULT,'$nombre','$nroserie',$seguro,$valor,DEFAULT,1,'$descrip',$sisop,$idsisop,$office,$idoffice,'$fecIni',DEFAULT,DEFAULT)";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -51,7 +53,7 @@ try {
 	$dbh->commit();
 	$pagina = "productos.php";
 	Header("Location: $pagina"); 
-	
+
 } catch (PDOException $e) {
 	$error =  $e->getMessage();
 	$dbh->rollback();

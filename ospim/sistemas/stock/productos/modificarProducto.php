@@ -129,9 +129,11 @@ function validar(formulario) {
 		alert("Debe completar en Nombre");
 		return(false);
 	}
-	if (formulario.valor.value == "" || !isNumberPositivo(formulario.valor.value)) {
-		alert("Error en valor original");
-		return(false);
+	if (formulario.seguro.value == 1 || formulario.valor.value != "") {
+		if (formulario.valor.value == "" || !isNumberPositivo(formulario.valor.value)) {
+			alert("Error en valor original");
+			return(false);
+		}
 	}
 	if (formulario.sisop.value != "") {
 		if (formulario.idsisop.value == "") {
@@ -195,8 +197,23 @@ function validar(formulario) {
             </tr>
             <tr>
 				<td><b>Descripcion</b></td>
-				<td><textarea name="descrip" cols="30" style="width: 378px; height: 80px;" rows="3" id="descrip"><?php echo $rowProd['descripcion'] ?></textarea></td>
-                <td><b>Valor Original</b></td>
+				<td colspan="3"><textarea name="descrip" cols="30" cols="125" rows="2" id="descrip"><?php echo $rowProd['descripcion'] ?></textarea></td>
+           	</tr>
+           	<tr>
+           		<td><b>Asegurado</b></td>
+                <td>
+                	<select name="seguro">
+                  <?php $selectNo = "selected";
+                   		$selectSi = "";
+                   		if ($rowProd['seguro'] == 1) { 
+                   			$selectSi = "selected";
+                   			$selectNo = "";
+                   		} ?>
+                        <option value="1" <?php echo $selectSi ?>>SI</option>
+                        <option value="0" <?php echo $selectNo ?>>NO</option>
+                    </select>
+                </td>
+            	<td><b>Valor Original</b></td>
                 <td><input name="valor" type="text" id="valor" size="14" maxlength="14" value="<?php echo $rowProd['valororiginal'] ?>"/></td>
            	</tr>
 			<tr>
