@@ -10,6 +10,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <script language="javascript" type="text/javascript">
 
 function MsgWait(formulario) {
+	formulario.Submit.disabled = true;
 	$.blockUI({ message: "<h1>Descargando Nuevas Solicitudes. Aguarde por favor...</h1>" });
 	return true;
 }
