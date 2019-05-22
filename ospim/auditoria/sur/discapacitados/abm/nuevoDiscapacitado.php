@@ -22,17 +22,6 @@ $rowBeneficiario = mysql_fetch_assoc($resBeneficiario);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nuevo Discapacitado :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-.Estilo3 {font-size: 18px}
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -60,7 +49,7 @@ function validar(formulario) {
 	var fechaInicio = formulario.fechaInicio.value;
 	var fechaFin = formulario.fechaFin.value;
 	var fechaAlta = formulario.fechaAlta.value;
-
+	
 	if (fechaAlta == "") {
 		alert("Debe ingresar un fecha de alta del certificado");
 		return(false);
@@ -80,9 +69,13 @@ function validar(formulario) {
 			return(false);
 		} 
 	}
-	if (fechaFin != "") {
+
+	if (fechaFin == "") {
+		alert("Debe ingresar un fecha de vto del certificado");
+		return(false);
+	} else {
 		if (!esFechaValida(fechaFin)) {
-			alert("La Fecha de Vencimiento no es valida");
+			alert("La fecha de vto de certificado no es valida");
 			return(false);
 		} else {
 			fechaInicio = new Date(invertirFecha(fechaInicio));
@@ -93,6 +86,12 @@ function validar(formulario) {
 			}
 		}
 	}
+
+	if (formulario.codigocertificado.value == "") {
+		alert("El codigo de certificado es obligatorio");
+		return(false);
+	} 
+	
 	var archivo = formulario.certificado.value;
 	var extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase(); 
 	if (extension != '.jpg') {
@@ -108,10 +107,8 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" />
-  </span></p>
-  <p class="Estilo2">Alta de Discapacitado  </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" /></p>
+  <h3>Alta de Discapacitado  </h3>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
@@ -127,47 +124,35 @@ function validar(formulario) {
     </tr>
   </table>
   <form action="guardarNuevoDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>" method="post" enctype="multipart/form-data" name="nuevoDisca" id="nuevoDisca" onsubmit="return validar(this)">
-   <table width="400" border="0">
+   <table width="400" style="margin-top: 10px">
      <tr>
-       <td width="181"><div align="right"><span class="Estilo2">Tipo Discapacidad</span> </div></td>
-       <td width="209">
-	     <div align="left">
-	       <?php  
-	   		$sqlTipoDiscapacidad = "Select * from tipodiscapacidad";
-	   	    $resTipoDiscapacidad = mysql_query($sqlTipoDiscapacidad,$db);
-			while ($rowTipoDiscapacidad = mysql_fetch_assoc($resTipoDiscapacidad)) {
-				echo ("<input type='checkbox' id='tipodisca' name='tipodisca".$rowTipoDiscapacidad['iddiscapacidad']."' value='".$rowTipoDiscapacidad['iddiscapacidad']."' />".$rowTipoDiscapacidad['descripcion']."<br>");
-			} ?>
-         </div></td>
+       <td width="181"><h3 align="center">Tipo Discapacidad</h3></td>
+       <td width="209" align="left">
+	   <?php $sqlTipoDiscapacidad = "Select * from tipodiscapacidad";
+	   	     $resTipoDiscapacidad = mysql_query($sqlTipoDiscapacidad,$db);
+			 while ($rowTipoDiscapacidad = mysql_fetch_assoc($resTipoDiscapacidad)) { ?>
+				<input type='checkbox' id='tipodisca' name='tipodisca<?php echo $rowTipoDiscapacidad['iddiscapacidad'] ?>' value='<?php echo $rowTipoDiscapacidad['iddiscapacidad'] ?>' /><?php echo $rowTipoDiscapacidad['descripcion']."<br>" ?>
+	   <?php } ?>
+       </td>
      </tr>
    </table>
-   <table width="900" border="0">
+   <table width="900" style="text-align: center">
       <tr>
-        <td height="47" colspan="6"><div align="center"><span class="Estilo2">Datos Certificado </span></div></td>
+        <td colspan="6"><h3 align="center">Datos Certificado </h3></td>
       </tr>
       <tr>
-      	<td><div align="right">Fecha De Alta</div></td>
-        <td><div align="left">
-          <input type="text" name="fechaAlta" id="fechaAlta" size="8"/>
-        </div></td>
-        <td><div align="right">Fecha De Emision</div></td>
-        <td><div align="left">
-          <input type="text" name="fechaInicio" id="fechaInicio" size="8"/>
-        </div></td>
-        <td><div align="right">Fecha de Vencimiento</div></td>
-        <td><div align="left">
-          <input type="text" name="fechaFin" id="fechaFin" size="8" />
-        </div></td>
-       </tr>
-       <tr>
-        <td colspan="6"><div align="center">Certificado
-          <input name="certificado" type="file" id="certificado" />
-        </div></td>
+      	<td>Fecha Alta: <input type="text" name="fechaAlta" id="fechaAlta" size="8"/></td>
+        <td>Fecha Emision: <input type="text" name="fechaInicio" id="fechaInicio" size="8"/></td>
+        <td>Fecha Vto: <input type="text" name="fechaFin" id="fechaFin" size="8" /></td>
       </tr>
+      <tr>
+        <td colspan="2">Codigo Cert.: <input name="codigocertificado" type="text" id="codigocertificado" size="40" maxlength="40"/></td>
+      	<td>Certificado: <input name="certificado" type="file" id="certificado" /></td>
+      </tr> 
     </table>
     <table width="900" border="0">
       <tr>
-        <td height="56" colspan="8"><div align="center"><span class="Estilo2">Datos Expediente </span></div></td>
+        <td height="56" colspan="8"><h3 align="center">Datos Expediente </h3></td>
       </tr>
       <tr>
         <td><div align="right">Pedido Medico</div></td>
@@ -287,12 +272,12 @@ function validar(formulario) {
       </tr>
       
       <tr>
-		<td><div align="right">Informe Evolutivo 1er Semestre</div></td>
+		<td><div align="right">Inf. Evolutivo 1er Semestre</div></td>
         <td><select name="evolutivoprimer" id="evolutivoprimer">
           <option value="0">NO</option>
           <option value="1">SI</option>
         </select></td>
-        <td><div align="right">Informe Evolutivo 2do Semestre</div></td>
+        <td><div align="right">Inf. Evolutivo 2do Semestre</div></td>
         <td><select name="evolutivosegundo" id="evolutivosegundo">
           <option value="0">NO</option>
           <option value="1">SI</option>

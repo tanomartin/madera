@@ -34,16 +34,6 @@ $rowExpediente = mysql_fetch_assoc($resExpediente);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Discapacitado :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -81,6 +71,7 @@ function validar(formulario) {
 			return(false);
 		} 
 	}
+	
 	if (fechaInicio == "") {
 		alert("Debe ingresar un fecha de emisión del certificado");
 		return(false);
@@ -90,9 +81,13 @@ function validar(formulario) {
 			return(false);
 		} 
 	}
-	if (fechaFin != "") {
+	
+	if (fechaFin == "") {
+		alert("Debe ingresar un fecha de vto del certificado");
+		return(false);
+	} else {
 		if (!esFechaValida(fechaFin)) {
-			alert("La Fecha de Vencimiento no es valida");
+			alert("La fecha de vto de certificado no es valida");
 			return(false);
 		} else {
 			fechaInicio = new Date(invertirFecha(fechaInicio));
@@ -103,6 +98,12 @@ function validar(formulario) {
 			}
 		}
 	}
+
+	if (formulario.codigocertificado.value == "") {
+		alert("El codigo de certificado es obligatorio");
+		return(false);
+	} 
+	
 	var archivo = formulario.certificado.value;
 	var extension = (archivo.substring(archivo.lastIndexOf("."))).toLowerCase(); 
 	if (extension != '.jpg' && extension != '' ) {
@@ -122,10 +123,8 @@ function verCertificado(dire){
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-   <input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" />
-  </span></p>
-  <p class="Estilo2">Modificar  Discapacitado  </p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" /></p>
+  <h3>Modificar  Discapacitado</h3>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
@@ -141,9 +140,9 @@ function verCertificado(dire){
     </tr>
   </table>
   <form action="guardarModificacionDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>&idexpediente=<?php echo $rowExpediente['idexpediente'] ?>" method="post" enctype="multipart/form-data" name="modifDisca" id="modifDisca" onsubmit="return validar(this)">
-	<table width="400" border="0">
+	<table width="400" style="margin-top: 10px">
       <tr>
-        <td width="181"><div align="right"><span class="Estilo2">Tipo Discapacidad</span> </div></td>
+        <td width="181"><h3 align="center">Tipo Discapacidad</h3></td>
         <td width="209"><div align="left">
             <?php  
 	   		$sqlTipoDiscapacidad = "Select * from tipodiscapacidad";
@@ -154,44 +153,35 @@ function verCertificado(dire){
 					if ($rowTipoDiscapacidad['iddiscapacidad'] == $disca) {
 						$checked = 'checked';
 					}
-				}
-				echo ("<input type='checkbox' id='tipodisca' name='tipodisca".$rowTipoDiscapacidad['iddiscapacidad']."' value='".$rowTipoDiscapacidad['iddiscapacidad']."' ".$checked."/>".$rowTipoDiscapacidad['descripcion']."<br>");
-			} 
-			?>
+				} ?>
+				<input type='checkbox' id='tipodisca' name='tipodisca<?php echo $rowTipoDiscapacidad['iddiscapacidad'] ?>' value='<?php echo $rowTipoDiscapacidad['iddiscapacidad'] ?>' <?php echo $checked ?>/><?php echo $rowTipoDiscapacidad['descripcion']."<br>" ?>
+	 <?php } ?>
         </div></td>
       </tr>
     </table>
-	<table width="1000" border="0">
+	<table width="1000" style="text-align: center">
       <tr>
-        <td height="47" colspan="6"><div align="center"><span class="Estilo2">Datos Certificado </span></div></td>
+        <td colspan="6"><h3 align="center">Datos Certificado </h3></td>
       </tr>
       <tr>
-      	<td><div align="right">Fecha De Alta</div></td>
-        <td><div align="left">
-          <input type="text" name="fechaAlta" id="fechaAlta" size="8" value="<?php echo invertirFecha($rowBeneficiario['fechaalta']) ?>"/>
-        </div></td>
-        <td><div align="right">Fecha De Emision</div></td>
-        <td><div align="left">
-          <input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowBeneficiario['emisioncertificado']) ?>"/>
-        </div></td>
-        <td><div align="right">Fecha de Vencimiento</div></td>
-        <td><div align="left">
-          <input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo invertirFecha($rowBeneficiario['vencimientocertificado']) ?>" />
-        </div></td>
-        </tr>
-        <tr>
-	        <td colspan="6">
-	        	<div align="center">
-	          		<input name="ver2" type="button" id="ver2" value="Ver Certificado" onclick="verCertificado('verCertificado.php?nroafiliado=<?php echo $nroafiliado ?>&amp;nroorden=<?php echo $nroorden ?>')" />
-	         		Modificar:  <input name="certificado" type="file" id="certificado" />
-	       		</div>
-	       	</td>
-       </tr>
+      	<td>Fecha Alta: <input type="text" name="fechaAlta" id="fechaAlta" size="8" value="<?php echo invertirFecha($rowBeneficiario['fechaalta']) ?>"/></td>
+        <td>Fecha Emision: <input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowBeneficiario['emisioncertificado']) ?>"/></td>
+        <td>Fecha Vto:  <input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo invertirFecha($rowBeneficiario['vencimientocertificado']) ?>" /></td>
+     	<td><input name="ver2" type="button" id="ver2" value="Ver Certificado" onclick="verCertificado('verCertificado.php?nroafiliado=<?php echo $nroafiliado ?>&amp;nroorden=<?php echo $nroorden ?>')" /></td>
+      </tr>
+      <tr>
+      	<td colspan="2">
+	        Codigo Cert: <input name="codigocertificado" type="text" id="codigocertificado" size="40" value="<?php echo $rowBeneficiario['codigocertificado'] ?>" maxlength="40"/>
+	     </td>
+	     <td colspan="2">
+	        Modificar:  <input name="certificado" type="file" id="certificado" />
+	     </td>
+      </tr>
     </table>
 	<table width="1000" border="0">
       <tr>
 	  	<?php if ($rowExpediente['completo'] == 0) { $estado = "[Incompleto]"; } else { $estado = "[Completo: ".$rowExpediente['fechacierre']."]"; } ?>	
-        <td height="56" colspan="8"><div align="center"><span class="Estilo2">Datos Expediente <?php echo $estado ?></span></div></td>
+        <td height="56" colspan="8"><h3 align="center">Datos Expediente <?php echo $estado ?></h3></td>
       </tr>
       <tr>
         <td><div align="right">Pedido Medico</div></td>

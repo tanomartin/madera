@@ -42,16 +42,6 @@ $rowExpediente = mysql_fetch_assoc($resExpediente);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Consulta Discapacitado :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <script type="text/javascript">
 
 function verCertificado(dire){	
@@ -63,10 +53,8 @@ function verCertificado(dire){
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <?php if (!isset($_GET['nomostrar'])) { ?> <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" /> <?php } ?>
-  </span></p>
-  <p class="Estilo2">Consulta de Discapacidado  </p>
+  <p><?php if (!isset($_GET['nomostrar'])) { ?> <input type="reset" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" /> <?php } ?></p>
+  <h3>Consulta de Discapacidado </h3>
   <table width="500" border="1">
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
@@ -81,11 +69,10 @@ function verCertificado(dire){
       <td><div align="left"><?php echo $tipoBeneficiario." - ".$rowBeneficiario['parentesco'] ?></div></td>
     </tr>
   </table>
-  <table width="400" border="0">
+  <table width="400">
     <tr>
-      <td width="180"><div align="right"><span class="Estilo2">Tipo Discapacidad</span> </div></td>
-      <td width="20">&nbsp;</td>
-      <td width="186"><div align="left">
+      <td width="180"><h3 align="center">Tipo Discapacidad</h3></td>
+      <td width="186" align="left">
         <?php  
 			$cantTipoDisca = mysql_num_rows($resTipoDiscapacidad);
 			if ($cantTipoDisca == 0) { 
@@ -95,31 +82,30 @@ function verCertificado(dire){
 					echo ($rowTipoDiscapacidad['descripcion']."<br>");
 				} 
 			}?>
-      </div></td>
+      </td>
     </tr>
   </table>
-  <table width="900" border="0">
+  <table width="700" style="text-align: center">
     <tr>
-      <td height="47" colspan="8"><div align="center"><span class="Estilo2">Datos Certificado </span></div></td>
+      <td height="47" colspan="8"><h3 align="center">Datos Certificado </h3></td>
     </tr>
     <tr>
-      <td><div align="right">Fecha De Alta: </div></td>
-      <td><div align="left"><b><?php echo invertirFecha($rowBeneficiario['fechaalta']) ?></b></div></td>
-      <td><div align="right">Fecha De Emision: </div></td>
-      <td><div align="left"><b><?php echo invertirFecha($rowBeneficiario['emisioncertificado']) ?></b></div></td>
-      <td><div align="right">Fecha de Vencimiento: </div></td>
-      <td><div align="left"><b><?php echo invertirFecha($rowBeneficiario['vencimientocertificado']) ?></b></div></td>
-      <td><div align="right">Certificado</div></td>
-      <td><div align="left"><input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('verCertificado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>')"/></div></td>
+      <td>Fecha Alta: <b><?php echo invertirFecha($rowBeneficiario['fechaalta']) ?></b></td>
+      <td>Fecha Emision: <b><?php echo invertirFecha($rowBeneficiario['emisioncertificado']) ?></b></td>
+      <td>Fecha Vto: <b><?php echo invertirFecha($rowBeneficiario['vencimientocertificado']) ?></b></td>
+    </tr>
+    <tr>
+      <td colspan="2">Codigo Cert: <b><?php echo $rowBeneficiario['codigocertificado'] ?></b></td>
+      <td>Certificado: <input name="ver" type="button" id="ver" value="Ver Certificado" onclick="verCertificado('verCertificado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>')"/></td>
     </tr>
   </table>
   
   <table width="900" border="0">
     <tr>
       <td height="56" colspan="9">
-	  	<div align="center">
-		     <?php if ($rowExpediente['completo'] == 0) { $estado = "[Incompleto]"; } else { $estado = "[Completo: ".$rowExpediente['fechacierre']."]"; } ?>
-			<span class="Estilo2">Datos Expediente <?php echo $estado ?></span>		</div>	</td>
+		 <?php if ($rowExpediente['completo'] == 0) { $estado = "[Incompleto]"; } else { $estado = "[Completo: ".$rowExpediente['fechacierre']."]"; } ?>
+		 <h3 align="center">Datos Expediente <?php echo $estado ?></h3>	
+	  </td>
     </tr>
     <tr>
       <td><div align="right">Pedido Medico: </div></td>
@@ -170,9 +156,9 @@ function verCertificado(dire){
       <td><b><?php if ($rowExpediente['segurodesempleo'] == 0) { echo "NO"; } if ($rowExpediente['segurodesempleo'] == 1) { echo "SI"; }  if ($rowExpediente['segurodesempleo'] == 2) { echo "No Requerido"; }?></b></td>
     </tr>
     <tr>
-      <td><div align="right">Informe Evolutivo 1er Semestre: </div></td>
+      <td><div align="right">Inf. Evolutivo 1er Semestre: </div></td>
       <td><b><?php if ($rowExpediente['evolutivoprimer'] == 0) { echo "NO"; } else { echo "SI"; }?></b></td>
-      <td><div align="right">Informe Evolutivo 2do Semestre: </div></td>
+      <td><div align="right">Inf. Evolutivo 2do Semestre: </div></td>
       <td><b><?php if ($rowExpediente['evolutivosegundo'] == 0) { echo "NO"; } else { echo "SI"; } ?></b></td>
       <td><div align="right">Entrevista Admisión: </div></td>
       <td><b><?php if ($rowExpediente['admision'] == 0) { echo "NO"; } else { echo "SI"; } ?></b></td>

@@ -76,14 +76,6 @@ if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: ABMC Discapacidad :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -198,23 +190,16 @@ function validar(formulario) {
 };
 </script>
 
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
 </head>
 
 <body bgcolor="#CCCCCC">
-<form id="moduloABM" name="moduloABM" method="post" onsubmit="return validar(this)" action="moduloABMDisca.php">
-	<div align="center">
-		<input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = '../moduloDisca.php'" /> 
-	</div>
-	<p align="center" class="Estilo1">Afiliados Discapacidad </p>
-	<div align="center">
+<div align="center">
+	<form id="moduloABM" name="moduloABM" method="post" onsubmit="return validar(this)" action="moduloABMDisca.php">
+		<p><input class="nover" type="reset" name="volver" value="Volver" onclick="location.href = '../moduloDisca.php'" /> </p>
+		<h3>Afiliados Discapacidad </h3>
 		<table width="137" border="0">
 		  <tr>
 			<td width="23"><input name="seleccion" type="radio" value="nroafiliado" checked="checked"/></td>
@@ -230,18 +215,15 @@ A:hover {text-decoration: none;color:#00FFFF }
 		  </tr>
 		</table>
 		<p><input name="valor" id="valor" type="text" size="11" /></p>
-	</div>
-	<p align="center">
-  <input class="nover" type="submit" name="buscar" value="Buscar" /></p>
-</form>
-<div align="center">
+		<p><input class="nover" type="submit" name="buscar" value="Buscar" /></p>
+	</form>
 <?php  if ($busqueda == 1) { ?>
-			<p align="center" class="Estilo1">Resultados Busqueda por "<?php echo $cartel ?>" </p>		
+			<h3>Resultados Busqueda por "<?php echo $cartel ?>" </h3>		
 <?php		if($resultado == 0) { 
 		  		print("<p><font color='#0000FF'><b> No Existen Discapacitados con la busqueda realizada </b></font></p>");
 		  	} else {  
 				if (sizeof($arrayTitulares) > 0) { ?>
-				 <p align="center" class="Estilo1">Titulares</p>
+				 <h3>Titulares</h3>
 				 <table style="text-align:center; width:1100px" id="tablatitulares" class="tablesorter" >
          		 <thead>
             		<tr>
@@ -274,7 +256,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				</table>
 	<?php	}
 		 if (sizeof($arrayFamiliares) > 0) { ?>
-				<p align="center" class="Estilo1">Familiares</p>
+				 <h3>Familiares</h3>
 				 <table style="text-align:center; width:1100px" id="tablafamiliares" class="tablesorter" >
          		 <thead>
             		<tr>
@@ -309,7 +291,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				</table>
 	<?php	} 
 			if (sizeof($arrayTituBaja) > 0) { ?>
-				<p align="center" class="Estilo1">Titulares Inactivos</p>
+				 <h3>Titulares Inactivos</h3>
 				 <table style="text-align:center; width:1100px" id="tablatitubaja" class="tablesorter" >
          		 <thead>
             		<tr>
@@ -341,7 +323,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				</table>
 	<?php	} 
 		if (sizeof($arrayFamiBaja) > 0) { ?>
-				<p align="center" class="Estilo1">Familiares Inactivos</p>
+				 <h3>Familiares Inactivos</h3>
 				 <table style="text-align:center; width:1100px" id="tablafamibaja" class="tablesorter" >
          		 <thead>
             		<tr>
@@ -364,7 +346,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 						<td><?php echo $familiarBaja['cuil']?> </td>
 						<td><?php if ($familiarBaja['discapacidad'] == 0) { echo "NO"; } else { echo "SI"; }?> </td>
 						<td><?php if ($familiarBaja['discapacidad'] == 0) { 
-										echo ("-");
+									echo ("-");
 								  } else { ?>
 								  	<input type='button' name='consultar' value='Consultar' onclick="location.href='consultarDiscapacitado.php?nroafiliado=<?php echo $familiarBaja['nroafiliado'] ?>&nroorden=<?php echo $familiarBaja['nroorden'] ?>&activo=0'" />
 							<?php }?> 
