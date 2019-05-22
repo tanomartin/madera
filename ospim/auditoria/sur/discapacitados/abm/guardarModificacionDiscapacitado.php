@@ -9,7 +9,7 @@ $idexpediente = $_GET['idexpediente'];
 $fechaAlta = fechaParaGuardar($_POST['fechaAlta']);
 $fechaEmision = fechaParaGuardar($_POST['fechaInicio']);
 $fechaVto = fechaParaGuardar($_POST['fechaFin']);
-$codigoCert = strtolower($_POST['codigocertificado']);
+$codigoCert = strtoupper($_POST['codigocertificado']);
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 

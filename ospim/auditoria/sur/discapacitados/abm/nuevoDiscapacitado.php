@@ -7,10 +7,10 @@ $nroafiliado = $_GET['nroafiliado'];
 $nroorden = $_GET['nroorden'];
 
 if ($nroorden == 0) {
-	$sqlBeneficiario = "SELECT apellidoynombre, '' as parentesco FROM titulares WHERE nroafiliado = $nroafiliado";
+	$sqlBeneficiario = "SELECT apellidoynombre, cuil, '' as parentesco FROM titulares WHERE nroafiliado = $nroafiliado";
 	$tipoBeneficiario = "TITULAR";
 } else {
-	$sqlBeneficiario = "SELECT f.apellidoynombre, p.descrip as parentesco FROM familiares f, parentesco p WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent";
+	$sqlBeneficiario = "SELECT f.apellidoynombre, f.cuil, p.descrip as parentesco FROM familiares f, parentesco p WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent";
 	$tipoBeneficiario = "FAMILIAR";
 }
 $resBeneficiario = mysql_query($sqlBeneficiario,$db);
@@ -113,6 +113,10 @@ function validar(formulario) {
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
       <td width="321"><div align="left"><strong><?php echo $nroafiliado ?></strong></div></td>
+    </tr>
+    <tr>
+      <td width="163"><div align="right"><strong>C.U.I.L.</strong></div></td>
+      <td width="321"><div align="left"><?php echo $rowBeneficiario['cuil'] ?></div></td>
     </tr>
     <tr>
       <td><div align="right"><strong>Apellido y Nombre </strong></div></td>

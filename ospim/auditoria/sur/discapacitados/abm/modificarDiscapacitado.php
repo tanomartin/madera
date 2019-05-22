@@ -7,10 +7,10 @@ $nroafiliado = $_GET['nroafiliado'];
 $nroorden = $_GET['nroorden'];
 
 if ($nroorden == 0) {
-	$sqlBeneficiario = "SELECT t.apellidoynombre, d.*, '' as parentesco FROM titulares t, discapacitados d WHERE t.nroafiliado = $nroafiliado and t.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
+	$sqlBeneficiario = "SELECT t.apellidoynombre, t.cuil, d.*, '' as parentesco FROM titulares t, discapacitados d WHERE t.nroafiliado = $nroafiliado and t.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
 	$tipoBeneficiario = "TITULAR";
 } else {
-	$sqlBeneficiario = "SELECT f.apellidoynombre, p.descrip as parentesco, d.* FROM familiares f, parentesco p, discapacitados d WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent and f.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
+	$sqlBeneficiario = "SELECT f.apellidoynombre, f.cuil, p.descrip as parentesco, d.* FROM familiares f, parentesco p, discapacitados d WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent and f.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
 	$tipoBeneficiario = "FAMILIAR";
 }
 $resBeneficiario = mysql_query($sqlBeneficiario,$db);
@@ -129,6 +129,10 @@ function verCertificado(dire){
     <tr>
       <td width="163"><div align="right"><strong>Nro Afiliado </strong></div></td>
       <td width="321"><div align="left"><strong><?php echo $nroafiliado ?></strong></div></td>
+    </tr>
+    <tr>
+      <td width="163"><div align="right"><strong>C.U.I.L.</strong></div></td>
+      <td width="321"><div align="left"><?php echo $rowBeneficiario['cuil'] ?></div></td>
     </tr>
     <tr>
       <td><div align="right"><strong>Apellido y Nombre </strong></div></td>
