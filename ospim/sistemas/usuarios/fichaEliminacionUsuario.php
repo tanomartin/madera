@@ -10,7 +10,7 @@ $sqlMails = "SELECT * FROM emails u WHERE u.idusuario = " . $_GET ['id'];
 $resMails = mysql_query ( $sqlMails, $db );
 $canMails = mysql_num_rows( $resMails );
 
-$sqlPc = "SELECT * FROM producto p, ubicacionproducto u WHERE u.idusuario = ".$_GET ['id']." and u.id = p.id";
+$sqlPc = "SELECT * FROM stockproducto p, stockubicacionproducto u WHERE u.idusuario = ".$_GET ['id']." and u.id = p.id";
 $resPc = mysql_query ( $sqlPc, $db );
 $canPc = mysql_num_rows( $resPc );?>
 
@@ -30,8 +30,8 @@ $canPc = mysql_num_rows( $resPc );?>
 <body bgcolor="#CCCCCC">
 	<div align="center">
 		<p><input type="button" class="nover" name="volver" value="Volver" onclick="location.href = 'usuarios.php'" /></p>
-		<p><span class="Estilo2">Ficha Usuario</span></p>
-		<p><span class="Estilo2"><?php echo $rowUsuario['nombre']?></span></p>
+		<h3>Ficha Usuario</h3>
+		<h3><?php echo $rowUsuario['nombre']?></h3>
 		<table width="600" border="1" style="text-align: left">
 			<tr>
 				<td><b>Sector</b></td>
@@ -58,9 +58,9 @@ $canPc = mysql_num_rows( $resPc );?>
 				<td><?php echo $rowUsuario['conector']?></td>
 			</tr>
 		</table>
-		<p><span class="Estilo2">Correos</span></p>
+		<h3>Correos</h3>
 		<?php if ($canMails == 0) { ?>
-			<h4>No Existen correos para este usuario</h4>
+			<h4 style="color: blue">No Existen correos para este usuario</h4>
 		<?php } else { ?>
 			<table width="600" border="1" style="text-align: center">
 				<thead>
@@ -79,9 +79,9 @@ $canPc = mysql_num_rows( $resPc );?>
 				</tbody>
 			</table>
 		<?php }  ?>
-		<p><span class="Estilo2">Computadora</span></p>
+		<h3>Computadora</h3>
 		<?php if ($canPc == 0) { ?>
-			<h4>No Existen Computadoras para este usuario</h4>
+			<h4 style="color: blue">No Existen Computadoras para este usuario</h4>
 		<?php } else { 
 					while ($rowPc = mysql_fetch_assoc($resPc)) { ?>				
 						<table width="800" border="1" style="text-align: left">

@@ -6,7 +6,7 @@ $id = $_GET ['id'];
 
 $sqlDelete = "DELETE FROM usuarios WHERE id = ".$id;
 $sqlUpdateMail = "UPDATE emails SET idusuario = 0 WHERE idusuario = ".$id;
-$sqlUpdateUbicacion = "UPDATE ubicacionproducto SET idusuario = 0 WHERE idusuario = ".$id;
+$sqlUpdateUbicacion = "UPDATE stockubicacionproducto SET idusuario = 0 WHERE idusuario = ".$id;
 
 try {
 	$hostname = $_SESSION ['host'];
