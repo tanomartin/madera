@@ -150,7 +150,7 @@ function validar(formulario) {
         <td>Fecha Vto: <input type="text" name="fechaFin" id="fechaFin" size="8" /></td>
       </tr>
       <tr>
-        <td colspan="2">Codigo Cert.: <input name="codigocertificado" type="text" id="codigocertificado" size="40" maxlength="40"/></td>
+        <td colspan="2">Codigo Cert.: <input name="codigocertificado" type="text" id="codigocertificado" size="40" maxlength="50"/></td>
       	<td>Certificado: <input name="certificado" type="file" id="certificado" /></td>
       </tr> 
     </table>
