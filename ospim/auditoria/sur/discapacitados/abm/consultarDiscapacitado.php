@@ -21,7 +21,7 @@ if ($nroorden == 0) {
 		$sqlBeneficiario = "SELECT f.apellidoynombre, f.cuil, p.descrip as parentesco, d.* FROM familiares f, parentesco p, discapacitados d WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent and f.nroafiliado = d.nroafiliado and d.nroorden = f.nroorden";
 		$tipoBeneficiario = "FAMILIAR";
 	} else {
-		$sqlBeneficiario = "SELECT f.apellidoynombre, f.cuil p.descrip as parentesco, d.* FROM familiaresdebaja f, parentesco p, discapacitados d WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent and f.nroafiliado = d.nroafiliado and d.nroorden = f.nroorden";
+		$sqlBeneficiario = "SELECT f.apellidoynombre, f.cuil, p.descrip as parentesco, d.* FROM familiaresdebaja f, parentesco p, discapacitados d WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent and f.nroafiliado = d.nroafiliado and d.nroorden = f.nroorden";
 		$tipoBeneficiario = "FAMILIAR INACTIVO";
 	}
 }
