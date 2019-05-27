@@ -175,7 +175,7 @@ function verCertificado(dire){
       </tr>
       <tr>
       	<td colspan="2">
-	        Codigo Cert: <input name="codigocertificado" type="text" id="codigocertificado" size="50" value="<?php echo $rowBeneficiario['codigocertificado'] ?>" maxlength="40"/>
+	        Codigo Cert: <input name="codigocertificado" type="text" id="codigocertificado" size="40" value="<?php echo $rowBeneficiario['codigocertificado'] ?>" maxlength="50"/>
 	     </td>
 	     <td colspan="2">
 	        Modificar:  <input name="certificado" type="file" id="certificado" />
