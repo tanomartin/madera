@@ -67,7 +67,7 @@ if ($archivo != '') {
 	}
 }
 
-$sqlDeletTipo = "DELETE FROM discapacidadbeneficiario WHERE nroafiliado = :nroafiliado";
+$sqlDeletTipo = "DELETE FROM discapacidadbeneficiario WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 
 $sqlInserTipo = array();
 while ($dato = current($_POST)) {
@@ -122,7 +122,7 @@ try {
 	}
 	
 	$resDeleteTipo = $dbh->prepare($sqlDeletTipo);
-	$resDeleteTipo->execute(array(':nroafiliado' => $nroafiliado));
+	$resDeleteTipo->execute(array(':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden));
 	//echo($sqlDeletTipo."<br>");
 
 	foreach($sqlInserTipo as $insertTipo) {
