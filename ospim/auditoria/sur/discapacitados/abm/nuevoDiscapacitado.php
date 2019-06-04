@@ -127,7 +127,7 @@ function validar(formulario) {
       <td><div align="left"><?php echo $tipoBeneficiario." - ".$rowBeneficiario['parentesco'] ?></div></td>
     </tr>
   </table>
-  <form action="guardarNuevoDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>" method="post" enctype="multipart/form-data" name="nuevoDisca" id="nuevoDisca" onsubmit="return validar(this)">
+  <form action="guardarNuevoDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>&cuil=<?php echo $rowBeneficiario['cuil'] ?>" method="post" enctype="multipart/form-data" name="nuevoDisca" id="nuevoDisca" onsubmit="return validar(this)">
    <table width="400" style="margin-top: 10px">
      <tr>
        <td width="181"><h3 align="center">Tipo Discapacidad</h3></td>

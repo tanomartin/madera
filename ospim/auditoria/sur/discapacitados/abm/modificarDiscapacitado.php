@@ -143,7 +143,7 @@ function verCertificado(dire){
       <td><div align="left"><?php echo $tipoBeneficiario." - ".$rowBeneficiario['parentesco'] ?></div></td>
     </tr>
   </table>
-  <form action="guardarModificacionDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>&idexpediente=<?php echo $rowExpediente['idexpediente'] ?>" method="post" enctype="multipart/form-data" name="modifDisca" id="modifDisca" onsubmit="return validar(this)">
+  <form action="guardarModificacionDiscapacitado.php?nroafiliado=<?php echo $nroafiliado ?>&nroorden=<?php echo $nroorden ?>&idexpediente=<?php echo $rowExpediente['idexpediente'] ?>&cuil=<?php echo $rowBeneficiario['cuil'] ?>" method="post" enctype="multipart/form-data" name="modifDisca" id="modifDisca" onsubmit="return validar(this)">
 	<table width="400" style="margin-top: 10px">
       <tr>
         <td width="181"><h3 align="center">Tipo Discapacidad</h3></td>

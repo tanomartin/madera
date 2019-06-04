@@ -5,6 +5,7 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 //var_dump($_POST);
 $nroafiliado = $_GET['nroafiliado'];
 $nroorden = $_GET['nroorden'];
+$cuil = $_GET['cuil'];
 $idexpediente = $_GET['idexpediente'];
 $fechaAlta = fechaParaGuardar($_POST['fechaAlta']);
 $fechaEmision = fechaParaGuardar($_POST['fechaInicio']);
@@ -52,14 +53,14 @@ if ($archivo != '') {
 	fclose($fp);
 }
 if ($archivo != '') {
-	$sqlUpdateDisca = "UPDATE discapacitados SET fechaalta = :fechaalta, emisioncertificado = :fechaemision, vencimientocertificado = :fechavto, codigocertificado = :codigocertificado, documentocertificado = :certificado WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+	$sqlUpdateDisca = "UPDATE discapacitados SET cuil = :cuil, fechaalta = :fechaalta, emisioncertificado = :fechaemision, vencimientocertificado = :fechavto, codigocertificado = :codigocertificado, documentocertificado = :certificado WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 	if ($nroorden == 0) { 
 		$sqlUpdateBene = "UPDATE titulares SET informesss = :informesss, tipoinformesss = :tipoinformesss, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
 	} else {
 		$sqlUpdateBene = "UPDATE familiares SET informesss = :informesss, tipoinformesss = :tipoinformesss, certificadodiscapacidad = 1, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 	}	
 } else {
-	$sqlUpdateDisca = "UPDATE discapacitados SET fechaalta = :fechaalta, emisioncertificado = :fechaemision, vencimientocertificado = :fechavto, codigocertificado = :codigocertificado WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
+	$sqlUpdateDisca = "UPDATE discapacitados SET cuil = :cuil, fechaalta = :fechaalta, emisioncertificado = :fechaemision, vencimientocertificado = :fechavto, codigocertificado = :codigocertificado WHERE nroafiliado = :nroafiliado and nroorden = :nroorden";
 	if ($nroorden == 0) {
 		$sqlUpdateBene = "UPDATE titulares SET informesss = :informesss, tipoinformesss = :tipoinformesss, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE nroafiliado = :nroafiliado";
 	} else {
@@ -109,9 +110,9 @@ try {
 
 	$resUpdateDisca = $dbh->prepare($sqlUpdateDisca);
 	if ($archivo != '') {
-		$resUpdateDisca->execute(array(':fechaalta' => $fechaAlta, ':fechaemision' => $fechaEmision, ':fechavto' => $fechaVto, ':codigocertificado' => $codigoCert, ':certificado' => $certificado, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden ));
+		$resUpdateDisca->execute(array(':cuil' => $cuil, ':fechaalta' => $fechaAlta, ':fechaemision' => $fechaEmision, ':fechavto' => $fechaVto, ':codigocertificado' => $codigoCert, ':certificado' => $certificado, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden ));
 	} else {
-		$resUpdateDisca->execute(array(':fechaalta' => $fechaAlta, ':fechaemision' => $fechaEmision, ':fechavto' => $fechaVto, ':codigocertificado' => $codigoCert, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden ));
+		$resUpdateDisca->execute(array(':cuil' => $cuil, ':fechaalta' => $fechaAlta, ':fechaemision' => $fechaEmision, ':fechavto' => $fechaVto, ':codigocertificado' => $codigoCert, ':nroafiliado' => $nroafiliado, ':nroorden' => $nroorden ));
 	}
 	
 	$resUpdateBene = $dbh->prepare($sqlUpdateBene);
