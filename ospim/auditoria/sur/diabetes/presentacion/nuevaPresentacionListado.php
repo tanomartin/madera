@@ -44,7 +44,7 @@ $resFamiliar = mysql_query($sqlFamiliar,$db);
 $arrayFamiliares = array();
 while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
 	$index = $rowFamiliar['nroafiliado']."-".$rowFamiliar['nroorden'];
-	$arrayFamiliares[$index] = array("nombre" => $rowFamiliar['apellidoynombre']);
+	$arrayFamiliares[$index] = array("nombre" => $rowFamiliar['apellidoynombre'], "cuil" => $rowFamiliar['cuil']);
 }
 
 $sqlFamiliarDeBaja = "SELECT nroafiliado, nroorden, apellidoynombre, cuil, fechabaja FROM familiaresdebaja WHERE nroafiliado in $whereIn";
@@ -52,7 +52,7 @@ $resFamiliarDeBaja = mysql_query($sqlFamiliarDeBaja,$db);
 $arrayFamiliaresDeBaja = array();
 while ($rowFamiliarDeBaja = mysql_fetch_assoc($resFamiliarDeBaja)) {
 	$index = $rowFamiliarDeBaja['nroafiliado']."-".$rowFamiliarDeBaja['nroorden'];
-	$arrayFamiliaresDeBaja[$index] = array("nombre" => $rowFamiliarDeBaja['apellidoynombre'], "fechabaja" =>  $rowFamiliarDeBaja['fechabaja']);
+	$arrayFamiliaresDeBaja[$index] = array("nombre" => $rowFamiliarDeBaja['apellidoynombre'], "fechabaja" =>  $rowFamiliarDeBaja['fechabaja'], "cuil" => $rowFamiliarDeBaja['cuil']);
 }
 //*****************************************************//
 
@@ -240,30 +240,12 @@ function validar(formulario) {
 						}
 						if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
 							$nombre = $arrayFamiliares[$indexBusqueda]['nombre']; 
-							
-							$busquedaCUILTitu = $completo['nroafiliado']."-0";
-							if (array_key_exists($busquedaCUILTitu,$arrayTitulares)) {
-								$cuil = $arrayTitulares[$busquedaCUILTitu]['cuil'];
-							} else {
-								if (array_key_exists($busquedaCUILTitu,$arrayTitularesDeBaja)) {
-									$cuil = $arrayTitularesDeBaja[$busquedaCUILTitu]['cuil'];
-								}
-							}
-							
+							$cuil = $arrayFamiliares[$indexBusqueda]['cuil'];
 							$tipoBene = "FAMILIAR";
 						} 
 						if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
 							$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
-							
-							$busquedaCUILTitu = $completo['nroafiliado']."-0";
-							if (array_key_exists($busquedaCUILTitu,$arrayTitulares)) {
-								$cuil = $arrayTitulares[$busquedaCUILTitu]['cuil'];
-							} else {
-								if (array_key_exists($busquedaCUILTitu,$arrayTitularesDeBaja)) {
-									$cuil = $arrayTitularesDeBaja[$busquedaCUILTitu]['cuil'];
-								}
-							}
-							
+							$cuil = $arrayFamiliaresDeBaja[$busquedaCUILTitu]['cuil'];
 							$tipoBene = "FAMILIAR DE BAJA (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 						} ?>
 						<tr>
@@ -315,33 +297,15 @@ function validar(formulario) {
 						}
 						if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
 							$nombre = $arrayFamiliares[$indexBusqueda]['nombre']."<br>"; 
-							
-							$busquedaCUILTitu = $incompleto['nroafiliado']."-0";
-							if (array_key_exists($busquedaCUILTitu,$arrayTitulares)) {
-								$cuil = $arrayTitulares[$busquedaCUILTitu]['cuil'];
-							} else {
-								if (array_key_exists($busquedaCUILTitu,$arrayTitularesDeBaja)) {
-									$cuil = $arrayTitularesDeBaja[$busquedaCUILTitu]['cuil'];
-								}
-							}
-							
+							$cuil = $arrayFamiliares[$indexBusqueda]['cuil'];			
 							$tipoBene .= "FAMILIAR<br>";
 						} 
 				 		if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
 							$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
-
-							$busquedaCUILTitu = $incompleto['nroafiliado']."-0";
-							if (array_key_exists($busquedaCUILTitu,$arrayTitulares)) {
-								$cuil = $arrayTitulares[$busquedaCUILTitu]['cuil'];
-							} else {
-								if (array_key_exists($busquedaCUILTitu,$arrayTitularesDeBaja)) {
-									$cuil = $arrayTitularesDeBaja[$busquedaCUILTitu]['cuil'];
-								}
-							}
-							
+							$cuil = $arrayFamiliaresDeBaja[$indexBusqueda]['cuil'];		
 							$tipoBene .= "FAMILIAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 						} 
-						if ($tipoBene == "") { $tipoBene = "-"; }?>
+						if ($tipoBene == "") { $tipoBene = "-"; } ?>
 						<tr>
 							<td><?php echo $incompleto['nroafiliado'] ?></td>
 							<td><?php echo $nombre; ?></td>
