@@ -13,7 +13,7 @@
 /ospim/auditoria/tempautorizaciones
 /ospim/sistemas/medicamentos/files
 /lib/jquery-ui-1.9.2.custom/css/smoothness/images/Thumbs.db
-/ospim/afiliados/infomres/informes
+/ospim/afiliados/informes/informes
 /ospim/tesoreria/ordenes/ordenpago/OrdenesPagoPDF
 /ospim/tesoreria/ordenes/ordenpagonm/OrdenesPagoPDF
 /ospim/tesoreria/ordenes/ordenpagonm/migracion/archivos
@@ -21,3 +21,7 @@
 /ospim/auditoria/sur/diabetes/presentacion/archivos
 /ospim/auditoria/sur/discapacitados/informes/informes
 /ospim/fiscalizacion/fiscalizacion/requerimientos/liqui
+/ospim/sistemas/intranets/intrausimra/archivos
+/ospim/sistemas/intranets/intrausimra/backupintrausimra
+/ospim/sistemas/intranets/intraospim/archivos
+/ospim/sistemas/intranets/intraospim/backupintraospim
