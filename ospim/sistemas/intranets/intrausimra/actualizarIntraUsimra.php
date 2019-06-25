@@ -13,7 +13,7 @@ $deleteTablas = 0;
 $loadTablas = 0;
 $control = array();
 $resultado = array();
-$arrayNombreTablas = array("empresa","cabacuer","detacuer","cuoacuer","ddjjnopa","juicios","pagos","peranter");
+$arrayNombreTablas = array("empresa","cabacuer","detacuer","cuoacuer","ddjjnopa","juicios","pagos","peranter","requerimientos");
 
 //print("<br>Verifico que existan el archivo<br>");
 $pathArchivo = "archivos/";

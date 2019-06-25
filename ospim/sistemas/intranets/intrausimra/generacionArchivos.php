@@ -5,6 +5,7 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php");
 $today = date('Y-m-d');
 $timestamp1 = mktime(date("H"),date("i"),date("s"),date("n"),date("j"),date("Y")); 
+$anoLimite = date("Y") - 6;
 
 //BANDERAS
 $errorArchivos = 0;
@@ -13,7 +14,7 @@ $resultados = array();
 
 //print("<br>Verifico si ya existen archivos<br>");
 $pathArchivo = "archivos/";
-$arrayNombreArchivo = array("empresa.txt","cabacuer.txt","detacuer.txt","cuoacuer.txt","ddjjnopa.txt","juicios.txt","pagos.txt","peranter.txt");
+$arrayNombreArchivo = array("empresa.txt","cabacuer.txt","detacuer.txt","cuoacuer.txt","ddjjnopa.txt","juicios.txt","pagos.txt","peranter.txt","requerimientos.txt");
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
 	//print($archivo."<br>");
@@ -62,22 +63,27 @@ if ($errorArchivos == 0) {
 			if(stripos($tabla,"ddjjnopa") !== FALSE) {
 				$sqlLeeTablas = "SELECT DISTINCT d.nrcuit, d.perano, d.permes
 									FROM empresas e, ddjjusimra d
-									WHERE e.cuit = d.nrcuit AND d.nrcuil = '99999999999' AND d.perano > 2010;";
+									WHERE e.cuit = d.nrcuit AND d.nrcuil = '99999999999' AND d.perano > $anoLimite;";
 			}
 			if(stripos($tabla,"juicios") !== FALSE) {
 				$sqlLeeTablas = "SELECT DISTINCT c.cuit, d.anojuicio, d.mesjuicio
 									FROM empresas e, cabjuiciosusimra c, detjuiciosusimra d
-									WHERE e.cuit = c.cuit AND c.nroorden = d.nroorden AND d.anojuicio > 2010;";
+									WHERE e.cuit = c.cuit AND c.nroorden = d.nroorden AND d.anojuicio > $anoLimite;";
 			}
 			if(stripos($tabla,"pagos") !== FALSE) {
 				$sqlLeeTablas = "SELECT s.cuit, s.anopago, s.mespago, s.nropago, s.fechapago, s.montopagado, s.sistemacancelacion, s.codigobarra
 									FROM empresas e, seguvidausimra s
-									WHERE e.cuit = s.cuit AND s.anopago > 2010;";
+									WHERE e.cuit = s.cuit AND s.anopago > $anoLimite;";
 			}
 			if(stripos($tabla,"peranter") !== FALSE) {
 				$sqlLeeTablas = "SELECT p.cuit, p.mespago, p.anopago, p.mesanterior, p.anoanterior, p.nropago
 									FROM empresas e, seguvidausimra s, periodosanterioresusimra p
-									WHERE e.cuit = s.cuit AND s.anopago > 2010 AND s.periodoanterior = 1 AND s.cuit = p.cuit AND s.mespago = p.mespago AND s.anopago = p.anopago AND s.nropago = p.nropago AND p.anoanterior > 2010;";
+									WHERE e.cuit = s.cuit AND s.anopago > $anoLimite AND s.periodoanterior = 1 AND s.cuit = p.cuit AND s.mespago = p.mespago AND s.anopago = p.anopago AND s.nropago = p.nropago AND p.anoanterior > $anoLimite;";
+			}
+			if(stripos($tabla,"requerimientos") !== FALSE) {
+				$sqlLeeTablas = "SELECT r.cuit, r.nrorequerimiento, d.anofiscalizacion, d.mesfiscalizacion 
+									FROM reqfiscalizusimra r, detfiscalizusimra d
+									WHERE r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and d.anofiscalizacion > $anoLimite";
 			}
 			
 			$resLeeTablas = $dbl->query($sqlLeeTablas);
@@ -288,6 +294,30 @@ if ($errorArchivos == 0) {
 					}
 				}
 				
+				if(stripos($tabla,"requerimientos") !== FALSE) {
+					$totalRegistros = $resLeeTablas->rowCount();
+					$totalLineas = 1;
+					foreach($resLeeTablas as $contenidoTabla){
+						if($totalLineas == $totalRegistros) {
+							$finRegistro = ');';
+						} else {
+							$finRegistro = '),';
+						}
+						$registroTabla = '("'.$contenidoTabla['cuit'].'",'.$contenidoTabla['nrorequerimiento'].','.$contenidoTabla['anofiscalizacion'].','.$contenidoTabla['mesfiscalizacion'].$finRegistro;
+						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
+							$errorEscritura = 1;
+							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
+						} else {
+							$totalLineas++;
+						}
+					}
+					if($errorEscritura == 0) {
+						$resultados[$i+1] = array("etapa" => "Escritura de Datos Tablas", "estado" => "OK", "descripcion" => "Datos para Tabla: ".$tabla." - Total Registros: ".($totalLineas-1)."<br>");
+					} else {
+						$resultados[$i+1] = array("etapa" => "Escritura de Datos Tablas", "estado" => "Error", "descripcion" => $msgErrorEscritura);
+					}
+				}
+				
 				fclose($punteroArchivo);
 			}
 			$i++;
@@ -315,7 +345,7 @@ $enMintuos = number_format($tiempoTranscurrido,2,',','.');
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Resultado Actua OSPIM  :.</title>
+<title>.: Resultado Actualizacion USIMRA  :.</title>
 </head>
 
 <body bgcolor="#CCCCCC">

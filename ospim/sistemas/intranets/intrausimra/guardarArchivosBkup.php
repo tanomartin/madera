@@ -63,7 +63,10 @@ if ($error == 0) {
   <?php if ($error == 0) {
 			$subidaAcceso = 0;
 			try {	
-				$hostUsimra = "localhost"; //para las pruebas...
+				$maquina = $_SERVER['SERVER_NAME'];
+				if(strcmp("localhost",$maquina)==0) {
+					$hostUsimra = "localhost"; //para las pruebas...
+				}
 				$dbhInternet = new PDO("mysql:host=$hostUsimra;dbname=$baseUsimraIntranet",$usuarioUsimra ,$claveUsimra);
 				$dbhInternet->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				$dbhInternet->setAttribute(PDO::MYSQL_ATTR_LOCAL_INFILE, true);

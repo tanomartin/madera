@@ -6,6 +6,8 @@ include($libPath."fechas.php");
 $today = date('Y-m-d');
 $timestamp1 = mktime(date("H"),date("i"),date("s"),date("n"),date("j"),date("Y")); 
 $delegacion = $_GET['delcod'];
+$anoLimite = date("Y") - 6;
+
 //BANDERAS
 $errorArchivos = 0;
 $errorEscritura = 0;
@@ -13,7 +15,7 @@ $resultados = array();
 
 //print("<br>Verifico si ya existen archivos<br>");
 $pathArchivo = "archivos/".$delegacion."/";
-$arrayNombreArchivo = array("empresa.txt","titular.txt","familia.txt","bajatit.txt","bajafam.txt","cabjur.txt","cuij$delegacion.txt","pagos.txt","apoi$delegacion.txt", "cabacuer.txt","detacuer.txt","cuoacuer.txt","juicios.txt","discapacitados.txt");
+$arrayNombreArchivo = array("empresa.txt","titular.txt","familia.txt","bajatit.txt","bajafam.txt","cabjur.txt","cuij$delegacion.txt","pagos.txt","apoi$delegacion.txt", "cabacuer.txt","detacuer.txt","cuoacuer.txt","juicios.txt","discapacitados.txt","requerimientos.txt");
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
 	//print($archivo."<br>");
@@ -39,45 +41,71 @@ if ($errorArchivos == 0) {
 			$splitNombre = explode(".",$nombreArc);
 			$tabla = $splitNombre[0];
 			if(stripos($tabla,"empresa") !== FALSE) {
-				$sqlLeeTablas="SELECT j.codidelega AS del, e.nombre AS nom, e.domilegal AS dom, l.nomlocali AS loc, p.codzeus AS pro, e.numpostal AS cpo, CONCAT(e.ddn1,e.telefono1) AS tel, e.iniobliosp AS fio, e.cuit AS cui FROM jurisdiccion j, empresas e, localidades l, provincia p WHERE j.codidelega = '$delegacion' AND j.cuit = e.cuit AND e.codlocali = l.codlocali AND e.codprovin = p.codprovin";
+				$sqlLeeTablas="SELECT j.codidelega AS del, e.nombre AS nom, e.domilegal AS dom, l.nomlocali AS loc, p.codzeus AS pro, e.numpostal AS cpo, CONCAT(e.ddn1,e.telefono1) AS tel, e.iniobliosp AS fio, e.cuit AS cui 
+								FROM jurisdiccion j, empresas e, localidades l, provincia p 
+								WHERE j.codidelega = '$delegacion' AND j.cuit = e.cuit AND e.codlocali = l.codlocali AND e.codprovin = p.codprovin";
 			}
 			if(stripos($tabla,"titular") !== FALSE) {
-			$sqlLeeTablas="SELECT t.nroafiliado AS naf, t.fechaobrasocial AS fos, t.apellidoynombre AS nom, t.tipodocumento AS tdo, t.nrodocumento AS ndo, t.fechanacimiento AS fna, t.sexo AS sex, t.estadocivil AS eci, t.nacionalidad AS nac, t.domicilio AS dom, l.nomlocali AS loc, p.codzeus AS pro, t.numpostal AS cpo, t.cuitempresa AS cue, t.codidelega AS del, t.fechaempresa AS fem, t.categoria  AS cat, t.fechacarnet AS fca, t.cuil AS cua, t.tipoafiliado AS taf FROM titulares t, localidades l, provincia p WHERE t.codidelega = '$delegacion' AND t.codlocali = l.codlocali AND t.codprovin = p.codprovin";
+			$sqlLeeTablas="SELECT t.nroafiliado AS naf, t.fechaobrasocial AS fos, t.apellidoynombre AS nom, t.tipodocumento AS tdo, t.nrodocumento AS ndo, t.fechanacimiento AS fna, t.sexo AS sex, t.estadocivil AS eci, t.nacionalidad AS nac, t.domicilio AS dom, l.nomlocali AS loc, p.codzeus AS pro, t.numpostal AS cpo, t.cuitempresa AS cue, t.codidelega AS del, t.fechaempresa AS fem, t.categoria  AS cat, t.fechacarnet AS fca, t.cuil AS cua, t.tipoafiliado AS taf 
+								FROM titulares t, localidades l, provincia p 
+								WHERE t.codidelega = '$delegacion' AND t.codlocali = l.codlocali AND t.codprovin = p.codprovin";
 			}
 			if(stripos($tabla,"familia") !== FALSE) {
-				$sqlLeeTablas="SELECT f.nroafiliado AS naf, f.nroorden AS nor, f.tipoparentesco AS tpa, f.estudia AS est, f.discapacidad AS dis, f.apellidoynombre AS nom, f.tipodocumento AS tdo, f.nrodocumento AS ndo, f.fechanacimiento AS fna, f.sexo AS sex, f.fechaobrasocial AS fos, f.fechacarnet AS fca, f.cuil AS cua, t.codidelega AS del FROM familiares f, titulares t WHERE f.nroafiliado = t.nroafiliado AND t.codidelega = '$delegacion'";
+				$sqlLeeTablas="SELECT f.nroafiliado AS naf, f.nroorden AS nor, f.tipoparentesco AS tpa, f.estudia AS est, f.discapacidad AS dis, f.apellidoynombre AS nom, f.tipodocumento AS tdo, f.nrodocumento AS ndo, f.fechanacimiento AS fna, f.sexo AS sex, f.fechaobrasocial AS fos, f.fechacarnet AS fca, f.cuil AS cua, t.codidelega AS del 
+								FROM familiares f, titulares t 
+								WHERE f.nroafiliado = t.nroafiliado AND t.codidelega = '$delegacion'";
 			}
 			if(stripos($tabla,"bajatit") !== FALSE) {
-				$sqlLeeTablas="SELECT t.nroafiliado AS naf, t.fechaobrasocial AS fos, t.fechabaja AS fba, t.apellidoynombre AS nom, t.tipodocumento AS tdo, t.nrodocumento AS ndo, t.fechanacimiento AS fna, t.sexo AS sex, t.estadocivil AS eci, t.nacionalidad AS nac, t.domicilio AS dom, l.nomlocali AS loc, p.codzeus AS pro, t.numpostal AS cpo, t.cuitempresa AS cue, t.codidelega AS del, t.fechaempresa AS fem, t.categoria AS cat, t.fechacarnet AS fca, t.cuil AS cua, t.tipoafiliado AS taf FROM titularesdebaja t, localidades l, provincia p WHERE t.codidelega = '$delegacion' AND t.codlocali = l.codlocali AND t.codprovin = p.codprovin";
+				$sqlLeeTablas="SELECT t.nroafiliado AS naf, t.fechaobrasocial AS fos, t.fechabaja AS fba, t.apellidoynombre AS nom, t.tipodocumento AS tdo, t.nrodocumento AS ndo, t.fechanacimiento AS fna, t.sexo AS sex, t.estadocivil AS eci, t.nacionalidad AS nac, t.domicilio AS dom, l.nomlocali AS loc, p.codzeus AS pro, t.numpostal AS cpo, t.cuitempresa AS cue, t.codidelega AS del, t.fechaempresa AS fem, t.categoria AS cat, t.fechacarnet AS fca, t.cuil AS cua, t.tipoafiliado AS taf 
+								FROM titularesdebaja t, localidades l, provincia p 
+								WHERE t.codidelega = '$delegacion' AND t.codlocali = l.codlocali AND t.codprovin = p.codprovin";
 			}
 			if(stripos($tabla,"bajafam") !== FALSE) {
-				$sqlLeeTablas="SELECT f.nroafiliado AS naf, f.nroorden AS nor, f.tipoparentesco AS tpa, f.estudia AS est, f.discapacidad AS dis, f.apellidoynombre AS nom, f.tipodocumento AS tdo, f.nrodocumento AS ndo, f.fechanacimiento AS fna, f.sexo AS sex, f.fechaobrasocial AS fos, f.fechabaja AS fba, f.fechacarnet AS fca, f.cuil AS cua, t.codidelega AS del FROM familiaresdebaja f, titularesdebaja t WHERE f.nroafiliado = t.nroafiliado AND t.codidelega = '$delegacion'";
+				$sqlLeeTablas="SELECT f.nroafiliado AS naf, f.nroorden AS nor, f.tipoparentesco AS tpa, f.estudia AS est, f.discapacidad AS dis, f.apellidoynombre AS nom, f.tipodocumento AS tdo, f.nrodocumento AS ndo, f.fechanacimiento AS fna, f.sexo AS sex, f.fechaobrasocial AS fos, f.fechabaja AS fba, f.fechacarnet AS fca, f.cuil AS cua, t.codidelega AS del 
+								FROM familiaresdebaja f, titularesdebaja t 
+								WHERE f.nroafiliado = t.nroafiliado AND t.codidelega = '$delegacion'";
 			}
 			if(stripos($tabla,"cabjur") !== FALSE) {
-				$sqlLeeTablas="SELECT j.codidelega AS del, c.cuit AS cui, c.anoddjj AS ano, c.mesddjj AS mes, c.totalpersonal AS tpe, c.totalremundeclarada AS tre, c.totalremundecreto AS tde FROM jurisdiccion j, cabddjjospim c WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.anoddjj > 2003";
+				$sqlLeeTablas="SELECT j.codidelega AS del, c.cuit AS cui, c.anoddjj AS ano, c.mesddjj AS mes, c.totalpersonal AS tpe, c.totalremundeclarada AS tre, c.totalremundecreto AS tde 
+								FROM jurisdiccion j, cabddjjospim c 
+								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.anoddjj > $anoLimite";
 			}
 			if(stripos($tabla,$delegacion) !== FALSE) {
 				if(stripos($tabla,"cuij") !== FALSE) {
-					$sqlLeeTablas="SELECT j.codidelega AS del, d.cuit AS cue, d.anoddjj AS ano, d.mesddjj AS mes, d.cuil AS cua, d.remundeclarada AS rem FROM jurisdiccion j, detddjjospim d WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.anoddjj > 2003";
+					$sqlLeeTablas="SELECT j.codidelega AS del, d.cuit AS cue, d.anoddjj AS ano, d.mesddjj AS mes, d.cuil AS cua, d.remundeclarada AS rem 
+									FROM jurisdiccion j, detddjjospim d 
+									WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.anoddjj > $anoLimite";
 				}
 				if(stripos($tabla,"apoi") !== FALSE) {
-					$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cue, a.cuil AS cua, a.anopago AS ano, a.mespago AS mes, a.concepto AS con, a.fechapago AS fpa, a.debitocredito AS deb, a.importe AS imp FROM jurisdiccion j, afiptransferencias a WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.anopago > 2003 AND a.concepto in('381','C14','T14','T55')";
+					$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cue, a.cuil AS cua, a.anopago AS ano, a.mespago AS mes, a.concepto AS con, a.fechapago AS fpa, a.debitocredito AS deb, a.importe AS imp 
+									FROM jurisdiccion j, afiptransferencias a 
+									WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.anopago > $anoLimite AND a.concepto in('381','C14','T14','T55')";
 				}
 			}
 			if(stripos($tabla,"pagos") !== FALSE) {
-				$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cui, a.anopago AS ano, a.mespago AS mes, a.debitocredito AS deb, a.concepto AS con, a.fechapago AS fpa, a.importe AS imp FROM jurisdiccion j, afipprocesadas a WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.anopago > 2003";
+				$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cui, a.anopago AS ano, a.mespago AS mes, a.debitocredito AS deb, a.concepto AS con, a.fechapago AS fpa, a.importe AS imp 
+								FROM jurisdiccion j, afipprocesadas a 
+								WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.anopago > $anoLimite";
 			}
 			if(stripos($tabla,"cabacuer") !== FALSE) {
-				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.tipoacuerdo AS tac, c.estadoacuerdo AS eac, c.fechaacuerdo AS fac, c.montoacuerdo AS mac FROM jurisdiccion j, cabacuerdosospim c WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit";
+				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.tipoacuerdo AS tac, c.estadoacuerdo AS eac, c.fechaacuerdo AS fac, c.montoacuerdo AS mac 
+								FROM jurisdiccion j, cabacuerdosospim c 
+								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit";
 			}
 			if(stripos($tabla,"detacuer") !== FALSE) {
-				$sqlLeeTablas="SELECT d.cuit AS cui, d.nroacuerdo AS nac, d.anoacuerdo AS ano, d.mesacuerdo AS mes FROM jurisdiccion j, detacuerdosospim d WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.anoacuerdo > 2003";
+				$sqlLeeTablas="SELECT d.cuit AS cui, d.nroacuerdo AS nac, d.anoacuerdo AS ano, d.mesacuerdo AS mes 
+								FROM jurisdiccion j, detacuerdosospim d 
+								WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.anoacuerdo > $anoLimite";
 			}
 			if(stripos($tabla,"cuoacuer") !== FALSE) {
-				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.nrocuota AS ncu, c.montocuota AS mcu, c.fechacuota AS fcu, c.montopagada AS mpa, c.fechapagada AS fpa FROM jurisdiccion j, cuoacuerdosospim c WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit";
+				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.nrocuota AS ncu, c.montocuota AS mcu, c.fechacuota AS fcu, c.montopagada AS mpa, c.fechapagada AS fpa 
+								FROM jurisdiccion j, cuoacuerdosospim c 
+								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit";
 			}
 			if(stripos($tabla,"juicios") !== FALSE) {
-				$sqlLeeTablas="SELECT c.cuit AS cui, d.anojuicio AS ano, d.mesjuicio AS mes FROM jurisdiccion j, cabjuiciosospim c, detjuiciosospim d WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.nroorden = d.nroorden AND d.anojuicio > 2003";
+				$sqlLeeTablas="SELECT c.cuit AS cui, d.anojuicio AS ano, d.mesjuicio AS mes 
+								FROM jurisdiccion j, cabjuiciosospim c, detjuiciosospim d 
+								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.nroorden = d.nroorden AND d.anojuicio > $anoLimite";
 			}
 			if(stripos($tabla,"discapacitados") !== FALSE) {
 				$sqlLeeTablas="SELECT d.nroafiliado as naf, d.nroorden as nrd, t.codidelega as delalta, b.codidelega as delbaja
@@ -85,6 +113,13 @@ if ($errorArchivos == 0) {
 									LEFT JOIN titulares t ON d.nroafiliado =  t.nroafiliado
 									LEFT JOIN titularesdebaja b ON d.nroafiliado =  b.nroafiliado
 									WHERE t.codidelega = $delegacion or b.codidelega = $delegacion";
+			}
+			if(stripos($tabla,"requerimientos") !== FALSE) {
+				$sqlLeeTablas="SELECT r.cuit, r.nrorequerimiento, d.anofiscalizacion, d.mesfiscalizacion
+									FROM reqfiscalizospim r, detfiscalizospim d, jurisdiccion j
+									WHERE j.codidelega = '$delegacion'  and j.cuit = r.cuit and 
+										  r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and 
+										  d.anofiscalizacion > $anoLimite";
 			}
 
 			//print($sqlLeeTablas."<br>");
@@ -104,7 +139,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '"),';						
 						}
-						$registroTabla = '('.$contenidoTabla[del].',"'.$contenidoTabla[nom].'","'.$contenidoTabla[dom].'","'.$contenidoTabla[loc].'",'.$contenidoTabla[pro].','.$contenidoTabla[cpo].',"'.$contenidoTabla[tel].'","'.$contenidoTabla[fio].'","'.$contenidoTabla[cui].$finRegistro;
+						$registroTabla = '('.$contenidoTabla['del'].',"'.$contenidoTabla['nom'].'","'.$contenidoTabla['dom'].'","'.$contenidoTabla['loc'].'",'.$contenidoTabla['pro'].','.$contenidoTabla['cpo'].',"'.$contenidoTabla['tel'].'","'.$contenidoTabla['fio'].'","'.$contenidoTabla['cui'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -128,7 +163,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '"),';						
 						}
-						$registroTabla = '('.$contenidoTabla[naf].',"'.$contenidoTabla[fos].'","'.$contenidoTabla[nom].'","'.$contenidoTabla[tdo].'",'.$contenidoTabla[ndo].',"'.$contenidoTabla[fna].'","'.$contenidoTabla[sex].'",'.$contenidoTabla[eci].','.$contenidoTabla[nac].',"'.$contenidoTabla[dom].'","'.$contenidoTabla[loc].'",'.$contenidoTabla[pro].','.$contenidoTabla[cpo].',"'.$contenidoTabla[cue].'",'.$contenidoTabla[del].',"'.$contenidoTabla[fem].'","'.$contenidoTabla[cat].'","'.$contenidoTabla[fca].'","'.$contenidoTabla[cua].'","'.$contenidoTabla[taf].$finRegistro;
+						$registroTabla = '('.$contenidoTabla['naf'].',"'.$contenidoTabla['fos'].'","'.$contenidoTabla['nom'].'","'.$contenidoTabla['tdo'].'",'.$contenidoTabla['ndo'].',"'.$contenidoTabla['fna'].'","'.$contenidoTabla['sex'].'",'.$contenidoTabla['eci'].','.$contenidoTabla['nac'].',"'.$contenidoTabla['dom'].'","'.$contenidoTabla['loc'].'",'.$contenidoTabla['pro'].','.$contenidoTabla['cpo'].',"'.$contenidoTabla['cue'].'",'.$contenidoTabla['del'].',"'.$contenidoTabla['fem'].'","'.$contenidoTabla['cat'].'","'.$contenidoTabla['fca'].'","'.$contenidoTabla['cua'].'","'.$contenidoTabla['taf'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -152,7 +187,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '),';						
 						}
-						$registroTabla = '('.$contenidoTabla[naf].','.$contenidoTabla[nor].','.$contenidoTabla[tpa].','.$contenidoTabla[est].','.$contenidoTabla[dis].',"'.$contenidoTabla[nom].'","'.$contenidoTabla[tdo].'",'.$contenidoTabla[ndo].',"'.$contenidoTabla[fna].'","'.$contenidoTabla[sex].'","'.$contenidoTabla[fos].'","'.$contenidoTabla[fca].'","'.$contenidoTabla[cua].'",'.$contenidoTabla[del].$finRegistro;
+						$registroTabla = '('.$contenidoTabla['naf'].','.$contenidoTabla['nor'].','.$contenidoTabla['tpa'].','.$contenidoTabla['est'].','.$contenidoTabla['dis'].',"'.$contenidoTabla['nom'].'","'.$contenidoTabla['tdo'].'",'.$contenidoTabla['ndo'].',"'.$contenidoTabla['fna'].'","'.$contenidoTabla['sex'].'","'.$contenidoTabla['fos'].'","'.$contenidoTabla['fca'].'","'.$contenidoTabla['cua'].'",'.$contenidoTabla['del'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -176,7 +211,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '"),';						
 						}
-						$registroTabla = '('.$contenidoTabla[naf].',"'.$contenidoTabla[fos].'","'.$contenidoTabla[fba].'","'.$contenidoTabla[nom].'","'.$contenidoTabla[tdo].'",'.$contenidoTabla[ndo].',"'.$contenidoTabla[fna].'","'.$contenidoTabla[sex].'",'.$contenidoTabla[eci].','.$contenidoTabla[nac].',"'.$contenidoTabla[dom].'","'.$contenidoTabla[loc].'",'.$contenidoTabla[pro].','.$contenidoTabla[cpo].',"'.$contenidoTabla[cue].'",'.$contenidoTabla[del].',"'.$contenidoTabla[fem].'","'.$contenidoTabla[cat].'","'.$contenidoTabla[fca].'","'.$contenidoTabla[cua].'","'.$contenidoTabla[taf].$finRegistro;
+						$registroTabla = '('.$contenidoTabla['naf'].',"'.$contenidoTabla['fos'].'","'.$contenidoTabla['fba'].'","'.$contenidoTabla['nom'].'","'.$contenidoTabla['tdo'].'",'.$contenidoTabla['ndo'].',"'.$contenidoTabla['fna'].'","'.$contenidoTabla['sex'].'",'.$contenidoTabla['eci'].','.$contenidoTabla['nac'].',"'.$contenidoTabla['dom'].'","'.$contenidoTabla['loc'].'",'.$contenidoTabla['pro'].','.$contenidoTabla['cpo'].',"'.$contenidoTabla['cue'].'",'.$contenidoTabla['del'].',"'.$contenidoTabla['fem'].'","'.$contenidoTabla['cat'].'","'.$contenidoTabla['fca'].'","'.$contenidoTabla['cua'].'","'.$contenidoTabla['taf'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -200,7 +235,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '),';						
 						}
-						$registroTabla = '('.$contenidoTabla[naf].','.$contenidoTabla[nor].','.$contenidoTabla[tpa].','.$contenidoTabla[est].','.$contenidoTabla[dis].',"'.$contenidoTabla[nom].'","'.$contenidoTabla[tdo].'",'.$contenidoTabla[ndo].',"'.$contenidoTabla[fna].'","'.$contenidoTabla[sex].'","'.$contenidoTabla[fos].'","'.$contenidoTabla[fba].'","'.$contenidoTabla[fca].'","'.$contenidoTabla[cua].'",'.$contenidoTabla[del].$finRegistro;
+						$registroTabla = '('.$contenidoTabla['naf'].','.$contenidoTabla['nor'].','.$contenidoTabla['tpa'].','.$contenidoTabla['est'].','.$contenidoTabla['dis'].',"'.$contenidoTabla['nom'].'","'.$contenidoTabla['tdo'].'",'.$contenidoTabla['ndo'].',"'.$contenidoTabla['fna'].'","'.$contenidoTabla['sex'].'","'.$contenidoTabla['fos'].'","'.$contenidoTabla['fba'].'","'.$contenidoTabla['fca'].'","'.$contenidoTabla['cua'].'",'.$contenidoTabla['del'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -224,7 +259,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '),';						
 						}
-						$registroTabla = '('.$contenidoTabla[del].',"'.$contenidoTabla[cui].'",'.$contenidoTabla[ano].','.$contenidoTabla[mes].','.$contenidoTabla[tpe].','.$contenidoTabla[tre].','.$contenidoTabla[tde].$finRegistro;
+						$registroTabla = '('.$contenidoTabla['del'].',"'.$contenidoTabla['cui'].'",'.$contenidoTabla['ano'].','.$contenidoTabla['mes'].','.$contenidoTabla['tpe'].','.$contenidoTabla['tre'].','.$contenidoTabla['tde'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -249,7 +284,7 @@ if ($errorArchivos == 0) {
 							} else {
 								$finRegistro = '),';						
 							}
-							$registroTabla = '('.$contenidoTabla[del].',"'.$contenidoTabla[cue].'",'.$contenidoTabla[ano].','.$contenidoTabla[mes].',"'.$contenidoTabla[cua].'",'.$contenidoTabla[rem].$finRegistro;
+							$registroTabla = '('.$contenidoTabla['del'].',"'.$contenidoTabla['cue'].'",'.$contenidoTabla['ano'].','.$contenidoTabla['mes'].',"'.$contenidoTabla['cua'].'",'.$contenidoTabla['rem'].$finRegistro;
 							if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 								$errorEscritura = 1;
 								$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -273,7 +308,7 @@ if ($errorArchivos == 0) {
 							} else {
 								$finRegistro = '),';						
 							}
-							$registroTabla = '('.$contenidoTabla[del].',"'.$contenidoTabla[cue].'","'.$contenidoTabla[cua].'",'.$contenidoTabla[ano].','.$contenidoTabla[mes].',"'.$contenidoTabla[con].'","'.$contenidoTabla[fpa].'","'.$contenidoTabla[deb].'",'.$contenidoTabla[imp].$finRegistro;
+							$registroTabla = '('.$contenidoTabla['del'].',"'.$contenidoTabla['cue'].'","'.$contenidoTabla['cua'].'",'.$contenidoTabla['ano'].','.$contenidoTabla['mes'].',"'.$contenidoTabla['con'].'","'.$contenidoTabla['fpa'].'","'.$contenidoTabla['deb'].'",'.$contenidoTabla['imp'].$finRegistro;
 							if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 								$errorEscritura = 1;
 								$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -298,7 +333,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '),';						
 						}
-						$registroTabla = '('.$contenidoTabla[del].',"'.$contenidoTabla[cui].'",'.$contenidoTabla[ano].','.$contenidoTabla[mes].',"'.$contenidoTabla[deb].'","'.$contenidoTabla[con].'","'.$contenidoTabla[fpa].'",'.$contenidoTabla[imp].$finRegistro;
+						$registroTabla = '('.$contenidoTabla['del'].',"'.$contenidoTabla['cui'].'",'.$contenidoTabla['ano'].','.$contenidoTabla['mes'].',"'.$contenidoTabla['deb'].'","'.$contenidoTabla['con'].'","'.$contenidoTabla['fpa'].'",'.$contenidoTabla['imp'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -322,7 +357,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '),';						
 						}
-						$registroTabla = '("'.$contenidoTabla[cui].'",'.$contenidoTabla[nac].','.$contenidoTabla[tac].','.$contenidoTabla[eac].',"'.$contenidoTabla[fac].'",'.$contenidoTabla[mac].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla['cui'].'",'.$contenidoTabla['nac'].','.$contenidoTabla['tac'].','.$contenidoTabla['eac'].',"'.$contenidoTabla['fac'].'",'.$contenidoTabla['mac'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -346,7 +381,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '),';						
 						}
-						$registroTabla = '("'.$contenidoTabla[cui].'",'.$contenidoTabla[nac].','.$contenidoTabla[ano].','.$contenidoTabla[mes].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla['cui'].'",'.$contenidoTabla['nac'].','.$contenidoTabla['ano'].','.$contenidoTabla['mes'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -370,7 +405,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '"),';						
 						}
-						$registroTabla = '("'.$contenidoTabla[cui].'",'.$contenidoTabla[nac].','.$contenidoTabla[ncu].','.$contenidoTabla[mcu].',"'.$contenidoTabla[fcu].'",'.$contenidoTabla[mpa].',"'.$contenidoTabla[fpa].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla['cui'].'",'.$contenidoTabla['nac'].','.$contenidoTabla['ncu'].','.$contenidoTabla['mcu'].',"'.$contenidoTabla['fcu'].'",'.$contenidoTabla['mpa'].',"'.$contenidoTabla['fpa'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -394,7 +429,7 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '),';						
 						}
-						$registroTabla = '("'.$contenidoTabla[cui].'",'.$contenidoTabla[ano].','.$contenidoTabla[mes].$finRegistro;
+						$registroTabla = '("'.$contenidoTabla['cui'].'",'.$contenidoTabla['ano'].','.$contenidoTabla['mes'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
@@ -418,12 +453,36 @@ if ($errorArchivos == 0) {
 						} else {
 							$finRegistro = '),';
 						}
-						if ($contenidoTabla[delalta] == null) {
-							$delega = $contenidoTabla[delbaja];
+						if ($contenidoTabla['delalta'] == null) {
+							$delega = $contenidoTabla['delbaja'];
 						} else {
-							$delega = $contenidoTabla[delalta];
+							$delega = $contenidoTabla['delalta'];
 						}
-						$registroTabla = '("'.$contenidoTabla[naf].'",'.$contenidoTabla[nrd].','.$delega.$finRegistro;
+						$registroTabla = '("'.$contenidoTabla['naf'].'",'.$contenidoTabla['nrd'].','.$delega.$finRegistro;
+						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
+							$errorEscritura = 1;
+							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";
+						} else {
+							$totalLineas++;
+						}
+					}
+					if($errorEscritura == 0) {
+						$resultados[$i+1] = array("etapa" => "Escritura de Datos Tablas", "estado" => "OK", "descripcion" => "Datos para Tabla: ".$tabla." - Total Registros: ".($totalLineas-1)."<br>");
+					} else {
+						$resultados[$i+1] = array("etapa" => "Escritura de Datos Tablas", "estado" => "Error", "descripcion" => $msgErrorEscritura);
+					}
+				}
+				
+				if(stripos($tabla,"requerimientos") !== FALSE) {
+					$totalRegistros = $resLeeTablas->rowCount();
+					$totalLineas = 1;
+					foreach($resLeeTablas as $contenidoTabla){
+						if($totalLineas == $totalRegistros) {
+							$finRegistro = ');';
+						} else {
+							$finRegistro = '),';
+						}
+						$registroTabla = '("'.$contenidoTabla['cuit'].'",'.$contenidoTabla['nrorequerimiento'].','.$contenidoTabla['anofiscalizacion'].','.$contenidoTabla['mesfiscalizacion'].$finRegistro;
 						if(fwrite($punteroArchivo, $registroTabla."\n") === FALSE) {
 							$errorEscritura = 1;
 							$msgErrorEscritura = "Se produjo un error escribiendo los datos en el archivo: ".$nombreArc."<br>";

@@ -64,6 +64,7 @@ if ($error == 0) {
 <?php if ($error == 0) {
   		$subidaAcceso = 0;
 		try {	
+			$maquina = $_SERVER['SERVER_NAME'];
 			if(strcmp("localhost",$maquina)==0) {
 				$hostOspim = "localhost"; //para las pruebas...
 			}

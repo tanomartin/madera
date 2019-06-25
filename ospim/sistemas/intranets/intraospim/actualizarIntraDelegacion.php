@@ -19,7 +19,10 @@ $resultados = array();
 
 //print("<br>Verifico que existan los archivos<br>");
 $pathArchivo = "archivos/".$delegacion."/";
-$arrayNombreArchivo = array("empresa.txt","titular.txt","familia.txt","bajatit.txt","bajafam.txt","cabjur.txt","cuij$delegacion.txt","pagos.txt","apoi$delegacion.txt", "cabacuer.txt","detacuer.txt","cuoacuer.txt","juicios.txt","discapacitados.txt");
+$arrayNombreArchivo = array("empresa.txt","titular.txt","familia.txt","bajatit.txt",
+							"bajafam.txt","cabjur.txt","cuij$delegacion.txt","pagos.txt","apoi$delegacion.txt", 
+							"cabacuer.txt","detacuer.txt","cuoacuer.txt","juicios.txt","discapacitados.txt",
+							"requerimientos.txt");
 foreach ($arrayNombreArchivo as $nombreArc) {
 	$archivo = $pathArchivo.$nombreArc;
 	//print($archivo."<br>");
@@ -66,7 +69,7 @@ if ($errorArchivos == 0) {
 			if (stripos($tabla,$delegacion) !== FALSE) {
 				$sqlControlTabla = "DELETE from $tabla";
 			} else {
-				if (stripos($tabla,"acuer") !== FALSE || stripos($tabla,"juicios") !== FALSE) {
+				if (stripos($tabla,"acuer") !== FALSE || stripos($tabla,"juicios") !== FALSE || stripos($tabla,"requerimientos") !== FALSE)  {
 					$sqlControlTabla = "DELETE from $tabla WHERE nrcuit in (SELECT nrcuit FROM empresa WHERE delcod = ".$delegacion.")";
 				} else {
 					$sqlControlTabla = "DELETE from $tabla WHERE delcod = $delegacion";
@@ -137,7 +140,7 @@ if (($errorArchivos == 0) && ($bajaacceso == 1) && ($deleteTablas == 1) && ($loa
 			if (stripos($tabla,$delegacion) !== FALSE) {
 				$sqlControlTabla = "SELECT count(*) as total from $tabla";
 			} else {
-				if (stripos($tabla,"acuer") !== FALSE || stripos($tabla,"juicios") !== FALSE) {
+				if (stripos($tabla,"acuer") !== FALSE || stripos($tabla,"juicios") !== FALSE || stripos($tabla,"requerimientos") !== FALSE) {
 					$sqlControlTabla = "SELECT count(*) as total from $tabla t, empresa e WHERE e.delcod = $delegacion and e.nrcuit = t.nrcuit";
 				} else {
 					$sqlControlTabla = "SELECT count(*) as total from $tabla WHERE delcod = $delegacion";
