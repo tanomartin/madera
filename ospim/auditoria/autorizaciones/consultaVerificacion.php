@@ -3,111 +3,134 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $nrosolicitud=$_GET['nroSolicitud'];
 setcookie($nrosolicitud, $_SESSION['usuario'], time() + (86400 * 7));
-$sqlLeeSolicitud = "SELECT a.*, doc.*, d.nombre as delegacion, parentesco.descrip as paretensco
+$sqlLeeSolicitud = "SELECT a.*, doc.*, d.nombre as delegacion, parentesco.descrip as paretensco,
+						   clasificamaterial.descripcion as tipomaterial
 					FROM delegaciones d, autorizacionesdocoriginales doc, autorizaciones a
 					LEFT JOIN parentesco ON a.codiparentesco = parentesco.codparent
+					LEFT JOIN clasificamaterial ON a.tipomaterial = clasificamaterial.codigo
 					WHERE a.nrosolicitud = $nrosolicitud and 
 						  a.nrosolicitud = doc.nrosolicitud and
 						  a.codidelega = d.codidelega";
 $resultLeeSolicitud = mysql_query($sqlLeeSolicitud,$db);
 $rowLeeSolicitud = mysql_fetch_array($resultLeeSolicitud);
 
-if($rowLeeSolicitud['material'] == 1) {
-	$sqlLeeMaterial = "SELECT * FROM clasificamaterial where codigo = $rowLeeSolicitud[tipomaterial]";
-	$resultLeeMaterial = mysql_query($sqlLeeMaterial,$db);
-	$rowLeeMaterial = mysql_fetch_array($resultLeeMaterial);
+$nombre = $rowLeeSolicitud['apellidoynombre'];
+$nroafiliado = "-"; 
+if ($rowLeeSolicitud['nroafiliado'] != 0) { 
+	$nroafiliado = $rowLeeSolicitud['nroafiliado']; 
 }
-
+$tipoAfiliado = "NO EMPADRONADO";
 $tipoTitular = "-";
-if($rowLeeSolicitud['nroafiliado']!=0) {
-	$sqlTipoTitular = "SELECT descrip FROM titulares t, tipotitular p WHERE t.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and t.situaciontitularidad = p.codtiptit";
+$nroorden = 0;
+$naci = "-";
+$edad = "-";
+
+if ($rowLeeSolicitud['codiparentesco'] <= 0) {
+	$sqlTipoTitular = "SELECT nroafiliado, apellidoynombre, descrip, cuil, DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento 
+						FROM titulares t, tipotitular p 
+						WHERE t.cuil = ".$rowLeeSolicitud['cuil']." and t.situaciontitularidad = p.codtiptit";
 	$resTipoTitular = mysql_query($sqlTipoTitular,$db);
 	$canTipoTitular = mysql_num_rows($resTipoTitular);
 	if ($canTipoTitular > 0) {
+		$tipoAfiliado = "TITULAR";
 		$rowTipoTitular = mysql_fetch_assoc($resTipoTitular);
 		$tipoTitular = $rowTipoTitular['descrip'];
+		$edad = $rowTipoTitular['edad'];
+		$naci = $rowTipoTitular['fechanacimiento'];
+		$nombre = $rowTipoTitular['apellidoynombre'];
+		$nroafiliado = $rowTipoTitular['nroafiliado'];
+	} else {
+		$sqlTipoTitularBaja = "SELECT nroafiliado, apellidoynombre, descrip, cuil, DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento
+								FROM titularesdebaja t, tipotitular p
+								WHERE t.cuil = ".$rowLeeSolicitud['cuil']." and t.situaciontitularidad = p.codtiptit";
+		$resTipoTitularBaja = mysql_query($sqlTipoTitularBaja,$db);
+		$canTipoTitularBaja = mysql_num_rows($resTipoTitularBaja);
+		if ($canTipoTitularBaja > 0) {
+			$tipoAfiliado = "TITULAR DE BAJA";
+			$rowTipoTitularBaja = mysql_fetch_assoc($resTipoTitularBaja);
+			$tipoTitular = $rowTipoTitular['descrip'];
+			$edad = $rowTipoTitularBaja['edad'];
+			$naci = $rowTipoTitularBaja['fechanacimiento'];
+			$nombre = $rowTipoTitularBaja['apellidoynombre'];
+			$nroafiliado = $rowTipoTitularBaja['nroafiliado'];
+		}
 	}
 }
 
-//SACO LA EDAD
-if ($rowLeeSolicitud['codiparentesco'] >= 0) {
-	if ($rowLeeSolicitud['codiparentesco'] > 0) {
-		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil']. " and nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
+if ($tipoAfiliado == "NO EMPADRONADO" && $rowLeeSolicitud['codiparentesco'] != 0) {
+	$sqlFamiliar = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento 
+					 FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil'];
+	$resFamiliar = mysql_query($sqlFamiliar,$db);
+	$canFamiliar = mysql_num_rows($resFamiliar);
+	if ($canFamiliar > 0) {
+		$tipoAfiliado = "FAMILIAR - ".$rowLeeSolicitud['paretensco'];
+		$rowFamiliar = mysql_fetch_assoc($resFamiliar);
+		$edad = $rowFamiliar['edad'];
+		$naci = $rowFamiliar['fechanacimiento'];
+		$nroorden = $rowFamiliar['nroorden'];
+		$nombre = $rowFamiliar['apellidoynombre'];
+		$nroafiliado = $rowFamiliar['nroafiliado'];
 	} else {
-		$sqlEdad = "SELECT DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento FROM titulares WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado'];
+		$sqlFamiliarBaja = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento
+							FROM familiaresdebaja WHERE cuil = ".$rowLeeSolicitud['cuil'];
+		$resFamiliarBaja = mysql_query($sqlFamiliarBaja,$db);
+		$canFamiliarBaja = mysql_num_rows($resFamiliarBaja);
+		if ($canFamiliarBaja > 0) {
+			$tipoAfiliado = "FAMILIAR DE BAJA - ".$rowLeeSolicitud['paretensco'];
+			$rowFamiliarBaja = mysql_fetch_assoc($resFamiliarBaja);
+			$edad = $rowFamiliarBaja['edad'];
+			$naci = $rowFamiliarBaja['fechanacimiento'];
+			$nroorden = $rowFamiliarBaja['nroorden'];
+			$nombre = $rowFamiliarBaja['apellidoynombre'];
+			$nroafiliado = $rowFamiliarBaja['nroafiliado'];
+		}
 	}
-	$resEdad = mysql_query($sqlEdad,$db);
-	$rowEdad = mysql_fetch_assoc($resEdad);
-	$edad = $rowEdad['edad'];
-	$naci = $rowEdad['fechanacimiento'];
-} else {
-	$edad = "-";
-	$naci = "-";
 }
 
-//VEO SI ES DISCAPACITADO
-if ($rowLeeSolicitud['codiparentesco'] >= 0) {
-	if ($rowLeeSolicitud['codiparentesco'] > 0) {
-		$sqlDisca = "SELECT f.nroafiliado, f.nroorden as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
-						FROM familiares f, discapacitados d WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = d.nroafiliado and f.nroorden = d.nroorden";
-	} else {
-		$sqlDisca = "SELECT d.*, 0 as nroorden, DATE_FORMAT(d.fechaalta,'%d/%m/%Y') as fechaalta, DATE_FORMAT(d.emisioncertificado,'%d/%m/%Y') as emisioncertificado, DATE_FORMAT(d.vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
-						FROM discapacitados d WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and d.nroorden = 0";
-
-	}
+$canDisca = 0;
+$canHIV = 0;
+$canOnco = 0;
+$canPMI = 0;
+$canDiabetes = 0;
+if ($tipoAfiliado != "NO EMPADRONADO") {
+	//VEO SI ES DISCA
+	$sqlDisca = "SELECT DATE_FORMAT(fechaalta,'%d/%m/%Y') as fechaalta,
+	DATE_FORMAT(emisioncertificado,'%d/%m/%Y') as emisioncertificado,
+	DATE_FORMAT(vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
+	FROM discapacitados
+	WHERE cuil = ".$rowLeeSolicitud['cuil'];
 	$resDisca = mysql_query($sqlDisca,$db);
 	$canDisca = mysql_num_rows($resDisca);
-} else {
-	$canDisca = 0;
-}
 
-//VEO SI ES HIV
-if ($rowLeeSolicitud['codiparentesco'] >= 0) {
-	if ($rowLeeSolicitud['codiparentesco'] > 0) {
-		$sqlHIV = "SELECT h.* FROM familiares f, hivbeneficiarios h WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = h.nroafiliado and f.nroorden = h.nroorden";
-	} else {
-		$sqlHIV = "SELECT h.* FROM hivbeneficiarios h WHERE h.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and h.nroorden = 0";
-	}
+	//VEO SI ES HIV
+	$sqlHIV = "SELECT *
+				FROM hivbeneficiarios
+				WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and nroorden = $nroorden";
 	$resHIV = mysql_query($sqlHIV,$db);
 	$canHIV = mysql_num_rows($resHIV);
-} else {
-	$canHIV = 0;
-}
 
-//VEO SI ES ONCO
-if ($rowLeeSolicitud['codiparentesco'] >= 0) {
-	if ($rowLeeSolicitud['codiparentesco'] > 0) {
-		$sqlOnco = "SELECT o.* FROM familiares f, oncologiabeneficiarios o WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and f.nroafiliado = o.nroafiliado and f.nroorden = o.nroorden";
-	} else {
-		$sqlOnco = "SELECT o.* FROM oncologiabeneficiarios o WHERE o.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and o.nroorden = 0";
-	}
+	//VEO SI ES ONCO
+	$sqlOnco = "SELECT *
+				FROM oncologiabeneficiarios o
+				WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and nroorden = $nroorden";
 	$resOnco = mysql_query($sqlOnco,$db);
 	$canOnco = mysql_num_rows($resOnco);
-} else {
-	$canOnco = 0;
-}
 
-//VEO SI ES ESTA EN PMI
-if ($rowLeeSolicitud['codiparentesco'] >= 0) {
+	//VEO SI ES ESTA EN PMI
 	$fechaLimite = date('Y-m-d',strtotime('-1 month',strtotime (date('Y-m-d'))));
-	if ($rowLeeSolicitud['codiparentesco'] > 0) {
-		$sqlPMI = "SELECT p.* FROM familiares f, pmibeneficiarios p
-					WHERE f.cuil = ".$rowLeeSolicitud['cuil']. " and
-					f.nroafiliado = p.nroafiliado and
-					f.nroorden = p.nroorden and
-					(p.fechanacimiento != '0000-00-00' and p.fechanacimiento >= '$fechaLimite'
-					or p.fechanacimiento = '0000-00-00' and p.fpp >= '$fechaLimite')";
-	} else {
-		$sqlPMI = "SELECT p.* FROM pmibeneficiarios p
-				 	WHERE p.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and
-				 	p.nroorden = 0 and
-				 	(p.fechanacimiento != '0000-00-00' and p.fechanacimiento >= '$fechaLimite'
-				 	or p.fechanacimiento = '0000-00-00' and p.fpp >= '$fechaLimite')";
-	}
+	$sqlPMI = "SELECT * FROM pmibeneficiarios
+				WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and
+				nroorden = $nroorden and
+				(fechanacimiento != '0000-00-00' and fechanacimiento >= '$fechaLimite'
+				or fechanacimiento = '0000-00-00' and fpp >= '$fechaLimite')";
 	$resPMI = mysql_query($sqlPMI,$db);
 	$canPMI = mysql_num_rows($resPMI);
-} else {
-	$canPMI = 0;
+
+	//VEO SI ES DIABETES
+	$sqlDiabetes = "SELECT * FROM diabetesbeneficiarios
+					WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and nroorden = $nroorden";
+	$resDiabetes = mysql_query($sqlDiabetes,$db);
+	$canDiabetes = mysql_num_rows($resDiabetes);
 }
 ?>
 
@@ -177,21 +200,12 @@ function validar(formulario) {
   			<tr>
    				<td width="40%" valign="top">
 	    			<p style="color: maroon;"><b>Información del Beneficiario</b></p>
-	    			<p><b>Nº Afiliado:</b> <?php if($rowLeeSolicitud['nroafiliado']!=0) echo $rowLeeSolicitud['nroafiliado']?></p>
+	    			<p><b>Nº Afiliado:</b> <?php echo $nroafiliado ?></p>
 	        		<p><b>Clasificacion del Titular: </b> <?php echo $tipoTitular ?></p>
-	        		<p><b>Apellido y Nombre: </b><?php echo $rowLeeSolicitud['apellidoynombre']?></p>
+	        		<p><b>Apellido y Nombre: </b><?php echo $nombre ?></p>
 	       		 	<p><b>Comentario: </b><?php echo $rowLeeSolicitud['comentario']?></p>
-	        		<p><b>Tipo:</b>
-			<?php	if($rowLeeSolicitud['codiparentesco']>=0) {
-						if($rowLeeSolicitud['codiparentesco']==0) {
-							echo "Titular";
-						} else {
-							echo "Familiar ".$rowLeeSolicitud['paretensco'];
-						}
-					} else {
-						echo "No Empadronado";
-					} ?>
-					</p>
+	        		<?php $color = ""; if ($tipoAfiliado == "NO EMPADRONADO") { $color = 'color="red"'; } ?>
+	        		<p><b>Tipo: </b><font <?php echo $color ?>><?php echo $tipoAfiliado; ?></font></p>
 	        		<p><b>Fecha Nacimiento:</b> <?php if ($naci != '-') { echo invertirFecha($naci); } else { echo $naci; } ?><strong> | Edad:</strong> <?php echo $edad ?></p>
 	        		<p><b>C.U.I.L.:</b> <?php echo $rowLeeSolicitud['cuil'] ?></p>
 	        		<p><b>Telefono:</b> <?php echo $rowLeeSolicitud['telefonoafiliado'] ?></p> 
@@ -209,12 +223,15 @@ function validar(formulario) {
 			<?php 	} ?>
 			<?php	if ($canOnco == 1) { ?>
 						<p><b>Oncológico:</b> SI </p>
-			<?php 	} ?>
-			<?php	if ($canPMI == 1) {
+			<?php 	} 
+					if ($canDiabetes == 1) { ?>
+						<p><b>Diabético:</b> SI </p>
+			<?php	}
+					if ($canPMI == 1) {
 						$rowPMI = mysql_fetch_assoc($resPMI); ?>
 						<p><b>P.M.I.:</b> SI (FPP: <?php echo $rowPMI['fpp'] ?> - FP: <?php if ($rowPMI['fechanacimiento'] != "00/00/0000") { echo $rowPMI['fechanacimiento']; } else { echo "Sin Dato"; } ?>) </p>
 			<?php 	} ?>
-			  <?php if ($canDisca == 0 && $canHIV == 0 && $canOnco == 0 && $canPMI == 0) { ?>
+			  <?php if ($canDisca == 0 && $canHIV == 0 && $canOnco == 0 && $canPMI == 0 && $canDiabetes == 0) { ?>
 			    		<p>Sin Información para mostrar</p>
 			 <?php  }?>
 	        		<p style="color: maroon;"><b>Historia Clinica Autorizaciones</b></p>
@@ -222,7 +239,7 @@ function validar(formulario) {
 	       		</td>
 	       		<td width="20%" valign="top">
 	    			<p style="color: maroon;"><b>Documentación de la Solicitud</b></p>
-	    			<p><b>Tipo:</b> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeMaterial['descripcion']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
+	    			<p><b>Tipo:</b> <?php if($rowLeeSolicitud['practica']==1) echo "Practica"; else { if($rowLeeSolicitud['material']==1) echo "Material - ".$rowLeeSolicitud['tipomaterial']; else { if($rowLeeSolicitud['medicamento']==1) echo "Medicamento";}} ?></p>
 	     			<p><b>Pedido Medico:</b> <?php if($rowLeeSolicitud['pedidomedico']!=NULL) {?><input type="button" name="pedidomedico" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,1)" /><?php }?></p>
 	      			<p><b>Historia Clínica:</b> <?php if($rowLeeSolicitud['resumenhc']!=NULL) {?><input type="button" name="historiaclinica" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,2)" /><?php }?></p>
 	      			<p><b>Estudios:</b> <?php if($rowLeeSolicitud['avalsolicitud']!=NULL) {?><input type="button" name="estudios" value="Ver" onclick="javascript:muestraArchivo(<?php echo $rowLeeSolicitud['nrosolicitud'] ?>,3)" /><?php }?></p>
