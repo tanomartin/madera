@@ -56,9 +56,8 @@ if ($rowLeeSolicitud['codiparentesco'] <= 0) {
 }
 
 if ($tipoAfiliado == "NO EMPADRONADO" && $rowLeeSolicitud['codiparentesco'] != 0) {
-	$sqlFamiliar = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, fechanacimiento
-						DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad,
-						parentesco.descrip as paretensco, 
+	$sqlFamiliar = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, fechanacimiento, parentesco.descrip as paretensco,
+						DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad
 					 FROM familiares  
 					 LEFT JOIN parentesco ON familiares.tipoparentesco = parentesco.codparent 
 					 WHERE cuil = ".$rowLeeSolicitud['cuil'];
@@ -73,9 +72,8 @@ if ($tipoAfiliado == "NO EMPADRONADO" && $rowLeeSolicitud['codiparentesco'] != 0
 		$nombre = $rowFamiliar['apellidoynombre'];
 		$nroafiliado = $rowFamiliar['nroafiliado'];
 	} else {
-		$sqlFamiliarBaja = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, fechanacimiento
-								DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad,
-								parentesco.descrip as paretensco, 
+		$sqlFamiliarBaja = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, fechanacimiento, parentesco.descrip as paretensco,
+								DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad
 							FROM familiaresdebaja 
 				  			LEFT JOIN parentesco ON familiaresdebaja.tipoparentesco = parentesco.codparent 
 							WHERE cuil = ".$rowLeeSolicitud['cuil'];
