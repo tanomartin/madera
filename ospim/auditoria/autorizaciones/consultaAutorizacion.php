@@ -105,7 +105,7 @@ $canPMI = 0;
 $canDiabetes = 0;
 if ($tipoAfiliado != "NO EMPADRONADO") { 
 	//VEO SI ES DISCA
-	$sqlDisca = "SELECT DATE_FORMAT(fechaalta,'%d/%m/%Y') as fechaalta, 
+	$sqlDisca = "SELECT DATE_FORMAT(fechaalta,'%d/%m/%Y') as fechaalta, nroorden,
 						DATE_FORMAT(emisioncertificado,'%d/%m/%Y') as emisioncertificado, 
 						DATE_FORMAT(vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
 				 FROM discapacitados 
