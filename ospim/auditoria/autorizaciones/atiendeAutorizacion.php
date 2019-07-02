@@ -98,7 +98,7 @@ $canPMI = 0;
 $canDiabetes = 0;
 if ($tipoAfiliado != "NO EMPADRONADO") {
 	//VEO SI ES DISCA
-	$sqlDisca = "SELECT DATE_FORMAT(fechaalta,'%d/%m/%Y') as fechaalta, nroorden,
+	$sqlDisca = "SELECT DATE_FORMAT(fechaalta,'%d/%m/%Y') as fechaalta, nroorden, nroafiliado,
 					DATE_FORMAT(emisioncertificado,'%d/%m/%Y') as emisioncertificado,
 					DATE_FORMAT(vencimientocertificado,'%d/%m/%Y') as vencimientocertificado
 					FROM discapacitados
@@ -578,7 +578,7 @@ function validar(formulario) {
 		      <?php	if ($canDisca == 1) {
 						$rowDisca = mysql_fetch_assoc($resDisca);  ?>
 						<p><b>Disca.: SI </b>(FA: <?php echo $rowDisca['fechaalta'] ?> - FE: <?php echo $rowDisca['emisioncertificado'] ?> - FV: <?php echo $rowDisca['vencimientocertificado'] ?> ) 
-						<input name="ver" type="button" id="ver" value="Ver Cert." onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowLeeSolicitud['nroafiliado'] ?>&nroorden=<?php echo $nroorden ?>')"/></p>
+						<input name="ver" type="button" id="ver" value="Ver Cert." onclick="verCertificado('../sur/discapacitados/abm/verCertificado.php?nroafiliado=<?php echo $rowDisca['nroafiliado'] ?>&nroorden=<?php echo $rowDisca['nroafiliado'] ?>')"/></p>
 			<?php 	}
 					if ($canHIV == 1) { ?>
 						<p><b>H.I.V.:</b> SI </p>
