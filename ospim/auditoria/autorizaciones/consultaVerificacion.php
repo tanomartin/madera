@@ -3,10 +3,8 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 $nrosolicitud=$_GET['nroSolicitud'];
 setcookie($nrosolicitud, $_SESSION['usuario'], time() + (86400 * 7));
-$sqlLeeSolicitud = "SELECT a.*, doc.*, d.nombre as delegacion, parentesco.descrip as paretensco,
-						   clasificamaterial.descripcion as tipomaterial
+$sqlLeeSolicitud = "SELECT a.*, doc.*, d.nombre as delegacion, clasificamaterial.descripcion as tipomaterial
 					FROM delegaciones d, autorizacionesdocoriginales doc, autorizaciones a
-					LEFT JOIN parentesco ON a.codiparentesco = parentesco.codparent
 					LEFT JOIN clasificamaterial ON a.tipomaterial = clasificamaterial.codigo
 					WHERE a.nrosolicitud = $nrosolicitud and 
 						  a.nrosolicitud = doc.nrosolicitud and
@@ -48,7 +46,7 @@ if ($rowLeeSolicitud['codiparentesco'] <= 0) {
 		if ($canTipoTitularBaja > 0) {
 			$tipoAfiliado = "TITULAR DE BAJA";
 			$rowTipoTitularBaja = mysql_fetch_assoc($resTipoTitularBaja);
-			$tipoTitular = $rowTipoTitular['descrip'];
+			$tipoTitular = $rowTipoTitularBaja['descrip'];
 			$edad = $rowTipoTitularBaja['edad'];
 			$naci = $rowTipoTitularBaja['fechanacimiento'];
 			$nombre = $rowTipoTitularBaja['apellidoynombre'];
@@ -58,26 +56,32 @@ if ($rowLeeSolicitud['codiparentesco'] <= 0) {
 }
 
 if ($tipoAfiliado == "NO EMPADRONADO" && $rowLeeSolicitud['codiparentesco'] != 0) {
-	$sqlFamiliar = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento 
-					 FROM familiares WHERE cuil = ".$rowLeeSolicitud['cuil'];
+	$sqlFamiliar = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, fechanacimiento, parentesco.descrip as paretensco,
+						DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad 
+					 	FROM familiares 
+						LEFT JOIN parentesco ON familiares.tipoparentesco = parentesco.codparent
+						WHERE cuil = ".$rowLeeSolicitud['cuil'];
 	$resFamiliar = mysql_query($sqlFamiliar,$db);
 	$canFamiliar = mysql_num_rows($resFamiliar);
 	if ($canFamiliar > 0) {
-		$tipoAfiliado = "FAMILIAR - ".$rowLeeSolicitud['paretensco'];
 		$rowFamiliar = mysql_fetch_assoc($resFamiliar);
+		$tipoAfiliado = "FAMILIAR - ".$rowFamiliar['paretensco'];
 		$edad = $rowFamiliar['edad'];
 		$naci = $rowFamiliar['fechanacimiento'];
 		$nroorden = $rowFamiliar['nroorden'];
 		$nombre = $rowFamiliar['apellidoynombre'];
 		$nroafiliado = $rowFamiliar['nroafiliado'];
 	} else {
-		$sqlFamiliarBaja = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad, fechanacimiento
-							FROM familiaresdebaja WHERE cuil = ".$rowLeeSolicitud['cuil'];
+		$sqlFamiliarBaja = "SELECT nroafiliado, apellidoynombre, nroorden, cuil, fechanacimiento, parentesco.descrip as paretensco,
+								DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(fechanacimiento)), '%Y')+0 as edad
+							FROM familiaresdebaja 
+							LEFT JOIN parentesco ON familiaresdebaja.tipoparentesco = parentesco.codparent
+							WHERE cuil = ".$rowLeeSolicitud['cuil'];
 		$resFamiliarBaja = mysql_query($sqlFamiliarBaja,$db);
 		$canFamiliarBaja = mysql_num_rows($resFamiliarBaja);
 		if ($canFamiliarBaja > 0) {
-			$tipoAfiliado = "FAMILIAR DE BAJA - ".$rowLeeSolicitud['paretensco'];
 			$rowFamiliarBaja = mysql_fetch_assoc($resFamiliarBaja);
+			$tipoAfiliado = "FAMILIAR DE BAJA - ".$rowFamiliarBaja['paretensco'];
 			$edad = $rowFamiliarBaja['edad'];
 			$naci = $rowFamiliarBaja['fechanacimiento'];
 			$nroorden = $rowFamiliarBaja['nroorden'];
