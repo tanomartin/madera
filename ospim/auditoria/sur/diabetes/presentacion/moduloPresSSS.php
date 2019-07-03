@@ -11,7 +11,8 @@ $resPresSSSFinalizadas = mysql_query($sqlPresSSSFinalizadas,$db);
 $canPresSSSFinalizadas = mysql_num_rows($resPresSSSFinalizadas);
 
 $sqlPresSSSActiva = "SELECT d.*,
-						DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion
+						DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion,
+						DATE_FORMAT(d.fechasolicitud,'%d/%m/%Y') as fechasolicitud
 						FROM diabetespresentacion d
 						WHERE d.fechacancelacion is null and d.fechadevolucion is null order by id DESC";
 $resPresSSSActiva = mysql_query($sqlPresSSSActiva,$db);
