@@ -71,7 +71,7 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, f
 						LEFT JOIN diabetesestudios on diabetesestudios.idDiagnostico = d.id
 						LEFT JOIN diabetestratamientos on diabetestratamientos.idDiagnostico = d.id
 						LEFT JOIN diabetesfarmacos on diabetesfarmacos.idDiagnostico = d.id
-						WHERE fechaficha >= '$fechaDesde' and fechaficha < '$fechaHasta'
+						WHERE fechaficha < '$fechaHasta'
 						ORDER BY fechaficha ASC";
 $resListadoDiabetes = mysql_query($sqlListadoDiabetes,$db);
 $canListadoDiabetes = mysql_num_rows($resListadoDiabetes);
