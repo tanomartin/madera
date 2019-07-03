@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspim.php");
 
 $id = $_GET['id'];
-$sqlPresSSS = "SELECT d.*
+$sqlPresSSS = "SELECT d.*, DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion
 			   FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
 $rowPresSSS = mysql_fetch_assoc($resPresSSS)
