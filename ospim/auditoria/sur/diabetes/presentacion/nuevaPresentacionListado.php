@@ -3,9 +3,11 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 
 $periodo = $_POST['periodo'];
-$fechaHasta = substr($periodo,0,4)."-".substr($periodo,4,2)."-01";
+$fechaDesde = substr($periodo,0,4)."-".substr($periodo,4,2)."-01";
+$fechaHasta = $fechaDesde;
 $fechaHasta = strtotime ('+1 month' , strtotime ($fechaHasta));
 $fechaHasta = date('Y-m-d',$fechaHasta);
+
 
 //BUSCO LA CANTIDAD TOTAL DE BENEFICIAIRIOS MARCADOS COMO DAIBETICOS//
 $sqlCantidadBeneDiab = "SELECT * FROM diabetesbeneficiarios";
@@ -69,7 +71,7 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, f
 						LEFT JOIN diabetesestudios on diabetesestudios.idDiagnostico = d.id
 						LEFT JOIN diabetestratamientos on diabetestratamientos.idDiagnostico = d.id
 						LEFT JOIN diabetesfarmacos on diabetesfarmacos.idDiagnostico = d.id
-						WHERE fechaficha < '$fechaHasta'
+						WHERE fechaficha >= '$fechaDesde' and fechaficha < '$fechaHasta'
 						ORDER BY fechaficha ASC";
 $resListadoDiabetes = mysql_query($sqlListadoDiabetes,$db);
 $canListadoDiabetes = mysql_num_rows($resListadoDiabetes);
