@@ -92,7 +92,7 @@ if(strcmp("localhost",$maquina) == 0)
 else
 	$archivoImportacion="/home/sistemas/Documentos/Diabetes/$nombreArchivo";
 
-$insertPresentacion = "INSERT INTO diabetespresentacion VALUES(DEFAULT, '$periodo', $cantidadBene,'$archivoImportacion', NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro',NULL,NULL)";
+$insertPresentacion = "INSERT INTO diabetespresentacion VALUES(DEFAULT, '$periodo', $cantidadBene,'$archivoImportacion', NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro',NULL,NULL)";
 $file = fopen($archivoImportacion, "w");
 if ($file !== false) {
 	while ($rowListadoDiabetes = mysql_fetch_assoc($resListadoDiabetes)) {

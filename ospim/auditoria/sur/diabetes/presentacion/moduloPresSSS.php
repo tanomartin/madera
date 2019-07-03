@@ -51,6 +51,10 @@ $(function() {
 	});
 });
 
+function verNota(path) {
+	window.open(path, "Nota Solicitud", "width=600, height=600");
+}
+
 </script>
 <link rel="stylesheet" href="/madera/lib/tablas.css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -97,6 +101,7 @@ $(function() {
 			  							<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
 			  					<?php } ?>
 			  					<?php if ($rowPresSSSActiva['fechapresentacion'] == NULL && $rowPresSSSActiva['fechasolicitud'] != NULL) { ?> 
+			  							<input type="button" value="NOTA" onclick="verNota('<?php echo $rowPresSSSActiva['pathsolicitud']?>')" /> 
 			  							<input type="button" value="EXPEDIENTE" onclick="location.href = 'presentacionSSSExpediente.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
 			  					<?php } ?>  					
 			  					<?php if ($rowPresSSSActiva['fechapresentacion'] != NULL) { ?><input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> <?php } ?>

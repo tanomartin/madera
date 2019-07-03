@@ -43,6 +43,12 @@ function validar(formulario) {
 		formulario.solicitud.focus();
 		return(false);
 	}
+
+	if (formulario.nota.value == "") {
+		alert("El documento de la solicitud es obligatorio");
+		formulario.nota.focus();
+		return(false);
+	}
 	formulario.guardar.disabled = true;
 	$.blockUI({ message: "<h1>Guardando Presentación a la Super. Aguarde por favor...</h1>" });
 	return true;
@@ -77,11 +83,13 @@ function validar(formulario) {
 		  	</tbody>
 	  	</table>
 	 </div>
-	 <form id="cancelarPresentacion" name="cancelarPresentacion" method="post" onsubmit="return validar(this)" action="presentacionSSSSolicitudGuardar.php">
+	 <form id="cancelarPresentacion" enctype="multipart/form-data" name="cancelarPresentacion" method="post" onsubmit="return validar(this)" action="presentacionSSSSolicitudGuardar.php">
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
+	 	<input type="text" id="periodo" name="periodo" value="<?php echo $rowPresSSS['periodo'] ?>" style="display: none"/>
 	 	<h3>Datos Presenetación Solicitud</h3>
-	 	<p><b>Fecha Subida: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
-	 	<p><b>Nro. Solicitud: </b><input type="text" id="solicitud" name="solicitud" size="20"/></p>
+	 	<p><b>Fecha Soli.: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
+	 	<p><b>Nro. Soli.: </b><input type="text" id="solicitud" name="solicitud" size="20"/></p>
+	 	<p><b>Nota. Soli.: </b><input type="file" id="nota" name="nota" /></p>
 	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR SOLICITUD SSS"/></p>
 	 </form>
 </div>

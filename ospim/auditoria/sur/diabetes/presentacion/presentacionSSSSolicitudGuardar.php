@@ -7,10 +7,28 @@ $fechamodif = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 $fecha = fechaParaGuardar($_POST['fecha']);
 $solicitud = strtoupper(trim($_POST['solicitud']));
+$periodo = $_POST['periodo'];
+
+if ($_FILES['nota']['tmp_name'] != "") {
+	$archivoNota = $_FILES['nota']['tmp_name'];
+	try {
+		$maquina = $_SERVER['SERVER_NAME'];
+		if(strcmp("localhost",$maquina) == 0)
+			$archivodestino="archivos/DIAB-$periodo-$solicitud.pdf";
+		else
+			$archivodestino="/home/sistemas/Documentos/Diabetes/DIAB-$periodo-$solicitud.pdf";
+		copy($archivoNota, $archivodestino);
+	} catch (Exception $e) {
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		Header($redire);
+		exit -1;
+	}
+}
+
 $presentacionSSS = "UPDATE diabetespresentacion 
-							SET fechasolicitud = '$fecha', nrosolicitud = '$solicitud',
-							    fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif'
-							WHERE id = $id";
+						SET fechasolicitud = '$fecha', nrosolicitud = '$solicitud', pathSolicitud = '$archivodestino',
+							fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif'
+						WHERE id = $id";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
