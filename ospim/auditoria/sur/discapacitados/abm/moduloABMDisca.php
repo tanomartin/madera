@@ -3,10 +3,15 @@ include($libPath."controlSessionOspim.php");
 
 $busqueda = 0;
 $resultado = 0;
-if(isset($_POST['valor']) && isset($_POST['seleccion'])) {
+if((isset($_POST['valor']) && isset($_POST['seleccion']) || isset($_GET['nroafiliado']))) {
 	$busqueda = 1;
-	$ordenbusqueda = $_POST['seleccion'];
-	$valorbusqueda = $_POST['valor'];
+	if (isset($_GET['nroafiliado'])) {
+		$valorbusqueda = $_GET['nroafiliado'];
+		$ordenbusqueda = "nroafiliado";
+	} else {
+		$ordenbusqueda = $_POST['seleccion'];
+		$valorbusqueda = $_POST['valor'];
+	}
 	if ($ordenbusqueda == "nroafiliado") {
 		$cartel = "Nro. Afiliado: ".$valorbusqueda;
 	}

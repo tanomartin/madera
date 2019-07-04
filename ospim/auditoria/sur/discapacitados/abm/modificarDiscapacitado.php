@@ -7,10 +7,16 @@ $nroafiliado = $_GET['nroafiliado'];
 $nroorden = $_GET['nroorden'];
 
 if ($nroorden == 0) {
-	$sqlBeneficiario = "SELECT t.apellidoynombre, t.cuil, d.*, '' as parentesco FROM titulares t, discapacitados d WHERE t.nroafiliado = $nroafiliado and t.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
+	$sqlBeneficiario = "SELECT t.apellidoynombre, t.cuil as cuilbene, d.*, '' as parentesco 
+							FROM titulares t
+							LEFT JOIN discapacitados d on t.nroafiliado = d.nroafiliado and d.nroorden = $nroorden
+							WHERE  t.nroafiliado = $nroafiliado";
 	$tipoBeneficiario = "TITULAR";
 } else {
-	$sqlBeneficiario = "SELECT f.apellidoynombre, f.cuil, p.descrip as parentesco, d.* FROM familiares f, parentesco p, discapacitados d WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent and f.nroafiliado = d.nroafiliado and d.nroorden = $nroorden";
+	$sqlBeneficiario = "SELECT f.apellidoynombre, f.cuil as cuilbene, p.descrip as parentesco, d.* 
+								FROM parentesco p, familiares f
+								LEFT JOIN discapacitados d on f.nroafiliado = d.nroafiliado and d.nroorden = f.nroorden
+								WHERE f.nroafiliado = $nroafiliado and f.nroorden = $nroorden and f.tipoparentesco = p.codparent";
 	$tipoBeneficiario = "FAMILIAR";
 }
 $resBeneficiario = mysql_query($sqlBeneficiario,$db);
@@ -19,8 +25,11 @@ $rowBeneficiario = mysql_fetch_assoc($resBeneficiario);
 $arrayTipoBene = array();
 $sqlTipoDiscaBene = "SELECT * FROM discapacidadbeneficiario WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
 $resTipoDiscaBene = mysql_query($sqlTipoDiscaBene,$db);
-while ($rowTipoDiscaBene = mysql_fetch_assoc($resTipoDiscaBene)) {
-	$arrayTipoBene[$rowTipoDiscaBene['iddiscapacidad']] = $rowTipoDiscaBene['iddiscapacidad'];
+$canTipoDiscaBene = mysql_num_rows($resTipoDiscaBene);
+if ($canTipoDiscaBene > 0) {
+	while ($rowTipoDiscaBene = mysql_fetch_assoc($resTipoDiscaBene)) {
+		$arrayTipoBene[$rowTipoDiscaBene['iddiscapacidad']] = $rowTipoDiscaBene['iddiscapacidad'];
+	}
 }
 
 $sqlExpediente = "SELECT * FROM discapacitadoexpendiente WHERE nroafiliado = $nroafiliado and nroorden = $nroorden";
@@ -123,7 +132,7 @@ function verCertificado(dire){
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" /></p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php?nroafiliado=<?php echo $nroafiliado ?>'" /></p>
   <h3>Modificar  Discapacitado</h3>
   <table width="500" border="1">
     <tr>
@@ -132,7 +141,7 @@ function verCertificado(dire){
     </tr>
     <tr>
       <td width="163"><div align="right"><strong>C.U.I.L.</strong></div></td>
-      <td width="321"><div align="left"><?php echo $rowBeneficiario['cuil'] ?></div></td>
+      <td width="321"><div align="left"><?php echo $rowBeneficiario['cuilbene'] ?></div></td>
     </tr>
     <tr>
       <td><div align="right"><strong>Apellido y Nombre </strong></div></td>

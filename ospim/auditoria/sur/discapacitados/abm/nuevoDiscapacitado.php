@@ -107,7 +107,7 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php'" /></p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href='moduloABMDisca.php?nroafiliado=<?php echo $nroafiliado ?>'" /></p>
   <h3>Alta de Discapacitado  </h3>
   <table width="500" border="1">
     <tr>
