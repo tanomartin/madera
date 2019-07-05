@@ -2,10 +2,12 @@
 include($libPath."controlSessionOspim.php");
 
 $id = $_GET['id'];
-$sqlPresSSS = "SELECT d.*
-			   FROM diabetespresentacion d WHERE id = $id";
+$sqlPresSSS = "SELECT d.*, DATE_FORMAT(d.fechasolicitud,'%d/%m/%Y') as fechasolicitud 
+					FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
-$rowPresSSS = mysql_fetch_assoc($resPresSSS)
+$rowPresSSS = mysql_fetch_assoc($resPresSSS);
+$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
+$archivo = end($arrayArchivo);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -38,15 +40,9 @@ function validar(formulario) {
 		} 
 	}
 
-	if (formulario.solicitud.value == "") {
-		alert("El Nro de solicitud es obligatorio");
-		formulario.solicitud.focus();
-		return(false);
-	}
-
-	if (formulario.nota.value == "") {
-		alert("El documento de la solicitud es obligatorio");
-		formulario.nota.focus();
+	if (formulario.expediente.value == "") {
+		alert("El expediente es obligatorio");
+		formulario.expediente.focus();
 		return(false);
 	}
 	formulario.guardar.disabled = true;
@@ -77,20 +73,18 @@ function validar(formulario) {
 			  		<td><?php echo $rowPresSSS['id']?></td>
 			  		<td><?php echo $rowPresSSS['periodo']?></td>
 			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
-			  		<td><?php echo substr($rowPresSSS['patharchivo'],-22)?></td>
-			  		<td><?php echo "SIN PRESENTAR"; ?></td>
+			  		<td><?php echo $archivo ?></td>
+			  		<td><?php echo "SOLICITADA <br>FEC: ".$rowPresSSS['fechasolicitud']."<br>SOL.: ".$rowPresSSS['nrosolicitud']; ?></td>
 			  	</tr>
 		  	</tbody>
 	  	</table>
 	 </div>
-	 <form id="cancelarPresentacion" enctype="multipart/form-data" name="cancelarPresentacion" method="post" onsubmit="return validar(this)" action="presentacionSSSSolicitudGuardar.php">
+	 <form id="cancelarPresentacion" name="cancelarPresentacion" method="post" onsubmit="return validar(this)" action="presentacionExpedienteGuardar.php">
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
-	 	<input type="text" id="periodo" name="periodo" value="<?php echo $rowPresSSS['periodo'] ?>" style="display: none"/>
-	 	<h3>Datos Presenetación Solicitud</h3>
-	 	<p><b>Fecha Soli.: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
-	 	<p><b>Nro. Soli.: </b><input type="text" id="solicitud" name="solicitud" size="20"/></p>
-	 	<p><b>Nota. Soli.: </b><input type="file" id="nota" name="nota" /></p>
-	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR SOLICITUD SSS"/></p>
+	 	<h3>Datos Presenetación Expediente</h3>
+	 	<p><b>Fecha Presentación: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
+	 	<p><b>Expediente: </b><input type="text" id="expediente" name="expediente" size="20"/></p>
+	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR PRESENTACION SSS"/></p>
 	 </form>
 </div>
 </body>

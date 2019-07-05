@@ -5,7 +5,9 @@ $id = $_GET['id'];
 $sqlPresSSS = "SELECT d.*, DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion
 			   FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
-$rowPresSSS = mysql_fetch_assoc($resPresSSS)
+$rowPresSSS = mysql_fetch_assoc($resPresSSS);
+$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
+$archivo = end($arrayArchivo);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -77,8 +79,8 @@ function validar(formulario) {
 			  		<td><?php echo $rowPresSSS['id']?></td>
 			  		<td><?php echo $rowPresSSS['periodo']?></td>
 			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
-			  		<td><?php echo substr($rowPresSSS['patharchivo'],-22)?></td>
-			  		<td><?php echo "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']." - EXP: ".$rowPresSSS['nroexpediente']; ?></td>
+			  		<td><?php echo $archivo; ?></td>
+			  		<td><?php echo "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']."<br>EXP: ".$rowPresSSS['nroexpediente']; ?></td>
 			  	</tr>
 		  	</tbody>
 	  	</table>

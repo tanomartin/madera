@@ -5,7 +5,9 @@ $id = $_GET['id'];
 $sqlPresSSS = "SELECT d.*
 			   FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
-$rowPresSSS = mysql_fetch_assoc($resPresSSS)
+$rowPresSSS = mysql_fetch_assoc($resPresSSS);
+$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
+$archivo = end($arrayArchivo);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -83,6 +85,7 @@ function validar(formulario) {
 	 </div>
 	 <form id="cancelarPresentacion" name="cancelarPresentacion" method="post" onsubmit="return validar(this)" action="cancelarPresentacionGuardar.php">
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
+	 	<input type="text" id="archivo" name="archivo" value="<?php echo $archivo ?>" style="display: none"/>
 	 	<h3>Datos Cancelación</h3>
 	 	<p><b>Fecha Cancelacion: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
 	 	<p><b>Motivo</b></p>

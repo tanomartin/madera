@@ -7,10 +7,28 @@ $fechamodif = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 $fecha = fechaParaGuardar($_POST['fecha']);
 $motivo = strtoupper(trim($_POST['motivo']));
+$archivo = $_POST['archivo'];
 $cancelarPresentacion = "UPDATE diabetespresentacion 
 							SET fechacancelacion = '$fecha', motivocancelacion = '$motivo',
 							    fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif'
 							WHERE id = $id";
+
+try {
+	$maquina = $_SERVER['SERVER_NAME'];
+	if(strcmp("localhost",$maquina) == 0) {
+		$archivoCancalada = "archivos/canceladas/$archivo";	
+		$archivo = "archivos/$archivo";
+	} else {
+		$archivoCancalada="/home/sistemas/Documentos/Diabetes/cancleadas/$archivo";
+		$archivo = "/home/sistemas/Documentos/Diabetes/cancleadas/$archivo";
+	}
+	rename($archivo, $archivoCancalada);
+} catch (Exception $e) {
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	Header($redire);
+	exit -1;
+}
+
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];

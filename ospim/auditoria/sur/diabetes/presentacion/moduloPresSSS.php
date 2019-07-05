@@ -77,31 +77,36 @@ $(function() {
 	  					</tr>
 	  				</thead>
 					<tbody>
-			<?php  while ($rowPresSSSActiva = mysql_fetch_assoc($resPresSSSActiva)) { ?>
+			<?php  while ($rowPresSSSActiva = mysql_fetch_assoc($resPresSSSActiva)) { 
+						$arrayArchivo = explode("/",$rowPresSSSActiva['patharchivo']);
+						$archivo = end($arrayArchivo);?>
 			  			<tr>
 			  				<td><?php echo $rowPresSSSActiva['id']?></td>
 			  				<td><?php echo $rowPresSSSActiva['periodo']?></td>
 			  				<td><?php echo $rowPresSSSActiva['cantidadbeneficiario']?></td>
-			  				<td><?php echo substr($rowPresSSSActiva['patharchivo'],-30)?></td>
+			  				<td><?php echo $archivo ?></td>
 			  			  <?php $estado = "SIN PRESENTAR";
 			  					if ($rowPresSSSActiva['fechasolicitud'] != NULL) {
-			  						$estado = "SOLICITADA <br>FEC: ".$rowPresSSSActiva['fechasolicitud']."<br>NRO.: ".$rowPresSSSActiva['nrosolicitud'];
+			  						$estado = "SOLICITADA <br>FEC: ".$rowPresSSSActiva['fechasolicitud']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud'];
 			  						if ($rowPresSSSActiva['fechapresentacion'] != NULL) {
-			  							$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>NRO.: ".$rowPresSSSActiva['nroexpediente'];
+			  							$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>EXP.: ".$rowPresSSSActiva['nroexpediente'];
 			  						}
 			  					} ?>
 			  				<td><?php echo $estado ?></td>
 			  				<td>			  					
 			  					<?php if ($rowPresSSSActiva['fechasolicitud'] == NULL) { ?> 
 			  							<input type="button" value="DESCARGAR" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['patharchivo'] ?>'"/> 
-			  							<input type="button" value="SOLICITUD" onclick="location.href = 'presentacionSSSSolicitud.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
+			  							<input type="button" value="SOLICITUD" onclick="location.href = 'presentacionSolicitud.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
 			  							<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
-			  					<?php } ?>
-			  					<?php if ($rowPresSSSActiva['fechapresentacion'] == NULL && $rowPresSSSActiva['fechasolicitud'] != NULL) { ?> 
+			  					<?php } 
+			  						  if ($rowPresSSSActiva['fechapresentacion'] == NULL && $rowPresSSSActiva['fechasolicitud'] != NULL) { ?> 
 			  							<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 
-			  							<input type="button" value="EXPEDIENTE" onclick="location.href = 'presentacionSSSExpediente.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
-			  					<?php } ?>  					
-			  					<?php if ($rowPresSSSActiva['fechapresentacion'] != NULL) { ?><input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> <?php } ?>
+			  							<input type="button" value="EXPEDIENTE" onclick="location.href = 'presentacionExpediente.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
+			  					<?php } 
+			  						  if ($rowPresSSSActiva['fechapresentacion'] != NULL) { ?>
+			  							<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 
+			  							<input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
+			  					<?php } ?>
 			  				</td>
 			  			</tr>
 			  	<?php } ?>
@@ -120,15 +125,19 @@ $(function() {
 	  					<th>ID</th>
 	  					<th>Periodo</th>
 	  					<th># Bene</th>
+	  					<th>Archivo</th>
 	  					<th>Estado</th>
   					</tr>
   				</thead>
   				<tbody>
-  			<?php  while ($rowPresSSSFinalizadas = mysql_fetch_assoc($resPresSSSFinalizadas)) { ?>
+  			<?php  while ($rowPresSSSFinalizadas = mysql_fetch_assoc($resPresSSSFinalizadas)) { 
+  					$arrayArchivo = explode("/",$rowPresSSSFinalizadas['patharchivo']);
+					$archivo = end($arrayArchivo);?>
   					<tr>
   						<td><?php echo $rowPresSSSFinalizadas['id'] ?></td>
   						<td><?php echo $rowPresSSSFinalizadas['periodo']?></td>
   						<td><?php echo $rowPresSSSFinalizadas['cantidadbeneficiario']?></td>
+  						<td><?php echo $archivo?></td>
   						 <?php  $estado = "";
 			  					$color = "";
 			  					if ($rowPresSSSFinalizadas['fechacancelacion'] != NULL) {
