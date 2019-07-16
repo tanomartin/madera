@@ -30,10 +30,10 @@ if ($quincena == 2) {
 	$fechaLimite = date ( 'Y-m-d', strtotime ( '+1 month', strtotime ( $fecha ) ) );
 	$fechaMuestra = date ( 'Y-m-d', strtotime ( '+7 day', strtotime ( $fechaLimite ) ) );
 } else {
-	$dia = "15";
+	$dia = "16";
 	$fecha = $anio . "-" . $mes . "-" .$dia;
 	$fechaLimite = date ( 'Y-m-d', strtotime ($fecha) );
-	$fechaMuestra = date ( 'Y-m-d', strtotime ( '+7 day', strtotime ( $fechaLimite ) ) );
+	$fechaMuestra = date ( 'Y-m-d', strtotime ( '+6 day', strtotime ( $fechaLimite ) ) );
 }
 
 //echo $fechaLimite."<br>";
