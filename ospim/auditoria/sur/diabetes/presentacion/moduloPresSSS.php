@@ -10,7 +10,8 @@ $resPresSSSFinalizadas = mysql_query($sqlPresSSSFinalizadas,$db);
 $canPresSSSFinalizadas = mysql_num_rows($resPresSSSFinalizadas);
 
 $sqlPresSSSActiva = "SELECT d.*,
-						DATE_FORMAT(d.fechasolicitud,'%d/%m/%Y') as fechasolicitud
+						DATE_FORMAT(d.fechasolicitud,'%d/%m/%Y') as fechasolicitud,
+						DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion
 						FROM diabetespresentacion d
 						WHERE d.fechacancelacion is null and d.fechadevolucion is null order by id DESC";
 $resPresSSSActiva = mysql_query($sqlPresSSSActiva,$db);
@@ -86,7 +87,10 @@ $(function() {
 			  			  <?php $estado = "SIN PRESENTAR";
 			  					if ($rowPresSSSActiva['fechasolicitud'] != NULL) {
 			  						$estado = "SOLICITADA <br>FEC: ".$rowPresSSSActiva['fechasolicitud']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud'];
-			  					} ?>
+			  					}
+			  					if ($rowPresSSSActiva['fechapresentacion'] != NULL) {
+			  						$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud'];
+								}?>
 			  				<td><?php echo $estado ?></td>
 			  				<td>			  					
 			  					<?php if ($rowPresSSSActiva['fechasolicitud'] == NULL) { ?> 
@@ -94,10 +98,15 @@ $(function() {
 			  							<input type="button" value="SOLICITUD" onclick="location.href = 'presentacionSolicitud.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
 			  							<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
 			  					<?php } else {
-			  						 	 if ($rowPresSSSActiva['fechadevolucion'] == NULL) { ?>
-			  								<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 
-			  								<input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
-			  					<?php	 }
+			  							 if ($rowPresSSSActiva['fechapresentacion'] == NULL) { ?>
+			  							 	<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/>
+			  							 	<input type="button" value="PRESENTACION" onclick="location.href = 'presentacionSSS.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
+			  					<?php	} else { 
+			  						 		 if ($rowPresSSSActiva['fechadevolucion'] == NULL) { ?>
+			  									<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 
+			  									<input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
+			  					<?php	 	}
+			  							 }
 			  						  } ?>
 			  				</td>
 			  			</tr>
