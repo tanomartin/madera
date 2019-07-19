@@ -3,8 +3,10 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php"); 
 $id = $_GET['id'];
 $fechasoli = fechaParaGuardar($_POST['fecsoli']);
+$idproveedor = $_POST['proveedor'];
 $descripcion = $_POST['descripcion'];
-$sqlUpdateCabPedido = "UPDATE stockcabpedidos SET fechasolicitud = '$fechasoli', descripcion = '$descripcion', costototal = 0 WHERE id = $id";
+
+$sqlUpdateCabPedido = "UPDATE stockcabpedidos SET fechasolicitud = '$fechasoli', idproveedor = $idproveedor, descripcion = '$descripcion', costototal = 0 WHERE id = $id";
 $sqlDeleteDetPedido = "DELETE FROM stockdetpedidos WHERE idpedido = $id";
 try {
 	$hostname = $_SESSION['host'];

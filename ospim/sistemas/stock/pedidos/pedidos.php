@@ -59,6 +59,7 @@ include($libPath."fechas.php"); ?>
 		<tr>
 		  <th>Codigo</th>
 		  <th>Fecha Solicitud</th>
+		  <th>Proveedor</th>
 		  <th>Descripcion</th>
 		  <th>Costo Total</th>
 		  <th>Fecha Cierre</th>
@@ -67,13 +68,14 @@ include($libPath."fechas.php"); ?>
 	 </thead>
 	 <tbody>
 		<?php	
-			$sqlPedido = "SELECT * FROM stockcabpedidos order by id DESC";
+			$sqlPedido = "SELECT c.*, p.nombre FROM stockcabpedidos c, stockproveedor p WHERE c.idproveedor = p.id order by c.id DESC";
 			$resPedido = mysql_query($sqlPedido,$db);
 			$canPedido = mysql_num_rows($resPedido);
 			while ($rowPedido = mysql_fetch_assoc($resPedido)) { ?>
 			<tr>
 				<td><?php echo $rowPedido['id'] ?></td>
 				<td><?php echo invertirFecha($rowPedido['fechasolicitud']) ?></td>
+				<td><?php echo $rowPedido['nombre'] ?></td>
 				<td><?php echo $rowPedido['descripcion'] ?></td>
 				<td><?php echo number_format($rowPedido['costototal'],2,",","."); ?></td>
 				<td><?php if($rowPedido['fechacierre'] != "0000-00-00") {echo invertirFecha($rowPedido['fechacierre']); } ?></td>

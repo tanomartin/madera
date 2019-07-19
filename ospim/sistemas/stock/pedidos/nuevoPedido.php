@@ -51,6 +51,10 @@ $canInsumo = mysql_num_rows($resInsumo); ?>
 			alert("Debe colocar fecha de Solicitud del Pedido");
 			return false;
 		}
+		if (formulario.proveedor.value == 0) {
+			alert("Debe seleccionar el proveedor");
+			return false;
+		}
 		var seleccion = false;
 		for (var i=0; i<cantidadInsumo; i++) {
 			var campo = "cantidad"+i;
@@ -79,14 +83,19 @@ $canInsumo = mysql_num_rows($resInsumo); ?>
   <p><input type="button" name="volver" value="Volver" onclick="location.href = 'pedidos.php'" /></p>
   <h3>Nuevo Pedido </h3>
   <form name="nuevoPedido" id="nuevoPedido" method="post" action="guardarNuevoPedido.php?cant=<?php echo  $canInsumo?>" onsubmit="return validar(this)">
-	  <table width="800" border="0">
-	    <tr>
-	      <td><b>Fecha Solicitud</b></td>
-	      <td><input name="fecsoli" type="text" id="fecsoli" size="9"/></td>
-	      <td><b>Descripcion</b></td>
-	      <td><textarea name="descripcion" cols="50" rows="3" id="descripcion"></textarea></td>
-	    </tr>
-	  </table>
+	  <p><b>Fecha Solicitud: </b><input name="fecsoli" type="text" id="fecsoli" size="9"/></p>  
+	  <?php $sqlProveedor = "SELECT * FROM stockproveedor"; 
+			$resProveedor = mysql_query($sqlProveedor,$db); ?>
+	  <p><b>Provedor: </b>
+	  	<select name="proveedor" id="proveedor">
+	  		<option value="0">Seleccione Proveedor</option>
+	  		<?php while ($rowProveedor = mysql_fetch_assoc($resProveedor)) { ?>
+	  				<option value="<?php echo $rowProveedor['id'] ?>"><?php echo $rowProveedor['nombre'] ?></option>
+	  		<?php } ?>
+	  	</select>
+	  </p>
+	  <p><b>Descripcion: </b><textarea name="descripcion" cols="50" rows="3" id="descripcion"></textarea></p>
+
 	  <h3>Insumos</h3>  
 	  <table class="tablesorter" id="listado" style="width:1000px; font-size:14px">
 			  <thead>
@@ -104,8 +113,7 @@ $canInsumo = mysql_num_rows($resInsumo); ?>
 				</tr>
 			 </thead>
 			 <tbody>
-				<?php	
-					while ($rowInsumo = mysql_fetch_assoc($resInsumo)) { ?>
+			<?php	while ($rowInsumo = mysql_fetch_assoc($resInsumo)) { ?>
 					<tr align="center">
 						<td><?php echo $rowInsumo['id'] ?></td>
 						<td><?php echo $rowInsumo['nombre']?></td>

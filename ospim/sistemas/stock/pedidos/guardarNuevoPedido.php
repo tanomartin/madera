@@ -3,7 +3,8 @@ include($libPath."controlSessionOspimSistemas.php");
 include($libPath."fechas.php"); 
 $fechasoli = fechaParaGuardar($_POST['fecsoli']);
 $descripcion = $_POST['descripcion'];
-$sqlInsertCabPedido = "INSERT INTO stockcabpedidos VALUE(DEFAULT,'$fechasoli','$descripcion',DEFAULT,1,'0000-00-00')";
+$idProveedor = $_POST['proveedor'];
+$sqlInsertCabPedido = "INSERT INTO stockcabpedidos VALUE(DEFAULT,'$fechasoli','$descripcion',DEFAULT,$idProveedor,'0000-00-00')";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
