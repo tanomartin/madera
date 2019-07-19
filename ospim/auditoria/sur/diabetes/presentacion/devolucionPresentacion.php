@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspim.php");
 
 $id = $_GET['id'];
-$sqlPresSSS = "SELECT d.*, DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion
+$sqlPresSSS = "SELECT d.*, DATE_FORMAT(d.fechasolicitud,'%d/%m/%Y') as fechasolicitud
 			   FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
 $rowPresSSS = mysql_fetch_assoc($resPresSSS);
@@ -39,7 +39,11 @@ function validar(formulario) {
 			return(false);
 		} 
 	}
-
+	if (formulario.expediente.value == "") {
+		alert("El Nro de expediente es obligatorio");
+		formulario.expediente.focus();
+		return(false);
+	} 
 	if (formulario.monto.value != "") {
 		if (!isNumberPositivo(formulario.monto.value)) {
 			alert("El monto de la devolución debe ser un numero positivo");
@@ -80,7 +84,7 @@ function validar(formulario) {
 			  		<td><?php echo $rowPresSSS['periodo']?></td>
 			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
 			  		<td><?php echo $archivo; ?></td>
-			  		<td><?php echo "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']."<br>EXP: ".$rowPresSSS['nroexpediente']; ?></td>
+			  		<td><?php echo "SOLICITADA <br>FEC: ".$rowPresSSS['fechasolicitud']."<br>SOL.: ".$rowPresSSS['nrosolicitud'] ?></td>
 			  	</tr>
 		  	</tbody>
 	  	</table>
@@ -89,6 +93,7 @@ function validar(formulario) {
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
 	 	<h3>Datos de la Devolución</h3>
 	 	<p><b>Fecha Devolución: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
+	 	<p><b>Nro. Expediente: </b><input type="text" id="expediente" name="expediente" size="15"/></p>
 	 	<p><b>Monto: </b><input type="text" id="monto" name="monto" size="8"/></p>
 	 	<p><input type="submit" id="guardar" name="guardar" value="FINALIZAR"/></p>
 	 </form>

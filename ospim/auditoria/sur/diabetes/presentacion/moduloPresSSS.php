@@ -3,7 +3,6 @@ include($libPath."controlSessionOspim.php");
 
 $sqlPresSSSFinalizadas = "SELECT *,
 							DATE_FORMAT(d.fechacancelacion,'%d/%m/%Y') as fechacancelacion, 
-							DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion,
 							DATE_FORMAT(d.fechadevolucion,'%d/%m/%Y') as fechadevolucion
 							FROM diabetespresentacion d
 							WHERE d.fechacancelacion is not null or d.fechadevolucion is not null order by id DESC";
@@ -11,7 +10,6 @@ $resPresSSSFinalizadas = mysql_query($sqlPresSSSFinalizadas,$db);
 $canPresSSSFinalizadas = mysql_num_rows($resPresSSSFinalizadas);
 
 $sqlPresSSSActiva = "SELECT d.*,
-						DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechapresentacion,
 						DATE_FORMAT(d.fechasolicitud,'%d/%m/%Y') as fechasolicitud
 						FROM diabetespresentacion d
 						WHERE d.fechacancelacion is null and d.fechadevolucion is null order by id DESC";
@@ -88,9 +86,6 @@ $(function() {
 			  			  <?php $estado = "SIN PRESENTAR";
 			  					if ($rowPresSSSActiva['fechasolicitud'] != NULL) {
 			  						$estado = "SOLICITADA <br>FEC: ".$rowPresSSSActiva['fechasolicitud']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud'];
-			  						if ($rowPresSSSActiva['fechapresentacion'] != NULL) {
-			  							$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>EXP.: ".$rowPresSSSActiva['nroexpediente'];
-			  						}
 			  					} ?>
 			  				<td><?php echo $estado ?></td>
 			  				<td>			  					
@@ -98,15 +93,12 @@ $(function() {
 			  							<input type="button" value="DESCARGAR" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['patharchivo'] ?>'"/> 
 			  							<input type="button" value="SOLICITUD" onclick="location.href = 'presentacionSolicitud.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
 			  							<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
-			  					<?php } 
-			  						  if ($rowPresSSSActiva['fechapresentacion'] == NULL && $rowPresSSSActiva['fechasolicitud'] != NULL) { ?> 
-			  							<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 
-			  							<input type="button" value="EXPEDIENTE" onclick="location.href = 'presentacionExpediente.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
-			  					<?php } 
-			  						  if ($rowPresSSSActiva['fechapresentacion'] != NULL) { ?>
-			  							<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 
-			  							<input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
-			  					<?php } ?>
+			  					<?php } else {
+			  						 	 if ($rowPresSSSActiva['fechadevolucion'] == NULL) { ?>
+			  								<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 
+			  								<input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
+			  					<?php	 }
+			  						  } ?>
 			  				</td>
 			  			</tr>
 			  	<?php } ?>
@@ -127,6 +119,7 @@ $(function() {
 	  					<th># Bene</th>
 	  					<th>Archivo</th>
 	  					<th>Estado</th>
+	  					<th>+ Info</th>
   					</tr>
   				</thead>
   				<tbody>
@@ -142,13 +135,16 @@ $(function() {
 			  					$color = "";
 			  					if ($rowPresSSSFinalizadas['fechacancelacion'] != NULL) {
 			  						$color = "red";
-			  						$estado = "CANCELADA (".$rowPresSSSFinalizadas['fechacancelacion']." - MOTIVO: ".$rowPresSSSFinalizadas['motivocancelacion'].")";
+			  						$estado = "CANCELADA<br>".$rowPresSSSFinalizadas['fechacancelacion'];
+			  						$info = $rowPresSSSFinalizadas['motivocancelacion'];
 			  					}
 			  					if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) {
 			  						$color = "blue";
-			  						$estado = "FINALIZADA (".$rowPresSSSFinalizadas['fechadevolucion']." - MONTO: $ ".$rowPresSSSFinalizadas['monto'].")";
-			  					}?>
-			  				<td style="color: <?php echo $color ?>"><?php echo $estado ?></td>
+			  						$estado = "FINALIZADA<br>".$rowPresSSSFinalizadas['fechadevolucion'];
+			  						$info = "<b>EXP:</b> ".$rowPresSSSFinalizadas['nroexpediente']."<br><b>MONTO:</b> $ ".$rowPresSSSFinalizadas['monto'];
+			  					} ?>
+			  			<td style="color: <?php echo $color ?>"><?php echo $estado ?></td>
+			  			<td><?php echo $info ?></td>
   					</tr>
   			<?php } ?>
   				</tbody>
