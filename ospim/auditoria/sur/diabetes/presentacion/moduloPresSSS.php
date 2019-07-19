@@ -101,6 +101,7 @@ $(function() {
 			  							 if ($rowPresSSSActiva['fechapresentacion'] == NULL) { ?>
 			  							 	<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/>
 			  							 	<input type="button" value="PRESENTACION" onclick="location.href = 'presentacionSSS.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
+			  							 	<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
 			  					<?php	} else { 
 			  						 		 if ($rowPresSSSActiva['fechadevolucion'] == NULL) { ?>
 			  									<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 

@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspim.php");
 
 $id = $_GET['id'];
-$sqlPresSSS = "SELECT d.*
+$sqlPresSSS = "SELECT d.*,  DATE_FORMAT(d.fechasolicitud,'%d/%m/%Y') as fechasolicitud 
 			   FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
 $rowPresSSS = mysql_fetch_assoc($resPresSSS);
@@ -75,9 +75,9 @@ function validar(formulario) {
 			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
 			  		<td><?php echo substr($rowPresSSS['patharchivo'],-22)?></td>
 			  	    <?php $estado = "SIN PRESENTAR";
-			  			  if ($rowPresSSS['fechapresentacion'] != NULL) {
-			  				$estado = "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']." - EXP: ".$rowPresSSS['nroexpediente'];
-			  			  } ?>
+			  	    	  if ($rowPresSSS['fechasolicitud'] != NULL) {
+			  	    		$estado = "SOLICITADA<br>FEC: ".$rowPresSSS['fechasolicitud']."<br>SOL: ".$rowPresSSS['nrosolicitud'];
+			  	  	  	  } ?>
 			  		<td><?php echo $estado ?></td>
 			  	</tr>
 		  	</tbody>
