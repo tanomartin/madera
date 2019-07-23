@@ -135,7 +135,9 @@ $(function() {
   				<tbody>
   			<?php  while ($rowPresSSSFinalizadas = mysql_fetch_assoc($resPresSSSFinalizadas)) { 
   					$arrayArchivo = explode("/",$rowPresSSSFinalizadas['patharchivo']);
-					$archivo = end($arrayArchivo);?>
+					$archivo = end($arrayArchivo);
+					$arrayArchivo = explode("/",$rowPresSSSFinalizadas['pathsolicitud']); 
+					$archivo .= "<br>".end($arrayArchivo); ?>
   					<tr>
   						<td><?php echo $rowPresSSSFinalizadas['id'] ?></td>
   						<td><?php echo $rowPresSSSFinalizadas['periodo']?></td>
