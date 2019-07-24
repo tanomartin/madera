@@ -6,8 +6,11 @@ $sqlPresSSS = "SELECT d.*, DATE_FORMAT(d.fechasolicitud,'%d/%m/%Y') as fechasoli
 					FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
 $rowPresSSS = mysql_fetch_assoc($resPresSSS);
-$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
-$archivo = end($arrayArchivo);
+$archivo = "-";
+if ($rowPresSSS['patharchivo'] != NULL) {
+	$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
+	$archivo = end($arrayArchivo); 
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -39,12 +42,6 @@ function validar(formulario) {
 			return(false);
 		} 
 	}
-
-	if (formulario.expediente.value == "") {
-		alert("El expediente es obligatorio");
-		formulario.expediente.focus();
-		return(false);
-	}
 	formulario.guardar.disabled = true;
 	$.blockUI({ message: "<h1>Guardando Presentación a la Super. Aguarde por favor...</h1>" });
 	return true;
@@ -63,7 +60,8 @@ function validar(formulario) {
 	  			<tr>
 		  			<th>ID</th>
 		  			<th>Periodo</th>
-		  			<th># Beneficiarios</th>
+		  			<th># Nuevos</th>
+		  			<th># Ant.</th>
 		  			<th>Archivo</th>
 		  			<th>Estado</th>
 	  			</tr>
@@ -72,9 +70,10 @@ function validar(formulario) {
 			  	<tr>
 			  		<td><?php echo $rowPresSSS['id']?></td>
 			  		<td><?php echo $rowPresSSS['periodo']?></td>
-			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
-			  		<td><?php echo $archivo ?></td>
-			  		<td><?php echo "SOLICITADA <br>FEC: ".$rowPresSSS['fechasolicitud']."<br>SOL.: ".$rowPresSSS['nrosolicitud']; ?></td>
+			  		<td><?php echo $rowPresSSS['cantbenenuevos']?></td>
+			  		<td><?php echo $rowPresSSS['cantbeneanteriores']?></td>
+			  		<td><?php echo $archivo?></td>
+			  		<td><?php echo "SOLICITADA <br>FEC: ".$rowPresSSS['fechasolicitud']."<br>SOL.: ".$rowPresSSS['nrosolicitud']."<br>CANT: ".$rowPresSSS['cantbenesolicitados']; ?></td>
 			  	</tr>
 		  	</tbody>
 	  	</table>
@@ -83,6 +82,8 @@ function validar(formulario) {
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
 	 	<h3>Datos Presentación a SSS</h3>
 	 	<p><b>Fecha Presentación: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
+	 	<p><b>Observacion<p>
+	 	<p><textarea rows="5" cols="75" id="obs" name="obs"></textarea></p>
 	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR PRESENTACION SSS"/></p>
 	 </form>
 </div>

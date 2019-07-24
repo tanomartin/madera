@@ -6,9 +6,10 @@ $id = $_POST['id'];
 $fechamodif = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 $fecha = fechaParaGuardar($_POST['fecha']);
-$expediente = strtoupper(trim($_POST['expediente']));
+$obs = strtoupper(trim($_POST['obs']));
+
 $presentacionSSS = "UPDATE diabetespresentacion 
-							SET fechapresentacion = '$fecha',
+							SET fechapresentacion = '$fecha', observacion = '$obs',
 							    fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif'
 							WHERE id = $id";
 try {

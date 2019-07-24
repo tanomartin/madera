@@ -64,37 +64,46 @@ $(function() {
   	<h3>Presentacion Activa</h3>
   	<?php if ($canPresSSSActiva != 0) { ?>
 	  		<div class="grilla">
-	  			<table style="width:1000px">
+	  			<table style="width:100%">
 	  				<thead>
 	  					<tr>
 		  					<th>ID</th>
 		  					<th>Periodo</th>
-		  					<th># Bene</th>
+		  					<th># Nue.</th>
+		  					<th># Ant.</th>
 		  					<th>Archivo</th>
+		  					<th>Observacion</th>
 		  					<th>Estado</th>
 		  					<th>Acciones</th>
 	  					</tr>
 	  				</thead>
 					<tbody>
 			<?php  while ($rowPresSSSActiva = mysql_fetch_assoc($resPresSSSActiva)) { 
-						$arrayArchivo = explode("/",$rowPresSSSActiva['patharchivo']);
-						$archivo = end($arrayArchivo);?>
+						$archivo = "-";
+						if ($rowPresSSSActiva['patharchivo'] != NULL) {
+							$arrayArchivo = explode("/",$rowPresSSSActiva['patharchivo']);
+							$archivo = end($arrayArchivo); 
+						} ?>
 			  			<tr>
 			  				<td><?php echo $rowPresSSSActiva['id']?></td>
 			  				<td><?php echo $rowPresSSSActiva['periodo']?></td>
-			  				<td><?php echo $rowPresSSSActiva['cantidadbeneficiario']?></td>
+			  				<td><?php echo $rowPresSSSActiva['cantbenenuevos']?></td>
+			  				<td><?php echo $rowPresSSSActiva['cantbeneanteriores']?></td>
 			  				<td><?php echo $archivo ?></td>
+			  				<td><?php echo $rowPresSSSActiva['observacion']  ?></td>
 			  			  <?php $estado = "SIN PRESENTAR";
 			  					if ($rowPresSSSActiva['fechasolicitud'] != NULL) {
-			  						$estado = "SOLICITADA <br>FEC: ".$rowPresSSSActiva['fechasolicitud']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud'];
+			  						$estado = "SOLICITADA <br>FEC: ".$rowPresSSSActiva['fechasolicitud']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud']."<br>CANT: ".$rowPresSSSActiva['cantbenesolicitados'];
 			  					}
 			  					if ($rowPresSSSActiva['fechapresentacion'] != NULL) {
-			  						$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud'];
+			  						$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud']."<br>CANT: ".$rowPresSSSActiva['cantbenesolicitados'];
 								}?>
 			  				<td><?php echo $estado ?></td>
 			  				<td>			  					
-			  					<?php if ($rowPresSSSActiva['fechasolicitud'] == NULL) { ?> 
-			  							<input type="button" value="DESCARGAR" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['patharchivo'] ?>'"/> 
+			  					<?php if ($rowPresSSSActiva['fechasolicitud'] == NULL) { 
+			  							if ($rowPresSSSActiva['patharchivo'] != NULL) { ?> 
+			  								<input type="button" value="DESCARGAR" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['patharchivo'] ?>'"/> 
+			  					  <?php } ?>
 			  							<input type="button" value="SOLICITUD" onclick="location.href = 'presentacionSolicitud.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
 			  							<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
 			  					<?php } else {
@@ -121,13 +130,15 @@ $(function() {
   	<p><button onclick="location.href = 'nuevaPresentacion.php'">Nueva Presentacion</button></p>
   	<h3>Presentaciones Finalizadas</h3>
   	<?php if ($canPresSSSFinalizadas != 0) { ?>
-  			<table style="text-align:center; width:1000px;" id="finalizadas" class="tablesorter">
+  			<table style="text-align:center; width:1150px;" id="finalizadas" class="tablesorter">
   				<thead>
   					<tr>
 	  					<th>ID</th>
 	  					<th>Periodo</th>
-	  					<th># Bene</th>
+	  					<th># Nue.</th>
+		  				<th># Ant.</th>
 	  					<th>Archivo</th>
+	  					<th>Observacion</th>
 	  					<th>Estado</th>
 	  					<th>+ Info</th>
   					</tr>
@@ -141,8 +152,10 @@ $(function() {
   					<tr>
   						<td><?php echo $rowPresSSSFinalizadas['id'] ?></td>
   						<td><?php echo $rowPresSSSFinalizadas['periodo']?></td>
-  						<td><?php echo $rowPresSSSFinalizadas['cantidadbeneficiario']?></td>
+  						<td><?php echo $rowPresSSSFinalizadas['cantbenenuevos']?></td>
+			  			<td><?php echo $rowPresSSSFinalizadas['cantbeneanteriores']?></td>
   						<td><?php echo $archivo?></td>
+  						<td><?php echo $rowPresSSSFinalizadas['observacion']?></td>
   						 <?php  $estado = "";
 			  					$color = "";
 			  					if ($rowPresSSSFinalizadas['fechacancelacion'] != NULL) {
@@ -153,7 +166,7 @@ $(function() {
 			  					if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) {
 			  						$color = "blue";
 			  						$estado = "FINALIZADA<br>".$rowPresSSSFinalizadas['fechadevolucion'];
-			  						$info = "<b>EXP:</b> ".$rowPresSSSFinalizadas['nroexpediente']."<br><b>MONTO:</b> $ ".$rowPresSSSFinalizadas['monto'];
+			  						$info = "<b>EXP:</b> ".$rowPresSSSFinalizadas['nroexpediente']."<br><b>MONTO:</b> $ ".$rowPresSSSFinalizadas['monto']."<br><b>CANT: </b>".$rowPresSSSFinalizadas['cantbenesolicitados'];
 			  					} ?>
 			  			<td style="color: <?php echo $color ?>"><?php echo $estado ?></td>
 			  			<td><?php echo $info ?></td>

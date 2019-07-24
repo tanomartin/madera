@@ -6,8 +6,11 @@ $sqlPresSSS = "SELECT d.*
 			   FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
 $rowPresSSS = mysql_fetch_assoc($resPresSSS);
-$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
-$archivo = end($arrayArchivo);
+$archivo = "-";
+if ($rowPresSSS['patharchivo'] != NULL) {
+	$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
+	$archivo = end($arrayArchivo); 
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -46,6 +49,12 @@ function validar(formulario) {
 		return(false);
 	}
 
+	if (formulario.cantidad.value == "" || formulario.cantidad.value <= 0 || !esEntero(formulario.cantidad.value)) {
+		alert("El Nro de cantidad es obligatorio y debe ser entero y mayor a 0");
+		formulario.cantidad.focus();
+		return(false);
+	}
+
 	if (formulario.nota.value == "") {
 		alert("El documento de la solicitud es obligatorio");
 		formulario.nota.focus();
@@ -69,7 +78,8 @@ function validar(formulario) {
 	  			<tr>
 		  			<th>ID</th>
 		  			<th>Periodo</th>
-		  			<th># Beneficiarios</th>
+		  			<th># Nuevos</th>
+		  			<th># Ant.</th>
 		  			<th>Archivo</th>
 		  			<th>Estado</th>
 	  			</tr>
@@ -78,7 +88,8 @@ function validar(formulario) {
 			  	<tr>
 			  		<td><?php echo $rowPresSSS['id']?></td>
 			  		<td><?php echo $rowPresSSS['periodo']?></td>
-			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
+			  		<td><?php echo $rowPresSSS['cantbenenuevos']?></td>
+			  		<td><?php echo $rowPresSSS['cantbeneanteriores']?></td>
 			  		<td><?php echo $archivo?></td>
 			  		<td><?php echo "SIN PRESENTAR"; ?></td>
 			  	</tr>
@@ -89,8 +100,11 @@ function validar(formulario) {
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
 	 	<input type="text" id="periodo" name="periodo" value="<?php echo $rowPresSSS['periodo'] ?>" style="display: none"/>
 	 	<h3>Datos Presenetación Solicitud</h3>
-	 	<p><b>Fecha Soli.: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
-	 	<p><b>Nro. Soli.: </b><input type="text" id="solicitud" name="solicitud" size="20"/></p>
+	 	<p>
+	 		<b>Fecha Soli.: </b><input type="text" id="fecha" name="fecha" size="8"/> -
+	 		<b>Nro. Soli.: </b><input type="text" id="solicitud" name="solicitud" size="20"/> - 
+	 		<b>Cant. Bene.: </b><input type="text" id="cantidad" name="cantidad" size="5"/>
+	 	</p>
 	 	<p><b>Nota. Soli.: </b><input type="file" id="nota" name="nota" /></p>
 	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR SOLICITUD SSS"/></p>
 	 </form>

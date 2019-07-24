@@ -6,8 +6,11 @@ $sqlPresSSS = "SELECT d.*, DATE_FORMAT(d.fechapresentacion,'%d/%m/%Y') as fechap
 			   FROM diabetespresentacion d WHERE id = $id";
 $resPresSSS = mysql_query($sqlPresSSS,$db);
 $rowPresSSS = mysql_fetch_assoc($resPresSSS);
-$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
-$archivo = end($arrayArchivo);
+$archivo = "-";
+if ($rowPresSSS['patharchivo'] != NULL) {
+	$arrayArchivo = explode("/",$rowPresSSS['patharchivo']);
+	$archivo = end($arrayArchivo); 
+}
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -73,7 +76,8 @@ function validar(formulario) {
 	  			<tr>
 		  			<th>ID</th>
 		  			<th>Periodo</th>
-		  			<th># Beneficiarios</th>
+		  			<th># Nuevos</th>
+		  			<th># Ant.</th>
 		  			<th>Archivo</th>
 		  			<th>Estado</th>
 	  			</tr>
@@ -82,9 +86,10 @@ function validar(formulario) {
 			  	<tr>
 			  		<td><?php echo $rowPresSSS['id']?></td>
 			  		<td><?php echo $rowPresSSS['periodo']?></td>
-			  		<td><?php echo $rowPresSSS['cantidadbeneficiario']?></td>
-			  		<td><?php echo $archivo; ?></td>
-			  		<td><?php echo "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']."<br>SOL.: ".$rowPresSSS['nrosolicitud'] ?></td>
+			  		<td><?php echo $rowPresSSS['cantbenenuevos']?></td>
+			  		<td><?php echo $rowPresSSS['cantbeneanteriores']?></td>
+			  		<td><?php echo $archivo?></td>
+			  		<td><?php echo "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']."<br>SOL.: ".$rowPresSSS['nrosolicitud']."<br>CANT: ".$rowPresSSS['cantbenesolicitados']; ?></td>
 			  	</tr>
 		  	</tbody>
 	  	</table>

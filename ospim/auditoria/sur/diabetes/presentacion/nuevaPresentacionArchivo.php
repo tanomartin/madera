@@ -3,10 +3,17 @@ include($libPath."controlSessionOspim.php");
 
 $whereIn = "(";
 $arrayCuiles = array();
-foreach ($_POST as $datos) {
+$cantBeneNuevos = 0;
+$cantBeneViejos = 0;
+foreach ($_POST as $key => $datos) {
 	$arrayDatos = explode("-",$datos);
 	$whereIn .= $arrayDatos[0].",";
 	$arrayCuiles[$arrayDatos[0]] = $arrayDatos[1];
+	if (strpos($key, "datos") === false) {
+		$cantBeneViejos++;
+	} else {
+		$cantBeneNuevos++;
+	}
 }
 $whereIn = substr($whereIn, 0, -1);
 $whereIn .= ")";
@@ -80,218 +87,223 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d
 //echo $sqlListadoDiabetes."<br><br>";
 $resListadoDiabetes = mysql_query($sqlListadoDiabetes,$db);
 
-$cantidadBene = sizeof($arrayCuiles);
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $timestamp = date("YmdHis");
 $nombreArchivo = "DIAB-$periodo-$timestamp.csv";
 
-$maquina = $_SERVER['SERVER_NAME'];
-if(strcmp("localhost",$maquina) == 0)
-	$archivoImportacion="archivos/$nombreArchivo";
-else
-	$archivoImportacion="/home/sistemas/Documentos/Diabetes/$nombreArchivo";
+$total = $cantBeneNuevos + $cantBeneViejos;
+if ($total > 0) {
+	$maquina = $_SERVER['SERVER_NAME'];
+	if(strcmp("localhost",$maquina) == 0)
+		$archivoImportacion="archivos/$nombreArchivo";
+	else
+		$archivoImportacion="/home/sistemas/Documentos/Diabetes/$nombreArchivo";
 
-$insertPresentacion = "INSERT INTO diabetespresentacion VALUES(DEFAULT, '$periodo', $cantidadBene,'$archivoImportacion', NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro',NULL,NULL)";
-$file = fopen($archivoImportacion, "w");
-if ($file !== false) {
-	while ($rowListadoDiabetes = mysql_fetch_assoc($resListadoDiabetes)) {
-		$fechaRegistro = date_format(date_create($rowListadoDiabetes['fechaficha']),"Ymd");
-		$edadDiag = str_pad($rowListadoDiabetes['edaddiagnostico'],2,0,STR_PAD_LEFT);
+	$file = fopen($archivoImportacion, "w");
+	if ($file !== false) {
+		while ($rowListadoDiabetes = mysql_fetch_assoc($resListadoDiabetes)) {
+			$fechaRegistro = date_format(date_create($rowListadoDiabetes['fechaficha']),"Ymd");
+			$edadDiag = str_pad($rowListadoDiabetes['edaddiagnostico'],2,0,STR_PAD_LEFT);
+			
+			$hipertrofiaventricular = $rowListadoDiabetes['hipertrofiaventricular'];
+			if ($hipertrofiaventricular == 1) {
+				$hipertrofiaventricular = 2;
+			}
+			$hipertrofiaventricular = str_pad($hipertrofiaventricular,8,0,STR_PAD_LEFT);
+			
+			$infartomiocardio = $rowListadoDiabetes['infartomiocardio'];
+			if ($infartomiocardio == 1) {
+				$infartomiocardio = 2;
+			}
+			$infartomiocardio = str_pad($infartomiocardio,8,0,STR_PAD_LEFT);
+			
+			$insuficienciacardiaca = $rowListadoDiabetes['insuficienciacardiaca'];
+			if ($insuficienciacardiaca == 1) {
+				$insuficienciacardiaca = 2;
+			}
+			$insuficienciacardiaca = str_pad($insuficienciacardiaca,8,0,STR_PAD_LEFT);
+			
+			$accidentecerebrovascular = $rowListadoDiabetes['accidentecerebrovascular'];
+			if ($accidentecerebrovascular == 1) {
+				$accidentecerebrovascular = 2;
+			}
+			$accidentecerebrovascular = str_pad($accidentecerebrovascular,8,0,STR_PAD_LEFT);
+			
+			$retinopatia = $rowListadoDiabetes['retinopatia'];
+			if ($retinopatia == 1) {
+				$retinopatia = 2;
+			}
+			$retinopatia = str_pad($retinopatia,8,0,STR_PAD_LEFT);
+			
+			$ceguera = $rowListadoDiabetes['ceguera'];
+			if ($ceguera == 1) {
+				$ceguera = 2;
+			}
+			$ceguera = str_pad($ceguera,8,0,STR_PAD_LEFT);
+			
+			$neuropatiaperiferica = $rowListadoDiabetes['neuropatiaperiferica'];
+			if ($neuropatiaperiferica == 1) {
+				$neuropatiaperiferica = 2;
+			}
+			$neuropatiaperiferica = str_pad($neuropatiaperiferica,8,0,STR_PAD_LEFT);
+			
+			$vasculopatiaperiferica = $rowListadoDiabetes['vasculopatiaperiferica'];
+			if ($vasculopatiaperiferica == 1) {
+				$vasculopatiaperiferica = 2;
+			}
+			$vasculopatiaperiferica = str_pad($vasculopatiaperiferica,8,0,STR_PAD_LEFT);
+			
+			$amputacion = $rowListadoDiabetes['amputacion'];
+			if ($amputacion == 1) {
+				$amputacion = 2;
+			}
+			$amputacion = str_pad($amputacion,8,0,STR_PAD_LEFT);
+			
+			$nefropatia = $rowListadoDiabetes['nefropatia'];
+			if ($nefropatia == 1) {
+				$nefropatia = 2;
+			}
+			$nefropatia = str_pad($nefropatia,8,0,STR_PAD_LEFT);
+			
+			$dialisis = $rowListadoDiabetes['dialisis'];
+			if ($dialisis == 1) {
+				$dialisis = 2;
+			}
+			$dialisis = str_pad($dialisis,8,0,STR_PAD_LEFT);
+			
+			$transplanterenal = $rowListadoDiabetes['transplanterenal'];
+			if ($transplanterenal == 1) {
+				$transplanterenal = 2;
+			}
+			$transplanterenal = str_pad($transplanterenal,8,0,STR_PAD_LEFT);
+			
+			$glucemia = str_pad($rowListadoDiabetes['glucemiavalor'],4,0,STR_PAD_LEFT);
+			$glucemiafecha = $rowListadoDiabetes['glucemiafecha'];
+			if ($glucemiafecha == NULL) {
+				$glucemiafecha = "00000000";
+			} else {
+				$glucemiafecha = date_format(date_create($glucemiafecha),"Ymd");
+			}
+			
+			$hba1cvalor = str_pad($rowListadoDiabetes['hba1cvalor'],5,0,STR_PAD_LEFT);
+			$hba1cfecha = $rowListadoDiabetes['hba1cfecha'];
+			if ($hba1cfecha == NULL) {
+				$hba1cfecha = "00000000";
+			} else {
+				$hba1cfecha = date_format(date_create($hba1cfecha),"Ymd");
+			}
+			
+			$ldlcvalor = str_pad($rowListadoDiabetes['ldlcvalor'],4,0,STR_PAD_LEFT);
+			$ldlcfecha = $rowListadoDiabetes['ldlcfecha'];
+			if ($ldlcfecha == NULL) {
+				$ldlcfecha = "00000000";
+			} else {
+				$ldlcfecha = date_format(date_create($ldlcfecha),"Ymd");
+			}
+			
+			$trigliceridosvalor = str_pad($rowListadoDiabetes['trigliceridosvalor'],4,0,STR_PAD_LEFT);
+			$trigliceridosfecha = $rowListadoDiabetes['trigliceridosfecha'];
+			if ($trigliceridosfecha == NULL) {
+				$trigliceridosfecha = "00000000";
+			} else {
+				$trigliceridosfecha = date_format(date_create($trigliceridosfecha),"Ymd");
+			}
+			
+			$microalbuminuriavalor = $rowListadoDiabetes['microalbuminuriavalor'];
+			$microalbuminuriafecha = $rowListadoDiabetes['microalbuminuriafecha'];
+			if ($microalbuminuriafecha == NULL) {
+				$microalbuminuriafecha = "00000000";
+			} else {
+				$microalbuminuriafecha = date_format(date_create($microalbuminuriafecha),"Ymd");
+			}
+			
+			$tasistolicavalor = str_pad($rowListadoDiabetes['tasistolicavalor'],3,0,STR_PAD_LEFT);
+			$tasistolicafecha = $rowListadoDiabetes['tasistolicafecha'];
+			if ($tasistolicafecha == NULL) {
+				$tasistolicafecha = "00000000";
+			} else {
+				$tasistolicafecha = date_format(date_create($tasistolicafecha),"Ymd");
+			}
+			
+			$tadiastolicavalor = str_pad($rowListadoDiabetes['tadiastolicavalor'],3,0,STR_PAD_LEFT);
+			$tadiastolicafecha = $rowListadoDiabetes['tadiastolicafecha'];
+			if ($tadiastolicafecha == NULL) {
+				$tadiastolicafecha = "00000000";
+			} else {
+				$tadiastolicafecha = date_format(date_create($tadiastolicafecha),"Ymd");
+			}
+			
+			$creatininasericavalor = str_pad($rowListadoDiabetes['creatininasericavalor'],5,0,STR_PAD_LEFT);
+			$creatininasericafecha = $rowListadoDiabetes['creatininasericafecha'];
+			if ($creatininasericafecha == NULL) {
+				$creatininasericafecha = "00000000";
+			} else {
+				$creatininasericafecha = date_format(date_create($creatininasericafecha),"Ymd");
+			}
+			
+			$fondodeojo = $rowListadoDiabetes['fondodeojo'];
+			$fondodeojofecha = $rowListadoDiabetes['fondodeojofecha'];
+			if ($fondodeojofecha == NULL) {
+				$fondodeojofecha = "00000000";
+			} else {
+				$fondodeojofecha = date_format(date_create($fondodeojofecha),"Ymd");
+			}
+			
+			$pesovalor = str_pad($rowListadoDiabetes['pesovalor'],6,0,STR_PAD_LEFT);
+			$pesofecha = $rowListadoDiabetes['pesofecha'];
+			if ($pesofecha == NULL) {
+				$pesofecha = "00000000";
+			} else {
+				$pesofecha = date_format(date_create($pesofecha),"Ymd");
+			}
+			$tallavalor = str_pad($rowListadoDiabetes['tallavalor'],3,0,STR_PAD_LEFT); 
+			$tallafecha = $rowListadoDiabetes['tallafecha'];
+			if ($tallafecha == NULL) {
+				$tallafecha = "00000000";
+			} else {
+				$tallafecha = date_format(date_create($tallafecha),"Ymd");
+			}
+			
+			$cinturavalor = str_pad($rowListadoDiabetes['cinturavalor'],3,0,STR_PAD_LEFT);
+			$cinturafecha = $rowListadoDiabetes['cinturafecha'];
+			if ($cinturafecha == NULL) {
+				$cinturafecha = "00000000";
+			} else {
+				$cinturafecha = date_format(date_create($cinturafecha),"Ymd");
+			}
+			
+			$insulinabasalcodigo = str_pad($rowListadoDiabetes['insulinabasalcodigo'],3,0,STR_PAD_LEFT);
+			$insulinacorreccioncodigo = str_pad($rowListadoDiabetes['insulinacorreccioncodigo'],3,0,STR_PAD_LEFT);
 		
-		$hipertrofiaventricular = $rowListadoDiabetes['hipertrofiaventricular'];
-		if ($hipertrofiaventricular == 1) {
-			$hipertrofiaventricular = 2;
+			$linea = $arrayCuiles[$rowListadoDiabetes['id']]."|".$rowListadoDiabetes['tipodiabetes']."|".$fechaRegistro."|".$edadDiag."|".
+					 $rowListadoDiabetes['dislipemia']."|".$rowListadoDiabetes['obesidad']."|".$rowListadoDiabetes['tabaquismo']."|".
+					 $hipertrofiaventricular."|".$infartomiocardio."|".$insuficienciacardiaca."|".$accidentecerebrovascular."|".$retinopatia."|".
+					 $ceguera."|".$neuropatiaperiferica."|".$vasculopatiaperiferica."|".$amputacion."|".$nefropatia."|".$dialisis."|".$transplanterenal."|".
+					 $glucemia."|".$glucemiafecha."|".$hba1cvalor."|".$hba1cfecha."|".$ldlcvalor."|".$ldlcfecha."|".
+					 $trigliceridosvalor."|".$trigliceridosfecha."|".$microalbuminuriavalor."|".$microalbuminuriafecha."|".$tasistolicavalor."|".
+					 $tasistolicafecha."|".$tadiastolicavalor."|".$tadiastolicafecha."|".$creatininasericavalor."|".$creatininasericafecha."|".
+					 $fondodeojo."|".$fondodeojofecha."|".$pesovalor."|".$pesofecha."|".$tallavalor."|".$tallafecha."|".$cinturavalor."|".$cinturafecha."|".
+					 $rowListadoDiabetes['automonitoreoglucemico']."|".$rowListadoDiabetes['actividadfisica']."|".
+					 $rowListadoDiabetes['cumpletratamiento']."|".$rowListadoDiabetes['farmacosantihipertensivos']."|".
+					 $rowListadoDiabetes['farmacoshipolipemiantes']."|".$rowListadoDiabetes['acidoacetilsalicilico']."|".
+					 $rowListadoDiabetes['hipoglucemiantesorales']."|".$insulinabasalcodigo."|".$insulinacorreccioncodigo;
+			//echo $linea."<br>";
+			fwrite($file, $linea . PHP_EOL);
 		}
-		$hipertrofiaventricular = str_pad($hipertrofiaventricular,8,0,STR_PAD_LEFT);
-		
-		$infartomiocardio = $rowListadoDiabetes['infartomiocardio'];
-		if ($infartomiocardio == 1) {
-			$infartomiocardio = 2;
-		}
-		$infartomiocardio = str_pad($infartomiocardio,8,0,STR_PAD_LEFT);
-		
-		$insuficienciacardiaca = $rowListadoDiabetes['insuficienciacardiaca'];
-		if ($insuficienciacardiaca == 1) {
-			$insuficienciacardiaca = 2;
-		}
-		$insuficienciacardiaca = str_pad($insuficienciacardiaca,8,0,STR_PAD_LEFT);
-		
-		$accidentecerebrovascular = $rowListadoDiabetes['accidentecerebrovascular'];
-		if ($accidentecerebrovascular == 1) {
-			$accidentecerebrovascular = 2;
-		}
-		$accidentecerebrovascular = str_pad($accidentecerebrovascular,8,0,STR_PAD_LEFT);
-		
-		$retinopatia = $rowListadoDiabetes['retinopatia'];
-		if ($retinopatia == 1) {
-			$retinopatia = 2;
-		}
-		$retinopatia = str_pad($retinopatia,8,0,STR_PAD_LEFT);
-		
-		$ceguera = $rowListadoDiabetes['ceguera'];
-		if ($ceguera == 1) {
-			$ceguera = 2;
-		}
-		$ceguera = str_pad($ceguera,8,0,STR_PAD_LEFT);
-		
-		$neuropatiaperiferica = $rowListadoDiabetes['neuropatiaperiferica'];
-		if ($neuropatiaperiferica == 1) {
-			$neuropatiaperiferica = 2;
-		}
-		$neuropatiaperiferica = str_pad($neuropatiaperiferica,8,0,STR_PAD_LEFT);
-		
-		$vasculopatiaperiferica = $rowListadoDiabetes['vasculopatiaperiferica'];
-		if ($vasculopatiaperiferica == 1) {
-			$vasculopatiaperiferica = 2;
-		}
-		$vasculopatiaperiferica = str_pad($vasculopatiaperiferica,8,0,STR_PAD_LEFT);
-		
-		$amputacion = $rowListadoDiabetes['amputacion'];
-		if ($amputacion == 1) {
-			$amputacion = 2;
-		}
-		$amputacion = str_pad($amputacion,8,0,STR_PAD_LEFT);
-		
-		$nefropatia = $rowListadoDiabetes['nefropatia'];
-		if ($nefropatia == 1) {
-			$nefropatia = 2;
-		}
-		$nefropatia = str_pad($nefropatia,8,0,STR_PAD_LEFT);
-		
-		$dialisis = $rowListadoDiabetes['dialisis'];
-		if ($dialisis == 1) {
-			$dialisis = 2;
-		}
-		$dialisis = str_pad($dialisis,8,0,STR_PAD_LEFT);
-		
-		$transplanterenal = $rowListadoDiabetes['transplanterenal'];
-		if ($transplanterenal == 1) {
-			$transplanterenal = 2;
-		}
-		$transplanterenal = str_pad($transplanterenal,8,0,STR_PAD_LEFT);
-		
-		$glucemia = str_pad($rowListadoDiabetes['glucemiavalor'],4,0,STR_PAD_LEFT);
-		$glucemiafecha = $rowListadoDiabetes['glucemiafecha'];
-		if ($glucemiafecha == NULL) {
-			$glucemiafecha = "00000000";
-		} else {
-			$glucemiafecha = date_format(date_create($glucemiafecha),"Ymd");
-		}
-		
-		$hba1cvalor = str_pad($rowListadoDiabetes['hba1cvalor'],5,0,STR_PAD_LEFT);
-		$hba1cfecha = $rowListadoDiabetes['hba1cfecha'];
-		if ($hba1cfecha == NULL) {
-			$hba1cfecha = "00000000";
-		} else {
-			$hba1cfecha = date_format(date_create($hba1cfecha),"Ymd");
-		}
-		
-		$ldlcvalor = str_pad($rowListadoDiabetes['ldlcvalor'],4,0,STR_PAD_LEFT);
-		$ldlcfecha = $rowListadoDiabetes['ldlcfecha'];
-		if ($ldlcfecha == NULL) {
-			$ldlcfecha = "00000000";
-		} else {
-			$ldlcfecha = date_format(date_create($ldlcfecha),"Ymd");
-		}
-		
-		$trigliceridosvalor = str_pad($rowListadoDiabetes['trigliceridosvalor'],4,0,STR_PAD_LEFT);
-		$trigliceridosfecha = $rowListadoDiabetes['trigliceridosfecha'];
-		if ($trigliceridosfecha == NULL) {
-			$trigliceridosfecha = "00000000";
-		} else {
-			$trigliceridosfecha = date_format(date_create($trigliceridosfecha),"Ymd");
-		}
-		
-		$microalbuminuriavalor = $rowListadoDiabetes['microalbuminuriavalor'];
-		$microalbuminuriafecha = $rowListadoDiabetes['microalbuminuriafecha'];
-		if ($microalbuminuriafecha == NULL) {
-			$microalbuminuriafecha = "00000000";
-		} else {
-			$microalbuminuriafecha = date_format(date_create($microalbuminuriafecha),"Ymd");
-		}
-		
-		$tasistolicavalor = str_pad($rowListadoDiabetes['tasistolicavalor'],3,0,STR_PAD_LEFT);
-		$tasistolicafecha = $rowListadoDiabetes['tasistolicafecha'];
-		if ($tasistolicafecha == NULL) {
-			$tasistolicafecha = "00000000";
-		} else {
-			$tasistolicafecha = date_format(date_create($tasistolicafecha),"Ymd");
-		}
-		
-		$tadiastolicavalor = str_pad($rowListadoDiabetes['tadiastolicavalor'],3,0,STR_PAD_LEFT);
-		$tadiastolicafecha = $rowListadoDiabetes['tadiastolicafecha'];
-		if ($tadiastolicafecha == NULL) {
-			$tadiastolicafecha = "00000000";
-		} else {
-			$tadiastolicafecha = date_format(date_create($tadiastolicafecha),"Ymd");
-		}
-		
-		$creatininasericavalor = str_pad($rowListadoDiabetes['creatininasericavalor'],5,0,STR_PAD_LEFT);
-		$creatininasericafecha = $rowListadoDiabetes['creatininasericafecha'];
-		if ($creatininasericafecha == NULL) {
-			$creatininasericafecha = "00000000";
-		} else {
-			$creatininasericafecha = date_format(date_create($creatininasericafecha),"Ymd");
-		}
-		
-		$fondodeojo = $rowListadoDiabetes['fondodeojo'];
-		$fondodeojofecha = $rowListadoDiabetes['fondodeojofecha'];
-		if ($fondodeojofecha == NULL) {
-			$fondodeojofecha = "00000000";
-		} else {
-			$fondodeojofecha = date_format(date_create($fondodeojofecha),"Ymd");
-		}
-		
-		$pesovalor = str_pad($rowListadoDiabetes['pesovalor'],6,0,STR_PAD_LEFT);
-		$pesofecha = $rowListadoDiabetes['pesofecha'];
-		if ($pesofecha == NULL) {
-			$pesofecha = "00000000";
-		} else {
-			$pesofecha = date_format(date_create($pesofecha),"Ymd");
-		}
-		$tallavalor = str_pad($rowListadoDiabetes['tallavalor'],3,0,STR_PAD_LEFT); 
-		$tallafecha = $rowListadoDiabetes['tallafecha'];
-		if ($tallafecha == NULL) {
-			$tallafecha = "00000000";
-		} else {
-			$tallafecha = date_format(date_create($tallafecha),"Ymd");
-		}
-		
-		$cinturavalor = str_pad($rowListadoDiabetes['cinturavalor'],3,0,STR_PAD_LEFT);
-		$cinturafecha = $rowListadoDiabetes['cinturafecha'];
-		if ($cinturafecha == NULL) {
-			$cinturafecha = "00000000";
-		} else {
-			$cinturafecha = date_format(date_create($cinturafecha),"Ymd");
-		}
-		
-		$insulinabasalcodigo = str_pad($rowListadoDiabetes['insulinabasalcodigo'],3,0,STR_PAD_LEFT);
-		$insulinacorreccioncodigo = str_pad($rowListadoDiabetes['insulinacorreccioncodigo'],3,0,STR_PAD_LEFT);
-	
-		$linea = $arrayCuiles[$rowListadoDiabetes['id']]."|".$rowListadoDiabetes['tipodiabetes']."|".$fechaRegistro."|".$edadDiag."|".
-				 $rowListadoDiabetes['dislipemia']."|".$rowListadoDiabetes['obesidad']."|".$rowListadoDiabetes['tabaquismo']."|".
-				 $hipertrofiaventricular."|".$infartomiocardio."|".$insuficienciacardiaca."|".$accidentecerebrovascular."|".$retinopatia."|".
-				 $ceguera."|".$neuropatiaperiferica."|".$vasculopatiaperiferica."|".$amputacion."|".$nefropatia."|".$dialisis."|".$transplanterenal."|".
-				 $glucemia."|".$glucemiafecha."|".$hba1cvalor."|".$hba1cfecha."|".$ldlcvalor."|".$ldlcfecha."|".
-				 $trigliceridosvalor."|".$trigliceridosfecha."|".$microalbuminuriavalor."|".$microalbuminuriafecha."|".$tasistolicavalor."|".
-				 $tasistolicafecha."|".$tadiastolicavalor."|".$tadiastolicafecha."|".$creatininasericavalor."|".$creatininasericafecha."|".
-				 $fondodeojo."|".$fondodeojofecha."|".$pesovalor."|".$pesofecha."|".$tallavalor."|".$tallafecha."|".$cinturavalor."|".$cinturafecha."|".
-				 $rowListadoDiabetes['automonitoreoglucemico']."|".$rowListadoDiabetes['actividadfisica']."|".
-				 $rowListadoDiabetes['cumpletratamiento']."|".$rowListadoDiabetes['farmacosantihipertensivos']."|".
-				 $rowListadoDiabetes['farmacoshipolipemiantes']."|".$rowListadoDiabetes['acidoacetilsalicilico']."|".
-				 $rowListadoDiabetes['hipoglucemiantesorales']."|".$insulinabasalcodigo."|".$insulinacorreccioncodigo;
-		//echo $linea."<br>";
-		fwrite($file, $linea . PHP_EOL);
+		fclose($file);
+	} else {
+		$error = "Linea: No se pudo crear el archivo de migracion de diabetes";
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		Header($redire);
+		exit(0);
 	}
-	fclose($file);
+	$archivoImportacion = "'".$archivoImportacion."'";
 } else {
-	$error = "Linea: No se pudo crear el archivo de migracion de diabetes";
-	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
-	Header($redire);
-	exit(0);
+	$archivoImportacion = 'NULL';
 }
 
+$insertPresentacion = "INSERT INTO diabetespresentacion VALUES(DEFAULT, '$periodo', $cantBeneNuevos, $cantBeneViejos,$archivoImportacion, NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro',NULL,NULL)";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];

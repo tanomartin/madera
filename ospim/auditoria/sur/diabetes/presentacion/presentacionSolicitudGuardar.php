@@ -7,6 +7,7 @@ $fechamodif = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 $fecha = fechaParaGuardar($_POST['fecha']);
 $solicitud = strtoupper(trim($_POST['solicitud']));
+$cantidad =  $_POST['cantidad'];
 $periodo = $_POST['periodo'];
 
 if ($_FILES['nota']['tmp_name'] != "") {
@@ -26,7 +27,8 @@ if ($_FILES['nota']['tmp_name'] != "") {
 }
 
 $presentacionSSS = "UPDATE diabetespresentacion 
-						SET fechasolicitud = '$fecha', nrosolicitud = '$solicitud', pathSolicitud = '$archivodestino',
+						SET fechasolicitud = '$fecha', nrosolicitud = '$solicitud',
+							cantbenesolicitados = $cantidad, pathSolicitud = '$archivodestino',
 							fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif'
 						WHERE id = $id";
 try {

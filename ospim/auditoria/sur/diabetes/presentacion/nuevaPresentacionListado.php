@@ -119,6 +119,16 @@ if ($canListadoDiabetes != 0) {
 	}
 }
 
+$arrayNuevo = array();
+$arrayViejos = array();
+foreach ($arrayCompletos as $key => $beneficiarios) {
+	if (strtotime($beneficiarios['fechaficha']) >= strtotime($fechaDesde)) {
+		$arrayNuevo[$key] = $beneficiarios;
+	} else {
+		$arrayViejos[$key] = $beneficiarios;
+	}
+}
+
 $sqlListadoSinDiagnostico = "SELECT nroafiliado,nroorden,diagnosticos FROM diabetesbeneficiarios WHERE diagnosticos = 0";
 $resListadoSinDiagnostico = mysql_query($sqlListadoSinDiagnostico,$db);
 $canListadoSinDiagnostico = mysql_num_rows($resListadoSinDiagnostico);
@@ -175,6 +185,22 @@ $(function() {
 		}
 	
 	}),
+	$("#viejos")
+	.tablesorter({
+		theme: 'blue', 
+		widthFixed: true, 
+		widgets: ["zebra", "filter"], 
+		widgetOptions : { 
+			filter_cssFilter   : '',
+			filter_childRows   : false,
+			filter_hideFilters : false,
+			filter_ignoreCase  : true,
+			filter_searchDelay : 300,
+			filter_startsWith  : false,
+			filter_hideFilters : false,
+		}
+	
+	}),
 	$("#incompletos")
 	.tablesorter({
 		theme: 'blue', 
@@ -210,65 +236,122 @@ function validar(formulario) {
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'nuevaPresentacion.php'" class="nover"  /></p>
 	<h2>Nueva Presentación Listado Beneficiarios (<?php echo "# ".$canCantidadBeneDiab?>)</h2>
 	<h3>Periodo a Generar '<?php echo $periodo ?>'</h3>
-	<h3>Beneficiarios a Presentar (<?php echo "# ".sizeof($arrayCompletos) ?>)</h3>
-<?php if (sizeof($arrayCompletos) > 0) { ?>
-		<form id="nuevaPresentacionListado" name="nuevaPresentacionListado" method="post" onsubmit="return validar(this)" action="nuevaPresentacionArchivo.php?periodo=<?php echo $periodo ?>">	
-			<table style="text-align:center; width:1000px;" id="completos" class="tablesorter" >
-				<thead>
+	<h3>Beneficiarios a Subir (<?php echo "# ".sizeof($arrayNuevo) ?>)</h3>
+	<form id="nuevaPresentacionListado" name="nuevaPresentacionListado" method="post" onsubmit="return validar(this)" action="nuevaPresentacionArchivo.php?periodo=<?php echo $periodo ?>">	
+<?php if (sizeof($arrayNuevo) > 0) { ?>
+		<table style="text-align:center; width:1000px;" id="completos" class="tablesorter" >
+			<thead>
+				<tr>
+					<th>Nro. Afiliado</th>
+					<th>Nombre y Apellido</th>
+					<th>CUIL Titular</th>
+					<th>Tipo Bene.</th>
+					<th>Fecha Ficha</th>
+					<th>Tipo</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach($arrayNuevo as $completo) { 
+					$indexBusqueda = $completo['nroafiliado']."-".$completo['nroorden'];
+					$tipoBene = "";
+					$nombre = "-"; 
+					$cuil = "-";
+					if (array_key_exists($indexBusqueda, $arrayTitulares)) { 
+						$nombre = $arrayTitulares[$indexBusqueda]['nombre']; 
+						$cuil = $arrayTitulares[$indexBusqueda]['cuil']; 
+						$tipoBene = "TITULAR";
+					} 
+					if (array_key_exists($indexBusqueda, $arrayTitularesDeBaja)) {
+						$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']; 
+						$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
+						$tipoBene = "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayTitularesDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+					}
+					if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
+						$nombre = $arrayFamiliares[$indexBusqueda]['nombre']; 
+						$cuil = $arrayFamiliares[$indexBusqueda]['cuil'];
+						$tipoBene = "FAMILIAR";
+					} 
+					if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
+						$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
+						$cuil = $arrayFamiliaresDeBaja[$busquedaCUILTitu]['cuil'];
+						$tipoBene = "FAMILIAR DE BAJA (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+					} ?>
 					<tr>
-						<th>Nro. Afiliado</th>
-						<th>Nombre y Apellido</th>
-						<th>CUIL Titular</th>
-						<th>Tipo Bene.</th>
-						<th>Fecha Ficha</th>
-						<th>Tipo</th>
+						<td>
+							<input style="display: none" type="text" id="datos<?php echo $indexBusqueda?>" name="datos<?php echo $indexBusqueda?>" value="<?php echo $completo["id"]."-".$cuil?>"/>
+							<?php echo $completo['nroafiliado'] ?>
+						</td>
+						<td><?php echo $nombre; ?></td>
+						<td><?php echo $cuil; ?></td>
+						<td><?php echo $tipoBene; ?></td>
+						<td><?php echo $completo['fechaficha'] ?></td>
+						<td><?php echo $completo['tipodiabetes'] ?></td>
 					</tr>
-				</thead>
-				<tbody>
-				<?php foreach($arrayCompletos as $completo) { 
-						$indexBusqueda = $completo['nroafiliado']."-".$completo['nroorden'];
-						$tipoBene = "";
-						$nombre = "-"; 
-						$cuil = "-";
-						if (array_key_exists($indexBusqueda, $arrayTitulares)) { 
-							$nombre = $arrayTitulares[$indexBusqueda]['nombre']; 
-							$cuil = $arrayTitulares[$indexBusqueda]['cuil']; 
-							$tipoBene = "TITULAR";
-						} 
-						if (array_key_exists($indexBusqueda, $arrayTitularesDeBaja)) {
-							$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']; 
-							$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
-							$tipoBene = "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayTitularesDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
-						}
-						if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
-							$nombre = $arrayFamiliares[$indexBusqueda]['nombre']; 
-							$cuil = $arrayFamiliares[$indexBusqueda]['cuil'];
-							$tipoBene = "FAMILIAR";
-						} 
-						if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
-							$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
-							$cuil = $arrayFamiliaresDeBaja[$busquedaCUILTitu]['cuil'];
-							$tipoBene = "FAMILIAR DE BAJA (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
-						} ?>
-						<tr>
-							<td>
-								<input style="display: none" type="text" id="datos<?php echo $indexBusqueda?>" name="datos<?php echo $indexBusqueda?>" value="<?php echo $completo["id"]."-".$cuil?>"/>
-								<?php echo $completo['nroafiliado'] ?>
-							</td>
-							<td><?php echo $nombre; ?></td>
-							<td><?php echo $cuil; ?></td>
-							<td><?php echo $tipoBene; ?></td>
-							<td><?php echo $completo['fechaficha'] ?></td>
-							<td><?php echo $completo['tipodiabetes'] ?></td>
-						</tr>
-				<?php } ?>
-				</tbody>
-			</table>
-			<button class="nover" type="submit" name="Submit">Generar Archivo CSV</button>
-		</form>
+			<?php } ?>
+			</tbody>
+		</table>
+<?php } else { ?>
+		<h3 style="color: blue">No existen beneficiarios nuevos para subir</h3>
+<?php }?>
+	 
+	<h3>Beneficiarios Importados (<?php echo "# ".sizeof($arrayViejos) ?>)</h3>
+<?php if (sizeof($arrayViejos) > 0) { ?>
+		<table style="text-align:center; width:1000px;" id="viejos" class="tablesorter" >
+			<thead>
+				<tr>
+					<th>Nro. Afiliado</th>
+					<th>Nombre y Apellido</th>
+					<th>CUIL Titular</th>
+					<th>Tipo Bene.</th>
+					<th>Fecha Ficha</th>
+					<th>Tipo</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php foreach($arrayViejos as $completo) { 
+					$indexBusqueda = $completo['nroafiliado']."-".$completo['nroorden'];
+					$tipoBene = "";
+					$nombre = "-"; 
+					$cuil = "-";
+					if (array_key_exists($indexBusqueda, $arrayTitulares)) { 
+						$nombre = $arrayTitulares[$indexBusqueda]['nombre']; 
+						$cuil = $arrayTitulares[$indexBusqueda]['cuil']; 
+						$tipoBene = "TITULAR";
+					} 
+					if (array_key_exists($indexBusqueda, $arrayTitularesDeBaja)) {
+						$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']; 
+						$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
+						$tipoBene = "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayTitularesDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+					}
+					if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
+						$nombre = $arrayFamiliares[$indexBusqueda]['nombre']; 
+						$cuil = $arrayFamiliares[$indexBusqueda]['cuil'];
+						$tipoBene = "FAMILIAR";
+					} 
+					if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
+						$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
+						$cuil = $arrayFamiliaresDeBaja[$busquedaCUILTitu]['cuil'];
+						$tipoBene = "FAMILIAR DE BAJA (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+					} ?>
+					<tr>
+						<td><?php echo $completo['nroafiliado'] ?></td>
+						<td><?php echo $nombre; ?></td>
+						<td><?php echo $cuil; ?></td>
+						<td><?php echo $tipoBene; ?></td>
+						<td><?php echo $completo['fechaficha'] ?></td>
+						<td><?php echo $completo['tipodiabetes'] ?></td>
+						<td><input type="checkbox" id="check<?php echo $indexBusqueda?>" name="check<?php echo $indexBusqueda?>" value="<?php echo $completo["id"]."-".$cuil?>"/></td>
+					</tr>
+			<?php } ?>
+			</tbody>
+		</table>
 <?php } else { ?>
 		<h3 style="color: blue">No existen beneficiarios para presentar</h3>
 <?php }?>
+	  <button class="nover" type="submit" name="Submit">Generar Presentacion</button>
+	</form>
+	
 	<h3>Beneficiarios con información Incompleta (<?php echo "# ".sizeof($arrayIncompletos) ?>)</h3>
 	<?php if (sizeof($arrayIncompletos) > 0) { ?>
 			<table style="text-align:center; width:1000px;" id="incompletos" class="tablesorter" >
