@@ -73,7 +73,7 @@ function validar(formulario) {
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloPresSSS.php'" /></p>
 	<h3>Presentacion Diabetes S.S.S.</h3>
 	<div class="grilla">
-	  	<table>
+	  	<table style="width:100%">
 	  		<thead>
 	  			<tr>
 		  			<th>ID</th>
@@ -105,6 +105,8 @@ function validar(formulario) {
 	 		<b>Nro. Soli.: </b><input type="text" id="solicitud" name="solicitud" size="20"/> - 
 	 		<b>Cant. Bene.: </b><input type="text" id="cantidad" name="cantidad" size="5"/>
 	 	</p>
+	 	<p><b>Observacion</b></p>
+	 	<p><textarea rows="5" cols="75" id="obs" name="obs"></textarea></p>
 	 	<p><b>Nota. Soli.: </b><input type="file" id="nota" name="nota" /></p>
 	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR SOLICITUD SSS"/></p>
 	 </form>

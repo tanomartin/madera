@@ -73,8 +73,8 @@ $(function() {
 		  					<th># Ant.</th>
 		  					<th>Archivo</th>
 		  					<th width="25%">Observacion</th>
-		  					<th>Estado</th>
-		  					<th>Acciones</th>
+		  					<th width="20%">Estado</th>
+		  					<th width="25px">Acciones</th>
 	  					</tr>
 	  				</thead>
 					<tbody>

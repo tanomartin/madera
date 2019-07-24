@@ -71,7 +71,7 @@ function validar(formulario) {
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloPresSSS.php'" /></p>
 	<h3>Devolucion Presentacion Diabetes S.S.S.</h3>
 	<div class="grilla">
-	  	<table>
+	  	<table style="width:100%">
 	  		<thead>
 	  			<tr>
 		  			<th>ID</th>
@@ -79,7 +79,8 @@ function validar(formulario) {
 		  			<th># Nuevos</th>
 		  			<th># Ant.</th>
 		  			<th>Archivo</th>
-		  			<th>Estado</th>
+		  			<th width="25%">Observacion</th>
+		  			<th width="20%">Estado</th>
 	  			</tr>
 	  		</thead>
 			<tbody>
@@ -89,6 +90,7 @@ function validar(formulario) {
 			  		<td><?php echo $rowPresSSS['cantbenenuevos']?></td>
 			  		<td><?php echo $rowPresSSS['cantbeneanteriores']?></td>
 			  		<td><?php echo $archivo?></td>
+			  		<td><?php echo $rowPresSSS['observacion']  ?></td>
 			  		<td><?php echo "PRESENTADA <br>FEC: ".$rowPresSSS['fechapresentacion']."<br>SOL.: ".$rowPresSSS['nrosolicitud']."<br>CANT: ".$rowPresSSS['cantbenesolicitados']; ?></td>
 			  	</tr>
 		  	</tbody>

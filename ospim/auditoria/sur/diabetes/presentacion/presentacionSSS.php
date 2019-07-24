@@ -55,7 +55,7 @@ function validar(formulario) {
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloPresSSS.php'" /></p>
 	<h3>Presentacion Diabetes S.S.S.</h3>
 	<div class="grilla">
-	  	<table>
+	  	<table style="width:100%">
 	  		<thead>
 	  			<tr>
 		  			<th>ID</th>
@@ -63,7 +63,8 @@ function validar(formulario) {
 		  			<th># Nuevos</th>
 		  			<th># Ant.</th>
 		  			<th>Archivo</th>
-		  			<th>Estado</th>
+		  			<th width="25%">Observacion</th>
+		  			<th width="20%">Estado</th>
 	  			</tr>
 	  		</thead>
 			<tbody>
@@ -73,6 +74,7 @@ function validar(formulario) {
 			  		<td><?php echo $rowPresSSS['cantbenenuevos']?></td>
 			  		<td><?php echo $rowPresSSS['cantbeneanteriores']?></td>
 			  		<td><?php echo $archivo?></td>
+			  		<td><?php echo $rowPresSSS['observacion']  ?></td>
 			  		<td><?php echo "SOLICITADA <br>FEC: ".$rowPresSSS['fechasolicitud']."<br>SOL.: ".$rowPresSSS['nrosolicitud']."<br>CANT: ".$rowPresSSS['cantbenesolicitados']; ?></td>
 			  	</tr>
 		  	</tbody>
@@ -82,8 +84,6 @@ function validar(formulario) {
 	 	<input type="text" id="id" name="id" value="<?php echo $rowPresSSS['id'] ?>" style="display: none"/>
 	 	<h3>Datos Presentación a SSS</h3>
 	 	<p><b>Fecha Presentación: </b><input type="text" id="fecha" name="fecha" size="8"/></p>
-	 	<p><b>Observacion<p>
-	 	<p><textarea rows="5" cols="75" id="obs" name="obs"></textarea></p>
 	 	<p><input type="submit" id="guardar" name="guardar" value="GUARDAR PRESENTACION SSS"/></p>
 	 </form>
 </div>
