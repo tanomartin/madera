@@ -72,7 +72,7 @@ $(function() {
 		  					<th># Nue.</th>
 		  					<th># Ant.</th>
 		  					<th>Archivo</th>
-		  					<th>Observacion</th>
+		  					<th width="25%">Observacion</th>
 		  					<th>Estado</th>
 		  					<th>Acciones</th>
 	  					</tr>
@@ -138,7 +138,7 @@ $(function() {
 	  					<th># Nue.</th>
 		  				<th># Ant.</th>
 	  					<th>Archivo</th>
-	  					<th>Observacion</th>
+	  					<th width="25%">Observacion</th>
 	  					<th>Estado</th>
 	  					<th>+ Info</th>
   					</tr>
