@@ -104,16 +104,16 @@ $(function() {
 			  							if ($rowPresSSSActiva['patharchivo'] != NULL) { ?> 
 			  								<input type="button" value="DESCARGAR" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['patharchivo'] ?>'"/> 
 			  					  <?php } ?>
-			  							<input type="button" value="SOLICITUD" onclick="location.href = 'presentacionSolicitud.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
+			  							<input type="button" value="SOLICITUD" onclick="location.href = 'presentacionSolicitud.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/></br>
 			  							<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
 			  					<?php } else {
 			  							 if ($rowPresSSSActiva['fechapresentacion'] == NULL) { ?>
-			  							 	<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/>
-			  							 	<input type="button" value="PRESENTACION" onclick="location.href = 'presentacionSSS.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
+			  							 	<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/></br>
+			  							 	<input type="button" value="PRESENTACION" onclick="location.href = 'presentacionSSS.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/></br>
 			  							 	<input type="button" value="CANCELAR" onclick="location.href = 'cancelarPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/>
 			  					<?php	} else { 
 			  						 		 if ($rowPresSSSActiva['fechadevolucion'] == NULL) { ?>
-			  									<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> 
+			  									<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSActiva['pathsolicitud'] ?>'"/> </br>
 			  									<input type="button" value="DEVOLUCION" onclick="location.href = 'devolucionPresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/> 
 			  					<?php	 	}
 			  							 }
@@ -169,7 +169,11 @@ $(function() {
 			  						$info = "<b>EXP:</b> ".$rowPresSSSFinalizadas['nroexpediente']."<br><b>MONTO:</b> $ ".$rowPresSSSFinalizadas['monto']."<br><b>CANT: </b>".$rowPresSSSFinalizadas['cantbenesolicitados'];
 			  					} ?>
 			  			<td style="color: <?php echo $color ?>"><?php echo $estado ?></td>
-			  			<td><?php echo $info ?></td>
+			  			<td><?php echo $info."<br>";
+			  					  if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) {?>
+			  						<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSFinalizadas['pathsolicitud'] ?>'"/>
+			  		  		<?php } ?>
+			  			</td>
   					</tr>
   			<?php } ?>
   				</tbody>
