@@ -168,12 +168,13 @@ $(function() {
 			  						$estado = "FINALIZADA<br>".$rowPresSSSFinalizadas['fechadevolucion'];
 			  						$info = "<b>EXP:</b> ".$rowPresSSSFinalizadas['nroexpediente']."<br><b>MONTO:</b> $ ".$rowPresSSSFinalizadas['monto']."<br><b>CANT: </b>".$rowPresSSSFinalizadas['cantbenesolicitados'];
 			  					} ?>
-			  			<td style="color: <?php echo $color ?>"><?php echo $estado ?></td>
-			  			<td><?php echo $info."<br>";
+			  			<td style="color: <?php echo $color ?>">
+			  				<?php echo $estado."<br>";
 			  					  if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) {?>
 			  						<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSFinalizadas['pathsolicitud'] ?>'"/>
 			  		  		<?php } ?>
 			  			</td>
+			  			<td><?php echo $info ?> </td>
   					</tr>
   			<?php } ?>
   				</tbody>
