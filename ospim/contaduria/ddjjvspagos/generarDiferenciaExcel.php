@@ -47,28 +47,46 @@ try {
 	$mesDesde = substr ( $fechadesde, 5, 2 );
 	
 	// OBTENEMOS LAS DDJJ
-	
 	$anolimite = 2009;
 	$meslimite = 3;
 	
+	$arrayEmpresas = array();
+	$sqlEmpBajaDelega = "SELECT e.cuit, e.nombre, j.codidelega
+							FROM empresasdebaja e, jurisdiccion j
+							WHERE e.cuit = j.cuit
+							ORDER BY cuit, disgdinero ASC";
+	$resEmpBajaDelega = $dbh->prepare ($sqlEmpBajaDelega);
+	$resEmpBajaDelega->execute ();
+	while ( $rowEmpBajaDelega = $resEmpBajaDelega->fetch (PDO::FETCH_LAZY)) {
+		$arrayEmpresas[$rowEmpBajaDelega['cuit']] = array("nombre" => $rowEmpBajaDelega['nombre'], "delega" => $rowEmpBajaDelega['codidelega'], "estado" => "DE BAJA");
+	}
+	
+	$sqlEmpAltaDelega = "SELECT e.cuit, e.nombre, j.codidelega
+							FROM empresas e, jurisdiccion j 
+							WHERE e.cuit = j.cuit
+							ORDER BY cuit, disgdinero ASC";
+	$resEmpAltaDelega = $dbh->prepare ($sqlEmpAltaDelega);
+	$resEmpAltaDelega->execute ();
+	while ( $rowEmpAltaDelega = $resEmpAltaDelega->fetch (PDO::FETCH_LAZY)) {
+		$arrayEmpresas[$rowEmpAltaDelega['cuit']] = array("nombre" => $rowEmpAltaDelega['nombre'], "delega" => $rowEmpAltaDelega['codidelega'], "estado" => "ACTIVA");
+	}
+
 	$arrayDDJJ = array ();
 	if ($anoDesde < $anolimite or ($anolimite == $anoDesde and $meslimite < $mesDesde)) {
 		$sqlDDJJPrimera = "SELECT
 				  ddjj.cuit,
-				  e.nombre,
 				  ddjj.anoddjj,
 				  ddjj.mesddjj,
 				  ddjj.secuenciapresentacion,
 				  ROUND(SUM(ddjj.remundeclarada),2) AS totremune,
 				  ROUND(SUM(IF(ddjj.remundeclarada < 1001, ddjj.remundeclarada * 0.081, ddjj.remundeclarada * 0.0765)),2) AS obligacion
 				FROM
-				      afipddjj ddjj, empresas e
+				      afipddjj ddjj
 				WHERE
 					  ddjj.nrodisco >= " . $discoDesde . " AND
 				      ddjj.nrodisco <= " . $discoHasta . " AND
 				      ((ddjj.anoddjj < " . $anolimite . ") OR 
-					   (ddjj.anoddjj = " . $anolimite . " AND ddjj.mesddjj < " . $meslimite . ")) AND
-					  ddjj.cuit = e.cuit
+					   (ddjj.anoddjj = " . $anolimite . " AND ddjj.mesddjj < " . $meslimite . "))
 				GROUP by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion
 				ORDER by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion ASC";
 		$resDDJJ = $dbh->prepare ( $sqlDDJJPrimera );
@@ -86,20 +104,18 @@ try {
 		
 		$sqlDDJJSegunda = "SELECT
 				  ddjj.cuit,
-				  e.nombre,
 				  ddjj.anoddjj,
 				  ddjj.mesddjj,
 				  ddjj.secuenciapresentacion,
 				  ROUND(SUM(ddjj.remundeclarada),2) AS totremune,
 				  ROUND(SUM(IF(ddjj.remundeclarada < 2401, ddjj.remundeclarada * 0.081, ddjj.remundeclarada * 0.0765)),2) AS obligacion
 				FROM
-				      afipddjj ddjj, empresas e
+				      afipddjj ddjj
 				WHERE
 					  ddjj.nrodisco >= " . $discoDesde . " AND
 				      ddjj.nrodisco <= " . $discoHasta . " AND
 				      ((ddjj.anoddjj > " . $anolimite . ") OR
-	             	   (ddjj.anoddjj = " . $anolimite . " AND ddjj.mesddjj >= " . $meslimite . ")) AND
-					    ddjj.cuit = e.cuit
+	             	   (ddjj.anoddjj = " . $anolimite . " AND ddjj.mesddjj >= " . $meslimite . "))
 				GROUP by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion
 				ORDER by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion ASC";
 		
@@ -117,18 +133,16 @@ try {
 	} else {
 		$sqlDDJJ = "SELECT
 				  ddjj.cuit,
-				  e.nombre,
 				  ddjj.anoddjj,
 				  ddjj.mesddjj,
 				  ddjj.secuenciapresentacion,
 				  ROUND(SUM(ddjj.remundeclarada),2) AS totremune,
 				  ROUND(SUM(IF(ddjj.remundeclarada < 2401, ddjj.remundeclarada * 0.081, ddjj.remundeclarada * 0.0765)),2) AS obligacion
 				FROM
-				      afipddjj ddjj, empresas e
+				      afipddjj ddjj
 				WHERE
 					  ddjj.nrodisco >= " . $discoDesde . " AND
-				      ddjj.nrodisco <= " . $discoHasta . " AND
-					  ddjj.cuit = e.cuit
+				      ddjj.nrodisco <= " . $discoHasta . "
 				GROUP by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion
 				ORDER by ddjj.cuit, ddjj.anoddjj, ddjj.mesddjj, ddjj.secuenciapresentacion ASC";
 		
@@ -152,15 +166,13 @@ try {
 				  pagos.cuit,
 			      pagos.anopago,
 			      pagos.mespago,
-				  e.nombre,
 				  ROUND(SUM(IF(pagos.debitocredito = 'C', pagos.importe, pagos.importe * -1)),2) AS importepagos
 				FROM
-				      afiptransferencias pagos, empresas e
+				      afiptransferencias pagos
 				WHERE
 					  pagos.fechaprocesoafip >= '" . $fechadesde . "' AND
 				      pagos.fechaprocesoafip <= '" . $fechahasta . "' AND
-				      pagos.concepto != 'REM' AND
-				      pagos.cuit = e.cuit 
+				      pagos.concepto != 'REM'
 				GROUP by pagos.cuit, pagos.anopago, pagos.mespago
 				ORDER by pagos.cuit, pagos.anopago ASC, pagos.mespago ASC";
 	$resPagos = $dbh->prepare ( $sqlPagos );
@@ -176,44 +188,6 @@ try {
 	}
 	unset ($resPagos);
 	
-	//REDONDEO LOS QUE LA DIFERENCIA SE ENTRE -50 y +50
-/*	foreach ( $arrayDDJJ as $cuit => $ddjjCuit ) {
-		if (array_key_exists($cuit,$arrayPagos)) {
-			foreach ( $ddjjCuit as $periodo => $ddjjperido ) {
-				if ($periodo != 'nombre') {
-					if (array_key_exists($periodo,$arrayPagos[$cuit])) {
-						$pago = $arrayPagos[$cuit][$periodo]['pagos'];
-						$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
-						$dife = $obli - $pago;
-						if ($dife < 50 && $dife > -50) {
-							$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
-						} else {
-							$arrayDDJJ[$cuit][$periodo]['dife'] = $dife;
-						}
-					} else {
-						$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
-						if ($obli < 50) {
-							$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
-						} else {
-							$arrayDDJJ[$cuit][$periodo]['dife'] = $obli;
-						}
-					}
-				}
-			}	
-		} else {
-			foreach ( $ddjjCuit as $periodo => $ddjjperido ) {
-				if ($periodo != 'nombre') {
-					$obli = $arrayDDJJ[$cuit][$periodo]['obligacion'];
-					if ($obli < 50) {
-						$arrayDDJJ[$cuit][$periodo]['dife'] = 0;
-					} else {
-						$arrayDDJJ[$cuit][$periodo]['dife'] = $obli;
-					}
-				}
-			}
-		}
-	}*/
-	
 	// ARMO EL ESTADO CONTABLE
 	$estadoContable = array ();
 	reset($arrayDDJJ);
@@ -225,8 +199,17 @@ try {
 			$totalRemuneracion += $ddjjperido ['remuneracion'];
 			$totalObligacion += $ddjjperido ['obligacion'];
 		}
+		
+		if (!isset($arrayEmpresas[$cuit])) {
+			$arrayEmpresas[$cuit]['delega'] = "-";
+			$arrayEmpresas[$cuit]['nombre'] = "-";
+			$arrayEmpresas[$cuit]['estado'] = "-";
+		}
+		
 		$estadoContable [$cuit] = array (
-				'nombre' => $arrayDDJJ[$cuit]['nombre'],
+				'delega' => $arrayEmpresas[$cuit]['delega'],
+				'nombre' => $arrayEmpresas[$cuit]['nombre'],
+				'estado' => $arrayEmpresas[$cuit]['estado'],
 				'totremune' => $totalRemuneracion,
 				'totobligacion' => $totalObligacion
 		);
@@ -285,16 +268,20 @@ try {
 	// Setea tamaño de la columna y agrega datos a las celdas de titulos
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'A' )->setWidth ( 13 );
 	$objPHPExcel->getActiveSheet ()->setCellValue ( 'A1', 'C.U.I.T.' );
-	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'B' )->setWidth ( 120 );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'B1', 'Razon Social' );
-	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'C' )->setWidth ( 20 );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'C1', 'Total DDJJ' );
+	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'B' )->setWidth ( 13 );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'B1', 'COD. DEL.' );
+	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'C' )->setWidth ( 100 );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'C1', 'Razon Social' );
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'D' )->setWidth ( 20 );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'D1', 'Obligacion' );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'D1', 'Estado' );
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'E' )->setWidth ( 20 );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'E1', 'Total Pagos' );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'E1', 'Total DDJJ' );
 	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'F' )->setWidth ( 20 );
-	$objPHPExcel->getActiveSheet ()->setCellValue ( 'F1', 'Debito/Credito' );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'F1', 'Obligacion' );
+	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'G' )->setWidth ( 20 );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'G1', 'Total Pagos' );
+	$objPHPExcel->getActiveSheet ()->getColumnDimension ( 'H' )->setWidth ( 20 );
+	$objPHPExcel->getActiveSheet ()->setCellValue ( 'H1', 'Debito/Credito' );
 	
 	$fila = 1;
 	$totRem = 0;
@@ -306,12 +293,17 @@ try {
 		$fila ++;
 		// Agrega datos a las celdas de datos
 		$objPHPExcel->getActiveSheet ()->setCellValue ( 'A' . $fila, $cuit );
-		$objPHPExcel->getActiveSheet ()->setCellValue ( 'B' . $fila, utf8_encode($estado ['nombre']));
-		$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, $estado ['totremune'] );
-		$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, $estado ['totobligacion'] );
-		$objPHPExcel->getActiveSheet ()->setCellValue ( 'E' . $fila, $estado ['totpagos'] );
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'B' . $fila, $estado['delega'] );
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'C' . $fila, utf8_encode($estado ['nombre']));
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'D' . $fila, utf8_encode($estado ['estado']));
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'E' . $fila, $estado ['totremune'] );
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $estado ['totobligacion'] );
+		if (!isset($estado ['totpagos'])) {
+			$estado ['totpagos'] = 0;
+		}
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'G' . $fila, $estado ['totpagos'] );
 		$diferencia = $estado ['totobligacion'] - $estado ['totpagos'];
-		$objPHPExcel->getActiveSheet ()->setCellValue ( 'F' . $fila, $diferencia);
+		$objPHPExcel->getActiveSheet ()->setCellValue ( 'H' . $fila, $diferencia);
 	}
 	
 	// Setea fuente tipo y tamaño a la hoja activa
@@ -319,24 +311,28 @@ try {
 	$objPHPExcel->getDefaultStyle ()->getFont ()->setSize ( 8 );
 	
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:F1' )->getFont ()->setBold ( true );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:F1' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:F1' )->getFill ()->getStartColor ()->setARGB ( 'FF808080' );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:F1' )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_CENTER );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:H1' )->getFont ()->setBold ( true );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:H1' )->getFill ()->setFillType ( PHPExcel_Style_Fill::FILL_SOLID );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:H1' )->getFill ()->getStartColor ()->setARGB ( 'FF808080' );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'A1:H1' )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_CENTER );
 	
 	// Setea tipo de dato y alineamiento horizontal a las celdas de datos
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'A2:A' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'A2:A' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_CENTER );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'B2:B' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'B2:B' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_LEFT );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'C2:C' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'C2:C' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'D2:D' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 );
-	$objPHPExcel->getActiveSheet ()->getStyle ( 'D2:D' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'C2:C' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'C2:C' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_LEFT );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'D2:D' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_TEXT );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'D2:D' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_LEFT );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'E2:E' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'E2:E' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'F2:F' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 );
 	$objPHPExcel->getActiveSheet ()->getStyle ( 'F2:F' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'G2:G' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'G2:G' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'H2:H' . $fila )->getNumberFormat ()->setFormatCode ( PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1 );
+	$objPHPExcel->getActiveSheet ()->getStyle ( 'H2:H' . $fila )->getAlignment ()->setHorizontal ( PHPExcel_Style_Alignment::HORIZONTAL_RIGHT );
 	
 	// Guarda Archivo en Formato Excel 2003
 	$objWriter = PHPExcel_IOFactory::createWriter ( $objPHPExcel, 'Excel5' );
