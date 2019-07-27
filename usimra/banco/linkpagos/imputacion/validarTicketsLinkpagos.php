@@ -139,7 +139,7 @@ try {
 									$cantddjj = $totaddjj[cantdj];
 									$impoddjj = $totaddjj[totdep];
 									$importeadmitido=0; 
-									$difdeposito=0.00
+									$difdeposito=0.00;
 									if($cantddjj>0) {
 										if($impoddjj==$importebanco) {
 											$importeadmitido=1;
