@@ -39,6 +39,11 @@ function validar(formulario) {
 		document.getElementById("selectTipo").focus();
 		return false;
 	}
+	if (formulario.selectTotales.options[formulario.selectTotales.selectedIndex].value == "") {
+		alert("Debe seleccionar si necesita o no necesita totalizadores para el informe");
+		document.getElementById("selectTotales").focus();
+		return false;
+	}
 	$.blockUI({ message: "<h1>Generando Informe. Aguarde por favor...</h1>" });
 	return true;
 }
@@ -71,6 +76,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 			<option title="Manuales" value="M">Manuales</option>
 			<option title="LinkPagos" value="L">LinkPagos</option>
 			<option title="Todos" value="A">Todos</option>
+   		</select>
+	</p>
+<p align="center">Totalizadores 
+		<select name="selectTotales" id="selectTotales">
+			<option title="Seleccione un valor" value="">Seleccione un valor</option>
+			<option title="Sin Totales por Delegacion" value=0>Sin Totales por Delegacion</option>
+			<option title="Con Totales por Delegacion" value=1>Con Totales por Delegacion</option>
    		</select>
 	</p>
 <p align="center"><input type="submit" name="Submit" value="Generar Informe"/></p>
