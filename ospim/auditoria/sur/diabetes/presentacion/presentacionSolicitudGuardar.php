@@ -9,9 +9,11 @@ $fecha = fechaParaGuardar($_POST['fecha']);
 $solicitud = strtoupper(trim($_POST['solicitud']));
 $cantidad =  $_POST['cantidad'];
 $periodo = $_POST['periodo'];
-$obs = "'".strtoupper(trim($_POST['obs']))."'";
+$obs = $_POST['obs'];
 if ($obs == "") {
-	$obs = NULL;
+	$obs = 'NULL';
+} else {
+	$obs = "'".strtoupper(trim($_POST['obs']))."'";
 }
 
 if ($_FILES['nota']['tmp_name'] != "") {
