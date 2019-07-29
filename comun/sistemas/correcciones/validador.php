@@ -33,12 +33,13 @@ $idMotivo = $_POST[$nombreMotivo];
 $nombreObs = "obs-$modulo";
 $observacion = $_POST[$nombreObs];
 
+$numExistencia = 0;
 $arrayExistencia = array();
 if ($modulo == "ACUERDOS") {
 	$arrayExistencia[0] = "SELECT * FROM cabacuerdos$origen WHERE cuit = $dato1 and nroacuerdo = $dato2";
 	$error = "NO EXISTE ACUERDO NUMERO '$dato2' PARA EL C.U.I.T. '$dato1'";
 }
-if ($modulo == "APORTES" || $modulo == "EMPRESAS") {
+if ($modulo == "APORTES" || $modulo == "EMPRESAS" || $modulo == "FACTURACION") {
 	$arrayExistencia[0] = "SELECT * FROM empresas WHERE cuit = $dato1";
 	$error = "NO EXISTE EMPRESA CON EL C.U.I.T. '$dato1'";
 }
@@ -54,20 +55,19 @@ if ($modulo == "JUICIOS") {
 	$error = "NO EXISTE JUICIO CON NRO DE ORDEN '$dato2' EN EL C.U.I.T. '$dato1' ";
 }
 if ($modulo == "FISCALIZACION") {
-	
+	$arrayExistencia[1] = "SELECT * FROM reqfiscaliz$origen WHERE cuit = $dato1 and nrorequerimiento = $dato2";
+	$error = "NO EXISTE NRO DE REQUERIMIENTO CON NRO DE REQUERIMIENTO '$dato2' EN EL C.U.I.T. '$dato1' ";
 }
 if ($modulo == "AUDITORIA MEDICA") {
-
-}
-if ($modulo == "FACTURACION") {
-
+	$arrayExistencia[1] = "SELECT * FROM prestadores WHERE cuit = $dato1 or codigoprestador = $dato2";
+	$error = "NO EXISTE PRESATDOR CON CODIGO '$dato2' O C.U.I.T. '$dato1' ";
 }
 
-$numExistencia = 0;
 foreach($arrayExistencia as $sqlExistencia) {
 	$resExistencia = mysql_query($sqlExistencia,$db);
 	$numExistencia += mysql_num_rows($resExistencia);
 }
+
 if ($numExistencia == 0) {
 	Header("Location: nuevaCorreccion.php?origen=$origne&error=$error");
 }
