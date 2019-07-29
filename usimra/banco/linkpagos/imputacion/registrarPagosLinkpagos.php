@@ -37,7 +37,7 @@ $(document).ready(function(){
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra"],
-			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}, 5:{sorter:false}, 6:{sorter:false}}
+			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 6:{sorter:false}}
 		});
 });
 </script>
@@ -109,6 +109,7 @@ try {
 					$referenciabanco = $imputar[referencia];
 					$importebanco = $imputar[importe];
 					$depositobanco = $imputar[fechadeposito];
+					$difdeposito=0.00;
 					$actualizabanco=0;
 					$anterior=0;
  ?>
@@ -143,10 +144,12 @@ try {
 										}
 									}
 									$ultimopago=$ultimopago+1;
+									$montopagado=$importebanco;
+									$montoddjj=$cabddjj[totapo]+$cabddjj[recarg];
+									$difdeposito=round(($importebanco-$montoddjj),2);
+									$recargo=($cabddjj[recarg])+($difdeposito);
 
-									$montopagado=$cabddjj[totapo]+$cabddjj[recarg];
-
-									$sqlAgregaPago="INSERT INTO seguvidausimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$anterior','$depositobanco','$cabddjj[nfilas]','$cabddjj[remune]','$cabddjj[recarg]','$montopagado','$cabddjj[observ]','$sistemacancelacion','$referenciabanco','$fechabanco','$fechacancelacion','$usuariocancelacion','$fechamodificacion','$usuariomodificacion')";
+									$sqlAgregaPago="INSERT INTO seguvidausimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$anterior','$depositobanco','$cabddjj[nfilas]','$cabddjj[remune]','$recargo','$montopagado','$cabddjj[observ]','$sistemacancelacion','$referenciabanco','$fechabanco','$fechacancelacion','$usuariocancelacion','$fechamodificacion','$usuariomodificacion')";
 									if($resultAgregaPago = $dbh->query($sqlAgregaPago)) {
 										$sqlAgregaApo060="INSERT INTO apor060usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo060]')";
 										if($resultAgregaApo060 = $dbh->query($sqlAgregaApo060)) {
@@ -167,7 +170,11 @@ try {
 									$listaperi=$periodo;
 									$listaimporte=$importebanco;
 									$listastatus="Pago Imputado";
-									$listamensaje="IMPUTACION CORRECTA DEL PAGO.";
+									if($difdeposito==0.00) {
+										$listamensaje="IMPUTACION CORRECTA DEL PAGO.";
+									} else {
+										$listamensaje="IMPUTACION CORRECTA DEL PAGO. DIFERENCIA (".$difdeposito.") CON LA DDJJ.";
+									}
 								}
 							}
 						}

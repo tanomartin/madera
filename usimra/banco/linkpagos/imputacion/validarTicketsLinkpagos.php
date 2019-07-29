@@ -34,7 +34,7 @@ $(document).ready(function(){
 			theme: 'blue',
 			widthFixed: true, 
 			widgets: ["zebra"],
-			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}, 4:{sorter:false}}
+			headers:{0:{sorter:false}, 1:{sorter:false}, 2:{sorter:false}, 3:{sorter:false}}
 		});
 });
 function irARegistrar() {
@@ -138,14 +138,28 @@ try {
 								foreach($resultBuscaDDJJ as $totaddjj) {
 									$cantddjj = $totaddjj[cantdj];
 									$impoddjj = $totaddjj[totdep];
+									$importeadmitido=0; 
+									$difdeposito=0.00;
 									if($cantddjj>0) {
 										if($impoddjj==$importebanco) {
+											$importeadmitido=1;
+										} else {
+											$difdeposito=round(($importebanco-$impoddjj),2);
+											if($difdeposito >= -15.00 && $difdeposito <= 15.00) {
+												$importeadmitido=1;
+											}
+										}
+										if($importeadmitido) {
 											$sqlActualizaLink="UPDATE linkaportesusimra SET fechavalidacion = '$fechavalidacion', usuariovalidacion = '$usuariovalidacion', notificacion = 0 WHERE fechaarchivo = '$fechabanco' AND idmovimiento = $movimientobanco";
 											if($resultActualizaLink = $dbh->query($sqlActualizaLink)) {
 												$noddjj=0;
 												$cantvali++;
 												$listastatus="Ticket Validado";
-												$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DE LINK PAGOS SON CORRECTOS.";
+												if($difdeposito==0.00) {
+													$listamensaje="TODOS LOS DATOS DE LA IMPUTACION DE LINK PAGOS SON CORRECTOS.";
+												} else {
+													$listamensaje="DIFERENCIA (".$difdeposito.") EN EL IMPORTE (".$importebanco.") ACREDITADO POR LINK PAGOS.";
+												}
 												$listanotificacion="No Notificable";
 											}
 										} else {
