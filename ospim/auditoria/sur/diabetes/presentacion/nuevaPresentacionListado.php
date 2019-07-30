@@ -274,7 +274,7 @@ function validar(formulario) {
 					if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
 						$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
 						$cuil = $arrayFamiliaresDeBaja[$indexBusqueda]['cuil'];
-						$tipoBene = "FAMILIAR DE BAJA (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+						$tipoBene = "FAMILIAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 					} ?>
 					<tr>
 						<td>
@@ -332,7 +332,7 @@ function validar(formulario) {
 					if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
 						$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
 						$cuil = $arrayFamiliaresDeBaja[$indexBusqueda]['cuil'];
-						$tipoBene = "FAMILIAR DE BAJA (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+						$tipoBene = "FAMILIAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 					} ?>
 					<tr>
 						<td><?php echo $completo['nroafiliado'] ?></td>
