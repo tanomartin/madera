@@ -331,7 +331,7 @@ function validar(formulario) {
 					} 
 					if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
 						$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
-						$cuil = $arrayFamiliaresDeBaja[$busquedaCUILTitu]['cuil'];
+						$cuil = $arrayFamiliaresDeBaja[$indexBusqueda]['cuil'];
 						$tipoBene = "FAMILIAR DE BAJA (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
 					} ?>
 					<tr>
