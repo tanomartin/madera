@@ -78,6 +78,7 @@ $canListadoDiabetes = mysql_num_rows($resListadoDiabetes);
 $arrayCompletos = array();
 $arrayIncompletos = array();
 $arrayAfiliados = array();
+$arrayDeBaja = array();
 if ($canListadoDiabetes != 0) {
 	while ($rowListadoDiabetes = mysql_fetch_assoc($resListadoDiabetes)) {
 		$indexBene = $rowListadoDiabetes['nroafiliado']."-".$rowListadoDiabetes['nroorden'];
@@ -100,8 +101,7 @@ if ($canListadoDiabetes != 0) {
 							unset($arrayIncompletos[$indexBene]);
 						}
 					} else {
-						$arrayIncompletos[$indexBene] = $rowListadoDiabetes;
-						$arrayIncompletos[$indexBene]['diagnosticos'] = -2;
+						$arrayDeBaja[$indexBene] = $rowListadoDiabetes;
 					}
 				} else {
 					$arrayCompletos[$indexBene] = $rowListadoDiabetes;
@@ -201,6 +201,22 @@ $(function() {
 		}
 	
 	}),
+	$("#debaja")
+	.tablesorter({
+		theme: 'blue', 
+		widthFixed: true, 
+		widgets: ["zebra", "filter"], 
+		widgetOptions : { 
+			filter_cssFilter   : '',
+			filter_childRows   : false,
+			filter_hideFilters : false,
+			filter_ignoreCase  : true,
+			filter_searchDelay : 300,
+			filter_startsWith  : false,
+			filter_hideFilters : false,
+		}
+	
+	}),
 	$("#incompletos")
 	.tablesorter({
 		theme: 'blue', 
@@ -236,7 +252,7 @@ function validar(formulario) {
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'nuevaPresentacion.php'" class="nover"  /></p>
 	<h2>Nueva Presentación Listado Beneficiarios (<?php echo "# ".$canCantidadBeneDiab?>)</h2>
 	<h3>Periodo a Generar '<?php echo $periodo ?>'</h3>
-	<h3>Beneficiarios a Subir (<?php echo "# ".sizeof($arrayNuevo) ?>)</h3>
+	<h3>Diagnosticos a Subir (<?php echo "# ".sizeof($arrayNuevo) ?>)</h3>
 	<form id="nuevaPresentacionListado" name="nuevaPresentacionListado" method="post" onsubmit="return validar(this)" action="nuevaPresentacionArchivo.php?periodo=<?php echo $periodo ?>">	
 <?php if (sizeof($arrayNuevo) > 0) { ?>
 		<table style="text-align:center; width:1000px;" id="completos" class="tablesorter" >
@@ -294,7 +310,7 @@ function validar(formulario) {
 		<h3 style="color: blue">No existen beneficiarios nuevos para subir</h3>
 <?php }?>
 	 
-	<h3>Beneficiarios Importados (<?php echo "# ".sizeof($arrayViejos) ?>)</h3>
+	<h3>Diagnosticos Importados (<?php echo "# ".sizeof($arrayViejos) ?>)</h3>
 <?php if (sizeof($arrayViejos) > 0) { ?>
 		<table style="text-align:center; width:1000px;" id="viejos" class="tablesorter" >
 			<thead>
@@ -352,6 +368,42 @@ function validar(formulario) {
 	  <button class="nover" type="submit" name="Submit">Generar Presentacion</button>
 	</form>
 	
+	<h3>Diagnosticos Completos Afiliados de Baja (<?php echo "# ".sizeof($arrayDeBaja) ?>)</h3>
+	<?php if (sizeof($arrayDeBaja) > 0) { ?>
+			<table style="text-align:center; width:1000px;" id="debaja" class="tablesorter" >
+				<thead>
+					<tr>
+						<th>Nro. Afiliado</th>
+						<th>Nombre y Apellido</th>
+						<th>CUIL Titular</th>
+						<th>Tipo Bene.</th>
+						<th>Motivo</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php foreach($arrayDeBaja as $debaja) {  
+						$indexBusqueda = $debaja['nroafiliado']."-".$debaja['nroorden']; 
+						if (array_key_exists($indexBusqueda, $arrayTitularesDeBaja)) {
+							$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']."<br>";
+							$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
+							$tipoBene .= "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayTitularesDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+						}
+						if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) {
+							$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre'];
+							$cuil = $arrayFamiliaresDeBaja[$indexBusqueda]['cuil'];
+							$tipoBene .= "FAMILIAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+						} ?>
+						<tr>
+							<td><?php echo $debaja['nroafiliado'] ?></td>
+							<td><?php echo $nombre; ?></td>
+							<td><?php echo $cuil; ?></td>
+							<td><?php echo $tipoBene; ?></td>
+							<td>CON DIAGNOSTICO </br> AFIL. DE BAJA</td>
+						</tr>
+				<?php } ?>
+				</tbody>
+			</table>
+	<?php }?>
 	<h3>Beneficiarios con información Incompleta (<?php echo "# ".sizeof($arrayIncompletos) ?>)</h3>
 	<?php if (sizeof($arrayIncompletos) > 0) { ?>
 			<table style="text-align:center; width:1000px;" id="incompletos" class="tablesorter" >
@@ -402,7 +454,6 @@ function validar(formulario) {
 							  } else {
 							  		if ($incompleto['diagnosticos'] < 0) {
 							  			if ($incompleto['diagnosticos'] == -1) { echo "CON DIAGNOSTICO <br> FUERA DE PERIODO"; }
-							  			if ($incompleto['diagnosticos'] == -2) { echo "CON DIAGNOSTICO <br> AFIL. DE BAJA"; }
 							  		} else { 
 							  			echo "<b>F.F: ".$incompleto['fechaficha']."</b><br>";
 										if ($incompleto['comorbilidad'] == NULL) { echo "COMORBILIDAD<br>"; }  	
@@ -417,7 +468,6 @@ function validar(formulario) {
 				<?php } ?>
 				</tbody>
 			</table>
-			<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 	<?php } else { ?>
 			<h3 style="color: blue">No existen beneficiarios con información inconmpleta</h3>
 	<?php }?>
