@@ -24,11 +24,11 @@ if ($canPresSSSActiva != 0) {
 	}
 }
 
-$periodo = date("Ym01");
+$periodoArranque = date("Ym01");
 $periodoPermitidos = array();
 for ($i = 1; $i < 25; $i++) {
 	$resta = "-$i month";
-	$periodo = strtotime ( $resta , strtotime ( $periodo ) ) ;
+	$periodo = strtotime ( $resta , strtotime ( $periodoArranque ) ) ;
 	$periodo = date ( 'Ym' , $periodo );
 	if (!array_key_exists($periodo, $arrayPeriodoNOPermitodos)) {
 		$periodoPermitidos[$periodo] = $periodo;
