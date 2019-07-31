@@ -24,13 +24,25 @@ if ($canPresSSSActiva != 0) {
 	}
 }
 
+$sqlArranquePres = "SELECT d.periodo
+						FROM diabetespresentacion d
+						WHERE d.fechadevolucion is not null order by id LIMIT 1";
+$resArranquePres = mysql_query($sqlArranquePres,$db);
+$canArranquePres = mysql_num_rows($resArranquePres);
+if ($canArranquePres != 0) {
+	$rowArranquePres = mysql_fetch_assoc($resArranquePres);
+	$periodoInicio = $rowArranquePres['periodo'];
+} else {
+	$periodoInicio = "000000";
+}
+
 $periodoArranque = date("Ym01");
 $periodoPermitidos = array();
 for ($i = 1; $i < 25; $i++) {
 	$resta = "-$i month";
 	$periodo = strtotime ( $resta , strtotime ( $periodoArranque ) ) ;
 	$periodo = date ( 'Ym' , $periodo );
-	if (!array_key_exists($periodo, $arrayPeriodoNOPermitodos)) {
+	if (!array_key_exists($periodo, $arrayPeriodoNOPermitodos) && ($periodo > $periodoInicio)) {
 		$periodoPermitidos[$periodo] = $periodo;
 	}
 }
@@ -67,7 +79,7 @@ function validar(formulario) {
 	<h2>Nueva Presentacion Diabetes S.S.S.</h2>
 	<form id="nuevaPresentacion" name="nuevaPresentacion" method="post" onsubmit="return validar(this)" action="nuevaPresentacionListado.php">
 		<h3>Seleccione Periodo a Generar</h3>
-		<p style="color: blue">(No se listaran periodos Finalizados o Activos)</p>
+		<p style="color: blue">(No se listaran periodos Finalizados, Activos o Anteriores a la 1era Presentación Finalizada)</p>
 		<p>
 			<b>Periodo: </b> 
 			<select id="periodo" name="periodo">
