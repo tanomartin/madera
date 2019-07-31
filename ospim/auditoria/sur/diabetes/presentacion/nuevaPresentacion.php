@@ -24,7 +24,7 @@ if ($canPresSSSActiva != 0) {
 	}
 }
 
-$periodo = date("Ym");
+$periodo = date("Ym01");
 $periodoPermitidos = array();
 for ($i = 1; $i < 25; $i++) {
 	$resta = "-$i month";
