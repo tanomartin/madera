@@ -81,7 +81,7 @@ function validar(formulario, modulo) {
   </select>
 <?php if (isset($_GET['error'])) { ?>
 		 <h4>
-		 	<font color="black">NO SE GENERO LA CORRECCION</font></br>
+		 	<font color="black">NO SE GENERO EL PEDIDO DE CORRECCION</font></br>
 		 	<font color="brown"><?php echo $_GET['error'] ?></font></br>
 		 	<font color="black">(Revise la información y vuelva a cargar la corrección)</font> 	
 		</h4>	

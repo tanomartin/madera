@@ -39,8 +39,9 @@ if ($modulo == "ACUERDOS") {
 	$arrayExistencia[0] = "SELECT * FROM cabacuerdos$origen WHERE cuit = $dato1 and nroacuerdo = $dato2";
 	$error = "NO EXISTE ACUERDO NUMERO '$dato2' PARA EL C.U.I.T. '$dato1'";
 }
-if ($modulo == "APORTES" || $modulo == "EMPRESAS" || $modulo == "FACTURACION") {
+if ($modulo == "APORTES" || $modulo == "EMPRESAS" || $modulo == "FACTURACION / LIQUIDACION") {
 	$arrayExistencia[0] = "SELECT * FROM empresas WHERE cuit = $dato1";
+	$arrayExistencia[1] = "SELECT * FROM empresasdebaja WHERE cuit = $dato1";
 	$error = "NO EXISTE EMPRESA CON EL C.U.I.T. '$dato1'";
 }
 if ($modulo == "AFILIADOS") {
@@ -53,10 +54,6 @@ if ($modulo == "AFILIADOS") {
 if ($modulo == "JUICIOS") {
 	$arrayExistencia[0] = "SELECT * FROM cabjuicios$origen WHERE cuit = $dato1 and nroorden = $dato2";
 	$error = "NO EXISTE JUICIO CON NRO DE ORDEN '$dato2' EN EL C.U.I.T. '$dato1' ";
-}
-if ($modulo == "FISCALIZACION") {
-	$arrayExistencia[1] = "SELECT * FROM reqfiscaliz$origen WHERE cuit = $dato1 and nrorequerimiento = $dato2";
-	$error = "NO EXISTE NRO DE REQUERIMIENTO CON NRO DE REQUERIMIENTO '$dato2' EN EL C.U.I.T. '$dato1' ";
 }
 if ($modulo == "AUDITORIA MEDICA") {
 	$arrayExistencia[1] = "SELECT * FROM prestadores WHERE cuit = $dato1 or codigoprestador = $dato2";
