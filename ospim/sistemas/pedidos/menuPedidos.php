@@ -1,25 +1,44 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspimSistemas.php"); 
 
-$sqlPedidosOSPIMPendientes = "SELECT * FROM pedidos
-					 			WHERE origen = 'O' and usuariosistemas is null and motivorechazo is null";
-$resPedidosOSPIMPendientes = mysql_query($sqlPedidosOSPIMPendientes,$db);
-$numPedidosOSPIMPendientes = mysql_num_rows($resPedidosOSPIMPendientes);
+$sqlPedidos = "SELECT origen, estado FROM pedidos WHERE estado not in (4,5)";
+$resPedidos = mysql_query($sqlPedidos,$db);
+$numPedidos = mysql_num_rows($resPedidos);
 
-$sqlPedidosUSIMRAPendientes = "SELECT * FROM pedidos
-					 			WHERE origen = 'U' and usuariosistemas is null and motivorechazo is null";
-$resPedidosUSIMRAPendientes = mysql_query($sqlPedidosUSIMRAPendientes,$db);
-$numPedidosUSIMRAPendientes = mysql_num_rows($resPedidosUSIMRAPendientes);
+$peOSPPendientes = 0;
+$peOSPEstudio = 0;
+$peOSPEjecucion = 0;
 
-$sqlPedidosOSPIMEjecucion = "SELECT * FROM pedidos
-					 			WHERE origen = 'O' and usuariosistemas is not null and motivorechazo is null";
-$resPedidosOSPIMEjecucion = mysql_query($sqlPedidosOSPIMEjecucion,$db);
-$numPedidosOSPIMEjecucion = mysql_num_rows($resPedidosOSPIMEjecucion);
+$peUSPPendientes = 0;
+$peUSPEstudio = 0;
+$peUSPEjecucion = 0;
 
-$sqlPedidosUSIMRAEjecucion = "SELECT * FROM pedidos
-					 			WHERE origen = 'U' and usuariosistemas is not null and motivorechazo is null";
-$resPedidosUSIMRAEjecucion = mysql_query($sqlPedidosUSIMRAEjecucion,$db);
-$numPedidosUSIMRAEjecucion = mysql_num_rows($resPedidosUSIMRAEjecucion); ?>
+if ($numPedidos > 0) {
+	while ($rowPedidos = mysql_fetch_assoc($resPedidos)) {
+		if ($rowPedidos['origen'] == 'O') {
+			if ($rowPedidos['estado'] == 1) {
+				$peOSPPendientes++;
+			}
+			if ($rowPedidos['estado'] == 2) {
+				$peOSPEstudio++;
+			}
+			if ($rowPedidos['estado'] == 3) {
+				$peOSPEjecucion++;
+			}
+		}
+		if ($rowPedidos['origen'] == 'U') {
+			if ($rowPedidos['estado'] == 1) {
+				$peUSPPendientes++;
+			}
+			if ($rowPedidos['estado'] == 2) {
+				$peUSPEstudio++;
+			}
+			if ($rowPedidos['estado'] == 3) {
+				$peUSPEjecucion++;
+			}
+		}
+	}
+} ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -39,12 +58,12 @@ $numPedidosUSIMRAEjecucion = mysql_num_rows($resPedidosUSIMRAEjecucion); ?>
       <td width="200">
       	<p>U.S.I.M.R.A.</p>
         <p><a href="listadoPedidos.php?origen=U"><img src="img/usimra.png" width="90" height="90" border="0" /></a></p>
-        <p><b><?php echo $numPedidosUSIMRAPendientes ?></b> (P) - <b><?php echo $numPedidosUSIMRAEjecucion ?></b> (E)</p>
+        <p><b><?php echo $peUSPPendientes ?></b> (P) - <b><?php echo $peUSPEstudio ?></b> (Es) - <b><?php echo $peUSPEjecucion ?></b> (Ej)</p>
       </td>
        <td width="200">
       	<p>O.S.P.I.M.</p>
         <p><a href="listadoPedidos.php?origen=O"><img src="img/ospim.png" width="90" height="90" border="0" /></a></p>
-        <p><b><?php echo $numPedidosOSPIMPendientes ?></b> (P) - <b><?php echo $numPedidosOSPIMEjecucion ?></b> (E)</p>
+        <p> <b><?php echo $peOSPPendientes ?></b> (P) - <b><?php echo $peOSPEstudio ?></b> (Es) - <b><?php echo $peOSPEjecucion ?></b> (Ej)</p>
       </td>
       <td width="200">
       	<p>BUSCADOR</p>

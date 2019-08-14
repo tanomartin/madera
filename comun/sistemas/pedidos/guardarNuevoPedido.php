@@ -9,7 +9,7 @@ $descripcion = $_POST["descripcion"];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 
-$sqlInsertPedido = "INSERT INTO pedidos VALUES(DEFAULT,'$ori','$descripcion','PENDIENTE','$fecharegistro','$usuarioregistro',NULL,NULL,NULL,NULL)";
+$sqlInsertPedido = "INSERT INTO pedidos VALUES(DEFAULT,'$ori','$descripcion',1,'$fecharegistro','$usuarioregistro',NULL,NULL,NULL,NULL,NULL,NULL)";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
