@@ -2,8 +2,9 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 
 $origen = $_GET['origen'];
-$sqlPedidos = "SELECT p.*, pe.descripcion as estadodescri 
-				FROM pedidos p, pedidosestado pe 
+$sqlPedidos = "SELECT p.*, pe.descripcion as estadodescri, pedidosprioridad.descripcion as priodescri
+				FROM pedidosestado pe, pedidos p
+				LEFT JOIN pedidosprioridad on p.prioridad = pedidosprioridad.id
 				WHERE p.origen = '$origen' and p.estado not in (4,5) and p.estado = pe.id";
 $resPedidos = mysql_query($sqlPedidos,$db);
 $numPedidos = mysql_num_rows($resPedidos); 
@@ -61,11 +62,16 @@ function atender(id,accion, origen) {
 				alert("Debe seleccionar un Corrector y debe ingresar un fecha finalizacion estudio");
 				document.getElementById(nombre).focus();
 		 	} else {
-		 		var r = confirm("Desea pasar a Estudio el pedido con 'ID "+id+"' - 'REALIZADOR: "+realizador+"' - 'FECHA ESTIMADA ESTUDIO: "+fechae+"'");
-				if (r == true) {
-					$.blockUI({ message: "<h1>Pasando a Estudio Pedido<br>Aguarde por favor...</h1>" });
-					window.location.href = "estudioPedido.php?id="+id+"&origen="+origen+"&realizador="+realizador+"&fecha="+fechae;
-				} 
+				if (!esFechaValida(fechae)) {
+					alert("La fecha de estudio no es valida");
+					document.getElementById(nombre).focus();
+				} else {
+		 			var r = confirm("Desea pasar a Estudio el pedido con 'ID "+id+"' - 'REALIZADOR: "+realizador+"' - 'FECHA ESTIMADA ESTUDIO: "+fechae+"'");
+					if (r == true) {
+						$.blockUI({ message: "<h1>Pasando a Estudio Pedido<br>Aguarde por favor...</h1>" });
+						window.location.href = "estudioPedido.php?id="+id+"&origen="+origen+"&realizador="+realizador+"&fecha="+fechae;
+					} 
+				}
 		 	}
 		}
 	}
@@ -99,15 +105,23 @@ function atender(id,accion, origen) {
 		if (modoDisplayFJ == "block") {
 			var nombreFJ = "fechaejecucion-"+id;
 			var fechaj =  document.getElementById(nombreFJ).value;
-			if (fechaj == "") {
-				alert("Debe ingresar un fecha de ejecucion estimada");
+			var nombrePrio = "prioridad-"+id;
+			var prioridad =  document.getElementById(nombrePrio).value;
+			console.log(prioridad);
+			if (fechaj == "" || prioridad == 0) {
+				alert("Debe ingresar un fecha de ejecucion estimada y una prioridad");
 				document.getElementById(fechaj).focus();
 			} else { 
-				var r = confirm("Desea pasar a Ejecucion el pedido con 'ID "+id+"' con fecha estimada de finalizacion '"+fechaj+"'");
-				if (r == true) {
-					$.blockUI({ message: "<h1>Pasando a Ejecución Pedido<br>Aguarde por favor...</h1>" });
-					window.location.href = "ejecucionPedido.php?id="+id+"&origen="+origen+"&fecha="+fechaj;
-				} 
+				if (!esFechaValida(fechaj)) {
+					alert("La fecha de finalizacion no es valida");
+					document.getElementById(nombreFJ).focus();
+				} else { 
+					var r = confirm("Desea pasar a Ejecucion el pedido con 'ID "+id+"' con fecha estimada de finalizacion '"+fechaj+"'");
+					if (r == true) {
+						$.blockUI({ message: "<h1>Pasando a Ejecución Pedido<br>Aguarde por favor...</h1>" });
+						window.location.href = "ejecucionPedido.php?id="+id+"&origen="+origen+"&fecha="+fechaj+"&prioridad="+prioridad;
+					} 
+				}
 			}
 		}
 	}
@@ -151,8 +165,15 @@ function atender(id,accion, origen) {
 	 				<td><?php echo $rowPedido['usuarioregistro'] ?></td>
 	 				<td><?php echo $rowPedido['fecharegistro'] ?></td>
 	 				<td><?php echo $rowPedido['descripcion'] ?></td>
-	 				<td><b><?php echo $rowPedido['estadodescri'] ?></b></td>
-	 				<td><?php echo $rowPedido['fechaestado'] ?></td>
+	 				<td>
+	 					<b><?php echo $rowPedido['estadodescri'] ?></b></br>
+	 					<b><?php echo $rowPedido['priodescri'] ?></b>
+	 				</td>
+	 				<td>
+	 					<?php echo $rowPedido['fechaestado'] ?>
+	 					<?php if ($rowPedido['estado'] == 2) { echo "<br><b>F.E.E:</b> ".$rowPedido['fechaestudio']; } ?>
+	 					<?php if ($rowPedido['estado'] == 3) { echo "<br><b>F.E.F:</b> ".$rowPedido['fecharealizacion']; } ?>
+	 				</td>
 	 				<td><?php echo $rowPedido['usuariosistemas']; 
 	 					if ($rowPedido['usuariosistemas'] == NULL) { ?>
 			 				<select id="realizador-<?php echo $rowPedido['id'] ?>" name="realizador-<?php echo $rowPedido['id'] ?>">
@@ -168,19 +189,39 @@ function atender(id,accion, origen) {
 	 				<?php if ($rowPedido['estado'] == 1) { ?>
 	 						<input type="button" value="PASAR A ESTUDIO" onclick="atender('<?php echo $rowPedido['id'] ?>','E','<?php echo $origen?>')"/>
 	 						<p id="pest-<?php echo $rowPedido['id'] ?>" align="center" style="display: none">
-	 							<input type="text" id="fechaestudio-<?php echo $rowPedido['id'] ?>" name="fechaestudio-<?php echo $rowPedido['id'] ?>" size="10"/>
+	 							<b>Fecha: </b><input type="text" id="fechaestudio-<?php echo $rowPedido['id'] ?>" name="fechaestudio-<?php echo $rowPedido['id'] ?>" size="10"/>
 	 						</p>
 	 				<?php }
 	 					  if ($rowPedido['estado'] == 2) { ?>
 	 						<input type="button" value="PASAR A EJECUCION" onclick="atender('<?php echo $rowPedido['id'] ?>','J','<?php echo $origen?>')"/>
 	 						<p id="peje-<?php echo $rowPedido['id'] ?>" align="center" style="display: none">
-	 							<input type="text" id="fechaejecucion-<?php echo $rowPedido['id'] ?>" name="fechaejecucion-<?php echo $rowPedido['id'] ?>" size="10" />
+	 							<b>Fecha: </b><input type="text" id="fechaejecucion-<?php echo $rowPedido['id'] ?>" name="fechaejecucion-<?php echo $rowPedido['id'] ?>" size="10" />
+	 							<select id="prioridad-<?php echo $rowPedido['id'] ?>" name="prioridad-<?php echo $rowPedido['id'] ?>" style="margin-top: 5px">
+	 								<option value="0">Seleccionar Prioridad</option>
+	 							<?php 	$sqlPrioridad = "SELECT * FROM pedidosprioridad"; 
+	 									$resPrioridad  = mysql_query($sqlPrioridad,$db);
+	 									while($rowPrioridad = mysql_fetch_assoc($resPrioridad)) { ?>
+	 										<option value="<?php echo $rowPrioridad['id'] ?>"><?php echo $rowPrioridad['descripcion'] ?></option>
+	 							  <?php } ?>
+	 							</select>
 	 						</p>
 	 						<p><input type="button" value="RECHAZAR" onclick="atender('<?php echo $rowPedido['id'] ?>','R','<?php echo $origen?>')"/></p>
 	 						<p align="center"><textarea id="motivo-<?php echo $rowPedido['id'] ?>" name="motivo-<?php echo $rowPedido['id'] ?>" rows="4" cols="23" style="display: none"></textarea></p>
 	 				<?php }
 	 					  if ($rowPedido['estado'] == 3) { ?>
-	 						<input type="button" value="FINALIZAR" onclick="atender('<?php echo $rowPedido['id'] ?>','F','<?php echo $origen?>')"/>
+	 							<input type="button" value="CAMBIAR EJECUCION" onclick="atender('<?php echo $rowPedido['id'] ?>','J','<?php echo $origen?>')"/>
+	 							<p id="peje-<?php echo $rowPedido['id'] ?>" align="center" style="display: none">
+		 							<b>Fecha: </b><input type="text" id="fechaejecucion-<?php echo $rowPedido['id'] ?>" name="fechaejecucion-<?php echo $rowPedido['id'] ?>" size="10" />
+		 							<select id="prioridad-<?php echo $rowPedido['id'] ?>" name="prioridad-<?php echo $rowPedido['id'] ?>" style="margin-top: 5px">
+		 								<option value="0">Seleccionar Prioridad</option>
+		 							<?php 	$sqlPrioridad = "SELECT * FROM pedidosprioridad"; 
+		 									$resPrioridad  = mysql_query($sqlPrioridad,$db);
+		 									while($rowPrioridad = mysql_fetch_assoc($resPrioridad)) { ?>
+		 										<option value="<?php echo $rowPrioridad['id'] ?>"><?php echo $rowPrioridad['descripcion'] ?></option>
+		 							  <?php } ?>
+		 							</select>
+	 							</p>
+	 							<input type="button" value="FINALIZAR" onclick="atender('<?php echo $rowPedido['id'] ?>','F','<?php echo $origen?>')"/>
 	 				<?php } ?>
 	 				</td>
 	 			</tr>

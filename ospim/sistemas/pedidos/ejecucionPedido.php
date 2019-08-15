@@ -4,9 +4,10 @@ include($libPath."fechas.php");
 $id = $_GET['id'];
 $origen = $_GET['origen'];
 $fecha = fechaParaGuardar($_GET['fecha']);
+$prioridad =  $_GET['prioridad'];
 $fechaestado = date ( "Y-m-d H:i:s" );
 
-$sqlRechazar = "UPDATE pedidos SET estado=3, fecharealizacion = '$fecha', fechaestado = '$fechaestado' WHERE id = $id";
+$sqlRechazar = "UPDATE pedidos SET estado=3, prioridad = $prioridad, fecharealizacion = '$fecha', fechaestado = '$fechaestado' WHERE id = $id";
 try {
 	$hostname = $_SESSION ['host'];
 	$dbname = $_SESSION ['dbname'];

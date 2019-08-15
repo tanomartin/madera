@@ -1,7 +1,9 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSession.php"); 
 
-$sqlPedidos = "SELECT p.*, pe.descripcion as estadodescri FROM pedidos p, pedidosestado pe
+$sqlPedidos = "SELECT p.*, pe.descripcion as estadodescri,  pedidosprioridad.descripcion as priodescri
+				FROM pedidosestado pe, pedidos p 
+				LEFT JOIN pedidosprioridad on p.prioridad = pedidosprioridad.id
 				WHERE p.usuarioregistro = '".$_SESSION['usuario']."' and p.estado = pe.id
 				ORDER BY p.id DESC";
 $resPedidos = mysql_query($sqlPedidos,$db);
@@ -75,7 +77,8 @@ $(function() {
 	 					} else { 
 	 						echo $rowPedidos['estadodescri'];
 	 					} ?>
-	 					</b>
+	 					</b></br>
+	 					<b><?php echo $rowPedidos['priodescri'] ?></b>
 	 				</td>
 	 				<td>
 	 					<?php if ($rowPedidos['fechaestado'] == NULL ) { echo "-"; } else { echo $rowPedidos['fechaestado']; } ?>
