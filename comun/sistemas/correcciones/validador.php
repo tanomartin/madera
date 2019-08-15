@@ -33,7 +33,6 @@ $idMotivo = $_POST[$nombreMotivo];
 $nombreObs = "obs-$modulo";
 $observacion = $_POST[$nombreObs];
 
-$numExistencia = 0;
 $arrayExistencia = array();
 if ($modulo == "ACUERDOS") {
 	$arrayExistencia[0] = "SELECT * FROM cabacuerdos$origen WHERE cuit = $dato1 and nroacuerdo = $dato2";
@@ -60,6 +59,7 @@ if ($modulo == "AUDITORIA MEDICA") {
 	$error = "NO EXISTE PRESATDOR CON CODIGO '$dato2' O C.U.I.T. '$dato1' ";
 }
 
+$numExistencia = 0;
 foreach($arrayExistencia as $sqlExistencia) {
 	$resExistencia = mysql_query($sqlExistencia,$db);
 	$numExistencia += mysql_num_rows($resExistencia);
