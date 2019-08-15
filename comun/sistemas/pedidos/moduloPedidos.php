@@ -78,7 +78,7 @@ $(function() {
 	 						echo $rowPedidos['estadodescri'];
 	 					} ?>
 	 					</b></br>
-	 					<b><?php echo $rowPedidos['priodescri'] ?></b>
+	 					<b><?php if ($rowPedidos['estado'] == 3) { echo $rowPedidos['priodescri']; } ?></b>
 	 				</td>
 	 				<td>
 	 					<?php if ($rowPedidos['fechaestado'] == NULL ) { echo "-"; } else { echo $rowPedidos['fechaestado']; } ?>
