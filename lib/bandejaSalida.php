@@ -3,8 +3,8 @@
 function guardarEmail($username, $subject, $bodymail, $address, $modulo, $attachment) {
 	$fecharegistro = date("Y-m-d H:i:s");
 	$usuarioregistro = $_SESSION['usuario'];
-	$sqlEmailCabecera = "INSERT INTO bandejasalida VALUES(DEFAULT, '$username', '$subject', '$bodymail', '$address', '$modulo', '$fecharegistro', '$usuarioregistro')";
-	
+	$sqlMetaEmail = "INSERT INTO bandejasalidameta VALUES(DEFAULT, '$modulo', '$fecharegistro', '$usuarioregistro')";
+		
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
@@ -12,8 +12,11 @@ function guardarEmail($username, $subject, $bodymail, $address, $modulo, $attach
 		$dbhEmail->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbhEmail->beginTransaction();
 		
-		$dbhEmail->exec($sqlEmailCabecera);
+		$dbhEmail->exec($sqlMetaEmail);
 		$lastId = $dbhEmail->lastInsertId();
+		
+		$sqlEmailCabecera = "INSERT INTO bandejasalida VALUES($lastId, '$username', '$subject', '$bodymail', '$address')";
+		$dbhEmail->exec($sqlEmailCabecera);
 		
 		if ($attachment != null) {
 			foreach ($attachment as $file) {
@@ -47,7 +50,7 @@ function reenviarEmail($idEmail) {
 		$rowGetEnviado = $dbhEmail->query($sqlGetEnviado)->fetch();
 		
 		$moduloReenvio = "Reenvio - ".$rowGetEnviado['modulocreador'];
-		$sqlEmailCabecera = "INSERT INTO bandejasalida VALUES(".$rowGetEnviado['id'].", '".$rowGetEnviado['from']."', '".$rowGetEnviado['subject']."', '".$rowGetEnviado['body']."', '".$rowGetEnviado['address']."', '$moduloReenvio', '".$rowGetEnviado['fecharegistro']."', '".$rowGetEnviado['usuarioregistro']."')";
+		$sqlEmailCabecera = "INSERT INTO bandejasalida VALUES(".$rowGetEnviado['id'].", '".$rowGetEnviado['from']."', '".$rowGetEnviado['subject']."', '".$rowGetEnviado['body']."', '".$rowGetEnviado['address']."')";
 		$dbhEmail->exec($sqlEmailCabecera);
 
 		$sqlDeleteEnviados = "DELETE FROM bandejaenviados WHERE id = $idEmail";
