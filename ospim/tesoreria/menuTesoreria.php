@@ -10,7 +10,7 @@ include($libPath."controlSessionOspim.php"); ?>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<h2>Menú Tesoreríaa </h2>
+	<h2>Menú Tesorería </h2>
   	<table width="600" border="1" style="text-align: center">
     	<tr>
 	  		<td width="200">
