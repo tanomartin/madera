@@ -73,19 +73,19 @@ if ($errorArchivos == 0) {
 			if(stripos($tabla,$delegacion) !== FALSE) {
 				if(stripos($tabla,"cuij") !== FALSE) {
 					$sqlLeeTablas="SELECT j.codidelega AS del, d.cuit AS cue, d.anoddjj AS ano, d.mesddjj AS mes, d.cuil AS cua, d.remundeclarada AS rem 
-									FROM jurisdiccion j, detddjjospim d 
-									WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.anoddjj > $anoLimite";
+									FROM jurisdiccion j, detddjjospim d, empresas e
+									WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.cuit = e.cuit AND d.anoddjj > $anoLimite";
 				}
 				if(stripos($tabla,"apoi") !== FALSE) {
 					$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cue, a.cuil AS cua, a.anopago AS ano, a.mespago AS mes, a.concepto AS con, a.fechapago AS fpa, a.debitocredito AS deb, a.importe AS imp 
-									FROM jurisdiccion j, afiptransferencias a 
-									WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.anopago > $anoLimite AND a.concepto in('381','C14','T14','T55')";
+									FROM jurisdiccion j, afiptransferencias a, empresas e
+									WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.cuit = e.cuit AND a.anopago > $anoLimite AND a.concepto in('381','C14','T14','T55')";
 				}
 			}
 			if(stripos($tabla,"pagos") !== FALSE) {
 				$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cui, a.anopago AS ano, a.mespago AS mes, a.debitocredito AS deb, a.concepto AS con, a.fechapago AS fpa, a.importe AS imp 
-								FROM jurisdiccion j, afipprocesadas a 
-								WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.anopago > $anoLimite";
+								FROM jurisdiccion j, afipprocesadas a, empresas e 
+								WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.cuit = e.cuit AND a.anopago > $anoLimite";
 			}
 			if(stripos($tabla,"cabacuer") !== FALSE) {
 				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.tipoacuerdo AS tac, c.estadoacuerdo AS eac, c.fechaacuerdo AS fac, c.montoacuerdo AS mac 
