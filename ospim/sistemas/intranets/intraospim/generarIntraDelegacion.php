@@ -94,8 +94,8 @@ if ($errorArchivos == 0) {
 			}
 			if(stripos($tabla,"detacuer") !== FALSE) {
 				$sqlLeeTablas="SELECT DISTINCT d.cuit AS cui, d.nroacuerdo AS nac, d.anoacuerdo AS ano, d.mesacuerdo AS mes 
-								FROM jurisdiccion j, detacuerdosospim d 
-								WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.anoacuerdo > $anoLimite";
+								FROM jurisdiccion j, detacuerdosospim d, empresas e
+								WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.cuit = e.cuit AND d.anoacuerdo > $anoLimite";
 			}
 			if(stripos($tabla,"cuoacuer") !== FALSE) {
 				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.nrocuota AS ncu, c.montocuota AS mcu, c.fechacuota AS fcu, c.montopagada AS mpa, c.fechapagada AS fpa 
@@ -104,8 +104,8 @@ if ($errorArchivos == 0) {
 			}
 			if(stripos($tabla,"juicios") !== FALSE) {
 				$sqlLeeTablas="SELECT DISTINCT c.cuit AS cui, d.anojuicio AS ano, d.mesjuicio AS mes 
-								FROM jurisdiccion j, cabjuiciosospim c, detjuiciosospim d 
-								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.nroorden = d.nroorden AND d.anojuicio > $anoLimite";
+								FROM jurisdiccion j, cabjuiciosospim c, detjuiciosospim d, empresas e
+								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.cuit = e.cuit AND c.nroorden = d.nroorden AND d.anojuicio > $anoLimite";
 			}
 			if(stripos($tabla,"discapacitados") !== FALSE) {
 				$sqlLeeTablas="SELECT d.nroafiliado as naf, d.nroorden as nrd, t.codidelega as delalta, b.codidelega as delbaja
@@ -116,8 +116,8 @@ if ($errorArchivos == 0) {
 			}
 			if(stripos($tabla,"requerimientos") !== FALSE) {
 				$sqlLeeTablas="SELECT r.cuit, r.nrorequerimiento, d.anofiscalizacion, d.mesfiscalizacion
-									FROM reqfiscalizospim r, detfiscalizospim d, jurisdiccion j
-									WHERE j.codidelega = '$delegacion'  and j.cuit = r.cuit and 
+									FROM reqfiscalizospim r, detfiscalizospim d, jurisdiccion j, empresas e
+									WHERE j.codidelega = '$delegacion'  and j.cuit = r.cuit and r.cuit = e.cuit and
 										  r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and 
 										  d.anofiscalizacion > $anoLimite";
 			}
