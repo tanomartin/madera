@@ -89,8 +89,8 @@ if ($errorArchivos == 0) {
 			}
 			if(stripos($tabla,"cabacuer") !== FALSE) {
 				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.tipoacuerdo AS tac, c.estadoacuerdo AS eac, c.fechaacuerdo AS fac, c.montoacuerdo AS mac 
-								FROM jurisdiccion j, cabacuerdosospim c 
-								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit";
+								FROM jurisdiccion j, cabacuerdosospim c, empresas e
+								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.cuit = e.cuit";
 			}
 			if(stripos($tabla,"detacuer") !== FALSE) {
 				$sqlLeeTablas="SELECT DISTINCT d.cuit AS cui, d.nroacuerdo AS nac, d.anoacuerdo AS ano, d.mesacuerdo AS mes 
@@ -99,8 +99,8 @@ if ($errorArchivos == 0) {
 			}
 			if(stripos($tabla,"cuoacuer") !== FALSE) {
 				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.nrocuota AS ncu, c.montocuota AS mcu, c.fechacuota AS fcu, c.montopagada AS mpa, c.fechapagada AS fpa 
-								FROM jurisdiccion j, cuoacuerdosospim c 
-								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit";
+								FROM jurisdiccion j, cuoacuerdosospim c, empresas e
+								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.cuit = e.cuit";
 			}
 			if(stripos($tabla,"juicios") !== FALSE) {
 				$sqlLeeTablas="SELECT DISTINCT c.cuit AS cui, d.anojuicio AS ano, d.mesjuicio AS mes 
