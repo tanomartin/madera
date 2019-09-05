@@ -46,7 +46,7 @@ if ($errorArchivos == 0) {
 								WHERE j.codidelega = '$delegacion' AND j.cuit = e.cuit AND e.codlocali = l.codlocali AND e.codprovin = p.codprovin";
 			}
 			if(stripos($tabla,"titular") !== FALSE) {
-			$sqlLeeTablas="SELECT t.nroafiliado AS naf, t.fechaobrasocial AS fos, t.apellidoynombre AS nom, t.tipodocumento AS tdo, t.nrodocumento AS ndo, t.fechanacimiento AS fna, t.sexo AS sex, t.estadocivil AS eci, t.nacionalidad AS nac, t.domicilio AS dom, l.nomlocali AS loc, p.codzeus AS pro, t.numpostal AS cpo, t.cuitempresa AS cue, t.codidelega AS del, t.fechaempresa AS fem, t.categoria  AS cat, t.fechacarnet AS fca, t.cuil AS cua, t.tipoafiliado AS taf 
+				$sqlLeeTablas="SELECT t.nroafiliado AS naf, t.fechaobrasocial AS fos, t.apellidoynombre AS nom, t.tipodocumento AS tdo, t.nrodocumento AS ndo, t.fechanacimiento AS fna, t.sexo AS sex, t.estadocivil AS eci, t.nacionalidad AS nac, t.domicilio AS dom, l.nomlocali AS loc, p.codzeus AS pro, t.numpostal AS cpo, t.cuitempresa AS cue, t.codidelega AS del, t.fechaempresa AS fem, t.categoria  AS cat, t.fechacarnet AS fca, t.cuil AS cua, t.tipoafiliado AS taf 
 								FROM titulares t, localidades l, provincia p 
 								WHERE t.codidelega = '$delegacion' AND t.codlocali = l.codlocali AND t.codprovin = p.codprovin";
 			}
