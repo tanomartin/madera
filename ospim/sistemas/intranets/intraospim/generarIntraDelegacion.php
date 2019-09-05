@@ -75,7 +75,7 @@ if ($errorArchivos == 0) {
 					$sqlLeeTablas="SELECT j.codidelega AS del, d.cuit AS cue, d.anoddjj AS ano, d.mesddjj AS mes, d.cuil AS cua, sum(d.remundeclarada) AS rem 
 									FROM jurisdiccion j, detddjjospim d, empresas e
 									WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.cuit = e.cuit AND d.anoddjj > $anoLimite
-									GROUP BY a.cuit, d.anoddjj, d.mesddjj, d.cuil";
+									GROUP BY d.cuit, d.anoddjj, d.mesddjj, d.cuil";
 				}
 				if(stripos($tabla,"apoi") !== FALSE) {
 					$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cue, a.cuil AS cua, a.anopago AS ano, a.mespago AS mes, a.concepto AS con, a.fechapago AS fpa, a.debitocredito AS deb, sum(a.importe) AS imp 
