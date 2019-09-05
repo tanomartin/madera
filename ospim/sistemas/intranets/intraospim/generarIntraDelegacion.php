@@ -93,7 +93,7 @@ if ($errorArchivos == 0) {
 								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit";
 			}
 			if(stripos($tabla,"detacuer") !== FALSE) {
-				$sqlLeeTablas="SELECT d.cuit AS cui, d.nroacuerdo AS nac, d.anoacuerdo AS ano, d.mesacuerdo AS mes 
+				$sqlLeeTablas="SELECT DISTINCT d.cuit AS cui, d.nroacuerdo AS nac, d.anoacuerdo AS ano, d.mesacuerdo AS mes 
 								FROM jurisdiccion j, detacuerdosospim d 
 								WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.anoacuerdo > $anoLimite";
 			}
@@ -103,7 +103,7 @@ if ($errorArchivos == 0) {
 								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit";
 			}
 			if(stripos($tabla,"juicios") !== FALSE) {
-				$sqlLeeTablas="SELECT c.cuit AS cui, d.anojuicio AS ano, d.mesjuicio AS mes 
+				$sqlLeeTablas="SELECT DISTINCT c.cuit AS cui, d.anojuicio AS ano, d.mesjuicio AS mes 
 								FROM jurisdiccion j, cabjuiciosospim c, detjuiciosospim d 
 								WHERE j.codidelega = '$delegacion' AND j.cuit = c.cuit AND c.nroorden = d.nroorden AND d.anojuicio > $anoLimite";
 			}
