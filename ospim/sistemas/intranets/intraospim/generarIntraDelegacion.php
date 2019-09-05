@@ -72,20 +72,23 @@ if ($errorArchivos == 0) {
 			}
 			if(stripos($tabla,$delegacion) !== FALSE) {
 				if(stripos($tabla,"cuij") !== FALSE) {
-					$sqlLeeTablas="SELECT j.codidelega AS del, d.cuit AS cue, d.anoddjj AS ano, d.mesddjj AS mes, d.cuil AS cua, d.remundeclarada AS rem 
+					$sqlLeeTablas="SELECT j.codidelega AS del, d.cuit AS cue, d.anoddjj AS ano, d.mesddjj AS mes, d.cuil AS cua, sum(d.remundeclarada) AS rem 
 									FROM jurisdiccion j, detddjjospim d, empresas e
-									WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.cuit = e.cuit AND d.anoddjj > $anoLimite";
+									WHERE j.codidelega = '$delegacion' AND j.cuit = d.cuit AND d.cuit = e.cuit AND d.anoddjj > $anoLimite
+									GROUP BY a.cuit, d.anoddjj, d.mesddjj, d.cuil";
 				}
 				if(stripos($tabla,"apoi") !== FALSE) {
-					$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cue, a.cuil AS cua, a.anopago AS ano, a.mespago AS mes, a.concepto AS con, a.fechapago AS fpa, a.debitocredito AS deb, a.importe AS imp 
+					$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cue, a.cuil AS cua, a.anopago AS ano, a.mespago AS mes, a.concepto AS con, a.fechapago AS fpa, a.debitocredito AS deb, sum(a.importe) AS imp 
 									FROM jurisdiccion j, afiptransferencias a, empresas e
-									WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.cuit = e.cuit AND a.anopago > $anoLimite AND a.concepto in('381','C14','T14','T55')";
+									WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.cuit = e.cuit AND a.anopago > $anoLimite AND a.concepto in('381','C14','T14','T55')
+									GROUP BY a.cuit, a.cuil, a.anopago, a.mespago, a.concepto, a.fechapago, a.debitocredito";
 				}
 			}
 			if(stripos($tabla,"pagos") !== FALSE) {
-				$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cui, a.anopago AS ano, a.mespago AS mes, a.debitocredito AS deb, a.concepto AS con, a.fechapago AS fpa, a.importe AS imp 
+				$sqlLeeTablas="SELECT j.codidelega AS del, a.cuit AS cui, a.anopago AS ano, a.mespago AS mes, a.debitocredito AS deb, a.concepto AS con, a.fechapago AS fpa, sum(a.importe) AS imp 
 								FROM jurisdiccion j, afipprocesadas a, empresas e 
-								WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.cuit = e.cuit AND a.anopago > $anoLimite";
+								WHERE j.codidelega = '$delegacion' AND j.cuit = a.cuit AND a.cuit = e.cuit AND a.anopago > $anoLimite
+								GROUP BY a.cuit, a.anopago, a.mespago, a.debitocredito, a.concepto, a.fechapago";
 			}
 			if(stripos($tabla,"cabacuer") !== FALSE) {
 				$sqlLeeTablas="SELECT c.cuit AS cui, c.nroacuerdo AS nac, c.tipoacuerdo AS tac, c.estadoacuerdo AS eac, c.fechaacuerdo AS fac, c.montoacuerdo AS mac 
