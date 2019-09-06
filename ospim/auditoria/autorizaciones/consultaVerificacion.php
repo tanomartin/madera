@@ -131,8 +131,12 @@ if ($tipoAfiliado != "NO EMPADRONADO") {
 	$canPMI = mysql_num_rows($resPMI);
 
 	//VEO SI ES DIABETES
-	$sqlDiabetes = "SELECT * FROM diabetesbeneficiarios
-					WHERE nroafiliado = ".$rowLeeSolicitud['nroafiliado']." and nroorden = $nroorden";
+	$sqlDiabetes = "SELECT d.nroafiliado, d.nroorden, fechaficha, DATE_FORMAT(fechaficha, '%d/%m/%Y') as fechafichaform, tipodiabetes 
+						FROM diabetesbeneficiarios d
+						LEFT JOIN diabetesdiagnosticos ON diabetesdiagnosticos.nroafiliado = d.nroafiliado AND 
+													  	  diabetesdiagnosticos.nroorden = d.nroorden
+						WHERE d.nroafiliado = ".$rowLeeSolicitud['nroafiliado']." AND d.nroorden = $nroorden
+						ORDER BY fechaficha DESC LIMIT 1";
 	$resDiabetes = mysql_query($sqlDiabetes,$db);
 	$canDiabetes = mysql_num_rows($resDiabetes);
 }
@@ -227,9 +231,23 @@ function validar(formulario) {
 			<?php	if ($canOnco == 1) { ?>
 						<p><b>Oncológico:</b> SI </p>
 			<?php 	} 
-					if ($canDiabetes == 1) { ?>
-						<p><b>Diabético:</b> SI </p>
-			<?php	}
+					if ($canDiabetes == 1) { 
+						$rowDiabetes = mysql_fetch_assoc($resDiabetes); ?>
+						<p><b>Diabético:</b> SI 
+					 	(<?php if ($rowDiabetes['fechaficha'] != NULL) { 
+					 				$tipoDiabetes = $rowDiabetes['tipodiabetes'];
+					 				if ($rowDiabetes['tipodiabetes'] == 3) {
+					 					$tipoDiabetes = "Gestacional";
+					 				}
+					 				if ($rowDiabetes['tipodiabetes'] == 4) {
+					 					$tipoDiabetes = "Otro";
+					 				}
+									echo "Tipo.: ".$tipoDiabetes." - F.F.: ".$rowDiabetes['fechafichaform'];
+						 	   } else { 
+									echo "SIN DIAG."; 
+						  	   } ?>)
+						</p>
+			<?php 	} 
 					if ($canPMI == 1) {
 						$rowPMI = mysql_fetch_assoc($resPMI); ?>
 						<p><b>P.M.I.:</b> SI (FPP: <?php echo $rowPMI['fpp'] ?> - FP: <?php if ($rowPMI['fechanacimiento'] != "00/00/0000") { echo $rowPMI['fechanacimiento']; } else { echo "Sin Dato"; } ?>) </p>
