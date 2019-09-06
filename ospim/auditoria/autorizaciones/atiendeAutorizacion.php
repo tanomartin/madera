@@ -131,7 +131,7 @@ if ($tipoAfiliado != "NO EMPADRONADO") {
 	$canPMI = mysql_num_rows($resPMI);
 
 	//VEO SI ES DIABETES
-	$$sqlDiabetes = "SELECT d.nroafiliado, d.nroorden, fechaficha, DATE_FORMAT(fechaficha, '%d/%m/%Y') as fechafichaform, tipodiabetes 
+	$sqlDiabetes = "SELECT d.nroafiliado, d.nroorden, fechaficha, DATE_FORMAT(fechaficha, '%d/%m/%Y') as fechafichaform, tipodiabetes 
 						FROM diabetesbeneficiarios d
 						LEFT JOIN diabetesdiagnosticos ON diabetesdiagnosticos.nroafiliado = d.nroafiliado AND 
 													  	  diabetesdiagnosticos.nroorden = d.nroorden
