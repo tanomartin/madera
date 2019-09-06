@@ -151,6 +151,10 @@ if ($tipoAfiliado != "NO EMPADRONADO") {
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
+function verCertificado(dire){	
+	window.open(dire,'Certificado de Discapacidad','width=800, height=500,resizable=yes');
+}
+
 function muestraArchivo(solicitud, archivo) {
 	param = "nroSolicitud=" + solicitud;
 	param += "&archivo=" + archivo;
