@@ -53,7 +53,7 @@ try {
 }catch (PDOException $e) {
 	$error =  $e->getMessage();
 	$dbh->rollback();
-	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/".$_GET['origen']."/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
 	Header($redire);
 	exit(0);
 }

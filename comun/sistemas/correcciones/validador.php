@@ -7,6 +7,7 @@ print("<br>");
 $modulo = $_GET['modulo'];
 $nombreModulo = "id-$modulo";
 $idmodulo = $_POST[$nombreModulo];
+$origen = $_GET['origen'];
 
 $nombreDato1 = "dato1-$modulo";
 $dato1 = "";
@@ -66,7 +67,7 @@ foreach($arrayExistencia as $sqlExistencia) {
 }
 
 if ($numExistencia == 0) {
-	Header("Location: nuevaCorreccion.php?origen=$origne&error=$error");
+	Header("Location: nuevaCorreccion.php?origen=$origen&error=$error");
 }
 ?>
 
