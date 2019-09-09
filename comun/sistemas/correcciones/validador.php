@@ -55,17 +55,13 @@ if ($modulo == "JUICIOS") {
 	$arrayExistencia[0] = "SELECT * FROM cabjuicios$origen WHERE cuit = $dato1 and nroorden = $dato2";
 	$error = "NO EXISTE JUICIO CON NRO DE ORDEN '$dato2' EN EL C.U.I.T. '$dato1' ";
 }
-if ($modulo == "AUDITORIA MEDICA") {
-	$arrayExistencia[0] = "SELECT * FROM titulares WHERE cuil = $dato1";
-	$arrayExistencia[1] = "SELECT * FROM titularesdebaja WHERE cuil = $dato1";
-	$arrayExistencia[2] = "SELECT * FROM familiares WHERE cuil = $dato1";
-	$arrayExistencia[3] = "SELECT * FROM familiaresdebaja WHERE cuil = $dato1";
-	$arrayExistencia[4] = "SELECT * FROM prestadores WHERE cuit = $dato1 or codigoprestador = $dato3";
-	$error = "NO EXISTE PRESATDOR CON CODIGO '$dato2' O C.U.I.T. '$dato3' O AFILIADO CON C.U.I.L. $dato1";
+if ($modulo == "AUDITORIA") {
+	$arrayExistencia[0] = "SELECT * FROM prestadores WHERE cuit = $dato1 or codigoprestador = $dato3";
+	$error = "NO EXISTE PRESATDOR CON CODIGO '$dato2' O C.U.I.T. '$dato3'";
 }
 
-if ($modulo == "FACTURACION / LIQUIDACION") {
-	$arrayExistencia[1] = "SELECT * FROM prestadores WHERE cuit = $dato1";
+if ($modulo == "FACTURACION/LIQUIDACION") {
+	$arrayExistencia[0] = "SELECT * FROM prestadores WHERE cuit = $dato1";
 	$error = "NO EXISTE PRESATDOR CON C.U.I.T. '$dato1' ";
 }
 
