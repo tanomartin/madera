@@ -109,7 +109,6 @@ try {
 					$referenciabanco = $imputar[referencia];
 					$importebanco = $imputar[importe];
 					$depositobanco = $imputar[fechadeposito];
-					$difdeposito=0.00;
 					$actualizabanco=0;
 					$anterior=0;
  ?>
@@ -121,7 +120,25 @@ try {
 					$resultControlBuscaEmpresa=$dbh->query($sqlControlBuscaEmpresa);
 					if($resultControlBuscaEmpresa->fetchColumn()!=0) {
 						$periodo='';
-						$sqlBuscaCabDDJJ="SELECT d.* FROM ddjjusimra d, vinculadocuusimra v WHERE d.nrcuil = '$cuil' AND d.nrcuit = '$cuitbanco' AND d.nrcuit = v.nrcuit AND d.nrctrl = v.nrctrl AND v.referencia = '$referenciabanco'";
+						$difdeposito=0.00;
+						$sqlBuscaDDJJ="SELECT COUNT(d.nrctrl) AS cantdj, SUM((d.totapo+d.recarg)) AS totdep FROM ddjjusimra d, vinculadocuusimra v WHERE d.nrcuil = '$cuil' AND d.nrcuit = '$cuitbanco' AND d.nrcuit = v.nrcuit AND d.nrctrl = v.nrctrl AND v.referencia = '$referenciabanco' GROUP BY v.nrcuit, v.referencia";
+						if($resultBuscaDDJJ=$dbh->query($sqlBuscaDDJJ)) {
+							foreach($resultBuscaDDJJ as $totaddjj) {
+								$cantddjj = $totaddjj[cantdj];
+								$impoddjj = $totaddjj[totdep];
+								$importeadmitido=0; 
+								if($cantddjj>0) {
+									if($impoddjj!=$importebanco) {
+										$difdeposito=round(($importebanco-$impoddjj),2);
+										if($difdeposito >= -15.00 && $difdeposito <= 15.00) {
+											$importeadmitido=1;
+										}
+									}
+								}
+							}
+						}
+
+						$sqlBuscaCabDDJJ="SELECT d.* FROM ddjjusimra d, vinculadocuusimra v WHERE d.nrcuil = '$cuil' AND d.nrcuit = '$cuitbanco' AND d.nrcuit = v.nrcuit AND d.nrctrl = v.nrctrl AND v.referencia = '$referenciabanco' ORDER BY d.nrcuit, d.totapo DESC";
 						if($resultBuscaCabDDJJ=$dbh->query($sqlBuscaCabDDJJ)) {
 							foreach($resultBuscaCabDDJJ as $cabddjj) {
 								$periodo.=$cabddjj[permes]."-".$cabddjj[perano]." ";
@@ -144,13 +161,15 @@ try {
 										}
 									}
 									$ultimopago=$ultimopago+1;
-									$montopagado=$importebanco;
-									$montoddjj=$cabddjj[totapo]+$cabddjj[recarg];
-									$difdeposito=round(($importebanco-$montoddjj),2);
-									$recargo=($cabddjj[recarg])+($difdeposito);
+									$recargo=$cabddjj[recarg]+$difdeposito;
+									$montopagado=$cabddjj[totapo]+$recargo;
 
 									$sqlAgregaPago="INSERT INTO seguvidausimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$anterior','$depositobanco','$cabddjj[nfilas]','$cabddjj[remune]','$recargo','$montopagado','$cabddjj[observ]','$sistemacancelacion','$referenciabanco','$fechabanco','$fechacancelacion','$usuariocancelacion','$fechamodificacion','$usuariomodificacion')";
 									if($resultAgregaPago = $dbh->query($sqlAgregaPago)) {
+										if($importeadmitido==1) {
+											$difdeposito=0.00;
+											$importeadmitido=0;
+										}
 										$sqlAgregaApo060="INSERT INTO apor060usimra VALUES ('$cuitbanco','$cabddjj[permes]','$cabddjj[perano]','$ultimopago','$cabddjj[apo060]')";
 										if($resultAgregaApo060 = $dbh->query($sqlAgregaApo060)) {
 										}
