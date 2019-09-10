@@ -218,7 +218,8 @@ function habilitaCamposProfesional(valor) {
 	}	
 }
 
-function validar(formulario) {	
+function validar() {	
+	var formulario = document.forms.nuevoPrestador;
 	if (formulario.nombre.value == "") {
 		alert("El campo Nombre o Razon social es Obligatrio");
 		return false;
@@ -377,8 +378,8 @@ function validar(formulario) {
 		return false;
 	}
 	
-	formulario.Submit.disabled = true;
-	return true;
+	formulario.guardar.disabled = true;
+	formulario.submit();
 }
 
 </script>
@@ -387,7 +388,7 @@ function validar(formulario) {
 <body bgcolor="#CCCCCC">
 <div align="center">
   <h3>Nuevo Prestador </h3>
-  <form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarNuevoPrestador.php">
+  <form name="nuevoPrestador" id="nuevoPrestador" method="post" action="guardarNuevoPrestador.php">
     <table width="100%" border="0">
       <tr>
         <td width="130"><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
@@ -608,7 +609,7 @@ function validar(formulario) {
         </div></td>
       </tr>
     </table>
-    <p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>
+    <p><input type="button" name="guardar" id="guardar" value="Guardar" onclick="validar()"/></p>
   </form>
 </div>
 </body>
