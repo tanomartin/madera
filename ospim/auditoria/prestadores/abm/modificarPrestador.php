@@ -400,7 +400,7 @@ function validar() {
 		return false;
 	}
 	
-	formulario.Submit.disabled = true;
+	formulario.guardar.disabled = true;
 	return true;
 }
 
