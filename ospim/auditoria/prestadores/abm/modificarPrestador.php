@@ -401,7 +401,7 @@ function validar() {
 	}
 	
 	formulario.guardar.disabled = true;
-	return true;
+	formulario.submit();
 }
 
 </script>
