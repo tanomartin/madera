@@ -35,34 +35,37 @@ $nombreObs = "obs-$modulo";
 $observacion = $_POST[$nombreObs];
 
 $arrayExistencia = array();
-if ($modulo == "ACUERDOS") {
-	$arrayExistencia[0] = "SELECT * FROM cabacuerdos$origen WHERE cuit = $dato1 and nroacuerdo = $dato2";
-	$error = "NO EXISTE ACUERDO NUMERO '$dato2' PARA EL C.U.I.T. '$dato1'";
-}
-if ($modulo == "APORTES" || $modulo == "EMPRESAS") {
-	$arrayExistencia[0] = "SELECT * FROM empresas WHERE cuit = $dato1";
-	$arrayExistencia[1] = "SELECT * FROM empresasdebaja WHERE cuit = $dato1";
-	$error = "NO EXISTE EMPRESA CON EL C.U.I.T. '$dato1'";
-}
-if ($modulo == "AFILIADOS") {
-	$arrayExistencia[0] = "SELECT * FROM titulares WHERE cuil = $dato1";
-	$arrayExistencia[1] = "SELECT * FROM titularesdebaja WHERE cuil = $dato1";
-	$arrayExistencia[2] = "SELECT * FROM familiares WHERE cuil = $dato1";
-	$arrayExistencia[3] = "SELECT * FROM familiaresdebaja WHERE cuil = $dato1";
-	$error = "NO EXISTE AFILIADO CON EL C.U.I.L. '$dato1'";
-}
-if ($modulo == "JUICIOS") {
-	$arrayExistencia[0] = "SELECT * FROM cabjuicios$origen WHERE cuit = $dato1 and nroorden = $dato2";
-	$error = "NO EXISTE JUICIO CON NRO DE ORDEN '$dato2' EN EL C.U.I.T. '$dato1' ";
-}
-if ($modulo == "AUDITORIA") {
-	$arrayExistencia[0] = "SELECT * FROM prestadores WHERE cuit = $dato1 or codigoprestador = $dato3";
-	$error = "NO EXISTE PRESATDOR CON CODIGO '$dato2' O C.U.I.T. '$dato3'";
-}
-
-if ($modulo == "FACTURACION/LIQUIDACION") {
-	$arrayExistencia[0] = "SELECT * FROM prestadores WHERE cuit = $dato1";
-	$error = "NO EXISTE PRESATDOR CON C.U.I.T. '$dato1' ";
+switch ($modulo) {
+	case "ACUERDOS":
+		$arrayExistencia[0] = "SELECT * FROM cabacuerdos$origen WHERE cuit = $dato1 and nroacuerdo = $dato2";
+		$error = "NO EXISTE ACUERDO NUMERO '$dato2' PARA EL C.U.I.T. '$dato1'";
+		break;
+	case "APORTES":
+	case "EMPRESAS": 
+		$arrayExistencia[0] = "SELECT * FROM empresas WHERE cuit = $dato1";
+		$arrayExistencia[1] = "SELECT * FROM empresasdebaja WHERE cuit = $dato1";
+		$error = "NO EXISTE EMPRESA CON EL C.U.I.T. '$dato1'";
+		break;
+	case "AFILIADOS":
+	case "AUDITORIA":
+		$arrayExistencia[0] = "SELECT * FROM titulares WHERE cuil = $dato1";
+		$arrayExistencia[1] = "SELECT * FROM titularesdebaja WHERE cuil = $dato1";
+		$arrayExistencia[2] = "SELECT * FROM familiares WHERE cuil = $dato1";
+		$arrayExistencia[3] = "SELECT * FROM familiaresdebaja WHERE cuil = $dato1";
+		$error = "NO EXISTE AFILIADO CON EL C.U.I.L. '$dato1'";
+		break;
+	case "JUICIOS":
+		$arrayExistencia[0] = "SELECT * FROM cabjuicios$origen WHERE cuit = $dato1 and nroorden = $dato2";
+		$error = "NO EXISTE JUICIO CON NRO DE ORDEN '$dato2' EN EL C.U.I.T. '$dato1' ";
+		break;
+	case "FACTURACION":
+		$arrayExistencia[0] = "SELECT * FROM prestadores WHERE cuit = $dato1";
+		$error = "NO EXISTE PRESATDOR CON C.U.I.T. '$dato1'";
+		break;
+	case "AUTORIZACIONES":	
+		$arrayExistencia[0] = "SELECT * FROM autorizaciones WHERE nrosolicitud = $dato1";
+		$error = "NO EXISTE AUTORIZCION CON Nro. Solicitud '$dato1' PARA SER CORREGIDA";
+		break;
 }
 
 $numExistencia = 0;

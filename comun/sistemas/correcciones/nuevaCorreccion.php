@@ -114,7 +114,7 @@ function validar(formulario, modulo) {
 			  	<?php  } ?>	
 		  		</select>
 		  	</p>
-		  	<p><b>Observación</b></p>
+		  	<p><b>Solicitud</b></p>
 		  	<p><textarea rows="6" cols="100" name="obs-<?php echo $modulo ?>" id="obs-<?php echo $modulo ?>"></textarea></p>
 		  	<input type="submit" id="guardar-<?php echo $modulo ?>" name="guardar-<?php echo $modulo ?>" value="Guardar"/>
 		 </form>
