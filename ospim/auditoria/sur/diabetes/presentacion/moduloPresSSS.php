@@ -64,7 +64,7 @@ $(function() {
   	<h3>Presentacion Activa</h3>
   	<?php if ($canPresSSSActiva != 0) { ?>
 	  		<div class="grilla">
-	  			<table style="width:100%">
+	  			<table style="width:1150px">
 	  				<thead>
 	  					<tr>
 		  					<th>ID</th>
