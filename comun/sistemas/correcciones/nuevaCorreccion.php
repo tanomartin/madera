@@ -17,19 +17,36 @@ $resModulos = mysql_query($sqlModulos,$db);
 <link rel="stylesheet" href="/madera/lib/tablas.css"/>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css" type="text/css" id="" media="print, projection, screen" />
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
+<script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery-ui.min.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
+function clearForm(modulo) {
+	var arrayModulo = modulo.split('-');
+	moduloName = arrayModulo[0]
+	var nombreData = "nombre-"+moduloName;
+	document.getElementById(nombreData).innerHTML = "";
+	for (var i = 1; i<5; i++) {
+		var nameImput = "dato"+i+"-"+moduloName;
+		console.log(nameImput);
+		if (document.getElementById(nameImput) != null) {
+			document.getElementById(nameImput).value = "";
+		}
+	}
+}
+
 function cargarFormulario(modulo) {
+	clearForm(modulo);
 	modulos = document.getElementById('selectModulo')
 	for (var i = 0; i < modulos.length; i++) {
 		 var opt = modulos[i].value;
 		 if (opt != 0) {
 			 var arrayNombreSelect = opt.split('-');
 			 document.getElementById(arrayNombreSelect[0]).style.display = "none";
+			 document.getElementById(arrayNombreSelect[0]).value = "";
 		 }	 
 	}
 	if (modulo != 0) {
@@ -37,6 +54,25 @@ function cargarFormulario(modulo) {
 		document.getElementById(arrayModulo[0]).style.display = "block";
 		var id = "id-"+arrayModulo[0];
 		document.getElementById(id).value = arrayModulo[1];
+	}
+}
+
+function buscarEntidad(inputObject) {
+	var moduloArray = inputObject.name.split("-");
+	var valor = inputObject.value;
+	if (esEnteroPositivo(valor)) {
+		$.ajax({
+			type: "POST",
+			dataType: 'html',
+			url: "buscarEntidad.php?origen=<?php echo $origen ?>",
+			data: {modulo:moduloArray[1], valor:valor},
+		}).done(function(respuesta){
+			var labelName = "nombre-"+moduloArray[1];
+			document.getElementById(labelName).innerHTML = respuesta;
+		});
+	} else {
+		inputObject.value = "";
+		alert("El dato debe ser numerico");
 	}
 }
 
@@ -93,7 +129,11 @@ function validar(formulario, modulo) {
 		  	<input type="text" name="id-<?php echo $modulo ?>" id="id-<?php echo $modulo ?>" style="display: none"/>
 		  	<h3>Correccion de <?php echo $modulo ?></h3>
 		  	<?php if ($rowModulos['etiquetadato1'] != NULL) { ?>
-		  			<p><b><?php echo $rowModulos['etiquetadato1'].": " ?></b><input type="text" name="dato1-<?php echo $modulo ?>" id="dato1-<?php echo $modulo ?>" /></p>
+		  			<p>
+		  			   <b><?php echo $rowModulos['etiquetadato1'].": " ?></b>
+		  			   <input type="text" name="dato1-<?php echo $modulo ?>" id="dato1-<?php echo $modulo ?>" onchange="buscarEntidad(this)" size="10"/>
+		  			</p>
+		  			<p style="color: blue"><b><label id="nombre-<?php echo $modulo ?>"></label></b></p>
 		  	<?php } 
 		  		  if ($rowModulos['etiquetadato2'] != NULL) { ?>
 		  			<p><b><?php echo $rowModulos['etiquetadato2'].": " ?></b><input type="text" name="dato2-<?php echo $modulo ?>" id="dato2-<?php echo $modulo ?>" /></p>
