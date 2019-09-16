@@ -18,7 +18,7 @@ include($libPath."controlSession.php"); ?>
       </td>
       <td width="200">
       	<p>PEDIDOS</p>
-        <p><a href="pedidos/moduloPedidos.php?origen=<?php echo $origen?>"><img src="img/pedidos.png" width="90" height="90" border="0" /></a></p>
+        <p><a href="../../<?php echo $origen?>/moduloNoDisponible.php"><img src="img/pedidos.png" width="90" height="90" border="0" /></a></p>
       </td>
     </tr>
   </table>
