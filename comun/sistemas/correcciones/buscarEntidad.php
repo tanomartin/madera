@@ -25,21 +25,21 @@ switch ($modulo) {
 		$entidad = "PRESTADOR";
 		break;
 	case "AUTORIZACIONES":
-		$arrayExistencia[0] = "SELECT d.nombre FROM autorizaciones a , delegaciones d 
-								WHERE nrosolicitud = $valor and a.codidelega = d.codidelega";
+		$arrayExistencia[0] = "SELECT d.nombre FROM autorizaciones a , delegaciones d WHERE nrosolicitud = $valor and a.codidelega = d.codidelega";
 		$entidad = "DELEGACION";
 		break;
 }
 $numExistencia = 0;
+$nombre = "";
 foreach($arrayExistencia as $sqlExistencia) {
 	$resExistencia = mysql_query($sqlExistencia,$db);
-	$numExistencia += mysql_num_rows($resExistencia);
+	$numExistencia = mysql_num_rows($resExistencia);
 	if ($numExistencia > 0) {
 		$nombreArray = mysql_fetch_assoc($resExistencia);
 		$nombre = $entidad." - ".$nombreArray['nombre'];
 	} 
 }
-if ($numExistencia == 0) {
+if ($nombre == "") {
 	$nombre = $entidad." - SIN INFORMACION";
 }
 echo $nombre;

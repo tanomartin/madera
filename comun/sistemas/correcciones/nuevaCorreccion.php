@@ -60,19 +60,23 @@ function cargarFormulario(modulo) {
 function buscarEntidad(inputObject) {
 	var moduloArray = inputObject.name.split("-");
 	var valor = inputObject.value;
-	if (esEnteroPositivo(valor)) {
-		$.ajax({
-			type: "POST",
-			dataType: 'html',
-			url: "buscarEntidad.php?origen=<?php echo $origen ?>",
-			data: {modulo:moduloArray[1], valor:valor},
-		}).done(function(respuesta){
-			var labelName = "nombre-"+moduloArray[1];
-			document.getElementById(labelName).innerHTML = respuesta;
-		});
+	var labelName = "nombre-"+moduloArray[1];
+	if (valor != "") {
+		if (esEnteroPositivo(valor)) {
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "buscarEntidad.php?origen=<?php echo $origen ?>",
+				data: {modulo:moduloArray[1], valor:valor},
+			}).done(function(respuesta){
+				document.getElementById(labelName).innerHTML = respuesta;
+			});
+		} else {
+			inputObject.value = "";
+			alert("El dato debe ser numerico");
+		}
 	} else {
-		inputObject.value = "";
-		alert("El dato debe ser numerico");
+		document.getElementById(labelName).innerHTML = "";
 	}
 }
 
