@@ -31,7 +31,6 @@ function clearForm(modulo) {
 	document.getElementById(nombreData).innerHTML = "";
 	for (var i = 1; i<5; i++) {
 		var nameImput = "dato"+i+"-"+moduloName;
-		console.log(nameImput);
 		if (document.getElementById(nameImput) != null) {
 			document.getElementById(nameImput).value = "";
 		}
@@ -39,17 +38,15 @@ function clearForm(modulo) {
 }
 
 function cargarFormulario(modulo) {
-	clearForm(modulo);
 	modulos = document.getElementById('selectModulo')
-	for (var i = 0; i < modulos.length; i++) {
-		 var opt = modulos[i].value;
-		 if (opt != 0) {
-			 var arrayNombreSelect = opt.split('-');
-			 document.getElementById(arrayNombreSelect[0]).style.display = "none";
-			 document.getElementById(arrayNombreSelect[0]).value = "";
-		 }	 
+	for (var i = 1; i < modulos.length; i++) {
+		var opt = modulos[i].value;
+		var arrayNombreSelect = opt.split('-');
+		document.getElementById(arrayNombreSelect[0]).style.display = "none";
+		document.getElementById(arrayNombreSelect[0]).value = "";	 
 	}
 	if (modulo != 0) {
+		clearForm(modulo);
 		var arrayModulo = modulo.split('-');
 		document.getElementById(arrayModulo[0]).style.display = "block";
 		var id = "id-"+arrayModulo[0];
