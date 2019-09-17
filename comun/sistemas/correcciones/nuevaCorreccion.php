@@ -58,6 +58,7 @@ function buscarEntidad(inputObject) {
 	var moduloArray = inputObject.name.split("-");
 	var valor = inputObject.value;
 	var labelName = "nombre-"+moduloArray[1];
+	document.getElementById(labelName).innerHTML = "";
 	if (valor != "") {
 		if (esEnteroPositivo(valor)) {
 			$.ajax({
@@ -70,7 +71,6 @@ function buscarEntidad(inputObject) {
 			});
 		} else {
 			inputObject.value = "";
-			document.getElementById(labelName).innerHTML = "";
 			alert("El dato debe ser numerico");	
 		}
 	}
