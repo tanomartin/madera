@@ -70,10 +70,9 @@ function buscarEntidad(inputObject) {
 			});
 		} else {
 			inputObject.value = "";
-			alert("El dato debe ser numerico");
+			document.getElementById(labelName).innerHTML = "";
+			alert("El dato debe ser numerico");	
 		}
-	} else {
-		document.getElementById(labelName).innerHTML = "";
 	}
 }
 
