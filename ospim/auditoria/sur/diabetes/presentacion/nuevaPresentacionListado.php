@@ -25,36 +25,60 @@ $whereIn .= ")";
 //*******************************************************************//
 
 //BUSCO TODOS LOS BENE Y LOS AGRUPO EN ARRAYS X TIPO//
-$sqlTitulares = "SELECT nroafiliado, apellidoynombre, cuil FROM titulares WHERE nroafiliado in $whereIn";
+$sqlTitulares = "SELECT nroafiliado, apellidoynombre, cuil, delegaciones.nombre as delegacion, delegaciones.codidelega as codidelega
+					FROM titulares
+					LEFT JOIN delegaciones ON titulares.codidelega = delegaciones.codidelega
+					WHERE nroafiliado in $whereIn";
 $resTitulares = mysql_query($sqlTitulares,$db);
 $arrayTitulares = array();
 while ($rowTitulares = mysql_fetch_assoc($resTitulares)) {
 	$index = $rowTitulares['nroafiliado']."-0";
-	$arrayTitulares[$index] = array("nombre" => $rowTitulares['apellidoynombre'], "cuil" => $rowTitulares['cuil']);
+	$arrayTitulares[$index] = array("nombre" => $rowTitulares['apellidoynombre'], "cuil" => $rowTitulares['cuil'], "delegacion" =>  $rowTitulares['codidelega']." - ".$rowTitulares['delegacion']);
 }
 
-$sqlTitularesDeBaja = "SELECT nroafiliado, apellidoynombre, cuil, fechabaja FROM titularesdebaja WHERE nroafiliado in $whereIn";
+$sqlTitularesDeBaja = "SELECT nroafiliado, apellidoynombre, cuil, fechabaja, delegaciones.nombre as delegacion, delegaciones.codidelega as codidelega
+						FROM titularesdebaja 
+						LEFT JOIN delegaciones ON titularesdebaja.codidelega = delegaciones.codidelega
+						WHERE nroafiliado in $whereIn";
 $resTitularesDeBaja = mysql_query($sqlTitularesDeBaja,$db);
 $arrayTitularesDeBaja = array();
 while ($rowTitularesDeBaja = mysql_fetch_assoc($resTitularesDeBaja)) {
 	$index = $rowTitularesDeBaja['nroafiliado']."-0";
-	$arrayTitularesDeBaja[$index] = array("nombre" => $rowTitularesDeBaja['apellidoynombre'], "cuil" => $rowTitularesDeBaja['cuil'], "fechabaja" =>  $rowTitularesDeBaja['fechabaja']);
+	$arrayTitularesDeBaja[$index] = array("nombre" => $rowTitularesDeBaja['apellidoynombre'], "cuil" => $rowTitularesDeBaja['cuil'], "fechabaja" =>  $rowTitularesDeBaja['fechabaja'], "delegacion" =>  $rowTitularesDeBaja['codidelega']." - ".$rowTitularesDeBaja['delegacion']);
 }
 
-$sqlFamiliar = "SELECT nroafiliado, nroorden, apellidoynombre, cuil FROM familiares WHERE nroafiliado in $whereIn";
+$sqlFamiliar = "SELECT  f.nroafiliado, f.nroorden, f.apellidoynombre, f.cuil, 
+						IF(delegaciones.nombre is NULL, 
+							concat(delebaja.codidelega,' - ',delebaja.nombre), 
+							concat(delegaciones.codidelega,' - ',delegaciones.nombre)) as delegacion
+					FROM familiares f
+					LEFT JOIN titulares ON titulares.nroafiliado = f.nroafiliado
+					LEFT JOIN delegaciones ON delegaciones.codidelega = titulares.codidelega
+					LEFT JOIN titularesdebaja ON titularesdebaja.nroafiliado = f.nroafiliado
+					LEFT JOIN delegaciones as delebaja ON delebaja.codidelega = titularesdebaja.codidelega
+					WHERE f.nroafiliado in $whereIn";
 $resFamiliar = mysql_query($sqlFamiliar,$db);
 $arrayFamiliares = array();
 while ($rowFamiliar = mysql_fetch_assoc($resFamiliar)) {
 	$index = $rowFamiliar['nroafiliado']."-".$rowFamiliar['nroorden'];
-	$arrayFamiliares[$index] = array("nombre" => $rowFamiliar['apellidoynombre'], "cuil" => $rowFamiliar['cuil']);
+	$arrayFamiliares[$index] = array("nombre" => $rowFamiliar['apellidoynombre'], "cuil" => $rowFamiliar['cuil'], "delegacion" =>  $rowFamiliar['delegacion']);
 }
 
-$sqlFamiliarDeBaja = "SELECT nroafiliado, nroorden, apellidoynombre, cuil, fechabaja FROM familiaresdebaja WHERE nroafiliado in $whereIn";
+$sqlFamiliarDeBaja = "SELECT f.nroafiliado, f.nroorden, f.apellidoynombre, f.cuil, f.fechabaja,
+						     IF(delegaciones.nombre is NULL, 
+								concat(delebaja.codidelega,' - ',delebaja.nombre), 
+								concat(delegaciones.codidelega,' - ',delegaciones.nombre)) as delegacion
+						FROM familiaresdebaja f
+						LEFT JOIN titulares ON titulares.nroafiliado = f.nroafiliado
+						LEFT JOIN delegaciones ON delegaciones.codidelega = titulares.codidelega
+						LEFT JOIN titularesdebaja ON titularesdebaja.nroafiliado = f.nroafiliado
+						LEFT JOIN delegaciones as delebaja ON delebaja.codidelega = titularesdebaja.codidelega
+						WHERE f.nroafiliado in $whereIn";
 $resFamiliarDeBaja = mysql_query($sqlFamiliarDeBaja,$db);
 $arrayFamiliaresDeBaja = array();
 while ($rowFamiliarDeBaja = mysql_fetch_assoc($resFamiliarDeBaja)) {
 	$index = $rowFamiliarDeBaja['nroafiliado']."-".$rowFamiliarDeBaja['nroorden'];
-	$arrayFamiliaresDeBaja[$index] = array("nombre" => $rowFamiliarDeBaja['apellidoynombre'], "fechabaja" =>  $rowFamiliarDeBaja['fechabaja'], "cuil" => $rowFamiliarDeBaja['cuil']);
+	$arrayFamiliaresDeBaja[$index] = array("nombre" => $rowFamiliarDeBaja['apellidoynombre'], "fechabaja" =>  $rowFamiliarDeBaja['fechabaja'], "cuil" => $rowFamiliarDeBaja['cuil'], "delegacion" =>  $rowFamiliarDeBaja['delegacion']);
 }
 //*****************************************************//
 
@@ -133,23 +157,27 @@ foreach ($arrayCompletos as $key => $beneficiarios) {
 		$nombre = $arrayTitulares[$indexBusqueda]['nombre'];
 		$cuil = $arrayTitulares[$indexBusqueda]['cuil'];
 		$tipoBene = "TITULAR";
+		$delega = $arrayTitulares[$indexBusqueda]['delegacion'];
 	}
 	if (array_key_exists($indexBusqueda, $arrayTitularesDeBaja)) {
 		$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']."<br>";
 		$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
 		$fechaBajaInco = $arrayTitularesDeBaja[$indexBusqueda]['fechabaja'];
 		$tipoBene .= "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($fechaBajaInco)."</b>)";
+		$delega = $arrayTitularesDeBaja[$indexBusqueda]['delegacion'];
 	}
 	if (array_key_exists($indexBusqueda, $arrayFamiliares)) {
 		$nombre = $arrayFamiliares[$indexBusqueda]['nombre']."<br>";
 		$cuil = $arrayFamiliares[$indexBusqueda]['cuil'];
 		$tipoBene .= "FAMILIAR<br>";
+		$delega = $arrayFamiliares[$indexBusqueda]['delegacion'];
 	}
 	if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) {
 		$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre'];
 		$cuil = $arrayFamiliaresDeBaja[$indexBusqueda]['cuil'];
 		$fechaBajaInco = $arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'];
 		$tipoBene .= "FAMILIAR DE BAJA<br> (F.B: <b>".invertirFecha($fechaBajaInco)."</b>)";
+		$delega = $arrayFamiliaresDeBaja[$indexBusqueda]['delegacion'];
 	}
 	if ($tipoBene == "") { $tipoBene = "-"; }	
 	if (strtotime($beneficiarios['fechaficha']) >= strtotime($fechaDesde)) {
@@ -157,11 +185,13 @@ foreach ($arrayCompletos as $key => $beneficiarios) {
 		$arrayNuevo[$key]['nombre'] = $nombre;
 		$arrayNuevo[$key]['cuil'] = $cuil;
 		$arrayNuevo[$key]['tipoBene'] = $tipoBene;
+		$arrayNuevo[$key]['delega'] = $delega;
 	} else {
 		$arrayViejos[$key] = $beneficiarios;
 		$arrayViejos[$key]['nombre'] = $nombre;
 		$arrayViejos[$key]['cuil'] = $cuil;
 		$arrayViejos[$key]['tipoBene'] = $tipoBene;
+		$arrayViejos[$key]['delega'] = $delega;
 	}
 }
 //**********************************************************************//
@@ -198,34 +228,41 @@ foreach ($arrayIncompletos as $beneInco) {
 		$nombre = $arrayTitulares[$indexBusqueda]['nombre']; 
 		$cuil = $arrayTitulares[$indexBusqueda]['cuil'];
 		$tipoBene = "TITULAR";
+		$delega = $arrayTitulares[$indexBusqueda]['delegacion'];
 	} 
 	if (array_key_exists($indexBusqueda, $arrayTitularesDeBaja)) {
 		$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']."<br>"; 
 		$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
 		$fechaBajaInco = $arrayTitularesDeBaja[$indexBusqueda]['fechabaja'];
 		$tipoBene .= "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($fechaBajaInco)."</b>)";
+		$delega = $arrayTitularesDeBaja[$indexBusqueda]['delegacion'];
 	}
 	if (array_key_exists($indexBusqueda, $arrayFamiliares)) { 
 		$nombre = $arrayFamiliares[$indexBusqueda]['nombre']."<br>"; 
 		$cuil = $arrayFamiliares[$indexBusqueda]['cuil'];			
 		$tipoBene .= "FAMILIAR<br>";
+		$delega = $arrayFamiliares[$indexBusqueda]['delegacion'];
 	}
 	if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) { 
 		$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre']; 
 		$cuil = $arrayFamiliaresDeBaja[$indexBusqueda]['cuil'];		
 		$fechaBajaInco = $arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'];
 		$tipoBene .= "FAMILIAR DE BAJA<br> (F.B: <b>".invertirFecha($fechaBajaInco)."</b>)";
+		$delega = $arrayFamiliaresDeBaja[$indexBusqueda]['delegacion'];
+		
 	} 
 	if ($tipoBene == "") { $tipoBene = "-"; } 
 	$arrayIncompletos[$indexBusqueda]['nombre'] = $nombre;
 	$arrayIncompletos[$indexBusqueda]['cuil'] = $cuil;
 	$arrayIncompletos[$indexBusqueda]['tipoBene'] = $tipoBene;
+	$arrayIncompletos[$indexBusqueda]['delega'] = $delega;
 	if ($fechaBajaInco != "") {
 		if (strtotime($fechaBajaInco) < strtotime($fechaHasta)) {
 			$arrayIncoBaja[$indexBusqueda] = $beneInco;
 			$arrayIncoBaja[$indexBusqueda]['nombre'] = $nombre;
 			$arrayIncoBaja[$indexBusqueda]['cuil'] = $cuil;
 			$arrayIncoBaja[$indexBusqueda]['tipoBene'] = $tipoBene;
+			$arrayIncoBaja[$indexBusqueda]['delega'] = $delega;
 			unset($arrayIncompletos[$indexBusqueda]);
  		}
 	}
@@ -241,15 +278,18 @@ foreach($arrayDeBaja as $debaja) {
 		$nombre = $arrayTitularesDeBaja[$indexBusqueda]['nombre']."<br>";
 		$cuil = $arrayTitularesDeBaja[$indexBusqueda]['cuil'];
 		$tipoBene .= "TITULAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayTitularesDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+		$delega = $arrayTitularesDeBaja[$indexBusqueda]['delegacion'];;
 	}
 	if (array_key_exists($indexBusqueda, $arrayFamiliaresDeBaja)) {
 		$nombre = $arrayFamiliaresDeBaja[$indexBusqueda]['nombre'];
 		$cuil = $arrayFamiliaresDeBaja[$indexBusqueda]['cuil'];
 		$tipoBene .= "FAMILIAR DE BAJA<br> (F.B: <b>".invertirFecha($arrayFamiliaresDeBaja[$indexBusqueda]['fechabaja'])."</b>)";
+		$delega = $arrayFamiliaresDeBaja[$indexBusqueda]['delegacion'];
 	}
 	$arrayDeBaja[$indexBusqueda]['nombre'] = $nombre;
 	$arrayDeBaja[$indexBusqueda]['cuil'] = $cuil;
 	$arrayDeBaja[$indexBusqueda]['tipoBene'] = $tipoBene;
+	$arrayDeBaja[$indexBusqueda]['delega'] = $delega;
 }
 reset($arrayDeBaja);
 //*****************************************************************//
@@ -372,13 +412,14 @@ function validar(formulario) {
 	<form id="nuevaPresentacionListado" name="nuevaPresentacionListado" method="post" onsubmit="return validar(this)" action="nuevaPresentacionArchivo.php?periodo=<?php echo $periodo ?>">	
 	  <h3>Diagnosticos a Subir (<?php echo "# ".sizeof($arrayNuevo) ?>)</h3>
 <?php if (sizeof($arrayNuevo) > 0) { ?>
-		<table style="text-align:center; width:1000px;" id="completos" class="tablesorter" >
+		<table style="text-align:center; width:1100px;" id="completos" class="tablesorter" >
 			<thead>
 				<tr>
 					<th>Nro. Afiliado</th>
 					<th>Nombre y Apellido</th>
 					<th>CUIL</th>
 					<th>Tipo Bene.</th>
+					<th class="filter-select" data-placeholder="Seleccione Dele">Dele</th>
 					<th>Fecha Ficha</th>
 					<th>Tipo</th>
 				</tr>
@@ -396,6 +437,7 @@ function validar(formulario) {
 						<td><?php echo $completo['nombre']; ?></td>
 						<td><?php echo $completo['cuil']; ?></td>
 						<td><?php echo $completo['tipoBene']; ?></td>
+						<td><?php echo $completo['delega']; ?></td>
 						<td><?php echo $completo['fechaficha'] ?></td>
 						<td><?php echo $completo['tipodiabetes'] ?></td>
 					</tr>
@@ -407,13 +449,14 @@ function validar(formulario) {
 <?php }?>
 	  <h3>Diagnosticos Importados (<?php echo "# ".sizeof($arrayViejos) ?>)</h3>
 <?php if (sizeof($arrayViejos) > 0) { ?>
-		<table style="text-align:center; width:1000px;" id="viejos" class="tablesorter" >
+		<table style="text-align:center; width:1100px;" id="viejos" class="tablesorter" >
 			<thead>
 				<tr>
 					<th>Nro. Afiliado</th>
 					<th>Nombre y Apellido</th>
 					<th>CUIL</th>
 					<th>Tipo Bene.</th>
+					<th class="filter-select" data-placeholder="Seleccione Dele">Dele</th>
 					<th>Fecha Ficha</th>
 					<th>Tipo</th>
 					<th></th>
@@ -427,6 +470,7 @@ function validar(formulario) {
 						<td><?php echo $completo['nombre']; ?></td>
 						<td><?php echo $completo['cuil']; ?></td>
 						<td><?php echo $completo['tipoBene']; ?></td>
+						<td><?php echo $completo['delega']; ?></td>
 						<td><?php echo $completo['fechaficha'] ?></td>
 						<td><?php echo $completo['tipodiabetes'] ?></td>
 						<td><input type="checkbox" id="check<?php echo $index?>" name="check<?php echo $index?>" value="<?php echo $completo["id"]."-".$completo['cuil']?>"/></td>
@@ -445,13 +489,14 @@ function validar(formulario) {
 	
 	<h3>Diagnosticos Completos Afiliados de Baja (<?php echo "# ".sizeof($arrayDeBaja) ?>)</h3>
 	<?php if (sizeof($arrayDeBaja) > 0) { ?>
-			<table style="text-align:center; width:1000px;" id="debaja" class="tablesorter" >
+			<table style="text-align:center; width:1100px;" id="debaja" class="tablesorter" >
 				<thead>
 					<tr>
 						<th>Nro. Afiliado</th>
 						<th>Nombre y Apellido</th>
 						<th>CUIL Titular</th>
 						<th>Tipo Bene.</th>
+						<th class="filter-select" data-placeholder="Seleccione Dele">Dele</th>
 						<th>Motivo</th>
 					</tr>
 				</thead>
@@ -462,6 +507,7 @@ function validar(formulario) {
 							<td><?php echo $debaja['nombre']; ?></td>
 							<td><?php echo $debaja['cuil']; ?></td>
 							<td><?php echo $debaja['tipoBene']; ?></td>
+							<td><?php echo $debaja['delega']; ?></td>
 							<td>CON DIAGNOSTICO</br><b>F.F: <?php echo $debaja['fechaficha'] ?></b></td>
 						</tr>
 				<?php } ?>
@@ -470,13 +516,14 @@ function validar(formulario) {
 	<?php }?>
 	<h3>Diagnosticos con información Incompleta (<?php echo "# ".sizeof($arrayIncompletos) ?>)</h3>
 	<?php if (sizeof($arrayIncompletos) > 0) { ?>
-			<table style="text-align:center; width:1000px;" id="incompletos" class="tablesorter" >
+			<table style="text-align:center; width:1100px;" id="incompletos" class="tablesorter" >
 				<thead>
 					<tr>
 						<th>Nro. Afiliado</th>
 						<th>Nombre y Apellido</th>
 						<th>CUIL Titular</th>
 						<th>Tipo Bene.</th>
+						<th class="filter-select" data-placeholder="Seleccione Dele">Dele</th>
 						<th>Motivo</th>
 					</tr>
 				</thead>
@@ -487,6 +534,7 @@ function validar(formulario) {
 							<td><?php echo $incompleto['nombre']; ?></td>
 							<td><?php echo $incompleto['cuil']; ?></td>
 							<td><?php echo $incompleto['tipoBene']; ?></td>
+							<td><?php echo $incompleto['delega']; ?></td>
 							<td>
 						<?php if ($incompleto['diagnosticos'] == 0) {
 									echo "SIN DIAGNOSTICO";
@@ -512,13 +560,14 @@ function validar(formulario) {
 	<?php }?>
 	<h3>Diagnosticos con información Incompleta Beneficiarios de Baja (<?php echo "# ".sizeof($arrayIncoBaja) ?>)</h3>
 	<?php if (sizeof($arrayIncoBaja) > 0) { ?>
-			<table style="text-align:center; width:1000px;" id="incompletosbaja" class="tablesorter" >
+			<table style="text-align:center; width:1100px;" id="incompletosbaja" class="tablesorter" >
 				<thead>
 					<tr>
 						<th>Nro. Afiliado</th>
 						<th>Nombre y Apellido</th>
 						<th>CUIL Titular</th>
 						<th>Tipo Bene.</th>
+						<th class="filter-select" data-placeholder="Seleccione Dele">Dele</th>
 						<th>Motivo</th>
 					</tr>
 				</thead>
@@ -529,6 +578,7 @@ function validar(formulario) {
 							<td><?php echo $incompleto['nombre']; ?></td>
 							<td><?php echo $incompleto['cuil']; ?></td>
 							<td><?php echo $incompleto['tipoBene']; ?></td>
+							<td><?php echo $incompleto['delega']; ?></td>
 							<td>
 						<?php if ($incompleto['diagnosticos'] == 0) {
 									echo "SIN DIAGNOSTICO";
