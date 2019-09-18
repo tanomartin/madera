@@ -15,167 +15,8 @@ function agregaGuiones($cuit) {
 	return $conguiones;
 }
 
-function encuentroPagos($cuit, $anoInicioActivida, $mesInicioActividad, $anoInicioDeuda, $mesInicioDeuda, $db) {
-	if (($anoInicioActivida == $anoInicioDeuda) || $anoInicioActivida == "" || $anoInicioActivida == "0000") {
-		$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago < $anoInicioDeuda) or  (anopago = $anoInicioDeuda and mespago < $mesInicioDeuda)) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
-	} else {
-		$sqlPagos = "select anopago, mespago, fechapago, debitocredito, sum(importe) from afipprocesadas where cuit = $cuit and concepto != 'REM' and ((anopago > $anoInicioActivida and anopago < $anoInicioDeuda) or (anopago = $anoInicioDeuda and mespago < $mesInicioDeuda) or (anopago = $anoInicioActivida and mespago >= $mesInicioActividad)) group by anopago, mespago, debitocredito, fechapago order by anopago, mespago, fechapago";
-	}
-	$resPagos = mysql_query($sqlPagos,$db);
-	//print($sqlPagos."<br>");
-	$cantPagos = mysql_num_rows($resPagos); 
-	if($cantPagos > 0) {
-		while ($rowPagos = mysql_fetch_assoc($resPagos)) { 
-			$id=$rowPagos['anopago'].$rowPagos['mespago'];		
-			$arrayPagos[$id] = array('anio' => (int)$rowPagos['anopago'], 'mes' => (int)$rowPagos['mespago'], 'estado' => 'PAGO');
-		}
-		return($arrayPagos);
-	} else {
-		return(0);
-	}
-}
-
-function encuentroAcuerdos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	if ($anoinicio == $anofin || $anoinicio != "" || $anoinicio == "0000") {
-		$sqlAcuerdos = "select anoacuerdo, mesacuerdo from detacuerdosospim where cuit = $cuit and ((anoacuerdo > $anoinicio and anoacuerdo <= $anofin) or (anoacuerdo = $anoinicio and mesacuerdo >= $mesinicio)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
-	} else {
-		$sqlAcuerdos = "select anoacuerdo, mesacuerdo from detacuerdosospim where cuit = $cuit and ((anoacuerdo < $anofin) or (anoacuerdo = $anofin and mesacuerdo <= $mesfin)) group by anoacuerdo, mesacuerdo order by anoacuerdo, mesacuerdo";
-	}
-	//print($sqlAcuerdos."<br>");
-	$resAcuerdos = mysql_query($sqlAcuerdos,$db);
-	$canAcuerdos = mysql_num_rows($resAcuerdos); 
-	if($canAcuerdos > 0) {
-		while ($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) { 
-			$id=$rowAcuerdos['anoacuerdo'].$rowAcuerdos['mesacuerdo'];	
-			$arrayAcuerdos[$id] = array('anio' => (int)$rowAcuerdos['anoacuerdo'], 'mes' => (int)$rowAcuerdos['mesacuerdo'], 'estado' => 'N');
-		}
-	} else {
-		return 0;
-	}
-	return($arrayAcuerdos);
-}
-
-function encuentroJuicios($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	if ($anoinicio == $anofin || $anoinicio != "" || $anoinicio == "0000") {
-		$sqlJuicios = "select d.anojuicio, d.mesjuicio from cabjuiciosospim c, detjuiciosospim d  where c.cuit = $cuit and c.nroorden = d.nroorden and ((d.anojuicio > $anoinicio and d.anojuicio <= $anofin) or (d.anojuicio = $anoinicio and d.mesjuicio >= $mesinicio)) group by d.anojuicio, d.mesjuicio order by d.anojuicio, d.mesjuicio";
-	} else {
-		$sqlJuicios = "select d.anojuicio, d.mesjuicio from cabjuiciosospim c, detjuiciosospim d  where c.cuit = $cuit and c.nroorden = d.nroorden and ((d.anojuicio < $anofin) or (d.anojuicio = $anofin and d.mesjuicio <= $mesfin)) group by d.anojuicio, d.mesjuicio order by d.anojuicio, d.mesjuicio";
-	}
-	//print($sqlJuicios."<br>");
-	$resJuicios = mysql_query($sqlJuicios,$db);
-	$canJuicios = mysql_num_rows($resJuicios); 
-	if($canJuicios > 0) {
-		while ($rowJuicios = mysql_fetch_assoc($resJuicios)) { 
-			$id=$rowJuicios['anojuicio'].$rowJuicios['mesjuicio'];	
-			$arrayJuicios[$id] = array('anio' => (int)$rowJuicios['anojuicio'], 'mes' => (int)$rowJuicios['mesjuicio'], 'estado' => 'N');
-		}
-	} else {
-		return 0;
-	}
-	return($arrayJuicios);
-}
-
-function encuentroRequerimientos($cuit, $anoinicio, $mesinicio, $anofin, $mesfin, $db) {
-	if ($anoinicio == $anofin || $anoinicio != "" || $anoinicio == "0000") {
-		$sqlRequerimientos = "select d.anofiscalizacion, d.mesfiscalizacion from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and ((d.anofiscalizacion > $anoinicio and d.anofiscalizacion <= $anofin) or (d.anofiscalizacion = $anoinicio and d.mesfiscalizacion >= $mesinicio)) group by d.anofiscalizacion, d.mesfiscalizacion order by d.anofiscalizacion, d.mesfiscalizacion";
-	} else {
-		$sqlRequerimientos = "select d.anofiscalizacion, d.mesfiscalizacion from reqfiscalizospim r, detfiscalizospim d where r.cuit = $cuit and r.requerimientoanulado = 0 and r.nrorequerimiento = d.nrorequerimiento and ((d.anofiscalizacion < $anofin) or (d.anofiscalizacion = $anofin and d.mesfiscalizacion >= $mesfin)) group by d.anofiscalizacion, d.mesfiscalizacion order by d.anofiscalizacion, d.mesfiscalizacion";
-	}
-	//print($sqlRequerimientos."<br>");
-	$resRequerimientos = mysql_query($sqlRequerimientos,$db);
-	$canRequerimientos = mysql_num_rows($resRequerimientos); 
-	if($canRequerimientos > 0) {
-		while ($rowRequerimientos = mysql_fetch_assoc($resRequerimientos)) { 
-			$id=$rowRequerimientos['anofiscalizacion'].$rowRequerimientos['mesfiscalizacion'];	
-			$arrayRequerimientos[$id] = array('anio' => (int)$rowRequerimientos['anofiscalizacion'], 'mes' => (int)$rowRequerimientos['mesfiscalizacion'], 'estado' => 'N');
-		}
-	} else {
-		return 0;
-	}
-	return($arrayRequerimientos);
-}
-
-function deudaAnterior($cuit, $db) {
-	$tipo = 'activa';
-	$sqlEmpresasInicioActividad = "select iniobliosp from empresas where cuit = $cuit ";
-	$resEmpresasInicioActividad = mysql_query($sqlEmpresasInicioActividad,$db);
-	$rowEmpresasInicioActividad = mysql_fetch_assoc($resEmpresasInicioActividad);
-	$fechaInicio = $rowEmpresasInicioActividad['iniobliosp'];
-	$anioInicioActi = substr($fechaInicio,0,4);
-	$mesInicioActi = substr($fechaInicio,5,2);
-	include($_SERVER['DOCUMENT_ROOT']."/madera/lib/limitesTemporalesEmpresas.php");
-	
-	/*print("ANO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
-	print("MES INICIO ACTIVIDAD: ".$mesInicioActi."<br>");
-	print("ANO INICIO CALCULO DEUDA: ".$anoinicio."<br>");
-	print("MES INICIO CALCULO DEUDA: ".$mesinicio."<br>");*/
-	
-	if ($anioInicioActi == $anoinicio) {
-		if ($mesInicioActi == $mesinicio) {
-			return "N";
-		} else { //ES MENOR EL MES DE INICIO DE ACTIVIDAD
-			$pagos = encuentroPagos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
-		}
-	} else { //ES MENOR EL AÑO DE INICIO DE ACTIVIDAD Ó 0000
-		$pagos = encuentroPagos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
-	} 
-
-	if (($anioInicioActi == '0000' || $anioInicioActi == '') && $pagos == 0) {
-		return "N";
-	} else {
-		if ($anioInicioActi == '0000' || $anioInicioActi == '') {
-			foreach($pagos as $pago) {
-				$anioInicioActi = $pago['anio'];
-				$mesInicioActi = $pago['mes'];
-				//print("ANO INICIO ACTIVIDAD: ".$anioInicioActi."<br>");
-				//print("MES INICIO ACTIVIDAD: ".$mesInicioActi."<br>");
-				break;
-			}
-		}
-	}
-	//var_dump($pagos);
-	
-	$arrayAcuerdos = encuentroAcuerdos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
-	if ($arrayAcuerdos == 0){ 
-		$arrayAcuerdos = array();
-	} 
-	//var_dump($arrayAcuerdos);
-	
-	$arrayJuicios = encuentroJuicios($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
-	if ($arrayJuicios == 0){ 
-		$arrayJuicios = array();
-	} 
-	//var_dump($arrayJuicios);
-	
-	$arrayRequerimientos = encuentroRequerimientos($cuit, $anioInicioActi, $mesInicioActi, $anoinicio, $mesinicio, $db);
-	if ($arrayRequerimientos == 0){ 
-		$arrayRequerimientos = array();
-	}
-	//var_dump($arrayRequerimientos);
-	
-	$deuda = 0;
-	if ($pagos != 0) {
-		$ano = $anioInicioActi;
-		while($ano<=$anoinicio && $deuda <= 2) {
-			for ($i=1;$i<13;$i++){
-				$idArray = $ano.$i;
-				if (!array_key_exists($idArray, $pagos) && !array_key_exists($idArray, $arrayAcuerdos) && !array_key_exists($idArray, $arrayJuicios) && !array_key_exists($idArray, $arrayRequerimientos)) {
-					$deuda = $deuda + 1;
-					//print("DEUDA ACUMULA: ".$deuda."<br>");
-				}
-			}
-			$ano++;
-		}
-	}
-	if($deuda > 2) {
-		return 'S';
-	} else {
-		return 'N';
-	}
-}
-
 function tieneDiscapacitados($cuit, $db) {
-	$disca = "";
+	$disca = "N";
 	$sqlAfiliados = "SELECT nroafiliado, discapacidad FROM titulares WHERE cuitempresa = $cuit";
 	$resAfiliados = mysql_query($sqlAfiliados,$db);
 	$canAfiliados = mysql_num_rows($resAfiliados);
@@ -184,21 +25,17 @@ function tieneDiscapacitados($cuit, $db) {
 		while($rowAfiliados = mysql_fetch_assoc($resAfiliados)) {
 			$whereIn .= $rowAfiliados['nroafiliado'].",";
 			if ($rowAfiliados['discapacidad'] == 1) {
-				$disca = "|D";
+				$disca = "S";
 			}
 		}
 		$whereIn = substr($whereIn, 0, -1);
 		$whereIn .= ")";
-		if ($disca == "") {
-			$sqlAfiliadosFami = "SELECT discapacidad FROM familiares WHERE nroafiliado in $whereIn";
+		if ($disca == "N") {
+			$sqlAfiliadosFami = "SELECT discapacidad FROM familiares WHERE nroafiliado in $whereIn and discapacidad = 1";
 			$resAfiliadosFami = mysql_query($sqlAfiliadosFami,$db);
 			$canAfiliadosFami = mysql_num_rows($resAfiliadosFami);
-			if ($canAfiliadosFami != 0) {
-				while($rowAfiliadosFami = mysql_fetch_assoc($resAfiliadosFami)) {
-					if ($rowAfiliadosFami['discapacidad'] == 1) {
-						$disca = "|D";
-					}
-				}
+			if ($canAfiliadosFami > 0) {
+				$disca = "S";
 			}
 		}
 	}
@@ -273,8 +110,6 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArcCUIL;
 	}
 	//print($primeraLinea."<br>");
-	//solo para probar y eliminar lo recien hecho... en producción NO...
-	//unlink($direArc);
 	//****************
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de detalle de CUILES en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
 	for ($i=0; $i < sizeof($cuerpoCUIL); $i++) {
@@ -302,73 +137,6 @@ function cambioEstadoReq($nroreq) {
 		header ($redire);
 		exit(0);
 	}
-}
-
-function estaVencida($fecha) {
-	$today = date("Y-m-d"); 
-	if ($today > $fecha) {
-		return 1;
-	}
-	return 0;
-}
-
-function masTresVto($fecha) {
-	$today = date("Y-m-d");
-	$fechaVTO = strtotime ('-3 month',strtotime($today));
-	$fechaVTO = date ('Y-m-j',$fechaVTO);
-	if ($fechaVTO > $fecha) {
-		return 1;
-	}
-	return 0;
-}
-
-function acuerdosCaidos($cuit, $db) {
-	$sqlAcuerdo = "SELECT nroacuerdo, nroacta, fechaacuerdo, montoapagar, montopagadas FROM cabacuerdosospim WHERE cuit = $cuit and estadoacuerdo = 1 and tipoacuerdo != 3";
-	$resAcuerdo = mysql_query($sqlAcuerdo,$db);
-	$cuerpo = array();
-	$c = 0;
-	while ($rowAcuerdo = mysql_fetch_assoc($resAcuerdo)) {
-		$nro = $rowAcuerdo['nroacuerdo'];
-		$sqlCuotas = "SELECT fechacuota FROM cuoacuerdosospim WHERE cuit = $cuit and nroacuerdo = $nro and tipocancelacion = 8 order by fechacuota";
-		$resCuotas = mysql_query($sqlCuotas,$db);
-		$canCuotas = mysql_num_rows($resCuotas);
-		$cantVto = 0;
-		unset($fechasVencidas);
-		while ($rowCuotas = mysql_fetch_assoc($resCuotas)) {
-			if (estaVencida($rowCuotas['fechacuota'])) {
-				$fechasVencidas[$cantVto] = $rowCuotas['fechacuota'];
-				$cantVto++;
-			}
-		}
-
-		//Colocolo los tamaños fijos.
-		$nroacue = str_pad($rowAcuerdo['nroacuerdo'],3,'0',STR_PAD_LEFT);
-		$acueNro = "ACUE".$nroacue;
-		$acta = str_pad($rowAcuerdo['nroacta'],9,'0',STR_PAD_LEFT);
-		$deuda = (float)($rowAcuerdo['montoapagar'] - $rowAcuerdo['montopagadas']);
-		$deuda = number_format((float)$deuda,2,',','');
-		$deuda = str_pad($deuda,12,'0',STR_PAD_LEFT);
-		
-		if ($cantVto < 3) {		
-			$masTres = 0;
-			for ($i=0; $i < sizeof($fechasVencidas); $i++) {
-				if (masTresVto($fechasVencidas[$i])) {
-					$masTres = 1;
-					$i = sizeof($fechasVencidas);
-				}
-			}
-			if ($masTres > 0) {
-				$lineaAcuCaido = $acueNro."|".$acta."|".invertirFecha($fechasVencidas[0])."|".invertirFecha($rowAcuerdo['fechaacuerdo'])."|".$deuda;
-				$cuerpo[$c] = str_pad($lineaAcuCaido,124,' ',STR_PAD_RIGHT);
-				$c++;
-			}
-		} else {
-			$lineaAcuCaido =  $acueNro."|".$acta."|".invertirFecha($fechasVencidas[0])."|".invertirFecha($rowAcuerdo['fechaacuerdo'])."|".$deuda;
-			$cuerpo[$c] = str_pad($lineaAcuCaido,124,' ',STR_PAD_RIGHT);
-			$c++;
-		}
-	}
-	return($cuerpo);
 }
 
 function grabarCabLiquidacion($nroreq, $nombreArcExc, $db) {
@@ -414,20 +182,13 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$telefono = $rowJuris['ddn'].$rowJuris['telefono'];
 		$telefono = str_pad($telefono,14,' ',STR_PAD_RIGHT);
 	}
-	$deuda = deudaAnterior($cuit, $db);
 	
-	//TODO para habilitar cuando este listo todo
-	//$disca = tieneDiscapacitados($cuit, $db);
-	$disca = "";
+	$disca = tieneDiscapacitados($cuit, $db);
 	
-	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono."|".$deuda.$disca;
-	//**********************************************************************************************************
+	$primeraLinea = $delcod."|000000|".$nombre."|".$domireal."|".$locaDescr."|".$provDescr."|".$cuitconguiones."|".$numpostal."|".$telefono."|".$disca;
+	//*******************************************************************************************************************
 	
-	//ACUERDOS CAIDOS
-	//$cuerpoAcuerdoCaidos = acuerdosCaidos($cuit, $db);
-	$cuerpoAcuerdoCaidos = array();
 	//CREAMOS EL CUERPO DEL ARCHIVO CON LA DEUDA ************************************************************************
-	
 	$cuerpo = array();
 	$pagos = array();
 	$pagosOrdi = array();
@@ -471,8 +232,8 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 			$pExt = 0;
 			$pOrd = 0;
 			
-			//PAGOS ORDINARIOS//
-			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and (concepto = '381' or concepto = '401' or concepto = '471') group by fechapago, debitocredito order by fechapago, debitocredito";
+			//PAGOS ORDINARIOS 381 y 401//
+			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and (concepto = '381' or concepto = '401') group by fechapago, debitocredito order by fechapago, debitocredito";
 			$resAfipProc = mysql_query($sqlAfipProc,$db);
 			while ($rowAfipProc = mysql_fetch_assoc($resAfipProc)) {
 				$fechaOrdinario = $rowAfipProc['fechapago'];
@@ -489,6 +250,26 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 				$remunDec = "000000000,00";
 				$pOrd++;
 			} 
+			//********************//
+			
+			//PAGOS ORDINARIOS 471//
+			$sqlAfipProc = "select concepto, fechapago, sum(importe), debitocredito from afipprocesadas where cuit = $cuit and anopago = ".$rowRequeDet['anofiscalizacion']." and  mespago = ".$rowRequeDet['mesfiscalizacion']." and concepto = '471' group by fechapago, debitocredito order by fechapago, debitocredito";
+			$resAfipProc = mysql_query($sqlAfipProc,$db);
+			while ($rowAfipProc = mysql_fetch_assoc($resAfipProc)) {
+				$fechaOrdinario = $rowAfipProc['fechapago'];
+				$importeOrdinario = $rowAfipProc['sum(importe)'];
+				$importeOrdinario = number_format((float)$importeOrdinario,2,',','');
+				if ($rowAfipProc['debitocredito'] == 'D') {
+					$importeOrdinario = str_pad($importeOrdinario,11,'0',STR_PAD_LEFT);
+					$importeOrdinario = "-".$importeOrdinario;
+				} else {
+					$importeOrdinario = str_pad($importeOrdinario,12,'0',STR_PAD_LEFT);
+				}
+				$pagosOrdi[$pOrd] = "01/".$mes."/".$rowRequeDet['anofiscalizacion']."|".$personal."|".$remunDec."|".invertirFecha($fechaOrdinario)."|".$importeOrdinario."|".$cantm1000."|".$remum1000."|".$adehm1000."|".$remam1000."|".$cantM1000."|".$remuM1000."|".$adehM1000."|".$remaM1000;
+				$personal = "0000";
+				$remunDec = "000000000,00";
+				$pOrd++;
+			}
 			//********************//
 			
 			//PAGOS EXTRAORDINARIOS//
@@ -597,15 +378,10 @@ function liquidar($nroreq, $cuit, $codidelega, $db) {
 		$direArc="/home/sistemas/Documentos/Liquidaciones/Preliquidaciones/".$nombreArc;
 	}
 	//print($primeraLinea."<br>");
-	//solo por ahora...
-	//unlink($direArc);
 	//****************
 	$ar=fopen($direArc,"x") or die("Hubo un error al generar el archivo de liquidación de Deuda en $direArc. Por favor cuminiquese con el dpto. de Sistemas");
 	fputs($ar,$primeraLinea."\r\n");
-	for ($i=0; $i < sizeof($cuerpoAcuerdoCaidos); $i++) {
-		//print($cuerpoAcuerdoCaidos[$i]."<br>");
-		fputs($ar,$cuerpoAcuerdoCaidos[$i]."\r\n");
-	}
+	
 	for ($i=0; $i < sizeof($cuerpo); $i++) {
 		//print($cuerpo[$i]."<br>");
 		fputs($ar,$cuerpo[$i]."\r\n");
@@ -667,27 +443,15 @@ if (sizeof($reqALiquidar) != 0) {
 //cambio la hora de secion por ahora para no perder la misma
 $ahora = date("Y-n-j H:i:s"); 
 $_SESSION["ultimoAcceso"] = $ahora;
-
 ?>
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Requerimientos Liquidados:.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <script language="javascript">
+
 function abrirInfo(dire) {
 	a= window.open(dire,"InfoInspeccion",
 	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=700, height=400, top=10, left=10");
@@ -698,32 +462,28 @@ function abrirInfo(dire) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" />
-  </span></p>
-  	<p class="Estilo2">Resultado del proceso de liquidación los los requerimientos del d&iacute;a <?php echo $fecha ?>  </p>
-	  <table width="800" border="1" align="center">
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'listarRequerimientos.php?fecha=<?php echo $fecha ?>'" /></p>
+  	<h3>Resultado del proceso de liquidación los los requerimientos del d&iacute;a <?php echo $fecha ?>  </h3>
+	<table width="800" border="1" align="center">
         <tr>
           <th>Req Nro.</th>
           <th>Resolución</th>
 		  <th>Acción</th>
         </tr>
-  <?php for ($i=0; $i < sizeof($resultado); $i++) {
-			print("<tr align='center'>");
-			print("<td>".$resultado[$i]['nroreq']."</td>");
-			print("<td>".$resultado[$i]['estado']."</td>");   
-			if ($resultado[$i]['liquidado'] == 0) {
-				$dire = "consultaInspeccion.php?nroreq=".$resultado[$i]['nroreq'];
-				print ("<td><a href=javascript:abrirInfo('".$dire."')>Ver Datos Inspección</a></td>");
-			} else {
-				print("<td>-</td>");   
-			}
-			print("</tr>");
-		} ?>
+  <?php for ($i=0; $i < sizeof($resultado); $i++) { ?>
+			<tr align="center">
+				<td><?php echo $resultado[$i]['nroreq'] ?></td>
+			 	<td><?php echo $resultado[$i]['estado'] ?></td>
+			<?php if ($resultado[$i]['liquidado'] == 0) {
+					$dire = "consultaInspeccion.php?nroreq=".$resultado[$i]['nroreq']; ?>
+					<td><a href="javascript:abrirInfo('<?php echo $dire ?>')">Ver Datos Inspección</a></td>
+			<?php } else { ?>
+					<td>-</td>   
+			<?php } ?>
+			</tr>
+   <?php } ?>
       </table>
-      <p>
-        <input type="button" name="imprimir" value="Imprimir" onclick="window.print();" />
-  </p>
+      <p><input type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>
