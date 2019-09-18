@@ -109,7 +109,12 @@ if ($errorArchivos == 0) {
 					$gestor = fopen($pathCompleto, "r");
 					$contenido = fread($gestor, filesize($pathCompleto));
 					fclose($gestor);
-					$insertLinea = "INSERT IGNORE INTO $tabla VALUES ".$contenido;
+					if ($nombreArc == "titular.txt" || $nombreArc == "familia.txt" ||
+						$nombreArc == "discapacitados.txt" || $nombreArc == "bajafam.txt" || $nombreArc == "bajatit.txt") {
+							$insertLinea = "REPLACE INTO $tabla VALUES ".$contenido;
+						} else {
+							$insertLinea = "INSERT IGNORE INTO $tabla VALUES ".$contenido;
+						}
 					$dbhInternet->beginTransaction();
 					//print($insertLinea."<br>");
 					$dbhInternet->exec($insertLinea);
