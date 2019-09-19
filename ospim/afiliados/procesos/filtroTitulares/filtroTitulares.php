@@ -27,7 +27,7 @@ $fechaDesempleo = strtotime ( '-1 month', strtotime ( $fechaDesempleo ) );
 $fechaDesempleo = date ( 'Y-m-d', $fechaDesempleo );
 //echo $fechaDesempleo . "<br>";
 
-$sqlTitulares = "SELECT DISTINCT cuil FROM titulares t where (fechacarnet <= '" . $fechaInicio . "' || fechacarnet is null) and tipoafiliado != 'U' and codidelega not in (1000,1001)";
+$sqlTitulares = "SELECT DISTINCT cuil FROM titulares t where (fechacarnet <= '" . $fechaInicio . "' || fechacarnet is null) and tipoafiliado != 'U'";
 //echo $sqlTitulares . "<br>";
 
 $sqlDDJJ = "SELECT DISTINCT cuil FROM detddjjospim d where STR_TO_DATE(CONCAT(anoddjj,'/', mesddjj, '/01'),'%Y/%m/%d') BETWEEN '$fechaInicio' and '$fecha'";
