@@ -135,7 +135,7 @@ function atender(id,accion, origen) {
 	 				$datos .= "<b>".$rowCorrec['etiquetadato3'].":</b> ".$rowCorrec['dato3']."<br>";
 	 			}
 				if ($rowCorrec['etiquetadato4'] != NULL) {
-	 				$datos .= "<b>".$rowCorrec['etiquetadato4'].":</b> ".$rowCorrec['dato3'];
+	 				$datos .= "<b>".$rowCorrec['etiquetadato4'].":</b> ".$rowCorrec['dato4'];
 	 			} ?>
 	 			<tr>
 	 				<td><?php echo $rowCorrec['id'] ?></td>
@@ -158,7 +158,7 @@ function atender(id,accion, origen) {
 	 			  			<p><textarea id="motivo-<?php echo $rowCorrec['id'] ?>" name="motivo-<?php echo $rowCorrec['id'] ?>" rows="4" cols="23" style="display: none"></textarea></p>
 	 			  		</td>	
 	 		  <?php } else { ?>
-	 					<td><b>PEDINETE</b></td> 
+	 					<td><b>PENDIENTE</b></td> 
 	 			  		<td>-</td>
 	 			  		<td align="center">
 	 			  			<select id="corrector-<?php echo $rowCorrec['id'] ?>" name="corrector-<?php echo $rowCorrec['id'] ?>">
