@@ -97,7 +97,7 @@ $wherein .= ")";
 unset($tituParaBajar);
 
 // $sqlTituParaBajar = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,DATE_FORMAT(fechacarnet,'%d/%m/%Y') as fechacarnet,codidelega FROM titulares WHERE cuil IN ".$wherein;
-$sqlTituParaBajar = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,fechacarnet,codidelega FROM titulares  WHERE cuil IN " . $wherein ." and codidelega not in (1000,1001) order by fecharegistro ASC LIMIT 500";
+$sqlTituParaBajar = "SELECT nroafiliado,cuil,apellidoynombre,cuitempresa,fechacarnet,codidelega FROM titulares  WHERE cuil IN " . $wherein ." order by fecharegistro ASC LIMIT 500";
 $resTituParaBajar = mysql_query ( $sqlTituParaBajar, $db );
 $canTituParaBajar = mysql_num_rows ( $resTituParaBajar );
 //echo "CANT TITULARES: ".$canTituParaBajar . "<br>";
