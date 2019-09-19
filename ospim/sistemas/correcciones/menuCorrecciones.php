@@ -52,8 +52,8 @@ $numCorrecOSPIMEjecucion = mysql_num_rows($resCorrecOSPIMEjecucion);
         <p><b><?php echo $numCorrecOSPIMPendiente ?></b> (P) - <b><?php echo $numCorrecOSPIMEjecucion ?></b> (E)</p>
       </td>
       <td width="200">
-      	<p>BUSCADOR</p>
-        <p><a href="#"><img src="img/buscar.png" width="90" height="90" border="0" /></a></p>
+      	<p>FINALIZADAS</p>
+        <p><a href="buscadorCorrecciones.php"><img src="img/buscar.png" width="90" height="90" border="0" /></a></p>
       </td>
     </tr>
   </table>
