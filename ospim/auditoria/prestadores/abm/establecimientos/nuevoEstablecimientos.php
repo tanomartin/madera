@@ -52,6 +52,20 @@ jQuery(function($){
 	
 });
 
+function habilitaCalidad(valor) {
+	habilitaFecha(0);
+	var calidadSI = document.getElementById("calidadSI");
+	var calidadNO = document.getElementById("calidadNO");
+	calidadSI.checked = "";
+	calidadNO.checked = "checked";
+	calidadSI.disabled = true;
+	calidadNO.disabled = true;
+	if (valor == 1) {
+		calidadSI.disabled = false;
+		calidadNO.disabled = false;
+	}
+}
+
 function habilitaFecha(valor) {
 	var fechadesde = document.getElementById("fechadesde");
 	var fechahasta = document.getElementById("fechahasta");
@@ -201,24 +215,24 @@ function validar(formulario) {
         <td colspan="4"><div align="left"><strong>Email </strong><input name="email" type="text" id="email" size="40" /></div></td>
       </tr>
       <tr>
+	    <td><div align="right"><strong>Circulo</strong></div></td>
+	    <td colspan="3">
+	    	<div align="left">
+          		<input name="circulo" type="radio" value="0" checked="checked" onclick="habilitaCalidad(this.value)"/> NO
+  		  		<input name="circulo" type="radio" value="1" onclick="habilitaCalidad(this.value)"/>SI
+		  	</div>
+		</td>
+      </tr>
+      <tr>
       	<td><div align="right"><strong>Acrditacion Calidad</strong></div></td>
       	<td>
 	    	<div align="left">
-          		<input name="calidad" type="radio" value="0" checked="checked" onclick="habilitaFecha(this.value)"/> NO
-  		  		<input name="calidad" type="radio" value="1" onclick="habilitaFecha(this.value)"/>SI
+          		<input name="calidad" id="calidadNO" type="radio" value="0" checked="checked" onclick="habilitaFecha(this.value)" disabled="disabled"/> NO
+  		  		<input name="calidad" id="calidadSI" type="radio" value="1" onclick="habilitaFecha(this.value)" disabled="disabled"/>SI
 		  	</div>
 		</td>
 		<td><b>Fecha Desde</b> <input id="fechadesde" name="fechadesde" size="8" disabled="disabled"></input></td>
 		<td><b>Fecha Hasta</b> <input id="fechahasta" name="fechahasta" size="8" disabled="disabled"></input></td>
-      </tr>
-       <tr>
-	    <td><div align="right"><strong>Circulo</strong></div></td>
-	    <td colspan="3">
-	    	<div align="left">
-          		<input name="circulo" type="radio" value="0" checked="checked"/> NO
-  		  		<input name="circulo" type="radio" value="1" />SI
-		  	</div>
-		</td>
       </tr>
     </table>
     <p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>

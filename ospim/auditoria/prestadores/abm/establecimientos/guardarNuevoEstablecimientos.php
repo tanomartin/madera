@@ -80,16 +80,21 @@ if ($email == "") {
 }
 
 $circulo = $_POST['circulo'];
-
-$calidad = $_POST['calidad'];
-if ($calidad == 0) {
+if ($circulo == 1) {
+	$calidad = $_POST['calidad'];
+	if ($calidad == 0) {
+		$fechainiciocalidad = "NULL";
+		$fechafincalidad = "NULL";
+	} else {
+		$fechadesde = fechaParaGuardar($_POST['fechadesde']);
+		$fechahasta = fechaParaGuardar($_POST['fechahasta']);
+		$fechainiciocalidad = "'$fechadesde'";
+		$fechafincalidad = "'$fechahasta'";
+	}
+} else {
+	$calidad = 0;
 	$fechainiciocalidad = "NULL";
 	$fechafincalidad = "NULL";
-} else {
-	$fechadesde = fechaParaGuardar($_POST['fechadesde']);
-	$fechahasta = fechaParaGuardar($_POST['fechahasta']);
-	$fechainiciocalidad = "'$fechadesde'";
-	$fechafincalidad = "'$fechahasta'";
 }
 
 $fecharegistro = date("Y-m-d H:i:s");

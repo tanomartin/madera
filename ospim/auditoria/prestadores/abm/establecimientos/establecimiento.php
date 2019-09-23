@@ -81,16 +81,16 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
           <td colspan="4"><div align="left"><?php echo $rowConsultaEsta['email'] ?></div></td>
         </tr>
         <tr>
+          <td><div align="right"><strong>Circulo </strong></div></td>
+          <td colspan="5"><div align="left"><?php if ($rowConsultaEsta['circulo'] == 0) { echo "NO"; } else { echo "SI"; }  ?></div></td>
+        </tr>
+        <tr>
           <td><div align="right"><strong>Acreditacion Calidad </strong></div></td>
           <td><div align="left"><?php if ($rowConsultaEsta['calidad'] == 0) { echo "NO"; } else { echo "SI"; }  ?></div></td>
           <td><div align="left"><strong>Fecha Desde</strong></div></td>
           <td><div align="left"><?php if ($rowConsultaEsta['fechainiciocalidad'] != NULL) { echo invertirFecha($rowConsultaEsta['fechainiciocalidad']); } ?></div></td>
           <td><div align="left"><strong>Fecha Hasta</strong></div></td>
           <td><div align="left"><?php if ($rowConsultaEsta['fechafincalidad'] != NULL) { echo invertirFecha($rowConsultaEsta['fechafincalidad']); } ?></div></td>
-        </tr>
-        <tr>
-          <td><div align="right"><strong>Circulo </strong></div></td>
-          <td colspan="5"><div align="left"><?php if ($rowConsultaEsta['circulo'] == 0) { echo "NO"; } else { echo "SI"; }  ?></div></td>
         </tr>
   </table>
 <p><input class="nover" name="modificar" type="button" value="Modificar Establecimiento" onclick="location.href='modificarEstablecimiento.php?codigo=<?php echo $codigo ?>&codigopresta=<?php echo $codigopresta ?>'" /></p>

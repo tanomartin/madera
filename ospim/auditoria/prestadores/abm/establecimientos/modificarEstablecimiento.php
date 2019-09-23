@@ -67,6 +67,21 @@ jQuery(function($){
 	
 });
 
+function habilitaCalidad(valor) {
+	habilitaFecha(0);
+	var calidadSI = document.getElementById("calidadSI");
+	var calidadNO = document.getElementById("calidadNO");
+	calidadSI.checked = "";
+	calidadNO.checked = "checked";
+	calidadSI.disabled = true;
+	calidadNO.disabled = true;
+	if (valor == 1) {
+		calidadSI.disabled = false;
+		calidadNO.disabled = false;
+	}
+}
+
+
 function habilitaFecha(valor) {
 	var fechadesde = document.getElementById("fechadesde");
 	var fechahasta = document.getElementById("fechahasta");
@@ -234,10 +249,28 @@ function validar(formulario) {
         <td colspan="4"><div align="left"><strong>Email</strong> <input name="email" type="text" id="email" size="30" value="<?php echo $rowConsultaEsta['email'] ?>"/></div></td>
       </tr>
       <tr>
+	    <td><div align="right"><strong>Circulo</strong></div></td>
+	    <td colspan="3">
+	    	<div align="left">
+	    		<?php 
+	    			$ckeckedNO = 'checked="checked"' ;
+	    			$ckeckedSI = '';
+	    			if ($rowConsultaEsta['circulo'] == 1) {
+	    				$ckeckedSI = 'checked="checked"';
+	    				$ckeckedNO = '';
+	    			}
+	    		?>
+          		<input name="circulo" type="radio" value="0" <?php echo $ckeckedNO ?> onclick="habilitaCalidad(this.value)"/> NO
+  		  		<input name="circulo" type="radio" value="1" <?php echo $ckeckedSI ?> onclick="habilitaCalidad(this.value)"/>SI
+		  	</div>
+		</td>
+      </tr>
+      <tr>
       	<td><div align="right"><strong>Acrditacion Calidad</strong></div></td>
       	<td>
 	    	<div align="left">
-	    		<?php 
+	    <?php $calidadDisabled = "";
+	    	  if ($rowConsultaEsta['circulo'] == 1) {
 	    			$ckeckedNO = 'checked="checked"' ;
 	    			$ckeckedSI = '';
 	    			if ($rowConsultaEsta['calidad'] == 1) {
@@ -252,30 +285,16 @@ function validar(formulario) {
 	    				$fechafin = invertirFecha($rowConsultaEsta['fechafincalidad']);
 	    				$disabled = "";
 	    			}
-	    		?>
-          		<input name="calidad" type="radio" value="0" <?php echo $ckeckedNO ?> onclick="habilitaFecha(this.value)"/> NO
-  		  		<input name="calidad" type="radio" value="1" <?php echo $ckeckedSI ?> onclick="habilitaFecha(this.value)"/>SI
+	    		} else {
+	    			$calidadDisabled = 'disabled="disabled"';
+	    			$disabled = 'disabled="disabled"';
+	    		} ?>
+          		<input name="calidad" id="calidadNO" type="radio" value="0" <?php echo $ckeckedNO ?> onclick="habilitaFecha(this.value)" <?php echo $calidadDisabled ?>/> NO
+  		  		<input name="calidad" id="calidadSI" type="radio" value="1" <?php echo $ckeckedSI ?> onclick="habilitaFecha(this.value)" <?php echo $calidadDisabled ?>/>SI
 		  	</div>
 		</td>
 		<td><b>Fecha Desde</b> <input id="fechadesde" name="fechadesde" size="8" <?php echo $disabled ?> value="<?php echo $fechainicio  ?>"></input></td>
 		<td><b>Fecha Hasta</b> <input id="fechahasta" name="fechahasta" size="8" <?php echo $disabled ?> value="<?php echo $fechafin ?>" ></input></td>
-      </tr>
-       <tr>
-	    <td><div align="right"><strong>Circulo</strong></div></td>
-	    <td colspan="3">
-	    	<div align="left">
-	    		<?php 
-	    			$ckeckedNO = 'checked="checked"' ;
-	    			$ckeckedSI = '';
-	    			if ($rowConsultaEsta['circulo'] == 1) {
-	    				$ckeckedSI = 'checked="checked"';
-	    				$ckeckedNO = '';
-	    			}
-	    		?>
-          		<input name="circulo" type="radio" value="0" <?php echo $ckeckedNO ?> /> NO
-  		  		<input name="circulo" type="radio" value="1" <?php echo $ckeckedSI ?>/>SI
-		  	</div>
-		</td>
       </tr>
     </table>
     <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n" /></p>
