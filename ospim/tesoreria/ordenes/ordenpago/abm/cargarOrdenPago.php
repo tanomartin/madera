@@ -41,7 +41,7 @@ $sqlFacturas = "SELECT
 					f.*,
 					DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
 					DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
-				FROM facturas f, facturasprestaciones p, facturasintegracion i
+				FROM facturas f
 			    WHERE f.id in $whereIn";
 $resFacturas = mysql_query($sqlFacturas,$db);
 ?>

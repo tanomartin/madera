@@ -63,10 +63,10 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 		$principioOrden .= " en efectivo correspondiente a prestaciones medicas";
 	}
 	if ($rowCabecera['formapago'] == "T") {
-		$principioOrden .= " a traves de la transfeencia Nro ".$rowCabecera['nrotipopago']." correspondiente a prestaciones medicas";
+		$principioOrden .= " a traves de la transfeencia Nro ".$rowCabecera['comprobantepago']." correspondiente a prestaciones medicas";
 	}
 	if ($rowCabecera['formapago'] == "C") {
-		$principioOrden .= " a traves del cheque Nro ".$rowCabecera['nrotipopago']." correspondiente a prestaciones medicas";
+		$principioOrden .= " a traves del cheque Nro ".$rowCabecera['comprobantepago']." correspondiente a prestaciones medicas";
 	}
 	$finalOrden = "asistenciales brindadas a nuestros afiliados, segun el siguiente detalle: ";
 	
