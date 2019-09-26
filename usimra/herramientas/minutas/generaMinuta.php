@@ -9,96 +9,84 @@ if(strcmp("localhost",$maquina)==0)
 	else
 		$carpetaMinuta="/tmp/";
 
-
-//OPCION A4
-//$pdf = new FPDF('P','mm', 'A4');
-
 //OPCION Personalizada
+$offsetX = 0;
+$offsetY = 0;
+$bordes = 0;
 $pdf = new FPDF('L','mm', array(200,190));
-
 $pdf->AddPage();
 $pdf->SetFont('Courier','B',10);
-
 $fechaArray = explode("-",$_POST['fecha']);
 
-//$pdf->SetXY(152, 31);
-$pdf->SetXY(137, 28);
-$pdf->Cell(17,7, $fechaArray[0],0,0,'R');
-$pdf->SetXY(151, 28);
-$pdf->Cell(17,7, $fechaArray[1],0,0,'R');
-$pdf->SetXY(172, 28);
-$pdf->Cell(17,7, $fechaArray[2],0,0,'R');
+//FECHA
+$pdf->SetXY(144+$offsetX, 28+$offsetY);
+$pdf->Cell(17,7, $fechaArray[0],$bordes,$bordes,'R');
+$pdf->SetXY(161+$offsetX, 28+$offsetY);
+$pdf->Cell(17,7, $fechaArray[1],$bordes,$bordes,'R');
+$pdf->SetXY(178+$offsetX, 28+$offsetY);
+$pdf->Cell(17,7, $fechaArray[2],$bordes,$bordes,'R');
 
-//$pdf->SetXY(152, 38);
-$pdf->SetXY(137, 35);
-$pdf->Cell(51,7, $_POST['asiento'],0,0,'R');
+//ASIENTO
+$pdf->SetXY(144+$offsetX, 35+$offsetY);
+$pdf->Cell(51,7, $_POST['asiento'],$bordes,$bordes,'R');
 
-//$pdf->SetXY(35, 45);
-$pdf->SetXY(18, 45);
-$pdf->Cell(70,18, $_POST['cuenta'],0,0,'C');
+//CUENTA
+$pdf->SetXY(26+$offsetX, 42+$offsetY);
+$pdf->Cell(70,17, $_POST['cuenta'],$bordes,$bordes,'C');
 
-//$pdf->SetXY(105, 45);
+//CHEQUE
 $pdf->SetFont('Courier','B',12);
-$pdf->SetXY(94, 42);
-$pdf->Cell(35,10, $_POST['cheque'],0,0,'R');
+$pdf->SetXY(96+$offsetX, 42+$offsetY);
+$pdf->Cell(35,10, $_POST['cheque'],$bordes,$bordes,'R');
 
 $pdf->SetFont('Courier','B',10);
 if ($_POST['tipo'] == 'deposito') {
-	//$pdf->SetXY(140, 45);
-	$pdf->SetXY(137, 42);
-	$pdf->Cell(32,5,"X",0,0,'R');
+	$pdf->SetXY(160+$offsetX, 44+$offsetY);
+	$pdf->Cell(4,4,"X",$bordes,$bordes,'R');
 }
 if ($_POST['tipo'] == 'debito') {
-	//$pdf->SetXY(105, 55);
-	$pdf->SetXY(94, 52);
-	$pdf->Cell(35,5,"X",0,0,'R');
+	$pdf->SetXY(127+$offsetX, 52+$offsetY);
+	$pdf->Cell(4,4,"X",$bordes,$bordes,'R');
 }
 if ($_POST['tipo'] == 'credito') {
-	//$pdf->SetXY(140, 45);
-	$pdf->SetXY(130, 52);
-	$pdf->Cell(32,5,"X",0,0,'R');
+	$pdf->SetXY(160+$offsetX, 52+$offsetY);
+	$pdf->Cell(4,4,"X",$bordes,$bordes,'R');
 }
 
-//$pdf->SetXY(172, 45);
-$pdf->SetXY(158, 45);
-$pdf->Cell(31,18, "$ ".number_format($_POST['importe'],"2",",","."),0,0,'R');
+//IMPORTE
+$pdf->SetXY(164+$offsetX, 42+$offsetY);
+$pdf->Cell(31,18, "$ ".number_format($_POST['importe'],"2",",","."),$bordes,$bordes,'R');
 
 $detalle = explode("\n", $_POST['detalle']);
-//$y=63;
-$y=63;
+$y=65;
 foreach ($detalle as $lineaDetalle) {
 	if ($y >= 118) {
 		break;
 	}
-	//$pdf->SetXY(49, $y);
-	$pdf->SetXY(34, $y);
-	$pdf->Cell(154,5, $lineaDetalle,0,1,'L');
+	$pdf->SetXY(34+$offsetX, $y+$offsetY);
+	$pdf->Cell(154,5, $lineaDetalle,$bordes,1,'L');
 	$y += 5;
 }
 
 $debe = explode("\n", $_POST['debe']);
-//$y=123;
-$y=121;
+$y=123;
 foreach ($debe as $lineaDebe) {
 	if ($y >= 136) {
 		break;
 	}
-	//$pdf->SetXY(57, $y);
-	$pdf->SetXY(34, $y);
-	$pdf->Cell(146,5,$lineaDebe,0,1,'L');
+	$pdf->SetXY(34+$offsetX, $y+$offsetY);
+	$pdf->Cell(146,5,$lineaDebe,$bordes,1,'L');
 	$y += 5;
 }
 
 $haber = explode("\n", $_POST['haber']);
-//$y=143;
 $y=142;
 foreach ($haber as $lineaHaber) {
 	if ($y >= 157) {
 		break;
 	}
-	//$pdf->SetXY(57, $y);
-	$pdf->SetXY(34, $y);
-	$pdf->Cell(146,5, $lineaHaber,0,1,'L');
+	$pdf->SetXY(34+$offsetX, $y+$offsetY);
+	$pdf->Cell(146,5, $lineaHaber,$bordes,1,'L');
 	$y += 5;
 }
 
