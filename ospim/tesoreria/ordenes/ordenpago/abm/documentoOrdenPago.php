@@ -149,10 +149,10 @@ function printRecibo($pdf, $rowCabecera) {
 		$textoRecibo .= " en efectivo";
 	}
 	if ($rowCabecera['formapago'] == "T") {
-		$textoRecibo2 = "Por intermedio de la transferencia Nro. ".$rowCabecera['nrotipopago'];
+		$textoRecibo2 = "Por intermedio de la transferencia Nro. ".$rowCabecera['comprobantepago'];
 	}
 	if ($rowCabecera['formapago'] == "C") {
-		$textoRecibo2 = "Por intermedio del Nro ".$rowCabecera['nrotipopago'];
+		$textoRecibo2 = "Por intermedio del Nro ".$rowCabecera['comprobantepago'];
 	}
 	$textoFin = "En concepto de pago de prestaciones medicas asistenciales detallas en la orden de pago nro ".$rowCabecera['nroordenpago'];
 	$pdf->SetXY(7, $y);
