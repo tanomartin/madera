@@ -11,7 +11,7 @@ if(strcmp("localhost",$maquina)==0)
 
 //OPCION Personalizada
 $offsetX = 0;
-$offsetY = 0;
+$offsetY = 3;
 $bordes = 0;
 $pdf = new FPDF('L','mm', array(200,190));
 $pdf->AddPage();
@@ -36,20 +36,20 @@ $pdf->Cell(70,17, $_POST['cuenta'],$bordes,$bordes,'C');
 
 //CHEQUE
 $pdf->SetFont('Courier','B',12);
-$pdf->SetXY(96+$offsetX, 42+$offsetY);
+$pdf->SetXY(100+$offsetX, 42+$offsetY);
 $pdf->Cell(35,10, $_POST['cheque'],$bordes,$bordes,'R');
 
 $pdf->SetFont('Courier','B',10);
 if ($_POST['tipo'] == 'deposito') {
-	$pdf->SetXY(160+$offsetX, 44+$offsetY);
+	$pdf->SetXY(164+$offsetX, 44+$offsetY);
 	$pdf->Cell(4,4,"X",$bordes,$bordes,'R');
 }
 if ($_POST['tipo'] == 'debito') {
-	$pdf->SetXY(127+$offsetX, 52+$offsetY);
+	$pdf->SetXY(131+$offsetX, 52+$offsetY);
 	$pdf->Cell(4,4,"X",$bordes,$bordes,'R');
 }
 if ($_POST['tipo'] == 'credito') {
-	$pdf->SetXY(160+$offsetX, 52+$offsetY);
+	$pdf->SetXY(164+$offsetX, 52+$offsetY);
 	$pdf->Cell(4,4,"X",$bordes,$bordes,'R');
 }
 
