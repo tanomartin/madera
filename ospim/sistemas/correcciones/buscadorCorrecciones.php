@@ -58,16 +58,16 @@ $(function() {
 		  	<thead>
 		  		<tr>
 			  		<th>ID</th>
-			  		<th>Origen</th>
-			  		<th>Usuario</th>
-			  		<th>Modulo</th>
+			  		<th class="filter-select" data-placeholder="--">Origen</th>
+			  		<th class="filter-select" data-placeholder="--">Usuario</th>
+			  		<th class="filter-select" data-placeholder="--">Modulo</th>
 			  		<th width="150px">Datos</th>
 			  		<th>Fecha P.</th>
 			  		<th>Motivo</th>
 			  		<th>Descripcion</th>
-			  		<th>Estado</th>
+			  		<th class="filter-select" data-placeholder="--">Estado</th>
 			  		<th>Fecha</th>
-			  		<th>Corrector</th>
+			  		<th class="filter-select" data-placeholder="--">Corrector</th>
 			  	</tr>
 			</thead>
 		  	<tbody>
@@ -87,7 +87,9 @@ $(function() {
 			 		} ?>
 			 		<tr>
 			 			<td><?php echo $rowCorrec['id'] ?></td>
-			 			<td><?php echo $rowCorrec['origen'] ?></td>
+			 			<td><?php $origen = "O.S.P.I.M.";
+			 					  if ($rowCorrec['origen'] == "U") { $origen = "U.S.I.M.R.A."; } 
+			 					  echo $origen; ?></td>
 			 			<td><?php echo $rowCorrec['usuario'] ?></td>
 			 			<td><?php echo $rowCorrec['modulo'] ?></td>
 			 			<td><?php echo $datos ?></td>
