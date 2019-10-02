@@ -2,7 +2,7 @@
 include($libPath."controlSessionOspimSistemas.php"); 
 include($libPath."fechas.php"); 
 $id = $_GET['id'];
-$sqlInsumo = "SELECT * FROM insumo WHERE id = $id";
+$sqlInsumo = "SELECT * FROM stockinsumo WHERE id = $id";
 $resInsumo = mysql_query($sqlInsumo,$db);
 $rowInsumo = mysql_fetch_assoc($resInsumo);?>
 
