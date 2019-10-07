@@ -119,7 +119,7 @@ function atender(id,accion, origen) {
 			  		<th>Estado</th>
 			  		<th>Fecha E.</th>
 			  		<th>Corrector</th>
-			  		<th width="170px">Acciones</th>
+			  		<th>Acciones</th>
 		  		</tr>
 		  	</thead>
 		  	<tbody>
