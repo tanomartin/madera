@@ -112,10 +112,10 @@ function atender(id,accion, origen) {
 			  		<th>ID</th>
 			  		<th>Usuario</th>
 			  		<th>Modulo</th>
-			  		<th width="150px">Datos</th>
+			  		<th width="160px">Datos</th>
 			  		<th>Fecha P.</th>
 			  		<th>Motivo</th>
-			  		<th>Descripcion</th>
+			  		<th width="200px">Descripcion</th>
 			  		<th>Estado</th>
 			  		<th>Fecha E.</th>
 			  		<th>Corrector</th>
