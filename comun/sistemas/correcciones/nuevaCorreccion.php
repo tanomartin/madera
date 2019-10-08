@@ -7,6 +7,24 @@ $sqlModulos = "SELECT m.* FROM usuarios u, departamentos d, modulos m, modulosdp
 					  d.id = md.iddpto AND 
 					  md.idmodulo = m.id";
 $resModulos = mysql_query($sqlModulos,$db);
+$arrayCantEtiquetas = array();
+while ($rowModulos = mysql_fetch_assoc($resModulos)) {
+	$cantEtiquetas = 0;
+	if ($rowModulos['etiquetadato1'] != NULL) {
+		$cantEtiquetas++;
+	}
+	if ($rowModulos['etiquetadato2'] != NULL) {
+		$cantEtiquetas++;
+	}
+	if ($rowModulos['etiquetadato3'] != NULL) {
+		$cantEtiquetas++;
+	}
+	if ($rowModulos['etiquetadato4'] != NULL) {
+		$cantEtiquetas++;
+	}
+	$arrayCantEtiquetas[$rowModulos['nombre']] = $cantEtiquetas;
+}
+mysql_data_seek($resModulos, 0);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -26,13 +44,17 @@ $resModulos = mysql_query($sqlModulos,$db);
 
 function clearForm(modulo) {
 	var arrayModulo = modulo.split('-');
-	moduloName = arrayModulo[0]
+	moduloName = arrayModulo[0];
+	cantEtiquetas = arrayModulo[2];
 	var nombreData = "nombre-"+moduloName;
-	document.getElementById(nombreData).innerHTML = "";
-	for (var i = 1; i<5; i++) {
-		var nameImput = "dato"+i+"-"+moduloName;
-		if (document.getElementById(nameImput) != null) {
-			document.getElementById(nameImput).value = "";
+	if (cantEtiquetas > 0) { 
+		console.log(nombreData);
+		document.getElementById(nombreData).innerHTML = "";
+		for (var i = 1; i<5; i++) {
+			var nameImput = "dato"+i+"-"+moduloName;
+			if (document.getElementById(nameImput) != null) {
+				document.getElementById(nameImput).value = "";
+			}
 		}
 	}
 }
@@ -78,14 +100,16 @@ function buscarEntidad(inputObject) {
 
 function validar(formulario, modulo) {
 	var nameDato1 = "dato1-"+modulo;
+	if (document.getElementById(nameDato1) != null) {
+		if (document.getElementById(nameDato1).value == "") {
+			alert("El 1er dato del formulario es obligatorio");
+			document.getElementById(nameDato1).focus();
+			return false;
+		}
+	}
 	var nameMotivo = "motivo-"+modulo;
 	var nameObs = "obs-"+modulo;
 	var nameGuardar = "guardar-"+modulo;
-	if (document.getElementById(nameDato1).value == "") {
-		alert("El 1er dato del formulario es obligatorio");
-		document.getElementById(nameDato1).focus();
-		return false;
-	}
 	if (document.getElementById(nameMotivo).value == 0) {
 		alert("El motivo de la correccion es oblitagorio");
 		document.getElementById(nameMotivo).focus();
@@ -112,7 +136,7 @@ function validar(formulario, modulo) {
   <select id="selectModulo" name="selectModulo" onchange="cargarFormulario(this.value)">
   	  <option value="0">Seleccione Modulo</option>
 <?php while ($rowModulos = mysql_fetch_assoc($resModulos)) { ?>
-  		<option value="<?php echo $rowModulos['nombre']."-".$rowModulos['id'] ?>"><?php echo $rowModulos['nombre'] ?></option>
+  		<option value="<?php echo $rowModulos['nombre']."-".$rowModulos['id']."-".$arrayCantEtiquetas[$rowModulos['nombre']] ?>"><?php echo $rowModulos['nombre'] ?></option>
 <?php } ?>
   </select>
 <?php if (isset($_GET['error'])) { ?>

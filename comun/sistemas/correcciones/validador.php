@@ -68,14 +68,15 @@ switch ($modulo) {
 		break;
 }
 
-$numExistencia = 0;
-foreach($arrayExistencia as $sqlExistencia) {
-	$resExistencia = mysql_query($sqlExistencia,$db);
-	$numExistencia += mysql_num_rows($resExistencia);
-}
-
-if ($numExistencia == 0) {
-	Header("Location: nuevaCorreccion.php?origen=$origen&error=$error");
+if ($modulo != "GENERICO") {
+	$numExistencia = 0;
+	foreach($arrayExistencia as $sqlExistencia) {
+		$resExistencia = mysql_query($sqlExistencia,$db);
+		$numExistencia += mysql_num_rows($resExistencia);
+	}	
+	if ($numExistencia == 0) {
+		Header("Location: nuevaCorreccion.php?origen=$origen&error=$error");
+	}
 }
 ?>
 
