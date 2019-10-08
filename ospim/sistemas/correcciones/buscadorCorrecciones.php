@@ -61,10 +61,10 @@ $(function() {
 			  		<th class="filter-select" data-placeholder="--">Origen</th>
 			  		<th class="filter-select" data-placeholder="--">Usuario</th>
 			  		<th class="filter-select" data-placeholder="--">Modulo</th>
-			  		<th width="150px">Datos</th>
+			  		<th width="160px">Datos</th>
 			  		<th>Fecha P.</th>
 			  		<th>Motivo</th>
-			  		<th>Descripcion</th>
+			  		<th width="200px">Descripcion</th>
 			  		<th class="filter-select" data-placeholder="--">Estado</th>
 			  		<th>Fecha</th>
 			  		<th class="filter-select" data-placeholder="--">Corrector</th>
