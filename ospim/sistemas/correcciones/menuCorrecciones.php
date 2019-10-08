@@ -39,7 +39,7 @@ $numCorrecOSPIMEjecucion = mysql_num_rows($resCorrecOSPIMEjecucion);
     <input type="button" name="volver" value="Volver" onclick="location.href = '../menuSistemas.php'" />
   </span></p>
   <h3>Menú Correcciones</h3>
-  <table width="600" border="3" style="text-align: center;vertical-align: middle;">
+  <table width="400" border="3" style="text-align: center;vertical-align: middle;">
     <tr>
       <td width="200">
       	<p>U.S.I.M.R.A.</p>
@@ -51,9 +51,17 @@ $numCorrecOSPIMEjecucion = mysql_num_rows($resCorrecOSPIMEjecucion);
         <p><a href="listadoCorrecciones.php?origen=O"><img src="img/ospim.png" width="90" height="90" border="0" /></a></p>
         <p><b><?php echo $numCorrecOSPIMPendiente ?></b> (P) - <b><?php echo $numCorrecOSPIMEjecucion ?></b> (E)</p>
       </td>
+    </tr>
+    <tr>
       <td width="200">
       	<p>FINALIZADAS</p>
         <p><a href="buscadorCorrecciones.php"><img src="img/buscar.png" width="90" height="90" border="0" /></a></p>
+        <p></br></p>
+      </td>
+      <td width="200">
+      	<p>CONFIGURACION</p>
+        <p><a href="configuracion.php"><img src="img/config.png" width="90" height="90" border="0" /></a></p>
+        <p></br></p>
       </td>
     </tr>
   </table>
