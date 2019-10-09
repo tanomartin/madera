@@ -63,7 +63,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 		$principioOrden .= " en efectivo correspondiente a prestaciones medicas";
 	}
 	if ($rowCabecera['formapago'] == "T") {
-		$principioOrden .= " a traves de la transfeencia Nro ".$rowCabecera['comprobantepago']." correspondiente a prestaciones medicas";
+		$principioOrden .= " a traves de la transferencia Nro ".$rowCabecera['comprobantepago']." correspondiente a prestaciones medicas";
 	}
 	if ($rowCabecera['formapago'] == "C") {
 		$principioOrden .= " a traves del cheque Nro ".$rowCabecera['comprobantepago']." correspondiente a prestaciones medicas";
@@ -78,53 +78,61 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	
 	$y = 44;
 	$pdf->SetXY(7, $y);
-	$pdf->Cell(33.83,5,"FACTURA Nº",1,1,"C");
-	$pdf->SetXY(40.83, $y);
-	$pdf->Cell(33.83,5,"MONTO",1,1,"C");
-	$pdf->SetXY(74.66, $y);
-	$pdf->Cell(33.83,5,"DEBITO",1,1,"C");
-	$pdf->SetXY(108.49, $y);
-	$pdf->Cell(33.83,5,"A PAGAR",1,1,"C");
-	$pdf->SetXY(142.32, $y);
-	$pdf->Cell(33.83,5,"PAGO",1,1,"C");
-	$pdf->SetXY(176.15, $y);
-	$pdf->Cell(33.83,5,"SALDO",1,1,"C");
+	$pdf->Cell(84.72,5,"FACTURA Nº",1,1,"C");
+	$pdf->SetXY(91.72, $y);
+	$pdf->Cell(27.06,5,"MONTO",1,1,"C");
+	$pdf->SetXY(118.78, $y);
+	$pdf->Cell(27.06,5,"DEBITO",1,1,"C");
+	$pdf->SetXY(145.84, $y);
+	$pdf->Cell(27.06,5,"A PAGAR",1,1,"C");
+	$pdf->SetXY(172.9, $y);
+	$pdf->Cell(10,5,"PAGO",1,1,"C");
+	$pdf->SetXY(182.9, $y);
+	$pdf->Cell(27.06,5,"SALDO",1,1,"C");
 	
+	$pdf->SetFont('Courier','B',6);
 	$y += 5;
-	
-	$sqlDetalle = "SELECT * FROM ordendetalle o, facturas f WHERE o.nroordenpago = $nroOrden and o.idfactura = f.id";
+	$sqlDetalle = "SELECT o.*, f.*, establecimientos.nombre as establecimiento FROM ordendetalle o, facturas f 
+					LEFT JOIN establecimientos ON establecimientos.codigo = f.idestablecimiento
+					WHERE o.nroordenpago = $nroOrden and o.idfactura = f.id";
 	$resDetalle = mysql_query($sqlDetalle,$db);
 	while($rowDetalle = mysql_fetch_array($resDetalle)) {
 		 $pdf->SetXY(7, $y);
-		 $pdf->Cell(33.83,4,$rowDetalle['puntodeventa']."-".$rowDetalle['nrocomprobante'],1,1,"C");
-		 $pdf->SetXY(40.83, $y);
-		 $pdf->Cell(33.83,4,$rowDetalle['importecomprobante'],1,1,"C");
-		 $pdf->SetXY(74.66, $y);
-		 $pdf->Cell(33.83,4,$rowDetalle['totaldebito'],1,1,"C");
-		 $pdf->SetXY(108.49, $y);
-		 $pdf->Cell(33.83,4,$rowDetalle['importepago'],1,1,"C");
-		 $pdf->SetXY(142.32, $y);
-		 $pdf->Cell(33.83,4,$rowDetalle['tipocancelacion'],1,1,"C");
-		 $pdf->SetXY(176.15, $y);
-		 $pdf->Cell(33.83,4,$rowDetalle['restoapagar'],1,1,"C");
+		 $establecimiento = "";
+		 if ($rowDetalle['establecimiento'] != NULL) {
+		 	$establecimiento = " | ".$rowDetalle['establecimiento'];
+		 	$establecimiento = substr($establecimiento, 0, 50);
+		 }
+		 $pdf->Cell(84.72,4,$rowDetalle['puntodeventa']."-".$rowDetalle['nrocomprobante'].$establecimiento,1,1,"C");
+		 $pdf->SetXY(91.72, $y);
+		 $pdf->Cell(27.06,4,$rowDetalle['importecomprobante'],1,1,"C");
+		 $pdf->SetXY(118.78, $y);
+		 $pdf->Cell(27.06,4,$rowDetalle['totaldebito'],1,1,"C");
+		 $pdf->SetXY(145.84, $y);
+		 $pdf->Cell(27.06,4,$rowDetalle['importepago'],1,1,"C");
+		 $pdf->SetXY(172.9, $y);
+		 $pdf->Cell(10,4,$rowDetalle['tipocancelacion'],1,1,"C");
+		 $pdf->SetXY(182.9, $y);
+		 $pdf->Cell(27.06,4,$rowDetalle['restoapagar'],1,1,"C");
 	 	 $y += 4;
 	}
+	$pdf->SetFont('Courier','B',8);
 	$y += 2;
-	$pdf->SetXY(74.66, $y);
-	$pdf->Cell(33.83,5,"TOTAL",0,0,"C");
-	$pdf->SetXY(108.49, $y);
+	$pdf->SetXY(118.78, $y);
+	$pdf->Cell(27.06,5,"TOTAL",0,0,"C");
+	$pdf->SetXY(145.84, $y);
 	$total = number_format(round($rowCabecera['importe']+$rowCabecera['retencion'],2),2,'.','');
-	$pdf->Cell(33.83,5,$total,0,0,"C");
+	$pdf->Cell(27.06,5,$total,0,0,"C");
 	$y += 5;
-	$pdf->SetXY(74.66, $y);
-	$pdf->Cell(33.83,5,"RETENCION",0,0,"C");
-	$pdf->SetXY(108.49, $y);
-	$pdf->Cell(33.83,5,$rowCabecera['retencion'],0,0,"C");
+	$pdf->SetXY(118.78, $y);
+	$pdf->Cell(27.06,5,"RETENCION",0,0,"C");
+	$pdf->SetXY(145.84, $y);
+	$pdf->Cell(27.06,5,$rowCabecera['retencion'],0,0,"C");
 	$y += 5;
-	$pdf->SetXY(74.66, $y);
-	$pdf->Cell(33.83,5,"A PAGAR",0,0,"C");
-	$pdf->SetXY(108.49, $y);
-	$pdf->Cell(33.83,5,$rowCabecera['importe'],0,0,"C");
+	$pdf->SetXY(118.78, $y);
+	$pdf->Cell(27.06,5,"A PAGAR",0,0,"C");
+	$pdf->SetXY(145.84, $y);
+	$pdf->Cell(27.06,5,$rowCabecera['importe'],0,0,"C");
 	
 	$y = 190;
 	$pdf->Image('../img/fgornatti.png',25,$y,15,20,'PNG');
@@ -135,6 +143,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 }
 
 function printRecibo($pdf, $rowCabecera) {
+	$pdf->SetFont('Courier','B',8);
 	$y = 218;
 	$pdf->Line(7, $y, 210, $y);
 	
