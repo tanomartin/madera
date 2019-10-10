@@ -126,7 +126,6 @@ function validar(formulario, modulo) {
 }
 
 </script>
-
 </head>
 <body style="background-color: <?php echo $bgcolor ?>">
 <div align="center">
