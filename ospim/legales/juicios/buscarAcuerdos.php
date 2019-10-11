@@ -30,9 +30,10 @@ if(isset($_POST['status'])) {
 		}
 	}
 
-	
+	$respuesta = " <input type='text' id='cantAcuerdos' name='cantAcuerdos' value='".sizeof($acuAbs)."' style='display: none'/>
+				   <table width='500' border='0' id='tablaAcuerdos' style='text-align: center; margin-top: 15px;'>";
 	if (sizeof($acuAbs) > 0) {
-		$respuesta = "<tr>
+		$respuesta .= "<tr>
 		  					<td><b>Acuerdos a Absorver </b>
 		  						[<input name='acuabs' type='radio' value='0' checked='checked' onchange='mostrarAcuerdos()' /> NO -
 		  					    <input name='acuabs' type='radio' value='1' onchange='mostrarAcuerdos()' /> SI ]
@@ -48,9 +49,9 @@ if(isset($_POST['status'])) {
 	                				<td align='left'>".$acuerdo['nroacu']." - ".$acuerdo['tipo']. " - Acta: ".$acuerdo['acta']."</td>
 	             				</tr>";
 			 }
-		$respuesta .= "</table></div></td></tr>";
+			 $respuesta .= "</table></div></td></tr>";
 	} else { 
-	  	$respuesta ="<tr>
+	  	$respuesta .="<tr>
 	        			<td>
 	        				<div align='center'>
 	        					<b>Acuerdos a Absorver</b> [<input name='acuabs' type='radio' value='0' checked='checked'/> NO ]
@@ -65,6 +66,7 @@ if(isset($_POST['status'])) {
 	        		    </td>
 	        		  </tr>";
 	}
+	$respuesta .= "</table>";
 	echo $respuesta;
 }
 ?>

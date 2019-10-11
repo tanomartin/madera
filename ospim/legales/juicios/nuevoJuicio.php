@@ -8,8 +8,6 @@ if (isset($_GET['cuit'])) {
 }
 
 include($libPath."cabeceraEmpresaConsulta.php");
-$acuAbs = array();
-
 $base = $_SESSION['dbname'];
 $sqlBuscaNro = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'cabjuiciosospim'";
 //echo $sqlBuscaNro; echo "<br>";
@@ -53,18 +51,18 @@ jQuery(function($){
 		var status = $(this).val();
 		limpiarAcuerdos();
 		$("#cartelAcuerdos").show()
-		$("#tablaAcuerdos").html("")
-		$("#tablaAcuerdos").hide();
+		$("#datosAcuerdos").html("<input type='text' id='cantAcuerdos' name='cantAcuerdos' value='0' style='display: none'/>");
+		$("#datosAcuerdos").hide();
 		if (status != 0) {	
 			$("#cartelAcuerdos").hide();
-			$("#tablaAcuerdos").show()
+			$("#datosAcuerdos").show()
 			$.ajax({
 				type: "POST",
 				dataType: "html",
 				url: "buscarAcuerdos.php",
 				data: {status:status, nrcuit: $(nrcuit).val()},
 			}).done(function(respuesta){
-				 $("#tablaAcuerdos").html(respuesta);
+				 $("#datosAcuerdos").html(respuesta);
 			}); 
 		}
 	});
@@ -73,35 +71,39 @@ jQuery(function($){
 function cargarPeriodosAbsorvidos(acuerdo) {
 	formatoPeriodoInicio();
 	var n = 0;
-<?php  	$sqlPeriodos = "select * from detacuerdosospim where cuit = $cuit";
-		$resPeriodos = mysql_query($sqlPeriodos,$db); 
-		while ($rowPeriodos = mysql_fetch_array($resPeriodos)) { ?> 
-			if(acuerdo == <?php echo $rowPeriodos['nroacuerdo'] ?>) {
-				i = "id" + n;
-				m = "mes" + n;
-				a = "anio" + n;
-				c = "concepto" + n;
-				mes = <?php echo $rowPeriodos['mesacuerdo'] ?>;
-				if (mes < 10) {
-					mes = "0"+mes;
-				}
-				document.getElementById(i).value="<?php echo $rowPeriodos['idperiodo'] ?>";
-				document.getElementById(m).value= mes;
-				document.getElementById(a).value="<?php echo $rowPeriodos['anoacuerdo'] ?>";
-				document.getElementById(c).value="<?php echo $rowPeriodos['conceptodeuda'] ?>";
-				n++;
-				mostrando = document.forms.nuevoJuicio.mostrar.value;
-				if (n > mostrando && mostrando < 120) {
-					mostrando = mostrando + 12;
-					mostrarPeriodos();
-				}
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "buscarPeriodos.php",
+		data: {acuerdo:acuerdo, nrcuit: $(nrcuit).val()},
+	}).done(function(respuesta) {
+		$.each(respuesta, function (index, datos) {
+			i = "id" + n;
+			m = "mes" + n;
+			a = "anio" + n;
+			c = "concepto" + n;
+			mes = datos['mesacuerdo'];
+			if (mes < 10) {
+				mes = "0"+mes;
 			}
-<?php 	}?>
+			document.getElementById(i).value= datos['idperiodo'];
+			document.getElementById(m).value= mes;
+			document.getElementById(a).value= datos['anoacuerdo'];
+			document.getElementById(c).value= datos['conceptodeuda'];
+			n++;
+			mostrando = document.forms.nuevoJuicio.mostrar.value;
+			if (n > mostrando && mostrando < 120) {
+				mostrando = mostrando + 12;
+				mostrarPeriodos();
+			}
+		});
+	});
 }
-
+	
 function limpiarAcuerdos() {
 	formatoPeriodoInicio();
-	var limite = <?php echo sizeof($acuAbs) ?>;
+	var limite = document.forms.nuevoJuicio.cantAcuerdos.value;
+	console.log(limite);
 	if (limite == 1) {
 		document.forms.nuevoJuicio.nroacu.checked = false;
 	} else {
@@ -253,7 +255,7 @@ function validar(formulario) {
 		return false;
 	}
 	
-	var limite = <?php echo sizeof($acuAbs) ?>;		
+	var limite = document.forms.nuevoJuicio.cantAcuerdos.value;
 	if (limite != 0) {
 		if (formulario.acuabs[1].checked) {
 			if (limite == 1) {
@@ -347,9 +349,9 @@ function validar(formulario) {
     <!-- ACUERDOS A ABSORVER --> 
     <h3>Acuerdos a Absorver </h3>
     <h4 id="cartelAcuerdos" style="color: blue">Seleccione Status de Deuda para ver los Acuerdos</h4>
-    <table width="500" border="0" id="tablaAcuerdos" style="text-align: center; margin-top: 15px; display: none">   
-    </table>
-    
+   	<div id="datosAcuerdos" style="display: none">
+   		 <input type="text" id="cantAcuerdos" name="cantAcuerdos" value="0" style="display: none"/>
+   	</div>    
     
     <!-- PERIODOS -->
     <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="display: none"/>

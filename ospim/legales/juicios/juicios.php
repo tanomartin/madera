@@ -31,11 +31,10 @@ $cantJuicios = mysql_num_rows($resJuicios);
   <?php include($libPath."cabeceraEmpresaConsulta.php");
   		include($libPath."cabeceraEmpresa.php"); ?>
   <p><input type="button" name="nuevoJuicio" value="Nuevo Juicio" onClick="location.href = 'nuevoJuicio.php?cuit=<?php echo $cuit ?> '" ></p>
-  <h3>Juicios Existentes </h3>
 <?php if($cantJuicios > 0) { ?>
+		 <h3>Juicios Existentes </h3>
 		  <table width="600" border="1" style="text-align: center">
-		     <?php 
-				while ($rowJuicios = mysql_fetch_array($resJuicios)) {
+		 <?php  while ($rowJuicios = mysql_fetch_array($resJuicios)) {
 					$nroorden = $rowJuicios['nroorden'];
 					$sqlTramite = "SELECT fechafinalizacion from trajuiciosospim WHERE nroorden = $nroorden";
 					$resTramite  = mysql_query($sqlTramite);
@@ -56,7 +55,9 @@ $cantJuicios = mysql_num_rows($resJuicios);
 					</tr>
 		<?php } ?>	
 		  </table>
-<?php } ?>
+<?php } else { ?>
+		<h3 style="color: blue">No Existen Juicios para esta C.U.I.T.</h3>
+<?php }?>
 </div>
 </body>
 </html>

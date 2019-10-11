@@ -20,13 +20,14 @@ $i = 0;
 $acuAbs = array();
 while ( $rowAcuerdos = mysql_fetch_assoc ( $resAcuerdos ) ) {
 	$fechacuota = $rowAcuerdos ['fechacuota'];
-	if ($fechacuota < $fechaVto) {
-		$acuAbs [$i] = array (
-				'nroacu' => $rowAcuerdos ['nroacuerdo'],
-				'tipo' => $rowAcuerdos ['descripcion'],
-				'acta' => $rowAcuerdos ['nroacta'] 
-		);
-		$i ++;
+	if ($rowJuicio['statusdeuda'] != 2) {
+		if ($fechacuota < $fechaVto) {
+			$acuAbs [$i] = array ('nroacu' => $rowAcuerdos ['nroacuerdo'],'tipo' => $rowAcuerdos ['descripcion'],'acta' => $rowAcuerdos ['nroacta'] );
+			$i++;
+		}
+	} else {
+		$acuAbs [$i] = array ('nroacu' => $rowAcuerdos ['nroacuerdo'],'tipo' => $rowAcuerdos ['descripcion'],'acta' => $rowAcuerdos ['nroacta'] );
+		$i++;
 	}
 }
 
@@ -45,6 +46,10 @@ while ( $rowJuris = mysql_fetch_assoc ( $resJuris ) ) {
 }
 $sqlInsp = substr ( $sqlInsp, 0, - 1 );
 $sqlInsp = $sqlInsp . ")";
+
+$sqlPeriodos = "SELECT * FROM detjuiciosospim WHERE nroorden = $nroorden";
+$resPeriodos = mysql_query ( $sqlPeriodos, $db );
+$canPeriodos = mysql_num_rows ( $resPeriodos );
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -62,10 +67,30 @@ jQuery(function($){
 		$("#anio"+i).mask("9999");
 	}
 	$("#fechaexp").mask("99-99-9999");
+
+	$("#status").change(function(){
+		var status = $(this).val();
+		limpiarAcuerdos();
+		$("#cartelAcuerdos").show()
+		$("#datosAcuerdos").html("<input type='text' id='cantAcuerdos' name='cantAcuerdos' value='0' style='display: none'/>");
+		$("#datosAcuerdos").hide();
+		if (status != 0) {	
+			$("#cartelAcuerdos").hide();
+			$("#datosAcuerdos").show()
+			$.ajax({
+				type: "POST",
+				dataType: "html",
+				url: "buscarAcuerdos.php",
+				data: {status:status, nrcuit: $(nrcuit).val()},
+			}).done(function(respuesta){
+				 $("#datosAcuerdos").html(respuesta);
+			}); 
+		}
+	});
 });
 
 function checkQuitar() {
-	var limite = <?php echo sizeof($acuAbs) ?>;		
+	var limite = document.forms.nuevoJuicio.cantAcuerdos.value;
 	if (limite != 0) {
 		document.forms.nuevoJuicio.acuabs[0].checked = true;
 		limpiarAcuerdos();
@@ -76,38 +101,40 @@ function checkQuitar() {
 }
 
 function cargarPeriodosAbsorvidos(acuerdo) {
-		formatoPeriodoInicio();
-		var n = 0;
-		<?php
-		$sqlPeriodos = "select * from detacuerdosospim where cuit = $cuit";
-		$resPeriodos = mysql_query ( $sqlPeriodos, $db );
-		while ( $rowPeriodos = mysql_fetch_array ( $resPeriodos ) ) { ?> 
-			if(acuerdo == <?php echo $rowPeriodos['nroacuerdo'] ?>) {
-				i = "id" + n;
-				m = "mes" + n;
-				a = "anio" + n;
-				c = "concepto" + n;
-				document.getElementById(i).value="<?php echo $rowPeriodos['idperiodo'] ?>";
-				mes = <?php echo $rowPeriodos['mesacuerdo'] ?>;
-				if (mes < 10) {
-					mes = "0"+mes;
-				}
-				document.getElementById(m).value= mes;
-				document.getElementById(a).value="<?php echo $rowPeriodos['anoacuerdo'] ?>";
-				document.getElementById(c).value="<?php echo $rowPeriodos['conceptodeuda'] ?>";
-				n++;
-				mostrando = document.forms.nuevoJuicio.mostrar.value;
-				if (n > mostrando && mostrando < 120) {
-					mostrando = mostrando + 12;
-					mostrarPeriodos();
-				}
+	formatoPeriodoInicio();
+	var n = 0;
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "buscarPeriodos.php",
+		data: {acuerdo:acuerdo, nrcuit: $(nrcuit).val()},
+	}).done(function(respuesta) {
+		$.each(respuesta, function (index, datos) {
+			i = "id" + n;
+			m = "mes" + n;
+			a = "anio" + n;
+			c = "concepto" + n;
+			mes = datos['mesacuerdo'];
+			if (mes < 10) {
+				mes = "0"+mes;
 			}
-<?php 	}?>
+			document.getElementById(i).value= datos['idperiodo'];
+			document.getElementById(m).value= mes;
+			document.getElementById(a).value= datos['anoacuerdo'];
+			document.getElementById(c).value= datos['conceptodeuda'];
+			n++;
+			mostrando = document.forms.nuevoJuicio.mostrar.value;
+			if (n > mostrando && mostrando < 120) {
+				mostrando = mostrando + 12;
+				mostrarPeriodos();
+			}
+		});
+	});
 }
 
 function limpiarAcuerdos() {
 	formatoPeriodoInicio();
-	var limite = <?php echo sizeof($acuAbs) ?>;
+	var limite = document.forms.nuevoJuicio.cantAcuerdos.value;
 	if (limite == 1) {
 		document.forms.nuevoJuicio.nroacu.checked = false;
 	} else {
@@ -128,6 +155,8 @@ function mostrarAcuerdos() {
 
 function formatoPeriodoInicio() {
 	for(var i=0; i<12; i++) {
+		f = "fila" + i;
+		document.getElementById(f).style.display="table-row";
 		men = "mensaje" + i;
 		id = "id" + i;
 		m = "mes" + i;
@@ -137,8 +166,6 @@ function formatoPeriodoInicio() {
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
 		document.getElementById(con).value="";
-		document.getElementById(m).style.visibility="visible";
-		document.getElementById(a).style.visibility="visible";
 		document.getElementById(men).style.visibility="hidden";
 	}
 	for (i=12; i<120; i++){
@@ -147,9 +174,12 @@ function formatoPeriodoInicio() {
 		a = "anio" + i;
 		men = "mensaje" + i;
 		con = "concepto" + i;
+		f = "fila" + i;
+		document.getElementById(f).style.display="none";
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
+		document.getElementById(men).style.visibility="hidden";
 		document.getElementById(con).value="";
 	}
 	document.forms.nuevoJuicio.mostrar.value = 12;
@@ -265,7 +295,7 @@ function validar(formulario) {
 		return false;
 	}
 	
-	var limite = <?php echo sizeof($acuAbs) ?>;		
+	var limite = document.forms.nuevoJuicio.cantAcuerdos.value;
 	var acuRel = <?php echo $rowJuicio['acuerdorelacionado']; ?>;
 	if (limite != 0) {
 		if (formulario.acuabs[1].checked) {
@@ -308,12 +338,12 @@ function validar(formulario) {
 	<div align="center">
 		<input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility: hidden; position: absolute; z-index: 1" value="<?php echo $cuit ?>" /> 
 		<input type="reset" name="volver" value="Volver" onclick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'" />
-   	 	<?php
-			include ($_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/cabeceraEmpresaConsulta.php");
-			include ($_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/cabeceraEmpresa.php");
-		?>
+  <?php include ($_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/cabeceraEmpresaConsulta.php");
+		include ($_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/cabeceraEmpresa.php"); ?>
 		<h3>Modificación de Juicio </h3>
 		<p><b>NRO ORDEN </b> <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color: #CCCCCC; text-align: center" /></p>
+		
+		<!-- CABECERA -->
 		<table width="1000" border="0" style="text-align: left">
 			<tr>
 				<td>Nro. Certificado</td>
@@ -322,24 +352,33 @@ function validar(formulario) {
 				<td>
 					<?php
 					$selecEje = "";
+					$descrip = "";
 					if ($rowJuicio ['statusdeuda'] == 1) {
 						$selecEje = 'selected';
+						$descrip = "EJECUCION";
 					}
 					$selecCon = "";
 					if ($rowJuicio ['statusdeuda'] == 2) {
 						$selecCon = 'selected';
+						$descrip = "CONVOCATORIA";
 					}
 					$selecQui = "";
 					if ($rowJuicio ['statusdeuda'] == 3) {
 						$selecQui = 'selected';
+						$descrip = "QUIEBRA";
 					}
-					?>
-	          		<select name="status" id="status">
-						<option value="0">Seleccione Status</option>
-						<option value="1" <?php echo $selecEje ?>>EJECUCION</option>
-						<option value="2" <?php echo $selecCon ?>>CONVOCATORIA</option>
-						<option value="3" <?php echo $selecQui ?>>QUIEBRA</option>
-					</select>
+					$readonly = "";
+					if ($rowJuicio ['acuerdorelacionado'] != 1) { ?>
+		          		<select name="status" id="status" <?php echo $readonly ?>>
+							<option value="0">Seleccione Status</option>
+							<option value="1" <?php echo $selecEje ?>>EJECUCION</option>
+							<option value="2" <?php echo $selecCon ?>>CONVOCATORIA</option>
+							<option value="3" <?php echo $selecQui ?>>QUIEBRA</option>
+						</select>
+			  <?php } else { ?>
+			  			<input type="text" value="<?php echo $descrip ?>" id="statusDescrip" name="statusDescrip" readonly="readonly" style="background-color: silver"/>
+			  			<input type="text" value="<?php echo $rowJuicio ['statusdeuda'] ?>" id="status" name="status" style="display: none"/>
+		      <?php	} ?>
 				</td>
 				<td>Fecha Expedición</td>
 				<td><input id="fechaexp" type="text" name="fechaexp" size="12" value="<?php echo invertirFecha($rowJuicio['fechaexpedicion']) ?>" /></td>
@@ -386,7 +425,7 @@ function validar(formulario) {
 				<td>Acuerdo Abs.</td>
 				<td>
 		  	 <?php if ($rowJuicio ['acuerdorelacionado'] == 1) {  ?> 
-						<b>SI - Nro. Acuerdo: <?php echo $rowJuicio ['nroacuerdo'] ?></b> 
+						<b>SI - Nro. Acuerdo: <?php echo $rowJuicio ['nroacuerdo'] ?></b></br> 
 					 	Quitar Acuerdo <input name="desabsorver" id="desabsorver" type="checkbox" value="1" onclick="checkQuitar();" />
 			<?php	} else { ?>
 						<b>NO</b>
@@ -397,50 +436,64 @@ function validar(formulario) {
 				<td>Ejecutor</td>
 				<td colspan="5"><input id="ejecutor" type="text" name="ejecutor" value="<?php echo $rowJuicio['usuarioejecutor'] ?>" /></td>
 			</tr>
-    <?php if (sizeof ( $acuAbs ) > 0) { ?>
-    		<tr>
-        		<td colspan="6">
-        			<div align="center">
-						<b>Acuerdos a Absorver </b>[<input name="acuabs" type="radio" value="0" checked="checked" onchange="mostrarAcuerdos()" /> NO - <input name="acuabs" type="radio" value="1" onchange="mostrarAcuerdos()" /> SI ]
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="6">
-					<div align="center" id="acuerdos" style="visibility: hidden">
-						<table>
-              		<?php foreach ( $acuAbs as $acuerdo ) { ?>
-              				<tr>
-								<td><input name="nroacu" type="radio" value="<?php echo $acuerdo['nroacu']?>" onclick="cargarPeriodosAbsorvidos(this.value)" /></td>
-								<td align="left"><?php echo $acuerdo['nroacu']." - ".$acuerdo['tipo']. " - Acta: ".$acuerdo['acta']?></td>
-							</tr>
-					<?php } ?>
-            			</table>
-					</div>
-				</td>
-			</tr>
-  <?php } else { ?>
-  			<tr>
-        		<td colspan="6">
-        			<div align="center"> 
-        				Acuerdos a Absorver [<input name="acuabs" type="radio" value="0" checked="checked" /> NO ]
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="6">
-					<div align="center">
-						<b>No hay acuerdos posibles</b><input name="nroacu" type="radio" value="0" checked="checked" style="visibility: hidden" />
-					</div>
-				</td>
-			</tr>
-   <?php } ?>
 		</table>
-	<?php 	$sqlPeriodos = "SELECT * FROM detjuiciosospim WHERE nroorden = $nroorden";
-			$resPeriodos = mysql_query ( $sqlPeriodos, $db );
-			$canPeriodos = mysql_num_rows ( $resPeriodos ); ?>
-			<input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="display: none" /> 
-			<table width="800" style="text-align: center; margin-top: 15px">
+		
+		<!-- ACUERDOS A ABSORVER --> 
+  <?php if ($rowJuicio ['acuerdorelacionado'] != 1) { ?>
+		    <h3>Acuerdos a Absorver </h3>
+		    <h4 id="cartelAcuerdos" style="display: none" style="color: blue">Seleccione Status de Deuda para ver los Acuerdos</h4>
+		   	<div id="datosAcuerdos">
+		   		 <input type="text" id="cantAcuerdos" name="cantAcuerdos" value="<?php echo sizeof($acuAbs)?>" style="display: none"/>
+		   	     <table width='500' border='0' id='tablaAcuerdos' style='text-align: center; margin-top: 15px;'>
+		   <?php if (sizeof ( $acuAbs ) > 0) { ?>
+			    		<tr>
+			        		<td>
+			        			<div align="center">
+									<b>Acuerdos a Absorver </b>[<input name="acuabs" type="radio" value="0" checked="checked" onchange="mostrarAcuerdos()" /> NO - <input name="acuabs" type="radio" value="1" onchange="mostrarAcuerdos()" /> SI ]
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div align="center" id="acuerdos" style="visibility: hidden">
+									<table>
+			              		<?php foreach ( $acuAbs as $acuerdo ) { ?>
+			              				<tr>
+											<td><input name="nroacu" type="radio" value="<?php echo $acuerdo['nroacu']?>" onclick="cargarPeriodosAbsorvidos(this.value)" /></td>
+											<td align="left"><?php echo $acuerdo['nroacu']." - ".$acuerdo['tipo']. " - Acta: ".$acuerdo['acta']?></td>
+										</tr>
+								<?php } ?>
+			            			</table>
+								</div>
+							</td>
+						</tr>
+			  <?php } else { ?>
+			  			<tr>
+			        		<td>
+			        			<div align="center"> 
+			        				Acuerdos a Absorver [<input name="acuabs" type="radio" value="0" checked="checked" /> NO ]
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<div align="center">
+									<b>No hay acuerdos posibles</b><input name="nroacu" type="radio" value="0" checked="checked" style="visibility: hidden" />
+								</div>
+							</td>
+						</tr>
+			   <?php } ?>
+			   </table>
+		   	</div>    
+  <?php } else { ?>
+  			<h4 style="color: blue">Para ver y absover un nuevo acuerdo debe quitar el Acuerdo Nro.: <?php echo $rowJuicio ['nroacuerdo'] ?> </h4>
+  			<input type="text" id="cantAcuerdos" name="cantAcuerdos" value="0" style="display: none"/>
+  			<input name="acuabs" type="radio" value="0" checked="checked" style="display: none"></input>
+  <?php	} ?>	
+	   
+	    <!-- PERIODOS -->
+		<input name="mostrar" type="text" id="mostrar" size="1" value="<?php echo $canPeriodos ?>" readonly="readonly" style="display: none" /> 
+		<table width="800" style="text-align: center; margin-top: 15px">
 				<tr>
 					<td width="50%">
 						<p><b>PER&Iacute;ODOS DEL JUICIO</b></p>
@@ -459,7 +512,7 @@ function validar(formulario) {
 				<tr>
 					<td width="80" align="center"><b>Mes | Año</b></td>
 				</tr>
-        <?php  $i = 0;
+        <?php   $i = 0;
 				while ( $rowPeriodos = mysql_fetch_assoc ( $resPeriodos ) ) { 
 					if ($rowPeriodos ['mesjuicio'] < 10) {
 						$mes = "0" . $rowPeriodos ['mesjuicio'];
