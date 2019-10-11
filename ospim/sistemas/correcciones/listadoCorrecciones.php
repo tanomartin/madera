@@ -12,7 +12,8 @@ $sqlCorrecciones = "SELECT c.*, u.nombre as usuario, m.etiquetadato1, m.etiqueta
 						  c.fechafinalizacion is null and
 						  c.idmodulo = m.id and 
 						  c.idmotivo = mm.id and
-						  c.usuarioregistro = u.usuariosistema";
+						  c.usuarioregistro = u.usuariosistema
+					ORDER BY c.id";
 $resCorrecciones = mysql_query($sqlCorrecciones,$db);
 $numCorrecciones = mysql_num_rows($resCorrecciones); 
 
