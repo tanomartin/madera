@@ -138,6 +138,8 @@ function formatoPeriodoInicio() {
 		m = "mes" + i;
 		a = "anio" + i;
 		con = "concepto" + i;
+		f = "fila" + i;
+		document.getElementById(f).style.display="none";
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
