@@ -1,9 +1,7 @@
-<?php
-
-$libPath = $_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/";
-include ($libPath . "controlSessionOspim.php");
-include ($libPath . "fechas.php");
-$nroorden = $_GET ['nroorden'];
+<?php $libPath = $_SERVER ['DOCUMENT_ROOT']."/madera/lib/";
+include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php");
+$nroorden = $_GET['nroorden'];
 
 $sqlJuicio = "select * from cabjuiciosospim where nroorden = $nroorden";
 $resJuicio = mysql_query ( $sqlJuicio, $db );
@@ -338,8 +336,8 @@ function validar(formulario) {
 	<div align="center">
 		<input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility: hidden; position: absolute; z-index: 1" value="<?php echo $cuit ?>" /> 
 		<input type="reset" name="volver" value="Volver" onclick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'" />
-  <?php include ($_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/cabeceraEmpresaConsulta.php");
-		include ($_SERVER ['DOCUMENT_ROOT'] . "/madera/lib/cabeceraEmpresa.php"); ?>
+  <?php include($libPath."cabeceraEmpresaConsulta.php"); 
+		include($libPath."cabeceraEmpresa.php"); ?>
 		<h3>Modificación de Juicio </h3>
 		<p><b>NRO ORDEN </b> <input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $nroorden ?>" style="background-color: #CCCCCC; text-align: center" /></p>
 		
@@ -350,19 +348,18 @@ function validar(formulario) {
 				<td><input id="nrocert" type="text" name="nrocert" value="<?php echo $rowJuicio['nrocertificado'] ?>" /></td>
 				<td>Status Deuda</td>
 				<td>
-					<?php
-					$selecEje = "";
+			<?php	$selecEje = "";
+			 		$selecCon = "";
+			 		$selecQui = "";
 					$descrip = "";
 					if ($rowJuicio ['statusdeuda'] == 1) {
 						$selecEje = 'selected';
 						$descrip = "EJECUCION";
 					}
-					$selecCon = "";
 					if ($rowJuicio ['statusdeuda'] == 2) {
 						$selecCon = 'selected';
 						$descrip = "CONVOCATORIA";
 					}
-					$selecQui = "";
 					if ($rowJuicio ['statusdeuda'] == 3) {
 						$selecQui = 'selected';
 						$descrip = "QUIEBRA";
@@ -402,8 +399,7 @@ function validar(formulario) {
 									if ($rowAsesor ['codigo'] == $rowJuicio ['codasesorlegal']) {
 										$selected = 'selected';
 									} ?>
-            					<option value="<?php echo $rowAsesor['codigo']?>"
-								<?php echo $selected ?>><?php echo $rowAsesor['apeynombre'] ?></option>
+            						<option value="<?php echo $rowAsesor['codigo']?>" <?php echo $selected ?>><?php echo $rowAsesor['apeynombre'] ?></option>
          				 <?php } ?>
          			</select>
          		</td>
@@ -417,8 +413,7 @@ function validar(formulario) {
 								if ($rowInspe ['codigo'] == $rowJuicio ['codinspector']) {
 									$selected = 'selected';
 								} ?>
-            					<option value="<?php echo $rowInspe['codigo'] ?>"
-								<?php echo $selected ?>><?php echo $rowInspe['apeynombre'] ?></option>
+            					<option value="<?php echo $rowInspe['codigo'] ?>" <?php echo $selected ?>><?php echo $rowInspe['apeynombre'] ?></option>
 						 <?php }?>
           			</select>
           		</td>
@@ -496,7 +491,7 @@ function validar(formulario) {
 		<table width="800" style="text-align: center; margin-top: 15px">
 				<tr>
 					<td width="50%">
-						<p><b>PER&Iacute;ODOS DEL JUICIO</b></p>
+						<p><b>PERÍODOS DEL JUICIO</b></p>
            				<p><input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos" onclick="mostrarPeriodos()" /></p>
 					</td>
 					<td>
