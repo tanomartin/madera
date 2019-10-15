@@ -293,8 +293,8 @@ function validar(formulario) {
   <div align="center">
     <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>"/>
     <p><input type="button" name="volver" value="Volver" onclick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/></p>
-    <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/cabeceraEmpresa.php"); ?>
-  	<h3>M&oacute;dulo de Carga - Nuevo Juicio </h3>
+    <?php include($libPath."cabeceraEmpresa.php"); ?>
+  	<h3>Módulo de Carga - Nuevo Juicio </h3>
    	<p><b>NRO ORDEN </b><input name="nroorden" type="text" id="nroorden" size="5" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center" /></p>
 
 	<!-- CABECERA -->
@@ -360,7 +360,7 @@ function validar(formulario) {
    	<table width="800" style="text-align: center; margin-top: 15px">
         <tr>
           <td width="50%">
-              <p><b>PER&Iacute;ODOS DEL JUICIO</b></p>
+              <p><b>PERÍODOS DEL JUICIO</b></p>
               <p><input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/></p>
           </td>
 		  <td>
