@@ -6,17 +6,6 @@ include($libPath."controlSessionUsimra.php");?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Juicios :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -32,26 +21,17 @@ jQuery(function($){
 <body bgcolor="#B2A274">
 <form id="form1" name="form1" method="post" action="juicios.php">
 <div align="center">
-<table width="137" border="0">
-	<tr align="center" valign="top">
-      <td width="137" valign="middle"><div align="center">
-        <input type="button" name="volver" value="Volver" onclick="location.href = '../menuLegales.php'" /> 
-        </div></td>
-	</tr>
-</table>
-</div>
-  <p align="center" class="Estilo1">M&oacute;dulo De Juicios</p>
-  <?php 
-  	if (isset($_GET['err'])) {
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuLegales.php'" /></p> 
+	<h3>Módulo De Juicios</h3>
+<?php if (isset($_GET['err'])) {
 		$err = $_GET['err'];
-		if ($err == 1) {
-			print("<div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div>");
-		}
-  	}
-  ?>
-  <p align="center"><label>CUIT <input name="cuit" type="text" id="cuit" size="10" />
-  </label></p>
-  <p align="center"><label><input type="submit" name="Submit" value="Buscar" /></label></p>
+		if ($err == 1) { ?>
+			<h3 style="color: brown">El C.U.I.T. ingresado no existe</h3>
+<?php 	}
+	  } ?>
+	<p>C.U.I.T.: <input name="cuit" type="text" id="cuit" size="10" /></p>
+	<p><input type="submit" name="Submit" value="Buscar" /></p>
+</div>
 </form>
 </body>
 </html>

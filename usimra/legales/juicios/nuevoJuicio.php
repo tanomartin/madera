@@ -1,28 +1,18 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionUsimra.php");
 
-$cuit=$_GET['cuit'];
+if (isset($_GET['cuit'])) {
+	$cuit=$_GET['cuit'];
+} else {
+	$cuit=$_POST['cuit'];
+}
+
+include($libPath."cabeceraEmpresaConsulta.php");
 $base = $_SESSION['dbname'];
 $sqlBuscaNro = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = '$base' AND TABLE_NAME = 'cabjuiciosusimra'";
 //echo $sqlBuscaNro; echo "<br>";
 $resBuscaNro = mysql_query($sqlBuscaNro,$db);
 $rowBuscaNro = mysql_fetch_array($resBuscaNro);
-
-//VEO LOS ACUERDOS QUE PUEDEN SER ABSORIVIDOS
-$today = date('Y-m-j');
-$fechaVto = strtotime ('-6 month' , strtotime ($today)) ;
-$fechaVto = date( 'Y-m-j' , $fechaVto );								
-$sqlAcuerdos = "select c.nroacuerdo, t.descripcion, c.nroacta ,o.fechacuota from cabacuerdosusimra c, cuoacuerdosusimra o, tiposdeacuerdos t where c.cuit = $cuit and c.estadoacuerdo = 1 and c.cuit = o.cuit and c.nroacuerdo = o.nroacuerdo and o.montopagada = 0 and c.tipoacuerdo = t.codigo group by c.nroacuerdo order by c.nroacuerdo ASC, o.fechacuota DESC";
-$resAcuerdos = mysql_query($sqlAcuerdos,$db); 
-$i=0;
-$acuAbs = array();
-while($rowAcuerdos = mysql_fetch_assoc($resAcuerdos)) {
-	$fechacuota = $rowAcuerdos['fechacuota'];
-	if ($fechacuota < $fechaVto) { 
-		$acuAbs[$i] = array('nroacu' => $rowAcuerdos['nroacuerdo'], 'tipo' => $rowAcuerdos['descripcion'], 'acta' => $rowAcuerdos['nroacta']);
-		$i++;
-	}
-}
 
 $sqlJuris = "select codidelega from jurisdiccion where cuit = $cuit";
 $resJuris = mysql_query($sqlJuris,$db);
@@ -56,40 +46,63 @@ jQuery(function($){
 		$("#anio"+i).mask("9999");
 	}
 	$("#fechaexp").mask("99-99-9999");
+
+	$("#status").change(function(){
+		var status = $(this).val();
+		limpiarAcuerdos();
+		$("#cartelAcuerdos").show()
+		$("#datosAcuerdos").html("<input type='text' id='cantAcuerdos' name='cantAcuerdos' value='0' style='display: none'/>");
+		$("#datosAcuerdos").hide();
+		if (status != 0) {	
+			$("#cartelAcuerdos").hide();
+			$("#datosAcuerdos").show()
+			$.ajax({
+				type: "POST",
+				dataType: "html",
+				url: "buscarAcuerdos.php",
+				data: {status:status, nrcuit: $(nrcuit).val()},
+			}).done(function(respuesta){
+				 $("#datosAcuerdos").html(respuesta);
+			}); 
+		}
+	});
 });
 
 function cargarPeriodosAbsorvidos(acuerdo) {
 	formatoPeriodoInicio();
 	var n = 0;
-<?php  	$sqlPeriodos = "select * from detacuerdosusimra where cuit = $cuit";
-		$resPeriodos = mysql_query($sqlPeriodos,$db); 
-		while ($rowPeriodos = mysql_fetch_array($resPeriodos)) { ?> 
-			if(acuerdo == <?php echo $rowPeriodos['nroacuerdo'] ?>) {
-				i = "id" + n;
-				m = "mes" + n;
-				a = "anio" + n;
-				c = "concepto" + n;
-				mes = <?php echo $rowPeriodos['mesacuerdo'] ?>;
-				if (mes < 10) {
-					mes = "0"+mes;
-				}
-				document.getElementById(i).value="<?php echo $rowPeriodos['idperiodo'] ?>";
-				document.getElementById(m).value= mes;
-				document.getElementById(a).value="<?php echo $rowPeriodos['anoacuerdo'] ?>";
-				document.getElementById(c).value="<?php echo $rowPeriodos['conceptodeuda'] ?>";
-				n++;
-				mostrando = document.forms.nuevoJuicio.mostrar.value;
-				if (n > mostrando && mostrando < 120) {
-					mostrando = mostrando + 12;
-					mostrarPeriodos();
-				}
+	$.ajax({
+		type: "POST",
+		dataType: "json",
+		url: "buscarPeriodos.php",
+		data: {acuerdo:acuerdo, nrcuit: $(nrcuit).val()},
+	}).done(function(respuesta) {
+		$.each(respuesta, function (index, datos) {
+			i = "id" + n;
+			m = "mes" + n;
+			a = "anio" + n;
+			c = "concepto" + n;
+			mes = datos['mesacuerdo'];
+			if (mes < 10) {
+				mes = "0"+mes;
 			}
-<?php 	}?>
+			document.getElementById(i).value= datos['idperiodo'];
+			document.getElementById(m).value= mes;
+			document.getElementById(a).value= datos['anoacuerdo'];
+			document.getElementById(c).value= datos['conceptodeuda'];
+			n++;
+			mostrando = document.forms.nuevoJuicio.mostrar.value;
+			if (n > mostrando && mostrando < 120) {
+				mostrando = mostrando + 12;
+				mostrarPeriodos();
+			}
+		});
+	});
 }
 
 function limpiarAcuerdos() {
 	formatoPeriodoInicio();
-	var limite = <?php echo sizeof($acuAbs) ?>;
+	var limite = document.forms.nuevoJuicio.cantAcuerdos.value;
 	if (limite == 1) {
 		document.forms.nuevoJuicio.nroacu.checked = false
 	} else {
@@ -124,6 +137,8 @@ function formatoPeriodoInicio() {
 		m = "mes" + i;
 		a = "anio" + i;
 		con = "concepto" + i;
+		f = "fila" + i;
+		document.getElementById(f).style.display="none";
 		document.getElementById(id).value="";
 		document.getElementById(m).value="";
 		document.getElementById(a).value="";
@@ -152,6 +167,7 @@ function validoMes(id) {
 		document.getElementById(nombreMes).focus();
 		return false;
 	} 
+	return true;
 }
 
 function limpioid(id) {
@@ -175,7 +191,7 @@ function limpioid(id) {
 				if (anio == aniocom && mes == mescomp) {
 					alert("Este periódo ya se encuentra en la lista");
 					document.getElementById(mesnombre).value = "";
-					document.getElementById(anionombre).value = "";;
+					document.getElementById(anionombre).value = "";
 					document.getElementById(mesnombre).focus();
 				}
 			}
@@ -240,7 +256,7 @@ function validar(formulario) {
 		return false;
 	}
 	
-	var limite = <?php echo sizeof($acuAbs) ?>;		
+	var limite = document.forms.nuevoJuicio.cantAcuerdos.value;
 	if (limite != 0) {
 		if (formulario.acuabs[1].checked) {
 			if (limite == 1) {
@@ -276,12 +292,11 @@ function validar(formulario) {
   <div align="center">
     <input name="nrcuit" type="text" id="nrcuit" readonly="readonly" size="4" style="visibility:hidden; position:absolute; z-index:1" value="<?php echo $cuit ?>"/>
     <input type="button" name="volver" value="Volver" onclick="location.href = 'juicios.php?cuit=<?php echo $cuit?>'"/>
-    <?php 	
-		include($libPath."cabeceraEmpresaConsulta.php"); 
-		include($libPath."cabeceraEmpresa.php"); 
-	?>
-  	<h3>M&oacute;dulo de Carga - Nuevo Juicio </h3>
+    <?php include($libPath."cabeceraEmpresa.php"); ?>
+  	<h3>Módulo de Carga - Nuevo Juicio </h3>
    	<p><b>NRO ORDEN </b> <input name="nroorden" type="text" id="nroorden" size="4" readonly="readonly" value="<?php echo $rowBuscaNro['AUTO_INCREMENT'] ?>" style="background-color:#CCCCCC; text-align:center"/></p>
+   
+   	<!-- CABECERA -->
    	<table width="1000" style="text-align:left">
       <tr>
         <td>Nro. Certificado</td>
@@ -331,46 +346,21 @@ function validar(formulario) {
 		    <td>Ejecutor</td>
 			<td><input id="ejecutor" type="text" name="ejecutor"/></td>
       </tr>
-       
-<?php if (sizeof($acuAbs) > 0) { ?>
-      <tr>
-        <td colspan="6" style="text-align: center">
-        	<b>Acuerdos a Absorver </b>
-        	[<input name="acuabs" type="radio" value="0" checked="checked" onchange="mostrarAcuerdos()"/> NO - <input name="acuabs" type="radio" value="1" onchange="mostrarAcuerdos()"/> SI ]
-        </td>
-      </tr>
-      <tr>
-        <td colspan="6">
-			<div align="center" id="acuerdos" style="visibility:hidden">
-	            <table>
-	  		<?php foreach($acuAbs as $acuerdo) { ?>
-			      	<tr>
-			        	<td><input name="nroacu" type="radio" value="<?php echo $acuerdo['nroacu']?>" onclick="cargarPeriodosAbsorvidos(this.value)"/></td>
-			            <td align="left"><?php echo $acuerdo['nroacu']." - ".$acuerdo['tipo']. " - Acta: ".$acuerdo['acta']?></td>
-			        </tr>
-			<?php } ?>
-	            </table>
-       	 	</div>		
-        </td>
-      </tr>
-<?php } else { ?>
-  	  <tr>
-        <td colspan="6" style="text-align: center">
-        	<b>Acuerdos a Absorver</b> [ <input name="acuabs" type="radio" value="0" checked="checked"/> NO ]
-        </td>
-      </tr>
-      <tr>
-        <td colspan="6" style="text-align: center">
-        	<b>No hay acuerdos posibles</b><input name="nroacu" type="radio" value="0" checked="checked" style="display:none"/>
-        </td>
-      </tr>
-<?php } ?>
-    </table>
+     </table>
+     
+	<!-- ACUERDOS A ABSORVER --> 
+    <h3>Acuerdos a Absorver </h3>
+    <h4 id="cartelAcuerdos" style="color: blue">Seleccione Status de Deuda para ver los Acuerdos</h4>
+   	<div id="datosAcuerdos" style="display: none">
+   		 <input type="text" id="cantAcuerdos" name="cantAcuerdos" value="0" style="display: none"/>
+   	</div>    
+    
+    <!-- PERIODOS -->
     <input name="mostrar" type="text" id="mostrar" size="1" value="12" readonly="readonly" style="display: none"/>
    	<table width="800" style="text-align: center; margin-top: 15px">
         <tr>
           <td width="50%">
-            <p><b>PER&Iacute;ODOS DEL JUICIO</b></p>
+            <p><b>PERÍODOS DEL JUICIO</b></p>
             <p><input name="masPeridos" type="button" id="masPeridos" value="Mas Periodos"  onclick="mostrarPeriodos()"/></p>
           </td>
 		  <td>
@@ -402,6 +392,8 @@ function validar(formulario) {
 	<?php	} 			
 		} ?>
       </table>
+      
+      <!-- BOTONES DE GUARDADO -->
       <p>
 		<input name="btramite" type="button" id="btramite" value="Tramite Judicial" style="display:none" onclick="validar(document.forms.nuevoJuicio)"/>
 	    <input name="bguardar" type="button" id="bguardar" value="Guardar Juicio" onclick="validar(document.forms.nuevoJuicio)"/>

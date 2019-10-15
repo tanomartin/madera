@@ -10,16 +10,16 @@ include($libPath."controlSessionUsimra.php"); ?>
 
 <body bgcolor="#B2A274">
 <div align="center">
-  <h3>Men&uacute; Legales </h3>
+  <h3>Menú Legales </h3>
   <table width="400" border="2" style="text-align: center">
   	<tr>
     	<td width="200">
      		<p>JUICIOS</p>
-        	<p><a class="enlace" href="juicios/moduloJuicios.php"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+        	<p><a href="juicios/moduloJuicios.php"><img src="img/juicios.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
       	<td width="200">
         	<p>INFROMES</p>
-       		<p><a class="enlace" href="../moduloNoDisponible.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+       		<p><a href="../moduloNoDisponible.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td> 
     </tr>
   </table>
