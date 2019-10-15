@@ -6,19 +6,13 @@ if (isset($_GET['cuit'])) {
 } else {
 	$cuit=$_POST['cuit'];
 }
-
-$sql = "select * from empresas where cuit = $cuit";
-$result = mysql_query($sql,$db); 
-$cant = mysql_num_rows($result); 
-if ($cant != 1) {
+include($libPath."cabeceraEmpresaConsulta.php");
+if ($tipo == "noexiste") {
 	header ("Location: moduloJuicios.php?err=1");
 }
-
 $sqlJuicios =  "select * from cabjuiciosospim where cuit = $cuit";
 $resJuicios = mysql_query($sqlJuicios); 
-$cantJuicios = mysql_num_rows($resJuicios);
-?>
-
+$cantJuicios = mysql_num_rows($resJuicios); ?>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -28,8 +22,7 @@ $cantJuicios = mysql_num_rows($resJuicios);
 <body bgcolor="#CCCCCC" > 
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onClick="location.href = 'moduloJuicios.php'" /></p>
-  <?php include($libPath."cabeceraEmpresaConsulta.php");
-  		include($libPath."cabeceraEmpresa.php"); ?>
+  <?php include($libPath."cabeceraEmpresa.php"); ?>
   <p><input type="button" name="nuevoJuicio" value="Nuevo Juicio" onClick="location.href = 'nuevoJuicio.php?cuit=<?php echo $cuit ?> '" ></p>
 <?php if($cantJuicios > 0) { ?>
 		 <h3>Juicios Existentes </h3>

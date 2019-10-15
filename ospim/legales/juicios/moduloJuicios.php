@@ -25,9 +25,9 @@ jQuery(function($){
 		<h3>Módulo De Juicios</h3>
  <?php  if (isset($_GET['err'])) {
 			$err = $_GET['err'];
-			if ($err == 1) {
-				print("<p><div align='center' style='color:#FF0000'><b> CUIT NO ENCONTRADO </b></div></p>");
-			}
+			if ($err == 1) { ?>
+				<h3 style="color: red">El C.U.I.T. ingresado no existe</h3>
+ <?php		}
 	  	 } ?>
 	  <p>C.U.I.T.: <input name="cuit" type="text" id="cuit" size="10" /></p>
 	  <p><input type="submit" name="Submit" value="Buscar" /></p>
