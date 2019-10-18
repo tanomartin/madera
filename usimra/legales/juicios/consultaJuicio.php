@@ -84,16 +84,18 @@ $canTramite = mysql_num_rows($resTramite);
       			<tr>
         			<td><b>Mes</b></td>
 					<td><b>Año</b></td>
-					<td><b>+ Info</b></td>
+			<?php 	if ($rowCebecera['acuerdorelacionado'] == 1) { ?><td><b>+ Info</b></td> <?php } ?>
       			</tr>
 		<?php   while ($rowPeriodos = mysql_fetch_array($resPeriodos)) { ?>
 					<tr>
 						<td><?php echo $rowPeriodos['mesjuicio'] ?></td>
 						<td><?php echo $rowPeriodos['anojuicio'] ?></td>
-						<td><?php if ($rowPeriodos['nroacuerdo'] != 0) { 
+				  <?php if ($rowCebecera['acuerdorelacionado'] == 1) { ?>
+							<td><?php if ($rowPeriodos['nroacuerdo'] != 0) { 
 							        echo "Abs A. Nro: ".$rowPeriodos ['nroacuerdo']; 
 								  } ?>
-						</td>
+							</td>
+			      <?php } ?>
 					</tr>
 		<?php	} ?>
 			</table>
