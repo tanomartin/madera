@@ -71,9 +71,12 @@ function atender(id,accion, origen) {
 	}
 	
 	var nombreMotivo = "motivo-"+id;
+	var nombreFin = "fin-"+id;
+	console.log(nombreFin);
 	var modoDisplay = document.getElementById(nombreMotivo).style.display;
 	if (accion == "R" && modoDisplay == "none") {
 		document.getElementById(nombreMotivo).style.display = "block";
+		document.getElementById(nombreFin).disabled = "disabled";
 	}
 	if (accion == "R" && modoDisplay == "block") {
 		var motivo = document.getElementById(nombreMotivo).value;
@@ -154,9 +157,9 @@ function atender(id,accion, origen) {
 	 			  		<td><?php echo $rowCorrec['fechacorrector'] ?></td>
 	 			  		<td align="center"><?php echo $rowCorrec['corrector'] ?></td>
 	 			  		<td align="center">
-	 			  			<input type="button" value="FINALIZAR" onclick="atender('<?php echo $rowCorrec['id'] ?>','F','<?php echo $origen?>')" /> |
-	 			  			<input type="button" value="RECHAZAR" onclick="atender('<?php echo $rowCorrec['id'] ?>','R','<?php echo $origen?>')" />
+	 			  			<input type="button" id="fin-<?php echo $rowCorrec['id'] ?>" name="fin-<?php echo $rowCorrec['id'] ?>"  value="FINALIZAR" onclick="atender('<?php echo $rowCorrec['id'] ?>','F','<?php echo $origen?>')" />
 	 			  			<p><textarea id="motivo-<?php echo $rowCorrec['id'] ?>" name="motivo-<?php echo $rowCorrec['id'] ?>" rows="4" cols="23" style="display: none"></textarea></p>
+	 			  			<input type="button" value="RECHAZAR" onclick="atender('<?php echo $rowCorrec['id'] ?>','R','<?php echo $origen?>')" />
 	 			  		</td>	
 	 		  <?php } else { ?>
 	 					<td><b>PENDIENTE</b></td> 
