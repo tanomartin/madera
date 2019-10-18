@@ -84,14 +84,15 @@ $fechamodif = date("Y-m-d H:i:s");
 $sqlUpdateBene = "UPDATE titularesdebaja 
 					SET situaciontitularidad = 8, cuitempresa = '33637617449', codidelega = 0, tipoafiliado = '', 
 						usuariomodificacion = 'sistemas', fechamodificacion = '$fechamodif'
-					WHERE cuil $whereIn AND situaciontitularidad = 0";
+					WHERE cuil IN $whereIn AND situaciontitularidad = 0";
 $sqlImport = "LOAD DATA LOCAL INFILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
 try {
 	$hostname = $_SESSION ['host'];
 	$dbname = $_SESSION ['dbname'];
-	$dbh = new PDO ( "mysql:host=$hostname;dbname=$dbname", $_SESSION ['usuario'], $_SESSION ['clave'] );
+	$dbh = new PDO ( "mysql:host=$hostname;dbname=$dbname", $_SESSION ['usuario'], $_SESSION ['clave'], array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
 	$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 	$dbh->beginTransaction();
+	
 	//echo $sqlImport."<br>";
 	$dbh->exec ($sqlImport);
 	
@@ -104,7 +105,6 @@ try {
 	$modulo = "Desempleo";
 	$bodymail = "Este es un aviso para informar que se proceso el archivo de Desempleo del periodo $carpetaMes.<br><br>Dpto. Sistemas";
 	guardarEmail($username, $subject, $bodymail, $address, $modulo, null);
-	
 	$dbh->commit();
 
 } catch ( PDOException $e ) {
