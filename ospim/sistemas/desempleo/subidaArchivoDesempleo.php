@@ -80,7 +80,11 @@ foreach($lineasNuevoArchivo as $linea) {
 }
 fclose($ar);
 
-$sqlUpdateBene = "UPDATE titularesdebaja SET situaciontitularidad = 8, cuitempresa = '33637617449', codidelega = 0, tipoafiliado = '' WHERE cuil $whereIn AND situaciontitularidad = 0";
+$fechamodif = date("Y-m-d H:i:s");
+$sqlUpdateBene = "UPDATE titularesdebaja 
+					SET situaciontitularidad = 8, cuitempresa = '33637617449', codidelega = 0, tipoafiliado = '', 
+						usuariomodificacion = 'sistemas', fechamodificacion = '$fechamodif'
+					WHERE cuil $whereIn AND situaciontitularidad = 0";
 $sqlImport = "LOAD DATA LOCAL INFILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
 try {
 	$hostname = $_SESSION ['host'];
