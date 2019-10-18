@@ -89,12 +89,21 @@ $sqlImport = "LOAD DATA LOCAL INFILE '$fileProcDirectorio' REPLACE INTO TABLE de
 try {
 	$hostname = $_SESSION ['host'];
 	$dbname = $_SESSION ['dbname'];
-	$dbh = new PDO ( "mysql:host=$hostname;dbname=$dbname", $_SESSION ['usuario'], $_SESSION ['clave'], array(PDO::MYSQL_ATTR_LOCAL_INFILE => true));
+	$dbh = new PDO ( "mysql:host=$hostname;dbname=$dbname", $_SESSION ['usuario'], $_SESSION ['clave']);
 	$dbh->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 	$dbh->beginTransaction();
 	
+	
+	$linkid = mysqli_init();
+	mysqli_options($linkid, MYSQLI_OPT_LOCAL_INFILE, true);
+	mysqli_real_connect($linkid, $hostname, $_SESSION['usuario'], $_SESSION['clave'], $dbname);
 	//echo $sqlImport."<br>";
-	$dbh->exec ($sqlImport);
+	$resLoadArchivoMedicamento = mysqli_query($linkid, $sqlImport);
+	if (!$resLoadArchivoMedicamento) {
+		$error = mysqli_error($linkid);
+		throw new PDOException("Error al intentar realizar el LOAD LOCAL INFILE $nombreArcProc - $error" );
+	}
+	
 	
 	//echo $sqlUpdateBene."<br>";
 	$dbh->exec ($sqlUpdateBene);
