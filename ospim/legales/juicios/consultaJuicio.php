@@ -74,15 +74,20 @@ $nroorden = $_GET['nroorden'];
 		$resPeriodos = mysql_query($sqlPeriodos,$db); 
 		$canPeriodos = mysql_num_rows($resPeriodos); 
 		if ($canPeriodos != 0 ) { ?>
-			<table width="200" height="32" border="1" style="text-align: center">
+			<table width="300" height="32" border="1" style="text-align: center">
       			<tr>
         			<td><b>Mes</b></td>
 					<td><b>Año</b></td>
+					<td><b>+ Info</b></td>
       			</tr>
   	  	<?php while ($rowPeriodos = mysql_fetch_array($resPeriodos)) { ?>
   				<tr>
 					<td><?php echo $rowPeriodos['mesjuicio'] ?></td>
 					<td><?php echo $rowPeriodos['anojuicio'] ?></td>
+					<td><?php if ($rowPeriodos['nroacuerdo'] != 0) { 
+						        echo "Abs A. Nro: ".$rowPeriodos ['nroacuerdo']; 
+							  } ?>
+					</td>
 				</tr>
 	  	<?php } ?>
 			</table>
