@@ -85,7 +85,7 @@ $sqlUpdateBene = "UPDATE titularesdebaja
 					SET situaciontitularidad = 8, cuitempresa = '33637617449', codidelega = 0, tipoafiliado = '', 
 						usuariomodificacion = 'sistemas', fechamodificacion = '$fechamodif'
 					WHERE cuil $whereIn AND situaciontitularidad = 0";
-$sqlImport = "LOAD DATA INFILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
+$sqlImport = "LOAD DATA LOCAL INFILE '$fileProcDirectorio' REPLACE INTO TABLE desempleosss FIELDS TERMINATED BY '|' LINES TERMINATED BY '\\n'";
 try {
 	$hostname = $_SESSION ['host'];
 	$dbname = $_SESSION ['dbname'];
