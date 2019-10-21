@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-09-2019 a las 15:21:04
+-- Tiempo de generación: 21-10-2019 a las 17:48:01
 -- Versión del servidor: 5.6.11-log
 -- Versión de PHP: 5.3.27
 
@@ -642,7 +642,7 @@ CREATE TABLE IF NOT EXISTS `bandejasalidameta` (
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3125 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3130 ;
 
 -- --------------------------------------------------------
 
@@ -816,12 +816,13 @@ CREATE TABLE IF NOT EXISTS `cabcontratoprestador` (
   `codigoprestador` int(4) NOT NULL,
   `fechainicio` date NOT NULL,
   `fechafin` date DEFAULT NULL,
+  `idcontratotercero` int(4) NOT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   `fechamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`idcontrato`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 -- --------------------------------------------------------
 
@@ -891,7 +892,7 @@ CREATE TABLE IF NOT EXISTS `cabjuiciosospim` (
   `fechamodificacion` datetime DEFAULT NULL COMMENT 'Fecha de Ultima Modificacion del Registro',
   `usuariomodificacion` char(50) DEFAULT NULL COMMENT 'Usuario de Ultima Modificacion del Registro',
   PRIMARY KEY (`nroorden`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Cabecera de Juicios de OSPIM' AUTO_INCREMENT=5898 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Cabecera de Juicios de OSPIM' AUTO_INCREMENT=5900 ;
 
 -- --------------------------------------------------------
 
@@ -1231,7 +1232,7 @@ CREATE TABLE IF NOT EXISTS `correcciones` (
   `fechafinalizacion` datetime DEFAULT NULL,
   `corrector` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -2434,6 +2435,7 @@ CREATE TABLE IF NOT EXISTS `facturas` (
   `diasvencimiento` int(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Dias para el Vencimiento del Pago del Comprobante del Prestador',
   `fechavencimiento` date NOT NULL COMMENT 'Fecha de Vencimiento para el pago del Comprobante del Prestador',
   `importecomprobante` decimal(12,2) unsigned NOT NULL COMMENT 'Importe del Comprobante del Prestador',
+  `idestablecimiento` int(4) NOT NULL,
   `fechainicioliquidacion` datetime DEFAULT NULL COMMENT 'Fecha de Inicio de la Liquidacion/Auditoria OSPIM',
   `usuarioliquidacion` char(50) DEFAULT NULL COMMENT 'Usuario que Gestiona la Liquidacion/Auditoria OSPIM',
   `fechacierreliquidacion` datetime DEFAULT NULL COMMENT 'Fecha de Cierre de la Liquidacion/Auditoria OSPIM',
@@ -3150,11 +3152,10 @@ CREATE TABLE IF NOT EXISTS `modulos` (
 --
 
 CREATE TABLE IF NOT EXISTS `modulosdptos` (
-  `id` int(3) unsigned NOT NULL AUTO_INCREMENT,
-  `idmodulo` int(2) unsigned NOT NULL,
+  `idmodulo` int(2) NOT NULL,
   `iddpto` int(2) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+  PRIMARY KEY (`idmodulo`,`iddpto`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -3167,7 +3168,7 @@ CREATE TABLE IF NOT EXISTS `modulosmotivos` (
   `idmodulo` int(2) unsigned NOT NULL,
   `descripcion` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=33 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=34 ;
 
 -- --------------------------------------------------------
 
@@ -3320,7 +3321,7 @@ CREATE TABLE IF NOT EXISTS `ordencabecera` (
   `fechamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`nroordenpago`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=48 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
 
 -- --------------------------------------------------------
 
@@ -3619,7 +3620,7 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `fecharealizacion` date DEFAULT NULL,
   `fechaestado` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
