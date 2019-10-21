@@ -339,7 +339,7 @@ CREATE TABLE IF NOT EXISTS `aranceles` (
   `fechamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` char(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -597,7 +597,7 @@ CREATE TABLE IF NOT EXISTS `bandejaenviados` (
   `from` varchar(50) NOT NULL,
   `subject` varchar(200) NOT NULL,
   `body` text NOT NULL,
-  `address` varchar(50) NOT NULL,
+  `address` text NOT NULL,
   `fechaenvio` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -2310,7 +2310,7 @@ CREATE TABLE IF NOT EXISTS `escuelas` (
 CREATE TABLE IF NOT EXISTS `establecimientos` (
   `codigo` int(4) NOT NULL AUTO_INCREMENT,
   `codigoprestador` int(4) NOT NULL,
-  `nombre` char(100) CHARACTER SET latin1 NOT NULL,
+  `nombre` text CHARACTER SET latin1 NOT NULL,
   `domicilio` char(50) CHARACTER SET latin1 NOT NULL,
   `codlocali` int(6) NOT NULL,
   `codprovin` int(2) NOT NULL,
@@ -2927,11 +2927,11 @@ CREATE TABLE IF NOT EXISTS `medicamentos` (
   `troquel` int(7) NOT NULL,
   `nombre` char(50) CHARACTER SET utf8 NOT NULL,
   `presentacion` char(30) CHARACTER SET utf8 NOT NULL,
-  `IOMAMonto` float(6,2) NOT NULL,
+  `IOMAMonto` float(8,2) NOT NULL,
   `IOMANorma` char(1) CHARACTER SET utf8 NOT NULL,
   `IOMAInterna` char(1) CHARACTER SET utf8 NOT NULL,
   `laboratorio` char(20) CHARACTER SET utf8 NOT NULL,
-  `precio` float(7,2) NOT NULL,
+  `precio` float(9,2) NOT NULL,
   `fecha` date NOT NULL,
   `codigomarca` char(1) CHARACTER SET utf8 NOT NULL,
   `importado` int(1) NOT NULL,
@@ -3063,7 +3063,7 @@ CREATE TABLE IF NOT EXISTS `medimono` (
 CREATE TABLE IF NOT EXISTS `medipreciohistorico` (
   `codigomedicamento` int(5) NOT NULL,
   `fechadesde` date NOT NULL,
-  `precio` float(7,2) NOT NULL,
+  `precio` float(9,2) NOT NULL,
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   PRIMARY KEY (`codigomedicamento`,`fechadesde`,`precio`)
@@ -3191,7 +3191,7 @@ CREATE TABLE IF NOT EXISTS `nacionalidad` (
 CREATE TABLE IF NOT EXISTS `nomencladores` (
   `id` int(3) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) NOT NULL,
-  `contrato` int(1) unsigned NOT NULL,
+  `contrato` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
@@ -3280,7 +3280,7 @@ CREATE TABLE IF NOT EXISTS `odontograma` (
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -3321,7 +3321,7 @@ CREATE TABLE IF NOT EXISTS `ordencabecera` (
   `fechamodificacion` datetime DEFAULT NULL,
   `usuariomodificacion` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`nroordenpago`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=61 ;
 
 -- --------------------------------------------------------
 
@@ -3365,7 +3365,7 @@ CREATE TABLE IF NOT EXISTS `ordennmcabecera` (
   `fecharegistro` datetime NOT NULL,
   `usuarioregistro` char(50) NOT NULL,
   PRIMARY KEY (`nroorden`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 -- --------------------------------------------------------
 
@@ -3620,7 +3620,7 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `fecharealizacion` date DEFAULT NULL,
   `fechaestado` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -3849,7 +3849,7 @@ CREATE TABLE IF NOT EXISTS `prestadoresnm` (
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`codigo`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -4240,7 +4240,7 @@ CREATE TABLE IF NOT EXISTS `profesionales` (
   `fehamodificacion` datetime NOT NULL,
   `usuariomodificacion` char(50) NOT NULL,
   PRIMARY KEY (`codigoprofesional`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -4402,7 +4402,7 @@ CREATE TABLE IF NOT EXISTS `reqfiscalizospim` (
   `fechaanulacion` datetime DEFAULT NULL COMMENT 'Fecha de Anulacion del Requerimiento',
   `usuarioanulacion` char(50) DEFAULT NULL COMMENT 'Usuario que Anula el Requerimiento',
   PRIMARY KEY (`nrorequerimiento`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de OSPIM' AUTO_INCREMENT=29927 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Requerimientos de Fiscalizacion de OSPIM' AUTO_INCREMENT=29927 ;
 
 -- --------------------------------------------------------
 
