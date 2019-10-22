@@ -5,27 +5,13 @@ $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
 $sqlCategoria = "select * from practicascategorias";
-$resCategoria = mysql_query($sqlCategoria,$db);
-?>
+$resCategoria = mysql_query($sqlCategoria,$db); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Alta Profesinoal :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
--->
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -153,11 +139,8 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigopresta ?>'" />
-  </span> 
-  </p> 
- <p class="Estilo2">Nuevo Pofesional </p>
+  <p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigopresta ?>'" /></p> 
+  <h3>Nuevo Pofesional </h3>
   <table width="500" border="1" style="margin-bottom: 20px">
     <tr>
       <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
@@ -219,11 +202,10 @@ function validar(formulario) {
 	    <td><div align="left">
 	      <select name="selectTratamiento" size="1" id="selectTratamiento">
             <option value="0" selected="selected">Seleccione un valor </option>
-            <?php 
-					$query="select * from tipotratamiento";
-					$result=mysql_query($query,$db);
-					while ($rowtipos=mysql_fetch_array($result)) { ?>
-            <option value="<?php echo $rowtipos['codigotratamiento'] ?>"><?php echo $rowtipos['descripcion']  ?></option>
+            <?php $query="select * from tipotratamiento";
+				  $result=mysql_query($query,$db);
+				  while ($rowtipos=mysql_fetch_array($result)) { ?>
+            		<option value="<?php echo $rowtipos['codigotratamiento'] ?>"><?php echo $rowtipos['descripcion']  ?></option>
             <?php } ?>
           </select>
 	    </div></td>

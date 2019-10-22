@@ -19,36 +19,27 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Profesional :.</title>
-<style type="text/css">
-<!--
-.Estilo2 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
 </head>
-
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><span style="text-align:center"><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigopresta ?>'" /></span></p>
-  <p class="Estilo2">Ficha Pofesional </p>
-  <table width="500" border="1" style="margin-bottom: 20px">
-    <tr>
-      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
-      <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
-    </tr>
-    <tr>
-      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
-      <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
-    </tr>
-  </table>
-	  <table border="1">
+	<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarProfesionales.php?codigo=<?php echo $codigopresta ?>'" /></p>
+  	<h3>Ficha Pofesional </h3>
+	<table width="500" border="1" style="margin-bottom: 20px">
+	    <tr>
+	      <td width="163"><div align="right"><strong>Código</strong></div></td>
+	      <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
+	    </tr>
+	    <tr>
+	      <td><div align="right"><strong>Razón Social</strong></div></td>
+	      <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
+	    </tr>
+	</table>
+	<table border="1">
         <tr>
-          <td><div align="right"><strong>C&oacute;digo</strong></div></td>
+          <td><div align="right"><strong>Código</strong></div></td>
           <td colspan="6"><div align="left"><strong><?php echo $rowConsultaProf['codigoprofesional']  ?></strong></div></td>
         </tr>
         <tr>
@@ -88,17 +79,15 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
         <tr>
           <td><div align="right"><strong>Tratamiento</strong></div></td>
           <td><div align="left">
-        <?php 
-		if($rowConsultaProf['tratamiento'] != 0) {
-			$codigoTrat = $rowConsultaProf['tratamiento'];
-			$sqlConsultaTrata = "SELECT descripcion FROM tipotratamiento WHERE codigotratamiento = $codigoTrat";
-			$resConsultaTrata = mysql_query($sqlConsultaTrata,$db);
-			$rowConsultaTrata = mysql_fetch_assoc($resConsultaTrata);
-			echo $rowConsultaTrata['descripcion'];
-		} else {
-			echo "-";
-		}
-		?>
+     	  <?php if($rowConsultaProf['tratamiento'] != 0) {
+					$codigoTrat = $rowConsultaProf['tratamiento'];
+					$sqlConsultaTrata = "SELECT descripcion FROM tipotratamiento WHERE codigotratamiento = $codigoTrat";
+					$resConsultaTrata = mysql_query($sqlConsultaTrata,$db);
+					$rowConsultaTrata = mysql_fetch_assoc($resConsultaTrata);
+					echo $rowConsultaTrata['descripcion'];
+				} else {
+					echo "-";
+				} ?>
           </div></td>
           <td><div align="left"><strong>Matr&iacute;cula Nacional </strong></div></td>
           <td><div align="left"><?php echo $rowConsultaProf['matriculanacional'] ?></div></td>
@@ -111,9 +100,9 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
           <td><strong>Activo</strong></td>
 		  <td colspan="3"><?php if ($rowConsultaProf['activo'] == 0 ) { echo "NO"; } else { echo "SI"; } ?></td>
 		</tr>
-  </table>
-<p>	<input class="nover" name="modificar" type="button" value="Modificar Profesional" onclick="location.href='modificarProfesional.php?codigoprof=<?php echo $rowConsultaProf['codigoprofesional']?>&codigopresta=<?php echo $rowConsultaPresta['codigoprestador']  ?>'" /></p>
-<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
+  	</table>
+	<p><input class="nover" name="modificar" type="button" value="Modificar Profesional" onclick="location.href='modificarProfesional.php?codigoprof=<?php echo $rowConsultaProf['codigoprofesional']?>&codigopresta=<?php echo $rowConsultaPresta['codigoprestador']  ?>'" /></p>
+	<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
 </html>
