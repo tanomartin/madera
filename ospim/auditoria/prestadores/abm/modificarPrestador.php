@@ -11,27 +11,13 @@ $sqlConsultaServcio = "SELECT s.descripcion FROM prestadorservicio p, tiposervic
 $resConsultaServcio = mysql_query($sqlConsultaServcio,$db);
 
 $sqlConsultaJuris = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $codigo and p.codidelega = d.codidelega";
-$resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
-
-?>
+$resConsultaJuris = mysql_query($sqlConsultaJuris,$db); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Prestador :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
-.miestilo {
-	background-color: #CCCCCC;
-}
--->
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -422,7 +408,7 @@ function validar() {
         </td>
       </tr>
       <tr>
-        <td><div align="right"><b>Raz&oacute;n Social</b></div></td>
+        <td><div align="right"><b>Razón Social</b></div></td>
         <td colspan="3">
         	<div align="left">
             	<input name="nombre" type="text" id="nombre" size="120" value="<?php echo $rowConsultaPresta['nombre'] ?>"/>

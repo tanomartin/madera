@@ -33,20 +33,6 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Módulo Prestadores :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -112,66 +98,60 @@ function abrirPantalla(dire) {
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="moduloAbmPrestadores.php">
   <div align="center">
 	  <input type="reset" name="volver" value="Volver" onclick="location.href = '../menuPrestadores.php'" />
-	  <p class="Estilo1">M&oacute;dulo Prestadores </p>
+	  <h3>Módulo Prestadores </h3>
 	  <p><label><input type="button" name="nuevo" value="Nuevo Prestador" onclick="abrirPantalla('nuevoPrestador.php')" /></label></p>
-	  <?php 
-			if ($noExiste == 1) {
-				print("<div style='color:#FF0000'><b> NO EXISTE PRESTADOR CON ESTE FILTRO DE BUSQUEDA </b></div><br>");
-			}
-	  ?>   
-    <table width="400" border="0">
-      <tr>
-        <td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
-        <td><div align="left"><input type="radio" name="filtro"  value="0" checked="checked" /> Código </div></td>
-      </tr>
-      <tr>
-        <td><div align="left"><input type="radio" name="filtro" value="1" /> Nombre o Razón Social</div></td>
-      </tr>
-      <tr>
-        <td><div align="left"><input type="radio" name="filtro" value="2" /> C.U.I.T.</div></td>
-      </tr> 
-	</table>
-    <p><strong>Dato</strong> <input name="dato" type="text" id="dato" size="14" /></p>
-    <p><input type="submit" name="Buscar" value="Buscar" /></p>
-   <?php if ($noExiste == 0 and isset($dato)) { ?>
-  		<p><?php echo $cartel ?></p>
-   <table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
-	<thead>
-		<tr>
-			<th>Código</th>
-			<th>Nombre o Razón Social</th>
-			<th>C.U.I.T.</th>
-			<th>Telefono</th>
-			<th>E-mail Primario</th>
-			<th>Acci&oacute;n</th>
-		</tr>
-	</thead>
-	<tbody>
-	<?php
-		while($rowPrestador = mysql_fetch_array($resPrestador)) {
-	?>
-		<tr>
-			<td><?php echo $rowPrestador['codigoprestador'];?></td>
-			<td><?php echo $rowPrestador['nombre'];?></td>
-			<td><?php echo $rowPrestador['cuit'];?></td>
-			<td><?php echo $rowPrestador['telefono1'];?></td>
-			<td><?php echo $rowPrestador['email1'];?></td>
-			<td>
-				<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> | 
-				<?php if ($rowPrestador['montofijo'] == 0) { ?>
-					<input name="contrato" type="button" value="Contrato" onclick="abrirPantalla('contratos/consultaContratosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
-				<?php } else { ?>
-					<input name="contrato" type="button" value="Arancel" onclick="abrirPantalla('aranceles/consultaArancelPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
-				<?php } ?>
-				<?php if ($rowPrestador['personeria'] == 3) { ?> |  <input name="profesionales" type="button" value="Profesionales" onclick="abrirPantalla('profesionales/profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
-				<?php if ($rowPrestador['personeria'] == 4) { ?> |  <input name="establecimientos" type="button" value="Establecimientos" onclick="abrirPantalla('establecimientos/establecimientosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
-			</td>
-		</tr>
-	<?php
-		}
-	?>
-	</tbody>
-  </table>
+	  <?php if ($noExiste == 1) { ?>
+				<h3 style='color:#FF0000'>NO EXISTE PRESTADOR CON ESTE FILTRO DE BUSQUEDA </h3>
+	  <?php } ?>   
+	  <table width="400" border="0">
+	      <tr>
+	        <td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
+	        <td><div align="left"><input type="radio" name="filtro"  value="0" checked="checked" /> Código </div></td>
+	      </tr>
+	      <tr>
+	        <td><div align="left"><input type="radio" name="filtro" value="1" /> Nombre o Razón Social</div></td>
+	      </tr>
+	      <tr>
+	        <td><div align="left"><input type="radio" name="filtro" value="2" /> C.U.I.T.</div></td>
+	      </tr> 
+	   </table>
+	   <p><strong>Dato</strong> <input name="dato" type="text" id="dato" size="14" /></p>
+	   <p><input type="submit" name="Buscar" value="Buscar" /></p>
+	   <?php if ($noExiste == 0 and isset($dato)) { ?>
+	  		<p><?php echo $cartel ?></p>
+		   <table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
+			<thead>
+				<tr>
+					<th>Código</th>
+					<th>Nombre o Razón Social</th>
+					<th>C.U.I.T.</th>
+					<th>Telefono</th>
+					<th>E-mail Primario</th>
+					<th>Acci&oacute;n</th>
+				</tr>
+			</thead>
+			<tbody>
+		<?php while($rowPrestador = mysql_fetch_array($resPrestador)) { ?>
+			<tr>
+				<td><?php echo $rowPrestador['codigoprestador'];?></td>
+				<td><?php echo $rowPrestador['nombre'];?></td>
+				<td><?php echo $rowPrestador['cuit'];?></td>
+				<td><?php echo $rowPrestador['telefono1'];?></td>
+				<td><?php echo $rowPrestador['email1'];?></td>
+				<td>
+					<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> | 
+					<?php if ($rowPrestador['montofijo'] == 0) { ?>
+						<input name="contrato" type="button" value="Contrato" onclick="abrirPantalla('contratos/consultaContratosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
+					<?php } else { ?>
+						<input name="contrato" type="button" value="Arancel" onclick="abrirPantalla('aranceles/consultaArancelPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
+					<?php } ?>
+					<?php if ($rowPrestador['personeria'] == 3) { ?> |  <input name="profesionales" type="button" value="Profesionales" onclick="abrirPantalla('profesionales/profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
+					<?php if ($rowPrestador['personeria'] == 4) { ?> |  <input name="establecimientos" type="button" value="Establecimientos" onclick="abrirPantalla('establecimientos/establecimientosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
+				</td>
+			</tr>
+		<?php } ?>
+			</tbody>
+	  	</table>
   <?php } ?>
   </div>
 </form>

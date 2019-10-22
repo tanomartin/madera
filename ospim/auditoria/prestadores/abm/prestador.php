@@ -15,23 +15,13 @@ $resConsultaServcio = mysql_query($sqlConsultaServcio,$db);
 $canConsultaServcio = mysql_num_rows($resConsultaServcio);
 
 $sqlConsultaJuris = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $codigo and p.codidelega = d.codidelega";
-$resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
-
-?>
+$resConsultaJuris = mysql_query($sqlConsultaJuris,$db); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Prestador :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -39,11 +29,11 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><strong>Ficha Prestador</strong></p>
+  <h3>Ficha Prestador</h3>
 	  <div class="grilla">
 	  <table>
         <tr>
-          <td><div align="right" class="title"><strong>C&oacute;digo</strong></div></td>
+          <td><div align="right" class="title"><strong>Código</strong></div></td>
           <td colspan="5"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
         </tr>
         <tr>
@@ -55,7 +45,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
           <td><div align="left"><?php if ($rowConsultaPresta['vtoexento'] != NULL) { echo invertirFecha($rowConsultaPresta['vtoexento']); } ?></div></td>
         </tr>
         <tr>
-          <td><div align="right" class="title"><strong>Raz&oacute;n Social</strong></div></td>
+          <td><div align="right" class="title"><strong>Razón Social</strong></div></td>
           <td colspan="5"><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
         </tr>
         <tr>

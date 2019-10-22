@@ -5,15 +5,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Alta Prestador :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -578,8 +569,8 @@ function validar() {
     </table>
     <table width="900">
       <tr>
-        <td width="300" height="46"><div align="center" class="Estilo1"><strong>Servicios </strong></div></td>
-        <td colspan="2"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></td>
+        <td width="300" height="46"><div align="center"><strong>Servicios </strong></div></td>
+        <td colspan="2"><div align="center" ><strong>Jurisdiccion </strong></div></td>
       </tr>
       <tr>
         <td valign="top">
