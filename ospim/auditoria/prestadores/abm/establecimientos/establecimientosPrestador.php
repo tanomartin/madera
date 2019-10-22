@@ -2,22 +2,13 @@
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
-$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
-?>
+$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Establecimientos Prestador :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -52,12 +43,11 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 	});
 	
 </script>
-
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><strong>Profesionales del  Prestador</strong></p>
-	  <table width="500" border="1" style="margin-bottom: 20px">
+  	<h3>Profesionales del  Prestador</h3>
+	<table width="500" border="1" style="margin-bottom: 20px">
         <tr>
           <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
           <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
@@ -67,38 +57,30 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
           <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
         </tr>
   </table>
-  	  <?php 
-  		$sqlEstable = "SELECT codigo, nombre FROM establecimientos WHERE codigoprestador = $codigo";
+  <?php $sqlEstable = "SELECT codigo, nombre FROM establecimientos WHERE codigoprestador = $codigo";
 		$resEstable = mysql_query($sqlEstable,$db);
 		$numEstable  = mysql_num_rows($resEstable);
-		if ($numEstable > 0) {
-  ?>
-	<table style="text-align:center; width:600px" id="establecimientos" class="tablesorter" >
-			<thead>
-			  <tr>
-				<th>C&oacute;digo</th>
-				<th>Nombre</th>
-			  </tr>
-			</thead>
-			<tbody>
-			  <?php
-			while($rowEstable= mysql_fetch_array($resEstable)) {
-		?>
-			  <tr>
-				<td><?php echo $rowEstable['codigo'];?></td>
-				<td><?php echo $rowEstable['nombre'];?></td>
-			  </tr>
-			  <?php
-			}
-		?>
-			</tbody>
-  </table>
-	<p>
-		<input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" />
-   </p>	  
-	<?php } else { 	print("<p><div style='color:#FF0000'><b> ESTE PRESTADOR NO TIENE ESTABLECIMIENTOS CARGADO </b></div></p>"); } ?>
-	    
-	
+		if ($numEstable > 0) {  ?>
+			<table style="text-align:center; width:600px" id="establecimientos" class="tablesorter" >
+				<thead>
+					<tr>
+						<th>Código</th>
+						<th>Nombre</th>
+					</tr>
+				</thead>
+				<tbody>
+				 <?php while($rowEstable= mysql_fetch_array($resEstable)) { ?>
+						  <tr>
+							<td><?php echo $rowEstable['codigo'];?></td>
+							<td><?php echo $rowEstable['nombre'];?></td>
+						  </tr>
+				 <?php } ?>
+				</tbody>
+		    </table>
+			<p><input type="button" class="nover" name="imprimir" value="Imprimir" onclick="window.print();" /></p>	  
+  <?php } else { ?>
+  			<h3 style='color:#FF0000'>ESTE PRESTADOR NO TIENE ESTABLECIMIENTOS CARGADO </h3> 
+  <?php } ?>
 </div>
 </body>
 </html>

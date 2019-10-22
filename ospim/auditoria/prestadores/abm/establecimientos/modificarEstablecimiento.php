@@ -10,23 +10,13 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 $codigo = $_GET['codigo'];
 $sqlConsultaEsta = "SELECT p.*, pr.nombre as prestador, l.nomlocali as localidad, r.descrip as provincia FROM establecimientos p, prestadores pr, localidades l, provincia r WHERE p.codigo = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.codigoprestador = pr.codigoprestador";
 $resConsultaEsta = mysql_query($sqlConsultaEsta,$db);
-$rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
-
-?>
+$rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modificar Establecimiento :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
@@ -186,25 +176,22 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p><span style="text-align:center">
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'establecimiento.php?codigo=<?php echo $codigo ?>&codigopresta=<?php echo $codigopresta ?>'" />
-  </span>  
-  </p>
-   <p class="Estilo1">Modificar Establecimiento</p>
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'establecimiento.php?codigo=<?php echo $codigo ?>&codigopresta=<?php echo $codigopresta ?>'" /> </p>
+   <h3>Modificar Establecimiento</h3>
    <table width="500" border="1">
     <tr>
-      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
+      <td width="163"><div align="right"><strong>Código</strong></div></td>
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Razón Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
   <form name="modifEstablecimiento" id="modifEstablecimiento" method="post" onsubmit="return validar(this)" action="guardarModificacionEstablecimiento.php?codigopresta=<?php echo $codigopresta ?>">
     <table border="0">
       <tr>
-        <td><div align="right"><strong>C&oacute;digo</strong></div></td>
+        <td><div align="right"><strong>Código</strong></div></td>
         <td colspan="5"><div align="left">
           <input name="codigo" readonly="readonly" style="background:#CCCCCC" type="text" id="codigo" size="4" value="<?php echo $rowConsultaEsta['codigo'] ?>"/>
         </div></td>

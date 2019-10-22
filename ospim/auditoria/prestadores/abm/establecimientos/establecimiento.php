@@ -10,9 +10,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 $codigo = $_GET['codigo'];
 $sqlConsultaEsta = "SELECT p.*, pr.nombre as prestador, l.nomlocali as localidad, r.descrip as provincia FROM establecimientos p, prestadores pr, localidades l, provincia r WHERE p.codigo = $codigo and p.codlocali = l.codlocali and p.codprovin = r.codprovin and p.codigoprestador = pr.codigoprestador";
 $resConsultaEsta = mysql_query($sqlConsultaEsta,$db);
-$rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
-
-?>
+$rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -20,14 +18,6 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Establecimiento :.</title>
-<style type="text/css">
-<!--
-.Estilo2 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -35,21 +25,21 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta);
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><span style="text-align:center"><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarEstablecimientos.php?codigo=<?php echo $codigopresta ?>'" /></span></p>
-  <p class="Estilo2">Ficha Establecimiento </p>
+  <p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'modificarEstablecimientos.php?codigo=<?php echo $codigopresta ?>'" /></p>
+  <h3>Ficha Establecimiento </h3>
   <table width="500" border="1" style="margin-bottom: 20px">
     <tr>
-      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
+      <td width="163"><div align="right"><strong>Código</strong></div></td>
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Razón Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
 	  <table border="1">
         <tr>
-          <td><div align="right"><strong>C&oacute;digo</strong></div></td>
+          <td><div align="right"><strong>Código</strong></div></td>
           <td colspan="6"><div align="left"><strong><?php echo $rowConsultaEsta['codigo']  ?></strong></div></td>
         </tr>
         <tr>

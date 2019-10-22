@@ -4,8 +4,7 @@ include($libPath."controlSessionOspim.php");
 $codigopresta = $_GET['codigopresta'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigopresta";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
-$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
-?>
+$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
