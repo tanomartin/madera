@@ -11,9 +11,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
 $sqlArancel = "SELECT * FROM aranceles WHERE id = $id";
 $resArancel = mysql_query($sqlArancel,$db);
-$rowArancel = mysql_fetch_assoc($resArancel);
-
-?>
+$rowArancel = mysql_fetch_assoc($resArancel); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -77,32 +75,30 @@ function validar(formulario) {
   <h3>Modificación Contratos </h3>
   <table width="500" border="1">
     <tr>
-      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
+      <td width="163"><div align="right"><strong>Código</strong></div></td>
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Nombre / Razón Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
   <h3>Datos Arancel</h3>
-  <?php if (isset($_GET['err'])) { ?>
-  			<h4><font color='#FF0000'>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</font></h4>
- <?php	 } ?>
+ <?php if (isset($_GET['err'])) { ?>
+  			<h4><font color='#FF0000'>Existe un arancel con fecha de finalización posterior a la fecha de inicio que quiere ingresar</font></h4>
+ <?php } ?>
   <form id="modifArancel" name="modifArancel" method="post" onsubmit="return validar(this)" action="guardarModificacionArancel.php?codigo=<?php echo $codigo ?>&id=<?php echo  $rowArancel['id'] ?>">
-    <p> <b>Fecha Inicio: </b><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowArancel['fechainicio']) ?>"/> - 
-    <?php if ($rowArancel['fechafin'] == NULL) {
-				$valorfin = "-";
-		   } else {
-		   		$valorfin = invertirFecha($rowArancel['fechafin']);
-		   }
-	?>
-	<b>Fecha Fin: </b><input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo $valorfin ?>"/> -
-	<b>Monto:</b> <input type="text" name="monto" id="monto" size="8" value="<?php echo $rowArancel['monto'] ?>"/>
-    </p>
-    <p>
-      <label><input type="submit" name="Submit" value="Guardar" /></label>	
+    <p> 
+	    <b>Fecha Inicio: </b><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo invertirFecha($rowArancel['fechainicio']) ?>"/> - 
+	    <?php if ($rowArancel['fechafin'] == NULL) {
+					$valorfin = "-";
+			   } else {
+			   		$valorfin = invertirFecha($rowArancel['fechafin']);
+			   } ?>
+		<b>Fecha Fin: </b><input type="text" name="fechaFin" id="fechaFin" size="8" value="<?php echo $valorfin ?>"/> -
+		<b>Monto:</b> <input type="text" name="monto" id="monto" size="8" value="<?php echo $rowArancel['monto'] ?>"/>
 	</p>
+    <p><input type="submit" name="Submit" value="Guardar" /></p>
   </form>
 </div>
 </body>

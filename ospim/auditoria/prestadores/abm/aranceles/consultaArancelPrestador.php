@@ -7,8 +7,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
 $sqlAranceles = "SELECT c.* FROM aranceles c  WHERE c.codigoprestador = $codigo";
 $resAranceles = mysql_query($sqlAranceles,$db);
-$numAranceles = mysql_num_rows($resAranceles);
-?>
+$numAranceles = mysql_num_rows($resAranceles); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -53,11 +52,11 @@ $numAranceles = mysql_num_rows($resAranceles);
   <p><strong>Aranceles Prestador</strong></p>
 	  <table width="500" border="1">
         <tr>
-          <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
+          <td width="163"><div align="right"><strong>Código</strong></div></td>
           <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
+          <td><div align="right"><strong>Nombre / Razón Social</strong></div></td>
           <td><div align="left">
               <div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
           </div></td>
@@ -68,15 +67,14 @@ $numAranceles = mysql_num_rows($resAranceles);
 		   <table style="text-align:center; width:400px" id="practicas" class="tablesorter" >
 				<thead>
 				  <tr>
-					<th>C&oacute;digo</th>
+					<th>Código</th>
 					<th>Fecha Inicio</th>
 					<th>Fecha Fin</th>
 					<th>Monto</th>
 				  </tr>
 				</thead>
 				<tbody>
-				  <?php
-				while($rowArancel = mysql_fetch_array($resAranceles)) { ?>
+		 <?php  while($rowArancel = mysql_fetch_array($resAranceles)) { ?>
 				  <tr>
 					<td><?php echo $rowArancel['id'];?></td>
 					<td><?php echo invertirFecha($rowArancel['fechainicio']);?></td>
@@ -84,8 +82,7 @@ $numAranceles = mysql_num_rows($resAranceles);
 								  echo "-";
 							  } else {
 							   	  echo invertirFecha($rowArancel['fechafin']);
-							  }
-							 ?>
+							  } ?>
 					</td>
 					<td><?php echo number_format($rowArancel['monto'],2,',','.')  ?></td>
 				  </tr>

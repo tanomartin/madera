@@ -15,9 +15,7 @@ $numAranceles = mysql_num_rows($resAranceles);
 $today = date("Y-m-d");
 $sqlArancelesAbiertos = "SELECT c.* FROM aranceles c  WHERE c.codigoprestador = $codigo and (c.fechafin is null or c.fechafin > '$today')";
 $resArancelesAbiertos = mysql_query($sqlArancelesAbiertos,$db);
-$numArancelesAbiertos = mysql_num_rows($resArancelesAbiertos);
-
-?>
+$numArancelesAbiertos = mysql_num_rows($resArancelesAbiertos); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -60,24 +58,23 @@ $numArancelesAbiertos = mysql_num_rows($resArancelesAbiertos);
   <h3>ABM de Aranceles </h3>
   <table width="500" border="1">
     <tr>
-      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
+      <td width="163"><div align="right"><strong>Código</strong></div></td>
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Razón Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
    <h3>Aranceles</h3>
-	 <?php 
-		if ($numArancelesAbiertos == 0) { ?>
+  <?php if ($numArancelesAbiertos == 0) { ?>
 			<p><input type="button" name="nuevoArancel" id="nuevoArancel" value="Nuevo Arancel" onclick="location.href='nuevoArancel.php?codigo=<?php echo $codigo ?>'"/></p>
   <?php } 
 		if ($numAranceles > 0) { ?>
         <table style="text-align:center; width:800px" id="contratos" class="tablesorter" >
           <thead>
             <tr>
-             	<th>C&oacute;digo</th>
+             	<th>Código</th>
 				<th>Fecha Inicio</th>
 				<th>Fecha Fin</th>
 				<th>Monto</th>
@@ -85,8 +82,7 @@ $numArancelesAbiertos = mysql_num_rows($resArancelesAbiertos);
             </tr>
           </thead>
           <tbody>
-            <?php
-			while($rowAranceles = mysql_fetch_array($resAranceles)) { ?>
+      <?php while($rowAranceles = mysql_fetch_array($resAranceles)) { ?>
 				<tr>
 					<td><?php echo $rowAranceles['id'];?></td>
 					<td><?php echo invertirFecha($rowAranceles['fechainicio']);?></td>

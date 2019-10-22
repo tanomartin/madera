@@ -6,8 +6,7 @@ include($libPath."funcionespracticas.php");
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
-$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
-?>
+$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -71,19 +70,18 @@ function validar(formulario) {
   <h3>Alta Arancel </h3>
   <table width="500" border="1">
     <tr>
-      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
+      <td width="163"><div align="right"><strong>Código</strong></div></td>
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Razón Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
   
   <form id="nuevoContrato" name="nuevoContrato" method="post" onsubmit="return validar(this)" action="guardarNuevoArancel.php?codigo=<?php echo $codigo ?>">
     <h3>Datos Arancel</h3>
-    <?php 
-		$fi = ""; $ff = ""; $mm = "";
+  <?php $fi = ""; $ff = ""; $mm = "";
 		if (isset($_GET['err'])) {
 			$fi = $_GET['fi'];
 			$ff = $_GET['ff'];
