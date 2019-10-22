@@ -23,7 +23,8 @@ if ($numCabContratoFin > 0) {
 	Header("Location: $pagina"); 
 	exit(0);
 } else {
-	$sqlUpdateContrato = "UPDATE cabcontratoprestador SET fechainicio = '$fechaInicio', fechafin = $fechaFin, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' WHERE idcontrato = $idcontrato and codigoprestador = $codigopresta";
+	$sqlUpdateContrato = "UPDATE cabcontratoprestador SET fechainicio = '$fechaInicio', fechafin = $fechaFin, fechamodificacion = '$fechamodificacion', usuariomodificacion = '$usuariomodificacion' 
+							WHERE (idcontrato = $idcontrato AND codigoprestador = $codigopresta) OR idcontratotercero = $idcontrato";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];

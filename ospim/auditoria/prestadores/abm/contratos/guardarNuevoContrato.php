@@ -1,6 +1,8 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
+var_dump($_POST);echo "<br>";
+
 $codigopresta = $_GET['codigo'];
 $fechaInicio = fechaParaGuardar($_POST['fechaInicio']);
 if ($_POST['fechaFin'] != "") {
@@ -22,7 +24,11 @@ if ($numCabContratoFin > 0) {
 	Header("Location: $pagina"); 
 	exit(0);
 } else {
-	$sqlInsertCab = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio',$fechaFin,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+	$contratoTercero = 0;
+	if ($_POST['relacion'] != 0) {
+		$contratoTercero = $_POST['contratoTercero'];
+	} 
+	$sqlInsertCab = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,$codigopresta,'$fechaInicio',$fechaFin,$contratoTercero,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
@@ -30,7 +36,7 @@ if ($numCabContratoFin > 0) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 	
-		//print($sqlInsertCab."<br>");
+		//echo $sqlInsertCab."<br>";
 		$dbh->exec($sqlInsertCab);
 		
 		$dbh->commit();
@@ -40,7 +46,7 @@ if ($numCabContratoFin > 0) {
 		$error = "Cod. Error: ".$e->getCode()." - Linea: ".$e->getLine();
 		$dbh->rollback();
 		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
-		//Header($redire);
+		Header($redire);
 		exit(0);
 	}
 }

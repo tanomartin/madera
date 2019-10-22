@@ -11,9 +11,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
 $sqlContrato = "SELECT * FROM cabcontratoprestador WHERE idcontrato = $idcontrato";
 $resContrato = mysql_query($sqlContrato,$db);
-$rowContrato = mysql_fetch_assoc($resContrato);
-
-?>
+$rowContrato = mysql_fetch_assoc($resContrato); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -86,19 +84,16 @@ function validar(formulario) {
   <form id="modifContrato" name="modifContrato" method="post" onsubmit="return validar(this)" action="guardarAumentoContrato.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo  $rowContrato['idcontrato'] ?>">
     <h3>Datos Contrato a Duplicar</h3>
     <p>
-	<b>Id:</b> <?php echo $idcontrato ?>
-	<b>- Fecha Inicio:</b> <?php echo invertirFecha($rowContrato['fechainicio']) ?>
-	<b>- Fecha Fin:</b> <?php if ($rowContrato['fechafin'] != NULL) { echo invertirFecha($rowContrato['fechafin']); } else { echo "-"; } ?>
+		<b>Id:</b> <?php echo $idcontrato ?>
+		<b>- Fecha Inicio:</b> <?php echo invertirFecha($rowContrato['fechainicio']) ?>
+		<b>- Fecha Fin:</b> <?php if ($rowContrato['fechafin'] != NULL) { echo invertirFecha($rowContrato['fechafin']); } else { echo "-"; } ?>
     </p>
-    <p><?php 
-    	$fi = ""; $ff = "";
-		if (isset($_GET['err'])) {
-  			print("<font color='#FF0000'><b>Existe un contrato con fechas en conflicto con las que se quieren cargar. Verifique las fechas.</b></font>");
+ <?php  $fi = ""; $ff = "";
+		if (isset($_GET['err'])) { 
 			$fi = $_GET['fi'];
-			$ff = $_GET['ff'];
- 		}
-	?>
-	</p>
+			$ff = $_GET['ff']; ?>
+			<h4 style="color: red">Existe un contrato con fechas en conflicto con las que se quieren cargar. Verifique las fechas.</h4>
+ <?php	} ?>
     <h3>Datos Nuevo Contrato</h3>
     <p>
 		<b>Fecha Inicio: </b><input type="text" name="fechaInicio" id="fechaInicio" size="8" value="<?php echo $fi ?>"/> - 

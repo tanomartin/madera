@@ -46,13 +46,14 @@ if ($numCabContratoFin > 0) {
 			$rowCabContratoFin = mysql_fetch_array($resCabContratoFin);
 			$nuevafechaFin = strtotime ( '-1 day' , strtotime($fechaInicio)) ;
 			$nuevafechaFin = date ( 'Y-m-j' , $nuevafechaFin );
-			$sqlUpdateFechaFin = "UPDATE cabcontratoprestador SET fechafin = '$nuevafechaFin', usuariomodificacion = '$usuariomodificacion', fechamodificacion = '$fechamodificacion'  WHERE idcontrato = $idcontrato";
+			$sqlUpdateFechaFin = "UPDATE cabcontratoprestador SET fechafin = '$nuevafechaFin', usuariomodificacion = '$usuariomodificacion', fechamodificacion = '$fechamodificacion'  
+									WHERE idcontrato = $idcontrato OR idcontratotercero = $idcontrato";
 			//echo $sqlUpdateFechaFin."<br><br>";
 			$dbh->exec($sqlUpdateFechaFin);
 		}
 		
-		$sqlInsertCabecera = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,'$codigopresta','$fechaInicio',$fechaFin,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
-		echo $sqlInsertCabecera."<br><br>";
+		$sqlInsertCabecera = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,$codigopresta,'$fechaInicio',$fechaFin,0,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+		//echo $sqlInsertCabecera."<br><br>";
 		$dbh->exec($sqlInsertCabecera);
 		$idNuevoContrato = $dbh->lastInsertId();
 			

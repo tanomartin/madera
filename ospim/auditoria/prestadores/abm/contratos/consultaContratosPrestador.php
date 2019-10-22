@@ -5,10 +5,13 @@ $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codi
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
-$sqlCabContrato = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo";
+$sqlCabContrato = "SELECT c.*, prestadores.nombre, prestadores.codigoprestador
+					FROM cabcontratoprestador c  
+					LEFT JOIN cabcontratoprestador ON cabcontratoprestador.idcontrato = c.idcontratotercero
+					LEFT JOIN prestadores ON prestadores.codigoprestador = cabcontratoprestador.codigoprestador
+					WHERE c.codigoprestador = $codigo";
 $resCabContrato = mysql_query($sqlCabContrato,$db);
-$numCabContrato = mysql_num_rows($resCabContrato);
-?>
+$numCabContrato = mysql_num_rows($resCabContrato); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -57,8 +60,8 @@ $numCabContrato = mysql_num_rows($resCabContrato);
   <h3>Contrato Prestador</h3>
 	  <table width="500" border="1">
         <tr>
-          <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
-          <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
+          <td width="100"><div align="right"><strong>C&oacute;digo</strong></div></td>
+          <td width="400"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
         </tr>
         <tr>
           <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
@@ -69,38 +72,45 @@ $numCabContrato = mysql_num_rows($resCabContrato);
   </table>
   <h3>Contratos</h3>
   <?php if ($numCabContrato > 0) { ?>
-	 <table style="text-align:center; width:400px" id="practicas" class="tablesorter" >
+	 <table style="text-align:center; width:80%" id="practicas" class="tablesorter" >
 			<thead>
 			  <tr>
-				<th>C&oacute;digo</th>
+				<th>Código</th>
 				<th>Fecha Inicio</th>
 				<th>Fecha Fin</th>
+				<th>Practicas de Tercero</th>
+				<th>Contratos Asociados [ID - Prestador (codigo)]</th>
 				<th></th>
 			  </tr>
 			</thead>
 			<tbody>
- 	<?php while($rowCabContrato = mysql_fetch_array($resCabContrato)) { ?>
+ 	<?php while($rowCabContrato = mysql_fetch_array($resCabContrato)) { 
+ 				$sqlContraRelacionados = "SELECT c.*, p.nombre, p.codigoprestador FROM cabcontratoprestador c, prestadores p
+											WHERE c.idcontratotercero = ".$rowCabContrato['idcontrato']." and 
+												  c.codigoprestador = p.codigoprestador";
+ 				$resContraRelacionados = mysql_query($sqlContraRelacionados,$db);
+ 				$numContraRelacionados = mysql_num_rows($resContraRelacionados); ?>
 			  <tr>
 				<td><?php echo $rowCabContrato['idcontrato'];?></td>
 				<td><?php echo invertirFecha($rowCabContrato['fechainicio']);?></td>
-				<td><?php if($rowCabContrato['fechafin'] == NULL) {
-							  echo "-";
+				<td><?php if($rowCabContrato['fechafin'] == NULL) { echo "-"; } else { echo invertirFecha($rowCabContrato['fechafin']); } ?></td>
+				<td><?php if ($rowCabContrato['idcontratotercero'] == 0) { echo "-"; } else { echo $rowCabContrato['idcontratotercero']." - ".$rowCabContrato['nombre']. " (".$rowCabContrato['codigoprestador'].")"; } ?></td>
+				<td><?php if ($numContraRelacionados == 0) { 
+							echo "-"; 
 						  } else {
-						   	  echo invertirFecha($rowCabContrato['fechafin']);
-						  }
-						 ?>
-				</td>
+							while($rowContraRelacionados = mysql_fetch_array($resContraRelacionados)) {
+								echo $rowContraRelacionados['idcontrato']." - ".$rowContraRelacionados['nombre']." (".$rowContraRelacionados['codigoprestador'].")"."<hr>";
+							}
+ 						  } ?>
+ 				</td>
 				<td><input type="button" value="Practicas" name="verpracticas" id="verpracticas" onclick="location.href = 'consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>' " /></td>
 			  </tr>
-			  <?php
-			}
-		?>
+	<?php } ?>
 			</tbody>
 		  </table>
 	<?php } else { 	?>
 			<h3><font color="red"> ESTE PRESTADOR NO TIENE CONTRATO CARGADO </font></h3>
 	<?php } ?>
-	
 </div>
 </body>
 </html>

@@ -8,16 +8,22 @@ $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codi
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
-$sqlCabContrato = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo";
+$sqlCabContrato = "SELECT c.*, prestadores.nombre, prestadores.codigoprestador
+					FROM cabcontratoprestador c
+					LEFT JOIN cabcontratoprestador ON cabcontratoprestador.idcontrato = c.idcontratotercero
+					LEFT JOIN prestadores ON prestadores.codigoprestador = cabcontratoprestador.codigoprestador
+					WHERE c.codigoprestador = $codigo";
 $resCabContrato = mysql_query($sqlCabContrato,$db);
 $numCabContrato = mysql_num_rows($resCabContrato);
 
 $today = date("Y-m-d");
-$sqlCabContratoAbiertos = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = $codigo and (c.fechafin is null or c.fechafin > '$today')";
+$sqlCabContratoAbiertos = "SELECT c.*, prestadores.nombre, prestadores.codigoprestador
+							FROM cabcontratoprestador c 
+							LEFT JOIN cabcontratoprestador ON cabcontratoprestador.idcontrato = c.idcontratotercero
+							LEFT JOIN prestadores ON prestadores.codigoprestador = cabcontratoprestador.codigoprestador
+							WHERE c.codigoprestador = $codigo and (c.fechafin is null or c.fechafin > '$today')";
 $resCabContratoAbiertos = mysql_query($sqlCabContratoAbiertos,$db);
-$numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos);
-
-?>
+$numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -61,11 +67,11 @@ $numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos);
   <h3>ABM de Contratos </h3>
   <table width="500" border="1">
     <tr>
-      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
-      <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
+      <td width="100"><div align="right"><strong>Código</strong></div></td>
+      <td width="400"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
+      <td><div align="right"><strong>Razón Social</strong></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
@@ -74,18 +80,25 @@ $numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos);
 			<p><input type="button" name="nuevoContrato" id="nuevoContrato" value="Nuevo Contrato" onclick="location.href='nuevoContrato.php?codigo=<?php echo $codigo ?>'"/></p>
   <?php } 
         if ($numCabContrato > 0) { ?>
-        <table style="text-align:center; width:800px" id="contratos" class="tablesorter" >
+        <table style="text-align:center; width:80%" id="contratos" class="tablesorter" >
           <thead>
             <tr>
-             	<th>C&oacute;digo</th>
+             	<th>Código</th>
 				<th>Fecha Inicio</th>
 				<th>Fecha Fin</th>
+				<th>Contrato de Tercero</th>
+				<th>Contratos Asociados [ID - Prestador (codigo)]</th>
 				<th></th>
             </tr>
           </thead>
           <tbody>
             <?php
-			while($rowCabContrato = mysql_fetch_array($resCabContrato)) { ?>
+			while($rowCabContrato = mysql_fetch_array($resCabContrato)) { 
+				$sqlContraRelacionados = "SELECT c.*, p.nombre, p.codigoprestador FROM cabcontratoprestador c, prestadores p
+											WHERE c.idcontratotercero = ".$rowCabContrato['idcontrato']." and 
+												  c.codigoprestador = p.codigoprestador";
+ 				$resContraRelacionados = mysql_query($sqlContraRelacionados,$db);
+ 				$numContraRelacionados = mysql_num_rows($resContraRelacionados); ?>
 				<tr>
 				<td><?php echo $rowCabContrato['idcontrato'];?></td>
 				<td><?php echo invertirFecha($rowCabContrato['fechainicio']);?></td>
@@ -94,7 +107,16 @@ $numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos);
 						  } else {
 						   	  echo invertirFecha($rowCabContrato['fechafin']);
 						  }?></td>
-				<td><?php if ($rowCabContrato['fechafin'] == NULL || $rowCabContrato['fechafin'] > $today ) { ?> 
+				<td><?php if ($rowCabContrato['idcontratotercero'] == 0) { echo "-"; } else { echo $rowCabContrato['idcontratotercero']." - ".$rowCabContrato['nombre']. " (".$rowCabContrato['codigoprestador'].")"; } ?></td>
+				<td><?php if ($numContraRelacionados == 0) { 
+							echo "-"; 
+						  } else {
+							while($rowContraRelacionados = mysql_fetch_array($resContraRelacionados)) {
+								echo $rowContraRelacionados['idcontrato']." - ".$rowContraRelacionados['nombre']." (".$rowContraRelacionados['codigoprestador'].")"."<hr>";
+							}
+ 						  } ?>
+ 				</td>
+				<td><?php if (($rowCabContrato['fechafin'] == NULL || $rowCabContrato['fechafin'] > $today) && $rowCabContrato['idcontratotercero'] == 0) { ?> 
 							<input type="button" value="Modificar Practicas" name="modifpracticas" id="modifpracticas" onclick="location.href='modificarPracticasContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
 							<input type="button" value="Modificar Contrato" name="modifcontrato" id="modifcontrato" onclick="location.href='modificarContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
 							<input type="button" value="Duplicar Contrato con Aumento %" name="aumentocontrato" id="modifcontrato" onclick="location.href='aumentoPorcentaje.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/>

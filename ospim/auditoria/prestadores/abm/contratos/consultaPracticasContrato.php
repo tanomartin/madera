@@ -7,6 +7,17 @@ $sqlConsultaPresta = "SELECT codigoprestador, nombre, personeria FROM prestadore
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
+$sqlCabecera = "SELECT * FROM cabcontratoprestador WHERE idcontrato = $idcontrato";
+$resCabecera = mysql_query($sqlCabecera,$db);
+$rowCabecera = mysql_fetch_array($resCabecera);
+$cartel = "";
+if ($rowCabecera['idcontratotercero'] != 0) {
+	$idcontrato = $rowCabecera['idcontratotercero'];
+	$sqlPrestaTercer = "SELECT p.nombre, p.codigoprestador FROM prestadores p, cabcontratoprestador c WHERE c.idcontrato = $idcontrato and c.codigoprestador = p.codigoprestador";
+	$resPrestaTercer = mysql_query($sqlPrestaTercer,$db);
+	$rowPrestaTercer = mysql_fetch_assoc($resPrestaTercer);
+	$cartel = "<h3 style='color: blue; border: 1px solid blue; width: 500'>Practicas de Contrato de Tercero <br>ID CONTRATO: $idcontrato <br> PRESTADOR: ".$rowPrestaTercer['nombre']." (".$rowPrestaTercer['codigoprestador'].")<h3>";
+} 
 $sqlPracticas = "SELECT pr.*,
 p.*,
 t.descripcion as tipo,
@@ -23,7 +34,6 @@ tipocomplejidad tc,
 nomencladores n,
 practicascategorias pc
 WHERE
-c.codigoprestador = $codigo and
 c.idcontrato = $idcontrato and
 c.idcontrato = p.idcontrato and
 p.idcategoria = pc.id and
@@ -93,9 +103,10 @@ $numPracticas = mysql_num_rows($resPracticas);
               <div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
           </div></td>
         </tr>
-  </table>
-   <p><strong>Pr&aacute;cticas dentro del contrato </strong></p>
-		<?php  if ($numPracticas > 0) { ?>
+  	</table>
+  	<h3>Prácticas del Contrato</h3>
+    <?php echo $cartel ?>
+	<?php  if ($numPracticas > 0) { ?>      
         <table style="text-align:center; width:1000px; font-size: 13px" id="practicaencontrato" class="tablesorter" >
           <thead>
             <tr>
@@ -143,7 +154,7 @@ $numPracticas = mysql_num_rows($resPracticas);
           </tbody>
         </table>
    <?php } else { ?>
-        	<h3><font color='#000099'> ESTE CONTRATO NO TIENE PRACTICAS CARGADAS </font></h3>
+        	<h3 style="color: blue">ESTE CONTRATO NO TIENE PRACTICAS CARGADAS</h3>
 	<?php } ?>
 </div>
 </body>
