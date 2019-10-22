@@ -98,7 +98,6 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><?php echo $rowProf['nombre'];?></td>
 				<td> 
 					<input class="nover" name="ficha" type="button" value="Ver Ficha"  onclick="location.href = 'profesional.php?codigoprof=<?php echo $rowProf['codigoprofesional']?>&codigopresta=<?php echo $codigo ?>'" /> 
-					<input class="nover" name="modificar" type="button" value="Modificar Profesional" onclick="location.href='modificarProfesional.php?codigoprof=<?php echo $rowProf['codigoprofesional']?>&codigopresta=<?php echo $codigo ?>'" />
 				</td>
 			  </tr>
 			  <?php

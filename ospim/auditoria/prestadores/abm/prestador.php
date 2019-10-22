@@ -206,20 +206,20 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db);
 	  <table width="900" border="0" style="text-align: center">
       <tr>
         <td width="300">
-          <input class="nover" name="modificar" type="button" value="Modificar Prestador" onclick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
+          <input class="nover" name="modificar" type="button" value="Modificar Ficha" onclick="location.href = 'modificarPrestador.php?codigo=<?php echo $codigo ?>'" />
         </td>
 		<td width="300">
 		<?php if ($rowConsultaPresta['personeria'] == 3) { ?>
-            <input class="nover" name="profesionales" type="button" value="Modificar Profesionales"  onclick="location.href = 'profesionales/modificarProfesionales.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
+            <input class="nover" name="profesionales" type="button" value="Profesionales"  onclick="location.href = 'profesionales/modificarProfesionales.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
         <?php if ($rowConsultaPresta['personeria'] == 4) { ?>
-            <input class="nover" name="establecimientos" type="button" value="Modificar Establecimientos"  onclick="location.href = 'establecimientos/modificarEstablecimientos.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
+            <input class="nover" name="establecimientos" type="button" value="Establecimientos"  onclick="location.href = 'establecimientos/modificarEstablecimientos.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
         </td> 
         <td width="300">		
       <?php if ($rowConsultaPresta['montofijo'] == 0 ) {
         		if ($contrato == 0) { $disabled = "disabled='disabled'"; } else { $disabled = ""; } ?>
-         		<input <?php echo $disabled?> class="nover" name="modificarContrato" type="button" value="Modificar Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
+         		<input <?php echo $disabled?> class="nover" name="modificarContrato" type="button" value="Contratos"  onclick="location.href = 'contratos/contratosPrestador.php?codigo=<?php echo $codigo ?>'" />
       <?php } else { ?>
-      			<input class="nover" name="modificarArancel" type="button" value="Modificar Aranceles"  onclick="location.href = 'aranceles/arancelesPrestador.php?codigo=<?php echo $codigo ?>'" />
+      			<input class="nover" name="modificarArancel" type="button" value="Aranceles"  onclick="location.href = 'aranceles/arancelesPrestador.php?codigo=<?php echo $codigo ?>'" />
       <?php	} ?>
         </td>
       </tr>

@@ -112,6 +112,7 @@ $rowConsultaProf = mysql_fetch_assoc($resConsultaProf);
 		  <td colspan="3"><?php if ($rowConsultaProf['activo'] == 0 ) { echo "NO"; } else { echo "SI"; } ?></td>
 		</tr>
   </table>
+<p>	<input class="nover" name="modificar" type="button" value="Modificar Profesional" onclick="location.href='modificarProfesional.php?codigoprof=<?php echo $rowConsultaProf['codigoprofesional']?>&codigopresta=<?php echo $rowConsultaPresta['codigoprestador']  ?>'" /></p>
 <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 </div>
 </body>
