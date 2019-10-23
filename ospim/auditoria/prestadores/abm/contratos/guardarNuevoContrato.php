@@ -27,6 +27,18 @@ if ($numCabContratoFin > 0) {
 	$contratoTercero = 0;
 	if ($_POST['relacion'] != 0) {
 		$contratoTercero = $_POST['contratoTercero'];
+		$sqlNomencla = "SELECT DISTINCT nomenclador FROM practicas p, detcontratoprestador d WHERE d.idcontrato = $contratoTercero and d.idpractica = p.idpractica";
+		$resNomencla = mysql_query($sqlNomencla,$db);
+		while($rowNomencla = mysql_fetch_array($resNomencla)) {
+			$sqlExistePrestaNomencla = "SELECT * FROM prestadornomenclador WHERE codigoprestador = $codigopresta AND codigonomenclador = ".$rowNomencla['nomenclador'];
+			$resExistePrestaNomencla = mysql_query($sqlExistePrestaNomencla,$db);
+			$numExistePrestaNomencla = mysql_num_rows($resExistePrestaNomencla);
+			if ($numExistePrestaNomencla == 0) {
+				$pagina = "nuevoContrato.php?codigo=$codigopresta&err=2";
+				Header("Location: $pagina");
+				exit(0);
+			}
+		}
 	} 
 	$sqlInsertCab = "INSERT INTO cabcontratoprestador VALUES(DEFAULT,$codigopresta,'$fechaInicio',$fechaFin,$contratoTercero,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 	try {

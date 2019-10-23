@@ -117,11 +117,15 @@ function validar(formulario) {
     <h3>Datos Contrato</h3>   
  <?php  $fi = ""; $ff = "";
 		if (isset($_GET['err'])) {
-			$fi = $_GET['fi'];
-			$ff = $_GET['ff']; ?>
-  			<h4><font color='#FF0000'>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</font></h4>
-			
- <?php 	} ?>
+			if ($_GET['err'] == 1) {
+				$fi = $_GET['fi'];
+				$ff = $_GET['ff']; ?>
+	  			<h4><font color='#FF0000'>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</font></h4>
+	<?php	}
+			if ($_GET['err'] == 2) { ?>
+				<h4><font color='#FF0000'>El prestador al cual se le quiere asociar un contrato de terceros no contiene los nomencladores necesarios</font></h4>
+	<?php	}
+  		} ?>
  	<p><b>Contrato relacionado con otro Prestador</b></p>
  	<p>
  		<input type="radio" id="relacionNO" value="0" name="relacion" checked="checked" onchange="habilitaTercero(this.value)"/>NO - 
