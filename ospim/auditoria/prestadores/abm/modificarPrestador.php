@@ -675,7 +675,8 @@ function validar() {
       </tr>
       <tr>
 	    <td><div align="right"><b>Nomenclador </b></div></td>
-	    <td colspan="3"><div align="left">
+	    <td colspan="3">
+	    	<div align="left" style="width: 80%">
             <?php 	
 		          $today = date("Y-m-d");
 		          $sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin is null or c.fechafin > '$today')";

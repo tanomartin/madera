@@ -555,7 +555,7 @@ function validar() {
 	  <tr>
 	    <td><div align="right"><strong>Nomenclador </strong></div></td>
 	    <td colspan="3">
-	    	<div align="left">
+	    	<div align="left" style="width: 80%">
             	<?php 	$query="select * from nomencladores"; 
 	    	  			$result=mysql_query($query,$db);  
 	    	  			$i = 0;
