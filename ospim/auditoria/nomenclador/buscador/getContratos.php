@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['codigopresta'])) {
 	$codigopresta = $_POST['codigopresta'];
-	$sqlContratos = "SELECT * FROM cabcontratoprestador WHERE codigoprestador = $codigopresta";
+	$sqlContratos = "SELECT * FROM cabcontratoprestador WHERE codigoprestador = $codigopresta AND idcontratotercero = 0";
 	$resContratos = mysql_query($sqlContratos,$db);
 	$canContratos = mysql_num_rows($resContratos);
 	if ($canContratos == 0) {

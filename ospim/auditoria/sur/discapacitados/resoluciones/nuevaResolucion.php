@@ -10,10 +10,13 @@ include($libPath."controlSessionOspim.php"); ?>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
-	$("#fecha").mask("99-99-9999");
+	$("#fechaemision").mask("99-99-9999");
+	$("#fechainicio").mask("99-99-9999");
+	$("#fechafin").mask("99-99-9999");
 });
 
 function validar(formulario) {	
@@ -25,15 +28,31 @@ function validar(formulario) {
 		alert("El Emisor de la resolución es obligatoria");
 		return false;
 	}
-	if (formulario.fecha.value == "") {
-		alert("La fecha de la resolución es obligatoria");
+	if (formulario.fechaemision.value == "") {
+		alert("La fecha emision de la resolución es obligatoria");
 		return false;
 	} else {
-		if (!esFechaValida(formulario.fecha.value)) {
-			alert("La fecha de la resolución no es valida");
+		if (!esFechaValida(formulario.fechaemision.value)) {
+			alert("La fecha emision de la resolución no es valida");
 			return false;
 		}
 	}
+	if (formulario.fechainicio.value == "") {
+		alert("La fecha de inicio de la resolución es obligatoria");
+		return false;
+	} else {
+		if (!esFechaValida(formulario.fechainicio.value)) {
+			alert("La fecha inicio de la resolución no es valida");
+			return false;
+		}
+	}
+	if (formulario.fechafin.value != "") {
+		if (!esFechaValida(formulario.fechafin.value)) {
+			alert("La fecha fin de la resolución no es valida");
+			return false;
+		}
+	}
+	$.blockUI({ message: "<h1>Guardando Nueva cabecera de la Resolución...<br> Aguarde por favor</h1>" });
 	formulario.Submit.disabled = true;
 	return true;
 }
@@ -47,9 +66,11 @@ function validar(formulario) {
   	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'resoluciones.php'"/></p>
   	<h3>Nueva Resolucion</h3>
 	<form name="nuevoResolucion" id="nuevoResolucion" method="post" onsubmit="return validar(this)" action="guardarNuevaResolucion.php">
-		<p><b>Nombre </b><input type="text" name="nombre" id="nombre"/></p>
-		<p><b>Emisor </b><input type="text" name="emisor" id="emisor"/></p>
-		<p><b>Fecha </b><input type="text" name="fecha" id="fecha" size="10"/></p>
+		<p><b>Nombre: </b><input type="text" name="nombre" size="60" id="nombre"/></p>
+		<p><b>Emisor: </b><input type="text" name="emisor" size="60" id="emisor"/></p>
+		<p><b>Fecha Emision: </b><input type="text" name="fechaemision" id="fechaemision" size="10"/></p>
+		<p><b>Fecha Inicio: </b><input type="text" name="fechainicio" id="fechainicio" size="10" /></p>
+		<p><b>Fecha Fin: </b><input type="text" name="fechafin" id="fechafin" size="10" /></p>
 		<p><b>Observcacion</b></p>
 		<p><textarea rows="5" cols="60" id="obs" name="obs"></textarea></p>
 		<p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>

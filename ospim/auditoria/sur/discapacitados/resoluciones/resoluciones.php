@@ -1,7 +1,11 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 
-$sqlResolucion = "SELECT r.*, DATE_FORMAT(r.fecha, '%d-%m-%Y') as fecha FROM resolucioncabecera r ORDER BY id";
+$sqlResolucion = "SELECT r.*, DATE_FORMAT(r.fechaemision, '%d/%m/%Y') as fechaemision,
+					DATE_FORMAT(r.fechainicio, '%d/%m/%Y') as fechainicio,
+					DATE_FORMAT(r.fechafin, '%d/%m/%Y') as fechafin
+					FROM nomencladores n, nomencladoresresolucion r WHERE n.id = 7 and n.id = r.idnomenclador
+					ORDER BY r.id DESC";
 $resResolucion = mysql_query($sqlResolucion,$db);
 $canResolucion = mysql_num_rows($resResolucion);
 ?>
@@ -28,6 +32,7 @@ $canResolucion = mysql_num_rows($resResolucion);
 	  				<th>Nombre</th>
 	  				<th>Emisor</th>
 	  				<th>Fecha Emisión</th>
+	  				<th width="200px">Vigencia</th>
 	  				<th>Acciones</th>
 	  			</tr>
 	  		</thead>
@@ -37,11 +42,18 @@ $canResolucion = mysql_num_rows($resResolucion);
 	  				<td><?php echo $rowResolucion['id'] ?></td>
 	  				<td><?php echo $rowResolucion['nombre'] ?></td>
 	  				<td><?php echo $rowResolucion['emisor'] ?></td>
-	  				<td><?php echo $rowResolucion['fecha'] ?></td>
+	  				<td><?php echo $rowResolucion['fechaemision'] ?></td>
+	  				    <?php $fin = " al ".$rowResolucion['fechafin'];
+				    	  if ($rowResolucion['fechafin'] == NULL) {
+				    		$fin = " a la actualidad";
+				    	  }?>
+				   	<td><?php echo $rowResolucion['fechainicio'].$fin ?></td>
 	  				<td>
-	  					<input type="button" value="Detalle" onclick="location.href = 'detalleResolucion.php?id=<?php echo $rowResolucion['id']?>'"/> |
-	  					<input type="button" value="Modificar Cabecera" onclick="location.href = 'modificarResolucion.php?id=<?php echo $rowResolucion['id']?>'"/> |
-	  					<input type="button" value="Modificar Practicas" onclick="location.href = 'modificarPracticas.php?id=<?php echo $rowResolucion['id']?>'"/>
+	  					<input type="button" value="Detalle" onclick="location.href = 'detalleResolucion.php?id=<?php echo $rowResolucion['id']?>'"/></br>
+	  			<?php 	if ($rowResolucion['fechafin'] == NULL) { ?> 
+	  						<input type="button" value="Modificar Cabecera" onclick="location.href = 'modificarResolucion.php?id=<?php echo $rowResolucion['id']?>'"/></br>
+	  						<input type="button" value="Modificar Practicas" onclick="location.href = 'modificarPracticas.php?id=<?php echo $rowResolucion['id']?>'"/>
+	  			<?php    } ?>	
 	  				</td>
 	  			</tr>
 	  <?php } ?>

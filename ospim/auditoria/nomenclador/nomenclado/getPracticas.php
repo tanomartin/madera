@@ -3,18 +3,18 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$codigo=$_POST['valor'];
 	$tipo = $_POST['tipo'];
 	$nomenclador = $_POST['nomenclador'];
+	$contrato = $_POST['contrato'];
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
-					 <th>Modulo</th>
 					 <th>U. Honorarios</th>
-					 <th>U. Honorarios Especialista</th>
-					 <th>U. Honorarios Ayudante</th>
-			 		 <th>U. Honorarios Anestesista</th>
+					 <th>U. Honorarios<br>Especialista</th>
+					 <th>U. Honorarios<br>Ayudante</th>
+			 		 <th>U. Honorarios<br>Anestesista</th>
 			  		 <th>U. Gastos / U.B.</th>
-					 <th>Clasificacion<br>Res. 650</th>
+					 <th>Clasif.<br>Res. 650</th>
 					 <th>Internacion</th>
-					 <th>Acciones</th>
+					 <th>+Info</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
 		$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and p.nomenclador = $nomenclador and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
@@ -37,16 +37,18 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
-						<td>".$rowPractica['modulo']."</td>
 						<td>".$rowPractica['unihonorario']."</td>
 						<td>".$rowPractica['unihonorarioespecialista']."</td>
 						<td>".$rowPractica['unihonorarioayudante']."</td>
 						<td>".$rowPractica['unihonorarioanestesista']."</td>
 						<td>".$rowPractica['unigastos']."</td>
 						<td>".$rowPractica['complejidad']."</td>
-						<td>".$inter."</td>
-						<td><input name=\"contrato\" type=\"button\" value=\"Prestadores\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?idpractica=$practica&nomenclador=$nomenclador')\"/></td>
-					</tr>";
+						<td>".$inter."</td>";
+		if ($contrato == 1) {
+			$respuesta.= "<td><input name=\"contrato\" type=\"button\" value=\"Contratos\" onclick=\"abrirPantalla('../buscador/detallePracticasPresta.php?idpractica=$practica&nomenclador=$nomenclador')\"/></td></tr>";
+		} else {
+			$respuesta.= "<td><input name=\"resolucion\" type=\"button\" value=\"Resoluciones\" onclick=\"abrirPantalla('../buscador/detalleResoluciones.php?idpractica=$practica&nomenclador=$nomenclador')\"/></td></tr>";
+		}
 	}
 	$respuesta.="</tbody>";
 	

@@ -14,12 +14,14 @@ $resNomen = mysql_query($sqlNomen,$db);
 <script>
 	function redireccion(dire) {
 		var nomenclador = document.getElementById("nomenclador");
-		var idNomen = nomenclador.options[nomenclador.selectedIndex].value;
+		var valorArray = nomenclador.options[nomenclador.selectedIndex].value.split("-");
+		var idNomen = valorArray[0];
+		var contrato = valorArray[1];
 		var nombre = nomenclador.options[nomenclador.selectedIndex].text;
 		if (idNomen == 0) {
 			alert("Debe seleccionar un nomenclador");
 		} else {
-			redire =  dire + "?codigo=" + idNomen + "&nombre=" + nombre;
+			redire =  dire + "?codigo=" + idNomen + "&nombre=" + nombre + "&contrato=" + contrato;
 			window.location = redire;
 		}
 	}
@@ -36,7 +38,7 @@ $resNomen = mysql_query($sqlNomen,$db);
 	  	<select id="nomenclador" name="nomenclador">
 	  		<option value="">Seleccione Nomenclador</option>
 	  		<?php while($rowNomen = mysql_fetch_assoc($resNomen)) { ?>
-	  			<option value="<?php echo $rowNomen['id']?>"><?php echo $rowNomen['nombre']?></option>
+	  			<option value="<?php echo $rowNomen['id']."-".$rowNomen['contrato'] ?>"><?php echo $rowNomen['nombre']?></option>
 	  		<?php }?>
 	  	</select>
 	  </p>

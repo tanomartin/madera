@@ -2,24 +2,13 @@
 include($libPath."controlSessionOspim.php"); 
 $idNomenclador = $_GET['codigo'];
 $nomenclador = $_GET['nombre'];
-?>
+$contrato = $_GET['contrato'];?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listador Nomenclador Nacional :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
@@ -59,6 +48,8 @@ jQuery(function($){
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
 		$("#subcapitulo").prop("disabled",true);
 		$("#practicas").html("");
+		var nomenclador = $("#nomenclador").val();
+		var contrato = $("#contrato").val();
 		var valor = $(this).val();
 		$.ajax({
 			type: "POST",
@@ -71,12 +62,11 @@ jQuery(function($){
 					$("#capitulo").html(respuesta);
 					$("#capitulo").prop("disabled",false);
 				} else {
-					var nomenclador = $("#nomenclador").val();
 					$.ajax({
 						type: "POST",
 						dataType: 'html',
 						url: "getPracticas.php",
-						data: {valor:-1, tipo:valor, nomenclador:nomenclador},
+						data: {valor:-1, tipo:valor, nomenclador:nomenclador, contrato:contrato},
 					}).done(function(respuesta){
 						if (respuesta != 0) {	
 							$("#practicas").html(respuesta);
@@ -94,6 +84,7 @@ jQuery(function($){
 		var nomenclador = $("#nomenclador").val();
 		var valor = $(this).val();
 		valor = valor.split('-');
+		var contrato = $("#contrato").val();
 		tipo = $("#tipo").val();
 		$.ajax({
 			type: "POST",
@@ -105,11 +96,12 @@ jQuery(function($){
 				$("#subcapitulo").html(respuesta);	
 				$("#subcapitulo").prop("disabled",false);			
 			}
+			
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -123,14 +115,16 @@ jQuery(function($){
 		tipo = $("#tipo").val();
 		var nomenclador = $("#nomenclador").val();
 		var valor = $(this).val();
+		var contrato = $("#contrato").val();
 		if (valor == 0) { 
 			valor = $("#capitulo").val();
 			valor = valor.split('-');
+			var contrato = $("#contrato").val();
 			$.ajax({
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -142,7 +136,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -158,11 +152,9 @@ jQuery(function($){
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNomenclado.php'" />
-  </p>
-  <p><span class="Estilo2">Listador Nomenclador <?php echo $nomenclador ?></span>  </p>
-  <form id="form1" name="form1" method="post" action="">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuNomenclado.php'" /></p>
+  <h3>Listador Nomenclador <?php echo $nomenclador ?></h3>
+  <form id="listaNomencla" name="listaNomencla" method="post">
   	<input style="display: none" type="text" id="nomenclador" value="<?php echo $idNomenclador ?>"/>
     <p>
       <select name="tipo" id="tipo">
@@ -170,7 +162,7 @@ jQuery(function($){
 		<?php $sqlTipos = "SELECT tn.id, t.descripcion FROM tipopracticas t, tipopracticasnomenclador tn WHERE tn.codigonomenclador = $idNomenclador and tn.idtipo = t.id";
 			  $resTipos = mysql_query($sqlTipos,$db);
 			  while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
-			  <option value='<?php echo $rowTipos['id'] ?>'><?php echo $rowTipos['descripcion'] ?></option>
+			  	<option value='<?php echo $rowTipos['id'] ?>'><?php echo $rowTipos['descripcion'] ?></option>
 		<?php } ?>
       </select>
     </p>
@@ -184,6 +176,7 @@ jQuery(function($){
 	  	<option value='0'>Seleccione SubCapitulo</option>
       </select>
 	</p>
+	<p><input type="text" id="contrato" name="contrato" value="<?php echo $contrato ?>" style="display: none"/></p>
 	<table style="text-align:center; width:1000px" id="practicas" class="tablesorter" >
      <thead>
      </thead>

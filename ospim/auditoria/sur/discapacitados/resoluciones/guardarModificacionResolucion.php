@@ -5,15 +5,22 @@ include($libPath."fechas.php");
 $id = $_GET['id'];
 $nombre = $_POST['nombre'];
 $emisor = $_POST['emisor'];
-$fecha = fechaParaGuardar($_POST['fecha']);
+$fechaemision = fechaParaGuardar($_POST['fechaemision']);
+$fechainicio = fechaParaGuardar($_POST['fechainicio']);
+$fechafin = "NULL";
+if ($_POST['fechafin'] != "") {
+	$fechafin = "'".fechaParaGuardar($_POST['fechafin'])."'";
+}
 $obs = $_POST['obs'];
 $fechamodif = date("Y-m-d H:i:s");
 $usuariomodif = $_SESSION['usuario'];
 
-$sqlUpdateCabecera = "UPDATE resolucioncabecera 
+$sqlUpdateCabecera = "UPDATE nomencladoresresolucion 
 						SET nombre = '$nombre', 
 							emisor = '$emisor', 
-							fecha = '$fecha', 
+							fechaemision = '$fechaemision', 
+							fechainicio = '$fechainicio',
+							fechafin = $fechafin,
 							observacion = '$obs', 
 							fechamodificacion = '$fechamodif',
 							usuariomodificacion = '$usuariomodif'
@@ -26,7 +33,7 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	echo $sqlUpdateCabecera;
+	//echo $sqlUpdateCabecera;
 	$dbh->exec($sqlUpdateCabecera);
 	
 	$dbh->commit();

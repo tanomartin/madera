@@ -15,8 +15,8 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	}
 	$resultado = array();
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.codigopractica = '$dato' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and  tn.idtipo = t.id order by codigopractica DESC";}
-		if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.descripcion like '%$dato%' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by codigopractica DESC"; }
+		if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador, n.contrato FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.codigopractica = '$dato' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and  tn.idtipo = t.id order by codigopractica DESC";}
+		if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador, n.contrato FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.descripcion like '%$dato%' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by codigopractica DESC"; }
 		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas == 0) {
@@ -172,8 +172,12 @@ function validar(formulario) {
 			 <td><?php echo $rowPracticas['complejidad']; ?></td>
 			 <td><?php if ($rowPracticas['internacion'] == 0) { echo "NO"; } else { echo "SI";} ?>
 			 <td>
-			 	 <input name="prestadores" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>
-			 	 <input name="agregar" type="button" value="Agregar Prestador" onclick="abrirPantalla('agregarPracticaPrestador.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>
+			 <?php if ($rowPracticas['contrato'] == 1) { ?>
+			 	 		<input name="prestadores" type="button" value="Prestadores" onclick="abrirPantalla('detallePracticasPresta.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>
+			 	 		<input name="agregar" type="button" value="Agregar Prestador" onclick="abrirPantalla('agregarPracticaPrestador.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>
+			 <?php } else { ?>
+			 			<input name="resoluciones" type="button" value="Resoluciones" onclick="abrirPantalla('detalleResoluciones.php?idpractica=<?php echo $rowPracticas['idpractica'] ?>')"/>
+			<?php } ?>
 			 </td>
 		   </tr>
        <?php

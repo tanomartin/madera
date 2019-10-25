@@ -2,14 +2,18 @@
 include($libPath."controlSessionOspim.php"); 
 
 $id = $_GET['id'];
-$sqlResolucion = "SELECT r.*, DATE_FORMAT(r.fecha, '%d-%m-%Y') as fecha FROM resolucioncabecera r WHERE r.id = $id ORDER BY id";
+$sqlResolucion = "SELECT r.*, 
+						DATE_FORMAT(r.fechaemision, '%d-%m-%Y') as fechaemision,
+						DATE_FORMAT(r.fechainicio, '%d-%m-%Y') as fechainicio,
+						DATE_FORMAT(r.fechafin, '%d-%m-%Y') as fechafin 
+					FROM nomencladoresresolucion r WHERE r.id = $id ORDER BY id";
 $resResolucion = mysql_query($sqlResolucion,$db);
 $rowResolucion = mysql_fetch_assoc($resResolucion);
 
-$sqlResolucionDetalle = "SELECT practicas.idpractica, codigopractica, descripcion, DATE_FORMAT(fechadesde, '%d-%m-%Y') as fechadesde, DATE_FORMAT(fechahasta, '%d-%m-%Y') as fechahasta, importe
+$sqlResolucionDetalle = "SELECT practicas.idpractica, codigopractica, descripcion, practicasvaloresresolucion.modulo
 							FROM practicas 
-							LEFT JOIN resoluciondetalle ON resoluciondetalle.idresolucion = $id and 
-														   resoluciondetalle.idpractica = practicas.idpractica 
+							LEFT JOIN practicasvaloresresolucion ON practicasvaloresresolucion.idresolucion = $id and 
+														   	 		practicasvaloresresolucion.idpractica = practicas.idpractica 
 							WHERE practicas.nomenclador = 7";
 $resResolucionDetalle = mysql_query($sqlResolucionDetalle,$db);
 $canResolucionDetalle = mysql_num_rows($resResolucionDetalle);
@@ -39,21 +43,10 @@ jQuery(function($){
 });
 
 function validar(formulario) {
-	var nameid = "";
-	var namefd = "";
-	var fecha = "";
 	var nameimp = "";
 	var imp = "";
+
 	for (var i=1; i<=<?php echo $canResolucionDetalle ?>; i++) {
-		namefd = "fd"+i;
-		fecha = document.getElementById(namefd).value;
-		if (fecha != "") {
-			if (!esFechaValida(fecha)) {
-				alert("Una Fecha ingresada no es valida");
-				document.getElementById(namefd).focus();
-				return false;
-			}
-		}
 		nameimp = "imp"+i;		
 		imp =  document.getElementById(nameimp).value;
 		if (imp != "") {
@@ -63,31 +56,11 @@ function validar(formulario) {
 				return false;
 			}
 		}
-		if ((fecha != "" && imp == "") || (fecha == "" && imp != "")) {
-			alert("Debe ingresar los dos datos para la practica");
-			if (fecha == "") {
-				document.getElementById(namefd).focus();
-			}
-			if (imp == "") {
-				document.getElementById(nameimp).focus();
-			}
-			return false;
-		}
 	}
 
 	for (var i=1; i<=<?php echo $canResolucionDetalle ?>; i++) {
 		nameid = "id"+i;
 		id = document.getElementById(nameid).value;
-		namefd = "fd"+i;
-		fecha = document.getElementById(namefd).value;
-		nameimp = "imp"+i;		
-		imp =  document.getElementById(nameimp).value;
-
-		if (fecha == "" && imp == "") {
-			document.getElementById(nameid).setAttribute("disabled","disabled");
-			document.getElementById(nameimp).setAttribute("disabled","disabled");
-			document.getElementById(namefd).setAttribute("disabled","disabled");
-		}
 	}
 	
 	formulario.Submit.disabled = true;
@@ -96,9 +69,7 @@ function validar(formulario) {
 }
 
 </script>
-
 </head>
-
 <body bgcolor="#CCCCCC">
 <div align="center">
   	<p><input type="button" class="nover" name="volver" value="Volver" onclick="location.href = 'resoluciones.php'"/></p>
@@ -106,11 +77,15 @@ function validar(formulario) {
 	  	<h3>Modificacion Practicas de Resolución</h3>
 	  	<div style="border: solid; width: 600px">
 		  	<p><b>Nombre: </b> <?php echo $rowResolucion['nombre'] ?></p>
-		  	<p><b>Emisor: </b> <?php echo $rowResolucion['emisor'] ?></p>
-		    <p><b>Fecha Emisión: </b> <?php echo $rowResolucion['fecha'] ?></p>
-		  	<p><b>Observación</b></p> 
-		  	<p><?php echo $rowResolucion['observacion'] ?></p>
-	  	</div>
+	  		<p><b>Emisor: </b> <?php echo $rowResolucion['emisor'] ?></p>
+	    	<p><b>Fecha Emisión: </b> <?php echo $rowResolucion['fechaemision'] ?></p>
+	    	<?php $fin = " al ".$rowResolucion['fechafin'];
+	    	  if ($rowResolucion['fechafin'] == NULL) {
+	    		$fin = " a la actualidad";
+	    	  }?>
+	    	<p><b>Vigencia: </b><?php echo $rowResolucion['fechainicio'].$fin ?></p>
+	  		<p><b>Observación</b></p> 
+	  		<p><?php echo $rowResolucion['observacion'] ?></p>	</div>
 	  	<h3>Prácticas de la Resolución</h3>
 	  	<div class="grilla">
 		  	<table style="width: 900px">
@@ -118,8 +93,6 @@ function validar(formulario) {
 		  			<tr>
 			  			<th>Código</th>
 			  			<th>Nombre</th>
-			  			<th>Fecha Desde</th>
-			  			<th>Fecha Hasta</th>
 			  			<th>Importe ($)</th>
 		  			</tr>
 		  		</thead>
@@ -127,20 +100,14 @@ function validar(formulario) {
 		  <?php 
 		  		$i = 0;
 		  		while ($rowResolucionDetalle = mysql_fetch_assoc($resResolucionDetalle)) { 
-		  			$i++;
-		  			$disabled = "";
-		  			if ($rowResolucionDetalle['fechahasta'] != null ) {
-		  				$disabled = 'disabled="disabled"';
-		  			}?>
+		  			$i++; ?>
 			  		<tr>
 				  		 <td>
 				  		 	<?php echo $rowResolucionDetalle['codigopractica'] ?>
-				  		 	<input <?php echo $disabled?> style="display: none" type="text" id="id<?php echo $i ?>" name="id<?php echo $i ?>" value="<?php echo $rowResolucionDetalle['idpractica']?>" />
+				  		 	<input style="display: none" type="text" id="id<?php echo $i ?>" name="id<?php echo $i ?>" value="<?php echo $rowResolucionDetalle['idpractica']?>" />
 				  		 </td>
 				  		 <td><?php echo $rowResolucionDetalle['descripcion'] ?></td>
-				  		 <td><input <?php echo $disabled?> size="10" type="text" id="fd<?php echo $i ?>" name="fd<?php echo $i ?>" value="<?php echo $rowResolucionDetalle['fechadesde'] ?>"/></td>
-				  		 <td width="100px"><?php echo $rowResolucionDetalle['fechahasta'] ?></td>
-				  		 <td><input <?php echo $disabled?> type="text" id="imp<?php echo $i ?>" name="imp<?php echo $i ?>" value="<?php echo $rowResolucionDetalle['importe'] ?>"/></td>
+				  		 <td><input style="text-align: center" size="10" type="text" id="imp<?php echo $i ?>" name="imp<?php echo $i ?>" value="<?php echo $rowResolucionDetalle['modulo'] ?>"/></td>
 				  	</tr>
 		 <?php } ?>
 		  	 	</tbody>

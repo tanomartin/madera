@@ -131,24 +131,37 @@ function abrirPantalla(dire) {
 				</tr>
 			</thead>
 			<tbody>
-		<?php while($rowPrestador = mysql_fetch_array($resPrestador)) { ?>
-			<tr>
-				<td><?php echo $rowPrestador['codigoprestador'];?></td>
-				<td><?php echo $rowPrestador['nombre'];?></td>
-				<td><?php echo $rowPrestador['cuit'];?></td>
-				<td><?php echo $rowPrestador['telefono1'];?></td>
-				<td><?php echo $rowPrestador['email1'];?></td>
-				<td>
-					<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> | 
-					<?php if ($rowPrestador['montofijo'] == 0) { ?>
-						<input name="contrato" type="button" value="Contrato" onclick="abrirPantalla('contratos/consultaContratosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
-					<?php } else { ?>
-						<input name="contrato" type="button" value="Arancel" onclick="abrirPantalla('aranceles/consultaArancelPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
-					<?php } ?>
-					<?php if ($rowPrestador['personeria'] == 3) { ?> |  <input name="profesionales" type="button" value="Profesionales" onclick="abrirPantalla('profesionales/profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
-					<?php if ($rowPrestador['personeria'] == 4) { ?> |  <input name="establecimientos" type="button" value="Establecimientos" onclick="abrirPantalla('establecimientos/establecimientosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
-				</td>
-			</tr>
+		<?php while($rowPrestador = mysql_fetch_array($resPrestador)) { 
+				$sqlPermiteContrato = "SELECT sum(contrato) as cancontrato FROM prestadornomenclador p, nomencladores n
+										WHERE p.codigoprestador = ".$rowPrestador['codigoprestador']." and p.codigonomenclador = n.id";
+				$resPermiteContrato = mysql_query($sqlPermiteContrato,$db); 
+				$canPermiteContrato = mysql_num_rows($resPermiteContrato);
+				$contrato = 0;
+				if ($canPermiteContrato > 0) {
+					$rowPermiteContrato = mysql_fetch_array($resPermiteContrato);
+					if ($rowPermiteContrato['cancontrato'] > 0) {
+						$contrato = 1;
+					}
+				} ?>
+				<tr>
+					<td><?php echo $rowPrestador['codigoprestador'];?></td>
+					<td><?php echo $rowPrestador['nombre'];?></td>
+					<td><?php echo $rowPrestador['cuit'];?></td>
+					<td><?php echo $rowPrestador['telefono1'];?></td>
+					<td><?php echo $rowPrestador['email1'];?></td>
+					<td>
+						<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/></br>
+						<?php if ($rowPrestador['montofijo'] == 0) {
+								if ($contrato == 1) { ?>
+									<input name="contrato" type="button" value="Contrato" onclick="abrirPantalla('contratos/consultaContratosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/></br>
+						  <?php } ?>
+						<?php } else { ?>
+							    <input name="contrato" type="button" value="Arancel" onclick="abrirPantalla('aranceles/consultaArancelPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/></br>
+						<?php } ?>
+						<?php if ($rowPrestador['personeria'] == 3) { ?> <input name="profesionales" type="button" value="Profesionales" onclick="abrirPantalla('profesionales/profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/></br><?php } ?>
+						<?php if ($rowPrestador['personeria'] == 4) { ?> <input name="establecimientos" type="button" value="Establecimientos" onclick="abrirPantalla('establecimientos/establecimientosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
+					</td>
+				 </tr>
 		<?php } ?>
 			</tbody>
 	  	</table>

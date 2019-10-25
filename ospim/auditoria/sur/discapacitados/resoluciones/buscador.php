@@ -11,14 +11,14 @@ if (isset($_POST['practica'])) {
 	$codigopractica = $_POST['practica'];
 	
 	$sqlResolucionDetalle = "SELECT r.*,p.*,c.nombre,
-								DATE_FORMAT(r.fechadesde, '%d-%m-%Y') as fechadesde,
-								DATE_FORMAT(r.fechahasta, '%d-%m-%Y') as fechahasta
+								DATE_FORMAT(c.fechainicio, '%d-%m-%Y') as fechainicio,
+								DATE_FORMAT(c.fechafin, '%d-%m-%Y') as fechafin
 								FROM 
-									resoluciondetalle r, practicas p, resolucioncabecera c
+									practicasvaloresresolucion r, practicas p, nomencladoresresolucion c
 								WHERE 
 									r.idpractica = $codigopractica and 
 									r.idpractica = p.idpractica and 
-									r.idresolucion = c.id ORDER BY c.id ASC";
+									r.idresolucion = c.id ORDER BY c.id DESC";
 	$resResolucionDetalle = mysql_query($sqlResolucionDetalle,$db);
 	$canResolucionDetalle = mysql_num_rows($resResolucionDetalle);
 	
@@ -77,8 +77,7 @@ function validar(formulario) {
 		<?php if (isset($_POST['practica'])) { ?>
 			<h3>Listado de Precios Historicos</h3>
 			<?php if ($canResolucionDetalle != 0) { ?>
-			<h3>Practica</h3>
-			<h3><font color="blue"><?php echo  $practicaCodigo."-".$practicaNombre ?></font></h3>
+			<h3><font color="blue"><?php echo  $practicaCodigo." - ".$practicaNombre ?></font></h3>
 			<div class="grilla">
 				<table style="width:800px; font-size:14px; text-align:center">
 					<thead>
@@ -93,9 +92,9 @@ function validar(formulario) {
 					<?php foreach($arrayResultados as $resultado) { ?>
 							<tr>
 								<td><?php echo $resultado['nombre'] ?></td>
-			  			 		<td><?php echo $resultado['fechadesde'] ?></td>
-			  			 		<td><?php if ($resultado['fechahasta']!=NULL) { echo $resultado['fechahasta']; } else { echo "-"; } ?></td>
-			  			 		<td><?php echo number_format($resultado['importe'],2,',','.') ?></td>	  		
+			  			 		<td><?php echo $resultado['fechainicio'] ?></td>
+			  			 		<td><?php if ($resultado['fechafin']!=NULL) { echo $resultado['fechafin']; } else { echo "-"; } ?></td>
+			  			 		<td><?php echo number_format($resultado['modulo'],2,',','.') ?></td>	  		
 							</tr>
 					<?php } ?>
 					</tbody>

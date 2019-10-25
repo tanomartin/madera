@@ -40,20 +40,6 @@ if ($catPracticas > 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Prestadores Practica :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -86,14 +72,14 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#CCCCCC">
 <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="buscadorPractica.php">
-  <p align="center"><span class="Estilo1">Listado de Prestadores que contiene la Pr&aacute;ctica </span></p>
-  <p align="center" class="Estilo1"><?php echo $rowNombrePractica['codigopractica']." - ".$rowNombrePractica['descripcion'] ?></p>
-  <div align="center">
+<div align="center">
+  <h3>Listado de Prestadores que contiene la Práctica </h3>
+  <h3><?php echo $rowNombrePractica['codigopractica']." - ".$rowNombrePractica['descripcion'] ?></h3>
   <?php if (sizeof($resultado) > 0) { ?>
 	  <table style="text-align:center; width:1000px" id="prestadores" class="tablesorter" >
 		 <thead>
 		   <tr>
-			 <th>C&oacute;digo Prestador</th>
+			 <th>Código Prestador</th>
 			 <th>Nombre / Razón Social</th>
 			 <th>C.U.I.T.</th>
 			 <th>Nomenclador</th>
@@ -126,10 +112,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 		   <?php } ?>
 		 </tbody>
 	   </table>
-	  <?php } else {
-	  			print("<div style='color:#FF0000'><b> ESTA PRACTICA NO ESTA CARGADAD EN NINGÚN PRESTADOR </b></div><br>"); 
-	 		} ?>
-  </div>
+	  <?php } else { ?>
+	  			<h3 style='color:blue'>ESTA PRACTICA NO ESTA CARGADAD EN NINGÚN PRESTADOR</h3>
+	 <?php	} ?>
+</div>
 </form>
 </body>
 </html>

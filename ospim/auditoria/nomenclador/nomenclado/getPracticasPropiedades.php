@@ -6,7 +6,6 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
-					 <th>Modulo</th>
 					 <th>U. Honorarios</th>
 					 <th>U. Honorarios Especialista</th>
 					 <th>U. Honorarios Ayudante</th>
@@ -49,7 +48,6 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 		$respuesta.="<tr>
 						<td><input name=\"codigopractica".$i."\" id=\"codigopractica".$i."\" type=\"text\" value=\"".$rowPractica['codigopractica']."\" size=\"5\" readonly=\"readonly\" style=\"background-color: #CCCCCC; text-align:center\"  /></td>
 						<td>".$rowPractica['descripcion']."</td>
-						<td>".$rowPractica['modulo']."</td>
 						<td><input name=\"unihonorariosolo".$i."\" id=\"unihonorariosolo".$i."\" type=\"text\" value=\"".$rowPractica['unihonorario']."\" size=\"10\"/></td>
 						<td><input name=\"unihonorarioespecialista".$i."\" id=\"unihonorarioespecialista".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioespecialista']."\" size=\"10\"/></td>
 						<td><input name=\"unihonorarioayudante".$i."\" id=\"unihonorarioayudante".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioayudante']."\" size=\"10\"/></td>

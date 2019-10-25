@@ -2,15 +2,16 @@
 include($libPath."controlSessionOspim.php"); 
 
 $id = $_GET['id'];
-$sqlResolucion = "SELECT r.*, DATE_FORMAT(r.fecha, '%d-%m-%Y') as fecha FROM resolucioncabecera r 
+$sqlResolucion = "SELECT r.*, DATE_FORMAT(r.fechaemision, '%d-%m-%Y') as fechaemision,
+					DATE_FORMAT(r.fechainicio, '%d-%m-%Y') as fechainicio,
+					DATE_FORMAT(r.fechafin, '%d-%m-%Y') as fechafin
+					FROM nomencladoresresolucion r 
 					WHERE r.id = $id ORDER BY id";
 $resResolucion = mysql_query($sqlResolucion,$db);
 $rowResolucion = mysql_fetch_assoc($resResolucion);
 
-$sqlResolucionDetalle = "SELECT r.*,p.*, 
-							DATE_FORMAT(r.fechadesde, '%d-%m-%Y') as fechadesde,  
-							DATE_FORMAT(r.fechahasta, '%d-%m-%Y') as fechahasta
-							FROM resoluciondetalle r, practicas p 
+$sqlResolucionDetalle = "SELECT r.*,p.* 
+							FROM practicasvaloresresolucion r, practicas p 
 							WHERE r.idpractica = p.idpractica AND r.idresolucion = $id ORDER BY r.idpractica";
 $resResolucionDetalle = mysql_query($sqlResolucionDetalle,$db);
 $canResolucionDetalle = mysql_num_rows($resResolucionDetalle);
@@ -36,21 +37,23 @@ $canResolucionDetalle = mysql_num_rows($resResolucionDetalle);
   	<div style="border: solid; width: 600px">
 	  	<p><b>Nombre: </b> <?php echo $rowResolucion['nombre'] ?></p>
 	  	<p><b>Emisor: </b> <?php echo $rowResolucion['emisor'] ?></p>
-	    <p><b>Fecha Emisión: </b> <?php echo $rowResolucion['fecha'] ?></p>
+	    <p><b>Fecha Emisión: </b> <?php echo $rowResolucion['fechaemision'] ?></p>
+	    <?php $fin = " al ".$rowResolucion['fechafin'];
+	    	  if ($rowResolucion['fechafin'] == NULL) {
+	    		$fin = " a la actualidad";
+	    	  }?>
+	    <p><b>Vigencia: </b><?php echo $rowResolucion['fechainicio'].$fin ?></p>
 	  	<p><b>Observación</b></p> 
 	  	<p><?php echo $rowResolucion['observacion'] ?></p>
   	</div>
   	<h3>Detalle de Prácticas de la Resolución</h3>
   	<?php if ($canResolucionDetalle > 0) {  ?>
-  			<h4 style="color: blue">NOTA: Si no hay Fecha Hasta, el importe está vigente</h4> 
   			<div class="grilla">
 	  			<table style="width: 900px">
 	  				<thead>
 	  					<tr>
 		  					<th>Código</th>
 		  					<th>Nombre</th>
-		  					<th>Fecha Desde</th>
-		  					<th>Fecha Hasta</th>
 		  					<th>Importe ($)</th>
 	  					</tr>
 	  				</thead>
@@ -59,9 +62,7 @@ $canResolucionDetalle = mysql_num_rows($resResolucionDetalle);
 			  			 	<tr>
 			  			 		<td><?php echo $rowResolucionDetalle['codigopractica'] ?></td>
 			  			 		<td><?php echo $rowResolucionDetalle['descripcion'] ?></td>
-			  			 		<td><?php echo $rowResolucionDetalle['fechadesde'] ?></td>
-			  			 		<td><?php if ($rowResolucionDetalle['fechahasta']!=NULL) { echo $rowResolucionDetalle['fechahasta']; } else { echo "-"; } ?></td>
-			  			 		<td><?php echo number_format($rowResolucionDetalle['importe'],2,',','.') ?></td>
+			  			 		<td><?php echo number_format($rowResolucionDetalle['modulo'],2,',','.') ?></td>
 			  			 	</tr>
 			  	  <?php } ?>
 	  	  			</tbody>
