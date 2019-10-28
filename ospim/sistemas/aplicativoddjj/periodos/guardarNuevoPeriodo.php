@@ -23,7 +23,7 @@ try {
 	$dbhweb->beginTransaction();
 	
 	$sqlPeriodo = "INSERT INTO periodosusimra VALUES(".$_POST['anio'].", ".$_POST['mes'].", '".$_POST['descripcion']."')";
-	$sqlPeriodoApli = "INSERT INTO periodos VALUES(".$_POST['anio'].", ".$_POST['mes'].", '".$_POST['descripcion']."')";
+	$sqlPeriodoApli = "INSERT INTO periodos VALUES(".$_POST['anio'].", ".$_POST['mes'].", '".$_POST['descripcion']."', '".$_POST['activo']."')";
 	
 	//echo $sqlPeriodo."<br>";
 	$dbh->exec($sqlPeriodo);

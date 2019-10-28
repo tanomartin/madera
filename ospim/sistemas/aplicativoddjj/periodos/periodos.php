@@ -18,7 +18,7 @@ $dbnameaplicativo = $baseUsimraNewAplicativo;
 mysql_select_db($dbnameaplicativo);
 
 $sqlPeriodosApli = "SELECT 
-p.anio as anio, p.mes as mes, p.descripcion, e.relacionmes, e.tipo, e.valor, e.retiene060, e.retiene100, e.retiene150, e.mensaje 
+p.anio as anio, p.mes as mes, p.descripcion, e.relacionmes, p.activo, e.tipo, e.valor, e.retiene060, e.retiene100, e.retiene150, e.mensaje 
 FROM periodos as p
 LEFT OUTER JOIN
 extraordinarios as e on p.anio = e.anio and p.mes = e.mes
@@ -103,7 +103,7 @@ $canPeriodos = mysql_num_rows($resPeriodos); ?>
 	<table class="tablesorter" id="listadoApli" style="width:1100px; font-size:14px">
 	<thead>
 		<tr>
-			<th class="filter-select" data-placeholder="Seleccion Año">Año</th>
+			<th class="filter-select" data-placeholder="---">Año</th>
 			<th>Mes</th>
 			<th>Descripcion</th>
 			<th>Mes Relacionado</th>
@@ -113,6 +113,7 @@ $canPeriodos = mysql_num_rows($resPeriodos); ?>
 			<th>Ret. 100</th>
 			<th>Ret. 150</th>
 			<th>Mensaje</th>
+			<th class="filter-select" data-placeholder="---">Activo</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -128,6 +129,7 @@ $canPeriodos = mysql_num_rows($resPeriodos); ?>
 			<td><?php echo $rowPeriodosApli['retiene100'];?></td>
 			<td><?php echo $rowPeriodosApli['retiene150'];?></td>
 			<td><?php echo $rowPeriodosApli['mensaje'];?></td>
+			<td><?php if ($rowPeriodosApli['activo'] == 1) { echo "SI"; } else { echo "NO"; } ?>
 		</tr>
 	<?php } ?>
 	</tbody>

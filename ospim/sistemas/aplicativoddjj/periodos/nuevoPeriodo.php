@@ -105,6 +105,11 @@ function validar(formulario) {
            	<td>Año <input name="anio" type="text" id="anio" size="6"/></td>
             <td>Mes <input name="mes" type="text" id="mes" size="4"/></td>
             <td>Descripcion <input name="descripcion" type="text" id="nroserie" size="60"/></td>
+            <td>Activo 
+            	<select id="activo" name="activo" >
+           			<option value='0'>NO</option>
+           			<option value='1' selected="selected">SI</option>
+           		</select></td>
         </tr>
     </table>
     <h3>Datos Periodo Extraordinario</h3>
@@ -117,7 +122,7 @@ function validar(formulario) {
            			<option value='0'>0 - Contribucion Ext. No Remunerativa (Monto Fijo)</option>
            			<option value='1'>1 - Aumento No Remunerativo (Alicuota)</option>
            			<option value='2'>2 - Cuotas Extraordinarias (Monto Fijo)</option>
-           			<option value='3'>3 - Extraordinario SAC</option>
+           			<option value='3'>3 - Extraordinario SAC | Libre (Ajuste)</option>
            		</select>
            </td>
          </tr>
