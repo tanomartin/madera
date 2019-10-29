@@ -436,6 +436,95 @@ $whereNom = substr($whereNom, 0, -1);
       </td>
     </tr>
   </table>
+	
+	<!--******************************************************************************************************************************************************************** -->	
+	
+  	<form name="agregarContrato" id="agregarContrato" onsubmit="return validarAdd(this)" method="post" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
+	  <h3>Pr&aacute;cticas para Agregar al contrato </h3>
+	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS DE LA MISMA CATEGORIA<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?>
+	  <p>
+	  <?php $sqlTipos = "SELECT tn.id, tn.codigonomenclador, n.nombre, t.descripcion
+	  						FROM tipopracticas t, tipopracticasnomenclador tn, nomencladores n 
+							WHERE tn.codigonomenclador in ($whereNom) and n.contrato = 1 and tn.codigonomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by tn.id"; 
+	  		$resTipos = mysql_query($sqlTipos,$db);?>
+        <select name="tipo" id="tipo">
+          <option value="0">Seleccione Tipo de Practica</option>  
+          <?php while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
+          <option value="<?php echo $rowTipos['id']."-".$rowTipos['codigonomenclador'] ?>"><?php echo $rowTipos['nombre']." - ".$rowTipos['descripcion'] ?></option>
+          <?php } ?>
+        </select>
+      </p>
+	  <p>
+        <select name="capitulo" id="capitulo" disabled="disabled">
+          <option value="0">Seleccione Capitulo</option>
+        </select>
+      </p>
+	  <p>
+        <select name="subcapitulo" id="subcapitulo" disabled="disabled">
+          <option value="0">Seleccione SubCapitulo</option>
+        </select>
+      </p>
+     
+     <div id="tituloPraticas" style="display: none">
+    	<h3>Aplica a todas las Prácticas en pantalla</h3>
+     	<div class="grilla">
+	     	<table style="width: 900px">
+		     <thead>
+		     	<tr>
+		     		<th>Categoria</th>
+					<th></th>
+					<th>Modulo Consultorio / Valor General ($)</th>
+					<th>Modulo Urgencia ($)</th>
+					<th>G. Honorarios ($)</th>
+					<th>G. Honorarios Especialista ($)</th>
+					<th>G. Honorarios Ayudante ($)</th>
+					<th>G. Honorarios Anestesista ($)</th>
+					<th>G. Gastos ($)</th>
+					<th>Coseguro ($)</th>
+				</tr>
+			 </thead>
+			 <tbody>	
+				<tr>
+				    <td>
+						<select name="cattotal" id="cattotal" disabled="disabled" onchange="cambiarcat(this.selectedIndex)">
+						<?php $personeria = $rowConsultaPresta['personeria'];
+							  $sqlCategoriaTotal = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
+							  $resCategoriaTotal = mysql_query($sqlCategoriaTotal,$db);
+							  while($rowCategoriaTotal = mysql_fetch_assoc($resCategoriaTotal)) {  ?>
+								<option value='<?php echo $rowCategoriaTotal['id']?>'><?php echo $rowCategoriaTotal['descripcion']?></option>
+						<?php } ?>
+						</select>
+					</td>
+					<td>
+						<select id='tipocargatotal' name='tipocargatotal' onchange="habilitarValorestotales(this.selectedIndex)" disabled="disabled">
+							<option value='0'>Tipo Carga</option>
+							<option value='1'>Por Modulo</option>
+							<option value='2'>Por Galeno</option>
+						</select>
+					</td>
+					<td><input id='moduloConsultoriototal' name='moduloConsultoriototal' onchange="cambiarvalor('moduloConsultorio', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='moduloUrgenciatotal' name='moduloUrgenciatotal' onchange="cambiarvalor('moduloUrgencia', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gHonototal' name='gHonototal' onchange="cambiarvalor('gHono', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gHonoEspetotal' name='gHonoEspetotal' onchange="cambiarvalor('gHonoEspe', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gHonoAyudtotal' name='gHonoAyudtotal' onchange="cambiarvalor('gHonoAyud', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gHonoAnestotal' name='gHonoAnestotal' onchange="cambiarvalor('gHonoAnes', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='gGastostotal' name='gGastostotal' onchange="cambiarvalor('gGastos', this.value)" type='text' disabled="disabled" size='7'/></td>
+					<td><input id='cosegurototal' name='cosegurototal' onchange="cambiarvalor('coseguro', this.value)" type='text' disabled="disabled" size='7'/></td>
+				</tr>
+			</tbody>
+		 	</table>
+	 	</div>
+	 	<h3>Practicas</h3>
+	 </div>
+	
+	 <table style="text-align:center; width:1000px; font-size: 13px" id="practicas" class="tablesorter" >
+		 <thead>
+		 </thead>
+		 <tbody>
+		 </tbody>
+  	 </table>
+     <p><input type='submit' name='agregar' id='agregar' value='Agregar Seleccionados' disabled="disabled"/></p>
+	</form>
   
   <!--******************************************************************************************************************************************************************** -->
  
@@ -526,95 +615,7 @@ $whereNom = substr($whereNom, 0, -1);
         		<h4><font color='#000099'> ESTE CONTRATO NO TIENE PRACTICAS CARGADAS</font></h4>
 			<?php } ?>
     </form>
-	
-	<!--******************************************************************************************************************************************************************** -->	
-	
-	<form name="agregarContrato" id="agregarContrato" onsubmit="return validarAdd(this)" method="post" action="agregarPracticas.php?codigo=<?php echo $codigo ?>&idcontrato=<?php echo $idcontrato ?>" >
-	  <h3>Pr&aacute;cticas para Agregar al contrato </h3>
-	  <?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS DE LA MISMA CATEGORIA<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?>
-	  <p>
-	  <?php $sqlTipos = "SELECT tn.id, tn.codigonomenclador, n.nombre, t.descripcion
-	  						FROM tipopracticas t, tipopracticasnomenclador tn, nomencladores n 
-							WHERE tn.codigonomenclador in ($whereNom) and n.contrato = 1 and tn.codigonomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by tn.id"; 
-	  		$resTipos = mysql_query($sqlTipos,$db);?>
-        <select name="tipo" id="tipo">
-          <option value="0">Seleccione Tipo de Practica</option>  
-          <?php while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
-          <option value="<?php echo $rowTipos['id']."-".$rowTipos['codigonomenclador'] ?>"><?php echo $rowTipos['nombre']." - ".$rowTipos['descripcion'] ?></option>
-          <?php } ?>
-        </select>
-      </p>
-	  <p>
-        <select name="capitulo" id="capitulo" disabled="disabled">
-          <option value="0">Seleccione Capitulo</option>
-        </select>
-      </p>
-	  <p>
-        <select name="subcapitulo" id="subcapitulo" disabled="disabled">
-          <option value="0">Seleccione SubCapitulo</option>
-        </select>
-      </p>
-     
-     <div id="tituloPraticas" style="display: none">
-    	<h3>Aplica a todas las Prácticas en pantalla</h3>
-     	<div class="grilla">
-	     	<table style="width: 900px">
-		     <thead>
-		     	<tr>
-		     		<th>Categoria</th>
-					<th></th>
-					<th>Modulo Consultorio / Valor General ($)</th>
-					<th>Modulo Urgencia ($)</th>
-					<th>G. Honorarios ($)</th>
-					<th>G. Honorarios Especialista ($)</th>
-					<th>G. Honorarios Ayudante ($)</th>
-					<th>G. Honorarios Anestesista ($)</th>
-					<th>G. Gastos ($)</th>
-					<th>Coseguro ($)</th>
-				</tr>
-			 </thead>
-			 <tbody>	
-				<tr>
-				    <td>
-						<select name="cattotal" id="cattotal" disabled="disabled" onchange="cambiarcat(this.selectedIndex)">
-						<?php $personeria = $rowConsultaPresta['personeria'];
-							  $sqlCategoriaTotal = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
-							  $resCategoriaTotal = mysql_query($sqlCategoriaTotal,$db);
-							  while($rowCategoriaTotal = mysql_fetch_assoc($resCategoriaTotal)) {  ?>
-								<option value='<?php echo $rowCategoriaTotal['id']?>'><?php echo $rowCategoriaTotal['descripcion']?></option>
-						<?php } ?>
-						</select>
-					</td>
-					<td>
-						<select id='tipocargatotal' name='tipocargatotal' onchange="habilitarValorestotales(this.selectedIndex)" disabled="disabled">
-							<option value='0'>Tipo Carga</option>
-							<option value='1'>Por Modulo</option>
-							<option value='2'>Por Galeno</option>
-						</select>
-					</td>
-					<td><input id='moduloConsultoriototal' name='moduloConsultoriototal' onchange="cambiarvalor('moduloConsultorio', this.value)" type='text' disabled="disabled" size='7'/></td>
-					<td><input id='moduloUrgenciatotal' name='moduloUrgenciatotal' onchange="cambiarvalor('moduloUrgencia', this.value)" type='text' disabled="disabled" size='7'/></td>
-					<td><input id='gHonototal' name='gHonototal' onchange="cambiarvalor('gHono', this.value)" type='text' disabled="disabled" size='7'/></td>
-					<td><input id='gHonoEspetotal' name='gHonoEspetotal' onchange="cambiarvalor('gHonoEspe', this.value)" type='text' disabled="disabled" size='7'/></td>
-					<td><input id='gHonoAyudtotal' name='gHonoAyudtotal' onchange="cambiarvalor('gHonoAyud', this.value)" type='text' disabled="disabled" size='7'/></td>
-					<td><input id='gHonoAnestotal' name='gHonoAnestotal' onchange="cambiarvalor('gHonoAnes', this.value)" type='text' disabled="disabled" size='7'/></td>
-					<td><input id='gGastostotal' name='gGastostotal' onchange="cambiarvalor('gGastos', this.value)" type='text' disabled="disabled" size='7'/></td>
-					<td><input id='cosegurototal' name='cosegurototal' onchange="cambiarvalor('coseguro', this.value)" type='text' disabled="disabled" size='7'/></td>
-				</tr>
-			</tbody>
-		 	</table>
-	 	</div>
-	 	<h3>Practicas</h3>
-	 </div>
-	
-	 <table style="text-align:center; width:1000px; font-size: 13px" id="practicas" class="tablesorter" >
-		 <thead>
-		 </thead>
-		 <tbody>
-		 </tbody>
-  	 </table>
-     <p><input type='submit' name='agregar' id='agregar' value='Agregar Seleccionados' disabled="disabled"/></p>
-	</form>
+
 	
 </div>
 </body>
