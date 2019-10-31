@@ -12,20 +12,6 @@ $rowNombrePractica = mysql_fetch_array($resNombrePractica);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Prestadores Practica :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -70,6 +56,8 @@ A:hover {text-decoration: none;color:#00FFFF }
 		var gHonoAnes = document.getElementById(idname);
 		idname = "gGastos";
 		var gGastos = document.getElementById(idname);
+		idcoseguro = "coseguro"
+		var coseguro = document.getElementById(idcoseguro);
 		gHono.value = '';
 		gHonoEspe.value = '';
 		gHonoAyud.value = '';
@@ -84,7 +72,10 @@ A:hover {text-decoration: none;color:#00FFFF }
 		modUrge.value = '';
 		modCons.disabled = true;
 		modUrge.disabled = true;
+		coseguro.value = '';
+		coseguro.disabled = true;
 		if (opcion != 0) {
+			coseguro.disabled = false;
 			if (opcion == 1) {
 				modCons.disabled = false;
 				modUrge.disabled = false;	
@@ -180,6 +171,11 @@ A:hover {text-decoration: none;color:#00FFFF }
 				}
 			}
 		}
+		if (!isNumberPositivo(formulario.coseguro.value)) {
+			alert("El valor del coseguro deben ser numeros positivos");
+			formulario.coseguro.focus();
+			return false;
+		}
 		formulario.Submit.disabled = true;
 		return true;
 	}
@@ -188,15 +184,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="insertarPracticaPrestador.php?idpractica=<?php echo $idpractica ?>">
+<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="agregarPracticaPrestadorGuardar.php?idpractica=<?php echo $idpractica ?>">
   <div align="center">
-	  	<div class="Estilo1">
-	  		<p>Agregar Practica a Prestador</p>
-	  		<p style="color: blue"><?php echo $rowNombrePractica['codigopractica']." - ".$rowNombrePractica['descripcion']." (".$rowNombrePractica['nombre'].")" ?></p>
-	  		<input style="display: none" type="text" id="nomenclador" name="nomenclador" value="<?php echo $rowNombrePractica['nomenclador'] ?>" />
-	  		<p>Datos de Ingreso</p>
-	  		<p><?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?></p> 
-	  	</div>
+	  	<h2>Agregar Practica a Prestador</h2>
+	  	<h4 style="color: blue"><?php echo $rowNombrePractica['codigopractica']." - ".$rowNombrePractica['descripcion']." (".$rowNombrePractica['nombre'].")" ?></h4>
+	  	<input style="display: none" type="text" id="nomenclador" name="nomenclador" value="<?php echo $rowNombrePractica['nomenclador'] ?>" />
+	  	<h3>Datos de Ingreso</h3>
+	  	<p><?php if(isset($_GET['error'])) { print("<div style='color:#FF0000'><b> NO SE PUEDE COLOCAR EN EL MISMO CONTRATO DOS PRACTICAS<br> CON EL MISMO CODIGO DEL MISMO NOMENCLADOR</b></div>");} ?></p> 
   		<table>
   			<tr>
   				<th>Codigo Prestador</th>
@@ -226,7 +220,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 						<option value='2'>Por Galeno</option>
 					</select>
 				</td>
-  			</tr>
+  			</tr> 
   		</table>
   		<table style="margin-top: 10px; width: 650px">
   			<tr>
@@ -254,6 +248,16 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><input id='gHonoAyud' name='gHonoAyud' type='text' disabled='disabled' size='7'/></td>
 				<td><input id='gHonoAnes' name='gHonoAnes' type='text' disabled='disabled' size='7'/></td>
 				<td><input id='gGastos' name='gGastos' type='text' disabled='disabled' size='7'/></td>
+  			</tr>
+  			<tr>
+  				<th colspan="2"></th>
+  				<th>Coseguro</th>
+  				<th colspan="2"></th>
+  			</tr>
+  			<tr align="center">
+  				<td colspan="2"></td>
+  				<td><input type="text" id="coseguro" name="coseguro" disabled='disabled'  size='7'/></td>
+  				<td colspan="2"></td>
   			</tr>
   		</table>
   	<p><input type="submit" name="Submit" value="Agregar Practica" /></p>
