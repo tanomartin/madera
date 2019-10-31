@@ -212,12 +212,12 @@ function validarPractica(formulario) {
 function validarCapituloSubcapitulo(formulario) {
 	var codigo = formulario.codigo.value;
 	if(esEnteroPositivo(codigo)) {
-		if(codigo <= 0 || codigo > 99) {
-			alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para este tipo de practica");
+		if(codigo < 0 || codigo > 99) {
+			alert("Debe ingresar un codigo de dos digitos entre 00 y 99 para este tipo de practica");
 			return false;
 		}
 	} else {
-		alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para la practica");
+		alert("Debe ingresar un codigo de dos digitos entre 00 y 99 para la practica");
 		return false;
 	}
 	if(formulario.descri.value == "") {
