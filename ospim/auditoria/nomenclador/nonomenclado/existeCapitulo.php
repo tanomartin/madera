@@ -29,7 +29,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <p>
     <input type="button" name="volver" value="Volver" onclick="location.href = 'nuevaPractica.php'" />
   </p>
-  <p><span class="Estilo2" style="color:#FF0000">El capitulo de codigo <b><?php echo $rowCapitulo['codigo'] ?></b> ya existe</span></p>
+  <p><span class="Estilo2" style="color:#FF0000">El capitulo de codigo <b><?php echo $rowCapitulo['codigo'] ?></b> ya existe con la misma descripción</span></p>
   <p><span class="Estilo2"><?php echo $rowCapitulo['codigo']." - ".$rowCapitulo['descripcion'] ?></span></p>
 </div>
 </body>

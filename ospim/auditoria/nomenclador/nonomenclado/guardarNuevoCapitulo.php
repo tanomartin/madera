@@ -4,7 +4,7 @@ $codigo = $_POST['codigo'];
 $codigo = str_pad($codigo,2,'0',STR_PAD_LEFT);
 $descri = $_POST['descri'];
 
-$sqlExisteCodigo = "SELECT * FROM capitulosdepracticas WHERE codigo = '$codigo' and idtipopractica = $tipo";
+$sqlExisteCodigo = "SELECT * FROM capitulosdepracticas WHERE descripcion = '$descri' and idtipopractica = $tipo";
 $resExisteCodigo = mysql_query($sqlExisteCodigo,$db);
 $numExisteCodigo = mysql_num_rows($resExisteCodigo);
 //print($sqlExisteCodigo."<br>");
