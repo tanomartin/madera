@@ -16,13 +16,20 @@ include($libPath."controlSessionOspim.php"); ?>
     <tr>
 	  	<td width="200">
 	  		<p>A.B.M.C</p>
-			<p><a class="enlace" href="abm/moduloDiabetes.php"><img src="img/diabetes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p><a href="abm/moduloDiabetes.php"><img src="img/diabetes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
 		<td width="200">
 			<p>PRESENTACION S.S.S.</p>
-			<p><a class="enlace" href="presentacion/moduloPresSSS.php"><img src="img/logosss.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+			<p><a href="presentacion/moduloPresSSS.php"><img src="img/logosss.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 		</td>
     </tr>  
+    <tr>
+    	<td>
+	  		<p>INFORMES</p>
+			<p><a href="informes/moduloInformes.php"><img src="img/informes.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		</td>
+		<td></td>
+    </tr>
   </table>
 </div>
 </body>
