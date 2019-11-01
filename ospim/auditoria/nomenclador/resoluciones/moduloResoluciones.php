@@ -66,9 +66,7 @@ jQuery(function($){
 				url: "getPracticas.php",
 				data: {resolucion:resolucion},
 			}).done(function(respuesta){
-				if (respuesta != 0) {
-					$("#practicas").html(respuesta);
-				}
+				$("#practicas").html(respuesta);	
 			});
 		} else {
 			$("#practicas").html("<thead></thead><tbody></tbody>");	

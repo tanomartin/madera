@@ -22,7 +22,7 @@ if(isset($_POST['resolucion'])) {
 	$respuesta.="</tbody>";
 	
 	if($canPractica == 0) {
-		$respuesta = 0;
+		$respuesta .= "<tbody><tr><td colspan='3'>NO HAY PRACTICAS CARGADAS EN ESTA RESOLUCION</td></tr></tbody>";
 	}
 	echo $respuesta;
 }
