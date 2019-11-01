@@ -14,7 +14,7 @@ if($tipo != -1) {
 }
 $descri = $_POST['descri'];
 
-$sqlExisteCodigo = "SELECT * FROM practicas WHERE codigopractica = '$codigoCompleto' and nomenclador = 2";
+$sqlExisteCodigo = "SELECT * FROM practicas WHERE codigopractica = '$codigoCompleto' and descripcion = '$descri' and nomenclador = 2";
 $resExisteCodigo = mysql_query($sqlExisteCodigo,$db);
 $numExisteCodigo = mysql_num_rows($resExisteCodigo);
 if ($numExisteCodigo == 0) {	
