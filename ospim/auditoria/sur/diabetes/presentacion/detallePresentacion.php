@@ -179,8 +179,8 @@ $(function() {
 	  			<tr>
 					<td><?php echo $arrayKey[0] ?></td>
 					<td><?php echo $detalle['nombre'] ?></td>
-					<td><?php echo $detalle['tipoBene'] ?></td>
 					<td><?php echo $detalle['cuil']; ?></td>
+					<td><?php echo $detalle['tipoBene'] ?></td>
 					<td><?php echo $detalle['delega']; ?></td>
 				</tr>
 	  <?php } ?>
