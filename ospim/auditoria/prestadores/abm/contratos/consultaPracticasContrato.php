@@ -104,7 +104,7 @@ $numPracticas = mysql_num_rows($resPracticas);
           </div></td>
         </tr>
   	</table>
-  	<h3>Prácticas del Contrato</h3>
+  	<h3>Prácticas del Contrato - Nº  <?php echo $idcontrato ?></h3>
     <?php echo $cartel ?>
 	<?php  if ($numPracticas > 0) { ?>      
         <table style="text-align:center; width:1000px; font-size: 13px" id="practicaencontrato" class="tablesorter" >
