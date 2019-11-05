@@ -428,10 +428,11 @@ function validar(formulario) {
 			<?php 
 				$index = 0;
 				foreach($arrayNuevo as $completo) {  
-					$index++; ?>
+					$index++; 
+					$codidelega = substr($completo['delega'],0,4); ?>
 					<tr>
 						<td>
-							<input style="display: none" type="text" id="datos<?php echo $index?>" name="datos<?php echo $index ?>" value="<?php echo $completo["id"]."-".$completo['cuil']?>"/>
+							<input style="display: none" type="text" id="datos<?php echo $index?>" name="datos<?php echo $index ?>" value="<?php echo $completo["id"]."-".$completo['cuil']."-".$codidelega?>"/>
 							<?php echo $completo['nroafiliado'] ?>
 						</td>
 						<td><?php echo $completo['nombre']; ?></td>
@@ -464,7 +465,8 @@ function validar(formulario) {
 			</thead>
 			<tbody>
 			<?php foreach($arrayViejos as $completo) {  
-					$index++; ?>
+					$index++; 
+					$codidelega = substr($completo['delega'],0,4); ?>
 					<tr>
 						<td><?php echo $completo['nroafiliado'] ?></td>
 						<td><?php echo $completo['nombre']; ?></td>
@@ -473,7 +475,7 @@ function validar(formulario) {
 						<td><?php echo $completo['delega']; ?></td>
 						<td><?php echo $completo['fechaficha'] ?></td>
 						<td><?php echo $completo['tipodiabetes'] ?></td>
-						<td><input type="checkbox" id="check<?php echo $index?>" name="check<?php echo $index?>" value="<?php echo $completo["id"]."-".$completo['cuil']?>"/></td>
+						<td><input type="checkbox" id="check<?php echo $index?>" name="check<?php echo $index?>" value="<?php echo $completo["id"]."-".$completo['cuil']."-".$codidelega?>"/></td>
 					</tr>
 			<?php } ?>
 			</tbody>

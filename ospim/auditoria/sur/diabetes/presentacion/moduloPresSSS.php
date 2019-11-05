@@ -74,6 +74,7 @@ $(function() {
 		  					<th>Archivo</th>
 		  					<th width="25%">Observacion</th>
 		  					<th width="20%">Estado</th>
+		  					<th>+Info</th>
 		  					<th width="25px">Acciones</th>
 	  					</tr>
 	  				</thead>
@@ -98,7 +99,8 @@ $(function() {
 			  					if ($rowPresSSSActiva['fechapresentacion'] != NULL) {
 			  						$estado = "PRESENTADA <br>FEC: ".$rowPresSSSActiva['fechapresentacion']."<br>SOL.: ".$rowPresSSSActiva['nrosolicitud']."<br>CANT: ".$rowPresSSSActiva['cantbenesolicitados'];
 								}?>
-			  				<td><?php echo $estado ?></td>
+			  				<td><?php echo $estado."<br>" ?></td>
+			  				<td><input type="button" value="DETALLE" onclick="location.href = 'detallePresentacion.php?id=<?php echo $rowPresSSSActiva['id'] ?>'"/></td>
 			  				<td>			  					
 			  					<?php if ($rowPresSSSActiva['fechasolicitud'] == NULL) { 
 			  							if ($rowPresSSSActiva['patharchivo'] != NULL) { ?> 
@@ -141,6 +143,7 @@ $(function() {
 	  					<th width="25%">Observacion</th>
 	  					<th>Estado</th>
 	  					<th>+ Info</th>
+	  					<th></th>
   					</tr>
   				</thead>
   				<tbody>
@@ -168,13 +171,14 @@ $(function() {
 			  						$estado = "FINALIZADA<br>".$rowPresSSSFinalizadas['fechadevolucion'];
 			  						$info = "<b>EXP:</b> ".$rowPresSSSFinalizadas['nroexpediente']."<br><b>MONTO:</b> $ ".$rowPresSSSFinalizadas['monto']."<br><b>CANT: </b>".$rowPresSSSFinalizadas['cantbenesolicitados'];
 			  					} ?>
-			  			<td style="color: <?php echo $color ?>">
-			  				<?php echo $estado."<br>";
-			  					  if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) {?>
+			  			<td style="color: <?php echo $color ?>"><?php echo $estado."<br>"; ?></td>
+			  			<td><?php echo $info."<br>" ?></td>
+			  			<td>
+			  				<input type="button" value="DETALLE" onclick="location.href = 'detallePresentacion.php?id=<?php echo $rowPresSSSFinalizadas['id'] ?>'"/></br>
+			  				<?php if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) {?>
 			  						<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSFinalizadas['pathsolicitud'] ?>'"/>
-			  		  		<?php } ?>
+			  		  		<?php } ?>	
 			  			</td>
-			  			<td><?php echo $info ?> </td>
   					</tr>
   			<?php } ?>
   				</tbody>

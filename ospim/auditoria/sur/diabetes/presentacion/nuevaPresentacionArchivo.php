@@ -3,12 +3,14 @@ include($libPath."controlSessionOspim.php");
 
 $whereIn = "(";
 $arrayCuiles = array();
+$arrayDelega = array();
 $cantBeneNuevos = 0;
 $cantBeneViejos = 0;
 foreach ($_POST as $key => $datos) {
 	$arrayDatos = explode("-",$datos);
 	$whereIn .= $arrayDatos[0].",";
 	$arrayCuiles[$arrayDatos[0]] = $arrayDatos[1];
+	$arrayDelega[$arrayDatos[0]] = $arrayDatos[2];
 	if (strpos($key, "datos") === false) {
 		$cantBeneViejos++;
 	} else {
@@ -102,6 +104,8 @@ if ($total > 0) {
 
 	$file = fopen($archivoImportacion, "w");
 	if ($file !== false) {
+		
+		$insertDetalleArchivo = "";
 		while ($rowListadoDiabetes = mysql_fetch_assoc($resListadoDiabetes)) {
 			$fechaRegistro = date_format(date_create($rowListadoDiabetes['fechaficha']),"Ymd");
 			$edadDiag = str_pad($rowListadoDiabetes['edaddiagnostico'],2,0,STR_PAD_LEFT);
@@ -289,9 +293,14 @@ if ($total > 0) {
 					 $rowListadoDiabetes['farmacoshipolipemiantes']."|".$rowListadoDiabetes['acidoacetilsalicilico']."|".
 					 $rowListadoDiabetes['hipoglucemiantesorales']."|".$insulinabasalcodigo."|".$insulinacorreccioncodigo;
 			//echo $linea."<br>";
+			
+		    $insertDetalleArchivo .= "(idpres,".$arrayCuiles[$rowListadoDiabetes['id']].",".$rowListadoDiabetes['nroafiliado'].",".$rowListadoDiabetes['nroorden'].",".$arrayDelega[$rowListadoDiabetes['id']]."),";
+		 	
 			fwrite($file, $linea . PHP_EOL);
 		}
 		fclose($file);
+		//echo $insertDetalleArchivo."<br>";
+		$insertDetalleArchivo = substr($insertDetalleArchivo, 0, -1);
 	} else {
 		$error = "Linea: No se pudo crear el archivo de migracion de diabetes";
 		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
@@ -304,6 +313,7 @@ if ($total > 0) {
 }
 
 $insertPresentacion = "INSERT INTO diabetespresentacion VALUES(DEFAULT, '$periodo', $cantBeneNuevos, $cantBeneViejos,$archivoImportacion, NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro',NULL,NULL)";
+$insertDetalle = "INSERT INTO diabetespresentaciondetalle VALUES".$insertDetalleArchivo;
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -313,7 +323,11 @@ try {
 
 	//echo $insertPresentacion."<br><br>";
 	$dbh->exec($insertPresentacion);
-
+	$lastId = $dbh->lastInsertId();
+	$insertDetalle = str_replace("idpres",$lastId,$insertDetalle);
+	//echo $insertDetalle."<br><br>";
+	$dbh->exec($insertDetalle);
+	
 	$dbh->commit();
 	$redire = "moduloPresSSS.php";
 	Header("Location: $redire");
