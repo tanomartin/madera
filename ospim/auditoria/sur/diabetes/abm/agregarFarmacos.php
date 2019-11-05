@@ -284,7 +284,7 @@ function validar(formulario) {
 	}	
 	if (formulario.insulinabasal.checked == false) {
 		if(formulario.tipodiabetes.value == 1) {
-			var cajadialogo = $('<div title="Aviso"><p>Debe especificar datos de Insulina Basal.</p></div>');
+			var cajadialogo = $('<div title="Aviso"><p>El tipo de diabetes del diagnóstico es TIPO 1. Debe especificar datos de Insulina Basal.</p></div>');
 			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#insulinabasal').focus(); }});
 			formulario.guardar.disabled = false;
 			return false;
