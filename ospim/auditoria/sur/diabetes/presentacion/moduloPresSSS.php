@@ -182,9 +182,11 @@ $(function() {
 			  					<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSFinalizadas['pathsolicitud'] ?>'"/></br>
 			  			<?php	if ($numCantDetalle == $rowPresSSSFinalizadas['cantbenesolicitados']) { ?>
 			  						<input type="button" value="DETALLE" onclick="location.href = 'detallePresentacion.php?id=<?php echo $rowPresSSSFinalizadas['id'] ?>'"/></br>
-			  		  	  <?php } else { ?>
-			  		  	  			<input type="button" value="CONS. DET." onclick="#"/></br>
-			  		  	  <?php	}	
+			  		  	  <?php } else { 
+			  		  	  			if ($numCantDetalle != 0) { ?>
+			  		  	  				<input type="button" value="CONS. DET." onclick="location.href = 'detalleConsolidarPresentacion.php?id=<?php echo $rowPresSSSFinalizadas['id'] ?>&cantidad=<?php echo $rowPresSSSFinalizadas['cantbenesolicitados']?>'"/></br>
+			  		  	  <?php		}	
+			  		  	  		  }
 			  				  }?>	
 			  			</td>
   					</tr>
