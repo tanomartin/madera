@@ -148,6 +148,10 @@ $(function() {
   				</thead>
   				<tbody>
   			<?php  while ($rowPresSSSFinalizadas = mysql_fetch_assoc($resPresSSSFinalizadas)) { 
+  					$sqlCantDetalle = "SELECT * FROM diabetespresentaciondetalle WHERE idpresentacion = ".$rowPresSSSFinalizadas['id'];
+  					$resCantDetalle = mysql_query($sqlCantDetalle,$db);
+  					$numCantDetalle = mysql_num_rows($resCantDetalle);
+  				
   					$arrayArchivo = explode("/",$rowPresSSSFinalizadas['patharchivo']);
 					$archivo = end($arrayArchivo);
 					$arrayArchivo = explode("/",$rowPresSSSFinalizadas['pathsolicitud']); 
@@ -174,10 +178,14 @@ $(function() {
 			  			<td style="color: <?php echo $color ?>"><?php echo $estado."<br>"; ?></td>
 			  			<td><?php echo $info."<br>" ?></td>
 			  			<td>
-			  				<input type="button" value="DETALLE" onclick="location.href = 'detallePresentacion.php?id=<?php echo $rowPresSSSFinalizadas['id'] ?>'"/></br>
-			  				<?php if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) {?>
-			  						<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSFinalizadas['pathsolicitud'] ?>'"/>
-			  		  		<?php } ?>	
+			  			<?php if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) { ?>
+			  					<input type="button" value="NOTA" onclick="location.href = 'descargaArchivo.php?file=<?php echo $rowPresSSSFinalizadas['pathsolicitud'] ?>'"/></br>
+			  			<?php	if ($numCantDetalle == $rowPresSSSFinalizadas['cantbenesolicitados']) { ?>
+			  						<input type="button" value="DETALLE" onclick="location.href = 'detallePresentacion.php?id=<?php echo $rowPresSSSFinalizadas['id'] ?>'"/></br>
+			  		  	  <?php } else { ?>
+			  		  	  			<input type="button" value="CONS. DET." onclick="#"/></br>
+			  		  	  <?php	}	
+			  				  }?>	
 			  			</td>
   					</tr>
   			<?php } ?>

@@ -1,5 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
+include($libPath."fechas.php");
 
 $id = $_GET['id'];
 $sqlCabecera = "SELECT * FROM diabetespresentacion WHERE id = $id";
