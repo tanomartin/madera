@@ -86,7 +86,7 @@ if ($canExtraordinarioMes > 0) {
 	while ($rowPagosNoRem = mysql_fetch_assoc($resPagosNoRem)) {
 		$pagos[$i] = $rowPagosNoRem;
 		$alicuota = 0;
-		if ($tipo = 1) {
+		if ($tipo == 1) {
 			$alicuota = $rowPagosNoRem['remuneraciones'] * $valor;
 		}
 		$pagos[$i]['alicuota'] = $alicuota;
