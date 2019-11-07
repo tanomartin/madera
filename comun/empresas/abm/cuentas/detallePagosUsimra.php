@@ -7,8 +7,7 @@ include($libPath."cabeceraEmpresaConsulta.php");
 
 $anio=$_GET['anio'];
 $mes=$_GET['mes'];
-
-$sqlPagos = "select s.*, ap6.importe as importeap6, ap1.importe as importeap1, ap15.importe as importeap15
+$sqlPagos = "select s.*,0 as alicuota, ap6.importe as importeap6, ap1.importe as importeap1, ap15.importe as importeap15
 				from seguvidausimra s
 				LEFT OUTER JOIN
 				apor060usimra ap6 on
@@ -51,12 +50,14 @@ $sqlCabDDJJ = "SELECT * FROM cabddjjusimra WHERE cuit = $cuit and anoddjj = $ani
 $resCabDDJJ = mysql_query($sqlCabDDJJ,$db);
 
 
-$sqlExtraordinarioMes = "select mes from extraordinariosusimra where anio = $anio and relacionmes = $mes";
+$sqlExtraordinarioMes = "select mes, tipo, valor from extraordinariosusimra where anio = $anio and relacionmes = $mes";
 $resExtraordinarioMes = mysql_query($sqlExtraordinarioMes,$db);
 $canExtraordinarioMes = mysql_num_rows($resExtraordinarioMes);
 if ($canExtraordinarioMes > 0) {
 	$rowExtraordinarioMes = mysql_fetch_assoc($resExtraordinarioMes);
 	$mesExtra = $rowExtraordinarioMes['mes'];
+	$tipo = $rowExtraordinarioMes['tipo'];
+	$valor = $rowExtraordinarioMes['valor'];
 	$sqlPagosNoRem = "select s.*, ap6.importe as importeap6, ap1.importe as importeap1, ap15.importe as importeap15
 						from seguvidausimra s
 						LEFT OUTER JOIN
@@ -84,6 +85,11 @@ if ($canExtraordinarioMes > 0) {
 	$resPagosNoRem = mysql_query($sqlPagosNoRem,$db);
 	while ($rowPagosNoRem = mysql_fetch_assoc($resPagosNoRem)) {
 		$pagos[$i] = $rowPagosNoRem;
+		$alicuota = 0;
+		if ($tipo = 1) {
+			$alicuota = $rowPagosNoRem['remuneraciones'] * $valor;
+		}
+		$pagos[$i]['alicuota'] = $alicuota;
 		$totalPagado = (float) ($totalPagado + $pagos[$i]['montopagado']);
 		$i = $i + 1;
 	}
@@ -125,7 +131,8 @@ A:hover {text-decoration: none;color:#00FFFF }
       <th>Periodo</th>
       <th>Fecha de Pago </th>
 	  <th>Personal</th>
-	  <th>Remuneraci&oacute;n</th>
+	  <th>Remuneración</th>
+	  <th>Alicuota</th>
 	  <th>Aporte 0.6%</th>
 	  <th>Contri 1%</th>
 	  <th>Aporte 1.5%</th>
@@ -143,6 +150,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<td><?php echo invertirFecha($pagos[$n]['fechapago']) ?></td>
 		<td><?php echo $pagos[$n]['cantidadpersonal'] ?></td>
 		<td align='right'><?php echo number_format($pagos[$n]['remuneraciones'],2,',','.') ?></td>
+		<td align='right'><?php if ($pagos[$n]['alicuota'] != 0) { echo number_format($pagos[$n]['alicuota'],2,',','.'); } else { echo "-"; } ?></td>
 		<td align='right'><?php echo number_format($pagos[$n]['importeap6'],2,',','.') ?></td>
 		<td align='right'><?php echo number_format($pagos[$n]['importeap1'],2,',','.') ?></td>
 		<td align='right'><?php echo number_format($pagos[$n]['importeap15'],2,',','.') ?></td>
@@ -153,7 +161,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 		</tr>
 <?php }?>
 	<tr>
-      <td colspan="9"><div align="right"><strong>TOTAL</strong></div></td>
+      <td colspan="10"><div align="right"><strong>TOTAL</strong></div></td>
 	  <td><div align='right'><b><?php echo number_format($totalPagado,2,',','.') ?></b></div></td>
 	<td colspan="2"></td>
     </tr>
@@ -185,11 +193,11 @@ A:hover {text-decoration: none;color:#00FFFF }
   			?>		
 			 <tr>
 			 	<td><b>TOTAL</b></td>
-			 	<td align='right'><?php  echo number_format($rowCabDDJJ['remuneraciones'],2,',','.') ?></td>
-	  			<td align='right'><?php  echo number_format($rowCabDDJJ['apor060'],2,',','.') ?></td>
-	  			<td align='right'><?php  echo number_format($rowCabDDJJ['apor100'],2,',','.') ?></td>
-	  			<td align='right'><?php  echo number_format($rowCabDDJJ['apor150'],2,',','.') ?></td>
-	  			<td align='right'><?php  echo number_format($rowCabDDJJ['totalaporte'],2,',','.') ?></td>
+			 	<td align='right'><b><?php  echo number_format($rowCabDDJJ['remuneraciones'],2,',','.') ?></b></td>
+	  			<td align='right'><b><?php  echo number_format($rowCabDDJJ['apor060'],2,',','.') ?></b></td>
+	  			<td align='right'><b><?php  echo number_format($rowCabDDJJ['apor100'],2,',','.') ?></b></td>
+	  			<td align='right'><b><?php  echo number_format($rowCabDDJJ['apor150'],2,',','.') ?></b></td>
+	  			<td align='right'><b><?php  echo number_format($rowCabDDJJ['totalaporte'],2,',','.') ?></b></td>
 			 </tr>
   			</table>
   <?php } else { ?>
@@ -202,7 +210,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   			<table border="1" width="600">
   				<tr>
   					<th>C.U.I.L.</th>
-  					<th>Remuneracion</th>
+  					<th>Alicuota</th>
   					<th>Aporte 0.6%</th>
   					<th>Aporte 1%</th>
   					<th>Aporte 1.5%</th>
@@ -226,11 +234,11 @@ A:hover {text-decoration: none;color:#00FFFF }
   			?>		
 			 <tr>
 			 	<td><b>TOTAL</b></td>
-			 	<td align='right'><?php  echo number_format($totalRerNoRem,2,',','.') ?></td>
-	  			<td align='right'><?php  echo number_format($rowCabDDJJNoRem['apor060'],2,',','.') ?></td>
-	  			<td align='right'><?php  echo number_format($rowCabDDJJNoRem['apor100'],2,',','.') ?></td>
-	  			<td align='right'><?php  echo number_format($rowCabDDJJNoRem['apor150'],2,',','.') ?></td>
-	  			<td align='right'><?php  echo number_format($rowCabDDJJNoRem['totalaporte'],2,',','.') ?></td>
+			 	<td align='right'><b><?php  echo number_format($totalRerNoRem,2,',','.') ?></b></td>
+	  			<td align='right'><b><?php  echo number_format($rowCabDDJJNoRem['apor060'],2,',','.') ?></b></td>
+	  			<td align='right'><b><?php  echo number_format($rowCabDDJJNoRem['apor100'],2,',','.') ?></b></td>
+	  			<td align='right'><b><?php  echo number_format($rowCabDDJJNoRem['apor150'],2,',','.') ?></b></td>
+	  			<td align='right'><b><?php  echo number_format($rowCabDDJJNoRem['totalaporte'],2,',','.') ?></b></td>
 			 </tr>
   			</table>
   <?php } else { ?>
