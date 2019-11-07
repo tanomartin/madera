@@ -208,8 +208,11 @@ A:hover {text-decoration: none;color:#00FFFF }
   					<th>Aporte 1.5%</th>
   					<th>Total</th>
   				</tr>
-  	<?php  while ($rowDDJJNoRem = mysql_fetch_assoc($resDetDDJJNoRem)) {
-  				$totalNoRem = $rowDDJJNoRem['apor060'] + $rowDDJJNoRem['apor100'] + $rowDDJJNoRem['apor150']; ?>	
+  	<?php  $totalRerNoRem = 0;
+  			while ($rowDDJJNoRem = mysql_fetch_assoc($resDetDDJJNoRem)) {
+  				$totalNoRem = $rowDDJJNoRem['apor060'] + $rowDDJJNoRem['apor100'] + $rowDDJJNoRem['apor150']; 
+  				$totalRerNoRem += $rowDDJJNoRem['remuneraciones'];
+  				?>	
   				<tr>
 	  				<td><?php echo $rowDDJJNoRem['cuil'] ?></td>
 	  				<td align='right'><?php  echo number_format($rowDDJJNoRem['remuneraciones'],2,',','.') ?></td>
@@ -223,7 +226,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   			?>		
 			 <tr>
 			 	<td><b>TOTAL</b></td>
-			 	<td align='right'><?php  echo number_format($rowCabDDJJNoRem['remuneraciones'],2,',','.') ?></td>
+			 	<td align='right'><?php  echo number_format($totalRerNoRem,2,',','.') ?></td>
 	  			<td align='right'><?php  echo number_format($rowCabDDJJNoRem['apor060'],2,',','.') ?></td>
 	  			<td align='right'><?php  echo number_format($rowCabDDJJNoRem['apor100'],2,',','.') ?></td>
 	  			<td align='right'><?php  echo number_format($rowCabDDJJNoRem['apor150'],2,',','.') ?></td>
