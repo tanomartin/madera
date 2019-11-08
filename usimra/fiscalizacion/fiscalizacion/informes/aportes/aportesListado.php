@@ -10,8 +10,10 @@ if ($canEmpresa == 0) {
 	header ("Location: aportesCuit.php?err=2");
 } else {
 	$rowEmpresa = mysql_fetch_assoc($resEmpresa);
-	$sqlAportes = "select s.*, ap6.importe as importeap6, ap1.importe as importeap1, ap15.importe as importeap15
-					from seguvidausimra s
+	$sqlAportes = "select s.*, ap6.importe as importeap6, ap1.importe as importeap1, 
+						  ap15.importe as importeap15, p.descripcion as periodo, e.tipo, e.valor
+					from periodosusimra p, seguvidausimra s
+					LEFT JOIN  extraordinariosusimra e ON e.anio = s.anopago and e.mes = s.mespago
 					LEFT OUTER JOIN
 					apor060usimra ap6 on
 					s.cuit = ap6.cuit and
@@ -31,7 +33,8 @@ if ($canEmpresa == 0) {
 					s.mespago = ap15.mespago and
 					s.nropago = ap15.nropago
 					where 
-					s.cuit = $cuit";
+					s.cuit = $cuit and s.anopago = p.anio and s.mespago = p.mes
+					order by s.anopago, s.mespago";
 	$resAportes = mysql_query($sqlAportes,$db);
 	$canAportes = mysql_num_rows($resAportes);
 	if ($canAportes == 0) {
@@ -48,16 +51,6 @@ if ($canEmpresa == 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Aportes por C.U.I.T. :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -94,16 +87,18 @@ A:hover {text-decoration: none;color:#00FFFF }
 
 <body bgcolor="#B2A274">
 <div align="center">
-	 <input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'aportesCuit.php'" />
-	<p><span class="Estilo2">Aportes Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (U.S.I.M.R.A.) </span></p>
+ 	<p><input type="reset" class="nover" name="volver" value="Volver" onclick="location.href = 'aportesCuit.php'" /></p>
+	<h3>Aportes Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (U.S.I.M.R.A.) </h3>
 	<table class="tablesorter" id="listado" style="width:800px; font-size:14px">
 	<thead>
 		<tr>
 			<th class="filter-select" data-placeholder="Seleccion Año">Año</th>
 			<th class="filter-select" data-placeholder="Seleccion Mes">Mes</th>
+			<th>Periodo</th>
 			<th>Fecha de Pago</th>
 			<th>Personal</th>
 			<th>Remuneracion</th>
+			<th>Alicuota</th>
 			<th>Aporte 0.6%</th>
 			<th>Contri 1%</th>
 			<th>Aporte 1.5%</th>
@@ -119,15 +114,17 @@ A:hover {text-decoration: none;color:#00FFFF }
 		<tr align="center">
 			<td><?php echo $rowAportes['anopago'];?></td>
 			<td><?php echo $rowAportes['mespago'];?></td>
+			<td><?php echo $rowAportes['periodo'];?></td>
 			<td><?php echo invertirFecha($rowAportes['fechapago']);?></td>
 			<td><?php echo $rowAportes['cantidadpersonal'];?></td>
 			<td align="right"><?php print(number_format($rowAportes['remuneraciones'],2,',','.')) ?></td>
+			<td align="right"><?php if ($rowAportes['tipo'] == 1) { print(number_format($rowAportes['remuneraciones']*$rowAportes['valor'],2,',','.')); } else { echo "-"; } ?></td>
 			<td align="right"><?php print(number_format($rowAportes['importeap6'],2,',','.'))  ?></td>
 			<td align="right"><?php print(number_format($rowAportes['importeap1'],2,',','.'))  ?></td>
 			<td align="right"><?php print(number_format($rowAportes['importeap15'],2,',','.'))  ?></td>
 			<td align="right"><?php print(number_format($rowAportes['montorecargo'],2,',','.')) ?></td>
 			<td align="right"><?php print(number_format($rowAportes['montopagado'],2,',','.')) ?></td>
-			<td align="center"><?php print($rowAportes['observacion']) ?></td>
+			<td align="center"><?php print($rowAportes['observaciones']) ?></td>
 		</tr>
 		<?php
 		}

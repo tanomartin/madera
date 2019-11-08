@@ -11,11 +11,18 @@ if ($canEmpresa == 0) {
 	header ("Location: ddjjCuit.php?err=2");
 } else {
 	$rowEmpresa = mysql_fetch_assoc($resEmpresa);
-	$sqlDdjjValidas = "SELECT c.*, p.descripcion as periodo FROM cabddjjusimra c, periodosusimra p where c.cuit = $cuit and c.anoddjj = p.anio and c.mesddjj = p.mes order by c.id DESC";
+	$sqlDdjjValidas = "SELECT c.*, p.descripcion as periodo, e.valor, e.tipo
+						FROM periodosusimra p, cabddjjusimra c
+						LEFT JOIN  extraordinariosusimra e ON e.anio = c.anoddjj and e.mes = c.mesddjj
+						WHERE c.cuit = $cuit and c.anoddjj = p.anio and c.mesddjj = p.mes order by c.id DESC";
 	$resDdjjValidas = mysql_query($sqlDdjjValidas,$db);
 	$canDdjjValidas = mysql_num_rows($resDdjjValidas);
 	
-	$sqlDdjjTemp = "SELECT d.*, p.descripcion as periodo FROM ddjjusimra d, periodosusimra p where d.nrcuit = $cuit and d.nrcuil = '99999999999' and d.perano = p.anio and d.permes = p.mes order by d.id DESC";
+	$sqlDdjjTemp = "SELECT d.*, p.descripcion as periodo, e.valor, e.tipo
+						FROM periodosusimra p, ddjjusimra d
+						LEFT JOIN  extraordinariosusimra e ON e.anio = d.perano and e.mes = d.permes
+						WHERE d.nrcuit = $cuit and d.nrcuil = '99999999999' and d.perano = p.anio and 
+							  d.permes = p.mes order by d.id DESC";
 	$resDdjjTemp = mysql_query($sqlDdjjTemp,$db);
 	$canDdjjTemp = mysql_num_rows($resDdjjTemp);
 }
@@ -29,16 +36,6 @@ if ($canDdjjValidas == 0 && $canDdjjTemp == 0) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de DDJJ por C.U.I.T. :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -93,9 +90,9 @@ A:hover {text-decoration: none;color:#00FFFF }
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-	 <input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'ddjjCuit.php'" />
-	<p><span class="Estilo2">D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (U.S.I.M.R.A.) </span></p>
-	<p><span class="Estilo2">DDJJ Validas</span></p>
+	<p><input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'ddjjCuit.php'" /></p>
+	<h3>D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (U.S.I.M.R.A.) </h3>
+	<h3>DDJJ Validas</h3>
 	
 	<?php if ($canDdjjValidas != 0) { ?>
 		<table class="tablesorter" id="listadoValidas" style="width:800px; font-size:14px">
@@ -105,6 +102,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<th class="filter-select" data-placeholder="Seleccion Mes">Período</th>
 				<th>Personal</th>
 				<th>Remuneracion</th>
+				<th>Alicuota</th>
 				<th>Aporte 0.6%</th>
 				<th>Contri 1%</th>
 				<th>Aporte 1.5%</th>
@@ -124,12 +122,13 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><?php echo $rowDdjjValidas['periodo'];?></td>
 				<td><?php echo $rowDdjjValidas['cantidadpersonal'];?></td>
 				<td align="right"><?php print(number_format($rowDdjjValidas['remuneraciones'],2,',','.')) ?></td>
+				<td align="right"><?php if ($rowDdjjValidas['tipo'] == 1) { echo number_format($rowDdjjValidas['remuneraciones']*$rowDdjjValidas['valor'],2,',','.'); } else { echo "-";} ?>
 				<td align="right"><?php print(number_format($rowDdjjValidas['apor060'],2,',','.')) ?></td>
 				<td align="right"><?php print(number_format($rowDdjjValidas['apor100'],2,',','.')) ?></td>
 				<td align="right"><?php print(number_format($rowDdjjValidas['apor150'],2,',','.')) ?></td>
 				<td align="right"><?php print(number_format($rowDdjjValidas['recargo'],2,',','.')) ?></td>
 				<td align="right"><?php print(number_format($rowDdjjValidas['totalaporte'],2,',','.')) ?></td>
-				<td align="center"><?php print($rowDdjjValidas['observacion']) ?></td>
+				<td align="center"><?php print($rowDdjjValidas['observaciones']) ?></td>
 				<td class="nover"><input type="button" value="Detalle" onclick="detalleDdjj('<?php echo $linkDetalle ?>')" /></td>
 			</tr>
 			<?php
@@ -140,7 +139,7 @@ A:hover {text-decoration: none;color:#00FFFF }
   <?php } else { ?>
   		<p style="color:#0000FF"><strong>La empresa no tiene DDJJ Validas</strong></p>
   <?php } ?>
-  <p><span class="Estilo2">DDJJ No Pagas</span></p>
+  <h3>DDJJ No Pagas</h3>
   <?php if ($canDdjjTemp != 0) { ?>
 	  <table class="tablesorter" id="listadoTemp" style="width:800px; font-size:14px">
 		<thead>
@@ -149,6 +148,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<th class="filter-select" data-placeholder="Seleccion Mes">Período</th>
 				<th>Personal</th>
 				<th>Remuneracion</th>
+				<th>Alicuota</th>
 				<th>Aporte 0.6%</th>
 				<th>Contri 1%</th>
 				<th>Aporte 1.5%</th>
@@ -168,6 +168,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 				<td><?php echo $rowDdjjTemp['periodo'];?></td>
 				<td><?php echo $rowDdjjTemp['nfilas'];?></td>
 				<td align="right"><?php print(number_format($rowDdjjTemp['remune'],2,',','.')) ?></td>
+				<td align="right"><?php if ($rowDdjjTemp['tipo'] == 1) { echo number_format($rowDdjjTemp['remune']*$rowDdjjTemp['valor'],2,',','.'); } else { echo "-";} ?>
 				<td align="right"><?php print(number_format($rowDdjjTemp['apo060'],2,',','.')) ?></td>
 				<td align="right"><?php print(number_format($rowDdjjTemp['apo100'],2,',','.')) ?></td>
 				<td align="right"><?php print(number_format($rowDdjjTemp['apo150'],2,',','.')) ?></td>
