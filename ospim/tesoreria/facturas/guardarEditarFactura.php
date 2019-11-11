@@ -7,6 +7,13 @@ if(isset($_POST)) {
 	//var_dump($_POST);
 	$puntodeventa = substr($_POST['numero'],0,4);
 	$nrocomprobante = substr($_POST['numero'], -8);
+
+	if(isset($_POST['idEstablecimiento']){
+		$idestablecimiento = $_POST['idEstablecimiento'];
+	} else {
+		$idestablecimiento = 0;
+	}
+
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
@@ -14,9 +21,9 @@ if(isset($_POST)) {
 		$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		$dbh->beginTransaction();
 
-		$sqlActualizaFactura = "UPDATE facturas SET fecharecepcion = :fecharecepcion, idPrestador = :idPrestador, idTipocomprobante = :idTipocomprobante, puntodeventa = :puntodeventa, nrocomprobante = :nrocomprobante, fechacomprobante = :fechacomprobante, idCodigoautorizacion = :idCodigoautorizacion, nroautorizacion = :nroautorizacion, fechacorreo = :fechacorreo, diasvencimiento = :diasvencimiento, fechavencimiento = :fechavencimiento, importecomprobante = :importecomprobante, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE id = :id";
+		$sqlActualizaFactura = "UPDATE facturas SET fecharecepcion = :fecharecepcion, idPrestador = :idPrestador, idTipocomprobante = :idTipocomprobante, puntodeventa = :puntodeventa, nrocomprobante = :nrocomprobante, fechacomprobante = :fechacomprobante, idCodigoautorizacion = :idCodigoautorizacion, nroautorizacion = :nroautorizacion, fechacorreo = :fechacorreo, diasvencimiento = :diasvencimiento, fechavencimiento = :fechavencimiento, importecomprobante = :importecomprobante, idestablecimiento = :idestablecimiento, fechamodificacion = :fechamodificacion, usuariomodificacion = :usuariomodificacion WHERE id = :id";
 		$resActualizaFactura = $dbh->prepare($sqlActualizaFactura);
-		if($resActualizaFactura->execute(array(':fecharecepcion' => fechaParaGuardar($_POST['fecharecepcion']), ':idPrestador' => $_POST['idPrestador'], ':idTipocomprobante' => $_POST['idTipocomprobante'], ':puntodeventa' => $puntodeventa, ':nrocomprobante' =>  $nrocomprobante, ':fechacomprobante' =>  fechaParaGuardar($_POST['fechacomprobante']), ':idCodigoautorizacion' => $_POST['idCodigoautorizacion'], ':nroautorizacion' => $_POST['nroautorizacion'], ':fechacorreo' => fechaParaGuardar($_POST['fechacorreo']), ':diasvencimiento' => $_POST['diasvencimiento'], ':fechavencimiento' =>  fechaParaGuardar($_POST['fechavencimiento']), ':importecomprobante' => $_POST['importecomprobante'], ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':id' => $_POST['id'])))
+		if($resActualizaFactura->execute(array(':fecharecepcion' => fechaParaGuardar($_POST['fecharecepcion']), ':idPrestador' => $_POST['idPrestador'], ':idTipocomprobante' => $_POST['idTipocomprobante'], ':puntodeventa' => $puntodeventa, ':nrocomprobante' =>  $nrocomprobante, ':fechacomprobante' =>  fechaParaGuardar($_POST['fechacomprobante']), ':idCodigoautorizacion' => $_POST['idCodigoautorizacion'], ':nroautorizacion' => $_POST['nroautorizacion'], ':fechacorreo' => fechaParaGuardar($_POST['fechacorreo']), ':diasvencimiento' => $_POST['diasvencimiento'], ':fechavencimiento' =>  fechaParaGuardar($_POST['fechavencimiento']), ':importecomprobante' => $_POST['importecomprobante'], ':idestablecimiento' => $idestablecimiento, ':fechamodificacion' => $fechamodificacion, ':usuariomodificacion' => $usuariomodificacion, ':id' => $_POST['id'])))
 		$dbh->commit();
 		$pagina = "moduloFacturas.php";
 		header("Location: $pagina");

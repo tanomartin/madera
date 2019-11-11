@@ -5,10 +5,16 @@ if(isset($_GET)) {
 	$codigoprestador = $_GET['prestador'];
 	$nrocomprobante = $_GET['comprobante'];
 
-	$sqlLeePrestador="SELECT codigoprestador, nombre, cuit FROM prestadores WHERE codigoprestador = $codigoprestador";
+	$sqlLeePrestador="SELECT codigoprestador, nombre, cuit, personeria FROM prestadores WHERE codigoprestador = $codigoprestador";
 	$resLeePrestador=mysql_query($sqlLeePrestador,$db);
 	$rowLeePrestador=mysql_fetch_array($resLeePrestador);
 	$prestador = $rowLeePrestador['nombre'].' | CUIT: '.$rowLeePrestador['cuit'].' | Codigo: '.$rowLeePrestador['codigoprestador'];
+	$personeria = $rowLeePrestador['personeria'];
+
+	if($personeria==4) {
+		$sqlLeeEstablecimientos="SELECT codigo, nombre FROM establecimientos WHERE codigoprestador = $codigoprestador";
+		$resLeeEstablecimientos=mysql_query($sqlLeeEstablecimientos,$db);
+	}
 
 	$sqlConsultaTipoComprobante = "SELECT * FROM tipocomprobante";
 	$resConsultaTipoComprobante = mysql_query($sqlConsultaTipoComprobante,$db);
@@ -32,6 +38,7 @@ if(isset($_GET)) {
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	$("#idEstablecimiento").attr('disabled', true);
 	$.datepicker.setDefaults($.datepicker.regional['es']);
 	$("#fecharecepcion").mask("99/99/9999");
 	$("#fecharecepcion").datepicker({
@@ -101,6 +108,9 @@ $(document).ready(function(){
 		changeMonth: true,
 		changeYear: true
     });
+	if($("#personeria").val()==4) {
+		$("#idEstablecimiento").attr('disabled', false);
+	};
 });
 function validar(formulario) {
 	formulario.ingresar.disabled = true;
@@ -200,6 +210,14 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	if(formulario.personeria.value == 4) {
+		if (formulario.idEstablecimiento.options[formulario.idEstablecimiento.selectedIndex].value == "") {
+			var cajadialogo = $('<div title="Aviso"><p>El Prestador es Entidad Agrupadora. Debe seleccionar el Establecimiento Efector de la Prestacion.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#idEstablecimiento').focus(); }});
+			formulario.ingresar.disabled = false;
+			return false;
+		}
+	}
 	$.blockUI({ message: "<h1>Ingresando comprobante... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 	return true;
 };
@@ -248,7 +266,10 @@ function FechaValida(fecha){
 		<table border="0">
 			<tr>
 				<td align="right">Prestador</td>
-				<td colspan="5"><textarea name="prestador" rows="3" cols="100" id="prestador" readonly="readonly" style="background:#CCCCCC"><?php echo $prestador;?></textarea><input name="idPrestador" type="hidden" id="idPrestador" size="5" value="<?php echo $codigoprestador;?>"/></td>
+				<td colspan="5"><textarea name="prestador" rows="3" cols="100" id="prestador" readonly="readonly" style="background:#CCCCCC"><?php echo $prestador;?></textarea>
+				<input name="idPrestador" type="hidden" id="idPrestador" size="5" value="<?php echo $codigoprestador;?>"/>
+				<input name="personeria" type="hidden" id="personeria" size="2" value="<?php echo $personeria;?>"/>
+				</td>
 			</tr>
 			<tr>
 				<td align="right">Tipo</td>
@@ -289,6 +310,20 @@ function FechaValida(fecha){
 			<tr>
 				<td align="right">Importe</td>
 				<td colspan="5"><input name="importecomprobante" type="text" id="importecomprobante" size="10" maxlength="9" value=""/></td>
+			</tr>
+			<tr>
+				<td align="right">Est. Efector de Prestacion</td>
+				<td colspan="5"><select name="idEstablecimiento" id="idEstablecimiento">
+					<option title="Seleccione un valor" value="">Seleccione un valor</option>
+					<?php 
+						if($personeria==4) {
+							while($rowLeeEstablecimientos = mysql_fetch_array($resLeeEstablecimientos)) { 	
+								echo "<option title ='$rowLeeEstablecimientos[nombre]' value='$rowLeeEstablecimientos[codigo]'>".$rowLeeEstablecimientos['nombre']."</option>";
+							}
+						}
+					?>
+					</select>
+					</td>
 			</tr>
 		</table>
 	</div>

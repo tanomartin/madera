@@ -3,9 +3,16 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 if(isset($_GET['idfactura'])) {
 	$idcomprobante = $_GET['idfactura'];
-	$sqlConsultaFactura = "SELECT f.id, f.fecharecepcion, f.idPrestador, p.nombre, p.cuit, f.idTipocomprobante, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.idCodigoautorizacion, f.nroautorizacion, f.fechacorreo, f.diasvencimiento, f.fechavencimiento, f.importecomprobante FROM facturas f, prestadores p WHERE f.id = $idcomprobante AND f.idPrestador = p.codigoprestador";
+	$sqlConsultaFactura = "SELECT f.id, f.fecharecepcion, f.idPrestador, p.nombre, p.cuit, p.personeria, f.idTipocomprobante, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.idCodigoautorizacion, f.nroautorizacion, f.fechacorreo, f.diasvencimiento, f.fechavencimiento, f.importecomprobante, f.idestablecimiento FROM facturas f, prestadores p WHERE f.id = $idcomprobante AND f.idPrestador = p.codigoprestador";
 	$resConsultaFactura = mysql_query($sqlConsultaFactura,$db);
 	$rowConsultaFactura = mysql_fetch_array($resConsultaFactura);
+	$codigoprestador = $rowConsultaFactura['idPrestador'];
+	$personeria = $rowConsultaFactura['personeria'];
+
+	if($personeria==4) {
+		$sqlLeeEstablecimientos="SELECT codigo, nombre FROM establecimientos WHERE codigoprestador = $codigoprestador";
+		$resLeeEstablecimientos=mysql_query($sqlLeeEstablecimientos,$db);
+	}
 
 	$sqlConsultaTipoComprobante = "SELECT * FROM tipocomprobante";
 	$resConsultaTipoComprobante = mysql_query($sqlConsultaTipoComprobante,$db);
@@ -29,6 +36,11 @@ if(isset($_GET['idfactura'])) {
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	if($("#personeria").val()==4) {
+		$("#idEstablecimiento").attr('disabled', false);
+	} else {
+		$("#idEstablecimiento").attr('disabled', true);
+	};
 	$.datepicker.setDefaults($.datepicker.regional['es']);
 	$("#fecharecepcion").mask("99/99/9999");
 	$("#fecharecepcion").datepicker({
@@ -229,6 +241,14 @@ function validar(formulario) {
 			return false;
 		}
 	}
+	if(formulario.personeria.value == 4) {
+		if (formulario.idEstablecimiento.options[formulario.idEstablecimiento.selectedIndex].value == "") {
+			var cajadialogo = $('<div title="Aviso"><p>El Prestador es Entidad Agrupadora. Debe seleccionar el Establecimiento Efector de la Prestacion.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#idEstablecimiento').focus(); }});
+			formulario.guardar.disabled = false;
+			return false;
+		}
+	}
 	$.blockUI({ message: "<h1>Guardando cambios del comprobante... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 	return true;
 };
@@ -283,7 +303,9 @@ function FechaValida(fecha){
 			</tr>
 			<tr>
 				<td align="right">Prestador</td>
-				<td colspan="5"><textarea name="prestador" rows="3" cols="100" id="prestador"><?php echo $rowConsultaFactura['nombre'].' | CUIT: '.$rowConsultaFactura['cuit'].' | Codigo: '.$rowConsultaFactura['idPrestador'];?></textarea><input name="idPrestador" type="hidden" id="idPrestador" size="5" value="<?php echo $rowConsultaFactura['idPrestador'];?> "/></td>
+				<td colspan="5"><textarea name="prestador" rows="3" cols="100" id="prestador"><?php echo $rowConsultaFactura['nombre'].' | CUIT: '.$rowConsultaFactura['cuit'].' | Codigo: '.$rowConsultaFactura['idPrestador'];?></textarea>
+				<input name="idPrestador" type="hidden" id="idPrestador" size="5" value="<?php echo $rowConsultaFactura['idPrestador'];?> "/>
+				<input name="personeria" type="hidden" id="personeria" size="2" value="<?php echo $personeria;?>"/></td>
 			</tr>
 			<tr>
 				<td align="right">Tipo</td>
@@ -297,8 +319,7 @@ function FechaValida(fecha){
 								echo "<option title ='$rowConsultaTipoComprobante[descripcion]' value='$rowConsultaTipoComprobante[id]'>".$rowConsultaTipoComprobante['descripcion']."</option>";
 						}
 					?>
-					</select>
-				</td>
+					</select>				</td>
 				<td align="right">Nro.</td>
 				<td><input name="numero" type="text" id="numero" size="10" value="<?php echo $rowConsultaFactura['puntodeventa'].'-'.$rowConsultaFactura['nrocomprobante'];?>"/></td>
 				<td align="right" valign="bottom">Fecha</td>
@@ -326,6 +347,23 @@ function FechaValida(fecha){
 			<tr>
 				<td align="right">Importe</td>
 				<td colspan="5"><input name="importecomprobante" type="text" id="importecomprobante" size="10" maxlength="9" value="<?php echo $rowConsultaFactura['importecomprobante'];?>"/></td>
+			</tr>
+			<tr>
+				<td align="right">Est. Efector de Prestacion</td>
+				<td colspan="5"><select name="idEstablecimiento" id="idEstablecimiento">
+					<option title="Seleccione un valor" value="">Seleccione un valor</option>
+					<?php 
+						if($personeria==4) {
+							while($rowLeeEstablecimientos = mysql_fetch_array($resLeeEstablecimientos)) { 	
+								if($rowLeeEstablecimientos['codigo'] == $rowConsultaFactura['idestablecimiento'])
+									echo "<option title ='$rowLeeEstablecimientos[nombre]' value='$rowLeeEstablecimientos[codigo]' selected='selected'>".$rowLeeEstablecimientos['nombre']."</option>";
+								else
+									echo "<option title ='$rowLeeEstablecimientos[nombre]' value='$rowLeeEstablecimientos[codigo]'>".$rowLeeEstablecimientos['nombre']."</option>";
+							}
+						}
+					?>
+					</select>
+					</td>
 			</tr>
 		</table>
 	</div>

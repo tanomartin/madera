@@ -23,7 +23,7 @@ include($libPath."controlSessionOspim.php"); ?>
       		</td>
 	   		<td width="200">
 	   			<p>FACTURACION PRESTADORES</p>
-          		<p><a href="../moduloNoDisponible.php"><img src="img/factura.png" width="119" height="92" border="0" /></a></p>
+          		<p><a href="facturas/moduloFacturas.php"><img src="img/factura.png" width="119" height="92" border="0" /></a></p>
        		</td>	
     	</tr>
   	</table>
