@@ -37,6 +37,29 @@ $presentacionSSS = "UPDATE diabetespresentacion
 							cantbenesolicitados = $cantidad, pathSolicitud = '$archivodestino',
 							fechamodificacion = '$fechamodif', usuariomodificacion = '$usuariomodif'
 						WHERE id = $id";
+
+
+$sqlIdFinalizadaAnterior = "SELECT id FROM diabetespresentacion WHERE fechadevolucion is not null ORDER by id DESC limit 1";
+//echo $sqlIdFinalizadaAnterior."<br>";
+$resIdFinalizadaAnterior = mysql_query($sqlIdFinalizadaAnterior,$db);
+$rowIdFinalizadaAnterior = mysql_fetch_assoc($resIdFinalizadaAnterior);
+$idAnterior = $rowIdFinalizadaAnterior['id'];
+
+$sqlDetalleAnterior = "SELECT * FROM diabetespresentaciondetalle WHERE 
+						idpresentacion = $idAnterior and cuil not in (SELECT cuil FROM diabetespresentaciondetalle WHERE idpresentacion = $id)";
+//echo $sqlDetalleAnterior."<br>";
+$resDetalleAnterior = mysql_query($sqlDetalleAnterior,$db);
+$sqlInsertDetalle = "INSERT INTO diabetespresentaciondetalle VALUES";
+while ($rowDetalleAnterior = mysql_fetch_assoc($resDetalleAnterior)) {
+	$sqlInsertDetalle .= "(".$id.", ".
+						 $rowDetalleAnterior['cuil'].", ".
+						 $rowDetalleAnterior['nroafiliado'].", ".
+						 $rowDetalleAnterior['nroorden'].", ".
+						 $rowDetalleAnterior['codidelega']."),";
+}
+$sqlInsertDetalle = substr($sqlInsertDetalle, 0, -1);
+$sqlInsertDetalle .= ";";
+
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -46,6 +69,8 @@ try {
 
 	//echo $presentacionSSS."<br><br>";
 	$dbh->exec($presentacionSSS);
+	//echo $sqlInsertDetalle."<br><br>";
+	$dbh->exec($sqlInsertDetalle);
 
 	$dbh->commit();
 	$redire = "moduloPresSSS.php";
