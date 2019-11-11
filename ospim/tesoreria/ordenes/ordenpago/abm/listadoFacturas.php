@@ -45,6 +45,7 @@ $sqlFacPendientesInte = "SELECT
 							f.idPrestador = ".$rowPrestador['codigoprestador']." and
 							f.fechacierreliquidacion is not null and
 							f.restoapagar > 0 and 
+							f.autorizacionpago = 1
 							f.id = p.idFactura and p.id = i.idFacturaPrestacion
 						 ORDER BY f.fechacomprobante ASC";
 $resFacPendientesInte = mysql_query($sqlFacPendientesInte,$db);
@@ -65,7 +66,8 @@ $sqlFacPendientes = "SELECT
 					 WHERE
 						f.idPrestador = ".$rowPrestador['codigoprestador']." and
 						f.fechacierreliquidacion is not null and
-						f.restoapagar > 0
+						f.restoapagar > 0 and 
+						f.autorizacionpago = 1
 					 ORDER BY f.fechacomprobante ASC";
 $resFacPendientes = mysql_query($sqlFacPendientes,$db);
 $canFacPendientes = mysql_num_rows($resFacPendientes);
