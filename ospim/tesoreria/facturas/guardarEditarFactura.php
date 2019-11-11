@@ -8,7 +8,7 @@ if(isset($_POST)) {
 	$puntodeventa = substr($_POST['numero'],0,4);
 	$nrocomprobante = substr($_POST['numero'], -8);
 
-	if(isset($_POST['idEstablecimiento']){
+	if(isset($_POST['idEstablecimiento'])) {
 		$idestablecimiento = $_POST['idEstablecimiento'];
 	} else {
 		$idestablecimiento = 0;
