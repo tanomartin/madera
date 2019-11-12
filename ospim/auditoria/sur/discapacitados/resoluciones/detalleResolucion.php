@@ -12,7 +12,7 @@ $rowResolucion = mysql_fetch_assoc($resResolucion);
 
 $sqlResolucionDetalle = "SELECT r.*,p.* 
 							FROM practicasvaloresresolucion r, practicas p 
-							WHERE r.idpractica = p.idpractica AND r.idresolucion = $id ORDER BY r.idpractica";
+							WHERE r.idpractica = p.idpractica AND r.idresolucion = $id ORDER BY p.codigopractica";
 $resResolucionDetalle = mysql_query($sqlResolucionDetalle,$db);
 $canResolucionDetalle = mysql_num_rows($resResolucionDetalle);
 

@@ -14,7 +14,7 @@ $sqlResolucionDetalle = "SELECT practicas.idpractica, codigopractica, descripcio
 							FROM practicas 
 							LEFT JOIN practicasvaloresresolucion ON practicasvaloresresolucion.idresolucion = $id and 
 														   	 		practicasvaloresresolucion.idpractica = practicas.idpractica 
-							WHERE practicas.nomenclador = 7";
+							WHERE practicas.nomenclador = 7 ORDER BY codigopractica";
 $resResolucionDetalle = mysql_query($sqlResolucionDetalle,$db);
 $canResolucionDetalle = mysql_num_rows($resResolucionDetalle);
 ?>
