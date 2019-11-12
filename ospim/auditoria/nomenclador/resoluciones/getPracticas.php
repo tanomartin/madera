@@ -9,7 +9,8 @@ if(isset($_POST['resolucion'])) {
 
 	
 	$sqlPractica="SELECT pv.*, p.codigopractica, p.descripcion FROM practicasvaloresresolucion pv, practicas p 
-					WHERE pv.idresolucion = $reso and pv.idpractica = p.idpractica";
+					WHERE pv.idresolucion = $reso and pv.idpractica = p.idpractica
+					ORDER BY p.codigopractica";
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {

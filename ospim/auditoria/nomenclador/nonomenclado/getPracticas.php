@@ -10,14 +10,14 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 					 <th>Acciones</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {
-		$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p,tipocomplejidad t WHERE p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
+		$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p,tipocomplejidad t WHERE p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
 	} else {
 		$cantidaPuntos = substr_count($codigo,'.');
 		if ($cantidaPuntos == 0) {
-			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t  WHERE p.codigopractica like '$codigo.%' and p.codigopractica not like '$codigo.%.%' and p.nomenclador = 2 and tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t  WHERE p.codigopractica like '$codigo.%' and p.codigopractica not like '$codigo.%.%' and p.nomenclador = 2 and tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
 		}
 		if ($cantidaPuntos == 1) {
-			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica like '$codigo.%' and p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica like '$codigo.%' and p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
 		}
 	}
 	$resPractica=mysql_query($sqlPractica,$db);
