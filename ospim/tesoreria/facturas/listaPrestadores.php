@@ -10,8 +10,9 @@ if(isset($_GET['getPrestador'])) {
 	}
 	if($resLeePrestadores=mysql_query($sqlLeePrestadores,$db)) {
 		while($rowLeePrestadores=mysql_fetch_array($resLeePrestadores)) {
+			$nombre = utf8_encode($rowLeePrestadores['nombre']);
 			$prestadores[] = array(
-				'label' => $rowLeePrestadores['nombre'].' | CUIT: '.$rowLeePrestadores['cuit'].' | Codigo: '.$rowLeePrestadores['codigoprestador'],
+				'label' => $nombre.' | CUIT: '.$rowLeePrestadores['cuit'].' | Codigo: '.$rowLeePrestadores['codigoprestador'],
 				'codigoprestador' => $rowLeePrestadores['codigoprestador'],  
 			);
 		}
