@@ -46,17 +46,21 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$arrayDetalle = array();
 			$index = 0;
 			
-			$sqlFacturasDet = "SELECT puntodeventa, nrocomprobante, fechacomprobante, totaldebito, totalcredito, importeliquidado, totalpagado 
+			$sqlFacturasDet = "SELECT puntodeventa, nrocomprobante, fechacomprobante, importecomprobante, totaldebito, totalcredito, importeliquidado, totalpagado 
 								FROM facturas 
 								WHERE idPrestador = $codigo and fechacomprobante >= '$fechaBuscar'";
 			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
 				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];	
+				$debe = $rowFacturasDet['totaldebito'];
+				if ($rowFacturasDet['totaldebito'] == 0 and $rowFacturasDet['totalcredito'] == 0) {
+					$debe = $rowFacturasDet['importecomprobante'];
+				}
 				if ($rowFacturasDet['totaldebito'] != 0) {
 					$descripcion .= "<br> Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
 				}
-				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['totalcredito']);
+				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $debe, "haber" => $rowFacturasDet['totalcredito']);
 			}
 			
 			$sqlPagosDet = "SELECT * FROM ordencabecera
