@@ -42,8 +42,8 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$rowPagos = mysql_fetch_array($resPagos);
 			
 			$haber = 0;
-			if ($resFacturaSinLiqui['sumimporte'] != null) {
-				$haber =  $resFacturaSinLiqui['sumimporte'];
+			if ($rowFacturaSinLiqui['sumimporte'] != null) {
+				$haber =  $rowFacturaSinLiqui['sumimporte'];
 			}
 			if ($rowFacturas['sumdebe'] != null) {
 				$haber += $rowFacturas['sumdebe'];
