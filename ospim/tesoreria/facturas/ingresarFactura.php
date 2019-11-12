@@ -221,14 +221,6 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	if(formulario.personeria.value == 4) {
-		if (formulario.idEstablecimiento.options[formulario.idEstablecimiento.selectedIndex].value == "") {
-			var cajadialogo = $('<div title="Aviso"><p>El Prestador es Entidad Agrupadora. Debe seleccionar el Establecimiento Efector de la Prestacion.</p></div>');
-			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#idEstablecimiento').focus(); }});
-			formulario.ingresar.disabled = false;
-			return false;
-		}
-	}
 	$.blockUI({ message: "<h1>Ingresando comprobante... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 	return true;
 };
