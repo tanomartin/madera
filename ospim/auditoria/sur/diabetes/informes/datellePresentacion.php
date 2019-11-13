@@ -103,7 +103,9 @@ $canPresSSSFinalizadas = mysql_num_rows($resPresSSSFinalizadas); ?>
 			  			<?php if ($rowPresSSSFinalizadas['fechadevolucion'] != NULL) { 
 			  					if ($numCantDetalle == $rowPresSSSFinalizadas['cantbenesolicitados']) { ?>
 			  						<input type="button" value="DETALLE" onclick="location.href='detallePresentacionExcel.php?id=<?php echo $rowPresSSSFinalizadas['id'] ?>'"/>
-			  		  	  <?php } 
+			  		  	  <?php } else { ?>
+			  		  	  			<span style="color: red">DET.</br>NO</br>CONSOL.</span>
+			  		  	  <?php	}
 			  				  } ?>	
 			  			</td>
   					</tr>
