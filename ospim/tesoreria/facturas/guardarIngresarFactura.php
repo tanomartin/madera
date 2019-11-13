@@ -8,6 +8,12 @@ if(isset($_POST)) {
 	$puntodeventa = substr($_POST['numero'],0,4);
 	$nrocomprobante = substr($_POST['numero'], -8);
 
+	if(isset($_POST['idCodigoautorizacion'])){
+		$idcodigoautorizacion = $_POST['idCodigoautorizacion'];
+	} else {
+		$idcodigoautorizacion = NULL;
+	}
+
 	if(isset($_POST['idEstablecimiento'])){
 		$idestablecimiento = $_POST['idEstablecimiento'];
 	} else {
@@ -23,7 +29,7 @@ if(isset($_POST)) {
 
 		$sqlIngresaFactura = "INSERT INTO facturas (id,fecharecepcion,idPrestador,idTipocomprobante,puntodeventa,nrocomprobante,fechacomprobante,idCodigoautorizacion,nroautorizacion,fechacorreo,diasvencimiento,fechavencimiento,importecomprobante,idestablecimiento,fechainicioliquidacion,usuarioliquidacion,fechacierreliquidacion,totalcredito,totaldebito,importeliquidado,totalretenciones,fecharetencion,totalpagado,restoapagar,fechapago,fecharegistro,usuarioregistro,fechamodificacion,usuariomodificacion) VALUES(:id,:fecharecepcion,:idPrestador,:idTipocomprobante,:puntodeventa,:nrocomprobante,:fechacomprobante,:idCodigoautorizacion,:nroautorizacion,:fechacorreo,:diasvencimiento,:fechavencimiento,:importecomprobante,:idestablecimiento,:fechainicioliquidacion,:usuarioliquidacion,:fechacierreliquidacion,:totalcredito,:totaldebito,:importeliquidado,:totalretenciones,:fecharetencion,:totalpagado,:restoapagar,:fechapago,:fecharegistro,:usuarioregistro,:fechamodificacion,:usuariomodificacion)";
 		$resIngresaFactura = $dbh->prepare($sqlIngresaFactura);
-		if($resIngresaFactura->execute(array(':id' => 'DEFAULT',':fecharecepcion' => fechaParaGuardar($_POST['fecharecepcion']),':idPrestador' => $_POST['idPrestador'],':idTipocomprobante' => $_POST['idTipocomprobante'],':puntodeventa' => $puntodeventa,':nrocomprobante' =>  $nrocomprobante,':fechacomprobante' =>  fechaParaGuardar($_POST['fechacomprobante']),':idCodigoautorizacion' => $_POST['idCodigoautorizacion'],':nroautorizacion' => $_POST['nroautorizacion'],':fechacorreo' => fechaParaGuardar($_POST['fechacorreo']),':diasvencimiento' => $_POST['diasvencimiento'],':fechavencimiento' =>  fechaParaGuardar($_POST['fechavencimiento']),':importecomprobante' => $_POST['importecomprobante'],':idestablecimiento' => $idestablecimiento,':fechainicioliquidacion' => 'DEFAULT',':usuarioliquidacion' => NULL,':fechacierreliquidacion' => 'DEFAULT',':totalcredito' => 'DEFAULT',':totaldebito' => 'DEFAULT',':importeliquidado' => 'DEFAULT',':totalretenciones' => 'DEFAULT',':fecharetencion' => 'DEFAULT',':totalpagado' => 'DEFAULT',':restoapagar' => 'DEFAULT',':fechapago' => 'DEFAULT',':fecharegistro' => $fecharegistro,':usuarioregistro' => $usuarioregistro,':fechamodificacion' => 'DEFAULT',':usuariomodificacion' => NULL)))
+		if($resIngresaFactura->execute(array(':id' => 'DEFAULT',':fecharecepcion' => fechaParaGuardar($_POST['fecharecepcion']),':idPrestador' => $_POST['idPrestador'],':idTipocomprobante' => $_POST['idTipocomprobante'],':puntodeventa' => $puntodeventa,':nrocomprobante' =>  $nrocomprobante,':fechacomprobante' =>  fechaParaGuardar($_POST['fechacomprobante']),':idCodigoautorizacion' => $idcodigoautorizacion,':nroautorizacion' => $_POST['nroautorizacion'],':fechacorreo' => fechaParaGuardar($_POST['fechacorreo']),':diasvencimiento' => $_POST['diasvencimiento'],':fechavencimiento' =>  fechaParaGuardar($_POST['fechavencimiento']),':importecomprobante' => $_POST['importecomprobante'],':idestablecimiento' => $idestablecimiento,':fechainicioliquidacion' => 'DEFAULT',':usuarioliquidacion' => NULL,':fechacierreliquidacion' => 'DEFAULT',':totalcredito' => 'DEFAULT',':totaldebito' => 'DEFAULT',':importeliquidado' => 'DEFAULT',':totalretenciones' => 'DEFAULT',':fecharetencion' => 'DEFAULT',':totalpagado' => 'DEFAULT',':restoapagar' => 'DEFAULT',':fechapago' => 'DEFAULT',':fecharegistro' => $fecharegistro,':usuarioregistro' => $usuarioregistro,':fechamodificacion' => 'DEFAULT',':usuariomodificacion' => NULL)))
 		$idUltimaFactura = $dbh->lastInsertId();
 		$dbh->commit();
 		$pagina = "consultarFactura.php?idfactura=$idUltimaFactura";

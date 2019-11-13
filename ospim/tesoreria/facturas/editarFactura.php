@@ -41,6 +41,12 @@ $(document).ready(function(){
 	} else {
 		$("#idEstablecimiento").attr('disabled', true);
 	};
+	if($("#idCodigoautorizacion").val()=="N") {
+		$("#nroautorizacion").val("");
+		$("#nroautorizacion").attr('disabled', true);
+	} else {
+		$("#nroautorizacion").attr('disabled', false);
+	};
 	$.datepicker.setDefaults($.datepicker.regional['es']);
 	$("#fecharecepcion").mask("99/99/9999");
 	$("#fecharecepcion").datepicker({
@@ -90,6 +96,17 @@ $(document).ready(function(){
     });
 	$("#numero").mask("9999-99999999");
 	$("#nroautorizacion").mask("99999999999999");
+	$("#idCodigoautorizacion").change(function(){
+		var codigoautorizacion = $(this).val();
+		if(codigoautorizacion=="N") {
+			$("#nroautorizacion").val("");
+			$("#nroautorizacion").attr('disabled', true);
+		}
+		else {
+			$("#nroautorizacion").val("");
+			$("#nroautorizacion").attr('disabled', false);
+		}
+	});
 	$("#fechacorreo").mask("99/99/9999");
 	$("#fechacorreo").datepicker({
 		firstDay: 1,
@@ -183,17 +200,19 @@ function validar(formulario) {
 		formulario.guardar.disabled = false;
 		return false;
 	}
-	if(formulario.nroautorizacion.value == "") {
-		var cajadialogo = $('<div title="Aviso"><p>Debe ingresar un Nro. de Autorizacion AFIP.</p></div>');
-		cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#nroautorizacion').focus(); }});
-		formulario.guardar.disabled = false;
-		return false;
-	} else {
-		if(formulario.nroautorizacion.value == "00000000000000") {
-			var cajadialogo = $('<div title="Aviso"><p>El Nro. de Autorizacion AFIP ingresado no es válido.</p></div>');
+	if (formulario.idCodigoautorizacion.options[formulario.idCodigoautorizacion.selectedIndex].value != "N") {
+		if(formulario.nroautorizacion.value == "") {
+			var cajadialogo = $('<div title="Aviso"><p>Debe ingresar un Nro. de Autorizacion AFIP.</p></div>');
 			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#nroautorizacion').focus(); }});
 			formulario.guardar.disabled = false;
 			return false;
+		} else {
+			if(formulario.nroautorizacion.value == "00000000000000") {
+				var cajadialogo = $('<div title="Aviso"><p>El Nro. de Autorizacion AFIP ingresado no es válido.</p></div>');
+				cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#nroautorizacion').focus(); }});
+				formulario.guardar.disabled = false;
+				return false;
+			}
 		}
 	}
 	if(formulario.fechacorreo.value == "") {
@@ -237,14 +256,6 @@ function validar(formulario) {
 		if(!isNumberPositivo(formulario.importecomprobante.value)) {
 			var cajadialogo = $('<div title="Aviso"><p>El Importe del comprobante ingresado no es válido.</p></div>');
 			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#importecomprobante').focus(); }});
-			formulario.guardar.disabled = false;
-			return false;
-		}
-	}
-	if(formulario.personeria.value == 4) {
-		if (formulario.idEstablecimiento.options[formulario.idEstablecimiento.selectedIndex].value == "") {
-			var cajadialogo = $('<div title="Aviso"><p>El Prestador es Entidad Agrupadora. Debe seleccionar el Establecimiento Efector de la Prestacion.</p></div>');
-			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#idEstablecimiento').focus(); }});
 			formulario.guardar.disabled = false;
 			return false;
 		}
