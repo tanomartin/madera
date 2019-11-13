@@ -7,7 +7,7 @@ $sqlCabecera = "SELECT * FROM diabetespresentacion WHERE id = $id";
 $resCabecera = mysql_query($sqlCabecera,$db);
 $rowCabecera = mysql_fetch_assoc($resCabecera);
 
-$sqlDetalle = "SELECT * FROM diabetespresentaciondetalle WHERE idpresentacion = $id";
+$sqlDetalle = "SELECT * FROM diabetespresentaciondetalle WHERE idpresentacion = $id ORDER BY nroafiliado";
 $resDetalle = mysql_query($sqlDetalle,$db); 
 $canDetalle = mysql_num_rows($resDetalle);
 if ($canDetalle > 0) {
