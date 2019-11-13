@@ -291,7 +291,7 @@ function validar(formulario) {
 	<p><b>Complejidad Capitulo Completo</b>
 		<select name="res650total" id="res650total" disabled="disabled" onchange="cambiarClasificaion(this.value)">
 			<?php 
-			$sqlComplejida = "SELECT * FROM tipocomplejidad";
+			$sqlComplejida = "SELECT * FROM tipocomplejidad WHERE codigocomplejidad != 99";
 			$resComplejida = mysql_query($sqlComplejida,$db);
 			while($rowComplejida = mysql_fetch_assoc($resComplejida)) { ?>
 				<option value="<?php echo $rowComplejida['codigocomplejidad']?>"><?php echo $rowComplejida['descripcion']?></option>

@@ -29,7 +29,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	$canPractica=mysql_num_rows($resPractica);
 	$i = 0;
 	
-	$sqlComplejida = "SELECT * FROM tipocomplejidad";
+	$sqlComplejida = "SELECT * FROM tipocomplejidad WHERE codigocomplejidad != 99";
 	$resComplejida = mysql_query($sqlComplejida,$db);
 	$tipoComplejidad = array();
 	while($rowComplejida = mysql_fetch_assoc($resComplejida)) {
