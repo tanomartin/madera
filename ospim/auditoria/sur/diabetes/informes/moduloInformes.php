@@ -11,11 +11,9 @@ include($libPath."controlSessionOspim.php"); ?>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
-
-
-function informes(dire) {
-	location.href = dire;
-}
+	function informes(dire) {
+		location.href = dire;
+	}
 </script>
 </head>
 
@@ -23,11 +21,15 @@ function informes(dire) {
 	<div align="center">
 	  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../moduloDiabetes.php'" /> </p>
 	  <h3>Mení Consultas e Informes</h3>
-	  <table width="200" border="1" style="text-align: center">
+	  <table width="400" border="1" style="text-align: center">
 	    <tr>
-	      	<td>
+	      	<td width="200">
 				<p>LISTADO DE DIABETICOS</p>
 	          	<p><a href="#"><img onclick="location.href='listadoExcelDiabeticos.php'" src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
+	       	</td>
+	       	<td width="200">
+				<p>DETALLE DE PRESENTACIONES</p>
+	          	<p><a href="datellePresentacion.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
 	       	</td>
 	  	</tr>
 	  </table>
