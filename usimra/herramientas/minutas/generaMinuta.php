@@ -10,10 +10,10 @@ if(strcmp("localhost",$maquina)==0)
 		$carpetaMinuta="/tmp/";
 
 //OPCION Personalizada
-$offsetX = 0;
-$offsetY = 3;
+$offsetX = 6;
+$offsetY = 4;
 $bordes = 0;
-$pdf = new FPDF('L','mm', array(200,190));
+$pdf = new FPDF();
 $pdf->AddPage();
 $pdf->SetFont('Courier','B',10);
 $fechaArray = explode("-",$_POST['fecha']);
