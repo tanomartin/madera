@@ -13,7 +13,7 @@ if(strcmp("localhost",$maquina)==0)
 $offsetX = 0;
 $offsetY = 3;
 $bordes = 0;
-$pdf = new FPDF('L','mm', array(200,190));
+$pdf = new FPDF('P','mm', array(200,190));
 $pdf->AddPage();
 $pdf->SetFont('Courier','B',10);
 $fechaArray = explode("-",$_POST['fecha']);
