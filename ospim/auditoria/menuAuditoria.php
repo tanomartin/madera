@@ -47,11 +47,11 @@ include($libPath."controlSessionOspim.php"); ?>
       </td>
 	  <td>
 	   	<p>LIQUIDACION PRESTADORES</p>
-		<p><a href="../moduloNoDisponible.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+		<p><a href="liquidaciones/moduloLiquidaciones.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
 	  <td>
 	  	<p>ODONTOLOGIA</p>
-	  	<p><a href="odontologia/menuOdontologico.php"><img src="img/odonto.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	  	<p><a href="../moduloNoDisponible.php"><img src="img/odonto.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
     </tr>
   </table>

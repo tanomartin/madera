@@ -7,6 +7,7 @@ if(isset($_GET)) {
 	$noencontro = TRUE;
 	$efectores = array();  
 	$circulo = NULL;
+	$calidad = NULL;
 	if($idpersoneria==3) {
 		$tablabusqueda = 'profesionales';
 		$campos = 'codigoprofesional AS idefector, nombre';
@@ -14,7 +15,7 @@ if(isset($_GET)) {
 	}
 	if($idpersoneria==4) {
 		$tablabusqueda = 'establecimientos';
-		$campos = 'codigo AS idefector, nombre, circulo';
+		$campos = 'codigo AS idefector, nombre, circulo, calidad';
 		$campoid = 'codigo';
 	}
 	if(is_numeric($busqueda)) {
@@ -26,13 +27,15 @@ if(isset($_GET)) {
 	if(mysql_num_rows($resLeeEfectores)!=0) {
 		while($rowLeeEfectores=mysql_fetch_array($resLeeEfectores)) {
 			$noencontro = FALSE;
-		if($idpersoneria==4) {
-			$circulo = $rowLeeEfectores['circulo'];
-		}
+			if($idpersoneria==4) {
+				$circulo = $rowLeeEfectores['circulo'];
+				$calidad = $rowLeeEfectores['calidad'];
+			}
 			$efectores[] = array(
 				'label' => $rowLeeEfectores['nombre'].' | Codigo: '.$rowLeeEfectores['idefector'],
 				'idefector' => $rowLeeEfectores['idefector'],
 				'circulo' => $circulo,
+				'calidad' => $calidad,
 			);
 		}
 	}
@@ -41,6 +44,7 @@ if(isset($_GET)) {
 			'label' => 'No se encontraron resultados para la busqueda intentada',
 			'idefector' => NULL,
 			'circulo' => $circulo,
+			'calidad' => $calidad,
 		);
 	}
 	echo json_encode($efectores);

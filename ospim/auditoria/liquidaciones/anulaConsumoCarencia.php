@@ -23,10 +23,11 @@ if(isset($_GET)) {
 		$debito  = $rowConsultaTotalesBeneficiario['totaldebito'] - $rowConsultaConsumoCarencia['totaldebito'];
 		$credito = $rowConsultaTotalesBeneficiario['totalcredito'] - $rowConsultaConsumoCarencia['totalcredito'];
 		$consumo = $rowConsultaTotalesBeneficiario['consumoprestacional'] - 1;
+		$exceptuado = 0;
 
-		$sqlUpdateTotalesBeneficiario = "UPDATE facturasbeneficiarios SET totalfacturado = :totalfacturado, totaldebito = :totaldebito, totalcredito = :totalcredito, consumoprestacional = :consumoprestacional WHERE id = :id AND idFactura = :idfactura";
+		$sqlUpdateTotalesBeneficiario = "UPDATE facturasbeneficiarios SET totalfacturado = :totalfacturado, totaldebito = :totaldebito, totalcredito = :totalcredito, exceptuado = :exceptuado, consumoprestacional = :consumoprestacional WHERE id = :id AND idFactura = :idfactura";
 		$resUpdateTotalesBeneficiario = $dbh->prepare($sqlUpdateTotalesBeneficiario);
-		if($resUpdateTotalesBeneficiario->execute(array(':totalfacturado' => $facturado, ':totaldebito' => $debito, ':totalcredito' => $credito, ':consumoprestacional' => $consumo, ':id' => $idfacturabeneficiario, ':idfactura' => $idFactura))) {
+		if($resUpdateTotalesBeneficiario->execute(array(':totalfacturado' => $facturado, ':totaldebito' => $debito, ':totalcredito' => $credito, ':exceptuado' => $exceptuado, ':consumoprestacional' => $consumo, ':id' => $idfacturabeneficiario, ':idfactura' => $idFactura))) {
 		}
 
 		$sqlDeleteConsumoCarencia = "DELETE FROM facturasprestaciones WHERE id = :id";
@@ -37,6 +38,11 @@ if(isset($_GET)) {
 		$sqlDeleteIntegracion = "DELETE FROM facturasintegracion WHERE idFacturaprestacion = :idFacturaprestacion";
 		$resDeleteIntegracion = $dbh->prepare($sqlDeleteIntegracion);
 		if($resDeleteIntegracion->execute(array(':idFacturaprestacion' => $idconsumocarencia))){
+		}
+
+		$sqlDeleteEstadisctica = "DELETE FROM facturasestadisticas WHERE idFacturaprestacion = :idFacturaprestacion";
+		$resDeleteEstadisctica = $dbh->prepare($sqlDeleteEstadisctica);
+		if($resDeleteEstadisctica->execute(array(':idFacturaprestacion' => $idconsumocarencia))){
 		}
 
 		$dbh->commit();

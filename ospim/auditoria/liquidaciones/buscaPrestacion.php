@@ -6,11 +6,12 @@ if(isset($_GET)) {
 	$idprestador = $_GET['idPrestador'];
 	$fechaprestacion = fechaParaGuardar($_GET['fechaPrestacion']);
 	$tienecontrato = $_GET['contratoPrestador'];
-	$tienesur =  $_GET['nomencladorSur'];
+	$tieneresolucion =  $_GET['nomencladorResolucion'];
 	$noencontro = TRUE;
 	$prestaciones = array();
+
 	if($tienecontrato == 1) {
-		$sqlLeePracticasContrato="SELECT c.idcontrato, c.codigoprestador, c.fechainicio, c.fechafin, d.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, j.codigocomplejidad, j.descripcion AS complejidad, d.idcategoria, t.descripcion AS nombrecategoria, d.moduloconsultorio, d.modulourgencia, (d.galenohonorario*p.unihonorario) AS honorario, (d.galenohonorarioespecialista*p.unihonorarioespecialista) AS especialista, (d.galenohonorarioayudante*p.unihonorarioayudante) AS ayudante, (d.galenohonorarioanestesista*p.unihonorarioanestesista) AS anestesista, (d.galenogastos*p.unigastos) AS gastos, ((d.galenohonorario*p.unihonorario)+(d.galenohonorarioespecialista*p.unihonorarioespecialista)+(d.galenohonorarioayudante*p.unihonorarioayudante)+(d.galenohonorarioanestesista*p.unihonorarioanestesista)+(d.galenogastos*p.unigastos)) AS valorgaleno FROM cabcontratoprestador c, detcontratoprestador d, practicas p, practicascategorias t, tipocomplejidad j WHERE c.codigoprestador = $idprestador AND (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND c.idcontrato = d.idcontrato AND d.idpractica = p.idpractica AND d.idcategoria = t.id AND p.codigocomplejidad = j.codigocomplejidad";
+		$sqlLeePracticasContrato="SELECT c.idcontrato, c.codigoprestador, c.fechainicio, c.fechafin, d.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, p.internacion, j.codigocomplejidad, j.descripcion AS complejidad, d.idcategoria, t.descripcion AS nombrecategoria, d.moduloconsultorio, d.modulourgencia, ROUND((d.galenohonorario*p.unihonorario),2) AS honorario, ROUND((d.galenohonorarioespecialista*p.unihonorarioespecialista),2) AS especialista, ROUND((d.galenohonorarioayudante*p.unihonorarioayudante),2) AS ayudante, ROUND((d.galenohonorarioanestesista*p.unihonorarioanestesista),2) AS anestesista, ROUND((d.galenogastos*p.unigastos),2) AS gastos, d.coseguro, (ROUND((d.galenohonorario*p.unihonorario),2)+ROUND((d.galenohonorarioespecialista*p.unihonorarioespecialista),2)+ROUND((d.galenohonorarioayudante*p.unihonorarioayudante),2)+ROUND((d.galenohonorarioanestesista*p.unihonorarioanestesista),2)+ROUND((d.galenogastos*p.unigastos),2)) AS valorgaleno FROM cabcontratoprestador c, detcontratoprestador d, practicas p, practicascategorias t, tipocomplejidad j WHERE c.codigoprestador = $idprestador AND (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND c.idcontrato = d.idcontrato AND d.idpractica = p.idpractica AND d.idcategoria = t.id AND p.codigocomplejidad = j.codigocomplejidad";
 		$resLeePracticasContrato=mysql_query($sqlLeePracticasContrato,$db);
 		if(mysql_num_rows($resLeePracticasContrato)!=0) {
 			while($rowLeePracticasContrato=mysql_fetch_array($resLeePracticasContrato)) {
@@ -34,8 +35,10 @@ if(isset($_GET)) {
 								'ayudante' => NULL,
 								'anestesista' => NULL,
 								'gastos' => NULL,
+								'coseguro' => $rowLeePracticasContrato['coseguro'],
 								'integracion' => 0,
 								'complejidad' => $rowLeePracticasContrato['codigocomplejidad'],
+								'internacion' => $rowLeePracticasContrato['internacion'],
 							);
 						}
 						if($rowLeePracticasContrato['modulourgencia']>=0.00) {
@@ -50,8 +53,10 @@ if(isset($_GET)) {
 								'ayudante' => NULL,
 								'anestesista' => NULL,
 								'gastos' => NULL,
+								'coseguro' => $rowLeePracticasContrato['coseguro'],
 								'integracion' => 0,
 								'complejidad' => $rowLeePracticasContrato['codigocomplejidad'],
+								'internacion' => $rowLeePracticasContrato['internacion'],
 							);
 						}
 						if($rowLeePracticasContrato['valorgaleno']>=0.00) {
@@ -66,8 +71,10 @@ if(isset($_GET)) {
 								'ayudante' => $rowLeePracticasContrato['ayudante'],
 								'anestesista' => $rowLeePracticasContrato['anestesista'],
 								'gastos' => $rowLeePracticasContrato['gastos'],
+								'coseguro' => $rowLeePracticasContrato['coseguro'],
 								'integracion' => 0,
 								'complejidad' => $rowLeePracticasContrato['codigocomplejidad'],
+								'internacion' => $rowLeePracticasContrato['internacion'],
 							);
 						}
 					}
@@ -75,34 +82,36 @@ if(isset($_GET)) {
 			}
 		}
 	}
-	if($tienesur == 1) {
-		$sqlLeePracticasResolucion="SELECT r.fechadesde, r.fechahasta, p.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, j.codigocomplejidad, j.descripcion AS complejidad, r.importe, c.nombre FROM resoluciondetalle r, resolucioncabecera c, practicas p, tipocomplejidad j WHERE (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND r.idresolucion = c.id AND r.idpractica = p.idpractica AND p.codigocomplejidad = j.codigocomplejidad";
+
+	if($tieneresolucion == 1) {
+		$sqlLeePracticasResolucion="SELECT n.fechainicio, n.fechafin, p.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, p.internacion, j.codigocomplejidad, j.descripcion AS complejidad, r.modulo, n.nombre, CASE n.idnomenclador WHEN 7 THEN '1' ELSE '0' END AS integracion FROM practicasvaloresresolucion r, nomencladoresresolucion n, practicas p, tipocomplejidad j WHERE (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND r.idresolucion = n.id AND r.idpractica = p.idpractica AND p.codigocomplejidad = j.codigocomplejidad";
 		$resLeePracticasResolucion=mysql_query($sqlLeePracticasResolucion,$db);
 		if(mysql_num_rows($resLeePracticasResolucion)!=0) {
 			while($rowLeePracticasResolucion=mysql_fetch_array($resLeePracticasResolucion)) {
-				$fechainiresolucion=$rowLeePracticasResolucion['fechadesde'];
-				if($rowLeePracticasResolucion['fechahasta']==NULL) {
+				$fechainiresolucion=$rowLeePracticasResolucion['fechainicio'];
+				if($rowLeePracticasResolucion['fechafin']==NULL) {
 					$fechafinresolucion=date("Y-m-d");
 				} else {
-					$fechafinresolucion=$rowLeePracticasResolucion['fechahasta'];
+					$fechafinresolucion=$rowLeePracticasResolucion['fechafin'];
 				}
 				if(strcmp($fechainiresolucion, $fechaprestacion) <= 0) {
 					if(strcmp($fechafinresolucion, $fechaprestacion) >= 0) {
-
-						if($rowLeePracticasResolucion['importe']>=0.00) {
+						if($rowLeePracticasResolucion['modulo']>=0.00) {
 							$noencontro = FALSE;
 							$prestaciones[] = array(
-								'label' => $rowLeePracticasResolucion['nombrepractica'].' | Codigo: '.$rowLeePracticasResolucion['codigopractica'].' | Valor: '.$rowLeePracticasResolucion['importe'].' | Origen: Resolucion '.$rowLeePracticasResolucion['nombre'].' | NO CATEGORIZA | Clasif. Res. 650: '.$rowLeePracticasResolucion['complejidad'],
+								'label' => $rowLeePracticasResolucion['nombrepractica'].' | Codigo: '.$rowLeePracticasResolucion['codigopractica'].' | Valor: '.$rowLeePracticasResolucion['modulo'].' | Origen: Resolucion '.$rowLeePracticasResolucion['nombre'].' | NO CATEGORIZA | Clasif. Res. 650: '.$rowLeePracticasResolucion['complejidad'],
 								'idpractica' => $rowLeePracticasResolucion['idpractica'],
-								'valor' => $rowLeePracticasResolucion['importe'],
+								'valor' => $rowLeePracticasResolucion['modulo'],
 								'galeno' => 0,
 								'honorario' => NULL,
 								'especialista' => NULL,
 								'ayudante' => NULL,
 								'anestesista' => NULL,
 								'gastos' => NULL,
-								'integracion' => 1,
+								'coseguro' => 0.00,
+								'integracion' => $rowLeePracticasResolucion['integracion'],
 								'complejidad' => $rowLeePracticasResolucion['codigocomplejidad'],
+								'internacion' => $rowLeePracticasResolucion['internacion'],
 							);
 						}
 					}
@@ -110,35 +119,42 @@ if(isset($_GET)) {
 			}
 		}
 	}
-	$sqlConsultaNomenclador = "SELECT codigonomenclador FROM prestadornomenclador WHERE codigoprestador = $idprestador AND codigonomenclador != 7";
-	$resConsultaNomenclador = mysql_query($sqlConsultaNomenclador,$db);
-	if(mysql_num_rows($resConsultaNomenclador)!=0) {
-		$wherein = '';
-		while($rowConsultaNomenclador = mysql_fetch_array($resConsultaNomenclador)) {
-			$wherein .= $rowConsultaNomenclador['codigonomenclador'].',';
+
+	if($tienecontrato == 0 && $tieneresolucion == 0) {
+		$sqlConsultaNomenclador = "SELECT codigonomenclador FROM prestadornomenclador WHERE codigoprestador = $idprestador AND codigonomenclador != 7";
+		$resConsultaNomenclador = mysql_query($sqlConsultaNomenclador,$db);
+		if(mysql_num_rows($resConsultaNomenclador)!=0) {
+			$wherein = '';
+			while($rowConsultaNomenclador = mysql_fetch_array($resConsultaNomenclador)) {
+				$wherein .= $rowConsultaNomenclador['codigonomenclador'].',';
+			}
+			$wherein = substr($wherein, 0, -1);
 		}
-		$wherein = substr($wherein, 0, -1);
-	}
-	$sqlLeePracticasNomenclador="SELECT p.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, j.codigocomplejidad, j.descripcion AS complejidad, n.nombre FROM practicas p, nomencladores n, tipocomplejidad j WHERE p.nomenclador IN($wherein) AND (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND p.nomenclador = n.id AND p.codigocomplejidad = j.codigocomplejidad";
-	$resLeePracticasNomenclador=mysql_query($sqlLeePracticasNomenclador,$db);
-	if(mysql_num_rows($resLeePracticasNomenclador)!=0) {
-		while($rowLeePracticasNomenclador = mysql_fetch_array($resLeePracticasNomenclador)) {
-			$noencontro = FALSE;
-			$prestaciones[] = array(
-				'label' => $rowLeePracticasNomenclador['nombrepractica'].' | Codigo: '.$rowLeePracticasNomenclador['codigopractica'].' | NO VALORIZA  | Origen: Nomenclador '.$rowLeePracticasNomenclador['nombre'].' | NO CATEGORIZA | Clasif. Res. 650: '.$rowLeePracticasNomenclador['complejidad'],
-				'idpractica' => $rowLeePracticasNomenclador['idpractica'],
-				'valor' => '0.00',
-				'galeno' => 0,
-				'honorario' => NULL,
-				'especialista' => NULL,
-				'ayudante' => NULL,
-				'anestesista' => NULL,
-				'gastos' => NULL,
-				'integracion' => 0,
-				'complejidad' => $rowLeePracticasNomenclador['codigocomplejidad'],
-			);
+		$sqlLeePracticasNomenclador="SELECT p.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, j.codigocomplejidad, j.descripcion AS complejidad, p.internacion, n.nombre FROM practicas p, nomencladores n, tipocomplejidad j WHERE p.nomenclador IN($wherein) AND (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND p.nomenclador = n.id AND p.codigocomplejidad = j.codigocomplejidad";
+		$resLeePracticasNomenclador=mysql_query($sqlLeePracticasNomenclador,$db);
+		if(mysql_num_rows($resLeePracticasNomenclador)!=0) {
+			while($rowLeePracticasNomenclador = mysql_fetch_array($resLeePracticasNomenclador)) {
+				$noencontro = FALSE;
+				$valornomencladoretiqueta = 'NO VALORIZA';
+				$prestaciones[] = array(
+					'label' => $rowLeePracticasNomenclador['nombrepractica'].' | Codigo: '.$rowLeePracticasNomenclador['codigopractica'].' | '.$valornomencladoretiqueta.'  | Origen: Nomenclador '.$rowLeePracticasNomenclador['nombre'].' | NO CATEGORIZA | Clasif. Res. 650: '.$rowLeePracticasNomenclador['complejidad'],
+					'idpractica' => $rowLeePracticasNomenclador['idpractica'],
+					'valor' => NULL,
+					'galeno' => 0,
+					'honorario' => NULL,
+					'especialista' => NULL,
+					'ayudante' => NULL,
+					'anestesista' => NULL,
+					'gastos' => NULL,
+					'coseguro' => 0.00,
+					'integracion' => 0,
+					'complejidad' => $rowLeePracticasNomenclador['codigocomplejidad'],
+					'internacion' => $rowLeePracticasNomenclador['internacion'],
+				);
+			}
 		}
 	}
+
 	if($noencontro) {
 		$prestaciones[] = array(
 			'label' => 'No se encontraron resultados para la busqueda intentada',
@@ -150,8 +166,10 @@ if(isset($_GET)) {
 			'ayudante' => NULL,
 			'anestesista' => NULL,
 			'gastos' => NULL,
+			'coseguro' => 0.00,
 			'integracion' => 0,
 			'complejidad' => NULL,
+			'internacion' => 0,
 		);
 	}
 	echo json_encode($prestaciones);

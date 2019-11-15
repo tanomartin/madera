@@ -23,7 +23,7 @@ if(isset($_GET['idfactura'])) {
 	$sqlConsultaJurisdiccionPrestador = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $rowConsultaFactura[idPrestador] and p.codidelega = d.codidelega";
 	$resConsultaJurisdiccionPrestador = mysql_query($sqlConsultaJurisdiccionPrestador,$db);
 
-	$sqlConsultaFacturasBeneficiarios = "SELECT f.*, t.apellidoynombre, t.cuil, t.codidelega FROM facturasbeneficiarios f, titulares t WHERE f.idFactura = $idcomprobante AND f.nroafiliado = t.nroafiliado";
+	$sqlConsultaFacturasBeneficiarios = "SELECT * FROM facturasbeneficiarios WHERE idFactura = $idcomprobante";
 	$resConsultaFacturasBeneficiarios = mysql_query($sqlConsultaFacturasBeneficiarios,$db);
 
 	$sqlConsultaCarenciasBeneficiarios = "SELECT * FROM facturascarenciasbeneficiarios WHERE idFactura = $idcomprobante";
@@ -406,16 +406,39 @@ function cierraLiquidacion(idfactura) {
 					$totaldebito = $totaldebito + $rowConsultaFacturasBeneficiarios['totaldebito'];
 					$totalcredito = $totalcredito + $rowConsultaFacturasBeneficiarios['totalcredito'];
 					if($rowConsultaFacturasBeneficiarios['tipoafiliado']==0) {
+						$sqlConsultaTitular = "SELECT apellidoynombre, cuil, codidelega FROM titulares WHERE nroafiliado = $rowConsultaFacturasBeneficiarios[nroafiliado]";
+						$resConsultaTitular = mysql_query($sqlConsultaTitular,$db);
+						if(mysql_num_rows($resConsultaTitular)!=0) {
+							$rowConsultaTitular = mysql_fetch_array($resConsultaTitular);
+						} else {
+							$sqlConsultaTitular = "SELECT apellidoynombre, cuil, codidelega FROM titularesdebaja WHERE nroafiliado = $rowConsultaFacturasBeneficiarios[nroafiliado]";
+							$resConsultaTitular = mysql_query($sqlConsultaTitular,$db);
+							$rowConsultaTitular = mysql_fetch_array($resConsultaTitular);
+						}
 						$descripcionTipo = 'Titular';
-						$nombreBeneficiario = $rowConsultaFacturasBeneficiarios['apellidoynombre'];
-						$cuilBeneficiario = $rowConsultaFacturasBeneficiarios['cuil'];
+						$nombreBeneficiario = $rowConsultaTitular['apellidoynombre'];
+						$cuilBeneficiario = $rowConsultaTitular['cuil'];
+						$deleBeneficiario = $rowConsultaTitular['codidelega'];
 					} else {
-						$sqlConsultaFamiliar = "SELECT f.apellidoynombre, f.cuil, p.descrip FROM familiares f, parentesco p WHERE f.nroafiliado = $rowConsultaFacturasBeneficiarios[nroafiliado] AND f.nroorden = $rowConsultaFacturasBeneficiarios[nroorden] AND f.tipoparentesco = p.codparent";
+						$sqlConsultaFamiliar = "SELECT f.apellidoynombre, f.cuil, p.descrip, t.codidelega FROM familiares f, parentesco p, titulares t WHERE f.nroafiliado = $rowConsultaFacturasBeneficiarios[nroafiliado] AND f.nroorden = $rowConsultaFacturasBeneficiarios[nroorden] AND f.tipoparentesco = p.codparent AND f.nroafiliado = t.nroafiliado";
 						$resConsultaFamiliar = mysql_query($sqlConsultaFamiliar,$db);
-						$rowConsultaFamiliar = mysql_fetch_array($resConsultaFamiliar);
+						if(mysql_num_rows($resConsultaFamiliar)!=0) {
+							$rowConsultaFamiliar = mysql_fetch_array($resConsultaFamiliar);
+						} else {
+							$sqlConsultaFamiliar = "SELECT f.apellidoynombre, f.cuil, p.descrip, t.codidelega FROM familiaresdebaja f, parentesco p, titularesdebaja t WHERE f.nroafiliado = $rowConsultaFacturasBeneficiarios[nroafiliado] AND f.nroorden = $rowConsultaFacturasBeneficiarios[nroorden] AND f.tipoparentesco = p.codparent AND f.nroafiliado = t.nroafiliado";
+							$resConsultaFamiliar = mysql_query($sqlConsultaFamiliar,$db);
+							if(mysql_num_rows($resConsultaFamiliar)!=0) {
+								$rowConsultaFamiliar = mysql_fetch_array($resConsultaFamiliar);
+							} else {
+								$sqlConsultaFamiliar = "SELECT f.apellidoynombre, f.cuil, p.descrip, t.codidelega FROM familiaresdebaja f, parentesco p, titulares t WHERE f.nroafiliado = $rowConsultaFacturasBeneficiarios[nroafiliado] AND f.nroorden = $rowConsultaFacturasBeneficiarios[nroorden] AND f.tipoparentesco = p.codparent AND f.nroafiliado = t.nroafiliado";
+								$resConsultaFamiliar = mysql_query($sqlConsultaFamiliar,$db);
+								$rowConsultaFamiliar = mysql_fetch_array($resConsultaFamiliar);
+							}
+						}
 						$descripcionTipo = $rowConsultaFamiliar['descrip'];
 						$nombreBeneficiario = $rowConsultaFamiliar['apellidoynombre'];
 						$cuilBeneficiario = $rowConsultaFamiliar['cuil'];
+						$deleBeneficiario = $rowConsultaFamiliar['codidelega'];
 					}
 					$botonexcepcion = 'excepcion'.$rowConsultaFacturasBeneficiarios['id'];
 					$botonconsumo = 'consumo'.$rowConsultaFacturasBeneficiarios['id'];
@@ -425,7 +448,7 @@ function cierraLiquidacion(idfactura) {
 				<td><?php echo $descripcionTipo;?></td>
 				<td><?php echo $nombreBeneficiario;?></td>
 				<td><?php echo $cuilBeneficiario;?></td>
-				<td><?php echo $rowConsultaFacturasBeneficiarios['codidelega'];?></td>
+				<td><?php echo $deleBeneficiario;?></td>
 				<td><?php echo $rowConsultaFacturasBeneficiarios['totalfacturado'];?></td>
 				<td><?php echo $rowConsultaFacturasBeneficiarios['totaldebito'];?></td>
 				<td><?php echo $rowConsultaFacturasBeneficiarios['totalcredito'];?></td>
