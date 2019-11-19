@@ -22,8 +22,9 @@ if(isset($_GET['getBeneficiaro'])) {
 	if(mysql_num_rows($resLeeTitulares)!=0) {
 		while($rowLeeTitulares=mysql_fetch_array($resLeeTitulares)) {
 			$noencontro = FALSE;
+			$apellidoynombre = utf8_encode($rowLeeTitulares['apellidoynombre']);
 			$beneficiarios[] = array(
-				'label' => $rowLeeTitulares['apellidoynombre'].' | CUIL: '.$rowLeeTitulares['cuil'].' | Nro. Afiliado: '.$rowLeeTitulares['nroafiliado'].' | Tipo: Titular | Estado: Activo',
+				'label' => $apellidoynombre.' | CUIL: '.$rowLeeTitulares['cuil'].' | Nro. Afiliado: '.$rowLeeTitulares['nroafiliado'].' | Tipo: Titular | Estado: Activo',
 				'nroafiliado' => $rowLeeTitulares['nroafiliado'],
 				'tipoafiliado' => 0,
 				'nroorden' => 0,
@@ -35,8 +36,9 @@ if(isset($_GET['getBeneficiaro'])) {
 	if(mysql_num_rows($resLeeTitulares)!=0) {
 		while($rowLeeTitulares=mysql_fetch_array($resLeeTitulares)) {
 			$noencontro = FALSE;
+			$apellidoynombre = utf8_encode($rowLeeTitulares['apellidoynombre']);
 			$beneficiarios[] = array(
-				'label' => $rowLeeTitulares['apellidoynombre'].' | CUIL: '.$rowLeeTitulares['cuil'].' | Nro. Afiliado: '.$rowLeeTitulares['nroafiliado'].' | Tipo: Titular | Estado: Inactivo',
+				'label' => $apellidoynombre.' | CUIL: '.$rowLeeTitulares['cuil'].' | Nro. Afiliado: '.$rowLeeTitulares['nroafiliado'].' | Tipo: Titular | Estado: Inactivo',
 				'nroafiliado' => $rowLeeTitulares['nroafiliado'],
 				'tipoafiliado' => 0,
 				'nroorden' => 0,
@@ -48,9 +50,10 @@ if(isset($_GET['getBeneficiaro'])) {
 	if(mysql_num_rows($resLeeFamiliares)!=0) {
 		while($rowLeeFamiliares=mysql_fetch_array($resLeeFamiliares)) {
 			$noencontro = FALSE;
+			$apellidoynombre = utf8_encode($rowLeeFamiliares['apellidoynombre']);
 			$tipo = utf8_encode($rowLeeFamiliares['descrip']);
 			$beneficiarios[] = array(
-				'label' => $rowLeeFamiliares['apellidoynombre'].' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Activo',
+				'label' => $apellidoynombre.' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Activo',
 				'nroafiliado' => $rowLeeFamiliares['nroafiliado'],
 				'tipoafiliado' => $rowLeeFamiliares['tipoparentesco'],
 				'nroorden' => $rowLeeFamiliares['nroorden'],
@@ -62,9 +65,10 @@ if(isset($_GET['getBeneficiaro'])) {
 	if(mysql_num_rows($resLeeFamiliares)!=0) {
 		while($rowLeeFamiliares=mysql_fetch_array($resLeeFamiliares)) {
 			$noencontro = FALSE;
+			$apellidoynombre = utf8_encode($rowLeeFamiliares['apellidoynombre']);
 			$tipo = utf8_encode($rowLeeFamiliares['descrip']);
 			$beneficiarios[] = array(
-				'label' => $rowLeeFamiliares['apellidoynombre'].' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Inactivo',
+				'label' => $apellidoynombre.' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Inactivo',
 				'nroafiliado' => $rowLeeFamiliares['nroafiliado'],
 				'tipoafiliado' => $rowLeeFamiliares['tipoparentesco'],
 				'nroorden' => $rowLeeFamiliares['nroorden'],
@@ -76,9 +80,10 @@ if(isset($_GET['getBeneficiaro'])) {
 	if(mysql_num_rows($resLeeFamiliares)!=0) {
 		while($rowLeeFamiliares=mysql_fetch_array($resLeeFamiliares)) {
 			$noencontro = FALSE;
+			$apellidoynombre = utf8_encode($rowLeeFamiliares['apellidoynombre']);
 			$tipo = utf8_encode($rowLeeFamiliares['descrip']);
 			$beneficiarios[] = array(
-				'label' => $rowLeeFamiliares['apellidoynombre'].' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Inactivo',
+				'label' => $apellidoynombre.' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Inactivo',
 				'nroafiliado' => $rowLeeFamiliares['nroafiliado'],
 				'tipoafiliado' => $rowLeeFamiliares['tipoparentesco'],
 				'nroorden' => $rowLeeFamiliares['nroorden'],

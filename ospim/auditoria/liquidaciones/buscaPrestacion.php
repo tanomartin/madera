@@ -25,8 +25,9 @@ if(isset($_GET)) {
 					if(strcmp($fechafincontrato, $fechaprestacion) >= 0) {					
 						if($rowLeePracticasContrato['moduloconsultorio']>=0.00) {
 							$noencontro = FALSE;
+							$nombrepractica = utf8_encode($rowLeePracticasContrato['nombrepractica']);
 							$prestaciones[] = array(
-								'label' => $rowLeePracticasContrato['nombrepractica'].' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Mod. Consultorio Valor: '.$rowLeePracticasContrato['moduloconsultorio'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'].' | Categoria: '.$rowLeePracticasContrato['nombrecategoria'].' | Clasif. Res. 650: '.$rowLeePracticasContrato['complejidad'],
+								'label' => $nombrepractica.' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Mod. Consultorio Valor: '.$rowLeePracticasContrato['moduloconsultorio'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'].' | Categoria: '.$rowLeePracticasContrato['nombrecategoria'].' | Clasif. Res. 650: '.$rowLeePracticasContrato['complejidad'],
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['moduloconsultorio'],
 								'galeno' => 0,
@@ -43,8 +44,9 @@ if(isset($_GET)) {
 						}
 						if($rowLeePracticasContrato['modulourgencia']>=0.00) {
 							$noencontro = FALSE;
+							$nombrepractica = utf8_encode($rowLeePracticasContrato['nombrepractica']);
 							$prestaciones[] = array(
-								'label' => $rowLeePracticasContrato['nombrepractica'].' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Mod. Urgencia Valor: '.$rowLeePracticasContrato['modulourgencia'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'].' | Categoria: '.$rowLeePracticasContrato['nombrecategoria'].' | Clasif. Res. 650: '.$rowLeePracticasContrato['complejidad'],
+								'label' => $nombrepractica.' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Mod. Urgencia Valor: '.$rowLeePracticasContrato['modulourgencia'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'].' | Categoria: '.$rowLeePracticasContrato['nombrecategoria'].' | Clasif. Res. 650: '.$rowLeePracticasContrato['complejidad'],
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['modulourgencia'],
 								'galeno' => 0,
@@ -61,8 +63,9 @@ if(isset($_GET)) {
 						}
 						if($rowLeePracticasContrato['valorgaleno']>=0.00) {
 							$noencontro = FALSE;
+							$nombrepractica = utf8_encode($rowLeePracticasContrato['nombrepractica']);
 							$prestaciones[] = array(
-								'label' => $rowLeePracticasContrato['nombrepractica'].' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Galeno Valor: '.$rowLeePracticasContrato['valorgaleno'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'].' | Categoria: '.$rowLeePracticasContrato['nombrecategoria'].' | Clasif. Res. 650: '.$rowLeePracticasContrato['complejidad'],
+								'label' => $nombrepractica.' | Codigo: '.$rowLeePracticasContrato['codigopractica'].' | Galeno Valor: '.$rowLeePracticasContrato['valorgaleno'].' | Origen: Contrato '.$rowLeePracticasContrato['idcontrato'].' | Categoria: '.$rowLeePracticasContrato['nombrecategoria'].' | Clasif. Res. 650: '.$rowLeePracticasContrato['complejidad'],
 								'idpractica' => $rowLeePracticasContrato['idpractica'],
 								'valor' => $rowLeePracticasContrato['valorgaleno'],
 								'galeno' => 1,
@@ -98,8 +101,9 @@ if(isset($_GET)) {
 					if(strcmp($fechafinresolucion, $fechaprestacion) >= 0) {
 						if($rowLeePracticasResolucion['modulo']>=0.00) {
 							$noencontro = FALSE;
+							$nombrepractica = utf8_encode($rowLeePracticasResolucion['nombrepractica']);
 							$prestaciones[] = array(
-								'label' => $rowLeePracticasResolucion['nombrepractica'].' | Codigo: '.$rowLeePracticasResolucion['codigopractica'].' | Valor: '.$rowLeePracticasResolucion['modulo'].' | Origen: Resolucion '.$rowLeePracticasResolucion['nombre'].' | NO CATEGORIZA | Clasif. Res. 650: '.$rowLeePracticasResolucion['complejidad'],
+								'label' => $nombrepractica.' | Codigo: '.$rowLeePracticasResolucion['codigopractica'].' | Valor: '.$rowLeePracticasResolucion['modulo'].' | Origen: Resolucion '.$rowLeePracticasResolucion['nombre'].' | NO CATEGORIZA | Clasif. Res. 650: '.$rowLeePracticasResolucion['complejidad'],
 								'idpractica' => $rowLeePracticasResolucion['idpractica'],
 								'valor' => $rowLeePracticasResolucion['modulo'],
 								'galeno' => 0,
@@ -135,9 +139,10 @@ if(isset($_GET)) {
 		if(mysql_num_rows($resLeePracticasNomenclador)!=0) {
 			while($rowLeePracticasNomenclador = mysql_fetch_array($resLeePracticasNomenclador)) {
 				$noencontro = FALSE;
+				$nombrepractica = utf8_encode($rowLeePracticasNomenclador['nombrepractica']);
 				$valornomencladoretiqueta = 'NO VALORIZA';
 				$prestaciones[] = array(
-					'label' => $rowLeePracticasNomenclador['nombrepractica'].' | Codigo: '.$rowLeePracticasNomenclador['codigopractica'].' | '.$valornomencladoretiqueta.'  | Origen: Nomenclador '.$rowLeePracticasNomenclador['nombre'].' | NO CATEGORIZA | Clasif. Res. 650: '.$rowLeePracticasNomenclador['complejidad'],
+					'label' => $nombrepractica.' | Codigo: '.$rowLeePracticasNomenclador['codigopractica'].' | '.$valornomencladoretiqueta.'  | Origen: Nomenclador '.$rowLeePracticasNomenclador['nombre'].' | NO CATEGORIZA | Clasif. Res. 650: '.$rowLeePracticasNomenclador['complejidad'],
 					'idpractica' => $rowLeePracticasNomenclador['idpractica'],
 					'valor' => NULL,
 					'galeno' => 0,

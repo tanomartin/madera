@@ -27,12 +27,13 @@ if(isset($_GET)) {
 	if(mysql_num_rows($resLeeEfectores)!=0) {
 		while($rowLeeEfectores=mysql_fetch_array($resLeeEfectores)) {
 			$noencontro = FALSE;
+			$nombreefector = utf8_encode($rowLeeEfectores['nombre']);
 			if($idpersoneria==4) {
 				$circulo = $rowLeeEfectores['circulo'];
 				$calidad = $rowLeeEfectores['calidad'];
 			}
 			$efectores[] = array(
-				'label' => $rowLeeEfectores['nombre'].' | Codigo: '.$rowLeeEfectores['idefector'],
+				'label' => $nombreefector.' | Codigo: '.$rowLeeEfectores['idefector'],
 				'idefector' => $rowLeeEfectores['idefector'],
 				'circulo' => $circulo,
 				'calidad' => $calidad,

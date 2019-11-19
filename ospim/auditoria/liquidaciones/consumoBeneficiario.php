@@ -1181,7 +1181,6 @@ $(document).ready(function(){
 	});
 	$("#agregarprestacion").on("click", function() {
 		var datosform = $("form#consumoPrestacional").serialize();
-		alert("Serializo el formulario");
 		$.blockUI({ message: "<h1>Agregando Prestacion a la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 		$.ajax({
 			type: "POST",
@@ -1393,20 +1392,20 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			<tr>
 				<td align="right"><strong>Buscar Prestacion</strong></td>
 				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="125" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
-				<input name="idPractica" type="text" id="idPractica" size="5" value=""/>
-					<input name="esGaleno" type="text" id="esGaleno" size="2" value=""/>
-					<input name="esIntegracion" type="text" id="esIntegracion" size="2" value=""/>
-					<input name="clasificacionComplejidad" type="text" id="clasificacionComplejidad" size="2" value=""/>
-					<input name="esInternacion" type="text" id="esInternacion" size="2" value=""/>
-					<input name="referenciaunitario" type="text" id="referenciaunitario" size="5" value="0.00"/>
+				<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
+					<input name="esGaleno" type="hidden" id="esGaleno" size="2" value=""/>
+					<input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/>
+					<input name="clasificacionComplejidad" type="hidden" id="clasificacionComplejidad" size="2" value=""/>
+					<input name="esInternacion" type="hidden" id="esInternacion" size="2" value=""/>
+					<input name="referenciaunitario" type="hidden" id="referenciaunitario" size="5" value="0.00"/>
 				</td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Efector</strong></td>
 				<td colspan="5" align="left"><textarea name="efectorpractica" rows="3" cols="125" id="efectorpractica" placeholder=""></textarea>
-											<input name="idEfector" type="text" id="idEfector" size="5" value=""/>
-											<input name="establecimientoCirculo" type="text" id="establecimientoCirculo" size="2" value=""/>
-											<input name="establecimientoCalidad" type="text" id="establecimientoCalidad" size="2" value=""/>
+											<input name="idEfector" type="hidden" id="idEfector" size="5" value=""/>
+											<input name="establecimientoCirculo" type="hidden" id="establecimientoCirculo" size="2" value=""/>
+											<input name="establecimientoCalidad" type="hidden" id="establecimientoCalidad" size="2" value=""/>
 				</td>
 			</tr>
 			<tr>
@@ -1431,19 +1430,19 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 					| Medicamentos <input name="internacionMedicamentos" type="text" id="internacionMedicamentos" maxlength="9" size="5" value="0.00"/>
 					| Descartables <input name="internacionDescartables" type="text" id="internacionDescartables" maxlength="9" size="5" value="0.00"/>
 					| Otros <input name="internacionOtros" type="text" id="internacionOtros" size="5" maxlength="9" value="0.00"/> |
-					<input name="referenciainternacion" type="text" id="referenciainternacion" size="5" value="0.00"/>
+					<input name="referenciainternacion" type="hidden" id="referenciainternacion" size="5" value="0.00"/>
 				</td>
 			</tr>
 			<tr id="coseguro" style="display:none">
 				<td align="right" colspan="2"><strong>Incluye Coseguro ?</strong></td>
 				<td align="left" colspan="4"><input name="incluyecoseguro" type="checkbox" id="incluyecoseguro" value="1"/>
-					| Valor Coseguro <input name="valorCoseguro" type="text" id="valorCoseguro" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciacoseguro" type="text" id="referenciacoseguro" size="5" value="0.00"/>
+					| Valor Coseguro <input name="valorCoseguro" type="text" id="valorCoseguro" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciacoseguro" type="hidden" id="referenciacoseguro" size="5" value="0.00"/>
 				</td>
 			</tr>
 			<tr id="calidadestablecimiento" style="display:none">
 				<td align="right" colspan="2"><strong>Acred. de Calidad del Est. ?</strong></td>
 				<td align="left" colspan="4"><input name="acreditacioncalidad" type="checkbox" id="acreditacioncalidad" value="1"/>
-					| Importe Acreditacion <input name="importeAcreditacion" type="text" id="importeAcreditacion" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciaacreditacion" type="text" id="referenciaacreditacion" size="5" value="0.00"/>
+					| Importe Acreditacion <input name="importeAcreditacion" type="text" id="importeAcreditacion" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciaacreditacion" type="hidden" id="referenciaacreditacion" size="5" value="0.00"/>
 				</td>
 			</tr>
 			<tr>
