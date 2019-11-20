@@ -13,7 +13,7 @@ if(isset($_GET['err']) && isset($_GET['id']) && isset($_GET['importe'])) {
 	$importecomprobante = $_GET['importe'];
 	$mensajeerror = 'El comprobante que intenta ingresar ya ha sido cargado con el Id Interno '.$idcomprobante.' con un importe de $ '.$importecomprobante;
 }
-	$sqlFacturasSinLiquidar = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento FROM facturas f, prestadores p WHERE f.fechainicioliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador ORDER by f.id DESC";
+	$sqlFacturasSinLiquidar = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento, f.fecharecepcion FROM facturas f, prestadores p WHERE f.fechainicioliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador ORDER by f.id DESC";
 	$resFacturasSinLiquidar = mysql_query($sqlFacturasSinLiquidar,$db);
 	$totalfacturas = mysql_num_rows($resFacturasSinLiquidar);
 ?>
@@ -57,10 +57,12 @@ $(document).ready(function(){
 			headers: {
 				0:{sorter:false, filter: false},
 				1:{sorter:false, filter: false},
-				5:{sorter:false, filter: false},
+				3:{filter: false},
+				5:{sorter:false},
 				6:{sorter:false, filter: false},
 				7:{sorter:false, filter: false},
-				9:{sorter:false, filter: false}
+				8:{sorter:false, filter: false},
+				10:{sorter:false, filter: false}
 			},
 			widgets: ["zebra", "filter"], 
 			widgetOptions: { 
@@ -155,12 +157,13 @@ function validar(formulario) {
 		<thead>
 			<tr>
 				<th colspan="2">Prestador</th>
-				<th colspan="6">Factura</th>
+				<th colspan="7">Factura</th>
 			</tr>
 			<tr>
 				<th>Nombre</th>
 				<th>C.U.I.T.</th>
 				<th>ID Interno</th>
+				<th>Recepcion</th>
 				<th>Nro.</th>
 				<th>Fecha</th>
 				<th>Importe</th>
@@ -174,6 +177,7 @@ function validar(formulario) {
 				<td><?php echo $rowFacturasSinLiquidar['nombre'];?></td>
 				<td><?php echo $rowFacturasSinLiquidar['cuit'];?></td>
 				<td><?php echo $rowFacturasSinLiquidar['id'];?></td>
+				<td><?php echo invertirFecha($rowFacturasSinLiquidar['fecharecepcion']);?></td>
 				<td><?php echo $rowFacturasSinLiquidar['puntodeventa'].'-'.$rowFacturasSinLiquidar['nrocomprobante'];?></td>
 				<td><?php echo invertirFecha($rowFacturasSinLiquidar['fechacomprobante']);?></td>
 				<td><?php echo $rowFacturasSinLiquidar['importecomprobante'];?></td>
