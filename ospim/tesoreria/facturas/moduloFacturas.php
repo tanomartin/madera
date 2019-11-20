@@ -62,7 +62,9 @@ $(document).ready(function(){
 				6:{sorter:false, filter: false},
 				7:{sorter:false, filter: false},
 				8:{sorter:false, filter: false},
-				10:{sorter:false, filter: false}
+				9:{filter: false},
+				10:{sorter:false, filter: false},
+				11:{sorter:false}
 			},
 			widgets: ["zebra", "filter"], 
 			widgetOptions: { 
@@ -157,7 +159,7 @@ function validar(formulario) {
 		<thead>
 			<tr>
 				<th colspan="2">Prestador</th>
-				<th colspan="7">Factura</th>
+				<th colspan="8">Factura</th>
 			</tr>
 			<tr>
 				<th>Nombre</th>
@@ -169,6 +171,7 @@ function validar(formulario) {
 				<th>Importe</th>
 				<th>Vencimiento</th>
 				<th>Acciones</th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -186,6 +189,11 @@ function validar(formulario) {
 					<input class="nover" type="button" id="consultarfactura" name="consultarfactura" value="Consultar" onclick="location.href = 'consultarFactura.php?idfactura=<?php echo $rowFacturasSinLiquidar['id'] ?>'"/>
 					<input class="nover" type="button" id="editarfactura" name="editarfactura" value="Editar" onclick="location.href = 'editarFactura.php?idfactura=<?php echo $rowFacturasSinLiquidar['id'] ?>'"/>
 				</td>
+				<td>
+					  <?php if(isset($_COOKIE[$rowFacturasSinLiquidar['id']])) {?> 
+								<img src="../img/visited.png" height="20" width="20" style="vertical-align: middle;" id="visited<?php echo  $rowLeeAutorizacion['nrosolicitud'] ?>" name="visited<?php echo  $rowLeeAutorizacion['nrosolicitud'] ?>" /> 
+					  <?php } ?>
+					</td>
 			</tr>
 		<?php } ?>
 		</tbody>

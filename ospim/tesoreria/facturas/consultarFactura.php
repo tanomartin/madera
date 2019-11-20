@@ -3,6 +3,7 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 if(isset($_GET['idfactura'])) {
 	$idcomprobante = $_GET['idfactura'];
+	setcookie($idcomprobante, $_SESSION['usuario'], time() + (86400 * 7));
 	$sqlConsultaFactura = "SELECT f.id, f.fecharecepcion, f.idPrestador, p.nombre, p.cuit, f.idTipocomprobante, t.descripcion, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.idCodigoautorizacion, c.descripcioncorta, f.nroautorizacion, f.fechacorreo, f.diasvencimiento, f.fechavencimiento, f.importecomprobante FROM facturas f, prestadores p, tipocomprobante t, codigoautorizacion c WHERE f.id = $idcomprobante AND f.idPrestador = p.codigoprestador AND f.idTipocomprobante = t.id AND f.idCodigoautorizacion = c.id";
 	$resConsultaFactura = mysql_query($sqlConsultaFactura,$db);
 	$rowConsultaFactura = mysql_fetch_array($resConsultaFactura);
