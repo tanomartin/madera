@@ -27,7 +27,7 @@ $rowContrato = mysql_fetch_assoc($resContrato); ?>
 jQuery(function($){
 	$("#fechaInicio").mask("99-99-9999");
 	$("#fechaFin").mask("99-99-9999");
-	$("#porcentaje").mask("99.99");
+	$("#porcentaje").mask("99.99999");
 });
 
 function validar(formulario) {
