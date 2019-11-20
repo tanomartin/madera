@@ -103,7 +103,7 @@ $nroRegistro = $_POST['nroRegistro'];
 if ($nroRegistro == "") {
 	$nroRegistro = "NULL";
 } else {
-	$nroRegistro = "'$matriculaPro'";
+	$nroRegistro = "'$nroRegistro'";
 }
 
 $activo = $_POST['activo'];

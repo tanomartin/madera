@@ -101,7 +101,7 @@ $nroRegistro = $_POST['nroRegistro'];
 if ($nroRegistro == "") {
 	$nroRegistro = "NULL";
 } else {
-	$nroRegistro = "'$matriculaPro'";
+	$nroRegistro = "'$nroRegistro'";
 }
 
 $fecharegistro = date("Y-m-d H:i:s");
