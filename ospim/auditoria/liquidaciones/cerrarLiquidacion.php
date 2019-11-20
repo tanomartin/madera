@@ -27,9 +27,9 @@ if(isset($_GET['idFactura'])) {
 			$totaldebito = $totaldebito + $rowConsultaCarenciasBeneficiarios['totaldebito'];
 		}
 
-		$sqlUpdateFacturas = "UPDATE facturas SET fechacierreliquidacion = :fechacierreliquidacion, totalcredito = :totalcredito, totaldebito = :totaldebito, importeliquidado = :importeliquidado WHERE id = :id";
+		$sqlUpdateFacturas = "UPDATE facturas SET fechacierreliquidacion = :fechacierreliquidacion, totalcredito = :totalcredito, totaldebito = :totaldebito, importeliquidado = :importeliquidado, restoapagar = :restoapagar WHERE id = :id";
 		$resUpdateFacturas = $dbh->prepare($sqlUpdateFacturas);
-		if($resUpdateFacturas->execute(array(':fechacierreliquidacion' => $fechacierreliquidacion, ':totalcredito' => $totalcredito, ':totaldebito' => $totaldebito, ':importeliquidado' => $totalcredito, ':id' => $idcomprobante))) {
+		if($resUpdateFacturas->execute(array(':fechacierreliquidacion' => $fechacierreliquidacion, ':totalcredito' => $totalcredito, ':totaldebito' => $totaldebito, ':importeliquidado' => $totalcredito, ':restoapagar' => $totalcredito, ':id' => $idcomprobante))) {
 		}
 
 		$dbh->commit();

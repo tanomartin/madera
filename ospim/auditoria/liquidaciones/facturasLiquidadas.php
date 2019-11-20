@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
-	$sqlFacturasAgrupadas="SELECT f.id, p.nombre, p.cuit, COUNT(f.id) AS cantidadfacturas, SUM(f.importeliquidado) AS totalimporte FROM facturas f, prestadores p WHERE f.fechacierreliquidacion != '0000-00-00 00:00:00' AND f.fechapago = '0000-00-00' AND f.usuarioliquidacion = '$_SESSION[usuario]' AND f.idPrestador = p.codigoprestador GROUP BY p.cuit ORDER BY p.cuit";
+	$sqlFacturasAgrupadas="SELECT f.id, p.nombre, p.cuit, COUNT(f.id) AS cantidadfacturas, SUM(f.importeliquidado) AS totalimporte FROM facturas f, prestadores p WHERE f.fechacierreliquidacion != '0000-00-00 00:00:00' AND f.autorizacionpago = 0 AND f.usuarioliquidacion = '$_SESSION[usuario]' AND f.idPrestador = p.codigoprestador GROUP BY p.cuit ORDER BY p.cuit";
 	$resFacturasAgrupadas = mysql_query($sqlFacturasAgrupadas,$db);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
