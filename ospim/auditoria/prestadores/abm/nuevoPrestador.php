@@ -190,7 +190,15 @@ jQuery(function($){
 			$("#selectBarrio").html("<option title ='Seleccione un valor' value=''>Seleccione un barrio</option>");
 		}
 	});
-	
+
+	$("input[name='fijo']").click(function() {
+		var valor = $(this).val();
+		$("input[name='nomencladorReso']").prop("disabled", false);
+		if (valor == 1) {
+			$("input[name='nomencladorReso']").prop("disabled", true);
+			$("input[name='nomencladorReso']").prop("checked", false);
+		}
+	});
 });
 
 function habilitaCamposProfesional(valor) {

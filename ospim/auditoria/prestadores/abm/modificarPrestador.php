@@ -259,6 +259,15 @@ jQuery(function($){
 			$("#selectBarrio").html("<option title ='Seleccione un valor' value=''>Seleccione un barrio</option>");
 		}
 	});
+
+	$("input[name='fijo']").click(function() {
+		var valor = $(this).val();
+		$("input[name='nomencladorReso']").prop("disabled", false);
+		if (valor == 1) {
+			$("input[name='nomencladorReso']").prop("disabled", true);
+			$("input[name='nomencladorReso']").prop("checked", false);
+		}
+	});
 	
 });
 
@@ -755,8 +764,12 @@ function validar() {
         	<input <?php echo $nomenclador['checked'] ?> onclick="<?php echo $nomenclador['onclick'] ?>" value="<?php echo $key ?>" name="<?php echo "nomenclador".$key ?>" id="nomenclador" type="checkbox"/><?php echo $nomenclador['nombre']." | "; ?>
     <?php }?>
     <br></br><b>Con Resolucion |</b>
-    <?php foreach ($arrayConResolucion as $key => $nomenclador) { ?>
-        	<input <?php echo $nomenclador['checked'] ?> value="<?php echo $key ?>" name="nomencladorReso" id="nomencladorReso" type="radio"/><?php echo $nomenclador['nombre']." | "; ?>
+    <?php $disabledReso = "";
+    	  if ($rowConsultaPresta['montofijo'] == 1) {
+    	  	$disabledReso = "disabled='disabled'";
+    	  }
+    	  foreach ($arrayConResolucion as $key => $nomenclador) { ?>
+        	<input <?php echo $disabledReso ?> <?php echo $nomenclador['checked'] ?> value="<?php echo $key ?>" name="nomencladorReso" id="nomencladorReso" type="radio"/><?php echo $nomenclador['nombre']." | "; ?>
     <?php }?>
    
     <hr style="margin-top: 20px"></hr>
