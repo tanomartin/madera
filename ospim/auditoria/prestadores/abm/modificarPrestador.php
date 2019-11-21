@@ -11,7 +11,61 @@ $sqlConsultaServcio = "SELECT s.descripcion FROM prestadorservicio p, tiposervic
 $resConsultaServcio = mysql_query($sqlConsultaServcio,$db);
 
 $sqlConsultaJuris = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $codigo and p.codidelega = d.codidelega";
-$resConsultaJuris = mysql_query($sqlConsultaJuris,$db); ?>
+$resConsultaJuris = mysql_query($sqlConsultaJuris,$db); 
+
+$today = date("Y-m-d");
+$sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin is null or c.fechafin > '$today')";
+$resContratoActivo = mysql_query($sqlContratoActivo,$db);
+$canContratoActivo = mysql_num_rows($resContratoActivo);
+$tieneContrato = false;
+$cartel = '';
+if ($canContratoActivo > 0) {
+	$tieneContrato = true;
+	$onclick = 'return false';
+	$cartel = "Existe contratos abiertos.<br>No se pueden quitar Nomencladores con Contrato o Arancel Fijo";
+}
+
+$sqlPrestaNomencla = "select * from prestadornomenclador where codigoprestador = $codigo";;
+$resPrestaNomencla = mysql_query($sqlPrestaNomencla,$db);
+$numPrestaNomencla = mysql_num_rows($resPrestaNomencla);
+$arrayPrestaNomencla = array();
+if ($numPrestaNomencla > 0) {
+	while ($rowPrestaNomencla = mysql_fetch_assoc($resPrestaNomencla)) {
+		$arrayPrestaNomencla[$rowPrestaNomencla['codigonomenclador']] = $rowPrestaNomencla['codigonomenclador'];
+	}
+}
+
+$query="select * from nomencladores";
+$result=mysql_query($query,$db);
+$arrayConContrato = array();
+$arrayConResolucion = array();
+while ($rownom = mysql_fetch_assoc($result)) {
+	if ($rownom['contrato'] == 1) {
+		$arrayConContrato[$rownom['id']] = $rownom;
+	} else {
+		$arrayConResolucion[$rownom['id']] = $rownom;
+	}
+	$codigoNomenclador = $rownom['id'];
+		
+	if (isset($arrayConContrato[$codigoNomenclador])) {
+		$arrayConContrato[$codigoNomenclador]['checked'] = '';
+		$arrayConContrato[$codigoNomenclador]['onclick'] = '';
+	}
+	if (isset($arrayConResolucion[$codigoNomenclador])) {
+		$arrayConResolucion[$codigoNomenclador]['checked'] = '';
+	}
+		
+	if (isset($arrayPrestaNomencla[$codigoNomenclador])) {
+		if (isset($arrayConContrato[$codigoNomenclador])) {
+			$arrayConContrato[$codigoNomenclador]['checked'] = 'checked';
+			if ($tieneContrato) {
+				$arrayConContrato[$codigoNomenclador]['onclick'] = 'return false';
+			}
+		} else{
+			$arrayConResolucion[$codigoNomenclador]['checked'] = 'checked';
+		}
+	}
+} ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -21,6 +75,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db); ?>
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -179,7 +234,7 @@ jQuery(function($){
 			if (respuesta != 0) {
 				$("#divServicios").html(respuesta);
 			} else {
-				$("#divServicios").html("");
+				$("#divServicios").html("<font color='red'>Debe seleccionar una personeria para poder ver los servicios</font>");
 			}
 		});
 	});
@@ -353,7 +408,17 @@ function validar() {
 			}
 		}
 	}
-	if (nomencladorCheck == 0) {
+	var nomenclaResoCheck = 0;
+	var nomencladorReso = formulario.nomencladorReso;
+	if (nomencladorReso != null) {
+		for (var x=0;x<nomencladorReso.length;x++) {
+			if(nomencladorReso[x].checked) {
+				nomencladorReso = 1;
+			}
+		}
+	}
+	
+	if (nomencladorCheck == 0 && nomencladorReso == 0) {
 		alert("Debe elegir como mínimo un nomenclador para el prestador");
 		return false;
 	}
@@ -387,6 +452,7 @@ function validar() {
 	}
 	
 	formulario.guardar.disabled = true;
+	$.blockUI({ message: "<h1>Guardando Modificación de Prestador. Aguarde un minuto</h1>" });
 	formulario.submit();
 }
 
@@ -573,7 +639,7 @@ function validar() {
         <td colspan="3">
         	<div align="left">
           	<?php 
-          		$cartel = '';
+          		$cartelPersoneria = '';
 				if ($rowConsultaPresta['personeria'] == 1) { 
 					$disabled=""; 
 					$deshabilitado = '';
@@ -590,7 +656,7 @@ function validar() {
 					$resNumProfesional=mysql_query($sqlNumProfesional,$db);
 					$cantidadProf = mysql_num_rows($resNumProfesional);
 					if ($cantidadProf > 0) {
-						$cartel = "Existe prof. activos.<br>";
+						$cartelPersoneria = "Existe prof. activos.<br>";
 					} 
 				}
 				if ($rowConsultaPresta['personeria'] == 4) {
@@ -601,11 +667,11 @@ function validar() {
 					$resNumEstablecim = mysql_query($sqlNumEstablecim,$db);
 					$cantidadEsta = mysql_num_rows($resNumEstablecim);
 					if ($cantidadEsta > 0) {
-						$cartel = "Existe Establecimientos<br>";
+						$cartelPersoneria = "Existe Establecimientos<br>";
 					} 
 				}
 				
-				print("<span><font color='#0000CC'>$cartel</font></span>"); ?>
+				print("<span><font color='#0000CC'>$cartelPersoneria</font></span>"); ?>
 		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" >
 				  <?php if ($cantidadProf > 0 || $cantidadEsta > 0) { $selected = "disabled = 'disabled'"; } 
 		              	$query="select * from tipoprestador";  
@@ -674,52 +740,27 @@ function validar() {
 		</td>
       </tr>
       <tr>
-	    <td><div align="right"><b>Nomenclador </b></div></td>
-	    <td colspan="3">
-	    	<div align="left" style="width: 80%">
-            <?php 	
-		          $today = date("Y-m-d");
-		          $sqlContratoActivo = "SELECT c.* FROM cabcontratoprestador c  WHERE c.codigoprestador = ".$rowConsultaPresta['codigoprestador']." and (c.fechafin is null or c.fechafin > '$today')";
-		          $resContratoActivo = mysql_query($sqlContratoActivo,$db);
-		          $canContratoActivo = mysql_num_rows($resContratoActivo);
-		          $tieneContrato = false;
-		          $cartel = '';
-		          if ($canContratoActivo > 0) {
-		          	$tieneContrato = true;
-		            $onclick = 'return false';
-		            $cartel = "Existe contratos abiertos. No se pueden quitar Nomencladores.";
-		          }
-
-            	  $query="select * from nomencladores"; 
-	    	  	  $result=mysql_query($query,$db);  
-	    	  	  $i = 0;
-	    	  	  
-            	  while ($rownom=mysql_fetch_array($result)) {
-					$codigoNomenclador = $rownom['id'];
-					$sqlExiste = "select * from prestadornomenclador where codigoprestador = $codigo and codigonomenclador = $codigoNomenclador";
-					$resExiste = mysql_query($sqlExiste,$db);
-					$numExiste = mysql_num_rows($resExiste);
-					if ($numExiste == 1) {
-						$checked = "checked";
-						if ($tieneContrato) {
-							$onclick = 'return false';
-						}
-					} else {
-						$checked = "";
-						$onclick = '';
-					} ?>
-					<input name="<?php echo "nomenclador".$i ?>" id="nomenclador" type="checkbox" <?php echo $checked ?> onclick="<?php echo $onclick ?>" value="<?php echo $rownom['id'] ?>" /><?php echo $rownom['nombre']." | "; ?>
-				  	<?php $i++;
-				  } 
-				?>
-        </div></td>
-      </tr>
-      <tr>
       	<td><div align="right"><b>Observacion </b></div></td>
       	<td colspan="5"><textarea rows="3" cols="130" id="observacion" name="observacion"><?php echo $rowConsultaPresta['observacion'] ?></textarea></td>
       </tr>
-      <tr><td colspan="4" style="text-align: center"><font color='#0000CC'><?php echo $cartel ?></font></td></tr> 
+      <tr><td colspan="4" style="text-align: center"></td></tr> 
     </table>
+    
+    <hr></hr>
+    
+    <h3>Nomencladores</h3>
+    <h4 style="color: blue"><?php echo $cartel ?></h4>
+    <b>Con Contrato o Arancel Fijo |</b>
+    <?php foreach ($arrayConContrato as $key => $nomenclador) { ?>
+        	<input <?php echo $nomenclador['checked'] ?> onclick="<?php echo $nomenclador['onclick'] ?>" value="<?php echo $key ?>" name="<?php echo "nomenclador".$key ?>" id="nomenclador" type="checkbox"/><?php echo $nomenclador['nombre']." | "; ?>
+    <?php }?>
+    <br></br><b>Con Resolucion |</b>
+    <?php foreach ($arrayConResolucion as $key => $nomenclador) { ?>
+        	<input <?php echo $nomenclador['checked'] ?> value="<?php echo $key ?>" name="nomencladorReso" id="nomencladorReso" type="radio"/><?php echo $nomenclador['nombre']." | "; ?>
+    <?php }?>
+   
+    <hr style="margin-top: 20px"></hr>
+    
     <table width="884" border="0">
       <tr>
         <td width="284" height="46"><div align="center" class="Estilo1"><b>Servicios </b></div></td>
@@ -727,74 +768,71 @@ function validar() {
       </tr>
       <tr>
         <td valign="top">
-		<div id="divServicios" align="left">
-          <?php 
-		  	if ($rowConsultaPresta['personeria'] == 1) { 
-				$query="SELECT * FROM tiposervicio where profesional != 0"; 
-			} else {
-				$query="SELECT * FROM tiposervicio where profesional != 1"; 
-			}
-			$result=mysql_query($query,$db);
-			$i=0;
-			while ($rowtipos=mysql_fetch_array($result)) { 
-				$codigoServicio = $rowtipos['codigoservicio'];
-				$sqlExiste = "select * from prestadorservicio where codigoprestador = $codigo and codigoservicio = $codigoServicio";
-				$resExiste = mysql_query($sqlExiste,$db); 
-				$numExiste = mysql_num_rows($resExiste);
-				if ($numExiste == 1) {
-					$checked = "checked";
+			<div id="divServicios" align="left">
+	      <?php if ($rowConsultaPresta['personeria'] == 1) { 
+					$query="SELECT * FROM tiposervicio where profesional != 0"; 
 				} else {
-					$checked = "";
-				}	?>
-          		<input type="checkbox" <?php echo $checked ?> id="servicios" name="<?php echo "servicios".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" />
-          <?php 	echo $rowtipos['descripcion']."<br>";
-		  			$i++; 
-           		} ?>
-        </div></td>
-        <td width="281" valign="top"><div align="left">
-          <?php 
-				$query="select * from delegaciones where codidelega >= 1002 and codidelega <= 1702";
+					$query="SELECT * FROM tiposervicio where profesional != 1"; 
+				}
 				$result=mysql_query($query,$db);
-				$i = 0;
+				$i=0;
 				while ($rowtipos=mysql_fetch_array($result)) { 
-					$codigoDelega = $rowtipos['codidelega'];
-					$sqlExiste = "select * from prestadorjurisdiccion where codigoprestador = $codigo and codidelega = $codigoDelega";
+					$codigoServicio = $rowtipos['codigoservicio'];
+					$sqlExiste = "select * from prestadorservicio where codigoprestador = $codigo and codigoservicio = $codigoServicio";
 					$resExiste = mysql_query($sqlExiste,$db); 
 					$numExiste = mysql_num_rows($resExiste);
 					if ($numExiste == 1) {
 						$checked = "checked";
 					} else {
 						$checked = "";
-					}	
-					?>
-          <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" />
-          <?php echo $rowtipos['nombre'] ?><br />
-          <?php 	$i++;
-				} ?>
-        </div></td>
-        <td width="297" valign="top"><div align="left">
-          <?php 
-				$query="select * from delegaciones where codidelega > 1702 and codidelega < 3200";
-				$result=mysql_query($query,$db);				
-				while ($rowtipos=mysql_fetch_array($result)) {
-					$codigoDelega = $rowtipos['codidelega'];
-					$sqlExiste = "select * from prestadorjurisdiccion where codigoprestador = $codigo and codidelega = $codigoDelega";
-					$resExiste = mysql_query($sqlExiste,$db); 
-					$numExiste = mysql_num_rows($resExiste);
-					if ($numExiste == 1) {
-						$checked = "checked";
-					} else {
-						$checked = "";
-					}
-				 ?>
-          <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" />
-          <?php echo $rowtipos['nombre'] ?><br />
-          <?php 	$i++;
-				} ?>
-        </div></td>
+					}	?>
+	          		<input type="checkbox" <?php echo $checked ?> id="servicios" name="<?php echo "servicios".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" /><?php echo $rowtipos['descripcion']."<br>";
+			  		$i++; 
+	           	} ?>
+	        </div>
+	    </td>
+        <td width="281" valign="top">
+        	<div align="left">
+	          <?php $query="select * from delegaciones where codidelega >= 1002 and codidelega <= 1702";
+					$result=mysql_query($query,$db);
+					$i = 0;
+					while ($rowtipos=mysql_fetch_array($result)) { 
+						$codigoDelega = $rowtipos['codidelega'];
+						$sqlExiste = "select * from prestadorjurisdiccion where codigoprestador = $codigo and codidelega = $codigoDelega";
+						$resExiste = mysql_query($sqlExiste,$db); 
+						$numExiste = mysql_num_rows($resExiste);
+						if ($numExiste == 1) {
+							$checked = "checked";
+						} else {
+							$checked = "";
+						} ?>
+	          			<input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" /><?php echo $rowtipos['nombre']."<br>";
+						$i++;
+					} ?>
+        	</div>
+        </td>
+        <td width="297" valign="top">
+        	<div align="left">
+          	<?php   $query="select * from delegaciones where codidelega > 1702 and codidelega < 3200";
+					$result=mysql_query($query,$db);				
+					while ($rowtipos=mysql_fetch_array($result)) {
+						$codigoDelega = $rowtipos['codidelega'];
+						$sqlExiste = "select * from prestadorjurisdiccion where codigoprestador = $codigo and codidelega = $codigoDelega";
+						$resExiste = mysql_query($sqlExiste,$db); 
+						$numExiste = mysql_num_rows($resExiste);
+						if ($numExiste == 1) {
+							$checked = "checked";
+						} else {
+							$checked = "";
+						} ?>
+         				 <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" /><?php echo $rowtipos['nombre']."<br>";
+      					$i++;
+					} ?>
+       		 </div>
+       	</td>
       </tr>
     </table>
-     <p><input type="button" name="guardar" id="guardar" value="Guardar" onclick="validar()"/></p>
+    <p><input type="button" name="guardar" id="guardar" value="Guardar" onclick="validar()"/></p>
   </form>
 </div>
 </body>

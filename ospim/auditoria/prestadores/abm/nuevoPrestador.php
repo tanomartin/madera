@@ -8,6 +8,7 @@
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 jQuery(function($){
@@ -164,7 +165,7 @@ jQuery(function($){
 			if (respuesta != 0) {
 				$("#divServicios").html(respuesta);
 			} else {
-				$("#divServicios").html("");
+				$("#divServicios").html("<font color='red'>Debe seleccionar una personeria para poder ver los servicios</font>");
 			}
 		});
 	});
@@ -336,7 +337,18 @@ function validar() {
 			}
 		}
 	}
-	if (nomencladorCheck == 0) {
+
+	var nomenclaResoCheck = 0;
+	var nomenclaReso = formulario.nomencladorReso;
+	if (nomenclaReso != null) {
+		for (var x=0;x<nomenclaReso.length;x++) {
+			if(nomenclaReso[x].checked) {
+				nomenclaResoCheck = 1;
+			}
+		}
+	}
+	
+	if (nomencladorCheck == 0 && nomenclaResoCheck == 0) {
 		alert("Debe elegir como mínimo un nomenclador para el prestador");
 		return false;
 	}
@@ -368,8 +380,8 @@ function validar() {
 		alert("Debe elegir como mínimo una Delegación para el prestador");
 		return false;
 	}
-	
 	formulario.guardar.disabled = true;
+	$.blockUI({ message: "<h1>Guardando Nuevo Prestador. Aguarde un minuto</h1>" });
 	formulario.submit();
 }
 
@@ -492,8 +504,7 @@ function validar() {
         <td><div align="right"><strong>Personería</strong></div></td>
         <td colspan="3"><div align="left">
             <select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)">
-              <?php 
-              	$query="select * from tipoprestador";  
+          <?php $query="select * from tipoprestador";  
               	$result=mysql_query($query,$db);
               	while ($rowtipos=mysql_fetch_array($result)) { ?>
 					  <option value="<?php echo $rowtipos['id']?>"><?php echo $rowtipos['descripcion']?> </option>
@@ -552,30 +563,37 @@ function validar() {
       	<td><div align="right"><b>Observacion </b></div></td>
       	<td colspan="5"><textarea rows="3" cols="130" id="observacion" name="observacion"></textarea></td>
       </tr>
-	  <tr>
-	    <td><div align="right"><strong>Nomenclador </strong></div></td>
-	    <td colspan="3">
-	    	<div align="left" style="width: 80%">
-            	<?php 	$query="select * from nomencladores"; 
-	    	  			$result=mysql_query($query,$db);  
-	    	  			$i = 0;
-            			while ($rownom=mysql_fetch_array($result)) { ?>
-						  	<input value="<?php echo $rownom['id']?>" name="<?php echo "nomenclador".$i ?>" id="nomenclador" type="checkbox"/><?php echo $rownom['nombre']." | "; ?>
-				  <?php 	$i++;
-						} ?>
-        	</div>
-        </td>
-      </tr>
     </table>
+    <hr></hr>
+<?php 	$query="select * from nomencladores"; 
+	    $result=mysql_query($query,$db);  
+	    $arrayConContrato = array();
+	    $arrayConResolucion = array();
+        while ($rownom=mysql_fetch_assoc($result)) { 
+			if ($rownom['contrato'] == 1) {
+				$arrayConContrato[$rownom['id']] = $rownom;
+			} else {
+				$arrayConResolucion[$rownom['id']] = $rownom;
+			}
+		} ?>
+    <h3>Nomencladores</h3>
+    <b>Con Contrato o Arancel Fijo |</b>
+    <?php foreach ($arrayConContrato as $key => $nomenclador) { ?>
+        	<input value="<?php echo $key ?>" name="<?php echo "nomenclador".$key ?>" id="nomenclador" type="checkbox"/><?php echo $nomenclador['nombre']." | "; ?>
+    <?php }?>
+    <br></br><b>Con Resolucion |</b>
+    <?php foreach ($arrayConResolucion as $key => $nomenclador) { ?>
+        	<input value="<?php echo $key ?>" name="nomencladorReso" id="nomencladorReso" type="radio"/><?php echo $nomenclador['nombre']." | "; ?>
+    <?php }?>
+    <hr style="margin-top: 20px"></hr>
     <table width="900">
       <tr>
-        <td width="300" height="46"><div align="center"><strong>Servicios </strong></div></td>
-        <td colspan="2"><div align="center" ><strong>Jurisdiccion </strong></div></td>
+        <td width="300" height="46" style="text-align: center"><h3>Servicios </h3></td>
+        <td colspan="2" style="text-align: center"><h3>Jurisdiccion </h3></td>
       </tr>
       <tr>
         <td valign="top">
-			<div id="divServicios" align="left" >	 
-			</div>
+			<div id="divServicios" align="left"><font color="red">Debe seleccionar una Personeria para poder ver los servicios</font>  </div>
 		</td>
         <td width="300" valign="top"><div align="left">
             <?php 
