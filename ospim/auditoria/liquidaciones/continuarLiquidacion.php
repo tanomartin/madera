@@ -182,12 +182,13 @@ $(document).ready(function(){
 			var totalfacturado = $("#totalfacturado").val();
 			var totaldebito = $("#totaldebito").val();
 			var totalcredito = $("#totalcredito").val();
+			var efectorcarencia = $("#efectorcarencia").val();
 			var motivocarencia = $("#motivocarencia").val();
 			$.blockUI({ message: "<h1>Agregando Carencia de Beneficiario a la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 			$.ajax({
 				url: "agregaCarencia.php",
 				dataType: "json",
-				data: {idComprobante:idcomprobante,identidadBeneficiario:identidadbeneficiario,totalFacturado:totalfacturado,totalDebito:totaldebito,totalCredito:totalcredito,motivoCarencia:motivocarencia},
+				data: {idComprobante:idcomprobante,identidadBeneficiario:identidadbeneficiario,totalFacturado:totalfacturado,totalDebito:totaldebito,totalCredito:totalcredito,efectorCarencia:efectorcarencia,motivoCarencia:motivocarencia},
 				success: function(data) {
 					if(data.result == true){
 						location.reload();
@@ -526,6 +527,9 @@ function cierraLiquidacion(idfactura) {
 			<p></p>
 			<label for="totalcredito">Total Credito</label>
 			<input name="totalcredito" type="text" id="totalcredito" class="text ui-widget-content ui-corner-all" size="10" readonly="readonly" value=""/>
+			<p></p>
+			<label for="efectorcarencia">Efector</label>
+			<textarea name="efectorcarencia" rows="2" cols="50" id="efectorcarencia" class="text ui-widget-content ui-corner-all" placeholder="Ingrese el efector (Profesional o Establecimiento)"></textarea>
 			<p></p>
 			<label for="motivocarencia">Motivo / Comentario / Observacion</label>
 			<textarea name="motivocarencia" rows="2" cols="50" id="motivocarencia" class="text ui-widget-content ui-corner-all" placeholder="Ingrese el motivo de la carencia y/o Comentario u Observacion"></textarea>
