@@ -99,6 +99,7 @@ function validar(formulario) {
 			 						<th>C.U.I.T.</th>
 			 						<th>Fecha</th>
 			 						<th>Retencion</th>
+			 						<th>Debito</th>
 			 						<th>Importe</th>
 			 						<th></th>		 						
 			 					</tr>
@@ -117,6 +118,7 @@ function validar(formulario) {
 		 		  					<td><?php echo $rowOrdenesCabecera['cuit'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['fechaorden'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['retencion'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['debito'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['importe'] ?></td>
 		 		  					<td><input type="button" value="DETALLE" name="detalle" onclick="location.href = 'ordenPagoConsulta.php?nroorden=<?php echo $rowOrdenesCabecera['nroordenpago'] ?>'" /></td>
 		 		  				</tr>

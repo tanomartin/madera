@@ -36,17 +36,24 @@ if (isset($_POST['dato']) || isset($_GET['codigo'])) {
 $sqlPrestador = "SELECT * FROM prestadores WHERE codigoprestador = $codigo order by codigoprestador DESC";
 $resPrestador = mysql_query($sqlPrestador,$db);
 $rowPrestador = mysql_fetch_array($resPrestador);
+
+//TODO FALTA UNA TABLA DE DEBITO
 $sqlFacPendientesInte = "SELECT
 							f.*,
 							DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
-							DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
-						 FROM facturas f, facturasprestaciones p, facturasintegracion i
+							DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento,
+							count(facturasprestaciones.id) + count(facturascarenciasbeneficiarios.id)  as lineasdebito
+						 FROM facturasprestaciones p, facturasintegracion i, facturas f
+						 LEFT JOIN facturasprestaciones ON facturasprestaciones.idfactura = f.id and facturasprestaciones.totaldebito > 0
+						 LEFT JOIN facturascarenciasbeneficiarios ON facturascarenciasbeneficiarios.idfactura = f.id and facturascarenciasbeneficiarios.totaldebito > 0
 						 WHERE
 							f.idPrestador = ".$rowPrestador['codigoprestador']." and
-							f.fechacierreliquidacion is not null and
+							(f.fechacierreliquidacion is not null and f.fechacierreliquidacion != '0000-00-00 00:00:00') and
 							f.restoapagar > 0 and 
 							f.autorizacionpago = 1 and
-							f.id = p.idFactura and p.id = i.idFacturaPrestacion
+							f.id = p.idFactura and 
+							p.id = i.idFacturaPrestacion
+						 GROUP BY f.id
 						 ORDER BY f.fechacomprobante ASC";
 $resFacPendientesInte = mysql_query($sqlFacPendientesInte,$db);
 $canFacPendientesInte = mysql_num_rows($resFacPendientesInte);
@@ -56,18 +63,21 @@ if ($canFacPendientesInte > 0) {
 		$arrayInte[$rowFacPendientesInte['id']] = $rowFacPendientesInte;
 	}
 }
-	
+//TODO FALTA UNA TABLA DE DEBITO	
 $sqlFacPendientes = "SELECT
 						f.*,
 						DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
-						DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
+						DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento,
+						count(facturasprestaciones.id) + count(facturascarenciasbeneficiarios.id)  as lineasdebito
 					 FROM facturas f
-					 LEFT JOIN facturasintegracion i ON f.id = i.id
+					 LEFT JOIN facturasprestaciones ON facturasprestaciones.idfactura = f.id and facturasprestaciones.totaldebito > 0
+					 LEFT JOIN facturascarenciasbeneficiarios ON facturascarenciasbeneficiarios.idfactura = f.id and facturascarenciasbeneficiarios.totaldebito > 0 
 					 WHERE
 						f.idPrestador = ".$rowPrestador['codigoprestador']." and
-						f.fechacierreliquidacion is not null and
+						(f.fechacierreliquidacion is not null and f.fechacierreliquidacion != '0000-00-00 00:00:00')  and
 						f.restoapagar > 0 and 
 						f.autorizacionpago = 1
+					 GROUP BY f.id
 					 ORDER BY f.fechacomprobante ASC";
 $resFacPendientes = mysql_query($sqlFacPendientes,$db);
 $canFacPendientes = mysql_num_rows($resFacPendientes);
@@ -156,6 +166,30 @@ function validarValor(valor, totalApagar, id) {
 	}
 }
 
+function validarCantFacturas(formulario) {
+	var cantidadFactura = 0;
+	var canitdadDebito = 0;
+	for (var i=0;i<formulario.elements.length;i++) {
+		 if (formulario.elements[i].name.indexOf("tipopago") !== -1 ) {
+			 if (formulario.elements[i].value != 0) {
+				 cantidadFactura++;
+				 var idFactura = formulario.elements[i].name.substring(8);
+				 var ldebitoname = "ldebito"+idFactura;
+				 canitdadDebito += parseInt(document.getElementById(ldebitoname).value);
+			 }
+		 }
+	}
+	if (cantidadFactura > 25) {
+		alert("No se pueden cargar mas de 25 facturas en una Orden de Pago");
+		return false;
+	}
+	if (canitdadDebito > 25) {
+		alert("No se pueden cargar mas de 25 debitos en una Nota de Debito");
+		return false;
+	}
+	return true;
+}
+
 function validar(formulario) {
 	var name = formulario.name;
 	if (name == "formNointe") {
@@ -171,8 +205,11 @@ function validar(formulario) {
 			return false;
 		}
 	}
-	$.blockUI({ message: "<h1>Agrupando Informacion para la Carga de la Orden de Pago<br>Aguarde por favor...</h1>" });
-	return true;
+	if (validarCantFacturas(formulario)) {
+		$.blockUI({ message: "<h1>Agrupando Informacion para la Carga de la Orden de Pago<br>Aguarde por favor...</h1>" });
+		return true;
+	}
+	return false;
 }
 
 </script>
@@ -182,9 +219,11 @@ function validar(formulario) {
 <div align="center">
 	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'nuevaOrdenPago.php'" /></p>
 	<h3>Facturas Pendientes de Pago</h3>
-	<h4> Código: <font color='blue'><?php echo $rowPrestador['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowPrestador['cuit']?></font> 
-	<br/> Razon Social: <font color='blue'><?php echo $rowPrestador['nombre'] ?></font></h4>
-	<h3>NO Integración</h3>
+	<div style="border: solid; margin-bottom: 15px; width: 50%">
+		<h4> Código: <font color='blue'><?php echo $rowPrestador['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowPrestador['cuit']?></font> 
+		<br/> Razon Social: <font color='blue'><?php echo $rowPrestador['nombre'] ?></font></h4>
+	</div>
+	<h3>FACTURAS</h3>
 <?php if (sizeof($arrayNoInte) > 0) { ?>
 		<form id="formNointe" name="formNointe" method="post" onsubmit="return validar(this)" action="cargarOrdenPago.php?tipo=N">	
 			<input type="text" style="display: none" value="<?php echo $rowPrestador['codigoprestador']?>" id="codigo" name="codigo"/>
@@ -198,6 +237,7 @@ function validar(formulario) {
 							<th>Fecha Vto.</th>
 							<th>Imp. Factura</th>
 							<th>Debitos</th>
+							<th>#</th>
 							<th>Pagos Ant.</th>
 							<th>A Pagar</th>
 							<th>Tipo Pago</th>
@@ -205,35 +245,56 @@ function validar(formulario) {
 						</tr>
 					</thead>
 					<tbody>
-				<?php foreach ($arrayNoInte as $facturaNoInte) {?>
-						<tr>
-							<td><?php echo $facturaNoInte['id'];?></td>
-							<td><?php echo $facturaNoInte['puntodeventa']."-".$facturaNoInte['nrocomprobante'] ?></td>
-							<td><?php echo $facturaNoInte['fechamostrar'];?></td>
-							<td><?php echo $facturaNoInte['fechavencimiento'];?></td>
-							<td><?php echo number_format($facturaNoInte['importecomprobante'],2,',','.');?></td>
-							<td><?php echo number_format($facturaNoInte['totaldebito'],2,',','.');?></td>
-							<td><?php echo number_format($facturaNoInte['totalpagado'],2,',','.');?></td>
-							<td><?php echo number_format($facturaNoInte['restoapagar'],2,',','.');?></td>
-							<td>
-								<select id="tipopago<?php echo $facturaNoInte['id'] ?>" name="tipopago<?php echo $facturaNoInte['id'] ?>" onchange="habilitarMonto('<?php echo $facturaNoInte['id']?>','<?php echo $facturaNoInte['restoapagar']?>',this[selectedIndex].value, 'N')">
-									<option value="0">No pagar</option>
-									<option value="P">Parcial</option>
-							<?php if ($facturaNoInte['totalpagado'] == 0) { ?>
-								  		<option value="T">Total</option>
-						   <?php	}?>
-								  </select>
-							</td>
-							<td>
-								<input type="text" id="apagar<?php echo $facturaNoInte['id'] ?>" name="apagar<?php echo $facturaNoInte['id'] ?>" onblur="validarValor(this.value, <?php echo $facturaNoInte['restoapagar']?>,'<?php echo $facturaNoInte['id'] ?>')" size="14" value="0.00" style="background-color: silver; text-align: center"/>
-							</td>
-						</tr>
+				<?php 	$totalImpFactura = 0;	
+						$totalDebitos = 0;
+						$totalLineas = 0;
+						$totalPagosAnteriores = 0;
+						$totalAPagar = 0;
+						foreach ($arrayNoInte as $facturaNoInte) { 
+							$totalImpFactura += $facturaNoInte['importecomprobante'];
+							$totalDebitos += $facturaNoInte['totaldebito'];
+							$totalLineas += $facturaNoInte['lineasdebito'];
+							$totalPagosAnteriores += $facturaNoInte['totalpagado'];
+							$totalAPagar += $facturaNoInte['restoapagar']; ?>
+							<tr>
+								<td><?php echo $facturaNoInte['id'];?></td>
+								<td><?php echo $facturaNoInte['puntodeventa']."-".$facturaNoInte['nrocomprobante'] ?></td>
+								<td><?php echo $facturaNoInte['fechamostrar'];?></td>
+								<td><?php echo $facturaNoInte['fechavencimiento'];?></td>
+								<td><?php echo number_format($facturaNoInte['importecomprobante'],2,',','.');?></td>
+								<td><?php echo number_format($facturaNoInte['totaldebito'],2,',','.');?></td>
+								<td><?php echo $facturaNoInte['lineasdebito']; ?>
+									<input type="text" id="ldebito<?php echo $facturaNoInte['id'] ?>" name="ldebito<?php echo $facturaNoInte['id'] ?>" size="14" value="<?php echo $facturaNoInte['lineasdebito']?>" style="display: none"/>
+								</td>
+								<td><?php echo number_format($facturaNoInte['totalpagado'],2,',','.');?></td>
+								<td><?php echo number_format($facturaNoInte['restoapagar'],2,',','.');?></td>
+								<td>
+									<select id="tipopago<?php echo $facturaNoInte['id'] ?>" name="tipopago<?php echo $facturaNoInte['id'] ?>" onchange="habilitarMonto('<?php echo $facturaNoInte['id']?>','<?php echo $facturaNoInte['restoapagar']?>',this[selectedIndex].value, 'N')">
+										<option value="0">No pagar</option>
+										<option value="P">Parcial</option>
+									<?php if ($facturaNoInte['totalpagado'] == 0) { ?>
+										  		<option value="T">Total</option>
+								    <?php } ?>
+									  </select>
+								</td>
+								<td>
+									<input type="text" id="apagar<?php echo $facturaNoInte['id'] ?>" name="apagar<?php echo $facturaNoInte['id'] ?>" onblur="validarValor(this.value, <?php echo $facturaNoInte['restoapagar']?>,'<?php echo $facturaNoInte['id'] ?>')" size="14" value="0.00" style="background-color: silver; text-align: center"/>
+								</td>
+							</tr>
 				<?php } ?>
-						<tr>
-							<td colspan="9">TOTAL</td>
-							<td><input type="text" id="totalNoInte" name="totalNoInte" size="14" value="0" style="background-color: silver; text-align: center"/></td>
-						</tr>
-					</tbody>
+						</tbody>
+						<thead>
+							<tr>
+								<th colspan="4">TOTAL</th>
+								<th><?php echo number_format($totalImpFactura,2,',','.');?></th>
+								<th><?php echo number_format($totalDebitos,2,',','.');?></th>
+								<th><?php echo $totalLineas;?></th>
+								<th><?php echo number_format($totalPagosAnteriores,2,',','.');?></th>
+								<th><?php echo number_format($totalAPagar,2,',','.');?></th>
+								<th></th>
+								<th><input type="text" id="totalNoInte" name="totalNoInte" size="14" value="0" style="background-color: silver; text-align: center"/></th>
+							</tr>
+						</thead>
 		  		</table>
 		  	</div> 
 	 		<p><input type="submit" name="cargarOrden" value="Cargar Orden de Pago" /></p>
@@ -241,7 +302,7 @@ function validar(formulario) {
 <?php } else { ?>
 		<h3 style="color: blue">No existen facturas pendientes de pago</h3>
 <?php } ?>
-	<h3>Integración</h3>
+	  <h3>FACTURAS INTEGRACIÓN</h3>
 <?php if (sizeof($arrayInte) > 0) { ?>
 		<form id="formInte" name="formInte" method="post" onsubmit="return validar(this)" action="cargarOrdenPago.php?tipo=I">	
 			<input type="text" style="display: none" value="<?php echo $rowPrestador['codigoprestador']?>" id="codigo" name="codigo"/>
@@ -255,6 +316,7 @@ function validar(formulario) {
 							<th>Fecha Vto.</th>
 							<th>Imp. Factura</th>
 							<th>Debitos</th>
+							<th>#</th>
 							<th>Pagos Ant.</th>
 							<th>A Pagar</th>
 							<th>Tipo Pago</th>
@@ -262,32 +324,53 @@ function validar(formulario) {
 						</tr>
 					</thead>
 					<tbody>
-				<?php foreach ($arrayInte as $facturaInte) {?>
-						<tr>
-							<td><?php echo $facturaInte['id'];?></td>
-							<td><?php echo $facturaInte['puntodeventa']."-".$facturaInte['nrocomprobante'] ?></td>
-							<td><?php echo $facturaInte['fechamostrar'];?></td>
-							<td><?php echo $facturaInte['fechavencimiento'];?></td>
-							<td><?php echo number_format($facturaInte['importecomprobante'],2,',','.');?></td>
-							<td><?php echo number_format($facturaInte['totaldebito'],2,',','.');?></td>
-							<td><?php echo number_format($facturaInte['totalpagado'],2,',','.');?></td>
-							<td><?php echo number_format($facturaInte['restoapagar'],2,',','.');?></td>
-							<td>
-								<select id="tipopago<?php echo $facturaInte['id'] ?>" name="tipopago<?php echo $facturaInte['id'] ?>" onchange="habilitarMonto('<?php echo $facturaInte['id']?>','<?php echo $facturaInte['restoapagar']?>',this[selectedIndex].value, 'I')">
-									<option value="0">No pagar</option>
-							<?php if ($facturaInte['totalpagado'] == 0) { ?>
-								  		<option value="T">Total</option>
-						   <?php	}?>
-								  </select>
-							</td>
-							<td><input type="text" id="apagar<?php echo $facturaInte['id'] ?>" name="apagar<?php echo $facturaInte['id'] ?>" size="14" value="0.00" style="background-color: silver; text-align: center"/></td>
-						</tr>
+				<?php 	$totalImpFacturaInte = 0;	
+						$totalDebitosInte = 0;
+						$totalLineasNoInte = 0;
+						$totalPagosAnterioresInte = 0;
+						$totalAPagarInte = 0;
+						foreach ($arrayInte as $facturaInte) {
+							$totalImpFacturaInte += $facturaInte['importecomprobante'];
+							$totalDebitosInte += $facturaInte['totaldebito'];
+							$totalLineasNoInte += $facturaInte['lineasdebito'];
+							$totalPagosAnterioresInte += $facturaInte['totalpagado'];
+							$totalAPagarInte += $facturaInte['restoapagar']; ?>
+							<tr>
+								<td><?php echo $facturaInte['id'];?></td>
+								<td><?php echo $facturaInte['puntodeventa']."-".$facturaInte['nrocomprobante'] ?></td>
+								<td><?php echo $facturaInte['fechamostrar'];?></td>
+								<td><?php echo $facturaInte['fechavencimiento'];?></td>
+								<td><?php echo number_format($facturaInte['importecomprobante'],2,',','.');?></td>
+								<td><?php echo number_format($facturaInte['totaldebito'],2,',','.');?></td>
+								<td><?php echo $facturaInte['lineasdebito']; ?>
+									<input type="text" id="ldebito<?php echo $facturaInte['id'] ?>" name="ldebito<?php echo $facturaInte['id'] ?>" size="14" value="<?php echo $facturaInte['lineasdebito']?>" style="display: none"/>
+								</td>
+								<td><?php echo number_format($facturaInte['totalpagado'],2,',','.');?></td>
+								<td><?php echo number_format($facturaInte['restoapagar'],2,',','.');?></td>
+								<td>
+									<select id="tipopago<?php echo $facturaInte['id'] ?>" name="tipopago<?php echo $facturaInte['id'] ?>" onchange="habilitarMonto('<?php echo $facturaInte['id']?>','<?php echo $facturaInte['restoapagar']?>',this[selectedIndex].value, 'I')">
+										<option value="0">No pagar</option>
+								<?php if ($facturaInte['totalpagado'] == 0) { ?>
+									  		<option value="T">Total</option>
+							   <?php	}?>
+									  </select>
+								</td>
+								<td><input type="text" id="apagar<?php echo $facturaInte['id'] ?>" name="apagar<?php echo $facturaInte['id'] ?>" size="14" value="0.00" style="background-color: silver; text-align: center"/></td>
+							</tr>
 				<?php } ?>
-						<tr>
-							<td colspan="9">TOTAL</td>
-							<td><input type="text" id="totalInte" name="totalInte" size="14" value="0" style="background-color: silver; text-align: center"/></td>
-						</tr>
 					</tbody>
+					<thead>
+							<tr>
+								<th colspan="4">TOTAL</th>
+								<th><?php echo number_format($totalImpFacturaInte,2,',','.');?></th>
+								<th><?php echo number_format($totalDebitosInte,2,',','.');?></th>
+								<th><?php echo $totalLineasNoInte;?></th>
+								<th><?php echo number_format($totalPagosAnterioresInte,2,',','.');?></th>
+								<th><?php echo number_format($totalAPagarInte,2,',','.');?></th>
+								<th></th>
+								<th><input type="text" id="totalInte" name="totalInte" size="14" value="0" style="background-color: silver; text-align: center"/></th>
+							</tr>
+						</thead>
 		  		</table>
 		  	</div> 
 		  	<p><input type="submit" name="cargarOrden" value="Cargar Orden de Pago" /></p>

@@ -148,10 +148,10 @@ function validar(formulario) {
 <div align="center">
 	<p><input type="reset" name="volver" value="Volver" onclick="location.href = 'listadoFacturas.php?codigo=<?php echo $codigo ?>'"/></p>
 	<h3>Facturas Incluidas en la Orden de Pago</h3>
-	
-	<h4> Código: <font color='blue'><?php echo $rowPrestador['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowPrestador['cuit']?></font> 
-	<br/> Razon Social: <font color='blue'><?php echo $rowPrestador['nombre'] ?></font></h4>
-
+	<div style="border: solid; margin-bottom: 15px; width: 50%">
+		<h4> Código: <font color='blue'><?php echo $rowPrestador['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowPrestador['cuit']?></font> 
+		<br/> Razon Social: <font color='blue'><?php echo $rowPrestador['nombre'] ?></font></h4>
+	</div>
 	<form id="formorden" name="formorden" method="post" onsubmit="return validar(this)" action="guardarOrdenPago.php" >
 		<input type="text" value="<?php echo $rowPrestador['codigoprestador'] ?>" id="codigo" name="codigo" style="display: none"/>
 		<div class="grilla">
@@ -171,8 +171,16 @@ function validar(formulario) {
 					</tr>
 				</thead>
 				<tbody>
-			<?php while($rowFacturas = mysql_fetch_array($resFacturas)) { 
-					$idfactura = $rowFacturas['id'];?>
+			<?php $totalImpFactura = 0;
+				  $totalDebitos = 0;
+				  $totalPagosAnteriores = 0;
+				  $totalAPagar = 0;
+				  while($rowFacturas = mysql_fetch_array($resFacturas)) { 
+					$idfactura = $rowFacturas['id'];
+					$totalImpFactura += $rowFacturas['importecomprobante']; 
+					$totalDebitos += $rowFacturas['totaldebito'];
+					$totalPagosAnteriores += $rowFacturas['totalpagado'];
+					$totalAPagar += $rowFacturas['restoapagar']; ?>
 					<tr>
 						<td><?php echo $idfactura;?></td>
 						<td>
@@ -195,14 +203,23 @@ function validar(formulario) {
 						</td>
 					</tr>
 			<?php } ?>	
-					<tr>
-						<td colspan="9">TOTAL</td>
-						<td>
-							<?php echo number_format($total,2,',','.'); ?>
-							<input style="display: none" type="text" value="<?php echo $total?>" id="total" name="total"/>	
-						</td>
-					</tr>
 				</tbody>
+				<thead>
+					<tr>
+						<th colspan="4">TOTAL</th>
+						<th><?php echo number_format($totalImpFactura,2,',','.');?></th>
+						<th>
+							<?php echo number_format($totalDebitos,2,',','.');?>
+							<input style="display: none" type="text" value="<?php echo $totalDebitos ?>" id="totaldebito" name="totaldebito"/>	
+						</th>
+						<th><?php echo number_format($totalPagosAnteriores,2,',','.');?></th>
+						<th><?php echo number_format($totalAPagar,2,',','.');?></th>
+						<th></th>
+						<th><?php echo number_format($total,2,',','.'); ?>
+							<input style="display: none" type="text" value="<?php echo $total?>" id="total" name="total"/>	
+						</th>
+					</tr>
+				</thead>
 			</table>
 		</div>
 		
@@ -246,7 +263,7 @@ function validar(formulario) {
 				<td align="right"><b>Envio por mail</b></td>
 				<td>
 					<input type="radio" name="enviomail" value="0" checked="checked" onclick="habilitarEMail(this.value)"/> NO <br/>
-		  			<input type="radio" name="enviomail" value="1" onclick="habilitarEMail(this.value)"/> SI
+		  		<!-- <input type="radio" name="enviomail" value="1" onclick="habilitarEMail(this.value)"/> SI   -->    
 		  		</td>
 		  		<td><b>Email</b></td>
 		  		<td>

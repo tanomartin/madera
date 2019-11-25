@@ -3,6 +3,7 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 
 $importeTotal = $_POST['total'];
+$impDebito = $_POST['totaldebito'];
 $codigo = $_POST['codigo'];
 $fechaorden = date("Y-m-d");
 $tipoPago = $_POST['tipopago'];
@@ -24,7 +25,26 @@ if ($envioEmail != 0) {
 }
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo,'$fechaorden','$tipoPago', '$nroPago', '$fechaPago', $impRetencion, $impApagar, NULL, NULL, NULL, '$fecharegistro', '$usuarioregistro',NULL,NULL)";
+$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo,'$fechaorden','$tipoPago', '$nroPago', '$fechaPago', $impRetencion, $impDebito, $impApagar, NULL, NULL, NULL, '$fecharegistro', '$usuarioregistro',NULL,NULL)";
+
+if ($impDebito > 0) {
+	$today = date("Y-m-d");
+	$sqlUltimo = "SELECT * FROM ordendebitolote WHERE fechainicio <= '$today' and fechavto > '$today'";
+	$resUltimo = mysql_query($sqlUltimo,$db);
+	$canUltimo = mysql_num_rows($resUltimo);
+	if ($canUltimo == 0) {
+		$error = "No existe lote de notas de debito disponibles para realizar la misma";
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		Header($redire);
+	} else {
+		$rowUltimo = mysql_fetch_array($resUltimo);
+		$ptoVenta = $rowUltimo['ptoventa'];
+		$nronota = $rowUltimo['ultimousado'] + 1;
+		$sqlDebito = "INSERT INTO ordendebito VALUE(nroorden, $ptoVenta, $nronota, $codigo, '$fechaorden', $impDebito, '$fecharegistro', '$usuarioregistro')";
+		$sqlUpdateLote = "UPDATE ordendebitolote SET ultimousado = $nronota WHERE id = ".$rowUltimo['id'];
+	}
+	
+}
 
 $arrayDetalle = array();
 $arrayUpdateFactura = array();
@@ -63,6 +83,14 @@ try {
 	foreach ($arrayUpdateFactura as $updateFactura) {
 		//print($updateFactura."<br>");
 		$dbh->exec($updateFactura);
+	}
+	
+	if ($impDebito > 0) {
+		$sqlDebito = str_replace("nroorden", $lastId, $sqlDebito);
+		//print($sqlDebito."<br>");
+		$dbh->exec($sqlDebito);
+		//print($sqlUpdateLote."<br>");
+		$dbh->exec($sqlUpdateLote);
 	}
 	
 	$dbh->commit();

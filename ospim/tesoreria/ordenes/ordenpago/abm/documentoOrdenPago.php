@@ -11,6 +11,99 @@ $sqlCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden, p
 $resCabecera = mysql_query($sqlCabecera,$db);
 $rowCabecera = mysql_fetch_assoc($resCabecera);
 
+if ($rowCabecera['debito'] > 0) {
+	$sqlDebito = "SELECT *, DATE_FORMAT(o.fechadebito, '%d-%m-%Y') as fechadebito, pr.descrip as provincia, l.nomlocali as localidad
+				  FROM ordendebito o, prestadores p, provincia pr, localidades l 
+				  WHERE nroordenpago = $nroOrden and 
+					    o.codigoprestador = p.codigoprestador and 
+	 					p.codprovin = pr.codprovin and 
+						p.codlocali = l.codlocali";
+	$resDebito = mysql_query($sqlDebito,$db);
+	$rowDebito = mysql_fetch_assoc($resDebito);
+	
+	$arrayDetalleDebito = array();
+	$i= 0;
+	$sqlDetalleDebito = "SELECT f.puntodeventa, f.nrocomprobante, 
+	 						    DATE_FORMAT(f.fechacomprobante, '%d-%m-%Y') as fechacomprobante, 
+							    p.codigopractica, fb.nroafiliado, fb.nroorden, fp.motivodebito, fp.totaldebito
+							FROM facturasprestaciones fp, facturasbeneficiarios fb, facturas f, practicas p
+							WHERE fp.idfactura in (SELECT idFactura FROM ordendetalle WHERE nroordenpago = $nroOrden) and 
+								  fp.totaldebito > 0 and 
+								  fp.idFacturabeneficiario = fb.id and
+								  fp.idfactura = f.id and
+								  fp.idPractica = p.idpractica";
+	$resDetalleDebito = mysql_query($sqlDetalleDebito,$db);
+	$numDetalleDebito = mysql_num_rows($resDetalleDebito);
+	if ($numDetalleDebito > 0) {
+		while ($rowDebitoDetalle = mysql_fetch_assoc($resDetalleDebito)) {
+			$bene = "";
+			if ($rowDebitoDetalle['nroorden'] == 0) {
+				$sqlTitular = "SELECT apellidoynombre FROM titulares WHERE nroafiliado = ".$rowDebitoDetalle['nroafiliado'];
+				$resTitular = mysql_query($sqlTitular,$db);
+				$numTitular = mysql_num_rows($resTitular);
+				if ($numTitular > 0) {
+					$rowTitular = mysql_fetch_assoc($resTitular);
+					$bene = $rowTitular['apellidoynombre'];
+				} else {
+					$sqlTitulardebaja = "SELECT apellidoynombre FROM titularesdebaja WHERE nroafiliado = ".$rowDebitoDetalle['nroafiliado'];
+					$resTitulardebaja = mysql_query($sqlTitulardebaja,$db);
+					$numTitulardebaja = mysql_num_rows($resTitulardebaja);
+					if ($numTitulardebaja > 0) {
+						$rowTitulardebaja = mysql_fetch_assoc($resTitulardebaja);
+						$bene = $rowTitulardebaja['apellidoynombre'];
+					}
+				}
+			} else {
+				$sqlFamiliar = "SELECT apellidoynombre FROM familiares WHERE nroafiliado = ".$rowDebitoDetalle['nroafiliado']." and nroorden = ".$rowDebitoDetalle['nroorden'];
+				$resFamiliar = mysql_query($sqlFamiliar,$db);
+				$numFamiliar = mysql_num_rows($resFamiliar);
+				if ($numFamiliar > 0) {
+					$rowFamiliar = mysql_fetch_assoc($resFamiliar);
+					$bene = $rowFamiliar['apellidoynombre'];
+				} else {
+					$sqlFamiliarBaja = "SELECT apellidoynombre FROM familiaresdebaja WHERE nroafiliado = ".$rowDebitoDetalle['nroafiliado']." and nroorden = ".$rowDebitoDetalle['nroorden'];
+					$resFamiliarBaja = mysql_query($sqlFamiliarBaja,$db);
+					$numFamiliarBaja = mysql_num_rows($resFamiliarBaja);
+					if ($numFamiliar > 0) {
+						$rowFamiliarBaja = mysql_fetch_assoc($resFamiliarBaja);
+						$bene = $rowFamiliarBaja['apellidoynombre'];
+					}
+				}
+			}
+			
+			
+			$arrayDetalleDebito[$i] = array("factura"=> $rowDebitoDetalle['puntodeventa']."-".$rowDebitoDetalle['nrocomprobante'],
+											"fecha" => $rowDebitoDetalle['fechacomprobante'],
+											"practica" => $rowDebitoDetalle['codigopractica'],
+											"bene" => $bene,
+											"motivo" => $rowDebitoDetalle['motivodebito'],
+											"importe" => $rowDebitoDetalle['totaldebito']);
+			$i++;
+		}
+	}
+	
+	$sqlDetalleCarencia = "SELECT f.puntodeventa, f.nrocomprobante,
+								DATE_FORMAT(f.fechacomprobante, '%d-%m-%Y') as fechacomprobante,
+								fc.motivocarencia, fc.identidadbeneficiario, fc.totaldebito
+							FROM facturascarenciasbeneficiarios fc, facturas f
+							WHERE fc.idfactura in (SELECT idFactura FROM ordendetalle WHERE nroordenpago = $nroOrden) and
+								  fc.totaldebito > 0 and
+								  fc.idfactura = f.id";
+	$resDetalleCarencia = mysql_query($sqlDetalleCarencia,$db);
+	$numDetalleCarencia = mysql_num_rows($resDetalleCarencia);
+	if ($numDetalleCarencia > 0) {
+		while ($rowDetalleCarencia = mysql_fetch_assoc($resDetalleCarencia)) {
+			$arrayDetalleDebito[$i] = array("factura"=> $rowDetalleCarencia['puntodeventa']."-".$rowDetalleCarencia['nrocomprobante'],
+											"fecha" => $rowDetalleCarencia['fechacomprobante'],
+											"practica" => "",
+											"bene" => $rowDetalleCarencia['identidadbeneficiario'],
+											"motivo" => $rowDetalleCarencia['motivocarencia'],
+											"importe" => $rowDetalleCarencia['totaldebito']);
+			$i++;
+		}
+	}
+}
+
 require($libPath."fpdf.php");
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
@@ -192,6 +285,125 @@ function printRecibo($pdf, $rowCabecera) {
 	$pdf->Cell(150,3,"FIRMA PRESTADOR",0,0,"C");
 }
 
+function printHeaderPlanillaDebito($pdfPlanilla, $rowDebito) {
+	$pdfPlanilla->Image('../img/Logo Membrete OSPIM.jpg',7,1,25,20,'JPG');
+	$pdfPlanilla->SetFont('Courier','B',30);
+	$pdfPlanilla->SetXY(35, 1);
+	$pdfPlanilla->Cell(35,10,"OSPIM",0,0);
+	$pdfPlanilla->SetFont('Courier','B',10);
+	$pdfPlanilla->SetXY(35, 10);
+	$pdfPlanilla->Cell(55,5,"Obra Social del Personal",0,0);
+	$pdfPlanilla->SetXY(35, 13);
+	$pdfPlanilla->Cell(55,5,"de la Industria Maderera",0,0);
+	
+	$pdfPlanilla->SetFont('Courier','I',7);
+	$pdfPlanilla->SetXY(15, 20);
+	$pdfPlanilla->Cell(60,5,"Rojas 254 (C1405ABB) Capital Federal",0,0);
+	$pdfPlanilla->SetXY(15, 24);
+	$pdfPlanilla->Cell(60,5,"Tel.: 4431-4791/4089 - Fax: 4431-2567",0,0);
+	$pdfPlanilla->SetXY(30, 29);
+	$pdfPlanilla->Cell(30,5,"ospim@usimra.com.ar",0,0);
+	$pdfPlanilla->SetFont('Courier','B',10);
+	$pdfPlanilla->SetXY(33, 34);
+	$pdfPlanilla->Cell(25,5,"IVA EXENTO",0,0);
+	
+	$pdfPlanilla->SetFont('Courier','B',30);
+	$pdfPlanilla->SetXY(105, 1);
+	$pdfPlanilla->Cell(9,10,"X",1,1);
+	
+	$pdfPlanilla->SetFont('Courier','B',15);
+	$pdfPlanilla->SetXY(135, 1);
+	$pdfPlanilla->Cell(70,8,"Planilla de Debito",0,0);
+	$pdfPlanilla->SetFont('Courier','B',12);
+	$pdfPlanilla->SetXY(150, 9);
+	$pdfPlanilla->Cell(45,7,"Nº ".str_pad ($rowDebito['ptoventa'],4,0,STR_PAD_LEFT)."-".str_pad($rowDebito['nronotadebito'],8,0,STR_PAD_LEFT),0,0);
+	$pdfPlanilla->SetXY(135, 16);
+	$pdfPlanilla->Cell(60,7,"Fecha: ".$rowDebito['fechadebito'],0,0);
+	
+	$pdfPlanilla->SetFont('Courier','',8);
+	$pdfPlanilla->SetXY(135, 22);
+	$pdfPlanilla->Cell(55,5,"C.U.I.T. Nro: 30-50289264-5",0,0);
+	$pdfPlanilla->SetXY(135, 26);
+	$pdfPlanilla->Cell(55,5,"INGRESOS BRUTOS: EXENTO",0,0);
+	$pdfPlanilla->SetXY(135, 30);
+	$pdfPlanilla->Cell(55,5,"RNOS Nro.: 11100-1",0,0);
+	$pdfPlanilla->SetXY(135, 34);
+	$pdfPlanilla->Cell(70,5,"Fecha de Inicio de Actividades: 01/01/1972",0,0);
+	
+	$pdfPlanilla->Line(7, 40, 210, 40);
+	$pdfPlanilla->Line(109, 11, 109, 40);
+	
+	$pdfPlanilla->SetFont('Courier','',10);
+	$pdfPlanilla->SetXY(15, 41);
+	$pdfPlanilla->Cell(190,5,"ENTIDAD: ".$rowDebito['nombre'],0,0);
+	$pdfPlanilla->SetXY(15, 45);
+	$pdfPlanilla->Cell(190,5, "CUIT: ".$rowDebito['cuit'],0,0);
+	$pdfPlanilla->SetXY(15, 49);
+	$pdfPlanilla->Cell(190,5,"DOMICILIO: ".$rowDebito['domicilio']." - CP: ".$rowDebito['numpostal'],0,0);
+	$pdfPlanilla->SetXY(15, 53);
+	$pdfPlanilla->Cell(190,5,"LOCALIDAD: ".$rowDebito['localidad']." - (".$rowDebito['provincia'].")",0,0);
+	
+	$pdfPlanilla->Line(7, 59, 210, 59);
+	
+	$pdfPlanilla->SetFont('Courier','B',10);
+	$pdfPlanilla->SetXY(50, 60);
+	$pdfPlanilla->Cell(55,5,"DETALLE",0,0);
+	$pdfPlanilla->SetXY(180, 60);
+	$pdfPlanilla->Cell(55,5,"IMPORTE",0,0);
+	
+	$pdfPlanilla->Line(7, 66, 210, 66);
+}
+
+function printHeaderDebito($pdfNotaDebito, $rowDebito) {
+	$pdfNotaDebito->SetFont('Courier','B',12);
+	$pdfNotaDebito->SetXY(155, 9);
+	$pdfNotaDebito->Cell(45,7,str_pad ($rowDebito['ptoventa'],4,0,STR_PAD_LEFT)."-".str_pad($rowDebito['nronotadebito'],8,0,STR_PAD_LEFT),0,0);
+	$pdfNotaDebito->SetXY(140, 16);
+	$pdfNotaDebito->Cell(60,7,$rowDebito['fechadebito'],0,0);
+	
+	$pdfNotaDebito->SetFont('Courier','',10);
+	$pdfNotaDebito->SetXY(30, 41);
+	$pdfNotaDebito->Cell(190,5,$rowDebito['nombre'],0,0);
+	$pdfNotaDebito->SetXY(30, 45);
+	$pdfNotaDebito->Cell(190,5,$rowDebito['cuit'],0,0);
+	$pdfNotaDebito->SetXY(30, 49);
+	$pdfNotaDebito->Cell(190,5,$rowDebito['domicilio']." - CP: ".$rowDebito['numpostal'],0,0);
+	$pdfNotaDebito->SetXY(30, 53);
+	$pdfNotaDebito->Cell(190,5,$rowDebito['localidad']." - (".$rowDebito['provincia'].")",0,0);
+}
+
+function printDetalleDebito($pdf, $arrayDetalleDebito) {
+	$total = 0;
+	$cordY = 67;
+	foreach ($arrayDetalleDebito as $detalle) {
+		$total += $detalle['importe'];
+		
+		$pdf->SetFont('Courier','',8);
+		$pdf->SetXY(7, $cordY);
+		$pdf->Cell(173,5,$detalle['factura']."|".$detalle['fecha']."|".$detalle['practica']."|".$detalle['bene'],0,0);
+		
+		$cordY += 5;
+		
+		$pdf->SetXY(7, $cordY);
+		$pdf->Cell(173,5,"MOTIVO: ".$detalle['motivo'],0,0);
+		
+		$pdf->SetFont('Courier','B',8);
+		$pdf->SetXY(180, $cordY);
+		$pdf->Cell(30,5,"$ ".number_format($detalle['importe'],2,',','.'),0,0);
+		
+		$cordY += 5;
+		
+		$pdf->Line(7, $cordY, 210, $cordY);
+	}
+	
+	$pdf->SetFont('Courier','B',8);
+	$pdf->SetXY(7, 240);
+	$pdf->Cell(30,5,"SON PESOS: ".cfgValorEnLetras($total),0,0);
+	
+	$pdf->SetXY(180, 240);
+	$pdf->Cell(30,5,"$ ".number_format($total,2,',','.'),0,0);
+}
+
 /************************************************/
 $ordenNombreArchivo = str_pad($nroOrden, 8, '0', STR_PAD_LEFT);
 $nombreArchivoO = "OP".$ordenNombreArchivo."O.pdf";
@@ -215,6 +427,22 @@ printHeader($pdf);
 printDetalle($pdf, $rowCabecera, $db, "TRIPLICADO");
 $nombrearchivoC = $carpetaOrden.$nombreArchivoC;
 $pdf->Output($nombrearchivoC,'F');
+
+if ($rowCabecera['debito'] > 0) {
+	$nombreNotaDebito = $carpetaOrden."OP".$ordenNombreArchivo."DEB.pdf";
+	$pdfNotaDebito = new FPDF('P','mm','Letter');
+	$pdfNotaDebito->AddPage();
+	printHeaderDebito($pdfNotaDebito, $rowDebito);
+	printDetalleDebito($pdfNotaDebito, $arrayDetalleDebito);
+	$pdfNotaDebito->Output($nombreNotaDebito,'F');
+	
+	$nombrePlanillaDebito = $carpetaOrden."OP".$ordenNombreArchivo."PL.pdf";
+	$pdfPlanilla = new FPDF('P','mm','Letter');
+	$pdfPlanilla->AddPage();
+	printHeaderPlanillaDebito($pdfPlanilla, $rowDebito);
+	printDetalleDebito($pdfPlanilla, $arrayDetalleDebito);
+	$pdfPlanilla->Output($nombrePlanillaDebito,'F');
+}
 
 if ($email != "") {
 	$hostname = $_SESSION['host'];
