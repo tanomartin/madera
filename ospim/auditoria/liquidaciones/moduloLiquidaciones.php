@@ -83,7 +83,7 @@ $(document).ready(function(){
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-		<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" />
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'menuLiquidaciones.php'" />
 </div>
 <div align="center">
 	<h1>Liquidacion Prestadores</h1>

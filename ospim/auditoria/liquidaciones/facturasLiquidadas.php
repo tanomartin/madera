@@ -54,7 +54,7 @@ function ocultaDetalle(cuit,cantidad) {
 </head>
 <body bgcolor="#CCCCCC">
 <div align="center">
-		<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" />
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'menuLiquidaciones.php'" />
 </div>
 <div align="center">
 	<h1>Liquidacion Prestadores</h1>
@@ -105,7 +105,7 @@ function ocultaDetalle(cuit,cantidad) {
 			</thead>
 			<tbody>
 						<?php
-							$sqlFacturasUsuario = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento, f.totaldebito, f.totalcredito, f.importeliquidado, f.fechacierreliquidacion FROM facturas f, prestadores p WHERE f.id = $rowFacturasAgrupadas[id] AND f.idPrestador = p.codigoprestador ORDER by p.cuit";
+							$sqlFacturasUsuario = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento, f.totaldebito, f.totalcredito, f.importeliquidado, f.fechacierreliquidacion FROM facturas f, prestadores p WHERE f.fechacierreliquidacion != '0000-00-00 00:00:00' AND f.autorizacionpago = 0 AND f.usuarioliquidacion = '$_SESSION[usuario]' AND p.cuit = $rowFacturasAgrupadas[cuit] AND f.idPrestador = p.codigoprestador ORDER by p.cuit";
 							$resFacturasUsuario = mysql_query($sqlFacturasUsuario,$db);
 							$totalfacturasusuario = mysql_num_rows($resFacturasUsuario);
 							$i=0;

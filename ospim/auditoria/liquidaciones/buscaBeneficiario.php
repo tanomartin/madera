@@ -1,22 +1,23 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php");
 if(isset($_GET['getBeneficiaro'])) {
 	$busqueda = $_GET['getBeneficiaro'];
 	$noencontro = TRUE;
 	$beneficiarios = array();  
 	if(is_numeric($busqueda)) {
 		$sqlLeeTitularesActivos="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titulares WHERE cuil like '%$busqueda%' OR nroafiliado = $busqueda";
-		$sqlLeeTitularesInactivos="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titularesdebaja WHERE cuil like '%$busqueda%' OR nroafiliado = $busqueda";
+		$sqlLeeTitularesInactivos="SELECT nroafiliado, apellidoynombre, cuil, codidelega, fechabaja FROM titularesdebaja WHERE cuil like '%$busqueda%' OR nroafiliado = $busqueda";
 		$sqlLeeFamiliaresActivos="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega FROM familiares f, titulares t, parentesco p WHERE (f.cuil like '%$busqueda%' OR f.nroafiliado = $busqueda) AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
-		$sqlLeeFamiliaresInactivosTa="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega FROM familiaresdebaja f, titulares t, parentesco p WHERE (f.cuil like '%$busqueda%' OR f.nroafiliado = $busqueda) AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
-		$sqlLeeFamiliaresInactivosTb="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega FROM familiaresdebaja f, titularesdebaja t, parentesco p WHERE (f.cuil like '%$busqueda%' OR f.nroafiliado = $busqueda) AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
+		$sqlLeeFamiliaresInactivosTa="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega, f.fechabaja FROM familiaresdebaja f, titulares t, parentesco p WHERE (f.cuil like '%$busqueda%' OR f.nroafiliado = $busqueda) AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
+		$sqlLeeFamiliaresInactivosTb="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega, f.fechabaja FROM familiaresdebaja f, titularesdebaja t, parentesco p WHERE (f.cuil like '%$busqueda%' OR f.nroafiliado = $busqueda) AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
 		//$sqlLeeBeneficiarios="SELECT nroafiliado, apellidoynombre, cuil FROM titulares WHERE nroafiliado = $busqueda";
 	} else {
 		$sqlLeeTitularesActivos="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titulares WHERE apellidoynombre like '%$busqueda%'";
-		$sqlLeeTitularesInactivos="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titularesdebaja WHERE apellidoynombre like '%$busqueda%'";
+		$sqlLeeTitularesInactivos="SELECT nroafiliado, apellidoynombre, cuil, codidelega, fechabaja FROM titularesdebaja WHERE apellidoynombre like '%$busqueda%'";
 		$sqlLeeFamiliaresActivos="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega FROM familiares f, titulares t, parentesco p WHERE f.apellidoynombre like '%$busqueda%' AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
-		$sqlLeeFamiliaresInactivosTa="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega FROM familiaresdebaja f, titulares t, parentesco p WHERE f.apellidoynombre like '%$busqueda%' AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
-		$sqlLeeFamiliaresInactivosTb="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega FROM familiaresdebaja f, titularesdebaja t, parentesco p WHERE f.apellidoynombre like '%$busqueda%' AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
+		$sqlLeeFamiliaresInactivosTa="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega, f.fechabaja FROM familiaresdebaja f, titulares t, parentesco p WHERE f.apellidoynombre like '%$busqueda%' AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
+		$sqlLeeFamiliaresInactivosTb="SELECT f.nroafiliado, f.tipoparentesco, p.descrip, f.nroorden, f.apellidoynombre, f.cuil, t.codidelega, f.fechabaja FROM familiaresdebaja f, titularesdebaja t, parentesco p WHERE f.apellidoynombre like '%$busqueda%' AND f.nroafiliado = t.nroafiliado AND f.tipoparentesco = p.codparent";
 		}
 	$resLeeTitulares=mysql_query($sqlLeeTitularesActivos,$db);
 	if(mysql_num_rows($resLeeTitulares)!=0) {
@@ -38,7 +39,7 @@ if(isset($_GET['getBeneficiaro'])) {
 			$noencontro = FALSE;
 			$apellidoynombre = utf8_encode($rowLeeTitulares['apellidoynombre']);
 			$beneficiarios[] = array(
-				'label' => $apellidoynombre.' | CUIL: '.$rowLeeTitulares['cuil'].' | Nro. Afiliado: '.$rowLeeTitulares['nroafiliado'].' | Tipo: Titular | Estado: Inactivo',
+				'label' => $apellidoynombre.' | CUIL: '.$rowLeeTitulares['cuil'].' | Nro. Afiliado: '.$rowLeeTitulares['nroafiliado'].' | Tipo: Titular | Estado: Inactivo Desde '.invertirFecha($rowLeeTitulares['fechabaja']),
 				'nroafiliado' => $rowLeeTitulares['nroafiliado'],
 				'tipoafiliado' => 0,
 				'nroorden' => 0,
@@ -68,7 +69,7 @@ if(isset($_GET['getBeneficiaro'])) {
 			$apellidoynombre = utf8_encode($rowLeeFamiliares['apellidoynombre']);
 			$tipo = utf8_encode($rowLeeFamiliares['descrip']);
 			$beneficiarios[] = array(
-				'label' => $apellidoynombre.' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Inactivo',
+				'label' => $apellidoynombre.' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Inactivo Desde '.invertirFecha($rowLeeFamiliares['fechabaja']),
 				'nroafiliado' => $rowLeeFamiliares['nroafiliado'],
 				'tipoafiliado' => $rowLeeFamiliares['tipoparentesco'],
 				'nroorden' => $rowLeeFamiliares['nroorden'],
@@ -83,7 +84,7 @@ if(isset($_GET['getBeneficiaro'])) {
 			$apellidoynombre = utf8_encode($rowLeeFamiliares['apellidoynombre']);
 			$tipo = utf8_encode($rowLeeFamiliares['descrip']);
 			$beneficiarios[] = array(
-				'label' => $apellidoynombre.' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Inactivo',
+				'label' => $apellidoynombre.' | CUIL: '.$rowLeeFamiliares['cuil'].' | Nro. Afiliado: '.$rowLeeFamiliares['nroafiliado'].' | Tipo: '.$tipo.' | Estado: Inactivo Desde '.invertirFecha($rowLeeFamiliares['fechabaja']),
 				'nroafiliado' => $rowLeeFamiliares['nroafiliado'],
 				'tipoafiliado' => $rowLeeFamiliares['tipoparentesco'],
 				'nroorden' => $rowLeeFamiliares['nroorden'],
