@@ -46,8 +46,8 @@ include($libPath."controlSessionOspim.php"); ?>
       	<p><a href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td>
 	  <td>
-	   	<p>LIQUIDACION PRESTADORES</p>
-		<p><a href="liquidaciones/moduloLiquidaciones.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	   	<p>LIQUIDACIONES</p>
+		<p><a href="liquidaciones/menuLiquidaciones.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
 	  <td>
 	  	<p>ODONTOLOGIA</p>
