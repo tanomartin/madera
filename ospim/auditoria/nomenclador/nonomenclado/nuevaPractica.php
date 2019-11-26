@@ -61,16 +61,15 @@ jQuery(function($){
 					$("#capitulo").html(respuesta);
 					$("#capitulo").prop("disabled",false);
 					$("#nuevoCap").prop("disabled",false);
-				} else {
-					$.ajax({
-						type: "POST",
-						dataType: 'html',
-						url: "cargarNuevaPractica.php",
-						data: {valor:-1, tipo:valor},
-					}).done(function(respuesta){
-						$("#formularioCargaPractica").html(respuesta);
-					});
-				}
+				} 
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "cargarNuevaPractica.php",
+					data: {valor:-1, tipo:valor},
+				}).done(function(respuesta){
+					$("#formularioCargaPractica").html(respuesta);
+				});
 			}
 		});
 	});
@@ -102,16 +101,15 @@ jQuery(function($){
 				$("#subcapitulo").html(respuesta);	
 				$("#subcapitulo").prop("disabled",false);
 				$("#nuevoSub").prop("disabled",false);	
-			} else {
-				$.ajax({
-					type: "POST",
-					dataType: 'html',
-					url: "cargarNuevaPractica.php",
-					data: {valor:valor[1], tipo:tipo},
-				}).done(function(respuesta){
-					$("#formularioCargaPractica").html(respuesta);
-				});
-			}
+			} 
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "cargarNuevaPractica.php",
+				data: {valor:valor[1], tipo:tipo},
+			}).done(function(respuesta){
+				$("#formularioCargaPractica").html(respuesta);
+			});
 		});
 	});
 	
