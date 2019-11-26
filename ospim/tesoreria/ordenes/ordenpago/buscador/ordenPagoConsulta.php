@@ -131,19 +131,25 @@ function cancelarOrden(nroorden, boton) {
 				<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
 						<th colspan="2">
 							<input type="button" value="ORIGINAL" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>O.pdf', '_blank', 'fullscreen=yes');" />
-						<?php if ($rowCabecera['debito'] > 0 ) { ?>
-								<input type="button" value="NOTA DEBITO" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>DEB.pdf', '_blank', 'fullscreen=yes');" />
-						<?php } ?>
 						</th>
-						<th colspan="3"><input type="button" value="CANCELAR ORDEN" onclick="cancelarOrden(<?php echo $nroorden?>, this)" /></th>
-						<th colspan="2"><input type="button" value="COPIAS" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>C.pdf', '_blank', 'fullscreen=yes');" /></th>
+						<th colspan="3">
+							<?php if ($rowCabecera['debito'] > 0 ) { ?>
+								<input type="button" value="NOTA DEBITO" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>DEB.pdf', '_blank', 'fullscreen=yes');" />
+						<?php } ?>	
+						</th>
+						<th colspan="2">
+							<input type="button" value="COPIAS" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>C.pdf', '_blank', 'fullscreen=yes');" />
+					    </th>
 					<?php } else { ?>
-						<th colspan="7" style="color: red">Orden de pago Cancelada el "<?php echo $rowCabecera['fechacancelacion'] ?>"</th>
+							<th colspan="7" style="color: red">Orden de pago Cancelada el "<?php echo $rowCabecera['fechacancelacion'] ?>"</th>
 					<?php }?>
 				</tr>
 			</thead>
 		</table>
 	</div>
+	<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
+			<p><input type="button" value="CANCELAR ORDEN" onclick="cancelarOrden(<?php echo $nroorden?>, this)" /></p>
+	<?php } ?>
 </div>
 </body>
 </html>
