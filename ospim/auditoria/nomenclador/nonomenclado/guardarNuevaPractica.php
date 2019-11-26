@@ -9,7 +9,6 @@ if($tipo != -1) {
 	$codigo = str_pad($codigo,2,'0',STR_PAD_LEFT);
 	$codigoCompleto = $tipo.".".$codigo;
 } else {
-	$codigo = str_pad($codigo,4,'0',STR_PAD_LEFT);
 	$codigoCompleto = $codigo;
 }
 $descri = $_POST['descri'];

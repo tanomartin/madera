@@ -186,12 +186,12 @@ function validarPractica(formulario) {
 	var codigo = formulario.codigo.value;
 	var tipo =  formulario.tipo.value;
 	if(esEnteroPositivo(codigo)) {
-		if((codigo <= 0 || codigo > 99) && tipo != -1) {
+		if((codigo < 1 || codigo > 99) && tipo != -1) {
 			alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para este tipo de practica");
 			return false;
 		}
-		if((codigo <= 999 || codigo > 1999) && tipo == -1) {
-		alert("Debe ingresar un codigo de cuatro digitos entre 1000 y 1999 para este tipo de practica");
+		if((codigo < 1 || codigo > 1999) && tipo == -1) {
+			alert("Debe ingresar un codigo de cuatro digitos entre 1 y 1999 para este tipo de practica");
 			return false;
 		}
 	} else {

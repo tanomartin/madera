@@ -67,18 +67,17 @@ jQuery(function($){
 				if (respuesta != 0) {
 					$("#capitulo").html(respuesta);
 					$("#capitulo").prop("disabled",false);
-				} else {
-					$.ajax({
-						type: "POST",
-						dataType: 'html',
-						url: "getPracticas.php",
-						data: {valor:-1,tipo:valor},
-					}).done(function(respuesta){
-						if (respuesta != 0) {
-							$("#practicas").html(respuesta);
-						}
-					});
-				}
+				} 
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "getPracticas.php",
+					data: {valor:-1,tipo:valor},
+				}).done(function(respuesta){
+					if (respuesta != 0) {
+						$("#practicas").html(respuesta);
+					}
+				});
 			}
 		});
 	});
