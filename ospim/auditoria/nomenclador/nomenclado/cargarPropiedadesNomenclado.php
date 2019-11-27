@@ -186,10 +186,11 @@ function cambiarClasificaion(valor) {
 	var nombre = "";
 	cantFilas = tabla.rows.length;
 	cantFilas--;
+	console.log(cantFilas);
 	for (var i = 0; i < cantFilas; i++) {
 		nombre = "complejidad" + i;
 		selectElemento = document.getElementById(nombre);
-		selectElemento.selectedIndex = valor;
+		selectElemento.value = valor;
 	}
 }
 
@@ -201,7 +202,7 @@ function cambiarInternacion(valor) {
 	for (var i = 0; i < cantFilas; i++) {
 		nombre = "internacion" + i;
 		selectElemento = document.getElementById(nombre);
-		selectElemento.selectedIndex = valor;
+		selectElemento.value = valor;
 	}
 }
 
@@ -290,8 +291,7 @@ function validar(formulario) {
 	</p>
 	<p><b>Complejidad Capitulo Completo</b>
 		<select name="res650total" id="res650total" disabled="disabled" onchange="cambiarClasificaion(this.value)">
-			<?php 
-			$sqlComplejida = "SELECT * FROM tipocomplejidad WHERE codigocomplejidad != 99";
+	<?php   $sqlComplejida = "SELECT * FROM tipocomplejidad";
 			$resComplejida = mysql_query($sqlComplejida,$db);
 			while($rowComplejida = mysql_fetch_assoc($resComplejida)) { ?>
 				<option value="<?php echo $rowComplejida['codigocomplejidad']?>"><?php echo $rowComplejida['descripcion']?></option>

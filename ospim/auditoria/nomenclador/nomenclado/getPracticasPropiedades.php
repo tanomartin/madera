@@ -29,7 +29,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	$canPractica=mysql_num_rows($resPractica);
 	$i = 0;
 	
-	$sqlComplejida = "SELECT * FROM tipocomplejidad WHERE codigocomplejidad != 99";
+	$sqlComplejida = "SELECT * FROM tipocomplejidad";
 	$resComplejida = mysql_query($sqlComplejida,$db);
 	$tipoComplejidad = array();
 	while($rowComplejida = mysql_fetch_assoc($resComplejida)) {
@@ -54,21 +54,18 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 						<td><input name=\"unihonorarioanestesista".$i."\" id=\"unihonorarioanestesista".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioanestesista']."\" size=\"10\"/></td>
 						<td><input name=\"unigastos".$i."\" id=\"unigastos".$i."\" type=\"text\" value=\"".$rowPractica['unigastos']."\" size=\"10\"/></td>
 						<td><select name=\"complejidad".$i."\" id=\"complejidad".$i."\">";
-						reset($tipoComplejidad);
-						while ($complejidad = current($tipoComplejidad)) {
-								if (key($tipoComplejidad) == $rowPractica['codigocomplejidad']) {
-									$selected = "selected";
-								} else {
-									$selected = "";
-								}
-								$respuesta.="<option value=".key($tipoComplejidad)." $selected>".$complejidad."</option>";
-								next($tipoComplejidad);
+						foreach ($tipoComplejidad as $key => $complejidad) {
+							$selected = "";
+							if ($key == $rowPractica['codigocomplejidad']) {
+								$selected = "selected";
+							}
+							$respuesta.="<option value='$key' $selected>".$complejidad."</option>";
 						}
 		$respuesta.= "</select>
 					  <td>
 						<select name=\"internacion".$i."\" id=\"internacion".$i."\">
-							<option value=0 ".$selectNO.">NO</opction>
-							<option value=1 ".$selectSI.">SI</opction>
+							<option value=0 $selectNO>NO</opction>
+							<option value=1 $selectSI>SI</opction>
 						</select>
 					</tr>";
 		$i++;

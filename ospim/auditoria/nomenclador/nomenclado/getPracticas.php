@@ -12,8 +12,8 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 					 <th>U. Honorarios<br>Ayudante</th>
 			 		 <th>U. Honorarios<br>Anestesista</th>
 			  		 <th>U. Gastos / U.B.</th>
-					 <th>Clasif.<br>Res. 650</th>
-					 <th>Internacion</th>
+					 <th>Res. 650</th>
+					 <th>Inter.</th>
 					 <th>+Info</th>
        			</tr></thead><tbody>";
 	if ($codigo == -1) {

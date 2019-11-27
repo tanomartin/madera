@@ -52,7 +52,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$difCodigos = array_diff($codigosHabilitados, $codigosUsados);
 	$codigoPropuesto = current($difCodigos);
 	
-	$sqlComplejida = "SELECT * FROM tipocomplejidad WHERE codigocomplejidad != 99";
+	$sqlComplejida = "SELECT * FROM tipocomplejidad";
 	$resComplejida = mysql_query($sqlComplejida,$db);
 	$tipoComplejidad = array();
 	while($rowComplejida = mysql_fetch_assoc($resComplejida)) {
