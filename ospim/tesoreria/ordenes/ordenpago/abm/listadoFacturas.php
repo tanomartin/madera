@@ -141,7 +141,7 @@ function validarValor(valor, totalApagar, id) {
 	var apagar = document.getElementById(nombreinput);
 	valor = parseFloat(valor).toFixed(2);
 	apagar.value = valor;
-
+	
 	var ok = 0;
 	if (isNumber(valor)) {
 		if (valor > totalApagar || valor <= 0) {
@@ -154,16 +154,15 @@ function validarValor(valor, totalApagar, id) {
 	} else {
 		alert("El valor debe ser un numero y no puede quedar vacio");
 	}
-
 	if (ok == 0) {
-		apagar.style.readOnly = true;
 		apagar.value = "0.00";
-		apagar.style.backgroundColor = "silver";
 		var nombreSelect = "tipopago"+id;
 		var selectTipo = document.getElementById(nombreSelect);
 		selectTipo.value = "0";
 		selectTipo.focus();
-	}
+	}		
+	apagar.style.readOnly = true;
+	apagar.style.backgroundColor = "silver";
 }
 
 function validarCantFacturas(formulario) {
@@ -278,7 +277,7 @@ function validar(formulario) {
 									  </select>
 								</td>
 								<td>
-									<input type="text" id="apagar<?php echo $facturaNoInte['id'] ?>" name="apagar<?php echo $facturaNoInte['id'] ?>" onblur="validarValor(this.value, <?php echo $facturaNoInte['restoapagar']?>,'<?php echo $facturaNoInte['id'] ?>')" size="14" value="0.00" style="background-color: silver; text-align: center"/>
+									<input type="text" id="apagar<?php echo $facturaNoInte['id'] ?>" name="apagar<?php echo $facturaNoInte['id'] ?>" onchange="validarValor(this.value, <?php echo $facturaNoInte['restoapagar']?>,'<?php echo $facturaNoInte['id'] ?>')" size="14" value="0.00" style="background-color: silver; text-align: center"/>
 								</td>
 							</tr>
 				<?php } ?>

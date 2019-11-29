@@ -1,20 +1,39 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 $nroorden = $_GET['nroorden'];
-$sqlCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fecha, pr.descrip as provincia
-				FROM ordencabecera o, prestadores p, provincia pr
-				WHERE o.nroordenpago = $nroorden and o.codigoprestador = p.codigoprestador and p.codprovin = pr.codprovin";
-$resCabecera = mysql_query($sqlCabecera,$db);
-$rowCabecera = mysql_fetch_assoc($resCabecera);
-
-$sqlDetalle = "SELECT * FROM ordendetalle o, facturas f WHERE o.nroordenpago = $nroorden and o.idfactura = f.id";
-$resDetalle = mysql_query($sqlDetalle,$db);
 
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
 	$carpetaOrden="../OrdenesPagoPDF/";
 else
 	$carpetaOrden="/home/sistemas/Documentos/Repositorio/OrdenesPagoPDF/";
+
+$sqlCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fecha, pr.descrip as provincia
+				FROM ordencabecera o, prestadores p, provincia pr
+				WHERE o.nroordenpago = $nroorden and o.codigoprestador = p.codigoprestador and p.codprovin = pr.codprovin";
+$resCabecera = mysql_query($sqlCabecera,$db);
+$rowCabecera = mysql_fetch_assoc($resCabecera);
+
+$sqlDetalle = "SELECT f.*, o.importepago, o.tipocancelacion, 
+					  ordencabecera.nroordenpago as anterior, 
+					  ordencabecera.fechacancelacion as fechacancelacionanterior
+				FROM ordendetalle o, facturas f
+				LEFT JOIN ordendebitodetalle on ordendebitodetalle.idFactura = f.id and ordendebitodetalle.nroordenpago != $nroorden
+			    LEFT JOIN ordencabecera on ordencabecera.nroordenpago = ordendebitodetalle.nroordenpago
+				WHERE o.nroordenpago = $nroorden and  o.idfactura = f.id
+				ORDER BY fechacancelacion DESC";
+$resDetalle = mysql_query($sqlDetalle,$db);
+$arrayDetalle = array();
+while($rowDetalle = mysql_fetch_assoc($resDetalle)) {
+	if (array_key_exists($rowDetalle['id'],$arrayDetalle)) {
+		if ($arrayDetalle[$rowDetalle['id']]['fechacancelacionanterior'] != NULL) {
+			$arrayDetalle[$rowDetalle['id']] = $rowDetalle;
+		} 
+	} else {
+		$arrayDetalle[$rowDetalle['id']] = $rowDetalle;
+	}
+}
+sort($arrayDetalle);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -70,20 +89,26 @@ function cancelarOrden(nroorden, boton) {
 					<th>Pagado</th>
 					<th>Tipo Pago</th>
 					<th>Monto a Pagar</th>
+					<th>Obs</th>
 				</tr>
 			</thead>
 			<tbody>
 	  <?php $totalFactura = 0;
-	  		while($rowDetalle = mysql_fetch_array($resDetalle)) { 
-	  			$totalFactura += $rowDetalle['importecomprobante']; ?>
+	   		foreach ($arrayDetalle as $detalle) {
+	  			$totalFactura += $detalle['importecomprobante']; ?>
 				<tr>
-					<td><?php echo $rowDetalle['id'];?></td>
-					<td><?php echo $rowDetalle['puntodeventa']."-".$rowDetalle['nrocomprobante'] ?></td>
-					<td><?php echo number_format($rowDetalle['importecomprobante'],2,',','.');?></td>
-					<td><?php echo number_format($rowDetalle['totaldebito'],2,',','.');?></td>
-					<td><?php echo number_format($rowDetalle['importepago'],2,',','.');?></td>
-					<td><?php echo $rowDetalle['tipocancelacion'] ?></td>
-					<td><?php echo number_format($rowDetalle['restoapagar'],2,',','.');?></td>
+					<td><?php echo $detalle['id'];?></td>
+					<td><?php echo $detalle['puntodeventa']."-".$detalle['nrocomprobante'] ?></td>
+					<td><?php echo number_format($detalle['importecomprobante'],2,',','.');?></td>
+					<td><?php echo number_format($detalle['totaldebito'],2,',','.');?></td>
+					<td><?php echo number_format($detalle['importepago'],2,',','.');?></td>
+					<td><?php echo $detalle['tipocancelacion'] ?></td>
+					<td><?php echo number_format($detalle['restoapagar'],2,',','.');?></td>
+					<td> 
+						<?php if ($detalle['fechacancelacionanterior'] == NULL and $detalle['anterior'] != NULL) { ?>
+								<font>N.D. ya emitida en el 1er pago (<?php echo "O.P: ".$detalle['anterior'] ?>)</font>
+					    <?php } ?>
+					</td>
 				</tr>
 	  <?php } ?>	
 	  		</tbody>
@@ -93,17 +118,17 @@ function cancelarOrden(nroorden, boton) {
 					<th><?php echo number_format($totalFactura,2,',','.'); ?></th>
 					<th><?php echo number_format($rowCabecera['debito'],2,',','.'); ?></th>
 					<th><?php echo number_format($rowCabecera['importe']+$rowCabecera['retencion'],2,',','.'); ?></th>
-					<th colspan="2"></th>
+					<th colspan="3"></th>
 				</tr>
 				<tr>
 					<th colspan="4">RETENCION</th>
 					<th><?php echo number_format($rowCabecera['retencion'],2,',','.'); ?></th>
-					<th colspan="2"></th>
+					<th colspan="3"></th>
 				</tr>
 				<tr>
 					<th colspan="4">TOTAL PAGADO</th>
 					<th><?php echo number_format($rowCabecera['importe'],2,',','.'); ?></th>
-					<th colspan="2"></th>
+					<th colspan="3"></th>
 				</tr>
 		<?php if ($rowCabecera['idemail']) { 
 					$sqlEmail = "SELECT * FROM bandejaenviados WHERE id = ".$rowCabecera['idemail']; 
@@ -123,7 +148,7 @@ function cancelarOrden(nroorden, boton) {
 			<?php 	} else { ?>
 						<tr>
 							<th><b>Info. Email</b></th>
-							<th colspan="6">EN PROCESO DE ENVIO</th>
+							<th colspan="7">EN PROCESO DE ENVIO</th>
 						</tr>
 				<?php  }
 					}?>
@@ -137,11 +162,11 @@ function cancelarOrden(nroorden, boton) {
 								<input type="button" value="NOTA DEBITO" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>DEB.pdf', '_blank', 'fullscreen=yes');" />
 						<?php } ?>	
 						</th>
-						<th colspan="2">
+						<th colspan="3">
 							<input type="button" value="COPIAS" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>C.pdf', '_blank', 'fullscreen=yes');" />
 					    </th>
 					<?php } else { ?>
-							<th colspan="7" style="color: red">Orden de pago Cancelada el "<?php echo $rowCabecera['fechacancelacion'] ?>"</th>
+							<th colspan="8" style="color: red">Orden de pago Cancelada el "<?php echo $rowCabecera['fechacancelacion'] ?>"</th>
 					<?php }?>
 				</tr>
 			</thead>

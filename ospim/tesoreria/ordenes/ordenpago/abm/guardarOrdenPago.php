@@ -27,6 +27,7 @@ $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 $sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo,'$fechaorden','$tipoPago', '$nroPago', '$fechaPago', $impRetencion, $impDebito, $impApagar, NULL, NULL, NULL, '$fecharegistro', '$usuarioregistro',NULL,NULL)";
 
+//TODO VER SI YA SE HIZO EL DEBITO EN ALGUN PAGO PARCIAL ANTERIOR
 if ($impDebito > 0) {
 	$today = date("Y-m-d");
 	$sqlUltimo = "SELECT * FROM ordendebitolote WHERE fechainicio <= '$today' and fechavto > '$today'";
@@ -40,14 +41,14 @@ if ($impDebito > 0) {
 		$rowUltimo = mysql_fetch_array($resUltimo);
 		$ptoVenta = $rowUltimo['ptoventa'];
 		$nronota = $rowUltimo['ultimousado'] + 1;
-		$sqlDebito = "INSERT INTO ordendebito VALUE(nroorden, $ptoVenta, $nronota, $codigo, '$fechaorden', $impDebito, '$fecharegistro', '$usuarioregistro')";
+		$sqlDebito = "INSERT INTO ordendebito VALUE(nroorden, $ptoVenta, $nronota, $codigo, '$fechaorden', $impDebito)";
 		$sqlUpdateLote = "UPDATE ordendebitolote SET ultimousado = $nronota WHERE id = ".$rowUltimo['id'];
 	}
-	
 }
 
 $arrayDetalle = array();
 $arrayUpdateFactura = array();
+$arrayDetalleDebito = array();
 foreach ($_POST as $key => $facturas) {
 	$pos = strpos($key, "id");
 	if ($pos !== false) {
@@ -60,6 +61,15 @@ foreach ($_POST as $key => $facturas) {
 		$arrayDetalle[$id] = $sqlDetalleOrden;
 		$sqlUpdateFactura = "UPDATE facturas SET totalpagado = totalpagado + $valorPagoFactura, restoapagar = restoapagar - $valorPagoFactura, fechapago = '$fechaPago' WHERE id = $id";
 		$arrayUpdateFactura[$id] = $sqlUpdateFactura;
+		
+		$paname = "pa".$id;
+		$pagoanterior = $_POST[$paname];
+		if ($pagoanterior == 0) {
+			$debname = "debito".$id;
+			$importeDebito = $_POST[$debname];
+			$sqlInsertDetalleDebito = "INSERT INTO ordendebitodetalle VALUE(DEFAULT, nroorden, $id, $importeDebito)";
+			$arrayDetalleDebito[$id] = $sqlInsertDetalleDebito;
+		}
 	}
 }
 
@@ -80,17 +90,24 @@ try {
 		$dbh->exec($detalleOrden);
 	}
 	
-	foreach ($arrayUpdateFactura as $updateFactura) {
-		//print($updateFactura."<br>");
-		$dbh->exec($updateFactura);
-	}
-	
 	if ($impDebito > 0) {
 		$sqlDebito = str_replace("nroorden", $lastId, $sqlDebito);
 		//print($sqlDebito."<br>");
 		$dbh->exec($sqlDebito);
+		
+		foreach ($arrayDetalleDebito as $detalleDebito) {
+			$detalleDebito = str_replace("nroorden", $lastId, $detalleDebito);
+			//print($detalleDebito."<br>");
+			$dbh->exec($detalleDebito);
+		}
+		
 		//print($sqlUpdateLote."<br>");
 		$dbh->exec($sqlUpdateLote);
+	}
+	
+	foreach ($arrayUpdateFactura as $updateFactura) {
+		//print($updateFactura."<br>");
+		$dbh->exec($updateFactura);
 	}
 	
 	$dbh->commit();

@@ -40,11 +40,26 @@ $whereIn .= ")";
 $sqlFacturas = "SELECT
 					f.*,
 					DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
-					DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
+					DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento,
+					ordencabecera.nroordenpago as nroordenpago,
+					ordencabecera.fechacancelacion as fechacancelacion
 				FROM facturas f
-			    WHERE f.id in $whereIn";
+				LEFT JOIN ordendebitodetalle ON ordendebitodetalle.idFactura = f.id
+				LEFT JOIN ordencabecera ON ordencabecera.nroordenpago = ordendebitodetalle.nroordenpago
+			    WHERE f.id in $whereIn 
+				ORDER BY fechacancelacion DESC";
 $resFacturas = mysql_query($sqlFacturas,$db);
-?>
+$arrayFacturas = array();
+while($rowFacturas = mysql_fetch_assoc($resFacturas)) {
+	if (array_key_exists($rowFacturas['id'],$arrayFacturas)) {
+		if ($arrayFacturas[$rowFacturas['id']]['fechacancelacion'] != NULL) {
+			$arrayFacturas[$rowFacturas['id']] = $rowFacturas;
+		}
+	} else {
+		$arrayFacturas[$rowFacturas['id']] = $rowFacturas;
+	}
+}
+sort($arrayFacturas); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -168,31 +183,41 @@ function validar(formulario) {
 						<th>A Pagar</th>
 						<th>Tipo Pago</th>
 						<th>Monto a Pagar</th>
+						<th>Obs.</th>
 					</tr>
 				</thead>
 				<tbody>
 			<?php $totalImpFactura = 0;
 				  $totalDebitos = 0;
 				  $totalPagosAnteriores = 0;
-				  $totalAPagar = 0;
-				  while($rowFacturas = mysql_fetch_array($resFacturas)) { 
-					$idfactura = $rowFacturas['id'];
-					$totalImpFactura += $rowFacturas['importecomprobante']; 
-					$totalDebitos += $rowFacturas['totaldebito'];
-					$totalPagosAnteriores += $rowFacturas['totalpagado'];
-					$totalAPagar += $rowFacturas['restoapagar']; ?>
+				  $totalAPagar = 0;		
+				  foreach ($arrayFacturas as $factura) {
+					$idfactura = $factura['id'];
+					$totalImpFactura += $factura['importecomprobante']; 
+					$totalPagosAnteriores += $factura['totalpagado'];
+					$totalAPagar += $factura['restoapagar']; 
+					$pagoanterior = 1;
+					if ($factura['fechacancelacion'] != NULL or $factura['nroordenpago'] == NULL ) { 
+					 	$pagoanterior = 0;
+						$totalDebitos += $factura['totaldebito'];
+					} ?>
 					<tr>
 						<td><?php echo $idfactura;?></td>
 						<td>
-							<?php echo $rowFacturas['puntodeventa']."-".$rowFacturas['nrocomprobante'] ?>
+							<?php echo $factura['puntodeventa']."-".$factura['nrocomprobante'] ?>
 							<input style="display: none" type="text" value="<?php echo $idfactura?>" id="id<?php echo $idfactura ?>" name="id<?php echo $idfactura ?>"/>
+							
 						</td>
-						<td><?php echo $rowFacturas['fechamostrar'];?></td>
-						<td><?php echo $rowFacturas['fechavencimiento'];?></td>
-						<td><?php echo number_format($rowFacturas['importecomprobante'],2,',','.');?></td>
-						<td><?php echo number_format($rowFacturas['totaldebito'],2,',','.');?></td>
-						<td><?php echo number_format($rowFacturas['totalpagado'],2,',','.');?></td>
-						<td><?php echo number_format($rowFacturas['restoapagar'],2,',','.');?></td>
+						<td><?php echo $factura['fechamostrar'];?></td>
+						<td><?php echo $factura['fechavencimiento'];?></td>
+						<td><?php echo number_format($factura['importecomprobante'],2,',','.');?></td>
+						<td>
+							<?php echo number_format($factura['totaldebito'],2,',','.');?>
+							<input style="display: none" type="text" value="<?php echo $factura['totaldebito'] ?>" id="debito<?php echo $idfactura ?>" name="debito<?php echo $idfactura ?>"/>
+							<input style="display: none" type="text" value="<?php echo $pagoanterior?>" id="pa<?php echo $idfactura ?>" name="pa<?php echo $idfactura ?>"/>
+						</td>
+						<td><?php echo number_format($factura['totalpagado'],2,',','.');?></td>
+						<td><?php echo number_format($factura['restoapagar'],2,',','.');?></td>
 						<td>
 							<?php echo $arrayDatos[$idfactura]['tipo']?>
 							<input style="display: none" type="text" value="<?php echo $arrayDatos[$idfactura]['tipo']?>" id="tipo<?php echo $idfactura ?>" name="tipo<?php echo $idfactura ?>"/>
@@ -200,6 +225,11 @@ function validar(formulario) {
 						<td>
 							<?php echo number_format($arrayDatos[$idfactura]['valor'],2,',','.');?>
 							<input style="display: none" type="text" value="<?php echo $arrayDatos[$idfactura]['valor']?>" id="valor<?php echo $idfactura ?>" name="valor<?php echo $idfactura ?>"/>	
+						</td>
+						<td>
+							<?php if ($factura['fechacancelacion'] == NULL and $factura['nroordenpago']!= NULL) { ?>
+									 <font>N.D. ya emitida en el 1er pago (<?php echo "O.P: ".$factura['nroordenpago']; ?>)</font> 
+							<?php }?>
 						</td>
 					</tr>
 			<?php } ?>	
@@ -218,6 +248,7 @@ function validar(formulario) {
 						<th><?php echo number_format($total,2,',','.'); ?>
 							<input style="display: none" type="text" value="<?php echo $total?>" id="total" name="total"/>	
 						</th>
+						<th></th>
 					</tr>
 				</thead>
 			</table>

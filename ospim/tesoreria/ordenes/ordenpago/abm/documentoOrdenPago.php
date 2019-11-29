@@ -27,8 +27,7 @@ if ($rowCabecera['debito'] > 0) {
 	 						    DATE_FORMAT(f.fechacomprobante, '%d-%m-%Y') as fechacomprobante, 
 							    p.codigopractica, fb.nroafiliado, fb.nroorden, fp.motivodebito, fp.totaldebito
 							FROM facturasprestaciones fp, facturasbeneficiarios fb, facturas f, practicas p
-							WHERE fp.idfactura in (SELECT idFactura FROM ordendetalle WHERE nroordenpago = $nroOrden) and 
-								  fp.totaldebito > 0 and 
+							WHERE fp.idfactura in (SELECT idFactura FROM ordendebitodetalle WHERE nroordenpago = $nroOrden) and 
 								  fp.idFacturabeneficiario = fb.id and
 								  fp.idfactura = f.id and
 								  fp.idPractica = p.idpractica";
@@ -301,12 +300,9 @@ function printHeaderPlanillaDebito($pdfPlanilla, $rowDebito) {
 	$pdfPlanilla->Cell(60,5,"Rojas 254 (C1405ABB) Capital Federal",0,0);
 	$pdfPlanilla->SetXY(15, 24);
 	$pdfPlanilla->Cell(60,5,"Tel.: 4431-4791/4089 - Fax: 4431-2567",0,0);
-	$pdfPlanilla->SetXY(30, 29);
+	$pdfPlanilla->SetXY(30, 28);
 	$pdfPlanilla->Cell(30,5,"ospim@usimra.com.ar",0,0);
-	$pdfPlanilla->SetFont('Courier','B',10);
-	$pdfPlanilla->SetXY(33, 34);
-	$pdfPlanilla->Cell(25,5,"IVA EXENTO",0,0);
-	
+
 	$pdfPlanilla->SetFont('Courier','B',30);
 	$pdfPlanilla->SetXY(105, 1);
 	$pdfPlanilla->Cell(9,10,"X",1,1);
@@ -321,37 +317,31 @@ function printHeaderPlanillaDebito($pdfPlanilla, $rowDebito) {
 	$pdfPlanilla->Cell(60,7,"Fecha: ".$rowDebito['fechadebito'],0,0);
 	
 	$pdfPlanilla->SetFont('Courier','',8);
-	$pdfPlanilla->SetXY(135, 22);
-	$pdfPlanilla->Cell(55,5,"C.U.I.T. Nro: 30-50289264-5",0,0);
-	$pdfPlanilla->SetXY(135, 26);
-	$pdfPlanilla->Cell(55,5,"INGRESOS BRUTOS: EXENTO",0,0);
-	$pdfPlanilla->SetXY(135, 30);
+	$pdfPlanilla->SetXY(135, 25);
 	$pdfPlanilla->Cell(55,5,"RNOS Nro.: 11100-1",0,0);
-	$pdfPlanilla->SetXY(135, 34);
-	$pdfPlanilla->Cell(70,5,"Fecha de Inicio de Actividades: 01/01/1972",0,0);
 	
-	$pdfPlanilla->Line(7, 40, 210, 40);
-	$pdfPlanilla->Line(109, 11, 109, 40);
+	$pdfPlanilla->Line(7, 33, 210, 33);
+	$pdfPlanilla->Line(109, 11, 109, 33);
 	
 	$pdfPlanilla->SetFont('Courier','',10);
-	$pdfPlanilla->SetXY(15, 41);
+	$pdfPlanilla->SetXY(15, 34);
 	$pdfPlanilla->Cell(190,5,"ENTIDAD: ".$rowDebito['nombre'],0,0);
-	$pdfPlanilla->SetXY(15, 45);
+	$pdfPlanilla->SetXY(15, 38);
 	$pdfPlanilla->Cell(190,5, "CUIT: ".$rowDebito['cuit'],0,0);
-	$pdfPlanilla->SetXY(15, 49);
+	$pdfPlanilla->SetXY(15, 42);
 	$pdfPlanilla->Cell(190,5,"DOMICILIO: ".$rowDebito['domicilio']." - CP: ".$rowDebito['numpostal'],0,0);
-	$pdfPlanilla->SetXY(15, 53);
+	$pdfPlanilla->SetXY(15, 46);
 	$pdfPlanilla->Cell(190,5,"LOCALIDAD: ".$rowDebito['localidad']." - (".$rowDebito['provincia'].")",0,0);
 	
-	$pdfPlanilla->Line(7, 59, 210, 59);
+	$pdfPlanilla->Line(7, 52, 210, 52);
 	
 	$pdfPlanilla->SetFont('Courier','B',10);
-	$pdfPlanilla->SetXY(50, 60);
+	$pdfPlanilla->SetXY(50, 53);
 	$pdfPlanilla->Cell(55,5,"DETALLE",0,0);
-	$pdfPlanilla->SetXY(180, 60);
+	$pdfPlanilla->SetXY(180, 53);
 	$pdfPlanilla->Cell(55,5,"IMPORTE",0,0);
 	
-	$pdfPlanilla->Line(7, 66, 210, 66);
+	$pdfPlanilla->Line(7, 59, 210, 59);
 }
 
 function printHeaderDebito($pdfNotaDebito, $rowDebito) {
@@ -362,19 +352,19 @@ function printHeaderDebito($pdfNotaDebito, $rowDebito) {
 	$pdfNotaDebito->Cell(60,7,$rowDebito['fechadebito'],0,0);
 	
 	$pdfNotaDebito->SetFont('Courier','',10);
-	$pdfNotaDebito->SetXY(30, 41);
+	$pdfNotaDebito->SetXY(30, 34);
 	$pdfNotaDebito->Cell(190,5,$rowDebito['nombre'],0,0);
-	$pdfNotaDebito->SetXY(30, 45);
+	$pdfNotaDebito->SetXY(30, 38);
 	$pdfNotaDebito->Cell(190,5,$rowDebito['cuit'],0,0);
-	$pdfNotaDebito->SetXY(30, 49);
+	$pdfNotaDebito->SetXY(30, 42);
 	$pdfNotaDebito->Cell(190,5,$rowDebito['domicilio']." - CP: ".$rowDebito['numpostal'],0,0);
-	$pdfNotaDebito->SetXY(30, 53);
+	$pdfNotaDebito->SetXY(30, 46);
 	$pdfNotaDebito->Cell(190,5,$rowDebito['localidad']." - (".$rowDebito['provincia'].")",0,0);
 }
 
 function printDetalleDebito($pdf, $arrayDetalleDebito) {
 	$total = 0;
-	$cordY = 67;
+	$cordY = 60;
 	foreach ($arrayDetalleDebito as $detalle) {
 		$total += $detalle['importe'];
 		
