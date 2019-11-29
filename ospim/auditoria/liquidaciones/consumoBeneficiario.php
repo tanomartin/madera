@@ -219,7 +219,7 @@ $(document).ready(function(){
 			$("#referenciaacreditacion").val('');
 			$("#referenciaconformado").val('');
 			$("#referenciainternacion").val('');
-			$("#referenciacoseguro").val('');
+			$("#referenciacoseguro").val('0.00');
 			$("#referenciatotal").val('');
 			$("#totalfacturado").val('');
 			$("#totaldebito").val('');
@@ -430,10 +430,11 @@ $(document).ready(function(){
 		source: function(request, response) {
 			var idprestador = $("#idprestador").val();
 			var idpersoneria = $("#personeria").val();
+			var fechaprestacion = $("#fechaprestacion").val();
 			$.ajax({
 				url: "buscaEfector.php",
 				dataType: "json",
-				data: {getPersoneria:request.term,idPrestador:idprestador,idPersoneria:personeria},
+				data: {getPersoneria:request.term,idPrestador:idprestador,idPersoneria:personeria,fechaPrestacion:fechaprestacion},
 				success: function(data) {
 					response(data);
 				}
@@ -463,6 +464,8 @@ $(document).ready(function(){
 				$("#importeAcreditacion").attr('disabled', false);
 				$("#importeAcreditacion").val(valoracreditacion);
 				$("#referenciaacreditacion").val(valoracreditacion);
+				var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciaacreditacion").val());
+				$("#referenciaconformado").val(valorconformado);
 				$("#calidadestablecimiento").css('display', '');
 			} else {
 				$("#acreditacioncalidad").prop("checked",false);
@@ -480,11 +483,6 @@ $(document).ready(function(){
 			var nuevovalor = parseFloat($("#referenciaconformado").val()) - parseFloat($("#galenoHonorario").val());
 		}
 		$("#referenciaconformado").val(nuevovalor);
-		var valoracreditacion = (parseFloat($("#referenciaconformado").val()) * 1.07) -  parseFloat($("#referenciaconformado").val());
-		$("#importeAcreditacion").val(valoracreditacion);
-		if($("#acreditacioncalidad").prop('checked') ) {
-			$("#referenciaacreditacion").val(valoracreditacion);
-		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -500,11 +498,6 @@ $(document).ready(function(){
 			var nuevovalor = parseFloat($("#referenciaconformado").val()) - parseFloat($("#galenoEspecialista").val());
 		}
 		$("#referenciaconformado").val(nuevovalor);
-		var valoracreditacion = (parseFloat($("#referenciaconformado").val()) * 1.07) -  parseFloat($("#referenciaconformado").val());
-		$("#importeAcreditacion").val(valoracreditacion);
-		if($("#acreditacioncalidad").prop('checked') ) {
-			$("#referenciaacreditacion").val(valoracreditacion);
-		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -520,11 +513,6 @@ $(document).ready(function(){
 			var nuevovalor = parseFloat($("#referenciaconformado").val()) - parseFloat($("#galenoAyudante").val());
 		}
 		$("#referenciaconformado").val(nuevovalor);
-		var valoracreditacion = (parseFloat($("#referenciaconformado").val()) * 1.07) -  parseFloat($("#referenciaconformado").val());
-		$("#importeAcreditacion").val(valoracreditacion);
-		if($("#acreditacioncalidad").prop('checked') ) {
-			$("#referenciaacreditacion").val(valoracreditacion);
-		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -540,11 +528,6 @@ $(document).ready(function(){
 			var nuevovalor = parseFloat($("#referenciaconformado").val()) - parseFloat($("#galenoAnestesista").val());
 		}
 		$("#referenciaconformado").val(nuevovalor);
-		var valoracreditacion = (parseFloat($("#referenciaconformado").val()) * 1.07) -  parseFloat($("#referenciaconformado").val());
-		$("#importeAcreditacion").val(valoracreditacion);
-		if($("#acreditacioncalidad").prop('checked') ) {
-			$("#referenciaacreditacion").val(valoracreditacion);
-		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -560,11 +543,6 @@ $(document).ready(function(){
 			var nuevovalor = parseFloat($("#referenciaconformado").val()) - parseFloat($("#galenoGastos").val());
 		}
 		$("#referenciaconformado").val(nuevovalor);
-		var valoracreditacion = (parseFloat($("#referenciaconformado").val()) * 1.07) -  parseFloat($("#referenciaconformado").val());
-		$("#importeAcreditacion").val(valoracreditacion);
-		if($("#acreditacioncalidad").prop('checked') ) {
-			$("#referenciaacreditacion").val(valoracreditacion);
-		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -584,28 +562,9 @@ $(document).ready(function(){
 			$("#internacionDescartables").val('0.00');
 			$("#internacionDescartables").attr('disabled', false);
 			$("#internacionOtros").val('0.00');
-			$("#referenciainternacion").val('0.00');
 			$("#internacionOtros").attr('disabled', false);
-			var valorconformado = 0.00;
-			if($("#honorario").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoHonorario").val()) + valorconformado;
-			}
-			if($("#especialista").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoEspecialista").val()) + valorconformado;
-			}
-			if($("#ayudante").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoAyudante").val()) +valorconformado;
-			}
-			if($("#anestesista").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoAnestesista").val()) +valorconformado;
-			}
-			if($("#gastos").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoGastos").val()) + valorconformado;
-			}
-			if($("#incluyecoseguro").prop('checked') ) {
-				valorconformado = parseFloat($("#referenciacoseguro").val()) + valorconformado;
-			}
-			valorconformado =  valorconformado + parseFloat($("#referenciainternacion").val());
+			$("#referenciainternacion").val('0.00');
+			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
 			$("#referenciaconformado").val(valorconformado);
 		} else {
 			infoconformado = infoconformado.replace(' + Gastos Internacion','');
@@ -617,28 +576,9 @@ $(document).ready(function(){
 			$("#internacionDescartables").val('0.00');
 			$("#internacionDescartables").attr('disabled', true);
 			$("#internacionOtros").val('0.00');
-			$("#referenciainternacion").val('0.00');
 			$("#internacionOtros").attr('disabled', true);
-			var valorconformado = 0.00;
-			if($("#honorario").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoHonorario").val()) + valorconformado;
-			}
-			if($("#especialista").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoEspecialista").val()) + valorconformado;
-			}
-			if($("#ayudante").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoAyudante").val()) +valorconformado;
-			}
-			if($("#anestesista").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoAnestesista").val()) +valorconformado;
-			}
-			if($("#gastos").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoGastos").val()) + valorconformado;
-			}
-			if($("#incluyecoseguro").prop('checked') ) {
-				valorconformado = parseFloat($("#referenciacoseguro").val()) + valorconformado;
-			}
-			valorconformado =  valorconformado + parseFloat($("#referenciainternacion").val());
+			var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
+			$("#referenciainternacion").val('0.00');
 			$("#referenciaconformado").val(valorconformado);
 		}
 		$("#cantidad").val('');
@@ -653,28 +593,11 @@ $(document).ready(function(){
 		if($("#internacionLaboratorio").val()=='') {
 			$("#internacionLaboratorio").val('0.00');
 		}
+		var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
+		$("#referenciaconformado").val(valorconformado);
 		var nuevovalor = parseFloat($("#internacionLaboratorio").val()) + parseFloat($("#internacionMedicamentos").val()) + parseFloat($("#internacionDescartables").val()) + parseFloat($("#internacionOtros").val());
 		$("#referenciainternacion").val(nuevovalor);
-		var valorconformado = 0.00;
-		if($("#honorario").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoHonorario").val()) + valorconformado;
-		}
-		if($("#especialista").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoEspecialista").val()) + valorconformado;
-		}
-		if($("#ayudante").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoAyudante").val()) +valorconformado;
-		}
-		if($("#anestesista").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoAnestesista").val()) +valorconformado;
-		}
-		if($("#gastos").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoGastos").val()) + valorconformado;
-		}
-		if($("#incluyecoseguro").prop('checked') ) {
-			valorconformado = parseFloat($("#referenciacoseguro").val()) + valorconformado;
-		}
-		valorconformado =  valorconformado + parseFloat($("#referenciainternacion").val());
+		var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
 		$("#referenciaconformado").val(valorconformado);
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
@@ -688,28 +611,11 @@ $(document).ready(function(){
 		if($("#internacionMedicamentos").val()=='') {
 			$("#internacionMedicamentos").val('0.00');
 		}
+		var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
+		$("#referenciaconformado").val(valorconformado);
 		var nuevovalor = parseFloat($("#internacionLaboratorio").val()) + parseFloat($("#internacionMedicamentos").val()) + parseFloat($("#internacionDescartables").val()) + parseFloat($("#internacionOtros").val());
 		$("#referenciainternacion").val(nuevovalor);
-		var valorconformado = 0.00;
-		if($("#honorario").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoHonorario").val()) + valorconformado;
-		}
-		if($("#especialista").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoEspecialista").val()) + valorconformado;
-		}
-		if($("#ayudante").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoAyudante").val()) +valorconformado;
-		}
-		if($("#anestesista").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoAnestesista").val()) +valorconformado;
-		}
-		if($("#gastos").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoGastos").val()) + valorconformado;
-		}
-		if($("#incluyecoseguro").prop('checked') ) {
-			valorconformado = parseFloat($("#referenciacoseguro").val()) + valorconformado;
-		}
-		valorconformado =  valorconformado + parseFloat($("#referenciainternacion").val());
+		var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
 		$("#referenciaconformado").val(valorconformado);
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
@@ -723,28 +629,11 @@ $(document).ready(function(){
 		if($("#internacionDescartables").val()=='') {
 			$("#internacionDescartables").val('0.00');
 		}
+		var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
+		$("#referenciaconformado").val(valorconformado);
 		var nuevovalor = parseFloat($("#internacionLaboratorio").val()) + parseFloat($("#internacionMedicamentos").val()) + parseFloat($("#internacionDescartables").val()) + parseFloat($("#internacionOtros").val());
 		$("#referenciainternacion").val(nuevovalor);
-		var valorconformado = 0.00;
-		if($("#honorario").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoHonorario").val()) + valorconformado;
-		}
-		if($("#especialista").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoEspecialista").val()) + valorconformado;
-		}
-		if($("#ayudante").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoAyudante").val()) +valorconformado;
-		}
-		if($("#anestesista").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoAnestesista").val()) +valorconformado;
-		}
-		if($("#gastos").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoGastos").val()) + valorconformado;
-		}
-		if($("#incluyecoseguro").prop('checked') ) {
-			valorconformado = parseFloat($("#referenciacoseguro").val()) + valorconformado;
-		}
-		valorconformado =  valorconformado + parseFloat($("#referenciainternacion").val());
+		var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
 		$("#referenciaconformado").val(valorconformado);
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
@@ -758,29 +647,38 @@ $(document).ready(function(){
 		if($("#internacionOtros").val()=='') {
 			$("#internacionOtros").val('0.00');
 		}
+		var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
+		$("#referenciaconformado").val(valorconformado);
 		var nuevovalor = parseFloat($("#internacionLaboratorio").val()) + parseFloat($("#internacionMedicamentos").val()) + parseFloat($("#internacionDescartables").val()) + parseFloat($("#internacionOtros").val());
 		$("#referenciainternacion").val(nuevovalor);
-		var valorconformado = 0.00;
-		if($("#honorario").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoHonorario").val()) + valorconformado;
-		}
-		if($("#especialista").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoEspecialista").val()) + valorconformado;
-		}
-		if($("#ayudante").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoAyudante").val()) +valorconformado;
-		}
-		if($("#anestesista").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoAnestesista").val()) +valorconformado;
-		}
-		if($("#gastos").prop('checked') ) {
-			valorconformado = parseFloat($("#galenoGastos").val()) + valorconformado;
-		}
-		if($("#incluyecoseguro").prop('checked') ) {
-			valorconformado = parseFloat($("#referenciacoseguro").val()) + valorconformado;
-		}
-		valorconformado =  valorconformado + parseFloat($("#referenciainternacion").val());
+		var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
 		$("#referenciaconformado").val(valorconformado);
+		$("#cantidad").val('');
+		$("#referenciatotal").val('');
+		$("#totalfacturado").val('');
+		$("#totaldebito").val('');
+		$("#totalcredito").val('');
+		$("#motivodebito").val('');
+		$("#motivodebito").attr('disabled', true);
+	});
+	$("#incluyecoseguro").change(function(){
+		if($("#incluyecoseguro").prop('checked') ) {
+			infoconformado = infoconformado+' + Coseguro';
+			$('#infoconformado').attr('title', infoconformado);
+			var nuevovalor = parseFloat($("#referenciacoseguro").val()) + parseFloat($("#valorCoseguro").val());
+			$("#referenciacoseguro").val(nuevovalor);
+			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciacoseguro").val());
+			$("#referenciaconformado").val(valorconformado);
+			$("#valorCoseguro").attr('disabled', false);
+		} else {
+			infoconformado = infoconformado.replace(' + Coseguro','');
+			$('#infoconformado').attr('title', infoconformado);
+			var nuevovalor = parseFloat($("#referenciacoseguro").val()) - parseFloat($("#valorCoseguro").val());
+			var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciacoseguro").val());
+			$("#referenciacoseguro").val(nuevovalor);
+			$("#referenciaconformado").val(valorconformado);
+			$("#valorCoseguro").attr('disabled', true);
+		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -794,75 +692,18 @@ $(document).ready(function(){
 			infoconformado = infoconformado+' + Acreditacion Calidad';
 			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciaacreditacion").val()) + parseFloat($("#importeAcreditacion").val());
+			$("#referenciaacreditacion").val(nuevovalor);
+			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciaacreditacion").val());
+			$("#referenciaconformado").val(valorconformado);
 			$("#importeAcreditacion").attr('disabled', false);
 		} else {
 			infoconformado = infoconformado.replace(' + Acreditacion Calidad','');
 			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciaacreditacion").val()) - parseFloat($("#importeAcreditacion").val());
+			var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciaacreditacion").val());
+			$("#referenciaacreditacion").val(nuevovalor);
+			$("#referenciaconformado").val(valorconformado);
 			$("#importeAcreditacion").attr('disabled', true);
-		}
-		$("#referenciaacreditacion").val(nuevovalor);
-		$("#cantidad").val('');
-		$("#referenciatotal").val('');
-		$("#totalfacturado").val('');
-		$("#totaldebito").val('');
-		$("#totalcredito").val('');
-		$("#motivodebito").val('');
-		$("#motivodebito").attr('disabled', true);
-	});
-	$("#incluyecoseguro").change(function(){
-		if($("#incluyecoseguro").prop('checked') ) {
-			infoconformado = infoconformado+' + Coseguro';
-			$('#infoconformado').attr('title', infoconformado);
-			$("#referenciacoseguro").val($("#valorCoseguro").val());
-			$("#valorCoseguro").attr('disabled', false);
-			var valorconformado = 0.00;
-			if($("#honorario").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoHonorario").val()) + valorconformado;
-			}
-			if($("#especialista").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoEspecialista").val()) + valorconformado;
-			}
-			if($("#ayudante").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoAyudante").val()) +valorconformado;
-			}
-			if($("#anestesista").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoAnestesista").val()) +valorconformado;
-			}
-			if($("#gastos").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoGastos").val()) + valorconformado;
-			}
-			if($("#gastosinternacion").prop('checked') ) {
-				valorconformado = parseFloat($("#referenciainternacion").val()) + valorconformado;
-			}
-			valorconformado =  valorconformado + parseFloat($("#referenciacoseguro").val());
-			$("#referenciaconformado").val(valorconformado);
-		} else {
-			infoconformado = infoconformado.replace(' + Coseguro','');
-			$('#infoconformado').attr('title', infoconformado);
-			$("#referenciacoseguro").val('0.00');
-			$("#valorCoseguro").attr('disabled', true);
-			var valorconformado = 0.00;
-			if($("#honorario").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoHonorario").val()) + valorconformado;
-			}
-			if($("#especialista").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoEspecialista").val()) + valorconformado;
-			}
-			if($("#ayudante").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoAyudante").val()) +valorconformado;
-			}
-			if($("#anestesista").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoAnestesista").val()) +valorconformado;
-			}
-			if($("#gastos").prop('checked') ) {
-				valorconformado = parseFloat($("#galenoGastos").val()) + valorconformado;
-			}
-			if($("#gastosinternacion").prop('checked') ) {
-				valorconformado = parseFloat($("#referenciainternacion").val()) + valorconformado;
-			}
-			valorconformado =  valorconformado + parseFloat($("#referenciacoseguro").val());
-			$("#referenciaconformado").val(valorconformado);
 		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
@@ -1334,7 +1175,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			while ($rowConsultaNomenclador = mysql_fetch_assoc($resConsultaNomenclador)) {
 				echo $rowConsultaNomenclador['nombre']."<br>";
 				if($rowConsultaNomenclador['contrato']==0) {
-					$existeresolucion = 1;
+					$existeresolucion = $rowConsultaNomenclador['id'];
 				}
 			} ?>
 				<input name="nomencladorresolucion" type="hidden" id="nomencladorresolucion" size="2" value="<?php echo $existeresolucion; ?>"/>

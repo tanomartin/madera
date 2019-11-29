@@ -1,9 +1,11 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
+include($libPath."fechas.php");
 if(isset($_GET)) {
 	$busqueda = $_GET['getPersoneria'];
 	$idprestador = $_GET['idPrestador'];
 	$idpersoneria = $_GET['idPersoneria'];
+	$fechaprestacion = fechaParaGuardar($_GET['fechaPrestacion']);
 	$noencontro = TRUE;
 	$efectores = array();  
 	$circulo = NULL;
@@ -15,7 +17,7 @@ if(isset($_GET)) {
 	}
 	if($idpersoneria==4) {
 		$tablabusqueda = 'establecimientos';
-		$campos = 'codigo AS idefector, nombre, circulo, calidad';
+		$campos = 'codigo AS idefector, nombre, circulo, calidad, fechainiciocalidad, fechafincalidad';
 		$campoid = 'codigo';
 	}
 	if(is_numeric($busqueda)) {
@@ -30,7 +32,17 @@ if(isset($_GET)) {
 			$nombreefector = utf8_encode($rowLeeEfectores['nombre']);
 			if($idpersoneria==4) {
 				$circulo = $rowLeeEfectores['circulo'];
-				$calidad = $rowLeeEfectores['calidad'];
+				$fechainical=$rowLeeEfectores['fechainiciocalidad'];
+				if($rowLeeEfectores['fechafincalidad']==NULL) {
+					$fechafincal=date("Y-m-d");
+				} else {
+					$fechafincal=$rowLeeEfectores['fechafincalidad'];
+				}
+				if(strcmp($fechainical, $fechaprestacion) <= 0) {
+					if(strcmp($fechafincal, $fechaprestacion) >= 0) {
+						$calidad = $rowLeeEfectores['calidad'];
+					}
+				}
 			}
 			$efectores[] = array(
 				'label' => $nombreefector.' | Codigo: '.$rowLeeEfectores['idefector'],

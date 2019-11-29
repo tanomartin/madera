@@ -86,8 +86,8 @@ if(isset($_GET)) {
 		}
 	}
 
-	if($tieneresolucion == 1) {
-		$sqlLeePracticasResolucion="SELECT n.fechainicio, n.fechafin, p.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, p.internacion, j.codigocomplejidad, j.descripcion AS complejidad, r.modulo, n.nombre, CASE n.idnomenclador WHEN 7 THEN '1' ELSE '0' END AS integracion FROM practicasvaloresresolucion r, nomencladoresresolucion n, practicas p, tipocomplejidad j WHERE (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND r.idresolucion = n.id AND r.idpractica = p.idpractica AND p.codigocomplejidad = j.codigocomplejidad";
+	if($tieneresolucion != 0) {
+		$sqlLeePracticasResolucion="SELECT n.fechainicio, n.fechafin, p.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, p.internacion, j.codigocomplejidad, j.descripcion AS complejidad, r.modulo, n.nombre, CASE n.idnomenclador WHEN 7 THEN '1' ELSE '0' END AS integracion FROM practicasvaloresresolucion r, nomencladoresresolucion n, practicas p, tipocomplejidad j WHERE (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND r.idresolucion = n.id AND n.idnomenclador = $tieneresolucion AND r.idpractica = p.idpractica AND p.codigocomplejidad = j.codigocomplejidad";
 		$resLeePracticasResolucion=mysql_query($sqlLeePracticasResolucion,$db);
 		if(mysql_num_rows($resLeePracticasResolucion)!=0) {
 			while($rowLeePracticasResolucion=mysql_fetch_array($resLeePracticasResolucion)) {
