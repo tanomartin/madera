@@ -21,7 +21,11 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 								WHERE p.codigopractica = '$dato' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and  tn.idtipo = t.id 
 								ORDER BY codigopractica DESC";
 		}
-		if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador, n.contrato FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.descripcion like '%$dato%' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by codigopractica DESC"; }
+		if ($filtro == 1) { 
+			$sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador, n.contrato 
+								FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n 
+								WHERE p.descripcion like '%$dato%' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id 
+								ORDER BY codigopractica DESC"; }
 		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
 		if ($numPracticas == 0) {
