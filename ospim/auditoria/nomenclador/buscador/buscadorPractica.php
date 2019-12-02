@@ -15,7 +15,12 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	}
 	$resultado = array();
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador, n.contrato FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.codigopractica = '$dato' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and  tn.idtipo = t.id order by codigopractica DESC";}
+		if ($filtro == 0) { 
+			$sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador, n.contrato 
+								FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n 
+								WHERE p.codigopractica = '$dato' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and  tn.idtipo = t.id 
+								ORDER BY codigopractica DESC";
+		}
 		if ($filtro == 1) { $sqlPracticas = "SELECT p.*, t.descripcion as tipo, c.descripcion as complejidad, n.nombre as nombrenomenclador, n.contrato FROM practicas p, tipopracticasnomenclador tn, tipopracticas t, tipocomplejidad c, nomencladores n WHERE p.descripcion like '%$dato%' and p.tipopractica = tn.id and p.codigocomplejidad = c.codigocomplejidad and p.nomenclador = n.id and n.id = tn.codigonomenclador and tn.idtipo = t.id order by codigopractica DESC"; }
 		$resPracticas = mysql_query($sqlPracticas,$db);
 		$numPracticas = mysql_num_rows($resPracticas);
@@ -140,8 +145,6 @@ function validar(formulario) {
          <th>C&oacute;digo</th>
 		 <th class="filter-select" data-placeholder="Seleccione Nomenclador">Nomenclador</th>
 		 <th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
-	     <th class="filter-select" data-placeholder="Seleccione Capitulo">Capitulo</th>
-	     <th class="filter-select" data-placeholder="Seleccione Subcapitulo">Subcapitulo</th>
          <th>Descripciones</th>
          <th>U. Honorarios</th>
          <th>U. Honorarios Especialista</th>
@@ -155,14 +158,11 @@ function validar(formulario) {
      </thead>
      <tbody>
        <?php
-			while($rowPracticas = mysql_fetch_array($resPracticas)) {
-				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
+			while($rowPracticas = mysql_fetch_array($resPracticas)) { ?>
 		   <tr>
 			 <td><?php echo $rowPracticas['codigopractica'];?></td>
 			 <td><?php echo $rowPracticas['nombrenomenclador']; ?></td>
 			 <td><?php echo $rowPracticas['tipo'] ?></td>
-			 <td><?php echo $descripPractica['capitulo'] ?></td>
-			 <td><?php echo $descripPractica['subcapitulo'] ?></td>
 			 <td><?php echo $rowPracticas['descripcion'];?></td>
 			 <td><?php echo $rowPracticas['unihonorario'];?></td>
 			 <td><?php echo $rowPracticas['unihonorarioespecialista'];?></td>
