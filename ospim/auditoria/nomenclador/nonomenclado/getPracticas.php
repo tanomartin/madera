@@ -22,15 +22,16 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 		if ($cantidaPuntos == 0) {
 			$sqlPractica="SELECT p.*, t.descripcion as complejidad 
 						FROM practicas p, tipocomplejidad t 
-						WHERE p.idpadre = $padre and p.codigopractica like '%.%' and p.codigopractica not like '%.%.%' and
-							  p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad 
+						WHERE p.idpadre = $padre and p.nomenclador = 2 and p.tipopractica = $tipo and 
+							  p.codigopractica like '%.%' and p.codigopractica not like '%.%.%' and
+							  p.codigocomplejidad = t.codigocomplejidad 
 						ORDER BY p.codigopractica";
 		}
 		if ($cantidaPuntos == 1) {
 			$sqlPractica="SELECT p.*, t.descripcion as complejidad 
 						FROM practicas p, tipocomplejidad t 
-						WHERE p.idpadre = $padre and p.codigopractica like '%.%.%' and
-							  p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad 
+						WHERE p.idpadre = $padre and p.nomenclador = 2 and p.tipopractica = $tipo and 
+							  p.codigopractica like '%.%.%' and p.codigocomplejidad = t.codigocomplejidad 
 						ORDER BY p.codigopractica";
 		}
 	}
