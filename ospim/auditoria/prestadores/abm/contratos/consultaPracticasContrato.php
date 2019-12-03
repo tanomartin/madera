@@ -114,8 +114,8 @@ $numPracticas = mysql_num_rows($resPracticas);
               <?php if ($rowConsultaPresta['personeria'] == 3 || $rowConsultaPresta['personeria'] == 2) { ?><th class="filter-select" data-placeholder="Seleccione Categoria">Categoria</th> <?php } ?>
 			  <th class="filter-select" data-placeholder="Seleccione Nomenclador">Nomenclador</th>
 			  <th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
-			  <th class="filter-select" data-placeholder="Seleccione Capitulo">Capitulo</th>
-			  <th class="filter-select" data-placeholder="Seleccione Subcapitulo">Subcapitulo</th>
+		<!--  	  <th class="filter-select" data-placeholder="Seleccione Capitulo">Capitulo</th>
+			  <th class="filter-select" data-placeholder="Seleccione Subcapitulo">Subcapitulo</th> -->
               <th>Descripciones</th>
 			  <th class="filter-select" data-placeholder="Seleccione Complejidad">Clasificacion<br>Res. 650</th>
 			  <th>Modulo Consultorio / Valor General ($)</th>
@@ -131,14 +131,14 @@ $numPracticas = mysql_num_rows($resPracticas);
           <tbody>
             <?php
 			while($rowPracticas = mysql_fetch_array($resPracticas)) {
-				$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
+				//$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
 				<tr>
 				  <td><?php echo $rowPracticas['codigopractica'] ?></td>
 				  <?php if ($rowConsultaPresta['personeria'] == 3 || $rowConsultaPresta['personeria'] == 2) { ?> <td> <?php echo $rowPracticas['categoria'] ?></td> <?php } ?>
 				  <td><?php echo $rowPracticas['nombrenomenclador'] ?></td>
 				  <td><?php echo $rowPracticas['tipo'] ?></td>
-				  <td><?php echo $descripPractica['capitulo'] ?></td>
-				  <td><?php echo $descripPractica['subcapitulo'] ?></td>
+		<!--  	  <td><?php //echo $descripPractica['capitulo'] ?></td>
+				  <td><?php //echo $descripPractica['subcapitulo'] ?></td>-->	
 				  <td><?php echo $rowPracticas['descripcion'];?></td>
 				  <td><?php echo $rowPracticas['complejidad'];?></td>
 				  <td><?php echo $rowPracticas['moduloconsultorio'];?></td>
