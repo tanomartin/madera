@@ -17,22 +17,24 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 						      p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and
 							  p.codigocomplejidad = t.codigocomplejidad
 						ORDER BY p.codigopractica";
-	} else {		
-		if ($cantidaPuntos == 0) {
-			$codigoLike = "%.%";
-			$dontLike = "%.%.%";
-		}
-		if ($cantidaPuntos == 1) {
-			$codigoLike = "%.%.%";
-			$dontLike = "";
-		}
+	} else {
 		$padre = $_POST['padre'];
-		$sqlPractica="SELECT p.*, t.descripcion as complejidad 
+		if ($cantidaPuntos == 0) {
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad 
 						FROM practicas p, tipocomplejidad t 
-						WHERE p.idpadre = $padre and p.codigopractica like '$codigoLike' and p.codigopractica not like '$dontLike'
+						WHERE p.idpadre = $padre and p.codigopractica like '%.%' and p.codigopractica not like '%.%.%' and
 							  p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad 
 						ORDER BY p.codigopractica";
+		}
+		if ($cantidaPuntos == 1) {
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad 
+						FROM practicas p, tipocomplejidad t 
+						WHERE p.idpadre = $padre and p.codigopractica like '%.%.%' and
+							  p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad 
+						ORDER BY p.codigopractica";
+		}
 	}
+	echo $sqlPractica;
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
