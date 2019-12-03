@@ -20,14 +20,16 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	} else {		
 		if ($cantidaPuntos == 0) {
 			$codigoLike = "%.%";
+			$dontLike = "%.%.%";
 		}
 		if ($cantidaPuntos == 1) {
 			$codigoLike = "%.%.%";
+			$dontLike = "";
 		}
 		$padre = $_POST['padre'];
 		$sqlPractica="SELECT p.*, t.descripcion as complejidad 
 						FROM practicas p, tipocomplejidad t 
-						WHERE p.idpadre = $padre and p.codigopractica like '$codigoLike' and 
+						WHERE p.idpadre = $padre and p.codigopractica like '$codigoLike' and p.codigopractica not like '$dontLike'
 							  p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad 
 						ORDER BY p.codigopractica";
 	}
