@@ -44,8 +44,7 @@ pr.codigocomplejidad = tc.codigocomplejidad and
 n.id = tn.codigonomenclador and
 tn.idtipo = t.id";
 $resPracticas = mysql_query($sqlPracticas,$db);
-$numPracticas = mysql_num_rows($resPracticas);
-?>
+$numPracticas = mysql_num_rows($resPracticas); ?>
 
 <!DOCTYPE>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -83,6 +82,9 @@ $numPracticas = mysql_num_rows($resPracticas);
 			}
 		
 		})
+		.tablesorterPager({
+			container: $("#paginador")
+		});
 	});
 	
 </script>
@@ -153,6 +155,27 @@ $numPracticas = mysql_num_rows($resPracticas);
          <?php } ?>
           </tbody>
         </table>
+        <table class="nover" align="center" width="245" border="0">
+		<tr>
+			<td width="239">
+				<div id="paginador" class="pager">
+					<form>
+						<p align="center">
+						<img src="../../img/first.png" width="16" height="16" class="first"/> <img src="../../img/prev.png" width="16" height="16" class="prev"/>
+						<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
+						<img src="../../img/next.png" width="16" height="16" class="next"/> <img src="../../img/last.png" width="16" height="16" class="last"/>
+						<select name="select" class="pagesize">
+							<option selected="selected" value="15">15 por pagina</option>
+							<option value="30">30 por pagina</option>
+							<option value="60">60 por pagina</option>
+							<option value="<?php echo $numPracticas;?>">Todas</option>
+							</select>
+						</p>
+					</form>	
+				</div>
+			</td>
+		</tr>
+	</table>
    <?php } else { ?>
         	<h3 style="color: blue">ESTE CONTRATO NO TIENE PRACTICAS CARGADAS</h3>
 	<?php } ?>
