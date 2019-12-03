@@ -64,14 +64,10 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
 				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];	
-				$haber = $rowFacturasDet['totalcredito'];
-				if ($rowFacturasDet['totaldebito'] == 0 and $rowFacturasDet['totalcredito'] == 0) {
-					$haber = $rowFacturasDet['importecomprobante'];
-				}
 				if ($rowFacturasDet['totaldebito'] != 0) {
 					$descripcion .= "<br> Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
 				}
-				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $haber);
+				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['importecomprobante']);
 			}
 			
 			$sqlPagosDet = "SELECT * FROM ordencabecera
