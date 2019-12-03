@@ -1,6 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$codigo = $_POST['valor'];
+	$cantidaPuntos = substr_count($codigo,'.');
 	$tipo = $_POST['tipo'];
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th> 
@@ -10,12 +11,26 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 					 <th>Acciones</th>
        			</tr></thead><tbody>";
 	if (!isset($_POST['padre'])) {
-		$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p,tipocomplejidad t WHERE p.idpadre is null and p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
-	} else {
+		$sqlPractica="SELECT p.*, t.descripcion as complejidad 
+						FROM practicas p,tipocomplejidad t 
+						WHERE p.idpadre is null and p.nomenclador = 2 and p.tipopractica = $tipo and 
+						      p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and
+							  p.codigocomplejidad = t.codigocomplejidad
+						ORDER BY p.codigopractica";
+	} else {		
+		if ($cantidaPuntos == 0) {
+			$codigoLike = "%.%";
+		}
+		if ($cantidaPuntos == 1) {
+			$codigoLike = "%.%.%";
+		}
 		$padre = $_POST['padre'];
-		$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.idpadre = $padre and p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
+		$sqlPractica="SELECT p.*, t.descripcion as complejidad 
+						FROM practicas p, tipocomplejidad t 
+						WHERE p.idpadre = $padre and p.codigopractica like '$codigoLike' and 
+							  p.nomenclador = 2 and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad 
+						ORDER BY p.codigopractica";
 	}
-	//echo $sqlPractica;
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
