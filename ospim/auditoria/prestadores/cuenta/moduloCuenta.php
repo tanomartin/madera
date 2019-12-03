@@ -43,7 +43,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			
 			$haber = 0;
 			if ($rowFacturaSinLiqui['sumimporte'] != null) {
-				$haber =  $rowFacturaSinLiqui['sumimporte'];
+				$haber = $rowFacturaSinLiqui['sumimporte'];
 			}
 			if ($rowFacturas['sumdebe'] != null) {
 				$haber += $rowFacturas['sumdebe'];
@@ -63,11 +63,15 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
-				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];	
+				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." ($".number_format($rowFacturasDet['importecomprobante'],2,",",".").")";
+				$haber = $rowFacturasDet['totalcredito'];
+				if ($rowFacturasDet['totaldebito'] == 0 and $rowFacturasDet['totalcredito'] == 0) {
+					$haber = $rowFacturasDet['importecomprobante'];
+				}
 				if ($rowFacturasDet['totaldebito'] != 0) {
 					$descripcion .= "<br> Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
 				}
-				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['importecomprobante']);
+				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $haber, "tipo" => 'F');
 			}
 			
 			$sqlPagosDet = "SELECT * FROM ordencabecera
@@ -84,7 +88,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 				while ($rowDetalleOP = mysql_fetch_array($resDetalleOP)) {
 					$arrayDetOP[$rowDetalleOP['idfactura']] = array("tipo" => $rowDetalleOP['tipocancelacion'], "importe" => $rowDetalleOP['importepago'], "factura" => $rowDetalleOP['puntodeventa']."-".$rowDetalleOP['nrocomprobante']);
 				}				
-				$arrayDetalle[$rowPagosDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowPagosDet['importe'], "haber" => 0, "facturas" => $arrayDetOP);				
+				$arrayDetalle[$rowPagosDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowPagosDet['importe'], "haber" => 0, "facturas" => $arrayDetOP, "tipo" => 'O');				
 				if ($rowPagosDet['retencion'] != 0) {
 					$arrayRete[$rowPagosDet['nroordenpago']] = array('fecha' => $rowPagosDet['fechacomprobante'], 'rete' =>  $rowPagosDet['retencion']);
 				}
@@ -93,7 +97,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			foreach ($arrayRete as $nroorden => $datos) {
 				$index++;
 				$descripcion = "Ret. Orden de Pago $nroorden";
-				$arrayDetalle[$datos['fecha'].$index] = array("descripcion" => $descripcion, "debe" => $datos['rete'], "haber" => 0);
+				$arrayDetalle[$datos['fecha'].$index] = array("descripcion" => $descripcion, "debe" => $datos['rete'], "haber" => 0, "tipo" => 'R');
 			}
 		}
 		ksort($arrayDetalle);
@@ -216,8 +220,8 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 						<td><?php echo number_format($saldo,2,",","."); ?></td>
 					</tr>
 			<?php foreach ($arrayDetalle as $fechas => $detalle) {  
-					$saldo -= $detalle['debe']; 
-					$saldo += $detalle['haber']; 
+					$saldo += $detalle['haber'];
+					if ($detalle['tipo'] != 'F') { $saldo -= $detalle['debe']; }
 					$totalDebe += $detalle['debe'];
 					$totalHaber += $detalle['haber']; ?>
 					<tr>
