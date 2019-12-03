@@ -62,7 +62,11 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	if ($codigo == -1) {
 		$inptuCodigo = "<p>Codigo Practica: <input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='4'/></p>";
 	} else {
-		$inptuCodigo = "<p>Codigo Practica: <b>$codigo</b>.<input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/></p>";
+		$padre = $_POST['padre'];
+		$inptuCodigo = "<p>
+							Codigo Practica: <b>$codigo</b>.<input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/>
+							<input type='text' id='padre' name='padre' value='$padre' size='4' readonly style='visibility:hidden'/>
+						</p>";
 	}
 	$respuesta = "<p><span class='Estilo2'>Carga Nueva Practica</span></p>
 				  $inptuCodigo

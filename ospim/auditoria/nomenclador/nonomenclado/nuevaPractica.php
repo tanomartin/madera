@@ -106,7 +106,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "cargarNuevaPractica.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, padre: valor[0]},
 			}).done(function(respuesta){
 				$("#formularioCargaPractica").html(respuesta);
 			});
@@ -125,7 +125,7 @@ jQuery(function($){
 			type: "POST",
 			dataType: 'html',
 			url: "cargarNuevaPractica.php",
-			data: {valor:valor[1], tipo:tipo},
+			data: {valor:valor[1], tipo:tipo, padre: valor[0]},
 		}).done(function(respuesta){
 			$("#formularioCargaPractica").html(respuesta);
 		});

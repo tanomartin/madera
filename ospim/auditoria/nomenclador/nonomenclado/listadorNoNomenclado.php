@@ -7,16 +7,6 @@ include($libPath."controlSessionOspim.php"); ?>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listador No Nomenclado :.</title>
 
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
@@ -103,7 +93,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, padre:valor[0]},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -123,7 +113,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, padre: valor[0]},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -135,7 +125,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo},
+				data: {valor:valor[1], tipo:tipo, padre: valor[0]},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -153,13 +143,12 @@ jQuery(function($){
   <p>
     <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNoNomenclado.php'" />
   </p>
-  <p><span class="Estilo2">Listador Practicas No Nomencladas </span>  </p>
+  <h3>Listador Practicas No Nomencladas </h3>
   <form id="form1" name="form1" method="post" action="">
     <p>	
       <select name="tipo" id="tipo">
 	  		  <option value='0'>Seleccione Tipo de Practica</option>
-		<?php 
-			$sqlTipos = "SELECT tn.id, t.descripcion FROM tipopracticas t, tipopracticasnomenclador tn WHERE tn.codigonomenclador = 2 and tn.idtipo = t.id";
+	<?php   $sqlTipos = "SELECT tn.id, t.descripcion FROM tipopracticas t, tipopracticasnomenclador tn WHERE tn.codigonomenclador = 2 and tn.idtipo = t.id";
 			$resTipos = mysql_query($sqlTipos,$db);
 			while($rowTipos = mysql_fetch_assoc($resTipos)) { ?>
 			  <option value='<?php echo $rowTipos['id'] ?>'><?php echo $rowTipos['descripcion'] ?></option>
