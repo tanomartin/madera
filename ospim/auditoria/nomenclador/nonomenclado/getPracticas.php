@@ -34,7 +34,7 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 						ORDER BY p.codigopractica";
 		}
 	}
-	echo $sqlPractica;
+	//echo $sqlPractica;
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
 	while($rowPractica=mysql_fetch_assoc($resPractica)) {
