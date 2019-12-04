@@ -35,6 +35,10 @@ if($tipafiliado == 1) {
 
 	$mesfin = (int)date("m");
 	$anofin = date("Y");
+
+	$mesdes = (int)date("m");
+	$anodes = date("Y");
+
 	if($mesfin > 2) {
 		$mesini = $mesfin - 2;
 		$anoini = $anofin;
@@ -47,47 +51,53 @@ if($tipafiliado == 1) {
 //	echo $mesfin; echo "<br>";
 //	echo $anofin; echo "<br>";
 
-	$sqlLeeDDJJ = "SELECT cuil, cuit FROM detddjjospim WHERE cuil = '$cuilafiliado' AND ((anoddjj > '$anoini' AND anoddjj <= '$anofin') OR (anoddjj = '$anoini' and mesddjj >= '$mesini'))";
-	$resLeeDDJJ = mysql_query($sqlLeeDDJJ,$db);
-	$cantddjj = mysql_num_rows($resLeeDDJJ);
+	if($situtitular == 8) {
+		$sqlLeeDesempleo = "SELECT cuilbeneficiario FROM desempleosss WHERE anodesempleo = '$anodes' AND mesdesempleo = '$mesdes' AND parentesco = 0 AND cuilbeneficiario = '$cuilafiliado'";
+		$resLeeDesempleo = mysql_query($sqlLeeDesempleo,$db);
+		$cantdesde = mysql_num_rows($resLeeDesempleo);
 
-	$sqlLeeAportes = "SELECT cuil, cuit FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND concepto = '381' AND ((anopago > '$anoini' AND anopago <= '$anofin') OR (anopago = '$anoini' and mespago >= '$mesini'))";
-	$resLeeAportes = mysql_query($sqlLeeAportes,$db);
-	$cantapor = mysql_num_rows($resLeeAportes);
-//	echo $sqlLeeDDJJ; echo "<br>";
-//	echo $sqlLeeAportes; echo "<br>";
-//	echo $cantapor; echo "<br>";
-//	echo $cantddjj; echo "<br>";
+		if($cantdese == 0) {
+			$reactiva = 0;
+		}
+	} else {
+		$sqlLeeDDJJ = "SELECT cuil, cuit FROM detddjjospim WHERE cuil = '$cuilafiliado' AND ((anoddjj > '$anoini' AND anoddjj <= '$anofin') OR (anoddjj = '$anoini' and mesddjj >= '$mesini'))";
+		$resLeeDDJJ = mysql_query($sqlLeeDDJJ,$db);
+		$cantddjj = mysql_num_rows($resLeeDDJJ);
+	
+		$sqlLeeAportes = "SELECT cuil, cuit FROM afiptransferencias WHERE cuil = '$cuilafiliado' AND concepto = '381' AND ((anopago > '$anoini' AND anopago <= '$anofin') OR (anopago = '$anoini' and mespago >= '$mesini'))";
+		$resLeeAportes = mysql_query($sqlLeeAportes,$db);
+		$cantapor = mysql_num_rows($resLeeAportes);
 
-	if($cantddjj < 1) {
-		if($cantapor < 1) {
-			if(strcmp($tipotitular,"U")!=0) {
-				if($situtitular != 4) {
-					$reactiva = 0;
+		if($cantddjj < 1) {
+			if($cantapor < 1) {
+				if(strcmp($tipotitular,"U")!=0) {
+					if($situtitular != 4) {
+						$reactiva = 0;
+					}
+				}
+			} else {
+				$rowLeeAportes = mysql_fetch_array($resLeeAportes);
+				$cuit = $rowLeeAportes['cuit'];
+			}
+		} else {
+			$rowLeeDDJJ = mysql_fetch_array($resLeeDDJJ);
+			$cuit = $rowLeeDDJJ['cuit'];
+		}
+		
+		if (isset($cuit)) {
+			$sqlJurisEmpresa = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuit' order by disgdinero DESC LIMIT 1";
+			$resJurisEmpresa  = mysql_query($sqlJurisEmpresa,$db);
+			$canJurisEmpresa = mysql_num_rows($resJurisEmpresa);
+			if($canJurisEmpresa < 1) {
+				if(strcmp($tipotitular,"U")!=0) {
+					if($situtitular != 4) {
+						$reactivaEmpresa = 0;
+					}
 				}
 			}
 		} else {
-			$rowLeeAportes = mysql_fetch_array($resLeeAportes);
-			$cuit = $rowLeeAportes['cuit'];
+			$reactivaEmpresa = 0;
 		}
-	} else {
-		$rowLeeDDJJ = mysql_fetch_array($resLeeDDJJ);
-		$cuit = $rowLeeDDJJ['cuit'];
-	}
-	
-	if (isset($cuit)) {
-		$sqlJurisEmpresa = "SELECT codidelega FROM jurisdiccion WHERE cuit = '$cuit' order by disgdinero DESC LIMIT 1";
-		$resJurisEmpresa  = mysql_query($sqlJurisEmpresa,$db);
-		$canJurisEmpresa = mysql_num_rows($resJurisEmpresa);
-		if($canJurisEmpresa < 1) {
-			if(strcmp($tipotitular,"U")!=0) {
-				if($situtitular != 4) {
-					$reactivaEmpresa = 0;
-				}
-			}
-		}
-	} else {
-		$reactivaEmpresa = 0;
 	}
 	
 }
@@ -163,7 +173,7 @@ else {
     <td colspan="2">
     	<div align="center"><h2>
 		<?php if($reactiva == 0) {?>El titular NO tiene en el &uacute;ltimo trimestre ni las DDJJ ni los APORTES necesarios para su reactivaci&oacute;n.<?php }?>
-		<?php if($reactivaEmpresa == 0) {?>La Empresa a la cual hay que activar el empleado no Existe.<?php }?>
+		<?php if($reactivaEmpresa == 0) {?>La Empresa en la cual hay que activar el empleado no Existe.<?php }?>
 		</h2></div></td>
     </tr>
   <tr>
