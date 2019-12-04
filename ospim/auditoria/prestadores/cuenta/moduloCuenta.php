@@ -63,15 +63,11 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
-				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." ($".number_format($rowFacturasDet['importecomprobante'],2,",",".").")";
-				$haber = $rowFacturasDet['totalcredito'];
-				if ($rowFacturasDet['totaldebito'] == 0 and $rowFacturasDet['totalcredito'] == 0) {
-					$haber = $rowFacturasDet['importecomprobante'];
-				}
+				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".");
 				if ($rowFacturasDet['totaldebito'] != 0) {
 					$descripcion .= "<br> Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
 				}
-				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $haber, "tipo" => 'F');
+				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['importecomprobante'], "tipo" => 'F');
 			}
 			
 			$sqlPagosDet = "SELECT * FROM ordencabecera
@@ -221,7 +217,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 					</tr>
 			<?php foreach ($arrayDetalle as $fechas => $detalle) {  
 					$saldo += $detalle['haber'];
-					if ($detalle['tipo'] != 'F') { $saldo -= $detalle['debe']; }
+					$saldo -= $detalle['debe'];
 					$totalDebe += $detalle['debe'];
 					$totalHaber += $detalle['haber']; ?>
 					<tr>
