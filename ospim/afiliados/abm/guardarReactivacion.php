@@ -51,7 +51,7 @@ if(isset($_POST) && !empty($_POST)) {
 				$cantdese = mysql_num_rows($resLeeDesempleo);				
 				if($cantdese > 0) {
 					$rowLeeDesempleo = mysql_fetch_array($resLeeDesempleo);
-					$fechaprimercobro = $rowLeeDesempleo('fechacobro');
+					$fechaprimercobro = $rowLeeDesempleo['fechacobro'];
 				} else {
 					$fechaprimercobro = "0000-00-00";
 				}
