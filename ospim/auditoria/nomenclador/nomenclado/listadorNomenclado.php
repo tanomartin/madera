@@ -61,18 +61,17 @@ jQuery(function($){
 				if (respuesta != 0) {
 					$("#capitulo").html(respuesta);
 					$("#capitulo").prop("disabled",false);
-				} else {
-					$.ajax({
-						type: "POST",
-						dataType: 'html',
-						url: "getPracticas.php",
-						data: {valor:-1, tipo:valor, nomenclador:nomenclador, contrato:contrato},
-					}).done(function(respuesta){
-						if (respuesta != 0) {	
-							$("#practicas").html(respuesta);
-						}
-					});
-				}
+				} 
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "getPracticas.php",
+					data: {valor:-1, tipo:valor, nomenclador:nomenclador, contrato:contrato},
+				}).done(function(respuesta){
+					if (respuesta != 0) {	
+						$("#practicas").html(respuesta);
+					}
+				});
 			}
 		});
 	});
@@ -101,7 +100,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato, padre:valor[0]},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -124,7 +123,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato, padre:valor[0]},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);
@@ -136,7 +135,7 @@ jQuery(function($){
 				type: "POST",
 				dataType: 'html',
 				url: "getPracticas.php",
-				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato},
+				data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, contrato:contrato, padre:valor[0]},
 			}).done(function(respuesta){
 				if (respuesta != 0) {
 					$("#practicas").html(respuesta);

@@ -1,6 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	$codigo=$_POST['valor'];
+	$cantidaPuntos = substr_count($codigo,'.');
 	$tipo = $_POST['tipo'];
 	$nomenclador = $_POST['nomenclador'];
 	$contrato = $_POST['contrato'];
@@ -16,15 +17,28 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 					 <th>Inter.</th>
 					 <th>+Info</th>
        			</tr></thead><tbody>";
-	if ($codigo == -1) {
-		$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and p.nomenclador = $nomenclador and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
+	if (!isset($_POST['padre'])) {
+		$sqlPractica="SELECT p.*, t.descripcion as complejidad 
+						FROM practicas p, tipocomplejidad t 
+						WHERE p.idpadre is null and 
+							  p.nomenclador = $nomenclador and p.tipopractica = $tipo and 
+							  p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and
+							  p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
 	} else {
-		$cantidaPuntos = substr_count($codigo,'.');
+		$padre = $_POST['padre'];
 		if ($cantidaPuntos == 0) {
-			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica like '$codigo.%' and p.codigopractica not like '$codigo.%.%' and p.nomenclador = $nomenclador and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad 
+							FROM practicas p, tipocomplejidad t 
+							WHERE p.idpadre = $padre and p.nomenclador = $nomenclador and p.tipopractica = $tipo and 
+								  p.codigopractica like '%.%' and p.codigopractica not like '%.%.%' and 
+								  p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
 		}
 		if ($cantidaPuntos == 1) {
-			$sqlPractica="SELECT p.*, t.descripcion as complejidad FROM practicas p, tipocomplejidad t WHERE p.codigopractica like '$codigo.%' and p.nomenclador = $nomenclador and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad 
+							FROM practicas p, tipocomplejidad t 
+							WHERE p.idpadre = $padre and p.nomenclador = $nomenclador and p.tipopractica = $tipo and
+								  p.codigopractica like '%.%.%' and 
+								  p.codigocomplejidad = t.codigocomplejidad ORDER BY p.codigopractica";
 		}
 	}
 	
