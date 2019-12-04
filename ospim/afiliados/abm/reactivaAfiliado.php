@@ -54,7 +54,7 @@ if($tipafiliado == 1) {
 	if($situtitular == 8) {
 		$sqlLeeDesempleo = "SELECT cuilbeneficiario FROM desempleosss WHERE anodesempleo = '$anodes' AND mesdesempleo = '$mesdes' AND parentesco = 0 AND cuilbeneficiario = '$cuilafiliado'";
 		$resLeeDesempleo = mysql_query($sqlLeeDesempleo,$db);
-		$cantdesde = mysql_num_rows($resLeeDesempleo);
+		$cantdese = mysql_num_rows($resLeeDesempleo);
 
 		if($cantdese == 0) {
 			$reactiva = 0;

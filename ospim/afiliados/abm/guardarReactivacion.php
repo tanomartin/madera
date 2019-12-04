@@ -44,6 +44,13 @@ if(isset($_POST) && !empty($_POST)) {
 				$cantapor = 0;
 			}
 			
+			if($rowLeeTitular['situaciontitularidad']==8) {
+				$cuitempresa = $rowLeeTitular['cuitempresa'];
+				$fechaempresa = date("Y-m-d");
+				$cantddjj = 0;
+				$cantapor = 0;
+			}
+
 			if(strcmp($rowLeeTitular['tipoafiliado'],"U")==0) {
 				$cuitempresa = $rowLeeTitular['cuitempresa'];
 				$fechaempresa = $rowLeeTitular['fechaempresa'];
