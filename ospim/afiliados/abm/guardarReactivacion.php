@@ -82,6 +82,13 @@ if(isset($_POST) && !empty($_POST)) {
 				$resLeeAportes = mysql_query($sqlLeeAportes,$db);
 				$cantapor = mysql_num_rows($resLeeAportes);
 
+				if($rowLeeTitular['situaciontitularidad']==8) {
+					$cuitempresa = $rowLeeTitular['cuitempresa'];
+					$fechaempresa = date("Y-m-d");
+					$cantddjj = 0;
+					$cantapor = 0;
+				}
+
 				if(strcmp($rowLeeTitular['tipoafiliado'],"U")==0) {
 					$cuitempresa = $rowLeeTitular['cuitempresa'];
 					$fechaempresa = $rowLeeTitular['fechaempresa'];
@@ -108,6 +115,10 @@ if(isset($_POST) && !empty($_POST)) {
 			$rowLeeJurisdiccion = mysql_fetch_array($resLeeJurisdiccion);
 
 			$codidelega = $rowLeeJurisdiccion['codidelega'];
+
+			if($rowLeeTitular['situaciontitularidad']==8) {
+				$codidelega = $rowLeeTitular['codidelega'];
+			}
 
 			$sqlBajaTitular = "INSERT INTO titulares (nroafiliado, apellidoynombre, tipodocumento, nrodocumento, fechanacimiento, nacionalidad, sexo, estadocivil, codprovin, indpostal, numpostal, alfapostal, codlocali, domicilio, ddn, telefono, email, fechaobrasocial, tipoafiliado, solicitudopcion, situaciontitularidad, discapacidad, certificadodiscapacidad, cuil, cuitempresa, fechaempresa, codidelega, categoria, emitecarnet, cantidadcarnet, fechacarnet, lote, tipocarnet, vencimientocarnet, informesss, tipoinformesss, fechainformesss, usuarioinformesss, foto, fecharegistro, usuarioregistro, fechamodificacion, usuariomodificacion, mirroring) VALUES (:nroafiliado, :apellidoynombre, :tipodocumento, :nrodocumento, :fechanacimiento, :nacionalidad, :sexo, :estadocivil, :codprovin, :indpostal, :numpostal, :alfapostal, :codlocali, :domicilio, :ddn, :telefono, :email, :fechaobrasocial, :tipoafiliado, :solicitudopcion, :situaciontitularidad, :discapacidad, :certificadodiscapacidad, :cuil, :cuitempresa, :fechaempresa, :codidelega, :categoria, :emitecarnet, :cantidadcarnet, :fechacarnet, :lote, :tipocarnet, :vencimientocarnet, :informesss, :tipoinformesss, :fechainformesss, :usuarioinformesss, :foto, :fecharegistro, :usuarioregistro, :fechamodificacion, :usuariomodificacion, :mirroring)";
 			$resBajaTitular = $dbh->prepare($sqlBajaTitular);
