@@ -15,7 +15,8 @@ if(isset($_POST) && !empty($_POST)) {
 	$fechamodificacion = date("Y-m-d H:i:s");
 	$usuariomodificacion = $_SESSION['usuario'];
 	$mirroring = "N";
-	
+	$mesdes = (int)date("m");
+	$anodes = date("Y");	
 	try {
 		$hostname = $_SESSION['host'];
 		$dbname = $_SESSION['dbname'];
@@ -45,8 +46,17 @@ if(isset($_POST) && !empty($_POST)) {
 			}
 			
 			if($rowLeeTitular['situaciontitularidad']==8) {
+				$sqlLeeDesempleo = "SELECT * FROM desempleosss WHERE anodesempleo = '$anodes' AND mesdesempleo = '$mesdes' AND parentesco = 0 AND cuilbeneficiario = '$cuilafiliado'";
+				$resLeeDesempleo = mysql_query($sqlLeeDesempleo,$db);
+				$cantdese = mysql_num_rows($resLeeDesempleo);				
+				if($cantdese > 0) {
+					$rowLeeDesempleo = mysql_fetch_array($resLeeDesempleo);
+					$fechaprimercobro = $rowLeeDesempleo('fechacobro');
+				} else {
+					$fechaprimercobro = "0000-00-00";
+				}
 				$cuitempresa = $rowLeeTitular['cuitempresa'];
-				$fechaempresa = date("Y-m-d");
+				$fechaempresa = $fechaprimercobro;
 				$cantddjj = 0;
 				$cantapor = 0;
 			}
@@ -84,8 +94,7 @@ if(isset($_POST) && !empty($_POST)) {
 
 				if($rowLeeTitular['situaciontitularidad']==8) {
 					$cuitempresa = $rowLeeTitular['cuitempresa'];
-					$fechaempresa = date("Y-m-d");
-					$cantddjj = 0;
+					$fechaempresa = $fechaprimercobro;
 					$cantapor = 0;
 				}
 
