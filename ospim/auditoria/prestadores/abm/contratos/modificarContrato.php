@@ -1,7 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php");
-include($libPath."funcionespracticas.php");
 
 $codigo = $_GET['codigo'];
 $idcontrato = $_GET['idcontrato'];
@@ -76,7 +75,7 @@ function validar(formulario) {
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
-  <h3>Datos Contrato</h3>
+  <h3>Datos Contrato - ID <?php echo $idcontrato ?></h3>
   <?php if (isset($_GET['err'])) {
   			print("<font color='#FF0000'><b>Existe un contrato con fecha de finalización posterior a la fecha de inicio que quiere ingresar</b></font>");
  		 } ?>

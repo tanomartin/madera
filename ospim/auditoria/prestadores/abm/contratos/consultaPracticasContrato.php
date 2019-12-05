@@ -1,9 +1,10 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
-include($libPath."funcionespracticas.php");
+include($libPath."fechas.php");
+
 $codigo = $_GET['codigo'];
 $idcontrato = $_GET['idcontrato'];
-$sqlConsultaPresta = "SELECT codigoprestador, nombre, personeria FROM prestadores WHERE codigoprestador = $codigo";
+$sqlConsultaPresta = "SELECT * FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 
@@ -16,44 +17,66 @@ if ($rowCabecera['idcontratotercero'] != 0) {
 	$sqlPrestaTercer = "SELECT p.nombre, p.codigoprestador FROM prestadores p, cabcontratoprestador c WHERE c.idcontrato = $idcontrato and c.codigoprestador = p.codigoprestador";
 	$resPrestaTercer = mysql_query($sqlPrestaTercer,$db);
 	$rowPrestaTercer = mysql_fetch_assoc($resPrestaTercer);
-	$cartel = "<h3 style='color: blue; border: 1px solid blue; width: 500'>Practicas de Contrato de Tercero <br>ID CONTRATO: $idcontrato <br> PRESTADOR: ".$rowPrestaTercer['nombre']." (".$rowPrestaTercer['codigoprestador'].")<h3>";
-} 
-$sqlPracticas = "SELECT pr.*,
-p.*,
-t.descripcion as tipo,
-tc.descripcion as complejidad,
-n.nombre as nombrenomenclador,
-pc.descripcion as categoria
-FROM
-cabcontratoprestador c,
-detcontratoprestador p,
-practicas pr,
-tipopracticasnomenclador tn,
-tipopracticas t,
-tipocomplejidad tc,
-nomencladores n,
-practicascategorias pc
-WHERE
-c.idcontrato = $idcontrato and
-c.idcontrato = p.idcontrato and
-p.idcategoria = pc.id and
-p.idpractica = pr.idpractica and
-pr.nomenclador = n.id and
-pr.tipopractica = tn.id and
-pr.codigocomplejidad = tc.codigocomplejidad and
-n.id = tn.codigonomenclador and
-tn.idtipo = t.id";
-$resPracticas = mysql_query($sqlPracticas,$db);
-$numPracticas = mysql_num_rows($resPracticas); ?>
+	$cartel = "<h3 style='color: blue; border: 1px solid blue; width: 700px'>Practicas de Contrato de Tercero <br>ID CONTRATO: $idcontrato <br> PRESTADOR: ".$rowPrestaTercer['nombre']." (".$rowPrestaTercer['codigoprestador'].")</h3>";
+}
 
-<!DOCTYPE>
+$sqlTiposContrato = "SELECT tn.id, tn.codigonomenclador, tp.descripcion, n.nombre
+						FROM detcontratoprestador d, practicas p, tipopracticasnomenclador tn, tipopracticas tp, nomencladores n
+						WHERE d.idcontrato = $idcontrato and d.idpractica = p.idpractica and p.tipopractica = tn.id and tn.idtipo = tp.id and tn.codigonomenclador = n.id
+						GROUP BY p.tipopractica";
+$resTiposContrato = mysql_query($sqlTiposContrato,$db);
+$numTiposContrato = mysql_num_rows($resTiposContrato);
+$arrayTipos = array();
+if ($numTiposContrato > 0) {
+	while ($rowTiposContrato = mysql_fetch_assoc($resTiposContrato)) {
+		$arrayTipos[$rowTiposContrato['id']] = $rowTiposContrato;
+	}
+}
+
+$sqlSubCapContrato = "SELECT s.*
+						FROM detcontratoprestador d, practicas p, subcapitulosdepracticas s
+						where d.idcontrato = $idcontrato and
+						     d.idpractica = p.idpractica and
+						     p.codigopractica like '%.%.%' and p.idpadre = s.id
+						GROUP BY p.idpadre";
+$resSubCapContrato = mysql_query($sqlSubCapContrato,$db);
+$numSubCapContrato = mysql_num_rows($resSubCapContrato);
+$arrayCapContrato = array();
+$arraySubCapContrato = array();
+if ($numSubCapContrato > 0 ) {
+	while ($rowSubCapContrato = mysql_fetch_assoc($resSubCapContrato)) {
+		$arraySubCapContrato[$rowSubCapContrato['id']] = $rowSubCapContrato['id'];
+		$arrayCapContrato[$rowSubCapContrato['idcapitulo']] = $rowSubCapContrato['idcapitulo'];
+	}
+}
+$listadoSubCapitulos = serialize($arraySubCapContrato);
+$listadoSubCapitulos = urlencode($listadoSubCapitulos);
+
+
+$sqlCapContarto = "SELECT c.*
+					FROM detcontratoprestador d, practicas p, capitulosdepracticas c
+					where d.idcontrato = $idcontrato and
+					     d.idpractica = p.idpractica and
+					     p.codigopractica like '%.%' and
+					     p.codigopractica not like '%.%.%' and p.idpadre = c.id
+					GROUP BY p.idpadre";
+$resCapContrato = mysql_query($sqlCapContarto,$db);
+$numCapContrato = mysql_num_rows($resCapContrato);
+if ($numCapContrato > 0 ) {
+	while ($rowCapContrato = mysql_fetch_assoc($resCapContrato)) {
+		$arrayCapContrato[$rowCapContrato['id']] = $rowCapContrato['id'];
+	}
+}
+$listadoCapitulos = serialize($arrayCapContrato);
+$listadoCapitulos = urlencode($listadoCapitulos);
+
+?>
+
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Contrato Prestador :.</title>
-<style type="text/css" media="print">
-.nover {display:none}
-</style>
+<title>.: Modificar Contrato :.</title>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -63,10 +86,11 @@ $numPracticas = mysql_num_rows($resPracticas); ?>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
+<link rel="stylesheet" href="/madera/lib/tablas.css"/>
 <script type="text/javascript">
 
 	$(function() {
-		$("#practicaencontrato")
+		$("#practicas")
 		.tablesorter({
 			theme: 'blue', 
 			widthFixed: true, 
@@ -80,105 +104,178 @@ $numPracticas = mysql_num_rows($resPracticas); ?>
 				filter_startsWith  : false,
 				filter_hideFilters : false,
 			}
-		
-		})
-		.tablesorterPager({
-			container: $("#paginador")
-		});
+		}),
+		$.unblockUI(); 
 	});
 	
-</script>
+	jQuery(function($){	
+		$("#tipo").change(function(){
+			$("#capitulo").html("<option value='0'>Seleccione Capitulo</option>");
+			$("#capitulo").prop("disabled",true);
+			$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
+			$("#subcapitulo").prop("disabled",true);
+			$("#practicas").html("");
+			var valor = $(this).val();
+			var valores = valor.split("-");
+			var tipo = valores[0];
+			var nomenclador = valores[1];
+			var personeria = $("#personeria").val();
+			var contrato = $("#contrato").val();
+			var idcapitulos = $("#idcapitulos").val();
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "getCapitulosContrato.php",
+				data: {valor:tipo , idcapitulos:idcapitulos},
+			}).done(function(respuesta){
+				if (valor != 0) {
+					if (respuesta != 0) {
+						$("#capitulo").html(respuesta);
+						$("#capitulo").prop("disabled",false);
+					} else {
+						$.ajax({
+							type: "POST",
+							dataType: 'html',
+							url: "getPracticasContrato.php",
+							data: {valor:-1, tipo:tipo, personeria: personeria, nomenclador:nomenclador, contrato:contrato, eleminar:1},
+						}).done(function(respuesta){
+							if (respuesta != 0) {	
+								$("#practicas").html(respuesta);
+							} else {
+								$("#practicas").html("NO EXISTEN PRACTICAS");
+							}
+						});
+					}
+				}
+			});
+		});
+		
+		$("#capitulo").change(function(){
+			$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
+			$("#subcapitulo").prop("disabled",true);
+			$("#practicas").html("");
+			var personeria = $("#personeria").val();
+			var contrato = $("#contrato").val();
+			var subcapitulos = $("#idsubcapitulos").val();
+			var valor = $(this).val();
+			valor = valor.split('-');
+			tipo = $("#tipo").val();
+			tipos = tipo.split('-');
+			tipo = tipos[0];
+			nomenclador = tipos[1];
+			$.ajax({
+				type: "POST",
+				dataType: 'html',
+				url: "getSubCapitulosContrato.php",
+				data: {valor:valor[0], subcapitulos:subcapitulos},
+			}).done(function(respuesta){
+				console.log(respuesta);
+				if (respuesta != 0) {
+					$("#subcapitulo").html(respuesta);	
+					$("#subcapitulo").prop("disabled",false);			
+				}
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "getPracticasContrato.php",
+					data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, personeria:personeria, contrato:contrato, padre:valor[0],eleminar:0},
+				}).done(function(respuesta){
+					if (respuesta != 0) {
+						$("#practicas").html(respuesta);
+					}
+				});
+			});
+		});
+		
+		$("#subcapitulo").change(function(){
+			$("#practicas").html("");
+			var personeria = $("#personeria").val();
+			var contrato = $("#contrato").val();
+			tipo = $("#tipo").val();
+			tipos = tipo.split('-');
+			tipo = tipos[0];
+			nomenclador = tipos[1];
+			var valor = $(this).val();
+			if (valor == 0) { 
+				valor = $("#capitulo").val();
+				valor = valor.split('-');
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "getPracticasContrato.php",
+					data: {valor:valor[1], tipo:tipo, personeria:personeria, contrato:contrato, padre:valor[0], eleminar:0},
+				}).done(function(respuesta){
+					console.log(respuesta);
+					if (respuesta != 0) {
+						$("#practicas").html(respuesta);
+					} 
+				});
+			} else {
+				valor = valor.split('-');
+				$.ajax({
+					type: "POST",
+					dataType: 'html',
+					url: "getPracticasContrato.php",
+					data: {valor:valor[1], tipo:tipo, nomenclador:nomenclador, personeria:personeria, contrato:contrato, padre:valor[0], eleminar:0},
+				}).done(function(respuesta){
+					console.log(respuesta);
+					if (respuesta != 0) {
+						$("#practicas").html(respuesta);
+					}
+				});
+			}
+		});
+	});
 
+</script>
 </head>
+
 <body bgcolor="#CCCCCC">
+<script>
+	$.blockUI({ message: "<h1>Cargando Contrato<br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" } );
+</script>
 <div align="center">
-  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'consultaContratosPrestador.php?codigo=<?php echo $codigo ?>'" /></p>
-  <h3>Contrato Prestador</h3>
-	  <table style="width: 500" border="1">
-        <tr>
-          <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
-          <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
-        </tr>
-        <tr>
-          <td><div align="right"><strong>Nombre / Raz&oacute;n Social</strong></div></td>
-          <td><div align="left">
-              <div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
-          </div></td>
-        </tr>
-  	</table>
-  	<h3>Prácticas del Contrato - Nº  <?php echo $idcontrato ?></h3>
-    <?php echo $cartel ?>
-	<?php  if ($numPracticas > 0) { ?>      
-        <table style="text-align:center; width:1000px; font-size: 13px" id="practicaencontrato" class="tablesorter" >
-          <thead>
-            <tr>
-              <th>C&oacute;digo</th>
-              <?php if ($rowConsultaPresta['personeria'] == 3 || $rowConsultaPresta['personeria'] == 2) { ?><th class="filter-select" data-placeholder="Seleccione Categoria">Categoria</th> <?php } ?>
-			  <th class="filter-select" data-placeholder="Seleccione Nomenclador">Nomenclador</th>
-			  <th class="filter-select" data-placeholder="Seleccione Tipo">Tipo</th>
-		<!--  	  <th class="filter-select" data-placeholder="Seleccione Capitulo">Capitulo</th>
-			  <th class="filter-select" data-placeholder="Seleccione Subcapitulo">Subcapitulo</th> -->
-              <th>Descripciones</th>
-			  <th class="filter-select" data-placeholder="Seleccione Complejidad">Clasificacion<br>Res. 650</th>
-			  <th>Modulo Consultorio / Valor General ($)</th>
-			  <th>Modulo Urgencia ($)</th>
-			  <th>G. Honorarios ($)</th>
-			  <th>G. Honorarios Especialista ($)</th>
-			  <th>G. Honorarios Ayudante ($)</th>
-			  <th>G. Honorarios Anestesista ($)</th>
-			  <th>G. Gastos ($)</th>
-			  <th>Coseguro ($)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-			while($rowPracticas = mysql_fetch_array($resPracticas)) {
-				//$descripPractica = descripcionPractica($rowPracticas['codigopractica'],$rowPracticas['tipopractica'],$db); ?>
-				<tr>
-				  <td><?php echo $rowPracticas['codigopractica'] ?></td>
-				  <?php if ($rowConsultaPresta['personeria'] == 3 || $rowConsultaPresta['personeria'] == 2) { ?> <td> <?php echo $rowPracticas['categoria'] ?></td> <?php } ?>
-				  <td><?php echo $rowPracticas['nombrenomenclador'] ?></td>
-				  <td><?php echo $rowPracticas['tipo'] ?></td>
-		<!--  	  <td><?php //echo $descripPractica['capitulo'] ?></td>
-				  <td><?php //echo $descripPractica['subcapitulo'] ?></td>-->	
-				  <td><?php echo $rowPracticas['descripcion'];?></td>
-				  <td><?php echo $rowPracticas['complejidad'];?></td>
-				  <td><?php echo $rowPracticas['moduloconsultorio'];?></td>
-				  <td><?php echo $rowPracticas['modulourgencia'];?></td>
-				  <td><?php echo $rowPracticas['galenohonorario'];?></td>
-				  <td><?php echo $rowPracticas['galenohonorarioespecialista'];?></td>
-				  <td><?php echo $rowPracticas['galenohonorarioayudante'];?></td>
-				  <td><?php echo $rowPracticas['galenohonorarioanestesista'];?></td>
-				  <td><?php echo $rowPracticas['galenogastos'];?></td>
-				  <td><?php echo $rowPracticas['coseguro'];?></td>
-				</tr>
-         <?php } ?>
-          </tbody>
-        </table>
-        <table class="nover" align="center" width="245" border="0">
-		<tr>
-			<td width="239">
-				<div id="paginador" class="pager">
-					<form>
-						<p align="center">
-						<img src="../../img/first.png" width="16" height="16" class="first"/> <img src="../../img/prev.png" width="16" height="16" class="prev"/>
-						<input name="text" type="text" class="pagedisplay" style="background:#CCCCCC; text-align:center" size="8" readonly="readonly"/>
-						<img src="../../img/next.png" width="16" height="16" class="next"/> <img src="../../img/last.png" width="16" height="16" class="last"/>
-						<select name="select" class="pagesize">
-							<option selected="selected" value="15">15 por pagina</option>
-							<option value="30">30 por pagina</option>
-							<option value="60">60 por pagina</option>
-							<option value="<?php echo $numPracticas;?>">Todas</option>
-							</select>
-						</p>
-					</form>	
-				</div>
-			</td>
-		</tr>
-	</table>
-   <?php } else { ?>
-        	<h3 style="color: blue">ESTE CONTRATO NO TIENE PRACTICAS CARGADAS</h3>
-	<?php } ?>
+  <h3>Consulta de Contratos </h3>
+  <table border="1">
+    <tr>
+      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
+      <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
+    </tr>
+    <tr>
+      <td><div align="right"><strong>Razón Social</strong></div></td>
+      <td>
+      	<div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div>
+      	<input type="hidden" id="personeria" value="<?php echo $rowConsultaPresta['personeria']?>" />
+      </td>
+    </tr>
+  </table>
+  <h3>Prácticas dentro del contrato - ID <?php echo $_GET['idcontrato'] ?> </h3>
+  <?php echo $cartel ?>
+	<input type="hidden" id="contrato" value="<?php echo $idcontrato ?>" />  
+	<input type="hidden" id="idcapitulos" value="<?php echo $listadoCapitulos ?>" />  
+	<input type="hidden" id="idsubcapitulos" value="<?php echo $listadoSubCapitulos ?>" />  
+      <p><select name="tipo" id="tipo">
+          <option value="0">Seleccione Tipo de Practica</option>  
+          <?php foreach ($arrayTipos as $idTipo => $tipos) { ?>
+         	 <option value="<?php echo $idTipo."-".$tipos['codigonomenclador'] ?>"><?php echo $tipos['nombre']." - ".$tipos['descripcion'] ?></option>
+          <?php } ?>
+        </select></p>
+     <p>
+        <select name="capitulo" id="capitulo" disabled="disabled">
+          <option value="0">Seleccione Capitulo</option>
+        </select>
+      </p>
+	  <p>
+        <select name="subcapitulo" id="subcapitulo" disabled="disabled">
+          <option value="0">Seleccione SubCapitulo</option>
+        </select>
+      </p>
+     <table style="text-align:center; font-size: 13px" id="practicas" class="tablesorter" >
+		 <thead>
+		 </thead>
+		 <tbody>
+		 </tbody>
+  	 </table>
 </div>
 </body>
 </html>

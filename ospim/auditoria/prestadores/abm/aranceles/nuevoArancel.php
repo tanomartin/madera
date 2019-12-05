@@ -1,7 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php");
-include($libPath."funcionespracticas.php");
 
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";

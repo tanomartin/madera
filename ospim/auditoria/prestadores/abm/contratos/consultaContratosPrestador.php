@@ -51,6 +51,11 @@ $numCabContrato = mysql_num_rows($resCabContrato); ?>
 		
 		})
 	});
+
+	function abrirPracticas(dire) {
+		a= window.open(dire,"InfoPeriodoCuentaCorrienteEmpresa",
+		"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+	}
 	
 </script>
 
@@ -103,7 +108,7 @@ $numCabContrato = mysql_num_rows($resCabContrato); ?>
 							}
  						  } ?>
  				</td>
-				<td><input type="button" value="Practicas" name="verpracticas" id="verpracticas" onclick="location.href = 'consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>' " /></td>
+				<td><input type="button" value="Practicas" name="verpracticas" id="verpracticas" onclick="javascript:abrirPracticas('consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>') " /></td>
 			  </tr>
 	<?php } ?>
 			</tbody>

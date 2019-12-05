@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['valor'])) {
 	$tipo=$_POST['valor'];
-	$sqlCapitulo="SELECT * FROM capitulosdepracticas WHERE idtipopractica = '$tipo'";
+	$sqlCapitulo="SELECT * FROM capitulosdepracticas WHERE idtipopractica = '$tipo' ORDER BY codigo";
 	$resCapitulo=mysql_query($sqlCapitulo,$db);
 	$canCapitulo = mysql_num_rows($resCapitulo);
 	if ($canCapitulo == 0) {

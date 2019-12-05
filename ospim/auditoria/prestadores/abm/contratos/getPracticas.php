@@ -1,40 +1,65 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'])) {
 	$codigo=$_POST['valor'];
+	$cantidaPuntos = substr_count($codigo,'.');
 	$tipo = $_POST['tipo'];
 	$nomenclador = $_POST['nomenclador'];
-	$personeria = $_POST['personeria'];
+	$personeria = $_POST['personeria'];		
+	
+	$sqlCategoria = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
+	$resCategoria = mysql_query($sqlCategoria,$db);
+	$canCategoria = mysql_num_rows($resCategoria);
+	$arrayCategoria = array();
+	if ($canCategoria > 0) {
+		while($rowCategoria = mysql_fetch_assoc($resCategoria)) {
+			$arrayCategoria[$rowCategoria['id']] = $rowCategoria['descripcion'];
+		}
+	}
+	
+	if (!isset($_POST['padre'])) {
+		$sqlPractica="SELECT p.*, t.descripcion as complejidad
+						FROM practicas p, tipocomplejidad t
+						WHERE p.nomenclador = $nomenclador and p.idpadre is null and p.tipopractica = $tipo and 
+							  p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and 
+							  p.codigocomplejidad = t.codigocomplejidad
+						ORDER BY p.codigopractica";
+	} else {
+		$padre = $_POST['padre'];
+		if ($cantidaPuntos == 0) {
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad
+							FROM practicas p, tipocomplejidad t
+							WHERE p.nomenclador = $nomenclador and p.idpadre = $padre and
+								  p.codigopractica like '%.%' and p.codigopractica not like '%.%.%' and 
+								  p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad 
+							ORDER BY p.codigopractica";
+		}
+		if ($cantidaPuntos == 1) {
+			$sqlPractica="SELECT p.*, t.descripcion as complejidad
+							FROM practicas p, tipocomplejidad t
+						    WHERE p.nomenclador = $nomenclador and p.idpadre = $padre and
+								  p.codigopractica like '%.%.%' and p.tipopractica = $tipo and 
+								  p.codigocomplejidad = t.codigocomplejidad 
+							ORDER BY codigopractica";
+		}
+	}
+	
 	$respuesta = "<thead><tr>
-	         		<th>Cod.</th>
-					<th>Nomenclador</th>
+	         		<th>Codigo</th>
 					<th>Descripciones</th>
-					<th>Clasificacion<br>Res. 650</th>
-					<th>Internacion</th>
+					<th>Clas.<br>Res. 650</th>
+					<th>Inter.</th>
 					<th>Categoria</th>
 					<th></th>
-					<th>Modulo Consultorio / Valor General ($)</th>
-					<th>Modulo Urgencia ($)</th>
-					<th>G. Honorarios ($)</th>
-					<th>G. Honorarios Especialista ($)</th>
-					<th>G. Honorarios Ayudante ($)</th>
-					<th>G. Honorarios Anestesista ($)</th>
+					<th>Modulo Consul. / Valor General ($)</th>
+					<th>Modulo Urgen. ($)</th>
+					<th>G. Hono. ($)</th>
+					<th>G. Hono. Especialista ($)</th>
+					<th>G. Hono. Ayudante ($)</th>
+					<th>G. Hono. Anestesista ($)</th>
 					<th>G. Gastos ($)</th>
 					<th>Coseguro ($)</th>
 	       		</tr></thead><tbody>";
-				
-	if ($codigo == -1) {
-		$sqlPractica="SELECT p.*, t.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipocomplejidad t, nomencladores n WHERE p.codigopractica not like '%.%' and p.codigopractica not like '%.%.%' and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
-	} else {
-		$cantidaPuntos = substr_count($codigo,'.');
-		if ($cantidaPuntos == 0) {
-			$sqlPractica="SELECT p.*, t.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipocomplejidad t, nomencladores n WHERE p.codigopractica like '$codigo.%' and p.codigopractica not like '$codigo.%.%' and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
-		}
-		if ($cantidaPuntos == 1) {
-			$sqlPractica="SELECT p.*, t.descripcion as complejidad, n.nombre as nombrenomenclador FROM practicas p, tipocomplejidad t, nomencladores n WHERE p.codigopractica like '$codigo.%' and p.tipopractica = $tipo and p.codigocomplejidad = t.codigocomplejidad";
-		}
-	}
-	$sqlPractica .= " and p.nomenclador = $nomenclador and p.nomenclador = n.id order by p.idpractica";
-
+	
 	$resPractica=mysql_query($sqlPractica,$db);
 	$canPractica=mysql_num_rows($resPractica);
 	$i= 0;
@@ -46,16 +71,13 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 		}
 		$respuesta.="<tr>
 						<td>".$rowPractica['codigopractica']."</td>
-						<td>".$rowPractica['nombrenomenclador']."</td>
 						<td>".$rowPractica['descripcion']."</td>		
 						<td>".$rowPractica['complejidad']."</td>
 						<td>".$inte."</td>";
-		$respuesta.="<td><select id='categoria-".$i."' name='categoria-".$id."'>";
 		
-		$sqlCategoria = "select * from practicascategorias where (tipoprestador = 0 or tipoprestador = $personeria)";
-		$resCategoria = mysql_query($sqlCategoria,$db);
-		while($rowCategoria = mysql_fetch_assoc($resCategoria)) { 
-			$respuesta.="<option value='".$rowCategoria['id']."'>".$rowCategoria['descripcion']."</option>";
+		$respuesta.="<td><select id='categoria-".$i."' name='categoria-".$id."'>";
+		foreach ($arrayCategoria as $idCatego => $categoria) {
+			$respuesta.="<option value='".$idCatego."'>".$categoria."</option>";
 		}
 		
 		$respuesta.="</select></td>";
@@ -77,7 +99,6 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 		$i++;
 	}
 	$respuesta.="</tbody>";
-	
 	if($canPractica == 0) {
 		$respuesta = 0;
 	}

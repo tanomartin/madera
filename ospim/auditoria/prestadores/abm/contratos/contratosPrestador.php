@@ -1,7 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 include($libPath."fechas.php");
-include($libPath."funcionespracticas.php");
 
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
@@ -57,6 +56,10 @@ $numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos); ?>
 		})
 	});
 
+	function abrirPracticas(dire) {
+		a= window.open(dire,"InfoPeriodoCuentaCorrienteEmpresa",
+		"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+	}
 	
 </script>
 </head>
@@ -88,42 +91,48 @@ $numCabContratoAbiertos = mysql_num_rows($resCabContratoAbiertos); ?>
 				<th>Fecha Fin</th>
 				<th>Contrato de Tercero</th>
 				<th>Contratos Asociados [ID - Prestador (codigo)]</th>
-				<th></th>
+				<th>Acciones</th>
+				<th>Acc. Cont. Abierto (propios)</th>
             </tr>
           </thead>
           <tbody>
-            <?php
-			while($rowCabContrato = mysql_fetch_array($resCabContrato)) { 
+      <?php while($rowCabContrato = mysql_fetch_array($resCabContrato)) { 
 				$sqlContraRelacionados = "SELECT c.*, p.nombre, p.codigoprestador FROM cabcontratoprestador c, prestadores p
 											WHERE c.idcontratotercero = ".$rowCabContrato['idcontrato']." and 
 												  c.codigoprestador = p.codigoprestador";
  				$resContraRelacionados = mysql_query($sqlContraRelacionados,$db);
  				$numContraRelacionados = mysql_num_rows($resContraRelacionados); ?>
 				<tr>
-				<td><?php echo $rowCabContrato['idcontrato'];?></td>
-				<td><?php echo invertirFecha($rowCabContrato['fechainicio']);?></td>
-				<td><?php if($rowCabContrato['fechafin'] == NULL) {
-							  echo "-";
-						  } else {
-						   	  echo invertirFecha($rowCabContrato['fechafin']);
-						  }?></td>
-				<td><?php if ($rowCabContrato['idcontratotercero'] == 0) { echo "-"; } else { echo $rowCabContrato['idcontratotercero']." - ".$rowCabContrato['nombre']. " (".$rowCabContrato['codigoprestador'].")"; } ?></td>
-				<td><?php if ($numContraRelacionados == 0) { 
-							echo "-"; 
-						  } else {
-							while($rowContraRelacionados = mysql_fetch_array($resContraRelacionados)) {
-								echo $rowContraRelacionados['idcontrato']." - ".$rowContraRelacionados['nombre']." (".$rowContraRelacionados['codigoprestador'].")"."<hr>";
-							}
- 						  } ?>
- 				</td>
-				<td><?php if (($rowCabContrato['fechafin'] == NULL || $rowCabContrato['fechafin'] > $today) && $rowCabContrato['idcontratotercero'] == 0) { ?> 
-							<input type="button" value="Modificar Practicas" name="modifpracticas" id="modifpracticas" onclick="location.href='modificarPracticasContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
-							<input type="button" value="Modificar Contrato" name="modifcontrato" id="modifcontrato" onclick="location.href='modificarContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> -
-							<input type="button" value="Duplicar Contrato con Aumento %" name="aumentocontrato" id="modifcontrato" onclick="location.href='aumentoPorcentaje.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/>
-					<?php } else { ?>
-							<input type="button" value="Ver Practicas" name="verpracticas" id="verpracticas" onclick="location.href = 'consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>' "/>
-					<?php }  ?>	
-				</td>
+					<td><?php echo $rowCabContrato['idcontrato'];?></td>
+					<td><?php echo invertirFecha($rowCabContrato['fechainicio']);?></td>
+					<td><?php if($rowCabContrato['fechafin'] == NULL) {
+								  echo "-";
+							  } else {
+							   	  echo invertirFecha($rowCabContrato['fechafin']);
+							  }?></td>
+					<td><?php if ($rowCabContrato['idcontratotercero'] == 0) { echo "-"; } else { echo $rowCabContrato['idcontratotercero']." - ".$rowCabContrato['nombre']. " (".$rowCabContrato['codigoprestador'].")"; } ?></td>
+					<td><?php if ($numContraRelacionados == 0) { 
+								echo "-"; 
+							  } else {
+								while($rowContraRelacionados = mysql_fetch_array($resContraRelacionados)) {
+									echo $rowContraRelacionados['idcontrato']." - ".$rowContraRelacionados['nombre']." (".$rowContraRelacionados['codigoprestador'].")"."<hr>";
+								}
+	 						  } ?>
+	 				</td>
+					<td>
+					
+							<input type="button" value="Ver Practicas" name="verpracticas" id="verpracticas" onclick="javascript:abrirPracticas('consultaPracticasContrato.php?codigo=<?php echo $codigo?>&idcontrato=<?php echo $rowCabContrato['idcontrato']?>')" /></br>
+					<?php if ($rowCabContrato['idcontratotercero'] == 0) { ?>	
+							<input type="button" value="Agregar Practicas" name="addpracticas" id="addpracticas" onclick="location.href='agregarPracticas.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/>
+				    <?php } ?>
+					</td>
+					<td>
+					<?php  if (($rowCabContrato['fechafin'] == NULL || $rowCabContrato['fechafin'] > $today) and $rowCabContrato['idcontratotercero'] == 0) { ?> 
+								<input type="button" value="Eliminar Practicas" name="eliminarPracticas" id="eliminarPracticas" onclick="location.href='eliminarPracticas.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/></br>
+								<input type="button" value="Modificar Cabecera" name="modifcontrato" id="modifcontrato" onclick="location.href='modificarContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> </br>
+								<input type="button" value="Duplicar Aum. %" name="aumentocontrato" id="modifcontrato" onclick="location.href='aumentoPorcentaje.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/>
+					 <?php } ?>
+					</td>
 				</tr>
          <?php } ?>
           </tbody>
