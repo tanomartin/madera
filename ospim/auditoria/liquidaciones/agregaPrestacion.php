@@ -134,137 +134,238 @@ if(isset($_POST)) {
 //  DESDE ACA VA A LA TABLA facturasestadisticas
 	$agregaestadistica = false;
 	$valorcomputo = 0;
-	$valoralta = 0;
-	$diastotal = 0;
-	$diascoronaria = 0;
-	$diasintensiva = 0;
-	$diasneonatologia = 0;
+	$cantidadcomputo = 0;
+	$estadisticas = array();
+	$estadindices = 0;
 	 if(isset($_POST['calculoestadistico'])) {
 		if($_POST['calculoestadistico']==1) {
 			if(isset($_POST['estamb'])) {
 				if($_POST['estamb']==1) {
 					$agregaestadistica = true;
 					if(isset($_POST['amb1'])) {
-						if($_POST['amb1']!=NULL)
+						if($_POST['amb1']!=NULL) {
 							$valorcomputo = $_POST['amb1'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['amb2'])) {
-						if($_POST['amb2']!=NULL)
+						if($_POST['amb2']!=NULL) {
 							$valorcomputo = $_POST['amb2'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 						if(isset($_POST['amb21'])) {
-							if($_POST['amb21']!=NULL)
+							if($_POST['amb21']!=NULL) {
 								$valorcomputo = $_POST['amb21'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 						if(isset($_POST['amb22'])) {
-							if($_POST['amb22']!=NULL)
+							if($_POST['amb22']!=NULL) {
 								$valorcomputo = $_POST['amb22'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 					}
 					if(isset($_POST['amb3'])) {
-						if($_POST['amb3']!=NULL)
+						if($_POST['amb3']!=NULL) {
 							$valorcomputo = $_POST['amb3'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 						if(isset($_POST['amb31'])) {
-							if($_POST['amb31']!=NULL)
+							if($_POST['amb31']!=NULL) {
 								$valorcomputo = $_POST['amb31'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 						if(isset($_POST['amb32'])) {
-							if($_POST['amb32']!=NULL)
+							if($_POST['amb32']!=NULL) {
 								$valorcomputo = $_POST['amb32'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 						if(isset($_POST['amb33'])) {
-							if($_POST['amb33']!=NULL)
+							if($_POST['amb33']!=NULL) {
 								$valorcomputo = $_POST['amb33'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 					}
 					if(isset($_POST['amb4'])) {
-						if($_POST['amb4']!=NULL)
+						if($_POST['amb4']!=NULL) {
 							$valorcomputo = $_POST['amb4'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['amb5'])) {
-						if($_POST['amb5']!=NULL)
+						if($_POST['amb5']!=NULL) {
 							$valorcomputo = $_POST['amb5'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['amb6'])) {
-						if($_POST['amb6']!=NULL)
+						if($_POST['amb6']!=NULL) {
 							$valorcomputo = $_POST['amb6'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['amb7'])) {
-						if($_POST['amb7']!=NULL)
+						if($_POST['amb7']!=NULL) {
 							$valorcomputo = $_POST['amb7'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['amb8'])) {
-						if($_POST['amb8']!=NULL)
+						if($_POST['amb8']!=NULL) {
 							$valorcomputo = $_POST['amb8'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
-					$valoralta = 0;
-					$diastotal = 0;
-					$diascoronaria = 0;
-					$diasintensiva = 0;
-					$diasneonatologia = 0;
 				}
 			}
 			if(isset($_POST['estint'])) {
 				if($_POST['estint']==1) {
 					$agregaestadistica = true;
 					if(isset($_POST['int9'])) {
-						if($_POST['int9']!=NULL)
+						if($_POST['int9']!=NULL) {
 							$valorcomputo = $_POST['int9'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['int10'])) {
-						if($_POST['int10']!=NULL)
+						if($_POST['int10']!=NULL) {
 							$valorcomputo = $_POST['int10'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['int11'])) {
-						if($_POST['int11']!=NULL)
+						if($_POST['int11']!=NULL) {
 							$valorcomputo = $_POST['int11'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['int12'])) {
-						if($_POST['int12']!=NULL)
+						if($_POST['int12']!=NULL) {
 							$valorcomputo = $_POST['int12'];
+							$cantidadcomputo = 1;
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+							$estadindices++;
+						}
 						if(isset($_POST['int121'])) {
-							if($_POST['int121']!=NULL)
+							if($_POST['int121']!=NULL) {
 								$valorcomputo = $_POST['int121'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 						if(isset($_POST['int122'])) {
-							if($_POST['int122']!=NULL)
+							if($_POST['int122']!=NULL) {
 								$valorcomputo = $_POST['int122'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 						if(isset($_POST['int123'])) {
-							if($_POST['int123']!=NULL)
+							if($_POST['int123']!=NULL) {
 								$valorcomputo = $_POST['int123'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 						if(isset($_POST['int124'])) {
-							if($_POST['int124']!=NULL)
+							if($_POST['int124']!=NULL) {
 								$valorcomputo = $_POST['int124'];
+								$cantidadcomputo = 1;
+								$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+								$estadindices++;
+							}
 						}
 					}
 					if(isset($_POST['int13'])) {
-						if($_POST['int13']!=NULL)
-							$valoralta = $_POST['int13'];
+						if($_POST['int13']!=NULL) {
+							$valorcomputo = $_POST['int13'];
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => 1);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['int141'])) {
-						if($_POST['int141']!=NULL)
-							$valoralta = $_POST['int141'];
+						if($_POST['int141']!=NULL) {
+							$valorcomputo = $_POST['int141'];
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => 1);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['int142'])) {
-						if($_POST['int142']!=NULL)
-							$valoralta = $_POST['int142'];
+						if($_POST['int142']!=NULL) {
+							$valorcomputo = $_POST['int142'];
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => 1);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['int143'])) {
-						if($_POST['int143']!=NULL)
-							$valoralta = $_POST['int143'];
+						if($_POST['int143']!=NULL) {
+							$valorcomputo = $_POST['int143'];
+							$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => 1);
+							$estadindices++;
+						}
 					}
 					if(isset($_POST['diastotal'])) {
-						$diastotal = $_POST['diastotal'];
+						$valorcomputo = 15;
+						$cantidadcomputo = $_POST['diastotal'];
+						$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+						$estadindices++;
 					}
 					if(isset($_POST['diascoronaria'])) {
-						$diascoronaria = $_POST['diascoronaria'];
+						$valorcomputo = 151;
+						$cantidadcomputo = $_POST['diascoronaria'];
+						$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+						$estadindices++;
 					}
 					if(isset($_POST['diasintensiva'])) {
-						$diasintensiva = $_POST['diasintensiva'];
+						$valorcomputo = 152;
+						$cantidadcomputo = $_POST['diasintensiva'];
+						$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+						$estadindices++;
 					}
 					if(isset($_POST['diasneonatologia'])) {
-						$diasneonatologia = $_POST['diasneonatologia'];
+						$valorcomputo = 153;
+						$cantidadcomputo = $_POST['diasneonatologia'];
+						$estadisticas[$estadindices] = array('vcomputo' => $valorcomputo,'ccomputo' => $cantidadcomputo);
+						$estadindices++;
 					}
 				}
 			}
@@ -292,9 +393,11 @@ if(isset($_POST)) {
 		}
 
 		if($agregaestadistica) {
-			$sqlAddFacturasEstadisticas = "INSERT INTO facturasestadisticas(id,idFacturaprestacion,valorcomputo,valoralta,diastotal,diascoronaria,diasintensiva,diasneonatologia) VALUES(:id,:idFacturaprestacion,:valorcomputo,:valoralta,:diastotal,:diascoronaria,:diasintensiva,:diasneonatologia)";
-			$resAddFacturasEstadisticas = $dbh->prepare($sqlAddFacturasEstadisticas);
-			if($resAddFacturasEstadisticas->execute(array(':id' => 'DEFAULT',':idFacturaprestacion' => $lastidfacturaprestacion,':valorcomputo' => $valorcomputo,':valoralta' => $valoralta, ':diastotal' => $diastotal,':diascoronaria' => $diascoronaria,':diasintensiva' => $diasintensiva,':diasneonatologia' => $diasneonatologia))) {
+			foreach($estadisticas as $valestadistica) {
+				$sqlAddFacturasEstadisticas = "INSERT INTO facturasestadisticas(id,idFacturaprestacion,valorcomputo,cantidadcomputo) VALUES(:id,:idFacturaprestacion,:valorcomputo,:cantidadcomputo)";
+				$resAddFacturasEstadisticas = $dbh->prepare($sqlAddFacturasEstadisticas);
+				if($resAddFacturasEstadisticas->execute(array(':id' => 'DEFAULT',':idFacturaprestacion' => $lastidfacturaprestacion,':valorcomputo' => $valestadistica['vcomputo'],':cantidadcomputo' => $valestadistica['ccomputo']))) {
+				}
 			}
 		}
 

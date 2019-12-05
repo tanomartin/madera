@@ -9,7 +9,7 @@ if(isset($_GET)) {
 	$tieneresolucion =  $_GET['nomencladorResolucion'];
 	$noencontro = TRUE;
 	$prestaciones = array();
-
+	set_time_limit(0);
 	if($tienecontrato == 1) {
 		$sqlLeePracticasContrato="SELECT c.idcontrato, c.codigoprestador, c.fechainicio, c.fechafin, d.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, p.internacion, j.codigocomplejidad, j.descripcion AS complejidad, d.idcategoria, t.descripcion AS nombrecategoria, d.moduloconsultorio, d.modulourgencia, ROUND((d.galenohonorario*p.unihonorario),2) AS honorario, ROUND((d.galenohonorarioespecialista*p.unihonorarioespecialista),2) AS especialista, ROUND((d.galenohonorarioayudante*p.unihonorarioayudante),2) AS ayudante, ROUND((d.galenohonorarioanestesista*p.unihonorarioanestesista),2) AS anestesista, ROUND((d.galenogastos*p.unigastos),2) AS gastos, d.coseguro, (ROUND((d.galenohonorario*p.unihonorario),2)+ROUND((d.galenohonorarioespecialista*p.unihonorarioespecialista),2)+ROUND((d.galenohonorarioayudante*p.unihonorarioayudante),2)+ROUND((d.galenohonorarioanestesista*p.unihonorarioanestesista),2)+ROUND((d.galenogastos*p.unigastos),2)) AS valorgaleno FROM cabcontratoprestador c, detcontratoprestador d, practicas p, practicascategorias t, tipocomplejidad j WHERE c.codigoprestador = $idprestador AND (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND c.idcontrato = d.idcontrato AND d.idpractica = p.idpractica AND d.idcategoria = t.id AND p.codigocomplejidad = j.codigocomplejidad";
 		$resLeePracticasContrato=mysql_query($sqlLeePracticasContrato,$db);
@@ -23,7 +23,7 @@ if(isset($_GET)) {
 				}
 				if(strcmp($fechainicontrato, $fechaprestacion) <= 0) {
 					if(strcmp($fechafincontrato, $fechaprestacion) >= 0) {					
-						if($rowLeePracticasContrato['moduloconsultorio']>=0.00) {
+						if($rowLeePracticasContrato['moduloconsultorio']>0.00) {
 							$noencontro = FALSE;
 							$nombrepractica = utf8_encode($rowLeePracticasContrato['nombrepractica']);
 							$prestaciones[] = array(
@@ -42,7 +42,7 @@ if(isset($_GET)) {
 								'internacion' => $rowLeePracticasContrato['internacion'],
 							);
 						}
-						if($rowLeePracticasContrato['modulourgencia']>=0.00) {
+						if($rowLeePracticasContrato['modulourgencia']>0.00) {
 							$noencontro = FALSE;
 							$nombrepractica = utf8_encode($rowLeePracticasContrato['nombrepractica']);
 							$prestaciones[] = array(
@@ -61,7 +61,7 @@ if(isset($_GET)) {
 								'internacion' => $rowLeePracticasContrato['internacion'],
 							);
 						}
-						if($rowLeePracticasContrato['valorgaleno']>=0.00) {
+						if($rowLeePracticasContrato['valorgaleno']>0.00) {
 							$noencontro = FALSE;
 							$nombrepractica = utf8_encode($rowLeePracticasContrato['nombrepractica']);
 							$prestaciones[] = array(
@@ -99,7 +99,7 @@ if(isset($_GET)) {
 				}
 				if(strcmp($fechainiresolucion, $fechaprestacion) <= 0) {
 					if(strcmp($fechafinresolucion, $fechaprestacion) >= 0) {
-						if($rowLeePracticasResolucion['modulo']>=0.00) {
+						if($rowLeePracticasResolucion['modulo']>0.00) {
 							$noencontro = FALSE;
 							$nombrepractica = utf8_encode($rowLeePracticasResolucion['nombrepractica']);
 							$prestaciones[] = array(

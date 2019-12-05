@@ -4,7 +4,8 @@ include($libPath."fechas.php");
 if(isset($_GET['getBeneficiaro'])) {
 	$busqueda = $_GET['getBeneficiaro'];
 	$noencontro = TRUE;
-	$beneficiarios = array();  
+	$beneficiarios = array();
+	set_time_limit(0);
 	if(is_numeric($busqueda)) {
 		$sqlLeeTitularesActivos="SELECT nroafiliado, apellidoynombre, cuil, codidelega FROM titulares WHERE cuil like '%$busqueda%' OR nroafiliado = $busqueda";
 		$sqlLeeTitularesInactivos="SELECT nroafiliado, apellidoynombre, cuil, codidelega, fechabaja FROM titularesdebaja WHERE cuil like '%$busqueda%' OR nroafiliado = $busqueda";

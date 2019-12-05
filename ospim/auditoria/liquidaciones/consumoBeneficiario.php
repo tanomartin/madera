@@ -1021,6 +1021,11 @@ $(document).ready(function(){
 		}
 	});
 	$("#agregarprestacion").on("click", function() {
+		if($("#cantidad").val()=='') {
+			var cajadialogo = $('<div title="Aviso"><p>Debe ingresar la Cantidad/Unidades de la Prestacion.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#cantidad').focus(); }});
+			return;
+		}
 		var datosform = $("form#consumoPrestacional").serialize();
 		$.blockUI({ message: "<h1>Agregando Prestacion a la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 		$.ajax({
