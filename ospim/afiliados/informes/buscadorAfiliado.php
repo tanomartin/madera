@@ -229,7 +229,8 @@ function validar(formulario) {
 		} else { ?>
 			<p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>			
 <?php	} 
-		if ($existe == 1 || $existeBaja == 1) { ?>
+		if ($existe == 1 || $existeBaja == 1) {
+			print("<p><b>TITULARES</b></p>");?>
 			<table class="tablesorter" id="listaResultado" style="width:900px; font-size:14px">
 			  <thead>
 				<tr>
@@ -243,7 +244,6 @@ function validar(formulario) {
 			  </thead>
 			  <tbody>
 		<?php if ($existe == 1) { 
-				 print("<p><b>TITULARES</b></p>");
 				 while($rowEmpleados = mysql_fetch_assoc($resEmpleados)) { ?>
 				<tr align="center">
 				  <td><?php echo $rowEmpleados['nroafiliado'];?></td>
