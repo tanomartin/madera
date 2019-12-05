@@ -302,13 +302,13 @@ function validar(formulario) {
 				<?php } 
 				   }
 				   if ($existeFamiliaBaja == 1) { 
-				   	while($rowFamiliaresBaja = mysql_fetch_assoc($resFamiliaresBaja)) { ?>
+				   	while($rowFamiliaBaja = mysql_fetch_assoc($resFamiliaBaja)) { ?>
 					<tr align="center">
-					  <td><?php echo $rowFamiliaresBaja['nroafiliado'];?></td>	
-					  <td><?php echo $rowFamiliaresBaja['cuil'];?></td>
-					  <td><?php echo $rowFamiliaresBaja['apellidoynombre']?></td>
-					  <td><?php echo $rowFamiliaresBaja['tipodocumento'].": ".$rowFamiliaresBaja['nrodocumento'];?></td>
-					  <td><?php echo $rowFamiliaresBaja['sexo']; ?></td>
+					  <td><?php echo $rowFamiliaBaja['nroafiliado'];?></td>	
+					  <td><?php echo $rowFamiliaBaja['cuil'];?></td>
+					  <td><?php echo $rowFamiliaBaja['apellidoynombre']?></td>
+					  <td><?php echo $rowFamiliaBaja['tipodocumento'].": ".$rowFamiliaBaja['nrodocumento'];?></td>
+					  <td><?php echo $rowFamiliaBaja['sexo']; ?></td>
 					  <td><?php echo "SI" ?></td>
 					</tr>
 					<?php } 
