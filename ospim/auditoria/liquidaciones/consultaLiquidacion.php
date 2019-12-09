@@ -113,7 +113,7 @@ if ($numBeneficiarios > 0) {
 <body bgcolor="#CCCCCC">
 <div align="center">
 	<h3>Detalle de Liquidacion</h3>
-	<h3 style="color: blue"><?php echo $_GET['estado']; ?></br> (<?php echo $today ?>)  </h3>
+	<h3 style="color: blue">Estado: <?php echo $_GET['estado']; ?></br>Auditor: '<?php echo $_SESSION['usuario'] ?>'</br> (<?php echo $today ?>) </h3>
 	<h3 style="margin-bottom:1px">ID Interno: <?php echo $rowFactura['id'];?> - Fecha de Recepcion: <?php echo $rowFactura['fecharecepcion'];?> - Fecha de Correo: <?php echo $rowFactura['fechacorreo'];?></h3>
 	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 50%">
 		<table>
