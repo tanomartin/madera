@@ -79,6 +79,11 @@ $(document).ready(function(){
 			container: $("#paginadorUsuario")
 		});
 });
+
+function abrirPop(dire){	
+	window.open(dire,'Planilla De Debito','width=800, height=500,resizable=yes');
+}
+
 </script>
 </head>
 <body bgcolor="#CCCCCC">
@@ -178,7 +183,8 @@ $(document).ready(function(){
 				<td><?php echo $rowFacturasUsuario['importecomprobante'];?></td>
 				<td><?php echo invertirFecha($rowFacturasUsuario['fechavencimiento']);?></td>
 				<td>
-					<input class="nover" type="button" id="continuarLiquidacion" name="continuarLiquidacion" value="Continuar Liquidacion" onclick="location.href = 'continuarLiquidacion.php?idfactura=<?php echo $rowFacturasUsuario['id'] ?>'"/>
+					<input class="nover" type="button" id="continuarLiquidacion" name="continuarLiquidacion" value="Continuar Liquidacion" onclick="location.href = 'continuarLiquidacion.php?idfactura=<?php echo $rowFacturasUsuario['id'] ?>'"/></br>
+					<input type="button" value="Ver Liquidacion" onclick="abrirPop('consultaLiquidacion.php?id=<?php echo $rowFacturasUsuario['id'] ?>&estado=AUDITORIA');" />
 				</td>
 			</tr>
 		<?php } ?>
