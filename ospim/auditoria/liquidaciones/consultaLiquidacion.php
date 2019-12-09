@@ -213,7 +213,7 @@ if ($numBeneficiarios > 0) {
 									<td class="title" colspan="7">Prestaciones</td>
 								</tr>
 								<tr>
-									<td class="title">Practica</td>
+									<td class="title">Codigo</td>
 									<td class="title">Fecha</td>
 									<td class="title">Cantidad</td>
 									<td class="title">Facturado</td>
