@@ -60,11 +60,11 @@ function reenviarMail(nroorden, idmail, boton, mail) {
 	}
 }
 
-function cancelarOrden(nroorden, boton) {
+function cancelarOrden(nroorden, boton, dato, filtro) {
 	var r = confirm("Desea cancelar la orden de pago Nro " + nroorden);
 	if (r == true) {
 		boton.disabled = true;
-		var redireccion = "cancelarOrden.php?nroorden="+nroorden;
+		var redireccion = "cancelarOrden.php?nroorden="+nroorden+"&dato="+dato+"&filtro="+filtro;
 		location.href=redireccion;
 	}
 }
@@ -74,7 +74,11 @@ function cancelarOrden(nroorden, boton) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'buscarOrden.php?nroroden=<?php echo $nroorden ?>'"/></p>
+<?php if (isset($_GET['dato'])) { ?>
+		<p><input type="button" name="volver" value="Volver" onclick="location.href = 'buscarOrden.php?dato=<?php echo $_GET['dato'] ?>&filtro=<?php echo $_GET['filtro'] ?>'"/></p>
+<?php } else { ?>
+		<p><input type="button" name="volver" value="Volver" onclick="location.href = 'buscarOrden.php?dato=<?php echo $nroorden ?>&filtro=0'"/></p>
+<?php } ?>
 	<h3>Orden de Pago Nº <?php echo $nroorden ?></h3>
 	<h4> Código: <font color='blue'><?php echo $rowCabecera['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowCabecera['cuit']?></font> 
 	<br/> Razon Social: <font color='blue'><?php echo $rowCabecera['nombre'] ?></font></h4>
@@ -173,7 +177,7 @@ function cancelarOrden(nroorden, boton) {
 		</table>
 	</div>
 	<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
-			<p><input type="button" value="CANCELAR ORDEN" onclick="cancelarOrden(<?php echo $nroorden?>, this)" /></p>
+			<p><input type="button" value="CANCELAR ORDEN" onclick="cancelarOrden(<?php echo $nroorden?>, this, <?php echo $_GET['dato']?>, <?php echo $_GET['filtro']?>)" /></p>
 	<?php } ?>
 </div>
 </body>

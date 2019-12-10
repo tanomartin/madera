@@ -1,13 +1,13 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 
-if (isset($_POST['dato']) || isset($_GET['nroroden'])) {
+if (isset($_POST['dato']) || isset($_GET['dato'])) {
 	$canOrdenesCabecera = 0;
 	$dato = "";
 	$filtro = "";
-	if (isset($_GET['nroroden'])) {
-		$dato = $_GET['nroroden'];
-		$filtro = 0;
+	if (isset($_GET['dato'])) {
+		$dato = $_GET['dato'];
+		$filtro = $_GET['filtro'];
 	} else {
 		$dato = $_POST['dato'];
 		$filtro = $_POST['filtro'];
@@ -86,7 +86,7 @@ function validar(formulario) {
     	<p><strong>Dato</strong> <input name="dato" type="text" id="dato" size="14" /></p>
     	<p><input type="submit" name="Buscar" value="Buscar" /></p>
 	</form>
-	<?php if (isset($_POST['dato']) || isset($_GET['nroroden'])) { 
+	<?php if (isset($_POST['dato']) || isset($_GET['dato'])) { 
 			echo $cartel; 
 	  		if ($canOrdenesCabecera > 0) { ?>
 	  				<h3>Ordenes Genearadas</h3>	
@@ -120,7 +120,7 @@ function validar(formulario) {
 		 		  					<td><?php echo $rowOrdenesCabecera['retencion'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['debito'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['importe'] ?></td>
-		 		  					<td><input type="button" value="DETALLE" name="detalle" onclick="location.href = 'ordenPagoConsulta.php?nroorden=<?php echo $rowOrdenesCabecera['nroordenpago'] ?>'" /></td>
+		 		  					<td><input type="button" value="DETALLE" name="detalle" onclick="location.href = 'ordenPagoConsulta.php?nroorden=<?php echo $rowOrdenesCabecera['nroordenpago'] ?>&dato=<?php echo $dato ?>&filtro=<?php echo $filtro?>'" /></td>
 		 		  				</tr>
 		 				<?php } ?>
 		 					</tbody>

@@ -30,7 +30,7 @@ try {
 	}
 
 	$dbh->commit();
-	$pagina = "ordenPagoConsulta.php?nroorden=$nroorden";
+	$pagina = "ordenPagoConsulta.php?nroorden=$nroorden&dato=".$_GET['dato']."&filtro=".$_GET['filtro'];
 	Header("Location: $pagina");
 } catch (PDOException $e) {
 	$error = $e->getMessage();
