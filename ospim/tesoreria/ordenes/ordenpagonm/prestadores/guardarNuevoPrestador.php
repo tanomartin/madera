@@ -1,14 +1,12 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 
-//var_dump($_POST);
-
-$codigo = $_POST['codigo'];
 $nombre = addslashes($_POST['nombre']);
-$dirigidoa = addslashes($_POST['dirigidoa']);
+$cuit = $_POST['cuit'];
 $domicilio = strtoupper(addslashes($_POST['domicilio']));
 $indpostal = $_POST['indpostal'];
 $codPos = $_POST['codPos'];
+
 $alfapostal = $_POST['alfapostal'];
 if ($alfapostal == "") {
 	$alfapostal = "NULL";
@@ -23,30 +21,37 @@ if ($tel == "") {
 } else {
 	$tel = "'$tel'";
 }
+$tel1 = $_POST['telefono1'];
+if ($tel1 == "") {
+	$tel1 = "NULL";
+} else {
+	$tel1 = "'$tel1'";
+}
+$telfax = $_POST['telfax'];
+if ($telfax == "") {
+	$telfax = "NULL";
+} else {
+	$telfax = "'$telfax'";
+}
 $email = $_POST['email'];
 if ($email == "") {
 	$email = "NULL";
 } else {
 	$email = "'$email'";
 }
-$fechamodificacion = date("Y-m-d H:i:s");
-$usuariomodificacion = $_SESSION['usuario'];
+$email2 = $_POST['email2'];
+if ($email2 == "") {
+	$email2 = "NULL";
+} else {
+	$email2 = "'$email2'";
+}
 
-$sqlUpdatePresta = "UPDATE prestadoresnm 
-SET 
-nombre = '$nombre', 
-dirigidoa = '$dirigidoa',
-domicilio = '$domicilio',
-codlocali = '$localidad',
-codprovin = '$codProvin',
-indpostal = '$indpostal', 
-numpostal = '$codPos', 
-alfapostal = $alfapostal, 
-telefono = $tel, 
-email = $email, 
-fehamodificacion = '$fechamodificacion', 
-usuariomodificacion = '$usuariomodificacion'
-WHERE codigo = $codigo";
+$fecharegistro = date("Y-m-d H:i:s");
+$usuarioregistro = $_SESSION['usuario'];
+$fechamodificacion = $fecharegistro;
+$usuariomodificacion = $usuarioregistro;
+
+$sqlInsertPresta = "INSERT INTO prestadores VALUES(DEFAULT,'$nombre','$domicilio','$localidad',0 ,'$codProvin','$indpostal','$codPos',$alfapostal,NULL , $tel ,NULL ,$tel1, NULL, $telfax, $email, $email2, $cuit, 0, NULL, 5, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0,'','$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -55,15 +60,16 @@ try {
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	//print($sqlUpdatePresta."<br>");
-	$dbh->exec($sqlUpdatePresta);
-
+	//print($sqlInsertPresta."<br>");
+	$dbh->exec($sqlInsertPresta);
+	$codigoNextPresta = $dbh->lastInsertId(); 
+	
 	$dbh->commit();
-	$pagina = "beneficiario.php?codigo=$codigo";
+	$pagina = "prestador.php?codigo=$codigoNextPresta";
 	Header("Location: $pagina"); 
 	
 } catch (PDOException $e) {
-	$error = "Cod. Error: ".$e->getCode()." - Linea: ".$e->getLine();
+	$error =  $e->getMessage();
 	$dbh->rollback();
 	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
 	Header($redire);

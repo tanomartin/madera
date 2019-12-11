@@ -16,7 +16,7 @@ include($libPath."controlSessionOspim.php"); ?>
     	<tr>
 	  		<td width="200">
 	  			<p>ORDENES DE PAGO</p>
-          		<p><a href="../../moduloNoDisponible.php"><img src="img/ordenespago.png" width="90" height="90" border="0"/></a></p>
+          		<p><a href="ordenpago/moduloOrdenPago.php"><img src="img/ordenespago.png" width="90" height="90" border="0"/></a></p>
       		</td>
       		<td width="200">
 	  			<p>ORDENES NO MEDICA</p>

@@ -8,10 +8,10 @@ foreach ($_POST as $ordenes) {
 $whereIn = substr($whereIn, 0, -1);
 $whereIn .= ")";
 
-$sqlOrdenesCabecera = "SELECT o.*, b.dirigidoa, c.nrocta
-						FROM ordennmcabecera o, prestadoresnm b, cuentasospim c
+$sqlOrdenesCabecera = "SELECT o.*, b.nombre, c.nrocta
+						FROM ordennmcabecera o, prestadores b, cuentasospim c
 						WHERE o.nroorden in $whereIn and
-							  o.codigoprestador = b.codigo and
+							  o.codigoprestador = b.codigoprestador and
 							  o.idcuenta = c.id";
 $resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
 $arrayLineas = array();
@@ -21,7 +21,7 @@ while ($rowOrdenesCabecera = mysql_fetch_assoc($resOrdenesCabecera)) {
 	$index = $rowOrdenesCabecera['nroorden'].$tipolinea;
 	$fecha = date("dmy", strtotime($rowOrdenesCabecera['fecha'])); 
 	$nroorden = str_pad($rowOrdenesCabecera['nroorden'],6,"0",STR_PAD_LEFT);
-	$benefici = str_pad($rowOrdenesCabecera['dirigidoa'],33," ",STR_PAD_RIGHT);
+	$benefici = str_pad($rowOrdenesCabecera['nombre'],33," ",STR_PAD_RIGHT);
 	$credito = $rowOrdenesCabecera['credito'] * 100;
 	$credito = str_pad($credito,15,"0",STR_PAD_LEFT);
 	$arrayOrdenes[$index] = $rowOrdenesCabecera;

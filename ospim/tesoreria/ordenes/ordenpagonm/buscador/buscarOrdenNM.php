@@ -21,22 +21,22 @@ if (isset($_POST['dato']) || isset($_GET['nroorden'])) {
 	}
 	if ($filtro == 0) {
 		$cartel = "<b>Nro Orden:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.dirigidoa as beneficiario 
-								FROM ordennmcabecera o, prestadoresnm p 
-								WHERE o.nroorden = $dato and o.codigoprestador = p.codigo";
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador 
+								FROM ordennmcabecera o, prestadores p 
+								WHERE o.nroorden = $dato and o.codigoprestador = p.codigoprestador";
 	} 
 	if ($filtro == 1) {
 		$cartel = "<b>Beneficiario:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.dirigidoa as beneficiario 
-								FROM ordennmcabecera o, prestadoresnm p 
-								WHERE (p.dirigidoa like '%".$dato."%' or  p.nombre like '%".$dato."%') and o.codigoprestador = p.codigo";
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador 
+								FROM ordennmcabecera o, prestadores p 
+								WHERE (p.nombre like '%".$dato."%') and o.codigoprestador = p.codigoprestador";
 	} 
 	if ($filtro == 2) {
 		$datoBusqeuda = fechaParaGuardar($dato);
 		$cartel = "<b>Fecha Generacion:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.dirigidoa as beneficiario  
-								FROM ordennmcabecera o, prestadoresnm p 
-								WHERE o.fecha = '$datoBusqeuda' and o.codigoprestador = p.codigo";
+		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador  
+								FROM ordennmcabecera o, prestadores p 
+								WHERE o.fecha = '$datoBusqeuda' and o.codigoprestador = p.codigoprestador";
 	}
 	$resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
 	$canOrdenesCabecera = mysql_num_rows($resOrdenesCabecera);
@@ -120,7 +120,7 @@ function verOrden(nroorden) {
         		<td><input type="radio" name="filtro"  value="0" checked="checked" /> Nro Orden </td>
       		</tr>
       		<tr>
-        		<td><input type="radio" name="filtro"  value="1" /> Beneficiario </td>
+        		<td><input type="radio" name="filtro"  value="1" /> Prestador </td>
       		</tr> 
       		<tr>
         		<td><input type="radio" name="filtro"  value="2" /> Fecha Generacion </td>
@@ -150,7 +150,7 @@ function verOrden(nroorden) {
 		 		  		<?php while ($rowOrdenesCabecera = mysql_fetch_array($resOrdenesCabecera)) { ?>
 		 		  				<tr>
 		 		  					<td><?php echo $rowOrdenesCabecera['nroorden'];?></td>
-		 		  					<td><?php echo $rowOrdenesCabecera['beneficiario'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['prestador'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['fecha'] ?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['tipopago']." - ".$rowOrdenesCabecera['nropago'] ?></td>
 		 		  					<td><?php echo number_format($rowOrdenesCabecera['importe'],2,",",".") ?></td>

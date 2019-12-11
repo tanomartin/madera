@@ -1,11 +1,10 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
-include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT p.*, l.nomlocali as localidad, r.descrip as provincia
-						FROM prestadoresnm p
+						FROM prestadores p
 						LEFT JOIN localidades l on p.codlocali = l.codlocali
 						LEFT JOIN provincia r on p.codprovin = r.codprovin
-						WHERE p.codigo = $codigo";
+						WHERE p.codigoprestador = $codigo and personeria = 5";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
 $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 ?>
@@ -24,40 +23,51 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta);
 <body bgcolor="#CCCCCC">
 <div align="center">
 	<?php if (!isset($_GET['volver'])) { ?>
-			<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuBeneficiario.php'" /></p>
+			<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'menuPrestadores.php'" /></p>
 	<?php } ?>
-	<p><strong>Ficha Beneficiario</strong></p>
+	<p><strong>Ficha Prestador No Médico</strong></p>
 	<div class="grilla">
 	  	<table>
 		    <tr>
-        		<td><b>Nombre</b></td>
-        		<td colspan="3"><?php echo $rowConsultaPresta['nombre']?></td>
+        		<td class="title">Nombre</td>
+        		<td colspan="5"><?php echo $rowConsultaPresta['nombre']?></td>
      	 	</tr>
      	 	<tr>
-        		<td><b>Dirigido A</b></td>
-        		<td colspan="3"><?php echo $rowConsultaPresta['dirigidoa']?></td>
+        		<td class="title">C.U.I.T.</td>
+        		<td colspan="5"><?php echo $rowConsultaPresta['cuit']?></td>
      	 	</tr>
      		<tr>
-        		<td><b>Domicilio</b></td>
-        		<td colspan="3"><?php echo $rowConsultaPresta['domicilio']?></td>
+        		<td class="title">Domicilio</td>
+        		<td colspan="5"><?php echo $rowConsultaPresta['domicilio']?></td>
       		</tr>
       		<tr>
-        		<td><b>C.P.</b></td>
-        		<td colspan="3">
+        		<td class="title">C.P.</td>
+        		<td>
         			<?php echo $rowConsultaPresta['indpostal']." ".$rowConsultaPresta['numpostal']." ".$rowConsultaPresta['alfapostal']?>
 	   			</td>
+	   			<td class="title">Localidad</td>
+		        <td><?php echo $rowConsultaPresta['localidad']?></td>
+        		<td class="title">Provincia</td>
+        		<td><?php echo $rowConsultaPresta['provincia']?> </td>
 	   		</tr>
 	   		<tr>
-        		<td><b>Localidad</b></td>
-		        <td><?php echo $rowConsultaPresta['localidad']?></td>
-        		<td><b>Provincia</b></td>
-        		<td><?php echo $rowConsultaPresta['provincia']?> </td>
+        		
       		</tr>
       		<tr>
-        		<td><b>Telefono</b></td>
-        		<td><?php echo $rowConsultaPresta['telefono']?></td>
-        		<td><b>Email </b></td>
-        		<td><?php echo $rowConsultaPresta['email']?></td>
+        		<td class="title">Telefono</td>
+        		<td><?php echo $rowConsultaPresta['telefono1']?></td>
+        		<td class="title">Telefono 2</td>
+        		<td><?php echo $rowConsultaPresta['telefono2']?></td>
+        		<td class="title">Tel. Fax</td>
+        		<td><?php echo $rowConsultaPresta['telefonofax']?></td>
+        	</tr>
+        	<tr>
+        		<td class="title">Email</td>
+        		<td colspan="5"><?php echo $rowConsultaPresta['email1']?></td>
+      		</tr>
+      		<tr>
+        		<td class="title">Email Sec.</td>
+        		<td colspan="5"><?php echo $rowConsultaPresta['email2']?></td>
       		</tr>
     	</table>
     </div>

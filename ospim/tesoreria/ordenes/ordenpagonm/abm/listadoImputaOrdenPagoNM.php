@@ -1,9 +1,9 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 
-$sqlOrdenesAImputar = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.dirigidoa as beneficiario 
-						FROM ordennmcabecera o, prestadoresnm p 
-						WHERE o.fechageneracion is NULL and o.fechacancelacion is NULL and o.codigoprestador = p.codigo";
+$sqlOrdenesAImputar = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.nombre as prestador 
+						FROM ordennmcabecera o, prestadores p 
+						WHERE o.fechageneracion is NULL and o.fechacancelacion is NULL and o.codigoprestador = p.codigoprestador";
 $resOrdenesAImputar = mysql_query($sqlOrdenesAImputar,$db);
 $canOrdenesAImputar = mysql_num_rows($resOrdenesAImputar); ?>
 
@@ -63,7 +63,7 @@ function cancelarOrden(nroorden, boton, migrada) {
 		 	<thead>
 			 	<tr>
 			 		<th width="10%">Nro. Orden</th>
-			 		<th>Beneficiario</th>
+			 		<th>Prestador</th>
 					<th>Fecha</th>
 			 		<th>Importe</th>
 			 		<th width="20%">Acciones</th>		 						
@@ -73,7 +73,7 @@ function cancelarOrden(nroorden, boton, migrada) {
 	  <?php while ($rowOrdenesAImputar = mysql_fetch_array($resOrdenesAImputar)) { ?>
 	  	  		<tr>
 		 		  	<td><?php echo $rowOrdenesAImputar['nroorden'];?></td>
-		 		  	<td><?php echo $rowOrdenesAImputar['beneficiario'] ?></td>
+		 		  	<td><?php echo $rowOrdenesAImputar['prestador'] ?></td>
 		 		  	<td><?php echo $rowOrdenesAImputar['fecha'] ?></td>
 		 		  	<td><?php echo number_format($rowOrdenesAImputar['importe'],2,",",".") ?></td>
 		 		  	<td>

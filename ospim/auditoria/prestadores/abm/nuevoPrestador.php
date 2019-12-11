@@ -512,7 +512,7 @@ function validar() {
         <td><div align="right"><strong>Personería</strong></div></td>
         <td colspan="3"><div align="left">
             <select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)">
-          <?php $query="select * from tipoprestador";  
+          <?php $query="select * from tipoprestador WHERE id != 5";  
               	$result=mysql_query($query,$db);
               	while ($rowtipos=mysql_fetch_array($result)) { ?>
 					  <option value="<?php echo $rowtipos['id']?>"><?php echo $rowtipos['descripcion']?> </option>

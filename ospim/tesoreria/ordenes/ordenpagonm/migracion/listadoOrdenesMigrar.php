@@ -1,11 +1,11 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
-$sqlOrdenesAMigrar = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.dirigidoa as beneficiario 
-						FROM ordennmcabecera o, prestadoresnm p 
+$sqlOrdenesAMigrar = "SELECT *, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, p.nombre as prestador 
+						FROM ordennmcabecera o, prestadores p 
 						WHERE o.fechageneracion is not NULL and 
 							  o.fechacancelacion is NULL and 
 							  o.fechamigracion is NULL and
-							  o.codigoprestador = p.codigo";
+							  o.codigoprestador = p.codigoprestador";
 $resOrdenesAMigrar = mysql_query($sqlOrdenesAMigrar,$db);
 $canOrdenesAMigrar = mysql_num_rows($resOrdenesAMigrar); ?>
 
@@ -61,7 +61,7 @@ function generarArchivo(formulario) {
 			 	<thead>
 				 	<tr>
 				 		<th width="10%">Nro. Orden</th>
-				 		<th>Beneficiario</th>
+				 		<th>Prestador</th>
 						<th>Fecha</th>
 				 		<th>Importe</th>					
 				 	</tr>
@@ -73,7 +73,7 @@ function generarArchivo(formulario) {
 			 		  		<input style="display: none" type="text" value="<?php echo $rowOrdenesAMigrar['nroorden'] ?>" name="nroorden<?php echo $rowOrdenesAMigrar['nroorden']?>" id="nroorden<?php echo $rowOrdenesAMigrar['nroorden']?>"/>
 			 		  		<?php echo $rowOrdenesAMigrar['nroorden'];?>
 			 		  	</td>
-			 		  	<td><?php echo $rowOrdenesAMigrar['beneficiario'] ?></td>
+			 		  	<td><?php echo $rowOrdenesAMigrar['prestador'] ?></td>
 			 		  	<td><?php echo $rowOrdenesAMigrar['fecha'] ?></td>
 			 		  	<td><?php echo number_format($rowOrdenesAMigrar['importe'],2,",",".") ?></td>
 			 	 	</tr>

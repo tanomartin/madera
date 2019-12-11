@@ -186,7 +186,7 @@ function limpiarBeneficiario(inputBene) {
 					<b>Fecha: </b><input name="fecha" id="fecha" size="8"/>
 					<b style="float: right; font-size: x-large;">Nº <u style="color: maroon;"><?php echo $nroProximo ?></u></b>
 				</p>
-				<p><b>Beneficiario: </b>
+				<p><b>Prestador: </b>
 					<input autocomplete="off" name="nombrebene" id="nombrebene" size="75" onfocusout="limpiarBeneficiario(this)" />
 					<input name="codigoprestador" id="codigoprestador" size="5" maxlength="5" readonly="readonly" style="background-color: silver"/>
 				</p>

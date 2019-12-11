@@ -11,6 +11,25 @@
 <script type="text/javascript">
 
 jQuery(function($){
+	$("#cuit").mask("99999999999");
+
+	$("#cuit").change(function(){
+		var cuit = $(this).val();
+		$.ajax({
+			type: "POST",
+			dataType: "json",
+			url: "lib/existePrestaCuit.php",
+			data: {cuit:cuit},
+		}).done(function(respuesta){
+			if (respuesta != 0) {
+				$("#errorCuit").html("El C.U.I.T. '" + cuit + "' ya existe (Codigo Prestador '"+ respuesta +"')");
+				$("#cuit").val("");
+			} else {
+				$("#errorCuit").html("");
+			} 
+		});
+	});
+	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
 		$.ajax({
@@ -47,8 +66,8 @@ function validar(formulario) {
 		alert("El campo Nombre es Obligatrio");
 		return false;
 	}
-	if (formulario.dirigidoa.value == "") {
-		alert("El campo Dirigido A es Obligatrio");
+	if (!verificaCuilCuit(formulario.cuit.value)){
+		alert("C.U.I.T invalido");
 		return false;
 	}
 	if (formulario.domicilio.value == "") {
@@ -69,14 +88,32 @@ function validar(formulario) {
 		return false;
 	}
 	if (formulario.telefono.value != "") {
-		if (!esEnteroPositivo(formulario.telefono1.value)) {
+		if (!esEnteroPositivo(formulario.telefono.value)) {
 			alert("El telefono debe ser un numero");
 			return false;
 		}
 	}
+	if (formulario.telefono1.value != "") {
+		if (!esEnteroPositivo(formulario.telefono1.value)) {
+			alert("El telefono 1 debe ser un numero");
+			return false;
+		}
+	}
+	if (formulario.telfax.value != "") {
+		if (!esEnteroPositivo(formulario.telfax.value)) {
+			alert("El telefono Fax debe ser un numero");
+			return false;
+		}
+	}
 	if (formulario.email.value != "") {
-		if (!esCorreoValido(formulario.email1.value)){
+		if (!esCorreoValido(formulario.email.value)){
 			alert("Email Primario invalido");
+			return false;
+		}
+	}
+	if (formulario.email2.value != "") {
+		if (!esCorreoValido(formulario.email2.value)){
+			alert("Email Secundario invalido");
 			return false;
 		}
 	}
@@ -89,50 +126,61 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuBeneficiario.php'" /></p>
-	<form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarNuevoBeneficiario.php">
-		<h3>Nuevo Beneficiario Ordenes de Pago </h3>
-    	<table border="0">
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuPrestadores.php'" /></p>
+	<form name="nuevoPrestador" id="nuevoPrestador" method="post" onsubmit="return validar(this)" action="guardarNuevoPrestador.php">
+		<h3>Nuevo Prestador No Médico </h3>
+    	<table>
       		<tr>
         		<td><b>Nombre</b></td>
-        		<td colspan="2"><input name="nombre" type="text" id="nombre" size="100" /></td>
+        		<td colspan="3"><input name="nombre" type="text" id="nombre" size="100" /></td>
+        		
      	 	</tr>
      	 	<tr>
-        		<td><b>Dirigido A</b></td>
-        		<td colspan="2"><input name="dirigidoa" type="text" id="dirigidoa" size="100" /></td>
+     	 		<td><b>C.U.I.T. </b></td>
+     	 		<td colspan="3">
+     	 			<input name="cuit" type="text" id="cuit" size="10" />
+     	 			<span id="errorCuit" style="color:#FF0000;font-weight: bold;"></span>	
+     	 		</td>
      	 	</tr>
      		<tr>
         		<td><b>Domicilio</b></td>
-        		<td colspan="2"><input name="domicilio" type="text" id="domicilio" size="100" /></td>
+        		<td colspan="3"><input name="domicilio" type="text" id="domicilio" size="100" /></td>
       		</tr>
+      		
       		<tr>
         		<td><b>C.P.</b></td>
-        		<td colspan="2">
+        		<td>
 	          		<input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1"/>
 	          		-<input name="codPos" type="text" id="codPos" size="7" />-<input name="alfapostal"  id="alfapostal" type="text" size="3"/>
-	   			</td>
-	   		</tr>
-	   		<tr>
-        		<td><b>Localidad</b></td>
-		        <td>
+		        </td>
+		        <td>	
+		        	<b>Localidad</b>
 		        	<select name="selectLocali" id="selectLocali">
 		            		<option value="0">Seleccione una localidad </option>
 		          	</select>
-        		</td>
-        		<td>
-	      			<b>Provincia</b>
+		        </td>
+		        <td>
+		          	<b>Provincia</b>
 	          		<input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" />
 	           		<input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
         		</td>
-      		</tr>
+	   		</tr>
       		<tr>
         		<td><b>Telefono</b></td>
-        		<td><div align="left"><input name="telefono" type="text" id="telefono" size="15" /></div></td>
+        		<td><input name="telefono" type="text" id="telefono" size="20" /></td>
+        		<td><b>Telefono 1</b>	
+        			<input name="telefono1" type="text" id="telefono1" size="20" /></td>
         		<td>
-        			<div align="left">
-        				<b>Email </b><input name="email" type="text" id="email" size="60" />
-       	 			</div>
-       	 		</td>
+        			<b>Tel. Fax</b>	
+        			<input name="telfax" type="text" id="telfax" size="20" />
+        		</td>
+        	</tr>
+        	<tr><td><b>Email </b></td>
+        		<td colspan="3"><input name="email" type="text" id="email" size="60" /></td>
+        	</tr>
+        	<tr>
+        		<td><b>Email Sec. </b></td>
+        		<td colspan="3"><input name="email2" type="text" id="email2" size="60" /></td>
       		</tr>
     	</table>
     	<p><input type="submit" name="Submit" id="Submit" value="Guardar" /></p>

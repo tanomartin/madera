@@ -3,9 +3,9 @@ include($libPath."controlSessionOspim.php");
 require($libPath."fpdf.php");
 
 $nroorden = $_GET['nroorden'];
-$sqlCabecera = "SELECT o.*, DATE_FORMAT(fecha,'%d/%m/%Y') as fecha, p.dirigidoa as beneficiario
-				FROM ordennmcabecera o, prestadoresnm p 
-				WHERE o.nroorden = $nroorden and o.codigoprestador = p.codigo";
+$sqlCabecera = "SELECT o.*, DATE_FORMAT(fecha,'%d/%m/%Y') as fecha, p.nombre as prestador
+				FROM ordennmcabecera o, prestadores p 
+				WHERE o.nroorden = $nroorden and o.codigoprestador = p.codigoprestador";
 $resCabecera = mysql_query($sqlCabecera,$db);
 $rowCabecera = mysql_fetch_assoc($resCabecera);
 
@@ -41,7 +41,7 @@ function printHeader($pdf, $rowCabecera) {
 	$pdf->Cell(40,5,$fecha,0,0);
 	
 	$pdf->SetXY(10, 30);
-	$fecha = "Beneficiario: ".$rowCabecera['beneficiario'];
+	$fecha = "Prestador: ".$rowCabecera['prestador'];
 	$pdf->Cell(185,5,$fecha,0,0);
 	
 	$pdf->SetXY(10, 35);

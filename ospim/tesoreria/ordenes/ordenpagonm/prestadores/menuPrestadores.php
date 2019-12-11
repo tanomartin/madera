@@ -6,15 +6,19 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 	$dato = $_POST['dato'];
 	$filtro = $_POST['filtro'];
 	if ($filtro == 0) {
-		$cartel = "Resultados de Busqueda por Código de Beneficiario <b>'".$dato."'</b>";
+		$cartel = "Resultados de Busqueda por Código de Prestador No medico <b>'".$dato."'</b>";
 	}
 	if ($filtro == 1) {
-		$cartel = "Resultados de Busqueda por Nombre o Dirgido A <b>'".$dato."'</b>";
+		$cartel = "Resultados de Busqueda por Nombre <b>'".$dato."'</b>";
+	}
+	if ($filtro == 2) {
+		$cartel = "Resultados de Busqueda por C.U.I.T. <b>'".$dato."'</b>";
 	}
 	$resultado = array();
 	if (isset($dato)) {
-		if ($filtro == 0) { $sqlPrestador = "SELECT * from prestadoresnm where codigo = $dato order by codigo DESC"; }
-		if ($filtro == 1) { $sqlPrestador = "SELECT * from prestadoresnm where nombre like '%$dato%' or dirigidoa like '%$dato%' order by codigo DESC"; }
+		if ($filtro == 0) { $sqlPrestador = "SELECT * from prestadores where codigoprestador = $dato and personeria = 5 order by codigoprestador DESC"; }
+		if ($filtro == 1) { $sqlPrestador = "SELECT * from prestadores where personeria = 5 and nombre like '%$dato%' order by codigoprestador DESC"; }
+		if ($filtro == 2) { $sqlPrestador = "SELECT * from prestadores where personeria = 5 and cuit = $dato order by codigoprestador DESC"; }
 		$resPrestador = mysql_query($sqlPrestador,$db);
 		$canPrestador = mysql_num_rows($resPrestador);
 		if ($canPrestador == 0) {
@@ -85,21 +89,24 @@ function abrirPantalla(dire) {
 </head>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="menuBeneficiario.php">
+<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="menuPrestadores.php">
 	<div align="center">
 		<p><input type="button" name="volver" value="Volver" onclick="location.href = '../moduloOrdenPagoNM.php'" /></p>
-	  	<h3>Módulo Beneficiarios Ordenes de Pago </h3>  
-	  	<p><input type="button" name="nuevo" value="Nuevo Beneficiario" onclick="location.href = 'nuevoBeneficiario.php' " /></p>
+	  	<h3>Módulo Prestadores No Médicos</h3>  
+	  	<p><input type="button" name="nuevo" value="Nuevo Prestador" onclick="location.href = 'nuevoPrestador.php' " /></p>
 	  	<?php if ($noExiste == 1) { ?>
-				<p style='color:#FF0000'><b> NO EXISTE BENEFICIARIO CON ESTE FILTRO DE BUSQUEDA </b></p>
-		<?php } ?>   
-      	<table width="400" border="0">
+				<p style='color:#FF0000'><b> NO EXISTE PRESTADOR NO MEDICO CON ESTE FILTRO DE BUSQUEDA </b></p>
+	  	<?php } ?>   
+      	<table border="0">
 	      	<tr>
-	        	<td rowspan="6"><div align="center"><strong>Buscar por </strong></div></td>
+	        	<td rowspan="3"><div align="center"><strong>Buscar por </strong></div></td>
 	        	<td><div align="left"><input type="radio" name="filtro"  value="0" checked="checked" /> Código </div></td>
 	      	</tr>
 	      	<tr>
-	        	<td><div align="left"><input type="radio" name="filtro" value="1" /> Nombre o Dirigido A</div></td>
+	        	<td><div align="left"><input type="radio" name="filtro" value="1" /> Nombre </div></td>
+	      	</tr>
+	      	<tr>
+	        	<td><div align="left"><input type="radio" name="filtro" value="2" /> C.U.I.T. </div></td>
 	      	</tr>
 		</table>
     	<p><b>Dato</b> <input name="dato" type="text" id="dato" size="14" /></p>
@@ -112,7 +119,7 @@ function abrirPantalla(dire) {
 					<tr>
 						<th>Código</th>
 						<th>Nombre</th>
-						<th>Dirigido A</th>
+						<th>C.U.I.T.</th>
 						<th>Telefono</th>
 						<th>E-mail</th>
 						<th></th>
@@ -121,14 +128,14 @@ function abrirPantalla(dire) {
 				<tbody>
 		  <?php while($rowPrestador = mysql_fetch_array($resPrestador)) { ?>
 					<tr>
-						<td><?php echo $rowPrestador['codigo'];?></td>
+						<td><?php echo $rowPrestador['codigoprestador'];?></td>
 						<td><?php echo $rowPrestador['nombre'];?></td>
-						<td><?php echo $rowPrestador['dirigidoa'];?></td>
-						<td><?php echo $rowPrestador['telefono'];?></td>
-						<td><?php echo $rowPrestador['email'];?></td>
+						<td><?php echo $rowPrestador['cuit'];?></td>
+						<td><?php echo $rowPrestador['telefono1'];?></td>
+						<td><?php echo $rowPrestador['email1'];?></td>
 						<td>
-							<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('beneficiario.php?codigo=<?php echo $rowPrestador['codigo']; ?>&volver=0')"/> | 
-							<input name="modif" type="button" value="Modificar" onclick="location.href = 'modificarBeneficiario.php?codigo=<?php echo $rowPrestador['codigo']; ?>'"/>
+							<input name="ficha" type="button" value="Ficha" onclick="abrirPantalla('prestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>&volver=0')"/> | 
+							<input name="modif" type="button" value="Modificar" onclick="location.href = 'modificarPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>'"/>
 						</td>
 					</tr>
 		<?php } ?>

@@ -683,7 +683,7 @@ function validar() {
 				print("<span><font color='#0000CC'>$cartelPersoneria</font></span>"); ?>
 		  		<select name="selectPersoneria" id="selectPersoneria" onchange="habilitaCamposProfesional(this.value)" >
 				  <?php if ($cantidadProf > 0 || $cantidadEsta > 0) { $selected = "disabled = 'disabled'"; } 
-		              	$query="select * from tipoprestador";  
+		              	$query="select * from tipoprestador WHERE id != 5";  
 		              	$result=mysql_query($query,$db);
 		              	while ($rowtipos=mysql_fetch_array($result)) { 
 		              		if ($rowtipos['id'] == $rowConsultaPresta['personeria']) {   

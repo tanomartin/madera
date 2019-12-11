@@ -30,8 +30,8 @@ include($libPath."controlSessionOspim.php"); ?>
       	</tr>
       	<tr>
       		<td>
-      			<p>BENEFICIARIOS</p>
-          		<p><a href="beneficiario/menuBeneficiario.php"><img src="img/beneficiarios.png" width="90" height="90" border="0" /></a></p>
+      			<p>PRESTADORES</p>
+          		<p><a href="prestadores/menuPrestadores.php"><img src="img/prestador.png" width="90" height="90" border="0" /></a></p>
       		</td>
       		<td>
       			<p>BUSCADOR</p>

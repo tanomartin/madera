@@ -2,9 +2,9 @@
 include($libPath."controlSessionOspim.php"); 
 $nroorden = $_GET['nroorden'];
 
-$sqlOrdenAImputar = "SELECT *, DATE_FORMAT(o.fecha, '%d/%m/%Y') as fecha, p.dirigidoa as beneficiario 
-						FROM ordennmcabecera o, prestadoresnm p 
-						WHERE o.nroorden = $nroorden and o.codigoprestador = p.codigo";
+$sqlOrdenAImputar = "SELECT *, DATE_FORMAT(o.fecha, '%d/%m/%Y') as fecha, p.nombre as prestador 
+						FROM ordennmcabecera o, prestadores p 
+						WHERE o.nroorden = $nroorden and o.codigoprestador = p.codigoprestador";
 $resOrdenAImputar = mysql_query($sqlOrdenAImputar,$db);
 $rowOrdenAImputar = mysql_fetch_array($resOrdenAImputar);
 
@@ -390,7 +390,7 @@ function limpiarNroAfil(inputAfiliado) {
 					<b>Fecha: <?php echo $rowOrdenAImputar['fecha'] ?></b>
 					<b style="float: right; font-size: x-large;">Nº <u style="color: maroon;"><?php echo $nroorden ?></u></b>
 				</p>
-				<p><b>Beneficiario: <?php echo $rowOrdenAImputar['beneficiario'] ?></b></p>
+				<p><b>Prestador: <?php echo $rowOrdenAImputar['prestador'] ?></b></p>
 				<p><b>$: <?php echo number_format($rowOrdenAImputar['importe'],2,",",".") ?></b></p>
 			</div>
 		</div>

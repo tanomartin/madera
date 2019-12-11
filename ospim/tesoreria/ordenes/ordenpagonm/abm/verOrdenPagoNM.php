@@ -2,9 +2,9 @@
 include($libPath."controlSessionOspim.php"); 
 $nroorden = $_GET['nroorden'];
 
-$sqlCabeceraOrden = "SELECT *, DATE_FORMAT(o.fecha, '%d/%m/%Y') as fecha, p.dirigidoa as beneficiario,  c.*
-						FROM ordennmcabecera o, prestadoresnm p, cuentasospim c
-						WHERE o.nroorden = $nroorden and o.codigoprestador = p.codigo and o.idcuenta = c.id";
+$sqlCabeceraOrden = "SELECT *, DATE_FORMAT(o.fecha, '%d/%m/%Y') as fecha, p.nombre as prestador,  c.*
+						FROM ordennmcabecera o, prestadores p, cuentasospim c
+						WHERE o.nroorden = $nroorden and o.codigoprestador = p.codigoprestador and o.idcuenta = c.id";
 $resCabeceraOrden = mysql_query($sqlCabeceraOrden,$db);
 $rowCabeceraOrden = mysql_fetch_assoc($resCabeceraOrden);
 
@@ -48,7 +48,7 @@ function generar(nroorden) {
 			<p>
 				<b>Fecha: <?php echo $rowCabeceraOrden['fecha'] ?></b>
 				<b style="float: right; font-size: x-large;">Nº <u style="color: maroon;"><?php echo $nroorden ?></u></b>
-			</p><p><b>Beneficiario: <?php echo $rowCabeceraOrden['beneficiario'] ?></b></p>
+			</p><p><b>Prestador: <?php echo $rowCabeceraOrden['prestador'] ?></b></p>
 			<p><b>$: <?php echo number_format($rowCabeceraOrden['importe'],2,",",".") ?></b></p>
 		</div>
 	</div>
