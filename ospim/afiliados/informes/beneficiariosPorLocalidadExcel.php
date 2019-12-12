@@ -23,10 +23,10 @@ try{
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
-
 	$sqlLocalidades = "SELECT * FROM localidades WHERE codprovin = $codProvin and nomlocali = '$nomLocali'";
 	$resLocalidades = $dbh->query($sqlLocalidades);
-	foreach ($resLocalidades as $localidades){
+	$codLocalidades = "";
+	foreach ($resLocalidades as $localidades) {
 		$codLocalidades .= $localidades['codlocali'].","; 
 	}
 	$codLocalidades = substr($codLocalidades, 0, -1);
@@ -135,7 +135,7 @@ try{
 	t.cuitempresa = e.cuit and
 	t.tipodocumento = td.codtipdoc";
 	
-	//echo $sqlTitulares."<br><br>";
+	echo $sqlTitulares."<br><br>";
 	
 	$resultTitulares = $dbh->query($sqlTitulares);
 	if ($resultTitulares){
@@ -263,7 +263,7 @@ try{
 	f.tipoparentesco = p.codparent and
 	f.tipodocumento = td.codtipdoc";
 	
-	//echo $sqlFamiliares."<br><br>";
+	echo $sqlFamiliares."<br><br>";
 	
 	$resultFamiliares = $dbh->query($sqlFamiliares);
 	if ($resultFamiliares){
@@ -308,7 +308,7 @@ try{
 catch (PDOException $e) {
 	$error = $e->getMessage();
 	$dbh->rollback();
-	$pagina = "beneficiariosPorDelegacion.php?error=1&mensaje=$error";
+	$pagina = "beneficiariosPorLocalidad.php?error=1&mensaje=$error";
 	Header("Location: $pagina");
 }
 ?>

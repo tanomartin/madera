@@ -12,7 +12,7 @@ if(isset($_POST['valor'])) {
 		} else {
 			$respuesta='<option value="0">Seleccione Localidad</option>';
 			while($rowLocali=mysql_fetch_assoc($resLocali)) {
-				$respuesta.="<option value='".$rowLocali['nomlocali']."'>".utf8_encode($rowLocali['nomlocali'])."</option>";
+				$respuesta.="<option value='".utf8_encode($rowLocali['nomlocali'])."'>".utf8_encode($rowLocali['nomlocali'])."</option>";
 			}
 		}
 	}

@@ -6,16 +6,6 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado De Beneficiarios por Localidad :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
@@ -55,34 +45,33 @@ jQuery(function($){
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  	<p><input type="reset" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" /></p>
-	<form  name="listadoEmpresa" id="listadoEmpresa" method="post" onsubmit="return validar(this)" action="beneficiariosPorLocalidadExcel.php">
-  	<p><span class="Estilo2">Beneficiarios por Localidad </span></p>
-  	<?php if (isset($_GET['error'])) { 
-			if ($_GET['error'] == 0) {
-				$localidad = $_GET['locali'];
-				print("<p><font color='#0000FF'><b> Se generó correctamente el informe de la localidad $localidad.<br>Lo encontrara en la carpeta correspondiente </b></font></p>");
-		 	} 
-			if ($_GET['error'] == 1) {
-				$descerror = $_GET['mensaje'];
-				print("<p><font color='#FF0000'><b> Hubo un error. $descerror. Comuníquese con el Dpto. de Sistemas </b></font></p>");
-			}
-  	 } ?>
-	<p><strong>Provincia</strong>
-		<select name="provincia" id="provincia" class="nover">
-			<option value="-1" selected="selected">Seleccione un Valor </option>
-				  <?php 
-							$sqlProvi="SELECT * FROM provincia";
+  	<p><input type="button" name="volver" value="Volver" class="nover" onclick="location.href = 'moduloInformes.php'" /></p>
+  	<form  name="beneporlocalidad" id="beneporlocalidad" method="post" onsubmit="return validar(this)" action="beneficiariosPorLocalidadExcel.php">
+	  	<h3>Beneficiarios por Localidad </h3>
+	  	<?php if (isset($_GET['error'])) { 
+				if ($_GET['error'] == 0) {
+					$localidad = $_GET['locali'];
+					print("<p><font color='#0000FF'><b> Se generó correctamente el informe de la localidad $localidad.<br>Lo encontrara en la carpeta correspondiente </b></font></p>");
+			 	} 
+				if ($_GET['error'] == 1) {
+					$descerror = $_GET['mensaje'];
+					print("<p><font color='#FF0000'><b> Hubo un error. $descerror. Comuníquese con el Dpto. de Sistemas </b></font></p>");
+				}
+	  	 } ?>
+		<p><b>Provincia</b>
+			<select name="provincia" id="provincia" class="nover">
+				<option value="-1" selected="selected">Seleccione un Valor </option>
+					  <?php $sqlProvi="SELECT * FROM provincia";
 							$resProvi= mysql_query($sqlProvi,$db);
 							while ($rowProvi=mysql_fetch_array($resProvi)) { 	?>
-				  <option value="<?php echo $rowProvi['codprovin']."-".$rowProvi['descrip'] ?>"><?php echo utf8_encode($rowProvi['descrip'])  ?></option>
-				  <?php } ?>
-		</select></p>	
-	<p><strong>Localidad</strong>
-		<select name="localidad" id="localidad" class="nover">
-			<option value="0" selected="selected">Seleccione Localidad</option>
-		</select></p>
-	<p><input type="submit" name="Submit" value="Generar Archivo" class="nover"/></p>
+					  <option value="<?php echo $rowProvi['codprovin']."-".$rowProvi['descrip'] ?>"><?php echo utf8_encode($rowProvi['descrip'])  ?></option>
+					  <?php } ?>
+			</select></p>	
+		<p><b>Localidad</b>
+			<select name="localidad" id="localidad" class="nover">
+				<option value="0" selected="selected">Seleccione Localidad</option>
+			</select></p>
+		<p><input type="submit" name="Submit" value="Generar Archivo" class="nover"/></p>
 	</form>
 </div>
 </body>
