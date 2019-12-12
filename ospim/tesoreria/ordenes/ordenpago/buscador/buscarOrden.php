@@ -14,15 +14,15 @@ if (isset($_POST['dato']) || isset($_GET['dato'])) {
 	}
 	if ($filtro == 0) {
 		$cartel = "<b>Nro Orden:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE o.nroordenpago = $dato and o.codigoprestador = p.codigoprestador";
+		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE o.nroordenpago = $dato and o.codigoprestador = p.codigoprestador and p.personeria != 5";
 	} 
 	if ($filtro == 1) {
-		$cartel = "<b>Código:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE o.codigoprestador = $dato and o.codigoprestador = p.codigoprestador order by o.codigoprestador DESC";
+		$cartel = "<b>Código Prestador:<font color='blue'> $dato</font></b>";
+		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE o.codigoprestador = $dato and o.codigoprestador = p.codigoprestador and p.personeria != 5 order by o.codigoprestador DESC";
 	} 
 	if ($filtro == 2) {
 		$cartel = "<b>C.U.I.T.:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE p.cuit = $dato and o.codigoprestador = p.codigoprestador order by o.codigoprestador DESC";
+		$sqlOrdenesCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden FROM prestadores p, ordencabecera o WHERE p.cuit = $dato and o.codigoprestador = p.codigoprestador and p.personeria != 5 order by o.codigoprestador DESC";
 	}
 	$resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
 	$canOrdenesCabecera = mysql_num_rows($resOrdenesCabecera);

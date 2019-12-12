@@ -23,20 +23,20 @@ if (isset($_POST['dato']) || isset($_GET['nroorden'])) {
 		$cartel = "<b>Nro Orden:<font color='blue'> $dato</font></b>";
 		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador 
 								FROM ordennmcabecera o, prestadores p 
-								WHERE o.nroorden = $dato and o.codigoprestador = p.codigoprestador";
+								WHERE o.nroorden = $dato and o.codigoprestador = p.codigoprestador and p.personeria = 5";
 	} 
 	if ($filtro == 1) {
-		$cartel = "<b>Beneficiario:<font color='blue'> $dato</font></b>";
+		$cartel = "<b>Prestador:<font color='blue'> $dato</font></b>";
 		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador 
 								FROM ordennmcabecera o, prestadores p 
-								WHERE (p.nombre like '%".$dato."%') and o.codigoprestador = p.codigoprestador";
+								WHERE (p.nombre like '%".$dato."%') and o.codigoprestador = p.codigoprestador and p.personeria = 5";
 	} 
 	if ($filtro == 2) {
 		$datoBusqeuda = fechaParaGuardar($dato);
 		$cartel = "<b>Fecha Generacion:<font color='blue'> $dato</font></b>";
 		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador  
 								FROM ordennmcabecera o, prestadores p 
-								WHERE o.fecha = '$datoBusqeuda' and o.codigoprestador = p.codigoprestador";
+								WHERE o.fecha = '$datoBusqeuda' and o.codigoprestador = p.codigoprestador and p.personeria = 5";
 	}
 	$resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
 	$canOrdenesCabecera = mysql_num_rows($resOrdenesCabecera);
@@ -113,7 +113,7 @@ function verOrden(nroorden) {
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../moduloOrdenPagoNM.php'" /></p>	
 	<form id="buscarFacturas" name="buscarFacturas" method="post" onsubmit="return validar(this)" action="buscarOrdenNM.php">
-	  	<h3>Buscador de Ordenes de Pago </h3>
+	  	<h3>Buscador de Ordenes de Pago No Médicas </h3>
     	<table>
       		<tr>
         		<td rowspan="3"><b>Buscar por </b></td>
@@ -190,7 +190,7 @@ function verOrden(nroorden) {
 		 				</table>
 	 				</div>
 			<?php } else { ?>
-					<h3 style="color: blue">No Existen Ordenes de Pago</h3>
+					<h3 style="color: blue">No Existen Ordenes de Pago No Médicas para el filtro utilizado</h3>
 			<?php }
 	  	  } ?>
 </div>

@@ -13,9 +13,9 @@ if (isset($_POST['dato']) || isset($_GET['codigo'])) {
 	}
 
 	if ($filtro == 0) {
-		$sqlPrestador = "SELECT * FROM prestadores WHERE codigoprestador = $dato order by codigoprestador DESC";
+		$sqlPrestador = "SELECT * FROM prestadores WHERE codigoprestador = $dato and personeria != 5 order by codigoprestador DESC";
 	} else {
-		$sqlPrestador = "SELECT * FROM prestadores where cuit = $dato order by codigoprestador DESC";
+		$sqlPrestador = "SELECT * FROM prestadores where cuit = $dato and personeria != 5 order by codigoprestador DESC";
 	}
 
 	$resPrestador = mysql_query($sqlPrestador,$db);

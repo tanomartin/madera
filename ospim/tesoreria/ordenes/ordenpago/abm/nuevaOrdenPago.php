@@ -55,7 +55,7 @@ function validar(formulario) {
     	<p><input type="submit" name="Buscar" value="Buscar" /></p>
 	</form>
 	<?php if (isset($_GET['error'])) {
-			echo "<font color='red'><b>NO EXISTEN PRESTADOR CON ESTOS DATOS</b></font>";
+			echo "<font color='red'><b>NO EXISTEN PRESTADOR MÉDICO CON ESTOS DATOS</b></font>";
 	  	  } else { 
 	  	  	if (isset($_POST['dato']) || isset($_GET['codigo'])) { ?>
 	  	  		<h4> Código: <font color='blue'><?php echo $rowPrestador['codigoprestador']?></font> - C.U.I.T.: <font color='blue'><?php echo $rowPrestador['cuit']?></font> 
