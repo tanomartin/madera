@@ -271,6 +271,16 @@ jQuery(function($){
 	
 });
 
+function verPertenencia(checkbox) {
+	var nameradio = "pertenencia"+checkbox.name.substring(12);
+	var radio = document.getElementById(nameradio);
+	radio.style.display = "none";
+	radio.checked = false;
+	if (checkbox.checked) {
+		radio.style.display = "inline-block";
+	}
+}
+
 function habilitaCamposProfesional(valor) {
 	if (valor == 1) {
 		document.forms.nuevoPrestador.selectTratamiento.disabled = false;
@@ -457,6 +467,20 @@ function validar() {
 	}
 	if (delegaCheck == 0) {
 		alert("Debe elegir como mínimo una Delegación para el prestador");
+		return false;
+	}	
+
+	var perteCheck = 0;
+	pertenencias = formulario.pertenencia;
+	if (pertenencias != null) {
+		for (x=0;x<pertenencias.length;x++) {
+			if(pertenencias[x].checked) {
+				perteCheck = 1;
+			}
+		}
+	}
+	if (perteCheck == 0) {
+		alert("Debe elegir una Jurisdiccion como Pertenencia del prestador");
 		return false;
 	}
 	
@@ -774,10 +798,10 @@ function validar() {
    
     <hr style="margin-top: 20px"></hr>
     
-    <table width="884" border="0">
+    <table width="884" border="1">
       <tr>
         <td width="284" height="46"><div align="center" class="Estilo1"><b>Servicios </b></div></td>
-        <td colspan="2"><div align="center" class="Estilo1"><b>Jurisdiccion </b></div></td>
+        <td colspan="2"><div align="center" class="Estilo1"><b>Jurisdiccion | Pertenencia</b></div></td>
       </tr>
       <tr>
         <td valign="top">
@@ -806,21 +830,31 @@ function validar() {
 	    </td>
         <td width="281" valign="top">
         	<div align="left">
-	          <?php $query="select * from delegaciones where codidelega >= 1002 and codidelega <= 1702";
+	          <?php $query="SELECT * FROM delegaciones WHERE codidelega >= 1002 AND codidelega <= 1702";
 					$result=mysql_query($query,$db);
 					$i = 0;
 					while ($rowtipos=mysql_fetch_array($result)) { 
 						$codigoDelega = $rowtipos['codidelega'];
-						$sqlExiste = "select * from prestadorjurisdiccion where codigoprestador = $codigo and codidelega = $codigoDelega";
+						$sqlExiste = "SELECT * FROM prestadorjurisdiccion WHERE codigoprestador = $codigo AND codidelega = $codigoDelega";
 						$resExiste = mysql_query($sqlExiste,$db); 
 						$numExiste = mysql_num_rows($resExiste);
+						$chekedP = "";
 						if ($numExiste == 1) {
+							$rowExiste = mysql_fetch_assoc($resExiste);
+							$display = "style='display: display'";	
+							if ($rowExiste['pertenencia'] == 1) {
+								$chekedP = "checked";
+							}
 							$checked = "checked";
 						} else {
+							$display = "style='display: none'";	
 							$checked = "";
 						} ?>
-	          			<input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" /><?php echo $rowtipos['nombre']."<br>";
-						$i++;
+	          			<input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" onclick="verPertenencia(this)"/>
+	          				<?php echo $rowtipos['nombre'] ?>
+	          			<input <?php echo $display ?>  type="radio"  <?php echo $chekedP ?>  name="pertenencia" id="<?php echo "pertenencia".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+	          			</br>
+						<?php $i++; 
 					} ?>
         	</div>
         </td>
@@ -833,13 +867,23 @@ function validar() {
 						$sqlExiste = "select * from prestadorjurisdiccion where codigoprestador = $codigo and codidelega = $codigoDelega";
 						$resExiste = mysql_query($sqlExiste,$db); 
 						$numExiste = mysql_num_rows($resExiste);
+						$chekedP = "";
 						if ($numExiste == 1) {
+							$rowExiste = mysql_fetch_assoc($resExiste);
+							$display = "style='display: display'";
+							if ($rowExiste['pertenencia'] == 1) {
+								$chekedP = "checked";
+							}
 							$checked = "checked";
 						} else {
+							$display = "style='display: none'";					
 							$checked = "";
 						} ?>
-         				 <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" /><?php echo $rowtipos['nombre']."<br>";
-      					$i++;
+         				 <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" onclick="verPertenencia(this)" />
+         				 <?php echo $rowtipos['nombre'] ?>"
+         				 <input <?php echo $display ?> type="radio" <?php echo $chekedP ?> name="pertenencia" id="<?php echo "pertenencia".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+         				 </br>
+      			   <?php $i++;
 					} ?>
        		 </div>
        	</td>

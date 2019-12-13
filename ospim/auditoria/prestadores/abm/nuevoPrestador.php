@@ -201,6 +201,16 @@ jQuery(function($){
 	});
 });
 
+function verPertenencia(checkbox) {
+	var nameradio = "pertenencia"+checkbox.name.substring(12);
+	var radio = document.getElementById(nameradio);
+	radio.style.display = "none";
+	radio.checked = false;
+	if (checkbox.checked) {
+		radio.style.display = "inline-block";
+	}
+}
+
 function habilitaCamposProfesional(valor) {
 	document.getElementById("errorMatNac").innerHTML = "";
 	document.getElementById("errorMatPro").innerHTML = "";
@@ -388,6 +398,21 @@ function validar() {
 		alert("Debe elegir como mínimo una Delegación para el prestador");
 		return false;
 	}
+
+	var perteCheck = 0;
+	pertenencias = formulario.pertenencia;
+	if (pertenencias != null) {
+		for (x=0;x<pertenencias.length;x++) {
+			if(pertenencias[x].checked) {
+				perteCheck = 1;
+			}
+		}
+	}
+	if (perteCheck == 0) {
+		alert("Debe elegir una Jurisdiccion como Pertenencia del prestador");
+		return false;
+	}
+	
 	formulario.guardar.disabled = true;
 	$.blockUI({ message: "<h1>Guardando Nuevo Prestador. Aguarde un minuto</h1>" });
 	formulario.submit();
@@ -609,9 +634,11 @@ function validar() {
 				$result=mysql_query($query,$db);
 				$i = 0;
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
-            <input type="checkbox" name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" />
-            <?php echo $rowtipos['nombre'] ?><br />
-            <?php 	$i++;
+           	 		<input type="checkbox" name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" onclick="verPertenencia(this)"/>
+	          		<?php echo $rowtipos['nombre'] ?>
+	          		<input style="display: none"  type="radio" name="pertenencia" id="<?php echo "pertenencia".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+	          		</br>
+			  <?php $i++; 
 				} ?>
                 </div></td>
         <td width="300" valign="top"><div align="left">
@@ -619,9 +646,11 @@ function validar() {
 				$query="select * from delegaciones where codidelega > 1702 and codidelega < 3200";
 				$result=mysql_query($query,$db);
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
-          <input type="checkbox" name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" />
-          <?php echo $rowtipos['nombre'] ?><br />
-          <?php 	$i++;
+         			<input type="checkbox" name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" onclick="verPertenencia(this)"/>
+	          		<?php echo $rowtipos['nombre'] ?>
+	          		<input style="display: none"  type="radio" name="pertenencia" id="<?php echo "pertenencia".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
+	          		</br>
+			  <?php $i++; 
 				} ?>
         </div></td>
       </tr>

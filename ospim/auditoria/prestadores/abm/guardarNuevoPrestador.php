@@ -128,7 +128,7 @@ if ($nroRegistroSNR == '') {
 	$vtoRegistroSNR = fechaParaGuardar($_POST['vtoSNR']);
 	$vtoRegistroSNR = "'$vtoRegistroSNR'";
 }
-
+$pertenencia = $_POST['pertenencia'];
 $capitado = $_POST['capitado'];
 $fijo = $_POST['fijo'];
 $obs = strtoupper(addslashes($_POST['observacion']));
@@ -176,7 +176,11 @@ try {
 	foreach($_POST as $key => $value) {
 		if (strpos($key ,'delegacion') !== false) {
 			$delegacion = $_POST[$key];
-			$sqlInsertJurisdiccion = "INSERT INTO prestadorjurisdiccion VALUE($codigoNextPresta, $delegacion)";
+			$perte = 0;
+			if ($pertenencia == $delegacion) {
+				$perte = 1;
+			}
+			$sqlInsertJurisdiccion = "INSERT INTO prestadorjurisdiccion VALUE($codigoNextPresta, $delegacion,$perte)";
 			//print($sqlInsertJurisdiccion."<br>");
 			$dbh->exec($sqlInsertJurisdiccion);
 		}

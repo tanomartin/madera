@@ -14,7 +14,7 @@ $sqlConsultaServcio = "SELECT p.*, s.descripcion FROM prestadorservicio p, tipos
 $resConsultaServcio = mysql_query($sqlConsultaServcio,$db);
 $canConsultaServcio = mysql_num_rows($resConsultaServcio);
 
-$sqlConsultaJuris = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $codigo and p.codidelega = d.codidelega";
+$sqlConsultaJuris = "SELECT p.codidelega, d.nombre, p.pertenencia FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $codigo and p.codidelega = d.codidelega";
 $resConsultaJuris = mysql_query($sqlConsultaJuris,$db); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -164,7 +164,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db); ?>
 			<tr>
 			  <th width="300"><div align="center" class="Estilo1"><strong>Nomencladores </strong></div></th>
 	          <th width="300"><div align="center" class="Estilo1"><strong>Servicios </strong></div></th>
-	          <th width="300"><div align="center" class="Estilo1"><strong>Jurisdiccion </strong></div></th>
+	          <th width="300"><div align="center" class="Estilo1"><strong>Jurisdiccion (Pertenencia) </strong></div></th>
 	        </tr>
 		</thead>
         <tbody>
@@ -186,7 +186,9 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db); ?>
 	          </div></td>
 	          <td valign="top"><div align="left">
 	            <?php while ($rowConsultaJuris = mysql_fetch_assoc($resConsultaJuris)) {
-						echo $rowConsultaJuris['codidelega']." - ".$rowConsultaJuris['nombre']."<br>";
+	            		$pertenencia = "";
+	            		if ($rowConsultaJuris['pertenencia'] == 1) { $pertenencia = " <font color='red'>(P)</font>"; }
+						echo $rowConsultaJuris['codidelega']." - ".$rowConsultaJuris['nombre'].$pertenencia."<br>";
 					  } ?>
 	          </div></td>
 	        </tr>
