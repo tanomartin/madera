@@ -69,6 +69,10 @@ function cancelarOrden(nroorden, boton, dato, filtro) {
 	}
 }
 
+function abrirPop(dire, titulo){	
+	window.open(dire,titulo,'width=800, height=500,resizable=yes');
+}
+
 </script>
 </head>
 
@@ -159,15 +163,15 @@ function cancelarOrden(nroorden, boton, dato, filtro) {
 				<tr>
 				<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
 						<th colspan="2">
-							<input type="button" value="ORIGINAL" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>O.pdf', '_blank', 'fullscreen=yes');" />
+							<input type="button" value="ORIGINAL" onclick="abrirPop('verDocumento.php?documento=OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>O.pdf', 'Orden Pago Original');" />
 						</th>
 						<th colspan="3">
 							<?php if ($rowCabecera['debito'] > 0 ) { ?>
-								<input type="button" value="NOTA DEBITO" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>DEB.pdf', '_blank', 'fullscreen=yes');" />
+								<input type="button" value="NOTA DEBITO" onclick="abrirPop('verDocumento.php?documento=OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>DEB.pdf', 'Nota de Debito');" />
 						<?php } ?>	
 						</th>
 						<th colspan="3">
-							<input type="button" value="COPIAS" onclick="window.open('<?php echo $carpetaOrden ?>OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>C.pdf', '_blank', 'fullscreen=yes');" />
+							<input type="button" value="COPIAS" onclick="abrirPop('verDocumento.php?documento=OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>C.pdf', 'Orden Pago Copias');" />
 					    </th>
 					<?php } else { ?>
 							<th colspan="8" style="color: red">Orden de pago Cancelada el "<?php echo $rowCabecera['fechacancelacion'] ?>"</th>
