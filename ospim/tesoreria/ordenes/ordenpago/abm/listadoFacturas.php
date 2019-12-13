@@ -182,8 +182,8 @@ function validarCantFacturas(formulario) {
 		alert("No se pueden cargar mas de 25 facturas en una Orden de Pago");
 		return false;
 	}
-	if (canitdadDebito > 25) {
-		alert("No se pueden cargar mas de 25 debitos en una Nota de Debito");
+	if (canitdadDebito > 10) {
+		alert("No se pueden cargar mas de 10 debitos en una Nota de Debito");
 		return false;
 	}
 	return true;

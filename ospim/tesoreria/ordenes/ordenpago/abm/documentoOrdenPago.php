@@ -28,6 +28,7 @@ if ($rowCabecera['debito'] > 0) {
 							    p.codigopractica, fb.nroafiliado, fb.nroorden, fp.motivodebito, fp.totaldebito
 							FROM facturasprestaciones fp, facturasbeneficiarios fb, facturas f, practicas p
 							WHERE fp.idfactura in (SELECT idFactura FROM ordendebitodetalle WHERE nroordenpago = $nroOrden) and 
+								  fp.totaldebito > 0 and
 								  fp.idFacturabeneficiario = fb.id and
 								  fp.idfactura = f.id and
 								  fp.idPractica = p.idpractica";

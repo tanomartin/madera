@@ -180,8 +180,10 @@ function abrirPop(dire, titulo){
 			</thead>
 		</table>
 	</div>
-	<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
-			<p><input type="button" value="CANCELAR ORDEN" onclick="cancelarOrden(<?php echo $nroorden?>, this, <?php echo $_GET['dato']?>, <?php echo $_GET['filtro']?>)" /></p>
+	<?php if ($rowCabecera['fechacancelacion'] == null) { 
+			
+			if (!isset($_GET['dato'])) { $dato = 0; } else { $dato = $_GET['dato']; } ?>
+			<p><input type="button" value="CANCELAR ORDEN" onclick="cancelarOrden(<?php echo $nroorden?>, this, <?php echo $dato ?>, <?php echo $_GET['filtro']?>)" /></p>
 	<?php } ?>
 </div>
 </body>
