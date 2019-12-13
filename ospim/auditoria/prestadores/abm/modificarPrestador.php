@@ -880,7 +880,7 @@ function validar() {
 							$checked = "";
 						} ?>
          				 <input type="checkbox" <?php echo $checked ?> name="<?php echo "delegaciones".$i  ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" onclick="verPertenencia(this)" />
-         				 <?php echo $rowtipos['nombre'] ?>"
+         				 <?php echo $rowtipos['nombre'] ?>
          				 <input <?php echo $display ?> type="radio" <?php echo $chekedP ?> name="pertenencia" id="<?php echo "pertenencia".$i  ?>" value="<?php echo $rowtipos['codidelega'] ?>" />
          				 </br>
       			   <?php $i++;
