@@ -1357,9 +1357,6 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 		<div id="eligeestamb">
 			<h3 style="margin-bottom:1px">Estadistica Ambulatoria <input name="estamb" type="checkbox" id="estamb" value="1"/></h3>
 		</div>
-		<div id="eligeestint">
-			<h3 style="margin-bottom:1px">Estadistica Internacion / Egresos <input name="estint" type="checkbox" id="estint" value="1"/></h3>
-		</div>
 		<div id="estambulatoria" align="center">
 			<table width="55%" border="2" id="tablaambulatoria">
 			  <tr>
@@ -1414,6 +1411,9 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 				<td><input name="amb33" type="checkbox" id="amb33" value="33"/></td>
 			  </tr>
 		  </table>
+		</div>
+		<div id="eligeestint">
+			<h3 style="margin-bottom:1px">Estadistica Internacion / Egresos <input name="estint" type="checkbox" id="estint" value="1"/></h3>
 		</div>
 		<div id="estinternacionegreso" align="center">
 			<table width="55%" border="2" id="tablainternacion">

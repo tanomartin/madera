@@ -11,17 +11,17 @@ include($libPath."controlSessionOspim.php"); ?>
 <body bgcolor="#CCCCCC">
 <div align="center">
   <h2>Menú Liquidaciones</h2>
-  <table width="600" border="1" style="text-align: center;vertical-align: middle;">
+  <table width="622" border="1" style="text-align: center;vertical-align: middle;">
     <tr>
 	  <td width="200">
-	   	<p>FACTURAS LIQUIDADAS </p>
+	   	<p>AUTORIZACION DE PAGO </p>
       	<p><a href="facturasLiquidadas.php"><img src="img/liquidadas.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td>
 	  <td width="200">
 	   	<p>LIQUIDACION PRESTADORES</p>
 	   	<p><a href="moduloLiquidaciones.php"><img src="img/liquidaciones.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
-	  <td width="178">
+	  <td width="200">
 	  	<p>LISTADO DE FACTURAS </p>
 	  	<p><a href="listadofacturas.php"><img src="img/listado.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>

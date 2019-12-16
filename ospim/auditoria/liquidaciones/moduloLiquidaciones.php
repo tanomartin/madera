@@ -1,7 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
-	$sqlFacturasSinLiquidar = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento FROM facturas f, prestadores p WHERE f.fechainicioliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador ORDER by f.id DESC";
+	$sqlFacturasSinLiquidar = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento FROM facturas f, prestadores p WHERE f.fechainicioliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador AND p.personeria != 5 ORDER by f.id DESC";
 	$resFacturasSinLiquidar = mysql_query($sqlFacturasSinLiquidar,$db);
 	$totalfacturasingresadas = mysql_num_rows($resFacturasSinLiquidar);
 
