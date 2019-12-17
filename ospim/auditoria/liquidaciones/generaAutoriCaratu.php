@@ -7,7 +7,7 @@ $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
 	$carpetaCaratulas="C:/tmp/";
 else
-	$carpetaCaratulas="/tmp/";
+	$carpetaCaratulas="/home/sistemas/Documentos/Repositorio/LotesCaratulas/";
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 //sleep(2);
