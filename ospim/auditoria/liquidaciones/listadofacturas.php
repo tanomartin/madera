@@ -1,6 +1,6 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
-$liquidador = $_SESSION['usuario'];
+$liquidador = $_SESSION['usuario']; 
 $sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante, 
 					   t.descripcion as tipocomprobante
 					FROM facturas f, prestadores p, tipocomprobante t
@@ -10,7 +10,24 @@ $sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d
 						  f.idTipocomprobante = t.id
 					ORDER BY f.id DESC";
 $resFacturas = mysql_query($sqlFacturas,$db); 
-$numFacturas = mysql_num_rows($resFacturas); ?>
+$numFacturas = mysql_num_rows($resFacturas); 
+
+$sqlFacutrasInte = "SELECT DISTINCT f.id
+					FROM facturas f, facturasprestaciones pf, facturasintegracion fi
+					WHERE 
+						  f.usuarioliquidacion = '$liquidador' AND 
+						  f.id = pf.idFactura AND 
+						  pf.id = fi.idFacturaprestacion
+					ORDER BY f.id DESC";
+$resFacturasInte = mysql_query($sqlFacutrasInte,$db); 
+$numFacturasInte = mysql_num_rows($resFacturasInte); 
+$arrayInte = array();
+if ($numFacturasInte > 0) {
+	while ($rowFacturaInte = mysql_fetch_assoc($resFacturasInte)) {
+		$arrayInte[$rowFacturaInte['id']] = $rowFacturaInte['id'];
+	}
+}
+?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -91,18 +108,25 @@ function abrirPop(dire){
 					<td><?php echo number_format($rowFacturas['totalpagado'],2,',','.'); ?></td>
 					<?php $estado = "AUDITORIA";
 						  if ($rowFacturas['fechacierreliquidacion'] != "0000-00-00 00:00:00") { 
-							if ($rowFacturas['autorizacionpago'] == 1) {
-								if ($rowFacturas['restoapagar'] != 0) {
-									if ($rowFacturas['restoapagar'] == $rowFacturas['importeliquidado']) {
-										$estado = "PARA PAGAR";
-									} else {
-										$estado = "PAGO PARCIAL";
-									}
-								} else {
-									$estado = "PAGADA";
+							if (isset($arrayInte[$rowFacturas['id']])) {
+								$estado = "INTEGRACION";
+								if ($rowFacturas['restoapagar'] == 0) {
+									$estado = "INTEGRACION - PAGA";
 								}
 							} else {
-								$estado = "ENVIAR A PAGAR";
+							  	if ($rowFacturas['autorizacionpago'] == 1) {
+									if ($rowFacturas['restoapagar'] != 0) {
+										if ($rowFacturas['restoapagar'] == $rowFacturas['importeliquidado']) {
+											$estado = "PARA PAGAR";
+										} else {
+											$estado = "PAGO PARCIAL";
+										}
+									} else {
+										$estado = "PAGADA";
+									}
+								} else {
+									$estado = "ENVIAR A PAGAR";
+								}
 							}
 						  } ?>
 					<td><b><?php echo $estado ?></b></td>
