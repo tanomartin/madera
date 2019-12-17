@@ -39,7 +39,8 @@ $(document).ready(function(){
 			success: function(data) {
 				if(data.result == true){
 					$.unblockUI();
-					var cajadialogo = $('<div title="Caratulas"><object data="'+data.archivopdf+'" type="application/pdf" width="100%" height="100%"></object></div>');
+					var contenidopdf = "<object id='pdfObject' type='application/pdf' data='mostrarCaratula.php?rutaarchivo="+data.archivopdf+"'width='100%' height='100%'></object>";
+					var cajadialogo = $('<div title="Caratulas"></div>').html(contenidopdf);
 					cajadialogo.dialog({modal: true, width: 920, height: 920, show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) {location.reload();}});
 				} else {
 					$.unblockUI();
