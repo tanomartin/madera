@@ -47,8 +47,14 @@ $numCarencias = mysql_num_rows($resCarencias);
 $numEstadistica = 0;
 $numIntegracion = 0;
 if ($numBeneficiarios > 0) {
-	$sqlPretaciones = "SELECT *, DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica, p.codigopractica 
-						FROM practicas p, facturasprestaciones f ";
+	$sqlPretaciones = "SELECT p.*,f.*, DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica, 
+							  p.codigopractica,  facturasintegracion.*,
+							  facturasintegracion.id as inte, practicas.codigopractica as codigoescuela,
+							  escuelas.nombre as nombreescuela, escuelas.cue
+						    FROM practicas p, facturasprestaciones f 
+						    LEFT JOIN facturasintegracion ON facturasintegracion.idFacturaprestacion = f.id 
+							LEFT JOIN practicas ON practicas.idpractica = facturasintegracion.tipoescuela 
+							LEFT JOIN escuelas ON escuelas.id = facturasintegracion.idEscuela ";
 	if ($tipopresta == 3) {
 		$sqlPretaciones .= "LEFT JOIN profesionales ON profesionales.codigoprofesional = f.efectorpractica";
 	}
@@ -231,6 +237,21 @@ if ($numBeneficiarios > 0) {
 										<td><?php echo number_format($pretacion['totalcredito'],2,",","."); ?></td>
 										<td><?php if (isset($pretacion['nombre'])) { echo $pretacion['nombre']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
 									</tr>
+							  <?php if ($pretacion['inte'] != NULL) { ?>
+							  		<tr>
+										<td class="title" colspan="7">Integracion</td>
+									</tr>
+									<tr>
+										<td class="title">Solicitado</td>
+										<td class="title">Dependencia</td>
+										<td class="title" colspan="5">Tipo | Escuela | C.U.E.</td>
+									</tr>
+									<tr>
+										<td><?php echo number_format($pretacion['totalsolicitado'],2,",","."); ?></td>
+										<td><?php if ($pretacion['dependencia'] == 1) { echo "SI"; } else { echo "NO"; } ?></td>
+										<td colspan="5"><?php echo $pretacion['codigoescuela']." - ".$pretacion['nombreescuela']." - ".$pretacion['cue'] ?></td>
+									</tr>
+							  <?php } ?>
 						  <?php } ?>
 					<?php   } else { ?>
 								<tr><td class="title" colspan="7">Sin Prestaciones Cargadas</td></tr>
