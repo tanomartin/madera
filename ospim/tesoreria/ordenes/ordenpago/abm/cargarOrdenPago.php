@@ -102,7 +102,8 @@ function calcularRetencion(valor, total) {
 	} else {
 		var rete = parseFloat(0).toFixed(2);
 		document.getElementById("rete").disabled = false;
-		if (total > 30000) {
+		var minRete = 67170;
+		if (total > minRete) {
 			rete = parseFloat(parseFloat(total) * 0.02).toFixed(2);
 		}
 		document.getElementById("rete").value = rete;
