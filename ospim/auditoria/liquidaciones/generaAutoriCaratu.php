@@ -4,7 +4,7 @@ include($libPath."fechas.php");
 require_once($libPath."fpdf.php");
 require_once($libPath."FPDI-1.6.1/fpdi.php"); 
 $maquina = $_SERVER['SERVER_NAME'];
-if(strcmp("127.0.0.1",$maquina)==0)
+if(strcmp("localhost",$maquina)==0)
 	$carpetaCaratulas="C:/tmp/";
 else
 	$carpetaCaratulas="/tmp/";
@@ -250,10 +250,11 @@ if(isset($_POST)) {
 					$pdf->Image('img/sgornatti.png',110,245,50,18);
 				}
 			}
-			$fechaGeneracion = date("YmdHis");
-			$nombreCaratula = "caratula".$fechaGeneracion.".pdf";
+			$usuariogeneracion = $_SESSION['usuario'];
+			$fechaGeneracion = date("YmdHis").$usuariogeneracion;
+			$nombreCaratula = "C".$fechaGeneracion.".pdf";
 			
-			if(strcmp("127.0.0.1",$maquina)==0){ 
+			if(strcmp("localhost",$maquina)==0){ 
 				$nombrearchivo = $nombreCaratula;
 			} else {
 				$nombrearchivo = $carpetaCaratulas.$nombreCaratula;
