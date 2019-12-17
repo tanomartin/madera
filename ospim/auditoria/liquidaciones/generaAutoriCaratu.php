@@ -5,9 +5,9 @@ require_once($libPath."fpdf.php");
 require_once($libPath."FPDI-1.6.1/fpdi.php"); 
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
-	$carpetaCaratulas="C:/tmp/";
+	$carpetaCaratulas="/home/sistemas/Documentos/Repositorio/LotesCaratulas/";
 else
-	$carpetaCaratulas="/tmp/";
+	$carpetaCaratulas="/home/sistemas/Documentos/Repositorio/LotesCaratulas/";
 $fechamodificacion = date("Y-m-d H:i:s");
 $usuariomodificacion = $_SESSION['usuario'];
 //sleep(2);
@@ -254,13 +254,14 @@ if(isset($_POST)) {
 			$fechaGeneracion = date("YmdHis").$usuariogeneracion;
 			$nombreCaratula = "C".$fechaGeneracion.".pdf";
 			
-			if(strcmp("localhost",$maquina)==0){ 
-				$nombrearchivo = $nombreCaratula;
-			} else {
+			//if(strcmp("localhost",$maquina)==0){ 
+			//	$nombrearchivo = $nombreCaratula;
+			//} else {
 				$nombrearchivo = $carpetaCaratulas.$nombreCaratula;
-			}
+			//}
 
 			$pdf->Output($nombrearchivo,'F');
+			chmod($nombrearchivo, 0777);
 			echo json_encode(array('result'=> true,'archivopdf'=>$nombrearchivo));
 		} else {
 			echo json_encode(array('result'=> false,'archivopdf'=>''));
