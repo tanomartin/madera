@@ -261,6 +261,7 @@ if(isset($_POST)) {
 			//}
 
 			$pdf->Output($nombrearchivo,'F');
+			chmod($nombrearchivo, 0777);
 			echo json_encode(array('result'=> true,'archivopdf'=>$nombrearchivo));
 		} else {
 			echo json_encode(array('result'=> false,'archivopdf'=>''));
