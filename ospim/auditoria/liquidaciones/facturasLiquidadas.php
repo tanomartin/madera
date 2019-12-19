@@ -12,9 +12,10 @@ if($facturasintegracion != 0) {
 	}
 }
 $notintegracion = 'not in('.substr($notintegracion, 0, -1).')';
-
+$totalfacturasagrupadas = 0;
 $sqlFacturasAgrupadas="SELECT f.id, p.nombre, p.cuit, COUNT(f.id) AS cantidadfacturas, SUM(f.importeliquidado) AS totalimporte FROM facturas f, prestadores p WHERE f.id $notintegracion AND f.fechacierreliquidacion != '0000-00-00 00:00:00' AND f.autorizacionpago = 0 AND f.usuarioliquidacion = '$_SESSION[usuario]' AND f.idPrestador = p.codigoprestador GROUP BY p.cuit ORDER BY p.cuit";
 $resFacturasAgrupadas = mysql_query($sqlFacturasAgrupadas,$db);
+$totalfacturasagrupadas = mysql_num_rows($resFacturasAgrupadas);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -28,6 +29,13 @@ $resFacturasAgrupadas = mysql_query($sqlFacturasAgrupadas,$db);
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	$("#procesar").attr('disabled', true);
+	var totalfacturasagrupadas = $("#totalfacturasagrupadas").val();
+	if(totalfacturasagrupadas==0) {
+		$("#procesar").attr('disabled', true);
+	} else {
+		$("#procesar").attr('disabled', false);
+	}
 	$("#procesar").on("click", function() {
 		var datosform = $("form#generaAutoriCaratu").serialize();
 		$.blockUI({ message: "<h1>Procesando Autorizaciones y Caratulas... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
@@ -95,7 +103,7 @@ function ocultaDetalle(cuit,cantidad) {
 	<h1>Liquidacion Prestadores</h1>
 </div>
 <div id="facturasusuario" align="center">
-	<h2>Facturas Liquidadas por el Usuario @<?php echo $_SESSION['usuario'];?></h2>
+	<h2>Facturas Liquidadas por el Usuario @<?php echo $_SESSION['usuario'];?></h2><input name="totalfacturasagrupadas" type="hidden" id="totalfacturasagrupadas" size="10" value="<?php echo $totalfacturasagrupadas;?>"/>
 </div>
 <form id="generaAutoriCaratu">
 	<div align="center">
