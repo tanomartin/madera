@@ -37,7 +37,6 @@ $sqlPrestador = "SELECT * FROM prestadores WHERE codigoprestador = $codigo order
 $resPrestador = mysql_query($sqlPrestador,$db);
 $rowPrestador = mysql_fetch_array($resPrestador);
 
-//TODO FALTA UNA TABLA DE DEBITO
 $sqlFacPendientesInte = "SELECT
 							f.*,
 							DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
@@ -63,7 +62,7 @@ if ($canFacPendientesInte > 0) {
 		$arrayInte[$rowFacPendientesInte['id']] = $rowFacPendientesInte;
 	}
 }
-//TODO FALTA UNA TABLA DE DEBITO	
+
 $sqlFacPendientes = "SELECT
 						f.*,
 						DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,

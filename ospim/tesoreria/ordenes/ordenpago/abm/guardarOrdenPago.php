@@ -7,9 +7,9 @@ $impDebito = $_POST['totaldebito'];
 $codigo = $_POST['codigo'];
 $fechaorden = date("Y-m-d");
 $tipoPago = $_POST['tipopago'];
-$nroPago = NULL;
+$nroPago = 'NULL';
 if ($tipoPago != 'E') {
-	$nroPago = $_POST['numero'];
+	$nroPago =  "'".$_POST['numero']."'";
 }
 $fechaPago = fechaParaGuardar($_POST['fecha']);
 $retencion = $_POST['retencion'];
@@ -18,16 +18,17 @@ if ($retencion != 0) {
 	$impRetencion = $_POST['rete'];
 }
 $impApagar = $_POST['apagar'];
-$envioEmail = $_POST['enviomail'];
 $email = "";
-if ($envioEmail != 0) {
-	$email = $_POST['email'];
+if (isset($_POST['enviomail'])) {
+	$envioEmail = $_POST['enviomail'];
+	if ($envioEmail != 0) {
+		$email = $_POST['email'];
+	}
 }
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo,'$fechaorden','$tipoPago', '$nroPago', '$fechaPago', $impRetencion, $impDebito, $impApagar, NULL, NULL, NULL, '$fecharegistro', '$usuarioregistro',NULL,NULL)";
+$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo,'$fechaorden','$tipoPago', $nroPago, '$fechaPago', $impRetencion, $impDebito, $impApagar, NULL, NULL, NULL, '$fecharegistro', '$usuarioregistro',NULL,NULL)";
 
-//TODO VER SI YA SE HIZO EL DEBITO EN ALGUN PAGO PARCIAL ANTERIOR
 if ($impDebito > 0) {
 	$today = date("Y-m-d");
 	$sqlUltimo = "SELECT * FROM ordendebitolote WHERE fechainicio <= '$today' and fechavto > '$today'";
