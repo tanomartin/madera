@@ -39,7 +39,10 @@ $presentacionSSS = "UPDATE diabetespresentacion
 						WHERE id = $id";
 
 
-$sqlIdFinalizadaAnterior = "SELECT id FROM diabetespresentacion WHERE fechadevolucion is not null ORDER by id DESC limit 1";
+$sqlIdFinalizadaAnterior = "SELECT id FROM diabetespresentacion 
+								WHERE fechasolicitud is not null and 
+									  fechacancelacion is null 
+								ORDER by id DESC limit 1";
 //echo $sqlIdFinalizadaAnterior."<br>";
 $resIdFinalizadaAnterior = mysql_query($sqlIdFinalizadaAnterior,$db);
 $rowIdFinalizadaAnterior = mysql_fetch_assoc($resIdFinalizadaAnterior);
