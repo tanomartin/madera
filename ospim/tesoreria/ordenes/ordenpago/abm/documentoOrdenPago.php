@@ -254,7 +254,7 @@ function printRecibo($pdf, $rowCabecera) {
 		$textoRecibo2 = "Por intermedio de la transferencia Nro. ".$rowCabecera['comprobantepago'];
 	}
 	if ($rowCabecera['formapago'] == "C") {
-		$textoRecibo2 = "Por intermedio del Nro ".$rowCabecera['comprobantepago'];
+		$textoRecibo2 = "Por intermedio del Cheque Nro ".$rowCabecera['comprobantepago'];
 	}
 	$textoFin = "En concepto de pago de prestaciones medicas asistenciales detallas en la orden de pago nro ".$rowCabecera['nroordenpago'];
 	$pdf->SetXY(7, $y);

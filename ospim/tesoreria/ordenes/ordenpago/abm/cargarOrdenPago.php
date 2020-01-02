@@ -295,7 +295,7 @@ function validar(formulario) {
 				<td align="right"><b>Envio por mail</b></td>
 				<td>
 					<input type="radio" name="enviomail" value="0" checked="checked" onclick="habilitarEMail(this.value)"/> NO <br/>
-		  		<!-- <input type="radio" name="enviomail" value="1" onclick="habilitarEMail(this.value)"/> SI   -->    
+		  		    <input type="radio" name="enviomail" value="1" onclick="habilitarEMail(this.value)"/> SI 
 		  		</td>
 		  		<td><b>Email</b></td>
 		  		<td>

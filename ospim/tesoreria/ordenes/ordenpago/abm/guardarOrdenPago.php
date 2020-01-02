@@ -75,6 +75,18 @@ foreach ($_POST as $key => $facturas) {
 }
 
 try {
+	if (sizeof($arrayDetalle) == 0) {
+		throw new Exception("Error al guardar el detalle de la orden de pago. Comuniquese con el Dpto. de Sistemas");
+	}
+} catch (Exception $e) {
+		$error = $e->getMessage();
+		$dbh->rollback();
+		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+		Header($redire);
+		exit(0);
+}
+	
+try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
 	$dbh = new PDO("mysql:host=$hostname;dbname=$dbname",$_SESSION['usuario'],$_SESSION['clave']);
