@@ -183,7 +183,7 @@ function abrirPop(dire, titulo){
 	<?php if ($rowCabecera['fechacancelacion'] == null) { 
 			
 			if (!isset($_GET['dato'])) { $dato = 0; } else { $dato = $_GET['dato']; } ?>
-			<p><input type="button" value="CANCELAR ORDEN" onclick="cancelarOrden(<?php echo $nroorden?>, this, <?php echo $dato ?>, <?php echo $_GET['filtro']?>)" /></p>
+			<p><input type="button" value="ANULAR ORDEN" onclick="cancelarOrden(<?php echo $nroorden?>, this, <?php echo $dato ?>, <?php echo $_GET['filtro']?>)" /></p>
 	<?php } ?>
 </div>
 </body>
