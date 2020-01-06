@@ -49,7 +49,7 @@ $numIntegracion = 0;
 if ($numBeneficiarios > 0) {
 	$sqlPretaciones = "SELECT p.*,f.*, DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica, 
 							  p.codigopractica,  facturasintegracion.totalsolicitado,
-							  facturasintegracion.dependencia, facturasintegracion.codigoescuela,
+							  facturasintegracion.dependencia,
 							  facturasintegracion.id as inte, practicas.codigopractica as codigoescuela,
 							  escuelas.nombre as nombreescuela, escuelas.cue
 						    FROM practicas p, facturasprestaciones f 
@@ -63,7 +63,7 @@ if ($numBeneficiarios > 0) {
 		$sqlPretaciones .= "LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica";
 	}
 	$sqlPretaciones .= " WHERE f.idFactura = $id and f.idpractica = p.idpractica";
-	
+
 	$resPretaciones = mysql_query($sqlPretaciones,$db);
 	$numPretaciones = mysql_num_rows($resPretaciones);
 	$arrayPresta = array();
