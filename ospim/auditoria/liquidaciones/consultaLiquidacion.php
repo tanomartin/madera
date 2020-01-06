@@ -9,8 +9,10 @@ $sqlFactura = "SELECT f.*, p.nombre, p.cuit, p.personeria,
 					  DATE_FORMAT(f.fecharecepcion,'%d/%m/%Y') as fecharecepcion,
 					  DATE_FORMAT(f.fechacorreo,'%d/%m/%Y') as fechacorreo,
 					  DATE_FORMAT(f.fechavencimiento,'%d/%m/%Y') as fechavencimiento,
-					  t.descripcion as tipocomprobante, c.descripcioncorta  
-					FROM facturas f, prestadores p, tipocomprobante t, codigoautorizacion c
+					  t.descripcion as tipocomprobante, c.descripcioncorta,
+					  establecimientos.nombre as establecimiento
+					FROM prestadores p, tipocomprobante t, codigoautorizacion c, facturas f 
+					LEFT JOIN establecimientos ON establecimientos.codigo = f.idestablecimiento
 					WHERE f.id = $id AND 
 						  f.idPrestador = p.codigoprestador AND 
 						  f.idTipocomprobante = t.id and f.idCodigoautorizacion = c.id
@@ -45,7 +47,6 @@ $resCarencias = mysql_query($sqlCarencias,$db);
 $numCarencias = mysql_num_rows($resCarencias);
 
 $numEstadistica = 0;
-$numIntegracion = 0;
 if ($numBeneficiarios > 0) {
 	$sqlPretaciones = "SELECT p.*,f.*, DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica, 
 							  p.codigopractica,  facturasintegracion.totalsolicitado,
@@ -82,10 +83,6 @@ if ($numBeneficiarios > 0) {
 							GROUP BY f.valorcomputo";
 		$resEstadistica = mysql_query($sqlEstadistica,$db);
 		$numEstadistica = mysql_num_rows($resEstadistica);
-		
-		$sqlIntegracion = "SELECT * FROM facturasintegracion f WHERE idFacturaprestacion in $whereIn";
-		$resIntegracion = mysql_query($sqlIntegracion,$db);
-		$numIntegracion = mysql_num_rows($resIntegracion);
 	} 
 }
 
@@ -161,6 +158,11 @@ if ($numBeneficiarios > 0) {
 				<td align="right" colspan="3">Importe: </td>
 				<td align="left"><?php echo number_format($rowFactura['importecomprobante'],2,",",".");?></td>
 			</tr>
+			<?php if ($rowFactura['establecimiento'] != NULL) { ?>
+				<tr>
+					<td colspan="4"><?php echo "Establecimiento: ".$rowFactura['establecimiento'] ?></td>
+				</tr>
+			<?php }?>
 		</table>
 	</div>
 	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 40%">
