@@ -237,7 +237,12 @@ if ($numBeneficiarios > 0) {
 										<td><?php echo number_format($pretacion['totalcredito'],2,",","."); ?></td>
 										<td><?php if (isset($pretacion['nombre'])) { echo $pretacion['nombre']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
 									</tr>
-							  <?php if ($pretacion['inte'] != NULL) { ?>
+							  <?php if ($pretacion['totaldebito'] > 0) { ?>
+							  		<tr>
+							  			<td colspan="7">MOTIVO DEBITO: <?php echo $pretacion['motivodebito']?></td>
+							  		</tr>
+							  <?php	}	
+							 	    if ($pretacion['inte'] != NULL) { ?>
 							  		<tr>
 										<td class="title" colspan="7">Integracion</td>
 									</tr>
