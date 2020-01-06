@@ -376,7 +376,7 @@ function printDetalleDebito($pdf, $arrayDetalleDebito) {
 		$cordY += 5;
 		
 		$pdf->SetXY(7, $cordY);
-		$pdf->Cell(173,5,"MOTIVO: ".$detalle['motivo'],0,0);
+		$pdf->Cell(173,5,"MOTIVO: ".substr($detalle['motivo'],0,90),0,0);
 		
 		$pdf->SetFont('Courier','B',8);
 		$pdf->SetXY(180, $cordY);
@@ -443,18 +443,7 @@ if ($email != "") {
 	$dbh->beginTransaction();
 	
 	$subject = "Orden de Pago O.S.P.I.M.";
-	$bodymail= "<body>
-					Sr. Prestador de O.S.P.I.M.<br><br>
-			   		Recientemente se le ha efectuado una transferencia bancaria a vuestro C.B.U.<br>
-					Los datos de la transferencia figuran en la \"Orden de Pago\" adjunta.<br>
-					Solicitamos imprimir el adjunto firmarlo, sellarlo y <b>enviarlo</b> junto a vuestro recibo oficial a:<br><br>
-					O.S.P.I.M.<br>
-					Rojas 254 - 1405 C.A.B.A.<br><br>
-					La recepción de la órden de pago y de vuestro recibo son requisitos necesarios para agilizar futuros pagos.<br>
-					Agradecemos vuestra atención<br><br>
-					<b>TESORERIA<br>
-					O.S.P.I.M.</b><br><br>
-				</body>";
+	$bodymail= "<body>Sr. Prestador de O.S.P.I.M.<br><br>Recientemente se le ha efectuado una transferencia bancaria a vuestro C.B.U.<br>Los datos de la transferencia figuran en la \"Orden de Pago\" adjunta.<br>Solicitamos imprimir el adjunto firmarlo, sellarlo y <b>enviarlo</b> junto a vuestro recibo oficial a:<br><br>O.S.P.I.M.<br>Rojas 254 - 1405 C.A.B.A.<br><br>La recepción de la órden de pago y de vuestro recibo son requisitos necesarios para agilizar futuros pagos.<br>Agradecemos vuestra atención<br><br><b>TESORERIA<br>O.S.P.I.M.</b><br><br></body>";
 	$username ="tesoreria@ospim.com.ar";
 	$modulo = "Ordenes de Pago";
 	$arrayAttachment[] = $nombrearchivoO;

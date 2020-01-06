@@ -38,10 +38,17 @@ if ($impDebito > 0) {
 		$error = "No existe lote de notas de debito disponibles para realizar la misma";
 		$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
 		Header($redire);
+		exit(0);
 	} else {
 		$rowUltimo = mysql_fetch_array($resUltimo);
 		$ptoVenta = $rowUltimo['ptoventa'];
 		$nronota = $rowUltimo['ultimousado'] + 1;
+		if ($nronota > $rowUltimo['nrofin']) {
+			$error = "Se supero el último Nro. de Nota de Debito del lote actual";
+			$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
+			Header($redire);
+			exit(0);
+		}
 		$sqlDebito = "INSERT INTO ordendebito VALUE(nroorden, $ptoVenta, $nronota, $codigo, '$fechaorden', $impDebito)";
 		$sqlUpdateLote = "UPDATE ordendebitolote SET ultimousado = $nronota WHERE id = ".$rowUltimo['id'];
 	}
