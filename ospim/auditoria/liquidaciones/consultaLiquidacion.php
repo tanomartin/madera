@@ -48,7 +48,8 @@ $numEstadistica = 0;
 $numIntegracion = 0;
 if ($numBeneficiarios > 0) {
 	$sqlPretaciones = "SELECT p.*,f.*, DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica, 
-							  p.codigopractica,  facturasintegracion.*,
+							  p.codigopractica,  facturasintegracion.totalsolicitado,
+							  facturasintegracion.dependencia, facturasintegracion.codigoescuela,
 							  facturasintegracion.id as inte, practicas.codigopractica as codigoescuela,
 							  escuelas.nombre as nombreescuela, escuelas.cue
 						    FROM practicas p, facturasprestaciones f 
