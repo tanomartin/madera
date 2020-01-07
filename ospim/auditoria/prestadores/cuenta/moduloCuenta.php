@@ -221,7 +221,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 					$totalDebe += $detalle['debe'];
 					$totalHaber += $detalle['haber']; ?>
 					<tr>
-						<td><?php echo str_replace("-","/",$fecha); ?></td>
+						<td><?php echo invertirFecha(substr($fechas,0,10)); ?></td>
 						<td><?php echo $detalle['descripcion']."<br>";
 								  if (isset($detalle['facturas'])) {
 								  	echo "---------------------------------------------------------------------<br>";
