@@ -63,11 +63,11 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
-				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." -".invertirFecha($rowFacturasDet['fechacomprobante'])." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".");
+				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - F.R.:".invertirFecha($rowFacturasDet['fecharecepcion'])." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".");
 				if ($rowFacturasDet['totaldebito'] != 0) {
 					$descripcion .= "<br> Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
 				}
-				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['importecomprobante'], "tipo" => 'F', "fecrec" => $rowFacturasDet['fecharecepcion']);
+				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['importecomprobante'], "tipo" => 'F');
 			}
 			
 			$sqlPagosDet = "SELECT * FROM ordencabecera
@@ -200,7 +200,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
   			<table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
 				<thead>
 					<tr>
-						<th>Fecha Ingreso</th>
+						<th>Fecha Compr</th>
 						<th>Descripcion</th>
 						<th>DEBE</th>
 						<th>HABER</th>
@@ -221,7 +221,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 					$totalDebe += $detalle['debe'];
 					$totalHaber += $detalle['haber']; ?>
 					<tr>
-						<td><?php echo invertirFecha($detalle['fecrec']); ?></td>
+						<td><?php echo str_replace("-","/",$fecha); ?></td>
 						<td><?php echo $detalle['descripcion']."<br>";
 								  if (isset($detalle['facturas'])) {
 								  	echo "---------------------------------------------------------------------<br>";
