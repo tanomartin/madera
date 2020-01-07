@@ -146,10 +146,10 @@ function abrirPop(dire, titulo){
 						$rowEmail = mysql_fetch_assoc($resEmail); ?>
 						<tr>
 							<th><b>Info. Email</b></th>
-							<th colspan="5">Enviado a "<?php echo $rowEmail['address'] ?>" el día "<?php echo $rowEmail['fechaenvio'] ?>"</th>
-							<th colspan="2">	
+							<th colspan="6">Enviado a "<?php echo $rowEmail['address'] ?>" el día "<?php echo $rowEmail['fechaenvio'] ?>"</th>
+							<th>	
 							<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
-								<input type="button" value="Reenviar" onclick="reenviarMail(<?php echo $nroorden?>,<?php echo $rowEmail['id']?>, this, '<?php echo $rowEmail['address']?>')" />
+								<input type="button" value="RE-ENVIAR" onclick="reenviarMail(<?php echo $nroorden?>,<?php echo $rowEmail['id']?>, this, '<?php echo $rowEmail['address']?>')" />
 							<?php } ?>
 							</th>
 						</tr>
