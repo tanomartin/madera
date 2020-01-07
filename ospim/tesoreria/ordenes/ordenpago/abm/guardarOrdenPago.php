@@ -75,8 +75,10 @@ foreach ($_POST as $key => $facturas) {
 		if ($pagoanterior == 0) {
 			$debname = "debito".$id;
 			$importeDebito = $_POST[$debname];
-			$sqlInsertDetalleDebito = "INSERT INTO ordendebitodetalle VALUE(DEFAULT, nroorden, $id, $importeDebito)";
-			$arrayDetalleDebito[$id] = $sqlInsertDetalleDebito;
+			if ($importeDebito > 0) { 
+				$sqlInsertDetalleDebito = "INSERT INTO ordendebitodetalle VALUE(DEFAULT, nroorden, $id, $importeDebito)";
+				$arrayDetalleDebito[$id] = $sqlInsertDetalleDebito;
+			}
 		}
 	}
 }

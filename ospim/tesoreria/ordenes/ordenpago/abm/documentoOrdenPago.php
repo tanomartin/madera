@@ -21,6 +21,10 @@ if ($rowCabecera['debito'] > 0) {
 	$resDebito = mysql_query($sqlDebito,$db);
 	$rowDebito = mysql_fetch_assoc($resDebito);
 	
+	$sqlLote = "SELECT cai, DATE_FORMAT(fechavto, '%d-%m-%Y') as fechavto FROM ordendebitolote WHERE nroinicio <= ".$rowDebito['nronotadebito']." and nrofin >= ".$rowDebito['nronotadebito']." LIMIT 1";;
+	$resLote = mysql_query($sqlLote,$db);
+	$rowLote = mysql_fetch_assoc($resLote);
+	
 	$arrayDetalleDebito = array();
 	$i= 0;
 	$sqlDetalleDebito = "SELECT f.puntodeventa, f.nrocomprobante, 
@@ -318,8 +322,10 @@ function printHeaderPlanillaDebito($pdfPlanilla, $rowDebito) {
 	$pdfPlanilla->Cell(60,7,"Fecha: ".$rowDebito['fechadebito'],0,0);
 	
 	$pdfPlanilla->SetFont('Courier','',8);
-	$pdfPlanilla->SetXY(135, 25);
+	$pdfPlanilla->SetXY(135, 20);
 	$pdfPlanilla->Cell(55,5,"RNOS Nro.: 11100-1",0,0);
+	$pdfPlanilla->SetXY(135, 25);
+	$pdfPlanilla->Cell(55,5,"Nro. Ord.: ".$rowDebito['nroordenpago'],0,0);
 	
 	$pdfPlanilla->Line(7, 33, 210, 33);
 	$pdfPlanilla->Line(109, 11, 109, 33);
@@ -345,22 +351,80 @@ function printHeaderPlanillaDebito($pdfPlanilla, $rowDebito) {
 	$pdfPlanilla->Line(7, 59, 210, 59);
 }
 
-function printHeaderDebito($pdfNotaDebito, $rowDebito) {
-	$pdfNotaDebito->SetFont('Courier','B',12);
-	$pdfNotaDebito->SetXY(155, 9);
-	$pdfNotaDebito->Cell(45,7,str_pad ($rowDebito['ptoventa'],4,0,STR_PAD_LEFT)."-".str_pad($rowDebito['nronotadebito'],8,0,STR_PAD_LEFT),0,0);
-	$pdfNotaDebito->SetXY(140, 16);
-	$pdfNotaDebito->Cell(60,7,$rowDebito['fechadebito'],0,0);
+function printHeaderDebito($pdf, $rowDebito, $tipoDebito) {
+	$pdf->Image('../img/Logo Membrete OSPIM.jpg',7,1,25,20,'JPG');
+	$pdf->SetFont('Courier','B',30);
+	$pdf->SetXY(35, 1);
+	$pdf->Cell(35,10,"OSPIM",0,0);
+	$pdf->SetFont('Courier','B',10);
+	$pdf->SetXY(35, 10);
+	$pdf->Cell(55,5,"Obra Social del Personal",0,0);
+	$pdf->SetXY(35, 13);
+	$pdf->Cell(55,5,"de la Industria Maderera",0,0);
 	
-	$pdfNotaDebito->SetFont('Courier','',10);
-	$pdfNotaDebito->SetXY(30, 34);
-	$pdfNotaDebito->Cell(190,5,$rowDebito['nombre'],0,0);
-	$pdfNotaDebito->SetXY(30, 38);
-	$pdfNotaDebito->Cell(190,5,$rowDebito['cuit'],0,0);
-	$pdfNotaDebito->SetXY(30, 42);
-	$pdfNotaDebito->Cell(190,5,$rowDebito['domicilio']." - CP: ".$rowDebito['numpostal'],0,0);
-	$pdfNotaDebito->SetXY(30, 46);
-	$pdfNotaDebito->Cell(190,5,$rowDebito['localidad']." - (".$rowDebito['provincia'].")",0,0);
+	$pdf->SetFont('Courier','I',7);
+	$pdf->SetXY(15, 20);
+	$pdf->Cell(60,5,"Rojas 254 (C1405ABB) Capital Federal",0,0);
+	$pdf->SetXY(15, 24);
+	$pdf->Cell(60,5,"Tel.: 4431-4791/4089 - Fax: 4431-2567",0,0);
+	$pdf->SetXY(15, 28);
+	$pdf->Cell(30,5,"tesoreria@ospim.com.ar - IVA EXENTO",0,0);
+	
+	$pdf->SetFont('Courier','B',30);
+	$pdf->SetXY(105, 1);
+	$pdf->Cell(9,10,"C",1,1);
+	
+	$pdf->SetFont('Courier','B',13);
+	if ($tipoDebito == 'D') {
+		$pdf->SetXY(96, 25);
+		$pdf->Cell(9,10,"DUPLICADO",0,0);
+	} else {
+		$pdf->SetXY(97, 25);
+		$pdf->Cell(9,10,"ORIGINAL",0,0);
+	}
+	
+	
+	$pdf->SetFont('Courier','B',15);
+	$pdf->SetXY(135, 1);
+	$pdf->Cell(70,8,"Nota de Debito",0,0);
+	$pdf->SetFont('Courier','B',12);
+	$pdf->SetXY(150, 9);
+	$pdf->Cell(45,7,"Nº ".str_pad ($rowDebito['ptoventa'],4,0,STR_PAD_LEFT)."-".str_pad($rowDebito['nronotadebito'],8,0,STR_PAD_LEFT),0,0);
+	$pdf->SetXY(135, 14);
+	$pdf->Cell(60,7,"Fecha: ".$rowDebito['fechadebito'],0,0);
+	
+	$pdf->SetFont('Courier','',8);
+	$pdf->SetXY(135, 20);
+	$pdf->Cell(55,5,"CUIT: Nro.: 30-50289264-5",0,0);
+	$pdf->SetXY(135, 23);
+	$pdf->Cell(55,5,"INGRESOS BRUTOS: EXENTOS",0,0);
+	$pdf->SetXY(135, 26);
+	$pdf->Cell(55,5,"RNOS Nro.: 11100-1",0,0);
+	$pdf->SetXY(135, 29);
+	$pdf->Cell(55,5,"Fecha de Inicio de Actividad: 01/01/1972",0,0);
+	
+	$pdf->Line(7, 33, 210, 33);
+	$pdf->Line(109, 11, 109, 27);
+	
+	$pdf->SetFont('Courier','',10);
+	$pdf->SetXY(15, 34);
+	$pdf->Cell(190,5,"ENTIDAD: ".$rowDebito['nombre'],0,0);
+	$pdf->SetXY(15, 38);
+	$pdf->Cell(190,5, "CUIT: ".$rowDebito['cuit'],0,0);
+	$pdf->SetXY(15, 42);
+	$pdf->Cell(190,5,"DOMICILIO: ".$rowDebito['domicilio']." - CP: ".$rowDebito['numpostal'],0,0);
+	$pdf->SetXY(15, 46);
+	$pdf->Cell(190,5,"LOCALIDAD: ".$rowDebito['localidad']." - (".$rowDebito['provincia'].")",0,0);
+	
+	$pdf->Line(7, 52, 210, 52);
+	
+	$pdf->SetFont('Courier','B',10);
+	$pdf->SetXY(50, 53);
+	$pdf->Cell(55,5,"DETALLE",0,0);
+	$pdf->SetXY(180, 53);
+	$pdf->Cell(55,5,"IMPORTE",0,0);
+	
+	$pdf->Line(7, 59, 210, 59);
 }
 
 function printDetalleDebito($pdf, $arrayDetalleDebito) {
@@ -395,19 +459,41 @@ function printDetalleDebito($pdf, $arrayDetalleDebito) {
 	$pdf->Cell(30,5,"$ ".number_format($total,2,',','.'),0,0);
 }
 
+function printFooterDebito($pdf, $cai, $vto) {
+	$pdf->SetFont('Courier','B',7);
+	$pdf->Line(7, 245, 210, 245);
+	
+	$pdf->SetXY(7, 245);
+	$pdf->Cell(80,5,"Nota: Se adjunta documentación respaldatoria",0,0,"L");
+	$pdf->SetXY(7, 247);
+	$pdf->Cell(130,5,"Vencimiento presentación de deducciones, con documentación respaldatoria: 60 días",0,0,"L");
+	
+	$pdf->Line(7, 251, 210, 251);
+	
+	$pdf->SetXY(160, 251);
+	$pdf->Cell(50,5,"C.A.I.: ".$cai,0,0,"R");
+	$pdf->SetXY(160, 254);
+	$pdf->Cell(50,5,"FECHA DE VENC.: ".$vto,0,0,"R");
+	$pdf->SetXY(7, 254);
+	$pdf->Cell(130,5,"147 Telefono Gratuito CABA, Área de Defensa y Protección del Consumidor",0,0,"L");
+	
+	$pdf->Line(7, 258, 210, 258);
+}
+
 /************************************************/
+/************	ORDEN ORIGINAL	*****************/
 $ordenNombreArchivo = str_pad($nroOrden, 8, '0', STR_PAD_LEFT);
 $nombreArchivoO = "OP".$ordenNombreArchivo."O.pdf";
-
 $pdf = new FPDF('P','mm','Letter');
 $pdf->AddPage();
 printHeader($pdf);
 printDetalle($pdf, $rowCabecera, $db, "ORIGINAL");
 printRecibo($pdf, $rowCabecera);
-
 $nombrearchivoO = $carpetaOrden.$nombreArchivoO;
 $pdf->Output($nombrearchivoO,'F');
+/************************************************/
 
+/************	ORDEN COPIA		*****************/
 $nombreArchivoC = "OP".$ordenNombreArchivo."C.pdf";
 $pdf = new FPDF('P','mm','Letter');
 $pdf->AddPage();
@@ -418,21 +504,37 @@ printHeader($pdf);
 printDetalle($pdf, $rowCabecera, $db, "TRIPLICADO");
 $nombrearchivoC = $carpetaOrden.$nombreArchivoC;
 $pdf->Output($nombrearchivoC,'F');
+/************************************************/
 
 if ($rowCabecera['debito'] > 0) {
+	/*********	NOTA DEBITO ORIGINAL 	*********************/
 	$nombreNotaDebito = $carpetaOrden."OP".$ordenNombreArchivo."DEB.pdf";
 	$pdfNotaDebito = new FPDF('P','mm','Letter');
 	$pdfNotaDebito->AddPage();
-	printHeaderDebito($pdfNotaDebito, $rowDebito);
+	printHeaderDebito($pdfNotaDebito, $rowDebito, 'O');
 	printDetalleDebito($pdfNotaDebito, $arrayDetalleDebito);
+	printFooterDebito($pdfNotaDebito, $rowLote['cai'], $rowLote['fechavto']);
 	$pdfNotaDebito->Output($nombreNotaDebito,'F');
+	/********************************************************/
 	
+	/*********	NOTA DEBITO DUPLICADO 	*********************/
+	$nombreNotaDebitoDup = $carpetaOrden."OP".$ordenNombreArchivo."DEBDUP.pdf";
+	$pdfNotaDebitoDup = new FPDF('P','mm','Letter');
+	$pdfNotaDebitoDup->AddPage();
+	printHeaderDebito($pdfNotaDebitoDup, $rowDebito, 'D');
+	printDetalleDebito($pdfNotaDebitoDup, $arrayDetalleDebito);
+	printFooterDebito($pdfNotaDebitoDup, $rowLote['cai'], $rowLote['fechavto']);
+	$pdfNotaDebitoDup->Output($nombreNotaDebitoDup,'F');
+	/********************************************************/
+	
+	/***********	PLANILLA DE DEBITO **********************/
 	$nombrePlanillaDebito = $carpetaOrden."OP".$ordenNombreArchivo."PL.pdf";
 	$pdfPlanilla = new FPDF('P','mm','Letter');
 	$pdfPlanilla->AddPage();
 	printHeaderPlanillaDebito($pdfPlanilla, $rowDebito);
 	printDetalleDebito($pdfPlanilla, $arrayDetalleDebito);
 	$pdfPlanilla->Output($nombrePlanillaDebito,'F');
+	/********************************************************/
 }
 
 if ($email != "") {
