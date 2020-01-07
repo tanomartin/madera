@@ -147,8 +147,8 @@ function abrirPop(dire, titulo){
 						<tr>
 							<th><b>Info. Email</b></th>
 							<th colspan="5">Enviado a "<?php echo $rowEmail['address'] ?>" el día "<?php echo $rowEmail['fechaenvio'] ?>"</th>
-							<th>	
-							<?php if ($rowCabecera['fechacancelacion'] != null) { ?>
+							<th colspan="2">	
+							<?php if ($rowCabecera['fechacancelacion'] == null) { ?>
 								<input type="button" value="Reenviar" onclick="reenviarMail(<?php echo $nroorden?>,<?php echo $rowEmail['id']?>, this, '<?php echo $rowEmail['address']?>')" />
 							<?php } ?>
 							</th>
