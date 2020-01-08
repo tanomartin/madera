@@ -10,6 +10,7 @@ else
 
 
 $idFactura = $_GET['id'];
+$doc = $_GET['doc'];
 $sqlOrden = "SELECT c.nroordenpago FROM ordendebito d, ordencabecera c, ordendetalle od
 				WHERE od.idFactura = $idFactura AND od.nroordenpago = d.nroordenpago and
 					  d.nroordenpago = c.nroordenpago AND 
@@ -20,7 +21,7 @@ $numOrden = mysql_num_rows($resOrden);
 if ($numOrden != 0) {
 	$rowOrden = mysql_fetch_assoc($resOrden);
 	$nroorden = str_pad($rowOrden['nroordenpago'], 8, '0', STR_PAD_LEFT);
-	$mi_pdf = $carpetaPlanilla."OP".$nroorden."PL.pdf";
+	$mi_pdf = $carpetaPlanilla."OP".$nroorden.$doc.".pdf";
 	header('Content-type: application/pdf');
 	readfile($mi_pdf);
 	exit();
@@ -33,7 +34,7 @@ if ($numOrden != 0) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<h2>NO SE ENCUENTRA PLANILLA DE DEBITO</h2>
+	<h2>NO SE ENCUENTRA EL DOCUMENTO DE DEBITO</h2>
 	<h2 style="color: red">ORDEN DE PAGO CANCELADA PARA ESTA FACTURA</h2>
 </div>
 </body>
