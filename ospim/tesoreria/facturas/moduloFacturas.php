@@ -55,8 +55,8 @@ $(document).ready(function(){
 			theme: 'blue', 
 			widthFixed: true, 
 			headers: {
-				0:{sorter:false, filter: false},
-				1:{sorter:false, filter: false},
+				0:{sorter:false},
+				1:{sorter:false},
 				3:{filter: false},
 				5:{sorter:false},
 				6:{sorter:false, filter: false},
@@ -123,6 +123,12 @@ function validar(formulario) {
 	return true;
 }
 
+function abrirPop(dire, id) {
+	var idVisto = "visited"+id;
+	document.getElementById(idVisto).style.display = "block";
+	window.open(dire,"Consulta Factura","width=800,height=500");
+}
+
 </script>
 </head>
 
@@ -186,14 +192,16 @@ function validar(formulario) {
 				<td><?php echo $rowFacturasSinLiquidar['importecomprobante'];?></td>
 				<td><?php echo invertirFecha($rowFacturasSinLiquidar['fechavencimiento']);?></td>
 				<td>
-					<input class="nover" type="button" id="consultarfactura" name="consultarfactura" value="Consultar" onclick="location.href = 'consultarFactura.php?idfactura=<?php echo $rowFacturasSinLiquidar['id'] ?>'"/>
+					<input class="nover" type="button" id="consultarfactura" name="consultarfactura" value="Consultar" onclick="abrirPop('consultarFactura.php?idfactura=<?php echo $rowFacturasSinLiquidar['id'] ?>','<?php echo $rowFacturasSinLiquidar['id'] ?>')"/>
 					<input class="nover" type="button" id="editarfactura" name="editarfactura" value="Editar" onclick="location.href = 'editarFactura.php?idfactura=<?php echo $rowFacturasSinLiquidar['id'] ?>'"/>
 				</td>
 				<td>
-					  <?php if(isset($_COOKIE[$rowFacturasSinLiquidar['id']])) {?> 
-								<img src="../img/visited.png" height="20" width="20" style="vertical-align: middle;" id="visited<?php echo  $rowLeeAutorizacion['nrosolicitud'] ?>" name="visited<?php echo  $rowLeeAutorizacion['nrosolicitud'] ?>" /> 
-					  <?php } ?>
-					</td>
+				<?php $display = "none";
+					  if(isset($_COOKIE[$rowFacturasSinLiquidar['id']])) {
+							$display = "display";
+					  } ?>
+					<img src="../img/visited.png" height="20" width="20" style="vertical-align: middle; display: <?php echo $display ?>" id="visited<?php echo  $rowFacturasSinLiquidar['id'] ?>" name="visited<?php echo  $rowFacturasSinLiquidar['id'] ?>" dis /> 
+				</td>
 			</tr>
 		<?php } ?>
 		</tbody>

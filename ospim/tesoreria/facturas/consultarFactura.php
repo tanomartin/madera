@@ -15,23 +15,12 @@ if(isset($_GET['idfactura'])) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Modulo Facturas :.</title>
-<style type="text/css">
-<!--
-.Estilo1 {
-	font-size: 18px;
-	font-weight: bold;
-}
--->
-</style>
 <style type="text/css" media="print">
 .nover {display:none}
 </style>
 <link rel="stylesheet" href="/madera/lib/tablas.css"/>
 </head>
 <body bgcolor="#CCCCCC">
-<div align="center">
-		<input type="reset" name="volver" value="Volver" onclick="location.href = 'moduloFacturas.php'" />
-</div>
 <div align="center">
 	<h1>Consulta de Comprobante</h1>
 </div>
