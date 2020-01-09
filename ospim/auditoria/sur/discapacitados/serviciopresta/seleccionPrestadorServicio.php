@@ -26,7 +26,6 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 		if ($filtro == 2) { $sqlPrestador = "SELECT * FROM prestadores
 												LEFT JOIN prestadorservicio on prestadores.codigoprestador = prestadorservicio.codigoprestador
 												WHERE prestadores.cuit = $dato order by prestadores.codigoprestador ASC"; }
-		echo $sqlPrestador;
 		$resPrestador = mysql_query($sqlPrestador,$db); 
 		$canPrestador = mysql_num_rows($resPrestador); 
 		if ($canPrestador == 0) {
