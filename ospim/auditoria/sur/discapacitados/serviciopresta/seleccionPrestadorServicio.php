@@ -26,7 +26,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 		if ($filtro == 2) { $sqlPrestador = "SELECT * FROM prestadores
 												LEFT JOIN prestadorservicio on prestadores.codigoprestador = prestadorservicio.codigoprestador
 												WHERE prestadores.cuit = $dato order by prestadores.codigoprestador ASC"; }
-			
+		echo $sqlPrestador;
 		$resPrestador = mysql_query($sqlPrestador,$db); 
 		$canPrestador = mysql_num_rows($resPrestador); 
 		if ($canPrestador == 0) {
@@ -36,10 +36,9 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			while($rowPrestador = mysql_fetch_assoc($resPrestador)) {
 				if (!isset($arrayResultado[$rowPrestador['codigoprestador']])) {
 					$arrayResultado[$rowPrestador['codigoprestador']] = $rowPrestador;
-				} else { 
-					if ($rowPrestador['codigoservicio'] == 8) {
-						$arrayResultado[$rowPrestador['codigoprestador']]['disca'] = "SI"; 
-					}
+				}
+				if ($rowPrestador['codigoservicio'] == 8) {
+					$arrayResultado[$rowPrestador['codigoprestador']]['disca'] = "SI"; 
 				}
 			}
 		}
