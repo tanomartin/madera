@@ -169,6 +169,7 @@ function abrirPop(dire, titulo){
 							<?php if ($rowCabecera['debito'] > 0 ) { ?>
 								<input type="button" value="DEB. ORI." onclick="abrirPop('verDocumento.php?documento=OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>DEB.pdf', 'Nota de Debito');" />
 								<input type="button" value="DEB. DUP." onclick="abrirPop('verDocumento.php?documento=OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>DEBDUP.pdf', 'Nota de Debito');" />
+								<input type="button" value="DEB. PL." onclick="abrirPop('verDocumento.php?documento=OP<?php echo str_pad($nroorden, 8, '0', STR_PAD_LEFT) ?>PL.pdf', 'Nota de Debito');" />
 						<?php } ?>	
 						</th>
 						<th colspan="3">
