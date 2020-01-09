@@ -27,7 +27,7 @@ if ($rowCabecera['debito'] > 0) {
 	
 	$arrayDetalleDebito = array();
 	$i= 0;
-	$sqlDetalleDebito = "SELECT f.puntodeventa, f.nrocomprobante, 
+	$sqlDetalleDebito = "SELECT f.id, f.puntodeventa, f.nrocomprobante, 
 	 						    DATE_FORMAT(f.fechacomprobante, '%d-%m-%Y') as fechacomprobante, 
 							    p.codigopractica, fb.nroafiliado, fb.nroorden, fp.motivodebito, fp.totaldebito
 							FROM facturasprestaciones fp, facturasbeneficiarios fb, facturas f, practicas p
@@ -76,7 +76,8 @@ if ($rowCabecera['debito'] > 0) {
 			}
 			
 			
-			$arrayDetalleDebito[$i] = array("factura"=> $rowDebitoDetalle['puntodeventa']."-".$rowDebitoDetalle['nrocomprobante'],
+			$arrayDetalleDebito[$i] = array("id"=>$rowDebitoDetalle['id'],
+											"factura"=> $rowDebitoDetalle['puntodeventa']."-".$rowDebitoDetalle['nrocomprobante'],
 											"fecha" => $rowDebitoDetalle['fechacomprobante'],
 											"practica" => $rowDebitoDetalle['codigopractica'],
 											"bene" => $bene,
@@ -86,7 +87,7 @@ if ($rowCabecera['debito'] > 0) {
 		}
 	}
 	
-	$sqlDetalleCarencia = "SELECT f.puntodeventa, f.nrocomprobante,
+	$sqlDetalleCarencia = "SELECT f.id, f.puntodeventa, f.nrocomprobante,
 								DATE_FORMAT(f.fechacomprobante, '%d-%m-%Y') as fechacomprobante,
 								fc.motivocarencia, fc.identidadbeneficiario, fc.totaldebito
 							FROM facturascarenciasbeneficiarios fc, facturas f
@@ -97,7 +98,8 @@ if ($rowCabecera['debito'] > 0) {
 	$numDetalleCarencia = mysql_num_rows($resDetalleCarencia);
 	if ($numDetalleCarencia > 0) {
 		while ($rowDetalleCarencia = mysql_fetch_assoc($resDetalleCarencia)) {
-			$arrayDetalleDebito[$i] = array("factura"=> $rowDetalleCarencia['puntodeventa']."-".$rowDetalleCarencia['nrocomprobante'],
+			$arrayDetalleDebito[$i] = array("id"=>$rowDebitoDetalle['id'],
+											"factura"=> $rowDetalleCarencia['puntodeventa']."-".$rowDetalleCarencia['nrocomprobante'],
 											"fecha" => $rowDetalleCarencia['fechacomprobante'],
 											"practica" => "",
 											"bene" => $rowDetalleCarencia['identidadbeneficiario'],
@@ -430,17 +432,12 @@ function printHeaderDebito($pdf, $rowDebito, $tipoDebito) {
 function printDetalleDebito($pdf, $arrayDetalleDebito) {
 	$total = 0;
 	$cordY = 60;
-	foreach ($arrayDetalleDebito as $detalle) {
+	foreach ($arrayDetalleDebito as $id => $detalle) {
 		$total += $detalle['importe'];
 		
 		$pdf->SetFont('Courier','',8);
 		$pdf->SetXY(7, $cordY);
-		$pdf->Cell(173,5,$detalle['factura']."|".$detalle['fecha']."|".$detalle['practica']."|".$detalle['bene'],0,0);
-		
-		$cordY += 5;
-		
-		$pdf->SetXY(7, $cordY);
-		$pdf->Cell(173,5,"MOTIVO: ".substr($detalle['motivo'],0,90),0,0);
+		$pdf->Cell(173,5,$detalle['factura']."|".$detalle['fecha']);
 		
 		$pdf->SetFont('Courier','B',8);
 		$pdf->SetXY(180, $cordY);
@@ -455,6 +452,39 @@ function printDetalleDebito($pdf, $arrayDetalleDebito) {
 	$pdf->SetXY(7, 240);
 	$pdf->Cell(30,5,"SON PESOS: ".cfgValorEnLetras($total),0,0);
 	
+	$pdf->SetXY(180, 240);
+	$pdf->Cell(30,5,"$ ".number_format($total,2,',','.'),0,0);
+}
+
+function printDetallePlanillaDebito($pdf, $arrayDetalleDebito) {
+	$total = 0;
+	$cordY = 60;
+	$arrayDebXFac = array();
+	foreach ($arrayDetalleDebito as $detalle) {
+		$total += $detalle['importe'];
+
+		$pdf->SetFont('Courier','',8);
+		$pdf->SetXY(7, $cordY);
+		$pdf->Cell(173,5,$detalle['factura']."|".$detalle['fecha']."|".$detalle['practica']."|".$detalle['bene'],0,0);
+
+		$cordY += 5;
+
+		$pdf->SetXY(7, $cordY);
+		$pdf->Cell(173,5,"MOTIVO: ".substr($detalle['motivo'],0,90),0,0);
+
+		$pdf->SetFont('Courier','B',8);
+		$pdf->SetXY(180, $cordY);
+		$pdf->Cell(30,5,"$ ".number_format($detalle['importe'],2,',','.'),0,0);
+
+		$cordY += 5;
+
+		$pdf->Line(7, $cordY, 210, $cordY);
+	}
+
+	$pdf->SetFont('Courier','B',8);
+	$pdf->SetXY(7, 240);
+	$pdf->Cell(30,5,"SON PESOS: ".cfgValorEnLetras($total),0,0);
+
 	$pdf->SetXY(180, 240);
 	$pdf->Cell(30,5,"$ ".number_format($total,2,',','.'),0,0);
 }
@@ -507,12 +537,26 @@ $pdf->Output($nombrearchivoC,'F');
 /************************************************/
 
 if ($rowCabecera['debito'] > 0) {
+	/***** AGRUPAMOS EL DETALLE DEL DEBITO POR FACTURA ******/
+	$arrayDebitoXFactura = array();
+	foreach ($arrayDetalleDebito as $debitodetalle) {
+		if (isset($arrayDebitoXFactura[$debitodetalle['id']]['importe'])) { 
+			$arrayDebitoXFactura[$debitodetalle['id']]['importe'] += $debitodetalle['importe'];
+		} else {
+			$arrayDebitoXFactura[$debitodetalle['id']]['factura'] = $debitodetalle['factura'];
+			$arrayDebitoXFactura[$debitodetalle['id']]['fecha'] = $debitodetalle['fecha'];
+			$arrayDebitoXFactura[$debitodetalle['id']]['importe'] = $debitodetalle['importe'];
+		}
+	}
+	reset($arrayDetalleDebito);
+	/********************************************************/
+	
 	/*********	NOTA DEBITO ORIGINAL 	*********************/
 	$nombreNotaDebito = $carpetaOrden."OP".$ordenNombreArchivo."DEB.pdf";
 	$pdfNotaDebito = new FPDF('P','mm','Letter');
 	$pdfNotaDebito->AddPage();
 	printHeaderDebito($pdfNotaDebito, $rowDebito, 'O');
-	printDetalleDebito($pdfNotaDebito, $arrayDetalleDebito);
+	printDetalleDebito($pdfNotaDebito, $arrayDebitoXFactura);
 	printFooterDebito($pdfNotaDebito, $rowLote['cai'], $rowLote['fechavto']);
 	$pdfNotaDebito->Output($nombreNotaDebito,'F');
 	/********************************************************/
@@ -522,7 +566,7 @@ if ($rowCabecera['debito'] > 0) {
 	$pdfNotaDebitoDup = new FPDF('P','mm','Letter');
 	$pdfNotaDebitoDup->AddPage();
 	printHeaderDebito($pdfNotaDebitoDup, $rowDebito, 'D');
-	printDetalleDebito($pdfNotaDebitoDup, $arrayDetalleDebito);
+	printDetalleDebito($pdfNotaDebitoDup, $arrayDebitoXFactura);
 	printFooterDebito($pdfNotaDebitoDup, $rowLote['cai'], $rowLote['fechavto']);
 	$pdfNotaDebitoDup->Output($nombreNotaDebitoDup,'F');
 	/********************************************************/
@@ -532,7 +576,7 @@ if ($rowCabecera['debito'] > 0) {
 	$pdfPlanilla = new FPDF('P','mm','Letter');
 	$pdfPlanilla->AddPage();
 	printHeaderPlanillaDebito($pdfPlanilla, $rowDebito);
-	printDetalleDebito($pdfPlanilla, $arrayDetalleDebito);
+	printDetallePlanillaDebito($pdfPlanilla, $arrayDetalleDebito);
 	$pdfPlanilla->Output($nombrePlanillaDebito,'F');
 	/********************************************************/
 }
