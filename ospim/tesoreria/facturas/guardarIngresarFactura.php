@@ -32,7 +32,7 @@ if(isset($_POST)) {
 		if($resIngresaFactura->execute(array(':id' => 'DEFAULT',':fecharecepcion' => fechaParaGuardar($_POST['fecharecepcion']),':idPrestador' => $_POST['idPrestador'],':idTipocomprobante' => $_POST['idTipocomprobante'],':puntodeventa' => $puntodeventa,':nrocomprobante' =>  $nrocomprobante,':fechacomprobante' =>  fechaParaGuardar($_POST['fechacomprobante']),':idCodigoautorizacion' => $idcodigoautorizacion,':nroautorizacion' => $_POST['nroautorizacion'],':fechacorreo' => fechaParaGuardar($_POST['fechacorreo']),':diasvencimiento' => $_POST['diasvencimiento'],':fechavencimiento' =>  fechaParaGuardar($_POST['fechavencimiento']),':importecomprobante' => $_POST['importecomprobante'],':idestablecimiento' => $idestablecimiento,':fechainicioliquidacion' => 'DEFAULT',':usuarioliquidacion' => NULL,':fechacierreliquidacion' => 'DEFAULT',':totalcredito' => 'DEFAULT',':totaldebito' => 'DEFAULT',':importeliquidado' => 'DEFAULT',':totalretenciones' => 'DEFAULT',':fecharetencion' => 'DEFAULT',':totalpagado' => 'DEFAULT',':restoapagar' => 'DEFAULT',':fechapago' => 'DEFAULT',':fecharegistro' => $fecharegistro,':usuarioregistro' => $usuarioregistro,':fechamodificacion' => 'DEFAULT',':usuariomodificacion' => NULL)))
 		$idUltimaFactura = $dbh->lastInsertId();
 		$dbh->commit();
-		$pagina = "consultarFactura.php?idfactura=$idUltimaFactura";
+		$pagina = "moduloFacturas.php";
 		header("Location: $pagina");
 	}
 	catch (PDOException $e) {
