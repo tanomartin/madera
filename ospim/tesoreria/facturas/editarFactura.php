@@ -357,7 +357,7 @@ function FechaValida(fecha){
 			</tr>
 			<tr>
 				<td align="right">Importe</td>
-				<td colspan="5"><input name="importecomprobante" type="text" id="importecomprobante" size="10" maxlength="9" value="<?php echo $rowConsultaFactura['importecomprobante'];?>"/></td>
+				<td colspan="5"><input name="importecomprobante" type="text" id="importecomprobante" size="10" maxlength="10" value="<?php echo $rowConsultaFactura['importecomprobante'];?>"/></td>
 			</tr>
 			<tr>
 				<td align="right">Est. Efector de Prestacion</td>
