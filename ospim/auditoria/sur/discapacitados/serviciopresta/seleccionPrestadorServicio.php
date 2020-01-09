@@ -34,9 +34,12 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 		} else {
 			$arrayResultado = array();
 			while($rowPrestador = mysql_fetch_assoc($resPrestador)) {
-				$arrayResultado[$rowPrestador['codigoprestador']] = $rowPrestador;
-				if ($rowPrestador['codigoservicio'] == 8) {
-					$arrayResultado[$rowPrestador['codigoprestador']]['disca'] = "SI"; 
+				if (!isset($arrayResultado[$rowPrestador['codigoprestador']])) {
+					$arrayResultado[$rowPrestador['codigoprestador']] = $rowPrestador;
+				} else { 
+					if ($rowPrestador['codigoservicio'] == 8) {
+						$arrayResultado[$rowPrestador['codigoprestador']]['disca'] = "SI"; 
+					}
 				}
 			}
 		}
