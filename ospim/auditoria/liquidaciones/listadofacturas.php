@@ -208,6 +208,7 @@ function validar(formulario) {
 				<thead>
 					<tr>
 						<th>Id</th>
+						<th>Cod. Pres.</th>
 						<th>C.U.I.T.</th>
 						<th width="25%">Nombre</th>
 						<th>Comprobante</th>
@@ -224,6 +225,7 @@ function validar(formulario) {
 				<?php while ($rowFacturas = mysql_fetch_assoc($resFacturas)) { ?>
 					<tr>
 						<td><?php echo $rowFacturas['id'] ?></td>
+						<td><?php echo $rowFacturas['idPrestador'] ?></td>
 						<td><?php echo $rowFacturas['cuit'] ?></td>
 						<td><?php echo $rowFacturas['nombre'] ?></td>
 						<td><?php echo $rowFacturas['tipocomprobante']."<br>".$rowFacturas['puntodeventa']."-".$rowFacturas['nrocomprobante'] ?></td>
