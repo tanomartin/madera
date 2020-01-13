@@ -31,8 +31,8 @@ $(document).ready(function(){
 			theme: 'blue', 
 			widthFixed: true, 
 			headers: {
-				0:{sorter:false, filter: false},
-				1:{sorter:false, filter: false},
+				0:{sorter:false},
+				1:{sorter:false},
 				5:{sorter:false, filter: false},
 				6:{sorter:false, filter: false},
 				7:{sorter:false, filter: false},
