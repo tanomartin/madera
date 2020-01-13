@@ -101,15 +101,26 @@ if ($numBeneficiarios > 0) {
 
 <script>
 	
-	function mostrarInfo(divid) {	
+function mostrarInfo(divid) {	
+	if (divid != "debitos") {
 		var divObject = document.getElementById(divid);
 		if (divObject.style.display == "none") {
-			console.log(divObject.style.display);
 			divObject.style.display = "block"; 
 		} else {
 			divObject.style.display = "none"; 
 		}
-	}	
+	} else {
+		var divObject = document.getElementById("debitos");
+		var divObjectCarencias = document.getElementById("carencias");
+		if (divObject.style.display == "none") {
+			divObject.style.display = "block"; 
+			divObjectCarencias.style.display = "block"; 
+		} else {
+			divObject.style.display = "none";
+			divObjectCarencias.style.display = "none";  
+		}	
+	}
+}
 
 </script>
 
@@ -117,7 +128,7 @@ if ($numBeneficiarios > 0) {
 <body bgcolor="#CCCCCC">
 <div align="center">
 	<h3>Detalle de Liquidacion</h3>
-	<h3 style="color: blue">Estado: <?php echo $_GET['estado']; ?></br>Auditor: '<?php echo $_SESSION['usuario'] ?>'</br> (<?php echo $today ?>) </h3>
+	<h3 style="color: blue">Estado: <?php echo $_GET['estado']; ?></br>Auditor: '<?php echo $rowFactura['usuarioliquidacion'] ?>'</br> (<?php echo $today ?>) </h3>
 	<h3 style="margin-bottom:1px">ID Interno: <?php echo $rowFactura['id'];?> - Fecha de Recepcion: <?php echo $rowFactura['fecharecepcion'];?> - Fecha de Correo: <?php echo $rowFactura['fechacorreo'];?></h3>
 	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 50%">
 		<table>
@@ -191,16 +202,19 @@ if ($numBeneficiarios > 0) {
 			<td><input class="nover" type="button" value="Beneficiarios y Prestaciones" onclick="mostrarInfo('bene')"/></td>
 			<td><input class="nover" type="button" value="Carencias" onclick="mostrarInfo('carencias')"/></td>
 			<td><input class="nover" type="button" value="Estadisticas" onclick="mostrarInfo('estadistica')"/></td>
+			<td><input class="nover" type="button" value="Detalle Debito" onclick="mostrarInfo('debitos')"/></td>
 		</tr>
 	</table>
 	
 	
 	<div id="bene" style="display: none">
 		<h3>Detalle de Beneficiarios y Prestaciones</h3>
-	<?php if ($numBeneficiarios > 0) { 
+	<?php $cantDebitosPresta = 0;
+		  if ($numBeneficiarios > 0) { 
 			while ($rowBeneficiarios = mysql_fetch_assoc($resBeneficiarios)) {
-				$nombreBene = $rowBeneficiarios['nombretitu'];
-				 if ($rowBeneficiarios['tipoafiliado'] != 0) { $nombreBene = $rowBeneficiarios['nombrefami']; } ?>
+				 $nombreBene = $rowBeneficiarios['nombretitu'];
+				 if ($rowBeneficiarios['tipoafiliado'] != 0) { $nombreBene = $rowBeneficiarios['nombrefami']; } 
+				 if ($rowBeneficiarios['totaldebito'] > 0) { $cantDebitosPresta = 1; } ?>
 				 <div class="grilla" style="width: 90%; margin-top: 10px">			
 					<table>
 							<tr>
@@ -271,6 +285,87 @@ if ($numBeneficiarios > 0) {
 			<p style="color: blue"><b>Sin Beneficiarios cargadas</b></p>
 	<?php } ?>
 	</div>
+	
+	<div id="debitos" style="display: none">
+		<h3>Detalle de Debitos en Prestaciones</h3>
+		<?php if ($cantDebitosPresta == 1) {
+				 $resBeneficiarios = mysql_query($sqlBeneficiarios,$db);
+				 while ($rowBeneficiarios = mysql_fetch_assoc($resBeneficiarios)) {
+					 $nombreBene = $rowBeneficiarios['nombretitu'];
+					 if ($rowBeneficiarios['tipoafiliado'] != 0) { $nombreBene = $rowBeneficiarios['nombrefami']; } 
+					 if ($rowBeneficiarios['totaldebito'] > 0) { ?>
+					 <div class="grilla" style="width: 90%; margin-top: 10px">			
+						<table>
+								<tr>
+									<td class="title" colspan="3" width="50%">Beneficiario</td>
+									<td class="title">Facturado</td>
+									<td class="title">Debito</td>
+									<td class="title">Credito</td>
+									<td class="title">Exceptuado</td>
+								</tr>
+								<tr>
+									<td colspan="3"><?php echo $nombreBene." - ".$rowBeneficiarios['nroafiliado']."/". $rowBeneficiarios['nroorden'] ?></td>
+									<td><?php echo number_format($rowBeneficiarios['totalfacturado'],2,",","."); ?></td>
+									<td><?php echo number_format($rowBeneficiarios['totaldebito'],2,",","."); ?></td>
+									<td><?php echo number_format($rowBeneficiarios['totalcredito'],2,",","."); ?></td>
+									<td><?php if ($rowBeneficiarios['exceptuado'] == 0) { echo "NO"; } else { echo "SI";} ?></td>
+								</tr>
+						<?php	if (isset($arrayPresta[$rowBeneficiarios['id']])) { ?>
+									<tr>
+										<td class="title" colspan="7">Prestaciones</td>
+									</tr>
+									<tr>
+										<td class="title">Codigo</td>
+										<td class="title">Fecha</td>
+										<td class="title">Cantidad</td>
+										<td class="title">Facturado</td>
+										<td class="title">Debito</td>
+										<td class="title">Credito</td>
+										<td class="title">Efector</td>
+									</tr>
+							  <?php foreach ($arrayPresta[$rowBeneficiarios['id']] as $pretacion) { ?>
+										<tr>
+											<td><?php echo $pretacion['codigopractica'] ?></td>
+											<td><?php echo $pretacion['fechapractica'] ?></td>
+											<td><?php echo number_format($pretacion['cantidad'],3,",","."); ?></td>
+											<td><?php echo number_format($pretacion['totalfacturado'],2,",","."); ?></td>
+											<td><?php echo number_format($pretacion['totaldebito'],2,",","."); ?></td>
+											<td><?php echo number_format($pretacion['totalcredito'],2,",","."); ?></td>
+											<td><?php if (isset($pretacion['nombre'])) { echo $pretacion['nombre']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
+										</tr>
+								  <?php if ($pretacion['totaldebito'] > 0) { ?>
+								  		<tr>
+								  			<td colspan="7">MOTIVO DEBITO: <?php echo $pretacion['motivodebito']?></td>
+								  		</tr>
+								  <?php	}	
+								 	    if ($pretacion['inte'] != NULL) { ?>
+								  		<tr>
+											<td class="title" colspan="7">Integracion</td>
+										</tr>
+										<tr>
+											<td class="title">Solicitado</td>
+											<td class="title">Dependencia</td>
+											<td class="title" colspan="5">Tipo | Escuela | C.U.E.</td>
+										</tr>
+										<tr>
+											<td><?php echo number_format($pretacion['totalsolicitado'],2,",","."); ?></td>
+											<td><?php if ($pretacion['dependencia'] == 1) { echo "SI"; } else { echo "NO"; } ?></td>
+											<td colspan="5"><?php echo $pretacion['codigoescuela']." - ".$pretacion['nombreescuela']." - ".$pretacion['cue'] ?></td>
+										</tr>
+								  <?php } ?>
+							  <?php } ?>
+						<?php   } else { ?>
+									<tr><td class="title" colspan="7">Sin Prestaciones Cargadas</td></tr>
+						<?php   }?>		
+						</table>
+					 </div>
+			   <?php }
+		 		}
+			 } else {?>
+				<p style="color: blue"><b>Sin Debitos en Prestaciones</b></p>
+  	   <?php } ?>
+	</div>
+	
 	<div id="carencias" style="display: none">
 	<h3>Detalle de Carencias</h3>
 <?php if ($numCarencias > 0) { ?>
