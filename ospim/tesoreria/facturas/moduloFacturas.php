@@ -134,7 +134,7 @@ function abrirPop(dire, id) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-		<input type="reset" name="volver" value="Volver" onclick="location.href = '../menuTesoreria.php'" />
+		<input type="reset" name="volver" value="Volver" onclick="location.href = 'menuFacturas.php'" />
 </div>
 <div id="ocultos" align="center">
 	<input name="error" id="error" type="text" value="<?php echo $err ?>" size="1"/>
