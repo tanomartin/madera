@@ -20,7 +20,7 @@ include($libPath."controlSessionOspim.php"); ?>
       		</td>
       		<td width="200">
 	  			<p>BUSCADOR</p>
-          		<p><a href="#"><img src="../img/buscar.png" width="90" height="90" border="0"/></a></p>
+          		<p><a href="buscador.php"><img src="../img/buscar.png" width="90" height="90" border="0"/></a></p>
       		</td>
       	</tr>
   	</table>
