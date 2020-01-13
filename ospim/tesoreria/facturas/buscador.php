@@ -172,7 +172,8 @@ function validar(formulario) {
 			}
 		}
 	} else {
-		if (formulario.filtroPaga.checked) {
+		console.log(formulario.filtroPaga);
+		if (formulario.filtroPaga.value != "") {
 			if (formulario.valor.value == "") {
 				alert("El Dato de Busqueda es obligatorio");
 				return false;
@@ -180,6 +181,7 @@ function validar(formulario) {
 		}
 	}
 	$.blockUI({ message: "<h1>Generando listado de Facturas... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
+	return true;
 }
 
 </script>
