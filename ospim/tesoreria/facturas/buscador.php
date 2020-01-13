@@ -35,7 +35,7 @@ if (isset($_POST['filtro'])) {
 			FROM facturas f, prestadores p, tipocomprobante t
 			WHERE
 		 	f.usuarioliquidacion is null AND
-			f.idPrestador = p.codigoprestador AND "
+			f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
 			.$whereBusqueda.	
 			"f.idTipocomprobante = t.id
 			ORDER BY f.id DESC";
@@ -52,7 +52,7 @@ if (isset($_POST['filtro'])) {
 			WHERE
 			f.usuarioliquidacion is not null AND	
 			(f.importecomprobante - f.totaldebito) != f.totalpagado AND
-			f.idPrestador = p.codigoprestador AND "
+			f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
 			.$whereBusqueda.
 			"f.idTipocomprobante = t.id
 			ORDER BY f.id DESC";
@@ -64,7 +64,7 @@ if (isset($_POST['filtro'])) {
 			WHERE
 			f.usuarioliquidacion is not null AND
 			(f.importecomprobante - f.totaldebito) != f.totalpagado AND
-			f.idPrestador = p.codigoprestador AND "
+			f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
 			.$whereBusqueda.
 			"f.id = pf.idFactura AND
 			pf.id = fi.idFacturaprestacion
@@ -87,7 +87,7 @@ if (isset($_POST['filtro'])) {
 						FROM facturas f, prestadores p, tipocomprobante t
 						WHERE
 						(f.importecomprobante - f.totaldebito) = f.totalpagado AND
-						f.idPrestador = p.codigoprestador AND "
+						f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
 						.$whereBusqueda.
 						"f.idTipocomprobante = t.id
 						ORDER BY f.id DESC";
@@ -100,7 +100,7 @@ if (isset($_POST['filtro'])) {
 							f.usuarioliquidacion = '$liquidador' AND
 							(f.importecomprobante - f.totaldebito) = f.totalpagado AND
 							f.id = pf.idFactura AND
-							f.idPrestador = p.codigoprestador AND "
+							f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
 							.$whereBusqueda.
 							"pf.id = fi.idFacturaprestacion
 							ORDER BY f.id DESC";

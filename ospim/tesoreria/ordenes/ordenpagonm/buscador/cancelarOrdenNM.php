@@ -3,6 +3,8 @@ include($libPath."controlSessionOspim.php");
 require_once($libPath."fpdf.php");
 require_once($libPath."FPDI-1.6.1/fpdi.php");
 $nroorden = $_GET['nroorden'];
+$idFac = $_GET['idFac'];
+$importe = $_GET['importe'];
 
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
@@ -12,7 +14,8 @@ else
 
 $fechacancelacion = date("Y-m-d");
 $usuariomodificacion = $_SESSION['usuario'];
-$updateCancelacion = "UPDATE ordennmcabecera SET fechacancelacion = '$fechacancelacion', usuariocancelacion = '$usuariomodificacion' WHERE nroorden = $nroorden";
+$updateCancelacion = "UPDATE ordencabecera SET fechacancelacion = '$fechacancelacion' WHERE nroordenpago = $nroorden";
+$updateFactura = "UPDATE facturas SET totalpagado = 0, restoapagar = $importe WHERE id = $idFac";
 try {
 	$hostname = $_SESSION['host'];
 	$dbname = $_SESSION['dbname'];
@@ -22,9 +25,11 @@ try {
 
 	//print($updateCancelacion."<br>");
 	$dbh->exec($updateCancelacion);
+	//print($updateFactura."<br>");
+	$dbh->exec($updateFactura);
 
 	$ordenNombreArchivo = str_pad($nroorden, 8, '0', STR_PAD_LEFT);
-	$nombreArchivo = "OP-NM".$ordenNombreArchivo.".pdf";
+	$nombreArchivo = "OP".$ordenNombreArchivo."NM.pdf";
 	$filename = $carpetaOrden.$nombreArchivo;
 	if (file_exists($filename)) {
 		$pdf = new FPDI();

@@ -4,7 +4,7 @@ include($libPath."fechas.php");
 
 $maquina = $_SERVER['SERVER_NAME'];
 if(strcmp("localhost",$maquina)==0)
-	$carpetaOrden="../OrdenesPagoPDF/";
+	$carpetaOrden="../OrdenesPagoNMPDF/";
 else
 	$carpetaOrden="/home/sistemas/Documentos/Repositorio/OrdenesPagoNMPDF/";
 
@@ -21,22 +21,34 @@ if (isset($_POST['dato']) || isset($_GET['nroorden'])) {
 	}
 	if ($filtro == 0) {
 		$cartel = "<b>Nro Orden:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador 
-								FROM ordennmcabecera o, prestadores p 
-								WHERE o.nroorden = $dato and o.codigoprestador = p.codigoprestador and p.personeria = 5";
+		$sqlOrdenesCabecera = "SELECT o.*,  d.idfactura, f.puntodeventa, f.nrocomprobante, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fecha, p.nombre, p.codigoprestador, p.cuit 
+								FROM ordencabecera o, prestadores p, ordendetalle d, facturas f 
+								WHERE o.nroordenpago = $dato AND 
+									  o.nroordenpago = d.nroordenpago AND 
+									  o.codigoprestador = p.codigoprestador AND 
+									  d.idfactura = f.id AND
+									  p.personeria = 5";
 	} 
 	if ($filtro == 1) {
 		$cartel = "<b>Prestador:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador 
-								FROM ordennmcabecera o, prestadores p 
-								WHERE (p.nombre like '%".$dato."%') and o.codigoprestador = p.codigoprestador and p.personeria = 5";
+		$sqlOrdenesCabecera = "SELECT o.*, d.idfactura, f.puntodeventa, f.nrocomprobante, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fecha,  p.nombre, p.codigoprestador, p.cuit 
+								FROM ordencabecera o, prestadores p, ordendetalle d, facturas f  
+								WHERE o.codigoprestador = $dato AND 
+									  o.nroordenpago = d.nroordenpago AND 
+									  d.idfactura = f.id AND
+								      o.codigoprestador = p.codigoprestador AND 
+									  p.personeria = 5";
 	} 
 	if ($filtro == 2) {
 		$datoBusqeuda = fechaParaGuardar($dato);
 		$cartel = "<b>Fecha Generacion:<font color='blue'> $dato</font></b>";
-		$sqlOrdenesCabecera = "SELECT o.*, DATE_FORMAT(o.fecha, '%d-%m-%Y') as fecha, DATE_FORMAT(o.fechamigracion, '%d-%m-%Y') as fechamigracion, p.nombre as prestador  
-								FROM ordennmcabecera o, prestadores p 
-								WHERE o.fecha = '$datoBusqeuda' and o.codigoprestador = p.codigoprestador and p.personeria = 5";
+		$sqlOrdenesCabecera = "SELECT o.*, d.idfactura, f.puntodeventa, f.nrocomprobante, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fecha, p.nombre, p.codigoprestador, p.cuit
+								FROM ordencabecera o, prestadores p, ordendetalle d, facturas f 
+								WHERE o.fechaorden = '$datoBusqeuda' AND 
+									  o.nroordenpago = d.nroordenpago AND 
+									  d.idfactura = f.id AND
+									  o.codigoprestador = p.codigoprestador AND 
+									  p.personeria = 5";
 	}
 	$resOrdenesCabecera = mysql_query($sqlOrdenesCabecera,$db);
 	$canOrdenesCabecera = mysql_num_rows($resOrdenesCabecera);
@@ -79,16 +91,12 @@ function validar(formulario) {
 	return true;
 }
 
-function cancelarOrden(nroorden, boton, fechamigrada, nroarchivo) {
+function cancelarOrden(nroorden, idfactura, importe) {
 	var cartel = "Desea anular la orden de pago Nro " + nroorden;
-	console.log(fechamigrada);
-	if (fechamigrada != "") {
-		cartel = cartel + "\nTenga en cuenta que esta orden ya fue migrada al sistema contable\nInfo Migracion dia: "+fechamigrada+" - archivo Nro: "+nroarchivo;
-	}
 	var r = confirm(cartel);
 	if (r == true) {
-		boton.disabled = true;
-		var redireccion = "cancelarOrdenNM.php?nroorden="+nroorden;
+		var redireccion = "cancelarOrdenNM.php?nroorden="+nroorden+"&idFac="+idfactura+"&importe="+importe;
+		$.blockUI({ message: "<h1>Anulando ORden de Pago... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 		location.href=redireccion;
 	}
 }
@@ -99,12 +107,10 @@ function imputarOrden(nroorden) {
 	location.href=redireccion;
 }
 
-function verOrden(nroorden) {
-	var redireccion = "verOrdenNM.php?nroorden="+nroorden;
-	var titulo = "ORDEN DE PAGO NO MEDICA NUM "+nroorden;
-	a= window.open(redireccion,titulo,
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+function abrirPop(dire, titulo){	
+	window.open(dire,titulo,'width=800, height=500,resizable=yes');
 }
+
 
 </script>
 </head>
@@ -120,7 +126,7 @@ function verOrden(nroorden) {
         		<td><input type="radio" name="filtro"  value="0" checked="checked" /> Nro Orden </td>
       		</tr>
       		<tr>
-        		<td><input type="radio" name="filtro"  value="1" /> Prestador </td>
+        		<td><input type="radio" name="filtro"  value="1" /> Codigo Prestador </td>
       		</tr> 
       		<tr>
         		<td><input type="radio" name="filtro"  value="2" /> Fecha Generacion </td>
@@ -134,12 +140,16 @@ function verOrden(nroorden) {
 	  		if ($canOrdenesCabecera > 0) { ?>
 	  				<h3>Ordenes Genearadas</h3>	
 	 				<div class="grilla">
-		 				<table style="width: 900px">
+		 				<table style="width: 100%">
 		 					<thead>
 			 					<tr>
 			 						<th>Nro. Orden</th>
-			 						<th>Beneficiario</th>
-									<th>Fecha</th>
+			 						<th>Fecha</th>
+			 						<th>Codigo</th>
+			 						<th>C.U.I.T.</th>
+			 						<th>Nombre</th>
+			 						<th>Id. Fac.</th>
+			 						<th>Factura</th>
 									<th>Tipo - Nro Pago</th>
 			 						<th>Importe</th>
 			 						<th>Estado</th>
@@ -149,39 +159,26 @@ function verOrden(nroorden) {
 		 					<tbody>
 		 		  		<?php while ($rowOrdenesCabecera = mysql_fetch_array($resOrdenesCabecera)) { ?>
 		 		  				<tr>
-		 		  					<td><?php echo $rowOrdenesCabecera['nroorden'];?></td>
-		 		  					<td><?php echo $rowOrdenesCabecera['prestador'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['nroordenpago'];?></td>
 		 		  					<td><?php echo $rowOrdenesCabecera['fecha'] ?></td>
-		 		  					<td><?php echo $rowOrdenesCabecera['tipopago']." - ".$rowOrdenesCabecera['nropago'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['codigoprestador'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['cuit'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['nombre'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['idfactura'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['puntodeventa']."-".$rowOrdenesCabecera['nrocomprobante'] ?></td>
+		 		  					<td><?php echo $rowOrdenesCabecera['formapago']." - ".$rowOrdenesCabecera['comprobantepago'] ?></td>
 		 		  					<td><?php echo number_format($rowOrdenesCabecera['importe'],2,",",".") ?></td>
 		 		  					<td>
-		 		  					<?php   
-		 		  						if ($rowOrdenesCabecera['fechacancelacion'] != null) { 
-		 		  							echo "<font color='red'> CANCELADA </font>"; 
+		 		  				<?php   if ($rowOrdenesCabecera['fechacancelacion'] != null) { 
+		 		  							echo "<font color='red'> ANULADA </font>"; 
 		 		  						} else {
-	  										if ($rowOrdenesCabecera['fechageneracion'] != null) { 
-	  											if ($rowOrdenesCabecera['fechamigracion'] != null) {
-	  												echo "<font color='green'> MIGRADA </font>";
-	  											} else {
-	  												echo "<font color='green'> EMITIDA </font>"; 
-	  											}
-	  										} else {
-	  											if ($rowOrdenesCabecera['fechaimputacion'] != null) {
-	  												echo "<font color='olive'> PARA EMITIR </font>";
-	  											} else {
-	  												echo "<font color='blue'> PARA IMPUTAR </font>";
-	  											}
-	  										}
-		 		  						}
-	  								?>
+	  										echo "<font color='green'> EMITIDA </font>"; 
+		 		  						} ?>
 		 		  					</td>
-		 		  					
 		 		  					<td>
-		 		  				 <?php if ($rowOrdenesCabecera['fechageneracion'] != null) {  ?>	
-		 		  							<input type="button" value="VER PDF" onclick="verOrden('<?php echo $rowOrdenesCabecera['nroorden'] ?>')" />
-		 		  			  	  <?php }
-		 		  			  			if ($rowOrdenesCabecera['fechacancelacion'] == null) {   ?>
-		 		  							<input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroorden'] ?>, this, '<?php echo $rowOrdenesCabecera['fechamigracion'] ?>','<?php echo $rowOrdenesCabecera['nroarchivomigra']?>' )" />
+		 		  						<input class="nover" id="verorden" type="button" value="ORDEN PDF" onclick="abrirPop('verDocumento.php?documento=OP<?php echo str_pad($rowOrdenesCabecera['nroordenpago'], 8, '0', STR_PAD_LEFT) ?>NM.pdf', 'Orden Pago No Medica');"/>
+		 		  			  	<?php	if ($rowOrdenesCabecera['fechacancelacion'] == null) {   ?>		
+		 		  							| <input type="button" value="ANULAR" onclick="cancelarOrden(<?php echo $rowOrdenesCabecera['nroordenpago'] ?>, <?php echo $rowOrdenesCabecera['idfactura'] ?>, <?php echo $rowOrdenesCabecera['importe']?>)" />
 		 		  				 <?php  }?>
 		 		  					</td>
 		 		  				</tr>

@@ -48,10 +48,6 @@ function borrarDatosLiquidacion(id) {
 	}
 }
 
-function abrirPop(dire, titulo){	
-	window.open(dire,titulo,'width=800, height=500,resizable=yes');
-}
-
 </script>
 
 </head>
@@ -105,12 +101,9 @@ function abrirPop(dire, titulo){
  			<h3>Factura sin liquidacion de conceptos</h3>
   <?php } else { ?>
   			<h3>Detalle Liquidación</h3>
-  			<?php if ($numOrdenPago == 0) { ?>
+  	  <?php if ($numOrdenPago == 0) { ?>
   				<input class="nover" id="reliquidar" type="button" value="Borrar Liquidacion" onclick="borrarDatosLiquidacion(<?php echo $id ?>)"/>
-			<?php } else {
-				 	$rowOrden = mysql_fetch_assoc($resOrdenPago);?>
-				<input class="nover" id="verorden" type="button" value="Ver Orden" onclick="abrirPop('verDocumento.php?documento=OP<?php echo str_pad($rowOrden['nroordenpago'], 8, '0', STR_PAD_LEFT) ?>NM.pdf', 'Orden Pago No Medica');"/>
-			<?php } ?>
+	  <?php }  ?>
   <?php }?>
 		<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 40%">
 			<table>

@@ -5,8 +5,7 @@ $sqlFacturas = "SELECT p.codigoprestador, p.cuit, p.nombre, f.*,
 				DATE_FORMAT(f.fechacomprobante, '%d/%m/%Y') as fechacomprobante,
 				DATE_FORMAT(f.fechavencimiento, '%d/%m/%Y') as fechavencimiento
 				FROM facturas f, prestadores p 
-				WHERE f.idPrestador = p.codigoprestador AND p.personeria = 5 AND
-					  (fechapago = 0000-00-00 OR (fechapago != 0000-00-00 AND restoapagar > 0))
+				WHERE f.idPrestador = p.codigoprestador AND p.personeria = 5 AND restoapagar != 0
 				ORDER BY p.cuit, f.id";
 $resFacturas = mysql_query($sqlFacturas,$db);
 $canFacturas = mysql_num_rows($resFacturas); ?>
