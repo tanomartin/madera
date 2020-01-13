@@ -2,38 +2,35 @@
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
 
-$fecha = fechaParaGuardar($_POST['fecha']);
-$importeTotal = $_POST['monto'];
-$codigoprestador = $_POST['codigoprestador'];
+$id = $_POST['id'];
+$codigo = $_POST['codigo'];
+$fechaorden = date("Y-m-d");
+$tipoPago = $_POST['tipopago'];
+$nroPago = 'NULL';
+if ($tipoPago != 'E') {
+	$nroPago = "'".$_POST['numero']."'";
+}
+$fechaPago = fechaParaGuardar($_POST['fecha']);
+$impDebito = $_POST['debito'];
+$retencion = $_POST['retencion'];
+$impRetencion = 0;
+if ($retencion != 0) {
+	$impRetencion = $_POST['rete'];
+}
+$impApagar = $_POST['apagar'];
+$email = "";
+if (isset($_POST['enviomail'])) {
+	$envioEmail = $_POST['enviomail'];
+	if ($envioEmail != 0) {
+		$email = $_POST['email'];
+	}
+}
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 
-$lineas = $_POST['conceptoaver'];
-$arrayConcepto = array();
-$arrayImputacion = array();
-
-$credito = 0;
-$debito = 0;
-for($i=1; $i<=$lineas; $i++) {
-	$conceptoNombre = "concepto".$i;
-	$concepto = $_POST[$conceptoNombre];
-	$tipoNombre = "tipo".$i;
-	$tipo = $_POST[$tipoNombre];
-	$importeLineaNombre = "importe".$i;
-	$importeLinea = $_POST[$importeLineaNombre];
-	
-	$sqlInsertConcepto = "INSERT INTO ordennmdetalle VALUES(nroorden, $i, '$concepto', '$tipo', $importeLinea)";
-	$arrayConcepto[$i] = $sqlInsertConcepto;
-	
-	if ($tipo == 'C') {
-		$credito += $importeLinea;
-	} else {
-		$debito += $importeLinea;
-	}
-	
-}
-
-$sqlInsertCabecera = "INSERT INTO ordennmcabecera VALUES(DEFAULT,'$fecha',$credito, $debito, $importeTotal,$codigoprestador,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'$fecharegistro','$usuarioregistro')";
+$sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo,'$fechaorden','$tipoPago', $nroPago, '$fechaPago', $impRetencion, $impDebito, $impApagar, NULL, NULL, NULL, '$fecharegistro', '$usuarioregistro',NULL,NULL)";
+$sqlDetalleOrden = "INSERT INTO ordendetalle VALUE(nroorden, $id, 'T', $impApagar, NULL, NULL, NULL)";
+$sqlUpdateFactura = "UPDATE facturas SET totalpagado = $impApagar, restoapagar = 0, fechapago = '$fechaPago' WHERE id = $id";
 
 try {
 	$hostname = $_SESSION['host'];
@@ -42,18 +39,19 @@ try {
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 	$dbh->beginTransaction();
 
-	print($sqlInsertCabecera."<br>");
-	$dbh->exec($sqlInsertCabecera);
+	//echo $sqlCabeceraOrden."<br>";
+	$dbh->exec($sqlCabeceraOrden);
 	$lastId = $dbh->lastInsertId();
+	
+	$sqlDetalleOrden = str_replace("nroorden", $lastId, $sqlDetalleOrden);
+	//echo $sqlDetalleOrden."<br>";
+	$dbh->exec($sqlDetalleOrden);
 
-	foreach ($arrayConcepto as $sqlconcepto) {
-		$sqlconcepto = str_replace("nroorden", $lastId, $sqlconcepto);
-		print($sqlconcepto."<br>");
-		$dbh->exec($sqlconcepto);
-	}
+	//echo $sqlUpdateFactura."<br>";
+	$dbh->exec($sqlUpdateFactura);
 
 	$dbh->commit();
-	$pagina = "imputaOrdenPagoNM.php?nroorden=$lastId";
+	$pagina = "documentoOrdenPagoNM.php?nroorden=$lastId&id=$id";
 	Header("Location: $pagina");
 } catch (PDOException $e) {
 	$error = $e->getMessage();
@@ -62,5 +60,4 @@ try {
 	Header($redire);
 	exit(0);
 }
-
 ?>

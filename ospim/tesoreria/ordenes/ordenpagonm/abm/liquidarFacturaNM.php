@@ -1,14 +1,14 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 
-$sqlProximo = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = 'madera' AND TABLE_NAME = 'ordennmcabecera'";
-$resProximo = mysql_query($sqlProximo,$db);
-$rowProximo = mysql_fetch_array($resProximo);
-$nroProximo = $rowProximo['AUTO_INCREMENT'];
+$id = $_GET['id'];
+$sqlFacturas = "SELECT *
+				FROM facturas f, prestadores p
+				WHERE f.id= $id and f.idPrestador = p.codigoprestador";
+$resFacturas = mysql_query($sqlFacturas,$db);
+$rowFacturas = mysql_fetch_assoc($resFacturas); 
 
-//VARIABLES PARA CONTROL DE LIMITE//
-$LIMITECONCEPTO = 11;
-?>
+$LIMITECONCEPTO = 10; ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,10 +27,6 @@ $LIMITECONCEPTO = 11;
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script type="text/javascript">
-
-jQuery(function($){
-	$("#fecha").mask("99-99-9999");
-});
 
 function vermasconcepto(limite) {
 	var importeValue = document.getElementById("conceptoaver").value;
@@ -60,7 +56,6 @@ function vermenosconcepto() {
 		
 		linea--
 		document.getElementById("conceptoaver").value = linea;
-		calcularSaldos();
 	}
 }
 
@@ -74,47 +69,14 @@ function verificarImporte(importe) {
 	if (importe.value != "") {
 		importe.value = parseFloat(importe.value).toFixed(2);
 	}
-	calcularSaldos();
 }
 
-function calcularSaldos() {
-	var linea = document.getElementById("conceptoaver").value;
-	var saldoTotal = 0;
-	for(var i=linea; i>0; i--) {
-		var nombreImporte = "importe"+i;
-		var inputimportelinea = document.getElementById(nombreImporte).value;
-		if (inputimportelinea != "") {
-			var nombreImporte = "tipo"+i;
-			var inputtipolinea = document.getElementById(nombreImporte).value;
-			if (inputtipolinea == "C") {
-				saldoTotal += parseFloat(inputimportelinea);
-			} else {
-				saldoTotal -= parseFloat(inputimportelinea);	
-			}
-		}
-	}
-	document.getElementById("monto").value = saldoTotal.toFixed(2);
-}
 
 function validar(formulario) {
-	if (!esFechaValida(formulario.fecha.value)) {
-		alert("La fecha es obligatoria");
-		return false;	
-	}
-	if (formulario.codigoprestador.value == "") {
-		alert("El beneficiario es obligatorio");
-		return false;	
-	}
-
-	if (formulario.monto.value <= 0) {
-		alert("El Monto de la Orden de Pago debe ser positivo");
-		formulario.monto.focus();
-		return false;	
-	}
-	
-
-	var datosControl = document.getElementById("conceptoaver").value;
+	var monto = formulario.monto.value;
+	var datosControl = formulario.conceptoaver.value;
 	var totalLineas = 0;
+	var controlTotal = 0;
 	for (var i=1; i <= datosControl; i++) {		
 		var concepto = "concepto"+i;
 		var lineasConcepto = 0;
@@ -131,6 +93,8 @@ function validar(formulario) {
 			alert("El importe es obligatorio");
 			document.getElementById(importe).focus();
 			return false;
+		} else {
+			controlTotal = (parseFloat(controlTotal) + parseFloat(importeValor)).toFixed(2);
 		} 		
 		lineasConcepto = Math.ceil(conceptoValue.length / 58);
 		totalLineas += lineasConcepto;
@@ -139,58 +103,31 @@ function validar(formulario) {
 		alert("La cantidad total de lineas supera el limite por hoja.");
 		return false;
 	}
-	$.blockUI({ message: "<h1>Generando Orden de Pago... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
+	console.log(controlTotal);
+	if (monto != controlTotal) {
+		alert("El total de los importe de los conceptos no es igual la monto de la factura");
+		return false;
+	}
+	
+	$.blockUI({ message: "<h1>Guardando Liquidacion de Factura No Médica... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
 	return true;
 }
 
-$(document).ready(function(){
-	$("#nombrebene").autocomplete({  
-		source: function(request, response) {
-			console.log(request);
-			$.ajax({
-				url: "buscaPrestador.php",
-				dataType: "json",
-				data: {getPresta:request.term},
-				success: function(data) {
-					response(data);
-				}
-			});
-		},
-        minLength: 4,
-		select: function(event, ui) {
-			$("#codigoprestador").val(ui.item.codigoprestador);
-		},
-	});
-});
-
-function limpiarBeneficiario(inputBene) {
-	if (inputBene.value == "") {
-		document.getElementById("codigoprestador").value = "";
-	}
-}
-
 </script>
-<style>
-.ui-menu .ui-menu-item a{ font-size:10px; }
-</style>
+
 </head>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../moduloOrdenPagoNM.php'" /></p>	
-	<form id="nuevoOrdenNM" name="nuevoOrdenNM" method="post" onsubmit="return validar(this)" action="guardarOrdenNM.php">
-	  	<h3>Nueva Orden de Pago No Médica</h3>
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'listadoFacturasNM.php'" /></p>	
+	<form id="nuevoOrdenNM" name="nuevoOrdenNM" method="post" onsubmit="return validar(this)" action="guardarLiquidacionNM.php">  	
+	  	<h3>Liquidacion de Factura No Médica</h3>
 	  	<div style="border-style: solid; border-width: 1px; width: 900px;">
 			<div style="text-align: left; width: 850px;">
-				<p>
-					<b>Fecha: </b><input name="fecha" id="fecha" size="8"/>
-					<b style="float: right; font-size: x-large;">Nº <u style="color: maroon;"><?php echo $nroProximo ?></u></b>
-				</p>
-				<p><b>Prestador: </b>
-					<input autocomplete="off" name="nombrebene" id="nombrebene" size="75" onfocusout="limpiarBeneficiario(this)" />
-					<input name="codigoprestador" id="codigoprestador" size="5" maxlength="5" readonly="readonly" style="background-color: silver"/>
-				</p>
-				<p><b>$: </b><input value="0.00" name="monto" id="monto" size="12" readonly="readonly" style="background: silver; text-align: center; font-weight: bold;"/></p>
+				<input type="text" value="<?php echo $id ?>" name="id" id="id" style="display: none"/>
+				<p>Fecha: <b><?php echo $rowFacturas['fechacomprobante']?></b></p>
+				<p>Prestador: <b> <?php echo $rowFacturas['nombre']?></b></p>
+				<p><b>$: </b><input value="<?php echo $rowFacturas['importecomprobante']?>" name="monto" id="monto" size="12" readonly="readonly" style="background: silver; text-align: center; font-weight: bold;"/></p>
 				<p align="center">
 					<input type="button" value="+ Conceptos" onclick="vermasconcepto(<?php echo $LIMITECONCEPTO?>)"/>
 					<input type="button" value="- Conceptos" onclick="vermenosconcepto()"/>
@@ -213,7 +150,7 @@ function limpiarBeneficiario(inputBene) {
 					<tr <?php echo $display?> id="datos<?php echo $i?>">
 						<td><textarea name="concepto<?php echo $i?>" id="concepto<?php echo $i?>" rows="2" cols="100"></textarea></td>
 						<td>
-							<select name="tipo<?php echo $i ?>" id="tipo<?php echo $i ?>" onchange="calcularSaldos()">
+							<select name="tipo<?php echo $i ?>" id="tipo<?php echo $i ?>">
 								<option value="C" selected="selected">C</option>
 								<option value="D">D</option>
 							</select>
@@ -223,7 +160,7 @@ function limpiarBeneficiario(inputBene) {
 			<?php } ?>
 			</tbody>	
 		</table>
-		<p><input type="submit" value="Guardar Orden" /></p>
+		<p><input type="submit" value="Guardar Liquidacion" /></p>
 	</form>
 </div>
 </body>
