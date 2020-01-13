@@ -504,6 +504,8 @@ function printFooterDebito($pdf, $cai, $vto) {
 	$pdf->Cell(50,5,"C.A.I.: ".$cai,0,0,"R");
 	$pdf->SetXY(160, 254);
 	$pdf->Cell(50,5,"FECHA DE VENC.: ".$vto,0,0,"R");
+	$pdf->SetXY(7, 251);
+	$pdf->Cell(130,5,"Debitos de gastos prestacionales según planilla de Debito que se adjunta",0,0,"L");
 	$pdf->SetXY(7, 254);
 	$pdf->Cell(130,5,"147 Telefono Gratuito CABA, Área de Defensa y Protección del Consumidor",0,0,"L");
 	
