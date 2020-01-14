@@ -106,7 +106,7 @@ $(document).ready(function(){
 			theme: 'blue', 
 			widthFixed: true, 
 			headers: {
-				0:{sorter:false, filter: false},
+				0:{filter: false},
 				9:{sorter:false, filter: false}
 			},
 			widgets: ["zebra", "filter"], 
