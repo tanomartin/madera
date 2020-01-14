@@ -30,12 +30,12 @@ if (isset($_POST['filtro'])) {
 	if ($filtro == "I") {
 		$cartel = "LISTADO DE FACTURAS INGRESADAS";
 
-		$sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
+		$sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante, p.personeria,
 			t.descripcion as tipocomprobante
 			FROM facturas f, prestadores p, tipocomprobante t
 			WHERE
 		 	f.usuarioliquidacion is null AND
-			f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
+			f.idPrestador = p.codigoprestador AND "
 			.$whereBusqueda.	
 			"f.idTipocomprobante = t.id
 			ORDER BY f.id DESC";
@@ -46,25 +46,25 @@ if (isset($_POST['filtro'])) {
 	if ($filtro == "P") {
 		$cartel = "LISTADO DE FACTURAS EN PROCESO";
 		
-		$sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
+		$sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante, p.personeria, 
 			t.descripcion as tipocomprobante
 			FROM facturas f, prestadores p, tipocomprobante t
 			WHERE
 			f.usuarioliquidacion is not null AND	
 			(f.importecomprobante - f.totaldebito) != f.totalpagado AND
-			f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
+			f.idPrestador = p.codigoprestador AND "
 			.$whereBusqueda.
 			"f.idTipocomprobante = t.id
 			ORDER BY f.id DESC";
 		$resFacturas = mysql_query($sqlFacturas,$db);
 		$numFacturas = mysql_num_rows($resFacturas);
 		
-		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante
+		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, p.personeria, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante
 			FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
 			WHERE
 			f.usuarioliquidacion is not null AND
 			(f.importecomprobante - f.totaldebito) != f.totalpagado AND
-			f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
+			f.idPrestador = p.codigoprestador AND "
 			.$whereBusqueda.
 			"f.id = pf.idFactura AND
 			pf.id = fi.idFacturaprestacion
@@ -83,24 +83,24 @@ if (isset($_POST['filtro'])) {
 		$cartel = "LISTADO DE FACTURAS PAGADAS";
 			
 		$sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
-						t.descripcion as tipocomprobante
+						t.descripcion as tipocomprobante, p.personeria
 						FROM facturas f, prestadores p, tipocomprobante t
 						WHERE
 						(f.importecomprobante - f.totaldebito) = f.totalpagado AND
-						f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
+						f.idPrestador = p.codigoprestador AND "
 						.$whereBusqueda.
 						"f.idTipocomprobante = t.id
 						ORDER BY f.id DESC";
 		$resFacturas = mysql_query($sqlFacturas,$db);
 		$numFacturas = mysql_num_rows($resFacturas);
 		
-		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante
+		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante, p.personeria
 							FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
 							WHERE
 							f.usuarioliquidacion = '$liquidador' AND
 							(f.importecomprobante - f.totaldebito) = f.totalpagado AND
 							f.id = pf.idFactura AND
-							f.idPrestador = p.codigoprestador AND p.personeria != 5  AND "
+							f.idPrestador = p.codigoprestador AND "
 							.$whereBusqueda.
 							"pf.id = fi.idFacturaprestacion
 							ORDER BY f.id DESC";
@@ -290,8 +290,12 @@ function validar(formulario) {
 								} ?>
 						<td><b><?php echo $estado ?></b></td>
 						<td>
-							<input type="button" value="Liquidacion" onclick="abrirPop('../../auditoria/liquidaciones/consultaLiquidacion.php?id=<?php echo $rowFacturas['id'] ?>&estado=<?php echo $estado ?>');" /></br>
-							<?php if ($rowFacturas['restoapagar'] != $rowFacturas['importeliquidado'] && $rowFacturas['totaldebito'] != 0) { ?>
+						<?php if ($rowFacturas['personeria'] != 5) { ?>
+								<input type="button" value="Liquidacion" onclick="abrirPop('../../auditoria/liquidaciones/consultaLiquidacion.php?id=<?php echo $rowFacturas['id'] ?>&estado=<?php echo $estado ?>');" /></br>
+						<?php } else { ?>
+								<input type="button" value="Liquidacion" onclick="abrirPop('../ordenes/ordenpagonm/abm/consultaFacturaNM.php?id=<?php echo $rowFacturas['id'] ?>');" /></br>
+						<?php } 
+							  if ($rowFacturas['restoapagar'] != $rowFacturas['importeliquidado'] && $rowFacturas['totaldebito'] != 0) { ?>
 								<input type="button" value="Plan. Debito" style="margin-top: 5px"  onclick="abrirPop('../../auditoria/liquidaciones/docuDebito.php?id=<?php echo $rowFacturas['id'] ?>&doc=PL');"  />
 								<input type="button" value="Nota Debito" style="margin-top: 5px"  onclick="abrirPop('../../auditoria/liquidaciones/docuDebito.php?id=<?php echo $rowFacturas['id'] ?>&doc=DEB');"  />
 							<?php } ?>
