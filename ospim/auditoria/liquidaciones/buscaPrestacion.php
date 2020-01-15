@@ -11,6 +11,17 @@ if(isset($_GET)) {
 	$prestaciones = array();
 	set_time_limit(0);
 	if($tienecontrato == 1) {
+		$sqlLeeContratoRelacionado="SELECT idcontratotercero FROM cabcontratoprestador WHERE codigoprestador = $idprestador AND fechainicio <= '$fechaprestacion' AND (fechafin >= '$fechaprestacion' OR fechafin IS NULL ) AND idcontratotercero != 0";
+		$resLeeContratoRelacionado=mysql_query($sqlLeeContratoRelacionado,$db);
+		if(mysql_num_rows($resLeeContratoRelacionado)==1) {
+			$rowLeeContratoRelacionado=mysql_fetch_array($resLeeContratoRelacionado);
+			$sqlLeeContratoPadre="SELECT codigoprestador FROM cabcontratoprestador WHERE idcontrato = $rowLeeContratoRelacionado[idcontratotercero]";
+			$resLeeContratoPadre=mysql_query($sqlLeeContratoPadre,$db);
+			if(mysql_num_rows($resLeeContratoPadre)==1) {
+				$rowLeeContratoPadre=mysql_fetch_array($resLeeContratoPadre);
+				$idprestador = $rowLeeContratoPadre['codigoprestador'];
+			}
+		}
 		$sqlLeePracticasContrato="SELECT c.idcontrato, c.codigoprestador, c.fechainicio, c.fechafin, d.idpractica, p.codigopractica, SUBSTRING(p.descripcion,1,45) AS nombrepractica, p.internacion, j.codigocomplejidad, j.descripcion AS complejidad, d.idcategoria, t.descripcion AS nombrecategoria, d.moduloconsultorio, d.modulourgencia, ROUND((d.galenohonorario*p.unihonorario),2) AS honorario, ROUND((d.galenohonorarioespecialista*p.unihonorarioespecialista),2) AS especialista, ROUND((d.galenohonorarioayudante*p.unihonorarioayudante),2) AS ayudante, ROUND((d.galenohonorarioanestesista*p.unihonorarioanestesista),2) AS anestesista, ROUND((d.galenogastos*p.unigastos),2) AS gastos, d.coseguro, (ROUND((d.galenohonorario*p.unihonorario),2)+ROUND((d.galenohonorarioespecialista*p.unihonorarioespecialista),2)+ROUND((d.galenohonorarioayudante*p.unihonorarioayudante),2)+ROUND((d.galenohonorarioanestesista*p.unihonorarioanestesista),2)+ROUND((d.galenogastos*p.unigastos),2)) AS valorgaleno FROM cabcontratoprestador c, detcontratoprestador d, practicas p, practicascategorias t, tipocomplejidad j WHERE c.codigoprestador = $idprestador AND (p.codigopractica like '%$busqueda%' OR p.descripcion like '%$busqueda%') AND c.idcontrato = d.idcontrato AND d.idpractica = p.idpractica AND d.idcategoria = t.id AND p.codigocomplejidad = j.codigocomplejidad";
 		$resLeePracticasContrato=mysql_query($sqlLeePracticasContrato,$db);
 		if(mysql_num_rows($resLeePracticasContrato)!=0) {
