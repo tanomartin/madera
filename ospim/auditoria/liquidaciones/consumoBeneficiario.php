@@ -303,6 +303,7 @@ $(document).ready(function(){
 				$("#internacion").css('display', 'none');
 			}
 			if(cosegurodevuelto!=0.00) {
+				infoconformado = infoconformado+' + Coseguro';
 				$("#incluyecoseguro").prop("checked",false);
 				$("#incluyecoseguro").attr('disabled', false);
 				$("#valorCoseguro").val(cosegurodevuelto);
@@ -663,18 +664,18 @@ $(document).ready(function(){
 	});
 	$("#incluyecoseguro").change(function(){
 		if($("#incluyecoseguro").prop('checked') ) {
-			infoconformado = infoconformado+' + Coseguro';
-			$('#infoconformado').attr('title', infoconformado);
-			var nuevovalor = parseFloat($("#referenciacoseguro").val()) + parseFloat($("#valorCoseguro").val());
-			$("#referenciacoseguro").val(nuevovalor);
-			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciacoseguro").val());
-			$("#referenciaconformado").val(valorconformado);
-			$("#valorCoseguro").attr('disabled', false);
-		} else {
 			infoconformado = infoconformado.replace(' + Coseguro','');
 			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciacoseguro").val()) - parseFloat($("#valorCoseguro").val());
+			$("#referenciacoseguro").val(nuevovalor);
 			var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciacoseguro").val());
+			$("#referenciaconformado").val(valorconformado);
+			$("#valorCoseguro").attr('disabled', false);
+		} else {
+			infoconformado = infoconformado+' + Coseguro';
+			$('#infoconformado').attr('title', infoconformado);
+			var nuevovalor = parseFloat($("#referenciacoseguro").val()) + parseFloat($("#valorCoseguro").val());
+			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciacoseguro").val());
 			$("#referenciacoseguro").val(nuevovalor);
 			$("#referenciaconformado").val(valorconformado);
 			$("#valorCoseguro").attr('disabled', true);
@@ -1280,7 +1281,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 				</td>
 			</tr>
 			<tr id="coseguro" style="display:none">
-				<td align="right" colspan="2"><strong>Incluye Coseguro ?</strong></td>
+				<td align="right" colspan="2"><strong>Coseguro a Cargo Beneficiario?</strong></td>
 				<td align="left" colspan="4"><input name="incluyecoseguro" type="checkbox" id="incluyecoseguro" value="1"/>
 					| Valor Coseguro <input name="valorCoseguro" type="text" id="valorCoseguro" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciacoseguro" type="hidden" id="referenciacoseguro" size="5" value="0.00"/>
 				</td>
