@@ -101,7 +101,7 @@ if ($rowCabecera['debito'] > 0) {
 	$numDetalleCarencia = mysql_num_rows($resDetalleCarencia);
 	if ($numDetalleCarencia > 0) {
 		while ($rowDetalleCarencia = mysql_fetch_assoc($resDetalleCarencia)) {
-			$arrayDetalleDebito[$i] = array("id"=>$rowDebitoDetalle['id'],
+			$arrayDetalleDebito[$i] = array("id"=>$rowDetalleCarencia['id'],
 											"factura"=> $rowDetalleCarencia['puntodeventa']."-".$rowDetalleCarencia['nrocomprobante'],
 											"fecha" => $rowDetalleCarencia['fechacomprobante'],
 											"practica" => "",
