@@ -667,18 +667,18 @@ $(document).ready(function(){
 			infoconformado = infoconformado.replace(' + Coseguro','');
 			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciacoseguro").val()) - parseFloat($("#valorCoseguro").val());
-			$("#referenciacoseguro").val(nuevovalor);
 			var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciacoseguro").val());
+			$("#referenciacoseguro").val(nuevovalor);
 			$("#referenciaconformado").val(valorconformado);
-			$("#valorCoseguro").attr('disabled', false);
+			$("#valorCoseguro").attr('disabled', true);
 		} else {
 			infoconformado = infoconformado+' + Coseguro';
 			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciacoseguro").val()) + parseFloat($("#valorCoseguro").val());
-			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciacoseguro").val());
 			$("#referenciacoseguro").val(nuevovalor);
+			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciacoseguro").val());
 			$("#referenciaconformado").val(valorconformado);
-			$("#valorCoseguro").attr('disabled', true);
+			$("#valorCoseguro").attr('disabled', false);
 		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
