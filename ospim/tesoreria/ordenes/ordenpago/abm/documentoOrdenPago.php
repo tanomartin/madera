@@ -5,9 +5,12 @@ include($libPath."bandejaSalida.php");
 
 $nroOrden = $_GET['nroorden'];
 $email = $_GET['email'];
-$sqlCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden, pr.descrip as provincia
-				FROM ordencabecera o, prestadores p, provincia pr
-				WHERE o.nroordenpago = $nroOrden and o.codigoprestador = p.codigoprestador and p.codprovin = pr.codprovin";
+$sqlCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden, pr.descrip as provincia, l.nomlocali as localidad
+				FROM ordencabecera o, prestadores p, provincia pr, localidades l 
+				WHERE o.nroordenpago = $nroOrden and 
+					  o.codigoprestador = p.codigoprestador and 
+					  p.codprovin = pr.codprovin and
+					  p.codlocali = l.codlocali";
 $resCabecera = mysql_query($sqlCabecera,$db);
 $rowCabecera = mysql_fetch_assoc($resCabecera);
 
@@ -153,7 +156,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	$pdf->SetXY(7, 25);
 	$pdf->Cell(203,5,"NOMBRE: ".$rowCabecera['nombre']." - CUIT: ".$rowCabecera['cuit'],0,0,"L");
 	$pdf->SetXY(7, 28);
-	$pdf->Cell(203,5,"DIRECCION: ".$rowCabecera['domicilio']." - CP: ".$rowCabecera['numpostal']." - ".$rowCabecera['provincia'],0,0,"L");
+	$pdf->Cell(203,5,"DIRECCION: ".$rowCabecera['domicilio']." - CP: ".$rowCabecera['numpostal']." - ".$rowCabecera['localidad']." - ".$rowCabecera['provincia'],0,0,"L");
 	$pdf->SetXY(7, 31);
 	$pdf->Cell(203,5,"EMAIL: ".$rowCabecera['email1']." - ".$rowCabecera['email2']." | TEL: ".$rowCabecera['ddn1']."-".$rowCabecera['telefono1'],0,0,"L");
 	
@@ -575,7 +578,7 @@ if ($rowCabecera['debito'] > 0) {
 	
 	/***********	PLANILLA DE DEBITO **********************/
 	$nombrePlanillaDebito = $carpetaOrden."OP".$ordenNombreArchivo."PL.pdf";
-	$pdfPlanilla = new FPDF('P','mm','Letter');
+	$pdfPlanilla = new FPDF('P','mm','Letter');	
 	$pdfPlanilla->AddPage();
 	printHeaderPlanillaDebito($pdfPlanilla, $rowDebito);
 	printDetallePlanillaDebito($pdfPlanilla, $arrayDetalleDebito);
