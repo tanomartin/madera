@@ -40,8 +40,7 @@ $rowPrestador = mysql_fetch_array($resPrestador);
 $sqlFacPendientesInte = "SELECT
 							f.*,
 							DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
-							DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento,
-							count(facturasprestaciones.id) + count(facturascarenciasbeneficiarios.id)  as lineasdebito
+							DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
 						 FROM facturasprestaciones p, facturasintegracion i, facturas f
 						 LEFT JOIN facturasprestaciones ON facturasprestaciones.idfactura = f.id and facturasprestaciones.totaldebito > 0
 						 LEFT JOIN facturascarenciasbeneficiarios ON facturascarenciasbeneficiarios.idfactura = f.id and facturascarenciasbeneficiarios.totaldebito > 0
@@ -66,8 +65,7 @@ if ($canFacPendientesInte > 0) {
 $sqlFacPendientes = "SELECT
 						f.*,
 						DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechamostrar,
-						DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento,
-						count(facturasprestaciones.id) + count(facturascarenciasbeneficiarios.id)  as lineasdebito
+						DATE_FORMAT(f.fechavencimiento,'%d-%m-%Y') as fechavencimiento
 					 FROM facturas f
 					 LEFT JOIN facturasprestaciones ON facturasprestaciones.idfactura = f.id and facturasprestaciones.totaldebito > 0
 					 LEFT JOIN facturascarenciasbeneficiarios ON facturascarenciasbeneficiarios.idfactura = f.id and facturascarenciasbeneficiarios.totaldebito > 0 
@@ -166,23 +164,15 @@ function validarValor(valor, totalApagar, id) {
 
 function validarCantFacturas(formulario) {
 	var cantidadFactura = 0;
-	var canitdadDebito = 0;
 	for (var i=0;i<formulario.elements.length;i++) {
 		 if (formulario.elements[i].name.indexOf("tipopago") !== -1 ) {
 			 if (formulario.elements[i].value != 0) {
 				 cantidadFactura++;
-				 var idFactura = formulario.elements[i].name.substring(8);
-				 var ldebitoname = "ldebito"+idFactura;
-				 canitdadDebito += parseInt(document.getElementById(ldebitoname).value);
 			 }
 		 }
 	}
 	if (cantidadFactura > 25) {
 		alert("No se pueden cargar mas de 25 facturas en una Orden de Pago");
-		return false;
-	}
-	if (canitdadDebito > 25) {
-		alert("No se pueden cargar mas de 25 debitos en una Nota de Debito");
 		return false;
 	}
 	return true;
@@ -235,7 +225,6 @@ function validar(formulario) {
 							<th>Fecha Vto.</th>
 							<th>Imp. Factura</th>
 							<th>Debitos</th>
-							<th>#</th>
 							<th>Pagos Ant.</th>
 							<th>A Pagar</th>
 							<th>Tipo Pago</th>
@@ -245,13 +234,11 @@ function validar(formulario) {
 					<tbody>
 				<?php 	$totalImpFactura = 0;	
 						$totalDebitos = 0;
-						$totalLineas = 0;
 						$totalPagosAnteriores = 0;
 						$totalAPagar = 0;
 						foreach ($arrayNoInte as $facturaNoInte) { 
 							$totalImpFactura += $facturaNoInte['importecomprobante'];
 							$totalDebitos += $facturaNoInte['totaldebito'];
-							$totalLineas += $facturaNoInte['lineasdebito'];
 							$totalPagosAnteriores += $facturaNoInte['totalpagado'];
 							$totalAPagar += $facturaNoInte['restoapagar']; ?>
 							<tr>
@@ -261,9 +248,6 @@ function validar(formulario) {
 								<td><?php echo $facturaNoInte['fechavencimiento'];?></td>
 								<td><?php echo number_format($facturaNoInte['importecomprobante'],2,',','.');?></td>
 								<td><?php echo number_format($facturaNoInte['totaldebito'],2,',','.');?></td>
-								<td><?php echo $facturaNoInte['lineasdebito']; ?>
-									<input type="text" id="ldebito<?php echo $facturaNoInte['id'] ?>" name="ldebito<?php echo $facturaNoInte['id'] ?>" size="14" value="<?php echo $facturaNoInte['lineasdebito']?>" style="display: none"/>
-								</td>
 								<td><?php echo number_format($facturaNoInte['totalpagado'],2,',','.');?></td>
 								<td><?php echo number_format($facturaNoInte['restoapagar'],2,',','.');?></td>
 								<td>
@@ -286,7 +270,6 @@ function validar(formulario) {
 								<th colspan="4">TOTAL</th>
 								<th><?php echo number_format($totalImpFactura,2,',','.');?></th>
 								<th><?php echo number_format($totalDebitos,2,',','.');?></th>
-								<th><?php echo $totalLineas;?></th>
 								<th><?php echo number_format($totalPagosAnteriores,2,',','.');?></th>
 								<th><?php echo number_format($totalAPagar,2,',','.');?></th>
 								<th></th>
@@ -314,7 +297,6 @@ function validar(formulario) {
 							<th>Fecha Vto.</th>
 							<th>Imp. Factura</th>
 							<th>Debitos</th>
-							<th>#</th>
 							<th>Pagos Ant.</th>
 							<th>A Pagar</th>
 							<th>Tipo Pago</th>
@@ -324,13 +306,11 @@ function validar(formulario) {
 					<tbody>
 				<?php 	$totalImpFacturaInte = 0;	
 						$totalDebitosInte = 0;
-						$totalLineasNoInte = 0;
 						$totalPagosAnterioresInte = 0;
 						$totalAPagarInte = 0;
 						foreach ($arrayInte as $facturaInte) {
 							$totalImpFacturaInte += $facturaInte['importecomprobante'];
 							$totalDebitosInte += $facturaInte['totaldebito'];
-							$totalLineasNoInte += $facturaInte['lineasdebito'];
 							$totalPagosAnterioresInte += $facturaInte['totalpagado'];
 							$totalAPagarInte += $facturaInte['restoapagar']; ?>
 							<tr>
@@ -340,9 +320,6 @@ function validar(formulario) {
 								<td><?php echo $facturaInte['fechavencimiento'];?></td>
 								<td><?php echo number_format($facturaInte['importecomprobante'],2,',','.');?></td>
 								<td><?php echo number_format($facturaInte['totaldebito'],2,',','.');?></td>
-								<td><?php echo $facturaInte['lineasdebito']; ?>
-									<input type="text" id="ldebito<?php echo $facturaInte['id'] ?>" name="ldebito<?php echo $facturaInte['id'] ?>" size="14" value="<?php echo $facturaInte['lineasdebito']?>" style="display: none"/>
-								</td>
 								<td><?php echo number_format($facturaInte['totalpagado'],2,',','.');?></td>
 								<td><?php echo number_format($facturaInte['restoapagar'],2,',','.');?></td>
 								<td>
@@ -362,7 +339,6 @@ function validar(formulario) {
 								<th colspan="4">TOTAL</th>
 								<th><?php echo number_format($totalImpFacturaInte,2,',','.');?></th>
 								<th><?php echo number_format($totalDebitosInte,2,',','.');?></th>
-								<th><?php echo $totalLineasNoInte;?></th>
 								<th><?php echo number_format($totalPagosAnterioresInte,2,',','.');?></th>
 								<th><?php echo number_format($totalAPagarInte,2,',','.');?></th>
 								<th></th>

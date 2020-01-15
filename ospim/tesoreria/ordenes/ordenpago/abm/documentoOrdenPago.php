@@ -327,7 +327,7 @@ function printHeaderPlanillaDebito($pdfPlanilla, $rowDebito) {
 	$pdfPlanilla->Cell(60,7,"Fecha: ".$rowDebito['fechadebito'],0,0);
 	
 	$pdfPlanilla->SetFont('Courier','',8);
-	$pdfPlanilla->SetXY(135, 20);
+	$pdfPlanilla->SetXY(135, 22);
 	$pdfPlanilla->Cell(55,5,"RNOS Nro.: 11100-1",0,0);
 	$pdfPlanilla->SetXY(135, 25);
 	$pdfPlanilla->Cell(55,5,"Nro. Ord.: ".$rowDebito['nroordenpago'],0,0);
@@ -459,7 +459,7 @@ function printDetalleDebito($pdf, $arrayDetalleDebito) {
 	$pdf->Cell(30,5,"$ ".number_format($total,2,',','.'),0,0);
 }
 
-function printDetallePlanillaDebito($pdf, $arrayDetalleDebito) {
+function printDetallePlanillaDebito($pdf, $arrayDetalleDebito, $hoja, $totalHojas) {
 	$total = 0;
 	$cordY = 60;
 	$arrayDebXFac = array();
@@ -482,14 +482,21 @@ function printDetallePlanillaDebito($pdf, $arrayDetalleDebito) {
 		$cordY += 5;
 
 		$pdf->Line(7, $cordY, 210, $cordY);
+		
+		$pdf->SetFont('Courier','',8);
+		$pdf->SetXY(105, 250);
+		$pdf->Cell(20,5,$hoja." de ".$totalHojas,0,0);
 	}
 
+}
+
+function printFooterPlanilla($pdf, $totalDebito) {
 	$pdf->SetFont('Courier','B',8);
 	$pdf->SetXY(7, 240);
-	$pdf->Cell(30,5,"SON PESOS: ".cfgValorEnLetras($total),0,0);
-
+	$pdf->Cell(30,5,"SON PESOS: ".cfgValorEnLetras($totalDebito),0,0);
+	
 	$pdf->SetXY(180, 240);
-	$pdf->Cell(30,5,"$ ".number_format($total,2,',','.'),0,0);
+	$pdf->Cell(30,5,"$ ".number_format($totalDebito,2,',','.'),0,0);
 }
 
 function printFooterDebito($pdf, $cai, $vto) {
@@ -576,12 +583,17 @@ if ($rowCabecera['debito'] > 0) {
 	$pdfNotaDebitoDup->Output($nombreNotaDebitoDup,'F');
 	/********************************************************/
 	
-	/***********	PLANILLA DE DEBITO **********************/
+	/***********	PLANILLA DE DEBITO MULTIHOJA ************/
 	$nombrePlanillaDebito = $carpetaOrden."OP".$ordenNombreArchivo."PL.pdf";
 	$pdfPlanilla = new FPDF('P','mm','Letter');	
-	$pdfPlanilla->AddPage();
-	printHeaderPlanillaDebito($pdfPlanilla, $rowDebito);
-	printDetallePlanillaDebito($pdfPlanilla, $arrayDetalleDebito);
+	$arrayDetalleDividio = array_chunk($arrayDetalleDebito, 18, true);
+	foreach ($arrayDetalleDividio as $key =>$arrayDetalleDebitoDiv) {
+		$pdfPlanilla->AddPage();
+		printHeaderPlanillaDebito($pdfPlanilla, $rowDebito);
+		$hoja = $key + 1;
+		printDetallePlanillaDebito($pdfPlanilla, $arrayDetalleDebitoDiv,$hoja, sizeof($arrayDetalleDividio));
+	}
+	printFooterPlanilla($pdfPlanilla, $rowCabecera['debito']);
 	$pdfPlanilla->Output($nombrePlanillaDebito,'F');
 	/********************************************************/
 }
