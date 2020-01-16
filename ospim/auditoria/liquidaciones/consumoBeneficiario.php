@@ -1283,7 +1283,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			<tr id="coseguro" style="display:none">
 				<td align="right" colspan="2"><strong>Coseguro a Cargo Beneficiario?</strong></td>
 				<td align="left" colspan="4"><input name="incluyecoseguro" type="checkbox" id="incluyecoseguro" value="1"/>
-					| Valor Coseguro <input name="valorCoseguro" type="text" id="valorCoseguro" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciacoseguro" type="text" id="referenciacoseguro" size="5" value="0.00"/>
+					| Valor Coseguro <input name="valorCoseguro" type="text" id="valorCoseguro" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciacoseguro" type="hidden" id="referenciacoseguro" size="5" value="0.00"/>
 				</td>
 			</tr>
 			<tr id="calidadestablecimiento" style="display:none">
