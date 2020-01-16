@@ -100,7 +100,7 @@ $(document).ready(function(){
 
 function validar(formulario) {
 	formulario.ingresar.disabled = true;
-	if(formulario.prestador.value == "") {
+	if(formulario.codigoprestador.value == "") {
 		var cajadialogo = $('<div title="Aviso"><p>Debe ingresar un prestador.</p></div>');
 		cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#prestador').focus(); }});
 		formulario.ingresar.disabled = false;
