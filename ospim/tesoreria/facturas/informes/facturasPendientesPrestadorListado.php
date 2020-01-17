@@ -38,6 +38,9 @@ ksort($arrayFacturas);?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Listado de Facturas Pendientes de Pago :.</title>
+<style type="text/css" media="print">
+.nover {display:none}
+</style>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
@@ -127,6 +130,7 @@ ksort($arrayFacturas);?>
 	 <?php  } else { ?>
 		 		<h3>No existen Facturas Pendientes de Pago</h3>
 	  <?php }?>
+	  <p><input class="nover" type="button" name="imprimir" value="Imprimir" onclick="window.print();" /></p>
 	</div>
 </body>
 </html>
