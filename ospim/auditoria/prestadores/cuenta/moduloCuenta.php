@@ -24,14 +24,14 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			
 			$sqlFacturaSinLiqui = "SELECT sum(importecomprobante) as sumimporte
 									FROM facturas
-									WHERE idPrestador = $codigo and fecharecepcion < '$fechaBuscar' and
+									WHERE idPrestador = $codigo and fechacomprobante < '$fechaBuscar' and
 									totalcredito = 0 and totaldebito = 0";
 			$resFacturaSinLiqui = mysql_query($sqlFacturaSinLiqui,$db);
 			$rowFacturaSinLiqui  = mysql_fetch_array($resFacturaSinLiqui);
 			
 			$sqlFacturas = "SELECT sum(totalcredito) - sum(totaldebito) as sumdebe 
 							FROM facturas 
-							WHERE idPrestador = $codigo and fecharecepcion < '$fechaBuscar'";
+							WHERE idPrestador = $codigo and fechacomprobante < '$fechaBuscar'";
 			$resFacturas = mysql_query($sqlFacturas,$db);
 			$rowFacturas = mysql_fetch_array($resFacturas);
 			
@@ -59,7 +59,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			
 			$sqlFacturasDet = "SELECT puntodeventa, nrocomprobante, fecharecepcion, fechacomprobante, importecomprobante, totaldebito, totalcredito, importeliquidado, totalpagado 
 								FROM facturas 
-								WHERE idPrestador = $codigo and fecharecepcion >= '$fechaBuscar'";
+								WHERE idPrestador = $codigo and fechacomprobante >= '$fechaBuscar'";
 			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
