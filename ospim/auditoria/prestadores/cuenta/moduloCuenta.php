@@ -24,14 +24,14 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			
 			$sqlFacturaSinLiqui = "SELECT sum(importecomprobante) as sumimporte
 									FROM facturas
-									WHERE idPrestador = $codigo and fechacomprobante < '$fechaBuscar' and
+									WHERE idPrestador = $codigo and fecharecepcion < '$fechaBuscar' and
 									totalcredito = 0 and totaldebito = 0";
 			$resFacturaSinLiqui = mysql_query($sqlFacturaSinLiqui,$db);
 			$rowFacturaSinLiqui  = mysql_fetch_array($resFacturaSinLiqui);
 			
 			$sqlFacturas = "SELECT sum(totalcredito) - sum(totaldebito) as sumdebe 
 							FROM facturas 
-							WHERE idPrestador = $codigo and fechacomprobante < '$fechaBuscar'";
+							WHERE idPrestador = $codigo and fecharecepcion < '$fechaBuscar'";
 			$resFacturas = mysql_query($sqlFacturas,$db);
 			$rowFacturas = mysql_fetch_array($resFacturas);
 			
@@ -59,15 +59,15 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			
 			$sqlFacturasDet = "SELECT puntodeventa, nrocomprobante, fecharecepcion, fechacomprobante, importecomprobante, totaldebito, totalcredito, importeliquidado, totalpagado 
 								FROM facturas 
-								WHERE idPrestador = $codigo and fechacomprobante >= '$fechaBuscar'";
+								WHERE idPrestador = $codigo and fecharecepcion >= '$fechaBuscar'";
 			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
-				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - F.R.:".invertirFecha($rowFacturasDet['fecharecepcion'])." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".");
+				$descripcion = "Ingreso Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - F.F.:".invertirFecha($rowFacturasDet['fechacomprobante'])." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".");
 				if ($rowFacturasDet['totaldebito'] != 0) {
 					$descripcion .= "<br> Debito Aud. Med. Factura ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante'];
 				}
-				$arrayDetalle[$rowFacturasDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['importecomprobante'], "tipo" => 'F');
+				$arrayDetalle[$rowFacturasDet['fecharecepcion'].$index] = array("descripcion" => $descripcion, "debe" => $rowFacturasDet['totaldebito'], "haber" => $rowFacturasDet['importecomprobante'], "tipo" => 'F');
 			}
 			
 			$sqlPagosDet = "SELECT * FROM ordencabecera
@@ -200,7 +200,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
   			<table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
 				<thead>
 					<tr>
-						<th>Fecha Compr</th>
+						<th>Fecha</th>
 						<th>Descripcion</th>
 						<th>DEBE</th>
 						<th>HABER</th>
