@@ -15,10 +15,9 @@ include($libPath."controlSessionOspim.php"); ?>
   	<table width="200" border="1" style="text-align: center">
     	<tr>
 	  		<td width="200">
-	  			<p>FAC. PENDIENTES X PRESTADOR</p>
-          		<p><a href="facturasPendientesPrestador.php"><img src="img/informes.png" width="90" height="90" border="0"/></a></p>
+	  			<p>FACTURAS X PRESTADOR</p>
+          		<p><a href="facturasPrestador.php"><img src="img/informes.png" width="90" height="90" border="0"/></a></p>
       		</td>
-      
       	</tr>
   	</table>
 </div>

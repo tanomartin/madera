@@ -95,10 +95,10 @@ function abrirPantalla(dire) {
 </head>
 
 <body bgcolor="#CCCCCC">
-<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="facturasPendientesPrestador.php">
+<form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="facturasPrestador.php">
   <div align="center">
 	  <input type="button" name="volver" value="Volver" onclick="location.href = 'menuInformes.php'" />
-	  <h3>Informe de Facturas Pendientes de Pago por Prestador </h3>
+	  <h3>Informe de Facturas por Prestador </h3>
 	   <?php if ($noExiste == 1) { ?>
 				<h3 style='color:#FF0000'>NO EXISTE PRESTADOR CON ESTE FILTRO DE BUSQUEDA </h3>
 	  <?php } ?>   
@@ -138,7 +138,8 @@ function abrirPantalla(dire) {
 					<td><?php echo $rowPrestador['telefono1'];?></td>
 					<td><?php echo $rowPrestador['email1'];?></td>
 					<td>
-						<input name="pendientes" type="button" value="FACTURAS" onclick="abrirPantalla('facturasPendientesPrestadorListado.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
+						<input name="pendientes" type="button" value="PENDIENTES" onclick="abrirPantalla('facturasPendientesPrestadorListado.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/> | 
+						<input name="todas" type="button" value="TODAS" onclick="abrirPantalla('facturasPrestadorListado.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/>
 					</td>
 				 </tr>
 		<?php } ?>
