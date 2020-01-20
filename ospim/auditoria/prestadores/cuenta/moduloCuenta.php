@@ -29,7 +29,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$resFacturaSinLiqui = mysql_query($sqlFacturaSinLiqui,$db);
 			$rowFacturaSinLiqui  = mysql_fetch_array($resFacturaSinLiqui);
 			
-			$sqlFacturas = "SELECT sum(totalcredito) - sum(totaldebito) as sumdebe 
+			$sqlFacturas = "SELECT sum(totalcredito) as sumdebe 
 							FROM facturas 
 							WHERE idPrestador = $codigo and fecharecepcion < '$fechaBuscar'";
 			$resFacturas = mysql_query($sqlFacturas,$db);
