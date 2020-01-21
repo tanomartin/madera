@@ -57,15 +57,22 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$arrayDetalle = array();
 			$index = 0;
 			
-			$sqlFacturasDet = "SELECT id, puntodeventa, nrocomprobante, fecharecepcion, fechacomprobante, 
-									  importecomprobante, totaldebito, totalcredito, importeliquidado, 
-									  totalpagado, fechacierreliquidacion
-								FROM facturas 
+			$sqlFacturasDet = "SELECT f.id, f.puntodeventa, f.nrocomprobante, f.fecharecepcion, f.fechacomprobante, 
+									  f.importecomprobante, f.totaldebito, f.totalcredito, f.importeliquidado, 
+									  f.totalpagado, f.fechacierreliquidacion, 
+									  ordencabecera.nroordenpago as nroorden
+								FROM facturas f
+								LEFT JOIN ordendetalle ON ordendetalle.idfactura = f.id
+							    LEFT JOIN ordencabecera ON ordencabecera.nroordenpago = ordendetalle.nroordenpago and ordencabecera.fechacancelacion is NULL
 								WHERE idPrestador = $codigo and fecharecepcion >= '$fechaBuscar'";
 			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
-				$descripcion = "Ingreso Factura - ID: ".$rowFacturasDet['id']." - Nro: ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - F.F.:".invertirFecha($rowFacturasDet['fechacomprobante'])." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".");
+				$desordenpago = "";
+				if ($rowFacturasDet['nroorden'] != NULL) {
+					$desordenpago = " OP: ". $rowFacturasDet['nroorden'];
+				}
+				$descripcion = "Ingreso Factura - ID: ".$rowFacturasDet['id']." - Nro: ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - F.F.:".invertirFecha($rowFacturasDet['fechacomprobante'])." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".").$desordenpago;
 				$arrayDetalle[$rowFacturasDet['fecharecepcion'].$index] = array("descripcion" => $descripcion, "debe" => 0, "haber" => $rowFacturasDet['importecomprobante'], "tipo" => 'F');
 				if ($rowFacturasDet['totaldebito'] != 0) {
 					$index++;
