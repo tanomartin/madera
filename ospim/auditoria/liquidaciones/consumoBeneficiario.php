@@ -65,10 +65,10 @@ if(isset($_GET)) {
 		$deleBeneficiario = $rowConsultaFamiliar['codidelega'];
 	}
 
-	$sqlConsultaFacturasPrestacionesConsumo = "SELECT f.*, p.codigopractica FROM facturasprestaciones f, practicas p WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 1 AND f.idPractica = p.idpractica";
+	$sqlConsultaFacturasPrestacionesConsumo = "SELECT f.*, p.codigopractica FROM facturasprestaciones f, practicas p WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 1 AND f.idPractica = p.idpractica ORDER BY f.id DESC";
 	$resConsultaFacturasPrestacionesConsumo = mysql_query($sqlConsultaFacturasPrestacionesConsumo,$db);
 
-	$sqlConsultaFacturasPrestacionesCarencia = "SELECT f.*, p.codigopractica FROM facturasprestaciones f, practicas p WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 2 AND f.idPractica = p.idpractica";
+	$sqlConsultaFacturasPrestacionesCarencia = "SELECT f.*, p.codigopractica FROM facturasprestaciones f, practicas p WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 2 AND f.idPractica = p.idpractica ORDER BY f.id DESC";
 	$resConsultaFacturasPrestacionesCarencia = mysql_query($sqlConsultaFacturasPrestacionesCarencia,$db);
 }
 ?>
@@ -423,6 +423,18 @@ $(document).ready(function(){
 					$("#eligeestamb").show();
 					$("#eligeestint").show();
 				} else {
+					//Momentaneo hasta que clasifiquemos automatico realmente
+					$("#computoautomatico").show();
+					if(integraciondevuelto==1) {
+						$("#calculoestadistico").prop("checked",false);
+						$("#calculoestadistico").prop('disabled',false);
+					} else {
+						$("#calculoestadistico").prop("checked",true);
+						$("#calculoestadistico").prop('disabled',false);
+					}
+					$("#computomanual").show();
+					$("#eligeestamb").show();
+					$("#eligeestint").show();
 				}
 			}
 		}  

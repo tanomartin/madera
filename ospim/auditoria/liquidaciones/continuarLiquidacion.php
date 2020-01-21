@@ -23,10 +23,10 @@ if(isset($_GET['idfactura'])) {
 	$sqlConsultaJurisdiccionPrestador = "SELECT p.codidelega, d.nombre FROM prestadorjurisdiccion p, delegaciones d WHERE p.codigoprestador = $rowConsultaFactura[idPrestador] and p.codidelega = d.codidelega";
 	$resConsultaJurisdiccionPrestador = mysql_query($sqlConsultaJurisdiccionPrestador,$db);
 
-	$sqlConsultaFacturasBeneficiarios = "SELECT * FROM facturasbeneficiarios WHERE idFactura = $idcomprobante";
+	$sqlConsultaFacturasBeneficiarios = "SELECT * FROM facturasbeneficiarios WHERE idFactura = $idcomprobante ORDER BY id DESC";
 	$resConsultaFacturasBeneficiarios = mysql_query($sqlConsultaFacturasBeneficiarios,$db);
 
-	$sqlConsultaCarenciasBeneficiarios = "SELECT * FROM facturascarenciasbeneficiarios WHERE idFactura = $idcomprobante";
+	$sqlConsultaCarenciasBeneficiarios = "SELECT * FROM facturascarenciasbeneficiarios WHERE idFactura = $idcomprobante ORDER BY id DESC";
 	$resConsultaCarenciasBeneficiarios = mysql_query($sqlConsultaCarenciasBeneficiarios,$db);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
