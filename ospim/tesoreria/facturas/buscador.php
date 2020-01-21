@@ -163,7 +163,6 @@ function abrirPop(dire){
 
 function validar(formulario) {
 	if (formulario.filtro.value == "F") {
-		console.log(esEnteroPositivo(formulario.valor.value));
 		if (formulario.valor.value == "") {
 			alert("El Dato de Busqueda es obligatorio");
 			return false;
@@ -204,11 +203,11 @@ function validar(formulario) {
 		
 		<table id="filtrosPagadas">
 			<tr>
-				<td colspan="2" align="center"><h3 style="color: blue;">Filtro de Facturas</h3>(Obligatorio para Fac. Pagadas)</td>
+				<td colspan="2" align="center"><h3 style="color: blue;">Seleccione Filtro de Busqueda</h3></td>
 			</tr>
 			<tr>
 				<td><b>COD. PRES.</b></td>
-				<td><input type="radio" value="codigo" id="codigo" name="filtroPaga"/></td>	
+				<td><input type="radio" value="codigo" id="codigo" name="filtroPaga" checked="checked"/></td>	
 			</tr>
 			<tr>
 				<td><b>C.U.I.T.</b></td>
@@ -222,7 +221,7 @@ function validar(formulario) {
 				<td><b>NRO. FACTURA</b></td>
 				<td><input type="radio" value="nro" id="nro" name="filtroPaga"/></td>
 			</tr>
-			<tr>
+			<tr align="center">
 				<td colspan="2"><input type="text" id="valor" name="valor" size="22"/></td>
 			</tr>
 		</table>
