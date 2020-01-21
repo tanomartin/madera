@@ -83,7 +83,10 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 				$index++;
 				
 				//ORDEN DE PAGO Y DETALLE DE FACTURAS
-				$descripcion = "Orden de Pago ".$rowPagosDet['nroordenpago']." ".$rowPagosDet['formapago']." ".$rowPagosDet['comprobantepago']; 
+				if ($rowPagosDet['formapago'] == "C") { $formaPago = "CHEQUE"; }
+				if ($rowPagosDet['formapago'] == "T") { $formaPago = "TRANS."; }
+				if ($rowPagosDet['formapago'] == "E") { $formaPago = "EFECT."; }
+				$descripcion = "Orden de Pago ".$rowPagosDet['nroordenpago']." - ".$formaPago." ".$rowPagosDet['comprobantepago']; 
 				$sqlDetalleOP = "SELECT * FROM ordendetalle o, facturas f 
 								 WHERE o.nroordenpago = ".$rowPagosDet['nroordenpago']." and 
 								 	   o.idfactura = f.id";
@@ -136,6 +139,11 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			theme: 'blue', 
 			widthFixed: true, 
 			widgets: ["zebra", "filter"], 
+			headers:{0:{sorter:false},
+					 1:{sorter:false},
+					 2:{sorter:false},
+					 3:{sorter:false}, 
+					 4:{sorter:false}},
 			widgetOptions : { 
 				filter_cssFilter   : '',
 				filter_childRows   : false,
@@ -216,7 +224,8 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 				<tbody>
 					<tr>
 						<td></td>
-						<td><?php echo "Saldo Consolidado al $fecha"?></td>
+						<td><?php $fechaconso = date("d/m/Y",strtotime($fecha."- 1 day"));
+								  echo "Saldo Consolidado al $fechaconso"?></td>
 						<td><?php if ($saldo < 0) { echo number_format($saldo,2,",","."); $totalDebe += $saldo; } ?></td>
 						<td><?php if ($saldo > 0) { echo number_format($saldo,2,",","."); $totalHaber += $saldo; } ?></td>
 						<td><?php echo number_format($saldo,2,",","."); ?></td>
