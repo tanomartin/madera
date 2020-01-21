@@ -260,7 +260,7 @@ function validar(formulario) {
 						<td><b><?php echo $estado ?></b></td>
 						<td>
 							<input type="button" value="Liquidacion" onclick="abrirPop('consultaLiquidacion.php?id=<?php echo $rowFacturas['id'] ?>&estado=<?php echo $estado ?>');" /></br>
-							<?php if ($rowFacturas['restoapagar'] != $rowFacturas['importeliquidado'] && $rowFacturas['totaldebito'] != 0) { ?>
+							<?php if ($rowFacturas['restoapagar'] != $rowFacturas['importeliquidado'] && $rowFacturas['totaldebito'] != 0  && $rowFacturas['fechapago'] != "0000-00-00") { ?>
 								<input type="button" value="Plan. Debito" style="margin-top: 5px"  onclick="abrirPop('docuDebito.php?id=<?php echo $rowFacturas['id'] ?>&doc=PL');"  />
 								<input type="button" value="Nota Debito" style="margin-top: 5px"  onclick="abrirPop('docuDebito.php?id=<?php echo $rowFacturas['id'] ?>&doc=DEB');"  />
 							<?php } ?>
