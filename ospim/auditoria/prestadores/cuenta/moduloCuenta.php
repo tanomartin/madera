@@ -65,7 +65,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$resFacturasDet = mysql_query($sqlFacturasDet,$db);
 			while($rowFacturasDet = mysql_fetch_array($resFacturasDet)) {
 				$index++;
-				$descripcion = "Ingreso Factura - ID: ".$rowFacturasDet['id']." - Nro: ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - F.F.:".invertirFecha($rowFacturasDet['fechacomprobante'])." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".");
+				$descripcion = "Ingreso Factura - ID: ".$rowFacturasDet['id']." - Nro: ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - F.F.:".invertirFecha($rowFacturasDet['fechacomprobante']);
 				$arrayDetalle[$rowFacturasDet['fecharecepcion'].$index] = array("descripcion" => $descripcion, "debe" => 0, "haber" => $rowFacturasDet['importecomprobante'], "tipo" => 'F');
 				if ($rowFacturasDet['totaldebito'] != 0) {
 					$index++;
