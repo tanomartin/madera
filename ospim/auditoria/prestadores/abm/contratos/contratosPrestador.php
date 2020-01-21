@@ -87,8 +87,10 @@ if ($numCabContratoAbiertos > 0) {
     </tr>
   </table>
   <h3>Contratos</h3>
-		<p><input type="button" name="nuevoContrato" id="nuevoContrato" value="Nuevo Contrato" onclick="location.href='nuevoContrato.php?codigo=<?php echo $codigo ?>'"/></p>
-<?php   if ($numCabContrato > 0) { ?>
+<?php  	if ($numCabContratoAbiertos == 0) { ?>
+			<p><input type="button" name="nuevoContrato" id="nuevoContrato" value="Nuevo Contrato" onclick="location.href='nuevoContrato.php?codigo=<?php echo $codigo ?>'"/></p>
+<?php   }
+		if ($numCabContrato > 0) { ?>
         <table style="text-align:center; width:80%" id="contratos" class="tablesorter" >
           <thead>
             <tr>
