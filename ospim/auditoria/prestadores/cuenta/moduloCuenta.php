@@ -81,6 +81,8 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 			$arrayRete = array();
 			while($rowPagosDet = mysql_fetch_array($resPagosDet)) {
 				$index++;
+				
+				//ORDEN DE PAGO Y DETALLE DE FACTURAS
 				$descripcion = "Orden de Pago ".$rowPagosDet['nroordenpago']." ".$rowPagosDet['formapago']." ".$rowPagosDet['comprobantepago']; 
 				$sqlDetalleOP = "SELECT * FROM ordendetalle o, facturas f 
 								 WHERE o.nroordenpago = ".$rowPagosDet['nroordenpago']." and 
@@ -91,15 +93,13 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 					$arrayDetOP[$rowDetalleOP['idfactura']] = array("tipo" => $rowDetalleOP['tipocancelacion'], "importe" => $rowDetalleOP['importepago'], "factura" => "ID: ".$rowDetalleOP['id']." - Nro: ".$rowDetalleOP['puntodeventa']."-".$rowDetalleOP['nrocomprobante']);
 				}				
 				$arrayDetalle[$rowPagosDet['fechacomprobante'].$index] = array("descripcion" => $descripcion, "debe" => $rowPagosDet['importe'], "haber" => 0, "facturas" => $arrayDetOP, "tipo" => 'O');				
+				
+				//RETENCION
 				if ($rowPagosDet['retencion'] != 0) {
-					$arrayRete[$rowPagosDet['nroordenpago']] = array('fecha' => $rowPagosDet['fechacomprobante'], 'rete' =>  $rowPagosDet['retencion'], "facturas" => $arrayDetOP);
+					$index++;
+					$descripcion = "Ret. Orden de Pago ".$rowPagosDet['nroordenpago'];
+					$arrayDetalle[$rowPagosDet['fechacomprobante'].$index++] = array("descripcion" => $descripcion, 'debe' =>  $rowPagosDet['retencion'],"haber" => 0, "tipo" => 'R', "facturas" => $arrayDetOP);
 				}
-			}
-			
-			foreach ($arrayRete as $nroorden => $datos) {
-				$index++;
-				$descripcion = "Ret. Orden de Pago $nroorden";
-				$arrayDetalle[$datos['fecha'].$index] = array("descripcion" => $descripcion, "debe" => $datos['rete'], "haber" => 0, "tipo" => 'R', "facturas" => $arrayDetOP);
 			}
 		}
 		ksort($arrayDetalle);
