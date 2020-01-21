@@ -70,7 +70,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 				$index++;
 				$desordenpago = "";
 				if ($rowFacturasDet['nroorden'] != NULL) {
-					$desordenpago = " OP: ". $rowFacturasDet['nroorden'];
+					$desordenpago = " - OP: ". $rowFacturasDet['nroorden'];
 				}
 				$descripcion = "Ingreso Factura - ID: ".$rowFacturasDet['id']." - Nro: ".$rowFacturasDet['puntodeventa']."-".$rowFacturasDet['nrocomprobante']." - F.F.:".invertirFecha($rowFacturasDet['fechacomprobante'])." - Imp: $".number_format($rowFacturasDet['importecomprobante'],2,",",".").$desordenpago;
 				$arrayDetalle[$rowFacturasDet['fecharecepcion'].$index] = array("descripcion" => $descripcion, "debe" => 0, "haber" => $rowFacturasDet['importecomprobante'], "tipo" => 'F');
@@ -210,7 +210,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
    		$totalHaber = 0;
    		if ($noExiste == 0 and isset($dato)) { ?>
   			<p><?php echo $cartel ?></p>
-  			<table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
+  			<table style="text-align:center; width:90%" id="listaResultado" class="tablesorter" >
 				<thead>
 					<tr>
 						<th>Fecha</th>
