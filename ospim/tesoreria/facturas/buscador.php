@@ -295,7 +295,7 @@ function validar(formulario) {
 						<?php } else { ?>
 								<input type="button" value="Liquidacion" onclick="abrirPop('../ordenes/ordenpagonm/abm/consultaFacturaNM.php?id=<?php echo $rowFacturas['id'] ?>');" /></br>
 						<?php } 
-							  if ($rowFacturas['restoapagar'] != $rowFacturas['importeliquidado'] && $rowFacturas['totaldebito'] != 0) { ?>
+							  if ($rowFacturas['restoapagar'] != $rowFacturas['importeliquidado'] && $rowFacturas['totaldebito'] != 0 && $rowFacturas['fechapago'] != "0000-00-00") { ?>
 								<input type="button" value="Plan. Debito" style="margin-top: 5px"  onclick="abrirPop('../../auditoria/liquidaciones/docuDebito.php?id=<?php echo $rowFacturas['id'] ?>&doc=PL');"  />
 								<input type="button" value="Nota Debito" style="margin-top: 5px"  onclick="abrirPop('../../auditoria/liquidaciones/docuDebito.php?id=<?php echo $rowFacturas['id'] ?>&doc=DEB');"  />
 							<?php } ?>
