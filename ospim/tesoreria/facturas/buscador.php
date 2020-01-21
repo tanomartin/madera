@@ -51,7 +51,7 @@ if (isset($_POST['filtro'])) {
 			FROM facturas f, prestadores p, tipocomprobante t
 			WHERE
 			f.usuarioliquidacion is not null AND	
-			(f.importecomprobante - f.totaldebito) != f.totalpagado AND
+			(f.importeliquidado != 0 AND f.restoapagar != 0 OR f.importeliquidado = 0 AND f.restoapagar = 0) AND
 			f.idPrestador = p.codigoprestador AND "
 			.$whereBusqueda.
 			"f.idTipocomprobante = t.id
@@ -63,7 +63,7 @@ if (isset($_POST['filtro'])) {
 			FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
 			WHERE
 			f.usuarioliquidacion is not null AND
-			(f.importecomprobante - f.totaldebito) != f.totalpagado AND
+			(f.importeliquidado != 0 AND f.restoapagar != 0 OR f.importeliquidado = 0 AND f.restoapagar = 0) AND
 			f.idPrestador = p.codigoprestador AND "
 			.$whereBusqueda.
 			"f.id = pf.idFactura AND
@@ -86,7 +86,8 @@ if (isset($_POST['filtro'])) {
 						t.descripcion as tipocomprobante, p.personeria
 						FROM facturas f, prestadores p, tipocomprobante t
 						WHERE
-						(f.importecomprobante - f.totaldebito) = f.totalpagado AND
+						f.importeliquidado != 0 AND
+						f.restoapagar = 0 AND
 						f.idPrestador = p.codigoprestador AND "
 						.$whereBusqueda.
 						"f.idTipocomprobante = t.id
@@ -98,7 +99,8 @@ if (isset($_POST['filtro'])) {
 							FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
 							WHERE
 							f.usuarioliquidacion = '$liquidador' AND
-							(f.importecomprobante - f.totaldebito) = f.totalpagado AND
+							f.importeliquidado != 0 AND
+							f.restoapagar = 0 AND
 							f.id = pf.idFactura AND
 							f.idPrestador = p.codigoprestador AND "
 							.$whereBusqueda.
