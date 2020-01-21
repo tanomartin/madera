@@ -252,7 +252,7 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 					</tr>
 			<?php } ?>
 					<tr>
-						<th colspan="2">TOTALES</th>
+						<th colspan="2"></th>
 						<th><?php echo number_format($totalDebe,2,",","."); ?></th>
 						<th><?php echo number_format($totalHaber,2,",","."); ?></th>
 						<th><?php echo number_format($saldo,2,",","."); ?></th>
