@@ -1337,7 +1337,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 		<table border="0">
 			<tr>
 				<td align="right"><strong>Importe Solicitado</strong></td>
-				<td align="left"><input name="solicitadointegracion" type="text" id="solicitadointegracion" size="10" value=""/>
+				<td align="left"><input name="solicitadointegracion" type="text" id="solicitadointegracion" size="10" value="" autocomplete="off"/>
 				<td align="right"><strong>Dependencia ?</strong></td>
 				<td align="left"><input name="dependenciaintegracion" type="checkbox" id="dependenciaintegracion" value="1"/>
 				<td align="right"><strong>Escuela ?</strong></td>
