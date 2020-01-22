@@ -235,45 +235,12 @@ $(document).ready(function(){
 			tips.removeClass( "ui-state-highlight", 1500 );
 		}, 500 );
 	};
-	if($("#totalconsumos").val() >= $("#totalbeneficiarios").val()) {
+
+	if($("#restoliquidacion").val() == 0) {
 		$("#cerrarliquidacion").attr('disabled', false);
-		if(parseFloat($("#facturadototal").val()) != parseFloat($("#importecomprobante").val())) {
-			$("#cerrarliquidacion").attr('disabled', true);
-		} else {
-			$("#cerrarliquidacion").attr('disabled', false);
-			if(parseFloat($("#debitototal").val()) > parseFloat($("#importecomprobante").val())) {
-				$("#cerrarliquidacion").attr('disabled', true);
-			} else {
-				$("#cerrarliquidacion").attr('disabled', false);
-				if(parseFloat($("#creditototal").val()) > parseFloat($("#importecomprobante").val())) {
-					$("#cerrarliquidacion").attr('disabled', true);
-				} else {
-					$("#cerrarliquidacion").attr('disabled', false);
-				}
-			}
-		}
 	} else {
-		if($("#totalcarencias").val()!=0) {
-			$("#cerrarliquidacion").attr('disabled', false);
-			if(parseFloat($("#facturadototal").val()) != parseFloat($("#importecomprobante").val())) {
-				$("#cerrarliquidacion").attr('disabled', true);
-			} else {
-				$("#cerrarliquidacion").attr('disabled', false);
-				if(parseFloat($("#debitototal").val()) > parseFloat($("#importecomprobante").val())) {
-					$("#cerrarliquidacion").attr('disabled', true);
-				} else {
-					$("#cerrarliquidacion").attr('disabled', false);
-					if(parseFloat($("#creditototal").val()) > parseFloat($("#importecomprobante").val())) {
-						$("#cerrarliquidacion").attr('disabled', true);
-					} else {
-						$("#cerrarliquidacion").attr('disabled', false);
-					}
-				}
-			}
-		} else {
-			$("#cerrarliquidacion").attr('disabled', true);
-		}
-	};
+		$("#cerrarliquidacion").attr('disabled', true);
+	}
 });
 function cargaConsumo(idfactura, idfacturabeneficiario) {
 	param = "idFactura="+idfactura+"&idFacturabeneficiario="+idfacturabeneficiario;
@@ -576,7 +543,7 @@ function cierraLiquidacion(idfactura) {
 			<td><input name="facturadototal" type="text" id="facturadototal" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totalfacturado;?>"/></td>
 			<td><input name="debitototal" type="text" id="debitototal" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totaldebito;?>"/></td>
 			<td><input name="creditototal" type="text" id="creditototal" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totalcredito;?>"/></td>
-			<td><input name="restoliquidacion" type="text" id="restoliquidacion" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo round(($rowConsultaFactura['importecomprobante'] - $totalcredito), 2);?>"/></td>
+			<td><input name="restoliquidacion" type="text" id="restoliquidacion" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo round(($rowConsultaFactura['importecomprobante'] - $totalfacturado), 2);?>"/></td>
 		</tr>
 		</tbody>
 	</table>
