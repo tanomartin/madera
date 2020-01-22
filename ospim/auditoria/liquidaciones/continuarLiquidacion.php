@@ -472,7 +472,7 @@ function cierraLiquidacion(idfactura) {
 				<td>
 				<?php
 					if($rowConsultaFacturasBeneficiarios['consumoprestacional'] != 0) {
-						$totalconsumos++;
+						$totalconsumos = $totalconsumos + $rowConsultaFacturasBeneficiarios['consumoprestacional'];
 					?>
 					<input name="<?php echo $botonconsumo;?>" type="button" id="<?php echo $botonconsumo;?>" value="Consumo Prestacional" style="font-size:10px" onclick="javascript:cargaConsumo(<?php echo $idcomprobante;?>,<?php echo $rowConsultaFacturasBeneficiarios['id'];?>)"/>
 				<?php
