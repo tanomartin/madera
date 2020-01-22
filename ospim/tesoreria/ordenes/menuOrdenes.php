@@ -24,7 +24,7 @@ include($libPath."controlSessionOspim.php"); ?>
       		</td>
       		<td width="200">
       			<p>ENVIO SISTEMA ZEUZ</p>
-          		<p><a href="enviozeuz/moduloEnvio.php"><img src="img/envio.png" width="90" height="90" border="0" /></a></p>
+          		<p><a href="../../moduloNoDisponible.php"><img src="img/envio.png" width="90" height="90" border="0" /></a></p>
       		</td>
       	</tr>
   	</table>

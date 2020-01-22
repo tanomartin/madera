@@ -4,9 +4,25 @@ $nroorden = $_GET['nroorden'];
 $sqlDetalle = "SELECT * FROM ordendetalle WHERE nroordenpago = $nroorden";
 $resDetalle = mysql_query($sqlDetalle,$db);
 $arrayUpdateFactura = array();
-while($rowDetalle = mysql_fetch_array($resDetalle)) { 
+while($rowDetalle = mysql_fetch_assoc($resDetalle)) { 
 	$importePagado = $rowDetalle['importepago'];
-	$sqlUpdateFactura = "UPDATE facturas SET totalpagado = totalpagado - $importePagado, restoapagar = restoapagar + $importePagado WHERE id = ".$rowDetalle['idfactura'];
+	$fechapago = "0000-00-00";
+	if ($rowDetalle['tipocancelacion'] == 'P') {
+		$sqlFechaUltimoPago = "SELECT o.fechaorden 
+								FROM ordencabecera o, ordendetalle d 
+								WHERE d.nroordenpago != $nroorden and 
+								      d.idfactura = ".$rowDetalle['idfactura']." and 
+									  d.nroordenpago = o.nroordenpago and
+									  o.fechacancelacion is null
+								ORDER BY o.nroordenpago DESC LIMIT 1";
+		$resFechaUltimoPago = mysql_query($sqlFechaUltimoPago,$db);
+		$numFechaUltimoPago = mysql_num_rows($resFechaUltimoPago);
+		if ($numFechaUltimoPago == 1) {
+			$rowFechaUltimoPago = mysql_fetch_assoc($resFechaUltimoPago);
+			$fechapago = $rowFechaUltimoPago['fechaorden'];
+		}
+	}
+	$sqlUpdateFactura = "UPDATE facturas SET totalpagado = totalpagado - $importePagado, restoapagar = restoapagar + $importePagado, fechapago = '$fechapago' WHERE id = ".$rowDetalle['idfactura'];
 	$arrayUpdateFactura[$rowDetalle['idfactura']] = $sqlUpdateFactura;
 }
 

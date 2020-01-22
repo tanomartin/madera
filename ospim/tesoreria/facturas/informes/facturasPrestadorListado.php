@@ -8,12 +8,14 @@ $resPrestador = mysql_query($sqlPrestador,$db);
 $rowPrestador = mysql_fetch_assoc($resPrestador);
 
 $sqlFacturas = "SELECT f.*,DATE_FORMAT(fechacomprobante, '%d/%m/%Y') as fechacomprobante, 
-						   DATE_FORMAT(fecharecepcion, '%d/%m/%Y') as fecharecepcion
+						   DATE_FORMAT(fecharecepcion, '%d/%m/%Y') as fecharecepcion,
+						   DATE_FORMAT(fechapago, '%d/%m/%Y') as fechapago
 				FROM facturas f
 				WHERE idPrestador = $codigo 
 				ORDER BY f.id DESC";
 $resFacturas = mysql_query($sqlFacturas,$db);
 $canFacturas = mysql_num_rows($resFacturas);
+$arrayFacturas = array();
 if ($canFacturas > 0) {
 	while ($rowFacturas = mysql_fetch_assoc($resFacturas)) {
 		$arrayFacturas[$rowFacturas['id']] = $rowFacturas;
@@ -73,6 +75,7 @@ if ($canFacturas > 0) {
 				 		<th>Debitos</th>
 				 		<th>Liquidado</th>
 				 		<th>Pagos</th>
+				 		<th>Ultimo Pago</th>
 				 		<th>Saldo</th>
 				 	</tr>
 				 </thead>
@@ -96,6 +99,10 @@ if ($canFacturas > 0) {
 						<td><?php echo number_format($facturas['totaldebito'],2,",","."); ?></td>
 						<td><?php echo number_format($facturas['importeliquidado'],2,",","."); ?></td>
 						<td><?php echo number_format($facturas['totalpagado'],2,",","."); ?></td>
+						<?php 	
+							$fechapago = "-";
+							if ($facturas['fechapago'] != "00/00/0000") { $fechapago = $facturas['fechapago']; } ?>
+						<td><?php echo $fechapago?> </td>
 						<?php $saldo = $facturas['restoapagar'];
 							  if ($facturas['restoapagar'] == 0 && $facturas['importeliquidado'] == 0) { 
 									$saldo = $facturas['importecomprobante']; 
@@ -111,6 +118,7 @@ if ($canFacturas > 0) {
 				  	<th><?php echo number_format($totalDeb,2,",","."); ?></th>
 				  	<th><?php echo number_format($totalLiq,2,",","."); ?></th>
 				  	<th><?php echo number_format($totalPag,2,",","."); ?></th>
+				  	<th></th>
 				  	<th><?php echo number_format($totalSaldo,2,",","."); ?></th>
 				  </tr>
 		 	</table>
