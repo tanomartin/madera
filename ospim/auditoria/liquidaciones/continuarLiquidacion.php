@@ -139,6 +139,22 @@ $(document).ready(function(){
 				filter_hideFilters : false,
 			}
 	});
+	$("#parcialesLiquidacion")
+		.tablesorter({
+			theme: 'blue', 
+			widthFixed: true, 
+			headers: {
+				0:{sorter:false, filter: false},
+				1:{sorter:false, filter: false},
+				2:{sorter:false, filter: false},
+				3:{sorter:false, filter: false},
+				4:{sorter:false, filter: false},
+				5:{sorter:false, filter: false},
+				6:{sorter:false, filter: false},
+				7:{sorter:false, filter: false}
+			},
+			widgets: ["zebra"], 
+	});
 	var identidad = $( "#identidadbeneficiario" ), facturado = $( "#totalfacturado" ),  motivo = $( "#motivocarencia" ),
 	allFields = $( [] ).add( identidad ).add( facturado ).add( motivo ),
 	tips = $(".validateTips" );
@@ -537,12 +553,36 @@ function cierraLiquidacion(idfactura) {
 	</form>
 </div>
 <div align="center">
-	<input name="totalbeneficiarios" type="hidden" id="totalbeneficiarios" size="5" value="<?php echo $totalbeneficiarios;?>"/>
-	<input name="totalconsumos" type="hidden" id="totalconsumos" size="5" value="<?php echo $totalconsumos;?>"/>
-	<input name="totalcarencias" type="hidden" id="totalcarencias" size="5" value="<?php echo $totalcarencias;?>"/>
-	<input name="facturadototal" type="hidden" id="facturadototal" size="5" value="<?php echo $totalfacturado;?>"/>
-	<input name="debitototal" type="hidden" id="debitototal" size="5" value="<?php echo $totaldebito;?>"/>
-	<input name="creditototal" type="hidden" id="creditototal" size="5" value="<?php echo $totalcredito;?>"/>
+	<table id="parcialesLiquidacion" class="tablesorter" style="font-size:14px; text-align:center">
+		<thead>
+			<tr>
+				<th colspan="7">Parciales de Liquidacion</th>
+			</tr>
+			<tr>
+				<th>Beneficiarios</th>
+				<th>Consumos</th>
+				<th>Carencias</th>
+				<th>Facturado</th>
+				<th>Debitos</th>
+				<th>Creditos</th>
+				<th>Resto a Liquidar</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td><input name="totalbeneficiarios" type="text" id="totalbeneficiarios" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totalbeneficiarios;?>"/></td>
+			<td><input name="totalconsumos" type="text" id="totalconsumos" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totalconsumos;?>"/></td>
+			<td><input name="totalcarencias" type="text" id="totalcarencias" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totalcarencias;?>"/></td>
+			<td><input name="facturadototal" type="text" id="facturadototal" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totalfacturado;?>"/></td>
+			<td><input name="debitototal" type="text" id="debitototal" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totaldebito;?>"/></td>
+			<td><input name="creditototal" type="text" id="creditototal" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo $totalcredito;?>"/></td>
+			<td><input name="restoliquidacion" type="text" id="restoliquidacion" size="8" readonly style="background-color:#CCCCCC;text-align:center" value="<?php echo round(($rowConsultaFactura['importecomprobante'] - $totalcredito), 2);?>"/></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+<div align="center">
+	<p></p>
 	<input type="button" name="cerrarliquidacion" id="cerrarliquidacion" value="Cerrar Liquidacion" onclick="javascript:cierraLiquidacion(<?php echo $idcomprobante;?>)"/>
 </div>
 </body>
