@@ -138,7 +138,7 @@ if ($numCabContratoAbiertos > 0) {
 					<?php  if (($rowCabContrato['fechafin'] == NULL || $rowCabContrato['fechafin'] > $today) and $rowCabContrato['idcontratotercero'] == 0) { ?> 
 								<input type="button" value="Eliminar Practicas" name="eliminarPracticas" id="eliminarPracticas" onclick="location.href='eliminarPracticas.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/></br>
 					 <?php } 
-					 	   if ($rowCabContrato['idcontrato'] == $idLastAbierto) { ?>
+					 	   if ($rowCabContrato['idcontrato'] == $idLastAbierto and $rowCabContrato['idcontratotercero'] == 0) { ?>
 					 	  		<input type="button" value="Modificar Cabecera" name="modifcontrato" id="modifcontrato" onclick="location.href='modificarContrato.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/> </br>
 					 	   		<input type="button" value="Duplicar Aum. %" name="aumentocontrato" id="modifcontrato" onclick="location.href='aumentoPorcentaje.php?idcontrato=<?php echo $rowCabContrato['idcontrato'] ?>&codigo=<?php echo $codigo ?>'"/>
 	 				 <?php }  ?>
