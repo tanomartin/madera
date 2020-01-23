@@ -46,13 +46,13 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 			$selectSI = "selected";
 		}
 		$respuesta.="<tr>
-						<td><input name=\"codigopractica".$i."\" id=\"codigopractica".$i."\" type=\"text\" value=\"".$rowPractica['codigopractica']."\" size=\"5\" readonly=\"readonly\" style=\"background-color: #CCCCCC; text-align:center\"  /></td>
+						<td><input name=\"idpractica".$i."\" id=\"idpractica".$i."\" type=\"text\" value=\"".$rowPractica['idpractica']."\" style=\"display: none\" />".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
-						<td><input name=\"unihonorariosolo".$i."\" id=\"unihonorariosolo".$i."\" type=\"text\" value=\"".$rowPractica['unihonorario']."\" size=\"10\"/></td>
-						<td><input name=\"unihonorarioespecialista".$i."\" id=\"unihonorarioespecialista".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioespecialista']."\" size=\"10\"/></td>
-						<td><input name=\"unihonorarioayudante".$i."\" id=\"unihonorarioayudante".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioayudante']."\" size=\"10\"/></td>
-						<td><input name=\"unihonorarioanestesista".$i."\" id=\"unihonorarioanestesista".$i."\" type=\"text\" value=\"".$rowPractica['unihonorarioanestesista']."\" size=\"10\"/></td>
-						<td><input name=\"unigastos".$i."\" id=\"unigastos".$i."\" type=\"text\" value=\"".$rowPractica['unigastos']."\" size=\"10\"/></td>
+						<td>".$rowPractica['unihonorario']."</td>
+						<td>".$rowPractica['unihonorarioespecialista']."</td>
+						<td>".$rowPractica['unihonorarioayudante']."</td>
+						<td>".$rowPractica['unihonorarioanestesista']."</td>
+						<td>".$rowPractica['unigastos']."</td>
 						<td><select name=\"complejidad".$i."\" id=\"complejidad".$i."\">";
 						foreach ($tipoComplejidad as $key => $complejidad) {
 							$selected = "";

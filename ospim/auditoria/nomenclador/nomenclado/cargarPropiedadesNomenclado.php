@@ -27,6 +27,7 @@ A:hover {text-decoration: none;color:#00FFFF }
 <script src="/madera/lib/jquery.tablesorter/jquery.tablesorter.widgets.js"></script>
 <script src="/madera/lib/jquery.tablesorter/addons/pager/jquery.tablesorter.pager.js"></script> 
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
 <script type="text/javascript">
 
@@ -207,54 +208,14 @@ function cambiarInternacion(valor) {
 }
 
 function validar(formulario) {
-	var tabla = document.getElementById('practicas');
-	var nombre = "";
-	cantFilas = tabla.rows.length;
-	cantFilas--;
-	for (var i = 0; i < cantFilas; i++){
-		nombre = "unihonorariosolo" + i;
-		inputElement = document.getElementById(nombre);
-		if(!isNumberPositivo(inputElement.value)) {
-			alert("El valor de la unidad debe ser positivo");
-			inputElement.focus();
-			return false;
-		}
-
-		nombre = "unihonorarioespecialista" + i;
-		inputElement = document.getElementById(nombre);
-		if(!isNumberPositivo(inputElement.value) && inputElement.value != "") {
-			alert("El valor de la unidad debe ser positivo");
-			inputElement.focus();
-			return false;
-		}
-
-		nombre = "unihonorarioayudante" + i;
-		inputElement = document.getElementById(nombre);
-		if(!isNumberPositivo(inputElement.value) && inputElement.value != "") {
-			alert("El valor de la unidad debe ser positivo");
-			inputElement.focus();
-			return false;
-		}
-
-		nombre = "unihonorarioanestesista" + i;
-		inputElement = document.getElementById(nombre);
-		if(!isNumberPositivo(inputElement.value) && inputElement.value != "") {
-			alert("El valor de la unidad debe ser positivo");
-			inputElement.focus();
-			return false;
-		}
-
-		nombre = "unigastos" + i;
-		inputElement = document.getElementById(nombre);
-		if(!isNumberPositivo(inputElement.value) && inputElement.value != "") {
-			alert("El valor de la unidad debe ser positivo");
-			inputElement.focus();
-			return false;
-		}
-	}
+	formulario.nomenclador.disabled = true;
+	formulario.tipo.disabled = true;
+	formulario.capitulo.disabled = true;
+	formulario.subcapitulo.disabled = true;
 	formulario.res650total.disabled = true;
 	formulario.intetotal.disabled = true;
 	formulario.guardar.disabled = true;
+	$.blockUI({ message: "<h1>Guardando Propiedades de las Practicas. Aguarde un minuto</h1>" });
 	return true;
 }
 
@@ -267,7 +228,7 @@ function validar(formulario) {
     <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNomenclado.php'" />
   </p>
   <p><span class="Estilo2">Carga de Valores del Nomenclador <?php echo $nomenclador ?> </span>  </p>
-  <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardarPropiedadesNomenclado.php?codigo=<?php echo $idNomenclador ?>">
+  <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardarPropiedadesNomenclado.php">
     <input type="text" id="nomenclador" name="nomenclador" value="<?php echo $idNomenclador?>" style="display: none"/>
     <p>
       <select name="tipo" id="tipo">

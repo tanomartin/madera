@@ -1,36 +1,11 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
 $i=0;
-$idNomenclador = $_GET['codigo'];
+$sqlUpdatePractica = array();
 foreach($_POST as $key => $value) {
-	$resultado = strpos($key, "codigopractica");
+	$resultado = strpos($key, "idpractica");
 	if($resultado !== FALSE){
 		$sqlUpdatePractica[$i] = "UPDATE practicas SET ";
-		$codigoPractica = $value;
-	}
-	$resultado = strpos($key, "unihonorariosolo");
-	if($resultado !== FALSE){
-		$unihonorario = $value;
-		if ($unihonorario != '') { $sqlUpdatePractica[$i] .= "unihonorario = $unihonorario, "; }
-	}
-	$resultado = strpos($key, "unihonorarioespecialista");
-	if($resultado !== FALSE){
-		$unihonorarioespecialista = $value;
-		if ($unihonorarioespecialista != '') { $sqlUpdatePractica[$i] .= "unihonorarioespecialista = $unihonorarioespecialista, "; }
-	}
-	$resultado = strpos($key, "unihonorarioayudante");
-	if($resultado !== FALSE){
-		$unihonorarioayudante = $value;
-		if ($unihonorarioayudante != '') { $sqlUpdatePractica[$i] .= "unihonorarioayudante = $unihonorarioayudante, "; }
-	}
-	$resultado = strpos($key, "unihonorarioanestesista");
-	if($resultado !== FALSE){
-		$unihonorarioanestesista = $value;
-		if ($unihonorarioanestesista != '') { $sqlUpdatePractica[$i] .= "unihonorarioanestesista = $unihonorarioanestesista, "; }
-	}
-	$resultado = strpos($key, "unigastos");
-	if($resultado !== FALSE){
-		$unigastos = $value;
-		if ($unigastos != '') { $sqlUpdatePractica[$i] .= "unigastos = $unigastos, "; }
+		$idpractica = $value;
 	}
 	$resultado = strpos($key, "complejidad");
 	if($resultado !== FALSE){
@@ -40,7 +15,8 @@ foreach($_POST as $key => $value) {
 	$resultado = strpos($key, "internacion");
 	if($resultado !== FALSE){
 		$interancion = $value;
-		$sqlUpdatePractica[$i] .= "internacion = $interancion WHERE codigopractica = '$codigoPractica' and nomenclador = '$idNomenclador'";
+		$sqlUpdatePractica[$i] .= "internacion = $interancion ";
+		$sqlUpdatePractica[$i] .= "WHERE idpractica = '$idpractica'";
 		$i++;
 	}
 }
@@ -53,7 +29,7 @@ try {
 	$dbh->beginTransaction();
 	
 	foreach($sqlUpdatePractica as $sqlUpdate) {
-		print($sqlUpdate."<br>");
+		//print($sqlUpdate."<br>");
 		$dbh->exec($sqlUpdate);
 	}
 	
