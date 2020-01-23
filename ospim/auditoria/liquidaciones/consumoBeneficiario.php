@@ -792,6 +792,7 @@ $(document).ready(function(){
 	});
 	$("#cancelaintegracion").change(function(){
 		if($("#cancelaintegracion").prop('checked') ) {
+			$("#solicitadointegracion").val('');
 			$("#datosintegracion").show();
 			var idpracticadevuelta = $("#idPractica").val();
 			if(idpracticadevuelta==2400 || idpracticadevuelta==2409) {
@@ -819,6 +820,12 @@ $(document).ready(function(){
 			$("#cueescuelaintegracion option[value='']").prop('selected',true);
 			$("#cueescuelaintegracion").attr('disabled', true);
 			$("#datosintegracion").hide();
+		}
+	});
+	$("#solicitadointegracion").change(function(){
+		if($("#solicitadointegracion").val() > $("#totalcredito").val()) {
+			var cajadialogo = $('<div title="Aviso"><p>El importe solicitado por integracion no es un monto admisible.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#solicitadointegracion').focus(); }});
 		}
 	});
 	$("#escuelaintegracion").change(function(){
