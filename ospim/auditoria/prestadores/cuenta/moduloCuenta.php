@@ -239,11 +239,11 @@ if (isset($_POST['dato']) && isset($_POST['filtro'])) {
 						<td><?php echo invertirFecha(substr($fechas,0,10)); ?></td>
 						<td><?php echo $detalle['descripcion']."<br>";
 								  if (isset($detalle['facturas'])) {
-								  	echo "------------------------------------------------------------------------------------------<br>";
+								  	echo "---------------------------------------------------------------------------------------------<br>";
 									foreach ($detalle['facturas'] as $facturas) {
-										echo "Fac: ".$facturas['factura']." - Tipo.: ".$facturas['tipo']." - Imp: $".number_format($facturas['importe'],2,",",".")."<br>";
+										echo "Fac: ".$facturas['factura']." - Tipo.: ".$facturas['tipo']." - Imp Pagado: $".number_format($facturas['importe'],2,",",".")."<br>";
 									}
-									echo "------------------------------------------------------------------------------------------";
+									echo "----------------------------------------------------------------------------------------------";
 								  } ?>
 						</td>
 						<td><?php echo number_format($detalle['debe'],2,",","."); ?></td>
