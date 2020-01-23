@@ -441,7 +441,7 @@ function mostrarInfo(divid) {
 			 			$nombre = "SIN EFECTOR";
 			 			if ($rowAgrupaEfector['nombre'] != NULL) { $nombre = $rowAgrupaEfector['nombre']; } ?>
 			 			<tr>
-							<td><?php echo number_format($rowAgrupaEfector['nombre'],2,",","."); ?></td>
+							<td><?php echo $rowAgrupaEfector['nombre']; ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['facturado'],2,",","."); ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['debito'],2,",","."); ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['credito'],2,",","."); ?></td>
