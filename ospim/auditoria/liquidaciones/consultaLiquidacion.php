@@ -47,6 +47,7 @@ $resCarencias = mysql_query($sqlCarencias,$db);
 $numCarencias = mysql_num_rows($resCarencias);
 
 $numEstadistica = 0;
+$numAgrupaEfector = 0;
 if ($numBeneficiarios > 0) {
 	$sqlPretaciones = "SELECT p.*,f.*, DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica, 
 							  p.codigopractica,  facturasintegracion.totalsolicitado,
@@ -83,7 +84,21 @@ if ($numBeneficiarios > 0) {
 							GROUP BY f.valorcomputo";
 		$resEstadistica = mysql_query($sqlEstadistica,$db);
 		$numEstadistica = mysql_num_rows($resEstadistica);
+		
+		$sqlAgrupaEfector = "SELECT sum(f.totalfacturado) as facturado, 
+									sum(f.totaldebito) as debito,
+									sum(f.totalcredito) as credito,
+									establecimientos.nombre
+							FROM facturasprestaciones f
+							LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica
+							where idFactura = $id
+							GROUP by f.efectorpractica";
+		$resAgrupaEfector = mysql_query($sqlAgrupaEfector,$db);
+		$numAgrupaEfector = mysql_num_rows($resAgrupaEfector);
 	} 
+	
+	
+	
 }
 
 
@@ -203,6 +218,7 @@ function mostrarInfo(divid) {
 			<td><input class="nover" type="button" value="Carencias" onclick="mostrarInfo('carencias')"/></td>
 			<td><input class="nover" type="button" value="Estadisticas" onclick="mostrarInfo('estadistica')"/></td>
 			<td><input class="nover" type="button" value="Detalle Debito" onclick="mostrarInfo('debitos')"/></td>
+			<td><input class="nover" type="button" value="Detalle x Efector" onclick="mostrarInfo('agrupaEfector')"/></td>
 		</tr>
 	</table>
 	
@@ -373,15 +389,19 @@ function mostrarInfo(divid) {
 				<table>
 					<tr>
 						<td class="title">Carencia</td>
+						<td class="title">Facturado</td>
 						<td class="title">Debito</td>
 						<td class="title">Efector</td>
-						<td class="title">Motivo</td>
+						<td class="title" width="50%">Motivo</td>
 					</tr>
 			  <?php $totalCarencia = 0;
+			  		$totalCarenciaFacturado = 0;
 			  	    while ($rowCarencias = mysql_fetch_assoc($resCarencias)) { 
-			  			$totalCarencia += $rowCarencias['totaldebito']; ?>
+			  			$totalCarencia += $rowCarencias['totaldebito']; 
+			  			$totalCarenciaFacturado += $rowCarencias['totalfacturado']; ?>
 						<tr>
 							<td><?php echo $rowCarencias['identidadbeneficiario'] ?></td>
+							<td><?php echo number_format($rowCarencias['totalfacturado'],2,",","."); ?></td>
 							<td><?php echo number_format($rowCarencias['totaldebito'],2,",","."); ?></td>
 							<td><?php echo $rowCarencias['efectorcarencia'] ?></td>
 							<td><?php echo $rowCarencias['motivocarencia'] ?></td>
@@ -389,6 +409,7 @@ function mostrarInfo(divid) {
 			  <?php } ?>
 			  		<tr>
 			  			<td class="title">TOTAL</td>
+			  			<td class="title"><?php echo number_format($totalCarenciaFacturado,2,",","."); ?></td>
 			  			<td class="title"><?php echo number_format($totalCarencia,2,",","."); ?></td>
 			  			<td class="title" colspan="2"></td>
 			  		</tr>
@@ -398,6 +419,47 @@ function mostrarInfo(divid) {
 		<p style="color: blue"><b>Sin Carencia de Beneficiarios</b></p>
 <?php } ?>
 	</div>
+	
+	<div id="agrupaEfector" style="display: none">
+	<h3>Detalle de Facturación Por Efector</h3>
+		<?php if ($numEstadistica > 1) { ?>
+				<div class="grilla">
+					<table>
+						<tr>
+							<td class="title">Efector</td>
+							<td class="title">Facturado</td>
+							<td class="title">Debito</td>
+							<td class="title">Credito</td>
+						</tr>
+			 <?php  $totFacEfe = 0;
+			 		$totDebEfe = 0;
+			 		$totCreEfe = 0;
+			 		while ($rowAgrupaEfector = mysql_fetch_assoc($resAgrupaEfector)) { 	
+			 			$totFacEfe += $rowAgrupaEfector['facturado'];
+			 			$totDebEfe += $rowAgrupaEfector['debito'];
+			 			$totCreEfe += $rowAgrupaEfector['credito'];
+			 			$nombre = "SIN EFECTOR";
+			 			if ($rowAgrupaEfector['nombre'] != NULL) { $nombre = $rowAgrupaEfector['nombre']; } ?>
+			 			<tr>
+							<td><?php echo number_format($rowAgrupaEfector['nombre'],2,",","."); ?></td>
+							<td><?php echo number_format($rowAgrupaEfector['facturado'],2,",","."); ?></td>
+							<td><?php echo number_format($rowAgrupaEfector['debito'],2,",","."); ?></td>
+							<td><?php echo number_format($rowAgrupaEfector['credito'],2,",","."); ?></td>
+						</tr>
+			 <?php } ?>
+					<tr>
+			  			<td class="title">TOTAL</td>
+			  			<td class="title"><?php echo number_format($totFacEfe,2,",","."); ?></td>
+			  			<td class="title"><?php echo number_format($totDebEfe,2,",","."); ?></td>
+			  			<td class="title"><?php echo number_format($totCreEfe,2,",","."); ?></td>
+			  		</tr>
+				</table>
+			</div>
+		<?php } else { ?>
+				<p style="color: blue"><b>No existe efector o el efector es el mismo para todas las practicas cargada</b></p>
+		<?php } ?>
+	</div>
+	
 	<div id="estadistica" style="display: none">
 		<h3>Estadistica Res. 650</h3>
 	<?php if ($numEstadistica > 0) { ?>
