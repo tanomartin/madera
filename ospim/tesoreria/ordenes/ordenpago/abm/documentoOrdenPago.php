@@ -311,7 +311,7 @@ function printHeaderPlanillaDebito($pdfPlanilla, $rowDebito) {
 	$pdfPlanilla->SetXY(15, 24);
 	$pdfPlanilla->Cell(60,5,"Tel.: 4431-4791/4089 - Fax: 4431-2567",0,0);
 	$pdfPlanilla->SetXY(30, 28);
-	$pdfPlanilla->Cell(30,5,"ospim@usimra.com.ar",0,0);
+	$pdfPlanilla->Cell(30,5,"tesoreria@ospim.com.ar",0,0);
 
 	$pdfPlanilla->SetFont('Courier','B',30);
 	$pdfPlanilla->SetXY(105, 1);
