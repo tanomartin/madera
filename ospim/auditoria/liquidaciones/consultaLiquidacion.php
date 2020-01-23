@@ -88,7 +88,8 @@ if ($numBeneficiarios > 0) {
 		$sqlAgrupaEfector = "SELECT sum(f.totalfacturado) as facturado, 
 									sum(f.totaldebito) as debito,
 									sum(f.totalcredito) as credito,
-									establecimientos.nombre
+									establecimientos.nombre,
+									establecimientos.codigo
 							FROM facturasprestaciones f
 							LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica
 							where idFactura = $id
@@ -426,7 +427,8 @@ function mostrarInfo(divid) {
 				<div class="grilla">
 					<table>
 						<tr>
-							<td class="title">Efector</td>
+							<td class="title">Cod Efector</td>
+							<td class="title">Nombre</td>
 							<td class="title">Facturado</td>
 							<td class="title">Debito</td>
 							<td class="title">Credito</td>
@@ -438,17 +440,20 @@ function mostrarInfo(divid) {
 			 			$totFacEfe += $rowAgrupaEfector['facturado'];
 			 			$totDebEfe += $rowAgrupaEfector['debito'];
 			 			$totCreEfe += $rowAgrupaEfector['credito'];
-			 			$nombre = "SIN EFECTOR";
-			 			if ($rowAgrupaEfector['nombre'] != NULL) { $nombre = $rowAgrupaEfector['nombre']; } ?>
+			 			$nombreEfe = "SIN EFECTOR";
+			 			$codigoEfe = "";
+			 			if ($rowAgrupaEfector['nombre'] != NULL) { $nombreEfe = $rowAgrupaEfector['nombre']; 
+			 													   $codigoEfe = $rowAgrupaEfector['codigo']; } ?>
 			 			<tr>
-							<td><?php echo $rowAgrupaEfector['nombre']; ?></td>
+							<td><?php echo $nombreEfe; ?></td>
+							<td><?php echo $codigoEfe; ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['facturado'],2,",","."); ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['debito'],2,",","."); ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['credito'],2,",","."); ?></td>
 						</tr>
 			 <?php } ?>
 					<tr>
-			  			<td class="title">TOTAL</td>
+			  			<td class="title" colspan="2">TOTAL</td>
 			  			<td class="title"><?php echo number_format($totFacEfe,2,",","."); ?></td>
 			  			<td class="title"><?php echo number_format($totDebEfe,2,",","."); ?></td>
 			  			<td class="title"><?php echo number_format($totCreEfe,2,",","."); ?></td>
