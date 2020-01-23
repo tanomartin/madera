@@ -383,45 +383,7 @@ function mostrarInfo(divid) {
   	   <?php } ?>
 	</div>
 	
-	<div id="carencias" style="display: none">
-	<h3>Detalle de Carencias</h3>
-<?php if ($numCarencias > 0) { ?>
-			<div class="grilla" style="width: 90%">
-				<table>
-					<tr>
-						<td class="title">Carencia</td>
-						<td class="title">Facturado</td>
-						<td class="title">Debito</td>
-						<td class="title">Efector</td>
-						<td class="title" width="50%">Motivo</td>
-					</tr>
-			  <?php $totalCarencia = 0;
-			  		$totalCarenciaFacturado = 0;
-			  	    while ($rowCarencias = mysql_fetch_assoc($resCarencias)) { 
-			  			$totalCarencia += $rowCarencias['totaldebito']; 
-			  			$totalCarenciaFacturado += $rowCarencias['totalfacturado']; ?>
-						<tr>
-							<td><?php echo $rowCarencias['identidadbeneficiario'] ?></td>
-							<td><?php echo number_format($rowCarencias['totalfacturado'],2,",","."); ?></td>
-							<td><?php echo number_format($rowCarencias['totaldebito'],2,",","."); ?></td>
-							<td><?php echo $rowCarencias['efectorcarencia'] ?></td>
-							<td><?php echo $rowCarencias['motivocarencia'] ?></td>
-						</tr>
-			  <?php } ?>
-			  		<tr>
-			  			<td class="title">TOTAL</td>
-			  			<td class="title"><?php echo number_format($totalCarenciaFacturado,2,",","."); ?></td>
-			  			<td class="title"><?php echo number_format($totalCarencia,2,",","."); ?></td>
-			  			<td class="title" colspan="2"></td>
-			  		</tr>
-				</table>
-			</div>
-<?php } else { ?>
-		<p style="color: blue"><b>Sin Carencia de Beneficiarios</b></p>
-<?php } ?>
-	</div>
-	
-	<div id="agrupaEfector" style="display: none">
+		<div id="agrupaEfector" style="display: none">
 	<h3>Detalle de Facturación Por Efector</h3>
 		<?php if ($numEstadistica > 1) { ?>
 				<div class="grilla">
@@ -465,6 +427,44 @@ function mostrarInfo(divid) {
 		<?php } ?>
 	</div>
 	
+	<div id="carencias" style="display: none">
+	<h3>Detalle de Carencias</h3>
+<?php if ($numCarencias > 0) { ?>
+			<div class="grilla" style="width: 90%">
+				<table>
+					<tr>
+						<td class="title">Carencia</td>
+						<td class="title">Facturado</td>
+						<td class="title">Debito</td>
+						<td class="title">Efector</td>
+						<td class="title" width="50%">Motivo</td>
+					</tr>
+			  <?php $totalCarencia = 0;
+			  		$totalCarenciaFacturado = 0;
+			  	    while ($rowCarencias = mysql_fetch_assoc($resCarencias)) { 
+			  			$totalCarencia += $rowCarencias['totaldebito']; 
+			  			$totalCarenciaFacturado += $rowCarencias['totalfacturado']; ?>
+						<tr>
+							<td><?php echo $rowCarencias['identidadbeneficiario'] ?></td>
+							<td><?php echo number_format($rowCarencias['totalfacturado'],2,",","."); ?></td>
+							<td><?php echo number_format($rowCarencias['totaldebito'],2,",","."); ?></td>
+							<td><?php echo $rowCarencias['efectorcarencia'] ?></td>
+							<td><?php echo $rowCarencias['motivocarencia'] ?></td>
+						</tr>
+			  <?php } ?>
+			  		<tr>
+			  			<td class="title">TOTAL</td>
+			  			<td class="title"><?php echo number_format($totalCarenciaFacturado,2,",","."); ?></td>
+			  			<td class="title"><?php echo number_format($totalCarencia,2,",","."); ?></td>
+			  			<td class="title" colspan="2"></td>
+			  		</tr>
+				</table>
+			</div>
+<?php } else { ?>
+		<p style="color: blue"><b>Sin Carencia de Beneficiarios</b></p>
+<?php } ?>
+	</div>
+		
 	<div id="estadistica" style="display: none">
 		<h3>Estadistica Res. 650</h3>
 	<?php if ($numEstadistica > 0) { ?>
