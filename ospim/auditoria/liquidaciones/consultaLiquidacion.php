@@ -144,9 +144,11 @@ function mostrarInfo(divid) {
 <body bgcolor="#CCCCCC">
 <div align="center">
 	<h3>Detalle de Liquidacion</h3>
-	<h3 style="color: blue">Estado: <?php echo $_GET['estado']; ?></br>Auditor: '<?php echo $rowFactura['usuarioliquidacion'] ?>'</br> (<?php echo $today ?>) </h3>
-	<h3 style="margin-bottom:1px">ID Interno: <?php echo $rowFactura['id'];?> - Fecha de Recepcion: <?php echo $rowFactura['fecharecepcion'];?> - Fecha de Correo: <?php echo $rowFactura['fechacorreo'];?></h3>
-	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 50%">
+	<div class="nover">
+		<h3 style="color: blue">Estado: <?php echo $_GET['estado']; ?></br>Auditor: '<?php echo $rowFactura['usuarioliquidacion'] ?>'</br> (<?php echo $today ?>) </h3>
+		<h3 style="margin-bottom:1px">ID Interno: <?php echo $rowFactura['id'];?> - Fecha de Recepcion: <?php echo $rowFactura['fecharecepcion'];?> - Fecha de Correo: <?php echo $rowFactura['fechacorreo'];?></h3>
+	</div>
+	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 60%">
 		<table>
 			<tr>
 				<td colspan="2" class="title">Prestador</td>
@@ -165,7 +167,7 @@ function mostrarInfo(divid) {
 			</tr>
 		</table>
 	</div>
-	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 50%">
+	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 60%">
 		<table>
 			<tr>
 				<td colspan="4" class="title">Comprobante</td>
@@ -182,7 +184,8 @@ function mostrarInfo(divid) {
 				<td align="left"><?php echo $rowFactura['fechavencimiento'];?></td>
 			</tr>
 			<tr>
-				<td align="right" colspan="3">Importe: </td>
+				<td align="center">ID Interno: <?php echo $rowFactura['id'];?></td>
+				<td align="right" colspan="2">Importe: </td>
 				<td align="left"><?php echo number_format($rowFactura['importecomprobante'],2,",",".");?></td>
 			</tr>
 			<?php if ($rowFactura['establecimiento'] != NULL) { ?>
@@ -192,7 +195,7 @@ function mostrarInfo(divid) {
 			<?php }?>
 		</table>
 	</div>
-	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 40%">
+	<div class="grilla" style="margin-top:10px; margin-bottom:10px; width: 60%">
 		<table>
 			<tr>
 				<td colspan="5" class="title">Totalizador</td>
