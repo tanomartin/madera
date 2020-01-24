@@ -738,6 +738,11 @@ $(document).ready(function(){
 				var calculodebito = $("#totalfacturado").val()-$("#referenciatotal").val();
 				if(calculodebito > 0.00) {
 					$("#totaldebito").val(calculodebito);
+					if($("#idPractica").val()=='') {
+						$("#totaldebito").attr('readonly',"readonly");
+					} else {
+						$("#totaldebito").removeAttr('readonly');
+					}
 					$("#motivodebito").attr('disabled', false);
 				} else {
 					$("#totaldebito").val(0.00);
@@ -758,6 +763,11 @@ $(document).ready(function(){
 			var calculodebito = $("#totalfacturado").val()-$("#referenciatotal").val();
 			if(calculodebito > 0.00) {
 				$("#totaldebito").val(calculodebito);
+				if($("#idPractica").val()=='') {
+					$("#totaldebito").attr('readonly',"readonly");
+				} else {
+					$("#totaldebito").removeAttr('readonly');
+				}
 				$("#motivodebito").attr('disabled', false);
 			} else {
 				$("#totaldebito").val(0.00);
@@ -780,8 +790,13 @@ $(document).ready(function(){
 		}
 		var calculocredito = $("#totalfacturado").val()-$("#totaldebito").val();
 		if(calculocredito > 0.00) {
-			$("#agregarprestacion").attr('disabled', false);
-			$("#agregarcarencia").attr('disabled', true);
+			if($("#idPractica").val()!='') {
+				$("#agregarprestacion").attr('disabled', false);
+				$("#agregarcarencia").attr('disabled', true);
+			} else {
+				$("#agregarprestacion").attr('disabled', true);
+				$("#agregarcarencia").attr('disabled', false);
+			}
 		} else {
 			$("#agregarprestacion").attr('disabled', true);
 			$("#cancelaintegracion").prop("checked",false);
@@ -1046,6 +1061,18 @@ $(document).ready(function(){
 			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#cantidad').focus(); }});
 			return;
 		}
+		if($("#totalfacturado").val()=='') {
+			var cajadialogo = $('<div title="Aviso"><p>Debe ingresar el Total Facturado de la Prestacion.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#totalfacturado').focus(); }});
+			return;
+		}
+		if($("#totaldebito").val()!=0) {
+			if($("#motivodebito").val()=='') {
+				var cajadialogo = $('<div title="Aviso"><p>Debe ingresar el Motivo de Debito de la Prestacion.</p></div>');
+				cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#motivodebito').focus(); }});
+				return;
+			}
+		}
 		var datosform = $("form#consumoPrestacional").serialize();
 		$.blockUI({ message: "<h1>Agregando Prestacion a la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 		$.ajax({
@@ -1066,6 +1093,28 @@ $(document).ready(function(){
 		});
 	});
 	$("#agregarcarencia").on("click", function() {
+		if($("#cantidad").val()=='') {
+			var cajadialogo = $('<div title="Aviso"><p>Debe ingresar la Cantidad/Unidades de la Prestacion.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#cantidad').focus(); }});
+			return;
+		}
+		if($("#totalfacturado").val()=='') {
+			var cajadialogo = $('<div title="Aviso"><p>Debe ingresar el Total Facturado de la Prestacion.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#totalfacturado').focus(); }});
+			return;
+		}
+		if($("#totaldebito").val()=='') {
+			var cajadialogo = $('<div title="Aviso"><p>Una Carencia de Prestacion genera un debito completo. No Debe borrar el debito si quiere guardar la carencia.</p></div>');
+			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#totaldebito').focus(); }});
+			return;
+		}
+		if($("#totaldebito").val()!=0) {
+			if($("#motivodebito").val()=='') {
+				var cajadialogo = $('<div title="Aviso"><p>Debe ingresar el Motivo de Debito de la Prestacion.</p></div>');
+				cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#motivodebito').focus(); }});
+				return;
+			}
+		}
 		var datosform = $("form#consumoPrestacional").serialize();
 		$.blockUI({ message: "<h1>Agregando Carencia a la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 		$.ajax({
@@ -1258,7 +1307,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			<tr>
 				<td align="right"><strong>Buscar Prestacion</strong></td>
 				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="125" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
-				<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
+				<input name="idPractica" type="text" id="idPractica" size="5" value=""/>
 					<input name="esGaleno" type="hidden" id="esGaleno" size="2" value=""/>
 					<input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/>
 					<input name="clasificacionComplejidad" type="hidden" id="clasificacionComplejidad" size="2" value=""/>
