@@ -1173,9 +1173,9 @@ $(document).ready(function(){
 			}
 	});
 });
-function consultaContratos(dire) {
+function consultaPrestador(dire) {
 	a=window.open(dire,'',
-	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=800, height=500, top=10, left=10");
+	"toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1000, height=850, top=10, left=10");
 };
 function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiario) {
 	param = "idConsumoCarencia="+idconsumocarencia+"&idFactura="+idfactura+"&idFacturaBeneficiario="+idfacturabeneficiario;
@@ -1206,7 +1206,9 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 	<div class="grilla" style="margin-top:10px; margin-bottom:10px">
 	<table>
 		<tr>
-			<td colspan="3" class="title">Prestador</td>
+			<td colspan="3" class="title">Prestador
+			<input name="consultaprestador" type="button" id="consultaprestador" value="Ficha" onclick="consultaPrestador('../prestadores/abm/prestador.php?codigo=<?php echo $rowConsultaPrestador['codigoprestador']; ?>')"/>
+			</td>
 		</tr>
 		<tr>
 			<td align="right">Codigo: </td>
@@ -1238,9 +1240,8 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 				echo 'Sin Contratos Cargados';
 				$contratoprestador = 0;
 			}  else {
-				$contratoprestador = 1; ?>
-				<input name="consultacontrato" type="button" id="consultacontrato" value="Ver Contratos" onclick="consultaContratos('../prestadores/abm/contratos/consultaContratosPrestador.php?codigo=<?php echo $rowConsultaFactura['idPrestador']; ?>')"/>
-			<?php
+				$contratoprestador = 1;
+				echo 'Con Contratos Cargados';
 			} ?>
 				<input name="contrato" type="hidden" id="contrato" size="2" value="<?php echo $contratoprestador; ?>"/>
 			</td>
@@ -1307,7 +1308,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			<tr>
 				<td align="right"><strong>Buscar Prestacion</strong></td>
 				<td colspan="5"><textarea name="buscaprestacion" rows="3" cols="125" id="buscaprestacion" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
-				<input name="idPractica" type="text" id="idPractica" size="5" value=""/>
+				<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
 					<input name="esGaleno" type="hidden" id="esGaleno" size="2" value=""/>
 					<input name="esIntegracion" type="hidden" id="esIntegracion" size="2" value=""/>
 					<input name="clasificacionComplejidad" type="hidden" id="clasificacionComplejidad" size="2" value=""/>
