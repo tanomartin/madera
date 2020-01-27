@@ -53,8 +53,14 @@ if ($numBeneficiarios > 0) {
 							  p.codigopractica,  facturasintegracion.totalsolicitado,
 							  facturasintegracion.dependencia,
 							  facturasintegracion.id as inte, practicas.codigopractica as codigoescuela,
-							  escuelas.nombre as nombreescuela, escuelas.cue
-						    FROM practicas p, facturasprestaciones f 
+							  escuelas.nombre as nombreescuela, escuelas.cue ";
+	if ($tipopresta == 3) {
+		$sqlPretaciones .= ",profesionales.nombre as efector ";
+	}
+	if ($tipopresta == 4) {
+		$sqlPretaciones .= ",establecimientos.nombre as efector ";
+	}
+	$sqlPretaciones .=	"FROM practicas p, facturasprestaciones f 
 						    LEFT JOIN facturasintegracion ON facturasintegracion.idFacturaprestacion = f.id 
 							LEFT JOIN practicas ON practicas.idpractica = facturasintegracion.tipoescuela 
 							LEFT JOIN escuelas ON escuelas.id = facturasintegracion.idEscuela ";
@@ -351,7 +357,7 @@ function mostrarInfo(divid) {
 											<td><?php echo number_format($pretacion['totalfacturado'],2,",","."); ?></td>
 											<td><?php echo number_format($pretacion['totaldebito'],2,",","."); ?></td>
 											<td><?php echo number_format($pretacion['totalcredito'],2,",","."); ?></td>
-											<td><?php if (isset($pretacion['nombre'])) { echo $pretacion['nombre']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
+											<td><?php if (isset($pretacion['efector'])) { echo $pretacion['efector']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
 										</tr>
 								  <?php if ($pretacion['totaldebito'] > 0) { ?>
 								  		<tr>
