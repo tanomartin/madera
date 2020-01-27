@@ -84,7 +84,7 @@ $sqlListadoDiabetes = "SELECT d.id, d.nroafiliado, d.nroorden, d.tipodiabetes, d
 					   LEFT JOIN diabetesfarmacos on diabetesfarmacos.idDiagnostico = d.id
 					   LEFT JOIN diabetesinsulinas d1 on d1.id = diabetesfarmacos.insulinabasalcodigo
 					   LEFT JOIN diabetesinsulinas d2 on d2.id = diabetesfarmacos.insulinacorreccioncodigo
-					   WHERE d.id in $whereIn and d.nroafiliado = b.nroafiliado and d.nroorden = b.nroorden";
+					   WHERE d.id in $whereIn and d.tipodiabetes in (1,2) and d.nroafiliado = b.nroafiliado and d.nroorden = b.nroorden";
 
 //echo $sqlListadoDiabetes."<br><br>";
 $resListadoDiabetes = mysql_query($sqlListadoDiabetes,$db);
