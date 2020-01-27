@@ -278,7 +278,7 @@ function mostrarInfo(divid) {
 										<td><?php echo number_format($pretacion['totalfacturado'],2,",","."); ?></td>
 										<td><?php echo number_format($pretacion['totaldebito'],2,",","."); ?></td>
 										<td><?php echo number_format($pretacion['totalcredito'],2,",","."); ?></td>
-										<td><?php if (isset($pretacion['nombre'])) { echo $pretacion['nombre']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
+										<td><?php if (isset($pretacion['efector'])) { echo $pretacion['efector']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
 									</tr>
 							  <?php if ($pretacion['totaldebito'] > 0) { ?>
 							  		<tr>
@@ -349,7 +349,8 @@ function mostrarInfo(divid) {
 										<td class="title">Credito</td>
 										<td class="title">Efector</td>
 									</tr>
-							  <?php foreach ($arrayPresta[$rowBeneficiarios['id']] as $pretacion) { ?>
+							  <?php foreach ($arrayPresta[$rowBeneficiarios['id']] as $pretacion) {	
+							  	  		if ($pretacion['totaldebito'] > 0) { ?>
 										<tr>
 											<td><?php echo $pretacion['codigopractica'] ?></td>
 											<td><?php echo $pretacion['fechapractica'] ?></td>
@@ -359,12 +360,10 @@ function mostrarInfo(divid) {
 											<td><?php echo number_format($pretacion['totalcredito'],2,",","."); ?></td>
 											<td><?php if (isset($pretacion['efector'])) { echo $pretacion['efector']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
 										</tr>
-								  <?php if ($pretacion['totaldebito'] > 0) { ?>
 								  		<tr>
 								  			<td colspan="7">MOTIVO DEBITO: <?php echo $pretacion['motivodebito']?></td>
-								  		</tr>
-								  <?php	}	
-								 	    if ($pretacion['inte'] != NULL) { ?>
+								  		</tr>								  
+								  <?php if ($pretacion['inte'] != NULL) { ?>
 								  		<tr>
 											<td class="title" colspan="7">Integracion</td>
 										</tr>
@@ -378,7 +377,8 @@ function mostrarInfo(divid) {
 											<td><?php if ($pretacion['dependencia'] == 1) { echo "SI"; } else { echo "NO"; } ?></td>
 											<td colspan="5"><?php echo $pretacion['codigoescuela']." - ".$pretacion['nombreescuela']." - ".$pretacion['cue'] ?></td>
 										</tr>
-								  <?php } ?>
+									<?php	}	
+								 		} ?>
 							  <?php } ?>
 						<?php   } else { ?>
 									<tr><td class="title" colspan="7">Sin Prestaciones Cargadas</td></tr>
