@@ -838,7 +838,7 @@ $(document).ready(function(){
 		}
 	});
 	$("#solicitadointegracion").change(function(){
-		if($("#solicitadointegracion").val() > $("#totalcredito").val()) {
+		if(parseFloat($("#solicitadointegracion").val()) > parseFloat($("#totalcredito").val())) {
 			var cajadialogo = $('<div title="Aviso"><p>El importe solicitado por integracion no es un monto admisible.</p></div>');
 			cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#solicitadointegracion').focus(); }});
 		}
@@ -1073,6 +1073,20 @@ $(document).ready(function(){
 				return;
 			}
 		}
+		if($("#cancelaintegracion").prop('checked') ) {
+			if($("#solicitadointegracion").val()=='') {
+				var cajadialogo = $('<div title="Aviso"><p>Debe ingresar el Importe Solicitado por Integracion.</p></div>');
+				cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close:function(event, ui) { $('#solicitadointegracion').focus(); }});
+				return;
+			} else {
+				if(parseFloat($("#solicitadointegracion").val()) > parseFloat($("#totalcredito").val())) {
+					var cajadialogo = $('<div title="Aviso"><p>El importe solicitado por integracion no es un monto admisible.</p></div>');
+					cajadialogo.dialog({modal: true, height: "auto", show: {effect: "blind",duration: 250}, hide: {effect: "blind",duration: 250}, closeOnEscape:false, close: function(event, ui) { $('#solicitadointegracion').focus(); }});
+					return;
+				}
+			}
+		}
+
 		var datosform = $("form#consumoPrestacional").serialize();
 		$.blockUI({ message: "<h1>Agregando Prestacion a la Liquidacion... <br>Esto puede tardar unos minutos.<br> Aguarde por favor</h1>" });
 		$.ajax({
