@@ -180,19 +180,13 @@ function mostrarInfo(divid) {
 			</tr>
 			<tr>
 				<td><?php echo $rowFactura['tipocomprobante'].' Nro.: '.$rowFactura['puntodeventa'].'-'.$rowFactura['nrocomprobante'];?></td>
-				<td align="right">Fecha: </td>
-				<td align="left"><?php echo $rowFactura['fechacomprobante'];?></td>
+				<td align="center">Fecha: <?php echo $rowFactura['fechacomprobante'];?></td>
 				<td><?php echo $rowFactura['descripcioncorta'].' Nro.: '.$rowFactura['nroautorizacion'];?></td>
 			</tr>
 			<tr>
-				<td align="right" colspan="2"> Vencimiento a <?php echo $rowFactura['diasvencimiento'].' dias';?></td>
-				<td align="right">Fecha Vto.: </td>
-				<td align="left"><?php echo $rowFactura['fechavencimiento'];?></td>
-			</tr>
-			<tr>
 				<td align="center">ID Interno: <?php echo $rowFactura['id'];?></td>
-				<td align="right" colspan="2">Importe: </td>
-				<td align="left"><?php echo number_format($rowFactura['importecomprobante'],2,",",".");?></td>
+				<td></td>
+				<td align="center">Importe: <?php echo number_format($rowFactura['importecomprobante'],2,",",".");?></td>
 			</tr>
 			<?php if ($rowFactura['establecimiento'] != NULL) { ?>
 				<tr>
