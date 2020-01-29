@@ -91,17 +91,33 @@ if ($numBeneficiarios > 0) {
 		$resEstadistica = mysql_query($sqlEstadistica,$db);
 		$numEstadistica = mysql_num_rows($resEstadistica);
 		
-		$sqlAgrupaEfector = "SELECT sum(f.totalfacturado) as facturado, 
-									sum(f.totaldebito) as debito,
-									sum(f.totalcredito) as credito,
-									establecimientos.nombre,
-									establecimientos.codigo
-							FROM facturasprestaciones f
-							LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica
-							where idFactura = $id
-							GROUP by f.efectorpractica";
-		$resAgrupaEfector = mysql_query($sqlAgrupaEfector,$db);
-		$numAgrupaEfector = mysql_num_rows($resAgrupaEfector);
+		$sqlAgrupaEfector = "";
+		if ($tipopresta == 3) {
+			$sqlAgrupaEfector = "SELECT sum(f.totalfacturado) as facturado,
+										sum(f.totaldebito) as debito,
+										sum(f.totalcredito) as credito,
+										profesionales.nombre,
+										profesionales.codigoprofesional as codigo
+									FROM facturasprestaciones f
+									LEFT JOIN profesionales ON profesionales.codigoprofesional = f.efectorpractica
+									WHERE idFactura = $id
+									GROUP by f.efectorpractica";
+		}
+		if ($tipopresta == 4 || $tipopresta == 6) {
+			$sqlAgrupaEfector = "SELECT sum(f.totalfacturado) as facturado, 
+										sum(f.totaldebito) as debito,
+										sum(f.totalcredito) as credito,
+										establecimientos.nombre,
+										establecimientos.codigo
+								FROM facturasprestaciones f
+								LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica
+								WHERE idFactura = $id
+								GROUP by f.efectorpractica";
+		}
+		if ($sqlAgrupaEfector != "") {
+			$resAgrupaEfector = mysql_query($sqlAgrupaEfector,$db);
+			$numAgrupaEfector = mysql_num_rows($resAgrupaEfector);
+		}
 	} 
 	
 	
@@ -386,9 +402,9 @@ function mostrarInfo(divid) {
   	   <?php } ?>
 	</div>
 	
-		<div id="agrupaEfector" style="display: none">
+	<div id="agrupaEfector" style="display: none">
 	<h3>Detalle de Facturación Por Efector</h3>
-		<?php if ($numEstadistica > 1) { ?>
+		<?php if ($numAgrupaEfector > 1) { ?>
 				<div class="grilla">
 					<table>
 						<tr>
