@@ -49,29 +49,38 @@ $numCarencias = mysql_num_rows($resCarencias);
 $numEstadistica = 0;
 $numAgrupaEfector = 0;
 if ($numBeneficiarios > 0) {
-	$sqlPretaciones = "SELECT p.*,f.*, DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica, 
-							  p.codigopractica,  facturasintegracion.totalsolicitado,
-							  facturasintegracion.dependencia,
-							  facturasintegracion.id as inte, practicas.codigopractica as codigoescuela,
-							  escuelas.nombre as nombreescuela, escuelas.cue ";
-	if ($tipopresta == 3) {
-		$sqlPretaciones .= ",profesionales.nombre as efector ";
+	if ($tipopresta != 6) {
+		$sqlPretaciones = "SELECT p.codigopractica, f.*, DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica, 
+								  facturasintegracion.totalsolicitado,
+								  facturasintegracion.dependencia,
+								  facturasintegracion.id as inte, practicas.codigopractica as codigoescuela,
+								  escuelas.nombre as nombreescuela, escuelas.cue ";
+		if ($tipopresta == 3) {
+			$sqlPretaciones .= ",profesionales.nombre as efector ";
+		}
+		if ($tipopresta == 4) {
+			$sqlPretaciones .= ",establecimientos.nombre as efector ";
+		}
+		$sqlPretaciones .=	"FROM practicas p, facturasprestaciones f 
+							    LEFT JOIN facturasintegracion ON facturasintegracion.idFacturaprestacion = f.id 
+								LEFT JOIN practicas ON practicas.idpractica = facturasintegracion.tipoescuela 
+								LEFT JOIN escuelas ON escuelas.id = facturasintegracion.idEscuela ";
+		if ($tipopresta == 3) {
+			$sqlPretaciones .= "LEFT JOIN profesionales ON profesionales.codigoprofesional = f.efectorpractica";
+		}
+		if ($tipopresta == 4) {
+			$sqlPretaciones .= "LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica";
+		}
+		$sqlPretaciones .= " WHERE f.idFactura = $id and f.idpractica = p.idpractica";
+	} else {
+		$sqlPretaciones = "SELECT m.codigo as codigopractica, f.*, 
+								  DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica,
+								  establecimientos.nombre as efector 
+						   FROM medicamentos m, facturasprestaciones f 
+						   LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica
+						   WHERE f.idFactura = $id and f.idpractica = m.codigo";
 	}
-	if ($tipopresta == 4) {
-		$sqlPretaciones .= ",establecimientos.nombre as efector ";
-	}
-	$sqlPretaciones .=	"FROM practicas p, facturasprestaciones f 
-						    LEFT JOIN facturasintegracion ON facturasintegracion.idFacturaprestacion = f.id 
-							LEFT JOIN practicas ON practicas.idpractica = facturasintegracion.tipoescuela 
-							LEFT JOIN escuelas ON escuelas.id = facturasintegracion.idEscuela ";
-	if ($tipopresta == 3) {
-		$sqlPretaciones .= "LEFT JOIN profesionales ON profesionales.codigoprofesional = f.efectorpractica";
-	}
-	if ($tipopresta == 4) {
-		$sqlPretaciones .= "LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica";
-	}
-	$sqlPretaciones .= " WHERE f.idFactura = $id and f.idpractica = p.idpractica";
-
+	
 	$resPretaciones = mysql_query($sqlPretaciones,$db);
 	$numPretaciones = mysql_num_rows($resPretaciones);
 	$arrayPresta = array();
@@ -118,14 +127,8 @@ if ($numBeneficiarios > 0) {
 			$resAgrupaEfector = mysql_query($sqlAgrupaEfector,$db);
 			$numAgrupaEfector = mysql_num_rows($resAgrupaEfector);
 		}
-	} 
-	
-	
-	
-}
-
-
-?>
+	} 	
+} ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -158,6 +161,12 @@ function mostrarInfo(divid) {
 			divObjectCarencias.style.display = "none";  
 		}	
 	}
+}
+
+function abrirDetalleEfector(idEfector,idFactura, tipopresta, nombreEfe) {
+	if (idEfector == "") { idEfector = 0; }
+	var dire = "consultaLiquidacionDetalleEfector.php?id="+idFactura+"&idEfector="+idEfector+"&tipopresta="+tipopresta+"&nombreEfe="+nombreEfe;
+	window.open(dire,"Detalle por Efector",'width=800, height=500,resizable=yes');
 }
 
 </script>
@@ -413,6 +422,7 @@ function mostrarInfo(divid) {
 							<td class="title">Facturado</td>
 							<td class="title">Debito</td>
 							<td class="title">Credito</td>
+							<td class="title"></td>
 						</tr>
 			 <?php  $totFacEfe = 0;
 			 		$totDebEfe = 0;
@@ -431,6 +441,7 @@ function mostrarInfo(divid) {
 							<td><?php echo number_format($rowAgrupaEfector['facturado'],2,",","."); ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['debito'],2,",","."); ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['credito'],2,",","."); ?></td>
+							<td><input type="button" value="DETALLE" onclick="abrirDetalleEfector('<?php echo $codigoEfe ?>', '<?php echo $id ?>', '<?php echo $tipopresta ?>', '<?php echo $nombreEfe ?>')"/></td>
 						</tr>
 			 <?php } ?>
 					<tr>
@@ -438,6 +449,7 @@ function mostrarInfo(divid) {
 			  			<td class="title"><?php echo number_format($totFacEfe,2,",","."); ?></td>
 			  			<td class="title"><?php echo number_format($totDebEfe,2,",","."); ?></td>
 			  			<td class="title"><?php echo number_format($totCreEfe,2,",","."); ?></td>
+			  			<td class="title"></td>
 			  		</tr>
 				</table>
 			</div>
