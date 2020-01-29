@@ -159,7 +159,7 @@ function abrirPantalla(dire) {
 							    <input name="contrato" type="button" value="Arancel" onclick="abrirPantalla('aranceles/consultaArancelPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/></br>
 						<?php } ?>
 						<?php if ($rowPrestador['personeria'] == 3) { ?> <input name="profesionales" type="button" value="Profesionales" onclick="abrirPantalla('profesionales/profesionalesPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/></br><?php } ?>
-						<?php if ($rowPrestador['personeria'] == 4) { ?> <input name="establecimientos" type="button" value="Establecimientos" onclick="abrirPantalla('establecimientos/establecimientosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
+						<?php if ($rowPrestador['personeria'] == 4 || $rowPrestador['personeria'] == 6) { ?> <input name="establecimientos" type="button" value="Establecimientos" onclick="abrirPantalla('establecimientos/establecimientosPrestador.php?codigo=<?php echo $rowPrestador['codigoprestador']; ?>')"/><?php } ?>
 					</td>
 				 </tr>
 		<?php } ?>
