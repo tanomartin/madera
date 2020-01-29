@@ -196,21 +196,23 @@ try {
 	//print($sqlDeleteServicio."<br>");
 	$dbh->exec($sqlDeleteServicio);
 	
-	foreach($_POST as $key => $value) {
-		if (strpos($key ,'servicio') !== false) {
-			$servicio = $_POST[$key];
-			$sqlInsertServicio = "INSERT INTO prestadorservicio VALUE($codigo, $servicio)";
-			//print($sqlInsertServicio."<br>");
-			$dbh->exec($sqlInsertServicio);
+	if ($personeria != 6) {
+		foreach($_POST as $key => $value) {
+			if (strpos($key ,'servicio') !== false) {
+				$servicio = $_POST[$key];
+				$sqlInsertServicio = "INSERT INTO prestadorservicio VALUE($codigo, $servicio)";
+				//print($sqlInsertServicio."<br>");
+				$dbh->exec($sqlInsertServicio);
+			}
 		}
-	}
-	
-	foreach($_POST as $key => $value) {
-		if (strpos($key ,'nomenclador') !== false) {
-			$nomenclador = $_POST[$key];
-			$sqlInsertNomenclador = "INSERT INTO prestadornomenclador VALUE($codigo, $nomenclador)";
-			//print($sqlInsertNomenclador."<br>");
-			$dbh->exec($sqlInsertNomenclador);
+		
+		foreach($_POST as $key => $value) {
+			if (strpos($key ,'nomenclador') !== false) {
+				$nomenclador = $_POST[$key];
+				$sqlInsertNomenclador = "INSERT INTO prestadornomenclador VALUE($codigo, $nomenclador)";
+				//print($sqlInsertNomenclador."<br>");
+				$dbh->exec($sqlInsertNomenclador);
+			}
 		}
 	}
 	

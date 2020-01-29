@@ -203,7 +203,7 @@ $resConsultaJuris = mysql_query($sqlConsultaJuris,$db); ?>
 		<td width="300">
 		<?php if ($rowConsultaPresta['personeria'] == 3) { ?>
             <input class="nover" name="profesionales" type="button" value="Profesionales"  onclick="location.href = 'profesionales/modificarProfesionales.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
-        <?php if ($rowConsultaPresta['personeria'] == 4) { ?>
+        <?php if ($rowConsultaPresta['personeria'] == 4 || $rowConsultaPresta['personeria'] == 6) { ?>
             <input class="nover" name="establecimientos" type="button" value="Establecimientos"  onclick="location.href = 'establecimientos/modificarEstablecimientos.php?codigo=<?php echo $codigo ?>'" /><?php } ?>
         </td> 
         <td width="300">		

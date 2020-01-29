@@ -224,6 +224,7 @@ jQuery(function($){
 	});
 	
 	$("#selectPersoneria").change(function(){
+		$("#divNomencla").show();
 		var personeria = $(this).val();
 		$.ajax({
 			type: "POST",
@@ -231,10 +232,16 @@ jQuery(function($){
 			url: "lib/getServicios.php",
 			data: {personeria:personeria},
 		}).done(function(respuesta){
-			if (respuesta != 0) {
+			if (respuesta != 0 && respuesta != -1) {
 				$("#divServicios").html(respuesta);
 			} else {
-				$("#divServicios").html("<font color='red'>Debe seleccionar una personeria para poder ver los servicios</font>");
+				if (respuesta == 0) { 
+					$("#divServicios").html("<font color='red'>Debe seleccionar una personeria para poder ver los servicios.</font>");
+				}
+				if (respuesta == -1) {
+					$("#divNomencla").hide();
+					$("#divServicios").html("Personería farmaceutico no tiene servicios");
+				} 
 			}
 		});
 	});
@@ -427,33 +434,46 @@ function validar() {
 			}
 		}
 	}
-	var nomenclaResoCheck = 0;
-	var nomencladorReso = formulario.nomencladorReso;
-	if (nomencladorReso != null) {
-		for (var x=0;x<nomencladorReso.length;x++) {
-			if(nomencladorReso[x].checked) {
-				nomencladorReso = 1;
-			}
-		}
-	}
-	
-	if (nomencladorCheck == 0 && nomencladorReso == 0) {
-		alert("Debe elegir como mínimo un nomenclador para el prestador");
-		return false;
-	}
 
-	var servicioCheck = 0;
-	var servicios = formulario.servicios;
-	if (servicios != null) {
-		for (var x=0;x<servicios.length;x++) {
-			if(servicios[x].checked) {
-				servicioCheck = 1;
+	if (personeria != 6) {	
+		var nomencladorCheck = 0;
+		var nomenclador = formulario.nomenclador;
+		if (nomenclador != null) {
+			for (var x=0;x<nomenclador.length;x++) {
+				if(nomenclador[x].checked) {
+					nomencladorCheck = 1;
+				}
 			}
 		}
-	}
-	if (servicioCheck == 0) {
-		alert("Debe elegir como mínimo un servicio para el prestador");
-		return false;
+		
+		var nomenclaResoCheck = 0;
+		var nomencladorReso = formulario.nomencladorReso;
+		if (nomencladorReso != null) {
+			for (var x=0;x<nomencladorReso.length;x++) {
+				if(nomencladorReso[x].checked) {
+					nomenclaResoCheck = 1;
+				}
+			}
+		}
+		
+		if (nomencladorCheck == 0 && nomenclaResoCheck == 0) {
+			alert("Debe elegir como mínimo un nomenclador para el prestador");
+			return false;
+		}
+	
+		var servicioCheck = 0;
+		var servicios = formulario.servicios;
+		if (servicios != null) {
+			for (var x=0;x<servicios.length;x++) {
+				if(servicios[x].checked) {
+					servicioCheck = 1;
+				}
+			}
+		}
+		if (servicioCheck == 0) {
+			alert("Debe elegir como mínimo un servicio para el prestador");
+			return false;
+		}
 	}
 	
 	var delegaCheck = 0;
@@ -692,7 +712,7 @@ function validar() {
 						$cartelPersoneria = "Existe prof. activos.<br>";
 					} 
 				}
-				if ($rowConsultaPresta['personeria'] == 4) {
+				if ($rowConsultaPresta['personeria'] == 4 || $rowConsultaPresta['personeria'] == 6) {
 					$entidad = "selected";
 					$disabled="disabled";
 					
@@ -780,25 +800,27 @@ function validar() {
     </table>
     
     <hr></hr>
-    
-    <h3>Nomencladores</h3>
-    <h4 style="color: blue"><?php echo $cartel ?></h4>
-    <b>Con Contrato o Arancel Fijo |</b>
-    <?php foreach ($arrayConContrato as $key => $nomenclador) { ?>
-        	<input <?php echo $nomenclador['checked'] ?> onclick="<?php echo $nomenclador['onclick'] ?>" value="<?php echo $key ?>" name="<?php echo "nomenclador".$key ?>" id="nomenclador" type="checkbox"/><?php echo $nomenclador['nombre']." | "; ?>
-    <?php }?>
-    <br></br><b>Con Resolucion |</b>
-    <?php $disabledReso = "";
-    	  if ($rowConsultaPresta['montofijo'] == 1) {
-    	  	$disabledReso = "disabled='disabled'";
-    	  }
-    	  foreach ($arrayConResolucion as $key => $nomenclador) { ?>
-        	<input <?php echo $disabledReso ?> <?php echo $nomenclador['checked'] ?> value="<?php echo $key ?>" name="nomencladorReso" id="nomencladorReso" type="radio"/><?php echo $nomenclador['nombre']." | "; ?>
-    <?php }?>
-   
-    <hr style="margin-top: 20px"></hr>
-    
-    <table width="884" border="1">
+    <?php $display = "";
+    	  if ($rowConsultaPresta['personeria'] == 6) { $display = 'style="display: none"'; } ?>
+    <div id="divNomencla" <?php echo $display ?>>
+	    <h3>Nomencladores</h3>
+	    <h4 style="color: blue"><?php echo $cartel ?></h4>
+	    <b>Con Contrato o Arancel Fijo |</b>
+	    <?php foreach ($arrayConContrato as $key => $nomenclador) { ?>
+	        	<input <?php echo $nomenclador['checked'] ?> onclick="<?php echo $nomenclador['onclick'] ?>" value="<?php echo $key ?>" name="<?php echo "nomenclador".$key ?>" id="nomenclador" type="checkbox"/><?php echo $nomenclador['nombre']." | "; ?>
+	    <?php }?>
+	    <br></br><b>Con Resolucion |</b>
+	    <?php $disabledReso = "";
+	    	  if ($rowConsultaPresta['montofijo'] == 1) {
+	    	  	$disabledReso = "disabled='disabled'";
+	    	  }
+	    	  foreach ($arrayConResolucion as $key => $nomenclador) { ?>
+	        	<input <?php echo $disabledReso ?> <?php echo $nomenclador['checked'] ?> value="<?php echo $key ?>" name="nomencladorReso" id="nomencladorReso" type="radio"/><?php echo $nomenclador['nombre']." | "; ?>
+	    <?php }?>
+	   
+	    <hr style="margin-top: 20px"></hr>
+    </div>
+    <table width="900">
       <tr>
         <td width="284" height="46"><div align="center" class="Estilo1"><b>Servicios </b></div></td>
         <td colspan="2"><div align="center" class="Estilo1"><b>Jurisdiccion | Pertenencia</b></div></td>
@@ -806,26 +828,30 @@ function validar() {
       <tr>
         <td valign="top">
 			<div id="divServicios" align="left">
-	      <?php if ($rowConsultaPresta['personeria'] == 1) { 
-					$query="SELECT * FROM tiposervicio where profesional != 0"; 
-				} else {
-					$query="SELECT * FROM tiposervicio where profesional != 1"; 
-				}
-				$result=mysql_query($query,$db);
-				$i=0;
-				while ($rowtipos=mysql_fetch_array($result)) { 
-					$codigoServicio = $rowtipos['codigoservicio'];
-					$sqlExiste = "select * from prestadorservicio where codigoprestador = $codigo and codigoservicio = $codigoServicio";
-					$resExiste = mysql_query($sqlExiste,$db); 
-					$numExiste = mysql_num_rows($resExiste);
-					if ($numExiste == 1) {
-						$checked = "checked";
+	      <?php if ($rowConsultaPresta['personeria'] == 6) {
+	      			echo "Personería farmaceutico no tiene servicios";
+	      		} else { 
+		      		if ($rowConsultaPresta['personeria'] == 1) { 
+						$query="SELECT * FROM tiposervicio where profesional != 0"; 
 					} else {
-						$checked = "";
-					}	?>
-	          		<input type="checkbox" <?php echo $checked ?> id="servicios" name="<?php echo "servicios".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" /><?php echo $rowtipos['descripcion']."<br>";
-			  		$i++; 
-	           	} ?>
+						$query="SELECT * FROM tiposervicio where profesional != 1"; 
+					}
+					$result=mysql_query($query,$db);
+					$i=0;
+					while ($rowtipos=mysql_fetch_array($result)) { 
+						$codigoServicio = $rowtipos['codigoservicio'];
+						$sqlExiste = "select * from prestadorservicio where codigoprestador = $codigo and codigoservicio = $codigoServicio";
+						$resExiste = mysql_query($sqlExiste,$db); 
+						$numExiste = mysql_num_rows($resExiste);
+						if ($numExiste == 1) {
+							$checked = "checked";
+						} else {
+							$checked = "";
+						}	?>
+		          		<input type="checkbox" <?php echo $checked ?> id="servicios" name="<?php echo "servicios".$i ?>" value="<?php echo $rowtipos['codigoservicio'] ?>" /><?php echo $rowtipos['descripcion']."<br>";
+				  		$i++; 
+		           	}
+				} ?>
 	        </div>
 	    </td>
         <td width="281" valign="top">

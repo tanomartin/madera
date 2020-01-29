@@ -155,6 +155,7 @@ jQuery(function($){
 	});
 	
 	$("#selectPersoneria").change(function(){
+		$("#divNomencla").show();
 		var personeria = $(this).val();
 		$.ajax({
 			type: "POST",
@@ -162,10 +163,16 @@ jQuery(function($){
 			url: "lib/getServicios.php",
 			data: {personeria:personeria},
 		}).done(function(respuesta){
-			if (respuesta != 0) {
+			if (respuesta != 0 && respuesta != -1) {
 				$("#divServicios").html(respuesta);
 			} else {
-				$("#divServicios").html("<font color='red'>Debe seleccionar una personeria para poder ver los servicios</font>");
+				if (respuesta == 0) { 
+					$("#divServicios").html("<font color='red'>Debe seleccionar una personeria para poder ver los servicios.</font>");
+				}
+				if (respuesta == -1) {
+					$("#divNomencla").hide();
+					$("#divServicios").html("Personería farmaceutico no tiene servicios");
+				} 
 			}
 		});
 	});
@@ -346,43 +353,45 @@ function validar() {
 		}
 	}
 
-	var nomencladorCheck = 0;
-	var nomenclador = formulario.nomenclador;
-	if (nomenclador != null) {
-		for (var x=0;x<nomenclador.length;x++) {
-			if(nomenclador[x].checked) {
-				nomencladorCheck = 1;
+	if (personeria != 6) {	
+		var nomencladorCheck = 0;
+		var nomenclador = formulario.nomenclador;
+		if (nomenclador != null) {
+			for (var x=0;x<nomenclador.length;x++) {
+				if(nomenclador[x].checked) {
+					nomencladorCheck = 1;
+				}
 			}
 		}
-	}
-
-	var nomenclaResoCheck = 0;
-	var nomenclaReso = formulario.nomencladorReso;
-	if (nomenclaReso != null) {
-		for (var x=0;x<nomenclaReso.length;x++) {
-			if(nomenclaReso[x].checked) {
-				nomenclaResoCheck = 1;
-			}
-		}
-	}
 	
-	if (nomencladorCheck == 0 && nomenclaResoCheck == 0) {
-		alert("Debe elegir como mínimo un nomenclador para el prestador");
-		return false;
-	}
-
-	var servicioCheck = 0;
-	var servicios = formulario.servicios;
-	if (servicios != null) {
-		for (var x=0;x<servicios.length;x++) {
-			if(servicios[x].checked) {
-				servicioCheck = 1;
+		var nomenclaResoCheck = 0;
+		var nomenclaReso = formulario.nomencladorReso;
+		if (nomenclaReso != null) {
+			for (var x=0;x<nomenclaReso.length;x++) {
+				if(nomenclaReso[x].checked) {
+					nomenclaResoCheck = 1;
+				}
 			}
 		}
-	}
-	if (servicioCheck == 0) {
-		alert("Debe elegir como mínimo un servicio para el prestador");
-		return false;
+		
+		if (nomencladorCheck == 0 && nomenclaResoCheck == 0) {
+			alert("Debe elegir como mínimo un nomenclador para el prestador");
+			return false;
+		}
+
+		var servicioCheck = 0;
+		var servicios = formulario.servicios;
+		if (servicios != null) {
+			for (var x=0;x<servicios.length;x++) {
+				if(servicios[x].checked) {
+					servicioCheck = 1;
+				}
+			}
+		}
+		if (servicioCheck == 0) {
+			alert("Debe elegir como mínimo un servicio para el prestador");
+			return false;
+		}
 	}
 	
 	var delegaCheck = 0;
@@ -609,16 +618,18 @@ function validar() {
 				$arrayConResolucion[$rownom['id']] = $rownom;
 			}
 		} ?>
-    <h3>Nomencladores</h3>
-    <b>Con Contrato o Arancel Fijo |</b>
-    <?php foreach ($arrayConContrato as $key => $nomenclador) { ?>
-        	<input value="<?php echo $key ?>" name="<?php echo "nomenclador".$key ?>" id="nomenclador" type="checkbox"/><?php echo $nomenclador['nombre']." | "; ?>
-    <?php }?>
-    <br></br><b>Con Resolucion |</b>
-    <?php foreach ($arrayConResolucion as $key => $nomenclador) { ?>
-        	<input value="<?php echo $key ?>" name="nomencladorReso" id="nomencladorReso" type="radio"/><?php echo $nomenclador['nombre']." | "; ?>
-    <?php }?>
-    <hr style="margin-top: 20px"></hr>
+	<div id="divNomencla">
+	    <h3>Nomencladores</h3>
+	    <b>Con Contrato o Arancel Fijo |</b>
+	    <?php foreach ($arrayConContrato as $key => $nomenclador) { ?>
+	        	<input value="<?php echo $key ?>" name="<?php echo "nomenclador".$key ?>" id="nomenclador" type="checkbox"/><?php echo $nomenclador['nombre']." | "; ?>
+	    <?php }?>
+	    <br></br><b>Con Resolucion |</b>
+	    <?php foreach ($arrayConResolucion as $key => $nomenclador) { ?>
+	        	<input value="<?php echo $key ?>" name="nomencladorReso" id="nomencladorReso" type="radio"/><?php echo $nomenclador['nombre']." | "; ?>
+	    <?php }?>
+	    <hr style="margin-top: 20px"></hr>
+    </div>
     <table width="900">
       <tr>
         <td width="300" height="46" style="text-align: center"><h3>Servicios </h3></td>
@@ -626,7 +637,7 @@ function validar() {
       </tr>
       <tr>
         <td valign="top">
-			<div id="divServicios" align="left"><font color="red">Debe seleccionar una Personeria para poder ver los servicios</font>  </div>
+			<div id="divServicios" align="left"><font color="red">Debe seleccionar una personeria para poder ver los servicios</font>  </div>
 		</td>
         <td width="300" valign="top"><div align="left">
             <?php 
