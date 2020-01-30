@@ -17,10 +17,34 @@ $resFacturas = mysql_query($sqlFacturas,$db);
 $canFacturas = mysql_num_rows($resFacturas);
 $arrayFacturas = array();
 if ($canFacturas > 0) {
+	$whereIn = "(";
+	$buscarPagos = 0;
 	while ($rowFacturas = mysql_fetch_assoc($resFacturas)) {
 		$arrayFacturas[$rowFacturas['id']] = $rowFacturas;
+		if ($rowFacturas['fechapago'] != "00/00/0000") {
+			$whereIn .= "'".$rowFacturas['id']."',";
+			$buscarPagos = 1;
+		}
 	}
-} ?>
+	$whereIn = substr($whereIn, 0, -1);
+	$whereIn .= ")";
+	if ($buscarPagos == 1) {
+		$sqlOrdenesPago = "SELECT c.nroordenpago,formapago, comprobantepago, idfactura
+							FROM ordencabecera c, ordendetalle d 
+							WHERE d.idfactura in $whereIn and 
+								  d.nroordenpago = c.nroordenpago and
+								  c.fechacancelacion is null 
+								  ORDER BY c.nroordenpago ASC";
+		$resOrdenesPago = mysql_query($sqlOrdenesPago,$db);
+		$canOrdenesPago = mysql_num_rows($resOrdenesPago);
+		$arrayPagos = array();
+		if ($canOrdenesPago > 0) {
+			while ($rowOrdenesPago = mysql_fetch_assoc($resOrdenesPago)) {
+				$arrayPagos[$rowOrdenesPago['idfactura']] = array("op" => $rowOrdenesPago['nroordenpago'],  "formapago" => $rowOrdenesPago['formapago'], "nrocompro" => $rowOrdenesPago['comprobantepago']);
+			}
+		}
+	}
+}  ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -64,7 +88,7 @@ if ($canFacturas > 0) {
 		<h3>Informe de Facturas </h3>
 		<h3>Prestador:<font color="blue"> <?php echo $rowPrestador['nombre']?> - <?php echo $rowPrestador['cuit']?> (<?php echo $rowPrestador['codigoprestador'] ?>)</font></h3>
 	 	<?php if (sizeof($arrayFacturas) > 0 ) { ?>
-		 	<table style="text-align:center; width:1000px" id="listaResultado" class="tablesorter" >
+		 	<table style="text-align:center; width:90%" id="listaResultado" class="tablesorter" >
 		 		<thead>
 					<tr>
 				 		<th>ID Fac.</th>
@@ -76,6 +100,7 @@ if ($canFacturas > 0) {
 				 		<th>Liquidado</th>
 				 		<th>Pagos</th>
 				 		<th>Ultimo Pago</th>
+				 		<th>Comprobante</th>
 				 		<th>Saldo</th>
 				 	</tr>
 				 </thead>
@@ -101,8 +126,15 @@ if ($canFacturas > 0) {
 						<td><?php echo number_format($facturas['totalpagado'],2,",","."); ?></td>
 						<?php 	
 							$fechapago = "-";
-							if ($facturas['fechapago'] != "00/00/0000") { $fechapago = $facturas['fechapago']; } ?>
-						<td><?php echo $fechapago?> </td>
+							$comprobante = "-";
+							if ($facturas['fechapago'] != "00/00/0000") { 
+								$fechapago = $facturas['fechapago'];
+								if (isset($arrayPagos[$facturas['id']])) {
+									$comprobante = "O.P.: ".$arrayPagos[$facturas['id']]['op']." - ".$arrayPagos[$facturas['id']]['formapago']." ".$arrayPagos[$facturas['id']]['nrocompro'];
+								}
+							} ?>
+						<td><?php echo $fechapago ?> </td>
+						<td><?php echo $comprobante ?> </td>
 						<?php $saldo = $facturas['restoapagar'];
 							  if ($facturas['restoapagar'] == 0 && $facturas['importeliquidado'] == 0) { 
 									$saldo = $facturas['importecomprobante']; 
@@ -118,7 +150,7 @@ if ($canFacturas > 0) {
 				  	<th><?php echo number_format($totalDeb,2,",","."); ?></th>
 				  	<th><?php echo number_format($totalLiq,2,",","."); ?></th>
 				  	<th><?php echo number_format($totalPag,2,",","."); ?></th>
-				  	<th></th>
+				  	<th colspan="2"></th>
 				  	<th><?php echo number_format($totalSaldo,2,",","."); ?></th>
 				  </tr>
 		 	</table>
