@@ -100,7 +100,7 @@ if ($canFacturas > 0) {
 				 		<th>Liquidado</th>
 				 		<th>Pagos</th>
 				 		<th>Ultimo Pago</th>
-				 		<th>Comprobante</th>
+				 		<th>Compr. Ult. Pago</th>
 				 		<th>Saldo</th>
 				 	</tr>
 				 </thead>
