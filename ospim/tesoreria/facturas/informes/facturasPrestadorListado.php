@@ -130,7 +130,7 @@ if ($canFacturas > 0) {
 							if ($facturas['fechapago'] != "00/00/0000") { 
 								$fechapago = $facturas['fechapago'];
 								if (isset($arrayPagos[$facturas['id']])) {
-									$comprobante = "O.P.: ".$arrayPagos[$facturas['id']]['op']." - ".$arrayPagos[$facturas['id']]['formapago']." ".$arrayPagos[$facturas['id']]['nrocompro'];
+									$comprobante = "O.P.: ".$arrayPagos[$facturas['id']]['op']."<br>".$arrayPagos[$facturas['id']]['formapago']." ".$arrayPagos[$facturas['id']]['nrocompro'];
 								}
 							} ?>
 						<td><?php echo $fechapago ?> </td>
