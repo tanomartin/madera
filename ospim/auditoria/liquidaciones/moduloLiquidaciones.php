@@ -1,11 +1,11 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php");
-	$sqlFacturasSinLiquidar = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento FROM facturas f, prestadores p WHERE f.fechainicioliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador AND p.personeria != 5 ORDER by f.id DESC";
+	$sqlFacturasSinLiquidar = "SELECT p.nombre, p.cuit, p.personeria, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento FROM facturas f, prestadores p WHERE f.fechainicioliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador AND p.personeria != 5 ORDER by f.id DESC";
 	$resFacturasSinLiquidar = mysql_query($sqlFacturasSinLiquidar,$db);
 	$totalfacturasingresadas = mysql_num_rows($resFacturasSinLiquidar);
 
-	$sqlFacturasUsuario = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento FROM facturas f, prestadores p WHERE f.fechainicioliquidacion != '0000-00-00 00:00:00' AND f.usuarioliquidacion = '$_SESSION[usuario]' AND f.fechacierreliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador ORDER by f.id DESC";
+	$sqlFacturasUsuario = "SELECT p.nombre, p.cuit, p.personeria, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento FROM facturas f, prestadores p WHERE f.fechainicioliquidacion != '0000-00-00 00:00:00' AND f.usuarioliquidacion = '$_SESSION[usuario]' AND f.fechacierreliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador ORDER by f.id DESC";
 	$resFacturasUsuario = mysql_query($sqlFacturasUsuario,$db);
 	$totalfacturasusuario = mysql_num_rows($resFacturasUsuario);
 
@@ -122,8 +122,11 @@ function abrirPop(dire){
 				<td><?php echo invertirFecha($rowFacturasSinLiquidar['fechacomprobante']);?></td>
 				<td><?php echo $rowFacturasSinLiquidar['importecomprobante'];?></td>
 				<td><?php echo invertirFecha($rowFacturasSinLiquidar['fechavencimiento']);?></td>
-				<td>
+				<td><?php if($rowFacturasSinLiquidar['personeria']!= 6) {?>
 					<input class="nover" type="button" id="iniciarLiquidacion" name="iniciarLiquidacion" value="Iniciar Liquidacion" onclick="location.href = 'iniciarLiquidacion.php?idfactura=<?php echo $rowFacturasSinLiquidar['id'] ?>'"/>
+					<?php } else {?>
+					<input class="nover" type="button" id="iniciarLiquidacionMedicamento" name="iniciarLiquidacionMedicamento" value="Iniciar Liquidacion" onclick="location.href = 'iniciarLiquidacionMedicamento.php?idfactura=<?php echo $rowFacturasSinLiquidar['id'] ?>'"/>
+					<?php }?>
 				</td>
 			</tr>
 		<?php } ?>
@@ -182,8 +185,11 @@ function abrirPop(dire){
 				<td><?php echo invertirFecha($rowFacturasUsuario['fechacomprobante']);?></td>
 				<td><?php echo $rowFacturasUsuario['importecomprobante'];?></td>
 				<td><?php echo invertirFecha($rowFacturasUsuario['fechavencimiento']);?></td>
-				<td>
+				<td><?php if($rowFacturasUsuario['personeria']!= 6) {?>
 					<input class="nover" type="button" id="continuarLiquidacion" name="continuarLiquidacion" value="Continuar Liquidacion" onclick="location.href = 'continuarLiquidacion.php?idfactura=<?php echo $rowFacturasUsuario['id'] ?>'"/></br>
+					<?php } else {?>
+					<input class="nover" type="button" id="continuarLiquidacionMedicamento" name="continuarLiquidacionMedicamento" value="Continuar Liquidacion" onclick="location.href = 'continuarLiquidacionMedicamento.php?idfactura=<?php echo $rowFacturasUsuario['id'] ?>'"/></br>
+					<?php }?>
 					<input type="button" value="Ver Liquidacion" onclick="abrirPop('consultaLiquidacion.php?id=<?php echo $rowFacturasUsuario['id'] ?>&estado=AUDITORIA');" />
 				</td>
 			</tr>

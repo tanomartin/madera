@@ -46,7 +46,13 @@ if(isset($_GET)) {
 		}
 
 		$dbh->commit();
-		$pagina = "consumoBeneficiario.php?idFactura=$idFactura&idFacturabeneficiario=$idfacturabeneficiario";
+		if(isset($_GET['origenAnulacion'])) {
+			if(strcmp($_GET['origenAnulacion'], 'M')==0) {
+				$pagina = "consumoMedicamento.php?idFactura=$idFactura&idFacturabeneficiario=$idfacturabeneficiario";
+			}
+		} else {
+			$pagina = "consumoBeneficiario.php?idFactura=$idFactura&idFacturabeneficiario=$idfacturabeneficiario";
+		}
 		header("Location: $pagina");
 	}
 	catch (PDOException $e) {

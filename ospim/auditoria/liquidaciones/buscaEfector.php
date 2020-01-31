@@ -15,7 +15,7 @@ if(isset($_GET)) {
 		$campos = 'codigoprofesional AS idefector, nombre';
 		$campoid = 'codigoprofesional';
 	}
-	if($idpersoneria==4) {
+	if($idpersoneria==4 || $idpersoneria==6) {
 		$tablabusqueda = 'establecimientos';
 		$campos = 'codigo AS idefector, nombre, circulo, calidad, fechainiciocalidad, fechafincalidad';
 		$campoid = 'codigo';
@@ -30,7 +30,7 @@ if(isset($_GET)) {
 		while($rowLeeEfectores=mysql_fetch_array($resLeeEfectores)) {
 			$noencontro = FALSE;
 			$nombreefector = utf8_encode($rowLeeEfectores['nombre']);
-			if($idpersoneria==4) {
+			if($idpersoneria==4 || $idpersoneria==6) {
 				$circulo = $rowLeeEfectores['circulo'];
 				$fechainical=$rowLeeEfectores['fechainiciocalidad'];
 				if($rowLeeEfectores['fechafincalidad']==NULL) {

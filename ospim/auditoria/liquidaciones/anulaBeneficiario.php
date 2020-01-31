@@ -3,7 +3,7 @@ include($libPath."controlSessionOspim.php");
 $idfactura = 0;
 $idfacturabeneficiarios = 0;
 if(isset($_GET)) {
-	var_dump($_GET);
+	//var_dump($_GET);
 	$idfactura = $_GET['idFactura'];
 	$idfacturabeneficiario = $_GET['idFacturabeneficiario'];
 	try {
@@ -17,7 +17,13 @@ if(isset($_GET)) {
 		$resDeleteFacturasBeneficiarios = $dbh->prepare($sqlDeleteFacturasBeneficiarios);
 		if($resDeleteFacturasBeneficiarios->execute(array(':id' => $idfacturabeneficiario)))
 		$dbh->commit();
-		$pagina = "continuarLiquidacion.php?idfactura=$idfactura";
+		if(isset($_GET['origenAnulacion'])) {
+			if(strcmp($_GET['origenAnulacion'], 'M')==0) {
+				$pagina = "continuarLiquidacionMedicamento.php?idfactura=$idfactura";
+			}
+		} else {
+			$pagina = "continuarLiquidacion.php?idfactura=$idfactura";
+		}
 		header("Location: $pagina");
 	}
 	catch (PDOException $e) {

@@ -15,7 +15,13 @@ if(isset($_GET)) {
 		$resDeleteCarenciasBeneficiarios = $dbh->prepare($sqlDeleteCarenciasBeneficiarios);
 		if($resDeleteCarenciasBeneficiarios->execute(array(':id' => $idcarencia)))
 		$dbh->commit();
-		$pagina = "continuarLiquidacion.php?idfactura=$idcomprobante";
+		if(isset($_GET['origenAnulacion'])) {
+			if(strcmp($_GET['origenAnulacion'], 'M')==0) {
+				$pagina = "continuarLiquidacionMedicamento.php?idfactura=$idcomprobante";
+			}
+		} else {
+			$pagina = "continuarLiquidacion.php?idfactura=$idcomprobante";
+		}
 		header("Location: $pagina");
 	}
 	catch (PDOException $e) {
