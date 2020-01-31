@@ -30,15 +30,30 @@ if ($rowCabecera['debito'] > 0) {
 	
 	$arrayDetalleDebito = array();
 	$i= 0;
-	$sqlDetalleDebito = "SELECT f.id, f.puntodeventa, f.nrocomprobante, 
-	 						    DATE_FORMAT(f.fechacomprobante, '%d-%m-%Y') as fechacomprobante, 
-							    p.codigopractica, fb.nroafiliado, fb.nroorden, fp.motivodebito, fp.totaldebito
-							FROM facturasprestaciones fp, facturasbeneficiarios fb, facturas f, practicas p
-							WHERE fp.idfactura in (SELECT idFactura FROM ordendebitodetalle WHERE nroordenpago = $nroOrden) and 
-								  fp.totaldebito > 0 and
-								  fp.idFacturabeneficiario = fb.id and
-								  fp.idfactura = f.id and
-								  fp.idPractica = p.idpractica";
+	
+	if ($rowCabecera['personeria'] != 6) { 
+		//NO FARMACEUTICOS VE LAS PRACTICAS
+		$sqlDetalleDebito = "SELECT f.id, f.puntodeventa, f.nrocomprobante, 
+		 						    DATE_FORMAT(f.fechacomprobante, '%d-%m-%Y') as fechacomprobante, 
+								    p.codigopractica, fb.nroafiliado, fb.nroorden, fp.motivodebito, fp.totaldebito
+								FROM facturasprestaciones fp, facturasbeneficiarios fb, facturas f, practicas p
+								WHERE fp.idfactura in (SELECT idFactura FROM ordendebitodetalle WHERE nroordenpago = $nroOrden) and 
+									  fp.totaldebito > 0 and
+									  fp.idFacturabeneficiario = fb.id and
+									  fp.idfactura = f.id and
+									  fp.idPractica = p.idpractica";
+	} else {
+		//FARMACEUTICOS VE MEDICAMENTOS
+		$sqlDetalleDebito = "SELECT f.id, f.puntodeventa, f.nrocomprobante,
+									DATE_FORMAT(f.fechacomprobante, '%d-%m-%Y') as fechacomprobante,
+									CONCAT(m.codigo,' ',m.nombre) as codigopractica, fb.nroafiliado, fb.nroorden, fp.motivodebito, fp.totaldebito
+								FROM facturasprestaciones fp, facturasbeneficiarios fb, facturas f, medicamentos m
+								WHERE fp.idfactura in (SELECT idFactura FROM ordendebitodetalle WHERE nroordenpago = $nroOrden) and
+									fp.totaldebito > 0 and
+									fp.idFacturabeneficiario = fb.id and
+									fp.idfactura = f.id and
+									fp.idPractica = m.codigo";
+	}
 	$resDetalleDebito = mysql_query($sqlDetalleDebito,$db);
 	$numDetalleDebito = mysql_num_rows($resDetalleDebito);
 	if ($numDetalleDebito > 0) {
