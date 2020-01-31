@@ -25,7 +25,7 @@ if ($tipopresta != 6) {
 	}
 	$sqlPretaciones .= " WHERE f.idFactura = $id and f.efectorpractica = $idEfector and f.idpractica = p.idpractica";
 } else {
-	$sqlPretaciones = "SELECT m.codigo as codigopractica, f.*, 
+	$sqlPretaciones = "SELECT CONCAT(m.codigo,' ',m.nombre) as codigopractica, f.*, 
 							  DATE_FORMAT(f.fechapractica,'%d/%m/%Y') as fechapractica,
 							  establecimientos.nombre as efector
 						FROM medicamentos m, facturasprestaciones f
