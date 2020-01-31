@@ -60,7 +60,9 @@ if(isset($_GET)) {
 		$cuilBeneficiario = $rowConsultaFamiliar['cuil'];
 		$deleBeneficiario = $rowConsultaFamiliar['codidelega'];
 	}
-
+	$benetotalfacturado = 0.00;
+	$benetotaldebito = 0.00;
+	$benetotalcredito = 0.00;
 	$sqlConsultaFacturasPrestacionesConsumo = "SELECT f.*, m.codigo, m.nombre FROM facturasprestaciones f, medicamentos m WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 3 AND f.idPractica = m.codigo ORDER BY f.id DESC";
 	$resConsultaFacturasPrestacionesConsumo = mysql_query($sqlConsultaFacturasPrestacionesConsumo,$db);
 }
@@ -351,6 +353,24 @@ $(document).ready(function(){
 				filter_hideFilters : false,
 			}
 	});
+	$("#parcialesBeneficiario")
+		.tablesorter({
+			theme: 'blue', 
+			widthFixed: true, 
+			headers: {
+				0:{sorter:false, filter: false},
+				1:{sorter:false, filter: false},
+				2:{sorter:false, filter: false},
+				3:{sorter:false, filter: false},
+				4:{sorter:false, filter: false},
+				5:{sorter:false, filter: false},
+				6:{sorter:false, filter: false},
+				7:{sorter:false, filter: false},
+				8:{sorter:false, filter: false},
+				9:{sorter:false, filter: false}
+			},
+			widgets: ["zebra"], 
+	});
 });
 function consultaPrestador(dire) {
 	a=window.open(dire,'',
@@ -545,6 +565,9 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 		</thead>
 		<tbody>
 		<?php while($rowConsultaFacturasPrestacionesConsumo = mysql_fetch_array($resConsultaFacturasPrestacionesConsumo)) {
+					$benetotalfacturado = $benetotalfacturado + $rowConsultaFacturasPrestacionesConsumo['totalfacturado'];;
+					$benetotaldebito = $benetotaldebito + $rowConsultaFacturasPrestacionesConsumo['totaldebito'];
+					$benetotalcredito = $benetotalcredito + $rowConsultaFacturasPrestacionesConsumo['totalcredito'];
 					if($rowConsultaFacturasPrestacionesConsumo['tipoefectorpractica']==1) {
 						$efectorpractica = $rowConsultaPrestador['nombre'];
 					} else {
@@ -576,6 +599,22 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 				<td><input type="button" name="anulaconsumo" id="anulaconsumo" value="Anular Consumo" style="font-size:10px" onclick="javascript:anulaConsumoCarencia(<?php echo $rowConsultaFacturasPrestacionesConsumo['id'];?>,<?php echo $idfactura;?>,<?php echo $idfacturabeneficiario;?>)"/></td>
 			</tr>
 		<?php } ?>
+		</tbody>
+	</table>
+</div>
+<div align="center">
+	<table id="parcialesBeneficiario" class="tablesorter" style="font-size:14px; text-align:center">
+		<thead>
+			<tr>
+				<th colspan="3">Parciales Beneficiario</th>
+			</tr>
+			<tr>
+				<th>Facturado: <?php echo $benetotalfacturado;?></th>
+				<th>Debito: <?php echo $benetotaldebito;?></th>
+				<th>Credito: <?php echo $benetotalcredito;?></th>
+			</tr>
+		</thead>
+		<tbody>
 		</tbody>
 	</table>
 </div>
