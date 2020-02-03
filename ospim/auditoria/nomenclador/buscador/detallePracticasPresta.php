@@ -6,7 +6,8 @@ $sqlNombrePractica = "SELECT codigopractica, descripcion FROM practicas WHERE id
 $resNombrePractica = mysql_query($sqlNombrePractica,$db);
 $rowNombrePractica = mysql_fetch_array($resNombrePractica);
 
-$sqlPracticas = "SELECT pr.*, det.*, presta.codigoprestador, presta.nombre, presta.cuit, nom.nombre as nombrenomenclador, pc.descripcion
+$sqlPracticas = "SELECT cab.idcontrato as idcontrato, pr.*, det.*, presta.codigoprestador, presta.nombre, 
+						presta.cuit, nom.nombre as nombrenomenclador, pc.descripcion
 				 FROM
 					cabcontratoprestador cab,
 					detcontratoprestador det,
@@ -76,13 +77,14 @@ if ($catPracticas > 0) {
   <h3>Listado de Prestadores que contiene la Práctica </h3>
   <h3><?php echo $rowNombrePractica['codigopractica']." - ".$rowNombrePractica['descripcion'] ?></h3>
   <?php if (sizeof($resultado) > 0) { ?>
-	  <table style="text-align:center; width:1000px" id="prestadores" class="tablesorter" >
+	  <table style="text-align:center; width:95%" id="prestadores" class="tablesorter" >
 		 <thead>
 		   <tr>
 			 <th>Código Prestador</th>
 			 <th>Nombre / Razón Social</th>
 			 <th>C.U.I.T.</th>
 			 <th>Nomenclador</th>
+			 <th>Id Contrato</th>
 			 <th>Categoria</th>
 			 <th>Modulo Consultorio ($)</th>
 			 <th>Modulo Urgencia ($)</th>
@@ -100,6 +102,7 @@ if ($catPracticas > 0) {
 				 <td><?php echo $practica['nombre'] ?></td>
 				 <td><?php echo $practica['cuit'] ?></td>
 				 <td><?php echo $practica['nombrenomenclador'] ?></td>
+				 <td><?php echo $practica['idcontrato'] ?></td>
 				 <td><?php echo $practica['descripcion'] ?></td>
 				 <td><?php echo $practica['moduloconsultorio'] ?></td>
 				 <td><?php echo $practica['modulourgencia'] ?></td>
