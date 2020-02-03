@@ -21,6 +21,7 @@ switch ($modulo) {
 		$entidad = "AFILIADO";
 		break;
 	case "FACTURACION":
+	case "PRESTADORES":
 		$arrayExistencia[0] = "SELECT nombre FROM prestadores WHERE cuit = $valor";
 		$entidad = "PRESTADOR";
 		break;

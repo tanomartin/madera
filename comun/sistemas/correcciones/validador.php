@@ -60,12 +60,16 @@ switch ($modulo) {
 		break;
 	case "FACTURACION":
 		$arrayExistencia[0] = "SELECT * FROM prestadores WHERE cuit = $dato1";
-		$error = "NO EXISTE PRESATDOR CON C.U.I.T. '$dato1'";
+		$arrayExistencia[1] = "SELECT * FROM facturas WHERE id = $dato2";
+		$error = "NO EXISTE PRESTADOR CON C.U.I.T. '$dato1' O NO EXISTE FACUTRA CON EL ID '$dato2'";
 		break;
 	case "AUTORIZACIONES":	
 		$arrayExistencia[0] = "SELECT * FROM autorizaciones WHERE nrosolicitud = $dato1";
 		$error = "NO EXISTE AUTORIZCION CON Nro. Solicitud '$dato1' PARA SER CORREGIDA";
 		break;
+	case "PRESTADORES":
+		$arrayExistencia[0] = "SELECT * FROM prestadores WHERE cuit = $dato1";
+		$error = "NO EXISTE PRESTADOR CON C.U.I.T. '$dato1'";
 }
 
 if ($modulo != "GENERICO") {
@@ -74,8 +78,14 @@ if ($modulo != "GENERICO") {
 		$resExistencia = mysql_query($sqlExistencia,$db);
 		$numExistencia += mysql_num_rows($resExistencia);
 	}	
-	if ($numExistencia == 0) {
-		Header("Location: nuevaCorreccion.php?origen=$origen&error=$error");
+	if ($modulo != "FACTURACION") {
+		if ($numExistencia == 0) {
+			Header("Location: nuevaCorreccion.php?origen=$origen&error=$error");
+		}
+	} else {
+		if ($numExistencia < 2) {
+			Header("Location: nuevaCorreccion.php?origen=$origen&error=$error");
+		}	
 	}
 }
 ?>
@@ -96,22 +106,22 @@ if ($modulo != "GENERICO") {
 </script>
 </head>
 <body onload="formSubmit();" style="background-color: <?php echo $bgcolor ?>">
-<form action="guardarCorreccion.php?origen=<?php echo $origen ?>&modulo=<?php echo $modulo ?>" id="correccion" method="post" style="display: none"> 
-	<input type="text" name="id-<?php echo $modulo ?>" id="id-<?php echo $modulo ?>" value="<?php echo $idmodulo ?>"/>
-<?php if ($dato1 != "") {?>
-		<input type="text" name="dato1-<?php echo $modulo ?>" id="dato1-<?php echo $modulo ?>" value="<?php echo $dato1 ?>"/>
-<?php } 
-	  if ($dato2 != "") {?>
-		<input type="text" name="dato2-<?php echo $modulo ?>" id="dato2-<?php echo $modulo ?>" value="<?php echo $dato2 ?>"/>
-<?php } 
-	  if ($dato3 != "") { ?>
-		<input type="text" name="dato3-<?php echo $modulo ?>" id="dato3-<?php echo $modulo ?>" value="<?php echo $dato3 ?>"/>
-<?php }
-	  if ($dato4 != "") { ?>
-		<input type="text" name="dato4-<?php echo $modulo ?>" id="dato4-<?php echo $modulo ?>" value="<?php echo $dato4 ?>"/>
-<?php } ?>
-	<input type="text" name="motivo-<?php echo $modulo ?>" id="motivo-<?php echo $modulo ?>" value="<?php echo $idMotivo ?>"/>
-	<textarea rows="6" cols="100" name="obs-<?php echo $modulo ?>" id="obs-<?php echo $modulo ?>"><?php echo $observacion ?></textarea>
-</form> 
+	<form action="guardarCorreccion.php?origen=<?php echo $origen ?>&modulo=<?php echo $modulo ?>" id="correccion" method="post" style="display: none"> 
+		<input type="text" name="id-<?php echo $modulo ?>" id="id-<?php echo $modulo ?>" value="<?php echo $idmodulo ?>"/>
+	<?php if ($dato1 != "") {?>
+			<input type="text" name="dato1-<?php echo $modulo ?>" id="dato1-<?php echo $modulo ?>" value="<?php echo $dato1 ?>"/>
+	<?php } 
+		  if ($dato2 != "") {?>
+			<input type="text" name="dato2-<?php echo $modulo ?>" id="dato2-<?php echo $modulo ?>" value="<?php echo $dato2 ?>"/>
+	<?php } 
+		  if ($dato3 != "") { ?>
+			<input type="text" name="dato3-<?php echo $modulo ?>" id="dato3-<?php echo $modulo ?>" value="<?php echo $dato3 ?>"/>
+	<?php }
+		  if ($dato4 != "") { ?>
+			<input type="text" name="dato4-<?php echo $modulo ?>" id="dato4-<?php echo $modulo ?>" value="<?php echo $dato4 ?>"/>
+	<?php } ?>
+		<input type="text" name="motivo-<?php echo $modulo ?>" id="motivo-<?php echo $modulo ?>" value="<?php echo $idMotivo ?>"/>
+		<textarea rows="6" cols="100" name="obs-<?php echo $modulo ?>" id="obs-<?php echo $modulo ?>"><?php echo $observacion ?></textarea>
+	</form> 
 </body>
 </html>

@@ -139,11 +139,11 @@ function validar(formulario, modulo) {
 <?php } ?>
   </select>
 <?php if (isset($_GET['error'])) { ?>
-		 <h4>
-		 	<font color="black">NO SE GENERO EL PEDIDO DE CORRECCION</font></br>
-		 	<font color="brown"><?php echo $_GET['error'] ?></font></br>
-		 	<font color="black">(Revise la información y vuelva a cargar la corrección)</font> 	
-		</h4>	
+		<div>
+		 	<p><font color="black"><b>NO SE GENERO EL PEDIDO DE CORRECCION</b></font></p>
+		 	<p><font color="brown"><b><?php echo $_GET['error'] ?></b></font></p>
+		 	<p><font color="black"><b>(Revise la información y vuelva a cargar la corrección)</b></font></p>
+		</div>
 <?php }
 	  mysql_data_seek( $resModulos, 0 );
 	  while ($rowModulos = mysql_fetch_assoc($resModulos)) { 
