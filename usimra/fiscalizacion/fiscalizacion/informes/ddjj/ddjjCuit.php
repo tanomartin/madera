@@ -22,17 +22,22 @@ if (isset($_GET['tipo'])) {
 <script src="/madera/lib/jquery.js" type="text/javascript"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
 <script src="/madera/lib/funcionControl.js" type="text/javascript"></script>
+<script src="/madera/lib/jquery.blockUI.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 
 jQuery(function($){
 	$("#cuit").mask("99999999999");
 });
 
+function bloquear() {
+	$.blockUI({ message: "<h1>Realizando Busqueda... <br>Esto puede tardar unos segundos.<br> Aguarde por favor</h1>" });
+}
+
 </script>
 </head>
 
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" method="post" action="<?php echo $action ?>">
+<form id="form1" name="form1" method="post" onsubmit="bloquear()" action="<?php echo $action ?>">
   <div align="center">
    	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuddjj.php'" /></p>
   	<h3>Consulta de D.D.J.J. por C.U.I.T. "<?php echo $cartel ?>"</h3>
