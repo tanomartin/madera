@@ -160,7 +160,7 @@ function validar(formulario) {
      </thead>
      <tbody>
        <?php
-			while($rowPracticas = mysql_fetch_array($resPracticas)) { ?>
+			while($rowPracticas = mysql_fetch_assoc($resPracticas)) { ?>
 		   <tr>
 			 <td><?php echo $rowPracticas['codigopractica'];?></td>
 			 <td><?php echo $rowPracticas['nombrenomenclador']; ?></td>

@@ -6,17 +6,6 @@ include($libPath."controlSessionOspim.php"); ?>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <title>.: Nueva Practica :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
 <script src="/madera/lib/jquery.maskedinput.js" type="text/javascript"></script>
@@ -235,7 +224,19 @@ function validarCapituloSubcapitulo(formulario) {
   <p>
     <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNoNomenclado.php'"/>
   </p>
-  <p><span class="Estilo2">Nueva Practica No Nomenclada </span>  </p>
+  <h3>Nueva Practica No Nomenclada </h3>
+  <?php if (isset($_GET['id'])) { 
+  			$idpracticanueva = $_GET['id'];
+  			$sqlPractica = "SELECT p.codigopractica, p.descripcion, t.descripcion as tipo
+					  		FROM practicas p, tipopracticasnomenclador tn, tipopracticas t
+					  		WHERE p.idpractica = $idpracticanueva and 
+					  			  p.tipopractica = tn.id and 
+					  			  tn.idtipo = t.id";
+  			$resPractica = mysql_query($sqlPractica,$db);
+  			$rowPractica = mysql_fetch_assoc($resPractica); ?>
+  			<p><b style="color: blue">Se creó correctamente la practica</b></p>
+  			<p><b style="color: blue">"<?php echo $rowPractica['codigopractica']." - ".$rowPractica['descripcion']." - ".$rowPractica['tipo'] ?>"</b></p>
+  <?php	} ?>
   <form id="form1" name="form1">
   <table width="322" border="0">
       <tr>

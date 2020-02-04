@@ -30,8 +30,9 @@ if ($numExisteCodigo == 0) {
 	
 		//print($sqlInsertPractica."<br>");
 		$dbh->exec($sqlInsertPractica);
+		$lastId = $dbh->lastInsertId();
 		$dbh->commit();
-		$pagina = "../buscador/buscadorPractica.php?dato=$codigoCompleto";
+		$pagina = "nuevaPractica.php?id=$lastId";
 		Header("Location: $pagina"); 
 	}catch (PDOException $e) {
 		$error =  $e->getMessage();
