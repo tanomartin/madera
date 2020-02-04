@@ -20,7 +20,7 @@ include($libPath."controlSessionUsimra.php");  ?>
           </td>
           <td width="200">
           	<p>DDJJ</p>
-            <p><a href="ddjj/ddjjCuit.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
+            <p><a href="ddjj/menuddjj.php"><img src="img/consultas.png" width="90" height="90" border="0" /></a></p>
           </td>
           <td width="200">
           	<p>CUOTAS EXCEPCIONALES</p>

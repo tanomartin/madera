@@ -1,5 +1,18 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
-include($libPath."controlSessionUsimra.php"); ?>
+include($libPath."controlSessionUsimra.php"); 
+
+$action = "ddjjListado.php";
+$cartel = "TODAS";
+if (isset($_GET['tipo'])) {
+	if ($_GET['tipo'] == 'validas') {
+		$action = "ddjjListadoValidas.php";
+		$cartel = "VALIDAS";
+	}
+	if ($_GET['tipo'] == 'novalidas') {
+		$action = "ddjjListadoNoValidas.php";
+		$cartel = "NO VALIDAS";
+	}
+}?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,10 +32,10 @@ jQuery(function($){
 </head>
 
 <body bgcolor="#B2A274">
-<form id="form1" name="form1" method="post" action="ddjjListado.php">
+<form id="form1" name="form1" method="post" action="<?php echo $action ?>">
   <div align="center">
-   	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../moduloInformes.php'" /></p>
-  	<h3>Consulta de D.D.J.J. por C.U.I.T.</h3>
+   	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuddjj.php'" /></p>
+  	<h3>Consulta de D.D.J.J. por C.U.I.T. "<?php echo $cartel ?>"</h3>
   	<p><?php if (isset($_GET['err'])) { 
   				 $err = $_GET['err']; 
 				 if ($err == 1) {
