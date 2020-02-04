@@ -9,7 +9,7 @@ include($libPath."controlSessionUsimra.php"); ?>
 </head>
 <body bgcolor="#B2A274">
 	<div align="center">
-	  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuFiscalizaciones.php'" /></p>
+	  <p><input type="button" name="volver" value="Volver" onclick="location.href = 'moduloInformes.php'" /></p>
 	  <h3>Menú Consultas D.D.J.J. </h3>
 	  <table width="600" border="1" style="text-align: center">
         <tr>
