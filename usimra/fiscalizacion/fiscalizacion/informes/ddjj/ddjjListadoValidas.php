@@ -64,7 +64,7 @@ if ($canEmpresa == 0) {
 </head>
 <body bgcolor="#B2A274">
 <div align="center">
-	<p><input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'ddjjcuit.php?tipo=validas'" /></p>
+	<p><input type="button" name="volver" class="nover" value="Volver" onclick="location.href = 'ddjjCuit.php?tipo=validas'" /></p>
 	<h3>D.D.J.J. Empresa "<?php echo $rowEmpresa['nombre'] ?>" - C.U.I.T.: <?php echo $rowEmpresa['cuit'] ?> (U.S.I.M.R.A.) </h3>
 	<h3>DDJJ Validas</h3>
 	
