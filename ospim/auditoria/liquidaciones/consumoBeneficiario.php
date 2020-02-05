@@ -1403,7 +1403,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 				<td align="right"><strong>Cant. / Unidades</strong></td>
 				<td align="left"><input name="cantidad" type="text" id="cantidad" size="5" value="" maxlength="7"/></td>
 				<td align="right"><strong>Facturado</strong></td>
-				<td align="left"><input name="totalfacturado" type="text" id="totalfacturado" size="5" maxlength="9" value=""/></td>
+				<td align="left"><input name="totalfacturado" type="text" id="totalfacturado" size="5" maxlength="10" value=""/></td>
 				<td align="right"><i id="infototal" style="font-size: 15px" title="" class="ui-icon ui-icon-info"></i></td>
 				<td align="left"><strong>Ref. Valor Total Prestacion</strong><input name="referenciatotal" type="text" id="referenciatotal" size="5" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
 
