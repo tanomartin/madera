@@ -6,12 +6,12 @@ $fechaingreso = $_POST['fechaingreso'];
 $fecharegistroIni = fechaParaGuardar($fechaingreso)." 00:00:00";
 $fecharegistroFin = date('Y-m-d H:i:s',strtotime ('+1 day',strtotime($fecharegistroIni )));
 
-$sqlFacturas = "SELECT f.*, p.nombre, p.codigoprestador, p.cuit, establecimientos.nombre as establecimiento
-					FROM prestadores p, facturas f
+$sqlFacturas = "SELECT f.*, p.nombre, p.codigoprestador, p.cuit, establecimientos.nombre as establecimient, c.descripcioncorta as autori
+					FROM prestadores p, codigoautorizacion c, facturas f
 					LEFT JOIN establecimientos on establecimientos.codigo = f.idestablecimiento
 					WHERE f.fecharegistro >= '$fecharegistroIni' and 
 						  f.fecharegistro < '$fecharegistroFin' and 
-						  f.idPrestador = p.codigoprestador";
+						  f.idPrestador = p.codigoprestador and f.idCodigoautorizacion = c.id";
 $resFacturas = mysql_query($sqlFacturas,$db);
 $canFacturas = mysql_num_rows($resFacturas);
 if ($canFacturas == 0) {
@@ -46,13 +46,13 @@ header("Content-Disposition: attachment; filename=$file"); ?>
 			<tbody>
 			<?php while ($rowFacturas = mysql_fetch_assoc($resFacturas)) {  ?>		
 					 <tr>
-					 	<td><?php echo $rowFacturas['codigoprestador'] ?></td>
+					 	<td><?php echo $rowFacturas['id'] ?></td>
 					 	<td><?php echo $rowFacturas['fecharecepcion'] ?></td>
 					 	<td><?php echo $rowFacturas['idPrestador']." - ".$rowFacturas['nombre'] ?></td>
 					 	<td><?php echo $rowFacturas['cuit'] ?></td>
 					 	<td><?php echo $rowFacturas['puntodeventa']."-".$rowFacturas['nrocomprobante'] ?></td>
 					 	<td><?php echo $rowFacturas['fechacomprobante'] ?></td>
-					 	<td><?php echo $rowFacturas['idCodigoautorizacion']."-".$rowFacturas['nroautorizacion'] ?></td>
+					 	<td><?php echo $rowFacturas['autori']." ".$rowFacturas['nroautorizacion']; ?></td>
 						<td><?php echo $rowFacturas['fechacorreo'] ?></td>
 						<td><?php echo $rowFacturas['diasvencimiento'] ?></td>
 						<td><?php if ($rowFacturas['idestablecimiento'] != 0) { echo $rowFacturas['idestablecimiento']." - ".$rowFacturas['establecimiento']; } ?></td>
