@@ -6,7 +6,7 @@ $fechaingreso = $_POST['fechaingreso'];
 $fecharegistroIni = fechaParaGuardar($fechaingreso)." 00:00:00";
 $fecharegistroFin = date('Y-m-d H:i:s',strtotime ('+1 day',strtotime($fecharegistroIni )));
 
-$sqlFacturas = "SELECT f.*, p.nombre, p.codigoprestador, p.cuit, establecimientos.nombre as establecimient, c.descripcioncorta as autori
+$sqlFacturas = "SELECT f.*, p.nombre, p.codigoprestador, p.cuit, establecimientos.nombre as establecimiento, c.descripcioncorta as autori
 					FROM prestadores p, codigoautorizacion c, facturas f
 					LEFT JOIN establecimientos on establecimientos.codigo = f.idestablecimiento
 					WHERE f.fecharegistro >= '$fecharegistroIni' and 
