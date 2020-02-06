@@ -55,7 +55,7 @@ header("Content-Disposition: attachment; filename=$file"); ?>
 					 	<td><?php echo $rowFacturas['idCodigoautorizacion']."-".$rowFacturas['nroautorizacion'] ?></td>
 						<td><?php echo $rowFacturas['fechacorreo'] ?></td>
 						<td><?php echo $rowFacturas['diasvencimiento'] ?></td>
-						<td><?php echo $rowFacturas['idestablecimiento']." - ".$rowFacturas['establecimiento'] ?></td>
+						<td><?php if ($rowFacturas['idestablecimiento'] != 0) { echo $rowFacturas['idestablecimiento']." - ".$rowFacturas['establecimiento']; } ?></td>
 						<td><?php echo number_format($rowFacturas['importecomprobante'],2,',','.'); ?></td>
 						<td><?php echo $rowFacturas['usuarioregistro'] ?></td>
 					 </tr>
