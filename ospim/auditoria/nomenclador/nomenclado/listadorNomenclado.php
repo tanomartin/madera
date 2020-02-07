@@ -54,7 +54,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "getCapitulos.php",
+			url: "../lib/getCapitulos.php",
 			data: {valor:valor},
 		}).done(function(respuesta){
 			if (valor != 0) {
@@ -88,7 +88,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "getSubCapitulos.php",
+			url: "../lib/getSubCapitulos.php",
 			data: {valor:valor[0]},
 		}).done(function(respuesta){
 			if (respuesta != 0) {

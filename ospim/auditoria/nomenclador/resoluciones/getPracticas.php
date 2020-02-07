@@ -6,8 +6,6 @@ if(isset($_POST['resolucion'])) {
 					 <th>Descripciones</th>
 					 <th>Modulo</th>
        			</tr></thead><tbody>";
-
-	
 	$sqlPractica="SELECT pv.*, p.codigopractica, p.descripcion FROM practicasvaloresresolucion pv, practicas p 
 					WHERE pv.idresolucion = $reso and pv.idpractica = p.idpractica
 					ORDER BY p.codigopractica";

@@ -25,11 +25,10 @@ if(isset($_POST['tipo'])) {
 	} else {
 		$codigoPropuesto = '01';
 	}
-	$respuesta = "<p><span class='Estilo2'>Carga Nuevo Capitulo</span></p>
-					 <p>Codigo Capitulo: <input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/></p>
-					 <label> <input type='text' id='tipo' name='tipo' value='$tipo' size='4' readonly style='visibility:hidden'/>
-					  		  Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea>
-					 </label>
+	$respuesta = "<h3>Carga Nuevo Capitulo</h3>
+					 <p><b>Codigo Capitulo:</b> <input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/></p>
+					 <input type='text' id='tipo' name='tipo' value='$tipo' size='4' style='display:none'/>
+					 <p><b>Descripcion:</b> <textarea id='descri' name='descri' cols='100' rows='3'></textarea></p>
 					 <p><input type='submit' name='Submit' value='Guardar' sub/></p>";
 	echo $respuesta;
 }

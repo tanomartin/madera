@@ -1,4 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']."/madera/lib/controlSessionOspim.php"); 
+$idNomenclador = $_GET['codigo'];
+$nomenclador = $_GET['nombre'];
 $i=0;
 $sqlUpdatePractica = array();
 foreach($_POST as $key => $value) {
@@ -34,7 +36,7 @@ try {
 	}
 	
 	$dbh->commit();
-	$pagina = "menuNomenclado.php";
+	$pagina = "cargarPropiedades.php?codigo=$idNomenclador&nombre=$nomenclador&guardado=0";
 	Header("Location: $pagina"); 
 }catch (PDOException $e) {
 	$error =  $e->getMessage();

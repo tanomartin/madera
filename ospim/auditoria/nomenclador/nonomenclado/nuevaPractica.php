@@ -42,7 +42,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "getCapitulos.php",
+			url: "../lib/getCapitulos.php",
 			data: {valor:valor, tipo:valor},
 		}).done(function(respuesta){
 			if (valor != 0) {
@@ -83,7 +83,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "getSubCapitulos.php",
+			url: "../lib/getSubCapitulos.php",
 			data: {valor:valor[0], tipo:tipo},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
@@ -174,41 +174,58 @@ function deshabilitarNuevoSub(valor) {
 function validarPractica(formulario) {
 	var codigo = formulario.codigo.value;
 	var tipo =  formulario.tipo.value;
-	if(esEnteroPositivo(codigo)) {
-		if((codigo < 1 || codigo > 99) && tipo != -1) {
-			alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para este tipo de practica");
-			return false;
-		}
-		if((codigo < 1 || codigo > 10000) && tipo == -1) {
-			alert("Debe ingresar un codigo de cuatro digitos entre 1 y 10000 para este tipo de practica");
+	if (codigo != "") {
+		if(esEnteroPositivo(codigo)) {
+			if((codigo < 1 || codigo > 99) && tipo != -1) {
+				alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para este tipo de practica");
+				return false;
+			}
+			if((codigo < 1 || codigo > 10000) && tipo == -1) {
+				alert("Debe ingresar un codigo de cuatro digitos entre 1 y 10000 para este tipo de practica");
+				return false;
+			}
+		} else {
+			alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para la practica");
 			return false;
 		}
 	} else {
-		alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para la practica");
+		alert("Debe ingresar un codigo para la practica");
 		return false;
 	}
 	if(formulario.descri.value == "") {
 		alert("Debe ingresar una descripción para la practica");
 		return false;
 	}
-	
+	if (formulario.complejidad.value == 0) {
+		alert("Debe especificar la si aplica o no la resolucion 650");
+		return false;
+	}
+	if (formulario.internacion.value == "") {
+		alert("Debe especificar si la practica es una internación o no");
+		return false;
+	}
 	formulario.Submit.disabled = true;
 	return true;
 }
 
 function validarCapituloSubcapitulo(formulario) {
 	var codigo = formulario.codigo.value;
-	if(esEnteroPositivo(codigo)) {
-		if(codigo < 0 || codigo > 99) {
-			alert("Debe ingresar un codigo de dos digitos entre 00 y 99 para este tipo de practica");
+	if (codigo != "") {
+		if(esEnteroPositivo(codigo)) {
+			if(codigo < 0 || codigo > 99) {
+				alert("Debe ingresar un codigo de dos digitos entre 00 y 99 para este tipo de practica");
+				return false;
+			}
+		} else {
+			alert("Debe ingresar un codigo de dos digitos entre 00 y 99 para la practica");
 			return false;
 		}
 	} else {
-		alert("Debe ingresar un codigo de dos digitos entre 00 y 99 para la practica");
+		alert("Debe ingresar un codigo para el capitulo o subcapitulo a guardar");
 		return false;
 	}
 	if(formulario.descri.value == "") {
-		alert("Debe ingresar una descripción para la practica");
+		alert("Debe ingresar una descripción del capitulo o subcapitulo a guardar");
 		return false;
 	}
 	formulario.Submit.disabled = true;

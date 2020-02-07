@@ -60,28 +60,29 @@ if(isset($_POST['valor']) && isset($_POST['tipo'])) {
 	}
 	
 	if ($codigo == -1) {
-		$inptuCodigo = "<p>Codigo Practica: <input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='4'/></p>";
+		$inptuCodigo = "<p><b>Codigo Practica: </b><input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='4'/></p>";
 	} else {
 		$padre = $_POST['padre'];
 		$inptuCodigo = "<p>
-							Codigo Practica: <b>$codigo</b>.<input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/>
+							<b>Codigo Practica: $codigo.</b><input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/>
 							<input type='text' id='padre' name='padre' value='$padre' size='4' readonly style='visibility:hidden'/>
 						</p>";
 	}
-	$respuesta = "<p><span class='Estilo2'>Carga Nueva Practica</span></p>
+	$respuesta = "<h3>Carga Nueva Practica</h3>
 				  $inptuCodigo
-				  <input type='text' id='tipopractica' name='tipopractica' value='$tipo' size='2' readonly style='visibility:hidden'/>	
-				  <input type='text' id='tipo' name='tipo' value='$codigo' size='4' readonly style='visibility:hidden'/>
-				  <label> Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea> </label>
-				  <p> Complejidad: <select name=\"complejidad\" id=\"complejidad\">";
+				  <input type='text' id='tipopractica' name='tipopractica' value='$tipo' size='2' style='display:none'/>	
+				  <input type='text' id='tipo' name='tipo' value='$codigo' size='4' style='display:none'/>
+				  <p><b>Descripcion:</b> <textarea id='descri' name='descri' cols='100' rows='3'></textarea> </label>
+				  <p><b>Complejidad:</b> <select name=\"complejidad\" id=\"complejidad\">";
 				  while ($complejidad = current($tipoComplejidad)) {
 						$respuesta.="<option value=".key($tipoComplejidad).">".$complejidad."</option>";
 						next($tipoComplejidad);
 				  }
 				  $respuesta.= "</select></p>
-				  <p> Interancion: 
+				  <p><b>Interancion: </b>
 				  		<select name=\"internacion\" id=\"internacion\">
-				  	 		<option value=0 selected>NO</opction>
+				  			<option value='' selected>Seleccion</opction> 
+				  	 		<option value=0>NO</opction>
 				  			<option value=1>SI</opction>
 				  		</select>
 				  </p>

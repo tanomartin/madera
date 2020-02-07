@@ -6,11 +6,6 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 	$respuesta = "<thead><tr>
          			 <th>C&oacute;digo</th>
 					 <th>Descripciones</th>
-					 <th>U. Honorarios</th>
-					 <th>U. Honorarios Especialista</th>
-					 <th>U. Honorarios Ayudante</th>
-			 		 <th>U. Honorarios Anestesista</th>
-			  		 <th>U. Gastos</th>
 					 <th>Clasificacion<br>Res. 650</th>
 					 <th>Interancion</th>
        			</tr></thead><tbody>";
@@ -48,11 +43,6 @@ if(isset($_POST['valor']) && isset($_POST['tipo']) && isset($_POST['nomenclador'
 		$respuesta.="<tr>
 						<td><input name=\"idpractica".$i."\" id=\"idpractica".$i."\" type=\"text\" value=\"".$rowPractica['idpractica']."\" style=\"display: none\" />".$rowPractica['codigopractica']."</td>
 						<td>".$rowPractica['descripcion']."</td>
-						<td>".$rowPractica['unihonorario']."</td>
-						<td>".$rowPractica['unihonorarioespecialista']."</td>
-						<td>".$rowPractica['unihonorarioayudante']."</td>
-						<td>".$rowPractica['unihonorarioanestesista']."</td>
-						<td>".$rowPractica['unigastos']."</td>
 						<td><select name=\"complejidad".$i."\" id=\"complejidad".$i."\">";
 						foreach ($tipoComplejidad as $key => $complejidad) {
 							$selected = "";

@@ -23,12 +23,11 @@ if(isset($_POST['tipo'])) {
 	}	
 	$difCodigos = array_diff($codigosHabilitados, $codigosUsados);
 	$codigoPropuesto = current($difCodigos);
-	$respuesta = "<p><span class='Estilo2'>Carga Nuevo SubCapitulo</span></p>
-				  <p>Codigo Capitulo: <b> $codCap. </b> <input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/></p>
-				  <label> <input type='text' id='codcapitulo' name='codcapitulo' value='$codCap' size='4' readonly style='visibility:hidden'/>
-				  		  <input type='text' id='idcapitulo' name='idcapitulo' value='$idCap' size='4' readonly style='visibility:hidden'/>	
-				  		  Descripcion: <textarea id='descri' name='descri' cols='100' rows='3'></textarea>
-				  </label>
+	$respuesta = "<h3>Carga Nuevo SubCapitulo</h3>
+				  <p><b>Codigo Capitulo: $codCap. </b> <input type='text' id='codigo' name='codigo' value='$codigoPropuesto' size='2'/></p>
+				  <input type='text' id='codcapitulo' name='codcapitulo' value='$codCap' size='4' style='display:none'/>
+				  <input type='text' id='idcapitulo' name='idcapitulo' value='$idCap' size='4' style='display:none'/>	
+				  <p><b>Descripcion:</b> <textarea id='descri' name='descri' cols='100' rows='3'></textarea></p>
 				  <p><input type='submit' name='Submit' value='Guardar' sub/></p>";
 	echo $respuesta;
 }

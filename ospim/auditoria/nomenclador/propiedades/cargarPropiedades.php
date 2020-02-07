@@ -1,25 +1,13 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php"); 
 $idNomenclador = $_GET['codigo'];
-$nomenclador = $_GET['nombre'];
-?>
+$nomenclador = $_GET['nombre']; ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>.: Carga de Valores Nomenclador Nacional :.</title>
-
-<style>
-A:link {text-decoration: none;color:#0033FF}
-A:visited {text-decoration: none}
-A:hover {text-decoration: none;color:#00FFFF }
-.Estilo2 {
-	font-weight: bold;
-	font-size: 18px;
-}
-</style>
-
+<title>.: Carga de Propiedades :.</title>
 <link rel="stylesheet" href="/madera/lib/jquery.tablesorter/themes/theme.blue.css"/>
 <script src="/madera/lib/jquery.js"></script>
 <script src="/madera/lib/jquery-ui.min.js"></script>
@@ -56,6 +44,7 @@ $(function() {
 	
 jQuery(function($){	
 	$("#tipo").change(function(){
+		$('#cartelguardado').html('')
 		$("#capitulo").html("<option value='0'>Seleccione Capitulo</option>");
 		$("#capitulo").prop("disabled",true);
 		$("#subcapitulo").html("<option value='0'>Seleccione SubCapitulo</option>");
@@ -71,7 +60,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "getCapitulos.php",
+			url: "../lib/getCapitulos.php",
 			data: {valor:valor},
 		}).done(function(respuesta){
 			if (valor != 0) {
@@ -85,11 +74,13 @@ jQuery(function($){
 						url: "getPracticasPropiedades.php",
 						data: {valor:-1, tipo:valor, nomenclador:nomenclador},
 					}).done(function(respuesta){
-						$("#practicas").html(respuesta);
-						$("#res650total").prop("disabled",false);
-						$("#intetotal").prop("disabled",false);
-						$("#guardar").prop("disabled",false);	
-						$("#guardar").css("display", "block");
+						if (respuesta != 0) {
+							$("#practicas").html(respuesta);
+							$("#res650total").prop("disabled",false);
+							$("#intetotal").prop("disabled",false);
+							$("#guardar").prop("disabled",false);	
+							$("#guardar").css("display", "block");
+						}
 					});
 				}
 			}
@@ -112,7 +103,7 @@ jQuery(function($){
 		$.ajax({
 			type: "POST",
 			dataType: 'html',
-			url: "getSubCapitulos.php",
+			url: "../lib/getSubCapitulos.php",
 			data: {valor:valor[0]},
 		}).done(function(respuesta){
 			if (respuesta != 0) {
@@ -224,11 +215,10 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-  <p>
-    <input type="button" name="volver" value="Volver" onclick="location.href = 'menuNomenclado.php'" />
-  </p>
-  <p><span class="Estilo2">Carga de Valores del Nomenclador <?php echo $nomenclador ?> </span>  </p>
-  <form id="form1" name="form1" method="post" onsubmit="return validar(this)" action="guardarPropiedadesNomenclado.php">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuNomenclador.php'" /></p>
+  <h3>Carga de Valores del Nomenclador <?php echo $nomenclador ?> </h3>
+  <label id="cartelguardado"><?php if (isset($_GET['guardado'])) { ?><b style="color: blue">Se guardaron correctamente las propiedades en las practicas seleccionadas</b> <?php } ?></label>
+  <form id="cargaPropiedades" name="cargaPropiedades" method="post" onsubmit="return validar(this)" action="guardarPropiedades.php?codigo=<?php echo $idNomenclador ?>&nombre=<?php echo $nomenclador ?>">
     <input type="text" id="nomenclador" name="nomenclador" value="<?php echo $idNomenclador?>" style="display: none"/>
     <p>
       <select name="tipo" id="tipo">
