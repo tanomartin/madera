@@ -101,6 +101,7 @@ $(document).ready(function(){
 	$("#galenoAyudante").inputmask('decimal', {digits: 2});
 	$("#galenoAnestesista").inputmask('decimal', {digits: 2});
 	$("#galenoGastos").inputmask('decimal', {digits: 2});
+	$("#ambulatorioOtros").inputmask('decimal', {digits: 2});
 	$("#internacionLaboratorio").inputmask('decimal', {digits: 2});
 	$("#internacionMedicamentos").inputmask('decimal', {digits: 2});
 	$("#internacionDescartables").inputmask('decimal', {digits: 2});
@@ -109,9 +110,11 @@ $(document).ready(function(){
 	$("#referenciaunitario").inputmask('decimal', {digits: 2});
 	$("#referenciaacreditacion").inputmask('decimal', {digits: 2});
 	$("#referenciaconformado").inputmask('decimal', {digits: 2});
+	$("#referenciaambulatorio").inputmask('decimal', {digits: 2});
 	$("#referenciainternacion").inputmask('decimal', {digits: 2});
 	$("#referenciacoseguro").inputmask('decimal', {digits: 2});
 	$("#cantidad").inputmask('decimal', {digits: 3});
+	$("#referenciagastos").inputmask('decimal', {digits: 2});
 	$("#referenciatotal").inputmask('decimal', {digits: 2});
 	$("#totalfacturado").inputmask('decimal', {digits: 2});
 	$("#totaldebito").inputmask('decimal', {digits: 2});
@@ -129,6 +132,8 @@ $(document).ready(function(){
 	$("#acreditacioncalidad").attr('disabled', true);
 	$("#importeAcreditacion").val('');
 	$("#importeAcreditacion").attr('disabled', true);
+	$("#gastosambulatorio").prop("checked",false);
+	$("#ambulatorioOtros").attr('disabled', true);
 	$("#gastosinternacion").prop("checked",false);
 	$("#internacionLaboratorio").attr('disabled', true);
 	$("#internacionMedicamentos").attr('disabled', true);
@@ -149,8 +154,12 @@ $(document).ready(function(){
 	$("#cueescuelaintegracion").attr('disabled', true);
 	$("#agregarprestacion").attr('disabled', true);
 	$("#agregarcarencia").attr('disabled', true);
-	var infoconformado = 'Info';
+	var infoconformado = 'Info: Valor Unitario de la Prestacion menos Valor de Items Seleccionados que coforman el Galeno (si corresponde), menos Valor Coseguro (si corresponde).';
 	$('#infoconformado').attr('title', infoconformado);
+	var infogastos = 'Info: Valor de Gasto Ambulatorio o de Gastos Internacion segun corresponda, mas Valor de Acreditacion de Calidad (si corresponde).';
+	$('#infogastos').attr('title', infogastos);
+	var infototal = 'Info: Ref. Valor Unitario Prestacion por Cantidad/Unidades, mas Ref. Valor Total Gastos.';
+	$('#infototal').attr('title', infototal);
 	var personeria = $("#personeria").val();
 	$("#estadisticas").hide();
 	$("#computoautomatico").hide();
@@ -222,6 +231,7 @@ $(document).ready(function(){
 			$("#referenciaconformado").val('');
 			$("#referenciainternacion").val('');
 			$("#referenciacoseguro").val('0.00');
+			$("#referenciagastos").val('0.00');
 			$("#referenciatotal").val('');
 			$("#totalfacturado").val('');
 			$("#totaldebito").val('');
@@ -237,19 +247,12 @@ $(document).ready(function(){
 			} else {
 				$("#efectorpractica").attr('disabled', true);
 			}
-			infoconformado = infoconformado.replace(': Prestacion','');
-			infoconformado = infoconformado.replace(': Conformacion Galeno','');
-			infoconformado = infoconformado.replace(' + Acreditacion Calidad','');
-			infoconformado = infoconformado.replace(' + Coseguro','');
-			$('#infoconformado').attr('title', infoconformado);
 			if(idpracticadevuelta==null) {
 				$("#agregarcarencia").attr('disabled', false);
 				$("#agregarprestacion").attr('disabled', true);
 			} else {
 				$("#referenciaunitario").val(ui.item.valor);
 				$("#referenciaconformado").val(ui.item.valor);
-				infoconformado = infoconformado+': Prestacion';
-				$('#infoconformado').attr('title', infoconformado);
 				if(referenciadevuelto==0.00) {
 					$("#agregarcarencia").attr('disabled', false);
 					$("#agregarprestacion").attr('disabled', true);
@@ -259,9 +262,6 @@ $(document).ready(function(){
 				}
 			}
 			if(galenodevuelto==1) {
-				infoconformado = infoconformado.replace(': Prestacion','');
-				infoconformado = infoconformado+': Conformacion Galeno';
-				$('#infoconformado').attr('title', infoconformado);
 				$("#honorario").prop("checked",true);
 				$("#galenoHonorario").val(ui.item.honorario);
 				$("#especialista").prop("checked",true);
@@ -274,7 +274,6 @@ $(document).ready(function(){
 				$("#galenoGastos").val(ui.item.gastos);
 				$("#conformaciongaleno").css('display', '');
 			} else {
-				$('#infoconformado').attr('title', infoconformado);
 				$("#honorario").prop("checked",false);
 				$("#galenoHonorario").val('');
 				$("#especialista").prop("checked",false);
@@ -288,6 +287,10 @@ $(document).ready(function(){
 				$("#conformaciongaleno").css('display', 'none');
 			}
 			if(internaciondevuelto==1) {
+				$("#gastosambulatorio").prop("checked",false);
+				$("#gastosambulatorio").attr('disabled', true);
+				$("#ambulatorioOtros").attr('disabled', true);
+				$("#ambulatorio").css('display', 'none');
 				$("#gastosinternacion").prop("checked",false);
 				$("#gastosinternacion").attr('disabled', false);
 				$("#internacionLaboratorio").attr('disabled', true);
@@ -296,6 +299,10 @@ $(document).ready(function(){
 				$("#internacionOtros").attr('disabled', true);
 				$("#internacion").css('display', '');
 			} else {
+				$("#gastosambulatorio").prop("checked",false);
+				$("#gastosambulatorio").attr('disabled', false);
+				$("#ambulatorioOtros").attr('disabled', true);
+				$("#ambulatorio").css('display', '');
 				$("#gastosinternacion").prop("checked",false);
 				$("#gastosinternacion").attr('disabled', true);
 				$("#internacionLaboratorio").attr('disabled', true);
@@ -305,7 +312,6 @@ $(document).ready(function(){
 				$("#internacion").css('display', 'none');
 			}
 			if(cosegurodevuelto!=0.00) {
-				infoconformado = infoconformado+' + Coseguro';
 				$("#incluyecoseguro").prop("checked",false);
 				$("#incluyecoseguro").attr('disabled', false);
 				$("#valorCoseguro").val(cosegurodevuelto);
@@ -471,16 +477,14 @@ $(document).ready(function(){
 				$("#efectorprofesional").attr('disabled', true);
 			}
 			if(tienecalidad==1) {
-				infoconformado = infoconformado+' + Acreditacion Calidad';
-				$('#infoconformado').attr('title', infoconformado);
 				var valoracreditacion = (parseFloat($("#referenciaconformado").val()) * 1.07) -  parseFloat($("#referenciaconformado").val());
 				$("#acreditacioncalidad").attr('disabled', false);
 				$("#acreditacioncalidad").prop("checked",true);
 				$("#importeAcreditacion").attr('disabled', false);
 				$("#importeAcreditacion").val(valoracreditacion);
 				$("#referenciaacreditacion").val(valoracreditacion);
-				var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciaacreditacion").val());
-				$("#referenciaconformado").val(valorconformado);
+				var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciaacreditacion").val());
+				$("#referenciagastos").val(valorconformado);
 				$("#calidadestablecimiento").css('display', '');
 			} else {
 				$("#acreditacioncalidad").prop("checked",false);
@@ -566,10 +570,48 @@ $(document).ready(function(){
 		$("#motivodebito").val('');
 		$("#motivodebito").attr('disabled', true);
 	});
+	$("#gastosambulatorio").change(function(){
+		if($("#gastosambulatorio").prop('checked') ) {
+			$("#ambulatorioOtros").val('0.00');
+			$("#ambulatorioOtros").attr('disabled', false);
+			$("#referenciaambulatorio").val('0.00');
+			var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciaambulatorio").val());
+			$("#referenciagastos").val(valorconformado);
+		} else {
+			$("#ambulatorioOtros").val('0.00');
+			$("#ambulatorioOtros").attr('disabled', true);
+			var valorconformado = parseFloat($("#referenciagastos").val()) - parseFloat($("#referenciaambulatorio").val());
+			$("#referenciaambulatorio").val('0.00');
+			$("#referenciagastos").val(valorconformado);
+		}
+		$("#cantidad").val('');
+		$("#referenciatotal").val('');
+		$("#totalfacturado").val('');
+		$("#totaldebito").val('');
+		$("#totalcredito").val('');
+		$("#motivodebito").val('');
+		$("#motivodebito").attr('disabled', true);
+	});
+	$("#ambulatorioOtros").change(function(){
+		if($("#ambulatorioOtros").val()=='') {
+			$("#ambulatorioOtros").val('0.00');
+		}
+		var valorconformado = parseFloat($("#referenciagastos").val()) - parseFloat($("#referenciaambulatorio").val());
+		$("#referenciagastos").val(valorconformado);
+		var nuevovalor = parseFloat($("#ambulatorioOtros").val());
+		$("#referenciaambulatorio").val(nuevovalor);
+		var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciaambulatorio").val());
+		$("#referenciagastos").val(valorconformado);
+		$("#cantidad").val('');
+		$("#referenciatotal").val('');
+		$("#totalfacturado").val('');
+		$("#totaldebito").val('');
+		$("#totalcredito").val('');
+		$("#motivodebito").val('');
+		$("#motivodebito").attr('disabled', true);
+	});
 	$("#gastosinternacion").change(function(){
 		if($("#gastosinternacion").prop('checked') ) {
-			infoconformado = infoconformado+' + Gastos Internacion';
-			$('#infoconformado').attr('title', infoconformado);
 			$("#internacionLaboratorio").val('0.00');
 			$("#internacionLaboratorio").attr('disabled', false);
 			$("#internacionMedicamentos").val('0.00');
@@ -579,11 +621,9 @@ $(document).ready(function(){
 			$("#internacionOtros").val('0.00');
 			$("#internacionOtros").attr('disabled', false);
 			$("#referenciainternacion").val('0.00');
-			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
-			$("#referenciaconformado").val(valorconformado);
+			var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciainternacion").val());
+			$("#referenciagastos").val(valorconformado);
 		} else {
-			infoconformado = infoconformado.replace(' + Gastos Internacion','');
-			$('#infoconformado').attr('title', infoconformado);
 			$("#internacionLaboratorio").val('0.00');
 			$("#internacionLaboratorio").attr('disabled', true);
 			$("#internacionMedicamentos").val('0.00');
@@ -592,9 +632,9 @@ $(document).ready(function(){
 			$("#internacionDescartables").attr('disabled', true);
 			$("#internacionOtros").val('0.00');
 			$("#internacionOtros").attr('disabled', true);
-			var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
+			var valorconformado = parseFloat($("#referenciagastos").val()) - parseFloat($("#referenciainternacion").val());
 			$("#referenciainternacion").val('0.00');
-			$("#referenciaconformado").val(valorconformado);
+			$("#referenciagastos").val(valorconformado);
 		}
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
@@ -608,12 +648,12 @@ $(document).ready(function(){
 		if($("#internacionLaboratorio").val()=='') {
 			$("#internacionLaboratorio").val('0.00');
 		}
-		var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
-		$("#referenciaconformado").val(valorconformado);
+		var valorconformado = parseFloat($("#referenciagastos").val()) - parseFloat($("#referenciainternacion").val());
+		$("#referenciagastos").val(valorconformado);
 		var nuevovalor = parseFloat($("#internacionLaboratorio").val()) + parseFloat($("#internacionMedicamentos").val()) + parseFloat($("#internacionDescartables").val()) + parseFloat($("#internacionOtros").val());
 		$("#referenciainternacion").val(nuevovalor);
-		var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
-		$("#referenciaconformado").val(valorconformado);
+		var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciainternacion").val());
+		$("#referenciagastos").val(valorconformado);
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -626,12 +666,12 @@ $(document).ready(function(){
 		if($("#internacionMedicamentos").val()=='') {
 			$("#internacionMedicamentos").val('0.00');
 		}
-		var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
-		$("#referenciaconformado").val(valorconformado);
+		var valorconformado = parseFloat($("#referenciagastos").val()) - parseFloat($("#referenciainternacion").val());
+		$("#referenciagastos").val(valorconformado);
 		var nuevovalor = parseFloat($("#internacionLaboratorio").val()) + parseFloat($("#internacionMedicamentos").val()) + parseFloat($("#internacionDescartables").val()) + parseFloat($("#internacionOtros").val());
 		$("#referenciainternacion").val(nuevovalor);
-		var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
-		$("#referenciaconformado").val(valorconformado);
+		var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciainternacion").val());
+		$("#referenciagastos").val(valorconformado);
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -644,12 +684,12 @@ $(document).ready(function(){
 		if($("#internacionDescartables").val()=='') {
 			$("#internacionDescartables").val('0.00');
 		}
-		var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
-		$("#referenciaconformado").val(valorconformado);
+		var valorconformado = parseFloat($("#referenciagastos").val()) - parseFloat($("#referenciainternacion").val());
+		$("#referenciagastos").val(valorconformado);
 		var nuevovalor = parseFloat($("#internacionLaboratorio").val()) + parseFloat($("#internacionMedicamentos").val()) + parseFloat($("#internacionDescartables").val()) + parseFloat($("#internacionOtros").val());
 		$("#referenciainternacion").val(nuevovalor);
-		var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
-		$("#referenciaconformado").val(valorconformado);
+		var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciainternacion").val());
+		$("#referenciagastos").val(valorconformado);
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -662,12 +702,12 @@ $(document).ready(function(){
 		if($("#internacionOtros").val()=='') {
 			$("#internacionOtros").val('0.00');
 		}
-		var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciainternacion").val());
-		$("#referenciaconformado").val(valorconformado);
+		var valorconformado = parseFloat($("#referenciagastos").val()) - parseFloat($("#referenciainternacion").val());
+		$("#referenciagastos").val(valorconformado);
 		var nuevovalor = parseFloat($("#internacionLaboratorio").val()) + parseFloat($("#internacionMedicamentos").val()) + parseFloat($("#internacionDescartables").val()) + parseFloat($("#internacionOtros").val());
 		$("#referenciainternacion").val(nuevovalor);
-		var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciainternacion").val());
-		$("#referenciaconformado").val(valorconformado);
+		var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciainternacion").val());
+		$("#referenciagastos").val(valorconformado);
 		$("#cantidad").val('');
 		$("#referenciatotal").val('');
 		$("#totalfacturado").val('');
@@ -678,16 +718,12 @@ $(document).ready(function(){
 	});
 	$("#incluyecoseguro").change(function(){
 		if($("#incluyecoseguro").prop('checked') ) {
-			infoconformado = infoconformado.replace(' + Coseguro','');
-			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciacoseguro").val()) + parseFloat($("#valorCoseguro").val());
 			$("#referenciacoseguro").val(nuevovalor);			
 			var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciacoseguro").val());
 			$("#referenciaconformado").val(valorconformado);
 			$("#valorCoseguro").attr('disabled', true);
 		} else {
-			infoconformado = infoconformado+' + Coseguro';
-			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciacoseguro").val()) - parseFloat($("#valorCoseguro").val());
 			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciacoseguro").val());
 			$("#referenciacoseguro").val(nuevovalor);
@@ -704,20 +740,16 @@ $(document).ready(function(){
 	});
 	$("#acreditacioncalidad").change(function(){
 		if($("#acreditacioncalidad").prop('checked') ) {
-			infoconformado = infoconformado+' + Acreditacion Calidad';
-			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciaacreditacion").val()) + parseFloat($("#importeAcreditacion").val());
 			$("#referenciaacreditacion").val(nuevovalor);
-			var valorconformado = parseFloat($("#referenciaconformado").val()) + parseFloat($("#referenciaacreditacion").val());
-			$("#referenciaconformado").val(valorconformado);
+			var valorconformado = parseFloat($("#referenciagastos").val()) + parseFloat($("#referenciaacreditacion").val());
+			$("#referenciagastos").val(valorconformado);
 			$("#importeAcreditacion").attr('disabled', false);
 		} else {
-			infoconformado = infoconformado.replace(' + Acreditacion Calidad','');
-			$('#infoconformado').attr('title', infoconformado);
 			var nuevovalor = parseFloat($("#referenciaacreditacion").val()) - parseFloat($("#importeAcreditacion").val());
-			var valorconformado = parseFloat($("#referenciaconformado").val()) - parseFloat($("#referenciaacreditacion").val());
+			var valorconformado = parseFloat($("#referenciagastos").val()) - parseFloat($("#referenciaacreditacion").val());
 			$("#referenciaacreditacion").val(nuevovalor);
-			$("#referenciaconformado").val(valorconformado);
+			$("#referenciagastos").val(valorconformado);
 			$("#importeAcreditacion").attr('disabled', true);
 		}
 		$("#cantidad").val('');
@@ -730,7 +762,7 @@ $(document).ready(function(){
 	});
 	$("#cantidad").change(function(){
 		if($("#cantidad").val()!='' && $("#cantidad").val()!=0) {
-			var totalreferencia = $("#cantidad").val()*$("#referenciaconformado").val();
+			var totalreferencia = parseFloat($("#cantidad").val()*$("#referenciaconformado").val())+parseFloat($("#referenciagastos").val());
 			if(totalreferencia==0.00) {
 				$("#referenciatotal").val('0.00');
 			} else {
@@ -1365,54 +1397,65 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			<tr id="conformaciongaleno" style="display:none">
 				<td align="right" colspan="2"><strong>Conformacion Galeno</strong></td>
 				<td align="left" colspan="4">
-					 | Honorario <input name="honorario" type="checkbox" id="honorario" value="1"/> <input name="galenoHonorario" type="text" id="galenoHonorario" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>
-					 | Especialista <input name="especialista" type="checkbox" id="especialista" value="1"/> <input name="galenoEspecialista" type="text" id="galenoEspecialista" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>
-					 | Ayudante <input name="ayudante" type="checkbox" id="ayudante" value="1"/> <input name="galenoAyudante" type="text" id="galenoAyudante" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>
-					 | Anestesista <input name="anestesista" type="checkbox" id="anestesista" value="1"/> <input name="galenoAnestesista" type="text" id="galenoAnestesista" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/>
+					 | Honorario <input name="honorario" type="checkbox" id="honorario" value="1"/> <input name="galenoHonorario" type="text" id="galenoHonorario" size="6" readonly="readonly" style="background-color:#CCCCCC" value=""/>
+					 | Especialista <input name="especialista" type="checkbox" id="especialista" value="1"/> <input name="galenoEspecialista" type="text" id="galenoEspecialista" size="6" readonly="readonly" style="background-color:#CCCCCC" value=""/>
+					 | Ayudante <input name="ayudante" type="checkbox" id="ayudante" value="1"/> <input name="galenoAyudante" type="text" id="galenoAyudante" size="6" readonly="readonly" style="background-color:#CCCCCC" value=""/>
+					 | Anestesista <input name="anestesista" type="checkbox" id="anestesista" value="1"/> <input name="galenoAnestesista" type="text" id="galenoAnestesista" size="6" readonly="readonly" style="background-color:#CCCCCC" value=""/>
 					 | Gastos / U.B. 
-					 <input name="gastos" type="checkbox" id="gastos" value="1"/> <input name="galenoGastos" type="text" id="galenoGastos" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |
+					 <input name="gastos" type="checkbox" id="gastos" value="1"/> <input name="galenoGastos" type="text" id="galenoGastos" size="6" readonly="readonly" style="background-color:#CCCCCC" value=""/> |
+				</td>
+			</tr>
+			<tr id="ambulatorio" style="display:none">
+				<td align="right" colspan="2"><strong>Gasto Ambulatorio ?</strong></td>
+				<td align="left" colspan="4"><input name="gastosambulatorio" type="checkbox" id="gastosambulatorio" value="1"/>
+					| <input name="ambulatorioOtros" type="text" id="ambulatorioOtros" size="6" maxlength="10" value="0.00"/> |
+					<input name="referenciaambulatorio" type="hidden" id="referenciaambulatorio" size="6" value="0.00"/>
 				</td>
 			</tr>
 			<tr id="internacion" style="display:none">
 				<td align="right" colspan="2"><strong>Gastos Internacion ?</strong></td>
 				<td align="left" colspan="4"><input name="gastosinternacion" type="checkbox" id="gastosinternacion" value="1"/>
-					| Laboratorio <input name="internacionLaboratorio" type="text" id="internacionLaboratorio" size="5" maxlength="9" value="0.00"/>
-					| Medicamentos <input name="internacionMedicamentos" type="text" id="internacionMedicamentos" maxlength="9" size="5" value="0.00"/>
-					| Descartables <input name="internacionDescartables" type="text" id="internacionDescartables" maxlength="9" size="5" value="0.00"/>
-					| Otros <input name="internacionOtros" type="text" id="internacionOtros" size="5" maxlength="9" value="0.00"/> |
-					<input name="referenciainternacion" type="hidden" id="referenciainternacion" size="5" value="0.00"/>
+					| Laboratorio <input name="internacionLaboratorio" type="text" id="internacionLaboratorio" size="6" maxlength="10" value="0.00"/>
+					| Medicamentos <input name="internacionMedicamentos" type="text" id="internacionMedicamentos" maxlength="10" size="6" value="0.00"/>
+					| Descartables <input name="internacionDescartables" type="text" id="internacionDescartables" maxlength="10" size="6" value="0.00"/>
+					| Otros <input name="internacionOtros" type="text" id="internacionOtros" size="6" maxlength="10" value="0.00"/> |
+					<input name="referenciainternacion" type="hidden" id="referenciainternacion" size="6" value="0.00"/>
 				</td>
 			</tr>
 			<tr id="coseguro" style="display:none">
 				<td align="right" colspan="2"><strong>Coseguro a Cargo Beneficiario?</strong></td>
 				<td align="left" colspan="4"><input name="incluyecoseguro" type="checkbox" id="incluyecoseguro" value="1"/>
-					| Valor Coseguro <input name="valorCoseguro" type="text" id="valorCoseguro" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciacoseguro" type="hidden" id="referenciacoseguro" size="5" value="0.00"/>
+					| Valor Coseguro <input name="valorCoseguro" type="text" id="valorCoseguro" size="6" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciacoseguro" type="hidden" id="referenciacoseguro" size="6" value="0.00"/>
 				</td>
 			</tr>
 			<tr id="calidadestablecimiento" style="display:none">
 				<td align="right" colspan="2"><strong>Acred. de Calidad del Est. ?</strong></td>
-				<td align="left" colspan="4"><input name="acreditacioncalidad" type="checkbox" id="acreditacioncalidad" value="1"/>
-					| Importe Acreditacion <input name="importeAcreditacion" type="text" id="importeAcreditacion" size="5" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciaacreditacion" type="hidden" id="referenciaacreditacion" size="5" value="0.00"/>
+				<td align="left" colspan="2"><input name="acreditacioncalidad" type="checkbox" id="acreditacioncalidad" value="1"/>
+					| Importe Acreditacion <input name="importeAcreditacion" type="text" id="importeAcreditacion" size="6" readonly="readonly" style="background-color:#CCCCCC" value=""/> |<input name="referenciaacreditacion" type="hidden" id="referenciaacreditacion" size="6" value="0.00"/>
 				</td>
 			</tr>
-			<tr>
 				<td align="right" colspan="5"><i id="infoconformado" style="font-size: 15px" title="" class="ui-icon ui-icon-info"></i></td>
-				<td align="left"><strong>Ref. Valor Unitario Prestacion</strong><input name="referenciaconformado" type="text" id="referenciaconformado" size="5" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
+				<td align="left"><strong>Ref. Valor Unitario Prestacion </strong><input name="referenciaconformado" type="text" id="referenciaconformado" size="6" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
+			<tr>
+			</tr>
+			<tr>
+				<td align="right" colspan="5"><i id="infogastos" style="font-size: 15px" title="" class="ui-icon ui-icon-info"></i></td>
+				<td align="left"><strong>Ref. Valor Total Gastos </strong><input name="referenciagastos" type="text" id="referenciagastos" size="6" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Cant. / Unidades</strong></td>
 				<td align="left"><input name="cantidad" type="text" id="cantidad" size="5" value="" maxlength="7"/></td>
 				<td align="right"><strong>Facturado</strong></td>
-				<td align="left"><input name="totalfacturado" type="text" id="totalfacturado" size="5" maxlength="10" value=""/></td>
+				<td align="left"><input name="totalfacturado" type="text" id="totalfacturado" size="6" maxlength="10" value=""/></td>
 				<td align="right"><i id="infototal" style="font-size: 15px" title="" class="ui-icon ui-icon-info"></i></td>
-				<td align="left"><strong>Ref. Valor Total Prestacion</strong><input name="referenciatotal" type="text" id="referenciatotal" size="5" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
-
+				<td align="left"><strong>Ref. Valor Total Prestacion </strong>
+				  <input name="referenciatotal" type="text" id="referenciatotal" size="6" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
 			</tr>
 			<tr>
 				<td align="right"><strong>Debito</strong></td>
-				<td align="left"><input name="totaldebito" type="text" id="totaldebito" size="5" maxlength="9" value=""/></td>
+				<td align="left"><input name="totaldebito" type="text" id="totaldebito" size="6" maxlength="10" value=""/></td>
 				<td align="right"><strong>Credito</strong></td>
-				<td align="left" colspan="3"><input name="totalcredito" type="text" id="totalcredito" size="5" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/>			</td>
+				<td align="left" colspan="3"><input name="totalcredito" type="text" id="totalcredito" size="6" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/>			</td>
 			</tr>
 			<tr>
 	<td align="right"><strong>Motivo Debito</strong></td>
@@ -1428,7 +1471,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 		<table border="0">
 			<tr>
 				<td align="right"><strong>Importe Solicitado</strong></td>
-				<td align="left"><input name="solicitadointegracion" type="text" id="solicitadointegracion" size="10" value="" autocomplete="off"/>
+				<td align="left"><input name="solicitadointegracion" type="text" id="solicitadointegracion" size="6" maxlength="10" value="" autocomplete="off"/>
 				<td align="right"><strong>Dependencia ?</strong></td>
 				<td align="left"><input name="dependenciaintegracion" type="checkbox" id="dependenciaintegracion" value="1"/>
 				<td align="right"><strong>Escuela ?</strong></td>
