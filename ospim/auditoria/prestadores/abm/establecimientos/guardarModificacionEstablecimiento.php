@@ -89,9 +89,13 @@ if ($circulo == 1) {
 		$fechafincalidad = "NULL";
 	} else {
 		$fechadesde = fechaParaGuardar($_POST['fechadesde']);
-		$fechahasta = fechaParaGuardar($_POST['fechahasta']);
 		$fechainiciocalidad = "'$fechadesde'";
-		$fechafincalidad = "'$fechahasta'";
+		if ($_POST['fechahasta'] == "") {
+			$fechafincalidad = "NULL";
+		} else {
+			$fechahasta = fechaParaGuardar($_POST['fechahasta']);
+			$fechafincalidad = "'$fechahasta'";
+		}
 	}
 } else {
 	$calidad = 0;

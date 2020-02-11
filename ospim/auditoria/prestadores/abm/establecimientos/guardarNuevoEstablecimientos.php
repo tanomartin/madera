@@ -87,9 +87,13 @@ if ($circulo == 1) {
 		$fechafincalidad = "NULL";
 	} else {
 		$fechadesde = fechaParaGuardar($_POST['fechadesde']);
-		$fechahasta = fechaParaGuardar($_POST['fechahasta']);
 		$fechainiciocalidad = "'$fechadesde'";
-		$fechafincalidad = "'$fechahasta'";
+		if ($_POST['fechahasta'] == "") {
+			$fechafincalidad = "NULL";
+		} else {
+			$fechahasta = fechaParaGuardar($_POST['fechahasta']);
+			$fechafincalidad = "'$fechahasta'";
+		}
 	}
 } else {
 	$calidad = 0;
@@ -99,10 +103,8 @@ if ($circulo == 1) {
 
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
-$fechamodificacion = $fecharegistro;
-$usuariomodificacion = $usuarioregistro;
 
-$sqlInsertProf = "INSERT INTO establecimientos VALUES(DEFAULT,'$codigopresta','$nombre','$domicilio','$localidad','$codProvin',$indpostal,$codPos,$alfapostal,$tel1,$ddn1,$tel2,$ddn2,$telfax,$ddnfax,$email,$circulo,$calidad,$fechainiciocalidad,$fechafincalidad,'$fecharegistro','$usuarioregistro','$fechamodificacion','$usuariomodificacion')";
+$sqlInsertProf = "INSERT INTO establecimientos VALUES(DEFAULT,'$codigopresta','$nombre','$domicilio','$localidad','$codProvin',$indpostal,$codPos,$alfapostal,$tel1,$ddn1,$tel2,$ddn2,$telfax,$ddnfax,$email,$circulo,$calidad,$fechainiciocalidad,$fechafincalidad,'$fecharegistro','$usuarioregistro',NULL,NULL)";
 
 try {
 	$hostname = $_SESSION['host'];

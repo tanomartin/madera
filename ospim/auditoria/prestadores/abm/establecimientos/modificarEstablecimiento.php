@@ -156,16 +156,20 @@ function validar(formulario) {
 			alert("La Fecha Desde de la acreditacion no de calidad no es valida");
 			return false
 		}
-		if (!esFechaValida(fechahasta)) {
-			alert("La Fecha Hasta de la acreditacion no de calidad no es valida");
-			return false
+		if (fechahasta != "") {
+			if (!esFechaValida(fechahasta)) {
+				alert("La Fecha Hasta de la acreditacion no de calidad no es valida");
+				return false
+			}
 		}
 		fechaInicio = new Date(invertirFecha(fechadesde));
-		fechaFin = new Date(invertirFecha(fechahasta));
-		if (fechaInicio >= fechaFin) {
-			alert("La Fecha Desde debe ser superior a la Fecha de Hasta");
-			return false ;
-		}
+		if (fechahasta != "") {
+			fechaFin = new Date(invertirFecha(fechahasta));
+			if (fechaInicio >= fechaFin) {
+				alert("La Fecha Desde debe ser superior a la Fecha de Hasta");
+				return false ;
+			}
+		}	
 	}
 	formulario.Submit.disabled = true;
 	return true;
