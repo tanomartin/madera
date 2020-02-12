@@ -176,8 +176,8 @@ function validarPractica(formulario) {
 	var tipo =  formulario.tipo.value;
 	if (codigo != "") {
 		if(esEnteroPositivo(codigo)) {
-			if((codigo < 1 || codigo > 99) && tipo != -1) {
-				alert("Debe ingresar un codigo de dos digitos entre 01 y 99 para este tipo de practica");
+			if((codigo < 0 || codigo > 99) && tipo != -1) {
+				alert("Debe ingresar un codigo de dos digitos entre 00 y 99 para este tipo de practica");
 				return false;
 			}
 			if((codigo < 1 || codigo > 10000) && tipo == -1) {
