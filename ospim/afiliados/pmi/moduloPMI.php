@@ -78,8 +78,15 @@ $(document).ready(function(){
 		.tablesorter({
 			theme: 'blue',
 			widthFixed: true, 
-			widgets: ["zebra"],
-			headers:{0:{sorter:false}, 10:{sorter:false}}
+			widgets: ["zebra", "filter"],
+			headers:{0:{sorter:false},
+					 1:{filter:false},
+					 5:{filter:false},
+					 6:{filter:false},
+					 7:{filter:false},
+					 8:{filter:false},
+					 9:{filter:false},
+					 10:{sorter:false}}
 		})
 		.tablesorterPager({
 			container: $("#paginador")
