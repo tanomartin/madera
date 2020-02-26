@@ -336,8 +336,8 @@ function printHeaderPlanillaDebito($pdfPlanilla, $rowDebito) {
 	$pdfPlanilla->SetXY(135, 1);
 	$pdfPlanilla->Cell(70,8,"Planilla de Debito",0,0);
 	$pdfPlanilla->SetFont('Courier','B',12);
-	$pdfPlanilla->SetXY(150, 9);
-	$pdfPlanilla->Cell(45,7,"Nº ".str_pad ($rowDebito['ptoventa'],4,0,STR_PAD_LEFT)."-".str_pad($rowDebito['nronotadebito'],8,0,STR_PAD_LEFT),0,0);
+	//$pdfPlanilla->SetXY(150, 9);
+	//$pdfPlanilla->Cell(45,7,"Nº ".str_pad ($rowDebito['ptoventa'],4,0,STR_PAD_LEFT)."-".str_pad($rowDebito['nronotadebito'],8,0,STR_PAD_LEFT),0,0);
 	$pdfPlanilla->SetXY(135, 16);
 	$pdfPlanilla->Cell(60,7,"Fecha: ".$rowDebito['fechadebito'],0,0);
 	
@@ -408,8 +408,8 @@ function printHeaderDebito($pdf, $rowDebito, $tipoDebito) {
 	$pdf->SetXY(135, 1);
 	$pdf->Cell(70,8,"Nota de Debito",0,0);
 	$pdf->SetFont('Courier','B',12);
-	$pdf->SetXY(150, 9);
-	$pdf->Cell(45,7,"Nº ".str_pad ($rowDebito['ptoventa'],4,0,STR_PAD_LEFT)."-".str_pad($rowDebito['nronotadebito'],8,0,STR_PAD_LEFT),0,0);
+	//$pdf->SetXY(150, 9);
+	//$pdf->Cell(45,7,"Nº ".str_pad ($rowDebito['ptoventa'],4,0,STR_PAD_LEFT)."-".str_pad($rowDebito['nronotadebito'],8,0,STR_PAD_LEFT),0,0);
 	$pdf->SetXY(135, 14);
 	$pdf->Cell(60,7,"Fecha: ".$rowDebito['fechadebito'],0,0);
 	
@@ -525,10 +525,10 @@ function printFooterDebito($pdf, $cai, $vto) {
 	
 	$pdf->Line(7, 251, 210, 251);
 	
-	$pdf->SetXY(160, 251);
-	$pdf->Cell(50,5,"C.A.I.: ".$cai,0,0,"R");
-	$pdf->SetXY(160, 254);
-	$pdf->Cell(50,5,"FECHA DE VENC.: ".$vto,0,0,"R");
+	//$pdf->SetXY(160, 251);
+	//$pdf->Cell(50,5,"C.A.I.: ".$cai,0,0,"R");
+	//$pdf->SetXY(160, 254);
+	//$pdf->Cell(50,5,"FECHA DE VENC.: ".$vto,0,0,"R");
 	$pdf->SetXY(7, 251);
 	$pdf->Cell(130,5,"Debitos de gastos prestacionales según planilla de Debito que se adjunta",0,0,"L");
 	$pdf->SetXY(7, 254);
