@@ -641,7 +641,7 @@ function validar() {
 		</td>
         <td width="300" valign="top"><div align="left">
             <?php 
-				$query="select * from delegaciones where codidelega >= 1002 and codidelega <= 1702";
+				$query="select * from delegaciones where codidelega >= 1000 and codidelega <= 1701";
 				$result=mysql_query($query,$db);
 				$i = 0;
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
@@ -654,7 +654,7 @@ function validar() {
                 </div></td>
         <td width="300" valign="top"><div align="left">
           <?php 
-				$query="select * from delegaciones where codidelega > 1702 and codidelega < 3200";
+				$query="select * from delegaciones where codidelega > 1701 and codidelega < 3200";
 				$result=mysql_query($query,$db);
 				while ($rowtipos=mysql_fetch_array($result)) { ?>
          			<input type="checkbox" name="<?php echo "delegaciones".$i ?>" id="delegaciones" value="<?php echo $rowtipos['codidelega'] ?>" onclick="verPertenencia(this)"/>

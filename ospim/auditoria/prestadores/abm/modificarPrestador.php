@@ -856,7 +856,7 @@ function validar() {
 	    </td>
         <td width="281" valign="top">
         	<div align="left">
-	          <?php $query="SELECT * FROM delegaciones WHERE codidelega >= 1002 AND codidelega <= 1702";
+	          <?php $query="SELECT * FROM delegaciones WHERE codidelega >= 1000 AND codidelega <= 1701";
 					$result=mysql_query($query,$db);
 					$i = 0;
 					while ($rowtipos=mysql_fetch_array($result)) { 
@@ -886,7 +886,7 @@ function validar() {
         </td>
         <td width="297" valign="top">
         	<div align="left">
-          	<?php   $query="select * from delegaciones where codidelega > 1702 and codidelega < 3200";
+          	<?php   $query="select * from delegaciones where codidelega > 1701 and codidelega < 3200";
 					$result=mysql_query($query,$db);				
 					while ($rowtipos=mysql_fetch_array($result)) {
 						$codigoDelega = $rowtipos['codidelega'];
