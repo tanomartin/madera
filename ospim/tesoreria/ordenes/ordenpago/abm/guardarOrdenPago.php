@@ -31,7 +31,7 @@ $sqlCabeceraOrden = "INSERT INTO ordencabecera VALUE(DEFAULT, $codigo,'$fechaord
 
 if ($impDebito > 0) {
 	$today = date("Y-m-d");
-	$sqlUltimo = "SELECT * FROM ordendebitolote WHERE fechainicio <= '$today' and fechavto > '$today'";
+	$sqlUltimo = "SELECT * FROM ordendebitolote WHERE fechainicio <= '$today' and fechavto >= '$today'";
 	$resUltimo = mysql_query($sqlUltimo,$db);
 	$canUltimo = mysql_num_rows($resUltimo);
 	if ($canUltimo == 0) {
