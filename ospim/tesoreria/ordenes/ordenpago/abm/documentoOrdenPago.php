@@ -5,7 +5,7 @@ include($libPath."bandejaSalida.php");
 
 $nroOrden = $_GET['nroorden'];
 $email = $_GET['email'];
-$sqlCabecera = "SELECT *, DATE_FORMAT(o.fechaorden, '%d-%m-%Y') as fechaorden, pr.descrip as provincia, l.nomlocali as localidad
+$sqlCabecera = "SELECT *, DATE_FORMAT(o.fechacomprobante, '%d-%m-%Y') as fechacomprobante, pr.descrip as provincia, l.nomlocali as localidad
 				FROM ordencabecera o, prestadores p, provincia pr, localidades l 
 				WHERE o.nroordenpago = $nroOrden and 
 					  o.codigoprestador = p.codigoprestador and 
@@ -165,7 +165,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	$nroOrden = $rowCabecera['nroordenpago'];
 	$pdf->SetFont('Courier','B',8);
 	$pdf->SetXY(7, 21);
-	$pdf->Cell(20,5,$rowCabecera['fechaorden'],0,0,"R");
+	$pdf->Cell(20,5,$rowCabecera['fechacomprobante'],0,0,"R");
 	$pdf->SetXY(130, 21);
 	$pdf->Cell(80,5,"Orden de Pago: ".$rowCabecera['nroordenpago']." - $tipo",0,0,"R");
 	$pdf->SetXY(7, 25);
