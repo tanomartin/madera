@@ -13,9 +13,17 @@ if(isset($_GET['err']) && isset($_GET['id']) && isset($_GET['importe'])) {
 	$importecomprobante = $_GET['importe'];
 	$mensajeerror = 'El comprobante que intenta ingresar ya ha sido cargado con el Id Interno '.$idcomprobante.' con un importe de $ '.$importecomprobante;
 }
-	$sqlFacturasSinLiquidar = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, f.fechacomprobante, f.importecomprobante, f.fechavencimiento, f.fecharecepcion FROM facturas f, prestadores p WHERE f.fechainicioliquidacion = '0000-00-00 00:00:00' AND f.idPrestador = p.codigoprestador ORDER by f.id DESC";
-	$resFacturasSinLiquidar = mysql_query($sqlFacturasSinLiquidar,$db);
-	$totalfacturas = mysql_num_rows($resFacturasSinLiquidar);
+
+$sqlFacturasSinLiquidar = "SELECT p.nombre, p.cuit, f.id, f.puntodeventa, f.nrocomprobante, 
+								  f.fechacomprobante, f.importecomprobante, f.fechavencimiento,
+								  f.fecharecepcion, establecimientos.nombre as establecimientos
+							FROM prestadores p, facturas f
+							LEFT JOIN establecimientos on establecimientos.codigo = f.idestablecimiento
+							WHERE f.fechainicioliquidacion = '0000-00-00 00:00:00' AND 
+								  f.idPrestador = p.codigoprestador 
+						    ORDER by f.id DESC";
+$resFacturasSinLiquidar = mysql_query($sqlFacturasSinLiquidar,$db);
+$totalfacturas = mysql_num_rows($resFacturasSinLiquidar);
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -57,14 +65,15 @@ $(document).ready(function(){
 			headers: {
 				0:{sorter:false},
 				1:{sorter:false},
-				3:{filter: false},
-				5:{sorter:false},
-				6:{sorter:false, filter: false},
+				2:{filter: false},
+				4:{sorter:false, filter: false},
+				6:{sorter:false},
 				7:{sorter:false, filter: false},
 				8:{sorter:false, filter: false},
-				9:{filter: false},
-				10:{sorter:false, filter: false},
-				11:{sorter:false}
+				9:{sorter:false, filter: false},
+				10:{filter: false},
+				11:{sorter:false},
+				12:{sorter:false}
 			},
 			widgets: ["zebra", "filter"], 
 			widgetOptions: { 
@@ -161,15 +170,16 @@ function abrirPop(dire, id) {
 </div>
 <div id="facturasingresadas" align="center">
 	<h2>Facturas Ingresadas Sin Inicio de Liquidacion</h2>
-	<table style="text-align:center; width:1000px" id="listaFacturas" class="tablesorter" >
+	<table style="text-align:center; width:90%" id="listaFacturas" class="tablesorter" >
 		<thead>
 			<tr>
-				<th colspan="2">Prestador</th>
+				<th colspan="3">Prestador</th>
 				<th colspan="8">Factura</th>
 			</tr>
 			<tr>
 				<th>Nombre</th>
 				<th>C.U.I.T.</th>
+				<th>Establecimientos</th>
 				<th>ID Interno</th>
 				<th>Recepcion</th>
 				<th>Nro.</th>
@@ -185,6 +195,7 @@ function abrirPop(dire, id) {
 			<tr>
 				<td><?php echo $rowFacturasSinLiquidar['nombre'];?></td>
 				<td><?php echo $rowFacturasSinLiquidar['cuit'];?></td>
+				<td><?php echo $rowFacturasSinLiquidar['establecimientos'];?></td>
 				<td><?php echo $rowFacturasSinLiquidar['id'];?></td>
 				<td><?php echo invertirFecha($rowFacturasSinLiquidar['fecharecepcion']);?></td>
 				<td><?php echo $rowFacturasSinLiquidar['puntodeventa'].'-'.$rowFacturasSinLiquidar['nrocomprobante'];?></td>
