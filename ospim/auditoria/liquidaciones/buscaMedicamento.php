@@ -16,8 +16,17 @@ if(isset($_GET)) {
 			$nombre = utf8_encode($rowBuscaMedicamento['nombre']);
 			$presentacion = utf8_encode($rowBuscaMedicamento['presentacion']);
 			$laboratorio = utf8_encode($rowBuscaMedicamento['laboratorio']);
+			if($rowBuscaMedicamento['tipo']==3) {
+				$origen = 'ALFABETA';
+			}
+			if($rowBuscaMedicamento['tipo']==4) {
+				$origen = 'C.M.';
+			}
+			if($rowBuscaMedicamento['tipo']==5) {
+				$origen = 'INSUMO';
+			}
 			$prestaciones[$rowBuscaMedicamento['codigo']] = array(
-				'label' => $nombre.' '.$presentacion.' '.$laboratorio.' | Codigo: '.$rowBuscaMedicamento['codigo'].' | Valor: '.$rowBuscaMedicamento['precio'].' desde '.invertirFecha($rowBuscaMedicamento['fechadesde']).' | Origen: ALFABETA ',
+				'label' => $nombre.' '.$presentacion.' '.$laboratorio.' | Codigo: '.$rowBuscaMedicamento['codigo'].' | Valor: '.$rowBuscaMedicamento['precio'].' desde '.invertirFecha($rowBuscaMedicamento['fechadesde']).' | Origen: '.$origen,
 				'idpractica' => $rowBuscaMedicamento['codigo'],
 				'tipopractica' => $rowBuscaMedicamento['tipo'],	
 				'valor' => $rowBuscaMedicamento['precio'],
