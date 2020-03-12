@@ -18,8 +18,10 @@ if(isset($_POST)) {
 		$efectorpractica = $_POST['idprestador'];
 	}
 
-	//tipomovimiento
-	$tipomovimiento = 3;
+	if(isset($_POST['tipoPractica'])) {
+		//tipomovimiento
+		$tipomovimiento = $_POST['tipoPractica'];
+	}
 
 	if(isset($_POST['idPractica'])) {
 		//idPractica

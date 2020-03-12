@@ -8,7 +8,7 @@ if(isset($_GET)) {
 	$noencontro = TRUE;
 	$prestaciones = array();
 	set_time_limit(0);
-	$sqlBuscaMedicamento="SELECT m.codigo, m.nombre, m.presentacion, m.laboratorio, h.fechadesde, h.precio FROM medipreciohistorico h, medicamentos m WHERE h.fechadesde <= '$fechaprestacion' AND m.nombre like '%$busqueda%' AND h.codigomedicamento = m.codigo AND m.baja = 0 ORDER BY h.fechadesde, h.codigomedicamento";
+	$sqlBuscaMedicamento="SELECT m.codigo, m.tipo, m.nombre, m.presentacion, m.laboratorio, h.fechadesde, h.precio FROM medipreciohistorico h, medicamentos m WHERE h.fechadesde <= '$fechaprestacion' AND m.nombre like '%$busqueda%' AND h.codigomedicamento = m.codigo AND m.baja = 0 ORDER BY h.fechadesde, h.codigomedicamento";
 	$resBuscaMedicamento=mysql_query($sqlBuscaMedicamento,$db);
 	if(mysql_num_rows($resBuscaMedicamento)!=0) {
 		while($rowBuscaMedicamento=mysql_fetch_array($resBuscaMedicamento)) {
@@ -19,6 +19,7 @@ if(isset($_GET)) {
 			$prestaciones[$rowBuscaMedicamento['codigo']] = array(
 				'label' => $nombre.' '.$presentacion.' '.$laboratorio.' | Codigo: '.$rowBuscaMedicamento['codigo'].' | Valor: '.$rowBuscaMedicamento['precio'].' desde '.invertirFecha($rowBuscaMedicamento['fechadesde']).' | Origen: ALFABETA ',
 				'idpractica' => $rowBuscaMedicamento['codigo'],
+				'tipopractica' => $rowBuscaMedicamento['tipo'],	
 				'valor' => $rowBuscaMedicamento['precio'],
 			);
 		}
@@ -27,6 +28,7 @@ if(isset($_GET)) {
 		$prestaciones[] = array(
 			'label' => 'No se encontraron resultados para la busqueda intentada',
 			'idpractica' => NULL,
+			'tipopractica' => NULL,
 			'valor' => NULL,
 		);
 	}

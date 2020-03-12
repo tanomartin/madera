@@ -63,7 +63,7 @@ if(isset($_GET)) {
 	$benetotalfacturado = 0.00;
 	$benetotaldebito = 0.00;
 	$benetotalcredito = 0.00;
-	$sqlConsultaFacturasPrestacionesConsumo = "SELECT f.*, m.codigo, m.nombre FROM facturasprestaciones f, medicamentos m WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento = 3 AND f.idPractica = m.codigo ORDER BY f.id DESC";
+	$sqlConsultaFacturasPrestacionesConsumo = "SELECT f.*, m.codigo, m.nombre FROM facturasprestaciones f, medicamentos m WHERE idFactura = $idfactura AND idFacturabeneficiario = $idfacturabeneficiario AND tipomovimiento >= 3 AND f.idPractica = m.codigo ORDER BY f.id DESC";
 	$resConsultaFacturasPrestacionesConsumo = mysql_query($sqlConsultaFacturasPrestacionesConsumo,$db);
 }
 ?>
@@ -140,6 +140,7 @@ $(document).ready(function(){
 			var idpracticadevuelta = ui.item.idpractica;
 			var referenciadevuelto = ui.item.valor;
 			$("#idPractica").val(ui.item.idpractica);
+			$("#tipoPractica").val(ui.item.tipopractica);
 			$("#efectorpractica").val('');
 			$("#efectorpractica").attr('disabled', true);
 			$("#cantidad").val('');
@@ -494,6 +495,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 				<td align="right"><strong>Buscar Medicamento </strong></td>
 				<td colspan="5"><textarea name="buscamedicamento" rows="3" cols="125" id="buscamedicamento" placeholder="Ingrese un minimo de 3 caracteres para que se inicie la busqueda"></textarea>
 				<input name="idPractica" type="hidden" id="idPractica" size="5" value=""/>
+				<input name="tipoPractica" type="hidden" id="tipoPractica" size="5" value=""/>
 				<input name="referenciaunitario" type="hidden" id="referenciaunitario" size="5" value="0.00"/>
 				</td>
 			</tr>
@@ -553,7 +555,7 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 			</tr>
 			<tr>
 				<th>Fecha</th>
-				<th>Medicamento</th>
+				<th>Medicamento | Insumo</th>
 				<th>Cantidad</th>
 				<th>Facturado</th>
 				<th>Debito</th>
