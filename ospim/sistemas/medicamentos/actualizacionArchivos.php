@@ -21,7 +21,7 @@ $fechafile = $_POST['fechafile'];
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 
-$deleteMedicamento = "DELETE FROM medicamentos";
+$deleteMedicamento = "DELETE FROM medicamentos WHERE tipo = 3";
 $deleteExtra = "DELETE FROM mediextra";
 $deleteAccion = "DELETE FROM mediaccion";
 
@@ -67,14 +67,14 @@ while(!feof($fmanual)) {
 		
 		$cantidadMedicamento++;
 		
-		$lineain = $codigo."|".$troquel."|".$nombre."|".$presentacion."|".$IOMAMonto."|".$IOMANorma.
+		$lineain = $codigo."|3|".$troquel."|".$nombre."|".$presentacion."|".$IOMAMonto."|".$IOMANorma.
 				"|".$IOMAInterna."|".$laboratorio."|".$precio."|".$fecha."|".$codigomarca."|".$importado.
 				"|".$codigotipoventa."|".$iva."|".$codigoPAMI."|".$codigoLab."|".$baja.
 				"|".$codbarra."|".$unidades."|".$codigotamano."|".$heladera."|".$SIFAR."|".$blanco.
 				"|".$fecharegistro."|".$usuarioregistro;
 		fwrite($filemanual, $lineain."\n");
 		
-		$lineaHistorico = $codigo."|".$fecha."|".$precio."|".$fecharegistro."|".$usuarioregistro;
+		$lineaHistorico = $codigo."|3|".$fecha."|".$precio."|".$fecharegistro."|".$usuarioregistro;
 		fwrite($filePrecio, $lineaHistorico."\n");
 	}
 }

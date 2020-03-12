@@ -78,7 +78,7 @@ if ($numBeneficiarios > 0) {
 								  establecimientos.nombre as efector 
 						   FROM medicamentos m, facturasprestaciones f 
 						   LEFT JOIN establecimientos ON establecimientos.codigo = f.efectorpractica
-						   WHERE f.idFactura = $id and f.idpractica = m.codigo";
+						   WHERE f.idFactura = $id and f.idpractica = m.codigo and f.tipomovimiento = m.tipo";
 	}
 	
 	$resPretaciones = mysql_query($sqlPretaciones,$db);
@@ -281,7 +281,7 @@ function abrirDetalleEfector(idEfector,idFactura, tipopresta, nombreEfe) {
 									<td class="title" colspan="7">Prestaciones</td>
 								</tr>
 								<tr>
-									<td class="title">Codigo</td>
+									<td class="title">Codigo | Tipo</td>
 									<td class="title">Fecha</td>
 									<td class="title">Cantidad</td>
 									<td class="title">Facturado</td>
@@ -289,9 +289,17 @@ function abrirDetalleEfector(idEfector,idFactura, tipopresta, nombreEfe) {
 									<td class="title">Credito</td>
 									<td class="title">Efector</td>
 								</tr>
-						  <?php foreach ($arrayPresta[$rowBeneficiarios['id']] as $pretacion) { ?>
+						  <?php foreach ($arrayPresta[$rowBeneficiarios['id']] as $pretacion) { 
+						  			$tipoConsumoPresta = " | Prest";
+						  			if ($pretacion['tipomovimiento'] == 3 || $pretacion['tipomovimiento'] == 4) {
+						  				$tipoConsumoPresta = " | Medic";
+						  			}
+						  			if ($pretacion['tipomovimiento'] == 5) {
+						  				$tipoConsumoPresta = " | Insumo";
+						  			}
+						  			?>
 									<tr>
-										<td><?php echo $pretacion['codigopractica'] ?></td>
+										<td><?php echo $pretacion['codigopractica'].$tipoConsumoPresta ?></td>
 										<td><?php echo $pretacion['fechapractica'] ?></td>
 										<td><?php echo number_format($pretacion['cantidad'],3,",","."); ?></td>
 										<td><?php echo number_format($pretacion['totalfacturado'],2,",","."); ?></td>

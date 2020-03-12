@@ -12,7 +12,7 @@ include($libPath."controlSessionOspim.php");
 <body bgcolor="#CCCCCC">
 <div align="center">
   <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" /></p>
-  <h3>Menú Medicamentos [alfaBETA]</h3>
+  <h3>Menú Medicamentos e Insumos</h3>
   <table width="400" border="3" style="text-align: center">
     <tr>
       <td width="200">
@@ -20,7 +20,7 @@ include($libPath."controlSessionOspim.php");
         <p><a href="buscadorMedicamentos.php"><img src="img/buscar.png" width="90" height="90" border="0" /></a></p>
       </td>
        <td width="200">
-      	<p>ACTUALIZACIONES</p>
+      	<p>ACTUALIZACIONES ALFABETA</p>
         <p><a href="controlActualizacion.php"><img src="img/listado.png" width="90" height="90" border="0" /></a></p>
       </td>
     </tr>

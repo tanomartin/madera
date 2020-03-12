@@ -6,19 +6,18 @@ if (isset($_POST['valor'])) {
 	$seleccion = $_POST['seleccion'];
 	$valor = $_POST['valor'];
 	
-	$selectMedicamento = "SELECT m.codigo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja FROM medicamentos m WHERE m.$seleccion = '$valor'";
+	$selectMedicamento = "SELECT m.codigo, m.tipo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja FROM medicamentos m WHERE m.$seleccion = '$valor'";
 	if ($seleccion == 'nombre') {
-		$selectMedicamento = "SELECT m.codigo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja FROM medicamentos m WHERE m.$seleccion like '%$valor%'";
+		$selectMedicamento = "SELECT m.codigo, m.tipo, m.nombre, m.presentacion, m.precio, DATE_FORMAT(m.fecha, '%d-%m-%Y') AS fecha, m.baja FROM medicamentos m WHERE m.$seleccion like '%$valor%'";
 	}
 	
 	$resMedicamento = mysql_query($selectMedicamento,$db);
 	$numMedicamento = mysql_num_rows($resMedicamento);
 	if ($numMedicamento > 0) {
 		while ($rowMedicamento = mysql_fetch_assoc($resMedicamento)) {
-			$arrayResultado[$rowMedicamento['codigo']] = $rowMedicamento;
+			$arrayResultado[$rowMedicamento['codigo'].$rowMedicamento['tipo']] = $rowMedicamento;
 		}
 	}
-
 }
 
 
@@ -93,7 +92,7 @@ function abrirInfo(dire) {
 <div align="center">
 	<form id="moduloABM" name="moduloABM" method="post"  onsubmit="return validar(this)" action="buscadorMedicamentos.php">
 		<p><input class="nover" type="button" name="volver" value="Volver" onclick="location.href = 'menuMedicamentos.php'" /></p>
-		<h3>Buscador de Medicamentos [alfaBETA]</h3> 
+		<h3>Buscador de Medicamentos e Insumos </h3> 
 	    <p> <?php 
 		    	if (sizeof($arrayResultado) == 0  && isset($_POST['valor'])) { ?>
 				 <b style='color:#FF0000'> LA BUSQUEDA DE MEDICAMENTO NO GENERO RESULTADOS </b>
@@ -118,6 +117,7 @@ function abrirInfo(dire) {
 				<thead>
 					<tr>
 						<th>Código</th>
+						<th>Tipo</th>
 						<th>Nombre</th>
 						<th>Presentacion</th>
 						<th class="filter-select" data-placeholder="Seleccion">Prestación Activa</th>
@@ -127,15 +127,22 @@ function abrirInfo(dire) {
 					</tr>
 				</thead>
 				<tbody>
-				<?php foreach($arrayResultado as $medicamento) {  ?>
+				<?php foreach($arrayResultado as $medicamento) { 
+						$tipo = "AlfaBeta";
+						if ($medicamento['tipo'] == 4) { $tipo = "Medicamento C.M."; }
+						if ($medicamento['tipo'] == 5) { $tipo = "Insumo"; } ?>
 					<tr>
 						<td><?php echo $medicamento['codigo'] ?></td>	
+						<td><?php echo $tipo ?></td>	
 						<td><?php echo $medicamento['nombre'] ?></td>	
 						<td><?php echo $medicamento['presentacion'] ?></td>	
 						<td><?php if ($medicamento['baja'] == 1) { echo "NO"; } else { echo "SI"; } ?> </td>	
 						<td><?php echo $medicamento['fecha'] ?></td>
 						<td><?php echo number_format($medicamento['precio'],2,',','.')  ?></td>
-						<td><input type="button" name="info" id="info" value="+ INFO" onclick="javascript:abrirInfo('detalleMedicamento.php?codigo=<?php echo $medicamento['codigo']?>')" /></td>		
+						<td>
+						<?php if ($medicamento['tipo'] == 3) { ?>
+								<input type="button" name="info" id="info" value="+ INFO" onclick="javascript:abrirInfo('detalleMedicamento.php?codigo=<?php echo $medicamento['codigo']?>')" /></td>		
+						<?php }?>
 					</tr>
 		    	<?php } ?>
 				</tbody>
