@@ -129,7 +129,7 @@ function abrirInfo(dire) {
 				<tbody>
 				<?php foreach($arrayResultado as $medicamento) { 
 						$tipo = "AlfaBeta";
-						if ($medicamento['tipo'] == 4) { $tipo = "Medicamento C.M."; }
+						if ($medicamento['tipo'] == 4) { $tipo = "C.M."; }
 						if ($medicamento['tipo'] == 5) { $tipo = "Insumo"; } ?>
 					<tr>
 						<td><?php echo $medicamento['codigo'] ?></td>	
