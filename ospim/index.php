@@ -10,6 +10,7 @@
   <div align="center">
     <h2>Ingreso Sistema O.S.P.I.M.</h2>
     <p><img src="img/logo.png" width="357" height="300" /> </p>
+
     <p><?php  
     	if (isset($_GET['error'])) {
 			$error = $_GET['error'];
@@ -38,7 +39,10 @@
     </table>
   </div>
 </form>
-
+<div align="center">
+	<h2>Cuantas veces te lavaste las manos hoy?</h2>
+	<p><img src="img/lavadodemanosmin.jpg" width="584" height="540" /> </p>
+</div>
 </body>
 
 </html>
