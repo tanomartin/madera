@@ -37,7 +37,10 @@
     </table>
   </div>
 </form>
-
+<div align="center">
+	<h2>Cuantas veces te lavaste las manos hoy?</h2>
+	<p><img src="img/lavadodemanosmin.jpg" width="584" height="540" /> </p>
+</div>
 </body>
 
 </html>
