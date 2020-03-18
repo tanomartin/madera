@@ -167,8 +167,10 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	$pdf->SetXY(7, 21);
 	$pdf->Cell(20,5,$rowCabecera['fechacomprobante'],0,0,"R");
 	$pdf->SetXY(130, 21);
+	$pdf->SetFont('Courier','B',12);
 	$pdf->Cell(80,5,"Orden de Pago: ".$rowCabecera['nroordenpago']." - $tipo",0,0,"R");
 	$pdf->SetXY(7, 25);
+	$pdf->SetFont('Courier','B',8);
 	$pdf->Cell(203,5,"NOMBRE: ".$rowCabecera['nombre']." - CUIT: ".$rowCabecera['cuit'],0,0,"L");
 	$pdf->SetXY(7, 28);
 	$pdf->Cell(203,5,"DIRECCION: ".$rowCabecera['domicilio']." - CP: ".$rowCabecera['numpostal']." - ".$rowCabecera['localidad']." - ".$rowCabecera['provincia'],0,0,"L");
@@ -207,7 +209,7 @@ function printDetalle($pdf, $rowCabecera, $db, $tipo) {
 	$pdf->SetXY(182.9, $y);
 	$pdf->Cell(27.06,5,"SALDO",1,1,"C");
 	
-	$pdf->SetFont('Courier','B',6);
+	$pdf->SetFont('Courier','B',8);
 	$y += 5;
 	$sqlDetalle = "SELECT o.*, f.*, establecimientos.nombre as establecimiento FROM ordendetalle o, facturas f 
 					LEFT JOIN establecimientos ON establecimientos.codigo = f.idestablecimiento
