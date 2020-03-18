@@ -6,6 +6,15 @@ $codigopresta = $_GET['codigopresta'];
 
 $codigo = $_POST['codigo'];
 $nombre = addslashes($_POST['nombre']);
+
+$cuit = $_POST['cuit'];
+if ($cuit == '') {
+	$cuit = "NULL";
+} else {
+	$cuit = "'$cuit'";
+}
+
+
 $domicilio = strtoupper(addslashes($_POST['domicilio']));
 
 $indpostal = $_POST['indpostal'];
@@ -110,6 +119,7 @@ $usuariomodificacion = $_SESSION['usuario'];
 $sqlUpdateEsta = "UPDATE establecimientos 
 SET 
 nombre = '$nombre', 
+cuit = $cuit,
 domicilio = '$domicilio',
 codlocali = '$localidad', 
 codprovin = '$codProvin',

@@ -25,7 +25,8 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta); ?>
 jQuery(function($){
 	$("#fechadesde").mask("99-99-9999");
 	$("#fechahasta").mask("99-99-9999");
-
+	$("#cuit").mask("99999999999");
+	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
 		$.ajax({
@@ -89,6 +90,13 @@ function validar(formulario) {
 	if (formulario.nombre.value == "") {
 		alert("El campo Nombre es Obligatrio");
 		return false;
+	}
+
+	if (formulario.cuit.value != "") {
+		if (!verificaCuilCuit(formulario.cuit.value)){
+			alert("C.U.I.T. Inválido");
+			return false;
+		}
 	}
 	
 	if (formulario.codPos.value != "") {
@@ -193,73 +201,67 @@ function validar(formulario) {
     </tr>
   </table>
   <form name="modifEstablecimiento" id="modifEstablecimiento" method="post" onsubmit="return validar(this)" action="guardarModificacionEstablecimiento.php?codigopresta=<?php echo $codigopresta ?>">
-    <table border="0">
+    <table border="1">
       <tr>
-        <td><div align="right"><strong>Código</strong></div></td>
-        <td colspan="5"><div align="left">
+        <td align="right"><b>Código</b></td>
+        <td align="left" colspan="3">
           <input name="codigo" readonly="readonly" style="background:#CCCCCC" type="text" id="codigo" size="4" value="<?php echo $rowConsultaEsta['codigo'] ?>"/>
-        </div></td>
+        </td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Nombre</strong></div></td>
-        <td colspan="5"><div align="left"><input name="nombre" type="text" id="nombre" size="120" value="<?php echo $rowConsultaEsta['nombre'] ?>"/></div></td>
+        <td align="right"><b>Nombre</b></td>
+        <td colspan="2" align="left"><input name="nombre" type="text" id="nombre" size="80" value="<?php echo $rowConsultaEsta['nombre'] ?>"/></td>
+        <td align="left"><b>C.U.I.T. </b><input name="cuit" type="text" id="cuit" size="9" value="<?php echo $rowConsultaEsta['cuit'] ?>"/></td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Domicilio</strong></div></td>
-        <td colspan="5"><div align="left"><input name="domicilio" type="text" id="domicilio" size="120" value="<?php echo $rowConsultaEsta['domicilio'] ?>" /> </div></td>
+        <td align="right"><b>Domicilio</b></td>
+        <td colspan="3" align="left"><input name="domicilio" type="text" id="domicilio" size="120" value="<?php echo $rowConsultaEsta['domicilio'] ?>" /></td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Codigo Postal</strong></div></td>
-        <td width="244"><div align="left">
-          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1" value="<?php echo $rowConsultaEsta['indpostal'] ?>"/>
--
-<input name="codPos" type="text" id="codPos" size="7" value="<?php echo $rowConsultaEsta['numpostal'] ?>" />
--
-<input name="alfapostal"  id="alfapostal" type="text" size="3" value="<?php echo $rowConsultaEsta['alfapostal'] ?>"/>
-		</div></td>
-        <td width="365"><div align="left"><strong>Localidad</strong><strong>
+        <td align="right"><b>Codigo Postal</b></td>
+        <td align="left">
+          <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1" value="<?php echo $rowConsultaEsta['indpostal'] ?>"/> -
+		  <input name="codPos" type="text" id="codPos" size="7" value="<?php echo $rowConsultaEsta['numpostal'] ?>" /> -
+		  <input name="alfapostal"  id="alfapostal" type="text" size="3" value="<?php echo $rowConsultaEsta['alfapostal'] ?>"/>
+		</td>
+        <td align="left"><b>Localidad</b>
           <select name="selectLocali" id="selectLocali">
             <option value="0">Seleccione un valor </option>
             <option value="<?php echo $rowConsultaEsta['codlocali'] ?>" selected="selected"><?php echo $rowConsultaEsta['localidad'] ?></option>
           </select>
-        </strong></div></td>
-        <td><div align="left"><strong>Provincia</strong><strong>
-          <input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $rowConsultaEsta['provincia'] ?>"/>
+        </td>
+        <td align="left"><b>Provincia</b>
+          <input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" value="<?php echo $rowConsultaEsta['provincia'] ?>" size="25"/>
           <input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2" value="<?php echo $rowConsultaEsta['codprovin'] ?>"/>
-        </strong></div></td>
+        </td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Telefono 1 </strong></div></td>
-        <td><div align="left">(<input name="ddn1" type="text" id="ddn1" size="3" value="<?php echo $rowConsultaEsta['ddn1'] ?>"/>)-<input name="telefono1" type="text" id="telefono1" size="15" value="<?php echo $rowConsultaEsta['telefono1'] ?>"/></div></td>
-        <td colspan="4"><div align="left"><strong>Telefono 2 </strong>( <strong><input name="ddn2" type="text" id="ddn2" size="3" value="<?php echo $rowConsultaEsta['ddn2'] ?>"/></strong> )-<strong><input name="telefono2" type="text" id="telefono2" size="15" value="<?php echo $rowConsultaEsta['telefono2'] ?>"/></strong></div></td>
+        <td align="right"><b>Telefono 1 </b></td>
+        <td align="left">(<input name="ddn1" type="text" id="ddn1" size="3" value="<?php echo $rowConsultaEsta['ddn1'] ?>"/>) - <input name="telefono1" type="text" id="telefono1" size="15" value="<?php echo $rowConsultaEsta['telefono1'] ?>"/></td>
+        <td colspan="2" align="left"><b>Telefono 2 </b> (<input name="ddn2" type="text" id="ddn2" size="3" value="<?php echo $rowConsultaEsta['ddn2'] ?>"/>) - <input name="telefono2" type="text" id="telefono2" size="15" value="<?php echo $rowConsultaEsta['telefono2'] ?>"/></td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Telefono FAX </strong></div></td>
-        <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="3" value="<?php echo $rowConsultaEsta['ddnfax'] ?>"/>)-<input name="telefonofax" type="text" id="telefonofax" size="15" value="<?php echo $rowConsultaEsta['telefonofax'] ?>"/>
-</div></td>
-        <td colspan="4"><div align="left"><strong>Email</strong> <input name="email" type="text" id="email" size="30" value="<?php echo $rowConsultaEsta['email'] ?>"/></div></td>
+        <td align="right"><b>Telefono FAX </b></td>
+        <td align="left">(<input name="ddnfax" type="text" id="ddnfax" size="3" value="<?php echo $rowConsultaEsta['ddnfax'] ?>"/>) - <input name="telefonofax" type="text" id="telefonofax" size="15" value="<?php echo $rowConsultaEsta['telefonofax'] ?>"/>
+	  </td>
+        <td colspan="2" align="left"><b>Email</b> <input name="email" type="text" id="email" size="30" value="<?php echo $rowConsultaEsta['email'] ?>"/></td>
       </tr>
       <tr>
-	    <td><div align="right"><strong>Circulo</strong></div></td>
-	    <td colspan="3">
-	    	<div align="left">
-	    		<?php 
-	    			$ckeckedNO = 'checked="checked"' ;
-	    			$ckeckedSI = '';
-	    			if ($rowConsultaEsta['circulo'] == 1) {
-	    				$ckeckedSI = 'checked="checked"';
-	    				$ckeckedNO = '';
-	    			}
-	    		?>
-          		<input name="circulo" type="radio" value="0" <?php echo $ckeckedNO ?> onclick="habilitaCalidad(this.value)"/> NO
-  		  		<input name="circulo" type="radio" value="1" <?php echo $ckeckedSI ?> onclick="habilitaCalidad(this.value)"/>SI
-		  	</div>
+	    <td align="right"><b>Circulo</b></td>
+	    <td colspan="3" align="left">
+	    <?php $ckeckedNO = 'checked="checked"' ;
+	    	  $ckeckedSI = '';
+	    	  if ($rowConsultaEsta['circulo'] == 1) {
+	    		$ckeckedSI = 'checked="checked"';
+	    		$ckeckedNO = '';
+	    	  } ?>
+          	<input name="circulo" type="radio" value="0" <?php echo $ckeckedNO ?> onclick="habilitaCalidad(this.value)"/> NO
+  		  	<input name="circulo" type="radio" value="1" <?php echo $ckeckedSI ?> onclick="habilitaCalidad(this.value)"/> SI
 		</td>
       </tr>
       <tr>
-      	<td><div align="right"><strong>Acrditacion Calidad</strong></div></td>
-      	<td>
-	    	<div align="left">
+      	<td align="right"><b>Acrditacion Calidad</b></td>
+      	<td align="left">
 	    <?php $calidadDisabled = "";
 	    	  if ($rowConsultaEsta['circulo'] == 1) {
 	    			$ckeckedNO = 'checked="checked"' ;
@@ -280,15 +282,14 @@ function validar(formulario) {
 	    			$calidadDisabled = 'disabled="disabled"';
 	    			$disabled = 'disabled="disabled"';
 	    		} ?>
-          		<input name="calidad" id="calidadNO" type="radio" value="0" <?php echo $ckeckedNO ?> onclick="habilitaFecha(this.value)" <?php echo $calidadDisabled ?>/> NO
-  		  		<input name="calidad" id="calidadSI" type="radio" value="1" <?php echo $ckeckedSI ?> onclick="habilitaFecha(this.value)" <?php echo $calidadDisabled ?>/>SI
-		  	</div>
+          	<input name="calidad" id="calidadNO" type="radio" value="0" <?php echo $ckeckedNO ?> onclick="habilitaFecha(this.value)" <?php echo $calidadDisabled ?>/> NO
+  		  	<input name="calidad" id="calidadSI" type="radio" value="1" <?php echo $ckeckedSI ?> onclick="habilitaFecha(this.value)" <?php echo $calidadDisabled ?>/> SI
 		</td>
 		<td><b>Fecha Desde</b> <input id="fechadesde" name="fechadesde" size="8" <?php echo $disabled ?> value="<?php echo $fechainicio  ?>"></input></td>
 		<td><b>Fecha Hasta</b> <input id="fechahasta" name="fechahasta" size="8" <?php echo $disabled ?> value="<?php echo $fechafin ?>" ></input></td>
       </tr>
     </table>
-    <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificaci&oacute;n" /></p>
+    <p><input type="submit" name="Submit" id="Submit" value="Guardar Modificación" /></p>
   </form>
   </div>
 </body>

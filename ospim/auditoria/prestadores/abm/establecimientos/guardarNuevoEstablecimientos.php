@@ -4,6 +4,14 @@ include($_SERVER['DOCUMENT_ROOT']."/madera/lib/fechas.php");
 $codigopresta = $_GET['codigopresta'];
 
 $nombre = addslashes($_POST['nombre']);
+
+$cuit = $_POST['cuit'];
+if ($cuit == '') {
+	$cuit = "NULL";
+} else {
+	$cuit = "'$cuit'";
+}
+
 $domicilio = strtoupper(addslashes($_POST['domicilio']));
 
 $indpostal = $_POST['indpostal'];
@@ -104,7 +112,7 @@ if ($circulo == 1) {
 $fecharegistro = date("Y-m-d H:i:s");
 $usuarioregistro = $_SESSION['usuario'];
 
-$sqlInsertProf = "INSERT INTO establecimientos VALUES(DEFAULT,'$codigopresta','$nombre','$domicilio','$localidad','$codProvin',$indpostal,$codPos,$alfapostal,$tel1,$ddn1,$tel2,$ddn2,$telfax,$ddnfax,$email,$circulo,$calidad,$fechainiciocalidad,$fechafincalidad,'$fecharegistro','$usuarioregistro',NULL,NULL)";
+$sqlInsertProf = "INSERT INTO establecimientos VALUES(DEFAULT,'$codigopresta','$nombre',$cuit,'$domicilio','$localidad','$codProvin',$indpostal,$codPos,$alfapostal,$tel1,$ddn1,$tel2,$ddn2,$telfax,$ddnfax,$email,$circulo,$calidad,$fechainiciocalidad,$fechafincalidad,'$fecharegistro','$usuarioregistro',NULL,NULL)";
 
 try {
 	$hostname = $_SESSION['host'];

@@ -2,7 +2,11 @@
 $codigo = $_GET['codigo'];
 $sqlConsultaPresta = "SELECT codigoprestador, nombre FROM prestadores WHERE codigoprestador = $codigo";
 $resConsultaPresta = mysql_query($sqlConsultaPresta,$db);
-$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta); ?>
+$rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta); 
+
+$sqlEstable = "SELECT codigo, nombre FROM establecimientos WHERE codigoprestador = $codigo";
+$resEstable = mysql_query($sqlEstable,$db);
+$numEstable  = mysql_num_rows($resEstable); ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -49,18 +53,15 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta); ?>
   	<h3>Profesionales del  Prestador</h3>
 	<table width="500" border="1" style="margin-bottom: 20px">
         <tr>
-          <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
-          <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
+          <td width="163" align="right"><b>Código</b></td>
+          <td width="321" align="left"><b><?php echo $rowConsultaPresta['codigoprestador']  ?></b></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
-          <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
+          <td align="right"><b>Razón Social</b></td>
+          <td align="left"><?php echo $rowConsultaPresta['nombre'] ?></td>
         </tr>
   </table>
-  <?php $sqlEstable = "SELECT codigo, nombre FROM establecimientos WHERE codigoprestador = $codigo";
-		$resEstable = mysql_query($sqlEstable,$db);
-		$numEstable  = mysql_num_rows($resEstable);
-		if ($numEstable > 0) {  ?>
+  <?php if ($numEstable > 0) {  ?>
 			<table style="text-align:center; width:600px" id="establecimientos" class="tablesorter" >
 				<thead>
 					<tr>

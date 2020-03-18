@@ -19,6 +19,7 @@ $rowConsultaPresta = mysql_fetch_assoc($resConsultaPresta); ?>
 jQuery(function($){
 	$("#fechadesde").mask("99-99-9999");
 	$("#fechahasta").mask("99-99-9999");
+	$("#cuit").mask("99999999999");
 	
 	$("#codPos").change(function(){
 		var codigo = $(this).val();
@@ -82,6 +83,12 @@ function validar(formulario) {
 	if (formulario.nombre.value == "") {
 		alert("El campo Nombre es Obligatrio");
 		return false;
+	}
+	if (formulario.cuit.value != "") {
+		if (!verificaCuilCuit(formulario.cuit.value)){
+			alert("C.U.I.T. Inválido");
+			return false;
+		}
 	}
 	if (formulario.codPos.value != "") {
 		if (!esEnteroPositivo(formulario.codPos.value)){
@@ -174,65 +181,63 @@ function validar(formulario) {
   <h3>Nuevo Establecimientos </h3>
   <table width="500" border="1" style="margin-bottom: 20px">
     <tr>
-      <td width="163"><div align="right"><strong>C&oacute;digo</strong></div></td>
-      <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
+      <td width="163" align="right"><b>Código</b></td>
+      <td width="321" align="left"><b><?php echo $rowConsultaPresta['codigoprestador']  ?></b></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Raz&oacute;n Social</strong></div></td>
-      <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
+      <td align="right"><b>Raz&oacute;n Social</b></td>
+      <td align="left"><?php echo $rowConsultaPresta['nombre'] ?></td>
     </tr>
   </table>
   <form name="nuevoEstablecimientos" id="nuevoEstablecimientos" method="post" onsubmit="return validar(this)" action="guardarNuevoEstablecimientos.php?codigopresta=<?php echo $codigopresta ?>">
-    <table border="0">
+    <table border="1">
       <tr>
-        <td><div align="right"><strong>Nombre</strong></div></td>
-        <td colspan="5"><div align="left"><input name="nombre" type="text" id="nombre" size="120" /></div></td>
+        <td align="right"><b>Razón Social</b></td>
+        <td colspan="2" align="left"><input name="nombre" type="text" id="nombre" size="80" /></td>
+        <td align="left"><b>C.U.I.T. </b><input name="cuit" type="text" id="cuit" size="9" /></td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Domicilio</strong></div></td>
-        <td colspan="5"><div align="left"><input name="domicilio" type="text" id="domicilio" size="120" /></div></td>
+        <td align="right"><b>Domicilio</b></td>
+        <td colspan="3" align="left"><input name="domicilio" type="text" id="domicilio" size="110" /></td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Codigo Postal</strong></div></td>
-        <td><div align="left">
+        <td align="right"><b>Codigo Postal</b></td>
+        <td align="left">
           <input style="background-color:#CCCCCC" readonly="readonly" name="indpostal" id="indpostal" type="text" size="1"/>
-          -<input name="codPos" type="text" id="codPos" size="7" />-<input name="alfapostal"  id="alfapostal" type="text" size="3"/></div></td>
-        <td><div align="left"><strong>Localidad</strong>
+          -<input name="codPos" type="text" id="codPos" size="7" />-<input name="alfapostal"  id="alfapostal" type="text" size="3"/>
+        </td>
+        <td align="left"><b>Localidad</b>
           <select name="selectLocali" id="selectLocali">
             <option value="0">Seleccione un valor </option>
           </select>
-        </div></td>
-        <td><div align="left"><strong>Provincia</strong>
+        </td>
+        <td align="left"><b>Provincia</b>
           <input readonly="readonly" style="background-color:#CCCCCC" name="provincia" type="text" id="provincia" />
   		   <input style="background-color:#CCCCCC; visibility:hidden " readonly="readonly" name="codprovin" id="codprovin" type="text" size="2"/>
-       </div></td>
+        </td>
       </tr>
       <tr>
-        <td><div align="right"><strong>Telefono 1 </strong></div></td>
-        <td><div align="left">(<input name="ddn1" type="text" id="ddn1" size="5" />)-<input name="telefono1" type="text" id="telefono1" size="20" /></div></td>
-        <td colspan="4"><div align="left"><strong>Telefono 2 </strong>(<input name="ddn2" type="text" id="ddn2" size="5"/>)-<input name="telefono2" type="text" id="telefono2" size="20"/></div></td>
+        <td align="right"><b>Telefono 1 </b></td>
+        <td align="left">(<input name="ddn1" type="text" id="ddn1" size="5" />)-<input name="telefono1" type="text" id="telefono1" size="20" /></td>
+        <td colspan="2" align="left"><b>Telefono 2 </b>(<input name="ddn2" type="text" id="ddn2" size="5"/>)-<input name="telefono2" type="text" id="telefono2" size="20"/></td>
       </tr>
 	  <tr>
-        <td><div align="right"><strong>Telefono FAX </strong></div></td>
-        <td><div align="left">(<input name="ddnfax" type="text" id="ddnfax" size="5"/>)-<input name="telefonofax" type="text" id="telefonofax" size="20" /></div></td>
-        <td colspan="4"><div align="left"><strong>Email </strong><input name="email" type="text" id="email" size="40" /></div></td>
+        <td align="right"><b>Telefono FAX </b></td>
+        <td align="left">(<input name="ddnfax" type="text" id="ddnfax" size="5"/>)-<input name="telefonofax" type="text" id="telefonofax" size="20" /></td>
+        <td colspan="2" align="left"><b>Email </b><input name="email" type="text" id="email" size="40" /></td>
       </tr>
       <tr>
-	    <td><div align="right"><strong>Circulo</strong></div></td>
-	    <td colspan="3">
-	    	<div align="left">
-          		<input name="circulo" type="radio" value="0" checked="checked" onclick="habilitaCalidad(this.value)"/> NO
-  		  		<input name="circulo" type="radio" value="1" onclick="habilitaCalidad(this.value)"/>SI
-		  	</div>
+	    <td align="right"><b>Circulo</b></td>
+	    <td colspan="3" align="left">
+          	<input name="circulo" type="radio" value="0" checked="checked" onclick="habilitaCalidad(this.value)"/> NO
+  		  	<input name="circulo" type="radio" value="1" onclick="habilitaCalidad(this.value)"/>SI
 		</td>
       </tr>
       <tr>
-      	<td><div align="right"><strong>Acrditacion Calidad</strong></div></td>
-      	<td>
-	    	<div align="left">
-          		<input name="calidad" id="calidadNO" type="radio" value="0" checked="checked" onclick="habilitaFecha(this.value)" disabled="disabled"/> NO
-  		  		<input name="calidad" id="calidadSI" type="radio" value="1" onclick="habilitaFecha(this.value)" disabled="disabled"/>SI
-		  	</div>
+      	<td align="right"><b>Acrditacion Calidad</b></td>
+      	<td align="left">
+          	<input name="calidad" id="calidadNO" type="radio" value="0" checked="checked" onclick="habilitaFecha(this.value)" disabled="disabled"/> NO
+  		  	<input name="calidad" id="calidadSI" type="radio" value="1" onclick="habilitaFecha(this.value)" disabled="disabled"/>SI
 		</td>
 		<td><b>Fecha Desde</b> <input id="fechadesde" name="fechadesde" size="8" disabled="disabled"></input></td>
 		<td><b>Fecha Hasta</b> <input id="fechahasta" name="fechahasta" size="8" disabled="disabled"></input></td>

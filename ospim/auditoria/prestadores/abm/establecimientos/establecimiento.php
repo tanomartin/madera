@@ -33,22 +33,24 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta); ?>
       <td width="321"><div align="left"><strong><?php echo $rowConsultaPresta['codigoprestador']  ?></strong></div></td>
     </tr>
     <tr>
-      <td><div align="right"><strong>Razón Social</strong></div></td>
+      <td><div align="right"><b>Razón Social</b></div></td>
       <td><div align="left"><?php echo $rowConsultaPresta['nombre'] ?></div></td>
     </tr>
   </table>
 	  <table border="1">
         <tr>
-          <td><div align="right"><strong>Código</strong></div></td>
-          <td colspan="6"><div align="left"><strong><?php echo $rowConsultaEsta['codigo']  ?></strong></div></td>
+          <td><div align="right"><b>Código</b></div></td>
+          <td colspan="5"><div align="left"><strong><?php echo $rowConsultaEsta['codigo']  ?></strong></div></td>
         </tr>
         <tr>
-          <td><div align="right"><strong>Nombre</strong></div></td>
-          <td colspan="6"><div align="left"><?php echo $rowConsultaEsta['nombre'] ?></div></td>
+          <td><div align="right"><b>Nombre</b></div></td>
+          <td colspan="3"><div align="left"><?php echo $rowConsultaEsta['nombre'] ?></div></td>
+          <td><div align="left"><b>C.U.I.T.</b></div></td>
+          <td><div align="left"><?php echo $rowConsultaEsta['cuit'] ?></div></td>
         </tr>
         <tr>
           <td><div align="right"><strong>Domicilio</strong></div></td>
-          <td colspan="6"><div align="left"><?php echo $rowConsultaEsta['domicilio'] ?></div></td>
+          <td colspan="5"><div align="left"><?php echo $rowConsultaEsta['domicilio'] ?></div></td>
         </tr>
         <tr>
           <td><div align="right"><strong>Codigo Postal</strong></div></td>
@@ -62,13 +64,13 @@ $rowConsultaEsta = mysql_fetch_assoc($resConsultaEsta); ?>
           <td><div align="right"><strong>Telefono 1 </strong></div></td>
           <td><div align="left"><?php if ($rowConsultaEsta['telefono1'] != NULL) echo "(".$rowConsultaEsta['ddn1'].")-".$rowConsultaEsta['telefono1']; ?></div></td>
           <td><div align="left"><strong>Telefono 2 </strong></div></td>
-          <td colspan="4"><div align="left"><?php if ($rowConsultaEsta['telefono2'] != NULL) echo "(".$rowConsultaEsta['ddn2'].")-".$rowConsultaEsta['telefono2']; ?></div></td>
+          <td colspan="3"><div align="left"><?php if ($rowConsultaEsta['telefono2'] != NULL) echo "(".$rowConsultaEsta['ddn2'].")-".$rowConsultaEsta['telefono2']; ?></div></td>
         </tr>
         <tr>
           <td><div align="right"><strong>Telefono FAX </strong></div></td>
           <td><div align="left"><?php if ($rowConsultaEsta['telefonofax'] != NULL) echo "(".$rowConsultaEsta['ddnfax'].")-".$rowConsultaEsta['telefonofax']; ?></div></td>
           <td><div align="left"><strong>Email</strong></div></td>
-          <td colspan="4"><div align="left"><?php echo $rowConsultaEsta['email'] ?></div></td>
+          <td colspan="3"><div align="left"><?php echo $rowConsultaEsta['email'] ?></div></td>
         </tr>
         <tr>
           <td><div align="right"><strong>Circulo </strong></div></td>
