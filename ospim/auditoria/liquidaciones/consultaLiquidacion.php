@@ -438,7 +438,7 @@ function abrirDetalleEfector(idEfector,idFactura, tipopresta, nombreEfe) {
 			 		while ($rowAgrupaEfector = mysql_fetch_assoc($resAgrupaEfector)) { 	
 			 			$totFacEfe += $rowAgrupaEfector['facturado'];
 			 			$totDebEfe += $rowAgrupaEfector['debito'];
-			 			$totCreEfe += $rowAgrupaEfector['credito'];
+			 			$totCreEfe += $rowAgrupaEfector['facturado']-$rowAgrupaEfector['debito'];
 			 			$nombreEfe = "SIN EFECTOR";
 			 			$codigoEfe = "";
 			 			if ($rowAgrupaEfector['nombre'] != NULL) { $nombreEfe = $rowAgrupaEfector['nombre']; 
@@ -448,7 +448,7 @@ function abrirDetalleEfector(idEfector,idFactura, tipopresta, nombreEfe) {
 							<td><?php echo $nombreEfe; ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['facturado'],2,",","."); ?></td>
 							<td><?php echo number_format($rowAgrupaEfector['debito'],2,",","."); ?></td>
-							<td><?php echo number_format($rowAgrupaEfector['credito'],2,",","."); ?></td>
+							<td><?php echo number_format($rowAgrupaEfector['facturado']-$rowAgrupaEfector['debito'],2,",","."); ?></td>
 							<td><input type="button" value="DETALLE" onclick="abrirDetalleEfector('<?php echo $codigoEfe ?>', '<?php echo $id ?>', '<?php echo $tipopresta ?>', '<?php echo $nombreEfe ?>')"/></td>
 						</tr>
 			 <?php } ?>
