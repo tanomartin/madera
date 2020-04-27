@@ -92,14 +92,14 @@ while ($rowBeneficiarios = mysql_fetch_assoc($resBeneficiarios)) {
 				  <?php foreach ($arrayPresta[$id] as $pretacion) { 
 				  		$totFacEfe += $pretacion['totalfacturado'];
 				  		$totDebEfe += $pretacion['totaldebito']; 
-				  		$totCreEfe += $pretacion['totalcredito'];?>
+				  		$totCreEfe += $pretacion['totalfacturado'] - $pretacion['totaldebito'];?>
 						<tr>
 							<td><?php echo $nombreBene." - ".$bene['nroafiliado']."/". $bene['nroorden'] ?></td>
 							<td><?php echo $pretacion['codigopractica']; ?></td>
 							<td><?php echo $pretacion['fechapractica']; ?></td>
 							<td><?php echo $pretacion['totalfacturado']; ?></td>
 							<td><?php echo $pretacion['totaldebito']; ?></td>
-							<td><?php echo $pretacion['totalcredito']; ?></td>
+							<td><?php echo $pretacion['totalfacturado'] - $pretacion['totaldebito']; ?></td>
 						</tr>
 			<?php	 	}
 			 		} ?>

@@ -304,7 +304,7 @@ function abrirDetalleEfector(idEfector,idFactura, tipopresta, nombreEfe) {
 										<td><?php echo number_format($pretacion['cantidad'],3,",","."); ?></td>
 										<td><?php echo number_format($pretacion['totalfacturado'],2,",","."); ?></td>
 										<td><?php echo number_format($pretacion['totaldebito'],2,",","."); ?></td>
-										<td><?php echo number_format($pretacion['totalcredito'],2,",","."); ?></td>
+										<td><?php echo number_format($pretacion['totalfacturado'] - $pretacion['totaldebito'],2,",","."); ?></td>
 										<td><?php if (isset($pretacion['efector'])) { echo $pretacion['efector']."<br>".$pretacion['profesionalestablecimientocirculo']; } ?></td>
 									</tr>
 							  <?php if ($pretacion['totaldebito'] > 0) { ?>
