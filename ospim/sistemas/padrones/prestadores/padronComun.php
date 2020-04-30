@@ -40,6 +40,7 @@
 								l.nomlocali, 
 								t.codprovin, 
 								t.codidelega,
+                                t.cuil,
 								t.cuitempresa, 
 								e.nombre as nomempresa 
 							FROM titulares t, localidades l, empresas e 
@@ -57,6 +58,7 @@
 								l.nomlocali,
 								t.codprovin,
 								t.codidelega,
+                                t.cuil,
 								t.cuitempresa,
 								e.nombre as nomempresa
 							FROM titulares t, localidades l, empresas e
@@ -87,7 +89,9 @@
 				if (array_key_exists($indexCoseguro,$arrayCoseguro)) {
 					$coseguro = 0;
 				}
+				
 				$objPHPExcel->getActiveSheet()->setCellValue('N'.$fila, $coseguro);
+				$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, $rowTitulares['cuil']);
 				$totalTituXDelega++;
 				
 				$nroafil = $rowTitulares['nroafiliado'];
@@ -104,7 +108,8 @@
 									f.tipodocumento, 
 									f.nrodocumento, 
 									f.fechanacimiento, 
-									f.sexo 
+									f.sexo,
+                                    f.cuil 
 								FROM familiares f
 								WHERE f.nroafiliado = $nroafil and f.cantidadcarnet != 0 and f.fecharegistro < '$fechaLimite'";
 				if ($capitado == 0) {
@@ -116,7 +121,8 @@
 										f.tipodocumento,
 										f.nrodocumento,
 										f.fechanacimiento,
-										f.sexo
+										f.sexo,
+                                        f.cuil
 									  FROM familiares f
 									  WHERE f.nroafiliado = $nroafil and f.fecharegistro < '$fechaLimite'";
 				}
@@ -129,7 +135,7 @@
 					if (array_key_exists($indexCoseguro,$arrayCoseguro)) {
 						$coseguro = 0;
 					}					
-					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'tipoparentesco' => $rowFamiliares['tipoparentesco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo'], 'coseguro' => $coseguro);
+					$cuerpoFamilia[$filaFamilia] = array('nroafil' => $rowFamiliares['nroafiliado'], 'tipoparentesco' => $rowFamiliares['tipoparentesco'], 'nombre' => $rowFamiliares['apellidoynombre'], 'tipdoc' => $rowFamiliares['tipodocumento'], 'numdoc' => $rowFamiliares['nrodocumento'], 'fecnac' => invertirFecha($rowFamiliares['fechanacimiento']), 'sexo' => $rowFamiliares['sexo'], 'coseguro' => $coseguro, 'cuil' => $rowFamiliares['cuil']);
 					$filaFamilia++;
 					
 					$insertInforme[$indexInforme] = array('nroafiliado' => $rowFamiliares['nroafiliado'], 'nroorden' => $rowFamiliares['nroorden'], 'tipoparentesco' => $rowFamiliares['tipoparentesco']);
@@ -142,12 +148,12 @@
 			$totalizador[$delega] = array('delega' => $delega, 'tottit' => $totalTituXDelega, 'totfam' => $totalFamiXDelega, "total" => $totalDele);
 		}
 		
-		for($col = 'A'; $col !== 'O'; $col++) {
+		for($col = 'A'; $col !== 'P'; $col++) {
 			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
 		
 		if ($medicina == 0) {
-			$objPHPExcel->getActiveSheet()->removeColumn("M",1);
+			$objPHPExcel->getActiveSheet()->removeColumn("N",1);
 		}
 		
 		$totalTitulares = $fila;
@@ -184,9 +190,10 @@
 			$objPHPExcel->getActiveSheet()->setCellValue('F'.$fila, $familiar['fecnac']);
 			$objPHPExcel->getActiveSheet()->setCellValue('G'.$fila, $familiar['sexo']);
 			$objPHPExcel->getActiveSheet()->setCellValue('H'.$fila, $familiar['coseguro']);
+			$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, $familiar['cuil']);
 		}
 		
-		for($col = 'A'; $col !== 'I'; $col++) {
+		for($col = 'A'; $col !== 'J'; $col++) {
 			$objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
 		}
 		
