@@ -45,19 +45,40 @@ while ($rowDelegaciones = mysql_fetch_assoc ($resDelegaciones)) {
 	$arrayInforme[$rowDelegaciones['codidelega']]['cantidad'] = 0;
 }
 
+$sqlFami = "SELECT DISTINCT cuil, nrodocumento, apellidoynombre, nroafiliado FROM familiares f";
+$resFami =  mysql_query ( $sqlFami, $db );
+$arrayFami = array();
+while ($rowFami = mysql_fetch_assoc ($resFami)) {
+    $arrayFami[$rowFami['cuil']] = $rowFami['nrodocumento'];
+}
+
+$sqlFamiBaja = "SELECT DISTINCT cuil, nrodocumento, apellidoynombre, nroafiliado FROM familiaresdebaja f";
+$resFamiBaja =  mysql_query ( $sqlFamiBaja, $db );
+$arrayFamiBaja = array();
+while ($rowFamiBaja = mysql_fetch_assoc ($resFamiBaja)) {
+    $arrayFamiBaja[$rowFamiBaja['cuil']] = $rowFamiBaja['nrodocumento'];
+}
+
+$arrayTiposAceptados = array(0,2,4,5,8);
 
 foreach ($arrayTituSSS as $cuil => $titu) {
-	if (!array_key_exists ($cuil , $arrayTitu)) {
-		if (!array_key_exists ($cuil , $arrayTituBaja)) {
-			if(!in_array($titu['nrodoc'], $arrayTitu)) {
-				if(!in_array($titu['nrodoc'], $arrayTituBaja)) {
-					if (array_key_exists($titu['cuit'], $arrayCuit)) {
-						$arrayInforme[$arrayCuit[$titu['cuit']]['codidelega']]['cantidad'] += 1; 
-					}
-				} 
-			} 
-		}
-	} 
+    if (in_array($titu['tipotitular'],$arrayTiposAceptados)) {
+    	if (!array_key_exists ($cuil , $arrayTitu)) {
+    		if (!array_key_exists ($cuil , $arrayTituBaja)) {
+    			if(!in_array($titu['nrodoc'], $arrayTitu)) {
+    				if(!in_array($titu['nrodoc'], $arrayTituBaja)) {
+    				    if (!array_key_exists ($cuil , $arrayFami) && !in_array($titu['nrodoc'], $arrayFami)) {
+    				        if (!array_key_exists ($cuil , $arrayFamiBaja)) {
+            					if (array_key_exists($titu['cuit'], $arrayCuit)) {
+            						$arrayInforme[$arrayCuit[$titu['cuit']]['codidelega']]['cantidad'] += 1; 
+            					}
+    				        }
+    				    }
+    				} 
+    			} 
+    		}
+    	} 
+    }
 }
 
 $sqlMesPadron = "SELECT * FROM padronssscabecera c WHERE fechacierre is null ORDER BY c.id DESC LIMIT 1";
