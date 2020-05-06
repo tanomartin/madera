@@ -78,11 +78,11 @@ if ($whereCuit != ")") {
 				if (!array_key_exists ($cuil , $arrayTituBaja)) {
 					if(!in_array($titu['nrodoc'], $arrayTitu)) {
 						if(!in_array($titu['nrodoc'], $arrayTituBaja)) {
-						    if (!array_key_exists ($cuil , $arrayFami) && !in_array($titu['nrodoc'], $arrayFami)) {
-						        if (!array_key_exists ($cuil , $arrayFamiBaja)) {
+						   // if (!array_key_exists ($cuil , $arrayFami) && !in_array($titu['nrodoc'], $arrayFami)) {
+						      //  if (!array_key_exists ($cuil , $arrayFamiBaja)) {
 						          $arrayAlta[$cuil] = $titu; 
-						        }
-						    }
+						  //      }
+						 //   }
 						} 
 					} 
 				}
