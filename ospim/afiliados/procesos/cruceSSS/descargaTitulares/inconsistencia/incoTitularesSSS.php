@@ -32,6 +32,20 @@ while ($rowTitu = mysql_fetch_assoc ($resTitu)) {
 	$arrayTipo[$rowTitu['cuil']] = $rowTitu['descrip'];
 }
 
+$sqlFami = "SELECT DISTINCT cuil, nrodocumento, apellidoynombre, nroafiliado FROM familiares f";
+$resFami =  mysql_query ( $sqlFami, $db );
+$arrayFami = array();
+while ($rowFami = mysql_fetch_assoc ($resFami)) {
+    $arrayFami[$rowFami['cuil']] = $rowFami['nrodocumento'];
+}
+
+$sqlFamiBaja = "SELECT DISTINCT cuil, nrodocumento, apellidoynombre, nroafiliado FROM familiaresdebaja f";
+$resFamiBaja =  mysql_query ( $sqlFamiBaja, $db );
+$arrayFamiBaja = array();
+while ($rowFamiBaja = mysql_fetch_assoc ($resFamiBaja)) {
+    $arrayFamiBaja[$rowFamiBaja['cuil']] = $rowFamiBaja['nrodocumento'];
+}
+
 $arrayInforme = array();
 $arrayTipoAceptados = array(0,2,4,5,8);
 foreach ($arrayTituSSS as $cuil => $titu) {
@@ -39,13 +53,21 @@ foreach ($arrayTituSSS as $cuil => $titu) {
 		if (!array_key_exists ($cuil , $arrayTituBaja)) {
 			if(!in_array($titu['nrodoc'], $arrayTitu)) {
 				if(!in_array($titu['nrodoc'], $arrayTituBaja)) {
-					if ($titu['osopcion'] != 0) {
-						$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular por Opcion no empadronado informado desde la S.S.S");
-					} else {
-						if (!in_array($titu['tipotitular'], $arrayTipoAceptados)) {
-							$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular con tipo de titular no aceptado por la O.S. no empadronado informado desde la S.S.S");
-						}
-					}
+				    if (!array_key_exists ($cuil , $arrayFami) && !in_array($titu['nrodoc'], $arrayFami)) {
+				        if (!array_key_exists ($cuil , $arrayFamiBaja)) {
+        					if ($titu['osopcion'] != 0) {
+        						$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular por Opcion no empadronado informado desde la S.S.S");
+        					} else {
+        						if (!in_array($titu['tipotitular'], $arrayTipoAceptados)) {
+        							$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular con tipo de titular no aceptado por la O.S. no empadronado informado desde la S.S.S");
+        						}
+        					}
+				        } else {
+				            $arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por C.U.I.L. en la tabla de Familiares de Baja");
+				        }
+				    } else {
+				        $arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. o C.U.I.L. en la tabla de Familiares");
+				    }
 				} else {
 					$arrayInforme[$cuil] = array('titu' => $titu, 'motivo' => "Titular encontrado por D.N.I. con diferente C.U.I.L. informado desde la S.S.S");
 				}

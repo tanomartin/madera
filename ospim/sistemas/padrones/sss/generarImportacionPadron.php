@@ -135,7 +135,7 @@ try {
 	$_SESSION["ultimoAcceso"] = $ahora;
 
 }  catch ( PDOException $e ) {
-	unlink($archivoHostorico);
+    unlink($archivoHistorico);
 	$error =  $e->getMessage();
 	$dbh->rollback();
 	$redire = "Location://".$_SERVER['SERVER_NAME']."/madera/ospim/errorSistemas.php?error='".$error."'&page='".$_SERVER['SCRIPT_FILENAME']."'";
