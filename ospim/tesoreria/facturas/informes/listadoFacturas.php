@@ -188,7 +188,7 @@ function validar(formulario) {
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuInformes.php'" /></p>
 	<h2>Listado de Facturas</h2>
 	
-	<form method="post" action="listadofacturas.php" onsubmit="return validar(this)">
+	<form method="post" action="listadoFacturas.php" onsubmit="return validar(this)">
 		<h3 style="color: blue">Seleccione el filtro de listado</h3>
 		<table>
 			<tr><td><b>INGRESADAS</b></td><td><input type="radio" value="I" id="i" name="filtro" checked="checked" onclick="habilitarFiltros(this.value)"></input></td></tr>
