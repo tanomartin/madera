@@ -109,21 +109,23 @@ if (isset($_POST['filtro'])) {
 		}
 		
 		$sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
-						t.descripcion as tipocomprobante
-						FROM facturas f, prestadores p, tipocomprobante t
+						tipocomprobante.descripcion as tipocomprobante
+						FROM prestadores p, facturas f
+                        LEFT JOIN tipocomprobante on tipocomprobante.id = f.idTipocomprobante
 						WHERE
 						f.usuarioliquidacion is not null AND
 						(f.importeliquidado != 0 OR f.totaldebito = f.importecomprobante) AND
 						f.restoapagar = 0 AND
 						f.idPrestador = p.codigoprestador AND "
-						.$whereBusqueda." AND 
-						f.idTipocomprobante = t.id
+						.$whereBusqueda."
 						ORDER BY f.id DESC";
 		$resFacturas = mysql_query($sqlFacturas,$db);
 		$numFacturas = mysql_num_rows($resFacturas);
 		
-		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante
-							FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
+		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante, 
+                            tipocomprobante.descripcion as tipocomprobante
+							FROM facturasprestaciones pf, facturasintegracion fi, prestadores p, facturas f
+                            LEFT JOIN tipocomprobante on tipocomprobante.id = f.idTipocomprobante
 							WHERE
 							f.usuarioliquidacion is not null AND
 							(f.importeliquidado != 0 OR f.totaldebito = f.importecomprobante) AND
