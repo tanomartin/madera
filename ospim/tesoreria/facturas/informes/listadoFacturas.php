@@ -1,9 +1,23 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
-$liquidador = $_SESSION['usuario']; 
 $cartelPagadas = "";
 if (isset($_POST['filtro'])) {
 	$filtro = $_POST['filtro'];
+	if ($filtro == "I") {
+	    $cartel = "LISTADO DE FACTURAS INGRESADAS SIN LIQUIDADOR";
+	    
+	    $sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
+			t.descripcion as tipocomprobante
+			FROM facturas f, prestadores p, tipocomprobante t
+			WHERE
+			f.usuarioliquidacion is null AND
+			f.idPrestador = p.codigoprestador AND
+			f.idTipocomprobante = t.id
+			ORDER BY f.id DESC";
+	    $resFacturas = mysql_query($sqlFacturas,$db);
+	    $numFacturas = mysql_num_rows($resFacturas);
+	}
+	
 	if ($filtro == "P") {
 		$cartel = "LISTADO DE FACTURAS EN PROCESO";
 		
@@ -11,10 +25,10 @@ if (isset($_POST['filtro'])) {
 			t.descripcion as tipocomprobante
 			FROM facturas f, prestadores p, tipocomprobante t
 			WHERE
-			f.usuarioliquidacion = '$liquidador' AND
+            f.usuarioliquidacion is not null AND
 			(f.importeliquidado != 0 AND f.restoapagar != 0 OR 
              f.importeliquidado = 0 AND f.restoapagar = 0) AND
-            f.totaldebito != f.importecomprobante AND    
+            f.totaldebito != f.importecomprobante AND
 			f.idPrestador = p.codigoprestador AND
 			f.idTipocomprobante = t.id
 			ORDER BY f.id DESC";
@@ -24,7 +38,7 @@ if (isset($_POST['filtro'])) {
 		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante
 			FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
 			WHERE
-			f.usuarioliquidacion = '$liquidador' AND
+			f.usuarioliquidacion is not null AND
 			(f.importeliquidado != 0 AND f.restoapagar != 0 OR 
              f.importeliquidado = 0 AND f.restoapagar = 0) AND
             f.totaldebito != f.importecomprobante AND
@@ -40,7 +54,9 @@ if (isset($_POST['filtro'])) {
 				$arrayInte[$rowFacturaInte['id']] = $rowFacturaInte['id'];
 			}
 		}
-	} else {
+	}
+	
+	if ($filtro == "F") {
 		$cartel = "LISTADO DE FACTURAS PAGADAS";
 		
 		$filtroBusqueda = $_POST['filtroPaga'];
@@ -66,7 +82,7 @@ if (isset($_POST['filtro'])) {
 						t.descripcion as tipocomprobante
 						FROM facturas f, prestadores p, tipocomprobante t
 						WHERE
-						f.usuarioliquidacion = '$liquidador' AND
+						f.usuarioliquidacion is not null AND
 						(f.importeliquidado != 0 OR f.totaldebito = f.importecomprobante) AND
 						f.restoapagar = 0 AND
 						f.idPrestador = p.codigoprestador AND "
@@ -79,7 +95,7 @@ if (isset($_POST['filtro'])) {
 		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante
 							FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
 							WHERE
-							f.usuarioliquidacion = '$liquidador' AND
+							f.usuarioliquidacion is not null AND
 							(f.importeliquidado != 0 OR f.totaldebito = f.importecomprobante) AND
 							f.restoapagar = 0 AND
 							f.id = pf.idFactura AND
@@ -124,7 +140,7 @@ $(function() {
 				 8:{sorter:false, filter: false},
 				 9:{sorter:false, filter: false},
 				 10:{sorter:false},
-				 11:{sorter:false, filter: false}},
+				 11:{sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -169,13 +185,14 @@ function validar(formulario) {
 
 <body bgcolor="#CCCCCC">
 <div align="center">
-	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuLiquidaciones.php'" /></p>
-	<h2>Listado de Facturas </br> Liquidador: <font color="blue">"<?php echo $liquidador ?>"</font></h2>
+	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuInformes.php'" /></p>
+	<h2>Listado de Facturas</h2>
 	
 	<form method="post" action="listadofacturas.php" onsubmit="return validar(this)">
 		<h3 style="color: blue">Seleccione el filtro de listado</h3>
 		<table>
-			<tr><td><b>EN PROCESO</b></td><td><input type="radio" value="P" id="p" name="filtro" checked="checked" onclick="habilitarFiltros(this.value)"></input></td></tr>
+			<tr><td><b>INGRESADAS</b></td><td><input type="radio" value="I" id="i" name="filtro" checked="checked" onclick="habilitarFiltros(this.value)"></input></td></tr>
+			<tr><td><b>EN PROCESO</b></td><td><input type="radio" value="P" id="p" name="filtro" onclick="habilitarFiltros(this.value)"></input></td></tr>
 			<tr><td><b>PAGADAS</b></td><td><input type="radio" value="F" id="f" name="filtro" onclick="habilitarFiltros(this.value)"></input></td></tr>
 		</table>
 		
@@ -223,8 +240,8 @@ function validar(formulario) {
 						<th>$ Debito</th>
 						<th>$ Liquidado</th>
 						<th>$ Pagado</th>
+						<th class="filter-select" data-placeholder="--">Liquidador</th>
 						<th class="filter-select" data-placeholder="--">Estado</th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -240,7 +257,10 @@ function validar(formulario) {
 						<td><?php echo number_format($rowFacturas['totaldebito'],2,',','.'); ?></td>
 						<td><?php echo number_format($rowFacturas['importeliquidado'],2,',','.'); ?></td>
 						<td><?php echo number_format($rowFacturas['totalpagado'],2,',','.'); ?></td>
-						<?php $estado = "AUDITORIA";
+						<?php $estado = "INGRESADA";
+						      if ($rowFacturas['usuarioliquidacion'] != NULL) {
+						          $estado = "AUDITORIA";
+						      }
 							  if ($rowFacturas['fechacierreliquidacion'] != "0000-00-00 00:00:00") { 
 								if (isset($arrayInte[$rowFacturas['id']])) {
 									$estado = "INTEGRACION";
@@ -263,14 +283,8 @@ function validar(formulario) {
 									}
 								}
 							  } ?>
+						<td><b><?php echo $rowFacturas['usuarioliquidacion'] ?></b></td>
 						<td><b><?php echo $estado ?></b></td>
-						<td>
-							<input type="button" value="Liquidacion" onclick="abrirPop('consultaLiquidacion.php?id=<?php echo $rowFacturas['id'] ?>&estado=<?php echo $estado ?>');" /></br>
-							<?php if ($rowFacturas['restoapagar'] != $rowFacturas['importeliquidado'] && $rowFacturas['totaldebito'] != 0  && $rowFacturas['fechapago'] != "0000-00-00") { ?>
-								<input type="button" value="Plan. Debito" style="margin-top: 5px"  onclick="abrirPop('docuDebito.php?id=<?php echo $rowFacturas['id'] ?>&doc=PL');"  />
-								<input type="button" value="Nota Debito" style="margin-top: 5px"  onclick="abrirPop('docuDebito.php?id=<?php echo $rowFacturas['id'] ?>&doc=DEB');"  />
-							<?php } ?>
-						</td>
 					</tr>
 				<?php } ?>
 				</tbody>
