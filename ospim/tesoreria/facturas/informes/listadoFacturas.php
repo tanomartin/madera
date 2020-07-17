@@ -292,11 +292,11 @@ function validar(formulario) {
 			<div id="paginador" class="pager">
 				<form>
 					<p>
-						<img src="../img/first.png" width="16" height="16" class="first"/>
-						<img src="../img/prev.png" width="16" height="16" class="prev"/>
+						<img src="img/first.png" width="16" height="16" class="first"/>
+						<img src="img/prev.png" width="16" height="16" class="prev"/>
 						<input type="text" class="pagedisplay" size="8" readonly="readonly" style="background:#CCCCCC; text-align:center"/>
-						<img src="../img/next.png" width="16" height="16" class="next"/>
-						<img src="../img/last.png" width="16" height="16" class="last"/>
+						<img src="img/next.png" width="16" height="16" class="next"/>
+						<img src="img/last.png" width="16" height="16" class="last"/>
 					</p>
 					<p>
 						<select class="pagesize">
