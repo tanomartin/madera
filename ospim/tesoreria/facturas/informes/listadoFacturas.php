@@ -1,18 +1,46 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 $cartelPagadas = "";
+
+$sqlTotalFacturas = "SELECT count(*) as totalfac FROM facturas";
+$resTotalFacturas = mysql_query($sqlTotalFacturas,$db);
+$rowTotalFacturas = mysql_fetch_assoc($resTotalFacturas);
+
+$sqlTotalIngresadas = "SELECT count(*) as totalingre
+                        FROM facturas f
+                        where ((f.importeliquidado != 0 AND restoapagar > 0) OR (importeliquidado = 0 AND restoapagar = 0)) AND f.totaldebito != f.importecomprobante
+                        and usuarioliquidacion is null
+                        order by idPrestador, fechacomprobante";
+$resTotalIngresadas = mysql_query($sqlTotalIngresadas,$db);
+$rowTotalIngresadas = mysql_fetch_assoc($resTotalIngresadas);
+
+$sqlTotalProceso = "SELECT count(*) as totalproc
+                        FROM facturas f
+                        where ((f.importeliquidado != 0 AND restoapagar > 0) OR (importeliquidado = 0 AND restoapagar = 0)) AND f.totaldebito != f.importecomprobante
+                        and usuarioliquidacion is not null
+                        order by idPrestador, fechacomprobante";
+$resTotalProceso = mysql_query($sqlTotalProceso,$db);
+$rowTotalProceso = mysql_fetch_assoc($resTotalProceso);
+
+$sqlTotalPagas = "SELECT count(*) as totalpagas
+                    FROM facturas f
+                    where (f.importeliquidado != 0 OR f.totaldebito = f.importecomprobante) AND	f.restoapagar = 0
+                    order by idPrestador, fechacomprobante";
+$resTotalPagas = mysql_query($sqlTotalPagas,$db);
+$rowTotalPagas = mysql_fetch_assoc($resTotalPagas);
+
 if (isset($_POST['filtro'])) {
 	$filtro = $_POST['filtro'];
 	if ($filtro == "I") {
 	    $cartel = "LISTADO DE FACTURAS INGRESADAS SIN LIQUIDADOR";
 	    
-	    $sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
-			t.descripcion as tipocomprobante
-			FROM facturas f, prestadores p, tipocomprobante t
-			WHERE
-			f.usuarioliquidacion is null AND
-			f.idPrestador = p.codigoprestador AND
-			f.idTipocomprobante = t.id
+	    $sqlFacturas = "SELECT f.*, prestadores.nombre, prestadores.cuit, 
+                               DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante, 
+                               tipocomprobante.descripcion as tipocomprobante
+			FROM facturas f
+            LEFT JOIN prestadores on prestadores.codigoprestador = f.idPrestador
+            LEFT JOIN tipocomprobante on tipocomprobante.id = f.idTipocomprobante
+			WHERE f.usuarioliquidacion is null
 			ORDER BY f.id DESC";
 	    $resFacturas = mysql_query($sqlFacturas,$db);
 	    $numFacturas = mysql_num_rows($resFacturas);
@@ -21,28 +49,30 @@ if (isset($_POST['filtro'])) {
 	if ($filtro == "P") {
 		$cartel = "LISTADO DE FACTURAS EN PROCESO";
 		
-		$sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
-			t.descripcion as tipocomprobante
-			FROM facturas f, prestadores p, tipocomprobante t
-			WHERE
+		$sqlFacturas = "SELECT f.*, prestadores.nombre, prestadores.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
+			tipocomprobante.descripcion as tipocomprobante
+			FROM facturas f
+			LEFT JOIN prestadores on prestadores.codigoprestador = f.idPrestador
+            LEFT JOIN tipocomprobante on tipocomprobante.id = f.idTipocomprobante
+            WHERE
             f.usuarioliquidacion is not null AND
 			(f.importeliquidado != 0 AND f.restoapagar != 0 OR 
              f.importeliquidado = 0 AND f.restoapagar = 0) AND
-            f.totaldebito != f.importecomprobante AND
-			f.idPrestador = p.codigoprestador AND
-			f.idTipocomprobante = t.id
+            f.totaldebito != f.importecomprobante
 			ORDER BY f.id DESC";
 		$resFacturas = mysql_query($sqlFacturas,$db);
 		$numFacturas = mysql_num_rows($resFacturas);
 		
-		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante
-			FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
-			WHERE
+		$sqlFacutrasInte = "SELECT DISTINCT f.id, prestadores.nombre, prestadores.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
+            tipocomprobante.descripcion as tipocomprobante
+			FROM facturasprestaciones pf, facturasintegracion fi, facturas f 
+			LEFT JOIN prestadores on prestadores.codigoprestador = f.idPrestador
+            LEFT JOIN tipocomprobante on tipocomprobante.id = f.idTipocomprobante
+            WHERE
 			f.usuarioliquidacion is not null AND
 			(f.importeliquidado != 0 AND f.restoapagar != 0 OR 
              f.importeliquidado = 0 AND f.restoapagar = 0) AND
             f.totaldebito != f.importecomprobante AND
-			f.idPrestador = p.codigoprestador AND
 			f.id = pf.idFactura AND
 			pf.id = fi.idFacturaprestacion
 			ORDER BY f.id DESC";
@@ -67,7 +97,7 @@ if (isset($_POST['filtro'])) {
 		}
 		if ($filtroBusqueda == "cuit") {
 			$cartelPagadas = "Facturas Pagas del CUIT de Prestador '".$valor."'";
-			$whereBusqueda = "p.cuit = ".$valor;
+			$whereBusqueda = "prestadores.cuit = ".$valor;
 		}
 		if ($filtroBusqueda == "id") {
 			$cartelPagadas = "Facturas Pagas ID '".$valor."'";
@@ -78,30 +108,29 @@ if (isset($_POST['filtro'])) {
 			$whereBusqueda = "f.nrocomprobante = ".$valor;
 		}
 		
-		$sqlFacturas = "SELECT f.*, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
-						t.descripcion as tipocomprobante
-						FROM facturas f, prestadores p, tipocomprobante t
+		$sqlFacturas = "SELECT f.*, prestadores.nombre, prestadores.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
+						tipocomprobante.descripcion as tipocomprobante
+						FROM facturas f
+                        LEFT JOIN prestadores on prestadores.codigoprestador = f.idPrestador
+                        LEFT JOIN tipocomprobante on tipocomprobante.id = f.idTipocomprobante
 						WHERE
 						f.usuarioliquidacion is not null AND
 						(f.importeliquidado != 0 OR f.totaldebito = f.importecomprobante) AND
-						f.restoapagar = 0 AND
-						f.idPrestador = p.codigoprestador AND "
-						.$whereBusqueda." AND 
-						f.idTipocomprobante = t.id
+						f.restoapagar = 0 AND ".$whereBusqueda."
 						ORDER BY f.id DESC";
 		$resFacturas = mysql_query($sqlFacturas,$db);
 		$numFacturas = mysql_num_rows($resFacturas);
 		
-		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante
-							FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
+		$sqlFacutrasInte = "SELECT DISTINCT f.id, prestadores.nombre, prestadores.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante,
+                            tipocomprobante.descripcion as tipocomprobante
+							FROM facturasprestaciones pf, facturasintegracion fi, facturas f
+                            LEFT JOIN prestadores on prestadores.codigoprestador = f.idPrestador
+                            LEFT JOIN tipocomprobante on tipocomprobante.id = f.idTipocomprobante
 							WHERE
 							f.usuarioliquidacion is not null AND
 							(f.importeliquidado != 0 OR f.totaldebito = f.importecomprobante) AND
 							f.restoapagar = 0 AND
-							f.id = pf.idFactura AND
-							f.idPrestador = p.codigoprestador AND "
-							.$whereBusqueda." AND 
-							pf.id = fi.idFacturaprestacion
+							f.id = pf.idFactura AND ".$whereBusqueda."
 							ORDER BY f.id DESC";
 		$resFacturasInte = mysql_query($sqlFacutrasInte,$db);
 		$numFacturasInte = mysql_num_rows($resFacturasInte);
@@ -188,6 +217,26 @@ function validar(formulario) {
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = 'menuInformes.php'" /></p>
 	<h2>Listado de Facturas</h2>
+	
+	<h3>Totalizadores</h3>
+	<table border="1" style="text-align: center">
+		<thead>
+			<tr>
+				<th>Total Ingresadas</th>
+				<th>Total En Proceso</th>
+				<th>Total Pagadas</th>
+				<th>Total Facturas</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><?php echo $rowTotalIngresadas['totalingre']?></td>
+				<td><?php echo $rowTotalProceso['totalproc']?></td>
+				<td><?php echo $rowTotalPagas['totalpagas']?></td>
+				<td><?php echo $rowTotalFacturas['totalfac']?></td>
+			</tr>
+		</tbody>
+	</table>
 	
 	<form method="post" action="listadoFacturas.php" onsubmit="return validar(this)">
 		<h3 style="color: blue">Seleccione el filtro de listado</h3>
