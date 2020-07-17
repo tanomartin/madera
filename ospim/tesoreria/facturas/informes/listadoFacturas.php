@@ -139,8 +139,9 @@ $(function() {
 				 7:{sorter:false, filter: false},
 				 8:{sorter:false, filter: false},
 				 9:{sorter:false, filter: false},
-				 10:{sorter:false},
-				 11:{sorter:false}},
+				 10:{sorter:false, filter: false},
+				 11:{sorter:false},
+				 12:{sorter:false}},
 		widgetOptions : { 
 			filter_cssFilter   : '',
 			filter_childRows   : false,
@@ -227,19 +228,20 @@ function validar(formulario) {
 	<?php	if ($numFacturas) {  ?>
 			<h3><?php echo $cartel ?></h3>
 			
-			<table style="text-align:center; width:95%" id="listaFacturasUsuario">
+			<table style="text-align:center; width:100%; font-size: 14px" id="listaFacturasUsuario">
 				<thead>
 					<tr>
 						<th>Id</th>
 						<th>Cod. Pres.</th>
 						<th>C.U.I.T.</th>
-						<th width="25%">Nombre</th>
+						<th width="15%">Nombre</th>
 						<th>Comprobante</th>
-						<th>Fecha</th>
+						<th width="7%">Fecha</th>
 						<th>$ Importe</th>
 						<th>$ Debito</th>
 						<th>$ Liquidado</th>
 						<th>$ Pagado</th>
+						<th width="7%">Cierre Liq.</th>
 						<th class="filter-select" data-placeholder="--">Liquidador</th>
 						<th class="filter-select" data-placeholder="--">Estado</th>
 					</tr>
@@ -283,6 +285,7 @@ function validar(formulario) {
 									}
 								}
 							  } ?>
+					    <td><?php if ($rowFacturas['fechacierreliquidacion'] != "0000-00-00 00:00:00") { echo $rowFacturas['fechacierreliquidacion']; } ?></td>
 						<td><b><?php echo $rowFacturas['usuarioliquidacion'] ?></b></td>
 						<td><b><?php echo $estado ?></b></td>
 					</tr>
