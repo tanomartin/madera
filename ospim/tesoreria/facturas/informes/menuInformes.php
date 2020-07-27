@@ -30,7 +30,7 @@ include($libPath."controlSessionOspim.php"); ?>
       		</td>
   			<td>
     	   		<p>LISTADO FACTURAS </br>POR FECHA</p>
-          		<p><a href="facturasFechas.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
+          		<p><a href="../../../moduloNoDisponible.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
   			</td>
   		</tr>
   	</table>
