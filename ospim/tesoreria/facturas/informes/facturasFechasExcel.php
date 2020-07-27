@@ -48,6 +48,7 @@ if ($canPagas > 0) {
             $rowPagas['totalpagado'] = $rowPagas['totalpagado'] - $rowPagoPosterior['importePagadoPosterior'];
             if ($rowPagas['totalpagado'] == 0) { $rowPagas['totalpagado'] = "0"; }
             $rowPagas['restoapagar'] = $rowPagas['restoapagar'] + $rowPagoPosterior['importePagadoPosterior'];
+            if ($rowPagas['restoapagar'] == 0) { $rowPagas['restoapagar'] = "0"; }
             $arrayPendientes[$rowPagas['id']] = $rowPagas;
         }
     }
@@ -83,6 +84,7 @@ if ($canPendientes > 0) {
             $rowPendientes['totalpagado'] = $rowPendientes['totalpagado'] - $rowPagoPosterior['importePagadoPosterior'];
             if ($rowPendientes['totalpagado'] == 0) { $rowPendientes['totalpagado'] = "0"; }
             $rowPendientes['restoapagar'] = $rowPendientes['restoapagar'] + $rowPagoPosterior['importePagadoPosterior'];
+            if ($rowPendientes['restoapagar'] == 0) { $rowPendientes['restoapagar'] = "0"; }
             $arrayPendientes[$rowPendientes['id']] = $rowPendientes;
         }
     }
