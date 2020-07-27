@@ -12,19 +12,25 @@ include($libPath."controlSessionOspim.php"); ?>
 <div align="center">
 	<p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuFacturas.php'" /></p>	
 	<h3>Modulo Informes Facturas </h3>
-  	<table width="600" border="1" style="text-align: center">
+  	<table width="400" border="1" style="text-align: center">
     	<tr>
 	  		<td width="200">
 	  			<p>FACTURAS POR PRESTADOR</p>
           		<p><a href="facturasPrestador.php"><img src="img/informes.png" width="90" height="90" border="0"/></a></p>
       		</td>
       		<td width="200">
+    	   		<p>LISTADO </br>FACTURAS</p>
+          		<p><a href="listadoFacturas.php"><img src="img/factura.png" width="110" height="90" border="0" /></a></p>
+  			</td>
+      	</tr>
+      	<tr>
+      		<td>
 	  			<p>FACTURAS INGR. </br>POR FECHA</p>
           		<p><a href="facturasIngresadas.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
       		</td>
-      		<td width="200">
-    	   		<p>LISTADO </br>FACTURAS</p>
-          		<p><a class="enlace" href="listadoFacturas.php"><img src="img/factura.png" width="110" height="90" border="0" alt="enviar"/></a></p>
+  			<td>
+    	   		<p>LISTADO FACTURAS </br>POR FECHA</p>
+          		<p><a href="facturasFechas.php"><img src="img/excellogo.png" width="90" height="90" border="0"/></a></p>
   			</td>
   		</tr>
   	</table>
