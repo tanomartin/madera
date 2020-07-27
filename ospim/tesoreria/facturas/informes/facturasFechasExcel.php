@@ -3,7 +3,7 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 require_once($libPath."phpExcel/Classes/PHPExcel.php");
 set_time_limit(0);
-ini_set('memory_limit', '2048M');
+ini_set('memory_limit', '5120M');
 
 $timestamp1 = mktime(date("H"),date("i"),date("s"),date("n"),date("j"),date("Y")); 
 
