@@ -3,7 +3,7 @@ include($libPath."controlSessionOspim.php");
 include($libPath."fechas.php"); 
 require_once($libPath."phpExcel/Classes/PHPExcel.php");
 set_time_limit(0);
-ini_set('memory_limit', '5120M');
+ini_set('memory_limit', '4096M');
 
 $timestamp1 = mktime(date("H"),date("i"),date("s"),date("n"),date("j"),date("Y")); 
 
@@ -53,6 +53,7 @@ if ($canPagas > 0) {
         }
     }
 }
+unset($resPagas);
 
 $sqlPendientes = "SELECT f.id, f.fecharecepcion, f.idPrestador, prestadores.nombre as nombre, establecimientos.nombre as establecimiento,
                          concat(f.puntodeventa,'-',f.nrocomprobante) as nrocomprobante, f.fechapago,
@@ -89,6 +90,7 @@ if ($canPendientes > 0) {
         }
     }
 }
+unset($resPendientes);
 
 array_multisort (array_column($arrayPendientes, 'idPrestador'), SORT_ASC, $arrayPendientes);
 
@@ -106,6 +108,7 @@ if ($canOrdenes > 0) {
         $arrayOrdenes[$rowOrdenes['idfactura']] = $rowOrdenes;
     }
 }
+unset($resOrdenes);
 
 $sqlServicios = "SELECT p.codigoprestador, GROUP_CONCAT(s.descripcion) as infoServicio
                     FROM prestadorservicio p, tiposervicio s
@@ -119,6 +122,7 @@ if ($canServicios > 0) {
         $arrayServicios[$rowServicios['codigoprestador']] = $rowServicios['infoServicio'];
     }
 }
+unset($resServicios);
 
 foreach ($arrayPendientes as $key => $pendientes) {  
     $servicio = "Sin Datos";
