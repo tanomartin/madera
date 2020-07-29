@@ -92,7 +92,7 @@ if ($canPendientes > 0) {
 }
 unset($resPendientes);
 
-array_multisort (array_column($arrayPendientes, 'idPrestador'), SORT_ASC, $arrayPendientes);
+//array_multisort (array_column($arrayPendientes, 'idPrestador'), SORT_ASC, $arrayPendientes);
 
 $sqlOrdenes = "SELECT idfactura, 
                       group_concat(' N: ',o.nroordenpago,' (',o.formapago,' - ',o.comprobantepago,' - ',o.fechacomprobante,')') as infoPago,
