@@ -208,7 +208,7 @@ $sheet->setCellValue('C1', 'ID PRESTA');
 $sheet->getColumnDimension('D')->setWidth(14);
 $sheet->setCellValue('D1', 'NOMBRE');
 $sheet->getColumnDimension('E')->setWidth(14);
-$sheet->setCellValue('E1', 'ESTABLECIMIENTO PRINCIPAL');
+$sheet->setCellValue('E1', 'EFECTOR PRINCIPAL');
 $sheet->getColumnDimension('F')->setWidth(11);
 $sheet->setCellValue('F1', 'SERVICIOS');
 $sheet->getColumnDimension('G')->setWidth(5);
