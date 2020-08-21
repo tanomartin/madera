@@ -98,7 +98,6 @@ if (isset($_POST['filtro'])) {
 		$sqlFacutrasInte = "SELECT DISTINCT f.id, p.nombre, p.cuit, DATE_FORMAT(f.fechacomprobante,'%d-%m-%Y') as fechacomprobante, p.personeria
 							FROM facturas f, facturasprestaciones pf, facturasintegracion fi, prestadores p
 							WHERE
-							f.usuarioliquidacion = '$liquidador' AND
 							f.importeliquidado != 0 AND
 							f.restoapagar = 0 AND
 							f.id = pf.idFactura AND
