@@ -193,24 +193,23 @@ $whereNom = substr($whereNom, 0, -1);
 					if (respuesta != 0) {
 						$("#capitulo").html(respuesta);
 						$("#capitulo").prop("disabled",false);
-					} else {
-						$.ajax({
-							type: "POST",
-							dataType: 'html',
-							url: "getPracticas.php",
-							data: {valor:-1, tipo:tipo, nomenclador:nomenclador, personeria:personeria},
-						}).done(function(respuesta){
-							$("#tituloPraticas").show();
-							if (respuesta != 0) {	
-								$("#practicas").html(respuesta);
-								$("#agregar").prop("disabled",false);
-								$("#cattotal").prop("disabled",false);
-								$("#tipocargatotal").prop("disabled",false);
-							} else {
-								$("#practicas").html("NO EXISTEN PRACTICAS");
-							}
-						});
-					}
+					} 
+					$.ajax({
+						type: "POST",
+						dataType: 'html',
+						url: "getPracticas.php",
+						data: {valor:-1, tipo:tipo, nomenclador:nomenclador, personeria:personeria},
+					}).done(function(respuesta){
+						$("#tituloPraticas").show();
+						if (respuesta != 0) {	
+							$("#practicas").html(respuesta);
+							$("#agregar").prop("disabled",false);
+							$("#cattotal").prop("disabled",false);
+							$("#tipocargatotal").prop("disabled",false);
+						} else {
+							$("#practicas").html("NO EXISTEN PRACTICAS");
+						}
+					});
 				}
 			});
 		});
