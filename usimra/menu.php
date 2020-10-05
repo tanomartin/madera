@@ -65,5 +65,4 @@ function abrirModulo(dire, titulo) {
    <p><a href="logout.php"><input type="button" name="salir" value="SALIR" onclick="location.href='logout.php'" /></a></p>
 </div>
 </body>
-
 </html>
