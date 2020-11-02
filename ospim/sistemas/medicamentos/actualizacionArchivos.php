@@ -44,9 +44,9 @@ while(!feof($fmanual)) {
 		
 		$IOMANorma = substr($linea,83,1);
 		$IOMAInterna = substr($linea,84,1);
-		$laboratorio = addslashes(substr($linea,85,16));
+		$laboratorio = addslashes(substr($linea,85,15));
 		
-		$precio = substr($linea,101,9);
+		$precio = substr($linea,100,10);
 		$precio = (float)$precio/100;
 		
 		$fecha = substr($linea,110,8);
