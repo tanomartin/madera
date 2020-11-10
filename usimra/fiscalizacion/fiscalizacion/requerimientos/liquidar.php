@@ -132,10 +132,11 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
 	
 	$sqlDDJJ = "SELECT anoddjj, mesddjj, cuil, sum(remuneraciones) as remuneraciones, count(cuil) as ddjjcant,
 	                   if(empleadosusimra.nombre is null, empleadosdebajausimra.nombre, empleadosusimra.nombre) as nombre
-        FROM detddjjusimra
-        LEFT JOIN empleadosusimra ON empleadosusimra.nrcuil = detddjjusimra.cuil
-        LEFT JOIN empleadosdebajausimra ON empleadosdebajausimra.nrcuil = detddjjusimra.cuil
-        WHERE cuit = $cuit and cuil != '99999999999' and anoddjj >= $anoinicio and anoddjj <= $ultano group by anoddjj, mesddjj, cuil";
+                FROM detddjjusimra
+                LEFT JOIN empleadosusimra ON empleadosusimra.nrcuil = detddjjusimra.cuil
+                LEFT JOIN empleadosdebajausimra ON empleadosdebajausimra.nrcuil = detddjjusimra.cuil
+                WHERE cuit = $cuit and cuil != '99999999999' and anoddjj >= $anoinicio and anoddjj <= $ultano 
+                GROUP BY anoddjj, mesddjj, cuil";
 	
 	$resDDJJ = mysql_query($sqlDDJJ,$db);
 	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
@@ -171,7 +172,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
                         FROM ddjjusimra
                         LEFT JOIN empleadosusimra ON empleadosusimra.nrcuil = ddjjusimra.nrcuil
                         LEFT JOIN empleadosdebajausimra ON empleadosdebajausimra.nrcuil = ddjjusimra.nrcuil
-                        WHERE nrcuit = $cuit and ddjjusimra.nrcuil != '99999999999' and nrctrl in $wherein";
+                        WHERE ddjjusimra.nrcuit = $cuit and ddjjusimra.nrcuil != '99999999999' and nrctrl in $wherein";
 	    echo $sqlDDJJTemp."<br><br>";
 	    
 	    $resDDJJTemp = mysql_query($sqlDDJJTemp,$db);
