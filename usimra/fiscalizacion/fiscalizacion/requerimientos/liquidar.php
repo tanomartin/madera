@@ -131,7 +131,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
 	//$sqlDDJJ = "select anoddjj, mesddjj, cuil, sum(remuneraciones) as remuneraciones, count(cuil) as ddjjcant from detddjjusimra where cuit = $cuit and cuil != '99999999999' and anoddjj >= $anoinicio and anoddjj <= $ultano group by anoddjj, mesddjj, cuil";
 	
 	$sqlDDJJ = "SELECT anoddjj, mesddjj, cuil, sum(remuneraciones) as remuneraciones, count(cuil) as ddjjcant,
-	                   if(empleadosusimra.nombre is null, concat(empleadosdebajausimra.nombre,' ',empleadosdebajausimra.apelli) , concat(empleadosusimra.nombre,' ',empleadosusimra.apelli) as nombre
+	                   if(empleadosusimra.nombre is null, concat(empleadosdebajausimra.nombre,' ',empleadosdebajausimra.apelli) , concat(empleadosusimra.nombre,' ',empleadosusimra.apelli)) as nombre
                 FROM detddjjusimra
                 LEFT JOIN empleadosusimra ON empleadosusimra.nrcuil = detddjjusimra.cuil
                 LEFT JOIN empleadosdebajausimra ON empleadosdebajausimra.nrcuil = detddjjusimra.cuil
@@ -168,7 +168,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
 	if ($wherein != "()") {
 		//$sqlDDJJTemp = "select perano as anoddjj, permes as mesddjj, nrcuil as cuil, remune as remuneraciones,  '1' as ddjjcant from ddjjusimra where nrcuit = $cuit and nrcuil != '99999999999' and nrctrl in $wherein";
 	    $sqlDDJJTemp = "SELECT perano as anoddjj, permes as mesddjj, ddjjusimra.nrcuil as cuil, remune as remuneraciones,  '1' as ddjjcant,
-                        	   if(empleadosusimra.nombre is null, concat(empleadosdebajausimra.nombre,' ',empleadosdebajausimra.apelli) , concat(empleadosusimra.nombre,' ',empleadosusimra.apelli) as nombre
+                        	   if(empleadosusimra.nombre is null, concat(empleadosdebajausimra.nombre,' ',empleadosdebajausimra.apelli) , concat(empleadosusimra.nombre,' ',empleadosusimra.apelli)) as nombre
                         FROM ddjjusimra
                         LEFT JOIN empleadosusimra ON empleadosusimra.nrcuil = ddjjusimra.nrcuil
                         LEFT JOIN empleadosdebajausimra ON empleadosdebajausimra.nrcuil = ddjjusimra.nrcuil
