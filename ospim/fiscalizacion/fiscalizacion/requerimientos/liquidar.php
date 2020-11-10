@@ -58,7 +58,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 
 	//$sqlDDJJ = "select anoddjj, mesddjj, cuil, remundeclarada, adherentes from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	
-	$sqlDDJJ = "SELECT anoddjj, mesddjj, cuil, remundeclarada, adherentes,
+	$sqlDDJJ = "SELECT anoddjj, mesddjj, detddjjospim.cuil, remundeclarada, adherentes,
 	                   if(titulares.apellidoynombre is null, titularesdebaja.apellidoynombre, titulares.apellidoynombre) as nombre
                 FROM detddjjospim 
                 LEFT JOIN titulares ON titulares.cuil = detddjjospim.cuil
