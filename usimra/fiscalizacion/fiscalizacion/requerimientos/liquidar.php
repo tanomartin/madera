@@ -281,7 +281,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
 	foreach ($cuerpoCUIL as $per => $cuiles) {
 		foreach($cuiles as $cuil => $datos) {
 		    
-		    var_dump(datos);echo"<br><br>";
+		    var_dump($datos);echo"<br><br>";
 			
 			if ($cuil == 'tipo') {
 				$tipolinea = $datos;
