@@ -271,7 +271,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
 					$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('fijo' => $ddjj['datos']['remuneraciones']);
 				}
 				$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('origen' =>  $ddjj['origen']);
-				$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('nombre' =>  $ddjj['nombre']);
+				$cuerpoCUIL[$idBuscadorTipo][$cuil] += array('nombre' =>  $ddjj['datos']['nombre']);
 			}
 		}
 	}
