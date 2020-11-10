@@ -251,6 +251,9 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
 			$fijook = 1;
 		}
 		$cuerpoCUIL[$idBuscadorTipo]['tipo'] = $tipolinea;
+		
+		var_dump($arrayDDJJ);echo"<br><br>";
+		
 		if (array_key_exists($idBuscadorDDJJ, $arrayDDJJ)) {
 			$ddjjarray = $arrayDDJJ[$idBuscadorDDJJ];
 			foreach($ddjjarray as $ddjj) {
