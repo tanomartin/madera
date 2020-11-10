@@ -138,7 +138,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
                 WHERE cuit = $cuit and cuil != '99999999999' and anoddjj >= $anoinicio and anoddjj <= $ultano 
                 GROUP BY anoddjj, mesddjj, cuil";
 	
-	echo $sqlDDJJ."<br><br>";
+	//echo $sqlDDJJ."<br><br>";
 	
 	$resDDJJ = mysql_query($sqlDDJJ,$db);
 	while ($rowDDJJ = mysql_fetch_assoc($resDDJJ)) {
@@ -175,7 +175,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
                         LEFT JOIN empleadosusimra ON empleadosusimra.nrcuil = ddjjusimra.nrcuil
                         LEFT JOIN empleadosdebajausimra ON empleadosdebajausimra.nrcuil = ddjjusimra.nrcuil
                         WHERE ddjjusimra.nrcuit = $cuit and ddjjusimra.nrcuil != '99999999999' and nrctrl in $wherein";
-	    echo $sqlDDJJTemp."<br><br>";
+	    //echo $sqlDDJJTemp."<br><br>";
 	    
 	    $resDDJJTemp = mysql_query($sqlDDJJTemp,$db);
 		$canDDJJTemp = mysql_num_rows($resDDJJTemp);
@@ -203,7 +203,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
                      WHERE cuit = $cuit and detddjjospim.cuil != '99999999999' and
                     	  ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))
                      GROUP BY anoddjj, mesddjj, detddjjospim.cuil";
-	echo $sqlDDJJOspim."<br><br>";
+	//echo $sqlDDJJOspim."<br><br>";
 	
 	$resDDJJOspim = mysql_query($sqlDDJJOspim,$db);
 	while ($rowDDJJOspim = mysql_fetch_assoc($resDDJJOspim)) {
@@ -282,9 +282,6 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
 	$i=0;
 	foreach ($cuerpoCUIL as $per => $cuiles) {
 		foreach($cuiles as $cuil => $datos) {
-		    
-		    var_dump($datos);echo"<br><br>";
-			
 			if ($cuil == 'tipo') {
 				$tipolinea = $datos;
 			} else {
