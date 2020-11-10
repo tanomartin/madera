@@ -56,7 +56,15 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 	print("FIN MES: ".$ultmes."<br>");
 	print("FIN ANO: ".$ultano."<br>");*/
 
-	$sqlDDJJ = "select anoddjj, mesddjj, cuil, remundeclarada, adherentes from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
+	//$sqlDDJJ = "select anoddjj, mesddjj, cuil, remundeclarada, adherentes from detddjjospim where cuit = $cuit and ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
+	
+	$sqlDDJJ = "SELECT anoddjj, mesddjj, cuil, remundeclarada, adherentes,
+	                   if(titulares.apellidoynombre is null, titularesdebaja.apellidoynombre, titulares.apellidoynombre) as nombre
+                FROM detddjjospim 
+                LEFT JOIN titulares ON titulares.cuil = detddjjospim.cuil
+                LEFT JOIN titularesdebaja ON titularesdebaja.cuil = detddjjospim.cuil
+                WHERE cuit = $cuit and 
+                ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	
 	//print($sqlDDJJ."<br>");
 	$arrayDDJJ = array();
@@ -94,7 +102,8 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
 			$remuDecl = number_format((float)$arrayDDJJ[$i]['datos']['remundeclarada'],2,',','');
 			$remuDecl = str_pad($remuDecl,12,'0',STR_PAD_LEFT);
 			$cantAdhe = str_pad($arrayDDJJ[$i]['datos']['adherentes'],4,'0',STR_PAD_LEFT);
-			$cuerpoCUIL[$c] = "01/".$mes."/".$arrayDDJJ[$i]['datos']['anoddjj']."|".agregaGuiones($arrayDDJJ[$i]['datos']['cuil'])."|".$remuDecl."|".$cantAdhe;
+			$nombre = $arrayDDJJ[$i]['datos']['nombre'];
+			$cuerpoCUIL[$c] = "01/".$mes."/".$arrayDDJJ[$i]['datos']['anoddjj']."|".agregaGuiones($arrayDDJJ[$i]['datos']['cuil'])."|".$remuDecl."|".$cantAdhe."|".$nombre;
 			$c++;
 		}
 	}
