@@ -66,7 +66,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $cuerpo, $nroreqArc
                 WHERE cuit = $cuit and 
                 ((anoddjj > $anoinicio and anoddjj < $ultano) or (anoddjj = $ultano and mesddjj <= $ultmes) or (anoddjj = $anoinicio and mesddjj >= $mesinicio))";
 	
-	print($sqlDDJJ."<br>");
+	//echo $sqlDDJJ."<br>";
 	$arrayDDJJ = array();
 	$resDDJJ = mysql_query($sqlDDJJ,$db);
 	$b = 0;
