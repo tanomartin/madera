@@ -133,6 +133,7 @@ try{
 		}
 	}
 
+	
 	// ********************************* DESCARGA ORDENES DE CONSULTA ********************************* //
 	$sqlOrdenesADescargar = "SELECT * FROM ordenesconsulta WHERE bajada = 0";
 	$canOrdenesADescargar = count($dbr->query($sqlOrdenesADescargar)->fetchAll());
