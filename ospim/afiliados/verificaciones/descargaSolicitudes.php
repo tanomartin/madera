@@ -1,6 +1,7 @@
 <?php $libPath = $_SERVER['DOCUMENT_ROOT']."/madera/lib/";
 include($libPath."controlSessionOspim.php");
 include($libPath."claves.php");
+include($libPath."bandejaSalida.php");
 $fechadescarga = date("Y-m-d H:m:s");
 $usuariodescarga = $_SESSION['usuario'];
 
@@ -131,6 +132,60 @@ try{
 			}
 		}
 	}
+
+	// ********************************* DESCARGA ORDENES DE CONSULTA ********************************* //
+	$sqlOrdenesADescargar = "SELECT * FROM ordenesconsulta WHERE bajada = 0";
+	$canOrdenesADescargar = count($dbr->query($sqlOrdenesADescargar)->fetchAll());
+	if ($canOrdenesADescargar > 0) {
+	    $emailSend = 0;
+	    $resOrdenesADescargar = $dbr->query($sqlOrdenesADescargar,PDO::FETCH_ASSOC);
+	    $whereIn = "(";
+	    foreach ($resOrdenesADescargar as $rowOrdenesADescargar) {
+	        $rowOrdenesADescargar['fechadescarga'] = $fechadescarga;	        
+	        $sqlOrdenConsulta = "INSERT INTO ordenesconsulta VALUES (:id, :delcod, :fechaorden, :nrcuil, :nrafil, 
+                                                                    :codpar, :nombre, :nrodoc, :sexo, :edad, :fechavto, 
+                                                                    :nrcuiltitular, :autorizada, :bajada, :emitida, 
+                                                                    :fechaestado, :fechadescarga)";
+	        $resOrdenConsulta = $dbl->prepare($sqlOrdenConsulta);        
+	        if (!$resOrdenConsulta->execute($rowOrdenesADescargar)) {
+	            throw new PDOException("Error al descargar las Ordenes de Consultas");
+	        }
+	        
+	   	    $whereIn .= "'".$rowOrdenesADescargar['id']."',";
+	        
+	        if ($rowOrdenesADescargar['autorizada'] == 0) {
+	            $emailSend = 1;
+	        }
+	    }
+	    $whereIn = substr($whereIn, 0, -1);
+	    $whereIn .= ")";
+	    
+	    $sqlArchivos = "SELECT * FROM ordenesconsultadoc WHERE id in $whereIn";
+	    $canArchivos = count($dbr->query($sqlArchivos)->fetchAll());
+	    if ($canArchivos > 0) {
+	        $resArchivos = $dbr->query($sqlArchivos,PDO::FETCH_ASSOC);
+	        foreach ($resArchivos as $rowArchivos) {    
+	            $sqlOrdenesArchivo = "INSERT INTO ordenesconsultadoc VALUES (:id, :historiaclinica)";
+	            $resOrdenesArchivo = $dbl->prepare($sqlOrdenesArchivo);
+	            if (!$resOrdenesArchivo->execute($rowArchivos)) {
+	               throw new PDOException("Error al descargar las historias clinicas de las Ordenes de Consultas");
+	            }
+	                
+	        }
+	    }
+	    $sqlUpdateBajada = "UPDATE ordenesconsulta SET bajada = 1 WHERE id in $whereIn";
+	    $dbr->exec ($sqlUpdateBajada);
+	    
+	    if ($emailSend == 1) {
+	        $subject = "Ordenes de Consulta O.S.P.I.M. para ser atendidas";
+	        $bodymail= "<body>Sra. Medica Auditora de O.S.P.I.M.<br><br>Se han descargado Ordenes de Consulta que requieren ser atendidas<br>Agradecemos vuestra atención<br><br><b>DPTO. SISTEMAS<br>O.S.P.I.M.</b><br><br></body>";
+	        $username ="sistemas@ospim.com.ar";
+	        $modulo = "Ordenes de Consulta";
+	        $email = "sgiraudo@ospim.com.ar";
+	        $idMail = guardarEmail($username, $subject, $bodymail, $email, $modulo, null);
+	    }
+	}
+	// ************************************************************************************************* //
 
 	$dbr->commit();
 	$dbl->commit();
