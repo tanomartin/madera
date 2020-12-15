@@ -297,6 +297,7 @@ function creacionArchivoCuiles($cuit, $ultano, $ultmes, $db, $tiporegistro, $nro
 				if (isset($datos['fijo'])) {
 					$fijo = $datos['fijo'];
 				}
+				
 				//$arrayCuerpoArchivo[$per][$i] = $datos['fecha']."|".$cuil."|".str_pad(number_format($remu,2,',',''),12,'0',STR_PAD_LEFT)."|".str_pad(number_format($norem,2,',',''),12,'0',STR_PAD_LEFT)."|".str_pad(number_format($fijo,2,',',''),12,'0',STR_PAD_LEFT)."|".$datos['origen']."|".$tipolinea."|".$datos['nombre'];
 				$arrayCuerpoArchivo[$per][$i] = $datos['fecha']."|".$cuil."|".str_pad(number_format($remu,2,',',''),12,'0',STR_PAD_LEFT)."|".str_pad(number_format($norem,2,',',''),12,'0',STR_PAD_LEFT)."|".str_pad(number_format($fijo,2,',',''),12,'0',STR_PAD_LEFT)."|".$datos['origen']."|".$tipolinea;
 				$i++;
