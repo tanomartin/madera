@@ -11,7 +11,7 @@ include($libPath."controlSessionOspim.php"); ?>
 <body bgcolor="#CCCCCC">
 <div align="center">
   <h2>Menú Auditoria Medica </h2>
-  <table width="600" border="1" style="text-align: center;vertical-align: middle;">
+  <table width="800" border="1" style="text-align: center;vertical-align: middle;">
     <tr>
       <td width="200">
       	  <p>PRESTADORES</p>
@@ -21,10 +21,14 @@ include($libPath."controlSessionOspim.php"); ?>
       	  <p>AUTORIZACIONES</p>
           <p><a href="autorizaciones/moduloAutorizaciones.php"><img src="img/auditoria.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
-	  <td width="200">
+      <td width="200">
+		  <p>ORDENES<br> DE CONSULTA</p>
+      	  <p><a href="ordenesconsulta/menuOrdenesConsulta.php"><img src="img/ordenesconsulta.png" width="90" height="90" border="0" alt="enviar"/></a></p>    
+      </td>
+      <td width="200">
 	  	  <p>NOMENCLADORES</p>
           <p><a href="nomenclador/menuNomenclador.php"><img src="img/nomenclador.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      </td>  
+      </td> 
     </tr>
     <tr>
       <td>
@@ -39,20 +43,23 @@ include($libPath."controlSessionOspim.php"); ?>
       	<p>MEDICAMENTOS (ALFABETA)</p>
       	<p><a href="medicamentos/menuMedicamentos.php"><img src="img/medicamentos.png" width="90" height="90" border="0" alt="enviar"/></a></p>
       </td>
+      <td>
+      	<p>GESTION Y SEGUIMIENTO </p>
+      	<p><a href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+      </td>
     </tr>
     <tr>
 	  <td>
-	   	<p>GESTION Y SEGUIMIENTO </p>
-      	<p><a href="seguimiento/menuSeguimiento.php"><img src="img/seguimiento.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-      </td>
+	  	<p>ODONTOLOGIA</p>
+	  	<p><a href="odontologia/menuOdontologico.php"><img src="img/odonto.png" width="90" height="90" border="0" alt="enviar"/></a></p>
+	  </td>
 	  <td>
 	   	<p>LIQUIDACIONES</p>
 		<p><a href="liquidaciones/menuLiquidaciones.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
 	  <td>
-	  	<p>ODONTOLOGIA</p>
-	  	<p><a href="odontologia/menuOdontologico.php"><img src="img/odonto.png" width="90" height="90" border="0" alt="enviar"/></a></p>
 	  </td>
+	  <td></td>
     </tr>
   </table>
 </div>
