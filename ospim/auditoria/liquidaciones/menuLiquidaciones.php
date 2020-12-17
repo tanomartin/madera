@@ -10,6 +10,7 @@ include($libPath."controlSessionOspim.php"); ?>
 
 <body bgcolor="#CCCCCC">
 <div align="center">
+  <p><input type="button" name="volver" value="Volver" onclick="location.href = '../menuAuditoria.php'" /></p>	
   <h2>Menú Liquidaciones</h2>
   <table width="622" border="1" style="text-align: center;vertical-align: middle;">
     <tr>

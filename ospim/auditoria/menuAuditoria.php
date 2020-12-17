@@ -49,6 +49,7 @@ include($libPath."controlSessionOspim.php"); ?>
       </td>
     </tr>
     <tr>
+      <td></td>
 	  <td>
 	  	<p>ODONTOLOGIA</p>
 	  	<p><a href="odontologia/menuOdontologico.php"><img src="img/odonto.png" width="90" height="90" border="0" alt="enviar"/></a></p>
@@ -56,8 +57,6 @@ include($libPath."controlSessionOspim.php"); ?>
 	  <td>
 	   	<p>LIQUIDACIONES</p>
 		<p><a href="liquidaciones/menuLiquidaciones.php"><img src="img/liquidacion.png" width="90" height="90" border="0" alt="enviar"/></a></p>
-	  </td>
-	  <td>
 	  </td>
 	  <td></td>
     </tr>
