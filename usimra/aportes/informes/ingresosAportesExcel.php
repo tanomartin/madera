@@ -96,8 +96,8 @@ try{
 	$objPHPExcel->getActiveSheet()->setCellValue('C1', 'Mes');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(5);
 	$objPHPExcel->getActiveSheet()->setCellValue('D1', 'Ano');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(14);
-	$objPHPExcel->getActiveSheet()->setCellValue('E1', 'Fecha de Pago');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(10);
+	$objPHPExcel->getActiveSheet()->setCellValue('E1', 'Fecha Pago');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(9);
 	$objPHPExcel->getActiveSheet()->setCellValue('F1', 'Personal');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(17);
@@ -114,22 +114,24 @@ try{
 	$objPHPExcel->getActiveSheet()->setCellValue('L1', 'Recargo');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(16);
 	$objPHPExcel->getActiveSheet()->setCellValue('M1', 'Total Depositado');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(20);
-	$objPHPExcel->getActiveSheet()->setCellValue('N1', 'Sistema Cancelacion');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(10);
+	$objPHPExcel->getActiveSheet()->setCellValue('N1', 'Sistema');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(33);
 	$objPHPExcel->getActiveSheet()->setCellValue('O1', 'Codigo de Barra/Ticket Link Pagos');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(18);
-	$objPHPExcel->getActiveSheet()->setCellValue('P1', 'Fecha Acreditacion');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('P')->setWidth(14);
+	$objPHPExcel->getActiveSheet()->setCellValue('P1', 'Acreditacion');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(18);
+	$objPHPExcel->getActiveSheet()->setCellValue('Q1', 'Operador');
 
 	// Setea fuente tipo y tamaño a la hoja activa
 	$objPHPExcel->getDefaultStyle()->getFont()->setName('Arial');
 	$objPHPExcel->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Setea negrita relleno y alineamiento horizontal a las celdas de titulos
-	$objPHPExcel->getActiveSheet()->getStyle('A1:P1')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:P1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:P1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcel->getActiveSheet()->getStyle('A1:P1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 
 	$fila=1;
 		
@@ -150,7 +152,8 @@ ROUND((s.montorecargo)*(j.disgdinero/100),2) AS montorecargo,
 ROUND((s.montopagado)*(j.disgdinero/100),2) AS totaldeposito,
 s.sistemacancelacion,
 s.codigobarra,
-DATE_FORMAT(s.fechaacreditacion, '%d/%m/%Y') AS fechaacreditacion
+DATE_FORMAT(s.fechaacreditacion, '%d/%m/%Y') AS fechaacreditacion,
+s.usuarioregistro
 FROM ((((seguvidausimra s, empresas e, jurisdiccion j)
 LEFT JOIN apor060usimra a ON
 a.cuit = s.cuit AND
@@ -195,6 +198,7 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 		$objPHPExcel->getActiveSheet()->setCellValue('N'.$fila, $aportes[sistemacancelacion]);
 		$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, "-".$aportes[codigobarra]."-");
 		$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, $aportes[fechaacreditacion]);
+		$objPHPExcel->getActiveSheet()->setCellValue('Q'.$fila, $aportes[usuarioregistro]);
 	}
 
 	if($fila > 1) {
@@ -231,6 +235,8 @@ ORDER BY j.codidelega, s.cuit, s.anopago, s.mespago, s.fechapago";
 		$objPHPExcel->getActiveSheet()->getStyle('O2:O'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$objPHPExcel->getActiveSheet()->getStyle('P2:P'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_DDMMYYYY);
 		$objPHPExcel->getActiveSheet()->getStyle('P2:P'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
+		$objPHPExcel->getActiveSheet()->getStyle('Q2:Q'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+		$objPHPExcel->getActiveSheet()->getStyle('Q2:Q'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 		$filaagregada = 0;
 		$totalgeneral = 0.00;
 		$desde = 2;
