@@ -489,10 +489,10 @@ try {
 																{
 																	if($pagos[montopagado]!=0.00)
 																	{
-																		$importeboletasapo=$importeboletasapo+$pagos[montopagado];
+																		$importeboletasapo=$importeboletasapo+$pagos[montopagado]-$pagos[montorecargo];
 																		$importeboletasrec=$importeboletasrec+$pagos[montorecargo];
 																		$importeboletasvar=$importeboletasvar+0.00;
-																		$importeboletaspag=$importeboletaspag+$pagos[montopagado]+$pagos[montorecargo];
+																		$importeboletaspag=$importeboletaspag+$pagos[montopagado];
 																		$totalboletaspag++;
 																	}
 																}
