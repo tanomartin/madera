@@ -515,17 +515,17 @@ function anulaConsumoCarencia(idconsumocarencia, idfactura, idfacturabeneficiari
 				<td align="right"><strong>Cantidad / Unidades</strong></td>
 				<td align="left"><input name="cantidad" type="text" id="cantidad" size="5" value="" maxlength="7"/></td>
 				<td align="right"><strong>Facturado</strong></td>
-				<td align="left"><input name="totalfacturado" type="text" id="totalfacturado" size="5" maxlength="9" value=""/></td>
+				<td align="left"><input name="totalfacturado" type="text" id="totalfacturado" size="6" maxlength="10" value=""/></td>
 				<td align="right"><i id="infototal" style="font-size: 15px" title="" class="ui-icon ui-icon-info"></i></td>
 				<td align="left"><strong>Ref. Valor Total</strong>
-			  <input name="referenciatotal" type="text" id="referenciatotal" size="5" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
+			  <input name="referenciatotal" type="text" id="referenciatotal" size="6" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
 
 			</tr>
 			<tr>
 				<td align="right"><strong>Debito</strong></td>
 				<td align="left"><input name="totaldebito" type="text" id="totaldebito" size="5" maxlength="9" value=""/></td>
 				<td align="right"><strong>Credito</strong></td>
-				<td align="left"><input name="totalcredito" type="text" id="totalcredito" size="5" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
+				<td align="left"><input name="totalcredito" type="text" id="totalcredito" size="6" readonly="readonly" style="background-color:#CCCCCC" value="0.00"/></td>
 				<td align="right"><i id="infobonificacion" style="font-size: 15px" title="" class="ui-icon ui-icon-info"></i></td>
 				<td align="left"><strong>Ref. Bonificacion</strong>
 				 - En Pesos 
