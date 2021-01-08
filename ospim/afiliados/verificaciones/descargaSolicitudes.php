@@ -161,6 +161,7 @@ try{
 	    $whereIn = substr($whereIn, 0, -1);
 	    $whereIn .= ")";
 	    
+	   
 	    $sqlArchivos = "SELECT * FROM ordenesconsultadoc WHERE id in $whereIn";
 	    $canArchivos = count($dbr->query($sqlArchivos)->fetchAll());
 	    if ($canArchivos > 0) {
@@ -174,6 +175,21 @@ try{
 	                
 	        }
 	    }
+	  
+	    $sqlRelacional = "SELECT * FROM ordenesconsultarelacional WHERE id in $whereIn";
+	    $canRelacional = count($dbr->query($sqlRelacional)->fetchAll());
+	    if ($canRelacional > 0) {
+	        $resRelacional = $dbr->query($sqlRelacional,PDO::FETCH_ASSOC);
+	        foreach ($resRelacional as $rowRelacional) {
+	            $sqlOrdenesRelacional = "INSERT INTO ordenesconsultarelacional VALUES (:id, :nroordenrelacional, :archivosubida, :fechasubida)";
+	            $resOrdenesRelacional = $dbl->prepare($sqlOrdenesRelacional);
+	            if (!$resOrdenesRelacional->execute($rowRelacional)) {
+	                throw new PDOException("Error al descargar las ordenes de consulta relacionales");
+	            }	            
+	        }
+	    }
+	    
+	    
 	    $sqlUpdateBajada = "UPDATE ordenesconsulta SET bajada = 1 WHERE id in $whereIn";
 	    $dbr->exec ($sqlUpdateBajada);
 	    
