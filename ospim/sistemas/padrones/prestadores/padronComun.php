@@ -69,7 +69,6 @@
 			
 			while($rowTitulares = mysql_fetch_array($resTitulares)) {
 				$fila++;
-				
 				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $rowTitulares['nroafiliado']);
 				$objPHPExcel->getActiveSheet()->setCellValue('B'.$fila, utf8_encode($rowTitulares['apellidoynombre']));	
 				$objPHPExcel->getActiveSheet()->setCellValue('C'.$fila, $rowTitulares['tipodocumento']);
