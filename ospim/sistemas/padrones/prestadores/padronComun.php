@@ -66,7 +66,6 @@
 			}
 			//print($sqlTitulares."<br>");
 			$resTitulares = mysql_query($sqlTitulares, $db);	
-			
 			while($rowTitulares = mysql_fetch_array($resTitulares)) {
 				$fila++;
 				$objPHPExcel->getActiveSheet()->setCellValue('A'.$fila, $rowTitulares['nroafiliado']);
@@ -80,7 +79,7 @@
 				$objPHPExcel->getActiveSheet()->setCellValue('I'.$fila, utf8_encode($rowTitulares['nomlocali']));
 				$objPHPExcel->getActiveSheet()->setCellValue('J'.$fila, $rowTitulares['codprovin']);
 				$objPHPExcel->getActiveSheet()->setCellValue('K'.$fila, $rowTitulares['cuitempresa']);
-				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowTitulares['codidelega']);	
+				$objPHPExcel->getActiveSheet()->setCellValue('L'.$fila, $rowTitulares['codidelega']);
 				$objPHPExcel->getActiveSheet()->setCellValue('M'.$fila, utf8_encode($rowTitulares['nomempresa']));
 	
 				$coseguro = 1;
