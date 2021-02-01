@@ -208,7 +208,6 @@
 		$objPHPExcel->disconnectWorksheets();
 		unset($objWriter, $objPHPExcel);
 		//********************************************
-		
 		//ACHIVO DE ZIP
 		if (file_exists($direCompletaZip)) {
 			unlink($direCompletaZip);
