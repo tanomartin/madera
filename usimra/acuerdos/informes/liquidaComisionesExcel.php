@@ -100,8 +100,8 @@ try{
 	$objPHPExcel->getActiveSheet()->setCellValue('P1', '% de Comision');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(13);
 	$objPHPExcel->getActiveSheet()->setCellValue('Q1', 'Monto Comision');
-	//$objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(18);
-	//$objPHPExcel->getActiveSheet()->setCellValue('R1', 'Operador');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(18);
+	$objPHPExcel->getActiveSheet()->setCellValue('R1', 'Operador');
 	$fila=1;
 
 	$sqlCuotas="SELECT * FROM cuoacuerdosusimra WHERE montopagada != 0.00 AND ((sistemacancelacion = 'E' AND fechaacreditacion >= '$fechaini' AND fechaacreditacion <= '$fechafin') OR (sistemacancelacion = 'M' AND fechacancelacion >= '$fechaini' AND fechacancelacion <= '$fechafin'))";
