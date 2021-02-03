@@ -80,19 +80,19 @@ try{
 	$objPHPExcel->getActiveSheet()->setCellValue('F1', 'Vto. Cuota');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(13);
 	$objPHPExcel->getActiveSheet()->setCellValue('G1', 'Monto Pagado');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(13);
-	$objPHPExcel->getActiveSheet()->setCellValue('H1', 'Fecha de Pago');
+	$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(12);
+	$objPHPExcel->getActiveSheet()->setCellValue('H1', 'Fecha Pago');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(12);
 	$objPHPExcel->getActiveSheet()->setCellValue('I1', 'Acred./Canc.');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(33);
 	$objPHPExcel->getActiveSheet()->setCellValue('J1', 'Codigo de Barra');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(11);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(10);
 	$objPHPExcel->getActiveSheet()->setCellValue('K1', 'Gestor');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(13);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('L')->setWidth(12);
 	$objPHPExcel->getActiveSheet()->setCellValue('L1', 'Gto. Adm.');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(19);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('M')->setWidth(12);
 	$objPHPExcel->getActiveSheet()->setCellValue('M1', 'Inspector');
-	$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(33);
+	$objPHPExcel->getActiveSheet()->getColumnDimension('N')->setWidth(14);
 	$objPHPExcel->getActiveSheet()->setCellValue('N1', '% Sobre Total');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('O')->setWidth(12);
 	$objPHPExcel->getActiveSheet()->setCellValue('O1', 'Monto Liquidacion');
@@ -100,7 +100,8 @@ try{
 	$objPHPExcel->getActiveSheet()->setCellValue('P1', '% de Comision');
 	$objPHPExcel->getActiveSheet()->getColumnDimension('Q')->setWidth(13);
 	$objPHPExcel->getActiveSheet()->setCellValue('Q1', 'Monto Comision');
-
+	$objPHPExcel->getActiveSheet()->getColumnDimension('R')->setWidth(18);
+	$objPHPExcel->getActiveSheet()->setCellValue('R1', 'Operador');
 	$fila=1;
 
 	$sqlCuotas="SELECT * FROM cuoacuerdosusimra WHERE montopagada != 0.00 AND ((sistemacancelacion = 'E' AND fechaacreditacion >= '$fechaini' AND fechaacreditacion <= '$fechafin') OR (sistemacancelacion = 'M' AND fechacancelacion >= '$fechaini' AND fechacancelacion <= '$fechafin'))";
@@ -154,6 +155,7 @@ try{
 			$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, '=G'.$fila.'*N'.$fila);
 			$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, '0.03');
 			$objPHPExcel->getActiveSheet()->setCellValue('Q'.$fila, '=O'.$fila.'*P'.$fila);
+			$objPHPExcel->getActiveSheet()->setCellValue('R'.$fila, $rowAcuerdos['usuarioregistro']);
 		}
 	}
 
@@ -162,10 +164,10 @@ try{
 	$objPHPExcel->getDefaultStyle()->getFont()->setSize(8); 
 
 	// Set bold fills color and horizontal alignment to title cells
-	$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFont()->setBold(true);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
-	$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getFill()->getStartColor()->setARGB('FF808080');
-	$objPHPExcel->getActiveSheet()->getStyle('A1:Q1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFont()->setBold(true);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID);
+	$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getFill()->getStartColor()->setARGB('FF808080');
+	$objPHPExcel->getActiveSheet()->getStyle('A1:R1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 	
 	// Set data type and horizontal alignment to data cells
 	$objPHPExcel->getActiveSheet()->getStyle('A2:A'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER);
@@ -202,7 +204,8 @@ try{
 	$objPHPExcel->getActiveSheet()->getStyle('P2:P'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
 	$objPHPExcel->getActiveSheet()->getStyle('Q2:Q'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED1);
 	$objPHPExcel->getActiveSheet()->getStyle('Q2:Q'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_RIGHT);
-
+	$objPHPExcel->getActiveSheet()->getStyle('R2:R'.$fila)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_TEXT);
+	$objPHPExcel->getActiveSheet()->getStyle('R2:R'.$fila)->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
 	// Save Excel 2003 file
 	$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 	$objWriter->save($archivo_name);
