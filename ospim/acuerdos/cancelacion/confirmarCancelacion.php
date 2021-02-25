@@ -72,7 +72,7 @@ function validar(formulario) {
 			</tr> 
 		</table>
 	    <p><b>Fecha de Pago</b> <input name="fechapagada" type="text" id="fechapagada" size="8"></p>
-	    <p><b>Observacion</b> <textarea name="textarea" cols="50" rows="4"></textarea></p>
+	    <p><b>Observacion</b> <textarea name="textarea" cols="50" rows="4"><?php echo $rowCuo['observaciones'] ?></textarea></p>
 	    <p><input type="submit" name="Submit" value="Cancelar Cuota"></p>
 	</form>
 </div>
