@@ -155,7 +155,7 @@ try{
 			$objPHPExcel->getActiveSheet()->setCellValue('O'.$fila, '=G'.$fila.'*N'.$fila);
 			$objPHPExcel->getActiveSheet()->setCellValue('P'.$fila, '0.03');
 			$objPHPExcel->getActiveSheet()->setCellValue('Q'.$fila, '=O'.$fila.'*P'.$fila);
-			$objPHPExcel->getActiveSheet()->setCellValue('R'.$fila, $cuotas[usuarioregistro]);
+			$objPHPExcel->getActiveSheet()->setCellValue('R'.$fila, $cuotas['usuariomodificacion']);
 		}
 	}
 
